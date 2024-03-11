@@ -70,7 +70,7 @@ app.component('entity-table', {
     created() {
         const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
         const required = this.required instanceof Array ? this.required : this.required.split(",");
-        
+
         for(let header of this.columns) {
             header.slug = this.parseSlug(header);
             header.visible = visible.includes(header.slug) || required.includes(header.slug);
@@ -78,8 +78,16 @@ app.component('entity-table', {
         }
     },
 
-    data() {
+    mounted() {
+        const searchInput = this.$refs.search;
+        searchInput.addEventListener("input", OnInput, false);
+        function OnInput() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + "px";
+        }
+    },
 
+    data() {
         return {
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
@@ -93,8 +101,76 @@ app.component('entity-table', {
             return this.columns.filter((col) => col.visible);
         },
         $description() {
-            return $DESCRIPTION[this.type];
-        }
+            return $DESCRIPTIONS[this.type];
+        },
+        appliedFilters() {
+            const type = this.type;
+            const query = JSON.parse(JSON.stringify(this.query));
+            
+            delete query['@limit'];
+            delete query['@opportunity'];
+            delete query['@order'];
+            delete query['@select'];
+            delete query['@page'];
+
+            function getFilterLabels(prop, value) {
+                // Exemplo: 
+                //      key = status  value = EQ(1)
+
+                if (prop == '@keyword') {
+                    return [{prop, value, label: 'palavra-chave'}]
+                }
+                
+                let values = getFilterValues(value);
+                if (prop == 'status') {
+
+                    let statusDict = {
+                        '0': __('rascunhos', 'entity-table'),
+                        '1': __('publicadas', 'entity-table'),
+                        '-10': __('lixeira', 'entity-table'),
+                        '-1': __('arquivadas', 'entity-table'),
+                    }
+
+                    if(type == 'registration') {
+                        statusDict = {
+                            '0': __('rascunhos', 'entity-table'),
+                            '1': __('pendentes', 'entity-table'),
+                            '2': __('invalidas', 'entity-table'),
+                            '3': __('nao selecionadas', 'entity-table'),
+                            '8': __('suplentes', 'entity-table'),
+                            '10': __('selecionadas', 'entity-table'),
+                        }
+                    }
+
+                    return values.map((value) => { 
+                        return {prop, value, label: statusDict[value]} 
+                    });
+
+                } else {
+                    const fieldDescription = this.$description[prop];
+
+                    if (fieldDescription.field_type == 'select') {
+                        return values.map((value) => { 
+                            return {prop, value, label: fieldDescription.options[value]}
+                        });
+                    }
+                }                
+            }
+
+            function getFilterValues(value) {
+                // Exemplos: 
+                //      EQ(10), EQ(preto), IN(8, 10), IN(preto, pardo)                
+                let values = /(EQ|IN|GT|GTE|LT|LTE)\(([^\)]+,?)+\)/.exec(value); 
+                
+                return values[2].split(',').filter(value => value.trim());
+            }
+
+            let result = [];
+            for (let key of Object.keys(query)) {
+                result = result.concat(getFilterLabels(key, query[key]));
+            }
+            return result;
+        },
     },
 
     methods: {
@@ -161,7 +237,10 @@ app.component('entity-table', {
 
         clearFilters(entities) {
             this.resetHeaders();
-            this.$refs.allHeaders.checked = false;
+
+            if (this.$refs.allHeaders?.checked) {
+                this.$refs.allHeaders.checked = false;
+            }
 
             if(this.searchText != '') {
                 this.searchText = '';
@@ -170,6 +249,37 @@ app.component('entity-table', {
             }
 
             this.$emit('clear-filters', entities);
-        }
+        },
+
+        removeFilter(filter) {
+            if (filter.prop == 'status') {
+                let status = /(EQ|IN|GT|GTE|LT|LTE)\(([^\)]+,?)+\)/.exec(this.query[filter.prop]);
+                let operator = status[1];
+                let values = status[2];
+
+                if (operator == 'IN') {
+                    values = values.split(',');
+
+                    if (values.length > 1) {
+                        for (let index of Object.keys(values)) {
+                            if (values[index] == filter.value) {
+                                values.splice(index, 1);
+                            }
+                        }
+                        
+                        this.query[filter.prop] = `${operator}(${values.toString()})`;
+                    } else {
+                        this.query[filter.prop] = 'GTE(0)';
+                    }
+                } else {
+                    this.query[filter.prop] = 'GTE(0)';
+                }
+            }
+
+            if (filter.prop == '@keyword') {
+                delete this.query['@keyword'];
+                this.searchText = '';
+            }
+        },
     },
 });

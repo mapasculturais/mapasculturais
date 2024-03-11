@@ -15,6 +15,7 @@ $this->import('
     mc-link
     mc-multiselect
     mc-popover
+    mc-select
     mc-tag-list
 ');
 ?>
@@ -44,19 +45,19 @@ $this->import('
                 <mc-collapse>
                     <template #header>
                         <div class="entity-table__main-filter">
-                            <div class="entity-table__search">
-                                <div class="entity-table__search-title">
-                                    <h4 class="bold"><?= i::__('Filtrar:') ?></h4>
-                                </div>
-                                <div class="entity-table__search-field">
-                                    <input v-model="searchText" @input="keyword(entities)" type="text" placeholder="<?= i::__('Pesquise por palavra-chave') ?>" class="entity-table__search-input" />
-                                    <button @click="keyword(entities)" class="entity-table__search-button">
-                                        <mc-icon name="search"></mc-icon>
-                                    </button>
-                                </div>
+                            <div class="entity-table__search-field">
+                                <textarea ref="search" v-model="searchText" @input="keyword(entities)" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+                                
+                                <button @click="keyword(entities)" class="entity-table__search-button">
+                                    <mc-icon name="search"></mc-icon>
+                                </button>
                             </div>
                             
-                            <slot name="filters" :entities="entities" :filters="filters"></slot>
+                            <slot name="filters" :entities="entities" :filters="filters">
+                                <!-- <mc-select placeholder="<?= i::__('Selecione o tipo de entidade') ?>">
+                                    <option v-for="option in $description.type" :value="option.order">{{option.label}}</option>
+                                </mc-select> -->
+                            </slot>                            
                         </div>
                     </template>
 
@@ -67,16 +68,31 @@ $this->import('
                     </template>
                 </mc-collapse>
 
-                <div class="entity-table__clear-filters">
-                    <button class="button button--text button--icon" @click="clearFilters(entities)"> <?= i::__("Limpar filtros") ?> <mc-icon name="trash"></mc-icon> </button>
+                <div class="entity-table__tags">
+                    <div class="mc-tag-list">
+                        <ul class="mc-tag-list__tagList">
+                            <li v-for="filter in appliedFilters" class="mc-tag-list__tag mc-tag-list__tag--editable opportunity__background opportunity__color">
+                                <span>{{ filter.label }}</span>
+                                <mc-icon name="delete" @click="removeFilter(filter)" is-link></mc-icon>
+                            </li>
+                            <li>
+                                <button class="button button--sm button--text-danger button--icon" @click="clearFilters(entities)"> <?= i::__("Limpar filtros") ?> <mc-icon name="trash"></mc-icon> </button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </template>
+
         <template #default="{entities, refresh}">
-            <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-            <select v-model="entitiesOrder">
-                <option v-for="option in sortOptions" :value="option.order">{{option.label}}</option>
-            </select>
+            <div class="entity-table__info">
+                <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+
+                <mc-select small :default-value="entitiesOrder" placeholder="<?= i::__('Selecione a ordem de listagem') ?>" @change-option="entitiesOrder = $event.value">
+                    <option v-for="option in sortOptions" :value="option.order">{{option.label}}</option>
+                </mc-select>
+            </div>
+
             <table class="entity-table__table">
                 <thead>
                     <tr>
