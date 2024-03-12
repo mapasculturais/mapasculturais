@@ -137,8 +137,12 @@ abstract class Theme {
             $this->jsObject['request'] = [
                 'controller' => $app->view->controller->id,
                 'action' => $app->view->controller->action,
-                'urlData' => $app->view->urlData,  
+                'urlData' => $app->view->controller->urlData,
             ];
+            
+            if($app->view->controller->data['id']){
+                $this->jsObject['request']['id'] = $app->view->controller->data['id'];
+            }
 
             $this->jsObject['EntitiesDescription'] = [
                 "user"          => Entities\User::getPropertiesMetadata(),

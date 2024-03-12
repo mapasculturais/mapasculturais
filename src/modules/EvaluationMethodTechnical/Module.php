@@ -196,15 +196,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $this->registerOpportunityMetadata('enableQuotasQuestion', [
             'label' => i::__('Habilitar opção para o candidato declarar interesse nas cotas ou políticas afirmativas'),
             'description' => i::__('Ao habilitar esta configuração, será liberada a opção para o candidato se autoidentificar para cotas ou políticas afirmativas.'),
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'private' => false,
-            'default' => true,
+            'field_type' => 'checkbox'
         ]);
 
         $this->registerOpportunityMetadata('considerQuotasInGeneralList', [
             'label' => i::__('Considerar os cotistas dentro da listagem da ampla concorrência'),
             'description' => i::__('Ao habilitar esta configuração, os cotistas seráo considerados na listagem da ampla concorrência.'),
-            'type' => 'checkbox',
+            'type' => 'boolean',
             'private' => false,
             'default' => true,
         ]);
@@ -400,7 +400,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 foreach($rule->fields as $field){
                     $field_name = $field->fieldName;
 
-                    if($quota_count < $rule->vacancies && in_array($reg->$field_name, $rule->eligibleValues)) {
+                    if($quota_count < $rule->vacancies && in_array($reg->$field_name, $field->eligibleValues)) {
                         $selected_by_quotas[$rule_id][] = &$reg;
                         $selected_global[] = &$reg;
 
