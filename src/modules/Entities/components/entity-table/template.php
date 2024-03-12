@@ -21,7 +21,7 @@ $this->import('
 ?>
 <div class="entity-table">
     
-    <mc-entities :select="select" :type="apiController" :query="query" :order="entitiesOrder" :limit="limit" :endpoint="endpoint" watch-query>
+    <mc-entities :select="select" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" watch-query>
 
         <template #header="{entities, filters}">
             <div class="entity-table__header">
