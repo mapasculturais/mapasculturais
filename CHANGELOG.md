@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.26] - 2024-03-11
+### Melhorias
+- Corrige filtro por status do módulo de relatórios
+- Corrige visualização de relatórios de fases de avaliação
+
 ## [7.3.25] - 2024-03-11
 ### Melhorias
 - Implementa aba para definir os avaliadores manualmente na single da inscrição
