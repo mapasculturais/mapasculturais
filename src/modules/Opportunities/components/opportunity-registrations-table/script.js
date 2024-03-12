@@ -126,7 +126,7 @@ app.component('opportunity-registrations-table', {
             if (this.phase.registrationRanges && this.phase.registrationRanges.length > 0) {
                 const result = {};
                 for (let range of this.phase.registrationRanges) {
-                    result[range.replace(/,/g, '\\,')] = range;
+                    result[range.label.replace(/,/g, '\\,')] = range.label;
                 }
                 return result;
             }
