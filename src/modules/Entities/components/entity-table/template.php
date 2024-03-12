@@ -46,7 +46,7 @@ $this->import('
                     <template #header>
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
-                                <textarea ref="search" v-model="searchText" @input="keyword(entities)" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+                                <textarea ref="search" v-model="this.query['@keyword']" @input="keyword(entities)" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
                                 
                                 <button @click="keyword(entities)" class="entity-table__search-button">
                                     <mc-icon name="search"></mc-icon>
@@ -58,9 +58,23 @@ $this->import('
                         </div>
                     </template>
 
-                    <template v-if="hasSlot('advanced-filters')" #content>
+                    <template #content>
                         <div class="entity-table__advanced-filters">
-                            <slot name="advanced-filters" :entities="entities" :filters="filters"></slot>
+                            <slot name="advanced-filters" :entities="entities" :filters="filters">
+
+                                <div class="grid-12">
+                                    <div v-for="(filter, slug) in advancedFilters" class="field col-3">
+                                        <label>{{filter.label}}</label>
+    
+                                        <div class="field__group">
+                                            <label v-for="option in filter.options" :key="option" class="field__checkbox">
+                                                <input type="checkbox" :checked="advancedFilterChecked(slug, option)" @change="toggleAdvancedFilter(slug, option)"> {{option}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </slot>
                         </div>
                     </template>
                 </mc-collapse>
@@ -105,6 +119,7 @@ $this->import('
                                     <label class="field__checkbox">
                                         <input ref="allHeaders" type="checkbox" @click="showAllHeaders()"> <?= i::__('Todas as colunas') ?>
                                     </label>
+
                                     <label v-for="column in columns" class="field__checkbox">
                                         <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
                                     </label>
