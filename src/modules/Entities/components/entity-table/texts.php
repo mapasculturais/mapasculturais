@@ -20,4 +20,6 @@ return [
     'rascunhos' => i::__('Rascunhos'),
     'selecionadas' => i::__('Selecionadas'),
     'suplentes' => i::__('Suplentes'),
+
+    'palavras-chave' => i::__('Palavras-chave'),
 ];

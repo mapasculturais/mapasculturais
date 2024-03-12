@@ -54,14 +54,11 @@ $this->import('
                             </div>
                             
                             <slot name="filters" :entities="entities" :filters="filters">
-                                <!-- <mc-select placeholder="<?= i::__('Selecione o tipo de entidade') ?>">
-                                    <option v-for="option in $description.type" :value="option.order">{{option.label}}</option>
-                                </mc-select> -->
                             </slot>                            
                         </div>
                     </template>
 
-                    <template #content>
+                    <template v-if="hasSlot('advanced-filters')" #content>
                         <div class="entity-table__advanced-filters">
                             <slot name="advanced-filters" :entities="entities" :filters="filters"></slot>
                         </div>
@@ -72,10 +69,10 @@ $this->import('
                     <div class="mc-tag-list">
                         <ul class="mc-tag-list__tagList">
                             <li v-for="filter in appliedFilters" class="mc-tag-list__tag mc-tag-list__tag--editable opportunity__background opportunity__color">
-                                <span>{{ filter }}</span>
-                                <mc-icon name="delete" @click="removeFilter(filter)" is-link></mc-icon>
+                                <span>{{ filter.label }}</span>
+                                <mc-icon name="delete" @click="removeFilter(filter, entities)" is-link></mc-icon>
                             </li>
-                            <li>
+                            <li v-if="appliedFilters.length > 0">
                                 <button class="button button--sm button--text-danger button--icon" @click="clearFilters(entities)"> <?= i::__("Limpar filtros") ?> <mc-icon name="trash"></mc-icon> </button>
                             </li>
                         </ul>

@@ -39,7 +39,7 @@ $entity = $this->controller->requestedEntity;
         <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
 
         <div class="col-12"> 
-            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters" show-index>
+            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" visible="agent,status,category,consolidatedResult,attachments" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index>
                 <template #title>
                     <h5>
                         <strong><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas.") ?></strong>
@@ -66,14 +66,38 @@ $entity = $this->controller->requestedEntity;
                         <mc-select v-if="statusEvaluationResult" class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)" placeholder="<?= i::__("Resultado de avaliação") ?>">
                             <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
                         </mc-select>
-
-                        <mc-select class="col-4" :default-value="selectedStatus" @change-option="filterByStatus($event,entities)" placeholder="<?= i::__("Status de inscrição") ?>">
-                            <option v-for="item in statusDict" :value="item.value">{{item.label}}</option>
-                        </mc-select>
                         
-                        <mc-select v-if="statusCategory.length > 0" class="col-3" :default-value="selectedCategory" @change-option="filterByCategory($event,entities)" placeholder="<?= i::__("Categoria") ?>">
-                            <option v-for="item in statusCategory" :value="item.value">{{item.label}}</option>
-                        </mc-select>
+                        <mc-multiselect class="col-3" :model="selectedStatus" :items="status" title="<?= i::esc_attr__('Status') ?>" @selected="filterByStatus(entities)" @removed="filterByStatus(entities)" hide-filter hide-button>
+                            <template #default="{popover, setFilter}">
+                                <div class="field">
+                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os status: ') ?>">
+                                </div>
+                            </template>
+                        </mc-multiselect>
+                        
+                        <mc-multiselect v-if="categories" class="col-3" :model="selectedCategories" :items="categories" title="<?= i::esc_attr__('Categorias') ?>" @selected="filterByCategories(entities)" @removed="filterByCategories(entities)" hide-filter hide-button>
+                            <template #default="{popover, setFilter}">
+                                <div class="field">
+                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as categorias: ') ?>">
+                                </div>
+                            </template>
+                        </mc-multiselect>
+
+                        <mc-multiselect v-if="proponentTypes" class="col-3" :model="selectedProponentTypes" :items="proponentTypes" title="<?= i::esc_attr__('Tipos de proponente') ?>" @selected="filterByProponentTypes(entities)" @removed="filterByProponentTypes(entities)" hide-filter hide-button>
+                            <template #default="{popover, setFilter}">
+                                <div class="field">
+                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
+                                </div>
+                            </template>
+                        </mc-multiselect>
+
+                        <mc-multiselect v-if="ranges" class="col-3" :model="selectedRanges" :items="ranges" title="<?= i::esc_attr__('Faixas') ?>" @selected="filterByRanges(entities)" @removed="filterByRanges(entities)" hide-filter hide-button>
+                            <template #default="{popover, setFilter}">
+                                <div class="field">
+                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as: ') ?>">
+                                </div>
+                            </template>
+                        </mc-multiselect>
                     </div>
                 </template>
 
