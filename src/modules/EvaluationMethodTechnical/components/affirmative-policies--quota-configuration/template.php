@@ -37,7 +37,7 @@ $this->import('
             </label>
         </div>
         <hr style="width: 100%;">
-        <entity-field :entity="phase.opportunity.parent ?? phase.opportunity" prop="considerQuotasInGeneralList"></entity-field>
+        <entity-field :entity="phase.opportunity.parent ?? phase.opportunity" prop="considerQuotasInGeneralList" :autosave="3000"></entity-field>
     </div>
 
     <div v-if="isActive" v-for="(quota, index) in phase.quotaConfiguration.rules" :key="index" class="affirmative-policies--quota-configuration__card">
