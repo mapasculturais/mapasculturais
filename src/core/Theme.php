@@ -134,6 +134,12 @@ abstract class Theme {
         });
         
         $app->hook('mapas.printJsObject:before', function () use($app) {
+            $this->jsObject['request'] = [
+                'controller' => $app->view->controller->id,
+                'action' => $app->view->controller->action,
+                'urlData' => $app->view->urlData,  
+            ];
+
             $this->jsObject['EntitiesDescription'] = [
                 "user"          => Entities\User::getPropertiesMetadata(),
                 "agent"         => Entities\Agent::getPropertiesMetadata(),
