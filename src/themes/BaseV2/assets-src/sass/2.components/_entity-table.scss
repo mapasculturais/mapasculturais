@@ -96,30 +96,7 @@
     &__advanced-filters {
         display: flex;
         gap: size(16) size(5);
-        flex-wrap: wrap;
-
-        & > * {
-            @media (min-width: size(830)) {
-                flex-basis: calc(25% - size(3.8));
-            }
-            
-            @media (max-width: size(830)) {
-                flex-basis: calc(33% - size(5));
-            }
-
-            @media (max-width: size(700)) {
-                flex-basis: calc(50% - size(2.5));
-            }
-        }
-
-
-        .field__group {
-            display: grid;
-            gap: size(5);
-            overflow: auto;
-            padding-right: size(5);
-        }
-        
+        flex-wrap: wrap;        
     }
 
     &__info {
