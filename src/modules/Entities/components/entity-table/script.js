@@ -32,7 +32,7 @@ app.component('entity-table', {
         },
         watchDebounce: {
             type: Number,
-            default: 1500
+            default: 2000
         },
         headers: {
             type: Array,
@@ -231,12 +231,6 @@ app.component('entity-table', {
 
             return val;
         },
-
-        // keyword(entities) {
-        //     window.dispatchEvent(new CustomEvent('entityTableSearchText', { detail: {searchText: this.searchText} }));
-        //     this.query['@keyword'] = this.searchText;
-        //     entities.refresh(this.watchDebounce);
-        // },
 
         resetHeaders() {
             const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
