@@ -1,5 +1,9 @@
 app.component('opportunity-ranges-config', {
     template: $TEMPLATES['opportunity-ranges-config'],
+    setup() {
+        const messages = useMessages();
+        return{messages};
+    },
     props: {
         entity: {
             type: Entity,
@@ -16,11 +20,15 @@ app.component('opportunity-ranges-config', {
     },
     methods: { 
         addRange() {
-            this.entity.registrationRanges.push({
-                label: '',
-                limit: 0,
-                value: NaN
-            });
+            if (this.areAllRangesValid()) {
+                this.entity.registrationRanges.push({
+                    label: '',
+                    limit: 0,
+                    value: NaN
+                });
+            }else{
+               this.messages.error("Por favor, preencha todos os campos da faixa antes de adicionar uma nova faixa.");
+            }
         },
         removeRange(item) {
             this.entity.registrationRanges = this.entity.registrationRanges.filter(function(value, key) {
@@ -34,7 +42,12 @@ app.component('opportunity-ranges-config', {
             }
         },
         autoSave() {
-            this.entity.save(3000)
-        }
+            if (this.areAllRangesValid()) {
+                this.entity.save(3000);
+            }
+        },
+        areAllRangesValid() {
+            return this.entity.registrationRanges.every(range => range.label.trim().length > 0);
+        },
     }
 });
