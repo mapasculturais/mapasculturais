@@ -1,6 +1,6 @@
 app.component('mc-select', {
     template: $TEMPLATES['mc-select'],
-    emits: ['changeOption'],
+    emits: ['changeOption', 'update:defaultValue'],
 
     props: {
         defaultValue: {
@@ -100,6 +100,7 @@ app.component('mc-select', {
                                     value: optionValue,
                                 }
 
+                                this.$emit('update:defaultValue', optionValue);
                                 this.$refs.selected.innerHTML = optionItem;
                             }
 
@@ -112,6 +113,7 @@ app.component('mc-select', {
                                 value: optionValue,
                             }
     
+                            this.$emit('update:defaultValue', optionValue);
                             this.$refs.selected.innerHTML = optionItem;
                         }   
 
@@ -123,7 +125,6 @@ app.component('mc-select', {
             }
 
             event.target.classList.add('active');
-            
             this.toggleSelect();
         },
 
