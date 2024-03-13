@@ -709,6 +709,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
             // eliminar as inscrições com nota inferior a nota de corte
             if($delete_registrations) {
+                $query_params['status'] = "AND($statusNotEqual, $statusIn)";
                 $query_params['consolidatedResult'] = API::LT($cutoff_Score);
                 $new_status = 3;
             }
