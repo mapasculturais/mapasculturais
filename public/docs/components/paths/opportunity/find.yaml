@@ -1,0 +1,29 @@
+get:
+  tags:
+    - Oportunidades
+  summary: Recupera a lista de oportunidades
+  description: Recupera a lista de oportunidades
+  parameters:
+    - in: query
+      name: '@select'
+      schema:
+        type: string
+      required: false
+      description: Um campo que permite personalizar os dados que vão retornar na resposta
+      example: 'id,name,status'
+  responses:
+    '200':
+      description: Um array com todas as oportunidades, caso não tenha o parametro @select na busca, ele trará apenas id e @entityType
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: '../../schemas/opportunity.yaml'
+                - type: object
+                  properties:
+                    '@entityType':
+                      type: string
+                      example: opportunity
+                      description: Um texto que representa qual a entity é retornada

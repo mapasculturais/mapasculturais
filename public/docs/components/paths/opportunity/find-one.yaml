@@ -1,8 +1,8 @@
 get:
   tags:
     - Oportunidades
-  summary: Recupera uma lista de oportunidades
-  description: Recuperar uma lista de oportunidades
+  summary: Recupera uma única oportunidade
+  description: Recuperar um única oportunidade
   responses:
     '200':
       description: Success
