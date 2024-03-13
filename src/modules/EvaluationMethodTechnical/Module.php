@@ -323,12 +323,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $exclude_ampla_concorrencia = false;
 
         // configuração de faixas
+        $registration_ranges = $first_phase->registrationRanges ?: [];
         $ranges_config = [];
-        foreach($first_phase->registrationRanges as $range) {
+        foreach($registration_ranges as $range) {
             $ranges_config[$range['label']] = $range['limit'];
         }
 
-        $quota_config = $phase_evaluation_config->quotaConfiguration;
+        $quota_config = $phase_evaluation_config->quotaConfiguration ?: (object) ['rules' => (object) []];
         $geo_quota_config = $phase_evaluation_config->geoQuotaConfiguration ?: (object) ['distribution' => (object) [], 'geoDivision' => null];
         $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
         
