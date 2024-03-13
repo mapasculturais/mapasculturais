@@ -18,7 +18,6 @@ app.component("affirmative-policy--bonus-config", {
   data() {
     const config = this.entity.affirmativePolicyBonusConfig || {};
     return {
-      pointRewardRoof: this.entity.pointRewardRoof,
       fields: this.entity.opportunity.id
         ? $MAPAS.config.affirmativePolicyBonusConfig.fields[
             this.entity.opportunity.id
