@@ -22,6 +22,7 @@ $col-columns: 12;
 
 .flex-container {
     display: flex;
+    margin-top: size(24);
     flex-wrap: wrap;
     flex-direction: column;
     gap: size(32) 3%;
