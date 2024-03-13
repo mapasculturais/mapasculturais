@@ -6,5 +6,8 @@ properties:
     description: Um id númerico que representa o Tipo de Oportunidade
   name:
     type: string
-    example: Edital 032024 - Festival de Leitura
+    example: Festival
     description: Um texto que representa o Tipo de Oportunidade
+required:
+  - id
+  - name
