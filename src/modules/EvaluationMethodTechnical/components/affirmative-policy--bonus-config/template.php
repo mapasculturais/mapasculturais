@@ -24,7 +24,7 @@ $this->import('
                     <?= i::__('Percentual total de indução:') ?>
                 </label>
                 <span>
-                    <input type="number" v-model="pointRewardRoof" @change="autoSave()" min="0" max="100" /> %
+                    <input type="number" v-model="entity.pointRewardRoof" @change="autoSave()" min="0" max="100" /> %
                 </span>
             </div>
         </div>
