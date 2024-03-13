@@ -345,7 +345,8 @@ class Registration extends \MapasCulturais\Entity
             'agentRelations' => [],
             'files' => [],
             'singleUrl' => $this->singleUrl,
-            'editUrl' => $this->editUrl
+            'editUrl' => $this->editUrl,
+            'appliedForQuota' => $this->appliedForQuota
         ];
 
         if($this->canUser('viewConsolidatedResult')){
