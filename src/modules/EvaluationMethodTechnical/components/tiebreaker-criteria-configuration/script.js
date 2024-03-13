@@ -76,10 +76,6 @@ app.component('tiebreaker-criteria-configuration', {
             this.criteria[id].preferences = this.checkCriterionType(this.criteria[id], ['checkboxes', 'select']) ? [] : null;
         },
 
-        setPreference(option, id) {
-            this.criteria[id].preferences = option.value;
-        },
-
         unsetCriterion(id) {
             let counter = 1;
             for (const criterion in this.criteria) {

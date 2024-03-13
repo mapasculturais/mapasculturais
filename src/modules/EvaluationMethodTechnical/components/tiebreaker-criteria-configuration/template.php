@@ -56,7 +56,7 @@ $this->import('
                     <template v-if="criterion.criterionType == 'criterion'">
                         <div class="field">
                             <label>&nbsp;</label>
-                            <mc-select placeholder="<?= i::esc_attr__('Selecione um critério') ?>" :default-value="criterion.preferences" @change-option="setPreference($event, criterion.id)" has-groups>
+                            <mc-select placeholder="<?= i::esc_attr__('Selecione um critério') ?>" v-model:default-value="criterion.preferences" has-groups>
                                 <optgroup v-for="section in sections" :label="section.name">
                                     <option v-for="_criterion in section.criteria" :key="_criterion.id" :value="_criterion.id"> {{_criterion.title}} </option>
                                 </optgroup>                        
@@ -67,7 +67,7 @@ $this->import('
                     <template v-if="criterion.criterionType == 'sectionCriteria'">
                         <div class="field">
                             <label>&nbsp;</label>
-                            <mc-select placeholder="<?= i::esc_attr__('Selecione uma seção') ?>" :default-value="criterion.preferences" @change-option="setPreference($event, criterion.id)">
+                            <mc-select placeholder="<?= i::esc_attr__('Selecione uma seção') ?>" v-model:default-value="criterion.preferences">
                                 <option v-for="section in sections" :key="section.id" :value="section.id"> {{section.name}} </option>
                             </mc-select>
                         </div>
@@ -76,7 +76,7 @@ $this->import('
                     <template v-if="checkCriterionType(criterion, ['boolean', 'checkbox'])" >
                         <div class="field">
                             <label>&nbsp;</label>
-                            <mc-select placeholder="<?= i::esc_attr__('Selecione a preferência') ?>" :default-value="criterion.preferences" @change-option="setPreference($event, criterion.id)">
+                            <mc-select placeholder="<?= i::esc_attr__('Selecione a preferência') ?>" v-model:default-value="criterion.preferences">
                                 <option value="marked"> <?= i::__('dar preferência ao valor marcado') ?> </option>
                                 <option value="unmarked"> <?= i::__('dar preferência ao valor desmarcado') ?> </option>
                             </mc-select>
@@ -86,7 +86,7 @@ $this->import('
                     <template v-if="checkCriterionType(criterion, ['number', 'date', 'currency'])" >
                         <div class="field">
                             <label>&nbsp;</label>
-                            <mc-select placeholder="<?= i::esc_attr__('Selecione a preferência') ?>" :default-value="criterion.preferences" @change-option="setPreference($event, criterion.id)">
+                            <mc-select placeholder="<?= i::esc_attr__('Selecione a preferência') ?>" v-model:default-value="criterion.preferences">
                                 <option value="smallest"> <?= i::__('dar preferência ao menor valor') ?> </option>
                                 <option value="largest"> <?= i::__('dar preferência ao maior valor') ?> </option>
                             </mc-select>
