@@ -1,0 +1,8 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: O identificador único do espaço.
+  name:
+    type: string
+    description: O nome do tipo de espaço cultural.

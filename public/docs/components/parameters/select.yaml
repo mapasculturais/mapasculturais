@@ -4,4 +4,10 @@ schema:
   type: string
 required: false
 description: Um campo que permite personalizar os dados que vão retornar na resposta
-example: 'id,name,status'
+examples:
+  example1:
+    value: 'id,name,status'
+    summary: Primeiro exemplo
+  example2:
+    value: '*'
+    summary: Segundo exemplo

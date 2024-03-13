@@ -1,0 +1,7 @@
+name: '@order'
+in: query
+schema:
+  type: string
+required: false
+description: Um campo que permite personalizar a ordem do itens retornados
+example: 'createTimestamp+DESC'

@@ -1,0 +1,26 @@
+get:
+  tags:
+    - Espaços
+  summary: Recupera a lista de espaços
+  description: Recupera a lista de espaços
+  parameters:
+    - $ref: '../../parameters/select.yaml'
+    - $ref: '../../parameters/order.yaml'
+    - $ref: '../../parameters/limit.yaml'
+    - $ref: '../../parameters/page.yaml'
+  responses:
+    '200':
+      description: Um array com todos as espaços, caso não tenha o parâmetro @select na busca, ele trará apenas id e @entityType
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: '../../schemas/space.yaml'
+                - type: object
+                  properties:
+                    '@entityType':
+                      type: string
+                      example: space
+                      description: Um texto que representa qual a entity é retornada

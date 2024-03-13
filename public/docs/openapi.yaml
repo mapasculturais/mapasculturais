@@ -18,6 +18,11 @@ externalDocs:
 servers:
   - url: /
 tags:
+  - name: Espaços
+    description: Rotas relacionadas aos espaços
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
   - name: Oportunidades
     description: Everything about your tests
     externalDocs:
@@ -36,10 +41,27 @@ paths:
     $ref: './components/paths/opportunity/find-registrations.yaml'
   /api/opportunity/selectFields:
     $ref: './components/paths/opportunity/select-fields.yaml'
-
+  /api/space/describe:
+    $ref: './components/paths/space/describe.yaml'
+  /api/space/find:
+    $ref: './components/paths/space/find.yaml'
+  /api/space/findOne:
+    $ref: './components/paths/space/find-one.yaml'
+  /api/space/findByEvents:
+    $ref: './components/paths/space/find-by-events.yaml'
+  /api/space/getTypes:
+    $ref: './components/paths/space/get-types.yaml'
+  /api/space/getTypeGroups:
+    $ref: './components/paths/space/get-type-groups.yaml'
 components:
   schemas:
     Opportunity:
       $ref: './components/schemas/opportunity.yaml'
     OpportunityType:
       $ref: './components/schemas/opportunity-type.yaml'
+    Space:
+      $ref: './components/schemas/space.yaml'
+    SpaceType:
+      $ref: './components/schemas/space-type.yaml'
+    SpaceTypeGroup:
+      $ref: './components/schemas/space-type-group.yaml'
