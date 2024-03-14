@@ -32,13 +32,13 @@ $this->import('
             <div class="dates">
                 <div v-if="!item.isLastPhase" class="date">
                     <div class="date__title"> <?= i::__('Data de início') ?> </div>
-                    <div v-if="item.registrationFrom" class="date__content">{{item.registrationFrom.date('2-digit year')}}</div>
-                    <div v-if="item.evaluationFrom" class="date__content">{{item.evaluationFrom.date('2-digit year')}}</div>
+                    <div v-if="item.registrationFrom" class="date__content">{{item.registrationFrom.date('2-digit year')}} {{item.registrationFrom.time('numeric')}}</div>
+                    <div v-if="item.evaluationFrom" class="date__content">{{item.evaluationFrom.date('2-digit year')}} {{item.evaluationFrom.time('numeric')}}</div>
                 </div>
                 <div v-if="!item.isLastPhase" class="date">
                     <div class="date__title"> <?= i::__('Data final') ?> </div>
-                    <div v-if="item.registrationTo" class="date__content">{{item.registrationTo.date('2-digit year')}}</div>
-                    <div v-if="item.evaluationTo" class="date__content">{{item.evaluationTo.date('2-digit year')}}</div>
+                    <div v-if="item.registrationTo" class="date__content">{{item.registrationTo.date('2-digit year')}} {{item.registrationTo.time('numeric')}}</div>
+                    <div v-if="item.evaluationTo" class="date__content">{{item.evaluationTo.date('2-digit year')}} {{item.evaluationTo.time('numeric')}}</div>
                 </div>
                 <div v-if="showPublishTimestamp(item)" class="date">
                     <div class="date__title"> <?= i::__('Data publicação') ?> </div>
