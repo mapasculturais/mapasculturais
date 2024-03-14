@@ -287,12 +287,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
         
         $cache_key = "$phase_opportunity:quota-registrations";
         
-        if($app->cache->contains($cache_key)){
+        if($app->config['app.useQuotasCache'] && $app->cache->contains($cache_key)){
             return $app->cache->fetch($cache_key);
         }
 
         $result = $app->controller('opportunity')->apiFindRegistrations($phase_opportunity, [
-            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,score', ...$fields]),
+            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score', ...$fields]),
             '@order' => 'score DESC'
         ]);
 
@@ -300,7 +300,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             return (object) $reg; 
         }, $result->registrations);
 
-        $app->cache->save($cache_key, $registrations);
+        if($app->config['app.useQuotasCache']){
+            $app->cache->save($cache_key, $registrations, $app->config['app.quotasCache.lifetime']);
+        }
 
         return $registrations;
     }
@@ -320,7 +322,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         // número total de vagas no edital
         $vacancies = $first_phase->vacancies;
-        $exclude_ampla_concorrencia = false;
+        $exclude_ampla_concorrencia = !$first_phase->considerQuotasInGeneralList;
 
         // configuração de faixas
         $registration_ranges = $first_phase->registrationRanges ?: [];
@@ -338,7 +340,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $selected_by_geo = [];
         $selected_by_ranges = [];
 
-        /** ===  inicializa as listas === */
+        /** ===  INICIALIZANDO AS LISTAS === */
         // cotas
         $total_quota = 0;
         foreach($quota_config->rules as $rule) {
@@ -372,7 +374,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields);
         $registrations = $this->tiebreaker($tiebreaker_config, $registrations);
         
-        /** gera as listas */
+        /** === POPULANDO AS LISTAS === */
         // primeiro preenche as cotas
         foreach($quota_config->rules as $rule) {
 
@@ -384,7 +386,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 }
 
                 // se a pessoa não é elegível, ela não conta nas cotas (pode ser pq falou que não quer ser cotista ou pq nenhum critério configurado bateu)
-                if(!$reg->appliedForQuota) {
+                if(!$reg->eligible) {
                     continue;
                 }
 
@@ -438,14 +440,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $selected_global[] = $reg;
             }
         }
-
+        
         $selected_global = $this->tiebreaker($tiebreaker_config, $selected_global);
 
         $result = array_values($selected_global);
-
-        foreach($registrations as $reg) {
+        
+        foreach(array_values($registrations) as &$reg) {
             if(!in_array($reg, $result)){
-                $result[] = $reg;
+                $result[] = &$reg;
             }
         }
 
@@ -458,29 +460,21 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $self = $this;
 
-        // Define o valor da coluna eligible da inscrição no momento do insert
-        $app->hook('entity(Registration).<<insert|send>>:after', function() use($app){
+        // Define o valor da coluna eligible
+        $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
             /** @var Registration $this */
-            $app->disableAccessControl();
-
-            $this->eligible = $this->isEligibleForAffirmativePolicies();
-            $this->save(true);
-            
-            if ($this->previousPhase) {
-                $this->eligible =  $this->previousPhase->isEligibleForAffirmativePolicies();
-                $this->save(true);
+            if($this->evaluationMethod->slug == 'technical') {
+                $this->eligible = $this->isEligibleForAffirmativePolicies();
             }
-            $app->disableAccessControl();
-
         });
 
         // Define o valor da coluna eligible da inscrição no momento do update
-        $app->hook('entity(Registration).update:after', function() use($app){
+        $app->hook('entity(Registration).<<save|send>>:after', function() use($app){
             /** @var Registration $this */
             $app->disableAccessControl();
 
             if( $this->nextPhase){
-                $this->nextPhase->eligible = $this->isEligibleForAffirmativePolicies();
+                $this->nextPhase->eligible = $this->eligible;
                 $this->nextPhase->save(true);
             }
             $app->enableAccessControl();
@@ -488,7 +482,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         // Devolve se a inscrição é elegível a participar das cotas
         $app->hook('Entities\\Registration::isEligibleForAffirmativePolicies', function() use($self) {
-            /** @var Registration $this */
+            /** 
+             * @var Registration $this 
+             * @var Module $self 
+             **/
             $registration = $this;
             $em = $registration->evaluationMethodConfiguration;
 
@@ -500,7 +497,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 }
             }
 
-            if($appliedForQuota) {
+            if(!$appliedForQuota) {
                 return false;
             }
             
@@ -534,16 +531,55 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 }
             }
 
-            if($geoQuotaConfiguration = $em->geoQuotaConfiguration) {
-                $geoDivision = $geoQuotaConfiguration->geoDivision;
-                foreach($geoQuotaConfiguration->distribution as $division => $value) {
-                    if($value && $registration->owner->$geoDivision === $division) {
-                        return true;
-                    }
-                }
-            }
-
             return false;
+        });
+
+        $app->hook('Entities\\Opportunity::isAffirmativePoliciesActive', function() use($self) {
+            /** @var Opportunity $this */
+        
+            $result = false;
+            $opportunity = $this;
+
+            do{
+                $em = $opportunity->evaluationMethodConfiguration;
+                
+                if($em && ($em->quotaConfiguration || $em->pointReward)) {
+                    $result = true;
+                }
+
+                if($opportunity->isFirstPhase) {
+                    $opportunity = null;
+                } else {
+                    $opportunity = $opportunity->previousPhase;
+                }
+                
+            } while ($opportunity);
+
+            return $result;
+        });
+
+        $app->hook('Entities\\Opportunity::hadTechnicalEvaluationPhase', function() use($self) {
+            /** @var Opportunity $this */
+        
+            $result = false;
+            $opportunity = $this;
+            
+            do{
+                $em = $opportunity->getEvaluationMethod();
+                
+                if($em && $em->slug == 'technical') {
+                    $result = true;
+                }
+
+                if($opportunity->isFirstPhase) {
+                    $opportunity = null;
+                } else {
+                    $opportunity = $opportunity->previousPhase;
+                }
+                
+            } while ($opportunity);
+
+            return $result;
         });
         
         $app->hook('entity(Registration).consolidateResult', function(&$result) use ($self) {
@@ -557,9 +593,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                 $app->disableAccessControl();
 
+                $score = $self->applyPointReward((float) $this->consolidatedResult, $registration);
+                $eligible = $this->isEligibleForAffirmativePolicies() ? 'true' : 'false';
+                
                 do {
-                    $score = $self->applyPointReward((float) $registration->consolidatedResult, $registration);
-                    $connection->executeQuery('UPDATE registration SET score = :score WHERE id = :id', ['score' => $score,'id' => $registration->id]);
+                    $connection->executeQuery("UPDATE registration SET score = :score, eligible = '{$eligible}' WHERE id = :id", [
+                        'score' => $score,
+                        'id' => $registration->id
+                    ]);
                 }
                 while($registration = $this->nexPhase);
                
@@ -571,7 +612,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 
             }
            
-        }); 
+        });
+
+
 
         $quota_data = (object)[];
 
