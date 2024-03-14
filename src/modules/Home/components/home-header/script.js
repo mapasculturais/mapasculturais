@@ -18,6 +18,10 @@ app.component('home-header', {
             secondBanner: $MAPAS.config.homeHeader.secondBanner,
             secondBannerLink: $MAPAS.config.homeHeader.secondBannerLink,
             secondDownloadableLink: $MAPAS.config.homeHeader.secondDownloadableLink,
+
+            thirdBanner: $MAPAS.config.homeHeader.thirdBanner,
+            thirdBannerLink: $MAPAS.config.homeHeader.thirdBannerLink,
+            thirdDownloadableLink: $MAPAS.config.homeHeader.thirdDownloadableLink,
         }
     },
 });

@@ -37,6 +37,13 @@ $this->import('
                 </a>
                 <img v-if="!secondBannerLink" :src="secondBanner" />
             </div>
+
+            <div v-if="thirdBanner" class="home-header__banner">
+                <a v-if="thirdBannerLink" :href="thirdBannerLink" :download="thirdDownloadableLink ? '' : undefined"  :target="!thirdDownloadableLink ? '_blank' : null">
+                    <img :src="thirdBanner" />
+                </a>
+                <img v-if="!thirdBannerLink" :src="thirdBanner" />
+            </div>
         </div>
   
     </div>

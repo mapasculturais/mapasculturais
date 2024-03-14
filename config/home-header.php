@@ -13,18 +13,30 @@ return [
     ex: `img/meu-banner.jpg` (pasta assets/img/meu-banner.jpg do tema)
     */
     'homeHeader.banner' => env('HOME_HEADER_BANNER', ''),
-    /* Link vinculado ao banner */
+
+    /* Link vinculado ao primeiro banner */
     'homeHeader.bannerLink' => env('HOME_HEADER_LINK', ''),
+    
     /* Define se link é para download ou para abrir em uma nova aba */
     'homeHeader.downloadableLink' => env('HOME_HEADER_DOWNLOADABLE', false),
 
-    /* 
-    Define o nome do asset do segundo banner do header da homepage 
-    ex: `img/meu-segundo-banner.jpg` (pasta assets/img/meu-segundo-banner.jpg do tema)
-    */
     'homeHeader.secondBanner' => env('HOME_HEADER_BANNER', ''),
-    /* Link vinculado ao banner */
+    
+    /* Link vinculado ao segundo banner */
     'homeHeader.secondBannerLink' => env('HOME_HEADER_LINK', ''),
+       
     /* Define se link é para download ou para abrir em uma nova aba */
     'homeHeader.secondDownloadableLink' => env('HOME_HEADER_SECOND_DOWNLOADABLE', false),
+
+    /* 
+    Define o nome do asset do terceiro banner do header da homepage 
+    ex: `img/meu-terceiro-banner.jpg` (pasta assets/img/meu-terceiro-banner.jpg do tema)
+    */
+    'homeHeader.thirdBanner' => env('HOME_HEADER_THIRD_BANNER', ''),
+
+    /* Link vinculado ao  terceiro banner */
+    'homeHeader.thirdBannerLink' => env('HOME_HEADER_THIRD_LINK', ''),
+
+    /* Define se link é para download ou para abrir em uma nova aba */
+    'homeHeader.thirdDownloadableLink' => env('HOME_HEADER_THIRD_DOWNLOADABLE', false),
 ];
