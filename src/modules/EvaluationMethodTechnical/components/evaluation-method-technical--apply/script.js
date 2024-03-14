@@ -15,7 +15,6 @@ app.component('evaluation-method-technical--apply', {
         applyData = {
             from:[0,max],
             cutoffScore: 0,
-            
         };
 
         return {
@@ -25,7 +24,7 @@ app.component('evaluation-method-technical--apply', {
             deleteRegistrations: false,
             selectFirst: false,
             considerQuotas: false,
-            selectionType: ''
+            selectionType: []
         }
     },
     watch: {
@@ -58,7 +57,7 @@ app.component('evaluation-method-technical--apply', {
             delete this.applyData.to;
             this.applyData.from[0] = 0;
             this.applyData.from[1] = this.maxResult;
-            this.selectionType = '';
+            this.selectionType = [];
         },
 
         apply(modal,entity) {
