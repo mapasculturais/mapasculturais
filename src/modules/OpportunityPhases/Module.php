@@ -260,12 +260,17 @@ class Module extends \MapasCulturais\Module{
             
             $last_phase = $this->isLastPhase ? $this : $this->lastPhase;
 
+            $complement = "";
+            if(!$this->isLastPhase) {
+                $complement = "o.id < :this AND";
+            }
+
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM MapasCulturais\Entities\Opportunity o 
                 WHERE 
                     o.id <> :last AND 
-                    o.id < :this AND
+                    {$complement}
                     (
                         o.id = :parent OR
                         (o.parent = :parent AND o.id <> :this)
