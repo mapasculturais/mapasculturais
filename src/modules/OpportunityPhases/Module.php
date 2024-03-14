@@ -1310,6 +1310,12 @@ class Module extends \MapasCulturais\Module{
                 if ($this->previousPhase) {
                     $this->range = $this->previousPhase->range;
                     $this->proponentType = $this->previousPhase->proponentType;
+                    if($this->previousPhase->score) {
+                        $this->score = $this->previousPhase->score;
+                    }
+                    if($this->previousPhase->eligible) {
+                        $this->eligible = $this->previousPhase->eligible;
+                    }
                     $this->save(true);
                 }
                 $app->disableAccessControl();
@@ -1323,6 +1329,13 @@ class Module extends \MapasCulturais\Module{
                 if( $this->nextPhase){
                     $this->nextPhase->range = $this->range;
                     $this->nextPhase->proponentType = $this->proponentType;
+                    if($this->score) {
+                        $this->nextPhase->score = $this->score;
+                    }
+                    if($this->eligible) {
+                        $this->nextPhase->eligible = $this->eligible;
+                    }
+
                     $this->nextPhase->save(true);
                 }
                 $app->enableAccessControl();
