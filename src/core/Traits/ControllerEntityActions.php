@@ -105,7 +105,7 @@ trait ControllerEntityActions {
         }
 
         if($errors = $entity->validationErrors){
-            if ($entity->getEntityType() == 'Opportunity' && $errors['term-area']) {
+            if ($entity->getEntityType() == 'Opportunity' && in_array("term-area", array_keys($errors)) && $errors['term-area']) {
                 foreach($errors['term-area'] as &$termError) {
                     if(strpos($termError, i::__('área de atuação')) !== false) {
                         $termError = str_replace(i::__('área de atuação'), i::__('área de interesse'), $termError);

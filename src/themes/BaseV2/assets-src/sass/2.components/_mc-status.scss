@@ -8,6 +8,11 @@
     gap: size(8);
     font-weight: var(--mc-font-bold);
 
+    @media (max-width: size(930)) {
+        grid-template-columns: 1fr;
+
+    }
+
     &--draft {
         color: var(--mc-low-300);
     }

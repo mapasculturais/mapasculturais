@@ -252,30 +252,51 @@ $today = new DateTime();
                     </template>
                 </mc-card>
 
-                <?php while($entity): $opportunity = $entity->opportunity;?>
+                <?php $phase = $entity;
+                while($phase): $opportunity = $phase->opportunity;?>
                     <?php if($opportunity->isDataCollection && $today >= $opportunity->registrationFrom):?>
                         <?php if($opportunity->isFirstPhase):?>
                             <h2><?= i::__('Inscrição') ?></h2>
                         <?php else: ?>
                             <h2><?= $opportunity->name ?></h2>
                         <?php endif ?>
-                        <?php if($entity->status < 1 && !$opportunity->isFirstPhase): ?>
+                        <?php if($phase->status < 1 && !$opportunity->isFirstPhase): ?>
                             <mc-alert type="warning">
                                 <?= i::__('Nesta etapa, é necessário inserir informações. Por favor, clique no botão para acessar o formulário e preenchê-lo') ?> <br>
-                                <?= i::__('dentro do período de') ?>  <?=$entity->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$entity->opportunity->registrationTo->format("d/m/Y H:i:s")?>
+                                <?= i::__('dentro do período de') ?>  <?=$phase->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$phase->opportunity->registrationTo->format("d/m/Y H:i:s")?>
                             </mc-alert>
                             <div class="grid-12">
                                 <div class="col-3 sm:col-12">
-                                    <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$entity->id])?>"><?= i::__('Preencher formulário') ?></a>
+                                    <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Preencher formulário') ?></a>
                                 </div>
                             </div>
                         <?php else: ?>
-                            <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
+                            <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>
                         <?php endif ?>
                     <?php endif ?>
-                    <?php $entity = $entity->nextPhase; ?>
+                    <?php $phase = $phase->nextPhase; ?>
                 <?php endwhile ?>
 
+            </div>
+        </mc-tab>
+
+        <mc-tab v-if="entity.opportunity.currentUserPermissions['@control']" label="<?= i::_e('Avaliadores') ?>" slug="valuers">
+            <div class="registration__content">
+                <?php $phase = $entity; 
+                    while($phase): $opportunity = $phase->opportunity;?>
+                    <mc-card>
+                        <?php if($today >= $opportunity->registrationFrom):?>
+                            <?php if($opportunity->isFirstPhase):?>
+                                <h2><?= i::__('Inscrição') ?></h2>
+                            <?php else: ?>
+                                <h2><?= $opportunity->name ?></h2>
+                            <?php endif ?>
+
+                            <v1-embed-tool route="valuers" :id="<?=$phase->id?>"></v1-embed-tool>
+                        <?php endif ?>
+                        <?php $phase = $phase->nextPhase; ?>
+                    </mc-card>
+                <?php endwhile ?>
             </div>
         </mc-tab>
     </mc-tabs>

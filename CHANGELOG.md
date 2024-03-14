@@ -38,8 +38,40 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige permissão de visualização de arquivos privados
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
-- Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
 
+## [7.3.26] - 2024-03-11
+### Correções
+- Corrige filtro por status do módulo de relatórios
+- Corrige visualização de relatórios de fases de avaliação
+
+## [7.3.25] - 2024-03-11
+### Melhorias
+- Implementa aba para definir os avaliadores manualmente na single da inscrição
+
+## [7.3.24] - 2024-03-06
+### Correções
+- Corrige exibição do botão publicar resultados e suas frases de advertência para que sejam exibidos e funcionais somente quando a fase estiver terminada
+- Corrigido o erro que impedia o botão de exclusão da fase de coleta de dados de ficar ativo para uso
+- Corrige erro na criação de fase de coleta de dados
+
+## [7.3.23] - 2024-03-01
+### Correções
+- Corrige extração de planilha de inscritos para compatibilidade com o php 8.2
+
+## [7.3.22] - 2024-03-01
+### Correções
+- Ajusta para que o terceiro banner carregue a imagem correta.
+
+## [7.3.21] - 2024-03-01
+### Correções
+- Ajusta para que os os links do terceiro banner da home funcione.
+
+## [7.3.20] - 2024-03-01
+### Correções
+- Corrige erro ao enviar avaliações do tipo qualificação documental.
+
+### Melhorias
+- Implementa opção de inserir um terceiro banner na home do mapas.
 
 ## [7.3.19] - 2024-02-26
 ### Correções
