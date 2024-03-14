@@ -46,7 +46,7 @@ $this->import('
                     <template #header>
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
-                                <textarea ref="search" v-model="this.query['@keyword']" @input="keyword(entities)" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+                                <textarea ref="search" v-model="this.query['@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
                                 
                                 <button @click="keyword(entities)" class="entity-table__search-button">
                                     <mc-icon name="search"></mc-icon>
@@ -93,9 +93,6 @@ $this->import('
                     </div>
                 </div>
             </div>
-        </template>
-
-        <template #default="{entities, refresh}">
             <div class="entity-table__info">
                 <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
 
@@ -103,7 +100,10 @@ $this->import('
                     <option v-for="option in sortOptions" :value="option.order">{{option.label}}</option>
                 </mc-select>
             </div>
+        </template>
 
+
+        <template #default="{entities, refresh}">
             <table class="entity-table__table">
                 <thead>
                     <tr>

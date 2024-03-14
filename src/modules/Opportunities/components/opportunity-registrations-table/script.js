@@ -14,6 +14,14 @@ app.component('opportunity-registrations-table', {
     data() {
         const $DESC = $DESCRIPTIONS.registration;
         const avaliableFields = [];
+
+        const isAffirmativePoliciesActive = $MAPAS.config.opportunityRegistrationTable.isAffirmativePoliciesActive;
+        const hadTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.hadTechnicalEvaluationPhase;
+        const isTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.isTechnicalEvaluationPhase;
+        
+        let visibleColumns = "agent,status,category,consolidatedResult,score";
+        let order = 'score DESC';
+        let consolidatedResultOrder = 'consolidatedResult';
         
         if(this.phase.registrationCategories?.length > 0) {
             avaliableFields.push({
@@ -40,6 +48,7 @@ app.component('opportunity-registrations-table', {
         }
 
         const fieldTypes = ['select', 'boolean', 'checkbox', 'multiselect', 'checkboxes', 'agent-owner-field', 'agent-collective-field'];
+
         for(let key of Object.keys($DESC)) {
             const field = $DESC[key];
 
@@ -55,17 +64,36 @@ app.component('opportunity-registrations-table', {
             }
         }
 
+        if(isTechnicalEvaluationPhase){
+            consolidatedResultOrder = 'consolidatedResult AS FLOAT';
+        }
+
         const sortOptions = [
-            { order: 'status DESC,consolidatedResult AS FLOAT DESC', label: 'por status descendente' },
-            { order: 'status ASC,consolidatedResult AS FLOAT ASC', label: 'por status ascendente' },
-            { order: 'consolidatedResult AS FLOAT DESC', label: 'resultado das avaliações' },
-            { order: 'score DESC', label: 'pontuação final' },
-            { order: '@quota', label: 'pontuação final CONSIDERANDO COTAS' },
+            { order: `status DESC,${consolidatedResultOrder} DESC`, label: 'por status descendente' },
+            { order: `status ASC,${consolidatedResultOrder} ASC`, label: 'por status ascendente' },
+            { order: `${consolidatedResultOrder} DESC`, label: 'resultado das avaliações' },
             { order: 'createTimestamp ASC', label: 'mais antigas primeiro' },
             { order: 'createTimestamp DESC', label: 'mais recentes primeiro' },
             { order: 'sentTimestamp ASC', label: 'enviadas a mais tempo primeiro' },
             { order: 'sentTimestamp DESC', label: 'enviadas a menos tempo primeiro' },
         ];
+
+        if(hadTechnicalEvaluationPhase) {
+            order = 'score DESC';
+            sortOptions.splice(0, 0, {order: 'score DESC', label: 'pontuação final'});
+        }
+
+        if(isAffirmativePoliciesActive) {
+            avaliableFields.push({
+                title: __('concorrendo por cota', 'opportunity-registrations-table'),
+                fieldName: 'eligible',
+                fieldType: 'boolean'
+            });
+
+            visibleColumns += ',eligible';
+            order = '@quota';
+            sortOptions.splice(0, 0, {order: '@quota', label: 'classificação final'});
+        }
 
         return {
             sortOptions,
@@ -79,8 +107,11 @@ app.component('opportunity-registrations-table', {
             selectedRanges: [],
             selectedStatus: [],
             selectedAvaliation:null,
-            order: 'consolidatedResult AS FLOAT DESC',
-            avaliableFields
+            order,
+            avaliableFields,
+            visibleColumns,
+            isAffirmativePoliciesActive,
+            hadTechnicalEvaluationPhase,
         }
     },
 
@@ -134,11 +165,13 @@ app.component('opportunity-registrations-table', {
         },
         headers () {
             let itens = [
-                { text: "Inscrição", value: "number" },
-                { text: "Agente", value: "owner.name", slug: "agent"},
+                { text: __('inscrição', 'opportunity-registrations-table'), value: "number" },
+                { text: __('agente', 'opportunity-registrations-table'), value: "owner.name", slug: "agent"},
                 ...this.avaliableFields.map((item) => { return {text: item.title, value: item.fieldName} }),
-                { text: "Anexo", value: "attachments" },
-                { text: "Status", value: "status"},
+                { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
+                { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
+                { text: __('data de envio', 'opportunity-registrations-table'), value: "sentTimestamp" },
+                { text: __('status', 'opportunity-registrations-table'), value: "status"},
             ];
 
             if(this.phase.evaluationMethodConfiguration){
@@ -153,7 +186,7 @@ app.component('opportunity-registrations-table', {
         select() {
             const fields = this.avaliableFields.map((item) => item.fieldName);
             
-            return ['number,consolidatedResult,score,status,files,owner.{name,geoMesoregiao}', ...fields].join(',');
+            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao}', ...fields].join(',');
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;

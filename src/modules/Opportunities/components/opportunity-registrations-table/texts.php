@@ -18,4 +18,9 @@ return [
     'mais recentes primeiro' => i::__('mais recentes primeiro'),
     'enviadas a mais tempo primeiro' => i::__('enviadas a mais tempo primeiro'),
     'enviadas a menos tempo primeiro' => i::__('enviadas a menos tempo primeiro'),
+    'concorrendo por cota' => i::__('Concorrendo por cota'),
+    'inscrição' => i::__('Inscrição'),
+    'agente' => i::__('Responsável pela inscrição'), 
+    'anexos' => i::__('Anexos'), 
+    'status' => i::__('Status'), 
 ];
