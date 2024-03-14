@@ -226,7 +226,12 @@ app.component('entity-table', {
             let val = eval(`obj.${value}`);
 
             if(val instanceof McDate) {
-                val = val.date('numeric year');
+                const desc = this.$description[value];
+                if(desc.type == 'datetime') {
+                    val = val.date('numeric year') + ' ' + val.time('2-digit');
+                } else {
+                    val = val.date('numeric year');
+                }
             }
 
             return val;
