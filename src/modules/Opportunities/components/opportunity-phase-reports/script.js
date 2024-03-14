@@ -50,7 +50,7 @@ app.component('opportunity-phase-reports', {
                     newPhases.push({
                         type: this.evaluationMethods[phase.type] ? this.evaluationMethods[phase.type].name : '',
                         label: phase.name,
-                        id: phase.id
+                        id: phase.__objectType === 'evaluationmethodconfiguration' ? phase.opportunity.id : phase.id
                     });
                 }
 
