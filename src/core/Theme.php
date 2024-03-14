@@ -140,7 +140,7 @@ abstract class Theme {
                 'urlData' => $app->view->controller->urlData,
             ];
             
-            if($app->view->controller->data['id']){
+            if($app->view->controller->data['id'] ?? false ){
                 $this->jsObject['request']['id'] = $app->view->controller->data['id'];
             }
 
