@@ -33,6 +33,7 @@ $iconset = [
     'add' => 'ps:plus',
     'agents' => 'fluent:people-32-regular',
     'agent-single' => 'basil:user-outline',
+    'appearance' => 'dashicons:admin-appearance',
     'app' => 'heroicons-solid:puzzle',
     'archive' => 'mi:archive',
     'arrow-down' => 'akar-icons:arrow-down',
