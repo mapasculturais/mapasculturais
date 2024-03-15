@@ -8,3 +8,35 @@ properties:
     type: string
     example: Edital 032024 - Festival de Leitura
     description: Um texto que representa o Tipo de Oportunidade
+  shortDescription:
+    type: string
+    description: Uma breve descrição da oportunidade
+  registrationFrom:
+    $ref: '../common-types/date.yaml'
+  registrationTo:
+    $ref: '../common-types/date.yaml'
+  publishedRegistrations:
+    type: boolean
+    description: Se a Oportunidade possui publicações registradas
+  registrationCategories:
+    type: array
+    description: Uma lista de categorias associadas a essa oportunidade
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  publishTimestamp:
+    $ref: '../common-types/date.yaml'
+  autoPublish:
+    type: boolean
+    description: Se a oportunidade será publicada automaticamente
+  status:
+    type: integer
+    enum:
+      - 1
+      - 0
+      - -9
+      - -10
+      - -2
+    description: Um numero que representa o status
+  owner:
+    type: object
+    description: O Agente que criou a oportunidade

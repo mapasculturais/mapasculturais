@@ -16,7 +16,7 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: /api
+  - url: /
 tags:
   - name: Oportunidades
     description: Everything about your tests
@@ -24,17 +24,17 @@ tags:
       description: Find out more
       url: http://swagger.io
 paths:
-  /opportunity/find:
+  /api/opportunity/find:
     $ref: './components/paths/opportunity/find.yaml'
-  /opportunity/findOne:
+  /api/opportunity/findOne:
     $ref: './components/paths/opportunity/find-one.yaml'
-  /opportunity/describe:
+  /api/opportunity/describe:
     $ref: './components/paths/opportunity/describe.yaml'
-  /opportunity/getTypes:
+  /api/opportunity/getTypes:
     $ref: './components/paths/opportunity/get-types.yaml'
-  /opportunity/findRegistrations:
+  /api/opportunity/findRegistrations:
     $ref: './components/paths/opportunity/find-registrations.yaml'
-  /opportunity/selectFields:
+  /api/opportunity/selectFields:
     $ref: './components/paths/opportunity/select-fields.yaml'
 
 components:
