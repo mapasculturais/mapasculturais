@@ -39,6 +39,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
 
+## [7.3.29] - 2024-03-15
+### Correções
+-  Corrige erro que quebrava exibição do texto isncrições abertas da seção oportunidades do momento
+
 ## [7.3.28] - 2024-03-15
 ### Correções
 - corrige erro no carregamento do avatar na seção Oportunidades do momento
