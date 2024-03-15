@@ -104,47 +104,90 @@ $this->import('
 
 
         <template #default="{entities, refresh}">
-            <table class="entity-table__table">
-                <thead>
-                    <tr>
-                        <th v-if="showIndex" class="entity-table__index">&nbsp;</th>
-                        <template v-for="header in visibleColumns">
-                            <th v-if="header.visible">{{header.text}}</th>
-                        </template>
-                        <th class="entity-table__select_columns">
-                            <mc-popover>
-                                <div class="entity-table__popover">
-                                    <label class="field__title bold"><?= i::__('Selecione as colunas que deseja exibir:')?></label>
+              <!-- SÓ O HEADER -->
+            <div style="overflow-x: hidden; position: sticky; top:0; background-color: white;" ref="tableHeader">
+                <table class="entity-table__table" style="width:auto;">
+                    <thead style="position: sticky; top:0">
+                        <tr>
+                            <th v-if="showIndex" class="entity-table__index sticky sticky--left">&nbsp;</th>
+                            <template v-for="header in visibleColumns">
+                                <th :class="{sticky: header.sticky, 'sticky--left': header.sicky}">{{header.text}}</th>
+                            </template>
+                            <th class="entity-table__select_columns">
+                                <mc-popover>
+                                    <div class="entity-table__popover">
+                                        <label class="field__title bold"><?= i::__('Selecione as colunas que deseja exibir:')?></label>
 
-                                    <label class="field__checkbox">
-                                        <input ref="allHeaders" type="checkbox" @click="showAllHeaders()"> <?= i::__('Todas as colunas') ?>
-                                    </label>
+                                        <label class="field__checkbox">
+                                            <input ref="allHeaders" type="checkbox" @click="showAllHeaders()"> <?= i::__('Todas as colunas') ?>
+                                        </label>
 
-                                    <label v-for="column in columns" class="field__checkbox">
-                                        <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
-                                    </label>
-                                </div>
+                                        <label v-for="column in columns" class="field__checkbox">
+                                            <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                        </label>
+                                    </div>
 
-                                <template #button="popover">
-                                    <a href="#" title="<?= i::__("definir colunas habilitadas") ?> "><mc-icon name="columns" @click.prevent="popover.toggle()" ></mc-icon></a>
+                                    <template #button="popover">
+                                        <a href="#" title="<?= i::__("definir colunas habilitadas") ?> "><mc-icon name="columns" @click.prevent="popover.toggle()" ></mc-icon></a>
+                                    </template>
+                                </mc-popover>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <!-- <-- DIV PARA A TABELA COMPLETA + O SCROLL --> 
+            <div>
+                <div style="overflow-x: hidden;" ref="tableFull">
+                    <table class="entity-table__table" style="width:auto;" ref="table">
+                        <thead style="position: sticky; top:0">
+                            <tr>
+                                <th v-if="showIndex" class="entity-table__index sticky sticky--left">&nbsp;</th>
+                                <template v-for="header in visibleColumns">
+                                    <th :class="{sticky: header.sticky, 'sticky--left': header.sicky}">{{header.text}}</th>
                                 </template>
-                            </mc-popover>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(entity, index) in entities" :key="entity.__objectId">
-                        <td v-if="showIndex" class="entity-table__index">{{index+1}}</td>
-                        <template v-for="(header, index) in visibleColumns">
-                            <td :colspan="index + 1 == visibleColumns.length ? 2 : 1">
-                                <slot :name="header.slug" :entity="entity" :refresh="refresh">
-                                    {{getEntityData(entity, header.value)}}
-                                </slot>
-                            </td>
-                        </template>
-                    </tr>
-                </tbody>
-            </table>
+                                <th class="entity-table__select_columns">
+                                    <mc-popover>
+                                        <div class="entity-table__popover">
+                                            <label class="field__title bold"><?= i::__('Selecione as colunas que deseja exibir:')?></label>
+
+                                            <label class="field__checkbox">
+                                                <input ref="allHeaders" type="checkbox" @click="showAllHeaders()"> <?= i::__('Todas as colunas') ?>
+                                            </label>
+
+                                            <label v-for="column in columns" class="field__checkbox">
+                                                <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                            </label>
+                                        </div>
+
+                                        <template #button="popover">
+                                            <a href="#" title="<?= i::__("definir colunas habilitadas") ?> "><mc-icon name="columns" @click.prevent="popover.toggle()" ></mc-icon></a>
+                                        </template>
+                                    </mc-popover>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr v-for="(entity, index) in entities" :key="entity.__objectId">
+                                <td v-if="showIndex" class="entity-table__index sticky sticky--left">{{index+1}}</td>
+                                <template v-for="(header, index) in visibleColumns">
+                                    <td :colspan="index + 1 == visibleColumns.length ? 2 : 1" :class="{sticky: header.sticky, 'sticky--left': header.sicky}">
+                                        <slot :name="header.slug" :entity="entity" :refresh="refresh">
+                                            {{getEntityData(entity, header.value)}}
+                                        </slot>
+                                    </td>
+                                </template>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>          
+                <div @scroll="scroll($event)" style="overflow-x: auto; position: sticky; bottom:0">
+                    <div :style="{width}">
+                        {{ width }}
+                    </div>
+                </div>
+            </div>
         </template>
     </mc-entities>
 </div>

@@ -80,11 +80,17 @@ app.component('entity-table', {
 
     mounted() {
         const searchInput = this.$refs.search;
+
         searchInput.addEventListener("input", OnInput, false);
         function OnInput() {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + "px";
         }
+        this.resize();
+    },
+
+    updated() {
+        this.resize();
     },
 
     data() {
@@ -93,11 +99,14 @@ app.component('entity-table', {
             entitiesOrder: this.order,
             columns: this.headers,
             searchText: '',
+            left: 0,
+            width: '100%', //no exemplo está iniciada em 0
         }
     },
 
     computed: {
         visibleColumns() {
+            this.resize();
             return this.columns.filter((col) => col.visible);
         },
         $description() {
@@ -350,6 +359,26 @@ app.component('entity-table', {
             const currentValues = this.getFilterValues(this.query[fieldName] ?? '') || [];
 
             return currentValues.includes(option);
+        },
+
+        scroll(event) {
+            const scrollLeft = event.target.scrollLeft; 
+            const tableHeader = this.$refs.tableHeader; 
+            const tableFull = this.$refs.tableFull;
+            tableHeader.scrollLeft = scrollLeft; 
+            tableFull.scrollLeft = scrollLeft;
+            
+        },
+        
+        resize() {
+            this.$nextTick(() => {
+                if (this.$refs.table) {
+                    this.width = this.$refs.table.clientWidth + 'px';
+                }
+            })
+            
+
+            console.log(this.width);
         },
     },
 });
