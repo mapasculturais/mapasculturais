@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.28] - 2024-03-15
+### Correções
+- corrige erro no carregamento do avatar na seção Oportunidades do momento
+
 ## [7.3.27] - 2024-03-13
 ### Melhorias
 - Exibe a hora de início e fim das fases na listagem de fases das abas Configurações de fases e Inscrições e resultados
