@@ -32,7 +32,7 @@ $this->import('
 
 		<div class="entity-card__header user-slot">
 			<slot name="labels">
-				<div class="entity-card__slot">
+				<div class="entity-card__slot" :class="{'no-id' : !global.showIds[entity.__objectType]}">
 					<span v-if="global.showIds[entity.__objectType]" class="uppercase semibold entity-card__id">Id: <span class="bold">{{entity.id}}</span> </span>
 					<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
 				</div>
