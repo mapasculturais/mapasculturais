@@ -113,14 +113,16 @@
 
     &__table {
         background-color: var(--mc-white);
-        padding: 0 size(25) size(35);
+        padding: 0 size(25) size(35); //modificar o padding top para size(24) pois estava muito grudado no info?
         table-layout: fixed;
         text-align: left;
+        width: auto; //preciso entender como manter essa tabela do tamanho da tela mesmo sem o scroll
 
         & > thead > tr {
             height: size(48);
 
             & > th {
+                min-width: size(150);
                 border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
                 padding: 0 size(10);
             }
