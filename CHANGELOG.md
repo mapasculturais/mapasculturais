@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.29] - 2024-03-15
+### Correções
+-  Corrige erro que quebrava exibição do texto isncrições abertas da seção oportunidades do momento
+
 ## [7.3.28] - 2024-03-15
 ### Correções
 - corrige erro no carregamento do avatar na seção Oportunidades do momento
