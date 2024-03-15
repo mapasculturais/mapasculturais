@@ -1,0 +1,7 @@
+name: '@select'
+in: query
+schema:
+  type: string
+required: false
+description: Um campo que permite personalizar os dados que vão retornar na resposta
+example: 'id,name,status'

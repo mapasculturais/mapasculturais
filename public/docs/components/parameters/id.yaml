@@ -1,0 +1,8 @@
+name: 'id'
+in: query
+schema:
+  type: string
+  example: EQ(2)
+required: true
+description: Um campo que permite personalizar o filtro da consulta, mas precisa passar EQ(numero) para buscar uma entity em que o ID seja igual aquele numero passado como parametro
+example: 'EQ(123)'

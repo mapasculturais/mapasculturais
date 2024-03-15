@@ -4,13 +4,7 @@ get:
   summary: Recupera a lista de oportunidades
   description: Recupera a lista de oportunidades
   parameters:
-    - in: query
-      name: '@select'
-      schema:
-        type: string
-      required: false
-      description: Um campo que permite personalizar os dados que vão retornar na resposta
-      example: 'id,name,status'
+    - $ref: '../../parameters/select.yaml'
   responses:
     '200':
       description: Um array com todas as oportunidades, caso não tenha o parametro @select na busca, ele trará apenas id e @entityType
