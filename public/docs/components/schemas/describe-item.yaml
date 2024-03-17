@@ -10,7 +10,7 @@ properties:
         type: string
         description: Identifica se o campo é uma relação com outra entity.
       required:
-        type: bool
+        type: boolean
         description: Identifica se o campo é requerido.
       type:
         type: string
@@ -19,8 +19,8 @@ properties:
         type: integer
         description: O tamanho.
       label:
-        type: bool
+        type: boolean
         description: O nome do campo.
       isPK:
-        type: bool
+        type: boolean
         description: Identifica se o campo é uma primary key.

@@ -8,4 +8,7 @@ get:
       description: Success
       content:
         application/json:
-          example: ok
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/describe-item.yaml'
