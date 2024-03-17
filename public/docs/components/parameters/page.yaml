@@ -1,0 +1,7 @@
+name: '@page'
+in: query
+schema:
+  type: integer
+required: false
+description: Um inteiro que identifica a página retornada
+example: 1

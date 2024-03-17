@@ -1,0 +1,11 @@
+get:
+  tags:
+    - Espaços
+  summary: Recupera uma lista de espaços filtrados por evento
+  description: Recuperar uma lista de espaços filtrados por evento
+  responses:
+    '200':
+      description: Sucesso
+      content:
+        application/json:
+          example: ok

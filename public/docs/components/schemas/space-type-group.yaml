@@ -1,0 +1,15 @@
+type: object
+properties:
+  name:
+    type: string
+    description: Nome do grupo.
+  minId:
+    type: string
+    description: Identificador do menor id para o grupo.
+  maxId:
+    type: string
+    description: Identificador do maior id para o grupo.
+  types:
+    type: array
+    items:
+      $ref: '../schemas/space-type.yaml'
