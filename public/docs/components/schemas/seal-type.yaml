@@ -1,0 +1,13 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id númerico que representa o Tipo do Selo
+  name:
+    type: string
+    example: Dias
+    description: Um texto que representa o Tipo do Selo
+required:
+  - id
+  - name

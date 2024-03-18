@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Selos
+  summary: Recupera a lista de tipos de selos
+  description: Recupera a lista de tipos de selos
+  responses:
+    '200':
+      description: Um array com os vários de tipos que um selo pode ter
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/seal-type.yaml'
