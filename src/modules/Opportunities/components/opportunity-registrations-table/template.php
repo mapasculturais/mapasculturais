@@ -23,10 +23,10 @@ $entity = $this->controller->requestedEntity;
 ?>
 <div class="opportunity-registration-table grid-12">
     <div class="col-12">
-        <h2 v-if="phase.publishedRegistrations"><?= i::__("Os resultados já foram publicados") ?></h2>
-        <h2 v-if="!phase.publishedRegistrations && isPast()"><?= i::__("As fase já está encerrada") ?></h2>
-        <h2 v-if="isHappening()"><?= i::__("A fase está em andamento") ?></h2>
-        <h2 v-if="isFuture()"><?= i::__("A fase ainda não iniciou") ?></h2>
+        <h2 class="opportunity-status" v-if="phase.publishedRegistrations"><?= i::__("Os resultados já foram publicados") ?></h2>
+        <h2 class="opportunity-status" v-if="!phase.publishedRegistrations && isPast()"><?= i::__("A fase já está encerrada") ?></h2>
+        <h2 class="opportunity-status" v-if="isHappening()"><?= i::__("A fase está em andamento") ?></h2>
+        <h2 class="opportunity-status" v-if="isFuture()"><?= i::__("A fase ainda não iniciou") ?></h2>
     </div>
     <template v-if="!isFuture()">
 

@@ -5,7 +5,13 @@
         display: flex;
         gap: size(24);
         flex-wrap: wrap;
-    } 
+    }
+
+    .opportunity-status {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
     .apply-evaluations {
         .modal-content {
