@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Selos
+  summary: Recupera uma lista de tipos de selos de forma agrupada
+  description: Recupera uma lista de tipos de selos de forma agrupada
+  responses:
+    '200':
+      description: Sucesso
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/seal-type-groups.yaml'
