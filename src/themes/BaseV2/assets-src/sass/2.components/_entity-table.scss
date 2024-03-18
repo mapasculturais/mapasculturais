@@ -138,4 +138,9 @@
             }
         }
     }
+
+    &__advanced-filters {
+        overflow-y: auto;
+        max-height: size(500);
+    }
 }
