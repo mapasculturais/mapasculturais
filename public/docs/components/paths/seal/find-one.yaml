@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Selos
+  summary: Recupera um único selo
+  description: Recuperar um único selo
+  parameters:
+    - $ref: '../../parameters/id.yaml'
+    - $ref: '../../parameters/select.yaml'
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/seal.yaml'
