@@ -28,6 +28,11 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
+  - name: Selos
+    description: Rotas relacionadas aos selos
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
 paths:
   /api/opportunity/find:
     $ref: './components/paths/opportunity/find.yaml'
@@ -53,6 +58,8 @@ paths:
     $ref: './components/paths/space/get-types.yaml'
   /api/space/getTypeGroups:
     $ref: './components/paths/space/get-type-groups.yaml'
+  /api/seal/find:
+    $ref: './components/paths/seal/find.yaml'
 components:
   schemas:
     Opportunity:
@@ -65,3 +72,5 @@ components:
       $ref: './components/schemas/space-type.yaml'
     SpaceTypeGroup:
       $ref: './components/schemas/space-type-group.yaml'
+    seal:
+      $ref: './components/schemas/seal.yaml'
