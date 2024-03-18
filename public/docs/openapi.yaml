@@ -62,6 +62,8 @@ paths:
     $ref: './components/paths/seal/find.yaml'
   /api/seal/findOne:
     $ref: './components/paths/seal/find-one.yaml'
+  /api/seal/getTypes:
+    $ref: './components/paths/seal/get-types.yaml'
 components:
   schemas:
     Opportunity:
@@ -76,3 +78,5 @@ components:
       $ref: './components/schemas/space-type-group.yaml'
     Seal:
       $ref: './components/schemas/seal.yaml'
+    SealType:
+      $ref: './components/schemas/seal-type.yaml'
