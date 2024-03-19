@@ -9,13 +9,7 @@ use MapasCulturais\i;
 $this->import('
     mc-tab
     mc-tabs
-    panel--entities-summary 
-    panel--entity-tabs 
-    panel--last-edited
-    panel--last-registrations
-    panel--open-opportunities
-    panel--pending-evaluations
-    user-profile-avatar
+    logo-customizer
 '); 
 ?>
 <div class="panel-page">
@@ -33,15 +27,13 @@ $this->import('
     
     <mc-tabs class="panel-home__tabs">    
         <mc-tab label="<?php i::esc_attr_e('Home') ?>" slug="home">
-        
         </mc-tab>
-
+    
         <mc-tab label="<?php i::esc_attr_e('Cores e estilos') ?>" slug="style">
-
+            <logo-customizer />
         </mc-tab>
 
         <mc-tab label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
-
         </mc-tab>
     </mc-tabs>
 </div>
