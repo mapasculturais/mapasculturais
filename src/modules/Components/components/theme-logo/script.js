@@ -10,7 +10,15 @@ app.component('theme-logo', {
     props: {
         href: {
             type: String,
-            default: null
+            default: null,
+        },
+        title: {
+            type: String,
+            default: null,
+        },
+        subtitle: {
+            type: String,
+            default: null,
         },
         bg1: {
             type: String,
@@ -32,18 +40,35 @@ app.component('theme-logo', {
 
     data() {
         return {
-            title: $MAPAS.config.logo.title,
-            subtitle: $MAPAS.config.logo.subtitle,
             colors: $MAPAS.config.logo.colors,
             logoImg: $MAPAS.config.logo.image,
             hideLabel: $MAPAS.config.logo.hideLabel,
         }
     },
 
-    created() {
-        this.colors.bg1 = this.bg1 ?? this.colors[0];
-        this.colors.bg2 = this.bg2 ?? this.colors[1];
-        this.colors.bg3 = this.bg3 ?? this.colors[2] ?? colors[0];
-        this.colors.bg4 = this.bg4 ?? this.colors[3] ?? colors[1];
+    computed: {
+        logo_title() {
+            return this.title ?? $MAPAS.config.logo.title;
+        },
+        
+        logo_subtitle() {
+            return  this.subtitle ?? $MAPAS.config.logo.subtitle;
+        },
+
+        first_color() {
+            return this.bg1 ?? this.colors[0];
+        },
+
+        second_color() {
+            return this.bg2 ?? this.colors[1];
+        },
+
+        third_color() {
+            return this.bg3 ?? this.colors[2] ?? colors[0];
+        },
+
+        fourth_color() {
+            return this.bg4 ?? this.colors[3] ?? colors[1];
+        },
     },
 });
