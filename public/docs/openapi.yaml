@@ -33,6 +33,11 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
+  - name: Projetos
+    description: Rotas relacionadas aos projetos
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
   - name: Selos
     description: Rotas relacionadas aos selos
     externalDocs:
@@ -53,6 +58,10 @@ paths:
     $ref: './components/paths/opportunity/find-registrations.yaml'
   /api/opportunity/selectFields:
     $ref: './components/paths/opportunity/select-fields.yaml'
+  /api/project/describe:
+    $ref: './components/paths/project/describe.yaml'
+  /api/project/find:
+    $ref: './components/paths/project/find.yaml'
   /api/space/describe:
     $ref: './components/paths/space/describe.yaml'
   /api/space/find:
@@ -83,6 +92,10 @@ components:
       $ref: './components/schemas/opportunity.yaml'
     OpportunityType:
       $ref: './components/schemas/opportunity-type.yaml'
+    ProjectDescribe:
+      $ref: './components/schemas/project-describe.yaml'
+    Project:
+      $ref: './components/schemas/project.yaml'
     Space:
       $ref: './components/schemas/space.yaml'
     SpaceType:
