@@ -5,7 +5,13 @@
         display: flex;
         gap: size(24);
         flex-wrap: wrap;
-    } 
+    }
+
+    .opportunity-status {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
     .apply-evaluations {
         .modal-content {
@@ -70,5 +76,9 @@
         flex-direction: row;
         gap: size(16);
         align-items: center;
+    }
+
+    .opportunity-payment-table__actions {
+        margin-top: size(8);
     }
 }

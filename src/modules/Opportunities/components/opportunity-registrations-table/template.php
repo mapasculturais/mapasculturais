@@ -23,10 +23,10 @@ $entity = $this->controller->requestedEntity;
 ?>
 <div class="opportunity-registration-table grid-12">
     <div class="col-12">
-        <h2 v-if="phase.publishedRegistrations"><?= i::__("Os resultados já foram publicados") ?></h2>
-        <h2 v-if="!phase.publishedRegistrations && isPast()"><?= i::__("As fase já está encerrada") ?></h2>
-        <h2 v-if="isHappening()"><?= i::__("A fase está em andamento") ?></h2>
-        <h2 v-if="isFuture()"><?= i::__("A fase ainda não iniciou") ?></h2>
+        <h2 class="opportunity-status" v-if="phase.publishedRegistrations"><?= i::__("Os resultados já foram publicados") ?></h2>
+        <h2 class="opportunity-status" v-if="!phase.publishedRegistrations && isPast()"><?= i::__("A fase já está encerrada") ?></h2>
+        <h2 class="opportunity-status" v-if="isHappening()"><?= i::__("A fase está em andamento") ?></h2>
+        <h2 class="opportunity-status" v-if="isFuture()"><?= i::__("A fase ainda não iniciou") ?></h2>
     </div>
     <template v-if="!isFuture()">
 
@@ -53,8 +53,8 @@ $entity = $this->controller->requestedEntity;
                     <div class="opportunity-payment-table__actions">
                         <div class="opportunity-payment-table__actions grid-12">
                             <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
-                                <mc-link :entity="phase" route="reportDrafts" class="button button--primarylight button--icon button--large col-4"><?= i::__("Baixar rascunhos") ?> <mc-icon name="download"></mc-icon></mc-link>
-                                <mc-link :entity="phase" route="report" class="button button--primarylight button--icon button--large col-4"><?= i::__("Baixar lista de inscrições") ?> <mc-icon name="download"></mc-icon></mc-link>
+                                <mc-link :entity="phase" route="reportDrafts" class="button button--primarylight button--icon button--large col-2"><?= i::__("Baixar rascunhos") ?> <mc-icon name="download"></mc-icon></mc-link>
+                                <mc-link :entity="phase" route="report" class="button button--primarylight button--icon button--large col-2"><?= i::__("Baixar lista de inscrições") ?> <mc-icon name="download"></mc-icon></mc-link>
                             <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'end', ['entity' => $entity]); ?>
                         </div>
                     </div>
@@ -67,7 +67,7 @@ $entity = $this->controller->requestedEntity;
                             <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
                         </mc-select>
                         
-                        <mc-multiselect class="col-3" :model="selectedStatus" :items="status" title="<?= i::esc_attr__('Status') ?>" @selected="filterByStatus(entities)" @removed="filterByStatus(entities)" hide-filter hide-button>
+                        <mc-multiselect class="col-2" :model="selectedStatus" :items="status" title="<?= i::esc_attr__('Status') ?>" @selected="filterByStatus(entities)" @removed="filterByStatus(entities)" hide-filter hide-button>
                             <template #default="{popover, setFilter}">
                                 <div class="field">
                                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os status: ') ?>">
@@ -75,7 +75,7 @@ $entity = $this->controller->requestedEntity;
                             </template>
                         </mc-multiselect>
                         
-                        <mc-multiselect v-if="categories" class="col-3" :model="selectedCategories" :items="categories" title="<?= i::esc_attr__('Categorias') ?>" @selected="filterByCategories(entities)" @removed="filterByCategories(entities)" hide-filter hide-button>
+                        <mc-multiselect v-if="categories" class="col-2" :model="selectedCategories" :items="categories" title="<?= i::esc_attr__('Categorias') ?>" @selected="filterByCategories(entities)" @removed="filterByCategories(entities)" hide-filter hide-button>
                             <template #default="{popover, setFilter}">
                                 <div class="field">
                                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as categorias: ') ?>">
