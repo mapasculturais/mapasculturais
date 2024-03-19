@@ -18,6 +18,11 @@ externalDocs:
 servers:
   - url: /
 tags:
+  - name: Agentes
+    description: Rotas relacionadas aos agentes
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
   - name: Espaços
     description: Rotas relacionadas aos espaços
     externalDocs:
@@ -34,6 +39,8 @@ tags:
       description: Find out more
       url: http://swagger.io
 paths:
+  /api/agent/find:
+    $ref: './components/paths/agent/find.yaml'
   /api/opportunity/find:
     $ref: './components/paths/opportunity/find.yaml'
   /api/opportunity/findOne:
@@ -62,6 +69,8 @@ paths:
     $ref: './components/paths/seal/find.yaml'
 components:
   schemas:
+    Agent:
+      $ref: './components/schemas/agent.yaml'
     Opportunity:
       $ref: './components/schemas/opportunity.yaml'
     OpportunityType:
