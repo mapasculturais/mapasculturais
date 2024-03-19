@@ -1,0 +1,333 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id numérico que representa o Projeto
+    required: true
+  _type:
+    type: integer
+    example: 1
+    description: Um número que representa o tipo do Projeto
+    required: true
+  name:
+    type: string
+    example: "Nome do Projeto"
+    maxLength: 255
+    description: Um texto que representa o nome do Projeto
+    required: true
+  shortDescription:
+    type: string
+    example: "Descrição curta do Projeto"
+    description: Uma breve descrição do Projeto
+    required: true
+  longDescription:
+    type: string
+    example: "Descrição longa do Projeto"
+    description: Uma descrição detalhada do Projeto
+    required: false
+  updateTimestamp:
+    type: string
+    format: date-time
+    example: "2024-03-11 14:52:35.000000"
+    description: Data e hora da última atualização do Projeto
+    required: false
+  startsOn:
+    type: string
+    format: date-time
+    example: "2024-03-11 14:52:35.000000"
+    description: Data e hora de início do Projeto
+    required: false
+  endsOn:
+    type: string
+    format: date-time
+    example: "2024-03-11 14:52:35.000000"
+    description: Data e hora de término do Projeto
+    required: false
+  createTimestamp:
+    type: string
+    format: date-time
+    example: "2024-03-11 14:52:35.000000"
+    description: Data e hora de criação do Projeto
+    required: true
+  status:
+    type: integer
+    example: 1
+    description: Um número que representa o status do Projeto
+    required: true
+  _subsiteId:
+    type: integer
+    example: 1
+    description: ID do subsite associado ao Projeto
+    required: false
+  parent:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: ID do Projeto pai
+    required: false
+  _children:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+          description: ID do Projeto filho
+    description: Filhos do Projeto
+    required: false
+  owner:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: ID do Agente que criou o Projeto
+    required: true
+  _events:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID do Evento associado ao Projeto
+    description: Eventos associados ao Projeto
+    required: false
+  _relatedOpportunities:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID da Oportunidade relacionada ao Projeto
+    description: Oportunidades relacionadas ao Projeto
+    required: false
+  __metadata:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID do Metadado associado ao Projeto
+    description: Metadados associados ao Projeto
+    required: false
+  __files:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID do Arquivo associado ao Projeto
+    description: Arquivos associados ao Projeto
+    required: false
+  __agentRelations:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID da Relação de Agente associada ao Projeto
+    description: Relações de Agente associadas ao Projeto
+    required: false
+  __termRelations:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID da Relação de Termo associada ao Projeto
+    description: Relações de Termo associadas ao Projeto
+    required: false
+  __sealRelations:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID da Relação de Selo associada ao Projeto
+    description: Relações de Selo associadas ao Projeto
+    required: false
+  __permissionsCache:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID do Cache de Permissão associado ao Projeto
+    description: Caches de Permissão associados ao Projeto
+    required: false
+  subsite:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: ID do Subsite associado ao Projeto
+    required: false
+  site:
+    type: string
+    example: "https://example.com"
+    description: Site associado ao Projeto
+    required: false
+  facebook:
+    type: string
+    example: "https://facebook.com/example"
+    description: Facebook associado ao Projeto
+    required: false
+  twitter:
+    type: string
+    example: "https://twitter.com/example"
+    description: Twitter associado ao Projeto
+    required: false
+  instagram:
+    type: string
+    example: "https://instagram.com/example"
+    description: Instagram associado ao Projeto
+    required: false
+  linkedin:
+    type: string
+    example: "https://linkedin.com/in/example"
+    description: LinkedIn associado ao Projeto
+    required: false
+  vimeo:
+    type: string
+    example: "https://vimeo.com/example"
+    description: Vimeo associado ao Projeto
+    required: false
+  spotify:
+    type: string
+    example: "https://open.spotify.com/user/example"
+    description: Spotify associado ao Projeto
+    required: false
+  youtube:
+    type: string
+    example: "https://youtube.com/channel/example"
+    description: YouTube associado ao Projeto
+    required: false
+  pinterest:
+    type: string
+    example: "https://pinterest.com/example"
+    description: Pinterest associado ao Projeto
+    required: false
+  emailPublico:
+    type: string
+    example: "public@example.com"
+    description: Email público do Projeto
+    required: false
+  emailPrivado:
+    type: string
+    example: "private@example.com"
+    description: Email privado do Projeto
+    required: false
+  telefonePublico:
+    type: string
+    example: "+5511987654321"
+    description: Telefone público do Projeto
+    required: false
+  telefone1:
+    type: string
+    example: "+5511987654321"
+    description: Telefone 1 do Projeto
+    required: false
+  telefone2:
+    type: string
+    example: "+5511987654321"
+    description: Telefone 2 do Projeto
+    required: false
+  type:
+    type: string
+    example: "Festival"
+    description: Tipo do Projeto
+    enum:
+      - Ciclo
+      - Concurso
+      - Conferência Pública Estadual
+      - Conferência Pública Municipal
+      - Conferência Pública Nacional
+      - Conferência Pública Setorial
+      - Congresso
+      - Consulta
+      - Convenção
+      - Curso
+      - Edital
+      - Encontro
+      - Exibição
+      - Exposição
+      - Feira
+      - Festa Popular
+      - Festa Religiosa
+      - Festival
+      - Fórum
+      - Inscrições
+      - Intercâmbio Cultural
+      - Jornada
+      - Jornada
+      - Mostra
+      - Oficina
+      - Palestra
+      - Parada e Desfile Cívico
+      - Parada e Desfile Festivo
+      - Parada e Desfile Militar
+      - Parada e Desfile Político
+      - Parada e Desfile de Ações Afirmativas
+      - Pesquisa
+      - Programa
+      - Reunião
+      - Sarau
+      - Seminário
+      - Simpósio
+    required: true
+  singleUrl:
+    type: string
+    example: "https://example.com/single"
+    description: URL única do Projeto
+    required: false
+  editUrl:
+    type: string
+    example: "https://example.com/edit"
+    description: URL de edição do Projeto
+    required: false
+  '@file':
+    type: object
+    properties:
+      header:
+        type: array
+        items:
+          type: string
+        example: ["header"]
+      avatar:
+        type: array
+        items:
+          type: string
+        example: ["avatar", "avatarSmall", "avatarMedium", "avatarBig", "avatarEvent"]
+      downloads:
+        type: array
+        items:
+          type: string
+        example: ["downloads"]
+      gallery:
+        type: array
+        items:
+          type: string
+        example: ["gallery", "galleryThumb", "galleryFull"]
+    description: Arquivos associados ao Projeto
+    required: false

@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Projetos
+  summary: Recupera a lista de projetos
+  description: Recupera a lista de projetos
+  parameters:
+    - $ref: '../../parameters/select.yaml'
+  responses:
+    '200':
+      description: Um array com todos os projetos, caso não tenha o parametro @select na busca, ele trará apenas id e @entityType
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: '../../schemas/project.yaml'
+                - type: object
+                  properties:
+                    '@entityType':
+                      type: string
+                      example: seal
+                      description: Um texto que representa qual a entity é retornada
