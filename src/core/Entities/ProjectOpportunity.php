@@ -32,6 +32,7 @@ class ProjectOpportunity extends Opportunity{
     protected $parent;
     
     public function getSpecializedClassName() {
-        return ProjectOpportunity::class;
+        $className = static::class;
+        return $className;
     }
 }
