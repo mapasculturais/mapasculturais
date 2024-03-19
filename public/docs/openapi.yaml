@@ -58,6 +58,8 @@ paths:
     $ref: './components/paths/space/get-types.yaml'
   /api/space/getTypeGroups:
     $ref: './components/paths/space/get-type-groups.yaml'
+  /api/seal/describe:
+    $ref: './components/paths/seal/describe.yaml'
   /api/seal/find:
     $ref: './components/paths/seal/find.yaml'
   /api/seal/findOne:
@@ -84,3 +86,5 @@ components:
       $ref: './components/schemas/seal-type.yaml'
     SealTypeGroup:
       $ref: './components/schemas/seal-type-groups.yaml'
+    SealDescribe:
+      $ref: './components/schemas/seal-describe.yaml'

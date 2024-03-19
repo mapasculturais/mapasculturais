@@ -1,0 +1,116 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id numérico que representa o Selo
+    required: true
+  name:
+    type: string
+    example: "Selo Mapas"
+    maxLength: 255
+    description: Um texto que representa o nome do Selo
+    required: true
+  shortDescription:
+    type: string
+    example: "Descrição curta Selo Mapas"
+    description: Uma breve descrição do Selo
+    required: true
+  longDescription:
+    type: string
+    example: "Descrição longa Selo Mapas"
+    description: Uma descrição detalhada do Selo
+    required: false
+  certificateText:
+    type: string
+    example: "Texto do certificado do Selo"
+    description: Texto do certificado do Selo
+    required: false
+  validPeriod:
+    type: integer
+    example: 365
+    description: Período de validade do Selo
+    required: true
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  status:
+    type: integer
+    example: 1
+    description: Um número que representa o status do Selo
+    required: true
+  lockedFields:
+    type: array
+    items:
+      type: string
+    example: ["field1", "field2"]
+    description: Campos bloqueados do Selo
+    required: false
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  _subsiteId:
+    type: integer
+    example: 123
+    description: ID do subsite associado ao Selo
+    required: false
+  owner:
+    type: object
+    example: { "id": 1, "name": "Owner Name" }
+    description: O Agente que criou o Selo
+  __metadata:
+    type: object
+    example: { "meta1": "value1", "meta2": "value2" }
+    description: Metadados associados ao Selo
+  __files:
+    type: object
+    example: { "file1": "path/to/file1", "file2": "path/to/file2" }
+    description: Arquivos associados ao Selo
+  __agentRelations:
+    type: object
+    example: { "agent1": "relation1", "agent2": "relation2" }
+    description: Relações de agentes associados ao Selo
+  __permissionsCache:
+    type: object
+    example: { "permission1": true, "permission2": false }
+    description: Cache de permissões associadas ao Selo
+  subsite:
+    type: object
+    example: { "id": 1, "name": "Subsite Name" }
+    description: Subsite associado ao Selo
+  site:
+    type: string
+    example: "https://example.com"
+    description: Site associado ao Selo
+    required: false
+  singleUrl:
+    type: string
+    example: "https://example.com/seal/1"
+    description: URL única do Selo
+    required: false
+  editUrl:
+    type: string
+    example: "https://example.com/seal/1/edit"
+    description: URL de edição do Selo
+    required: false
+  '@file':
+    type: object
+    properties:
+      downloads:
+        type: array
+        items:
+          type: string
+        example: ["file1", "file2"]
+      header:
+        type: array
+        items:
+          type: string
+        example: ["header1", "header2"]
+      avatar:
+        type: array
+        items:
+          type: string
+        example: ["avatar1", "avatar2"]
+      gallery:
+        type: array
+        items:
+          type: string
+        example: ["gallery1", "gallery2"]
