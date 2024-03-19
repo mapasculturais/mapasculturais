@@ -44,6 +44,8 @@ tags:
       description: Find out more
       url: http://swagger.io
 paths:
+  /api/agent/describe:
+    $ref: './components/paths/agent/describe.yaml'
   /api/agent/find:
     $ref: './components/paths/agent/find.yaml'
   /api/opportunity/find:
