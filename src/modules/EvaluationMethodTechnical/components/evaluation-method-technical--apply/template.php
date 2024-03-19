@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -17,7 +18,7 @@ $this->import('
 <mc-modal title="<?= i::esc_attr__('Aplicar resultados das avaliações') ?>" classes="apply-evaluations" @close="modalClose()">
 
     <template #button="modal">
-        <button  class="button button--primary button--icon col-2" @click="modal.open()">
+        <button class="button button--primary button--icon col-4" @click="modal.open()">
             <mc-icon name="add"></mc-icon>
             <?php i::_e('Aplicar resultados das avaliações') ?>
         </button>
@@ -25,9 +26,9 @@ $this->import('
 
     <template #default>
         <div class="grid-12">
-            
+
             <div class="col-12">
-                <mc-tabs>
+                <mc-tabs @changed="changed($event)">
                     <mc-tab label="<?= i::esc_attr__('Por pontuação') ?>" slug='score'>
                         <div class="grid-12">
                             <div class="col-12 apply-evaluations__range">
@@ -35,17 +36,17 @@ $this->import('
                             </div>
                             <div class="col-12 grid-12">
                                 <div class="field field--horizontal col-6">
-                                    <label>Nota mínima</label>
+                                    <label><?php i::_e('Nota mínima:') ?></label>
                                     <input v-model.number.trim="applyData.from[0]" type="number" min="0" :max="maxResult" step="0.01" @input="validateValues()">
                                 </div>
                                 <div class="field field--horizontal col-6">
-                                    <label>Nota maximo</label>
+                                    <label><?php i::_e('Nota maximo:') ?></label>
                                     <input v-model.number.trim="applyData.from[1]" type="number" min="0" :max="maxResult" step="0.01" @input="validateValues()">
                                 </div>
                             </div>
                             <div class="field col-12">
                                 <label><?php i::_e('Status') ?></label>
-                                <select v-model="applyData.to">
+                                <select v-model="applyData.setStatusTo">
                                     <option v-for="item in statusList" :value="item.value">{{item.label}}</option>
                                 </select>
                             </div>
@@ -63,29 +64,29 @@ $this->import('
                             <div class="field col-6">
                                 <label>
                                     <?php i::_e('Nota de corte:') ?>
-                                    <input type="number" >
+                                    <input type="number" v-model="cutoffScore">
                                 </label>
                             </div>
-                            <label>
+                            <label v-if="enableConsiderQuotas">
                                 <input type="checkbox" v-model="considerQuotas" @checked="considerQuotas">
                                 <?php i::_e('Considerar cotas') ?>
                             </label>
                             <div class="field col-12">
                                 <label>
-                                    <input type="checkbox" name="selectionType" value="first" v-model="selectionType" @change="initConsiderQuotas">
+                                    <input type="checkbox" value="earlyRegistrations" v-model="selectionType">
                                     <?php i::_e('Selecionar as inscrições posicionadas na faixa de classificação') ?>
                                 </label>
                             </div>
                             <div class="field col-12">
                                 <label>
-                                    <input type="checkbox" name="selectionType" value="substitute" v-model="selectionType" @change="initConsiderQuotas">
+                                    <input type="checkbox" value="waitList" v-model="selectionType">
                                     <?php i::_e('Marcar como suplente as inscrições posicionadas fora da faixa de classificação que estejam acima da nota de corte') ?>
                                 </label>
                             </div>
-                
+
                             <div class="field col-12">
                                 <label>
-                                    <input type="checkbox" name="selectionType" value="delRegistrations" v-model="selectionType" @change="initConsiderQuotas">
+                                    <input type="checkbox" value="invalidateRegistrations" v-model="selectionType">
                                     <?php i::_e('Eliminar as inscrições com notas inferiores à nota de corte') ?>
                                 </label>
                             </div>
