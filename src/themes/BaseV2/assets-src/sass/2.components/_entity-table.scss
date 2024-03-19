@@ -100,11 +100,12 @@
     }
 
     &__info {
+        position: relative;
         align-items: center;
         display: flex;
         gap: size(10);
         justify-content: center;
-
+        z-index: 120;
         /* estilização específica de componentes internos */
         .mc-select {
             max-width: size(300);
@@ -137,5 +138,17 @@
                 padding: 0 size(10);
             }
         }
+    }
+
+    .sticky {
+        position: sticky;
+        background-color: white;
+    }
+
+    .table-header-cell {
+        vertical-align: top;
+        display: inline-block;
+        padding: 10px;
+        font-weight: bold;
     }
 }
