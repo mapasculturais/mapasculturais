@@ -28,6 +28,11 @@ tags:
     externalDocs:
       description: Find out more
       url: http://swagger.io
+  - name: Eventos
+    description: Rotas relacionadas aos eventos
+    externalDocs:
+      description: Find out more
+      url: http://swagger.io
   - name: Oportunidades
     description: Everything about your tests
     externalDocs:
@@ -74,6 +79,8 @@ paths:
     $ref: './components/paths/space/get-types.yaml'
   /api/space/getTypeGroups:
     $ref: './components/paths/space/get-type-groups.yaml'
+  /api/event/find:
+    $ref: './components/paths/event/find.yaml'
   /api/seal/describe:
     $ref: './components/paths/seal/describe.yaml'
   /api/seal/find:

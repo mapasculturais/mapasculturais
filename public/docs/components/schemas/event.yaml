@@ -1,0 +1,178 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id numérico que representa o Evento
+  name:
+    type: string
+    example: "evento teste"
+    description: Um texto que representa o nome do Evento
+  shortDescription:
+    type: string
+    example: "teste de evento"
+    description: Uma breve descrição do Evento
+  longDescription:
+    type: string
+    nullable: true
+    description: Uma descrição detalhada do Evento
+  rules:
+    type: string
+    nullable: true
+    description: Regras do Evento
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  status:
+    type: integer
+    example: 1
+    description: Um número que representa o status do Evento
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  owner:
+    type: integer
+    example: 1
+    description: O Agente que criou o Evento
+  project:
+    type: string
+    nullable: true
+    description: Projeto associado ao Evento
+  subsite:
+    type: string
+    nullable: true
+    description: Subsite associado ao Evento
+  currentUserPermissions:
+    type: object
+    properties:
+      '@control':
+        type: boolean
+        example: false
+      create:
+        type: boolean
+        example: false
+      modify:
+        type: boolean
+        example: false
+      unpublish:
+        type: boolean
+        example: false
+      publish:
+        type: boolean
+        example: false
+      view:
+        type: boolean
+        example: true
+      remove:
+        type: boolean
+        example: false
+      _control:
+        type: boolean
+        example: false
+      viewPrivateFiles:
+        type: boolean
+        example: false
+      changeOwner:
+        type: boolean
+        example: false
+      viewPrivateData:
+        type: boolean
+        example: false
+      createAgentRelation:
+        type: boolean
+        example: false
+      createAgentRelationWithControl:
+        type: boolean
+        example: false
+      removeAgentRelation:
+        type: boolean
+        example: false
+      removeAgentRelationWithControl:
+        type: boolean
+        example: false
+      createSealRelation:
+        type: boolean
+        example: false
+      removeSealRelation:
+        type: boolean
+        example: false
+      destroy:
+        type: boolean
+        example: false
+      archive:
+        type: boolean
+        example: false
+      unarchive:
+        type: boolean
+        example: false
+    description: Permissões do usuário atual para o Evento
+  classificacaoEtaria:
+    type: string
+    example: "18 anos"
+    description: Classificação etária do Evento
+  occurrences:
+    type: array
+    items:
+      type: string
+    description: Ocorrências do Evento
+  relatedOpportunities:
+    type: array
+    items:
+      type: string
+    description: Oportunidades relacionadas ao Evento
+  terms:
+    type: object
+    properties:
+      tag:
+        type: array
+        items:
+          type: string
+      linguagem:
+        type: array
+        items:
+          type: string
+        example: ["Curso ou Oficina"]
+    description: Termos associados ao Evento
+  metalists:
+    type: array
+    items:
+      type: string
+    description: Metalistas associadas ao Evento
+  files:
+    type: array
+    items:
+      type: string
+    description: Arquivos associados ao Evento
+  seals:
+    type: array
+    items:
+      type: string
+    description: Selos associados ao Evento
+  type:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: "Padrão"
+    description: Tipo do Evento
+  subsiteId:
+    type: integer
+    nullable: true
+    description: ID do subsite associado ao Evento
+  subTitle:
+    type: string
+    nullable: true
+    description: Subtítulo do Evento
+  registrationInfo:
+    type: string
+    nullable: true
+    description: Informações de registro do Evento
+  telefonePublico:
+    type: string
+    nullable: true
+    description: Telefone público do Evento
+  preco:
+    type: string
+    nullable: true
+    description: Preço do Evento
