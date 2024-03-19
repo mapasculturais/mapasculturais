@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Agentes
+  summary: Recupera um único agente
+  description: Recuperar um único agente
+  parameters:
+    - $ref: '../../parameters/id.yaml'
+    - $ref: '../../parameters/select.yaml'
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/agent.yaml'
