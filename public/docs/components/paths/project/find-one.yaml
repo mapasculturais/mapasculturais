@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Projetos
+  summary: Recupera um único projeto
+  description: Recuperar um único projeto
+  parameters:
+    - $ref: '../../parameters/id.yaml'
+    - $ref: '../../parameters/select.yaml'
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/project.yaml'

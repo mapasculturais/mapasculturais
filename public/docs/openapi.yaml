@@ -55,46 +55,48 @@ paths:
     $ref: './components/paths/agent/find.yaml'
   /api/agent/findOne:
     $ref: './components/paths/agent/find-one.yaml'
-  /api/opportunity/find:
-    $ref: './components/paths/opportunity/find.yaml'
-  /api/opportunity/findOne:
-    $ref: './components/paths/opportunity/find-one.yaml'
   /api/opportunity/describe:
     $ref: './components/paths/opportunity/describe.yaml'
-  /api/opportunity/getTypes:
-    $ref: './components/paths/opportunity/get-types.yaml'
+  /api/opportunity/find:
+    $ref: './components/paths/opportunity/find.yaml'
   /api/opportunity/findRegistrations:
     $ref: './components/paths/opportunity/find-registrations.yaml'
+  /api/opportunity/findOne:
+    $ref: './components/paths/opportunity/find-one.yaml'
+  /api/opportunity/getTypes:
+    $ref: './components/paths/opportunity/get-types.yaml'
   /api/opportunity/selectFields:
     $ref: './components/paths/opportunity/select-fields.yaml'
   /api/project/describe:
     $ref: './components/paths/project/describe.yaml'
   /api/project/find:
     $ref: './components/paths/project/find.yaml'
-  /api/space/describe:
-    $ref: './components/paths/space/describe.yaml'
-  /api/space/find:
-    $ref: './components/paths/space/find.yaml'
-  /api/space/findOne:
-    $ref: './components/paths/space/find-one.yaml'
-  /api/space/findByEvents:
-    $ref: './components/paths/space/find-by-events.yaml'
-  /api/space/getTypes:
-    $ref: './components/paths/space/get-types.yaml'
-  /api/space/getTypeGroups:
-    $ref: './components/paths/space/get-type-groups.yaml'
-  /api/event/find:
-    $ref: './components/paths/event/find.yaml'
+  /api/project/findOne:
+    $ref: './components/paths/project/find-one.yaml'
+  /api/project/getTypes:
+    $ref: './components/paths/project/get-types.yaml'
   /api/seal/describe:
     $ref: './components/paths/seal/describe.yaml'
   /api/seal/find:
     $ref: './components/paths/seal/find.yaml'
   /api/seal/findOne:
     $ref: './components/paths/seal/find-one.yaml'
-  /api/seal/getTypes:
-    $ref: './components/paths/seal/get-types.yaml'
   /api/seal/getTypeGroups:
     $ref: './components/paths/seal/get-type-groups.yaml'
+  /api/seal/getTypes:
+    $ref: './components/paths/seal/get-types.yaml'
+  /api/space/describe:
+    $ref: './components/paths/space/describe.yaml'
+  /api/space/findByEvents:
+    $ref: './components/paths/space/find-by-events.yaml'
+  /api/space/find:
+    $ref: './components/paths/space/find.yaml'
+  /api/space/findOne:
+    $ref: './components/paths/space/find-one.yaml'
+  /api/space/getTypeGroups:
+    $ref: './components/paths/space/get-type-groups.yaml'
+  /api/space/getTypes:
+    $ref: './components/paths/space/get-types.yaml'
 components:
   schemas:
     Agent:
@@ -103,21 +105,24 @@ components:
       $ref: './components/schemas/opportunity.yaml'
     OpportunityType:
       $ref: './components/schemas/opportunity-type.yaml'
-    ProjectDescribe:
-      $ref: './components/schemas/project-describe.yaml'
     Project:
       $ref: './components/schemas/project.yaml'
+    ProjectDescribe:
+      $ref: './components/schemas/project-describe.yaml'
+    ProjectType:
+      $ref: './components/schemas/project-type.yaml'
+    Seal:
+      $ref: './components/schemas/seal.yaml'
+    SealDescribe:
+      $ref: './components/schemas/seal-describe.yaml'
+    SealType:
+      $ref: './components/schemas/seal-type.yaml'
+    SealTypeGroup:
+      $ref: './components/schemas/seal-type-groups.yaml'
     Space:
       $ref: './components/schemas/space.yaml'
     SpaceType:
       $ref: './components/schemas/space-type.yaml'
     SpaceTypeGroup:
       $ref: './components/schemas/space-type-group.yaml'
-    Seal:
-      $ref: './components/schemas/seal.yaml'
-    SealType:
-      $ref: './components/schemas/seal-type.yaml'
-    SealTypeGroup:
-      $ref: './components/schemas/seal-type-groups.yaml'
-    SealDescribe:
-      $ref: './components/schemas/seal-describe.yaml'
+
