@@ -12,7 +12,6 @@ app.component('logo-customizer', {
 
     computed: {
         colors() {
-            console.log($MAPAS.config.logoCustomizer)
             if (!!!this.subsite.custom_colors) {
                 return {
                     first: $MAPAS.config.logoCustomizer.originalColors[0],
