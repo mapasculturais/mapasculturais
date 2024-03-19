@@ -140,6 +140,11 @@
         }
     }
 
+    &__advanced-filters {
+        overflow-y: auto;
+        max-height: size(500);
+    }
+
     .sticky {
         position: sticky;
         background-color: white;
