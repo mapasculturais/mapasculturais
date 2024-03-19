@@ -70,7 +70,6 @@ app.component('entity-table', {
         const required = this.required instanceof Array ? this.required : this.required.split(",");
 
         this.originalQuery = JSON.parse(JSON.stringify(this.query));
-
         for(let header of this.columns) {
             header.slug = this.parseSlug(header);
             header.visible = visible.includes(header.slug) || required.includes(header.slug);
@@ -80,11 +79,22 @@ app.component('entity-table', {
 
     mounted() {
         const searchInput = this.$refs.search;
+
         searchInput.addEventListener("input", OnInput, false);
         function OnInput() {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + "px";
         }
+        this.resize();
+
+        const self = this;
+        window.addEventListener('resize', () => {
+            self.resize();
+        })
+    },
+
+    updated() {
+        this.resize();
     },
 
     data() {
@@ -93,12 +103,37 @@ app.component('entity-table', {
             entitiesOrder: this.order,
             columns: this.headers,
             searchText: '',
+            left: 0,
+            width: '100%', //no exemplo está iniciada em 0,
+            columnsWidth: {},
+            columnsLeft: {},
+            columnsRight: {},
+            ready: false,
+            tableWidth: 'auto',
+            headerHeight: 'auto',
         }
+    },
+
+    watch: {
+        columns: {
+            handler(){
+                if(this.$refs.contentTable) {
+                    this.$refs.contentTable.style.width = 'auto';
+                }
+                this.headerHeight = 'auto';
+
+                this.resize();
+            },
+            deep: true
+        },
     },
 
     computed: {
         visibleColumns() {
             return this.columns.filter((col) => col.visible);
+        },
+        allHeadersActive() {
+            return this.visibleColumns.length == this.columns.length;
         },
         $description() {
             return $DESCRIPTIONS[this.type];
@@ -350,6 +385,99 @@ app.component('entity-table', {
             const currentValues = this.getFilterValues(this.query[fieldName] ?? '') || [];
 
             return currentValues.includes(option);
+        },
+
+        scroll(event) {
+            const scrollLeft = event.target.scrollLeft; 
+            const headerWrapper = this.$refs.headerWrapper; 
+            const contentWrapper = this.$refs.contentWrapper;
+            const scrollWrapper = this.$refs.scrollWrapper;
+            headerWrapper.scrollLeft = scrollLeft; 
+            contentWrapper.scrollLeft = scrollLeft;
+            scrollWrapper.scrollLeft = scrollLeft;
+            
+        },
+
+        setColumnWidth(slug) {
+            const col = this.$refs['column-' + slug]?.[0] ?? this.$refs['column-' + slug] ?? null;
+            if(col) {
+                this.columnsLeft[slug] = this.totalWidth + 'px';
+                this.columnsWidth[slug] = col.clientWidth + 'px';
+                this.totalWidth += col.clientWidth;
+                this.columnsRight[slug] = (parseInt(this.width) - this.totalWidth) + 'px';
+                this._ready = true;
+            }
+        },
+
+        setColumnRight(slug) {
+            const col = this.$refs['column-' + slug]?.[0] ?? this.$refs['column-' + slug] ?? null;
+            if(col) {
+                this.columnsRight[slug] = this.totalWidth + 'px';
+                this.totalWidth -= col.clientWidth;
+                this._ready = true;
+            }
+        },
+
+        calcResize() {
+            globalThis.$table = this.$refs.contentTable;
+
+            if (this.$refs.contentTable) {
+                this.width = this.$refs.contentTable.clientWidth + 'px';
+            }
+
+            this.$nextTick(() => {
+                this._ready = false;
+
+                this.totalWidth = 0;
+                this.setColumnWidth('-index');
+                for(let column of this.visibleColumns) {
+                    this.setColumnWidth(column.slug)
+                }
+
+                this.totalWidth = 0;
+                for(let i = this.visibleColumns.length - 1; i >= 0; i--) {
+                    const column = this.visibleColumns[i];
+                    this.setColumnRight(column.slug);
+                }
+                
+                if(this._ready){
+                    this.ready = this._ready;
+                    this.headerHeight = this.$refs.headerTable.offsetHeight;
+                }
+            });
+        },
+        
+        resize() {
+            const self = this;
+            self.$nextTick(() => {
+                if(self.$refs.contentTable) {
+                    while(self.$refs.headerTable.offsetHeight > 175) {
+                        self.$refs.contentTable.style.width = (self.$refs.contentTable.offsetWidth * 1.1) + 'px';
+                    }
+                }
+                self.calcResize();
+            });
+        },
+
+        getOffsetLeft(slug) {
+            return this.columnsLeft[slug] ?? null;
+        },
+
+        headerStyle(column) {
+            const style = {
+                width: column.width || this.columnsWidth[column.slug] || '', 
+                minHeight: this.headerHeight + 'px'
+            };
+
+            if(column.sticky) {
+                style.left = this.columnsLeft[column.slug] ?? ''
+            }
+
+            if(column.stickyRight) {
+                style.right = this.columnsRight[column.slug] ?? ''
+            }
+
+            return style;
         },
     },
 });

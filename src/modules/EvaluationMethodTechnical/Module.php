@@ -309,8 +309,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     protected function generateRuleId($rule) {
         $app = App::i();
-        
-        return $rule->title ? $app->slugify($rule->title) : md5(json_encode($rule));
+        return isset($rule->title) ? $app->slugify($rule->title) : md5(json_encode($rule));
     }
 
     public function getPhaseQuotaRegistrations(int $phase_id) {

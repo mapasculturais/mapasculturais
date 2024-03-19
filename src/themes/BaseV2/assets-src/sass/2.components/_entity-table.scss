@@ -100,11 +100,12 @@
     }
 
     &__info {
+        position: relative;
         align-items: center;
         display: flex;
         gap: size(10);
         justify-content: center;
-
+        z-index: 120;
         /* estilização específica de componentes internos */
         .mc-select {
             max-width: size(300);
@@ -113,14 +114,16 @@
 
     &__table {
         background-color: var(--mc-white);
-        padding: 0 size(25) size(35);
+        padding: 0 size(25) size(35); //modificar o padding top para size(24) pois estava muito grudado no info?
         table-layout: fixed;
         text-align: left;
+        width: auto; //preciso entender como manter essa tabela do tamanho da tela mesmo sem o scroll
 
         & > thead > tr {
             height: size(48);
 
             & > th {
+                min-width: size(150);
                 border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
                 padding: 0 size(10);
             }
@@ -135,5 +138,22 @@
                 padding: 0 size(10);
             }
         }
+    }
+
+    &__advanced-filters {
+        overflow-y: auto;
+        max-height: size(500);
+    }
+
+    .sticky {
+        position: sticky;
+        background-color: white;
+    }
+
+    .table-header-cell {
+        vertical-align: top;
+        display: inline-block;
+        padding: 10px;
+        font-weight: bold;
     }
 }
