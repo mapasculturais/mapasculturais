@@ -76,6 +76,34 @@
         }
     }
 
+    &__color {
+        display: flex;
+        gap: size(8);
+        align-items: center;
+    }
+
+    &__color-input {
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-xs);
+        height: size(20);
+        overflow: hidden;
+        width: size(45);
+
+        input[type="color"] {
+            border: 0;
+            cursor: pointer;
+            height: size(40);
+            padding: 0;
+            transform: translate(-8px, -10px);
+            width: size(60);
+        }
+    }
+
+    &__color-description {
+        font-size: var(--mc-font-size-xxs);
+        font-weight: var(--mc-font-semibold);
+    }
+
     .required {
         font-family: Open Sans;
         font-size: size(12);
