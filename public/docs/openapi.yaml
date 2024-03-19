@@ -46,6 +46,8 @@ tags:
 paths:
   /api/agent/find:
     $ref: './components/paths/agent/find.yaml'
+  /api/agent/findOne:
+    $ref: './components/paths/agent/find-one.yaml'
   /api/opportunity/find:
     $ref: './components/paths/opportunity/find.yaml'
   /api/opportunity/findOne:
