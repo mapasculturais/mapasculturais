@@ -4,6 +4,7 @@ namespace ThemeCustomizer;
 
 use MapasCulturais\App;
 use MapasCulturais\i;
+use MapasCulturais\Definitions;
 
 class Module extends \MapasCulturais\Module
 {
@@ -123,6 +124,21 @@ class Module extends \MapasCulturais\Module
                 'label' => i::__("Subtítulo da logo do Mapas Culturais"),
                 'type' => 'string',
             ]);
+
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('background',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'),true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('share',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'),true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            
+            // Grupos de imagens para customizar
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('welcomeBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('opportunityBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('eventBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('spaceBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('agentBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('projectBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+            $this->registerFileGroup('subsite', new Definitions\FileGroup('signupBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
         });
     }
 }
