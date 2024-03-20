@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Agentes
+  summary: Recupera uma lista de tipos de agentes de forma agrupada
+  description: Recupera uma lista de tipos de agentes de forma agrupada
+  responses:
+    '200':
+      description: Sucesso
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/agent-type-group.yaml'
