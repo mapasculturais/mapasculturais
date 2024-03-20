@@ -79,13 +79,15 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         
         $entity = $this->getEntityAndCheckPermission('@control');
 
-        $app->view->jsObject['request'] = [
-            'controller' => $this->id,
-            'action' => $this->action,
-            'urlData' => $this->urlData,
-        ];
+        $app->hook('mapas.printJsObject:before', function () use($app) {
+            $app->view->jsObject['request'] = [
+                'controller' => $this->controller->id,
+                'action' => $this->controller->action,
+                'urlData' => $this->controller->urlData,
+            ];
 
-        $this->jsObject['request']['id'] = $this->data['id'] ?? null;
+            $this->jsObject['request']['id'] = $this->controller->data['id'] ?? null;
+        }, 100);
 
         $this->render("report-manager",['entity' => $entity]);
     }
