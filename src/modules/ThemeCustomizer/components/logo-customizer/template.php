@@ -19,6 +19,10 @@ $this->import('
     </legend>
 
     <div class="logo-customizer__content">
+        <mc-alert small type="warning">
+            <b><?= i::__('Atenção!') ?></b> <?= i::__('As modificações só serão aplicadas no sistema após atualizar a página.') ?>
+        </mc-alert>
+        
         <div class="logo-customizer__settings grid-12">
             <entity-field class="col-12" :entity="subsite" prop="logo_title" :autosave="300"></entity-field>
             <entity-field class="col-12" :entity="subsite" prop="logo_subtitle" :autosave="300"></entity-field>
@@ -31,7 +35,7 @@ $this->import('
                 <entity-field :entity="subsite" prop="logo_color4" :autosave="300"></entity-field>
             </div>
         </div>
-    
+
         <div class="logo-customizer__preview">
             <theme-logo :bg1="colors.first" :bg2="colors.second" :bg3="colors.third" :bg4="colors.fourth" :title="title" :subtitle="subtitle"></theme-logo>
         </div>
