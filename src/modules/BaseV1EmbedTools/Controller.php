@@ -75,7 +75,18 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
 
     public function GET_reportmanager()
     {
+        $app = App::i();
+        
         $entity = $this->getEntityAndCheckPermission('@control');
+
+        $app->view->jsObject['request'] = [
+            'controller' => $this->id,
+            'action' => $this->action,
+            'urlData' => $this->urlData,
+        ];
+
+        $this->jsObject['request']['id'] = $this->data['id'] ?? null;
+
         $this->render("report-manager",['entity' => $entity]);
     }
 

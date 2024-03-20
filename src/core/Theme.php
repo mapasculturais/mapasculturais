@@ -139,6 +139,8 @@ abstract class Theme {
                     'action' => $app->view->controller->action,
                     'urlData' => $app->view->controller->urlData,
                 ];
+
+                $this->jsObject['request']['id'] = $app->view->controller->data['id'] ?? null;
             }
           
             $this->jsObject['EntitiesDescription'] = [
