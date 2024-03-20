@@ -89,8 +89,11 @@ $this->import('
 
 		<div class="entity-card__content--terms">
 			<div v-if="areas" class="entity-card__content--terms-area">
-				<label class="area__title">
+				<label v-if="entity.__objectType === 'opportunity'" class="area__title">
 					<?php i::_e('Áreas de interesse:') ?> ({{entity.terms.area.length}}):
+				</label>
+				<label v-if="entity.__objectType === 'agent' || entity.__objectType === 'space'" class="area__title">
+					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
 				</label>
 				<p :class="['terms', entity.__objectType+'__color']"> {{areas}} </p>
 			</div>
