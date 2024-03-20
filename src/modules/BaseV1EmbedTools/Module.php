@@ -57,16 +57,6 @@ class Module extends \MapasCulturais\Module
         $app->hook('GET(registration.evaluation):before', function() use($app) {
             $app->view->enqueueScript('app-v2', 'embedtools-evaluations', 'js/embedtools-evaluations.js');
         });
-
-        $app->hook('mapas.printJsObject:before', function () use($app) {
-            if($app->view->controller->id == 'embedtools') {
-                $this->jsObject['request'] = [
-                    'controller' => $app->view->controller->id,
-                    'action' => $app->view->controller->action,
-                    'urlData' => $app->view->controller->urlData,
-                ];
-            }
-        });
     }
 
     public function register()
