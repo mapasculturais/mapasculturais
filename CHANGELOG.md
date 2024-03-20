@@ -5,6 +5,7 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [7.3.32] - 2024-03-20
+### Correções
 - Corrige exibição da label Área de atuação e Área de interesse nos cads de listagem de entidades
 
 ## [7.3.31] - 2024-03-20
