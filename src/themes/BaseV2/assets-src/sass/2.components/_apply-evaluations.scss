@@ -7,4 +7,12 @@
         display: inline-grid;
         align-items: end;
     }
+
+    .classification__panel {
+        margin-top: size(5);
+    }
+
+    .field__input[type=checkbox] {
+        width: size(29.6);
+    }
 }
