@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    image-customizer
     mc-tab
     mc-tabs
     logo-customizer
@@ -27,6 +28,7 @@ $this->import('
     
     <mc-tabs class="panel-home__tabs">    
         <mc-tab label="<?php i::esc_attr_e('Home') ?>" slug="home">
+            <image-customizer />
         </mc-tab>
     
         <mc-tab label="<?php i::esc_attr_e('Cores e estilos') ?>" slug="style">

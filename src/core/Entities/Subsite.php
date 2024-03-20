@@ -458,6 +458,14 @@ class Subsite extends \MapasCulturais\Entity
         $app->em->flush();
     }
 
+    public function jsonSerialize(): array
+    {
+        $result = parent::jsonSerialize();
+        $result['files'] = $this->files;
+
+        return $result;
+    }
+
     
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
