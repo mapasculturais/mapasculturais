@@ -71,6 +71,73 @@ class Module extends \MapasCulturais\Module
                 if ($subtitle = $subsite->logo_subtitle) {
                     $app->config['logo.subtitle'] = $subtitle;
                 }
+
+                $css_map = [
+                    'primary',
+                    'secondary',
+                    'seals',
+                    'agents',
+                    'events',
+                    'opportunities',
+                    'projects',
+                    'spaces',
+                ];
+
+                $variable_part = [];
+                $root_part = [];
+
+                foreach ($css_map as $var) {
+                    $color = $subsite->{"color_$var"};
+                    
+                    if ($color) {
+                        $variable_part[] = "
+                            \$$var-500: $color !default;
+                            \$$var-300: lighten(\$$var-500, \$lightness-300) !default;
+                            \$$var-700: darken(\$$var-500, \$lightness-700) !default;
+                        ";
+
+                        $root_part[] = "
+                            --mc-$var-500: #{\$$var-500};
+                            --mc-$var-300: #{\$$var-300};
+                            --mc-$var-700: #{\$$var-700};
+                        ";
+                    }
+                }
+
+
+                if (!empty($variable_part) && !empty($root_part)) {
+                    $variable_part = implode("\n", $variable_part);
+                    $root_part = implode("\n", $root_part);
+                    
+                    $saas = "
+                        @use 'sass:color';
+
+                        // Default lightness deltas
+                        \$lightness-300: 25% !default;
+                        \$lightness-700: 25% !default;
+
+                        $variable_part
+
+                        :root {
+                            $root_part
+                        }
+                    ";
+                    
+                    $scss_filename = tempnam(sys_get_temp_dir(), 'subsite-').'.scss';
+                    $css_filename = tempnam(sys_get_temp_dir(), 'subsite-').'.css';
+                    
+                    
+                    file_put_contents($scss_filename, $saas);
+                    exec("sass $scss_filename $css_filename --no-source-map");
+                    
+                    $css = file_get_contents($css_filename);
+                    
+                    $app->hook('template(<<*>>.body):after', function () use ($css) {
+                        echo "
+                            <style> $css </style>
+                        ";
+                    });
+                }
             }
         });
 
@@ -95,6 +162,7 @@ class Module extends \MapasCulturais\Module
                 'default' => '',
             ]);
 
+            // Logo
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color1', [
                 'label' => i::__("Cor #1"),
                 'type' => 'color',
@@ -123,6 +191,47 @@ class Module extends \MapasCulturais\Module
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_subtitle', [
                 'label' => i::__("Subtítulo da logo do Mapas Culturais"),
                 'type' => 'string',
+            ]);
+
+            // System colors
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_primary', [
+                'label' => i::__("Cor primária"),
+                'type' => 'color',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_secondary', [
+                'label' => i::__("Cor Secundária"),
+                'type' => 'color',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_seals', [
+                'label' => i::__("Cor - selos"),
+                'type' => 'color',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_agents', [
+                'label' => i::__("Cor - agentes"),
+                'type' => 'color',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_events', [
+                'label' => i::__("Cor - eventos"),
+                'type' => 'color',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_opportunities', [
+                'label' => i::__("Cor - oportunidades"),
+                'type' => 'color',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_projects', [
+                'label' => i::__("Cor - projetos"),
+                'type' => 'color',
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_spaces', [
+                'label' => i::__("Cor - espaços"),
+                'type' => 'color',
             ]);
 
             $this->registerFileGroup('subsite', new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
