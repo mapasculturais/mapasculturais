@@ -1,0 +1,195 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: "Um id numérico que representa o Evento"
+    required: true
+  location:
+    type: point
+    example: { "type": "Point", "coordinates": [ -46.633309, -23.550520 ] }
+    description: "Localização geográfica do Evento"
+    required: true
+  name:
+    type: string
+    example: "Nome do Evento"
+    maxLength: 255
+    description: "Um texto que representa o nome do Evento"
+    required: true
+  shortDescription:
+    type: string
+    example: "Descrição curta do Evento"
+    description: "Uma breve descrição do Evento"
+    required: false
+  longDescription:
+    type: string
+    example: "Descrição longa do Evento"
+    description: "Uma descrição detalhada do Evento"
+    required: false
+  certificateText:
+    type: string
+    example: "Texto do certificado do Evento"
+    description: "Texto do certificado do Evento"
+    required: false
+  createTimestamp:
+    type: string
+    format: date-time
+    example: "2024-03-11 14:52:35.000000"
+    description: "Data e hora de criação do Evento"
+    required: true
+  status:
+    type: integer
+    example: 1
+    description: "Um número que representa o status do Evento"
+    required: true
+  _type:
+    type: integer
+    example: 1
+    description: "Um número que representa o tipo do Evento"
+    required: true
+  isVerified:
+    type: boolean
+    example: true
+    description: "Indica se o Evento foi verificado"
+    required: true
+  parent:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: "ID do Evento pai"
+    required: false
+  children:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+          description: "ID do Evento filho"
+    description: "Filhos do Evento"
+    required: false
+  owner:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: "ID do Agente que criou o Evento"
+    required: true
+  emailPublico:
+    type: string
+    example: "public@example.com"
+    description: "Email público do Evento"
+    required: false
+  emailPrivado:
+    type: string
+    example: "private@example.com"
+    description: "Email privado do Evento"
+    required: false
+  telefonePublico:
+    type: string
+    example: "+5511987654321"
+    description: "Telefone público do Evento"
+    required: false
+  telefone1:
+    type: string
+    example: "+5511987654321"
+    description: "Telefone 1 do Evento"
+    required: false
+  telefone2:
+    type: string
+    example: "+5511987654321"
+    description: "Telefone 2 do Evento"
+    required: false
+  acessibilidade:
+    type: string
+    example: "Sim"
+    description: "Acessibilidade do Evento"
+    required: false
+  capacidade:
+    type: string
+    example: "100 pessoas"
+    description: "Capacidade do Evento"
+    required: false
+  endereco:
+    type: string
+    example: "Rua Exemplo, 123 - Cidade, Estado"
+    description: "Endereço do Evento"
+    required: false
+  horario:
+    type: string
+    example: "Das 09:00 às 18:00"
+    description: "Horário de funcionamento do Evento"
+    required: false
+  criterios:
+    type: string
+    example: "Critérios de uso do espaço"
+    description: "Critérios de uso do espaço do Evento"
+    required: false
+  site:
+    type: string
+    example: "https://example.com"
+    description: "Site do Evento"
+    required: false
+  facebook:
+    type: string
+    example: "https://facebook.com/example"
+    description: "Facebook do Evento"
+    required: false
+  twitter:
+    type: string
+    example: "https://twitter.com/example"
+    description: "Twitter do Evento"
+    required: false
+  googleplus:
+    type: string
+    example: "https://plus.google.com/example"
+    description: "Google+ associado ao Evento"
+    required: false
+  regiao:
+    type: string
+    example: "Região do Evento"
+    description: "Região onde o Evento ocorre"
+    required: false
+  distrito:
+    type: string
+    example: "Distrito do Evento"
+    description: "Distrito onde o Evento ocorre"
+    required: false
+  subprefeitura:
+    type: string
+    example: "Subprefeitura do Evento"
+    description: "Subprefeitura onde o Evento ocorre"
+    required: false
+  '@file':
+      type: object
+      properties:
+        header:
+          type: array
+          items:
+            type: string
+          example: [ "header1", "header2" ]
+          description: "Cabeçalhos associados ao Evento"
+        avatar:
+          type: array
+          items:
+            type: string
+          example: [ "avatar1", "avatar2" ]
+          description: "Avatares associados ao Evento"
+        downloads:
+          type: array
+          items:
+            type: string
+          example: [ "download1", "download2" ]
+          description: "Downloads associados ao Evento"
+        gallery:
+          type: array
+          items:
+            type: string
+          example: [ "gallery1", "gallery2" ]
+          description: "Galeria de imagens do Evento"
+
+

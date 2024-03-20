@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Eventos
+  summary: Recupera um único evento
+  description: Recupera um único evento.
+  parameters:
+    - $ref: '../../parameters/id.yaml'
+    - $ref: '../../parameters/select.yaml'
+  responses:
+    '200':
+      description: Sucess
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/event.yaml'
