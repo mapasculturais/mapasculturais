@@ -20,34 +20,16 @@ servers:
 tags:
   - name: Agentes
     description: Rotas relacionadas aos agentes
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
   - name: Espaços
     description: Rotas relacionadas aos espaços
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
   - name: Eventos
     description: Rotas relacionadas aos eventos
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
   - name: Oportunidades
-    description: Everything about your tests
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
+    description: Rotas relacionadas às oportunidades
   - name: Projetos
     description: Rotas relacionadas aos projetos
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
   - name: Selos
     description: Rotas relacionadas aos selos
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
 paths:
   /api/agent/describe:
     $ref: './components/paths/agent/describe.yaml'

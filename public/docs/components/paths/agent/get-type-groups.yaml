@@ -11,4 +11,4 @@ get:
           schema:
             type: array
             items:
-              $ref: '../../schemas/agent-type-group.yaml'
+              $ref: '../../schemas/agent-type-groups.yaml'
