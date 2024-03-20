@@ -2364,11 +2364,6 @@ class App {
 
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
-        $this->registerFileGroup('subsite',$file_groups['logo']);
-        $this->registerFileGroup('subsite',$file_groups['background']);
-        $this->registerFileGroup('subsite',$file_groups['share']);
-        $this->registerFileGroup('subsite',$file_groups['institute']);
-        $this->registerFileGroup('subsite',$file_groups['favicon']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
 
         if ($theme_image_transformations = $this->view->resolveFilename('','image-transformations.php')) {
