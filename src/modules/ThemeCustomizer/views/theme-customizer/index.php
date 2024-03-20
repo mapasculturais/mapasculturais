@@ -10,6 +10,7 @@ $this->import('
     image-customizer
     mc-tab
     mc-tabs
+    home-texts
     logo-customizer
     colors-customizer
 '); 
@@ -29,6 +30,7 @@ $this->import('
     
     <mc-tabs class="panel-home__tabs">    
         <mc-tab label="<?php i::esc_attr_e('Home') ?>" slug="home">
+            <home-texts></home-texts>
             <image-customizer />
         </mc-tab>
     
