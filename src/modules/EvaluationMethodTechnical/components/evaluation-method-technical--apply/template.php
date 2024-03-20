@@ -53,7 +53,7 @@ $this->import('
                     </mc-tab>
 
                     <mc-tab label="<?= i::esc_attr__('Por classificação') ?>" slug='classification'>
-                        <div class="grid-12">
+                        <div class="grid-12 classification__panel">
                             <div class="field col-6">
                                 <label>
                                     <?php i::_e('Total de vagas:') ?>
@@ -78,7 +78,7 @@ $this->import('
                             </div>
                             <div class="field col-12">
                                 <label>
-                                    <input type="checkbox" name="selectionType" value="substitute" v-model="selectionType" @change="initConsiderQuotas">
+                                    <input class="field__input" type="checkbox" name="selectionType" value="substitute" v-model="selectionType" @change="initConsiderQuotas">
                                     <?php i::_e('Marcar como suplente as inscrições posicionadas fora da faixa de classificação que estejam acima da nota de corte') ?>
                                 </label>
                             </div>
