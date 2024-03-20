@@ -4,6 +4,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.31] - 2024-03-20
+- Corrige conflito do embedtools entre o módulo de relatórios e tabela de inscrições
+
 ## [7.3.30] - 2024-03-19
 ### Correções
 -  Corrige filtro do módulo de relatórios
