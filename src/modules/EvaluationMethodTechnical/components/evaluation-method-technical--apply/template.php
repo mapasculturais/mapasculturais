@@ -66,10 +66,12 @@ $this->import('
                                     <input type="number" >
                                 </label>
                             </div>
-                            <label>
-                                <input type="checkbox" v-model="considerQuotas" @checked="considerQuotas">
-                                <?php i::_e('Considerar cotas') ?>
-                            </label>
+                            <div class="field col-12">
+                                <label>
+                                    <input type="checkbox" v-model="considerQuotas" @checked="considerQuotas">
+                                    <?php i::_e('Considerar cotas') ?>
+                                </label>
+                            </div>
                             <div class="field col-12">
                                 <label>
                                     <input type="checkbox" name="selectionType" value="first" v-model="selectionType" @change="initConsiderQuotas">
