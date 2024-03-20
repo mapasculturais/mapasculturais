@@ -55,6 +55,8 @@ paths:
     $ref: './components/paths/agent/find.yaml'
   /api/agent/findOne:
     $ref: './components/paths/agent/find-one.yaml'
+  /api/agent/getTypes:
+    $ref: './components/paths/agent/get-types.yaml'
   /api/opportunity/describe:
     $ref: './components/paths/opportunity/describe.yaml'
   /api/opportunity/find:
@@ -103,6 +105,8 @@ components:
   schemas:
     Agent:
       $ref: './components/schemas/agent.yaml'
+    AgentType:
+      $ref: './components/schemas/agent-type.yaml'
     Opportunity:
       $ref: './components/schemas/opportunity.yaml'
     OpportunityType:

@@ -1,0 +1,13 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: O identificador único do Agente
+  name:
+    type: string
+    example: "Coletivo"
+    description: O nome do tipo do Agente
+required:
+  - id
+  - name
