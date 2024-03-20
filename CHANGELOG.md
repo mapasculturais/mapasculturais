@@ -39,6 +39,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
 
+## [7.3.31] - 2024-03-20
+- Corrige conflito do embedtools entre o módulo de relatórios e tabela de inscrições
+
 ## [7.3.30] - 2024-03-19
 ### Correções
 -  Corrige filtro do módulo de relatórios
