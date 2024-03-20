@@ -73,6 +73,8 @@ paths:
     $ref: './components/paths/project/find.yaml'
   /api/project/findOne:
     $ref: './components/paths/project/find-one.yaml'
+  /api/project/getTypeGroups:
+    $ref: './components/paths/project/get-type-groups.yaml'
   /api/project/getTypes:
     $ref: './components/paths/project/get-types.yaml'
   /api/seal/describe:
@@ -111,6 +113,8 @@ components:
       $ref: './components/schemas/project-describe.yaml'
     ProjectType:
       $ref: './components/schemas/project-type.yaml'
+    ProjectTypeGroup:
+      $ref: './components/schemas/project-type-groups.yaml'
     Seal:
       $ref: './components/schemas/seal.yaml'
     SealDescribe:

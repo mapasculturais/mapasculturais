@@ -3,11 +3,11 @@ properties:
   id:
     type: integer
     example: 1
-    description: Um id númerico que representa o Tipo do Selo
+    description: Um id númerico que representa o Tipo do Projeto
   name:
     type: string
     example: Festival
-    description: Um texto que representa o Tipo do Selo
+    description: Um texto que representa o Tipo do Projeto
 required:
   - id
   - name
