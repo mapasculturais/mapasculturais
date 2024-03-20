@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased - 7.5]
+## [unreleased - 7.4]
 ### Novas funcionalidades
 - Implementa botão de aplicar avaliações para avaliações técnicas
 - Implementa exibição de parecer na avaliação documental
@@ -38,6 +38,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige permissão de visualização de arquivos privados
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
+
+## [7.3.30] - 2024-03-19
+### Correções
+-  Corrige filtro do módulo de relatórios
 
 ## [7.3.29] - 2024-03-15
 ### Correções
