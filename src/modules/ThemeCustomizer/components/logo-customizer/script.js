@@ -2,12 +2,17 @@ app.component('logo-customizer', {
     template: $TEMPLATES['logo-customizer'],
 
     data() {
-        const subsite = $MAPAS.subsite;
-        const default_colors = $MAPAS.config.logo.colors;
+        let subsite = $MAPAS.subsite;
+        let default_colors = $MAPAS.config.logo.colors;
+
         return {
             subsite,
             default_colors,
         }
+    },
+
+    updated() {
+        this.subsite = this.subsite;
     },
 
     computed: {
@@ -21,16 +26,18 @@ app.component('logo-customizer', {
                 }
             } else {
                 return {
-                    first: this.default_colors[0],
-                    second: this.default_colors[1],
-                    third: this.default_colors[2],
-                    fourth: this.default_colors[3],
+                    first: this.subsite.logo_color1,
+                    second: this.subsite.logo_color2,
+                    third: this.subsite.logo_color3,
+                    fourth: this.subsite.logo_color4,
                 }
             }
         },
+
         title() {
             return this.subsite.logo_title;
         },
+
         subtitle() {
             return this.subsite.logo_subtitle;
         },

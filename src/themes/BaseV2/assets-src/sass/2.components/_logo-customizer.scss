@@ -10,9 +10,10 @@
     }
 
     &__content {
+        align-items: center;    
         display: grid;
         gap: size(40);
-        align-items: center;    
+        justify-items: start;
     }
 
     &__color-inputs {
@@ -27,6 +28,7 @@
     &__preview {        
         display: flex;
         justify-content: center;
+        width: 100%;
 
         .theme-logo {
             display: flex;
