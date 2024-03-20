@@ -1,0 +1,39 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Novo nome
+  shortDescription:
+    type: string
+    example: Secult
+    description: Uma breve descrição do espaço
+  status:
+    type: integer
+    example: 1
+    description: Status do espaço
+  type:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 50
+        description: ID do tipo de espaço
+      name:
+        type: string
+        example: Arquivo Público
+        description: Nome do tipo de espaço
+  terms:
+    type: object
+    properties:
+      tag:
+        type: array
+        items:
+          type: string
+        example: [ ]
+        description: Tags associadas ao espaço
+      area:
+        type: array
+        items:
+          type: string
+        example: [ "Outros", "Patrimônio Cultural" ]
+        description: Áreas relacionadas ao espaço

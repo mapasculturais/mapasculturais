@@ -1,0 +1,17 @@
+post:
+  tags:
+    - Espaços
+  summary: Cria um espaço
+  description: Cria um espaço
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../requestBodies/space/post-minimal.yaml'
+  responses:
+    '200':
+      description: O espaço criado
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/space.yaml'

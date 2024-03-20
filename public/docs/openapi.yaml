@@ -93,16 +93,20 @@ paths:
     $ref: './components/paths/seal/get-types.yaml'
   /api/space/describe:
     $ref: './components/paths/space/describe.yaml'
-  /api/space/findByEvents:
-    $ref: './components/paths/space/find-by-events.yaml'
   /api/space/find:
     $ref: './components/paths/space/find.yaml'
+  /api/space/findByEvents:
+    $ref: './components/paths/space/find-by-events.yaml'
   /api/space/findOne:
     $ref: './components/paths/space/find-one.yaml'
   /api/space/getTypeGroups:
     $ref: './components/paths/space/get-type-groups.yaml'
   /api/space/getTypes:
     $ref: './components/paths/space/get-types.yaml'
+  /space/index:
+    $ref: './components/paths/space/create.yaml'
+  /espaco/{id}:
+    $ref: './components/paths/space/delete-and-update.yaml'
 components:
   schemas:
     Agent:
@@ -137,4 +141,3 @@ components:
       $ref: './components/schemas/space-type.yaml'
     SpaceTypeGroup:
       $ref: './components/schemas/space-type-group.yaml'
-
