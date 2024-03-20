@@ -47,6 +47,10 @@ paths:
     $ref: './components/paths/event/find-one.yaml'
   /api/event/describe:
     $ref: './components/paths/event/describe.yaml'
+  /api/event/getTypes:
+    $ref: './components/paths/event/get-types.yaml'
+  /api/event/getTypeGroups:
+    $ref: './components/paths/event/get-type-groups.yaml'
   /api/opportunity/describe:
     $ref: './components/paths/opportunity/describe.yaml'
   /api/opportunity/find:
@@ -105,6 +109,10 @@ components:
       $ref: './components/schemas/agent-type-groups.yaml'
     Event:
       $ref: './components/schemas/event.yaml'
+    EventType:
+      $ref: './components/schemas/event-type.yaml'
+    EventTypeGroup:
+      $ref: './components/schemas/event-type-groups.yaml'
     Opportunity:
       $ref: './components/schemas/opportunity.yaml'
     OpportunityType:
