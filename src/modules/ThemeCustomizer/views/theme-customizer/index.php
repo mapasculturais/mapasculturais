@@ -11,6 +11,7 @@ $this->import('
     mc-tab
     mc-tabs
     logo-customizer
+    colors-customizer
 '); 
 ?>
 <div class="panel-page">
@@ -32,7 +33,8 @@ $this->import('
         </mc-tab>
     
         <mc-tab label="<?php i::esc_attr_e('Cores e estilos') ?>" slug="style">
-            <logo-customizer />
+            <logo-customizer></logo-customizer>
+            <colors-customizer></colors-customizer>
         </mc-tab>
 
         <mc-tab label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
