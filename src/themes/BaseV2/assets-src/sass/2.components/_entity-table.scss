@@ -27,7 +27,10 @@
     &__popover {
         max-width: size(500);
         max-height: size(500);
-        overflow: auto;
+        overflow-y: auto;
+        scrollbar-width: thin; 
+        scrollbar-color: var(--mc-gray-500) var(--mc-gray-100); 
+
 
         .field__title {
             display: flex;
@@ -90,12 +93,6 @@
         .iconify {
             font-size: size(20);
         }
-    }
-
-    &__advanced-filters {
-        display: flex;
-        gap: size(16) size(5);
-        flex-wrap: wrap;        
     }
 
     &__info {
@@ -188,6 +185,9 @@
     &__advanced-filters {
         overflow-y: auto;
         max-height: size(500);
+        display: flex;
+        gap: size(16) size(5);
+        flex-wrap: wrap; 
 
         .field__group {
             overflow-y: auto;
@@ -212,14 +212,14 @@
     .custom-scrollbar {
         scrollbar-width: thin; 
         scrollbar-color: var(--mc-gray-500) var(--mc-gray-100); 
-    }
-    
-    .custom-scrollbar::-webkit-scrollbar {
-        width: size(8); 
-    }
-    
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background-color: var(--mc-gray-500); 
-        border: var(--mc-border-hairline) var(--mc-gray-100); 
+
+        &::-webkit-scrollbar {
+            width: size(8); 
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--mc-gray-500); 
+            border: var(--mc-border-hairline) var(--mc-gray-100); 
+        }
     }
 }
