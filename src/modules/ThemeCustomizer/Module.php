@@ -193,25 +193,9 @@ class Module extends \MapasCulturais\Module
                 'type' => 'string',
             ]);
 
-            // System colors
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_primary', [
-                'label' => i::__("Cor primária"),
-                'type' => 'color',
-            ]);
-
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_secondary', [
-                'label' => i::__("Cor Secundária"),
-                'type' => 'color',
-            ]);
-
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_seals', [
-                'label' => i::__("Cor - selos"),
-                'type' => 'color',
-            ]);
-
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_agents', [
-                'label' => i::__("Cor - agentes"),
-                'type' => 'color',
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'homeTexts', [
+                'label' => i::__("Texto customização"),
+                'type' => 'json',
             ]);
 
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_events', [
