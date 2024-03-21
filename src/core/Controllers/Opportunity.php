@@ -402,103 +402,124 @@ class Opportunity extends EntityController {
 
         $opportunity_tree = array_reverse($opportunity_tree);
 
-        $last_query_ids = null;
+        $query_select = array_map(function ($item) { return trim($item); }, explode(',', $data['@select'] ?? ''));
 
-        $select_values = [];
+        $final_result = [];
+        $previous_phase_result = null;
 
-        foreach($opportunity_tree as $current){
-            $app->controller('registration')->registerRegistrationMetadata($current);
-            $cdata = ['opportunity' => "EQ({$current->id})", '@select' => 'id,previousPhaseRegistrationId'];
+        foreach($opportunity_tree as $phase){
+            /** @var EntitiesOpportunity $phase */
+            $phase->registerRegistrationMetadata();
+            $current_evaluation_method = $phase->evaluationMethod;
 
-            if($current->publishedRegistrations){
-                $cdata['status'] = 'IN(10,8)';
+            if (!$current_evaluation_method && $phase->isLastPhase && $phase->previousPhase && $phase->previousPhase->evaluationMethod){
+                $current_evaluation_method = $phase->previousPhase->evaluationMethod;
             }
 
-            foreach($current->registrationFieldConfigurations as $field){
-                if($field->fieldType == 'select'){
-                    $cdata['@select'] .= ",{$field->fieldName}";
-
-                    if(isset($data[$field->fieldName])){
-                        $cdata[$field->fieldName] = $data[$field->fieldName];
-                        unset($data[$field->fieldName]);
-                    }
-                }
-            }
-            if(!is_null($last_query_ids)){
-                if($last_query_ids){
-                    $cdata['previousPhaseRegistrationId'] = "IN($last_query_ids)";
-                } else {
-                    $cdata['id'] = "IN(-1)";
-                }
-            }
-            $_disable_access_control = $current->publishedRegistrations && !$current->canUser('viewEvaluations');
-            $q = new ApiQuery('MapasCulturais\Entities\Registration', $cdata, false, false, $_disable_access_control);
-
-            $regs = $q->find();
-
-            foreach($regs as $reg){
-
-                if($reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
-                    $select_values[$reg['id']] = $reg + $select_values[$reg['previousPhaseRegistrationId']];
-                } else {
-                    $select_values[$reg['id']] = $reg;
-                }
-            }
-
-            $ids = array_map(function ($r) { return $r['id']; }, $regs);
-            $last_query_ids = implode(',', $ids);
-        }
-
-        $app->controller('registration')->registerRegistrationMetadata($opportunity);
-
-        unset($data['@opportunity']);
-
-        if($select_values){
-            $data['@select'] = isset($data['@select']) ? $data['@select'] . ',previousPhaseRegistrationId' : 'previousPhaseRegistrationId';
-        }
-
-        if($opportunity->publishedRegistrations && !$opportunity->canUser('viewEvaluations')){
-
-            if(isset($data['status'])){
-                $data['status'] = 'AND(IN(10,8),' . $data['status'] . ')';
-            } else {
-                $data['status'] = 'IN(10,8)';
-            }
-        }
-
-        $em = $opportunity->evaluationMethod;
-        
-        if($em && $em->slug == "technical" && isset($data['@order']) && !preg_match('#consolidatedResult as \w+#i', $data['@order'])){
-
-            $data['@order'] = str_replace('consolidatedResult', 'consolidatedResult AS FLOAT', $data['@order']);
-        }
+            $current_phase_query_params = [
+                'opportunity' => API::EQ($phase->id)
+            ];
             
-        $query = new ApiQuery('MapasCulturais\Entities\Registration', $data, false, false, $opportunity->publishedRegistrations);
-
-        $registrations = $query->find();
-
-        if (!$em && $opportunity->isLastPhase && $opportunity->previousPhase && $opportunity->previousPhase->evaluationMethod){
-            $em = $opportunity->previousPhase->evaluationMethod;
-        }
-
-        if($em){
-            foreach($registrations as &$reg) {
-                if(in_array('consolidatedResult', $query->selecting)){
-                    $reg['evaluationResultString'] = $em->valueToString($reg['consolidatedResult']);
+            // $current é a fase que foi informada no parâmetro @opportunity
+            if($phase->equals($opportunity)) {
+                
+                if($phase->publishedRegistrations && !$phase->canUser('viewEvaluations')){
+                    if(isset($data['status'])){
+                        $current_phase_query_params['status'] = 'AND(IN(10,8),' . $data['status'] . ')';
+                    } else {
+                        $current_phase_query_params['status'] = 'IN(10,8)';
+                    }
+                } else if(isset($data['status'])) {
+                    $current_phase_query_params['status'] = $data['status'];
                 }
-    
-                if(isset($reg['previousPhaseRegistrationId']) && $reg['previousPhaseRegistrationId'] && isset($select_values[$reg['previousPhaseRegistrationId']])){
-                    $values = $select_values[$reg['previousPhaseRegistrationId']];
-                    foreach($reg as $key => $val){
-                        if(is_null($val) && isset($values[$key])){
-                            $reg[$key] = $values[$key];
-                        }
+
+                if(isset($data['@limit'])) {
+                    $current_phase_query_params['@limit'] = $data['@limit'];
+                }
+                if(isset($data['@page'])) {
+                    $current_phase_query_params['@page'] = $data['@page'];
+                }
+                if(isset($data['@order'])) {
+                    $_order = $data['@order'];
+                            
+                    if($current_evaluation_method && $current_evaluation_method->slug == "technical" && !preg_match('#consolidatedResult as \w+#i', $_order)){
+                        $_order = str_replace('consolidatedResult', 'consolidatedResult AS FLOAT', $_order);
+                    }
+                    $current_phase_query_params['@order'] = $_order;
+                }
+            }
+            
+            if(isset($data['category'])){
+                $current_phase_query_params['category'] = $data['category'];
+            }
+            if(isset($data['proponentType'])){
+                $current_phase_query_params['proponentType'] = $data['proponentType'];
+            }
+            if(isset($data['range'])){
+                $current_phase_query_params['range'] = $data['range'];
+            }
+            if(isset($data['score'])) {
+                $current_phase_query_params['score'] = API::OR(API::NULL(), $data['score']);
+            }
+            
+            $current_phase_query_select = ['id', 'number'];
+            
+            foreach($phase->registrationFieldConfigurations as $field){
+                // adiciona os metadados existentes na fase atual que estejam no select ao @select da consulta
+                if(in_array($field->fieldName, $query_select)) {
+                    $current_phase_query_select[] = $field->fieldName;
+
+                    // remove o campo do $query_select para não ser usado nas próximas fases
+                    $query_select = array_diff($query_select, [$field->fieldName]);
+                }
+
+                // adiciona os metadados existentes na fase atual que estejam sendo usados como filtro
+                if(isset($data[$field->fieldName])){
+                    $current_phase_query_params[$field->fieldName] = $data[$field->fieldName];
+                    unset($data[$field->fieldName]);
+                }
+            }
+
+            // se $phase é a fase que foi informada no parâmetro @opportunity
+            if($phase->equals($opportunity)) {
+                $current_phase_query_select = array_unique(array_merge($current_phase_query_select, $query_select));
+            }
+
+            $current_phase_query_params['@select'] = implode(',', $current_phase_query_select);
+
+            // adiciona os numbers resultantes da fase anterior como filtro da fase atual;
+            if(!is_null($previous_phase_result)) {
+                $numbers = array_keys($previous_phase_result);
+                if(isset($current_phase_query_params['number'])) {
+                    $current_phase_query_params['number'] = API::AND($current_phase_query_params['number'], API::IN($numbers));
+                } else {
+                    $current_phase_query_params['number'] = API::IN($numbers);
+                }
+            }
+
+            $current_phase_query = new ApiQuery(Registration::class, $current_phase_query_params);
+            $current_phase_result = $current_phase_query->find();
+
+            $new_previous_phase_result = [];
+            foreach($current_phase_result as &$registration) {
+                $registration += $previous_phase_result[$registration['number']] ?? [];
+                $new_previous_phase_result[$registration['number']] = $registration;
+            }
+
+            $previous_phase_result = $new_previous_phase_result;
+
+            $phase->unregisterRegistrationMetadata();
+
+            if($current_evaluation_method){
+                foreach($current_phase_result as &$reg) {
+                    if(in_array('consolidatedResult', $current_phase_query->selecting)){
+                        $reg['evaluationResultString'] = $current_evaluation_method->valueToString($reg['consolidatedResult']);
                     }
                 }
             }
         }
 
-        return (object) ['count' => $query->count(), 'registrations' => $registrations,];
+        return (object) ['count' => $current_phase_query->count(), 'registrations' => $current_phase_result,];
     }
 
     function API_findRegistrations() {
