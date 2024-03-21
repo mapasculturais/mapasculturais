@@ -28,7 +28,7 @@ class Module extends \MapasCulturais\Module
                 'icon' => 'appearance',
                 'label' => i::__('Aparência'),
                 'condition' => function () use ($app) {
-                    return $app->user->is('superAdmin');
+                    return $app->subsite && $app->user->is('superAdmin');
                 }
             ];
         });
@@ -163,26 +163,6 @@ class Module extends \MapasCulturais\Module
             ]);
 
             // Logo
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color1', [
-                'label' => i::__("Cor #1"),
-                'type' => 'color',
-            ]);
-
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color2', [
-                'label' => i::__("Cor #2"),
-                'type' => 'color',
-            ]);
-
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color3', [
-                'label' => i::__("Cor #3"),
-                'type' => 'color',
-            ]);
-
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color4', [
-                'label' => i::__("Cor #4"),
-                'type' => 'color',
-            ]);
-            
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_title', [
                 'label' => i::__("Título da logo do Mapas Culturais"),
                 'type' => 'string',
@@ -193,29 +173,85 @@ class Module extends \MapasCulturais\Module
                 'type' => 'string',
             ]);
 
-            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'homeTexts', [
-                'label' => i::__("Texto customização"),
-                'type' => 'json',
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color1', [
+                'label' => i::__("Cor #1"),
+                'type' => 'color',
+                'default' => null,
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color2', [
+                'label' => i::__("Cor #2"),
+                'type' => 'color',
+                'default' => null,
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color3', [
+                'label' => i::__("Cor #3"),
+                'type' => 'color',
+                'default' => null,
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'logo_color4', [
+                'label' => i::__("Cor #4"),
+                'type' => 'color',
+                'default' => null,
+            ]);
+
+
+            // Entidades
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_primary', [
+                'label' => i::__("Cor - primária"),
+                'type' => 'color',
+                'default' => null,
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_secondary', [
+                'label' => i::__("Cor - secundária"),
+                'type' => 'color',
+                'default' => null,
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_seals', [
+                'label' => i::__("Cor - selos"),
+                'type' => 'color',
+                'default' => null,
+            ]);
+
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_agents', [
+                'label' => i::__("Cor - agentes"),
+                'type' => 'color',
+                'default' => null,
             ]);
 
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_events', [
                 'label' => i::__("Cor - eventos"),
                 'type' => 'color',
+                'default' => null,
             ]);
 
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_opportunities', [
                 'label' => i::__("Cor - oportunidades"),
                 'type' => 'color',
+                'default' => null,
             ]);
 
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_projects', [
                 'label' => i::__("Cor - projetos"),
                 'type' => 'color',
+                'default' => null,
             ]);
 
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'color_spaces', [
                 'label' => i::__("Cor - espaços"),
                 'type' => 'color',
+                'default' => null,
+            ]);
+
+
+            // Textos
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'homeTexts', [
+                'label' => i::__("Texto customização"),
+                'type' => 'json',
             ]);
 
             $this->registerFileGroup('subsite', new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
