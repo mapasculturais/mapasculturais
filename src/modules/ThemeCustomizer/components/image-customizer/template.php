@@ -121,4 +121,22 @@ $this->import('
             </template>
         </mc-image-uploader>
     </div>
+
+    <div class="grid-12">
+        <?php i::_e("Header") ?>
+        
+        <mc-image-uploader :entity="subsite" group="header" :aspect-ratio="1920/386" deleteFile>
+            <template #default="modal">
+                <div class="entity-profile__profile">
+                    <div>
+                        <mc-icon name="image"></mc-icon>
+                        <img v-if="subsite.files.header" :src="subsite.files.header?.url" class="select-profileImg__img--img" />
+                    </div>
+                    <label class="entity-profile__profile--label">
+                        <?php i::_e("Adicionar imagem do header da home"); ?>
+                    </label>
+                </div>
+            </template>
+        </mc-image-uploader>
+    </div>
 </fieldset>
