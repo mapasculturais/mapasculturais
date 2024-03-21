@@ -24,22 +24,13 @@ $this->import('
             </div>
         </div>
         <p class="panel-page__header-subtitle">
-            <?= i::__('Area de customização do tema') ?>
+            <?= i::__('Área de customização do tema') ?>
         </p>
     </header>
     
     <mc-tabs class="panel-home__tabs">    
-        <mc-tab label="<?php i::esc_attr_e('Home') ?>" slug="home">
-            <home-texts></home-texts>
-            <image-customizer />
-        </mc-tab>
-    
-        <mc-tab label="<?php i::esc_attr_e('Cores e estilos') ?>" slug="style">
-            <logo-customizer></logo-customizer>
-            <colors-customizer></colors-customizer>
-        </mc-tab>
-
-        <mc-tab label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
-        </mc-tab>
+        <?php $this->part('home'); ?>
+        <?php $this->part('style'); ?>
+        <?php $this->part('map'); ?>        
     </mc-tabs>
 </div>
