@@ -113,12 +113,14 @@
     &__table-header-wrapper {
         overflow-x: hidden; 
         position: sticky; 
+        padding-left: size(25);
         top: 0; 
         background-color: white; 
         z-index: 100;
     }
 
     &__table-header {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
         width: size(50000); 
         padding-bottom: 0; 
         position: sticky; 
@@ -158,7 +160,6 @@
 
             & > th {
                 min-width: size(150);
-                border-bottom: var(--mc-border-hairline) var(--mc-gray-500);
                 padding: 0 size(10);
             }
         }
