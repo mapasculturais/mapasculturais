@@ -20,13 +20,13 @@ $this->import('
         <mc-image-uploader :entity="subsite" group="opportunityBanner" :aspect-ratio="800/306" deleteFile>
             <template #default="modal">
                 <div class="entity-profile__profile">
-                    <div>
-                        <mc-icon name="image"></mc-icon>
-                        <img v-if="subsite.files.opportunityBanner" :src="subsite.files.opportunityBanner?.url" class="select-profileImg__img--img" />
+                    <div class="entity-profile__profile--label">
+                        <div>
+                            <mc-icon name="image"></mc-icon>
+                            <img v-if="subsite.files.opportunityBanner" :src="subsite.files.opportunityBanner?.url" class="select-profileImg__img--img" />
+                        </div>
+                            <?php i::_e("Adicionar imagem de fundo da oportunidade"); ?>
                     </div>
-                    <label class="entity-profile__profile--label">
-                        <?php i::_e("Adicionar imagem de fundo da oportunidade"); ?>
-                    </label>
                 </div>
             </template>
         </mc-image-uploader>
@@ -38,13 +38,13 @@ $this->import('
         <mc-image-uploader :entity="subsite" group="eventBanner" :aspect-ratio="800/306" deleteFile>
             <template #default="modal">
                 <div class="entity-profile__profile">
-                    <div>
-                        <mc-icon name="image"></mc-icon>
-                        <img v-if="subsite.files.eventBanner" :src="subsite.files.eventBanner?.url" class="select-profileImg__img--img" />
+                    <div class="entity-profile__profile--label">
+                        <div>
+                            <mc-icon name="image"></mc-icon>
+                            <img v-if="subsite.files.eventBanner" :src="subsite.files.eventBanner?.url" class="select-profileImg__img--img" />
+                        </div>
+                            <?php i::_e("Adicionar imagem de fundo do evento"); ?>
                     </div>
-                    <label class="entity-profile__profile--label">
-                        <?php i::_e("Adicionar imagem de fundo do evento"); ?>
-                    </label>
                 </div>
             </template>
         </mc-image-uploader>
@@ -56,13 +56,13 @@ $this->import('
         <mc-image-uploader :entity="subsite" group="spaceBanner" :aspect-ratio="800/306" deleteFile>
             <template #default="modal">
                 <div class="entity-profile__profile">
-                    <div>
-                        <mc-icon name="image"></mc-icon>
-                        <img v-if="subsite.files.spaceBanner" :src="subsite.files.spaceBanner?.url" class="select-profileImg__img--img" />
+                    <div class="entity-profile__profile--label">
+                        <div>
+                            <mc-icon name="image"></mc-icon>
+                            <img v-if="subsite.files.spaceBanner" :src="subsite.files.spaceBanner?.url" class="select-profileImg__img--img" />
+                        </div>
+                            <?php i::_e("Adicionar imagem de fundo do espaço"); ?>
                     </div>
-                    <label class="entity-profile__profile--label">
-                        <?php i::_e("Adicionar imagem de fundo do espaço"); ?>
-                    </label>
                 </div>
             </template>
         </mc-image-uploader>
@@ -74,13 +74,13 @@ $this->import('
         <mc-image-uploader :entity="subsite" group="agentBanner" :aspect-ratio="800/306" deleteFile>
             <template #default="modal">
                 <div class="entity-profile__profile">
-                    <div>
-                        <mc-icon name="image"></mc-icon>
-                        <img v-if="subsite.files.agentBanner" :src="subsite.files.agentBanner?.url" class="select-profileImg__img--img" />
+                    <div class="entity-profile__profile--label">
+                        <div>
+                            <mc-icon name="image"></mc-icon>
+                            <img v-if="subsite.files.agentBanner" :src="subsite.files.agentBanner?.url" class="select-profileImg__img--img" />
+                        </div>
+                            <?php i::_e("Adicionar imagem de fundo do agente"); ?>
                     </div>
-                    <label class="entity-profile__profile--label">
-                        <?php i::_e("Adicionar imagem de fundo do agente"); ?>
-                    </label>
                 </div>
             </template>
         </mc-image-uploader>
@@ -92,13 +92,13 @@ $this->import('
         <mc-image-uploader :entity="subsite" group="projectBanner" :aspect-ratio="800/306" deleteFile>
             <template #default="modal">
                 <div class="entity-profile__profile">
-                    <div>
-                        <mc-icon name="image"></mc-icon>
-                        <img v-if="subsite.files.projectBanner" :src="subsite.files.projectBanner?.url" class="select-profileImg__img--img" />
+                    <div class="entity-profile__profile--label">
+                        <div>
+                            <mc-icon v-if="!subsite.files.projectBanner" name="image"></mc-icon>
+                            <img v-if="subsite.files.projectBanner" :src="subsite.files.projectBanner?.url" class="select-profileImg__img--img" />
+                        </div>
+                            <?php i::_e("Adicionar imagem de fundo do projeto"); ?>
                     </div>
-                    <label class="entity-profile__profile--label">
-                        <?php i::_e("Adicionar imagem de fundo do projeto"); ?>
-                    </label>
                 </div>
             </template>
         </mc-image-uploader>
@@ -110,13 +110,13 @@ $this->import('
         <mc-image-uploader :entity="subsite" group="signupBanner" :aspect-ratio="1920/386" deleteFile>
             <template #default="modal">
                 <div class="entity-profile__profile">
-                    <div>
-                        <mc-icon name="image"></mc-icon>
-                        <img v-if="subsite.files.signupBanner" :src="subsite.files.signupBanner?.url" class="select-profileImg__img--img" />
+                    <div class="entity-profile__profile--label">
+                        <div>
+                            <mc-icon name="image"></mc-icon>
+                            <img v-if="subsite.files.signupBanner" :src="subsite.files.signupBanner?.url" class="select-profileImg__img--img" />
+                        </div>
+                            <?php i::_e("Adicionar imagem de fundo da seção de fazer cadastro"); ?>
                     </div>
-                    <label class="entity-profile__profile--label">
-                        <?php i::_e("Adicionar imagem de fundo da seção de fazer cadastro"); ?>
-                    </label>
                 </div>
             </template>
         </mc-image-uploader>
