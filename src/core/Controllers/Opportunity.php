@@ -425,9 +425,9 @@ class Opportunity extends EntityController {
                 
                 if($phase->publishedRegistrations && !$phase->canUser('viewEvaluations')){
                     if(isset($data['status'])){
-                        $current_phase_query_params['status'] = 'AND(IN(10,8),' . $data['status'] . ')';
+                        $current_phase_query_params['status'] = API::AND(API::IN([10,8]), $data['status']);
                     } else {
-                        $current_phase_query_params['status'] = 'IN(10,8)';
+                        $current_phase_query_params['status'] = API::IN([10,8]);
                     }
                 } else if(isset($data['status'])) {
                     $current_phase_query_params['status'] = $data['status'];
