@@ -138,6 +138,12 @@ class Module extends \MapasCulturais\Module
                         ";
                     });
                 }
+
+                foreach($app->subsite->homeTexts as $slug => $text){
+                    if(!empty($text)){
+                        $app->config["text:$slug"] = $text;
+                    }
+                }
             }
         });
 
