@@ -143,7 +143,7 @@ class Module extends \MapasCulturais\Module{
                         $subject = i::__("Requisição para avaliar oportunidade");
                         $message = sprintf(i::__("%s te convida para avaliar a oportunidade %s vinculada ao %s %s. %s"), $profile_link, $opportunity_link, $owner_entity_label, $owner_entity_link, $urlDestinationPanel_link);
                         $message_to_requester = sprintf(i::__("Seu convite para fazer do agente %s um avaliador foi enviada."), $destination_link);
-                        
+                        $message_to_user_owner = sprintf(i::__("Olá! O %s solicitou adicionar o agente %s como avaliador para a oportunidade %s. Como você é um dos responsáveis por esta oportunidade, você tem o controle total sobre essa decisão. Você pode optar por permitir ou recusar essa adição"), $profile_link, $destination_link, $opportunity_link);
                     } else if($origin->getClassName() === 'MapasCulturais\Entities\Registration'){
                         $project = $origin->project;
                         $opportunity = $origin->opportunity;
@@ -250,9 +250,14 @@ class Module extends \MapasCulturais\Module{
             }
 
             if (!$requester->equals($origin->ownerUser) && !in_array($origin->ownerUser->id, $notified_user_ids)) {
+                $_message = $message;
+                if($origin->getClassName() === 'MapasCulturais\Entities\EvaluationMethodConfiguration'){ 
+                    $_message =  $message_to_user_owner;
+                }
+
                 $notification = new Notification;
                 $notification->user = $origin->ownerUser;
-                $notification->message = $message;
+                $notification->message = $_message;
                 $notification->request = $this;
                 $notification->save(true);
                 $module->sendMail($origin->ownerUser->email, $message, $subject);
