@@ -1,0 +1,48 @@
+tags:
+  - Projetos
+summary: Apaga um projeto
+description: Apaga um projeto
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do projeto
+responses:
+  '200':
+    description: Informações sobre o objeto apagado
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            '@entityType':
+              type: string
+              example: project
+              description: Tipo de entidade
+            id:
+              type: integer
+              example: 4
+              description: Um id numérico que representa o projeto
+            name:
+              type: string
+              example: projeto teste
+              description: Um texto que representa o nome do projeto
+            type:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                  description: ID do tipo de projeto
+                name:
+                  type: string
+                  example: Festival
+                  description: Nome do tipo de projeto
+            status:
+              type: integer
+              example: -10
+              description: Status do projeto
+  '404':
+    $ref: '../../responses/error/404.yaml'

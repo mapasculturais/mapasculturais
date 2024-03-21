@@ -1,0 +1,9 @@
+tags:
+  - Projetos
+delete:
+  $ref: './delete.yaml'
+patch: 
+  $ref: './patch.yaml'
+put:
+    $ref: './put.yaml'
+

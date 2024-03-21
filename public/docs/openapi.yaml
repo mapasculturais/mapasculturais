@@ -41,12 +41,12 @@ paths:
     $ref: './components/paths/agent/get-types.yaml'
   /api/agent/getTypeGroups:
     $ref: './components/paths/agent/get-type-groups.yaml'
+  /api/event/describe:
+    $ref: './components/paths/event/describe.yaml'
   /api/event/find:
     $ref: './components/paths/event/find.yaml'
   /api/event/findOne:
     $ref: './components/paths/event/find-one.yaml'
-  /api/event/describe:
-    $ref: './components/paths/event/describe.yaml'
   /api/event/getTypes:
     $ref: './components/paths/event/get-types.yaml'
   /api/event/getTypeGroups:
@@ -73,6 +73,10 @@ paths:
     $ref: './components/paths/project/get-type-groups.yaml'
   /api/project/getTypes:
     $ref: './components/paths/project/get-types.yaml'
+  /project/index:
+    $ref: './components/paths/project/create.yaml'
+  /project/single/{id}:
+    $ref: './components/paths/project/route-single-id.yaml'
   /api/seal/describe:
     $ref: './components/paths/seal/describe.yaml'
   /api/seal/find:
@@ -119,16 +123,12 @@ components:
       $ref: './components/schemas/opportunity-type.yaml'
     Project:
       $ref: './components/schemas/project.yaml'
-    ProjectDescribe:
-      $ref: './components/schemas/project-describe.yaml'
     ProjectType:
       $ref: './components/schemas/project-type.yaml'
     ProjectTypeGroup:
       $ref: './components/schemas/project-type-groups.yaml'
     Seal:
       $ref: './components/schemas/seal.yaml'
-    SealDescribe:
-      $ref: './components/schemas/seal-describe.yaml'
     SealType:
       $ref: './components/schemas/seal-type.yaml'
     SealTypeGroup:

@@ -1,0 +1,25 @@
+tags:
+  - Projetos
+summary: Atualiza um projeto
+description: Atualiza um projeto
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do projeto
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/project/post-minimal.yaml'
+responses:
+  '200':
+    description: O projeto atualizado
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/project.yaml'
+  '404':
+    $ref: '../../responses/error/404.yaml'

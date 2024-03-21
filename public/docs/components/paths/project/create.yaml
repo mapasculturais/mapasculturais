@@ -1,0 +1,17 @@
+post:
+  tags:
+    - Projetos
+  summary: Cria um projeto
+  description: Cria um projeto
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../requestBodies/project/post-minimal.yaml'
+  responses:
+    '200':
+      description: O projeto criado
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/project.yaml'
