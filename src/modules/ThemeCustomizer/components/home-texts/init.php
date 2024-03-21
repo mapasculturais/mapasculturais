@@ -24,28 +24,15 @@ $texts = [
         ],
     ],
     [
-        'sectionName' => i::__('Faça seu cadastro na home'),
+        'sectionName' => i::__('Titulo da oportunidade da home'),
         'texts' => [
             [
-                'slug' => 'home-register.title',
-                'description' => i::__('Título da seção faça seu cadastro da home')
+                'slug' => 'home-opportunities.title',
+                'description' => i::__('Título da oportunidade da home')
             ],
             [
-                'slug' => 'home-register.description',
-                'description' => i::__('Descrição da seção faça seu cadastro da home')
-            ],
-        ],
-    ],
-    [
-        'sectionName' => i::__('Desenvolvedores'),
-        'texts' => [
-            [
-                'slug' => 'home-developers.title',
-                'description' => i::__('Título da seção desenvolvedores da home')
-            ],
-            [
-                'slug' => 'home-developers.description',
-                'description' => i::__('Descrição da seção desenvolvedores da home')
+                'slug' => 'home-opportunities.description',
+                'description' => i::__('Descrição da oportunidade da home')
             ],
         ],
     ],
@@ -108,17 +95,12 @@ $texts = [
         ],
     ],
     [
-        'sectionName' =>  i::__('Registro'),
+        'sectionName' => i::__('Descrição de registro da home'),
         'texts' => [
             [
                 'slug' => 'home-feature.title',
                 'description' => i::__('Título de registro da home')
             ],
-        ],
-    ],
-    [
-        'sectionName' => i::__('Descrição de registro da home'),
-        'texts' => [
             [
                 'slug' => 'home-feature.description',
                 'description' => i::__('Descrição de registro da home')
@@ -126,48 +108,43 @@ $texts = [
         ],
     ],
     [
-        'sectionName' => i::__('Destaques'),
-        'texts' => [
-            [
-                'slug' => 'home-feature.destaques',
-                'description' => i::__('Destaque de registro da home')
-            ],
-        ],
-    ],
-    [
-        'sectionName' =>  i::__('Titulo do Header'),
-        'texts' => [
-            [
-                'slug' => 'home-header.title',
-                'description' => i::__('Título do header')
-            ],
-            [
-                'slug' => 'home-header.description',
-                'description' => i::__('Descrição do header')
-            ],
-        ],
-    ],
-    [
-        'sectionName' => i::__('Titulo do Header'),
-        'texts' => [
-            [
-                'slug' => 'home-opportunities.title',
-                'description' => i::__('Título da oportunidade da home')
-            ],
-            [
-                'slug' => 'home-opportunities.description',
-                'description' => i::__('Descrição da oportunidade da home')
-            ],
-        ],
-    ],
-    [
-        'sectionName' => i::__('Registro'),
+        'sectionName' => i::__('Faça seu cadastro na home'),
         'texts' => [
             [
                 'slug' => 'home-register.title',
-                'description' => i::__('Título de registro da home')
+                'description' => i::__('Título da seção faça seu cadastro da home')
+            ],
+            [
+                'slug' => 'home-register.description',
+                'description' => i::__('Descrição da seção faça seu cadastro da home')
             ],
         ],
-    ]
+    ],
+    [
+        'sectionName' => i::__('Visualize também no mapa'),
+        'texts' => [
+            [
+                'slug' => 'home-map.title',
+                'description' => i::__('Título da visualização do mapa da home')
+            ],
+            [
+                'slug' => 'home-map.description',
+                'description' => i::__('Descrição da visualização do mapa da home')
+            ],
+        ],
+    ],
+    [
+        'sectionName' => i::__('Desenvolvedores'),
+        'texts' => [
+            [
+                'slug' => 'home-developers.title',
+                'description' => i::__('Título da seção desenvolvedores da home')
+            ],
+            [
+                'slug' => 'home-developers.description',
+                'description' => i::__('Descrição da seção desenvolvedores da home')
+            ],
+        ],
+    ],
 ];
 $this->jsObject['config']['homeTexts'] = $texts;
