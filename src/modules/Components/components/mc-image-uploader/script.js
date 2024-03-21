@@ -58,6 +58,10 @@ app.component("mc-image-uploader", {
       type: Boolean,
       default: false,
     },
+    deleteFile: {
+      type: Boolean,
+      default: false
+    }
   },
 
   computed: {
@@ -103,6 +107,10 @@ app.component("mc-image-uploader", {
     blobUrl() {
       return this.blob ? URL.createObjectURL(this.blob) : "";
     },
+
+    showDelete() {
+      return this.entity.files[this.group] && this.deleteFile;
+    }
   },
 
   data() {
@@ -215,5 +223,11 @@ app.component("mc-image-uploader", {
         reader.readAsArrayBuffer(files[0]);
       }
     },
+
+    delFile() {
+      this.entity.files[this.group].delete().then(() => {
+        this.file = null;
+      });
+    }
   },
 });

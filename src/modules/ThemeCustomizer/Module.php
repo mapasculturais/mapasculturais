@@ -261,7 +261,6 @@ class Module extends \MapasCulturais\Module
             $this->registerFileGroup('subsite', new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
             
             // Grupos de imagens para customizar
-            $this->registerFileGroup('subsite', new Definitions\FileGroup('welcomeBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
             $this->registerFileGroup('subsite', new Definitions\FileGroup('opportunityBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
             $this->registerFileGroup('subsite', new Definitions\FileGroup('eventBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
             $this->registerFileGroup('subsite', new Definitions\FileGroup('spaceBanner',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
