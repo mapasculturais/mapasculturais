@@ -45,7 +45,7 @@ $texts = [
             ],
             [
                 'slug' => 'home-developers.description',
-                'description' => i::__('descrição da seção desenvolvedores da home')
+                'description' => i::__('Descrição da seção desenvolvedores da home')
             ],
         ],
     ],
