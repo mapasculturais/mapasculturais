@@ -54,7 +54,7 @@ $this->import('
                     </mc-tab>
 
                     <mc-tab label="<?= i::esc_attr__('Por classificação') ?>" slug='classification'>
-                        <div class="grid-12">
+                        <div class="grid-12 classification__panel">
                             <div class="field col-6">
                                 <label>
                                     <?php i::_e('Total de vagas:') ?>
@@ -67,10 +67,12 @@ $this->import('
                                     <input type="number" v-model="cutoffScore">
                                 </label>
                             </div>
-                            <label v-if="enableConsiderQuotas">
-                                <input type="checkbox" v-model="considerQuotas" @checked="considerQuotas">
-                                <?php i::_e('Considerar cotas') ?>
-                            </label>
+                            <div class="field col-12">
+                                <label>
+                                    <input type="checkbox" v-model="considerQuotas" @checked="considerQuotas">
+                                    <?php i::_e('Considerar cotas') ?>
+                                </label>
+                            </div>
                             <div class="field col-12">
                                 <label>
                                     <input type="checkbox" value="earlyRegistrations" v-model="selectionType">
@@ -79,7 +81,7 @@ $this->import('
                             </div>
                             <div class="field col-12">
                                 <label>
-                                    <input type="checkbox" value="waitList" v-model="selectionType">
+                                    <input class="field__input" type="checkbox" value="waitList" v-model="selectionType">
                                     <?php i::_e('Marcar como suplente as inscrições posicionadas fora da faixa de classificação que estejam acima da nota de corte') ?>
                                 </label>
                             </div>
