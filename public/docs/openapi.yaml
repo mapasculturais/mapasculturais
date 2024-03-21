@@ -37,10 +37,12 @@ paths:
     $ref: './components/paths/agent/find.yaml'
   /api/agent/findOne:
     $ref: './components/paths/agent/find-one.yaml'
-  /api/agent/getTypes:
-    $ref: './components/paths/agent/get-types.yaml'
   /api/agent/getTypeGroups:
     $ref: './components/paths/agent/get-type-groups.yaml'
+  /api/agent/getTypes:
+    $ref: './components/paths/agent/get-types.yaml'
+  /agent/index:
+    $ref: './components/paths/agent/create.yaml'
   /api/event/describe:
     $ref: './components/paths/event/describe.yaml'
   /api/event/find:
