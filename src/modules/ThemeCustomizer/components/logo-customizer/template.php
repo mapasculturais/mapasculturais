@@ -18,11 +18,7 @@ $this->import('
         <h3> <?= i::__('Customização da logo') ?> </h3>
     </legend>
 
-    <div class="logo-customizer__content">
-        <mc-alert small type="warning">
-            <b><?= i::__('Atenção!') ?></b> <?= i::__('As modificações só serão aplicadas no sistema após atualizar a página.') ?>
-        </mc-alert>
-        
+    <div class="logo-customizer__content">        
         <div class="logo-customizer__settings grid-12">
             <entity-field class="col-12" :entity="subsite" prop="logo_title" :autosave="300"></entity-field>
             <entity-field class="col-12" :entity="subsite" prop="logo_subtitle" :autosave="300"></entity-field>

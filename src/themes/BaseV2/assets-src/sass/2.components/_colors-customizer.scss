@@ -12,6 +12,7 @@
     &__content {
         display: grid;
         gap: size(40);
+        padding: size(10) 0;
     }
 
     &__alert {
