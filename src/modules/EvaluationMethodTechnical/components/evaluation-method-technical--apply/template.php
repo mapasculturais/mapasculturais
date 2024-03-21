@@ -30,7 +30,7 @@ $this->import('
             <div class="col-12">
                 <mc-tabs @changed="changed($event)">
                     <mc-tab label="<?= i::esc_attr__('Por pontuação') ?>" slug='score'>
-                        <div class="grid-12">
+                        <div class="grid-12 classification__panel">
                             <div class="col-12 apply-evaluations__range">
                                 <Slider :step="-1" :tooltips="true" :max="maxResult" v-model="applyData.from"></Slider>
                             </div>
