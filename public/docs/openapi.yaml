@@ -87,6 +87,10 @@ paths:
     $ref: './components/paths/seal/get-type-groups.yaml'
   /api/seal/getTypes:
     $ref: './components/paths/seal/get-types.yaml'
+  /seal/index:
+    $ref: './components/paths/seal/create.yaml'
+  /seal/single/{id}:
+    $ref: './components/paths/seal/route-single-id.yaml'
   /api/space/describe:
     $ref: './components/paths/space/describe.yaml'
   /api/space/find:
