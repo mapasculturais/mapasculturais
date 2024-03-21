@@ -14,6 +14,7 @@
         display: grid;
         gap: size(40);
         justify-items: start;
+        padding: size(10) 0;
     }
 
     &__color-inputs {

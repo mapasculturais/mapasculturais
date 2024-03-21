@@ -11,10 +11,6 @@ app.component('logo-customizer', {
         }
     },
 
-    updated() {
-        this.subsite = this.subsite;
-    },
-
     computed: {
         colors() {
             if (!!!this.subsite.custom_colors) {

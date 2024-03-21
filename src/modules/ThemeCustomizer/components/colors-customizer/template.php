@@ -19,12 +19,6 @@ $this->import('
     </legend>
 
     <div class="colors-customizer__content">    
-        <div class="colors-customizer__alert">
-            <mc-alert small type="warning">
-                <b><?= i::__('Atenção!') ?></b> <?= i::__('As modificações só serão aplicadas no sistema após atualizar a página.') ?>
-            </mc-alert>
-        </div>
-
         <div class="colors-customizer__previews">
             <label href="http://localhost/" class="colors-customizer__preview">
                 <span class="colors-customizer__preview-item primary__background" :style="{ backgroundColor: subsite.color_primary }"> <mc-icon name="home"></mc-icon> </span>
