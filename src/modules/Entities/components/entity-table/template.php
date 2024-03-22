@@ -122,12 +122,14 @@ $this->import('
                             </div>
 
                             <template #button="popover">
-                                <a href="#" title="<?= i::__("definir colunas habilitadas") ?> "  @click.prevent="popover.toggle()"  style="padding:1em;"><mc-icon name="columns"></mc-icon></a>
+                                <a href="#" v-tooltip="'<?= i::__("Configurar colunas") ?>'" data-toggle="tooltip" @click.prevent="popover.toggle()">
+                                    <mc-icon name="columns-edit"></mc-icon>
+                                </a>
                             </template>
                         </mc-popover>
                     </div>
                     <template v-for="header in columns">
-                        <div v-if="header.visible" class="table-header-cell" :class="{sticky: header.sticky || header.stickyRight}" :style="headerStyle(header)">{{header.text}}</div>
+                        <div v-if="header.visible" class="table-header-cell" :class="{sticky: header.sticky || header.stickyRight}" :style="headerStyle(header, true)">{{header.text}}</div>
                     </template>
                 </div>
             </div>
