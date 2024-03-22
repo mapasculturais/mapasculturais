@@ -93,7 +93,7 @@ app.component('entity-table', {
         });
 
         setInterval(() => {
-            self.calcResize();
+            self.resize();
         },500);
     },
 
