@@ -282,18 +282,31 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return array_values(array_unique($fields));
     }
 
-    function getRegistrationsForQuotaSorting(Opportunity $phase_opportunity, $fields) {
+    function getRegistrationsForQuotaSorting(Opportunity $phase_opportunity, $fields, $params = null) {
         $app = App::i();
+        if($params) {
+            unset(
+                $params['@select'], 
+                $params['@order'], 
+                $params['@limit'], 
+                $params['@page'],
+                $params['opportunity'],
+            );
+        } else {
+            $params = [];
+        }
         
-        $cache_key = "$phase_opportunity:quota-registrations";
+        $cache_key = "$phase_opportunity:quota-registrations:" . md5(serialize($params));
         
-        if($app->config['app.useQuotasCache'] && $app->cache->contains($cache_key)){
+        if(false && $app->config['app.useQuotasCache'] && $app->cache->contains($cache_key)){
             return $app->cache->fetch($cache_key);
         }
 
         $result = $app->controller('opportunity')->apiFindRegistrations($phase_opportunity, [
             '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score', ...$fields]),
-            '@order' => 'score DESC'
+            '@order' => 'score DESC',
+            '@quotaQuery' => true,
+            ...$params
         ]);
 
         $registrations = array_map(function ($reg) {
@@ -312,7 +325,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return isset($rule->title) ? $app->slugify($rule->title) : md5(json_encode($rule));
     }
 
-    public function getPhaseQuotaRegistrations(int $phase_id) {
+    public function getPhaseQuotaRegistrations(int $phase_id, $params = null) {
         $app = App::i();
         
         $phase_opportunity = $app->repo('Opportunity')->find($phase_id);
@@ -370,7 +383,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $fields_affirmative_policies = $this->getAffirmativePoliciesFields($quota_config, $geo_quota_config);
         $fields_tiebreaker = $this->getTiebreakerConfigurationFields($tiebreaker_config);
         $fields = array_unique([...$fields_affirmative_policies, ...$fields_tiebreaker]);
-        $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields);
+        $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields, $params);
         $registrations = $this->tiebreaker($tiebreaker_config, $registrations);
         
         /** === POPULANDO AS LISTAS === */
@@ -501,22 +514,23 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
             
             $_rules = [];
-            if($pointRewards = $em->pointReward) {
-                foreach($pointRewards as $pointReward) {
-            
-                    if($pointReward->value) {
-                        $field_name = "field_" . $pointReward->field;
-                        $data = [
-                            'fieldName' => $field_name,
-                            'eligibleValues' => $pointReward->value
-                        ];
-
-                        $_rules['fields'][] =  $data;
+            if($em->isActivePointReward) {
+                if($pointRewards = $em->pointReward) {
+                    foreach($pointRewards as $pointReward) {
+                        if(isset($pointReward->value)) {
+                            $field_name = "field_" . $pointReward->field;
+                            $data = [
+                                'fieldName' => $field_name,
+                                'eligibleValues' => $pointReward->value
+                            ];
+    
+                            $_rules['fields'][] =  $data;
+                        }
                     }
-                }
-
-                if($self->qualifiesForQuotaRule(json_decode(json_encode($_rules)), $registration)) {
-                    return true;
+                    
+                    if($_rules && $self->qualifiesForQuotaRule(json_decode(json_encode($_rules)), $registration)) {
+                        return true;
+                    }
                 }
             }
 
@@ -614,11 +628,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
 
-
         $quota_data = (object)[];
 
         $app->hook('ApiQuery(registration).params', function(&$params) use($self, &$quota_data) {
             /** @var ApiQuery $this */
+            
+            if($quota_data->objectId ?? false) {
+                return;
+            }
+
             $order = $params['@order'] ?? '';
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
@@ -627,10 +645,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $quota_data->params = $params;
 
                 unset($params['@order']);
-
-                $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id);
+                $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id, $params);
                 $ids = array_map(function($reg) { return $reg->id; }, $quota_order);
-
                 if($limit = (int) ($params['@limit'] ?? 0)) {
                     $page = $params['@page'] ?? 1;
                     $offset = ($page - 1) * $limit;
@@ -682,7 +698,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         });
 
-        $app->hook('POST(opportunity.appyTechnicalEvaluation)', function() {
+        $app->hook('POST(opportunity.appyTechnicalEvaluation)', function() use($self) {
             $this->requireAuthentication();
 
             set_time_limit(0);
@@ -695,114 +711,136 @@ class Module extends \MapasCulturais\EvaluationMethod {
     
             $opp->checkPermission('@control');
 
-            $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
+            $type = $opp->evaluationMethodConfiguration->definition->slug;
     
             if($type != 'technical') {
                 $this->errorJson(i::__('Somente para avaliações técnicas'), 400);
                 die;
             }
-            if ($this->data['to'] && (!is_numeric($this->data['to']) || !in_array($this->data['to'], [0,1,2,3,8,10]))) {
-                $this->errorJson(i::__('os status válidos são 0, 1, 2, 3, 8 e 10'), 400);
-                die;
-            }
-            $new_status = intval($this->data['to']);
-            
-            $apply_status = $this->data['status'];
 
-            if ($apply_status == 'all') {
-                $status = [0,1,2,3,8,10];
-            } else {
-                $status = [1];
-            }
-
-            $cutoff_Score = $this->data['cutoffScore'];
-            $select_firsts = $this->data['selectFirsts'];
-            $quantity_vacancies = $this->data['quantityVacancies'];
-            $consider_quotas = $this->data['considerQuotas'];
-            $mark_substitute = $this->data['markSubstitute'];
-            $delete_registrations = $this->data['deleteRegistrations'];
-    
-            // pesquise todas as registrations da opportunity que esta vindo na request
-            $statusNotEqual =  API::NOT_EQ($new_status);
-            $statusIn = API::IN($status);
-            $score = 'consolidatedResult AS FLOAT DESC';
+            $statusIn = API::GT(0);
             $query_params = [
-                '@select' => 'id', 
+                '@select' => 'id,score', 
                 'opportunity' => "EQ({$opp->id})",
-                '@order' => $score
+                '@order' => 'score DESC'
             ];
-            
-            // selecionar os primeiros
-            if($select_firsts) {
-                $query_params['status'] = "AND($statusNotEqual, $statusIn)";
-                $query_params['@limit'] = $quantity_vacancies;
-            }
 
-            // marcar como suplente as inscrições com nota acima da nota de corte mas que não foram selecionados (posição inferior ao máximo de vagas)
-            if($mark_substitute) {
-                $query_params['consolidatedResult'] = API::GTE($cutoff_Score);
-                $query_params['@offset'] = $quantity_vacancies;
-                $new_status = 8;
-            }
-
-            // considerar cotas
-            if($consider_quotas) {
-                $query_params['@order'] = API::EQ('@quota');
-            }
-
-            // eliminar as inscrições com nota inferior a nota de corte
-            if($delete_registrations) {
-                $query_params['status'] = "AND($statusNotEqual, $statusIn)";
-                $query_params['consolidatedResult'] = API::LT($cutoff_Score);
-                $new_status = 3;
-            }
-
-            $query = new ApiQuery(Registration::class, $query_params);
-            $registrations_ids = $query->findIds();
-            
-            $count = 0;
-            $total = count($registrations_ids);
-            
-            if ($total > 0) {
-                $opp->enqueueToPCacheRecreation();
-            }
-
-            // faça um foreach em cada registration e pegue as suas avaliações
-            foreach ($registrations_ids as $reg) {
-                $count++;
-                $registration = $app->repo('Registration')->find($reg);
-                $registration->__skipQueuingPCacheRecreation = true;
-
-                $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
-                switch ($new_status) {
-                    case Registration::STATUS_DRAFT:
-                        $registration->setStatusToDraft();
-                    break;
-                    case Registration::STATUS_INVALID:
-                        $registration->setStatusToInvalid();
-                    break;
-                    case Registration::STATUS_NOTAPPROVED:
-                        $registration->setStatusToNotApproved();
-                    break;
-                    case Registration::STATUS_WAITLIST:
-                        $registration->setStatusToWaitlist();
-                    break;
-                    case Registration::STATUS_APPROVED:
-                        $registration->setStatusToApproved();
-                    break;
-                    case Registration::STATUS_SENT:
-                        $registration->setStatusToSent();
-                    break;
-                    default:
-                        $registration->_setStatusTo($new_status);
+            // TAB POR PONTUAÇÃO
+            if($this->data['tabSelected'] === 'score') {
+                if ($this->data['setStatusTo'] && (!is_numeric($this->data['setStatusTo']) || !in_array($this->data['setStatusTo'], [0,1,2,3,8,10]))) {
+                    $this->errorJson(i::__('os status válidos são 0, 1, 2, 3, 8 e 10'), 400);
+                    die;
                 }
-                $app->disableAccessControl();
-                $registration->save(true);
-                $app->enableAccessControl();
-                $app->em->clear();
+
+                $new_status = intval($this->data['setStatusTo']);
+                $statusNotEqual =  API::NOT_EQ($new_status);
+                $min = $this->data['from'][0];
+                $max = $this->data['from'][1];
+                
+                $query_params['status'] = "AND($statusNotEqual, $statusIn)";
+                $query_params['score'] = "AND(GTE({$min}), LTE({$max}))";
+
+                $query = new ApiQuery(Registration::class, $query_params);
+                $registrations = $query->findIds();
+                $total = count($registrations);
+
+                foreach($registrations as $i => $reg) {
+                    $count = $i+1;
+                    $registration = $app->repo('Registration')->find($reg);
+
+                    $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
+                    switch ($new_status) {
+                        case Registration::STATUS_DRAFT:
+                            $registration->setStatusToDraft();
+                        break;
+                        case Registration::STATUS_INVALID:
+                            $registration->setStatusToInvalid();
+                        break;
+                        case Registration::STATUS_NOTAPPROVED:
+                            $registration->setStatusToNotApproved();
+                        break;
+                        case Registration::STATUS_WAITLIST:
+                            $registration->setStatusToWaitlist();
+                        break;
+                        case Registration::STATUS_APPROVED:
+                            $registration->setStatusToApproved();
+                        break;
+                        case Registration::STATUS_SENT:
+                            $registration->setStatusToSent();
+                        break;
+                        default:
+                            $registration->_setStatusTo($new_status);
+                    }
+
+                    $app->em->clear();
+                }
             }
 
-            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations_ids)), 200);
+            // TAB POR CLASSIFICAÇÃO
+            if($this->data['tabSelected'] === 'classification') {
+                $early_registrations = $this->data['earlyRegistrations'];
+                $wait_list = $this->data['waitList'];
+                $invalidate_registrations = $this->data['invalidateRegistrations'];
+
+                $cutoff_score = $this->data['cutoffScore'];
+                $quantity_vacancies = $this->data['quantityVacancies'];
+                $consider_quotas = $this->data['considerQuotas'];
+
+                $query_params['status'] = $statusIn;
+                
+                // considerar cotas
+                if($consider_quotas) {
+                    $query_params['@order'] = '@quota';
+                }
+
+                $query = new ApiQuery(Registration::class, $query_params);
+                $registrations = $query->getFindResult();
+                $total = count($registrations);
+                
+                // selecionar os primeiros
+                if($early_registrations) {
+                    for($i = 0; $i < $quantity_vacancies; $i++) {
+                        $count = $i+1;
+                        if($registrations[$i]['score'] >= $cutoff_score) {
+                            $registration_id = $registrations[$i]['id'];
+                            $registration = $app->repo('Registration')->find($registration_id);
+                            $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SELECIONADO");
+                            $registration->setStatusToApproved();
+                            $app->em->clear();
+                        }
+                        
+                    }
+                }
+
+                // marcar como suplente as inscrições com nota acima da nota de corte mas que não foram selecionados (posição inferior ao máximo de vagas)
+                if($wait_list) {
+                    for($i = $quantity_vacancies; $i < count($registrations); $i++) {
+                        $count = $i+1;
+                        if($registrations[$i]['score'] >= $cutoff_score) {
+                            $registration_id = $registrations[$i]['id'];
+                            $registration = $app->repo('Registration')->find($registration_id);
+                            $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SUPLENTE");
+                            $registration->setStatusToWaitlist();
+                            $app->em->clear();
+                        }  
+                    }
+                }
+
+                // eliminar as inscrições com nota inferior a nota de corte
+                if($invalidate_registrations) {
+                    foreach($registrations as $i => $reg) {
+                        $count = $i+1;
+                        if($reg['score'] < $cutoff_score) {
+                            $registration = $app->repo('Registration')->find($reg['id']);
+                            $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para INVÁLIDO");
+                            $registration->setStatusToNotApproved();
+                            $app->em->clear();
+                        }
+                    }
+                }
+            }
+
+            $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
         });
 
 
@@ -1082,7 +1120,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $isActivePointReward = filter_var($registration->opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL);
         $metadata = $registration->getRegisteredMetadata();
        
-        if(!$isActivePointReward || empty($affirmativePoliciesConfig)){
+        if(!$isActivePointReward || !array_filter($affirmativePoliciesConfig) || empty($affirmativePoliciesConfig)){
             return $result;
         }
 

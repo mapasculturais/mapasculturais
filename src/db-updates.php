@@ -2233,4 +2233,14 @@ $$
         __try('CREATE INDEX pcache_action_idx ON pcache (action)');
     },
 
+    'adiciona novos índices na tabela registration' => function () {
+        __try('CREATE INDEX registration_number_idx ON registration (number)');
+        __try('CREATE INDEX registration_category_idx ON registration (category)');
+        __try('CREATE INDEX registration_range_idx ON registration (range)');
+        __try('CREATE INDEX registration_proponent_type_idx ON registration (proponent_type)');
+        __try('CREATE INDEX registration_status_idx ON registration (status)');
+        __try('CREATE INDEX registration_score_idx ON registration (score)');
+        __try('CREATE INDEX registration_eligible_idx ON registration (eligible)');
+    },
+
 ] + $updates ;   
