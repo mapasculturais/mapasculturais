@@ -282,18 +282,31 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return array_values(array_unique($fields));
     }
 
-    function getRegistrationsForQuotaSorting(Opportunity $phase_opportunity, $fields) {
+    function getRegistrationsForQuotaSorting(Opportunity $phase_opportunity, $fields, $params = null) {
         $app = App::i();
+        if($params) {
+            unset(
+                $params['@select'], 
+                $params['@order'], 
+                $params['@limit'], 
+                $params['@page'],
+                $params['opportunity'],
+            );
+        } else {
+            $params = [];
+        }
         
-        $cache_key = "$phase_opportunity:quota-registrations";
+        $cache_key = "$phase_opportunity:quota-registrations:" . md5(serialize($params));
         
-        if($app->config['app.useQuotasCache'] && $app->cache->contains($cache_key)){
+        if(false && $app->config['app.useQuotasCache'] && $app->cache->contains($cache_key)){
             return $app->cache->fetch($cache_key);
         }
 
         $result = $app->controller('opportunity')->apiFindRegistrations($phase_opportunity, [
             '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score', ...$fields]),
-            '@order' => 'score DESC'
+            '@order' => 'score DESC',
+            '@quotaQuery' => true,
+            ...$params
         ]);
 
         $registrations = array_map(function ($reg) {
@@ -312,7 +325,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return isset($rule->title) ? $app->slugify($rule->title) : md5(json_encode($rule));
     }
 
-    public function getPhaseQuotaRegistrations(int $phase_id) {
+    public function getPhaseQuotaRegistrations(int $phase_id, $params = null) {
         $app = App::i();
         
         $phase_opportunity = $app->repo('Opportunity')->find($phase_id);
@@ -370,7 +383,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $fields_affirmative_policies = $this->getAffirmativePoliciesFields($quota_config, $geo_quota_config);
         $fields_tiebreaker = $this->getTiebreakerConfigurationFields($tiebreaker_config);
         $fields = array_unique([...$fields_affirmative_policies, ...$fields_tiebreaker]);
-        $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields);
+        $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields, $params);
         $registrations = $this->tiebreaker($tiebreaker_config, $registrations);
         
         /** === POPULANDO AS LISTAS === */
@@ -615,11 +628,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
 
-
         $quota_data = (object)[];
 
         $app->hook('ApiQuery(registration).params', function(&$params) use($self, &$quota_data) {
             /** @var ApiQuery $this */
+            
+            if($quota_data->objectId ?? false) {
+                return;
+            }
+
             $order = $params['@order'] ?? '';
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
@@ -628,10 +645,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $quota_data->params = $params;
 
                 unset($params['@order']);
-
-                $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id);
+                $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id, $params);
                 $ids = array_map(function($reg) { return $reg->id; }, $quota_order);
-
                 if($limit = (int) ($params['@limit'] ?? 0)) {
                     $page = $params['@page'] ?? 1;
                     $offset = ($page - 1) * $limit;
