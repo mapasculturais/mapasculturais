@@ -37,21 +37,21 @@ app.component('evaluation-method-documentary--apply', {
 
     methods: {
         apply(modal) {
+            const messages = useMessages();
+
             this.applyData.status = this.applyAll ? 'all' : 'pending';
             this.entity.disableMessages();
+            
             this.entity.POST('applyEvaluationsDocumentary', {
                 data: this.applyData, callback: data => {
-                    const messages = useMessages();
-                    if (data.error) {
-                        messages.error(data.data)
-                    } else {
-                        messages.success(data);
-                        modal.close();
-                        this.reloadPage();
-                    }
+                    messages.success(data);
+                    modal.close();
+                    this.reloadPage();
                     this.entity.enableMessages();
                 }
-            })
+            }).catch((data) => {
+                messages.error(data.data)
+            });
         },
         valueToString(value) {
             switch (value) {
