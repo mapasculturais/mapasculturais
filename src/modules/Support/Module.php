@@ -96,11 +96,12 @@ class Module extends \MapasCulturais\Module
             if($self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
-                        $userAllowedFields = $relation->metadata['registrationPermissions'];
-                        foreach($result as $key => $field){
-                            $field = "field_".$field->id;
-                            if(!isset($userAllowedFields[$field])){
-                                unset($result[$key]);
+                        if( $relation->metadata && $userAllowedFields = $relation->metadata['registrationPermissions']) {
+                            foreach($result as $key => $field){
+                                $field = "field_".$field->id;
+                                if(!isset($userAllowedFields[$field])){
+                                    unset($result[$key]);
+                                }
                             }
                         }
                     }
@@ -116,11 +117,13 @@ class Module extends \MapasCulturais\Module
             if($self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
-                        $userAllowedFields = $relation->metadata['registrationPermissions'];
-                        foreach($result as $key => $field){
-                            $field = $field->getFileGroupName();
-                            if(!isset($userAllowedFields[$field])){
-                                unset($result[$key]);
+                        if( $relation->metadata && $userAllowedFields = $relation->metadata['registrationPermissions']) {
+                            $userAllowedFields = $relation->metadata['registrationPermissions'];
+                            foreach($result as $key => $field){
+                                $field = $field->getFileGroupName();
+                                if(!isset($userAllowedFields[$field])){
+                                    unset($result[$key]);
+                                }
                             }
                         }
                     }
@@ -176,7 +179,7 @@ class Module extends \MapasCulturais\Module
         $app->hook('GET(registration.view):before', function() use($app) {
             $registration = $this->requestedEntity;
             if ($registration->canUser('support', $app->user)){
-                if(!$registration->isUserAdmin($app->user) && !$registration->canUser('evaluate')){
+                if(!$registration->isUserAdmin($app->user) && !$registration->canUser('evaluate') && !$registration->opportunity->canUser('@control')){
                     $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
                 }
             }
