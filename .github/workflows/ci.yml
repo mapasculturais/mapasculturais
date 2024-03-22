@@ -2,30 +2,30 @@ name: ci
 
 on:
   pull_request:
-    branches: 
+    branches:
       - homolog
-  
+
   workflow_dispatch:
 
 jobs:
   BUILD:
     runs-on: ubuntu-latest
-    steps: 
-      
+    steps:
+
       - uses: actions/checkout@v4.1.1
-      
-      - name: Docker Login  
+
+      - name: Docker Login
         uses: docker/login-action@v3.0.0
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      
+
       - name: Checkout submodules
         run: git submodule update --init --recursive
-      
+
       - name: Ajusta branch do MultipleLocalAuth
         run: cd src/plugins/MultipleLocalAuth && git checkout v3.0.0
-               
+
       - name: Criação da Imagem docker
         uses: docker/build-push-action@v5.0.0
         with:
@@ -33,8 +33,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            secultceara/mapacultural:7.3.7
-            secultceara/mapacultural:latest
+            secultceara/mapascultural:7.3.7
+            secultceara/mapascultural:latest
 
   DEPLOY:
     needs: BUILD
