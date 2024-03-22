@@ -391,7 +391,7 @@ class Opportunity extends EntityController {
         $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
         $data = $query_data;
 
-        $data['opportunity'] = "EQ({$opportunity->id})";
+        $data['opportunity'] = API::EQ($opportunity->id);
 
         $_opportunity = $opportunity;
         $opportunity_tree = [$opportunity];
@@ -404,7 +404,6 @@ class Opportunity extends EntityController {
 
         $query_select = array_map(function ($item) { return trim($item); }, explode(',', $data['@select'] ?? ''));
 
-        $final_result = [];
         $previous_phase_result = null;
 
         foreach($opportunity_tree as $phase){
@@ -420,9 +419,8 @@ class Opportunity extends EntityController {
                 'opportunity' => API::EQ($phase->id)
             ];
             
-            // $current é a fase que foi informada no parâmetro @opportunity
+            // $phase é a fase que foi informada no parâmetro @opportunity
             if($phase->equals($opportunity)) {
-                
                 if($phase->publishedRegistrations && !$phase->canUser('viewEvaluations')){
                     if(isset($data['status'])){
                         $current_phase_query_params['status'] = API::AND(API::IN([10,8]), $data['status']);
@@ -433,13 +431,19 @@ class Opportunity extends EntityController {
                     $current_phase_query_params['status'] = $data['status'];
                 }
 
+                foreach(['id','createTimestamp','sentTimestamp','score'] as $prop) {
+                    if(isset($data[$prop])){
+                        $current_phase_query_params[$prop] = $data[$prop];
+                    }
+                }
+
                 if(isset($data['@limit'])) {
                     $current_phase_query_params['@limit'] = $data['@limit'];
                 }
                 if(isset($data['@page'])) {
                     $current_phase_query_params['@page'] = $data['@page'];
                 }
-                if(isset($data['@order'])) {
+                if(isset($data['@order']) && $data['@order'] != '@quota') {
                     $_order = $data['@order'];
                             
                     if($current_evaluation_method && $current_evaluation_method->slug == "technical" && !preg_match('#consolidatedResult as \w+#i', $_order)){
@@ -447,21 +451,15 @@ class Opportunity extends EntityController {
                     }
                     $current_phase_query_params['@order'] = $_order;
                 }
+
             }
-            
-            if(isset($data['category'])){
-                $current_phase_query_params['category'] = $data['category'];
+
+            foreach(['agent_id', 'category', 'proponentType', 'range', 'eligible', 'number'] as $prop) {
+                if(isset($data[$prop])){
+                    $current_phase_query_params[$prop] = $data[$prop];
+                }
             }
-            if(isset($data['proponentType'])){
-                $current_phase_query_params['proponentType'] = $data['proponentType'];
-            }
-            if(isset($data['range'])){
-                $current_phase_query_params['range'] = $data['range'];
-            }
-            if(isset($data['score'])) {
-                $current_phase_query_params['score'] = API::OR(API::NULL(), $data['score']);
-            }
-            
+
             $current_phase_query_select = ['id', 'number'];
             
             foreach($phase->registrationFieldConfigurations as $field){
@@ -487,17 +485,11 @@ class Opportunity extends EntityController {
 
             $current_phase_query_params['@select'] = implode(',', $current_phase_query_select);
 
-            // adiciona os numbers resultantes da fase anterior como filtro da fase atual;
-            if(!is_null($previous_phase_result)) {
-                $numbers = array_keys($previous_phase_result);
-                if(isset($current_phase_query_params['number'])) {
-                    $current_phase_query_params['number'] = API::AND($current_phase_query_params['number'], API::IN($numbers));
-                } else {
-                    $current_phase_query_params['number'] = API::IN($numbers);
-                }
-            }
-
             $current_phase_query = new ApiQuery(Registration::class, $current_phase_query_params);
+            if(isset($previous_phase_query)) {
+                $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
+            }
+            $previous_phase_query = $current_phase_query;
             $current_phase_result = $current_phase_query->find();
 
             $new_previous_phase_result = [];
@@ -519,6 +511,7 @@ class Opportunity extends EntityController {
             }
         }
 
+        
         return (object) ['count' => $current_phase_query->count(), 'registrations' => $current_phase_result,];
     }
 
