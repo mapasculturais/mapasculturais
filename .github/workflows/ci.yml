@@ -30,14 +30,14 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            secultceara/mapasculturais:5.8.15
-            secultceara/mapasculturais:latest
+            secultceara/mapascultural:7.3.7
+            secultceara/mapascultural:latest
 
   DEPLOY:
     needs: BUILD
     runs-on: mapahomolog
     steps:
-      - name: Pull da imagem do dockerhub
-        run: sudo docker pull secultceara/mapasculturais:latest
+      - name: Pull das imagens docker
+        run: cd /opt/docker/mapa7 && sudo docker-compose pull
       - name: Restart do docker-compose para atualizar o container com a nova imagem
-        run: cd /opt/docker/mapa5 && sudo docker-compose down && sudo docker-compose up -d
+        run: cd /opt/docker/mapa7 && sudo docker-compose down && sudo docker-compose up -d
