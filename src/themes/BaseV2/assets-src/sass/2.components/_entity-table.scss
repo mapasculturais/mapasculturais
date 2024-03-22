@@ -113,10 +113,12 @@
     &__table-header-wrapper {
         overflow-x: hidden; 
         position: sticky; 
-        padding-left: size(25);
         top: 0; 
         background-color: white; 
         z-index: 100;
+        .entity-table__table-header {
+            padding-left: size(25);
+        }
     }
 
     &__table-header {
