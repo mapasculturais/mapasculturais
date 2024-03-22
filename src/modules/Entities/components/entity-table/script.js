@@ -90,7 +90,11 @@ app.component('entity-table', {
         const self = this;
         window.addEventListener('resize', () => {
             self.resize();
-        })
+        });
+
+        setInterval(() => {
+            self.resize();
+        },500);
     },
 
     updated() {
@@ -401,10 +405,11 @@ app.component('entity-table', {
         setColumnWidth(slug) {
             const col = this.$refs['column-' + slug]?.[0] ?? this.$refs['column-' + slug] ?? null;
             if(col) {
+                const react = col.getBoundingClientRect();
                 this.columnsLeft[slug] = this.totalWidth + 'px';
-                this.columnsWidth[slug] = col.clientWidth + 'px';
-                this.totalWidth += col.clientWidth;
-                this.columnsRight[slug] = (parseInt(this.width) - this.totalWidth) + 'px';
+                this.columnsWidth[slug] = react.width + 'px';
+                this.totalWidth += react.width;
+                this.columnsRight[slug] = (parseFloat(this.width) - this.totalWidth) + 'px';
                 this._ready = true;
             }
         },
@@ -442,7 +447,7 @@ app.component('entity-table', {
                 
                 if(this._ready){
                     this.ready = this._ready;
-                    this.headerHeight = this.$refs.headerTable.offsetHeight;
+                    this.headerHeight = this.$refs.headerTable.offsetHeight + 20;
                 }
             });
         },

@@ -171,7 +171,7 @@ app.component('opportunity-registrations-table', {
                 { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
                 { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
                 { text: __('data de envio', 'opportunity-registrations-table'), value: "sentTimestamp" },
-                { text: __('status', 'opportunity-registrations-table'), value: "status", width: '200px'},
+                { text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px'},
             ];
 
             if(this.phase.evaluationMethodConfiguration){

@@ -10,25 +10,21 @@ app.component('evaluation-method-technical--apply', {
     },
 
     data() {
-        applyAll = false;
         let max = parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
         applyData = {
-            from:[0,max],
-            cutoffScore: 0,
+            from: [0, max],
         };
+        const api = new API();
 
         return {
             applyData,
-            applyAll,
-            markSubstitute: false,
-            deleteRegistrations: false,
-            selectFirst: false,
-            considerQuotas: false,
-            selectionType: []
+            considerQuotas: true,
+            enableConsiderQuotas: $MAPAS.config.evaluationMethodTechnicalApply.isAffirmativePoliciesActive,
+            selectionType: [],
+            tabSelected: 'score',
+            cutoffScore: this.entity.evaluationMethodConfiguration?.cutoffScore ?? 0,
+            api
         }
-    },
-    watch: {
-
     },
 
     computed: {
@@ -44,7 +40,7 @@ app.component('evaluation-method-technical--apply', {
         validateValues() {
             const min = 0;
             const max = this.maxResult;
-            
+
             if (this.applyData.from[0] < min) {
                 this.applyData.from[0] = min;
             }
@@ -54,20 +50,17 @@ app.component('evaluation-method-technical--apply', {
         },
 
         modalClose() {
-            delete this.applyData.to;
-            this.applyData.from[0] = 0;
-            this.applyData.from[1] = this.maxResult;
+            if (this.applyData.hasOwnProperty('from')) {
+                delete this.applyData.setStatusTo;
+                this.applyData.from[0] = 0;
+                this.applyData.from[1] = this.maxResult;
+            }
             this.selectionType = [];
         },
 
-        apply(modal,entity) {
-            this.applyData.status = this.applyData.applyAll ? 'all' : false;
-            this.applyData.cutoffScore = this.entity.evaluationMethodConfiguration?.cutoffScore;
-            this.applyData.selectFirsts = this.selectFirst;
-            this.applyData.quantityVacancies = this.entity.vacancies;
-            this.applyData.considerQuotas = this.considerQuotas;
-            this.applyData.deleteRegistrations = this.deleteRegistrations;
-            this.applyData.markSubstitute = this.markSubstitute;
+        apply(modal, entity) {
+            this.infosApplyData();
+            
             this.entity.disableMessages();
             this.entity.POST('appyTechnicalEvaluation', {
                 data: this.applyData, callback: data => {
@@ -83,35 +76,48 @@ app.component('evaluation-method-technical--apply', {
                 }
             })
         },
-        
+
         reloadPage(timeout = 1500) {
             setTimeout(() => {
                 document.location.reload(true)
             }, timeout);
         },
 
-        initConsiderQuotas() {
-            if (this.selectionType === 'first') {
-                this.considerQuotas = true;
-                this.selectFirst = true;
-                this.markSubstitute = false;
-                this.deleteRegistrations = false;
+        changed(event) {
+            this.tabSelected = event.tab.slug;
+        },
+
+        setTabClassification() {
+            this.applyData.cutoffScore = this.cutoffScore;
+            this.applyData.earlyRegistrations = this.selectionType.includes('earlyRegistrations') ? true : false;
+            this.applyData.waitList = this.selectionType.includes('waitList') ? true : false;
+            this.applyData.invalidateRegistrations = this.selectionType.includes('invalidateRegistrations') ? true : false;
+            this.applyData.considerQuotas = this.considerQuotas;
+            this.applyData.quantityVacancies = this.entity.vacancies;
+            delete this.applyData.from;
+            delete this.applyData.setStatusTo;
+        },
+
+        setTabScore() {
+            const propertiesToRemove = ['cutoffScore', 'earlyRegistrations', 'waitList', 'invalidateRegistrations', 'considerQuotas'];
+
+            for (const prop of propertiesToRemove) {
+                if (this.applyData.hasOwnProperty(prop)) {
+                    delete this.applyData[prop];
+                }
+            }
+        },
+
+        infosApplyData() {
+            if (this.tabSelected === 'classification') {
+                this.setTabClassification();
             } 
-
-            if (this.selectionType === 'substitute') {
-                this.considerQuotas = true;
-                this.markSubstitute = true;
-                this.selectFirst = false;
-                this.deleteRegistrations = false;
+            
+            if (this.tabSelected === 'score') {
+                this.setTabScore();
             }
 
-            if (this.selectionType === 'delRegistrations') {
-                this.considerQuotas = false;
-                this.markSubstitute = false;
-                this.selectFirst = false;
-                this.deleteRegistrations = true;
-            }
+            this.applyData.tabSelected = this.tabSelected;
         }
-
     },
 });
