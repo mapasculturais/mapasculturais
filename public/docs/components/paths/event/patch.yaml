@@ -1,0 +1,29 @@
+patch:
+tags:
+  - Eventos
+summary: Atualiza um evento
+description: Atualiza os detalhes de um evento existente.
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+      required: true
+      description: Identificador único do evento.
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/event/post-minimal.yaml'
+responses:
+  '200':
+    description: Evento atualizado com sucesso.
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/event.yaml'
+  '400':
+    description: Requisição inválida, por exemplo, campos não preenchidos corretamente.
+  '404':
+    description: Evento não encontrado.
+    $ref: '../../responses/error/404.yaml'

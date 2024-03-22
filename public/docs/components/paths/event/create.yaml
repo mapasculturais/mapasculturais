@@ -1,0 +1,17 @@
+post:
+  tags:
+    - Eventos
+  summary: Cria um evento
+  description: Cria um novo evento com as informações fornecidas
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../requestBodies/event/post-minimal.yaml'
+  responses:
+    '201':
+      description: Evento criado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/event.yaml'

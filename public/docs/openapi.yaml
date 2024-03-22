@@ -55,6 +55,10 @@ paths:
     $ref: './components/paths/event/get-type-groups.yaml'
   /api/event/getTypes:
     $ref: './components/paths/event/get-types.yaml'
+  /api/event/create:
+    $ref: './components/paths/event/create.yaml'
+  /event/single/{id}:
+    $ref: './components/paths/event/route-single-id.yaml'
   /api/opportunity/describe:
     $ref: './components/paths/opportunity/describe.yaml'
   /api/opportunity/find:
