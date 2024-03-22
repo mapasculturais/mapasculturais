@@ -5,12 +5,16 @@
     border-radius: var(--mc-border-radius-sm);
     padding: size(10) size(25) size(25);
 
+    &__legend {
+        padding: 0 size(10);
+    }
+
     &__wrapper {
-        margin-bottom: size(26);
+        margin-top: size(24);
     }
 
     &__title {
-        margin-bottom: size(20);
+        margin-bottom: size(16);
     }
 
     &__content {

@@ -7,9 +7,13 @@
 use MapasCulturais\i;
 ?>
 
-<div class="home-texts">
+<fieldset class="home-texts">
+    <legend class="home-texts__legend">
+        <h3> <?= i::__('Textos da Home') ?> </h3>
+    </legend>
+
     <div class="home-texts__wrapper" v-for="(section, index) in homeTexts" :key="index">
-        <h3 class="home-texts__title">{{ section.sectionName }}</h3>
+        <h4 class="bold home-texts__title">{{ section.sectionName }}</h4>
         <div class="home-texts__content" ref="homeTextsContent">
             <div class="field" v-for="(text, textIndex) in section.texts" :key="textIndex">
                 <label :for="text.slug">{{ text.description }}</label>
@@ -17,4 +21,4 @@ use MapasCulturais\i;
             </div>
         </div>
     </div>
-</div>
+</fieldset>
