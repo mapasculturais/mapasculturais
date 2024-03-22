@@ -758,6 +758,7 @@ class ApiQuery {
                 $result[] = $r;
             }
         }
+
         if(!$this->_findingIds) {
             $this->processEntities($result);
         }
@@ -799,7 +800,6 @@ class ApiQuery {
         $params = $this->_dqlParams;
         
         $subqueries = $this->getSubqueryFilters();
-        
         foreach($subqueries as $filter){
             $params += $filter['subquery']->getDqlParams();
         }
@@ -872,11 +872,11 @@ class ApiQuery {
         return $this->_selecting;
     }
 
-    protected function getSubqueryInIdentities(array $entities, $property = null) {
+    protected function getSubqueryInIdentities(array $entities, $property = null, $force_ids = false) {
         if(is_null($property)) {
             $property = $this->pk;
         }
-        if (count($entities) > $this->maxBeforeSubquery && !$this->getOffset() && !$this->getLimit()) {
+        if (!$force_ids || count($entities) > $this->maxBeforeSubquery && !$this->getOffset() && !$this->getLimit()) {
             $this->_usingSubquery = true;
             $result = $this->getSubDQL($property);
         } else {
@@ -955,7 +955,6 @@ class ApiQuery {
         if(!$this->_subsiteId){
             if($subsite = $app->getCurrentSubsite()){
                 $subsite_query = $subsite->getApiQueryFilter($this->entityClassName);
-
                 if($subsite_query){
                     $filters[] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
                 }
@@ -1257,7 +1256,7 @@ class ApiQuery {
             $keys = ':' . implode(',:', array_keys($meta_keys));
 
             $in_entities_dql = $this->getSubqueryInIdentities($entities);
-
+            
             if (!$in_entities_dql) {
                 return;
             }
@@ -1280,7 +1279,7 @@ class ApiQuery {
             }
 
             if($this->_usingSubquery){
-                $q->setParameters($meta_keys + $this->_dqlParams);
+                $q->setParameters($meta_keys + $this->getDqlParams());
             } else {
                 $q->setParameters($meta_keys);
             }
@@ -1589,7 +1588,7 @@ class ApiQuery {
                         $query->where. " AND e.{$_target_property} IN ({$_subquery_where_id_in})";
                     
                     if(str_contains($_subquery_where_id_in, 'SELECT')){
-                        foreach($this->_dqlParams as $k => $v){
+                        foreach($this->getDqlParams() as $k => $v){
                             $query->_dqlParams[$k] = $v;
                         }
                     }
@@ -1723,8 +1722,10 @@ class ApiQuery {
             }
 
             if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
+                $query->setParameters($this->getDqlParams());
             }
+
+            $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
             
             $restul = $query->getResult(Query::HYDRATE_ARRAY);
                 
@@ -1898,7 +1899,7 @@ class ApiQuery {
             }
 
             if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
+                $query->setParameters($this->getDqlParams());
             }
             
             $restult = $query->getResult(Query::HYDRATE_ARRAY);
@@ -1983,7 +1984,7 @@ class ApiQuery {
         }
 
         if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
+            $query->setParameters($this->getDqlParams());
         }
         
         $relations = $query->getResult(Query::HYDRATE_ARRAY);
@@ -2103,7 +2104,7 @@ class ApiQuery {
         }
 
         if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
+            $query->setParameters($this->getDqlParams());
         }
         
         $relations = $query->getResult(Query::HYDRATE_ARRAY);
@@ -2224,7 +2225,7 @@ class ApiQuery {
         }
 
         if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
+            $query->setParameters($this->getDqlParams());
         }
         
         $relations = $query->getResult(Query::HYDRATE_ARRAY);
@@ -2324,7 +2325,7 @@ class ApiQuery {
         }
 
         if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
+            $query->setParameters($this->getDqlParams());
         }
         
         $relations = $query->getResult(Query::HYDRATE_ARRAY);
@@ -2420,8 +2421,10 @@ class ApiQuery {
             }
 
             if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
+                $query->setParameters($this->getDqlParams());
             }
+
+            $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
 
             $result = $query->getResult(Query::HYDRATE_ARRAY);
             $permissions_by_entity = [];
@@ -2493,8 +2496,10 @@ class ApiQuery {
                 }
                 
                 if($this->_usingSubquery){
-                    $query->setParameters($this->_dqlParams);
+                    $query->setParameters($this->getDqlParams());
                 }
+
+                $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
                 
                 $result = $query->getResult(Query::HYDRATE_ARRAY);
                             
@@ -2557,8 +2562,9 @@ class ApiQuery {
             }
             
             if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
+                $query->setParameters($this->getDqlParams());
             }
+            $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
 
             $relations = $query->getResult(Query::HYDRATE_ARRAY);
 
@@ -2670,8 +2676,9 @@ class ApiQuery {
                     }
     
                     if($this->_usingSubquery){
-                        $query->setParameters($this->_dqlParams);
+                        $query->setParameters($this->getDqlParams());
                     }
+                    $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
     
                     $qr = $query->getResult(Query::HYDRATE_ARRAY);
                 } else {
