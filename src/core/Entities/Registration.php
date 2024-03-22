@@ -589,8 +589,11 @@ class Registration extends \MapasCulturais\Entity
      * @throws PermissionDenied 
      */
     function getEvaluationResultValue(){
-        $method = $this->getEvaluationMethod();
-        return $method->getConsolidatedResult($this);
+        if($method = $this->getEvaluationMethod()) {
+            return $method->getConsolidatedResult($this);
+        }
+
+        return null;
     }
 
     /**
@@ -600,9 +603,12 @@ class Registration extends \MapasCulturais\Entity
      * @throws PermissionDenied 
      */
     function getEvaluationResultString(){
-        $method = $this->getEvaluationMethod();
-        $value = $this->getEvaluationResultValue();
-        return $method->valueToString($value);
+        if($method = $this->getEvaluationMethod()) {
+            $value = $this->getEvaluationResultValue();
+            return $method->valueToString($value);
+        }
+
+        return null;
     }
 
     /**
