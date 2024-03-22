@@ -11,9 +11,9 @@ COPY config /var/www/config
 COPY public /var/www/html
 COPY scripts /var/www/scripts
 COPY src /var/www/src
-COPY plugins /var/www/src/plugins
 COPY var /var/www/var
-COPY common/config.d /var/www/config/common.d
+COPY docker/common/config.d /var/www/config/common.d
+COPY docker/production/config.d /var/www/config/prod.d
 COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY docker/jobs-cron.sh /jobs-cron.sh
 COPY docker/entrypoint.sh /entrypoint.sh
@@ -21,7 +21,7 @@ COPY version.txt /var/www/version.txt
 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	imagemagick libmagickcore-dev libmagickwand-dev \
+	imagemagick libmagickcore-dev git libmagickwand-dev \
 	libcurl4-gnutls-dev libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev libzip-dev libzstd1 && \
 	# Instalação do node
 	curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
