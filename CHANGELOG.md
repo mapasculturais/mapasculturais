@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.33] - 2024-03-21
+### Correções
+- Evita que um agente de suporte que tenha controle sobre o edital, seja redirecionado para o modulo de suporte ao acessar uma inscrição atrvéz da listagem de inscrições
+- Corrige erro ao acessar a lista de inscrição sendo do grupo de suporte, mas nao ter permissões de acesso aos campos definidas
+
 ## [7.3.32] - 2024-03-20
 ### Correções
 - Corrige exibição da label Área de atuação e Área de interesse nos cads de listagem de entidades
