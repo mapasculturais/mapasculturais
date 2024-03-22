@@ -1,66 +1,46 @@
 name: ci
 
 on:
-  push:
-    branches:
-      - "master"
-      - "develop"
-    tags:
-      - "v*.*.*"
   pull_request:
-    branches:
-      - "develop"
+    branches: 
+      - homolog
+  
+  workflow_dispatch:
 
 jobs:
-  docker:
+  BUILD:
     runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v4
+    steps: 
+      
+      - uses: actions/checkout@v4.1.1
+      
+      - name: Docker Login  
+        uses: docker/login-action@v3.0.0
         with:
-          # list of Docker images to use as base name for tags
-          images: |
-            docker.io/hacklab/mapasculturais 
-          # ghcr.io/username/app
-          # generate Docker tags based on the following events/attributes
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+      
+      - name: Ajusta branch do MultipleLocalAuth
+        run: cd src/plugins/MultipleLocalAuth && git checkout v3.0.0
+               
+      - name: Criação da Imagem docker
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
           tags: |
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Login to Docker Hub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      # -
-      #   name: Login to GHCR
-      #   if: github.event_name != 'pull_request'
-      #   uses: docker/login-action@v2
-      #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.repository_owner }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          file: ./docker/Dockerfile
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+            secultceara/mapascultural:7.3.7
+            secultceara/mapascultural:latest
 
+  DEPLOY:
+    needs: BUILD
+    runs-on: mapahomolog
+    steps:
+      - name: Pull das imagens docker
+        run: cd /opt/docker/mapa7 && sudo docker-compose pull
+      - name: Restart do docker-compose para atualizar o container com a nova imagem
+        run: cd /opt/docker/mapa7 && sudo docker-compose down && sudo docker-compose up -d
