@@ -630,7 +630,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $quota_data = null;
 
-        $app->hook('ApiQuery(registration).params', function(&$params) use($self, &$quota_data) {
+        $app->hook('ApiQuery(registration).params', function(&$params) use($app, $self, &$quota_data) {
             /** @var ApiQuery $this */
 
             if(is_null($quota_data)) {
@@ -648,6 +648,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                 unset($params['@order']);
                 $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id, $params);
+                $opportunity = $app->repo('Opportunity')->find($phase_id);
+                $opportunity->registerRegistrationMetadata();
+
                 $ids = array_map(function($reg) { return $reg->id; }, $quota_order);
                 if($limit = (int) ($params['@limit'] ?? 0)) {
                     $page = $params['@page'] ?? 1;
