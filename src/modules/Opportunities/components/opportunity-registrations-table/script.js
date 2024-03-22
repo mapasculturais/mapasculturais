@@ -233,28 +233,48 @@ app.component('opportunity-registrations-table', {
         },
 
         filterByStatus(entities) {
-            this.query['status'] = `IN(${this.selectedStatus.toString()})`;
+            if (this.selectedStatus.length > 0) {
+                this.query['status'] = `IN(${this.selectedStatus.toString()})`;
+            } else {
+                delete this.query['status'];
+            }
             entities.refresh();
         },
         
         filterByCategories(entities) {
-            this.query['category'] = `IN(${this.selectedCategories.toString()})`;
+            if (this.selectedCategories.length > 0) {
+                this.query['category'] = `IN(${this.selectedCategories.toString()})`;
+            } else {
+                delete this.query['category'];
+            }
             entities.refresh();
         },
 
         filterByProponentTypes(entities) {
-            this.query['proponentType'] = `IN(${this.selectedProponentTypes.toString()})`;
+            if (this.selectedProponentTypes.length > 0) {
+                this.query['proponentType'] = `IN(${this.selectedProponentTypes.toString()})`;
+            } else {
+                delete this.query['proponentType'];
+            }
             entities.refresh();
         },
         
         filterByRanges(entities) {
-            this.query['range'] = `IN(${this.selectedRanges.toString()})`;
+            if (this.selectedRanges.length > 0) {
+                this.query['range'] = `IN(${this.selectedRanges.toString()})`;
+            } else {
+                delete this.query['range'];
+            }
             entities.refresh();
         },
 
         filterAvaliation(option,entities){
             this.selectedAvaliation = option.value;
-            this.query['consolidatedResult'] = `EQ(${this.selectedAvaliation})`;
+            if (this.selectedAvaliation.length > 0) {
+                this.query['consolidatedResult'] = `IN(${this.selectedAvaliation.toString()})`;
+            } else {
+                delete this.query['consolidatedResult'];
+            }
             entities.refresh();
             
         },
