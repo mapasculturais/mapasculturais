@@ -43,16 +43,18 @@ paths:
     $ref: './components/paths/agent/get-types.yaml'
   /agent/index:
     $ref: './components/paths/agent/create.yaml'
+  /agente/{id}:
+    $ref: './components/paths/agent/delete-and-update.yaml'
   /api/event/describe:
     $ref: './components/paths/event/describe.yaml'
   /api/event/find:
     $ref: './components/paths/event/find.yaml'
   /api/event/findOne:
     $ref: './components/paths/event/find-one.yaml'
-  /api/event/getTypes:
-    $ref: './components/paths/event/get-types.yaml'
   /api/event/getTypeGroups:
     $ref: './components/paths/event/get-type-groups.yaml'
+  /api/event/getTypes:
+    $ref: './components/paths/event/get-types.yaml'
   /api/opportunity/describe:
     $ref: './components/paths/opportunity/describe.yaml'
   /api/opportunity/find:
