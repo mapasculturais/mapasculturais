@@ -31,7 +31,10 @@ $this->import('
 
             <mc-confirm-button v-if="showDelete" @confirm="delFile()">
                 <template #button="modal">
-                    <mc-icon @click="modal.open()" name="trash"></mc-icon>
+                    <button @click="modal.open()" class="button button--text-danger button--icon">
+                        <?php i::_e('Excluir Imagem') ?>
+                        <mc-icon name="trash"></mc-icon>
+                    </button>
                 </template>
 
                 <template #message="message">
