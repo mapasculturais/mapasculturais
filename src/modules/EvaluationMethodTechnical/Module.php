@@ -475,7 +475,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
             /** @var Registration $this */
-            if($this->evaluationMethod->slug == 'technical') {
+            if($this->evaluationMethod && $this->evaluationMethod->slug == 'technical') {
                 $this->eligible = $this->isEligibleForAffirmativePolicies();
             }
         });
