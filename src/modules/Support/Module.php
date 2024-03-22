@@ -96,11 +96,12 @@ class Module extends \MapasCulturais\Module
             if($self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
-                        $userAllowedFields = $relation->metadata['registrationPermissions'];
-                        foreach($result as $key => $field){
-                            $field = "field_".$field->id;
-                            if(!isset($userAllowedFields[$field])){
-                                unset($result[$key]);
+                        if( $relation->metadata && $userAllowedFields = $relation->metadata['registrationPermissions']) {
+                            foreach($result as $key => $field){
+                                $field = "field_".$field->id;
+                                if(!isset($userAllowedFields[$field])){
+                                    unset($result[$key]);
+                                }
                             }
                         }
                     }
@@ -116,11 +117,13 @@ class Module extends \MapasCulturais\Module
             if($self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
-                        $userAllowedFields = $relation->metadata['registrationPermissions'];
-                        foreach($result as $key => $field){
-                            $field = $field->getFileGroupName();
-                            if(!isset($userAllowedFields[$field])){
-                                unset($result[$key]);
+                        if( $relation->metadata && $userAllowedFields = $relation->metadata['registrationPermissions']) {
+                            $userAllowedFields = $relation->metadata['registrationPermissions'];
+                            foreach($result as $key => $field){
+                                $field = $field->getFileGroupName();
+                                if(!isset($userAllowedFields[$field])){
+                                    unset($result[$key]);
+                                }
                             }
                         }
                     }
