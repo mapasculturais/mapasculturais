@@ -1,0 +1,32 @@
+@use '../0.settings/mixins' as *;
+
+.subsite-config-map {
+    display: grid;
+    gap: size(20);
+
+    &__content {
+        display: grid;
+        gap: size(30);
+    }
+
+    &__instructions {
+        margin: 0;
+        
+        & > li {
+            list-style: decimal-leading-zero;
+            padding: 0 0 size(8) size(8);
+        }
+    }
+
+    &__map {
+        height: size(600);
+        position: relative;
+        width: 100%;
+    }
+
+    &__buttons {
+        display: flex;
+        gap: size(20);
+        flex-wrap: wrap;
+    }
+}
