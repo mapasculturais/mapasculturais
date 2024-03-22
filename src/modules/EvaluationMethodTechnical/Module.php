@@ -628,12 +628,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
 
-        $quota_data = (object)[];
+        $quota_data = null;
 
         $app->hook('ApiQuery(registration).params', function(&$params) use($self, &$quota_data) {
             /** @var ApiQuery $this */
-            
-            if($quota_data->objectId ?? false) {
+
+            if(is_null($quota_data)) {
+                $quota_data = (object) [];
+            } else {
                 return;
             }
 
@@ -727,8 +729,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
             // TAB POR PONTUAÇÃO
             if($this->data['tabSelected'] === 'score') {
+                if(!isset($this->data['setStatusTo'])) {
+                    $this->errorJson(i::__('Por favor selecione um status para ser aplicado.'), 400);
+                }
+                
                 if ($this->data['setStatusTo'] && (!is_numeric($this->data['setStatusTo']) || !in_array($this->data['setStatusTo'], [0,1,2,3,8,10]))) {
-                    $this->errorJson(i::__('os status válidos são 0, 1, 2, 3, 8 e 10'), 400);
+                    $this->errorJson(i::__('Os status válidos são 0, 1, 2, 3, 8 e 10'), 400);
                     die;
                 }
 
