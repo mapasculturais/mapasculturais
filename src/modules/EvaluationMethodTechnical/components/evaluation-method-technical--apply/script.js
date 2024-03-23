@@ -6,6 +6,11 @@ app.component('evaluation-method-technical--apply', {
         entity: {
             type: Entity,
             required: true
+        },
+
+        entities: {
+            type: Array,
+            required: true
         }
     },
 
@@ -77,9 +82,7 @@ app.component('evaluation-method-technical--apply', {
         },
 
         reloadPage(timeout = 1500) {
-            setTimeout(() => {
-                document.location.reload(true)
-            }, timeout);
+            this.entities.refresh();
         },
 
         changed(event) {
