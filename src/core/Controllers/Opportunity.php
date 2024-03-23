@@ -436,7 +436,9 @@ class Opportunity extends EntityController {
                         $current_phase_query_params[$prop] = $data[$prop];
                     }
                 }
-
+                if(isset($data['@keyword'])) {
+                    $current_phase_query_params['@keyword'] = $data['@keyword'];
+                }
                 if(isset($data['@limit'])) {
                     $current_phase_query_params['@limit'] = $data['@limit'];
                 }
