@@ -16,7 +16,7 @@
         flex-direction: column;;
         gap: size(20) size(32);
         width: 100%;
-        margin-top: size(24);
+        margin-top: size(20);
         padding-bottom: size(20);
     }
 
@@ -27,14 +27,6 @@
         gap: size(20);
         width: max-content;
         margin: 0 auto;
-
-        .iconify--ooui {
-            cursor: pointer;
-            color: var(--mc-danger-500);
-            height: var(--mc-font-size-sm);
-            width: var(--mc-font-size-sm);
-            margin-right: size(20);
-        }
 
         .uploader-wrapper {
             display: flex;
@@ -48,7 +40,7 @@
             align-items: center;
             border: size(1) dashed var(--mc-gray-500);
             border-radius: var(--mc-border-radius-sm);
-            color: var(--mc-gray-700);
+            color: var(--mc-gray-500);
             cursor: pointer;
             display: flex;
             font-size: size(50);
