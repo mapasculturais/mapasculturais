@@ -1,0 +1,25 @@
+tags:
+  - Espaços
+summary: Atualiza um espaço
+description: Atualiza um espaço
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do espaço
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/space/patch.yaml'
+responses:
+  '200':
+    description: O espaço atualizado
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/space.yaml'
+  '404':
+    $ref: '../../responses/error/404.yaml'

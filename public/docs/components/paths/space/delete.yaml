@@ -1,0 +1,48 @@
+tags:
+  - Espaços
+summary: Apaga um espaço
+description: Apaga um espaço
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do espaço
+responses:
+  '200':
+    description: Informações sobre o objeto apagado
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            '@entityType':
+              type: string
+              example: space
+              description: Tipo de entidade
+            id:
+              type: integer
+              example: 5
+              description: Um id numérico que representa o espaço
+            name:
+              type: string
+              example: Secult
+              description: Um texto que representa o nome do espaço
+            type:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 50
+                  description: ID do tipo de espaço
+                name:
+                  type: string
+                  example: Arquivo Público
+                  description: Nome do tipo de espaço
+            status:
+              type: integer
+              example: -10
+              description: Status do espaço
+  '404':
+    $ref: '../../responses/error/404.yaml'

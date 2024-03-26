@@ -44,7 +44,7 @@ paths:
   /agent/index:
     $ref: './components/paths/agent/create.yaml'
   /agente/{id}:
-    $ref: './components/paths/agent/delete-and-update.yaml'
+    $ref: './components/paths/agent/route-single-id.yaml'
   /api/event/describe:
     $ref: './components/paths/event/describe.yaml'
   /api/event/find:
@@ -116,7 +116,7 @@ paths:
   /space/index:
     $ref: './components/paths/space/create.yaml'
   /espaco/{id}:
-    $ref: './components/paths/space/delete-and-update.yaml'
+    $ref: './components/paths/space/route-single-id.yaml'
 components:
   schemas:
     Agent:
