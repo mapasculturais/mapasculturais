@@ -49,6 +49,8 @@ paths:
     $ref: './components/paths/event/describe.yaml'
   /api/event/find:
     $ref: './components/paths/event/find.yaml'
+  /api/event/findOccurrences:
+    $ref: './components/paths/event/find-occurrences.yaml'
   /api/event/findOne:
     $ref: './components/paths/event/find-one.yaml'
   /api/event/getTypeGroups:
@@ -125,6 +127,8 @@ components:
       $ref: './components/schemas/agent-type-groups.yaml'
     Event:
       $ref: './components/schemas/event.yaml'
+    EventOccurrence:
+      $ref: './components/schemas/event-find-occurrences.yaml'
     EventType:
       $ref: './components/schemas/event-type.yaml'
     EventTypeGroup:
