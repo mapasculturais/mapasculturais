@@ -865,6 +865,27 @@ class ApiQuery {
         }
 
         $result = preg_replace('#([^a-z0-9_])e([\. ])#i', "$1{$alias}$2", $dql);
+
+        // faz os alias dos joins de metadados serem únicos
+        if(preg_match_all('#\.__metadata ([\w\d]+) WITH #i', $result, $matches)){
+            foreach($matches[1] as $alias) {
+                $result = str_replace($alias, uniqid ("{$alias}__"), $result);
+            }
+        }
+        
+        // faz os alias dos joins dos termRelations serem únicos
+        if(preg_match_all('#\.__termRelations ([\w\d]+) LEFT#i', $result, $matches)){
+            foreach($matches[1] as $alias) {
+                $result = str_replace($alias, uniqid ("{$alias}__"), $result);
+            }
+        }
+
+        // faz os alias dos joins de termos serem únicos
+        if(preg_match_all('#\.term ([\w\d]+) WITH#i', $result, $matches)){
+            foreach($matches[1] as $alias) {
+                $result = str_replace($alias, uniqid ("{$alias}__"), $result);
+            }
+        }
         return $result;
     }
     
@@ -1024,7 +1045,8 @@ class ApiQuery {
         $class = $this->entityClassName;
         
         if($this->_selectingOriginSiteUrl && $this->usesOriginSubsite){
-            $joins .= ' LEFT JOIN MapasCulturais\Entities\Subsite __subsite__ WITH __subsite__.id = e._subsiteId';
+            $subsite_alias = $this->getAlias('subsite');
+            $joins .= " LEFT JOIN MapasCulturais\Entities\Subsite {$subsite_alias} WITH {$subsite_alias}.id = e._subsiteId";
         }
         
         if($this->usesSealRelation && $this->_seals){
