@@ -405,10 +405,10 @@ app.component('entity-table', {
         setColumnWidth(slug) {
             const col = this.$refs['column-' + slug]?.[0] ?? this.$refs['column-' + slug] ?? null;
             if(col) {
-                const react = col.getBoundingClientRect();
+                const rect = col.getBoundingClientRect();
                 this.columnsLeft[slug] = this.totalWidth + 'px';
-                this.columnsWidth[slug] = react.width + 'px';
-                this.totalWidth += react.width;
+                this.columnsWidth[slug] = rect.width + 'px';
+                this.totalWidth += rect.width;
                 this.columnsRight[slug] = (parseFloat(this.width) - this.totalWidth) + 'px';
                 this._ready = true;
             }
@@ -468,9 +468,10 @@ app.component('entity-table', {
             return this.columnsLeft[slug] ?? null;
         },
 
-        headerStyle(column) {
+        headerStyle(column, header = false) {
+            const width = header ? this.columnsWidth[column.slug] || '' : column.width || this.columnsWidth[column.slug] || '';
             const style = {
-                width: column.width || this.columnsWidth[column.slug] || '', 
+                width, 
                 minHeight: this.headerHeight + 'px'
             };
 

@@ -436,16 +436,18 @@ class Opportunity extends EntityController {
                         $current_phase_query_params[$prop] = $data[$prop];
                     }
                 }
-
+                if(isset($data['@keyword'])) {
+                    $current_phase_query_params['@keyword'] = $data['@keyword'];
+                }
                 if(isset($data['@limit'])) {
                     $current_phase_query_params['@limit'] = $data['@limit'];
                 }
                 if(isset($data['@page'])) {
                     $current_phase_query_params['@page'] = $data['@page'];
                 }
-                if(isset($data['@order']) && $data['@order'] != '@quota') {
+                if(isset($data['@order'])) {
                     $_order = $data['@order'];
-                            
+                    
                     if($current_evaluation_method && $current_evaluation_method->slug == "technical" && !preg_match('#consolidatedResult as \w+#i', $_order)){
                         $_order = str_replace('consolidatedResult', 'consolidatedResult AS FLOAT', $_order);
                     }

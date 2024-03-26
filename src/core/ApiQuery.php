@@ -7,6 +7,7 @@ use Exception;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Types\GeoPoint;
@@ -729,7 +730,6 @@ class ApiQuery {
         }
 
         $dql = $this->getFindDQL($select);
-        
         $q = $this->em->createQuery($dql);
         if($this->__useDQLCache){
             $q->enableResultCache($this->__cacheTLS);
@@ -2741,6 +2741,7 @@ class ApiQuery {
     }
 
     protected function parseParam($key, $expression) {
+        
         if (is_string($expression) && !preg_match('#^[ ]*(!)?([a-z]+)[ ]*\((.*)\)$#i', $expression, $match)) {
             throw new Exceptions\Api\InvalidExpression($expression);
         } else {
@@ -2768,7 +2769,6 @@ class ApiQuery {
                 $values = $this->splitParam($value);
 
                 $values = $this->addMultipleParams($values);
-
                 if (count($values) > 0) {
                     $dql = $not ? "$key NOT IN (" : "$key IN (";
                     $dql .= implode(', ', $values) . ')';
@@ -2884,20 +2884,23 @@ class ApiQuery {
                         "st_covers(st_envelope(st_geomfromtext({$line})), $key) <> TRUE" :
                         "st_covers(st_envelope(st_geomfromtext({$line})), $key) = TRUE";
             }
+            
             return $dql;
         }
     }
 
     private function splitParam($val) {
+        
         $result = explode("\n", str_replace('\\,', ',', preg_replace('#(^[ ]*|([^\\\]))\,#', "$1\n", $val)));
 
-        if (count($result) === 1 && !$result[0]) {
+        if (count($result) === 1 && in_array($result[0], [null,'']) ) {
             return [];
         } else {
             $_result = [];
             foreach ($result as $r)
-                if ($r)
+                if (!is_null($r) && $r !== '') {
                     $_result[] = $r;
+                }
             return $_result;
         }
     }
@@ -3072,10 +3075,10 @@ class ApiQuery {
     }
 
     protected function _addFilterByOwnerUser($value) {
-        
-        $this->_keys['user'] = '__user_agent__.user';
+        $alias = uniqid('user_agent__');
+        $this->_keys['user'] = "{$alias}.user";
 
-        $this->joins .= "\n\tLEFT JOIN e.owner __user_agent__\n";
+        $this->joins .= "\n\tLEFT JOIN e.owner {$alias}\n";
         
         $this->_whereDqls[] = $this->parseParam($this->_keys['user'], $value);
     }

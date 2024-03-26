@@ -11,5 +11,5 @@ $this->import('
 ?>
 
 <div class="col-4 text-right">
-    <evaluation-method-documentary--apply :entity="phase"></evaluation-method-documentary--apply>
+    <evaluation-method-documentary--apply :entity="phase" :entities="entities"></evaluation-method-documentary--apply>
 </div>

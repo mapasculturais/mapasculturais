@@ -261,7 +261,7 @@ class API {
         return this.fetch('find', query, {list, raw, rawProcessor});
     }
 
-    async fetch(endpoint, query, {list, raw, rawProcessor}) {
+    async fetch(endpoint, query, {list, raw, rawProcessor, refresh}) {
         let url = this.createApiUrl(endpoint, query);
         return this.GET(url).then(response => response.json().then(objs => {
             let result;
@@ -281,7 +281,7 @@ class API {
                 objs.forEach(element => {
                     const api = new API(element['@entityType'], this.scope);
                     const entity = api.getEntityInstance(element[api.$PK]);
-                    entity.populate(element);
+                    entity.populate(element, !refresh);
                     result.push(entity);
                     entity.$LISTS.push(result);
                 });

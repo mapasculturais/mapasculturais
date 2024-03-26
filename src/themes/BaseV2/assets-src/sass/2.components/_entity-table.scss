@@ -133,6 +133,15 @@
         display: inline-block; 
         padding: size(10); 
         left: 0;
+        text-align: center;
+        svg.iconify {
+            width: size(26);
+            height: size(26);
+        }
+
+        a {
+            padding: 1em;
+        }
     }
 
     &__table-content-wrapper {
