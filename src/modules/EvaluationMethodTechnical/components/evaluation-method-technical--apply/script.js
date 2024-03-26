@@ -6,6 +6,11 @@ app.component('evaluation-method-technical--apply', {
         entity: {
             type: Entity,
             required: true
+        },
+
+        entities: {
+            type: Array,
+            required: true
         }
     },
 
@@ -59,28 +64,25 @@ app.component('evaluation-method-technical--apply', {
         },
 
         apply(modal, entity) {
-            this.infosApplyData();
+            const messages = useMessages();
             
+            this.infosApplyData();
             this.entity.disableMessages();
+
             this.entity.POST('appyTechnicalEvaluation', {
                 data: this.applyData, callback: data => {
-                    const messages = useMessages();
-                    if (data.error) {
-                        messages.error(data.data)
-                    } else {
-                        messages.success(data);
-                        modal.close();
-                        this.reloadPage();
-                    }
+                    messages.success(data);
+                    modal.close();
+                    this.reloadPage();
                     this.entity.enableMessages();
                 }
-            })
+            }).catch((data) => {
+                messages.error(data.data)
+            });
         },
 
         reloadPage(timeout = 1500) {
-            setTimeout(() => {
-                document.location.reload(true)
-            }, timeout);
+            this.entities.refresh();
         },
 
         changed(event) {

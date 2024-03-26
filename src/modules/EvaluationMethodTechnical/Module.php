@@ -475,7 +475,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
             /** @var Registration $this */
-            if($this->evaluationMethod->slug == 'technical') {
+            if($this->evaluationMethod && $this->evaluationMethod->slug == 'technical') {
                 $this->eligible = $this->isEligibleForAffirmativePolicies();
             }
         });
@@ -628,12 +628,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
 
-        $quota_data = (object)[];
+        $quota_data = null;
 
-        $app->hook('ApiQuery(registration).params', function(&$params) use($self, &$quota_data) {
+        $app->hook('ApiQuery(registration).params', function(&$params) use($app, $self, &$quota_data) {
             /** @var ApiQuery $this */
-            
-            if($quota_data->objectId ?? false) {
+
+            if(is_null($quota_data)) {
+                $quota_data = (object) [];
+            } else {
                 return;
             }
 
@@ -646,6 +648,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                 unset($params['@order']);
                 $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id, $params);
+                $opportunity = $app->repo('Opportunity')->find($phase_id);
+                $opportunity->registerRegistrationMetadata();
+
                 $ids = array_map(function($reg) { return $reg->id; }, $quota_order);
                 if($limit = (int) ($params['@limit'] ?? 0)) {
                     $page = $params['@page'] ?? 1;
@@ -727,8 +732,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
             // TAB POR PONTUAÇÃO
             if($this->data['tabSelected'] === 'score') {
+                if(!isset($this->data['setStatusTo'])) {
+                    $this->errorJson(i::__('Por favor selecione um status para ser aplicado.'), 400);
+                }
+                
                 if ($this->data['setStatusTo'] && (!is_numeric($this->data['setStatusTo']) || !in_array($this->data['setStatusTo'], [0,1,2,3,8,10]))) {
-                    $this->errorJson(i::__('os status válidos são 0, 1, 2, 3, 8 e 10'), 400);
+                    $this->errorJson(i::__('Os status válidos são 0, 1, 2, 3, 8 e 10'), 400);
                     die;
                 }
 
