@@ -27,7 +27,7 @@ $this->import('
 
      <template v-if="entity?.id" #default>
         <div>
-            <label><?php i::_e('Você pode completar as informações do sseu evento agora ou pode deixar para depois. '); ?> </label><br><br>
+            <label><?php i::_e('Você pode completar as informações do seu evento agora ou pode deixar para depois. '); ?> </label><br><br>
             <label><?php i::_e('Para completar e publicar seu novo evento, acesse a área <b>Rascunhos</b> em <b>Meus Eventos</b> no <b>Painel de Controle</b>.  ');?></label>
         </div>
         <hr><br>
