@@ -80,5 +80,19 @@
 
     .opportunity-payment-table__actions {
         margin-top: size(8);
+
+        .button {
+            min-width: size(272);
+        }
+
+        @media (max-width: 980px) {
+            display: flex;
+            flex-wrap: wrap;
+            gap: size(20);
+
+            .button {
+                min-width: 100%;
+            }
+        }
     }
 }
