@@ -97,6 +97,7 @@
 
     &__info {
         position: relative;
+        flex-wrap: wrap;
         align-items: center;
         display: flex;
         gap: size(10);
