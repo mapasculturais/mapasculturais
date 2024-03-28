@@ -39,6 +39,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
 
+## [7.3.34] - 2024-03-28
+### Correções
+- Corrige texto no modal de confirmação de criação de eventos
+
 ## [7.3.33] - 2024-03-21
 ### Correções
 - Evita que um agente de suporte que tenha controle sobre o edital, seja redirecionado para o modulo de suporte ao acessar uma inscrição atrvéz da listagem de inscrições
