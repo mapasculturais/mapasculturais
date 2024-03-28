@@ -647,6 +647,14 @@ class ApiQuery {
     }
     
     public function getFindOneResult() {
+        $app = App::i();
+        
+        $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset());
+
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
         if ($this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
             $result = $this->getSubClassesResult();
             if(!empty($result)) {
@@ -681,6 +689,8 @@ class ApiQuery {
             $this->processEntities($_tmp);
 
         }
+
+        $app->rcache->save($cache_key, $result);
 
         return $result;
     }
@@ -717,53 +727,72 @@ class ApiQuery {
         }
         return $result;
     }
+
+    function getCacheKey($method, string $select = null, $offset = null, $limit = null) {
+        $dql = $this->getFindDQL($select);
+        $params = $this->getDqlParams();
+
+        return md5(print_r([
+            $method,
+            str_replace(array_keys($params), array_values($params), $dql),
+            $offset,
+            $limit
+        ], true));
+    }
     
     private $__inSubclassesQuery = false;
     public function getFindResult(string $select = null) {
         $app = App::i();
-        
-        if (!$this->__inSubclassesQuery && $this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
+
+        $cache_key = $this->getCacheKey(__METHOD__, $select, $this->getOffset(), $this->getLimit());
+
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
+        if (!$this->_findingIds && !$this->__inSubclassesQuery && $this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
             $this->__inSubclassesQuery = true;
             $result = $this->getSubClassesResult();
             $this->__inSubclassesQuery = false;
-            return $result;
-        }
-
-        $dql = $this->getFindDQL($select);
-        $q = $this->em->createQuery($dql);
-        if($this->__useDQLCache){
-            $q->enableResultCache($this->__cacheTLS);
-        }
-
-        if ($offset = $this->getOffset()) {
-            $q->setFirstResult($offset);
-        }
-
-        if ($limit = $this->getLimit()) {
-            $q->setMaxResults($limit);
-        }
-
-        $params = $this->getDqlParams();
-
-        $q->setParameters($params);
-        $this->logDql($dql, __FUNCTION__, $params);
-        
-        $result = [];
-        $ids = [];
-        
-        // removes duplicated values
-        foreach($q->getResult(Query::HYDRATE_ARRAY) as $r){
-            if(!isset($ids[$r[$this->pk]])){
-                $ids[$r[$this->pk]] = true;
-                $result[] = $r;
+        } else {
+            $dql = $this->getFindDQL($select);
+            $q = $this->em->createQuery($dql);
+            if($this->__useDQLCache){
+                $q->enableResultCache($this->__cacheTLS);
+            }
+    
+            if ($offset = $this->getOffset()) {
+                $q->setFirstResult($offset);
+            }
+    
+            if ($limit = $this->getLimit()) {
+                $q->setMaxResults($limit);
+            }
+    
+            $params = $this->getDqlParams();
+    
+            $q->setParameters($params);
+            $this->logDql($dql, __FUNCTION__, $params);
+            
+            $result = [];
+            $ids = [];
+            
+            // removes duplicated values
+            foreach($q->getResult(Query::HYDRATE_ARRAY) as $r){
+                if(!isset($ids[$r[$this->pk]])){
+                    $ids[$r[$this->pk]] = true;
+                    $result[] = $r;
+                }
+            }
+    
+            if(!$this->_findingIds) {
+                $this->processEntities($result);
             }
         }
 
-        if(!$this->_findingIds) {
-            $this->processEntities($result);
-        }
-
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.findResult", [&$result]);
+
+        $app->rcache->save($cache_key, $result);
 
         return $result;
     }
@@ -775,7 +804,13 @@ class ApiQuery {
     
     public function getCountResult() {
         $app = App::i();
-        
+
+        $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset(), limit: $this->getLimit());
+
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
         $dql = $this->getCountDQL();
 
         $q = $this->em->createQuery($dql);
@@ -792,7 +827,9 @@ class ApiQuery {
         $result = $q->getSingleScalarResult();
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.countResult", [&$result]);
-        
+
+        $app->rcache->save($cache_key, $result);
+
         return $result;
     }
     
@@ -897,7 +934,7 @@ class ApiQuery {
         if(is_null($property)) {
             $property = $this->pk;
         }
-        if (!$force_ids || count($entities) > $this->maxBeforeSubquery && !$this->getOffset() && !$this->getLimit()) {
+        if (count($entities) > $this->maxBeforeSubquery) {
             $this->_usingSubquery = true;
             $result = $this->getSubDQL($property);
         } else {
