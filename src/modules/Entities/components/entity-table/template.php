@@ -96,8 +96,8 @@ $this->import('
             <div class="entity-table__info">
                 <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
 
-                <mc-select small v-model:default-value="entitiesOrder" placeholder="<?= i::__('Selecione a ordem de listagem') ?>">
-                    <option v-for="option in sortOptions" :value="option.order">{{option.label}}</option>
+                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>">
+                    <!-- <option v-for="option in sortOptions" :value="option.order">{{option.label}}</option> -->
                 </mc-select>
             </div>
         </template>
