@@ -30,6 +30,7 @@
     },
     "autoload": {
         "psr-4": {
+            "App\\": "src/app",
             "MapasCulturais\\": "src/core",
             "MapasCulturais\\Modules\\": "src/modules",
             "MapasCulturais\\Themes\\": "src/themes"
