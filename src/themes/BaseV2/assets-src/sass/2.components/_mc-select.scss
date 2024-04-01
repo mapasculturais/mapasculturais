@@ -44,15 +44,36 @@
         }
     }
 
-    &__options {
+    &__dropdown {
         background-color: var(--mc-white);
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-500);
-        margin-top: size(2);
-        min-width: 100%;
-        overflow: hidden;
-        position: absolute;
-        z-index: 1;
+    }
+
+    &__filter {
+        padding: size(5) size(10);
+        display: flex;
+        gap: size(8);
+        justify-content: flex-end;
+        border-bottom: var(--mc-border-hairline);
+    }
+
+    &__filter-input {
+        width: 100%;
+        padding: size(6) size(16);
+        font-family: var(--mc-font-body);
+    }
+
+    &__close {
+        display: flex;
+        align-items: center;
+        padding: size(10);
+        cursor: pointer;
+    }
+
+    &__options {
+        max-height: size(384);
+        overflow: auto;
 
         & > * {
             border-radius: var(--mc-border-radius-xs);
@@ -88,6 +109,50 @@
                 &:hover,
                 &.active {
                     background-color: var(--mc-gray-300);
+                }
+            }
+        }
+    }
+
+    &__popper {
+        &.v-popper {
+            &__popper {
+                .v-popper {
+                    &__inner {
+                        border: none;
+                    }
+
+                    &__arrow-container {
+                        display: none;
+                    }
+                }
+            }
+
+            &__popper--no-positioning {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+
+                & > .v-popper {
+                    &__backdrop {
+                        position: absolute;
+                        /* top: 0; */
+                        /* left: 0; */
+                        width: 100vw;
+                        height: 100vh;
+                        display: block;
+                        background: rgba(0, 0, 0, .5);
+                    }
+
+                    &__wrapper {
+                        position: fixed;
+                        width: 100%;
+                        bottom: 0;                        
+                    }
+                }
+
+                .mc-select__options {
+                    max-height: calc(100vh - size(46));
                 }
             }
         }
