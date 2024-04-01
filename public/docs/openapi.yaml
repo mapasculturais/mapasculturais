@@ -129,6 +129,8 @@ paths:
     $ref: './components/paths/space/route-single-id.yaml'
   /site/version:
     $ref: './components/paths/site/version.yaml'
+  /site/info:
+    $ref: './components/paths/site/info.yaml'
 components:
   schemas:
     Agent:
