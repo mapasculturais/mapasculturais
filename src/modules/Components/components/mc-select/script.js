@@ -22,6 +22,10 @@ app.component('mc-select', {
             type: Boolean,
             default: false,
         },
+
+        options: {
+            type: Array,
+        }
     },
 
     setup(props, { slots }) {
@@ -32,31 +36,51 @@ app.component('mc-select', {
     },
 
     mounted() {
+
         setTimeout(() => {
-            const options = this.$refs.options.children;            
-            for (const [index, option] of Object.entries(options)) {
+            const options = this.$refs.options.children;
+            
+            for (const [index, option] of Object.entries(options)) {                            
+                const refOptions = this.$refs.options;
+                const refSelected = this.$refs.selected;
                 
-                if (this.hasGroups) {
-                    for (const [_index, _option] of Object.entries(option.children)) {
-                        _option.addEventListener("click", (e) => this.selectOption(e));
-                        this.setDefaultOption(_option);
+                while (!option.hasAttribute('value') && option != refOptions) {
+                    option = option.parentElement;
+                }
+    
+                if (!option.hasAttribute('value')) {
+                    console.error('Atributo value não encontrado');
+                    return;
+                }
+
+                if (this.defaultValue != null || this.defaultValue != '') {
+    
+                    let optionText = option.text ?? option.textContent;
+                    let optionValue = option.value ?? option.getAttribute('value');
+                    let optionItem = option.outerHTML;
+    
+                    if (optionValue == this.defaultValue) {
+                        this.optionSelected = {
+                            text: optionText,
+                            value: optionValue,
+                        }
+    
+                        refSelected.innerHTML = optionItem;
                     }
-                } else {
-                    option.addEventListener("click", (e) => this.selectOption(e));
-                    this.setDefaultOption(option);
                 }
             }
-
-            if (this.defaultValue === null || this.defaultValue === '') {
+    
+            if (this.defaultValue === null || this.defaultValue === '' || this.$refs.selected.innerHTML === '') {
                 this.$refs.selected.innerHTML = this.placeholder;
             }
         });
 
         document.addEventListener('mousedown', (event) => {
-            const select = event.target.closest('.mc-select');
+            const select = event.target.closest('.mc-select') || event.target.closest('.mc-select__options');
+
             if (!select) {
                 this.open = false
-            } else if (event.target.closest('.mc-select').getAttribute('id') != this.uniqueID) {
+            } else if (select.getAttribute('id') != this.uniqueID) {
                 this.open = false;
             }
         });
@@ -64,7 +88,6 @@ app.component('mc-select', {
 
     unmounted() {
         document.removeEventListener('mousedown', {});
-        document.removeEventListener('click', {});
     },
 
     data() {
@@ -78,73 +101,64 @@ app.component('mc-select', {
         };
     },
 
+    computed: {
+        selectOptions() {
+            const result = [];
+
+            for(let option of this.options) {
+                if (typeof option == "string") {
+                    result.push({
+                        value: option,
+                        label: option,
+                    });
+                } else {
+                    result.push(option);
+                }
+            }
+
+            return result;
+        }
+    },
+
     methods: {
         toggleSelect() {
             this.open = !this.open
+
+            const refOptions = this.$refs.options;
+            const refSelected = this.$refs.selected;
+
+            refOptions.style.minWidth = refSelected.clientWidth + 'px'; 
         },
 
         selectOption(event) {
-            const options = this.$refs.options.children;       
-            let optionText = event.target.text ?? event.target.textContent;
-            let optionValue = event.target.value ?? event.target.getAttribute('value');
-            let optionItem = event.target.outerHTML;
+            const refOptions = this.$refs.options;
+            const refSelected = this.$refs.selected;
 
-            if (this.optionSelected.value != optionValue) {
-                for (const [index, option] of Object.entries(options)) {
+            let option = event.target;
 
-                    if (this.hasGroups) {
-                        for (const [_index, _option] of Object.entries(option.children)) {
-                            if (_option.text == optionText || _option.textContent == optionText) {
-                                this.optionSelected = {
-                                    text: optionText,
-                                    value: optionValue,
-                                }
-
-                                this.$emit('update:defaultValue', optionValue);
-                                this.$refs.selected.innerHTML = optionItem;
-                            }
-
-                            _option.classList.remove('active');
-                        }
-                    } else {
-                        if (option.text == optionText || option.textContent == optionText) {
-                            this.optionSelected = {
-                                text: optionText,
-                                value: optionValue,
-                            }
-    
-                            this.$emit('update:defaultValue', optionValue);
-                            this.$refs.selected.innerHTML = optionItem;
-                        }   
-
-                        option.classList.remove('active');
-                    }
-                };
-
-                this.$emit("changeOption", this.optionSelected);
+            while (!option.hasAttribute('value') && option != refOptions) {
+                option = option.parentElement;
+            }
+            
+            if (!option.hasAttribute('value')) {
+                console.error('Atributo value não encontrado');
+                return;
             }
 
-            event.target.classList.add('active');
+            let optionText = option.text ?? option.textContent;
+            let optionValue = option.value ?? option.getAttribute('value');
+            let optionItem = option.outerHTML;
+            
+            this.optionSelected = {
+                text: optionText,
+                value: optionValue,
+            }
+
+            refSelected.innerHTML = optionItem;
+            this.$emit('changeOption', this.optionSelected);
+            this.$emit('update:defaultValue', optionValue);
+
             this.toggleSelect();
-        },
-
-        setDefaultOption(option) {
-            if (this.defaultValue != null || this.defaultValue != '') {
-                let optionText = option.text ?? option.textContent;
-                let optionValue = option.value ?? option.getAttribute('value');
-                let optionItem = option.outerHTML;
-                
-                if (optionValue == this.defaultValue) {
-                    this.optionSelected = {
-                        text: optionText,
-                        value: optionValue,
-                    }
-                    
-                    option.classList.add('active');
-                    
-                    this.$refs.selected.innerHTML = optionItem;
-                }
-            }
         }
     },
 });
