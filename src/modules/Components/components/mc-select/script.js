@@ -18,6 +18,11 @@ app.component('mc-select', {
             default: false,
         },
 
+        hideFilter: {
+            type: Boolean,
+            default: false,
+        },
+
         small: {
             type: Boolean,
             default: false,
@@ -25,7 +30,7 @@ app.component('mc-select', {
 
         options: {
             type: Array,
-        }
+        },
     },
 
     setup(props, { slots }) {
@@ -39,6 +44,7 @@ app.component('mc-select', {
 
         setTimeout(() => {
             const options = this.$refs.options.children;
+            this.defaultOptions = Object.freeze(Array.from(options));
             
             for (const [index, option] of Object.entries(options)) {                            
                 const refOptions = this.$refs.options;
@@ -77,12 +83,20 @@ app.component('mc-select', {
 
         document.addEventListener('mousedown', (event) => {
             const select = event.target.closest('.mc-select') || event.target.closest('.mc-select__options');
-
-            if (!select) {
-                this.open = false
-            } else if (select.getAttribute('id') != this.uniqueID) {
-                this.open = false;
+            
+            if (!event.target.closest('.mc-select__filter')) {
+                if (!select) {
+                    this.open = false
+                } else if (select.getAttribute('id') != this.uniqueID) {
+                    this.open = false;
+                }
             }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if((e.key=="27") || (e.key =="Escape")) {
+                this.closeSelect();
+            }            
         });
     },
 
@@ -98,6 +112,8 @@ app.component('mc-select', {
             },
             open: false,
             uniqueID: (Math.floor(Math.random() * 9000) + 1000),
+            filter: '',
+            defaultOptions: [],
         };
     },
 
@@ -106,6 +122,7 @@ app.component('mc-select', {
             const result = [];
 
             for(let option of this.options) {
+                // debugger;
                 if (typeof option == "string") {
                     result.push({
                         value: option,
@@ -121,8 +138,29 @@ app.component('mc-select', {
     },
 
     methods: {
+        focus() {
+            const inputs = this.$refs.filter.getElementsByTagName('input');
+            if (inputs.length) {
+                setTimeout(() => {
+                    if (inputs[0].getAttribute("type") == 'text') {
+                        inputs[0].focus();
+                    }
+                }, 100);
+            }
+        },
+
+        openSelect() {
+            this.open = true;
+        },
+
+        closeSelect() {
+            this.open = false;
+            this.filter = '';
+            this.filterOptions();
+        },
+
         toggleSelect() {
-            this.open = !this.open
+            this.open ? this.closeSelect() : this.openSelect();
 
             const refOptions = this.$refs.options;
             const refSelected = this.$refs.selected;
@@ -154,11 +192,58 @@ app.component('mc-select', {
                 value: optionValue,
             }
 
-            refSelected.innerHTML = optionItem;
+            refSelected.innerHTML = optionItem.replace(/<b><u>(.*?)<\/u><\/b>/, '$1');
             this.$emit('changeOption', this.optionSelected);
             this.$emit('update:defaultValue', optionValue);
 
             this.toggleSelect();
-        }
+        },
+
+        filterOptions() {
+            let options = this.defaultOptions;
+            let result = [];
+            
+            for (const [index, option] of Object.entries(options)) {
+                const label = option.text ?? option.textContent;
+                const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                const indexOf = _item.indexOf(_filter);
+                if(indexOf >= 0) {
+                    const part0 = label.substr(0, indexOf); 
+                    const part1 = label.substr(indexOf, this.filter.length); 
+                    const part2 = label.substr(indexOf + this.filter.length);
+                    
+                    let highlighted = `${part0}<b><u>${part1}</u></b>${part2}`;
+
+                    const cleanText = option.innerHTML.replace(/<b><u>(.*?)<\/u><\/b>/, '$1');
+
+                    option.innerHTML = cleanText.replace(label, highlighted);
+                    result.push(option);
+                }
+            }
+
+            this.$refs.options.innerHTML = '';
+
+            result = result.sort((a, b) => {
+                let aText = a.text || a.textContent;
+                let bText = b.text || b.textContent;
+                if (aText > bText) {
+                    return 1;
+                } else if (aText < bText) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+
+            if (result.length > 0) {
+                result.forEach(option => {
+                    this.$refs.options.appendChild(option);
+                });
+            } else {
+                this.$refs.options.innerHTML = 'Nenhuma opção encontrada';
+            }
+        },
     },
 });
