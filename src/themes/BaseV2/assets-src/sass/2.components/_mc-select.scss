@@ -90,6 +90,40 @@
         }
     }
 
+    &__popper {
+        &.v-popper {
+            &__popper {
+                .v-popper__inner {
+                    border: none;
+                }
+            }
+
+            &__popper--no-positioning {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+
+                & > .v-popper {
+                    &__backdrop {
+                        position: absolute;
+                        /* top: 0; */
+                        /* left: 0; */
+                        width: 100vw;
+                        height: 100vh;
+                        display: block;
+                        background: rgba(0, 0, 0, .5);
+                    }
+
+                    &__wrapper {
+                        position: fixed;
+                        width: 100%;
+                        bottom: 0;                        
+                    }
+                }
+            }
+        }
+    }
+
     &--sm & {
         line-height: size(20);
 
