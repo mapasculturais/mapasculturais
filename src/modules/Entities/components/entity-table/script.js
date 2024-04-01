@@ -57,10 +57,10 @@ app.component('entity-table', {
         sortOptions: {
             type: Array,
             default: [
-                { order: 'createTimestamp DESC', label: __('mais recentes primeiro', 'entity-table') },
-                { order: 'createTimestamp ASC',  label: __('mais antidas primeiro', 'entity-table') },
-                { order: 'updateTimestamp DESC', label: __('modificadas recentemente', 'entity-table') },
-                { order: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
+                { value: 'createTimestamp DESC', label: __('mais recentes primeiro', 'entity-table') },
+                { value: 'createTimestamp ASC',  label: __('mais antidas primeiro', 'entity-table') },
+                { value: 'updateTimestamp DESC', label: __('modificadas recentemente', 'entity-table') },
+                { value: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
             ]
         },
     },
