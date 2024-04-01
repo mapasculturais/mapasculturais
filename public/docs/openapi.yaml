@@ -34,9 +34,11 @@ tags:
     description: Rotas relacionadas ao site
 paths:
   /agent/addRole/{id}:
-    $ref: './components/paths/agent/addRole.yaml'
+    $ref: './components/paths/agent/add-role.yaml'
   /agent/index:
     $ref: './components/paths/agent/create.yaml'
+  /agent/removeRole/{id}:
+    $ref: './components/paths/agent/remove-role.yaml'
   /agente/{id}:
     $ref: './components/paths/agent/route-single-id.yaml'
   /api/agent/describe:
