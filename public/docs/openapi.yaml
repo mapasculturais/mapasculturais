@@ -33,6 +33,12 @@ tags:
   - name: Site
     description: Rotas relacionadas ao site
 paths:
+  /agent/addRole/{id}:
+    $ref: './components/paths/agent/addRole.yaml'
+  /agent/index:
+    $ref: './components/paths/agent/create.yaml'
+  /agente/{id}:
+    $ref: './components/paths/agent/route-single-id.yaml'
   /api/agent/describe:
     $ref: './components/paths/agent/describe.yaml'
   /api/agent/find:
@@ -43,10 +49,6 @@ paths:
     $ref: './components/paths/agent/get-type-groups.yaml'
   /api/agent/getTypes:
     $ref: './components/paths/agent/get-types.yaml'
-  /agent/index:
-    $ref: './components/paths/agent/create.yaml'
-  /agente/{id}:
-    $ref: './components/paths/agent/route-single-id.yaml'
   /api/event/describe:
     $ref: './components/paths/event/describe.yaml'
   /api/event/find:
