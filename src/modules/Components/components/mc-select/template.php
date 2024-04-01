@@ -9,7 +9,7 @@ use MapasCulturais\i;
 ?>
 
 <div :class="['mc-select', {'mc-select--sm' : small }]" :id="uniqueID">
-    <VDropdown :triggers="[]" :shown="open" :autoHide="false" popperClass="mc-select__popper" ref="dropdown" eager-mount>
+    <VDropdown :triggers="[]" :shown="open" :autoHide="false" popperClass="mc-select__popper" ref="dropdown" eager-mount :positioning-disabled="$media('max-width: 500px')">
         <div ref="selected" :class="['mc-select__selected-option', {'mc-select__selected-option--open' : open }]" @click="toggleSelect();">
         </div>
 
