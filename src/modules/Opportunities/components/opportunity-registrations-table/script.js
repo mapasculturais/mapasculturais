@@ -69,18 +69,18 @@ app.component('opportunity-registrations-table', {
         }
 
         const sortOptions = [
-            { order: `status DESC,${consolidatedResultOrder} DESC`, label: 'por status descendente' },
-            { order: `status ASC,${consolidatedResultOrder} ASC`, label: 'por status ascendente' },
-            { order: `${consolidatedResultOrder} DESC`, label: 'resultado das avaliações' },
-            { order: 'createTimestamp ASC', label: 'mais antigas primeiro' },
-            { order: 'createTimestamp DESC', label: 'mais recentes primeiro' },
-            { order: 'sentTimestamp ASC', label: 'enviadas a mais tempo primeiro' },
-            { order: 'sentTimestamp DESC', label: 'enviadas a menos tempo primeiro' },
+            { value: `status DESC,${consolidatedResultOrder} DESC`, label: 'por status descendente' },
+            { value: `status ASC,${consolidatedResultOrder} ASC`, label: 'por status ascendente' },
+            { value: `${consolidatedResultOrder} DESC`, label: 'resultado das avaliações' },
+            { value: 'createTimestamp ASC', label: 'mais antigas primeiro' },
+            { value: 'createTimestamp DESC', label: 'mais recentes primeiro' },
+            { value: 'sentTimestamp ASC', label: 'enviadas a mais tempo primeiro' },
+            { value: 'sentTimestamp DESC', label: 'enviadas a menos tempo primeiro' },
         ];
 
         if(hadTechnicalEvaluationPhase) {
             order = 'score DESC';
-            sortOptions.splice(0, 0, {order: 'score DESC', label: 'pontuação final'});
+            sortOptions.splice(0, 0, {value: 'score DESC', label: 'pontuação final'});
         }
 
         if(isAffirmativePoliciesActive) {
@@ -92,7 +92,7 @@ app.component('opportunity-registrations-table', {
 
             visibleColumns += ',eligible';
             order = '@quota';
-            sortOptions.splice(0, 0, {order: '@quota', label: 'classificação final'});
+            sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
         }
 
         return {
@@ -171,7 +171,7 @@ app.component('opportunity-registrations-table', {
                 { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
                 { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
                 { text: __('data de envio', 'opportunity-registrations-table'), value: "sentTimestamp" },
-                { text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px'},
+                { text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true},
             ];
 
             if(this.phase.evaluationMethodConfiguration){
