@@ -39,6 +39,8 @@ paths:
     $ref: './components/paths/agent/create.yaml'
   /agent/removeRole/{id}:
     $ref: './components/paths/agent/remove-role.yaml'
+  /agent/setAsUserProfile:
+    $ref: './components/paths/agent/set-as-user-profile.yaml'
   /agente/{id}:
     $ref: './components/paths/agent/route-single-id.yaml'
   /api/agent/describe:
