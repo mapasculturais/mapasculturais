@@ -1,0 +1,16 @@
+get:
+  summary: Retorna a versão atual do site
+  responses:
+    200:
+      description: Sucess
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Mapa Cultural
+              version:
+                type: string
+                example: DEVELOP

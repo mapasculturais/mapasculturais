@@ -30,6 +30,8 @@ tags:
     description: Rotas relacionadas aos projetos
   - name: Selos
     description: Rotas relacionadas aos selos
+  - name: Site
+    description: Rotas relacionadas ao site
 paths:
   /api/agent/describe:
     $ref: './components/paths/agent/describe.yaml'
@@ -117,6 +119,8 @@ paths:
     $ref: './components/paths/space/create.yaml'
   /espaco/{id}:
     $ref: './components/paths/space/route-single-id.yaml'
+  /site/version:
+    $ref: './components/paths/site/version.yaml'
 components:
   schemas:
     Agent:
