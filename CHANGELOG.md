@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.35] - 2024-04-01
+### Melhorias
+- Cria novos hooks no componente mc-header
+
 ## [7.3.34] - 2024-03-28
 ### Correções
 - Corrige texto no modal de confirmação de criação de eventos
