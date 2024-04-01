@@ -51,6 +51,10 @@ paths:
     $ref: './components/paths/event/describe.yaml'
   /api/event/find:
     $ref: './components/paths/event/find.yaml'
+  /api/event/findByLocation:
+    $ref: './components/paths/event/find-by-location.yaml'
+  /api/event/findBySpace:
+    $ref: './components/paths/event/find-by-space.yaml'
   /api/event/findOccurrences:
     $ref: './components/paths/event/find-occurrences.yaml'
   /api/event/findOne:

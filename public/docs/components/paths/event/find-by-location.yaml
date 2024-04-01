@@ -1,0 +1,32 @@
+get:
+  tags:
+    - Eventos
+  summary: Recupera a lista de eventos por localização
+  description: Busca os eventos por localizção.
+  parameters:
+    - $ref: '../../parameters/space-id.yaml'
+    - name: space:atributo
+      in: query
+      description: Realizar a pesquisa das ocorrências de eventos por espaço.
+      required: false
+      schema:
+        type: string
+    - $ref: '../../parameters/from.yaml'
+    - $ref: '../../parameters/to.yaml'
+    - name: _geoLocation
+      in: query
+      description: Localização geográfica do evento.
+      required: false
+      schema:
+        type: string
+    - $ref: '../../parameters/count.yaml'
+  responses:
+    '200':
+      description: Lista de eventos do local.
+      content:
+        application/json:
+          schema:
+            type: array
+            example: []
+    '404':
+      $ref: '../../responses/error/404.yaml'

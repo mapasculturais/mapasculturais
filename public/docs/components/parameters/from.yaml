@@ -3,6 +3,5 @@ in: query
 schema:
   type: string
   format: date
-required: true
 description: Data inicial do período.
 example: '2021-01-01'

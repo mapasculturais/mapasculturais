@@ -1,38 +1,37 @@
-delete:
-  tags:
-    - Eventos
-  summary: Apaga um evento
-  description: Apaga um evento baseado no ID fornecido.
-  parameters:
-    - in: path
-      name: id
-      schema:
-        type: integer
-        required: true
-        description: Identificador único do evento.
-  responses:
-    '200':
-      description: Informações sobre o evento apagado.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              '@entityType':
-                type: string
-                example: event
-                description: Tipo de entidade.
-              id:
-                type: integer
-                example: 10
-                description: Um id numérico que representa o evento.
-              name:
-                type: string
-                example: "Festival de Verão"
-                description: Nome do evento.
-              status:
-                type: integer
-                example: -10
-                description: Status do evento após ser apagado.
-    '404':
-      $ref: '../../responses/error/404.yaml'
+tags:
+  - Eventos
+summary: Apaga um evento
+description: Apaga um evento baseado no ID fornecido.
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+      required: true
+      description: Identificador único do evento.
+responses:
+  '200':
+    description: Informações sobre o evento apagado.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            '@entityType':
+              type: string
+              example: event
+              description: Tipo de entidade.
+            id:
+              type: integer
+              example: 10
+              description: Um id numérico que representa o evento.
+            name:
+              type: string
+              example: "Festival de Verão"
+              description: Nome do evento.
+            status:
+              type: integer
+              example: -10
+              description: Status do evento após ser apagado.
+  '404':
+    $ref: '../../responses/error/404.yaml'
