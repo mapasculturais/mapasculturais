@@ -48,11 +48,8 @@
         background-color: var(--mc-white);
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-500);
-        margin-top: size(2);
         min-width: 100%;
         overflow: hidden;
-        position: absolute;
-        z-index: 1;
 
         & > * {
             border-radius: var(--mc-border-radius-xs);
