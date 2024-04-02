@@ -135,4 +135,36 @@
             grid-template-columns: repeat(1, 1fr);
         }
     }
+
+    &__config-button {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding-top: size(32);
+
+        &::before {
+            background: var(--mc-gray-100);
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: size(10);
+            top: size(52);
+        }
+
+        .config-phase__info-button {
+            background-color: var(--mc-primary-300);
+            border: var(--mc-border-hairline) var(--mc-primary-300);
+            color: var(--mc-low-500);
+            grid-template-columns: calc(70% - size(16)) size(15);
+            align-content: center;
+            max-width: 100%;
+            width: 35%;
+            height: size(52);
+
+            @media (max-width: 680px) {
+                width: 60%;
+                grid-template-columns: 1fr auto;
+            }
+        }
+    }
 }
