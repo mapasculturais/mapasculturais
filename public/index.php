@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-include_once dirname(__DIR__).'/app/src/Kernel.php';
+use App\Kernel;
 
-\App\Kernel::execute();
+include dirname(__DIR__).'/vendor/autoload.php';
+
+Kernel::execute();
 
 require_once 'bootstrap.php';
 

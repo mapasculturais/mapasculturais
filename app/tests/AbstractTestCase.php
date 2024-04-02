@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace App\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\HttpClient;

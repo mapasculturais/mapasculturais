@@ -26,11 +26,13 @@
         "symfony/mailgun-mailer": "^6.3",
         "symfony/mime": "^6.3",
         "symfony/sendgrid-mailer": "^6.3",
-        "league/csv": "^9.6.2"
+        "league/csv": "^9.6.2",
+        "symfony/http-foundation": "^7.0"
     },
     "autoload": {
         "psr-4": {
             "App\\": "app/src",
+            "App\\Tests\\": "app/tests",
             "MapasCulturais\\": "src/core",
             "MapasCulturais\\Modules\\": "src/modules",
             "MapasCulturais\\Themes\\": "src/themes"
@@ -51,6 +53,8 @@
         }
     ],
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.51"
+        "friendsofphp/php-cs-fixer": "^3.51",
+        "phpunit/phpunit": "^10",
+        "symfony/http-client": "^7"
     }
 }

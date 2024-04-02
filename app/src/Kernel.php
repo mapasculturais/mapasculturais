@@ -10,8 +10,6 @@ class Kernel
 {
     public static function execute(): void
     {
-        include dirname(__DIR__ ) . '/vendor/autoload.php';
-
         $routes = require_once dirname(__DIR__).'/routes/routes.php';
 
         $url = $_SERVER['REQUEST_URI'];

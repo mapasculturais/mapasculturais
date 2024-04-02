@@ -12,6 +12,7 @@ COPY public /var/www/html
 COPY scripts /var/www/scripts
 COPY src /var/www/src
 COPY var /var/www/var
+COPY app /var/www/app
 COPY docker/common/config.d /var/www/config/common.d
 COPY docker/production/config.d /var/www/config/prod.d
 COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
