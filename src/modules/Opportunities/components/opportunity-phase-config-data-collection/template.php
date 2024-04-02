@@ -23,12 +23,6 @@ $this->import('
             <entity-field :entity="phase" prop="registrationFrom" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
             <entity-field :entity="phase" prop="registrationTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
 
-            <div class="col-12 grid-12">
-                <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
-                    <?= i::__("Configurar formulário") ?>
-                </mc-link>
-            </div>
-
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
         <div class="opportunity-data-collection__limits col-12" v-if="phase.isFirstPhase">
@@ -62,6 +56,12 @@ $this->import('
 
         <div class="col-12 sm:col-12">
             <?php $this->applyComponentHook('bottom') ?>
+        </div>
+
+         <div class="col-12 grid-12 opportunity-data-collection__config-button">
+            <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
+            <?= i::__("Configurar formulário") ?>
+            </mc-link>
         </div>
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
