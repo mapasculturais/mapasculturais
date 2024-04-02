@@ -22,6 +22,7 @@ services:
       - ../public:/var/www/html
       - ../scripts:/var/www/scripts
       - ../src:/var/www/src
+      - ../app:/var/www/app
       - ../var:/var/www/var
 
       - ../docker/development/router.php:/var/www/router.php

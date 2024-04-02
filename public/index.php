@@ -2,18 +2,10 @@
 
 declare(strict_types=1);
 
+include_once dirname(__DIR__).'/app/src/Kernel.php';
+
+\App\Kernel::execute();
+
 require_once 'bootstrap.php';
-
-$routes = require_once __DIR__.'/../src/app/routes/routes.php';
-
-$url = $_SERVER['REQUEST_URI'];
-
-if (true === isset($routes[$url])) {
-    $controller = $routes[$url][0];
-    $method = $routes[$url][1];
-
-    (new $controller())->$method();
-    exit;
-}
 
 $app->run();

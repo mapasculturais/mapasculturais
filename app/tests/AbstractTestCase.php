@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests;
+
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+
+abstract class AbstractTestCase extends TestCase
+{
+    public HttpClientInterface $client;
+
+    protected function setUp(): void
+    {
+        $this->client = HttpClient::create()->withOptions([
+            'base_uri' => 'http://localhost'
+        ]);
+
+        parent::setUp();
+    }
+}
