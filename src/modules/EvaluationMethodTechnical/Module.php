@@ -1403,6 +1403,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return $result;
             }
             
+            $self = new self(); 
+
             foreach($tiebreaker_configuration as $tiebreaker) {
                 $selected = $tiebreaker->selected;
                 if($selected !== null && $selected->fieldType == 'select') {
@@ -1462,9 +1464,110 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         }
                     }
                 }
+
+                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'criterion') {
+                    $registration1Has = $self->tiebreakerCriterion($tiebreaker->preferences, $registration1->id);
+                    $registration2Has = $self->tiebreakerCriterion($tiebreaker->preferences, $registration2->id);
+
+                    if($registration1Has != $registration2Has) {
+                        return $registration2Has <=> $registration1Has;
+                    }
+                }
+
+                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'sectionCriteria') {
+                    $registration1Has = $self->tiebreakerSectionCriteria($tiebreaker->preferences, $registration1->id);
+                    $registration2Has = $self->tiebreakerSectionCriteria($tiebreaker->preferences, $registration2->id);
+
+                    if($registration1Has != $registration2Has) {
+                        return $registration2Has <=> $registration1Has;
+                    }
+                }
+
             }
         });
         
         return $registrations;
+    }
+
+    public function tiebreakerCriterion($criteriaId, $registrationId) {
+        $app = App::i();
+        
+        $registration = $app->repo('Registration')->find($registrationId);
+        $criteria = $registration->evaluationMethodConfiguration->criteria;
+
+        $findCriteria = [];
+        foreach($criteria as $criterion) {
+            if($criterion->id === $criteriaId) {
+                $findCriteria[] = $criterion;
+            }
+        }
+
+        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
+        ];
+
+        $committee = $registration->opportunity->getEvaluationCommittee();
+
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
+
+        $result = 0;
+        foreach ($evaluations as $eval) {
+            foreach($eval->evaluationData as $key => $data) {
+                foreach($findCriteria as $cri) {
+                    if($key === $criteriaId) {
+                        $result += $data * $cri->weight;
+                    }
+                }
+            }
+        }
+
+        $num = count($evaluations);
+
+        return $num ? number_format($result / $num, 2) : null;
+    }
+
+    public function tiebreakerSectionCriteria($sectionId, $registrationId) {
+        $app = App::i();
+        
+        $registration = $app->repo('Registration')->find($registrationId);
+        $criteria = $registration->evaluationMethodConfiguration->criteria;
+
+        $findCriteria = [];
+        foreach($criteria as $criterion) {
+            if($criterion->sid === $sectionId) {
+                $findCriteria[] = $criterion;
+            }
+        }
+
+        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
+        ];
+
+        $committee = $registration->opportunity->getEvaluationCommittee();
+
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
+
+        $result = 0;
+        foreach ($evaluations as $eval) {
+            foreach($eval->evaluationData as $key => $data) {
+                foreach($findCriteria as $cri) {
+                    if($key === $cri->id) {
+                        $result += $data * $cri->weight;
+                    }
+                }
+            }
+        }
+
+        return number_format($result, 2);
     }
 }
