@@ -39,6 +39,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
 
+## [7.3.37] - 2024-04-22
+### Correçoes
+- Corrige campos @ das redes sociais
+
+## [7.3.36] - 2024-04-02
+### Correçoes
+- Corrige hooks duplicados no componente mc-header
+>>>>>>> master
+
 ## [7.3.35] - 2024-04-01
 ### Melhorias
 - Cria novos hooks no componente mc-header
