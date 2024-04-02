@@ -15,15 +15,15 @@ $this->import('
 ?>
 <div class="opportunity-ranges-config">
     <div class="opportunity-ranges-config__header">
-        <h4 class="bold"><?= $this->text('header-title', i::__('Configuração por Faixas')) ?></h4>
+        <h4 class="bold"><?= $this->text('header-title', i::__('Configuração de faixas/linhas')) ?></h4>
         <h6><?= $this->text('header-description', i::__('Crie e configure as faixas abaixo, inserindo um breve resumo, quantidade e valor de cada uma delas.')) ?></h6>
     </div>
 
     
     <div class="opportunity-ranges-config__content grid-12" v-for="(range, index) in entity.registrationRanges" :key="index">
         <div class="field">
-            <h5 class="bold field__title"><?= $this->text('input-label', i::__('Faixa')) ?> {{index+1}}</h5>
-            <input class="field__input" type="text" v-model="range.label" @blur="autoSaveRange(range)" placeholder="<?= $this->text('input-placeholder', i::__('Descrição da faixa')) ?>">
+            <h5 class="bold field__title"><?= $this->text('input-label', i::__('Faixa/Linha')) ?> {{index+1}}</h5>
+            <input class="field__input" type="text" v-model="range.label" @blur="autoSaveRange(range)" placeholder="<?= $this->text('input-placeholder', i::__('Descrição da faixa/linha')) ?>">
         </div>
             
         <div class="field field--small"> 
