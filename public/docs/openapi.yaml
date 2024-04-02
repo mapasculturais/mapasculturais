@@ -35,14 +35,20 @@ tags:
 paths:
   /agent/addRole/{id}:
     $ref: './components/paths/agent/add-role.yaml'
+  /agent/archive/{id}:
+    $ref: './components/paths/agent/archive.yaml'
+  /agente/{id}:
+    $ref: './components/paths/agent/route-single-id.yaml'
   /agent/index:
     $ref: './components/paths/agent/create.yaml'
+  /agent/publish/{id}:
+     $ref: './components/paths/agent/publish.yaml'
   /agent/removeRole/{id}:
     $ref: './components/paths/agent/remove-role.yaml'
   /agent/setAsUserProfile:
     $ref: './components/paths/agent/set-as-user-profile.yaml'
-  /agente/{id}:
-    $ref: './components/paths/agent/route-single-id.yaml'
+  /agent/undelete/{id}:
+    $ref: './components/paths/agent/undelete.yaml'
   /api/agent/describe:
     $ref: './components/paths/agent/describe.yaml'
   /api/agent/find:
