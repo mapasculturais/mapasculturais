@@ -162,6 +162,10 @@ return array(
                 return intval($val);
             }
         ),
+        'requestAgentAvatar' => array(
+            'label' => \MapasCulturais\i::__('Solicitar avatar'),
+            'type' => 'boolean',
+        ),
     ),
     'items' => array(
         1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),
