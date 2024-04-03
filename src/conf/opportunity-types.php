@@ -163,6 +163,10 @@ return array(
             }
         ),
     ),
+    'requestAgentAvatar' => array(
+        'label' => \MapasCulturais\i::__('Solicitar avatar'),
+        'type' => 'boolean',
+    ),
     'items' => array(
         1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),
         2 =>  array( 'name' => \MapasCulturais\i::__("Encontro")),
