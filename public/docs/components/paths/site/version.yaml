@@ -1,4 +1,6 @@
 get:
+  tags:
+    - Site
   summary: Retorna a versão atual do site
   responses:
     200:

@@ -32,6 +32,8 @@ tags:
     description: Rotas relacionadas aos selos
   - name: Site
     description: Rotas relacionadas ao site
+  - name: Termos
+    description: Rotas relacionadas aos termos
 paths:
   /agent/addRole/{id}:
     $ref: './components/paths/agent/add-role.yaml'
@@ -139,6 +141,14 @@ paths:
     $ref: './components/paths/site/version.yaml'
   /site/info:
     $ref: './components/paths/site/info.yaml'
+  /term/list/area:
+    $ref: './components/paths/term/slugs/area.yaml'
+  /term/list/funcao:
+    $ref: './components/paths/term/slugs/funcao.yaml'
+  /term/list/linguagem:
+    $ref: './components/paths/term/slugs/linguagem.yaml'
+  /term/list/tag:
+    $ref: './components/paths/term/slugs/tag.yaml'
 components:
   schemas:
     Agent:

@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Termos
+  summary: Lista os slugs de tags
+  description: Lista os slugs de tags
+  responses:
+      '200':
+        description: Lista os slugs de tags
+        content:
+          application/json:
+            schema:
+              type: array
+            example: []
+      '404':
+        $ref: '../../../responses/error/404.yaml'
