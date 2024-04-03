@@ -11,7 +11,7 @@ $this->import('
     notification-list
 ');
 ?>
-<mc-popover v-if="notificationsCount>0" classes="notification-modal" title="<?= i::esc_attr_e('Notificações') ?>" openside="down-right">  
+<mc-popover classes="notification-modal" title="<?= i::esc_attr_e('Notificações') ?>" openside="down-right">
     <template #default>
         <div style="max-width: 500px;">
             <div class="notification-modal__header">
