@@ -723,6 +723,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 die;
             }
 
+            $app->clearHooks("entity(Registration).status(draft)");
+            $app->clearHooks("entity(Registration).status(approved)");
+            $app->clearHooks("entity(Registration).status(notapproved)");
+            $app->clearHooks("entity(Registration).status(waitlist)");
+            $app->clearHooks("entity(Registration).status(invalid)");
+
             $statusIn = API::GT(0);
             $query_params = [
                 '@select' => 'id,score', 
@@ -755,6 +761,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                 foreach($registrations as $i => $reg) {
                     $count = $i+1;
+                    /** @var Registration $registration */
                     $registration = $app->repo('Registration')->find($reg);
 
                     $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
@@ -812,6 +819,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $count = $i+1;
                         if($registrations[$i]['score'] >= $cutoff_score) {
                             $registration_id = $registrations[$i]['id'];
+                            /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($registration_id);
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SELECIONADO");
                             $registration->setStatusToApproved();
@@ -827,6 +835,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $count = $i+1;
                         if($registrations[$i]['score'] >= $cutoff_score) {
                             $registration_id = $registrations[$i]['id'];
+                            /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($registration_id);
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SUPLENTE");
                             $registration->setStatusToWaitlist();
@@ -841,12 +850,18 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $count = $i+1;
                         if($reg['score'] < $cutoff_score) {
                             $registration = $app->repo('Registration')->find($reg['id']);
+                            /** @var Registration $registration */
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para INVÁLIDO");
                             $registration->setStatusToNotApproved();
                             $app->em->clear();
                         }
                     }
                 }
+            }
+
+            if($next_phase = $opp->nextPhase) {
+                $app->log->debug('$next_phase->enqueueRegistrationSync()');
+                $next_phase->enqueueRegistrationSync();
             }
 
             $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
