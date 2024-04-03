@@ -69,7 +69,7 @@ app.component('evaluation-method-technical--apply', {
             this.infosApplyData();
             this.entity.disableMessages();
 
-            this.entity.POST('appyTechnicalEvaluation', {
+            this.entity.POST('applyTechnicalEvaluation', {
                 data: this.applyData, callback: data => {
                     messages.success(data);
                     modal.close();
