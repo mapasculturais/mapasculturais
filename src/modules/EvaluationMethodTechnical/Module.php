@@ -729,7 +729,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $app->clearHooks("entity(Registration).status(waitlist)");
             $app->clearHooks("entity(Registration).status(invalid)");
 
-            $statusIn = API::GT(0);
+            $statusIn = API::IN([1,3,8,10]);
             $query_params = [
                 '@select' => 'id,score', 
                 'opportunity' => "EQ({$opp->id})",
