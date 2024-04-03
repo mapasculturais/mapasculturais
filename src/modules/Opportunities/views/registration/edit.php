@@ -46,6 +46,8 @@ $this->breadcrumb = $breadcrumb;
  */
 
  $this->import('
+    entity-field
+    entity-profile 
     mc-avatar
     opportunity-header
     registration-info
@@ -80,7 +82,10 @@ $this->breadcrumb = $breadcrumb;
                             </div>
                             <div class="card__content">
                                 <div class="owner">
-                                    <mc-avatar :entity="entity.owner" size="small"></mc-avatar>
+                                    <mc-avatar v-if="!entity.opportunity.requestAgentAvatar" :entity="entity.owner" size="small"></mc-avatar>
+                                    <span v-if="entity.opportunity.requestAgentAvatar" class="icon">
+                                        <entity-profile :entity="entity.owner" size="small"></entity-profile>
+                                    </span>
                                     <div class="owner__name">
                                         {{entity.owner.name}}
                                     </div>
