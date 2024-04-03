@@ -13,7 +13,8 @@ use MapasCulturais\Entities\User;
 use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
-    use Traits\MagicGetter;
+    use Traits\MagicGetter,
+        Traits\MagicCallers;
     
     /**
      * Number of query objects to generate query ids
