@@ -229,6 +229,11 @@ return array(
             'label' => \MapasCulturais\i::__('Total de vagas'),
             'description' => \MapasCulturais\i::__("Quantidades de vagas que esse edital irá disponibilizar."),
         ),
+        
+        'requestAgentAvatar' => array(
+            'label' => \MapasCulturais\i::__('Solicitar avatar'),
+            'type' => 'boolean',
+        ),
     ),
     'items' => $items,
     
