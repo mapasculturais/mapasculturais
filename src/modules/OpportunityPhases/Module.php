@@ -751,7 +751,7 @@ class Module extends \MapasCulturais\Module{
                 'registrations' => $registrations
             ];
 
-            $app->enqueueJob(Jobs\SyncPhaseRegistrations::SLUG, $data);
+            $app->enqueueOrReplaceJob(Jobs\SyncPhaseRegistrations::SLUG, $data);
         });
 
         // sincroniza as inscrições da fase de acordo com o status da fase anterior
@@ -979,7 +979,7 @@ class Module extends \MapasCulturais\Module{
             return $new_registrations;
         });
 
-        $app->hook('entity(Registration).status(<<*>>),entity(Registration).remove:after>>', function() {
+        $app->hook('entity(Registration).status(<<*>>),entity(Registration).remove:after', function() {
             /** @var Registration $this */
             $current_phase = $this->opportunity;
             if($next_phase = $current_phase->nextPhase){
