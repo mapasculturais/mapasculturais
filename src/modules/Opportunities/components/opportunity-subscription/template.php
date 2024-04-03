@@ -100,7 +100,7 @@ $this->import('
 
 			<div class="loggedOut__button col-12">
 				<button @click="redirectLogin" class="button button--xbg button--primary">
-				<?= i::__("Acessar ou criar conta") ?>
+					<?= i::__("Acessar ou criar conta") ?>
 				</button>
 			</div>
 

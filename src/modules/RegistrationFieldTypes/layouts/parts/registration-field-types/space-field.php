@@ -17,7 +17,7 @@ foreach (Entities\Space::getPropertiesMetadata() as $key => $def) {
         }
 
         if($def->field_type === "socialMedia"){
-            $def->field_type = "url";
+            $def->field_type = "text";
         }
         $definitions[$key] = $def;
     }

@@ -2243,4 +2243,9 @@ $$
         __try('CREATE INDEX registration_eligible_idx ON registration (eligible)');
     },
 
+    'adiciona novos índices na tabela file' => function () {
+        __try('CREATE INDEX file_parent_idx ON file (parent_id)');
+        __try('CREATE INDEX file_parent_object_type_idx ON file (parent_id, object_type)');
+    },
+
 ] + $updates ;   
