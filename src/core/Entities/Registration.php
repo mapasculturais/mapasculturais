@@ -968,6 +968,11 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if($def->agent){
+                
+                if($opportunity->requestAgentAvatar && !array_key_exists("avatar", $def->agent->files)){
+                    $errors[] = sprintf(\MapasCulturais\i::__('O avatar do agente é obrigatório.'));
+                }
+
                 if($def->relationStatus < 0){
                     $errors[] = sprintf(\MapasCulturais\i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);
                 }else{
