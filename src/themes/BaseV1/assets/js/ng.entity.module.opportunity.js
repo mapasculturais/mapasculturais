@@ -1753,7 +1753,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if ($scope.useProponentTypes) {
-            result = result && (field.proponentTypes.length === 0 || field.proponentTypes.indexOf(MapasCulturais.entity.object.proponentType) >= 0);
+            let can = false;
+            field.proponentTypes.forEach(function(item) {
+                if($scope.registrationProponentTypes.includes(item)) {
+                    can = true;
+                }
+            })
+
+            result = can;
         }
       
         if(field.conditional){
