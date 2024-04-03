@@ -486,9 +486,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var Registration $this */
             $app->disableAccessControl();
 
-            if( $this->nextPhase){
-                $this->nextPhase->eligible = $this->eligible;
-                $this->nextPhase->save(true);
+            if($next_phase = $this->nextPhase){
+                $next_phase->eligible = $this->eligible;
+                $next_phase->save(true);
             }
             $app->enableAccessControl();
         });
