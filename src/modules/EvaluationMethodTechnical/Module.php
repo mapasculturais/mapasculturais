@@ -343,9 +343,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $ranges_config[$range['label']] = $range['limit'];
         }
 
+        $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
         $quota_config = $phase_evaluation_config->quotaConfiguration ?: (object) ['rules' => (object) []];
         $geo_quota_config = $phase_evaluation_config->geoQuotaConfiguration ?: (object) ['distribution' => (object) [], 'geoDivision' => null];
-        $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
+        $geo_quota_config->distribution = (object) $geo_quota_config->distribution;
         
         $selected_global = [];
         $selected_by_quotas = [];
