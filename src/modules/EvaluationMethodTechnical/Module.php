@@ -703,7 +703,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         });
 
-        $app->hook('POST(opportunity.appyTechnicalEvaluation)', function() use($self) {
+        $app->hook('POST(opportunity.applyTechnicalEvaluation)', function() use($self) {
             $this->requireAuthentication();
 
             set_time_limit(0);
@@ -711,7 +711,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             ini_set('memory_limit', '-1');
     
             $app = App::i();
-    
+
             $opp = $this->requestedEntity;
     
             $opp->checkPermission('@control');
