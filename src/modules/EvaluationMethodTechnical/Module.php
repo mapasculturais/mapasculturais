@@ -1413,13 +1413,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     public static function tiebreaker($tiebreaker_configuration, $registrations) {
-        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration) {
+        $app = App::i();
+        $self = $app->modules['EvaluationMethodTechnical']; 
+
+        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration, $self) {
             $result = $registration2->score <=> $registration1->score;
             if($result != 0) {
                 return $result;
             }
-            
-            $self = new self(); 
 
             foreach($tiebreaker_configuration as $tiebreaker) {
                 $selected = $tiebreaker->selected;
