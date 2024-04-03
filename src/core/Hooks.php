@@ -40,13 +40,19 @@ class Hooks {
         } else {
             $hooks = $this->getCallables($name);
             foreach ($this->_excludeHooks as $hook => $cb) {
-                if (in_array($cb, $hooks))
+                if (in_array($cb, $hooks)){
                     unset($this->_excludeHooks[$hook]);
+                }
             }
 
-            foreach ($this->_hooks as $hook => $cbs) {
-                foreach ($cbs as $i => $cb)
-                    unset($this->_hooks[$hook][$i]);
+            foreach ($this->_hooks as $hook => $priorities) {
+                foreach ($priorities as $priority => $callables) {
+                    foreach($callables as $i => $callable){
+                        if (in_array($callable, $hooks)){
+                            unset($this->_hooks[$hook][$priority][$i]);
+                        }
+                    }
+                }
             }
         }
     }
@@ -231,8 +237,9 @@ class Hooks {
         $result = [];
 
         foreach ($this->_excludeHooks as $hook => $callables) {
-            if (preg_match($hook, $name))
+            if (preg_match($hook, $name)) {
                 $exclude_list = array_merge($callables);
+            }
         }
 
         foreach ($this->_hooks as $hook => $_callables) {
