@@ -10,13 +10,14 @@ class Space extends \MapasCulturais\Repository{
     public function getCurrentSubsiteSpaceIds($implode = false){
         $app = App::i();
         if($subsite_id = $app->getCurrentSubsiteId()){
+            if($implode) {
+                return "SELECT id FROM space WHERE subsite_id = $subsite_id AND status > 0";
+            }
+            
             $cache_id = 'SUBSITE::SPACE-IDS';
 
             if($app->config['app.useSubsiteIdsCache'] && $app->cache->contains($cache_id)){
                 $space_ids = $app->cache->fetch($cache_id);
-                if($implode && is_array($space_ids)){
-                    $space_ids = implode(',', $space_ids);
-                }
                 return $space_ids;
             }
             $_api_result = $app->controller('space')->apiQuery(['@select' => 'id']);
