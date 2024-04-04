@@ -309,15 +309,14 @@ abstract class File extends \MapasCulturais\Entity
     public function jsonSerialize(): array {
         $result = [
             'id' => $this->id,
-            'md5' => $this->md5,
-            'mimeType' => $this->mimeType,
             'name' => $this->name,
-            'description' => $this->description,
-            'group' => $this->group,
-            'files' => $this->getFiles(),
+            'mimeType' => $this->mimeType,
             'url' => $this->url,
-            'deleteUrl' => $this->deleteUrl,
-            'createTimestamp' => $this->createTimestamp
+            'createTimestamp' => $this->createTimestamp,
+            'description' => $this->description,
+            'md5' => $this->md5,
+            'group' => $this->group,
+            'transformations' => $this->getFiles(),
         ];
         $app = App::i();
         
