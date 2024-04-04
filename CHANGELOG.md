@@ -41,6 +41,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 
+## [7.3.40] - 2024-04-04
+### Correçoes
+- Corrige o retorno dos selos das oportunidades na api
+
+### Melhorias
+- Adiciona mensagem para o avaliador informando que o período de avaliação já se ecerrou
+- Exibe todos os selos nos cards das entidades
+
+## [7.3.39] - 2024-04-04
+### Correçoes
+- Corrige exibição da imagem do selo após a vinculação deste com uma entidade
+- Oculta botão de carregar mais eventos quando não houver mais eventos a serem carregados
+
 ## [7.3.38] - 2024-04-04
 ### Correçoes
 - Corrige paginação das ocorrências dos eventos
