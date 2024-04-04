@@ -4,7 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.3.37] - 2024-04-22
+## [7.3.38] - 2024-04-04
+### Correçoes
+- Corrige paginação das ocorrências dos eventos
+
+## [7.3.37] - 2024-04-02
 ### Correçoes
 - Corrige campos @ das redes sociais
 
