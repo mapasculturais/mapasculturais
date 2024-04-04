@@ -73,11 +73,14 @@ app.component('search-list-event', {
                 raw: true,
                 rawProcessor: (rawData) => Utils.occurrenceRawProcessor(rawData, this.eventApi, this.spaceApi)
             });
+            
+            const metadata = occurrences.metadata;
 
             if(this.page === 1) {
                 this.occurrences = occurrences;
             } else {
                 this.occurrences = this.occurrences.concat(occurrences);
+                this.occurrences.metadata = metadata;
             }
             this.loading = false;
         },

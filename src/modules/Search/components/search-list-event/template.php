@@ -36,7 +36,7 @@ $this->import('
                 <occurrence-card :occurrence="occurrence" ></occurrence-card>
             </div>
 
-            <div class="col-12 load-more">
+            <div v-if="occurrences.metadata.page < occurrences.metadata.numPages" class="col-12 load-more">
                 <mc-loading :condition="loading && page > 1"></mc-loading>
                 <button v-if="!loading" class="button--large button button--primary-outline" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
             </div>
