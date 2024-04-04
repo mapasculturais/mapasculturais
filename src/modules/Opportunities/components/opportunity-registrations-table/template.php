@@ -62,7 +62,7 @@ $entity = $this->controller->requestedEntity;
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'after', ['entity' => $entity]); ?>
 
                 <template #filters="{entities,filters}">
-                    <div class="grid-12">
+                    <div class="opportunity-registration-table__multiselects">
                         <mc-select v-if="statusEvaluationResult" class="col-5" :default-value="selectedAvaliation" @change-option="filterAvaliation($event,entities)" placeholder="<?= i::__("Resultado de avaliação") ?>">
                             <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
                         </mc-select>
