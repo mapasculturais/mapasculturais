@@ -38,7 +38,7 @@ $this->breadcrumb = [
 <div class="main-app single-1">
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity"></entity-header>
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>
                 <main>

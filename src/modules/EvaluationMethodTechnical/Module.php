@@ -486,9 +486,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var Registration $this */
             $app->disableAccessControl();
 
-            if( $this->nextPhase){
-                $this->nextPhase->eligible = $this->eligible;
-                $this->nextPhase->save(true);
+            if($next_phase = $this->nextPhase){
+                $next_phase->eligible = $this->eligible;
+                $next_phase->save(true);
             }
             $app->enableAccessControl();
         });
@@ -723,13 +723,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $this->errorJson(i::__('Somente para avaliações técnicas'), 400);
                 die;
             }
-
-            $app->clearHooks("entity(Registration).status(draft)");
-            $app->clearHooks("entity(Registration).status(approved)");
-            $app->clearHooks("entity(Registration).status(notapproved)");
-            $app->clearHooks("entity(Registration).status(waitlist)");
-            $app->clearHooks("entity(Registration).status(invalid)");
-
+            
             $statusIn = API::IN([1,3,8,10]);
             $query_params = [
                 '@select' => 'id,score', 
@@ -764,6 +758,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     $count = $i+1;
                     /** @var Registration $registration */
                     $registration = $app->repo('Registration')->find($reg);
+                    $registration->skipSync = true;
+                    $registration->__skipQueuingPCacheRecreation = true;
 
                     $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
                     switch ($new_status) {
@@ -822,6 +818,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
                             $registration_id = $registrations[$i]['id'];
                             /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($registration_id);
+                            $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
+
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SELECIONADO");
                             $registration->setStatusToApproved();
                             $app->em->clear();
@@ -838,6 +837,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
                             $registration_id = $registrations[$i]['id'];
                             /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($registration_id);
+                            $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
+
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SUPLENTE");
                             $registration->setStatusToWaitlist();
                             $app->em->clear();
@@ -850,8 +852,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     foreach($registrations as $i => $reg) {
                         $count = $i+1;
                         if($reg['score'] < $cutoff_score) {
-                            $registration = $app->repo('Registration')->find($reg['id']);
                             /** @var Registration $registration */
+                            $registration = $app->repo('Registration')->find($reg['id']);
+                            $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
+
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para INVÁLIDO");
                             $registration->setStatusToNotApproved();
                             $app->em->clear();
@@ -861,9 +866,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
 
             if($next_phase = $opp->nextPhase) {
-                $app->log->debug('$next_phase->enqueueRegistrationSync()');
                 $next_phase->enqueueRegistrationSync();
             }
+
+            $opp->enqueueToPCacheRecreation();
 
             $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
         });
@@ -1413,13 +1419,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     public static function tiebreaker($tiebreaker_configuration, $registrations) {
-        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration) {
+        $app = App::i();
+        $self = $app->modules['EvaluationMethodTechnical']; 
+
+        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration, $self) {
             $result = $registration2->score <=> $registration1->score;
             if($result != 0) {
                 return $result;
             }
-            
-            $self = new self(); 
 
             foreach($tiebreaker_configuration as $tiebreaker) {
                 $selected = $tiebreaker->selected;
