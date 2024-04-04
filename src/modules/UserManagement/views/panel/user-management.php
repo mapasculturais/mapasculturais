@@ -25,7 +25,7 @@ $profile = $app->user->profile;
         </p>
     </header>
     
-    <panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
+    <panel--entity-tabs type="user" user="" select="id,email,status,currentUserPermissions,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
         <template #filters-additional="{query, entities}">
             <mc-entities type="system-role" select="name,slug">
                 <template #default="roles">
