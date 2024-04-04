@@ -13,8 +13,8 @@ $this->import('
 
 ?>
 <span class="icon">
-    <span v-if="hasErrors()" :class="{'errors' : hasErrors()}">
-        <?= i::__('Insira um avatar') ?>
-    </span>
     <entity-profile :entity="entity.owner" size="small"></entity-profile>
+    <div class="card__title"> 
+        <div class="obrigatory"> <?= i::__('* Obrigatório') ?> </div>
+    </div>
 </span>
