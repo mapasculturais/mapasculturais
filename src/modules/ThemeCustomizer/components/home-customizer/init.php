@@ -15,24 +15,28 @@ $texts = [
         'texts' => [
             [
                 'slug' => 'home-header.title',
-                'description' => i::__('Título do header da home')
+                'description' => i::__('Título do header da home'),
             ],
             [
                 'slug' => 'home-header.description',
-                'description' => i::__('Descrição do header da home')
+                'description' => i::__('Descrição do header da home'),
             ],
         ],
+        'image' => [
+            'description' => i::__('Imagem do header da home'),
+            'group' => 'header',
+        ]
     ],
     [
         'sectionName' => i::__('Titulo da oportunidade da home'),
         'texts' => [
             [
                 'slug' => 'home-opportunities.title',
-                'description' => i::__('Título da oportunidade da home')
+                'description' => i::__('Título da oportunidade da home'),
             ],
             [
                 'slug' => 'home-opportunities.description',
-                'description' => i::__('Descrição da oportunidade da home')
+                'description' => i::__('Descrição da oportunidade da home'),
             ],
         ],
     ],
@@ -41,11 +45,11 @@ $texts = [
         'texts' => [
             [
                 'slug' => 'home-entities.title',
-                'description' => i::__('Título da seção entidade da home')
+                'description' => i::__('Título da seção entidade da home'),
             ],
             [
                 'slug' => 'home-entities.description',
-                'description' => i::__('Descrição da seção entidade da home')
+                'description' => i::__('Descrição da seção entidade da home'),
             ],
         ],
     ],
@@ -57,6 +61,10 @@ $texts = [
                 'description' => i::__('Título das oportunidade da home')
             ],
         ],
+        'image' => [
+            'description' => i::__('Imagem de fundo da oportunidade'),
+            'group' => 'opportunityBanner',
+        ]
     ],
     [
         'sectionName' => i::__('Eventos'),
@@ -66,6 +74,10 @@ $texts = [
                 'description' => i::__('Título dos eventos da home')
             ],
         ],
+        'image' => [
+            'description' => i::__('Imagem de fundo do evento'),
+            'group' => 'eventBanner',
+        ]
     ],
     [
         'sectionName' => i::__('Espaços'),
@@ -75,6 +87,10 @@ $texts = [
                 'description' => i::__('Título dos espaços da home')
             ],
         ],
+        'image' => [
+            'description' => i::__('Imagem de fundo do espaço'),
+            'group' => 'spaceBanner',
+        ]
     ],
     [
         'sectionName' => i::__('Agentes'),
@@ -84,6 +100,10 @@ $texts = [
                 'description' => i::__('Título dos agentes da home')
             ],
         ],
+        'image' => [
+            'description' => i::__('Imagem de fundo do agente'),
+            'group' => 'agentBanner',
+        ]
     ],
     [
         'sectionName' => i::__('Projetos'),
@@ -93,6 +113,10 @@ $texts = [
                 'description' => i::__('Título dos projetos da home')
             ],
         ],
+        'image' => [
+            'description' => i::__('Imagem de fundo do projeto'),
+            'group' => 'projectBanner',
+        ]
     ],
     [
         'sectionName' => i::__('Descrição de registro da home'),
@@ -119,6 +143,10 @@ $texts = [
                 'description' => i::__('Descrição da seção faça seu cadastro da home')
             ],
         ],
+        'image' => [
+            'description' => i::__('Imagem de fundo da seção de fazer cadastro'),
+            'group' => 'signupBanner',
+        ]
     ],
     [
         'sectionName' => i::__('Visualize também no mapa'),
@@ -147,4 +175,4 @@ $texts = [
         ],
     ],
 ];
-$this->jsObject['config']['homeTexts'] = $texts;
+$this->jsObject['config']['homeConfigurations'] = $texts;
