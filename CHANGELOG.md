@@ -4,6 +4,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.40] - 2024-04-04
+### Correçoes
+- Corrige o retorno dos selos das oportunidades na api
+
+### Melhorias
+- Adiciona mensagem para o avaliador informando que o período de avaliação já se ecerrou
+
 ## [7.3.39] - 2024-04-04
 ### Correçoes
 - Corrige exibição da imagem do selo após a vinculação deste com uma entidade
