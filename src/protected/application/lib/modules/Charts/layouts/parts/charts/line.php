@@ -70,7 +70,7 @@ $route = MapasCulturais\App::i()->createUrl('reports', $action, ['opportunity_id
     </header>
 
     <div class="chart-scroll">
-        <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $count_data($series[0]['data']) ?>%;">
+        <div class="chart-container chart-line" style="position: relative; height:<?= $height ?>; width:<?= $count_data($series) ?>%;">
             <canvas id="<?= $chart_id ?>"></canvas>
         </div>
     </div>
