@@ -6,8 +6,13 @@ namespace App\Controller;
 
 class DocumentationController extends AbstractController
 {
-    public function index(): void
+    public function v1(): void
     {
-        $this->render($_SERVER['DOCUMENT_ROOT'].'/docs/index.html');
+        $this->render($_SERVER['DOCUMENT_ROOT'].'/docs/v1/index.html');
+    }
+
+    public function v2(): void
+    {
+        $this->render($_SERVER['DOCUMENT_ROOT'].'/docs/v2/index.html');
     }
 }

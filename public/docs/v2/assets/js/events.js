@@ -1,6 +1,6 @@
 const mountSwagger = new Promise((resolve, reject) => {
     resolve(SwaggerUIBundle({
-        url: '/docs/openapi.yaml',
+        url: '/docs/v2/openapi.yaml',
         dom_id: '#swagger-ui',
         deepLinking: true,
         presets: [
