@@ -1,0 +1,45 @@
+name: ci/cd-dev
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+  workflow_dispatch:
+
+jobs:
+  BUILD:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v4.1.1
+
+      - name: Docker Login
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+
+      - name: Ajusta branch do MultipleLocalAuth
+        run: cd src/plugins/MultipleLocalAuth && git checkout v3.0.0
+
+      - name: Criação da Imagem docker
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: |
+            secultceara/mapascultural:7.3.7-dev
+
+  DEPLOY:
+    needs: BUILD
+    runs-on: mapahomolog
+    steps:
+      - name: Pull das imagens docker
+        run: cd /opt/docker/developv7 && sudo docker-compose pull
+      - name: Restart do docker-compose para atualizar o container com a nova imagem
+        run: cd /opt/docker/developv7 && sudo docker-compose down && sudo docker-compose up -d
