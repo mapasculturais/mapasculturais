@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.39] - 2024-04-04
+### Correçoes
+- Corrige exibição da imagem do selo após a vinculação deste com uma entidade
+- Oculta botão de carregar mais eventos quando não houver mais eventos a serem carregados
+
 ## [7.3.38] - 2024-04-04
 ### Correçoes
 - Corrige paginação das ocorrências dos eventos
