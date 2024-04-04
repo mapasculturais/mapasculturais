@@ -35,7 +35,7 @@ $sort_options = [
 $this->applyComponentHook('.sortOptions', [&$tabs]);
 
 ?>
-<mc-tabs class="entity-tabs">
+<mc-tabs class="entity-tabs" sync-hash>
     <?php $this->applyComponentHook('begin') ?>
     <template #header="{ tab }">
         <?php $this->applyComponentHook('tab', 'begin') ?>

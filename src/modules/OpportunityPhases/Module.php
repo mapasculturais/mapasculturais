@@ -981,6 +981,9 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).status(<<*>>),entity(Registration).remove:after', function() {
             /** @var Registration $this */
+            if($this->skipSync) {
+                return;
+            }
             $current_phase = $this->opportunity;
             if($next_phase = $current_phase->nextPhase){
                 $next_phase->enqueueRegistrationSync();

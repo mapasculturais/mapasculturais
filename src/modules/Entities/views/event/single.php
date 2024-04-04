@@ -48,7 +48,7 @@ $this->breadcrumb = [
             </dl>
         </template>
     </entity-header>    
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
                 <mc-container>

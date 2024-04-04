@@ -27,6 +27,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
 - possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
 - melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
+- log de hooks agora exibe um backtrace
 
 ### Correções
 - Corrige seleção de relacionamentos OneToOne
@@ -38,6 +39,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige permissão de visualização de arquivos privados
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
+- Corrige método para limpeza de hooks
 
 ## [7.3.37] - 2024-04-22
 ### Correçoes
