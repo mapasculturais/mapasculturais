@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Adiciona mensagem para o avaliador informando que o período de avaliação já se ecerrou
+- Exibe todos os selos nos cards das entidades
 
 ## [7.3.39] - 2024-04-04
 ### Correçoes
