@@ -41,14 +41,17 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 
-## [7.3.37] - 2024-04-22
+## [7.3.38] - 2024-04-04
+### Correçoes
+- Corrige paginação das ocorrências dos eventos
+
+## [7.3.37] - 2024-04-02
 ### Correçoes
 - Corrige campos @ das redes sociais
 
 ## [7.3.36] - 2024-04-02
 ### Correçoes
 - Corrige hooks duplicados no componente mc-header
->>>>>>> master
 
 ## [7.3.35] - 2024-04-01
 ### Melhorias
