@@ -69,7 +69,7 @@ $this->breadcrumb = [
     </template>
   </entity-header>
 
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook("tabs", "begin")?>
         <mc-tab label="<?= i::__('Informações') ?>" slug="info">
             <mc-container class="opportunity">

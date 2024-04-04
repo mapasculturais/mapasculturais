@@ -31,7 +31,7 @@ $this->breadcrumb = [
         </create-agent>
     </template>
     <template #default="{pseudoQuery}">
-        <mc-tabs class="search__tabs">
+        <mc-tabs class="search__tabs" sync-hash>
             <template #before-tablist>
                 <label class="search__tabs--before">
                     <?= i::_e('Visualizar como:') ?>

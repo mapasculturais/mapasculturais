@@ -32,7 +32,7 @@ $this->breadcrumb = [
         </create-event>
     </template>
     <template #default="{pseudoQuery, changeTab}">
-        <mc-tabs  @changed="changeTab($event)" class="search__tabs">
+        <mc-tabs  @changed="changeTab($event)" class="search__tabs" sync-hash>
             <template #before-tablist>
                 <label class="search__tabs--before">
                     <?= i::_e('Visualizar como:') ?>
