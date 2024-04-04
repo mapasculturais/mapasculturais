@@ -8,14 +8,12 @@ use MapasCulturais\i;
 
 $this->import('
     mc-tab
-    home-texts
-    image-customizer
+    home-customizer
 ');
 ?>
 
 <mc-tab label="<?php i::esc_attr_e('Home') ?>" slug="home">
     <div class="theme-customizer">
-        <home-texts></home-texts>
-        <image-customizer></image-customizer>
+        <home-customizer></home-customizer>
     </div>
 </mc-tab>

@@ -7,12 +7,8 @@
 use MapasCulturais\i;
 
 $this->import('
-    image-customizer
     mc-tab
     mc-tabs
-    home-texts
-    logo-customizer
-    colors-customizer
 '); 
 ?>
 <div class="panel-page">
