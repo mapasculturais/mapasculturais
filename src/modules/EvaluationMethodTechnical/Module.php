@@ -852,11 +852,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     foreach($registrations as $i => $reg) {
                         $count = $i+1;
                         if($reg['score'] < $cutoff_score) {
+                            /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($reg['id']);
                             $registration->skipSync = true;
                             $registration->__skipQueuingPCacheRecreation = true;
 
-                            /** @var Registration $registration */
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para INVÁLIDO");
                             $registration->setStatusToNotApproved();
                             $app->em->clear();
