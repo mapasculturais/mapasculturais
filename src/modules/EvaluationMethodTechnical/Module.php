@@ -759,6 +759,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     /** @var Registration $registration */
                     $registration = $app->repo('Registration')->find($reg);
                     $registration->skipSync = true;
+                    $registration->__skipQueuingPCacheRecreation = true;
 
                     $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
                     switch ($new_status) {
@@ -818,6 +819,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                             /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($registration_id);
                             $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
 
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SELECIONADO");
                             $registration->setStatusToApproved();
@@ -836,6 +838,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                             /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($registration_id);
                             $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
 
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SUPLENTE");
                             $registration->setStatusToWaitlist();
@@ -851,6 +854,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         if($reg['score'] < $cutoff_score) {
                             $registration = $app->repo('Registration')->find($reg['id']);
                             $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
 
                             /** @var Registration $registration */
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para INVÁLIDO");
@@ -864,6 +868,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
             if($next_phase = $opp->nextPhase) {
                 $next_phase->enqueueRegistrationSync();
             }
+
+            $opp->enqueueToPCacheRecreation();
 
             $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
         });
