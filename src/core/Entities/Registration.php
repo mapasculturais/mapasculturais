@@ -953,6 +953,10 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['category'] = [\MapasCulturais\i::__('O campo é obrigatório.')];
         }
 
+        if($this->opportunity->requestAgentAvatar && !array_key_exists("avatar", $this->owner->files)){
+            $errorsResult['avatar'] = [sprintf(\MapasCulturais\i::__('A imagem avatar do agente "%s" é obrigatório.'),$this->owner->name)];
+        }
+
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
         
         // validate agents
@@ -968,10 +972,6 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if($def->agent){
-                
-                if($opportunity->requestAgentAvatar && !array_key_exists("avatar", $def->agent->files)){
-                    $errors[] = sprintf(\MapasCulturais\i::__('O avatar do agente é obrigatório.'));
-                }
 
                 if($def->relationStatus < 0){
                     $errors[] = sprintf(\MapasCulturais\i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);

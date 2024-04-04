@@ -16,6 +16,7 @@ $this->import('
     mc-icon
     opportunity-header
     registration-actions
+    request-agent-avatar 
     registration-related-agents
     registration-related-space
     registration-related-project
@@ -47,7 +48,7 @@ $this->breadcrumb = $breadcrumb;
 
  $this->import('
     entity-field
-    entity-profile 
+    entity-profile
     mc-avatar
     opportunity-header
     registration-info
@@ -83,9 +84,7 @@ $this->breadcrumb = $breadcrumb;
                             <div class="card__content">
                                 <div class="owner">
                                     <mc-avatar v-if="!entity.opportunity.requestAgentAvatar" :entity="entity.owner" size="small"></mc-avatar>
-                                    <span v-if="entity.opportunity.requestAgentAvatar" class="icon">
-                                        <entity-profile :entity="entity.owner" size="small"></entity-profile>
-                                    </span>
+                                    <request-agent-avatar v-if="entity.opportunity.requestAgentAvatar" :entity="entity"></request-agent-avatar>
                                     <div class="owner__name">
                                         {{entity.owner.name}}
                                     </div>
