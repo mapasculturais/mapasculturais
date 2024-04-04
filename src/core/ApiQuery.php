@@ -1125,6 +1125,10 @@ class ApiQuery {
     }
     
     protected function processEntities(array &$entities) {
+        if(empty($entities)) {
+            return;
+        }
+
         $this->appendCurrentUserPermissions($entities);
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
