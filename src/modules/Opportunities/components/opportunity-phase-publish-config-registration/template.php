@@ -55,12 +55,23 @@ $this->import('
                     </div>
                     <div v-else>
                         <div v-if="!isOpenPhase" class="col-4">
-                            <p class="bold"><?= i::__("Você pode publicar o resultado manualmente a qualquer momento utilizando o botão ao lado. AA") ?></p>
+                            <p class="bold"><?= i::__("Você pode publicar o resultado manualmente a qualquer momento utilizando o botão ao lado.") ?></p>
                         </div>
                     </div>
             </div>
             <div class="opportunity-phase-publish-config-registration__unpublishedlast" :class="[{'col-6':!phase.isLastPhase}, {'col-12 grid-12' : phase.isLastPhase}]">
                 <div v-if="tab=='registrations' && !phase.isFirstPhase" class="opportunity-phase-publish-config-registration__registrationList col-12">
+                    <div class="opportunity-phase-list-registrations__status col-6">
+                        <h4 class="bold"><?php i::_e("Status das inscrições") ?></h4>
+                        <p v-if="phase.summary.registrations"><?= i::__("Quantidade de inscrições:") ?> <strong>{{phase.summary.registrations}}</strong><strong> <?= i::__('inscrições') ?></strong></p>
+                        <p v-if="phase.summary?.sent"><?= i::__("Quantidade de inscrições <strong>enviadas</strong>:") ?> <strong>{{phase.summary.sent}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
+                        <p v-if="phase.summary?.Draft"><?= i::__("Quantidade de inscrições <strong>rascunho</strong>:") ?> <strong>{{phase.summary.Draft}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
+                        <p v-if="phase.summary?.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{phase.summary.Approved}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
+                        <p v-if="phase.summary?.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{phase.summary.Waitlist}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
+                        <p v-if="phase.summary?.Invalid"><?= i::__("Quantidade de inscrições <strong>inválida</strong>:") ?> <strong>{{phase.summary.Invalid}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
+                        <p v-if="phase.summary?.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{phase.summary.Pending}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
+    
+                    </div>
                     <h5 class="bold col-12"><?= i::__("A lista de inscrições pode ser acessada utilizando o botão abaixo")?></h5>
                     <mc-link  :entity="phase" class="button button--primary button--icon opportunity-phase-publish-config-registration__unpublishedbtn" route="registrations" right-icon>
                         <h4 class="semibold"><?= i::__("Conferir lista de inscrições") ?></h4><mc-icon name="external"></mc-icon>
