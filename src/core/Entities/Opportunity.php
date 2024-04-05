@@ -981,9 +981,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     if (in_array($value['status'], [0,1])){
                         $data[$status] = $value['qtd'];
                     } 
-                } else {
-                    $data[$status] = $value['qtd'];
-                }
+                } 
+
+                $data[$status] = $value['qtd'];
             }
         }
 
