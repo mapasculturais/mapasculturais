@@ -791,7 +791,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::removeOrphanRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            if ($this->isFirstPhase) {
+            if ($this->isFirstPhase || $this->isLastPhase) {
                 return;
             }
 
@@ -868,7 +868,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         // Importa as inscrições selecionadas da fase anterior
-        $app->hook('Entities\Opportunity::importPreviousPhaseRegistrations', function($value, $as_draft = false, array $registrations = []) use($app){
+        $app->hook('Entities\Opportunity::importPreviousPhaseRegistrations', function($value, $as_draft = false, array $registrations = []) use($app, $self){
             /** @var Opportunity $this */
 
             if ($this->isFirstPhase) {
@@ -923,7 +923,7 @@ class Module extends \MapasCulturais\Module{
             $query->setMaxResults(1);
 
             $query->setParameters([
-                'previous_opportunity' => $previous_phase,
+                'previous_opportunity' => $this->isLastPhase ? $first_phase : $previous_phase,
                 'target_opportunity' => $this
             ]);
 
@@ -932,6 +932,11 @@ class Module extends \MapasCulturais\Module{
             
             $app->disableAccessControl();
             while ($registration = $query->getOneOrNullResult()) {
+                if($this->isLastPhase) {
+                    while($next_registration_phase = $registration->nextPhase) {
+                        $registration = $next_registration_phase;
+                    }
+                }
                 $count++;
 
                 $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
@@ -943,12 +948,34 @@ class Module extends \MapasCulturais\Module{
                 $reg->category = $registration->category;
                 $reg->number = $registration->number;
 
+                if($this->isLastPhase) {
+                    $labels = [
+                        Registration::STATUS_DRAFT => [i::__('Não enviou inscrição'), i::__('Não enviou inscrição em "{PHASE_NAME}"')],
+                        Registration::STATUS_SENT => [i::__('Pendente'), i::__('Pendente em "{PHASE_NAME}"')],
+                        Registration::STATUS_APPROVED => [i::__('Selecionada'), i::__('Selecionada em "{PHASE_NAME}"')],
+                        Registration::STATUS_NOTAPPROVED => [i::__('Não selecionada'), i::__('Não selecionada em "{PHASE_NAME}"')],
+                        Registration::STATUS_WAITLIST => [i::__('Suplente'), i::__('Suplente em "{PHASE_NAME}"')],
+                        Registration::STATUS_INVALID => [i::__('Inválida'), i::__('Inválida em "{PHASE_NAME}"')],
+                    ];
+    
+                    if ($registration->opportunity->equals($previous_phase)) {
+                        $label = $labels[$registration->status][0];
+                    } else {
+                        $opp_phase = $registration->opportunity;
+                        $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
+                        $label = $labels[$registration->status][1];
+                        $label = str_replace('{PHASE_NAME}', $phase->name, $label);
+                    }
+    
+                    $reg->consolidatedResult = $label;
+                }
+
                 $reg->previousPhaseRegistrationId = $registration->id;
                 $reg->save(true);
 
                 if($this->isLastPhase) {
                     $methods = [
-                        Registration::STATUS_DRAFT => 'setStatusToDraft',
+                        Registration::STATUS_DRAFT => 'setStatusToInvalid',
                         Registration::STATUS_SENT => 'setStatusToSent',
                         Registration::STATUS_APPROVED => 'setStatusToApproved',
                         Registration::STATUS_NOTAPPROVED => 'setStatusToNotApproved',
@@ -957,7 +984,6 @@ class Module extends \MapasCulturais\Module{
                     ];
 
                     $method = $methods[$registration->status];
-                    $reg->consolidatedResult = $registration->consolidatedResult;
                     $reg->$method();
                 } else if(!$as_draft){
                     $reg->send();
