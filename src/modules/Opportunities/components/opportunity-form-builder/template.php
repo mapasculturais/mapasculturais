@@ -97,8 +97,8 @@ $this->import('
                     <div class="input-group">
                         <h4 class="input-group__title"><?= i::__("Solicitar avatar no agente responsável") ?></h4>
                         <h6 class="input-group__subtitle"><?= i::__("Solicita ao usuário que insira um avatar") ?></h6>
-                        <div class="input-group__inputs no-padding-bottom">
-                            <entity-field :entity="entity" hide-required  :editable="true" prop="requestAgentAvatar"></entity-field>
+                        <div class="input-group__inputs">
+                            <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="requestAgentAvatar"></entity-field>
                         </div>
                     </div>
                 </template>
