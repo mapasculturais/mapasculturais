@@ -170,6 +170,9 @@ return array(
             '0' => \MapasCulturais\i::__('Não Utilizar'),
             '1' => \MapasCulturais\i::__('Obrigatório'),
         ),
+        'unserialize' => function($value) {
+           return ($value == 0 || $value == "") ? false : true;
+        }
     ),
     'items' => array(
         1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),
