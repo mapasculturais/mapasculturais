@@ -8,18 +8,35 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Kernel
 {
-    public static function execute(): void
+    private string $url;
+    private null|array $currentRoute = null;
+
+    public function __construct()
     {
+        $this->url = $this->getPathRequest();
         $routes = require_once dirname(__DIR__).'/routes/routes.php';
 
-        $url = $_SERVER['REQUEST_URI'];
+        $this->currentRoute = $routes[$this->url] ?? null;
+    }
 
-        if (false === isset($routes[$url])) {
+    public function execute(): void
+    {
+        if (null === $this->currentRoute) {
             return;
         }
 
-        $controller = $routes[$url][0];
-        $method = $routes[$url][1];
+        $this->dispatchAction();
+    }
+
+    private function getPathRequest(): string
+    {
+        return explode('?', $_SERVER['REQUEST_URI'])[0];
+    }
+
+    private function dispatchAction(): void
+    {
+        $controller = $this->currentRoute[0];
+        $method = $this->currentRoute[1];
 
         $response = (new $controller())->$method();
 

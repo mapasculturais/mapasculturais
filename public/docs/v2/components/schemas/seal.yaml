@@ -1,0 +1,47 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id numérico que representa o Selo
+  name:
+    type: string
+    example: Selo Mapas
+    description: Um texto que representa o nome do Selo
+  shortDescription:
+    type: string
+    example: Descrição curta Selo Mapas
+    description: Uma breve descrição do Selo
+  longDescription:
+    type: string
+    example: Descrição longa Selo Mapas
+    description: Uma descrição detalhada do Selo
+  certificateText:
+    type: string
+    nullable: true
+    description: Texto do certificado do Selo
+  validPeriod:
+    type: integer
+    example: 0
+    description: Período de validade do Selo
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  status:
+    type: integer
+    example: 1
+    description: Um número que representa o status do Selo
+  _ownerId:
+    type: integer
+    example: 1
+    description: O ID do Agente que criou o Selo
+  lockedFields:
+    type: array
+    items:
+      type: string
+    description: Campos bloqueados do Selo
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  _subsiteId:
+    type: string
+    nullable: true
+    description: ID do Subsite associado ao Selo

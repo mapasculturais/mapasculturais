@@ -6,8 +6,8 @@ use App\Kernel;
 
 include dirname(__DIR__).'/vendor/autoload.php';
 
-Kernel::execute();
-
 require_once 'bootstrap.php';
+
+(new Kernel)->execute();
 
 $app->run();

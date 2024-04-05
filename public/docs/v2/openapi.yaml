@@ -6,6 +6,8 @@ info:
 
     Links Importantes:
     - [Mapa Cultural do Ceará](https://mapacultural.secult.ce.gov.br/)
+    - [API V2](https://mapacultural.secult.ce.gov.br/api/v2)
+    - [Github](https://github.com/secultce/mapacultural)
   contact:
     email: contato@email.com
   license:
@@ -16,4 +18,14 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: /v2
+  - url: /api/v2
+tags:
+  - name: Selos
+    description: Rotas relacionadas aos selos
+paths:
+  /seals:
+    $ref: './components/paths/seal/get-list.yaml'
+components:
+  schemas:
+    Seal:
+      $ref: './components/schemas/seal.yaml'
