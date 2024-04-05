@@ -976,12 +976,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 if ($value['status'] > 0) {
                     $data['sent'] += $value['qtd'];
                 }
-                
-                if ($this->evaluationMethodConfiguration){
-                    if (in_array($value['status'], [0,1])){
-                        $data[$status] = $value['qtd'];
-                    } 
-                } 
 
                 $data[$status] = $value['qtd'];
             }
