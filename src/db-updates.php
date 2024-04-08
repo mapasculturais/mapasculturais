@@ -2077,7 +2077,7 @@ $$
             ALTER TABLE 
                 geo_division 
             DROP CONSTRAINT 
-                'enforce_geotype_geom'
+                enforce_geotype_geom
         ");
 
         __exec(
@@ -2085,7 +2085,7 @@ $$
             ALTER TABLE 
                 geo_division 
             ADD CONSTRAINT 
-                'enforce_geotype_geom' 
+                enforce_geotype_geom 
             CHECK 
                 (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
                 geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
