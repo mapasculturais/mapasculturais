@@ -82,7 +82,19 @@ return array(
             // 'description' => \MapasCulturais\i::__('Defina se haverá uma quantidade máxima de inscritos (0 = sem limites).'),
             'validations' => array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições na oportunidade deve ser um número inteiro")
-            )
+            ),
+            'serialize' => function($value){
+                if(!empty($value) || !$value == 0 ){
+                    return json_encode($value);
+                }else{
+                    return null;
+                }
+            },
+            'unserialize' => function($value) {
+                if($value){
+                    return json_decode((string) $value); 
+                }
+            }
         ),
         'useSpaceRelationIntituicao' => array(
             'label' => \MapasCulturais\i::__('Espaço Cultural'),
