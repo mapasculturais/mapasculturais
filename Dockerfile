@@ -11,4 +11,5 @@ RUN install-php-extensions \
     curl \
     iconv \
     xmlwriter \
-    simplexml
+    simplexml \
+    xdebug

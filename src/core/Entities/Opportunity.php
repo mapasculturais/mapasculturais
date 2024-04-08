@@ -468,8 +468,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     static function getClassName() {
-        $className = static::class;
-        return $className;
+        return static::class;
     }
 
     function getExtraPermissionCacheUsers(){

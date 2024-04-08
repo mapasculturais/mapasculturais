@@ -32,7 +32,6 @@ class AgentOpportunity extends Opportunity{
     protected $parent;
     
     public function getSpecializedClassName() {
-        $className = static::class;
-        return $className;
+        return static::class;    
     }
 }
