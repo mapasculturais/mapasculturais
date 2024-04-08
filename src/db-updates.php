@@ -2071,5 +2071,24 @@ $$
                 p1.object_type = p2.object_type AND 
                 p1.object_id = p2.object_id AND 
                 p1.action = p2.action;");
+    },
+    'Corrige constraint enforce_geotype_geom da tabela geo_division' => function() use($conn) {
+        __exec("
+            ALTER TABLE 
+                geo_division 
+            DROP CONSTRAINT 
+                'enforce_geotype_geom'
+        ");
+
+        __exec(
+            "
+            ALTER TABLE 
+                geo_division 
+            ADD CONSTRAINT 
+                'enforce_geotype_geom' 
+            CHECK 
+                (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
+                geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
+        ");
     }
 ] + $updates ;
