@@ -22,15 +22,21 @@ servers:
 tags:
   - name: Espaços
     description: Rotas relacionadas aos espaços
+  - name: Projetos
+    description: Rotas relacionadas aos projetos
   - name: Selos
     description: Rotas relacionadas aos selos
 paths:
+  /projects:
+    $ref: './components/paths/project/get-list.yaml'
   /seals:
     $ref: './components/paths/seal/get-list.yaml'
   /spaces:
     $ref: './components/paths/space/get-list.yaml'
 components:
   schemas:
+    Project:
+      $ref: './components/schemas/project.yaml'
     Seal:
       $ref: './components/schemas/seal.yaml'
     Space:

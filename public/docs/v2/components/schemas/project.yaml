@@ -1,0 +1,42 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 15
+    description: Um id numérico que representa o Projeto
+  _type:
+    type: integer
+    example: 1
+    description: Um número que representa o tipo do Projeto
+  name:
+    type: string
+    example: "Projeto ABC"
+    description: Um texto que representa o nome do Projeto
+  shortDescription:
+    type: string
+    example: "texto."
+    description: Uma breve descrição do Projeto
+  longDescription:
+    type: 'string'
+    example: "texto longo."
+    description: Uma descrição detalhada do Projeto
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  startsOn:
+    type: 'string'
+    example: null
+    description: Data de início do Projeto
+  endsOn:
+    type: 'string'
+    example: null
+    description: Data de término do Projeto
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  status:
+    type: integer
+    example: 1
+    description: Um número que representa o status do Projeto
+  _subsiteId:
+    type: 'integer'
+    example: null
+    description: ID do Subsite associado ao Projeto

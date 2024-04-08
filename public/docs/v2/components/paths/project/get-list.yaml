@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Projetos
+  summary: Recupera a lista de projetos
+  description: Recupera a lista de projetos
+  responses:
+    '200':
+      description: Um array com todos os projetos.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              - $ref: '../../schemas/project.yaml'
