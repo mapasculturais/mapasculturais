@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.42] - 2024-04-08
+### Correçoes
+- Corrige criação das geo divisões 
+
 ## [7.3.41] - 2024-04-04
 ### Correçoes
 - Ajusta exibição dos resumos de inscrições na aba Inscrições e resultados
