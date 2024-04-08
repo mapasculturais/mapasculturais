@@ -14,7 +14,4 @@ $this->import('
 ?>
 <span class="icon">
     <entity-profile :entity="entity.owner" size="small"></entity-profile>
-    <div class="card__title"> 
-        <div class="obrigatory"> <?= i::__('* Obrigatório') ?> </div>
-    </div>
 </span>
