@@ -41,6 +41,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 
+## [7.3.42] - 2024-04-08
+### Correçoes
+- Corrige criação das geo divisões 
+
 ## [7.3.41] - 2024-04-04
 ### Correçoes
 - Ajusta exibição dos resumos de inscrições na aba Inscrições e resultados
