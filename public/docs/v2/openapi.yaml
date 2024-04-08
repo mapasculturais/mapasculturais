@@ -20,12 +20,18 @@ externalDocs:
 servers:
   - url: /api/v2
 tags:
+  - name: Espaços
+    description: Rotas relacionadas aos espaços
   - name: Selos
     description: Rotas relacionadas aos selos
 paths:
   /seals:
     $ref: './components/paths/seal/get-list.yaml'
+  /spaces:
+    $ref: './components/paths/space/get-list.yaml'
 components:
   schemas:
     Seal:
       $ref: './components/schemas/seal.yaml'
+    Space:
+      $ref: './components/schemas/space.yaml'

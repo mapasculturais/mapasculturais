@@ -15,7 +15,7 @@ abstract class AbstractTestCase extends TestCase
     protected function setUp(): void
     {
         $this->client = HttpClient::create()->withOptions([
-            'base_uri' => 'http://localhost'
+            'base_uri' => 'http://localhost',
         ]);
 
         parent::setUp();

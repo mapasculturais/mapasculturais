@@ -1,0 +1,51 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 5
+    description: Um id numérico que representa o espaço
+  location:
+    type: object
+    properties:
+      latitude:
+        type: string
+        example: "0"
+        description: Latitude do espaço
+      longitude:
+        type: string
+        example: "0"
+        description: Longitude do espaço
+  name:
+    type: string
+    example: Secult
+    description: Um texto que representa o nome do espaço
+  public:
+    type: boolean
+    example: false
+    description: Indica se o espaço é público ou não
+  shortDescription:
+    type: string
+    example: Secult
+    description: Uma breve descrição do espaço
+  longDescription:
+    type: string
+    example: null
+    description: Descrição detalhada do espaço
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  status:
+    type: integer
+    example: 1
+    description: Status do espaço
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  parent:
+    type: integer
+    description: O espaço pai (se houver)
+  owner:
+    type: integer
+    example: 1
+    description: Proprietário do espaço
+  subsite:
+    type: integer
+    description: Subsite do espaço (se houver)

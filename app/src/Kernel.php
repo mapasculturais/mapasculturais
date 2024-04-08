@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Kernel
 {
     private string $url;
-    private null|array $currentRoute = null;
+    private ?array $currentRoute = null;
 
     public function __construct()
     {
