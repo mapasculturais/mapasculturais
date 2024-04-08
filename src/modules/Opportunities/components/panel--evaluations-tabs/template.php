@@ -11,6 +11,7 @@ $this->import('
     mc-entities
     mc-tab
     mc-tabs
+    pending-evaluations-card
 ');
 ?>
 
@@ -40,7 +41,7 @@ $this->import('
                 <div class="panel-evaluations__cards">                   
                     <?php $this->applyComponentHook('tabs-openEvaluations-cards', 'begin'); ?>      
 
-                    <evaluation-card v-for="evaluation in entities" :entity="evaluation" buttonLabel="<?= i::esc_attr__('Avaliar') ?>"></evaluation-card>
+                    <pending-evaluations-card></pending-evaluations-card>
 
                     <?php $this->applyComponentHook('tabs-openEvaluations-cards', 'end'); ?>
                 </div>
