@@ -78,15 +78,22 @@ $this->breadcrumb = $breadcrumb;
                     </div>
                     <div class="section__content">                         
                         <div class="card owner">                            
-                            <div class="card__title"> 
-                                <?= i::__('Agente responsável') ?> 
-                            </div>
                             <div class="card__content">
                                 <div class="owner">
                                     <mc-avatar v-if="!entity.opportunity.requestAgentAvatar" :entity="entity.owner" size="small"></mc-avatar>
                                     <request-agent-avatar v-if="entity.opportunity.requestAgentAvatar" :entity="entity"></request-agent-avatar>
-                                    <div class="owner__name">
-                                        {{entity.owner.name}}
+                                    <div class="owner__content">
+                                        <div class="owner__content--title">
+                                            <h3 class="card__title"> 
+                                                <?= i::__('Agente responsável') ?> 
+                                            </h3>
+                                            <div class="owner__name">
+                                                {{entity.owner.name}}
+                                            </div>
+                                        </div>
+                                        <div v-if="entity.opportunity.requestAgentAvatar" class="card__mandatory"> 
+                                            <div class="obrigatory"> <?= i::__('*obrigatório') ?> </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
