@@ -20,6 +20,8 @@ externalDocs:
 servers:
   - url: /api/v2
 tags:
+  - name: Agentes
+    description: Rotas relacionadas aos agentes
   - name: Espaços
     description: Rotas relacionadas aos espaços
   - name: Projetos
@@ -27,6 +29,8 @@ tags:
   - name: Selos
     description: Rotas relacionadas aos selos
 paths:
+  /agents:
+    $ref: './components/paths/agent/get-list.yaml'
   /projects:
     $ref: './components/paths/project/get-list.yaml'
   /seals:
@@ -35,6 +39,8 @@ paths:
     $ref: './components/paths/space/get-list.yaml'
 components:
   schemas:
+    Agent:
+      $ref: './components/schemas/agent.yaml'
     Project:
       $ref: './components/schemas/project.yaml'
     Seal:

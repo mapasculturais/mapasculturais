@@ -1,0 +1,48 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id númerico que representa o Agente
+  name: 
+    type: string
+    example: "Agente 1"
+    description: O nome do Agente
+  publicLocation:
+    type: boolean
+    exemple: false
+    description: Se o Agente possui localização pública
+  location: 
+    type: object
+    properties:
+      latitude:
+        type: integer
+        example: -3.7201423995413423
+        description: A latitude da localização do Agente
+      longitude:
+        type: integer
+        example: -38.51312727564898
+        description: A longitude da localização do Agente
+  shortDescription:
+    type: string
+    example: "Descrição curta Agente 1"
+    description: Uma breve descrição do Agente
+  longDescription:
+    type: string
+    example: "Descrição longa Agente 1"
+    description: Uma descrição detalhada do Agente
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  status:
+    type: integer
+    exemple: 1
+    description: Um número que representa o status do Agente
+  userId:
+    type: integer
+    example: 1
+    description: O id do usuário associado ao Agente
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  subsite:
+    type: integer
+    description: Subsite do agente (se houver)
