@@ -37,6 +37,8 @@ paths:
     $ref: './components/paths/seal/get-list.yaml'
   /spaces:
     $ref: './components/paths/space/get-list.yaml'
+  /spaces/{id}:
+    $ref: './components/paths/space/get-one.yaml'
 components:
   schemas:
     Agent:

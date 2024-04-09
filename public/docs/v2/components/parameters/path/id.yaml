@@ -1,0 +1,8 @@
+name: 'id'
+in: path
+schema:
+  type: string
+  example: 1
+required: true
+description: O identificador do objeto
+example: '1'

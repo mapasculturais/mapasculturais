@@ -22,4 +22,11 @@ class SpaceApiController
 
         return new JsonResponse($spaces);
     }
+
+    public function getOne(array $params): JsonResponse
+    {
+        $space = $this->repository->find((int) $params['id']);
+
+        return new JsonResponse($space);
+    }
 }
