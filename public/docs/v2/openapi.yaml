@@ -33,6 +33,8 @@ tags:
 paths:
   /agents:
     $ref: './components/paths/agent/get-list.yaml'
+  /agents/{id}:
+    $ref: './components/paths/agent/get-one.yaml'
   /events:
     $ref: './components/paths/events/get-list.yaml'
   /projects:

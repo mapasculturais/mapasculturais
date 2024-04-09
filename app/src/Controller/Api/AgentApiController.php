@@ -23,9 +23,9 @@ class AgentApiController
         return new JsonResponse($agents);
     }
 
-    public function getOne(int $id): JsonResponse
+    public function getOne(array $params): JsonResponse
     {
-        $agent = $this->repository->find($id);
+        $agent = $this->repository->find((int) $params['id']);
 
         return new JsonResponse($agent);
     }

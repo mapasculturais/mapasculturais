@@ -15,7 +15,7 @@ class SpaceApiControllerTest extends AbstractTestCase
         $this->assertIsArray($content);
     }
 
-    public function testGetOneSealShouldRetrieveAObject(): void
+    public function testGetOneSpaceShouldRetrieveAObject(): void
     {
         $response = $this->client->request('GET', '/api/v2/spaces/1');
         $content = json_decode($response->getContent());
