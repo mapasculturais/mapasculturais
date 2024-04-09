@@ -22,4 +22,11 @@ class ProjectApiController
 
         return new JsonResponse($projects);
     }
+
+    public function getOne(array $params): JsonResponse
+    {
+        $project = $this->repository->find((int) $params['id']);
+
+        return new JsonResponse($project);
+    }
 }

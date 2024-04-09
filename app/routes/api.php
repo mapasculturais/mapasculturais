@@ -16,6 +16,7 @@ return [
     '/api/v2/agents/{id}' => [AgentApiController::class, 'getOne'],
 
     '/api/v2/projects' => [ProjectApiController::class, 'getList'],
+    '/api/v2/projects/{id}' => [ProjectApiController::class, 'getOne'],
 
     '/api/v2/seals' => [SealApiController::class, 'getList'],
     '/api/v2/seals/{id}' => [SealApiController::class, 'getOne'],

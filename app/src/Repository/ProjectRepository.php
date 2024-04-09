@@ -24,4 +24,9 @@ class ProjectRepository extends AbstractRepository
             ->getQuery()
             ->getArrayResult();
     }
+
+    public function find(int $id): Project
+    {
+        return $this->repository->find($id);
+    }
 }
