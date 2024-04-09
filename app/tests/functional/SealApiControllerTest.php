@@ -14,4 +14,13 @@ class SealApiControllerTest extends AbstractTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertIsArray($content);
     }
+
+    public function testGetOneSealShouldRetrieveAObject(): void
+    {
+        $response = $this->client->request('GET', '/api/v2/seals/1');
+        $content = json_decode($response->getContent());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertIsObject($content);
+    }
 }

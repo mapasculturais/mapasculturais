@@ -22,4 +22,11 @@ class SealApiController
 
         return new JsonResponse($seals);
     }
+
+    public function getOne(array $params): JsonResponse
+    {
+        $seal = $this->repository->find((int) $params['id']);
+
+        return new JsonResponse($seal);
+    }
 }

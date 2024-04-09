@@ -5,27 +5,33 @@ declare(strict_types=1);
 namespace App;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
 
 class Kernel
 {
     private string $url;
-    private ?array $currentRoute = null;
+    private RouteCollection $routes;
 
     public function __construct()
     {
         $this->url = $this->getPathRequest();
-        $routes = require_once dirname(__DIR__).'/routes/routes.php';
-
-        $this->currentRoute = $routes[$this->url] ?? null;
+        $this->routes = require_once dirname(__DIR__).'/routes/routes.php';
     }
 
     public function execute(): void
     {
-        if (null === $this->currentRoute) {
+        try {
+            $context = new RequestContext();
+
+            $matcher = new UrlMatcher($this->routes, $context);
+
+            $this->dispatchAction($matcher);
+        } catch (ResourceNotFoundException $exception) {
             return;
         }
-
-        $this->dispatchAction();
     }
 
     private function getPathRequest(): string
@@ -33,12 +39,16 @@ class Kernel
         return explode('?', $_SERVER['REQUEST_URI'])[0];
     }
 
-    private function dispatchAction(): void
+    private function dispatchAction(UrlMatcher $matcher): void
     {
-        $controller = $this->currentRoute[0];
-        $method = $this->currentRoute[1];
+        $parameters = $matcher->match($this->url);
 
-        $response = (new $controller())->$method();
+        $controller = array_shift($parameters);
+        $method = array_shift($parameters);
+
+        unset($parameters['_route']);
+
+        $response = (new $controller())->$method($parameters);
 
         if ($response instanceof Response) {
             $response->send();
