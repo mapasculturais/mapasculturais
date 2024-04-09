@@ -18,6 +18,10 @@
             flex-direction: column;
             align-items: flex-start;
         }
+
+        @media (max-width: 630px) {
+            grid-template-columns: 1fr;
+        }
     }
     
     & input {
@@ -42,61 +46,85 @@
         .title {
             display: grid;
             grid-template-columns: 1fr size(256);
-            gap: size(80);
-        }
+            gap: size(16);
 
-        .title__input {
-            font-size: inherit;
-            padding: 0 0 0 size(14);
-            margin: 0;
-            line-height: 1;
-        }
-
-        & span {
-            display: flex;
-            align-items: center;
-        }
-
-        .title__buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .iconify {
-                margin-right: size(8);
+            @media (max-width: 550px) {
+                grid-template-columns: 1fr;
+                justify-items: center;
             }
-        } 
+
+            .title__input {
+                font-size: inherit;
+                padding: 0 0 0 size(14);
+                margin: 0;
+                line-height: 1;
+            }
+
+            .title__buttons {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .iconify {
+                    margin-right: size(8);
+                }
+
+                @media (max-width: 550px) {
+                    flex-direction: column;
+                    gap: size(20)
+                }
+            } 
+        }
     }
 
     &__criterions {
         .criterion {
-            align-items: center;
             border-top: var(--mc-border-hairline) var(--mc-gray-300);
             display: grid;
             gap: size(20) size(30);
             grid-template-columns: 1fr size(70);
             padding: size(16) size(20);
-        }
 
-        .criterion__fields {
-            display: grid;
-            gap: size(20) size(30);
-            grid-template-columns: 
+            @media (max-width: 550px) {
+                grid-template-columns: 1fr;
+            }
+
+            &__fields {
+                display: grid;
+                gap: size(20) size(30);
+                grid-template-columns: 
                 calc(60% - size(20)) 
                 calc(20% - size(4)) 
                 calc(20% - size(36));
 
-            @media (max-width: 1010px) {
-                grid-template-columns: 1fr;
-            }
-        }
+                @media (max-width: 1010px) {
+                    grid-template-columns: 1fr;
+                }
 
-        .criterion__title {
-            grid-template-columns: 
+                @media (max-width: 450px) {
+                    grid-template-columns: size(175);
+                }
+            }
+
+            &__title {
+                grid-template-columns: 
                 calc(60% - size(80))
                 calc(20% - size(24))
                 calc(20% - size(56));
-            padding: size(18) size(23);
+                padding: size(18) size(23);
+
+                @media (max-width: 550px) {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .field__trash {
+                @media (max-width: 550px) {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
         }
     }
 
