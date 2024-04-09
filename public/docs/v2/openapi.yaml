@@ -24,6 +24,8 @@ tags:
     description: Rotas relacionadas aos agentes
   - name: Espaços
     description: Rotas relacionadas aos espaços
+  - name: Eventos
+    description: Rotas relacionadas aos eventos
   - name: Projetos
     description: Rotas relacionadas aos projetos
   - name: Selos
@@ -31,6 +33,8 @@ tags:
 paths:
   /agents:
     $ref: './components/paths/agent/get-list.yaml'
+  /events:
+    $ref: './components/paths/events/get-list.yaml'
   /projects:
     $ref: './components/paths/project/get-list.yaml'
   /seals:
@@ -43,6 +47,8 @@ components:
   schemas:
     Agent:
       $ref: './components/schemas/agent.yaml'
+    Events:
+      $ref: './components/schemas/event.yaml'
     Project:
       $ref: './components/schemas/project.yaml'
     Seal:
