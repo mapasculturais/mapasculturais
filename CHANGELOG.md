@@ -41,6 +41,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 
+## [7.3.44] - 2024-04-09
+### Correçoes
+- Corrije o salvamento dos dados de DeoDivision
+
 ## [7.3.43] - 2024-04-08
 ### Correçoes
 - Corrige erro no db-update das geo_divisions
