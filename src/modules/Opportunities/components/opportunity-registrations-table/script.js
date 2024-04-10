@@ -95,6 +95,10 @@ app.component('opportunity-registrations-table', {
             sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
         }
 
+        if(this.phase.isLastPhase) {
+            order = `status DESC,${consolidatedResultOrder} DESC`;
+        }
+
         return {
             sortOptions,
             filters: {},
@@ -171,15 +175,20 @@ app.component('opportunity-registrations-table', {
                 { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
                 { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
                 { text: __('data de envio', 'opportunity-registrations-table'), value: "sentTimestamp" },
-                { text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true},
             ];
 
             if(this.phase.evaluationMethodConfiguration){
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
             }
 
-            itens.splice(3,0,{ text: "Pontuação", value: "score"});
+            if(this.phase.isLastPhase){
+                itens.splice(2,0,{ text: "Status", value: "consolidatedResult"});
+                itens.push({ text: __('resultado final', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
+            } else {
+                itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
+            }
 
+            itens.splice(3,0,{ text: "Pontuação", value: "score"});
 
             return itens;
         },
@@ -287,6 +296,8 @@ app.component('opportunity-registrations-table', {
                 }else{
                     return this.statusEvaluation[type][entity.consolidatedResult];
                 }
+            } else if (this.phase.isLastPhase) {
+                return entity.consolidatedResult;
             }
             return "";
         },
