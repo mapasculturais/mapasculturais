@@ -47,6 +47,10 @@ return [
             'title' => i::__("Inscrição iniciada"),
             'template' => 'start_registration.html'
         ],
+        'start_teste' => [
+            'title' => i::__("Teste feito"),
+            'template' => 'start_teste.html'
+        ],
         'send_registration' => [
             'title' => i::__("Inscrição enviada"),
             'template' => 'send_registration.html'
