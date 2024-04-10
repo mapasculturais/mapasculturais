@@ -869,7 +869,6 @@ abstract class Entity implements \JsonSerializable{
                     $app->em->flush();
                 }
             }
-            $this->refresh();
 
             if($this->usesRevision()) {
                 if($is_new){
