@@ -16,10 +16,10 @@ $this->import('
     opportunity-phase-config-results
 ');
 ?>
-<mc-stepper-vertical :items="phases" allow-multiple>
+<mc-stepper-vertical class="opportunity-phases-config" :items="phases" allow-multiple>
     <template #header-title="{index, item}">
-        <div class="stepper-header__content">
-            <div class="info">
+        <div class="stepper-header__content opportunity-phases-config__content">
+            <div class="info opportunity-phases-config__info">
                 <h3 v-if="index" class="info__title">{{item.name}}</h3>
                 <h3 v-if="!index" class="info__title"><?= i::__('Período de inscrição') ?></h3>
                 <div v-if="!item.isLastPhase" class="info__type">
@@ -29,7 +29,7 @@ $this->import('
                 </div>
             </div>
 
-            <div class="dates">
+            <div class="dates opportunity-phases-config__dates">
                 <div v-if="!item.isLastPhase" class="date">
                     <div class="date__title"> <?= i::__('Data de início') ?> </div>
                     <div v-if="item.registrationFrom" class="date__content">{{item.registrationFrom.date('2-digit year')}} {{item.registrationFrom.time('numeric')}}</div>
