@@ -20,20 +20,20 @@ $this->import('
     </div>
 
     
-    <div class="opportunity-ranges-config__content grid-12" v-for="(range, index) in entity.registrationRanges" :key="index">
+    <div class="opportunity-ranges-config__content" v-for="(range, index) in entity.registrationRanges" :key="index">
         <div class="field">
-            <h5 class="bold field__title"><?= $this->text('input-label', i::__('Faixa/Linha')) ?> {{index+1}}</h5>
+            <label><?= $this->text('input-label', i::__('Faixa/Linha')) ?> {{index+1}}</label>
             <input class="field__input" type="text" v-model="range.label" @blur="autoSaveRange(range)" placeholder="<?= $this->text('input-placeholder', i::__('Descrição da faixa/linha')) ?>">
         </div>
             
-        <div class="field field--small"> 
-            <h6 class="field__title"><?= i::__('Quantidade de vagas') ?></h6>
-            <input class="field__input field__input--small" type="number" v-model="range.limit" @blur="autoSaveRange(range)">
+        <div class="field">
+            <h6><?= i::__('Quantidade de vagas') ?></h6>
+            <input class="field__input" type="number" v-model="range.limit" @blur="autoSaveRange(range)">
         </div>
             
-        <div class="field field--small">
-            <h6 class="field__title"><?= i::__('Valor') ?></h6>
-            <mc-currency-input class="field__input field__input--small" v-model.lazy="range.value" @blur="autoSaveRange(range)"></mc-currency-input>
+        <div class="field">
+            <h6><?= i::__('Valor') ?></h6>
+            <mc-currency-input class="field__input" v-model.lazy="range.value" @blur="autoSaveRange(range)"></mc-currency-input>
         </div>
             
         <mc-confirm-button @confirm="removeRange(index)">
