@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Controller\Api\AgentApiController;
+use App\Controller\Api\OpportunityApiController;
 use App\Controller\Api\ProjectApiController;
 use App\Controller\Api\SealApiController;
 use App\Controller\Api\SpaceApiController;
@@ -15,8 +16,8 @@ return [
     '/api/v2/agents' => [AgentApiController::class, 'getList'],
     '/api/v2/agents/{id}' => [AgentApiController::class, 'getOne'],
 
-    '/api/v2/opportunities' => [ProjectApiController::class, 'getList'],
-    '/api/v2/opportunities/{id}' => [ProjectApiController::class, 'getOne'],
+    '/api/v2/opportunities' => [OpportunityApiController::class, 'getList'],
+    '/api/v2/opportunities/{id}' => [OpportunityApiController::class, 'getOne'],
 
     '/api/v2/projects' => [ProjectApiController::class, 'getList'],
     '/api/v2/projects/{id}' => [ProjectApiController::class, 'getOne'],
