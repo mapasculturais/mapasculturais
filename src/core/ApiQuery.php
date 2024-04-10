@@ -3123,7 +3123,7 @@ class ApiQuery {
                     $admin_where = implode(' OR ', $admin_where);
                     $admin_where = "OR ($admin_where)";
                 }
-
+                $view_where = '';
                 if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
                     $params = $this->apiParams;
                     if($this->entityClassName === Opportunity::class && (isset($params['id']) || isset($params['parent']) || isset($params['status']))) {
