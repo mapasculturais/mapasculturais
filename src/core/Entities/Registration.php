@@ -4,6 +4,7 @@ namespace MapasCulturais\Entities;
 use DateTime;
 use MapasCulturais\i;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
@@ -717,7 +718,7 @@ class Registration extends \MapasCulturais\Entity
     //     // do nothing
     // }
 
-    function _setStatusTo($status){
+    function _setStatusTo($status, $flush = true){
         if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
             $this->checkPermission('send');
         }else{
@@ -727,7 +728,7 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
-        $this->save(true);
+        $this->save($flush);
         $app->enableAccessControl();
         
         $this->enqueueToPCacheRecreation();
@@ -864,28 +865,45 @@ class Registration extends \MapasCulturais\Entity
         return $statuses;
     }
 
-    function setStatusToDraft(){
-        $this->_setStatusTo(self::STATUS_DRAFT);
+    function setStatus(int $status) {
+        $status_map = [
+            self::STATUS_DRAFT => 'setStatusToDraft',
+            self::STATUS_SENT => 'setStatusToSent',
+            self::STATUS_INVALID => 'setStatusToInvalid',
+            self::STATUS_NOTAPPROVED => 'setStatusToNotApproved',
+            self::STATUS_WAITLIST => 'setStatusToWaitlist',
+            self::STATUS_APPROVED => 'setStatusToApproved',
+        ];
+
+        if($method = $status_map[$status] ?? false) {
+            $this->$method(false);
+        } else {
+            throw new Exception(i::__('Status inválido para inscrição'));
+        }
+    }
+
+    function setStatusToDraft($flush = true){
+        $this->_setStatusTo(self::STATUS_DRAFT, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');
     }
 
-    function setStatusToApproved(){
-        $this->_setStatusTo(self::STATUS_APPROVED);
+    function setStatusToApproved($flush = true){
+        $this->_setStatusTo(self::STATUS_APPROVED, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(approved)');
     }
 
-    function setStatusToNotApproved(){
-        $this->_setStatusTo(self::STATUS_NOTAPPROVED);
+    function setStatusToNotApproved($flush = true){
+        $this->_setStatusTo(self::STATUS_NOTAPPROVED, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(notapproved)');
     }
 
-    function setStatusToWaitlist(){
-        $this->_setStatusTo(self::STATUS_WAITLIST);
+    function setStatusToWaitlist($flush = true){
+        $this->_setStatusTo(self::STATUS_WAITLIST, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(waitlist)');
     }
 
-    function setStatusToInvalid(){
-        $this->_setStatusTo(self::STATUS_INVALID);
+    function setStatusToInvalid($flush = true){
+        $this->_setStatusTo(self::STATUS_INVALID, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(invalid)');
     }
 
@@ -905,8 +923,8 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
-    function setStatusToSent(){
-        $this->_setStatusTo(self::STATUS_SENT);
+    function setStatusToSent($flush = true){
+        $this->_setStatusTo(self::STATUS_SENT, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
     }
 
