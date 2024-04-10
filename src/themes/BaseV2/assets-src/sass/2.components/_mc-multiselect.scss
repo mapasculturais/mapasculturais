@@ -1,7 +1,6 @@
 @use '../0.settings/mixins' as *;
 
 .mc-multiselect {
-    
     &--input {
         appearance: none;
         -webkit-appearance: none;
@@ -11,53 +10,83 @@
         background-size: size(20);
     }
 
+    &__filter {
+        padding: size(5) size(10);
+        display: flex;
+        gap: size(8);
+        justify-content: flex-end;
+        border-bottom: var(--mc-border-hairline);
+    }
+
+    &__filter-input {
+        width: 100%;
+        padding: size(6) size(16);
+        font-family: var(--mc-font-body);
+    }
+
+    &__close {
+        display: flex;
+        align-items: center;
+        padding: size(10);
+        cursor: pointer;
+    }
+
     &__content {
         display: flex;
         flex-direction: column;
-        gap: size(10);
+    }
 
-        &-form {            
-            .input {
-                border: var(--mc-border-hairline) var(--mc-gray-100);
-                border-radius: var(--mc-border-radius-pill);
-                font-weight: 400;
-                font-size: size(16);
-                line-height: size(19);
-                padding: size(10) size(16);
-                width: 100%;
-            }
-            .mc-tag-list__tagList {
-                max-height: size(180);
-            }
-        }
+    &__confirm-button {
+        padding: size(5) size(10);
+        display: flex;
+        border-top: var(--mc-border-hairline);
+    }
 
-        &-list {
-            display: flex;
-            flex-direction: column;
-            list-style: none;
-            overflow-y: auto;
-            padding: 0;
-            width: max-content;
-            margin: 0;
-            max-height: size(250);
+    &__options {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        overflow-y: auto;
+        padding: 0;
+        width: max-content;
+        margin: 0;
+        max-height: size(256);
+    }
 
-            .item {
-                display: flex;
-                gap: size(8);
-            }
-        }
+    &__option {
+        display: flex;
+        gap: size(8);
+        border-radius: var(--mc-border-radius-xs);
+        color: var(--mc-low-500);
+        cursor: pointer;
+        padding: size(5) size(10);
 
-        &-button {
-            display: flex;
-            justify-content: flex-end;
+        &:hover {
+            background-color: var(--mc-gray-300);
         }
     }
-    
-    // @TODO: refatoração do popover
-    .popover {
-        width: 100%;
-        &__content {
+
+    &__popper {
+        .popover__content {
+            background-color: var(--mc-white);
+            border-radius: var(--mc-border-radius-xs);
+            border: var(--mc-border-hairline) var(--mc-gray-500);
             padding: 0;
+        }
+
+        &.v-popper {
+            &__popper {
+                .v-popper {
+                    &__inner {
+                        border: none;
+                    }
+
+                    &__arrow-container {
+                        display: none;
+                    }
+                }
+            }
+
         }
     }
 }

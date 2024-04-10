@@ -2247,5 +2247,18 @@ $$
         __try('CREATE INDEX file_parent_idx ON file (parent_id)');
         __try('CREATE INDEX file_parent_object_type_idx ON file (parent_id, object_type)');
     },
+    'Corrige constraint enforce_geotype_geom da tabela geo_division' => function() use($conn) {
+        __try("ALTER TABLE geo_division DROP CONSTRAINT enforce_geotype_geom");
+
+        __exec(
+            "ALTER TABLE 
+                geo_division 
+            ADD CONSTRAINT 
+                enforce_geotype_geom
+            CHECK 
+                (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
+                geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
+        ");
+    }
 
 ] + $updates ;   
