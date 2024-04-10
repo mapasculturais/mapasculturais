@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Oportunidades
+  summary: Recupera a lista de oportunidades
+  description: Recupera a lista de oportunidades
+  responses:
+    '200':
+      description: Um array com todos os espaços
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/opportunity.yaml'
