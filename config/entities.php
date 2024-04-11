@@ -53,6 +53,12 @@ return [
             'publishTimestamp' => i::__('Data e hora de publicação dos resultados'),
             'autoPublish' => i::__('Publicar resultado automaticamente')
         ),
+
+        'MapasCulturais\Entities\Registration' => [
+            'category' => i::__('Categoria'),
+            'range' => i::__('Faixa'),
+            'proponentType' => i::__('Tipo de proponente'),
+        ]
     ),
 
 ];

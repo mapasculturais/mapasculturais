@@ -32,6 +32,6 @@ class SpaceOpportunity extends Opportunity{
     protected $parent;
     
     public function getSpecializedClassName() {
-        return get_class();
+        return SpaceOpportunity::class;
     }
 }

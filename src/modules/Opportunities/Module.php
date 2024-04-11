@@ -33,6 +33,20 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\FinishDataCollectionPhase(Jobs\FinishDataCollectionPhase::SLUG));
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
 
+        // Método para que devolve se existe avaliações técnicas nas fases anteriores
+        $app->hook("Entities\\Opportunity::hasPreviousTechnicalEvaluation", function() use ($app) {
+            $previousPhases = $this->previousPhases;
+
+            $hasPreviousTechnicalEvaluation =  false;
+            foreach($previousPhases as $phase) {
+                if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type->id === "technical") {
+                    $hasPreviousTechnicalEvaluation = true;
+                }
+            }
+
+            return $hasPreviousTechnicalEvaluation;
+        });
+
         $app->hook('entity(Opportunity).validations', function(&$validations) {
             /** @var Opportunity $this */
             if (!$this->isNew() && !$this->isLastPhase) {

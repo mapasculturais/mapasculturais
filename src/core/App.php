@@ -2229,7 +2229,6 @@ class App {
         if(($this->view) instanceof Themes\BaseV1\Theme ) {
             $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
         }
-        $this->registerController('geoDivision',    'MapasCulturais\Controllers\GeoDivision');
 
         $this->registerController('user',   'MapasCulturais\Controllers\User');
 
@@ -3273,7 +3272,7 @@ class App {
      * @throws ReflectionException 
      * @throws MappingException 
      */
-    function getRegisteredEntityTypeById(Entity|string $entity, int|string $type_id): Definitions\EntityType|null {
+    function getRegisteredEntityTypeById(Entity|string $entity, int|string|null $type_id): Definitions\EntityType|null {
         if (is_object($entity)) {
             $entity = $entity->getClassName();
         }

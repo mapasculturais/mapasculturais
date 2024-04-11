@@ -14,6 +14,12 @@ $this->import('
 ?>
 <div class="grid-12 search-list">
     <mc-entities :type="type" :select="select" :query="query" :order="order" :limit="limit" watch-query>
+        <template #load-more="{entities, loadMore}">
+            <div class="col-9 load-more">
+                <mc-loading :condition="entities.loadingMore"></mc-loading>
+                <button class="button--large button button--primary-outline" v-if="!entities.loadingMore" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
+            </div>
+        </template>
         <template #header="{entities}">
             <div class="col-3 search-list__filter">
                 <div class="search-list__filter--filter">
@@ -59,7 +65,10 @@ $this->import('
                                 <option v-if="type == 'opportunity'" value="registrationFrom DESC"> <?php i::_e('Início das inscrições (antigas-recentes)') ?> </option>
                             </select>
                         </div>
-                        <div class="foundResults">
+                        <div v-if="entityType=='Oportunidades'" class="foundResults">
+                            {{entities.metadata.count}} {{entityType}} <?= i::__('encontradas') ?> 
+                        </div>
+                        <div v-if="entityType!='Oportunidades'" class="foundResults">
                             {{entities.metadata.count}} {{entityType}} <?= i::__('encontrados') ?> 
                         </div>
                     </div>

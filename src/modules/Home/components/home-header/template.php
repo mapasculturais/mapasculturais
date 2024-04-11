@@ -23,7 +23,7 @@ $this->import('
             </p>
         </div>
 
-        <div class="home-header__banners">
+        <div v-if="banner || secondBanner" class="home-header__banners">
             <div v-if="banner" class="home-header__banner">
                 <a v-if="bannerLink" :href="bannerLink" :download="downloadableLink ? '' : undefined"  :target="!downloadableLink ? '_blank' : null">
                     <img :src="banner" />
@@ -36,6 +36,13 @@ $this->import('
                     <img :src="secondBanner" />
                 </a>
                 <img v-if="!secondBannerLink" :src="secondBanner" />
+            </div>
+
+            <div v-if="thirdBanner" class="home-header__banner">
+                <a v-if="thirdBannerLink" :href="thirdBannerLink" :download="thirdDownloadableLink ? '' : undefined"  :target="!thirdDownloadableLink ? '_blank' : null">
+                    <img :src="thirdBanner" />
+                </a>
+                <img v-if="!thirdBannerLink" :src="thirdBanner" />
             </div>
         </div>
   

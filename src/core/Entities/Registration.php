@@ -2,13 +2,13 @@
 namespace MapasCulturais\Entities;
 
 use DateTime;
-use Doctrine\ORM\Exception\NotSupported;
+use MapasCulturais\i;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
-use MapasCulturais\i;
-use RuntimeException;
+use MapasCulturais\Definitions\EvaluationMethod;
 
 /**
  * Registration
@@ -17,6 +17,7 @@ use RuntimeException;
  * @property string $category
  * 
  * @property-read EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property-read EvaluationMethod $evaluationMethod
  * @property-read mixed $evaluationResultValue valor do resultado consolidado das avaliações
  * @property-read string $evaluationResultString string do resultado consolidado das avaliações
  * @property-read RegistrationEvaluation[] $sentEvaluations lista de avaliações enviadas
@@ -145,6 +146,19 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_DRAFT;
 
+      /**
+     * @var string
+     *
+     * @ORM\Column(name="proponent_type", type="string", nullable=false)
+     */
+    protected $proponentType;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="range", type="string", nullable=false)
+     */
+    protected $range;
     
     /**
      * @var integer
@@ -196,6 +210,20 @@ class Registration extends \MapasCulturais\Entity
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="score", type="float", nullable=true)
+     */
+    protected $score;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="eligible", type="boolean", nullable=true)
+     */
+    protected $eligible;
 
      /**
      * @var \MapasCulturais\Entities\Subsite
@@ -262,23 +290,23 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
         
         $app->disableAccessControl();
-        
         $em = $this->getEvaluationMethod();
-
+        
         $result = $em->getConsolidatedResult($this);
+        
+        $this->consolidatedResult = $result;
 
         // para que dentro do hook as permissões funcionem
         $app->enableAccessControl();
         
         $app->applyHookBoundTo($this, 'entity(Registration).consolidateResult', [&$result, $caller]);
         
-        $app->disableAccessControl();
-        
-        $this->consolidatedResult = $result;
-        
-        $this->save($flush);
-        
-        $app->enableAccessControl(); 
+        $connection = $app->em->getConnection();
+        $connection->executeQuery('UPDATE registration SET consolidated_result = :result WHERE id = :id', [
+            'result' => $result,
+            'id' => $this->id
+        ]);
+
     }
 
     static function isPrivateEntity(){
@@ -312,11 +340,14 @@ class Registration extends \MapasCulturais\Entity
             'projectName' => $this->projectName,
             'number' => $this->number,
             'category' => $this->category,
+            'range' => $this->range,
+            'proponentType' => $this->proponentType,
             'owner' => $this->owner->simplify('id,name,lockedFields,singleUrl'),
             'agentRelations' => [],
             'files' => [],
             'singleUrl' => $this->singleUrl,
-            'editUrl' => $this->editUrl
+            'editUrl' => $this->editUrl,
+            'appliedForQuota' => $this->appliedForQuota
         ];
 
         if($this->canUser('viewConsolidatedResult')){
@@ -559,8 +590,11 @@ class Registration extends \MapasCulturais\Entity
      * @throws PermissionDenied 
      */
     function getEvaluationResultValue(){
-        $method = $this->getEvaluationMethod();
-        return $method->getConsolidatedResult($this);
+        if($method = $this->getEvaluationMethod()) {
+            return $method->getConsolidatedResult($this);
+        }
+
+        return null;
     }
 
     /**
@@ -570,9 +604,12 @@ class Registration extends \MapasCulturais\Entity
      * @throws PermissionDenied 
      */
     function getEvaluationResultString(){
-        $method = $this->getEvaluationMethod();
-        $value = $this->getEvaluationResultValue();
-        return $method->valueToString($value);
+        if($method = $this->getEvaluationMethod()) {
+            $value = $this->getEvaluationResultValue();
+            return $method->valueToString($value);
+        }
+
+        return null;
     }
 
     /**
@@ -677,11 +714,11 @@ class Registration extends \MapasCulturais\Entity
     }
     
 
-    function setStatus($status){
-        // do nothing
-    }
+    // function setStatus($status){
+    //     // do nothing
+    // }
 
-    function _setStatusTo($status){
+    function _setStatusTo($status, $flush = true){
         if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
             $this->checkPermission('send');
         }else{
@@ -691,7 +728,7 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
         $app->disableAccessControl();
         $this->status = $status;
-        $this->save(true);
+        $this->save($flush);
         $app->enableAccessControl();
         
         $this->enqueueToPCacheRecreation();
@@ -828,28 +865,45 @@ class Registration extends \MapasCulturais\Entity
         return $statuses;
     }
 
-    function setStatusToDraft(){
-        $this->_setStatusTo(self::STATUS_DRAFT);
+    function setStatus(int $status) {
+        $status_map = [
+            self::STATUS_DRAFT => 'setStatusToDraft',
+            self::STATUS_SENT => 'setStatusToSent',
+            self::STATUS_INVALID => 'setStatusToInvalid',
+            self::STATUS_NOTAPPROVED => 'setStatusToNotApproved',
+            self::STATUS_WAITLIST => 'setStatusToWaitlist',
+            self::STATUS_APPROVED => 'setStatusToApproved',
+        ];
+
+        if($method = $status_map[$status] ?? false) {
+            $this->$method(false);
+        } else {
+            throw new Exception(i::__('Status inválido para inscrição'));
+        }
+    }
+
+    function setStatusToDraft($flush = true){
+        $this->_setStatusTo(self::STATUS_DRAFT, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(draft)');
     }
 
-    function setStatusToApproved(){
-        $this->_setStatusTo(self::STATUS_APPROVED);
+    function setStatusToApproved($flush = true){
+        $this->_setStatusTo(self::STATUS_APPROVED, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(approved)');
     }
 
-    function setStatusToNotApproved(){
-        $this->_setStatusTo(self::STATUS_NOTAPPROVED);
+    function setStatusToNotApproved($flush = true){
+        $this->_setStatusTo(self::STATUS_NOTAPPROVED, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(notapproved)');
     }
 
-    function setStatusToWaitlist(){
-        $this->_setStatusTo(self::STATUS_WAITLIST);
+    function setStatusToWaitlist($flush = true){
+        $this->_setStatusTo(self::STATUS_WAITLIST, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(waitlist)');
     }
 
-    function setStatusToInvalid(){
-        $this->_setStatusTo(self::STATUS_INVALID);
+    function setStatusToInvalid($flush = true){
+        $this->_setStatusTo(self::STATUS_INVALID, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(invalid)');
     }
 
@@ -869,8 +923,8 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
-    function setStatusToSent(){
-        $this->_setStatusTo(self::STATUS_SENT);
+    function setStatusToSent($flush = true){
+        $this->_setStatusTo(self::STATUS_SENT, $flush);
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
     }
 
@@ -948,9 +1002,19 @@ class Registration extends \MapasCulturais\Entity
         $metadata_definitions = $app->getRegisteredMetadata('MapasCulturais\Entities\Registration');
 
         $use_category = (bool) $opportunity->registrationCategories;
+        $use_range = (bool) $opportunity->registrationRanges;
+        $use_proponent_types = (bool) $opportunity->registrationProponentTypes;
+
+        if($use_range && !$this->range) {
+            $errorsResult['range'] = [\MapasCulturais\i::__('Faixa é um campo obrigatório.')];
+        }
+
+        if($use_proponent_types && !$this->proponentType) {
+            $errorsResult['proponentType'] = [\MapasCulturais\i::__('Tipo de proponente é um campo obrigatório.')];
+        }
 
         if($use_category && !$this->category){
-            $errorsResult['category'] = [\MapasCulturais\i::__('O campo é obrigatório.')];
+            $errorsResult['category'] = [\MapasCulturais\i::__('Categoria é um campo obrigatório.')];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
@@ -1011,6 +1075,14 @@ class Registration extends \MapasCulturais\Entity
                 continue;
             }
 
+            if ($use_range && count($rfc->registrationRanges) > 0 && !in_array($this->range, $rfc->registrationRanges)) {
+                continue;
+            }
+
+            if ($use_proponent_types && count($rfc->proponentTypes) > 0 && !in_array($this->proponentType, $rfc->proponentTypes)) {
+                continue;
+            }
+
             $field_required = $rfc->required;
             if($rfc->conditional){
                 $_fied_name = $rfc->conditionalField;
@@ -1033,6 +1105,14 @@ class Registration extends \MapasCulturais\Entity
         foreach ($opportunity->registrationFieldConfigurations as $field) {
 
             if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
+                continue;
+            }
+
+            if ($use_range && count($field->registrationRanges) > 0 && !in_array($this->range, $field->registrationRanges)) {
+                continue;
+            }
+
+            if ($use_proponent_types && count($field->proponentTypes) > 0 && !in_array($this->proponentType, $field->proponentTypes)) {
                 continue;
             }
 
@@ -1134,7 +1214,7 @@ class Registration extends \MapasCulturais\Entity
         ];
     }
 
-    protected function _getSpaceData(){
+    function _getSpaceData(){
         
         $spaceRelation =  $this->getSpaceRelation(); 
 
@@ -1150,6 +1230,12 @@ class Registration extends \MapasCulturais\Entity
                     unset($result[$field]);
                 }
             }
+
+            foreach($result as $key => &$value) {
+                if($value instanceof \MapasCulturais\Entity) {
+                    $value = $value->id;
+                }
+            }
             
             $exportData = $result;
         }       
@@ -1158,16 +1244,22 @@ class Registration extends \MapasCulturais\Entity
       
     }
 
-    protected function _getAgentsData(){
+    function _getAgentsData(){
         $exportData = [];
 
         $skip_fields = $this->skipFieldsEntityRelations();
         foreach($this->_getAgentsWithDefinitions() as $agent){
             $result =  $agent->jsonSerialize();
-
+            
             foreach($skip_fields as $field ){
                 if(in_array($field,array_keys($result))){
                     unset($result[$field]);
+                }
+            }
+
+            foreach($result as $key => &$value) {
+                if($value instanceof \MapasCulturais\Entity) {
+                    $value = $value->id;
                 }
             }
 

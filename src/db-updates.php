@@ -2032,13 +2032,13 @@ $$
 
             $conn->executeQuery("
                 UPDATE request 
-                SET metadata = '{$metadata}'
-                WHERE id = $id");
+                SET metadata = ':metadata'
+                WHERE id = $id", ['metadata'=>$metadata]);
         }
     },
 
     'corrige permissão de avaliadores que tem avaliação mas não possui permissão de avaliar pela regra configurada' => function() use($conn) {
-        $regs = $conn->fetchFirstColumn("
+        $regs = $conn->fetchFirstColumn(" 
             SELECT 
                 r.id
             FROM registration r
@@ -2049,8 +2049,10 @@ $$
 
         $app = App::i();
         
-        foreach($regs as $reg) {
+        $count = count($regs);
+        foreach($regs as $i => $reg) {
             $registration = $app->repo('Registration')->find($reg);
+            echo "\n$i / $count ---- $registration";
             $app->enqueueEntityToPCacheRecreation($registration);
         }
 
@@ -2071,5 +2073,192 @@ $$
                 p1.object_type = p2.object_type AND 
                 p1.object_id = p2.object_id AND 
                 p1.action = p2.action;");
+    },
+    
+    "Cria colunas proponent_type e registration na tabela registration" => function() use ($conn){
+        if(!__column_exists('registration', 'proponent_type')) {
+            __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
+        }
+
+        if(!__column_exists('registration', 'range')) {
+            __exec("ALTER TABLE registration ADD COLUMN range VARCHAR(255) NULL");
+        }
+    },
+    
+    "Cria colunas registration_proponent_types e registration_ranges na tabela opportunity" => function() use ($conn){
+        if(!__column_exists('opportunity', 'registration_proponent_types')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN registration_proponent_types JSON NULL");
+        }
+
+        if(!__column_exists('opportunity', 'registration_ranges')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN registration_ranges JSON NULL");
+        }
+    },
+
+    "Cria colunas registration_ranges e proponent_types na tabela registration_field_configuration" => function() use ($conn){
+        if(!__column_exists('registration_field_configuration', 'registration_ranges')) {
+            __exec("ALTER TABLE registration_field_configuration ADD COLUMN registration_ranges JSON NULL");
+        }
+
+        if(!__column_exists('registration_field_configuration', 'proponent_types')) {
+            __exec("ALTER TABLE registration_field_configuration ADD COLUMN proponent_types JSON NULL");
+        }
+    },
+
+    "Cria colunas registration_ranges e proponent_types na tabela registration_file_configuration" => function() use ($conn){
+        if(!__column_exists('registration_file_configuration', 'registration_ranges')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN registration_ranges JSON NULL");
+        }
+
+        if(!__column_exists('registration_file_configuration', 'proponent_types')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN proponent_types JSON NULL");
+        }
+    },
+    
+    'trigger to update children and parent opportunities' => function () {
+        __exec("CREATE OR REPLACE FUNCTION fn_propagate_opportunity_update()
+                    RETURNS TRIGGER
+                    LANGUAGE plpgsql
+                    COST 100
+                    VOLATILE NOT LEAKPROOF AS $$
+                    BEGIN
+                        UPDATE opportunity
+                        SET 
+                            registration_ranges = NEW.registration_ranges,
+                            registration_categories = NEW.registration_categories,
+                            registration_proponent_types = NEW.registration_proponent_types
+                        WHERE (parent_id = OLD.id OR id = OLD.parent_id)
+                        AND (
+                            registration_ranges::jsonb IS DISTINCT FROM NEW.registration_ranges::jsonb OR
+                            registration_categories::jsonb IS DISTINCT FROM NEW.registration_categories::jsonb OR
+                            registration_proponent_types::jsonb IS DISTINCT FROM NEW.registration_proponent_types::jsonb
+                        );
+                        RETURN NEW;
+                    END; $$;");
+
+        __try("CREATE TRIGGER trigger_propagate_opportunity_update
+                    AFTER UPDATE ON opportunity
+                    FOR EACH ROW
+                    EXECUTE FUNCTION fn_propagate_opportunity_update()");
+    },
+    'renomeia metadados da funcionalidade AffirmativePollices' => function() use ($conn, $app) {
+        $entity_metadada = [
+            [
+                'entity' => 'evaluationMethodConfiguration_meta',
+                'old' => 'affirmativePolicies',
+                'new' => 'pointReward'
+            ],
+            [
+                'entity' => 'evaluationMethodConfiguration_meta',
+                'old' => 'isActiveAffirmativePolicies',
+                'new' => 'isActivePointReward'
+            ],
+            [
+                'entity' => 'evaluationMethodConfiguration_meta',
+                'old' => 'affirmativePoliciesRoof',
+                'new' => 'pointRewardRoof'
+            ],
+            [
+                'entity' => 'registration_meta',
+                'old' => 'appliedAffirmativePolicy',
+                'new' => 'appliedPointReward'
+            ],
+        ];
+
+        foreach ($entity_metadada as $metadata) {
+           
+            $entity = trim($metadata['entity']);
+            $old = trim($metadata['old']);
+            $new = trim($metadata['new']);
+
+            if($values = $conn->fetchAll("SELECT id FROM {$entity} WHERE key = '{$old}'")) {
+                $total = count($values);
+                foreach ($values as $key => $value) {
+                    $_key = $key + 1;
+                    $id = $value['id'];
+                    __exec("UPDATE {$entity} SET key = '{$new}' WHERE id = {$id}");
+    
+                    $app->log->debug("{$_key} de {$total} - Metadado {$old} alterado para {$new} na entidade {$entity}");
+                }
+            } else {
+                    $app->log->debug("Metadado {$old} não encontrado");
+            }
+        }
+    },
+    "Cria colunas score e eligible na entidade Registration" => function() use ($conn){
+       if(!__column_exists('Registration', 'score')) {
+            __exec("ALTER TABLE Registration ADD COLUMN score FLOAT NULL");
+        } 
+        if(!__column_exists('Registration', 'eligible')) {
+            __exec("ALTER TABLE Registration ADD COLUMN eligible BOOLEAN NULL");
+        }
+    },
+    'corrige os valores da distribuição de avaliação por categorias' => function() use ($conn, $app) {
+        if($values = $conn->fetchAll("SELECT * FROM evaluationMethodConfiguration_meta WHERE key = 'fetchCategories'")) {
+            foreach($values as $value) {
+                if($fetchCategories = json_decode($value['value'], true)) {
+                    $data = [];
+                    $id = $value['id'];
+                    $val_id = $value['object_id'];
+                    foreach($fetchCategories as $user => $fetchCategorie ) {
+                        if(is_array($fetchCategorie)) {
+                            $data[$user] = $fetchCategorie;
+                        }else {
+                            $categories = explode(";",$fetchCategorie);
+                            $data[$user] = [implode(",", $categories)];
+                        }
+                        $_data = json_encode($data);
+                        __exec("UPDATE evaluationMethodConfiguration_meta SET value = '{$_data}' WHERE id = {$id}");
+                        $app->log->debug("Campo fetchCategories atualizado na avaliação {$val_id}");
+                    }
+                }
+            }
+        }
+    },
+
+    'adiciona índices nas tabelas de revisões de entidades' => function () {
+        __try('CREATE INDEX entity_revision_object_type ON entity_revision (object_type)');
+        __try('CREATE INDEX entity_revision_object_id ON entity_revision (object_id)');
+        __try('CREATE INDEX entity_revision_object ON entity_revision (object_type, object_id)');
+
+        __try('CREATE INDEX entity_revision_revision_data_data_id ON entity_revision_revision_data (revision_data_id)');
+        __try('CREATE INDEX entity_revision_revision_data_revision_id ON entity_revision_revision_data (revision_id)');
+
+        __try('CREATE INDEX entity_revision_data_id ON entity_revision_data (id)');
+        __try('CREATE INDEX entity_revision_data_key ON entity_revision_data (key)');
+
+    },
+
+    'adiciona índice para a coluna action da tabela pcache' => function () {
+        __try('CREATE INDEX pcache_action_idx ON pcache (action)');
+    },
+
+    'adiciona novos índices na tabela registration' => function () {
+        __try('CREATE INDEX registration_number_idx ON registration (number)');
+        __try('CREATE INDEX registration_category_idx ON registration (category)');
+        __try('CREATE INDEX registration_range_idx ON registration (range)');
+        __try('CREATE INDEX registration_proponent_type_idx ON registration (proponent_type)');
+        __try('CREATE INDEX registration_status_idx ON registration (status)');
+        __try('CREATE INDEX registration_score_idx ON registration (score)');
+        __try('CREATE INDEX registration_eligible_idx ON registration (eligible)');
+    },
+
+    'adiciona novos índices na tabela file' => function () {
+        __try('CREATE INDEX file_parent_idx ON file (parent_id)');
+        __try('CREATE INDEX file_parent_object_type_idx ON file (parent_id, object_type)');
+    },
+    'Corrige constraint enforce_geotype_geom da tabela geo_division' => function() use($conn) {
+        __try("ALTER TABLE geo_division DROP CONSTRAINT enforce_geotype_geom");
+
+        __exec(
+            "ALTER TABLE 
+                geo_division 
+            ADD CONSTRAINT 
+                enforce_geotype_geom
+            CHECK 
+                (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
+                geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
+        ");
     }
-] + $updates ;
+
+] + $updates ;   

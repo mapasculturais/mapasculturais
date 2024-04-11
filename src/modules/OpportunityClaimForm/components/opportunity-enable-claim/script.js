@@ -31,10 +31,7 @@ app.component('opportunity-enable-claim', {
         },
 
         autoSave(){
-            clearTimeout(this.timeout);
-                this.timeout = setTimeout(()=>{
-                    this.entity.save();
-            },1500);
+            this.entity.save(3000);
         }
     },
     computed: {

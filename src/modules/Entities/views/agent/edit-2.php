@@ -41,7 +41,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
 
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>
@@ -74,7 +74,10 @@ $this->breadcrumb = [
                         <div class="divider"></div>
                         <div class="right">
                             <div class="grid-12">
+                                <?php $this->applyTemplateHook('edit2-entity-info-taxonomie-area','before') ?>
                                 <entity-terms :entity="entity" taxonomy="area" editable classes="col-12" title="<?php i::_e('Área de atuação'); ?>"></entity-terms>
+                                <?php $this->applyTemplateHook('edit2-entity-info-taxonomie-area','after') ?>
+
                                 <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                             </div>
                         </div>
@@ -89,6 +92,7 @@ $this->breadcrumb = [
                         <template #content>
                             <div class="grid-12">
                                 <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name" label="<?php i::_e('Nome fantasia ou razão social') ?>"></entity-field>
+                                <entity-field v-if="global.auth.is('admin')" :entity="entity" prop="type" @change="entity.save(true).then(() => global.reload())" classes="col-12"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="cnpj" label="CNPJ"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="dataDeNascimento" label="<?= i::__('Data de fundação') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="emailPrivado" label="<?= i::__('E-mail privado ') ?>"></entity-field>

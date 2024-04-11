@@ -17,7 +17,7 @@ foreach (Entities\Space::getPropertiesMetadata() as $key => $def) {
         }
 
         if($def->field_type === "socialMedia"){
-            $def->field_type = "url";
+            $def->field_type = "text";
         }
         $definitions[$key] = $def;
     }
@@ -51,9 +51,13 @@ foreach (Entities\Space::getPropertiesMetadata() as $key => $def) {
     </div>
     <?php
     foreach ($definitions as $key => $def) :
+        $type = $def->field_type;
+        if($type == 'boolean') {
+            $type = 'checkbox';
+        }
     ?>
         <div ng-if="::field.config.entityField == '<?= $key ?>'">
-            <?php $this->part('registration-field-types/fields/' . $def->field_type) ?>
+            <?php $this->part('registration-field-types/fields/' . $type) ?>
         </div>
     <?php endforeach; ?>
 

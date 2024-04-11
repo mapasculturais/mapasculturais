@@ -12,7 +12,7 @@ class Auth extends \MapasCulturais\Controller {
             if(isset($this->data['redirectTo'])){
                 $app->auth->setRedirectPath($this->data['redirectTo']);
             }
-        });
+        },-10);
     }
 
     function ALL_logout(){

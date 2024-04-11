@@ -26,10 +26,10 @@ if ($evaluation_method->slug == "technical") {
 
     $evaluationMethodConfiguration = $entity->evaluationMethodConfiguration;
 
-    $app->view->jsObject['affirmativePoliciesFieldsList'] = $getFieldsAllPhases();
-    $app->view->jsObject['isActiveAffirmativePolicies'] = $evaluationMethodConfiguration->isActiveAffirmativePolicies;
-    $app->view->jsObject['affirmativePolicies'] = $evaluationMethodConfiguration->affirmativePolicies;
-    $app->view->jsObject['affirmativePoliciesRoof'] = $evaluationMethodConfiguration->affirmativePoliciesRoof;
+    $app->view->jsObject['pointsByInductionFieldsList'] = $getFieldsAllPhases();
+    $app->view->jsObject['isActivePointReward'] = $evaluationMethodConfiguration->isActivePointReward;
+    $app->view->jsObject['pointReward'] = $evaluationMethodConfiguration->pointReward;
+    $app->view->jsObject['pointRewardRoof'] = $evaluationMethodConfiguration->pointRewardRoof;
 }
 
 $configuration = $entity->evaluationMethodConfiguration;
@@ -45,7 +45,6 @@ if (is_object($definition) && property_exists($definition, 'evaluationMethod')) 
     $evaluationMethod = $definition->evaluationMethod;
     $config_form_part_name = $evaluationMethod->getConfigurationFormPartName();
 ?>
-    <?php $this->part('singles/opportunity-evaluations--committee', ['entity' => $entity]) ?>
     <?php if ($config_form_part_name) : ?>
         <div> <?php $this->part($config_form_part_name, ['entity' => $entity]) ?> </div>
     <?php endif; ?>

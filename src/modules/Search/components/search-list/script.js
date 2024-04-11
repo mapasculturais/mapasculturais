@@ -15,7 +15,7 @@ app.component('search-list', {
             typeText: '',
         }
     },
-
+    
     created() {
         if (this.type == "agent") {
             this.typeText = __('text', 'search-list');
@@ -24,6 +24,9 @@ app.component('search-list', {
         }
     },
 
+    mounted() {
+        this.query = Utils.parsePseudoQuery(this.pseudoQuery);
+    },
     watch: {
         pseudoQuery: {
             handler(pseudoQuery) {

@@ -1,0 +1,18 @@
+@use '../0.settings/mixins' as *;
+
+.apply-evaluations {
+    &__range {
+        min-height: size(50);
+        margin: 0 size(25.6);
+        display: inline-grid;
+        align-items: end;
+    }
+
+    .classification__panel {
+        margin-top: size(20);
+    }
+
+    .field__input[type=checkbox] {
+        width: size(29.6);
+    }
+}

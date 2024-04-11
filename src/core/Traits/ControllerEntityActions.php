@@ -1,5 +1,6 @@
 <?php
 namespace MapasCulturais\Traits;
+use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 use MapasCulturais\Exceptions\WorkflowRequest;
@@ -24,7 +25,7 @@ trait ControllerEntityActions {
         foreach($data as $property => $value) {
             if($type = $metadata[$property]['type'] ?? false) {
                 if(in_array($type, ['bool', 'boolean'])) {
-                    if($value == 'false') {
+                    if($value === 'false') {
                         $value = false;
                     } else {
                         $value = (bool) $value;
@@ -104,6 +105,13 @@ trait ControllerEntityActions {
         }
 
         if($errors = $entity->validationErrors){
+            if ($entity->getEntityType() == 'Opportunity' && in_array("term-area", array_keys($errors)) && $errors['term-area']) {
+                foreach($errors['term-area'] as &$termError) {
+                    if(strpos($termError, i::__('área de atuação')) !== false) {
+                        $termError = str_replace(i::__('área de atuação'), i::__('área de interesse'), $termError);
+                    }
+                }
+            }
             $this->errorJson($errors);
         }else{
             $this->_finishRequest($entity, true);
