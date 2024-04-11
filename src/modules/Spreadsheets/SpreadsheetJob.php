@@ -98,26 +98,27 @@ abstract class SpreadsheetJob extends JobType
         $file->group = 'downloads';
         $file->owner = $job->owner->profile;
         $file->save(true);
-
-        // Disparo de e-mail de teste
-       $this->mailNotification($job->authenticatedUser);
+        
+        // Disparo de e-mail
+       $this->mailNotification($job->authenticatedUser, $file->url, $entity_class_name);
     }
 
-    function mailNotification($user)
+    function mailNotification($user, $url, $entity_class)
     {
         $app = App::i();
-
-        $template = 'start_teste';
-        $teste = [
+        
+        $template = 'export_spreadsheet';
+        $data = [
             'userName' => $user->profile->name,
+            'pathFile' => $url
         ];
 
-        $message = $app->renderMailerTemplate($template, $teste);
+        $message = $app->renderMailerTemplate($template, $data);
 
         $app->createAndSendMailMessage([
             'from' => $app->config['mailer.from'],
             'to' => $user->email,
-            'subject' => sprintf(i::__($message['title'], Agent::class)),
+            'subject' => sprintf(i::__($message['title'], $entity_class)),
             'body' => $message['body']
         ]);
     }
