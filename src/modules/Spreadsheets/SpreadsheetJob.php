@@ -95,7 +95,7 @@ abstract class SpreadsheetJob extends JobType
             'size' => filesize($path),
         ]);
 
-        $file->group = 'downloads';
+        $file->group = $this->fileGroup;
         $file->owner = $job->owner->profile;
         $file->save(true);
         
