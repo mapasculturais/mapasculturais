@@ -13225,7 +13225,7 @@ msgstr "Acerca del sitio web"
 #~ msgid "Veja este link:"
 #~ msgstr "Mira este enlace:"
 
-#~ msgid "Evantos"
+#~ msgid "Eventos"
 #~ msgstr "Eventos"
 
 #~ msgid "Nome do evento"
