@@ -46,6 +46,7 @@ $this->breadcrumb = $breadcrumb;
  */
 
  $this->import('
+    entity-field
     mc-avatar
     opportunity-header
     registration-info
@@ -57,9 +58,9 @@ $this->breadcrumb = $breadcrumb;
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
-    <div class="registration__title">
+    <h1 class="registration__title">
         <?= i::__('Formulário de inscrição') ?>
-    </div>
+    </h1>
 
     <div class="registration__content">
         <div class="registration__steps">
@@ -69,15 +70,18 @@ $this->breadcrumb = $breadcrumb;
         <mc-container>
             <main class="grid-12">
                 <registration-info :registration="entity" classes="col-12"></registration-info>                
+                
                 <section class="section">
-                    <div class="section__title" id="main-info">
+                    <h2 class="section__title" id="main-info">
                         <?= i::__('Informações básicas') ?>
-                    </div>
+                    </h2>
+
                     <div class="section__content">                         
                         <div class="card owner">                            
-                            <div class="card__title"> 
+                            <h3 class="card__title"> 
                                 <?= i::__('Agente responsável') ?> 
-                            </div>
+                            </h3>
+
                             <div class="card__content">
                                 <div class="owner">
                                     <mc-avatar :entity="entity.owner" size="small"></mc-avatar>
@@ -87,6 +91,17 @@ $this->breadcrumb = $breadcrumb;
                                 </div>
                             </div>
                         </div>
+
+                        <div v-if="entity.opportunity.enableQuotasQuestion" class="card owner">                            
+                            <h3 class="card__title"> 
+                                <?= i::__('Declarar interesse em participar das políticas afirmativas') ?> 
+                            </h3>
+
+                            <div class="card__content">
+                                <entity-field :entity="entity" prop="appliedForQuota"></entity-field>
+                            </div>
+                        </div>
+
                         <registration-related-agents :registration="entity"></registration-related-agents>
                         <registration-related-space :registration="entity"></registration-related-space>
                         <registration-related-project :registration="entity"></registration-related-project>

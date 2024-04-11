@@ -111,6 +111,7 @@ app.component('registration-evaluation-actions', {
             const messages = useMessages();
 
             promise.then(() => {
+                messages.success(this.text('Avaliação salva'));
                 this.reloadPage();
             }).catch((res) => {
                 for (let error of res){
@@ -135,31 +136,79 @@ app.component('registration-evaluation-actions', {
             });
         },
         saveReload() {
-            this.save();
-            this.reloadPage();
+            const promise = this.save();
+            const messages = useMessages();
+
+            promise.then(() => {
+                this.reloadPage();
+            }).catch((res) => {
+                if(typeof res == "array") {
+                    for (let error of res){
+                        messages.error(error);
+                    }
+                }else {
+                    messages.error(res);
+                }
+            })
         },
         finishEvaluationNext(registration) {
-           this.evaluate();
-            setTimeout(() => {
+            const promise = this.evaluate();
+            const messages = useMessages();
+            let reload = false;
+
+            promise.then(() => {
                 this.next();
                 this.sendEvaluation(registration);
-                if(this.lastRegistration?.registrationid == registration.id){
-                    this.reloadPage();
+                messages.success(this.text('Avaliação enviada'));
+                reload = true;
+            }).catch((res) => {
+                for (let error of res){
+                    reload = false;
+                    console.log(error)
+                    messages.error(error);
                 }
-            }, 1500);
+            })
+
+            if(reload && this.lastRegistration?.registrationid == registration.id){
+                this.reloadPage();
+            }
         },
         saveNext(registration) {
-           this.save();
-            setTimeout(() => {
+            const promise = this.save();
+            const messages = useMessages();
+            let reload = false;
+
+            promise.then(() => {
+                reload = true;
+                messages.success(this.text('Avaliação salva'));
                 this.next();
-                if(this.lastRegistration?.registrationid == registration.id){
-                    this.reloadPage();
+            }).catch((res) => {
+                for (let error of res){
+                    reload = false;
+                    console.log(error)
+                    messages.error(error);
                 }
-            }, 1500);
+            })
+
+            if(reload && this.lastRegistration?.registrationid == registration.id){
+                this.reloadPage();
+            }
         },
         save() {
             const iframe = document.getElementById('evaluation-form');
             iframe.contentWindow.postMessage({type: "evaluationForm.save"});
+
+            return new Promise((resolve, reject) => {
+                window.addEventListener("message", function(event) { 
+                    if (event.data?.type == "evaluation.save.success") {
+                        resolve();
+                    }
+
+                    if (event.data?.type == "evaluation.save.error") {
+                        reject(event.data.error);
+                    }
+                });
+            });
         },
         sendEvaluation(registration){
             api = new API('registration');

@@ -72,10 +72,9 @@
         });
 
         $scope.setReportFilter = function(){
+            var route = MapasCulturais.createUrl(MapasCulturais.request.controller, MapasCulturais.request.action, {id: MapasCulturais.entity.id, status: $scope.reportFilter});
 
-            var route = MapasCulturais.createUrl('opportunity', 'single', {id: MapasCulturais.entity.id, status: $scope.reportFilter});
-
-            window.location = route+"#/tab=reports&#pointFilter";
+            window.location = route;
            
         }
 

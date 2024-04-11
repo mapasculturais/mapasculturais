@@ -63,5 +63,5 @@ if(isset($optionSelect[0]['value'])){
         </div>
 
     <?php else: ?>
-        <p><?php \MapasCulturais\i::_e("");?></p>
+        <p> </p>
 <?php endif; ?>

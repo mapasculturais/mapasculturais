@@ -171,8 +171,8 @@ foreach($registrations as $i => $r) {
         }
 
         if(is_entity_location_field($field)) {
-            $outRow[] = str_replace(';', ',', $_field_val['En_Estado']);
-            $outRow[] = str_replace(';', ',', $_field_val['En_Municipio']);
+            $outRow[] = str_replace(';', ',', $_field_val['En_Estado'] ?? '');
+            $outRow[] = str_replace(';', ',', $_field_val['En_Municipio'] ?? '');
         }
 
         if(isset($_field_val["endereco"]) && $_field_val["endereco"] != null){
@@ -203,7 +203,7 @@ foreach($registrations as $i => $r) {
             $result =  (is_array($_field_val)) ? '"' . implode(" - ", $_field_val) . '"' : $_field_val;
         }
 
-        $outRow[] = str_replace(';', ',', $result);
+        $outRow[] = str_replace(';', ',', (string) $result);
         
     }
         

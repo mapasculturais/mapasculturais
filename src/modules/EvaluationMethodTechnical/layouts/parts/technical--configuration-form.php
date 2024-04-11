@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 ?>
 <div ng-controller="TechnicalEvaluationMethodConfigurationController" class="technical-evaluation-configuration registration-fieldset">
-    <div class="technical-evaluation-configuration--criteria">
+    <!-- <div class="technical-evaluation-configuration--criteria">
         <h4><?php i::_e('Critérios') ?></h4>
         <p><?php i::_e('Configure abaixo os critérios de avaliação técnica') ?>
         <section id="{{section.id}}" ng-repeat="section in data.sections">
@@ -36,17 +36,17 @@ use MapasCulturais\i;
             </table>
         </section>
         <button ng-click="addSection()" class="btn btn-default add"><?php i::_e('Adicionar seção de avaliação técnica') ?></button>
-    </div>
+    </div> -->
 
     <?php $this->part('technical--affirmative-polices-configuration')?>
 
     <br><br><hr>
 
-    <div class="technical-evaluation-configuration--feasibility">
-        <h4><?php i::_e('Habilitar avaliação da exequibilidade da inscrição?'); ?></h4>
+    <!-- <div class="technical-evaluation-configuration--feasibility">
+        <h4><?php // i::_e('Habilitar avaliação da exequibilidade da inscrição?'); ?></h4>
         <p>
-            <?php i::_e('Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição.'); ?>
-            <?php i::_e('Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'); ?>
+            <?php //i::_e('Ao habilitar esta configuração, os avaliadores deverão considerar a exequibilidade da inscrição.'); ?>
+            <?php //i::_e('Se a maioria dos avaliadores considerarem a inabilitação por exequibilidade, a mesma será marcada com o status de inválida para o dono do edital, que ainda assim poderá mudar seu status para válida.'); ?>
         </p>
 
         <div class="options">
@@ -58,6 +58,6 @@ use MapasCulturais\i;
                 <input type="radio" ng-model="data.enableViability" value="false" ng-change="save({enableViability: false})" name="enableViability" /> <?php i::_e('Não habilitar'); ?>
             </label>
         </div>
-    </div>
+    </div> -->
 </div>
 

@@ -46,10 +46,10 @@
                 quotas: MapasCulturais.evaluationConfiguration.quotas || [],
                 enableViability: MapasCulturais.evaluationConfiguration.enableViability || false,
                 registrationFieldConfigurations: [],
-                criteriaAffirmativePolicies: MapasCulturais.affirmativePolicies || [],
+                criteriaAffirmativePolicies: MapasCulturais.pointReward || [],
                 fieldsAffiermativePolicie: {},
-                isActiveAffirmativePolicies: MapasCulturais.isActiveAffirmativePolicies ? true : false,
-                affirmativePolicieRoof: parseFloat(MapasCulturais.affirmativePoliciesRoof) || 0.00,
+                isActivePointReward: MapasCulturais.isActivePointReward ? true : false,
+                pointRewardRoof: parseFloat(MapasCulturais.pointRewardRoof) || 0.00,
                 
                 debounce: 2000
             };
@@ -71,9 +71,9 @@
                     criteria: [],
                     quotas: $scope.data.quotas,
                     enableViability: $scope.data.enableViability,
-                    affirmativePolicies: JSON.stringify($scope.data.criteriaAffirmativePolicies) == "[]" ? null : $scope.data.criteriaAffirmativePolicies,
-                    isActiveAffirmativePolicies: $scope.data.isActiveAffirmativePolicies,
-                    affirmativePoliciesRoof: $scope.data.affirmativePolicieRoof || 0.00
+                    pointReward: JSON.stringify($scope.data.criteriaAffirmativePolicies) == "[]" ? null : $scope.data.criteriaAffirmativePolicies,
+                    isActivePointReward: $scope.data.isActivePointReward,
+                    pointRewardRoof: $scope.data.pointRewardRoof || 0.00
                 };
 
                 $scope.data.criteria.forEach(function (crit) {
@@ -143,7 +143,7 @@
             }
 
             $scope.activeAffirmativePolicies = function(){
-                $scope.data.isActiveAffirmativePolicies = !$scope.data.isActiveAffirmativePolicies;
+                $scope.data.isActivePointReward = !$scope.data.isActivePointReward;
                 $scope.save();
             }
 
@@ -201,7 +201,7 @@
                 }
             });
 
-            MapasCulturais.affirmativePoliciesFieldsList.forEach(function(item){
+            MapasCulturais.pointsByInductionFieldsList.forEach(function(item){
                 if(item.fieldType == "checkbox" || 
                      item.fieldType == "select" || 
                      item.fieldType == "checkboxes" || 

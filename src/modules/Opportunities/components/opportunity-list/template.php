@@ -29,7 +29,7 @@ $this->import('
 
                         </div>
                         <div v-if="opp.registrationTo.isFuture() && opp.registrationFrom.isPast()">
-                            <p v-if="opp.registrationTo" class="semibold opportunity-list__registration"><?= i::__('Inscrições encerrarão no dia') ?> {{opp.registrationFrom.date('2-digit year')}} <?= i::__('às') ?> {{opp.registrationTo.hour('2-digit')}}h
+                            <p v-if="opp.registrationTo" class="semibold opportunity-list__registration"><?= i::__('Inscrições encerrarão no dia') ?> {{opp.registrationTo.date('2-digit year')}} <?= i::__('às') ?> {{opp.registrationTo.hour('2-digit')}}h
                             </p>
                         </div>
                         <div v-if="opp.registrationTo.isPast()">

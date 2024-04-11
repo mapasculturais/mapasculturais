@@ -1,6 +1,6 @@
 app.component('mc-multiselect', {
     template: $TEMPLATES['mc-multiselect'],
-    emits: ['open', 'close'],
+    emits: ['open', 'close', 'selected', 'removed'],
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -99,6 +99,8 @@ app.component('mc-multiselect', {
         remove(key) {
             const indexOf = this.model.indexOf(key);
             this.model.splice(indexOf,1);
+            this.$emit('removed', key);
+
         },
 
         toggleItem(key) {
@@ -106,6 +108,8 @@ app.component('mc-multiselect', {
                 this.remove(key);
             } else {
                 this.model.push(key);
+                this.$emit('selected', key);
+
             }
         },       
 

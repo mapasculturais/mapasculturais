@@ -21,6 +21,11 @@ $(function(){
             var data = $form.serialize();
             var url = MapasCulturais.createUrl('registration', 'saveEvaluation', {'0': MapasCulturais.request.id});
             $.post(url, data, function(r){
+                window.parent.postMessage({type:'evaluation.save.success'});
+            }).fail(function(rs) {
+                if(rs.responseJSON && rs.responseJSON.error){
+                    window.parent.postMessage({type:'evaluation.save.error', error: rs.responseJSON.data});
+                }
             });
         }, 100);
     }

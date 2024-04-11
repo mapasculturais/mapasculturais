@@ -75,7 +75,20 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
 
     public function GET_reportmanager()
     {
+        $app = App::i();
+        
         $entity = $this->getEntityAndCheckPermission('@control');
+
+        $app->hook('mapas.printJsObject:before', function () use($app) {
+            $app->view->jsObject['request'] = [
+                'controller' => $this->controller->id,
+                'action' => $this->controller->action,
+                'urlData' => $this->controller->urlData,
+            ];
+
+            $this->jsObject['request']['id'] = $this->controller->data['id'] ?? null;
+        }, 100);
+
         $this->render("report-manager",['entity' => $entity]);
     }
 
@@ -93,6 +106,14 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->layout = "embedtools-registration";
         $entity = $this->getEntityAndCheckPermission('view');
         $this->render("registration-view",['entity' => $entity]);
+    }
+
+    public Function GET_valuers()
+    {
+        $this->entityClassName = "MapasCulturais\\Entities\\Registration";
+        $this->layout = "embedtools-registration";
+        $entity = $this->getEntityAndCheckPermission('view');
+        $this->render("registration-valuers",['entity' => $entity]);
     }
 
      public Function GET_registrationevaluationtionformview()

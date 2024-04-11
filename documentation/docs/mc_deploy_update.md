@@ -73,8 +73,8 @@ $ git checkout [endereco_do_arquivo]
 Para mais detalhe sobre como utilizar o comando veja a documentação em https://git-scm.com/docs/git-pull.
 
 
-## Chat
+## Dúvidas
 
-Caso o seu problema seja diferente, consulte o Chat do Mapas Culturais em http://chat.mapasculturais.org/channel/general. É possível pesquisar por relatos anteriores do Mapas na **parte superior direita**, no botão "Search".
+Caso o seu problema seja diferente, consulte o Grupo da Comunidade em http://t.me/RedeMapas. 
 
-Se o seu problema não tiver sido relatado por ninguém, basta fazer a pergunta que a comunidade pode ter uma solução para o erro.
+Escolha o tópico que considerar mais apropriado e faça a pergunta para que a comunidade possa ajudar a encontrar uma solução.

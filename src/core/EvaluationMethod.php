@@ -237,11 +237,14 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             if(isset($fetch_categories[$user->id])){
                 $ucategories = $fetch_categories[$user->id];
                 if($ucategories){
-                    $categories = explode(';', $ucategories);
-                    if($categories){
+                    if(!is_array($ucategories)) {
+                        $ucategories = explode(';', $ucategories);
+                    }
+
+                    if($ucategories){
                         $found = false;
 
-                        foreach($categories as $cat){
+                        foreach($ucategories as $cat){
                             $cat = trim($cat);
                             if(strtolower((string)$registration->category) === strtolower($cat)){
                                 $found = true;

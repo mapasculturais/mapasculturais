@@ -508,7 +508,7 @@
                     var tip = $(this).data('tip');
                     var $this = $(this);
                     var _left = $(this).offset().left + $this.outerWidth(true) / 2 + $(document).scrollLeft();
-                    var _top = $(this).offset().top;
+                    var _top = $(this).offset().top + 15;
                     var _height = $(this).height();
 
                     //alterações para poder atualizar o hltip
@@ -520,6 +520,8 @@
                         }
                         tip = $('<div class="hltip-box"><div class="hltip-arrow-top"></div><div class="hltip-text">' + content + '</div><div class="hltip-arrow-bottom"></div></div><').hide();
                         tip.css({
+                            top:0,
+                            left:"-500px",
                             position: 'absolute',
                             zIndex: 99999
                         });

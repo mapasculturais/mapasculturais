@@ -24,10 +24,7 @@ app.component('opportunity-category' , {
 
     methods: {
         autoSave(){
-            clearTimeout(this.timeout);
-                this.timeout = setTimeout(()=>{
-                    this.entity.save();
-            },1500);
+            this.entity.save(3000);
         }
     }
 });

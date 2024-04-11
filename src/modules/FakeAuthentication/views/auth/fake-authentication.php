@@ -30,8 +30,8 @@ $profile = $app->user->profile;
         <p class="panel-page__header-subtitle">
             <?= i::__('Autenticação para desenvolvimento') ?>
         </p>
+        <fake-user-create> </fake-user-create>
     </header>
-    <fake-user-create> </fake-user-create>
     <panel--entity-tabs type="user" user="" select="id,email,status,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
         <template #filters-additional="{query, entities}">
             <mc-entities type="system-role" select="name,slug">

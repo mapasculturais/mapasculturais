@@ -1,0 +1,77 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-evaluation-committee {
+    display: flex;
+    flex-direction: column;
+    gap: size(24);    
+
+    &__header{
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__add-new-evaluator {
+        display: flex;
+    }
+
+    &__card-grouping {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__card {
+        border-radius: var(--mc-border-radius-xs);
+        border: size(1) solid var(--mc-low-300);
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__card-header {
+        align-items: center;
+        border-bottom: size(1) solid var(--mc-low-300);
+        display: flex;
+        justify-content: space-between;
+        padding: size(16) size(24);
+    }
+
+    &__card-header-info {
+        align-items: center;
+        display: flex;
+        gap: size(16);
+    }
+
+    &__card-header-actions {
+        align-items: center;
+        display: flex;
+        gap: size(16);
+    }
+
+    &__card-content {
+        padding: size(24);
+    }
+
+    &__change-distributions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__distributions {
+        display: flex;
+        gap: size(24);
+    }
+
+    &__distribution {
+        max-width: size(120);
+    }
+
+    &__categories {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(10);
+        min-height: size(49);
+    }
+}

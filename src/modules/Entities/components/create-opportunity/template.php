@@ -20,10 +20,10 @@ $this->import('
         <form @submit.prevent="handleSubmit" class="create-modal__fields">
             <entity-field :entity="entity" hide-required :editable="true" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type"></entity-field>
             <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Título") ?> prop="name"></entity-field>
+
             <div class="create-modal__fields">
                 <entity-terms :entity="entity" hide-required :editable="true" title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
             </div>
-            <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
 
             <div v-if="!entity.ownerEntity" class="select-list">
                 <label class="select-list__label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>

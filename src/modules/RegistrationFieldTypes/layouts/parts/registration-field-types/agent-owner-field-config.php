@@ -7,6 +7,7 @@ $agent_fields = $app->modules['RegistrationFieldTypes']->getAgentFields();
 
 $fields_options = [];
 $fields_labels = [
+    '@bankFields' => " " . i::__('Campos de dados bancários'),
     '@location' => " " . i::__('Campos de endereço'),
     '@terms:area' => " " . i::__('Área de atuação'),
     '@links' => " " . i::__(' Links'),
