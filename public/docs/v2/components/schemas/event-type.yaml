@@ -1,0 +1,10 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id numérico que representa o Evento
+  name:
+    type: string
+    example: "Padrão"
+    description: O nome do tipo de evento

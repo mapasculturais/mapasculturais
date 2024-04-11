@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Controller\Api\AgentApiController;
+use App\Controller\Api\EventApiController;
 use App\Controller\Api\OpportunityApiController;
 use App\Controller\Api\ProjectApiController;
 use App\Controller\Api\SealApiController;
@@ -15,6 +16,8 @@ return [
 
     '/api/v2/agents' => [AgentApiController::class, 'getList'],
     '/api/v2/agents/{id}' => [AgentApiController::class, 'getOne'],
+
+    '/api/v2/events/types' => [EventApiController::class, 'getTypes'],
 
     '/api/v2/opportunities' => [OpportunityApiController::class, 'getList'],
     '/api/v2/opportunities/{id}' => [OpportunityApiController::class, 'getOne'],
