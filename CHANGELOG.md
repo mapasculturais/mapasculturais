@@ -41,6 +41,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 
+## [7.3.47] - 2024-04-11
+### Correçoes
+- Remove caracter desnecessário
+
 ## [7.3.46] - 2024-04-10
 ### Correçoes
 - Corrige ortografia da palavra Eventos escrita errada em algumas telas
