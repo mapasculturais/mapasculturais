@@ -16,9 +16,9 @@ $this->import('
 
             <div class="mc-export-spreadsheet__modal-content">
                 <div class="mc-export-spreadsheet__buttons">
-                    <button class="button button--primary" @click="exportSpreadsheet('csv')"><?= i::__("Baixar csv") ?></button>
-                    <button class="button button--primary" @click="exportSpreadsheet('xlsx')"><?= i::__("Baixar xlsx") ?></button>
-                    <button class="button button--primary" @click="exportSpreadsheet('ods')"><?= i::__("Baixar ods") ?></button>
+                    <button class="button button--primary" @click="exportSpreadsheet('csv')"><?= i::__("Exportar como .csv") ?></button>
+                    <button class="button button--primary" @click="exportSpreadsheet('xlsx')"><?= i::__("Exportar como .xlsx") ?></button>
+                    <button class="button button--primary" @click="exportSpreadsheet('ods')"><?= i::__("Exportar como .ods") ?></button>
                 </div>
 
                 <mc-accordion v-if="showExportedFiles">
@@ -27,7 +27,7 @@ $this->import('
                     </template>
                     <template #content>
                         <div class="mc-export-spreadsheet__last-exports">
-                            <a v-for="exported in lastExported"> {{exported}} </a>
+                            <a v-for="exported in lastExported" class="mc-export-spreadsheet__link" :href="exported.url" download> <mc-icon name="download"></mc-icon> {{exported.name}} </a>
                         </div>
                     </template>
                 </mc-accordion>
