@@ -19,10 +19,6 @@ while(true){
     }
     sleep(1);
 }
-
-echo "\ncorrigindo status da fila de criação de cache de permissão\n\n";
-
-$pdo->query("UPDATE permission_cache_pending SET status = 0;");
 '
 
 mkdir -p /var/www/var/DoctrineProxies /var/www/var/logs
