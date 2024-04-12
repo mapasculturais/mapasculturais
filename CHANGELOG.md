@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.48] - 2024-04-12
+### Correçoes
+- Corrige problema causado pela criação da pasta DoctineProxies como root
+- Cria db-update para corrigir status da fila de criação de cache de permissão no start da aplicação
+
 ## [7.3.47] - 2024-04-11
 ### Correçoes
 - Remove caracter desnecessário
