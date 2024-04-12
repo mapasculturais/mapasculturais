@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
@@ -24,11 +26,19 @@ class Kernel
     public function execute(): void
     {
         try {
-            $context = new RequestContext();
+            $context = new RequestContext(
+                method: $_SERVER['REQUEST_METHOD']
+            );
 
             $matcher = new UrlMatcher($this->routes, $context);
 
             $this->dispatchAction($matcher);
+        } catch (MethodNotAllowedException $exception) {
+            (new JsonResponse([
+                'error' => 'Method not allowed: '.$_SERVER['REQUEST_METHOD'],
+            ], status: Response::HTTP_METHOD_NOT_ALLOWED))->send();
+
+            exit;
         } catch (ResourceNotFoundException $exception) {
             return;
         }

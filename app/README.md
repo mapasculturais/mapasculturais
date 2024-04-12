@@ -17,6 +17,8 @@ composer.phar install
 ### Web
 
 
+--- 
+
 ### API
 Para criar novos endpoints siga o passo a passo:
 
@@ -66,21 +68,56 @@ class EventApiController
 
 #### 3 - Rotas
 
-Acesse o arquivo `/app/routes/api.php` e adicione sua rota, apontando pro seu controller e método
+Acesse o arquivo `/app/routes/api.php` e adicione sua rota, informando o `path`, o verbo HTTP, e apontando pro seu controller e método
 
 ```php
     use App\Controller\Api\EventApiController;
+    use Symfony\Component\HttpFoundation\Request;
 
     $routes = [
         //... other routes
-        '/api/v2/events' => [EventApiController::class, 'getList'],
+        '/api/v2/events' => [
+            Request::METHOD_GET => [EventApiController::class, 'getList']
+        ],
     ];
 ```
 
+Se preferir pode criar um arquivo no diretório `/app/routes/api/` e isolar suas novas rotas nesse arquivo, basta fazer isso:
+
+```php
+    // /app/routes/api/event.php
+
+    use App\Controller\Api\EventApiController;
+    use Symfony\Component\HttpFoundation\Request;
+
+    return [
+        '/api/v2/events' => [
+            Request::METHOD_GET => [EventApiController::class, 'getList']
+            Request::METHOD_POST => [EventApiController::class, 'create']
+        ],
+    ];
+```
+
+Esse seu novo arquivo será reconhecimento automagicamente dentro da aplicação.
+
 #### 4 - Pronto
 
-Feito isso seu endpoint deverá estar disponivel em:
+Feito isso, seu endpoint deverá estar disponivel em:
 <http://localhost/api/v2/events>
+
+E deve estar retornando algo como:
+```json
+[
+  {
+    "id": 1,
+    "name": "Palestra"
+  },
+  {
+    "id": 2,
+    "name": "Curso"
+  }
+]
+```
 
 ---
 

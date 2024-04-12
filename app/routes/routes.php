@@ -20,15 +20,21 @@ $routes = [
 
 /** @var string $key */
 foreach ($routes as $key => $routeData) {
-    $controller = $routeData[0];
-    $method = $routeData[1];
+    foreach ($routeData as $method => $params) {
+        $controller = $params[0];
+        $action = $params[1];
 
-    $route = new Route(path: $key, defaults: [
-        '_controller' => $controller,
-        '_method' => $method,
-    ]);
+        $route = new Route(
+            path: $key,
+            defaults: [
+                '_controller' => $controller,
+                '_action' => $action,
+            ],
+            methods: [$method]
+        );
 
-    $routesCollection->add($key, $route);
+        $routesCollection->add($key, $route);
+    }
 }
 
 return $routesCollection;

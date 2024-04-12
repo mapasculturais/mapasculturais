@@ -17,7 +17,7 @@ class AgentApiControllerTest extends AbstractTestCase
 
     public function testGetOneAgentShouldRetrieveAObject(): void
     {
-        $response = $this->client->request('GET', '/api/v2/agent/1');
+        $response = $this->client->request('GET', '/api/v2/agents/1');
         $content = json_decode($response->getContent());
 
         $this->assertEquals(200, $response->getStatusCode());

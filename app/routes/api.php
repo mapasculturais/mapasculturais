@@ -2,32 +2,22 @@
 
 declare(strict_types=1);
 
-use App\Controller\Api\AgentApiController;
-use App\Controller\Api\EventApiController;
-use App\Controller\Api\OpportunityApiController;
-use App\Controller\Api\ProjectApiController;
-use App\Controller\Api\SealApiController;
-use App\Controller\Api\SpaceApiController;
 use App\Controller\Api\WelcomeApiController;
+use Symfony\Component\HttpFoundation\Request;
 
-return [
-    '/api' => [WelcomeApiController::class, 'index'],
-    '/api/v2' => [WelcomeApiController::class, 'index'],
-
-    '/api/v2/agents' => [AgentApiController::class, 'getList'],
-    '/api/v2/agents/{id}' => [AgentApiController::class, 'getOne'],
-
-    '/api/v2/events/types' => [EventApiController::class, 'getTypes'],
-
-    '/api/v2/opportunities' => [OpportunityApiController::class, 'getList'],
-    '/api/v2/opportunities/{id}' => [OpportunityApiController::class, 'getOne'],
-
-    '/api/v2/projects' => [ProjectApiController::class, 'getList'],
-    '/api/v2/projects/{id}' => [ProjectApiController::class, 'getOne'],
-
-    '/api/v2/seals' => [SealApiController::class, 'getList'],
-    '/api/v2/seals/{id}' => [SealApiController::class, 'getOne'],
-
-    '/api/v2/spaces' => [SpaceApiController::class, 'getList'],
-    '/api/v2/spaces/{id}' => [SpaceApiController::class, 'getOne'],
+$routes = [
+    '/api' => [
+        Request::METHOD_GET => [WelcomeApiController::class, 'index'],
+    ],
+    '/api/v2' => [
+        Request::METHOD_GET => [WelcomeApiController::class, 'index']
+    ],
 ];
+
+$files = glob(__DIR__.'/api/*.php');
+
+foreach ($files as $file) {
+    $routes = [...$routes, ...require $file];
+}
+
+return $routes;
