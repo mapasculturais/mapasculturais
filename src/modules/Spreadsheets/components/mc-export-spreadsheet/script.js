@@ -2,7 +2,7 @@ app.component('mc-export-spreadsheet', {
     template: $TEMPLATES['mc-export-spreadsheet'],
 
     props: {
-        entity: {
+        owner: {
             type: Entity,
             required: true,
         },
@@ -24,6 +24,7 @@ app.component('mc-export-spreadsheet', {
 
         showExportedFiles: {
             type: Boolean,
+            default: true, // remover
         },
     },
     
@@ -34,7 +35,8 @@ app.component('mc-export-spreadsheet', {
 
     computed: {
         lastExported() {
-            return this.entity.files[this.group] ?? [];
+            console.log(this.owner.files[this.group]);
+            return this.owner.files[this.group] ?? [];
         }
     },
     
@@ -45,13 +47,16 @@ app.component('mc-export-spreadsheet', {
 
             let props = {
                 ...this.params,
+                ownerType: this.owner.__objectType,
+                ownerId: this.owner.id,
                 extension: type,
             }
 
-            api.POST(url, props).catch((data) => {
-                messages.error(data.data);
+            api.POST(url, props).then((data) => {
+                this.messages.success(__('sucesso', 'mc-export-spreadsheet'))
+            }).catch((data) => {
+                this.messages.error(data.data);
             });
-
         }
     },
 });
