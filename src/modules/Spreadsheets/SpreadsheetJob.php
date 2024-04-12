@@ -42,9 +42,8 @@ abstract class SpreadsheetJob extends JobType
 
     protected function _execute(Job $job)
     {
-        //$app = App::i();
         $entity_class_name = $job->entityClassName;
-        $file_class = $entity_class_name::getFileClassName();
+        $file_class = $job->owner->getFileClassName();
 
         $extension = $job->extension ?: 'xlsx';
         $filename = $this->getFilename($job);
@@ -96,7 +95,7 @@ abstract class SpreadsheetJob extends JobType
         ]);
 
         $file->group = $this->fileGroup;
-        $file->owner = $job->owner->profile;
+        $file->owner = $job->owner;
         $file->save(true);
         
         // Disparo de e-mail
