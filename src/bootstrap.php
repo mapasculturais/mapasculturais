@@ -43,7 +43,7 @@ if (env('MAPAS_HTTPS', false) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_
 }
 
 if(!is_dir(PRIVATE_FILES_PATH)){
-    mkdir(PRIVATE_FILES_PATH);
+   throw new Exception("Folder ". PRIVATE_FILES_PATH ."  is required");
 }
 
 if(!is_dir(DOCTRINE_PROXIES_PATH)){
