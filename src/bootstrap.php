@@ -47,7 +47,7 @@ if(!is_dir(PRIVATE_FILES_PATH)){
 }
 
 if(!is_dir(DOCTRINE_PROXIES_PATH)){
-    mkdir(DOCTRINE_PROXIES_PATH);
+    mkdir(DOCTRINE_PROXIES_PATH, 0755);
 }
 
 if (REDIS_SESSION) {
