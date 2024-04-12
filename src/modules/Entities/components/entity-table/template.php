@@ -68,7 +68,7 @@ $this->import('
     
                                         <div class="field__group custom-scrollbar">
                                             <label v-for="option in filter.options" :key="option" class="field__checkbox">
-                                                <input type="checkbox" :checked="advancedFilterChecked(slug, option)" @change="toggleAdvancedFilter(slug, option)"> {{option}}
+                                                <input type="checkbox" :checked="advancedFilterChecked(slug, optionValue(option))" @change="toggleAdvancedFilter(slug, optionValue(option))"> {{optionLabel(option)}}
                                             </label>
                                         </div>
                                     </div>
