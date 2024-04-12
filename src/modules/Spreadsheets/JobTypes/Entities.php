@@ -2,7 +2,14 @@
 namespace Spreadsheets\JobTypes;
 
 use MapasCulturais\ApiQuery;
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Job;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Seal;
+use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\Subsite;
 use MapasCulturais\Entities\User;
 use Spreadsheets\SpreadsheetJob;
 
@@ -13,7 +20,16 @@ class Entities extends SpreadsheetJob
     }
 
     protected function _getTargetEntities() : array {
-        return [User::class];
+        return [
+            Agent::class,
+            Event::class,
+            Opportunity::class,
+            Project::class,
+            Space::class,
+            Seal::class,
+            Subsite::class,
+            User::class,
+        ];
     }
 
     protected function _getHeader(Job $job) : array {
