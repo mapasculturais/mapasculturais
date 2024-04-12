@@ -35,7 +35,6 @@ app.component('mc-export-spreadsheet', {
 
     computed: {
         lastExported() {
-            console.log(this.owner.files[this.group]);
             return this.owner.files[this.group] ?? [];
         }
     },
