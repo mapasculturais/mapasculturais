@@ -16,10 +16,26 @@ class EventApiController
         $this->eventService = new EventService();
     }
 
+        public function getList(): JsonResponse
+    {
+        $types = $this->eventService->getAll();
+
+        return new JsonResponse($types);
+    }
+
+    public function getOne(array $params): JsonResponse
+    {
+        $event = $this->repository->find((int) $params['id']);
+
+        return new JsonResponse($event);
+    }
+
     public function getTypes(): JsonResponse
     {
         $types = $this->eventService->getTypes();
 
         return new JsonResponse($types);
     }
+
+
 }
