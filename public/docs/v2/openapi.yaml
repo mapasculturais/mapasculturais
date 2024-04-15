@@ -37,6 +37,8 @@ paths:
     $ref: './components/paths/agent/get-list.yaml'
   /agents/{id}:
     $ref: './components/paths/agent/get-one.yaml'
+  /agents/types:
+    $ref: './components/paths/agent/get-type-list.yaml'
   /events:
     $ref: './components/paths/event/get-list.yaml'
   /events/types:

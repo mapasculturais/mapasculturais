@@ -5,15 +5,20 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Repository\AgentRepository;
+use App\Service\AgentService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AgentApiController
 {
+    public AgentService $agentService;
+
     private AgentRepository $repository;
 
     public function __construct()
     {
         $this->repository = new AgentRepository();
+        
+        $this->agentService = new AgentService();
     }
 
     public function getList(): JsonResponse
@@ -28,5 +33,12 @@ class AgentApiController
         $agent = $this->repository->find((int) $params['id']);
 
         return new JsonResponse($agent);
+    }
+
+    public function getTypes(): JsonResponse
+    {
+        $types = $this->agentService->getTypes();
+
+        return new JsonResponse($types);
     }
 }
