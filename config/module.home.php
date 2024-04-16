@@ -7,6 +7,7 @@ return [
         'home-opportunities' => env('MODULE_HOME_IMAGE_OPPORTUNITIES','img/home/home-entities/opportunities.jpg'),
         'home-projects' => env('MODULE_HOME_IMAGE_PROJECTS','img/home/home-entities/projects.jpg'),
         'home-spaces' => env('MODULE_HOME_IMAGE_SPACES','img/home/home-entities/spaces.jpg'),
-        'home-register' => env('MODULE_HOME_IMAGE_REGISTER','img/home/home-register/background.jpg'),      
+        'home-register' => env('MODULE_HOME_IMAGE_REGISTER','img/home/home-register/background.jpg'),
+        'report-bug-url' => 'https://forms.gle/jatbpe4ygHmmtsBs5',
     ]    
 ];
