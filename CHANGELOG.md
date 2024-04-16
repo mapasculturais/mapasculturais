@@ -41,6 +41,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 
+## [7.3.49] - 2024-04-16
+### Correçoes
+- Corrige problema que conflitava um agente gestor com usuarios do suporte
+
 ## [7.3.48] - 2024-04-12
 ### Correçoes
 - Corrige problema causado pela criação da pasta DoctineProxies como root
