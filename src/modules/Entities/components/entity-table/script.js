@@ -485,5 +485,15 @@ app.component('entity-table', {
 
             return style;
         },
+
+        optionValue(option) {
+            let _option = option.split(':');
+            return _option[0];
+        },
+
+        optionLabel(option) {
+            let _option = option.split(':');
+            return _option.length > 1 ? _option[1] : _option[0];
+        },
     },
 });
