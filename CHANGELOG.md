@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.49] - 2024-04-16
+### Correçoes
+- Corrige problema que conflitava um agente gestor com usuarios do suporte
+
 ## [7.3.48] - 2024-04-12
 ### Correçoes
 - Corrige problema causado pela criação da pasta DoctineProxies como root
