@@ -24,6 +24,7 @@ services:
       - ../src:/var/www/src
       - ../app:/var/www/app
       - ../var:/var/www/var
+      - ../vendor:/var/www/vendor
 
       - ../docker/development/router.php:/var/www/router.php
 

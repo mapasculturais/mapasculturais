@@ -160,7 +160,7 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-PHP_CS_FIXER='docker exec -i dev-mapas-1 vendor/bin/php-cs-fixer'
+PHP_CS_FIXER='docker compose -f dev/docker-compose.yml exec -T mapas vendor/bin/php-cs-fixer'
 
 check_php_cs_fixer() {
     if ! $PHP_CS_FIXER --version &> /dev/null; then
@@ -170,22 +170,12 @@ check_php_cs_fixer() {
 }
 
 run_php_cs_fixer() {
-    local modified_files=$1
-
-    echo -e "${GREEN}Executando php-cs-fixer nos arquivos modificados...${NC}"
-    $PHP_CS_FIXER --dry-run -vvv --diff fix --config=.php-cs-fixer.php "$modified_files"
+    echo -e "${GREEN}Executando php-cs-fixer no dirétorio app...${NC}"
+    $PHP_CS_FIXER --dry-run -vvv --diff fix --config=.php-cs-fixer.php "app"
 }
 
 check_php_cs_fixer
-
-modified_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.php$')
-
-if [ -z "$modified_files" ]; then
-    echo -e "${GREEN}Nenhum arquivo PHP modificado encontrado.${NC}"
-    exit 0
-fi
-
-run_php_cs_fixer "$modified_files"
+run_php_cs_fixer
 
 exit_code=$?
 
