@@ -45,8 +45,8 @@ $this->import('
                         <label><?= i::__('Dar preferência a:') ?></label>
                         <div class="field field--horizontal tiebreaker-criteria__group-field">
                             <label v-for="option in criterion.selected.fieldOptions">
-                                <input type="checkbox" :true-value="[]" v-model="criterion.preferences" :value="option" />
-                                <slot>{{option}}</slot>
+                                <input type="checkbox" :true-value="[]" v-model="criterion.preferences" :value="optionValue(option)" />
+                                <slot>{{optionLabel(option)}}</slot>
                             </label>
                         </div>
                     </div>
