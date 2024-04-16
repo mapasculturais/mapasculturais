@@ -13,7 +13,7 @@ class AgentService
         $typesFromConf = (require dirname(__DIR__, 3).self::FILE_TYPES)['items'] ?? [];
 
         return array_map(
-            fn ($key, $item) => ['id' => $key, 'name' => $item['name']], 
+            fn ($key, $item) => ['id' => $key, 'name' => $item['name']],
             array_keys($typesFromConf),
             $typesFromConf
         );

@@ -10,7 +10,7 @@ $routes = [
         Request::METHOD_GET => [WelcomeApiController::class, 'index'],
     ],
     '/api/v2' => [
-        Request::METHOD_GET => [WelcomeApiController::class, 'index']
+        Request::METHOD_GET => [WelcomeApiController::class, 'index'],
     ],
 ];
 

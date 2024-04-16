@@ -17,7 +17,7 @@ class AgentApiController
     public function __construct()
     {
         $this->repository = new AgentRepository();
-        
+
         $this->agentService = new AgentService();
     }
 

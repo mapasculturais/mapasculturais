@@ -16,7 +16,7 @@ class EventApiController
         $this->eventService = new EventService();
     }
 
-        public function getList(): JsonResponse
+    public function getList(): JsonResponse
     {
         $types = $this->eventService->getAll();
 
@@ -36,6 +36,4 @@ class EventApiController
 
         return new JsonResponse($types);
     }
-
-
 }

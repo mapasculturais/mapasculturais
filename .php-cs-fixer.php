@@ -22,7 +22,7 @@ return (new Config())
         'array_syntax' => ['syntax' => 'short'],
         'declare_strict_types' => true,
         'void_return' => true,
-        'yoda_style' => false,
+        'yoda_style' => true,
         'increment_style' => ['style' => 'post'],
     ])
     ->setFinder($finder)

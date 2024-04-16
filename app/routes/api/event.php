@@ -6,7 +6,6 @@ use App\Controller\Api\EventApiController;
 use Symfony\Component\HttpFoundation\Request;
 
 return [
-
     '/api/v2/events' => [
         Request::METHOD_GET => [EventApiController::class, 'getList'],
     ],
