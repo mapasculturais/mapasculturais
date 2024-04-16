@@ -4,11 +4,31 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use Doctrine\Persistence\ObjectRepository;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\EventOccurrence;
 
 class EventRepository extends AbstractRepository
 {
+    private ObjectRepository $repository;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->repository = $this->getEntityManager()->getRepository(Event::class);
+    }
+    public function findAll(): array
+    {
+        return $this->repository
+            ->createQueryBuilder('events')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
+    public function find(int $id): Event
+    {
+        return $this->repository->find($id);
+    }
 
     public function findEventsBySpaceId(int $spaceId): array
     {
