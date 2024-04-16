@@ -63,6 +63,8 @@ app.component('entity-table', {
                 { value: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
             ]
         },
+        hideFilters: Boolean,
+        hideSort: Boolean,
     },
 
     created() {
@@ -80,7 +82,10 @@ app.component('entity-table', {
     mounted() {
         const searchInput = this.$refs.search;
 
-        searchInput.addEventListener("input", OnInput, false);
+        if (searchInput) {
+            searchInput.addEventListener("input", OnInput, false);
+        }
+
         function OnInput() {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + "px";

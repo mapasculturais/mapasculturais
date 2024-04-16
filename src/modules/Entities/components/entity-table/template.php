@@ -42,7 +42,7 @@ $this->import('
                 </mc-collapse>
 
                 <!-- filtros - pré-definido -->
-                <mc-collapse>
+                <mc-collapse v-if="!hideFilters">
                     <template #header>
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
@@ -93,12 +93,12 @@ $this->import('
                     </div>
                 </div>
             </div>
-            <div class="entity-table__info">
+            <div v-if="!hideSort" class="entity-table__info">
                 <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-
-                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>">
-                    <!-- <option v-for="option in sortOptions" :value="option.order">{{option.label}}</option> -->
-                </mc-select>
+                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
+            </div>
+            <div v-if="hideSort" class="entity-table__info">
+                <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
             </div>
         </template>
 
