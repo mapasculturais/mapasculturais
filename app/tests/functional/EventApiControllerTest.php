@@ -14,4 +14,13 @@ class EventApiControllerTest extends AbstractTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertIsArray($content);
     }
+
+    public function testGetEventsBySpacesShouldRetrieveAList(): void
+    {
+        $response = $this->client->request('GET', '/api/v2/spaces/4/events');
+        $content = json_decode($response->getContent());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertIsArray($content);
+    }
 }

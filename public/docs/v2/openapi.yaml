@@ -59,12 +59,16 @@ paths:
     $ref: './components/paths/space/get-list.yaml'
   /spaces/{id}:
     $ref: './components/paths/space/get-one.yaml'
+  /spaces/{id}/events:
+    $ref: './components/paths/space/get-events-by-spaces.yaml'
 components:
   schemas:
     Agent:
       $ref: './components/schemas/agent.yaml'
     Events:
       $ref: './components/schemas/event.yaml'
+    EventOccurrence:
+      $ref: './components/schemas/event-occurrence.yaml'
     Opportunity:
       $ref: './components/schemas/opportunity.yaml'
     Project:
