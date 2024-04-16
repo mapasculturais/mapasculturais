@@ -4,7 +4,14 @@ app.component('opportunity-registrations-table', {
         phase: {
             type: Entity,
             required: true
-        }
+        },
+        showColumns: {
+            type: String,
+            default: "agent,status,category,consolidatedResult,score",
+        },
+        hideFilters: Boolean,
+        hideSort: Boolean,
+        statusNotEditable: Boolean,
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
@@ -19,7 +26,7 @@ app.component('opportunity-registrations-table', {
         const hadTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.hadTechnicalEvaluationPhase;
         const isTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.isTechnicalEvaluationPhase;
         
-        let visibleColumns = "agent,status,category,consolidatedResult,score";
+        let visibleColumns = this.showColumns;
         let order = 'score DESC';
         let consolidatedResultOrder = 'consolidatedResult';
         
@@ -205,6 +212,10 @@ app.component('opportunity-registrations-table', {
     },
 
     methods: {
+        getStatus(actualStatus) {
+            return this.statusDict.find(status => status.value === actualStatus);
+        },
+
         setStatus(selected, entity) {
             entity.status = selected.value;
             entity.save();
