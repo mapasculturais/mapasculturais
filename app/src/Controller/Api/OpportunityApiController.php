@@ -29,4 +29,12 @@ class OpportunityApiController
 
         return new JsonResponse($opportunity);
     }
+
+    public function getOpportunitiesByAgent(array $params): JsonResponse
+    {
+        $agentId = (int) $params['id'];
+        $opportunities = $this->repository->findOpportunitiesByAgentId($agentId);
+
+        return new JsonResponse($opportunities);
+    }
 }

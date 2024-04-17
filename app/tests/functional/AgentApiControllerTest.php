@@ -32,4 +32,13 @@ class AgentApiControllerTest extends AbstractTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertIsArray($content);
     }
+
+    public function testGetAgentOpportunitiesShouldRetrieveAList(): void
+    {
+        $response = $this->client->request('GET', '/api/v2/agents/1/opportunities');
+        $content = json_decode($response->getContent());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertIsArray($content);
+    }
 }

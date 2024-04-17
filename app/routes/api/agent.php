@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Controller\Api\AgentApiController;
+use App\Controller\Api\OpportunityApiController;
 use Symfony\Component\HttpFoundation\Request;
 
 return [
@@ -14,5 +15,8 @@ return [
     ],
     '/api/v2/agents/{id}' => [
         Request::METHOD_GET => [AgentApiController::class, 'getOne'],
+    ],
+    '/api/v2/agents/{id}/opportunities' => [
+        Request::METHOD_GET => [OpportunityApiController::class, 'getOpportunitiesByAgent'],
     ],
 ];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use Doctrine\Persistence\ObjectRepository;
+use MapasCulturais\Entities\AgentOpportunity;
 use MapasCulturais\Entities\Opportunity;
 
 class OpportunityRepository extends AbstractRepository
@@ -28,5 +29,18 @@ class OpportunityRepository extends AbstractRepository
     public function find(int $id): Opportunity
     {
         return $this->repository->find($id);
+    }
+
+    public function findOpportunitiesByAgentId(int $agentId): array
+    {
+        $queryBuilder = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('ao')
+            ->from(AgentOpportunity::class, 'ao')
+            ->where('ao.ownerEntity = :agentId')
+            ->andWhere('ao.parent is null')
+            ->setParameter('agentId', $agentId);
+
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 }
