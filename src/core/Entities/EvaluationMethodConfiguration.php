@@ -345,7 +345,9 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             }
         }
 
-        $data['evaluations'] = $em->filterEvaluationsSummary($data['evaluations']);
+        if($data['evaluations']) {
+            $data['evaluations'] =  $em->filterEvaluationsSummary($data['evaluations']);
+        }
         $slug = $em->slug;
         $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
 
