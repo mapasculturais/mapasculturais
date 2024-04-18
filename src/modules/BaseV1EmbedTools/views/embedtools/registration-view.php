@@ -1,10 +1,12 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 
-
 $avaliable_evaluationFields = $entity->opportunity->avaliableEvaluationFields ?? [];
-$app->view->jsObject['avaliableEvaluationFields'] = $avaliable_evaluationFields;
+$avaliable_evaluationFields['proponentType'] = true;
+$avaliable_evaluationFields['range'] = true;
+$avaliable_evaluationFields['category'] = true;
 
+$app->view->jsObject['avaliableEvaluationFields'] = $avaliable_evaluationFields;
 
 $_params = [
     'entity' => $entity,

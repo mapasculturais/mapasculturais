@@ -19,5 +19,10 @@
                 padding: size(8);
             }
         }
+
+        @media (max-width: 600px) {
+            flex-wrap: wrap;
+            gap: size(16);
+        }
     }
 }

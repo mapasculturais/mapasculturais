@@ -40,13 +40,19 @@ class Hooks {
         } else {
             $hooks = $this->getCallables($name);
             foreach ($this->_excludeHooks as $hook => $cb) {
-                if (in_array($cb, $hooks))
+                if (in_array($cb, $hooks)){
                     unset($this->_excludeHooks[$hook]);
+                }
             }
 
-            foreach ($this->_hooks as $hook => $cbs) {
-                foreach ($cbs as $i => $cb)
-                    unset($this->_hooks[$hook][$i]);
+            foreach ($this->_hooks as $hook => $priorities) {
+                foreach ($priorities as $priority => $callables) {
+                    foreach($callables as $i => $callable){
+                        if (in_array($callable, $hooks)){
+                            unset($this->_hooks[$hook][$priority][$i]);
+                        }
+                    }
+                }
             }
         }
     }
@@ -110,17 +116,38 @@ class Hooks {
         if(strpos($name, 'template(') === 0){
             $n = 3;
         }
+        $this->app->log->debug("hook >> \033[1m\033[37m$name");
 
-        $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $filename = $bt[$n]['file'];
-        $fileline = $bt[$n]['line'];
-        $lines = file($filename);
-        $line = trim($lines[$fileline - 1]);
         
-        $filename = str_replace(APPLICATION_PATH, '', $filename);
+        $btrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 
-        $this->app->log->debug("hook >> \033[1m\033[37m$name \033[0m(\033[33m$filename:$fileline\033[0m)");
-        $this->app->log->debug("     >> \033[32m$line\033[0m");
+        $c = 0;
+        foreach($btrace as $i => $bt) {
+            if($i < $n || ($bt['class'] ?? '') == __CLASS__ || in_array($bt['function'] ?? '', ['applyHookBoundTo', 'applyHook'])) {
+                continue;
+            } 
+            $filename = $bt['file'] ?? null;
+            $fileline = $bt['line'] ?? null;
+
+            if(str_starts_with($filename ?: '', '/var/www/vendor/')) {
+                continue;
+            }
+
+            if($c >= $this->app->config['app.log.hook.traceDepth']) {
+                break;
+            }
+
+            if($filename && file_exists($filename)) {
+                $c++;
+                $lines = file($filename);
+                $line = trim($lines[$fileline - 1]);
+                
+                $filename = str_replace(APPLICATION_PATH, '', $filename);
+        
+                $this->app->log->debug(" #{$c}   \033[0m(\033[33m$filename:$fileline\033[0m) >> \033[32m$line\033[0m");
+            }
+        }
+
     }
 
 
@@ -210,8 +237,9 @@ class Hooks {
         $result = [];
 
         foreach ($this->_excludeHooks as $hook => $callables) {
-            if (preg_match($hook, $name))
+            if (preg_match($hook, $name)) {
                 $exclude_list = array_merge($callables);
+            }
         }
 
         foreach ($this->_hooks as $hook => $_callables) {

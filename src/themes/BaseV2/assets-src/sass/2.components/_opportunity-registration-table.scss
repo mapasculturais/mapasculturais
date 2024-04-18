@@ -5,12 +5,19 @@
         display: flex;
         gap: size(24);
         flex-wrap: wrap;
-    } 
+    }
+
+    .opportunity-status {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
 
     .apply-evaluations {
         .modal-content {
             max-width: size(570);
-            padding: size(24);
+            padding: size(32);
 
             .modal__content {
                 margin: size(24) 0 0;
@@ -70,5 +77,42 @@
         flex-direction: row;
         gap: size(16);
         align-items: center;
+    }
+
+    &__multiselects {
+        display: flex;
+        gap: size(18);
+        flex-wrap: wrap;
+
+        @media (max-width: 552px) {
+            .mc-multiselect {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 554px) and (max-width: 770px){
+            .mc-multiselect {
+                width: 47.5%;
+            }
+        }
+    }
+
+    .opportunity-payment-table__actions {
+        margin-top: size(8);
+        text-align: center;
+
+        .button {
+            min-width: size(272);
+        }
+
+        @media (max-width: 980px) {
+            display: flex;
+            flex-wrap: wrap;
+            gap: size(20);
+
+            .button {
+                min-width: 100%;
+            }
+        }
     }
 }

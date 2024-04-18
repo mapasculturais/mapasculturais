@@ -13,5 +13,7 @@ $this->import('
 
 <div :class="statusClass">
     <mc-icon name="dot"></mc-icon>
-    {{statusName}}
+    <span>        
+        {{statusName}}
+    </span>
 </div>

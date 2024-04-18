@@ -34,8 +34,10 @@ return [
      */
     'monolog.logsDir'          => env('LOG_DIR', VAR_PATH . 'logs/'),
 
-    // 'app.log.query'         => true,
+    'app.log.hook.traceDepth' => 5,
+     
     // 'app.log.hook'          => true,
+    // 'app.log.query'         => true,
     // 'app.log.requestData'   => true,
     // 'app.log.texts'         => true,
     // 'app.log.translations'  => true,

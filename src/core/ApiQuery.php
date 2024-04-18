@@ -7,12 +7,14 @@ use Exception;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
-    use Traits\MagicGetter;
+    use Traits\MagicGetter,
+        Traits\MagicCallers;
     
     /**
      * Number of query objects to generate query ids
@@ -646,6 +648,14 @@ class ApiQuery {
     }
     
     public function getFindOneResult() {
+        $app = App::i();
+        
+        $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset());
+
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
         if ($this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
             $result = $this->getSubClassesResult();
             if(!empty($result)) {
@@ -680,6 +690,8 @@ class ApiQuery {
             $this->processEntities($_tmp);
 
         }
+
+        $app->rcache->save($cache_key, $result);
 
         return $result;
     }
@@ -716,53 +728,72 @@ class ApiQuery {
         }
         return $result;
     }
+
+    function getCacheKey($method, string $select = null, $offset = null, $limit = null) {
+        $dql = $this->getFindDQL($select);
+        $params = $this->getDqlParams();
+
+        return md5(print_r([
+            $method,
+            str_replace(array_keys($params), array_values($params), $dql),
+            $offset,
+            $limit
+        ], true));
+    }
     
     private $__inSubclassesQuery = false;
     public function getFindResult(string $select = null) {
         $app = App::i();
-        
-        if (!$this->__inSubclassesQuery && $this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
+
+        $cache_key = $this->getCacheKey(__METHOD__, $select, $this->getOffset(), $this->getLimit());
+
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
+        if (!$this->_findingIds && !$this->__inSubclassesQuery && $this->entityClassMetadata->inheritanceType == 3 && $this->entityClassMetadata->subClasses) {
             $this->__inSubclassesQuery = true;
             $result = $this->getSubClassesResult();
             $this->__inSubclassesQuery = false;
-            return $result;
-        }
-
-        $dql = $this->getFindDQL($select);
-        
-        $q = $this->em->createQuery($dql);
-        if($this->__useDQLCache){
-            $q->enableResultCache($this->__cacheTLS);
-        }
-
-        if ($offset = $this->getOffset()) {
-            $q->setFirstResult($offset);
-        }
-
-        if ($limit = $this->getLimit()) {
-            $q->setMaxResults($limit);
-        }
-
-        $params = $this->getDqlParams();
-
-        $q->setParameters($params);
-        $this->logDql($dql, __FUNCTION__, $params);
-        
-        $result = [];
-        $ids = [];
-        
-        // removes duplicated values
-        foreach($q->getResult(Query::HYDRATE_ARRAY) as $r){
-            if(!isset($ids[$r[$this->pk]])){
-                $ids[$r[$this->pk]] = true;
-                $result[] = $r;
+        } else {
+            $dql = $this->getFindDQL($select);
+            $q = $this->em->createQuery($dql);
+            if($this->__useDQLCache){
+                $q->enableResultCache($this->__cacheTLS);
             }
-        }
-        if(!$this->_findingIds) {
-            $this->processEntities($result);
+    
+            if ($offset = $this->getOffset()) {
+                $q->setFirstResult($offset);
+            }
+    
+            if ($limit = $this->getLimit()) {
+                $q->setMaxResults($limit);
+            }
+    
+            $params = $this->getDqlParams();
+    
+            $q->setParameters($params);
+            $this->logDql($dql, __FUNCTION__, $params);
+            
+            $result = [];
+            $ids = [];
+            
+            // removes duplicated values
+            foreach($q->getResult(Query::HYDRATE_ARRAY) as $r){
+                if(!isset($ids[$r[$this->pk]])){
+                    $ids[$r[$this->pk]] = true;
+                    $result[] = $r;
+                }
+            }
+    
+            if(!$this->_findingIds) {
+                $this->processEntities($result);
+            }
         }
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.findResult", [&$result]);
+
+        $app->rcache->save($cache_key, $result);
 
         return $result;
     }
@@ -774,7 +805,13 @@ class ApiQuery {
     
     public function getCountResult() {
         $app = App::i();
-        
+
+        $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset(), limit: $this->getLimit());
+
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
         $dql = $this->getCountDQL();
 
         $q = $this->em->createQuery($dql);
@@ -791,7 +828,9 @@ class ApiQuery {
         $result = $q->getSingleScalarResult();
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.countResult", [&$result]);
-        
+
+        $app->rcache->save($cache_key, $result);
+
         return $result;
     }
     
@@ -799,7 +838,6 @@ class ApiQuery {
         $params = $this->_dqlParams;
         
         $subqueries = $this->getSubqueryFilters();
-        
         foreach($subqueries as $filter){
             $params += $filter['subquery']->getDqlParams();
         }
@@ -865,6 +903,27 @@ class ApiQuery {
         }
 
         $result = preg_replace('#([^a-z0-9_])e([\. ])#i', "$1{$alias}$2", $dql);
+
+        // faz os alias dos joins de metadados serem únicos
+        if(preg_match_all('#\.__metadata ([\w\d]+) WITH #i', $result, $matches)){
+            foreach($matches[1] as $alias) {
+                $result = str_replace($alias, uniqid ("{$alias}__"), $result);
+            }
+        }
+        
+        // faz os alias dos joins dos termRelations serem únicos
+        if(preg_match_all('#\.__termRelations ([\w\d]+) LEFT#i', $result, $matches)){
+            foreach($matches[1] as $alias) {
+                $result = str_replace($alias, uniqid ("{$alias}__"), $result);
+            }
+        }
+
+        // faz os alias dos joins de termos serem únicos
+        if(preg_match_all('#\.term ([\w\d]+) WITH#i', $result, $matches)){
+            foreach($matches[1] as $alias) {
+                $result = str_replace($alias, uniqid ("{$alias}__"), $result);
+            }
+        }
         return $result;
     }
     
@@ -872,11 +931,11 @@ class ApiQuery {
         return $this->_selecting;
     }
 
-    protected function getSubqueryInIdentities(array $entities, $property = null) {
+    protected function getSubqueryInIdentities(array $entities, $property = null, $force_ids = false) {
         if(is_null($property)) {
             $property = $this->pk;
         }
-        if (count($entities) > $this->maxBeforeSubquery && !$this->getOffset() && !$this->getLimit()) {
+        if (count($entities) > $this->maxBeforeSubquery) {
             $this->_usingSubquery = true;
             $result = $this->getSubDQL($property);
         } else {
@@ -955,7 +1014,6 @@ class ApiQuery {
         if(!$this->_subsiteId){
             if($subsite = $app->getCurrentSubsite()){
                 $subsite_query = $subsite->getApiQueryFilter($this->entityClassName);
-
                 if($subsite_query){
                     $filters[] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
                 }
@@ -1025,7 +1083,8 @@ class ApiQuery {
         $class = $this->entityClassName;
         
         if($this->_selectingOriginSiteUrl && $this->usesOriginSubsite){
-            $joins .= ' LEFT JOIN MapasCulturais\Entities\Subsite __subsite__ WITH __subsite__.id = e._subsiteId';
+            $subsite_alias = $this->getAlias('subsite');
+            $joins .= " LEFT JOIN MapasCulturais\Entities\Subsite {$subsite_alias} WITH {$subsite_alias}.id = e._subsiteId";
         }
         
         if($this->usesSealRelation && $this->_seals){
@@ -1139,7 +1198,10 @@ class ApiQuery {
                         $new_oder = str_replace('.', '_', preg_replace('#^([^ ]+)#', '$1_' . $cast, $_order));
                         $alias = preg_replace("# .*#", '', $new_oder);
                         $_prop = preg_replace("# .*#", '', $_order);
-                        $this->orderCasts[] = "CAST({$_prop} AS $cast) AS HIDDEN $alias";
+                        $order_cast = "CAST({$_prop} AS $cast) AS HIDDEN $alias";
+                        if(!in_array($order_cast, $this->orderCasts)){
+                            $this->orderCasts[] = $order_cast;
+                        }
                         $_order = $new_oder;
 
                     }
@@ -1153,6 +1215,10 @@ class ApiQuery {
     }
     
     protected function processEntities(array &$entities) {
+        if(empty($entities)) {
+            return;
+        }
+
         $this->appendCurrentUserPermissions($entities);
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
@@ -1257,7 +1323,7 @@ class ApiQuery {
             $keys = ':' . implode(',:', array_keys($meta_keys));
 
             $in_entities_dql = $this->getSubqueryInIdentities($entities);
-
+            
             if (!$in_entities_dql) {
                 return;
             }
@@ -1280,7 +1346,7 @@ class ApiQuery {
             }
 
             if($this->_usingSubquery){
-                $q->setParameters($meta_keys + $this->_dqlParams);
+                $q->setParameters($meta_keys + $this->getDqlParams());
             } else {
                 $q->setParameters($meta_keys);
             }
@@ -1589,7 +1655,7 @@ class ApiQuery {
                         $query->where. " AND e.{$_target_property} IN ({$_subquery_where_id_in})";
                     
                     if(str_contains($_subquery_where_id_in, 'SELECT')){
-                        foreach($this->_dqlParams as $k => $v){
+                        foreach($this->getDqlParams() as $k => $v){
                             $query->_dqlParams[$k] = $v;
                         }
                     }
@@ -1723,8 +1789,10 @@ class ApiQuery {
             }
 
             if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
+                $query->setParameters($this->getDqlParams());
             }
+
+            $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
             
             $restul = $query->getResult(Query::HYDRATE_ARRAY);
                 
@@ -1898,7 +1966,7 @@ class ApiQuery {
             }
 
             if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
+                $query->setParameters($this->getDqlParams());
             }
             
             $restult = $query->getResult(Query::HYDRATE_ARRAY);
@@ -1983,7 +2051,7 @@ class ApiQuery {
         }
 
         if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
+            $query->setParameters($this->getDqlParams());
         }
         
         $relations = $query->getResult(Query::HYDRATE_ARRAY);
@@ -2103,7 +2171,7 @@ class ApiQuery {
         }
 
         if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
+            $query->setParameters($this->getDqlParams());
         }
         
         $relations = $query->getResult(Query::HYDRATE_ARRAY);
@@ -2224,7 +2292,7 @@ class ApiQuery {
         }
 
         if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
+            $query->setParameters($this->getDqlParams());
         }
         
         $relations = $query->getResult(Query::HYDRATE_ARRAY);
@@ -2324,7 +2392,7 @@ class ApiQuery {
         }
 
         if($this->_usingSubquery){
-            $query->setParameters($this->_dqlParams);
+            $query->setParameters($this->getDqlParams());
         }
         
         $relations = $query->getResult(Query::HYDRATE_ARRAY);
@@ -2420,8 +2488,10 @@ class ApiQuery {
             }
 
             if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
+                $query->setParameters($this->getDqlParams());
             }
+
+            $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
 
             $result = $query->getResult(Query::HYDRATE_ARRAY);
             $permissions_by_entity = [];
@@ -2493,8 +2563,10 @@ class ApiQuery {
                 }
                 
                 if($this->_usingSubquery){
-                    $query->setParameters($this->_dqlParams);
+                    $query->setParameters($this->getDqlParams());
                 }
+
+                $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
                 
                 $result = $query->getResult(Query::HYDRATE_ARRAY);
                             
@@ -2557,8 +2629,9 @@ class ApiQuery {
             }
             
             if($this->_usingSubquery){
-                $query->setParameters($this->_dqlParams);
+                $query->setParameters($this->getDqlParams());
             }
+            $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
 
             $relations = $query->getResult(Query::HYDRATE_ARRAY);
 
@@ -2670,8 +2743,9 @@ class ApiQuery {
                     }
     
                     if($this->_usingSubquery){
-                        $query->setParameters($this->_dqlParams);
+                        $query->setParameters($this->getDqlParams());
                     }
+                    $this->logDql($dql, __FUNCTION__, $this->_usingSubquery ? $this->getDqlParams() : []);
     
                     $qr = $query->getResult(Query::HYDRATE_ARRAY);
                 } else {
@@ -2734,6 +2808,7 @@ class ApiQuery {
     }
 
     protected function parseParam($key, $expression) {
+        
         if (is_string($expression) && !preg_match('#^[ ]*(!)?([a-z]+)[ ]*\((.*)\)$#i', $expression, $match)) {
             throw new Exceptions\Api\InvalidExpression($expression);
         } else {
@@ -2761,7 +2836,6 @@ class ApiQuery {
                 $values = $this->splitParam($value);
 
                 $values = $this->addMultipleParams($values);
-
                 if (count($values) > 0) {
                     $dql = $not ? "$key NOT IN (" : "$key IN (";
                     $dql .= implode(', ', $values) . ')';
@@ -2877,20 +2951,23 @@ class ApiQuery {
                         "st_covers(st_envelope(st_geomfromtext({$line})), $key) <> TRUE" :
                         "st_covers(st_envelope(st_geomfromtext({$line})), $key) = TRUE";
             }
+            
             return $dql;
         }
     }
 
     private function splitParam($val) {
+        
         $result = explode("\n", str_replace('\\,', ',', preg_replace('#(^[ ]*|([^\\\]))\,#', "$1\n", $val)));
 
-        if (count($result) === 1 && !$result[0]) {
+        if (count($result) === 1 && in_array($result[0], [null,'']) ) {
             return [];
         } else {
             $_result = [];
             foreach ($result as $r)
-                if ($r)
+                if (!is_null($r) && $r !== '') {
                     $_result[] = $r;
+                }
             return $_result;
         }
     }
@@ -3049,7 +3126,7 @@ class ApiQuery {
                     $admin_where = implode(' OR ', $admin_where);
                     $admin_where = "OR ($admin_where)";
                 }
-
+                $view_where = '';
                 if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
                     $params = $this->apiParams;
                     if($this->entityClassName === Opportunity::class && (isset($params['id']) || isset($params['parent']) || isset($params['status']))) {
@@ -3065,10 +3142,10 @@ class ApiQuery {
     }
 
     protected function _addFilterByOwnerUser($value) {
-        
-        $this->_keys['user'] = '__user_agent__.user';
+        $alias = uniqid('user_agent__');
+        $this->_keys['user'] = "{$alias}.user";
 
-        $this->joins .= "\n\tLEFT JOIN e.owner __user_agent__\n";
+        $this->joins .= "\n\tLEFT JOIN e.owner {$alias}\n";
         
         $this->_whereDqls[] = $this->parseParam($this->_keys['user'], $value);
     }

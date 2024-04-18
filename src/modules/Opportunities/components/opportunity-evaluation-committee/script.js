@@ -45,7 +45,7 @@ app.component('opportunity-evaluation-committee', {
             selectCategories: [],
             registrationCategories: [
                 'sem avaliações',
-                ...this.entity.opportunity.registrationCategories
+                ... (this.entity.opportunity.registrationCategories ?? [])
             ]
         }
     },

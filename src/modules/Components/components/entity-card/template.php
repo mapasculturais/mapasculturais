@@ -32,7 +32,7 @@ $this->import('
 
 		<div class="entity-card__header user-slot">
 			<slot name="labels">
-				<div class="entity-card__slot">
+				<div class="entity-card__slot" :class="{'no-id' : !global.showIds[entity.__objectType]}">
 					<span v-if="global.showIds[entity.__objectType]" class="uppercase semibold entity-card__id">Id: <span class="bold">{{entity.id}}</span> </span>
 					<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
 				</div>
@@ -89,8 +89,11 @@ $this->import('
 
 		<div class="entity-card__content--terms">
 			<div v-if="areas" class="entity-card__content--terms-area">
-				<label class="area__title">
+				<label v-if="entity.__objectType === 'opportunity'" class="area__title">
 					<?php i::_e('Áreas de interesse:') ?> ({{entity.terms.area.length}}):
+				</label>
+				<label v-if="entity.__objectType === 'agent' || entity.__objectType === 'space'" class="area__title">
+					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
 				</label>
 				<p :class="['terms', entity.__objectType+'__color']"> {{areas}} </p>
 			</div>
@@ -115,10 +118,10 @@ $this->import('
 		<div class="entity-card__footer--info">
 			<div v-if="seals" class="seals">
 				<label class="seals__title">
-					<?php i::_e('Selos') ?> ({{entity.seals.length}}):
+					<?php i::_e('Selos') ?>:
 				</label>
-				<mc-avatar v-for="seal in seals" :title="seal.name" :entity="seal" square size="xsmall"></mc-avatar>
-				<div v-if="seals.length > 2" class="seals__seal more">+1</div>
+				<mc-avatar v-for="seal in entity.seals" :title="seal.name + ' AQUI'" :entity="seal" square size="xsmall"></mc-avatar>
+				
 			</div>
 		</div>
 
