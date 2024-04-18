@@ -18,9 +18,18 @@ app.component('mc-select', {
             default: false,
         },
 
+        hideFilter: {
+            type: Boolean,
+            default: false,
+        },
+
         small: {
             type: Boolean,
             default: false,
+        },
+
+        options: {
+            type: Array,
         },
     },
 
@@ -32,39 +41,67 @@ app.component('mc-select', {
     },
 
     mounted() {
+
         setTimeout(() => {
-            const options = this.$refs.options.children;            
-            for (const [index, option] of Object.entries(options)) {
+            const options = this.$refs.options.children;
+            this.defaultOptions = Object.freeze(Array.from(options));
+            
+            for (const [index, option] of Object.entries(options)) {                            
+                const refOptions = this.$refs.options;
+                const refSelected = this.$refs.selected;
                 
-                if (this.hasGroups) {
-                    for (const [_index, _option] of Object.entries(option.children)) {
-                        _option.addEventListener("click", (e) => this.selectOption(e));
-                        this.setDefaultOption(_option);
+                while (!option.hasAttribute('value') && option != refOptions) {
+                    option = option.parentElement;
+                }
+    
+                if (!option.hasAttribute('value')) {
+                    console.error('Atributo value não encontrado');
+                    return;
+                }
+
+                if (this.defaultValue != null || this.defaultValue != '') {
+    
+                    let optionText = option.text ?? option.textContent;
+                    let optionValue = option.value ?? option.getAttribute('value');
+                    let optionItem = option.outerHTML;
+    
+                    if (optionValue == this.defaultValue) {
+                        this.optionSelected = {
+                            text: optionText,
+                            value: optionValue,
+                        }
+    
+                        refSelected.innerHTML = optionItem;
                     }
-                } else {
-                    option.addEventListener("click", (e) => this.selectOption(e));
-                    this.setDefaultOption(option);
                 }
             }
-
-            if (this.defaultValue === null || this.defaultValue === '') {
+    
+            if (this.defaultValue === null || this.defaultValue === '' || this.$refs.selected.innerHTML === '') {
                 this.$refs.selected.innerHTML = this.placeholder;
             }
         });
 
         document.addEventListener('mousedown', (event) => {
-            const select = event.target.closest('.mc-select');
-            if (!select) {
-                this.open = false
-            } else if (event.target.closest('.mc-select').getAttribute('id') != this.uniqueID) {
-                this.open = false;
+            const select = event.target.closest('.mc-select') || event.target.closest('.mc-select__options');
+            
+            if (!event.target.closest('.mc-select__filter')) {
+                if (!select) {
+                    this.open = false
+                } else if (select.getAttribute('id') != this.uniqueID) {
+                    this.open = false;
+                }
             }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if((e.key=="27") || (e.key =="Escape")) {
+                this.closeSelect();
+            }            
         });
     },
 
     unmounted() {
         document.removeEventListener('mousedown', {});
-        document.removeEventListener('click', {});
     },
 
     data() {
@@ -75,76 +112,138 @@ app.component('mc-select', {
             },
             open: false,
             uniqueID: (Math.floor(Math.random() * 9000) + 1000),
+            filter: '',
+            defaultOptions: [],
         };
     },
 
+    computed: {
+        selectOptions() {
+            const result = [];
+
+            for(let option of this.options) {
+                // debugger;
+                if (typeof option == "string") {
+                    result.push({
+                        value: option,
+                        label: option,
+                    });
+                } else {
+                    result.push(option);
+                }
+            }
+
+            return result;
+        }
+    },
+
     methods: {
+        focus() {
+            const inputs = this.$refs.filter.getElementsByTagName('input');
+            if (inputs.length) {
+                setTimeout(() => {
+                    if (inputs[0].getAttribute("type") == 'text') {
+                        inputs[0].focus();
+                    }
+                }, 100);
+            }
+        },
+
+        openSelect() {
+            this.open = true;
+        },
+
+        closeSelect() {
+            this.open = false;
+            this.filter = '';
+            this.filterOptions();
+        },
+
         toggleSelect() {
-            this.open = !this.open
+            this.open ? this.closeSelect() : this.openSelect();
+
+            const refOptions = this.$refs.options;
+            const refSelected = this.$refs.selected;
+
+            refOptions.style.minWidth = refSelected.clientWidth + 'px'; 
         },
 
         selectOption(event) {
-            const options = this.$refs.options.children;       
-            let optionText = event.target.text ?? event.target.textContent;
-            let optionValue = event.target.value ?? event.target.getAttribute('value');
-            let optionItem = event.target.outerHTML;
+            const refOptions = this.$refs.options;
+            const refSelected = this.$refs.selected;
 
-            if (this.optionSelected.value != optionValue) {
-                for (const [index, option] of Object.entries(options)) {
+            let option = event.target;
 
-                    if (this.hasGroups) {
-                        for (const [_index, _option] of Object.entries(option.children)) {
-                            if (_option.text == optionText || _option.textContent == optionText) {
-                                this.optionSelected = {
-                                    text: optionText,
-                                    value: optionValue,
-                                }
-
-                                this.$emit('update:defaultValue', optionValue);
-                                this.$refs.selected.innerHTML = optionItem;
-                            }
-
-                            _option.classList.remove('active');
-                        }
-                    } else {
-                        if (option.text == optionText || option.textContent == optionText) {
-                            this.optionSelected = {
-                                text: optionText,
-                                value: optionValue,
-                            }
-    
-                            this.$emit('update:defaultValue', optionValue);
-                            this.$refs.selected.innerHTML = optionItem;
-                        }   
-
-                        option.classList.remove('active');
-                    }
-                };
-
-                this.$emit("changeOption", this.optionSelected);
+            while (!option.hasAttribute('value') && option != refOptions) {
+                option = option.parentElement;
+            }
+            
+            if (!option.hasAttribute('value')) {
+                console.error('Atributo value não encontrado');
+                return;
             }
 
-            event.target.classList.add('active');
+            let optionText = option.text ?? option.textContent;
+            let optionValue = option.value ?? option.getAttribute('value');
+            let optionItem = option.outerHTML;
+            
+            this.optionSelected = {
+                text: optionText,
+                value: optionValue,
+            }
+
+            refSelected.innerHTML = optionItem.replace(/<b><u>(.*?)<\/u><\/b>/, '$1');
+            this.$emit('changeOption', this.optionSelected);
+            this.$emit('update:defaultValue', optionValue);
+
             this.toggleSelect();
         },
 
-        setDefaultOption(option) {
-            if (this.defaultValue != null || this.defaultValue != '') {
-                let optionText = option.text ?? option.textContent;
-                let optionValue = option.value ?? option.getAttribute('value');
-                let optionItem = option.outerHTML;
-                
-                if (optionValue == this.defaultValue) {
-                    this.optionSelected = {
-                        text: optionText,
-                        value: optionValue,
-                    }
+        filterOptions() {
+            let options = this.defaultOptions;
+            let result = [];
+            
+            for (const [index, option] of Object.entries(options)) {
+                const label = option.text ?? option.textContent;
+                const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+                const indexOf = _item.indexOf(_filter);
+                if(indexOf >= 0) {
+                    const part0 = label.substr(0, indexOf); 
+                    const part1 = label.substr(indexOf, this.filter.length); 
+                    const part2 = label.substr(indexOf + this.filter.length);
                     
-                    option.classList.add('active');
-                    
-                    this.$refs.selected.innerHTML = optionItem;
+                    let highlighted = `${part0}<b><u>${part1}</u></b>${part2}`;
+
+                    const cleanText = option.innerHTML.replace(/<b><u>(.*?)<\/u><\/b>/, '$1');
+
+                    option.innerHTML = cleanText.replace(label, highlighted);
+                    result.push(option);
                 }
             }
-        }
+
+            this.$refs.options.innerHTML = '';
+
+            result = result.sort((a, b) => {
+                let aText = a.text || a.textContent;
+                let bText = b.text || b.textContent;
+                if (aText > bText) {
+                    return 1;
+                } else if (aText < bText) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            });
+
+            if (result.length > 0) {
+                result.forEach(option => {
+                    this.$refs.options.appendChild(option);
+                });
+            } else {
+                this.$refs.options.innerHTML = 'Nenhuma opção encontrada';
+            }
+        },
     },
 });

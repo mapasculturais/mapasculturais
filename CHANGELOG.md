@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased - 7.5]
+## [unreleased - 7.4]
 ### Novas funcionalidades
 - Implementa botão de aplicar avaliações para avaliações técnicas
 - Implementa exibição de parecer na avaliação documental
@@ -27,6 +27,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
 - possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
 - melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
+- log de hooks agora exibe um backtrace
 
 ### Correções
 - Corrige seleção de relacionamentos OneToOne
@@ -38,6 +39,102 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige permissão de visualização de arquivos privados
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
+- Corrige método para limpeza de hooks
+
+## [7.3.49] - 2024-04-16
+### Correçoes
+- Corrige problema que conflitava um agente gestor com usuarios do suporte
+
+## [7.3.48] - 2024-04-12
+### Correçoes
+- Corrige problema causado pela criação da pasta DoctineProxies como root
+- Cria db-update para corrigir status da fila de criação de cache de permissão no start da aplicação
+
+## [7.3.47] - 2024-04-11
+### Correçoes
+- Remove caracter desnecessário
+
+## [7.3.46] - 2024-04-10
+### Correçoes
+- Corrige ortografia da palavra Eventos escrita errada em algumas telas
+
+## [7.3.45] - 2024-04-09
+### Correçoes
+- Cria método register() necessário no Theme.php do BaseV1
+
+## [7.3.44] - 2024-04-09
+### Correçoes
+- Corrije o salvamento dos dados de DeoDivision
+
+## [7.3.43] - 2024-04-08
+### Correçoes
+- Corrige erro no db-update das geo_divisions
+
+## [7.3.42] - 2024-04-08
+### Correçoes
+- Corrige criação das geo divisões 
+
+## [7.3.41] - 2024-04-04
+### Correçoes
+- Ajusta exibição dos resumos de inscrições na aba Inscrições e resultados
+- Ajusta exibição dos resumos de inscrições da ultima fase Publicação final do resultado na aba Inscrições e resultados
+
+## [7.3.40] - 2024-04-04
+### Correçoes
+- Corrige o retorno dos selos das oportunidades na api
+
+### Melhorias
+- Adiciona mensagem para o avaliador informando que o período de avaliação já se ecerrou
+- Exibe todos os selos nos cards das entidades
+
+## [7.3.39] - 2024-04-04
+### Correçoes
+- Corrige exibição da imagem do selo após a vinculação deste com uma entidade
+- Oculta botão de carregar mais eventos quando não houver mais eventos a serem carregados
+
+## [7.3.38] - 2024-04-04
+### Correçoes
+- Corrige paginação das ocorrências dos eventos
+
+## [7.3.37] - 2024-04-02
+### Correçoes
+- Corrige campos @ das redes sociais
+
+## [7.3.36] - 2024-04-02
+### Correçoes
+- Corrige hooks duplicados no componente mc-header
+
+## [7.3.35] - 2024-04-01
+### Melhorias
+- Cria novos hooks no componente mc-header
+
+## [7.3.34] - 2024-03-28
+### Correções
+- Corrige texto no modal de confirmação de criação de eventos
+
+## [7.3.33] - 2024-03-21
+### Correções
+- Evita que um agente de suporte que tenha controle sobre o edital, seja redirecionado para o modulo de suporte ao acessar uma inscrição atrvéz da listagem de inscrições
+- Corrige erro ao acessar a lista de inscrição sendo do grupo de suporte, mas nao ter permissões de acesso aos campos definidas
+
+## [7.3.32] - 2024-03-20
+### Correções
+- Corrige exibição da label Área de atuação e Área de interesse nos cads de listagem de entidades
+
+## [7.3.31] - 2024-03-20
+- Corrige conflito do embedtools entre o módulo de relatórios e tabela de inscrições
+
+## [7.3.30] - 2024-03-19
+### Correções
+-  Corrige filtro do módulo de relatórios
+
+## [7.3.29] - 2024-03-15
+### Correções
+-  Corrige erro que quebrava exibição do texto isncrições abertas da seção oportunidades do momento
+
+## [7.3.28] - 2024-03-15
+### Correções
+- corrige erro no carregamento do avatar na seção Oportunidades do momento
 
 ## [7.3.27] - 2024-03-13
 ### Melhorias

@@ -131,10 +131,19 @@ app.component("affirmative-policy--bonus-config", {
       }
       this.autoSave();
     },
+
+    optionValue(option) {
+      let _option = option.split(':');
+      return _option[0];
+    },
+
+    optionLabel(option) {
+      let _option = option.split(':');
+      return _option.length > 1 ? _option[1] : _option[0];
+    },
+
     autoSave() {
       this.entity.save(3000);
     },
   },
-
-  mounted() {},
 });

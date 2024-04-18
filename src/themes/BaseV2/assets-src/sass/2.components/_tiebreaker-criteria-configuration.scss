@@ -37,6 +37,11 @@
         &:first-child {
             border-top: var(--mc-border-hairline) var(--mc-gray-300);
         }
+
+        @media (max-width: 560px) {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
     }
 
     &__column {
@@ -53,6 +58,17 @@
             justify-self: center;
             max-width: size(300);
             width: 100%;
+
+            @media (max-width: 560px) {
+                justify-self: start;
+                max-width: 50%;
+                width: 35%;
+            }
+        }
+
+        @media (max-width: 560px) {
+            max-width: 50%;
+            width: 35%;
         }
     }
 

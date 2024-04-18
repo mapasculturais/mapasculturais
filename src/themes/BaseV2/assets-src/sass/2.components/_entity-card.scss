@@ -102,6 +102,10 @@
 					@media (max-width: size(500)) {
 						gap: size(9);
 					}
+					&.no-id {
+						position: relative;
+						display: flex;
+					}
 				}
 				.entity-card__id {
 					font-size:var(--mc-font-size-xxs);

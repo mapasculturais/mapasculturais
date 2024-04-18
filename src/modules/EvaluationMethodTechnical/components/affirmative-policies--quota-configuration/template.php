@@ -99,8 +99,8 @@ $this->import('
 
                     <div class="field field--horizontal">
                         <label v-for="option in getFieldOptions(field)">
-                            <input type="checkbox" :value="option" :true-value="[]" v-model="field.eligibleValues" @change="autoSave()" />
-                            <span>{{option}}</span>
+                            <input type="checkbox" :value="optionValue(option)" :true-value="[]" v-model="field.eligibleValues" @change="autoSave()" />
+                            <span>{{optionLabel(option)}}</span>
                         </label>
                     </div>
                 </div>

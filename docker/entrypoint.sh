@@ -19,11 +19,14 @@ while(true){
     }
     sleep(1);
 }
-
-echo "\ncorrigindo status da fila de criação de cache de permissão\n\n";
-
-$pdo->query("UPDATE permission_cache_pending SET status = 0;");
 '
+
+mkdir -p /var/www/var/DoctrineProxies /var/www/var/logs
+
+touch /var/www/var/logs/app.log
+
+chown -R www-data: /var/www/var/DoctrineProxies /var/www/var/logs
+
 if ! cmp /var/www/version.txt /var/www/var/private-files/deployment-version >/dev/null 2>&1
 then
     /var/www/scripts/deploy.sh
@@ -40,9 +43,6 @@ if [ $BUILD_ASSETS = "1" ]; then
 fi
 
 cd /
-touch /var/www/var/logs/app.log
-chown www-data: /var/www/var/logs/app.log
-
 touch /nohup.out
 chown www-data: /nohup.out
 sudo -E -u www-data nohup /jobs-cron.sh >> /dev/stdout &

@@ -122,6 +122,7 @@
                 display: flex;
                 justify-content: center;
                 position: relative;
+                width: 100%;
 
                 &::before {
                     background: var(--mc-gray-100);

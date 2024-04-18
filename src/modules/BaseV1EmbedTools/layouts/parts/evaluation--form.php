@@ -23,7 +23,6 @@ foreach ($opportunity->getEvaluationCommittee() as $evaluation_user) {
 }
 $action = 'single';
 
-
 ?>
 <?php if ($action === 'single' && $entity->canUser('viewUserEvaluation')) : ?>
     <div id="registration-evaluation-form">
@@ -41,8 +40,13 @@ $action = 'single';
             <div style="text-align: right;">
                 <button class="btn btn-primary js-evaluation-submit js-next"><?php i::_e('Finalizar Avaliação e Avançar'); ?> &gt;&gt;</button>
             </div>
-        <?php elseif ($entity->canUser('viewUserEvaluation')) : ?>
-            <?php $this->part($evaluation_view_part_name, $params); ?>
+        <?php else: ?>
+            <?php if (new DateTime('now') > $entity->opportunity->evaluationMethodConfiguration->evaluationTo) : ?>
+                <strong><?= i::__('O período de avaliação se encerrou em ') . $entity->opportunity->evaluationMethodConfiguration->evaluationTo->format(i::__("d/m/Y à\s H:i"))?> </strong>
+            <?php endif; ?>
+            <?php if ($entity->canUser('viewUserEvaluation')) : ?>
+                <?php $this->part($evaluation_view_part_name, $params); ?>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 <?php endif; ?>

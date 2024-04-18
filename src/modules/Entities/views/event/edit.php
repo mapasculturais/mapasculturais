@@ -32,7 +32,7 @@ $this->import('
         mc-tab
 ');
 
-$label = $this->isRequestedEntityMine() ? i::__('Meus eventos') : i::__('Evantos');
+$label = $this->isRequestedEntityMine() ? i::__('Meus eventos') : i::__('Eventos');
 $this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => $label, 'url' => $app->createUrl('panel', 'events')],
@@ -44,7 +44,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
 
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>
