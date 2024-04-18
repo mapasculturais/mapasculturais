@@ -41,6 +41,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 
+## [7.3.50] - 2024-04-18
+### Correçoes
+- Corrige erro ao pegar resumo das avaliações de uma oportunidade sem avaliações
+- Insere opção de alterar a descrição longa da oportunidade na tela de edição
+
 ## [7.3.49] - 2024-04-16
 ### Correçoes
 - Corrige problema que conflitava um agente gestor com usuarios do suporte
