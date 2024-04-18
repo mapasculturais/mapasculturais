@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Controller\Api\SpaceApiController;
 use App\Controller\Api\EventApiController;
+use App\Controller\Api\SpaceApiController;
 use Symfony\Component\HttpFoundation\Request;
 
 return [

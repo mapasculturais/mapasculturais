@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Service\EventService;
 use App\Repository\EventRepository;
+use App\Service\EventService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class EventApiController

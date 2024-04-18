@@ -17,6 +17,7 @@ class EventRepository extends AbstractRepository
         parent::__construct();
         $this->repository = $this->getEntityManager()->getRepository(Event::class);
     }
+
     public function findAll(): array
     {
         return $this->repository
