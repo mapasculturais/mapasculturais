@@ -276,6 +276,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     protected $_subsiteId;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="long_description", type="text", nullable=true)
+     */
+    protected $longDescription;
+
      /**
      * @var object
      *
