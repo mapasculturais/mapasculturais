@@ -71,6 +71,8 @@ return [
             'minhas-avaliacoes'        => ['panel', 'evaluations'],
             'minhas-prestacoes-de-contas'        => ['panel', 'prestacoes-de-conta'],
 
+            'aparencia'               => ['theme-customizer', 'index'],
+            
             'conta-e-privacidade'        => ['panel', 'my-account'],
 
             'inscricao' => ['registration', 'edit'],

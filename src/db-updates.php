@@ -710,6 +710,11 @@ return [
             PRIMARY KEY(id)
         );");
     },
+    
+    "corrigindo status da fila de criação de cache de permissão" => function() {
+        __exec("UPDATE permission_cache_pending SET status = 0;");
+        return false;
+    },
 
     'create opportunity tables' => function () {
         if(!__table_exists('opportunity')){

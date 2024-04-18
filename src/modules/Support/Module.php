@@ -93,7 +93,7 @@ class Module extends \MapasCulturais\Module
 
         $app->hook('entity(Opportunity).registrationFieldConfigurations', function(&$result) use ($self, $app){
             $user = $app->user;
-            if($self->isSupportUser($this, $user)){
+            if(!$this->canUser("@control") && $self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
                         if( $relation->metadata && $userAllowedFields = $relation->metadata['registrationPermissions']) {
@@ -112,9 +112,8 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook('entity(Opportunity).registrationFileConfigurations', function(&$result) use ($self, $app){
-
             $user = $app->user;
-            if($self->isSupportUser($this, $user)){
+            if(!$this->canUser("@control") && $self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
                         if( $relation->metadata && $userAllowedFields = $relation->metadata['registrationPermissions']) {
