@@ -1,15 +1,15 @@
 <?php
 
-$showColumns = [
+$visibleColumns = [
     'category',
     'number',
-    'owner',
+    'owner.name',
     'proponentType',
     'range',
     'score',
     'status'
 ];
 
-$app->applyHook('component(opportunity-results-table).showColumns', [&$showColumns]);
+$app->applyHook('component(opportunity-results-table).visibleColumns', [&$visibleColumns]);
 
-$this->jsObject['config']['opportunityResultsTable']['showColumns'] = $showColumns;
+$this->jsObject['config']['opportunityResultsTable']['visibleColumns'] = $visibleColumns;

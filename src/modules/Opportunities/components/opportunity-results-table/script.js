@@ -3,7 +3,7 @@ app.component('opportunity-results-table', {
 
     data() {
         return {
-            showColumns: $MAPAS.config.opportunityResultsTable.showColumns,
+            visibleColumns: $MAPAS.config.opportunityResultsTable.visibleColumns,
         };
     },
 
