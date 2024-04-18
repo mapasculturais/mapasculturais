@@ -47,8 +47,8 @@ $this->import('
                     </div>
                     <div class="field affirmative-policy--bonus-config__row" v-if="getFieldType(quota) === 'select' || getFieldType(quota) === 'multiselect'">
                         <label v-for="option in getFieldOptions(quota)">
-                            <input class="input" type="checkbox" :value="option" v-model="quota.value[option]" @change="checkboxUpdate($event,quota)">
-                            {{option}}
+                            <input class="input" type="checkbox" :value="optionValue(option)" v-model="quota.value[option]" @change="checkboxUpdate($event,quota)">
+                            {{optionLabel(option)}}
                         </label>
                     </div>
 

@@ -8,6 +8,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-confirm-button
     mc-modal
 ');
 ?>
@@ -27,6 +28,19 @@ $this->import('
                 <slot :modal="modal" :blob="blob" :file="file" :blobUrl="blobUrl" :description="description" :upload="upload"></slot>
                 <input :id="group+<?= date("Ymd") ?>" type="file" ref="file" @change="loadImage($event, modal)" accept="image/*" style="display:none">
             </label>
+
+            <mc-confirm-button v-if="showDelete" @confirm="delFile()">
+                <template #button="modal">
+                    <button @click="modal.open()" class="button button--text-danger button--icon">
+                        <?php i::_e('Excluir Imagem') ?>
+                        <mc-icon name="trash"></mc-icon>
+                    </button>
+                </template>
+
+                <template #message="message">
+                    <?php i::_e('Deseja remover este arquivo?') ?>
+                </template>
+            </mc-confirm-button>
         </template>
         <template #actions="modal">
             <a class="button button--primary" @click="crop(modal)"><?php i::_e('Recortar e subir imagem') ?></a>
