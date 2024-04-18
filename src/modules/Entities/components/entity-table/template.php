@@ -31,7 +31,7 @@ $this->import('
                 </div>
 
                 <!-- ações - opcional -->
-                <mc-collapse v-if="hasSlot('actions')">
+                <mc-collapse v-if="hasSlot('actions') || !hideActions">
                     <template #header>
                         <slot name="actions" :entities="entities" :filters="filters"></slot>
                     </template>
@@ -42,7 +42,7 @@ $this->import('
                 </mc-collapse>
 
                 <!-- filtros - pré-definido -->
-                <mc-collapse>
+                <mc-collapse v-if="!hideFilters">
                     <template #header>
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
@@ -93,12 +93,23 @@ $this->import('
                     </div>
                 </div>
             </div>
-            <div class="entity-table__info">
-                <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+            <div v-if="!hideSort" class="entity-table__info">
+                <span v-if="entities.length === entities.metadata.count">
+                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                </span>
+                <span v-else>    
+                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                </span>
+                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
+            </div>
 
-                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>">
-                    <!-- <option v-for="option in sortOptions" :value="option.order">{{option.label}}</option> -->
-                </mc-select>
+            <div v-if="hideSort" class="entity-table__info">
+                <span v-if="entities.length === entities.metadata.count">
+                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
+                </span>
+                <span v-else>    
+                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
+                </span>
             </div>
         </template>
 
