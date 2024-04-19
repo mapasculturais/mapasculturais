@@ -121,7 +121,7 @@ E deve estar retornando algo como:
 
 ---
 
-## Repository
+### Repository
 
 A camada responsável pela comunicação entre nosso código e o banco de dados.
 
@@ -176,6 +176,47 @@ public function __construct()
 }
 ```
 
+### Command
+Comandos são entradas via CLI (linha de comando) que permitem automatizar alguns processos, como rodar testes, veririfcar estilo de código, e debugar rotas
+
+#### Passo 1 - Criar uma nova classe em `app/src/Command/`:
+
+```php
+<?php
+
+namespace App\Command;
+
+use Symfony\Component\Console\Command\Command;use Symfony\Component\Console\Input\InputInterface;use Symfony\Component\Console\Output\OutputInterface;
+
+class MyCommand extends Command
+{
+    protected static string $defaultName = 'app:my-command';
+    
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $output->writeln('Hello World!');
+        
+        return Command::SUCCESS;  
+    }
+} 
+```
+
+#### Passo 2 - Testar seu comando no CLI
+
+Entre no container da aplicação PHP e execute isso
+
+```shell
+php app/bin/console app:my-command
+```
+
+Você deverá ver na tela o texto `Hello World!`
+
+#### Passo 3 - Documentação do pacote
+Para criar e gerenciar os nosso commands estamos utilizando o pacote `symfony/console`, para ver sua documentação acesse:
+
+Saiba mais em <https://symfony.com/doc/current/console.html>
+
+---
 
 ## Testes
 Para executar os testes, entre no container da aplicação e execute o seguinte comando:

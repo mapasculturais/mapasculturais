@@ -28,7 +28,8 @@
         "symfony/sendgrid-mailer": "^6.3",
         "league/csv": "^9.6.2",
         "symfony/http-foundation": "^7.0",
-        "symfony/routing": "^7.0"
+        "symfony/routing": "^7.0",
+        "symfony/console": "^6.4.6"
     },
     "autoload": {
         "psr-4": {
