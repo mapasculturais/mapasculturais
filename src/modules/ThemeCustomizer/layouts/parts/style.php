@@ -19,7 +19,7 @@ $this->import('
             <b><?= i::__('Atenção!') ?></b> <?= i::__('As modificações só serão aplicadas no sistema após atualizar a página.') ?>
         </mc-alert>
     
-        <colors-customizer></colors-customizer>
-        <logo-customizer></logo-customizer>
+        <colors-customizer :subsite="entity"></colors-customizer>
+        <logo-customizer :subsite="entity"></logo-customizer>
     </div>
 </mc-tab>

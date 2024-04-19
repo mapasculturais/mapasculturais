@@ -14,6 +14,6 @@ $this->import('
 
 <mc-tab label="<?php i::esc_attr_e('Home') ?>" slug="home">
     <div class="theme-customizer">
-        <home-customizer></home-customizer>
+        <home-customizer :subsite="entity"></home-customizer>
     </div>
 </mc-tab>

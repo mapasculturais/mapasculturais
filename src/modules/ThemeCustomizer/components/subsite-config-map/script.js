@@ -6,10 +6,15 @@ app.component('subsite-config-map', {
         LTileLayer: VueLeaflet.LTileLayer,
     },
 
+    props: {
+        subsite: {
+            type: Entity,
+            required: true,
+        },
+    },
+
     data() {
-        let subsite = $MAPAS.subsite;
         return {
-            subsite,
             tileServer: $MAPAS.config.map.tileServer,
             filter: '',
             filterResult: [],

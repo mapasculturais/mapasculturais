@@ -14,6 +14,6 @@ $this->import('
 
 <mc-tab label="<?php i::esc_attr_e('Mapa') ?>" slug="map">
     <div class="theme-customizer">
-        <subsite-config-map></subsite-config-map>
+        <subsite-config-map :subsite="entity"></subsite-config-map>
     </div>
 </mc-tab>

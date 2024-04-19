@@ -1,6 +1,13 @@
 app.component('colors-customizer', {
     template: $TEMPLATES['colors-customizer'],
 
+    props: {
+        subsite: {
+            type: Entity,
+            required: true,
+        },
+    },
+
     mounted() {
         if (!this.subsite.color_primary ) {
             this.subsite.color_primary = this.getCssValue('--mc-primary-500');
@@ -25,13 +32,6 @@ app.component('colors-customizer', {
         }
         if (!this.subsite.color_spaces ) {
             this.subsite.color_spaces = this.getCssValue('--mc-spaces-500');
-        }
-    },
-
-    data() {
-        const subsite = $MAPAS.subsite;
-        return {
-            subsite,
         }
     },
 

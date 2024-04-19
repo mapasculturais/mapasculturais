@@ -1,21 +1,21 @@
 app.component('home-customizer', {
     template: $TEMPLATES['home-customizer'],
     
-    created() { 
-        if(!this.subsite.homeConfigurations){
-            this.subsite.homeConfigurations = {};
-            for(let section of this.homeConfigurations){
-                for(let text of section.texts){
-                    this.subsite.homeConfigurations[text.slug] = '';
-                }
-            }
-        }
+    props: {
+        subsite: {
+            type: Entity,
+            required: true,
+        },
     },
 
-    data() {
-        let subsite = $MAPAS.subsite;
-        return {
-            subsite
+    created() { 
+        if(!this.subsite.homeTexts){
+            this.subsite.homeTexts = {};
+            for(let section of this.homeConfigurations){
+                for(let text of section.texts){
+                    this.subsite.homeTexts[text.slug] = '';
+                }
+            }
         }
     },
 
@@ -30,10 +30,4 @@ app.component('home-customizer', {
             return reorganizedConfig;
         }
     },
-
-    methods: {
-        save(entity) {
-            entity.save();
-        }
-    }
 });

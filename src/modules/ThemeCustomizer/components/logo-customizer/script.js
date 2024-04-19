@@ -1,12 +1,17 @@
 app.component('logo-customizer', {
     template: $TEMPLATES['logo-customizer'],
 
+    props: {
+        subsite: {
+            type: Entity,
+            required: true,
+        },
+    },
+
     data() {
-        let subsite = $MAPAS.subsite;
         let default_colors = $MAPAS.config.logo.colors;
 
         return {
-            subsite,
             default_colors,
         }
     },
