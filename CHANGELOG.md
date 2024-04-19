@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.51] - 2024-04-19
+### Melhorias
+- Adiciona o campo Comunidade tradicional para ser possível gerar gráficos no módulo de relatórios
+
 ## [7.3.50] - 2024-04-18
 ### Correçoes
 - Corrige erro ao pegar resumo das avaliações de uma oportunidade sem avaliações
