@@ -14,7 +14,8 @@ class SealRepository extends AbstractRepository
     public function __construct()
     {
         parent::__construct();
-        $this->repository = $this->getEntityManager()->getRepository(Seal::class);
+
+        $this->repository = $this->mapaCulturalEntityManager->getRepository(Seal::class);
     }
 
     public function findAll(): array

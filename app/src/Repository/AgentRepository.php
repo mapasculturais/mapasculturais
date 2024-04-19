@@ -14,7 +14,7 @@ class AgentRepository extends AbstractRepository
     public function __construct()
     {
         parent::__construct();
-        $this->repository = $this->getEntityManager()->getRepository(Agent::class);
+        $this->repository = $this->mapaCulturalEntityManager->getRepository(Agent::class);
     }
 
     public function findAll(): array

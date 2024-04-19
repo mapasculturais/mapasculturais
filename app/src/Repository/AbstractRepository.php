@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use Doctrine\ORM\EntityManager;
+use App\Connection\EntityManager;
+use Doctrine\ORM\EntityManager as MapaCulturalEntityManager;
 use MapasCulturais\App;
 
 abstract class AbstractRepository
 {
-    private EntityManager $entityManager;
+    protected MapaCulturalEntityManager $mapaCulturalEntityManager;
+    protected EntityManager $entityManager;
 
     public function __construct()
     {
         $app = App::i();
-        $this->entityManager = $app->em;
-    }
-
-    public function getEntityManager(): EntityManager
-    {
-        return $this->entityManager;
+        $this->mapaCulturalEntityManager = $app->em;
+        $this->entityManager = new EntityManager();
     }
 }

@@ -15,7 +15,7 @@ class OpportunityRepository extends AbstractRepository
     public function __construct()
     {
         parent::__construct();
-        $this->repository = $this->getEntityManager()->getRepository(Opportunity::class);
+        $this->repository = $this->mapaCulturalEntityManager->getRepository(Opportunity::class);
     }
 
     public function findAll(): array

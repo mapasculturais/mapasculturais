@@ -15,7 +15,7 @@ class EventRepository extends AbstractRepository
     public function __construct()
     {
         parent::__construct();
-        $this->repository = $this->getEntityManager()->getRepository(Event::class);
+        $this->repository = $this->mapaCulturalEntityManager->getRepository(Event::class);
     }
 
     public function findAll(): array

@@ -14,7 +14,7 @@ class SpaceRepository extends AbstractRepository
     public function __construct()
     {
         parent::__construct();
-        $this->repository = $this->getEntityManager()->getRepository(Space::class);
+        $this->repository = $this->mapaCulturalEntityManager->getRepository(Space::class);
     }
 
     public function findAll(): array
