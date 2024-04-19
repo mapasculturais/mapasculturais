@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\User;
 use MapasCulturais\i;
@@ -74,6 +75,34 @@ class Controller extends \MapasCulturais\Controller
             ] 
         ]);
 
+        $this->json(true);
+    }
+
+    function POST_registrations()
+    {
+        $app = App::i();
+
+        $extension = $this->getExtension();
+        $owner = $this->getOwner();
+        $owner_properties = $app->config['registration.reportOwnerProperties'];
+        $owner_properties = implode(',', $owner_properties);
+        
+        $query = $this->data['query'];
+
+        unset($query['@select']);
+        unset($query['@limit']);
+        unset($query['@page']);
+        $query['@select'] = $this->data['@select'];
+
+        $app->enqueueOrReplaceJob('registrations-spreadsheets', [
+            'owner' => $owner,
+            'authenticatedUser' => $app->user,
+            'extension' => $extension,
+            'entityClassName' => Registration::class,
+            'query' => $query,
+            'owner_properties' => $owner_properties
+        ]);
+        
         $this->json(true);
     }
 }
