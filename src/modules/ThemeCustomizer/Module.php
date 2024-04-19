@@ -24,7 +24,7 @@ class Module extends \MapasCulturais\Module
 
         $app->hook('panel.nav', function (&$group) use ($app) {
             $group['admin']['items'][] = [
-                'route' => 'aparencia/index',
+                'route' => 'edicao-de-instalacao/'.$app->subsite->id,
                 'icon' => 'appearance',
                 'label' => i::__('Aparência'),
                 'condition' => function () use ($app) {
@@ -37,13 +37,9 @@ class Module extends \MapasCulturais\Module
             $this->jsObject['subsite'] = $app->subsite;
         });
 
-        $app->hook('view.render(<<*>>):before', function () use($app) {
-            $app->view->enqueueScript('components', 'subsite-init', 'js/subsite-init.js', ['components-utils']);
-        });
-
         $app->hook('app.register:after', function () use($app) {
             if ($subsite = $app->subsite) {
-                
+
                 Module::$originalColors = $app->config['logo.colors'];
 
                 if ($subsite->custom_colors) {
