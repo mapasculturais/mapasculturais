@@ -256,6 +256,13 @@ class Registration extends \MapasCulturais\Entity
         parent::__construct();
     }
 
+    public static function getEntityTypeLabel($plural = false): string {
+        if ($plural)
+            return \MapasCulturais\i::__('Inscrições');
+        else
+            return \MapasCulturais\i::__('Inscrição');
+    }
+
     function save($flush = false){
         $this->cleanRegisteredFields();
         parent::save($flush);
