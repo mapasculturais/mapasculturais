@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Seal;
 use Doctrine\Persistence\ObjectRepository;
-use MapasCulturais\Entities\Seal;
 
 class SealRepository extends AbstractRepository
 {
@@ -15,7 +15,7 @@ class SealRepository extends AbstractRepository
     {
         parent::__construct();
 
-        $this->repository = $this->mapaCulturalEntityManager->getRepository(Seal::class);
+        $this->repository = $this->entityManager->getRepository(Seal::class);
     }
 
     public function findAll(): array
