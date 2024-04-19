@@ -151,28 +151,6 @@ class Opportunity extends EntityController {
         }
     }
 
-    function GET_report(){
-        $this->requireAuthentication();
-        $app = App::i();
-
-        $entity = $this->requestedEntity;
-
-        if(!$entity){
-            $app->pass();
-        }
-
-        $entity->checkPermission('@control');
-
-        $app->controller('Registration')->registerRegistrationMetadata($entity);
-
-        $date = date('Y-m-d.Hi');
-
-        $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--inscricoes--%s"), $entity->id, $date);
-
-        //$this->reportOutput('report', ['entity' => $entity], $filename);
-        $this->reportOutput('report-csv', ['entity' => $entity], $filename);
-    }
-
     function GET_reportDrafts(){
         $this->requireAuthentication();
         $app = App::i();
