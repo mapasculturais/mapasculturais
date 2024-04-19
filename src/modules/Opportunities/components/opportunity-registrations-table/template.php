@@ -51,12 +51,12 @@ $entity = $this->controller->requestedEntity;
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
                 <template #actions="{entities,filters}">
                     <h4 class="bold"><?= i::__('Ações:') ?></h4>
-                    <div class="opportunity-payment-table__actions">
-                        <div class="opportunity-payment-table__actions grid-12">
+                    <div class="opportunity-table__actions">
+                        <div class="opportunity-table__actions grid-12">
                             <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
                                 <mc-link :entity="phase" route="reportDrafts" class="button button--primarylight button--icon button--large col-2"><?= i::__("Baixar rascunhos") ?> <mc-icon name="download"></mc-icon></mc-link>
                                 <mc-link :entity="phase" route="report" class="button button--primarylight button--icon button--large col-2"><?= i::__("Baixar lista de inscrições") ?> <mc-icon name="download"></mc-icon></mc-link>
-                                <mc-export-spreadsheet :owner="phase" endpoint="entities" :params="{entityType: 'agent', '@select': 'name,status,createTimestamp,shortDescription,cpf'}" group="entities-spreadsheets"></mc-export-spreadsheet>
+                                <mc-export-spreadsheet :owner="phase" endpoint="registrations" :params="{entityType: 'registration', '@select': 'id,createTimestamp,sentTimestamp,status,subsite,consolidatedResult,number,proponentType,range,score,eligible,agentsData', '@order': 'id DESC', query}" group="registrations-spreadsheets"></mc-export-spreadsheet>
                             <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'end', ['entity' => $entity]); ?>
                         </div>
                     </div>
