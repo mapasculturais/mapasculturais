@@ -108,6 +108,13 @@ class Subsite extends \MapasCulturais\Entity
      */
     protected $verifiedSeals = [];
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="short_description", type="text", nullable=true)
+     */
+    protected $shortDescription;
+
     function setVerifiedSeals($val) {
         if(is_string($val)) {
             if(trim($val)){
