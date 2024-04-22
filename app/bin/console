@@ -3,11 +3,17 @@
 
 require dirname(__DIR__, 2).'/vendor/autoload.php';
 
+use App\Command\CodeStyleCommand;
+use App\Command\TestsCommand;
 use App\Command\WelcomeCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
 
-$application->add(new WelcomeCommand());
+$application->addCommands([
+    new WelcomeCommand(),
+    new TestsCommand(),
+    new CodeStyleCommand(),
+]);
 
 $application->run();

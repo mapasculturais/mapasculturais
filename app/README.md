@@ -222,5 +222,13 @@ Saiba mais em <https://symfony.com/doc/current/console.html>
 Para executar os testes, entre no container da aplicação e execute o seguinte comando:
 
 ```shell
-php vendor/bin/phpunit app/tests
+php app/bin/console tests:backend {path}
+```
+
+O `path` é opcional, o padrão é "app/tests"
+
+## Style Code
+Para executar o PHP-CS-FIXER basta entrar no container da aplicação e executar
+```
+php app/bin/console app:code-style
 ```
