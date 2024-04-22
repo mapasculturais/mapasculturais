@@ -15,6 +15,24 @@ class WelcomeApiControllerTest extends AbstractTestCase
         $this->assertEquals('MapaCultural', $content->API);
     }
 
+    public function testMethodDELETEFromAPI(): void
+    {
+        $response = $this->client->request('DELETE', '/api/v2');
+        $content = json_decode($response->getContent());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('MapaCultural - Test DELETE', $content->API);
+    }
+
+    public function testmethodPOSTFromAPI(): void
+    {
+        $response = $this->client->request('POST', '/api/v2');
+        $content = json_decode($response->getContent());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('MapaCultural - Test POST', $content->API);
+    }
+
     public function testErrorResponseWhenMethodIsNotAllowed(): void
     {
         $response = $this->client->request('POST', '/api');

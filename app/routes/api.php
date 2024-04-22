@@ -11,6 +11,8 @@ $routes = [
     ],
     '/api/v2' => [
         Request::METHOD_GET => [WelcomeApiController::class, 'index'],
+        Request::METHOD_POST => [WelcomeApiController::class, 'create'],
+        Request::METHOD_DELETE => [WelcomeApiController::class, 'delete'],
     ],
 ];
 

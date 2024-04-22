@@ -33,7 +33,7 @@ foreach ($routes as $key => $routeData) {
             methods: [$method]
         );
 
-        $routesCollection->add($key, $route);
+        $routesCollection->add("$key-$method", $route);
     }
 }
 

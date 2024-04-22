@@ -14,4 +14,18 @@ class WelcomeApiController
             'API' => 'MapaCultural',
         ]);
     }
+
+    public function create(): JsonResponse
+    {
+        return new JsonResponse([
+            'API' => 'MapaCultural - Test POST',
+        ]);
+    }
+
+    public function delete(): JsonResponse
+    {
+        return new JsonResponse([
+            'API' => 'MapaCultural - Test DELETE',
+        ]);
+    }
 }
