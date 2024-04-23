@@ -63,6 +63,10 @@ paths:
     $ref: './components/paths/space/get-one.yaml'
   /spaces/{id}/events:
     $ref: './components/paths/space/get-events-by-spaces.yaml'
+  /spaces/create:
+    $ref: './components/paths/space/create.yaml'
+  /spaces/delete:
+    $ref: './components/paths/space/delete.yaml'
 components:
   schemas:
     Agent:

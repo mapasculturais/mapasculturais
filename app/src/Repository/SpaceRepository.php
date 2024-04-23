@@ -17,6 +17,21 @@ class SpaceRepository extends AbstractRepository
         $this->repository = $this->mapaCulturalEntityManager->getRepository(Space::class);
     }
 
+    public function create(array $data): Space
+    {
+        $space = new Space();
+        $space->setName($data['name']);
+        $space->setLocation($data['location']);
+        $space->setPublic($data['public']);
+        $space->setShortDescription($data['shortDescription']);
+        $space->setLongDescription($data['longDescription']);
+
+        $this->mapaCulturalEntityManager->persist($space);
+        $this->mapaCulturalEntityManager->flush();
+
+        return $space;
+    }
+
     public function findAll(): array
     {
         return $this->repository
@@ -28,5 +43,18 @@ class SpaceRepository extends AbstractRepository
     public function find(int $id): Space
     {
         return $this->repository->find($id);
+    }
+
+    public function delete(int $id): bool
+    {
+        $space = $this->find($id);
+        if ($space) {
+            $space->setStatus(-10);
+            $this->mapaCulturalEntityManager->flush();
+
+            return true;
+        }
+
+        return false;
     }
 }

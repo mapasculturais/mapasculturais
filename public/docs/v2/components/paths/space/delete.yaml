@@ -1,0 +1,19 @@
+delete:
+  tags:
+    - Espaços
+  summary: Exclui um espaço existente
+  description: Remove um espaço do sistema com base no ID fornecido.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+      description: ID do espaço a ser excluído
+  responses:
+    '204':
+      description: Espaço excluído com sucesso
+    '404':
+      description: Espaço não encontrado
+    '403':
+      description: Não autorizado para excluir o espaço

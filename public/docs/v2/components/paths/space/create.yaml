@@ -1,0 +1,26 @@
+post:
+    tags:
+      - Espaços
+    summary: Cria um novo espaço
+    description: Cadastra um novo espaço no sistema com as informações fornecidas.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/space.yaml'
+          example:
+            name: "Espaço Exemplo"
+            location:
+              latitude: "45.4215"
+              longitude: "-75.6981"
+            public: true
+            shortDescription: "Descrição breve do espaço."
+            longDescription: "Descrição longa e detalhada do espaço."
+    responses:
+      '201':
+        description: Espaço criado com sucesso
+        content:
+          application/json:
+            schema:
+              $ref: '../../schemas/space.yaml'
