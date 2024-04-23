@@ -4,6 +4,18 @@
     display: grid;
     gap: size(20);
 
+    &__section {
+        border: var(--mc-border-hairline);
+        border-radius: var(--mc-border-radius-sm);
+        display: grid;
+        gap: size(12);
+        padding: size(10) size(25) size(25);
+    }
+    
+    &__section-legend {
+        padding: 0 size(10);
+    }
+
     &__content {
         display: grid;
         gap: size(30);
