@@ -39,6 +39,14 @@ class Module extends \MapasCulturais\Module
 
         $app->hook('app.register:after', function () use($app) {
             if ($subsite = $app->subsite) {
+                
+                if ($subsite->name) {
+                    $app->config['app.siteName'] = $subsite->name;
+                }
+
+                if (count($subsite->lang_config) > 0) {
+                    $app->config['app.lcode'] = implode(',', $subsite->lang_config);
+                } 
 
                 Module::$originalColors = $app->config['logo.colors'];
 
@@ -255,6 +263,20 @@ class Module extends \MapasCulturais\Module
             $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'homeTexts', [
                 'label' => i::__("Texto customização"),
                 'type' => 'json',
+            ]);
+
+
+            // Configurações
+            $this->view->registerMetadata(\MapasCulturais\Entities\Subsite::class, 'lang_config', [
+                'label' => i::__("Configuração de idioma"),
+                'type' => 'array',
+                'default_value' => '{}',
+                'serialize' => function($v) {
+                    return json_encode($v);
+                },
+                'unserialize' => function($v) {
+                    return (array) json_decode((string) $v);
+                },
             ]);
 
             $this->registerFileGroup('subsite', new Definitions\FileGroup('logo',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
