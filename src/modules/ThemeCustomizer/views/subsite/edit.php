@@ -33,6 +33,7 @@ $this->import('
             <?php $this->part('home'); ?>
             <?php $this->part('style'); ?>
             <?php $this->part('map'); ?>     
+            <?php $this->part('config'); ?>        
         </mc-tabs>
     </div>
 </mc-entity>
