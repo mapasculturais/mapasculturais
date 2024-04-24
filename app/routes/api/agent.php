@@ -15,6 +15,7 @@ return [
     ],
     '/api/v2/agents/{id}' => [
         Request::METHOD_GET => [AgentApiController::class, 'getOne'],
+        Request::METHOD_DELETE => [AgentApiController::class, 'delete'],
     ],
     '/api/v2/agents/{id}/opportunities' => [
         Request::METHOD_GET => [OpportunityApiController::class, 'getOpportunitiesByAgent'],

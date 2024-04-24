@@ -25,8 +25,15 @@ class AgentRepository extends AbstractRepository
             ->getArrayResult();
     }
 
-    public function find(int $id): Agent
+    public function find(int $id): ?Agent
     {
         return $this->repository->find($id);
+    }
+
+    public function softDelete(Agent $agent): void
+    {
+        $agent->setStatus(-10);
+        $this->mapaCulturalEntityManager->persist($agent);
+        $this->mapaCulturalEntityManager->flush();
     }
 }

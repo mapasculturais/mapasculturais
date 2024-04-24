@@ -41,4 +41,17 @@ class AgentApiController
 
         return new JsonResponse($types);
     }
+
+    public function delete(array $params): JsonResponse
+    {
+        $agent = $this->repository->find((int) $params['id']);
+
+        if (!$agent || -10 === $agent->status) {
+            return new JsonResponse(status: Response::HTTP_NOT_FOUND);
+        }
+
+        $this->repository->softDelete($agent);
+
+        return new JsonResponse(status: Response::HTTP_NO_CONTENT);
+    }
 }
