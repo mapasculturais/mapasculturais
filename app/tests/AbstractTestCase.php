@@ -20,4 +20,9 @@ abstract class AbstractTestCase extends TestCase
 
         parent::setUp();
     }
+
+    public function dump(mixed $content): void
+    {
+        fwrite(STDERR, print_r($content, return: true));
+    }
 }

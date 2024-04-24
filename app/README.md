@@ -219,6 +219,42 @@ Saiba mais em <https://symfony.com/doc/current/console.html>
 ---
 
 ## Testes
+Estamos utilizando o PHPUnit para criar e gerenciar os testes automatizados, focando principalmente nos testes funcionais, ao invés dos testes unitários.
+
+Documentação do PHPUnit: <https://phpunit.de/index.html>
+
+### Criar um novo teste
+Para criar um no cenário de teste funcional, basta adicionar sua nova classe no diretório `/app/tests/functional/`, com o seguinte código:
+
+```php
+<?php
+
+namespace App\Tests;
+
+class MeuTest extends AbstractTestCase
+{
+    
+}
+```
+
+Adicione dentro da classe os cenários que você precisa garantir que funcionem, caso precise imprimir algo na tela para "debugar", utilize o método `dump()` fornecido pela classe `AbstractTestCase`:
+
+```php
+public function testIfOneIsOne(): void
+{
+    $list = ['Mar', 'Minino'];
+    
+    $this->dump($list); // equivalente ao print_r
+    
+    $this->assertEquals(
+        'MarMinino',
+        implode('', $list)
+    );
+}
+```
+
+
+### Execução
 Para executar os testes, entre no container da aplicação e execute o seguinte comando:
 
 ```shell
