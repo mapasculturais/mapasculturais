@@ -2,18 +2,22 @@
 <?php
 
 require dirname(__DIR__, 2).'/vendor/autoload.php';
+require dirname(__DIR__, 2).'/public/bootstrap.php';
 
 use App\Command\CodeStyleCommand;
+use App\Command\FixturesCommand;
 use App\Command\TestsCommand;
 use App\Command\WelcomeCommand;
 use Symfony\Component\Console\Application;
 
 $application = new Application();
+$entityManager = $app->em ?? null;
 
 $application->addCommands([
     new WelcomeCommand(),
     new TestsCommand(),
     new CodeStyleCommand(),
+    new FixturesCommand($entityManager),
 ]);
 
 $application->run();
