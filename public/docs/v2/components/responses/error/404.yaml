@@ -1,0 +1,12 @@
+description: Não encontrado
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          type: bool
+          example: true
+        data:
+          type: string
+          example: ""

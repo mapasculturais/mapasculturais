@@ -7,6 +7,7 @@ namespace App\Controller\Api;
 use App\Repository\AgentRepository;
 use App\Service\AgentService;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AgentApiController
 {

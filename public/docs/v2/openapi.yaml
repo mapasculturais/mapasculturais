@@ -36,7 +36,10 @@ paths:
   /agents:
     $ref: './components/paths/agent/get-list.yaml'
   /agents/{id}:
-    $ref: './components/paths/agent/get-one.yaml'
+    get:
+      $ref: './components/paths/agent/get-one.yaml'
+    delete:
+      $ref: './components/paths/agent/delete.yaml'
   /agents/{id}/opportunities:
     $ref: './components/paths/agent/get-opportunity.yaml'
   /agents/types:
