@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-link
     mc-modal
     mc-stepper-vertical
     opportunity-phase-status
@@ -53,7 +54,7 @@ $this->import('
                     <v1-embed-tool route="supportbuilder" :id="item.id"></v1-embed-tool>
                 </template>
                 <template #button="modal">
-                    <a class="support" @click="modal.open"><?= i::__('Suporte') ?> <mc-icon name="external"></mc-icon></a>
+                    <mc-link class="button button--icon" route="suporte/configuracao" :params="[entity.id]" icon="external" right-icon> <?= i::__('Suporte') ?> </mc-link>
                 </template>
             </mc-modal>   
             <a class="expand-stepper" v-if="step.active" @click="step.close()"><label><?= i::__('Diminuir') ?></label><mc-icon name="arrowPoint-up"></mc-icon></a>
