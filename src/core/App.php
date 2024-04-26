@@ -54,6 +54,8 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\File;
 use TypeError;
 use Throwable;
 
@@ -2096,9 +2098,16 @@ class App {
                 }
     
                 if(method_exists($message, $method_name)){
-                    $message->$method_name($value);
+                    if($method_name == 'attach' && $value) {
+                        if (file_exists($value)) {
+                            $message->addPart(new DataPart(new File($value)));
+                        }
+                    } else {
+                        $message->$method_name($value);
+                    }
                 }
             }
+
         }
 
         if($this->config['mailer.alwaysTo']){
