@@ -16,6 +16,18 @@ app.component('affirmative-policies--quota-configuration', {
         return { text, messages }
     },
 
+    mounted() {
+        if(this.phase.quotaConfiguration && this.phase.quotaConfiguration.rules.length > 0) {
+            if(this.totalVacancies > 0) {
+                this.phase.quotaConfiguration.rules.forEach((quota, index) => {
+                    this.updateRuleQuotaPercentage(quota, true);
+                });
+            } else {
+                this.distributeQuotas(false, true);
+            }
+        }
+    },
+
     data() {
         const firstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
         return {
@@ -98,11 +110,11 @@ app.component('affirmative-policies--quota-configuration', {
         },
         
         updateTotalQuotas() {
-            this.totalQuota = (this.totalVacancies * this.totalPercentage) / 100;
+            this.totalQuota = ((this.totalVacancies * this.totalPercentage) / 100).toFixed(2);
         },
 
         updateQuotaPercentage() {
-            this.totalPercentage = (this.totalQuota * 100) / this.totalVacancies;
+            this.totalPercentage = ((this.totalQuota * 100) / this.totalVacancies).toFixed(2);
         },
 
         updateRuleQuotas(quota) {
@@ -132,20 +144,18 @@ app.component('affirmative-policies--quota-configuration', {
             }
         },
 
+        optionValue(option) {
+            let _option = option.split(':');
+            return _option[0];
+        },
+
+        optionLabel(option) {
+            let _option = option.split(':');
+            return _option.length > 1 ? _option[1] : _option[0];
+        },
+
         autoSave() {
             this.phase.save(3000)            
         },
     },
-
-    mounted() {
-        if(this.phase.quotaConfiguration && this.phase.quotaConfiguration.rules.length > 0) {
-            if(this.totalVacancies > 0) {
-                this.phase.quotaConfiguration.rules.forEach((quota, index) => {
-                    this.updateRuleQuotaPercentage(quota, true);
-                });
-            } else {
-                this.distributeQuotas(false, true);
-            }
-        }
-    }
 });
