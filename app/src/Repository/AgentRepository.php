@@ -30,6 +30,12 @@ class AgentRepository extends AbstractRepository
         return $this->repository->find($id);
     }
 
+    public function save(Agent $agent): void
+    {
+        $this->mapaCulturalEntityManager->persist($agent);
+        $this->mapaCulturalEntityManager->flush();
+    }
+
     public function softDelete(Agent $agent): void
     {
         $agent->setStatus(-10);

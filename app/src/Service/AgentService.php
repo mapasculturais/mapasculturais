@@ -4,9 +4,18 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Repository\AgentRepository;
+use MapasCulturais\Entities\Agent;
+
 class AgentService
 {
+    protected AgentRepository $repository;
     public const FILE_TYPES = '/src/conf/agent-types.php';
+
+    public function __construct()
+    {
+        $this->repository = new AgentRepository();
+    }
 
     public function getTypes(): array
     {
@@ -17,5 +26,19 @@ class AgentService
             array_keys($typesFromConf),
             $typesFromConf
         );
+    }
+
+    public function create($data): Agent
+    {
+        $agent = new Agent();
+        $agent->setName($data->name);
+        $agent->setShortDescription($data->shortDescription);
+        $agent->setType($data->type);
+        $agent->terms['area'] = $data->terms['area'];
+        $agent->saveTerms();
+
+        $this->repository->save($agent);
+
+        return $agent;
     }
 }

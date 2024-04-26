@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Repository\AgentRepository;
+use App\Request\AgentRequest;
 use App\Service\AgentService;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class AgentApiController
 {
     public AgentService $agentService;
+    private AgentRequest $agentRequest;
 
     private AgentRepository $repository;
 
@@ -20,6 +23,7 @@ class AgentApiController
         $this->repository = new AgentRepository();
 
         $this->agentService = new AgentService();
+        $this->agentRequest = new AgentRequest();
     }
 
     public function getList(): JsonResponse
@@ -41,6 +45,27 @@ class AgentApiController
         $types = $this->agentService->getTypes();
 
         return new JsonResponse($types);
+    }
+
+    public function post(): JsonResponse
+    {
+        try {
+            $agentData = $this->agentRequest->validatePost();
+
+            $agent = $this->agentService->create((object) $agentData);
+
+            $responseData = [
+                'id' => $agent->getId(),
+                'name' => $agent->getName(),
+                'shortDescription' => $agent->getShortDescription(),
+                'terms' => $agent->getTerms(),
+                'type' => $agent->getType(),
+            ];
+
+            return new JsonResponse($responseData, 201);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], 400);
+        }
     }
 
     public function delete(array $params): JsonResponse

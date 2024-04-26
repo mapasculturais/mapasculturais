@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 return [
     '/api/v2/agents' => [
         Request::METHOD_GET => [AgentApiController::class, 'getList'],
+        Request::METHOD_POST => [AgentApiController::class, 'post'],
     ],
     '/api/v2/agents/types' => [
         Request::METHOD_GET => [AgentApiController::class, 'getTypes'],
