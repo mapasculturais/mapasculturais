@@ -1,7 +1,6 @@
 <?php
 namespace Spreadsheets\JobTypes;
 
-use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
@@ -40,11 +39,22 @@ class Registrations extends SpreadsheetJob
             $fields = $opportunity->getRegistrationFieldConfigurations();
             
             foreach($fields as $field) {
-                if($this->is_entity_type_field($field->fieldName, $opportunity, 'location')) {
-                    $header['UF'] = i::__('UF');
-                    $header['Municipio'] = i::__('Município');
-                } elseif($this->is_entity_type_field($field->fieldName, $opportunity, 'links')) {
-                    $header['Links'] = i::__('Links');
+                $entity_type_field = $this->is_entity_type_field($field->fieldName, $job->owner);
+
+                if($entity_type_field['status']) {
+                     
+                    if($entity_type_field['ft'] == '@location') {
+                        $header['UF'] = i::__('UF');
+                        $header['Municipio'] = i::__('Município');
+                    }
+
+                    if($entity_type_field['ft'] == '@links') {
+                        $header['Links'] = i::__('Links');
+                    }
+
+                    if($entity_type_field['ft'] == 'pessoaDeficiente') {
+                        $header[$field->fieldName] = $field->title;
+                    }
                 } else {
                     $header[$field->fieldName] = $field->title;
                 }
@@ -85,19 +95,49 @@ class Registrations extends SpreadsheetJob
         if (isset($result->registrations) && is_array($result->registrations)) {
             foreach($result->registrations as &$entity) {
                 foreach($all_phases_fields as $field) {
-                    if($this->is_entity_type_field($field->fieldName, $job->owner, 'location')) {
-                        $entity['UF'] = $entity[$field->fieldName]->En_Estado;
-                        $entity['Municipio'] = $entity[$field->fieldName]->En_Municipio;
-                        unset($entity[$field->fieldName]);
+                    $entity_type_field = $this->is_entity_type_field($field->fieldName, $job->owner);
+
+                    if($entity_type_field['status']) {
+                        if($entity_type_field['ft'] == '@location') {
+                             
+                            $entity['UF'] = $entity[$field->fieldName]->En_Estado;
+                            $entity['Municipio'] = $entity[$field->fieldName]->En_Municipio;
+                            unset($entity[$field->fieldName]);
+                        }
+
+                        if($entity_type_field['ft'] == '@links') {
+                            $links = [];
+                            foreach ($entity[$field->fieldName] as $item) {
+                                $links[] = $item->value;
+                            }
+                            $entity['Links'] = implode(", ", $links);
+                            unset($entity[$field->fieldName]);
+                        }
+
+                        if($entity_type_field['ft'] == 'pessoaDeficiente') {
+                            if(is_array($entity[$field->fieldName])) {
+                                $entity_field_value = implode(', ', $entity[$field->fieldName]);
+                                
+                                $entity[$field->fieldName] = $entity_field_value;
+                            }
+                        }
                     }
 
-                    if($this->is_entity_type_field($field->fieldName, $job->owner, 'links')) {
-                        $links = [];
-                        foreach ($entity[$field->fieldName] as $item) {
-                            $links[] = $item->value;
-                        }
-                        $entity['Links'] = implode(", ", $links);
-                        unset($entity[$field->fieldName]);
+                    if(isset($entity[$field->fieldName]) && is_array($entity[$field->fieldName])) {
+                        $values = array_map(function($item) {
+                            if (is_object($item)) {
+                                if (isset($item->value)) {
+                                    return $item->value;
+                                } else {
+                                    return '';
+                                }
+                            } else {
+                                return $item;
+                            }
+                        }, $entity[$field->fieldName]);
+
+                        $formatted_values = implode(', ', $values);
+                        $entity[$field->fieldName] = $formatted_values;
                     }
                 }
 
@@ -130,7 +170,7 @@ class Registrations extends SpreadsheetJob
         
         unset($result->count);
         $result = json_decode(json_encode($result->registrations), true);
-
+        
         return $result;
     }
 
@@ -157,8 +197,9 @@ class Registrations extends SpreadsheetJob
         return "registrationsSpreadsheet:{$md5}";
     }
 
-    function is_entity_type_field($field_name, $opportunity, $type) {
+    function is_entity_type_field($field_name, $opportunity) {
         $app = App::i();
+        $result = ['status' => false];
 
         if($opportunity) {
             /** @var Opportunity $opportunity */
@@ -170,12 +211,16 @@ class Registrations extends SpreadsheetJob
             $field_config = $def->config['registrationFieldConfiguration'];
             $ft = $field_config->config['entityField'] ?? null;
     
-            if(($type == 'location' && $ft == '@location') || ($type == 'links' && $ft == '@links')) {
-                return true;
+            if(($ft == '@location') 
+                || ($ft == '@links')
+                || ($ft == 'pessoaDeficiente')
+            ) {
+                $result['status'] = true;
+                $result['ft'] = $ft;
             }
         }
-    
-        return false;
+
+        return $result;
     }
 
     function getStatusName($status) {
