@@ -10,7 +10,9 @@ use MapasCulturais\i;
 $this->import('
 	mc-avatar
 	mc-icon 
+    mc-confirm-button
 	mc-title
+    select-entity
 ');
 ?>
 
@@ -19,17 +21,38 @@ $this->import('
         <h2>Configuração de suporte</h2>
         <p>Adicione Agentes que darão suporte à essa Oportunidade.</p>
     </div>
-    <button class="button button--primary button-icon"><mc-icon name="add"></mc-icon> <?= i::__("Adicionar Agente") ?> </button>
-    <div class="entity-card" :class="classes">
-        <div class="entity-card__header" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
-            <div class="entity-card__header user-details">
-                <slot name="avatar">
-                    <mc-avatar :entity="entity" size="small"></mc-avatar>
-                </slot>
-                <mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{entity.name}}</mc-title>
+
+    <select-entity type="agent" @select="addAgent($event)" permissions="" select="id,name,files.avatar,terms,type"  openside="down-right">
+        <!-- :query="queries[groupName]" -->
+        <template #button="{ toggle }">
+            <button class="button button--icon button--primary" @click="toggle()">
+                <mc-icon name="add"></mc-icon>
+                <?php i::_e('Adicionar agente') ?>
+            </button>
+        </template>
+    </select-entity>
+
+    <div class="opportunity-support-config__agents">
+
+        <div v-for="relation in relations" class="opportunity-support-config__agent">
+            <div class="opportunity-support-config__agent-info">
+                <mc-avatar :entity="relation.agent" size="small"></mc-avatar>
+                <mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{relation.agent.name}}</mc-title>
+            </div>
+            <div class="opportunity-support-config__agent-actions">
+                <button class="button button--primary button--icon"> <?= i::__("Gerenciar permissões") ?> </button>
+                
+                <mc-confirm-button @confirm="removeAgent(relation.agent)">
+                    <template #button="modal">
+                        <button class="button button--delete" @click="modal.open()">
+                            <mc-icon name="trash"></mc-icon><?= i::__("Excluir") ?> 
+                        </button>
+                    </template>
+                    <template #message>
+                        <?= i::__("Deseja remover o agente relacionado?");?>
+                    </template>
+                </mc-confirm-button>
             </div>
         </div>
     </div>
-    <button class="button button--primary button--icon"> <?= i::__("Gerenciar permissões") ?> </button>
-    <button class="button button--delete"><mc-icon name="trash"></mc-icon><?= i::__("Excluir") ?> </button>
 </div>

@@ -11,8 +11,19 @@ app.component('opportunity-support-config', {
     data() {
         return {}
     },
+
+    computed: {
+        relations(){
+           return this.entity.agentRelations["@support"];
+        }
+    },
     
     methods: {
-
+        addAgent(agent) {
+            this.entity.addRelatedAgent('@support',agent);
+        },
+        removeAgent(agent) {
+            this.entity.removeAgentRelation('@support',agent);
+        }
     },
 });
