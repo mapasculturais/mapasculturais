@@ -45,16 +45,10 @@ class SpaceRepository extends AbstractRepository
         return $this->repository->find($id);
     }
 
-    public function delete(int $id): bool
+    public function softDelete(Space $space): void
     {
-        $space = $this->find($id);
-        if ($space) {
-            $space->setStatus(-10);
-            $this->mapaCulturalEntityManager->flush();
-
-            return true;
-        }
-
-        return false;
+        $space->setStatus(-10);
+        $this->mapaCulturalEntityManager->persist($space);
+        $this->mapaCulturalEntityManager->flush();
     }
 }

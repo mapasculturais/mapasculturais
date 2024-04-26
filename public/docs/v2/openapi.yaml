@@ -61,15 +61,17 @@ paths:
   /seals:
     $ref: './components/paths/seal/get-list.yaml'
   /spaces:
-    $ref: './components/paths/space/get-list.yaml'
+    get:
+      $ref: './components/paths/space/get-list.yaml'
+    post:
+      $ref: './components/paths/space/create.yaml'
   /spaces/{id}:
-    $ref: './components/paths/space/get-one.yaml'
+    get:
+      $ref: './components/paths/space/get-one.yaml'
+    delete:
+      $ref: './components/paths/space/delete.yaml'
   /spaces/{id}/events:
     $ref: './components/paths/space/get-events-by-spaces.yaml'
-  /spaces/create:
-    $ref: './components/paths/space/create.yaml'
-  /spaces/delete:
-    $ref: './components/paths/space/delete.yaml'
 components:
   schemas:
     Agent:

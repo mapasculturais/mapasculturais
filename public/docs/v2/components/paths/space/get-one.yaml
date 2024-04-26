@@ -1,14 +1,13 @@
-get:
-  tags:
-    - Espaços
-  summary: Recupera um único espaço
-  description: Recupera um único espaço
-  parameters:
-    - $ref: '../../parameters/path/id.yaml'
-  responses:
-    '200':
-      description: Success
-      content:
-        application/json:
-          schema:
-            $ref: '../../schemas/space.yaml'
+tags:
+  - Espaços
+summary: Recupera um único espaço
+description: Recupera um único espaço
+parameters:
+  - $ref: '../../parameters/path/id.yaml'
+responses:
+  '200':
+    description: Success
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/space.yaml'
