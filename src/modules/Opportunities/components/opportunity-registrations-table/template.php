@@ -39,12 +39,14 @@ $entity = $this->controller->requestedEntity;
         <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
 
         <div class="col-12"> 
-            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index>
+            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort">
                 <template #title>
-                    <h5>
-                        <strong><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas.") ?></strong>
-                        <?= i::__("Após conferir, você pode alterar os status das inscrições de maneira coletiva ou individual e aplicar os resultados das avaliações.") ?>
-                    </h5>
+                    <slot name="title">
+                        <h5>
+                            <strong><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas.") ?></strong>
+                            <?= i::__("Após conferir, você pode alterar os status das inscrições de maneira coletiva ou individual e aplicar os resultados das avaliações.") ?>
+                        </h5>
+                    </slot>
                 </template>
                 
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
@@ -106,9 +108,11 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #status="{entity}">
-                    <mc-select small :default-value="entity.status" @change-option="setStatus($event, entity)">
+                    <mc-select v-if="!statusNotEditable" small :default-value="entity.status" @change-option="setStatus($event, entity)">
                         <mc-status v-for="item in statusDict" :value="item.value" :status-name="item.label"></mc-status>
                     </mc-select>
+                    
+                    <mc-status v-if="statusNotEditable" :value="getStatus(entity.status).status" :status-name="getStatus(entity.status).label"></mc-status>
                 </template>
 
                 <template #consolidatedResult="{entity}"> 
