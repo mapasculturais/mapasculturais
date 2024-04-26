@@ -21,7 +21,7 @@ abstract class SpreadsheetJob extends JobType
 {
     protected $page = 1;
 
-    function __construct(string $slug, protected int $limit = 2)
+    function __construct(string $slug, protected int $limit = 50)
     {
         parent::__construct($slug);
 
@@ -60,7 +60,7 @@ abstract class SpreadsheetJob extends JobType
             foreach ($batch as $data) {
                 $new_data = [];
                 foreach($header as $prop => $label) {
-                    $new_data[] = $data[$prop]; 
+                    $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
                 } 
 
                 $sheet->fromArray($new_data, null, "A$row");
@@ -99,17 +99,17 @@ abstract class SpreadsheetJob extends JobType
         $file->save(true);
         
         // Disparo de e-mail
-       $this->mailNotification($job->authenticatedUser, $file->url, $entity_class_name);
+       $this->mailNotification($job->authenticatedUser, $file, $entity_class_name);
     }
 
-    function mailNotification($user, $url, $entity_class)
+    function mailNotification($user, $file, $entity_class)
     {
         $app = App::i();
         
         $template = 'export_spreadsheet';
         $data = [
             'userName' => $user->profile->name,
-            'pathFile' => $url
+            'pathFile' => $file->url
         ];
 
         $message = $app->renderMailerTemplate($template, $data);
@@ -118,7 +118,8 @@ abstract class SpreadsheetJob extends JobType
             'from' => $app->config['mailer.from'],
             'to' => $user->email,
             'subject' => sprintf(i::__($message['title'], $entity_class)),
-            'body' => $message['body']
+            'body' => $message['body'],
+            //'attach' => $file->path ?? null
         ]);
     }
 
