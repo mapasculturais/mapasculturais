@@ -5,20 +5,24 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Repository\EventRepository;
+use App\Request\EventRequest;
 use App\Service\EventService;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class EventApiController
 {
     private EventService $eventService;
-
     private EventRepository $repository;
+    private EventRequest $eventRequest;
 
     public function __construct()
     {
         $this->eventService = new EventService();
 
         $this->repository = new EventRepository();
+
+        $this->eventRequest = new EventRequest();
     }
 
     public function getList(): JsonResponse
@@ -47,5 +51,27 @@ class EventApiController
         $events = $this->repository->findEventsBySpaceId((int) $params['id']);
 
         return new JsonResponse($events);
+    }
+
+    public function post(): JsonResponse
+    {
+        try {
+            $eventData = $this->eventRequest->validatePost();
+
+            $event = $this->eventService->create((object) $eventData);
+
+            $responseData = [
+                'id' => $event->getId(),
+                'name' => $event->getName(),
+                'shortDescription' => $event->getShortDescription(),
+                'longDescription' => $event->getLongDescription(),
+                'classificacaoEtaria' => $event->getMetadata('classificacaoEtaria'),
+                'terms' => $event->getTerms(),
+            ];
+
+            return new JsonResponse($responseData, 201);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], 400);
+        }
     }
 }

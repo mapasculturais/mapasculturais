@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 return [
     '/api/v2/events' => [
         Request::METHOD_GET => [EventApiController::class, 'getList'],
+        Request::METHOD_POST => [EventApiController::class, 'post'],
     ],
     '/api/v2/events/types' => [
         Request::METHOD_GET => [EventApiController::class, 'getTypes'],

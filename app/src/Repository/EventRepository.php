@@ -54,4 +54,9 @@ class EventRepository extends AbstractRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
+    public function save($event): void
+    {
+        $event->save();
+    }
 }

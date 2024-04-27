@@ -565,4 +565,39 @@ class Event extends \MapasCulturais\Entity
     public function preUpdate($args = null){ parent::preUpdate($args); }
     /** @ORM\PostUpdate */
     public function postUpdate($args = null){ parent::postUpdate($args); }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getShortDescription(): string
+    {
+        return $this->shortDescription;
+    }
+
+    public function setShortDescription(string $shortDescription): void
+    {
+        $this->shortDescription = $shortDescription;
+    }
+
+    public function getLongDescription(): string
+    {
+        return $this->longDescription;
+    }
+
+    public function setLongDescription(string $longDescription): void
+    {
+        $this->longDescription = $longDescription;
+    }
 }
