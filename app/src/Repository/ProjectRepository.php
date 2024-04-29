@@ -29,4 +29,10 @@ class ProjectRepository extends AbstractRepository
     {
         return $this->repository->find($id);
     }
+
+    public function save(Project $project): void
+    {
+        $this->mapaCulturalEntityManager->persist($project);
+        $this->mapaCulturalEntityManager->flush();
+    }
 }
