@@ -1,0 +1,27 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 10
+    description: Identificador único do agente recém criado
+  name:
+    type: string
+    example: "Nome do agente"
+    description: Nome do agente recém criado
+  shortDescription:
+    type: string
+    example: "Uma breve descrição do agente"
+    description: Uma breve descrição do agente recém criado
+  terms:
+    type: object
+    properties:
+      area:
+        type: array
+        items:
+          type: string
+        example: [ "Música" ]
+        description: Áreas relacionadas ao agente recém criado
+  type:
+    type: integer
+    example: 1
+    description: Tipo do agente (1 - Individual, 2 - Coletivo) recém criado

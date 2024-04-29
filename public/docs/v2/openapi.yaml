@@ -34,7 +34,10 @@ tags:
     description: Rotas relacionadas aos selos
 paths:
   /agents:
-    $ref: './components/paths/agent/get-list.yaml'
+    get:
+      $ref: './components/paths/agent/get-list.yaml'
+    post:
+      $ref: './components/paths/agent/create.yaml'
   /agents/{id}:
     get:
       $ref: './components/paths/agent/get-one.yaml'

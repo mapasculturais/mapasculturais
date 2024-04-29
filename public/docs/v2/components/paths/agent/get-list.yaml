@@ -1,21 +1,20 @@
-get:
-  tags:
-    - Agentes
-  summary: Recupera a lista de agentes
-  description: Recupera a lista de agentes
-  responses:
-    '200':
-      description: Um array com todos os agentes
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              allOf:
-                - $ref: '../../schemas/agent.yaml'
-                - type: object
-                  properties:
-                    '@entityType':
-                      type: string
-                      example: agent
-                      description: Um texto que representa qual a entity é retornada
+tags:
+  - Agentes
+summary: Recupera a lista de agentes
+description: Recupera a lista de agentes
+responses:
+  '200':
+    description: Um array com todos os agentes
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            allOf:
+              - $ref: '../../schemas/agent.yaml'
+              - type: object
+                properties:
+                  '@entityType':
+                    type: string
+                    example: agent
+                    description: Um texto que representa qual a entity é retornada
