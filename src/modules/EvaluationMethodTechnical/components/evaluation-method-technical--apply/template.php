@@ -12,6 +12,7 @@ $this->import('
     mc-modal
     mc-tab
     mc-tabs
+    mc-loading
 ');
 ?>
 
@@ -26,7 +27,6 @@ $this->import('
 
     <template #default>
         <div class="grid-12">
-
             <div class="col-12">
                 <mc-tabs @changed="changed($event)">
                     <mc-tab label="<?= i::esc_attr__('Por pontuação') ?>" slug='score'>
@@ -100,8 +100,11 @@ $this->import('
         </div>
     </template>
 
-    <template #actions="modal">
+    <template v-if="!processing" #actions="modal">
         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
         <button class="button button--primary" @click="apply(modal)"><?php i::_e('Aplicar') ?></button>
+    </template>
+    <template v-if="processing" #actions="modal">
+        <mc-loading condition><?= i::__('aplicando avaliações') ?></mc-loading>
     </template>
 </mc-modal>

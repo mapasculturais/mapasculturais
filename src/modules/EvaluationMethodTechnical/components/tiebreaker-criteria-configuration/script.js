@@ -109,6 +109,16 @@ app.component('tiebreaker-criteria-configuration', {
             return criterion.selected ? !!allowedTypes.includes(criterion.selected.fieldType) : false 
         },
 
+        optionValue(option) {
+            let _option = option.split(':');
+            return _option[0];
+        },
+
+        optionLabel(option) {
+            let _option = option.split(':');
+            return _option.length > 1 ? _option[1] : _option[0];
+        },
+
         async save() {
             this.phase.tiebreakerCriteriaConfiguration = this.criteria;
             await this.phase.save(3000);

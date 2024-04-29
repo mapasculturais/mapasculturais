@@ -63,6 +63,9 @@ app.component('entity-table', {
                 { value: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
             ]
         },
+        hideFilters: Boolean,
+        hideSort: Boolean,
+        hideActions: Boolean,
     },
 
     created() {
@@ -80,7 +83,10 @@ app.component('entity-table', {
     mounted() {
         const searchInput = this.$refs.search;
 
-        searchInput.addEventListener("input", OnInput, false);
+        if (searchInput) {
+            searchInput.addEventListener("input", OnInput, false);
+        }
+
         function OnInput() {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + "px";
@@ -484,6 +490,16 @@ app.component('entity-table', {
             }
 
             return style;
+        },
+
+        optionValue(option) {
+            let _option = option.split(':');
+            return _option[0];
+        },
+
+        optionLabel(option) {
+            let _option = option.split(':');
+            return _option.length > 1 ? _option[1] : _option[0];
         },
     },
 });

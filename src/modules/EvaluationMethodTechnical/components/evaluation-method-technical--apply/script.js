@@ -22,6 +22,7 @@ app.component('evaluation-method-technical--apply', {
         const api = new API();
 
         return {
+            processing: false,
             applyData,
             considerQuotas: true,
             enableConsiderQuotas: $MAPAS.config.evaluationMethodTechnicalApply.isAffirmativePoliciesActive,
@@ -68,15 +69,18 @@ app.component('evaluation-method-technical--apply', {
             
             this.infosApplyData();
             this.entity.disableMessages();
+            this.processing = true;
 
-            this.entity.POST('appyTechnicalEvaluation', {
+            this.entity.POST('applyTechnicalEvaluation', {
                 data: this.applyData, callback: data => {
+                    this.processing = false;
                     messages.success(data);
                     modal.close();
                     this.reloadPage();
                     this.entity.enableMessages();
                 }
             }).catch((data) => {
+                this.processing = false;
                 messages.error(data.data)
             });
         },
