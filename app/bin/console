@@ -5,6 +5,7 @@ require dirname(__DIR__, 2).'/vendor/autoload.php';
 require dirname(__DIR__, 2).'/public/bootstrap.php';
 
 use App\Command\CodeStyleCommand;
+use App\Command\DebugRouterCommand;
 use App\Command\FixturesCommand;
 use App\Command\TestsCommand;
 use App\Command\WelcomeCommand;
@@ -18,6 +19,7 @@ $application->addCommands([
     new TestsCommand(),
     new CodeStyleCommand(),
     new FixturesCommand($entityManager),
+    new DebugRouterCommand(),
 ]);
 
 $application->run();

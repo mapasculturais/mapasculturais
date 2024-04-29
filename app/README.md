@@ -274,3 +274,11 @@ Para executar o conjunto de fixtures basta entrar no container da aplicação e 
 ```
 php app/bin/console app:fixtures
 ```
+
+## Debug router
+Para listas as routas basta entrar no container da aplicação e executar
+```
+php app/bin/console debug:router
+```
+
+> Podemos usar as flags --show-actions e --show-controllers
