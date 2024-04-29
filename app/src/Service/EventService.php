@@ -30,10 +30,7 @@ class EventService
 
         $event->setName($data->name);
         $event->setShortDescription($data->shortDescription);
-        $event->setLongDescription($data->longDescription);
-
         $event->setMetadata('classificacaoEtaria', $data->classificacaoEtaria);
-
         $event->terms['linguagem'] = $data->terms['linguagem'];
 
         $this->repository->save($event);

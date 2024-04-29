@@ -21,7 +21,7 @@ class EventRequest
         $jsonData = $this->request->getContent();
         $data = json_decode($jsonData, true);
 
-        $requiredFields = ['name', 'shortDescription', 'longDescription', 'classificacaoEtaria', 'terms'];
+        $requiredFields = ['name', 'shortDescription', 'classificacaoEtaria', 'terms'];
         foreach ($requiredFields as $field) {
             if (!isset($data[$field])) {
                 throw new Exception(ucfirst($field).' is required.');

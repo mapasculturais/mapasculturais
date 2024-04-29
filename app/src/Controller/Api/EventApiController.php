@@ -64,7 +64,6 @@ class EventApiController
                 'id' => $event->getId(),
                 'name' => $event->getName(),
                 'shortDescription' => $event->getShortDescription(),
-                'longDescription' => $event->getLongDescription(),
                 'classificacaoEtaria' => $event->getMetadata('classificacaoEtaria'),
                 'terms' => $event->getTerms(),
             ];

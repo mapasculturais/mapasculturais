@@ -32,4 +32,22 @@ class EventApiControllerTest extends AbstractTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertIsArray($content);
     }
+
+    public function testPostEventShouldCreateANewEvent(): void
+    {
+        $response = $this->client->request('POST', '/api/v2/events', [
+            'json' => [
+                'name' => 'Event Test',
+                'shortDescription' => 'Event Test Description',
+                'classificacaoEtaria' => 'livre',
+                'terms' => [
+                    'linguagem' => 'Artes Circenses',
+                ],
+            ],
+        ]);
+        $content = json_decode($response->getContent());
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertIsObject($content);
+    }
 }
