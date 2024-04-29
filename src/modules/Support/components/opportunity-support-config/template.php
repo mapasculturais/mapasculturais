@@ -12,6 +12,8 @@ $this->import('
 	mc-icon 
     mc-confirm-button
 	mc-title
+    mc-modal
+    mc-select
     select-entity
 ');
 ?>
