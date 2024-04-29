@@ -7114,7 +7114,7 @@ msgstr ""
 
 #: modules/Entities/views/event/edit.php:35
 #: modules/Entities/views/event/single.php:31
-msgid "Evantos"
+msgid "Eventos"
 msgstr ""
 
 #: modules/Entities/views/event/edit.php:69

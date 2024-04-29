@@ -307,7 +307,7 @@
         }
 
         &-danger {
-            background-color: var(--mc-white);
+            background-color: transparent;
             color: var(--mc-black);
             .iconify {
                 color: var(--mc-error);

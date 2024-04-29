@@ -399,7 +399,7 @@ class Opportunity extends EntityController {
             
             // $phase é a fase que foi informada no parâmetro @opportunity
             if($phase->equals($opportunity)) {
-                if($phase->publishedRegistrations && !$phase->canUser('viewEvaluations')){
+                if($phase->publishedRegistrations && !$phase->canUser('viewEvaluations') && !$phase->canUser('@control')){
                     if(isset($data['status'])){
                         $current_phase_query_params['status'] = API::AND(API::IN([10,8]), $data['status']);
                     } else {

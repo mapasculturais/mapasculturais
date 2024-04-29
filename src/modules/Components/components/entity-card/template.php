@@ -118,10 +118,10 @@ $this->import('
 		<div class="entity-card__footer--info">
 			<div v-if="seals" class="seals">
 				<label class="seals__title">
-					<?php i::_e('Selos') ?> ({{entity.seals.length}}):
+					<?php i::_e('Selos') ?>:
 				</label>
-				<mc-avatar v-for="seal in seals" :title="seal.name" :entity="seal" square size="xsmall"></mc-avatar>
-				<div v-if="seals.length > 2" class="seals__seal more">+1</div>
+				<mc-avatar v-for="seal in entity.seals" :title="seal.name + ' AQUI'" :entity="seal" square size="xsmall"></mc-avatar>
+				
 			</div>
 		</div>
 

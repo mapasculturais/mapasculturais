@@ -11,6 +11,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        text-align: center;
     }
 
     .apply-evaluations {
@@ -78,8 +79,27 @@
         align-items: center;
     }
 
+    &__multiselects {
+        display: flex;
+        gap: size(18);
+        flex-wrap: wrap;
+
+        @media (max-width: 552px) {
+            .mc-multiselect {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 554px) and (max-width: 770px){
+            .mc-multiselect {
+                width: 47.5%;
+            }
+        }
+    }
+
     .opportunity-payment-table__actions {
         margin-top: size(8);
+        text-align: center;
 
         .button {
             min-width: size(272);

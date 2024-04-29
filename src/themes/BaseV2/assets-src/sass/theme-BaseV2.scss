@@ -21,6 +21,7 @@
 @import '2.components/apply-evaluations';
 @import '2.components/button';
 @import '2.components/claim-support';
+@import '2.components/colors-customizer';
 @import '2.components/complaint-suggestion';
 @import '2.components/container';
 @import '2.components/create-app';
@@ -66,6 +67,7 @@
 @import '2.components/field';
 @import '2.components/files-list';
 @import '2.components/gallery';
+@import '2.components/home-customizer';
 @import '2.components/home-developers';
 @import '2.components/home-entities';
 @import '2.components/home-feature';
@@ -74,8 +76,9 @@
 @import '2.components/home-opportunities';
 @import '2.components/home-register';
 @import '2.components/home-search';
-@import '2.components/link-project';
 @import '2.components/link-opportunity';
+@import '2.components/link-project';
+@import '2.components/logo-customizer';
 @import '2.components/mc-accordion';
 @import '2.components/mc-breadcrumb';
 @import '2.components/mc-alert';
@@ -163,6 +166,7 @@
 @import '2.components/space-info';
 @import '2.components/stack';
 @import '2.components/stepper';
+@import '2.components/subsite-config-map';
 @import '2.components/tabs';
 @import '2.components/theme-logo';
 @import '2.components/technical-assessment-section';
@@ -182,21 +186,22 @@
 
 // PAGES
 @import 'pages/agents';
-@import 'pages/seals';
 @import 'pages/events';
 @import 'pages/faq';
+@import 'pages/form-builder';
+@import 'pages/form-preview';
 @import 'pages/opportunity';
 @import 'pages/panel-evaluations';
 @import 'pages/panel-registrations';
 @import 'pages/print-registration';
 @import 'pages/projects';
 @import 'pages/registrations';
+@import 'pages/seals';
 @import 'pages/search';
 @import 'pages/spaces';
 @import 'pages/support';
-@import 'pages/terms';
-@import 'pages/user-detail';
-@import 'pages/form-builder';
-@import 'pages/form-preview';
-@import 'pages/system-roles';
 @import 'pages/system-roles-modal';
+@import 'pages/system-roles';
+@import 'pages/terms';
+@import 'pages/theme-customizer';
+@import 'pages/user-detail';

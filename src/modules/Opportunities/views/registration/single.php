@@ -41,7 +41,7 @@ $today = new DateTime();
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
     <registration-print :registration="entity"></registration-print>
-    <mc-tabs>
+    <mc-tabs sync-hash>
         <mc-tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
                 <mc-card>
