@@ -40,8 +40,32 @@ $this->import('
                 <mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{relation.agent.name}}</mc-title>
             </div>
             <div class="opportunity-support-config__agent-actions">
-                <button class="button button--primary button--icon"> <?= i::__("Gerenciar permissões") ?> </button>
-                
+                <mc-modal title="<?= i::__('Campos que o Agente pode editar') ?>" classes="complaint-sugestion__modal">
+                    <template #actions="modal">
+                        <button class="button button--primary" @click="send(modal)"><?= i::__('Concluir') ?></button>
+                    </template>
+                    <div class="grid-12">
+                        <input type="checkbox" v-model="selectAll"><?php i::_e("Selecionar todos");?>
+                        <mc-select  @change-option="optionHandlers">
+                            <option value=""><?php i::_e("Selecione"); ?></option>
+                            <option value=""><?php i::_e("Sem permissão"); ?></option>
+                            <option value="ro"><?php i::_e("Visualizar"); ?></option>
+                            <option value="rw"><?php i::_e("Modificar"); ?></option>
+                        </mc-select>
+                    </div>
+                    <div v-for="(field, index) in fields" :key="index">
+                        <input type="checkbox" v-model="field.selected"><?php i::_e('Título do campo inserido pelo usuário'); ?>
+                        <mc-select  @change-option="optionHandler">
+                            <option value=""><?php i::_e("Selecione"); ?></option>
+                            <option value=""><?php i::_e("Sem permissão"); ?></option>
+                            <option value="ro"><?php i::_e("Visualizar"); ?></option>
+                            <option value="rw"><?php i::_e("Modificar"); ?></option>
+                        </mc-select>
+                    </div>
+                    <template #button="modal">
+                        <button  type="button" @click="modal.open(); initFormData('sendSuggestionMessage')" class="button button--primary button--icon"> <?= i::__("Gerenciar permissões") ?> </button>
+                    </template>
+                </mc-modal>
                 <mc-confirm-button @confirm="removeAgent(relation.agent)">
                     <template #button="modal">
                         <button class="button button--delete" @click="modal.open()">
