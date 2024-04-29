@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 return [
     '/api/v2/spaces' => [
         Request::METHOD_GET => [SpaceApiController::class, 'getList'],
-        Request::METHOD_POST => [SpaceApiController::class, 'createSpace'],
+        Request::METHOD_POST => [SpaceApiController::class, 'post'],
     ],
     '/api/v2/spaces/{id}' => [
         Request::METHOD_GET => [SpaceApiController::class, 'getOne'],

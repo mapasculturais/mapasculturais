@@ -17,19 +17,10 @@ class SpaceRepository extends AbstractRepository
         $this->repository = $this->mapaCulturalEntityManager->getRepository(Space::class);
     }
 
-    public function create(array $data): Space
+    public function save(Space $space): void
     {
-        $space = new Space();
-        $space->setName($data['name']);
-        $space->setLocation($data['location']);
-        $space->setPublic($data['public']);
-        $space->setShortDescription($data['shortDescription']);
-        $space->setLongDescription($data['longDescription']);
-
         $this->mapaCulturalEntityManager->persist($space);
         $this->mapaCulturalEntityManager->flush();
-
-        return $space;
     }
 
     public function findAll(): array
