@@ -1,86 +1,52 @@
-[![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
-
-# Mapas Culturais do Ceara
+# Mapa Cultural do Ceará
 
 Em julho de 2013, agentes culturais de vários países da América Latina e do Brasil se reuniram para discutir a criação de uma ferramenta de mapeamento de iniciativas culturais e gestão cultural. Desse encontro surgiram as bases para a criação de Mapas Culturais, um software livre que permite o aprimoramento da gestão cultural dos municípios e estados.
 
-Mapas Culturais é uma plataforma colaborativa que reúne informações sobre agentes, espaços, eventos e projetos culturais, fornecendo ao poder público uma radiografia da área de cultura e ao cidadão um mapa de espaços e eventos culturais da região. A plataforma está alinhada ao Sistema Nacional de Informação e Indicadores Culturais do Ministério da Cultura (SNIIC) e contribui para a realização de alguns dos objetivos do Plano Nacional de Cultura.
+O projeto originalmente denominado Mapas Culturais é uma plataforma colaborativa que reúne informações sobre agentes, espaços, eventos e projetos culturais, fornecendo ao poder público uma radiografia da área de cultura e ao cidadão um mapa de espaços e eventos culturais da região. A plataforma está alinhada ao Sistema Nacional de Informação e Indicadores Culturais do Ministério da Cultura (SNIIC) e contribui para a realização de alguns dos objetivos do Plano Nacional de Cultura.
 
-A plataforma já está em uso em diversos municipios, estados, no governo federal em diversos projetos do ministério da cultura e até mesmo fora do Brasil no Uruguai. Instalações recentes: 
+A plataforma já está em uso em diversos municipios, estados, no governo federal em diversos projetos do ministério da cultura e até mesmo fora do Brasil, no Uruguai. 
 
+## Projeto Original (Mapas Culturais)
+O projeto original atualmente é mantido de forma aberta e colaborativa, gerenciada pelo time de desenvolvimento do @HackLab
 
-### Instalações em nível federal ou internacional
-- IberculturaViva - https://mapa.iberculturaviva.org/
-- Mapa Uruguai - http://culturaenlinea.uy/
-- SNIIC - http://mapas.cultura.gov.br/
-- Museus - http://museus.cultura.gov.br/
-- Sistema Nacional de Bibliotecas Públicas - http://bibliotecas.cultura.gov.br/
-- Cultura Viva - http://culturaviva.gov.br/
-- Pontos de Memória - http://pontosdememoria.cultura.gov.br/
+O repositório se encontra aqui: <https://github.com/mapasculturais/mapasculturais>
 
-### Instalações estaduais
-- Distrito Federal - http://mapa.cultura.df.gov.br/
-- Ceará - https://mapacultural.secult.ce.gov.br/
-- Espírito Santo - https://mapa.cultura.es.gov.br/
-- Goiás - https://mapagoiano.cultura.go.gov.br/
-- Maranhão - http://ma.mapas.cultura.gov.br/
-- Mato Grosso - https://mapas.mt.gov.br/
-- Mato Grosso do Sul - https://www.mapacultural.ms.gov.br/
-- Pará - https://mapacultural.pa.gov.br/
-- Paraíba - http://pb.mapas.cultura.gov.br/
-- Pernambuco - https://www.mapacultural.pe.gov.br/
-- Sergipe - http://mapas.cultura.se.gov.br/
-- Tocantins - http://mapa.cultura.to.gov.br/
-### Instalações municipais
-- Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
-- Camaçari - https://mapacultural.camacari.ba.gov.br/
-- Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
-- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
-- Sobral - https://cultura.sobral.ce.gov.br/
-- Juazeiro do Norte - https://mapacultural.juazeiro.ce.gov.br/
-- Belo Horizonte - http://mapaculturalbh.pbh.gov.br/
-- Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
-- Ipatinga - http://mapacultural.ipatinga.mg.gov.br/
-- Varzea Grande - http://varzeagrande.mt.mapas.cultura.gov.br/
-- João Pessoa - http://jpcultura.joaopessoa.pb.gov.br/
-- Londrina - https://londrinacultura.londrina.pr.gov.br/
-- Foz do Iguaçu - http://mapadaculturafoz.pmfi.pr.gov.br/
-- Maringa - http://maringacultura.maringa.pr.gov.br:38081/
-- Rio das Ostras - http://mapadacultura.riodasostras.rj.gov.br/
-- Laguna - http://laguna.sc.mapas.cultura.gov.br/
-- Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/
-- Rio Grande - http://mapacultural.riogrande.rs.gov.br/
-- São Paulo - http://spcultura.prefeitura.sp.gov.br/
-- Santo André - http://culturaz.santoandre.sp.gov.br/
-- São Caetano do Sul - http://mapacultural.saocaetanodosul.sp.gov.br/
-- Osasco - http://osasco.sp.mapas.cultura.gov.br/
-- Franco da Rocha - http://francodarocha.sp.mapas.cultura.gov.br/
-- Guaruja - http://mapadacultura.guaruja.sp.gov.br/
-- Varzea Paulista - http://janelacultural.varzeapaulista.sp.gov.br/
-- Itu - http://mapacultural.itu.sp.gov.br/
-- Guarulhos - http://grucultura.guarulhos.sp.gov.br/
-- Itapetininga - http://mapacultural.itapetininga.sp.gov.br/
+> Caso queira saber mais sobre o projeto MapasCulturais, gerenciado pelo HackLab, [Clique aqui](https://github.com/mapasculturais/mapasculturais/README.md)
 
-## Sobre a aplicação
-Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
+## Este Fork
+Devido a motivações internas e organizacionais, o Pessoal do Ceará, optou por seguir um caminho um pouco diferente, tanto em relação a arquitetura da aplicação, bem como, ao gerenciamento colaborativo do projeto, o que resultou neste repositório.
 
-## Projetos correlatos
-* [Mapas Cuturais Base Project](https://github.com/hacklabr/mapasculturais-app) - Repositório de projeto base para novas instalações.
-* [Multiple Local Auth](https://github.com/mapasculturais/mapasculturais-MultipleLocalAuth) - Plugin de autenticação local + oauth.
-* [Mapas SDK](https://github.com/centroculturalsp/MapasSDK)
-* [Mapas Culturais APP](https://github.com/hacklabr/mapasculturais-app)
-* [Cultural Magazine Theme](https://github.com/hacklabr/cultural)
+Temos muito a agradecer tudo que foi construído até a versão XXX, e a partir dela fizemos algumas mudanças que podem ser melhor detalhadas aqui:
+
+- [Nova Arquitetura](./app/README.md) de arquivos e diretórios
+- [Conexão](./app/README.md) com o Banco de Dados
+- [Como colaborar](./app/README.md) criando issues
+- [Como implementar](./app/README.md) novos códigos através de pull requests
+
+## Tecnologias
+
+- PHP7^
+  - Symfony packages
+  - Slim packages
+  - Doctrine
+  - PHP DI
+  - PHPUnit
+- PostgreSQL
+
+---
 
 ## Instalação
-A maneira mais simples e segura para instalar o Mapas Culturais é utilizando o [Mapas Culturais Base Project](https://github.com/mapasculturais/mapasculturais-base-project) como base para a criação de um repositório próprio para o seu projeto, que reunirá o tema, os plugins e as configurações da aplicação. O Mapas Culturais Base Project utiliza o Docker e o Docker Composer para rodar a aplicação, facilitando os processos de deploy e de atualizaçao.
+A maneira mais simples e segura para instalar o MapaCultural é seguindo [Este tutorial]()
 
-- [Instalação utilizando o Base Project ](https://github.com/mapasculturais/mapasculturais-base-project#readme) - **RECOMENDADO**
-## Documentação
+## Documentação do Código
 
-Uma [nova documentação](https://mapasculturais.gitbook.io/bem-vindo-a-a-documentacao-do-mapas/) está sendo escrita no gitbook, organizada em três seções:
-- [Documentação para usuários](https://mapasculturais.gitbook.io/documentacao-para-usuarios/)
-- [Documentação para desenvolvedores](https://mapasculturais.gitbook.io/documentacao-para-desenvolvedores/formacao-para-desenvolvedores/)
-- [Documentação para devops](https://mapasculturais.gitbook.io/documentacao-para-devops/instalacao/)
+- [Getting Started]()
+- API
+  - [API V1](https://mapacultural.secult.ce.gov.br/api/v2/docs) do projeto original
+  - [API V2](https://mapacultural.secult.ce.gov.br/api/v2/docs) baseada em RestFul, implementada neste fork
+- Autenticação
+  - Web
+  - API V2
 
 ## Documentação Legada
 
@@ -96,97 +62,10 @@ Toda documentação da aplicação está na pasta [documentation](documentation)
 - [Deploy diretamente no sistema operacional](https://docs.mapasculturais.org/mc_deploy/) - **NÃO RECOMENDADO**
 - [Habilitar um novo tema](documentation/docs/mc_deploy_theme.md)
 
-### [Software] Requisitos para Instalação
-Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](documentation/docs/mc_deploy.md) ou [guia do desenvolvedor](documentation/docs/mc_developer_guide.md). 
+## Mais Informações
 
-- [Ubuntu Server >= 18.04](http://www.ubuntu.com) ou [Debian Server >= 10](https://www.debian.org.)
-- [PHP = 7.2](http://php.net)
-  - [php-gd](http://php.net/manual/pt_BR/book.image.php)
-  - [php-cli](https://packages.debian.org/pt-br/jessie/php5-cli)
-  - [php-json](http://php.net/manual/pt_BR/book.json.php)
-  - [php-curl](http://php.net/manual/pt_BR/book.curl.php)
-  - [php-pgsql](http://php.net/manual/pt_BR/book.pgsql.php)
-  - [php-apc](http://php.net/manual/pt_BR/book.apc.php)
-- [Composer](https://getcomposer.org/)
-- [PostgreSQL >= 10](http://www.postgresql.org/)
-- [Postgis >= 2.2](http://postgis.net)
-- [Node.JS >= 8.x](https://nodejs.org/en/)
-  - [NPM](https://www.npmjs.com/)
-  - [Terser](https://terser.org/)
-  - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
-- [Ruby](https://www.ruby-lang.org/pt)
-  - [Sass gem](https://rubygems.org/gems/sass/versions/3.4.22)
+Acesse aqui para ver a documentação do projeto original [aqui](./help/README.md)
 
-### [Hardware] Requisitos para instalação
-
-Para instalações de pequeno/medio porte nas quais o número de entidades, isto é, número de agentes, espaços, projetos e evento,giram em torno de 2000 ativos, recomenda-se o mínimo de recursos para um servidor (aplicação + base de dados):
-
-* 2 cores de CPU;
-* 2gb de RAM;
-* 50mbit de rede;
-
-Desejável:
-
-*  4 cores de CPU;
-* 4gb de RAM;
-* 100mbit de rede;
-
-Para instalações em cidades de grande porte onde o número de entidades, isto é, número de agentes, espaços, projetos e evento, giram em torno de dezenas de milhares de ativos de cada, recomenda-se o mínimo de recursos para um servidor:
-
-* 4 cores de CPU
-* 4gb de RAM
-* 100mbit de rede
-
-Recomendado:
-* 8 cores de CPU
-* 8gb de RAM
-* 500mbit de rede
-
-Vale lembrar que os requisitos de hardware podem variar de acordo com a latência da rede, velocidade dos cores dos cpus, uso de proxies, entre outros fatores. Recomendamos aos sysadmin da rede em que a aplicação será instalada um monitoramento de tráfego e uso durante o período de 6 meses a 1 ano para avaliação de cenário de uso. 
-
-### Canais de comunicação
-
-* [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
-* Telegram: [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
-
-### Git Hook
-Crie um arquivo chamado `pre-commit` no diretório `.git/hooks` e conceda permissão de execução com `sudo chmod +x .git/hooks/pre-commit`. Este hook garante a conformidade do código com o padrão estabelecido para o projeto.
-```bash
-#!/bin/bash
-
-echo "Before to commit"
-
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-NC='\033[0m'
-
-PHP_CS_FIXER='docker compose -f dev/docker-compose.yml exec -T mapas vendor/bin/php-cs-fixer'
-
-check_php_cs_fixer() {
-    if ! $PHP_CS_FIXER --version &> /dev/null; then
-        echo -e "${RED}Não foi encontrado  o php-cs-fixer.${NC}"
-        exit 1
-    fi
-}
-
-run_php_cs_fixer() {
-    echo -e "${GREEN}Executando php-cs-fixer no dirétorio app...${NC}"
-    $PHP_CS_FIXER --dry-run -vvv --diff fix --config=.php-cs-fixer.php "app"
-}
-
-check_php_cs_fixer
-run_php_cs_fixer
-
-exit_code=$?
-
-if [ $exit_code -eq 0 ]; then
-    echo -e "${GREEN}php-cs-fixer concluído sem erros.${NC}"
-else
-    echo -e "${RED}ERROR: Abortando o commit.\nO php-cs-fixer encontrou problemas nos arquivos modificados.${NC}"
-fi
-
-exit $exit_code
-```
 
 ### Licença de uso e desenvolvimento
 

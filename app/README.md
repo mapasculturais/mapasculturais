@@ -1,6 +1,6 @@
 # MapaCultural - Nova Arquitetura
 
-Essa a
+Essa é a nova documentação do MapaCultural, voltada para desenvolvedores e/ou entusiastas do código.
 
 ## Instalação
 
