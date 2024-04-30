@@ -23,4 +23,16 @@ class ProjectApiControllerTest extends AbstractTestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertIsObject($content);
     }
+
+    public function testDeleteProjectShouldReturnSuccess(): void
+    {
+        $projectId = 1;
+
+        $response = $this->client->request('DELETE', '/api/v2/projects/'.$projectId);
+
+        $this->assertEquals(204, $response->getStatusCode());
+
+        $response = $this->client->request('GET', '/api/v2/projects/'.$projectId);
+        $this->assertEquals(404, $response->getStatusCode());
+    }
 }
