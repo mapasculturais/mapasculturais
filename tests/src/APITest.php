@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/bootstrap.php';
 
 class APITest extends MapasCulturais_TestCase {
@@ -67,6 +68,8 @@ class APITest extends MapasCulturais_TestCase {
                     foreach($cps as $props => $proc){
                         $response = $this->apiFindOne($class, "@select={$props}&id=EQ({$entity->id})");
                         $_entity = $proc($entity, $props);
+                        $_entity['@entityType'] = strtolower($class);
+                        
 
                         $this->assertEquals($_entity, $response, "asserting {$class} api findOne to \$user");
                     }

@@ -13,3 +13,9 @@ src/themes/BaseV1/assets/css/main.css.map
 .idea
 .phpunit.result.cache
 .php-cs-fixer.cache
+public/assets/
+docker-data/
+src/.phpdoc
+.phpunit*
+.phpdocs*
+.env

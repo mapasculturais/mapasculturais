@@ -35,6 +35,47 @@ Temos muito a agradecer tudo que foi construído até a versão XXX, e a partir 
 
 ---
 
+## Instalação rápida com docker compose 
+
+`docker compose up -d`
+
+### Ferramentas
+
+#### PHP Composer
+
+`docker run --rm -it -v $PWD:/app composer:latest install`
+
+#### Migração do Banco de Dados
+
+`docker compose exec backend php src/tools/apply-updates.php`
+`docker compose exec backend php src/tools/apply-multicore-db-update.php`
+
+#### Frontend
+
+`nvm use 18 && cd src && pnpm install --recursive && pnpm build`
+
+npx oxlint@latest
+
+#### Phpdoc
+
+`docker run --rm -v ${PWD}/src:/data phpdoc/phpdoc:3`
+
+#### Phpunit
+
+`docker compose exec backend ./vendor/bin/phpunit`
+
+#### Phpcs
+
+`docker compose exec backend ./vendor/bin/phpcs -d memory_limit=1024M src/**/*.php`
+
+#### Phplint
+
+`docker run --rm -it -v $PWD:/app overtrue/phplint:latest /app/src/`
+
+#### HTTP Endpoints
+
+`egrep -r "function API_|function GET_|function POST_|function PATCH_|function PUT_|function DELETE_|function ALL_" src`
+
 ## Instalação
 A maneira mais simples e segura para instalar o MapaCultural é seguindo [Este tutorial]()
 
