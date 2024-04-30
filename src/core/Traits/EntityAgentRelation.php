@@ -52,7 +52,7 @@ trait EntityAgentRelation {
             } else {
                 $arstatus_ok = $ar->status > 0;
             }
-            if($arstatus_ok && (is_null($has_control) || $ar->hasControl === $has_control) && in_array($ar->agent->status, $agent_statuses)){
+            if($arstatus_ok && (is_null($has_control) ||  $ar->hasControl === $has_control) && ($ar->agent && in_array($ar->agent->status, $agent_statuses))){
                 $relations[] = $ar;
             }
         }
