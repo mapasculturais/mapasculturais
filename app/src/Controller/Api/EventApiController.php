@@ -73,4 +73,16 @@ class EventApiController
             return new JsonResponse(['error' => $exception->getMessage()], 400);
         }
     }
+
+    public function delete($params): JsonResponse
+    {
+        try {
+            $event = $this->eventRequest->validateDelete($params);
+            $this->repository->softDelete($event);
+
+            return new JsonResponse([], 200);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], 400);
+        }
+    }
 }

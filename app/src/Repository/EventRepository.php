@@ -26,7 +26,7 @@ class EventRepository extends AbstractRepository
             ->getArrayResult();
     }
 
-    public function find(int $id): Event
+    public function find(int $id): ?Event
     {
         return $this->repository->find($id);
     }
@@ -58,5 +58,12 @@ class EventRepository extends AbstractRepository
     public function save($event): void
     {
         $event->save();
+    }
+
+    public function softDelete(Event $event): void
+    {
+        $event->setStatus(-10);
+        $this->mapaCulturalEntityManager->persist($event);
+        $this->mapaCulturalEntityManager->flush();
     }
 }
