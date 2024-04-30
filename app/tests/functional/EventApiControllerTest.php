@@ -50,4 +50,13 @@ class EventApiControllerTest extends AbstractTestCase
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertIsObject($content);
     }
+
+    public function testDeleteEventShouldRemoveAnEvent(): void
+    {
+        $response = $this->client->request('DELETE', '/api/v2/events/1');
+        $content = json_decode($response->getContent());
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertIsArray($content);
+    }
 }
