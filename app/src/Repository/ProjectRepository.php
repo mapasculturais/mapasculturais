@@ -25,13 +25,20 @@ class ProjectRepository extends AbstractRepository
             ->getArrayResult();
     }
 
-    public function find(int $id): Project
+    public function find(int $id): ?Project
     {
         return $this->repository->find($id);
     }
 
     public function save(Project $project): void
     {
+        $this->mapaCulturalEntityManager->persist($project);
+        $this->mapaCulturalEntityManager->flush();
+    }
+
+    public function softDelete(Project $project): void
+    {
+        $project->setStatus(-10);
         $this->mapaCulturalEntityManager->persist($project);
         $this->mapaCulturalEntityManager->flush();
     }

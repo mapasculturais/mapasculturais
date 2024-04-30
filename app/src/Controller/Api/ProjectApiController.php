@@ -59,4 +59,17 @@ class ProjectApiController
             return new JsonResponse(['error' => $exception->getMessage()], status: Response::HTTP_BAD_REQUEST);
         }
     }
+
+    public function delete(array $params): JsonResponse
+    {
+        $project = $this->repository->find((int) $params['id']);
+
+        if (!$project || -10 === $project->status) {
+            return new JsonResponse(status: Response::HTTP_NOT_FOUND);
+        }
+
+        $this->repository->softDelete($project);
+
+        return new JsonResponse(status: Response::HTTP_NO_CONTENT);
+    }
 }
