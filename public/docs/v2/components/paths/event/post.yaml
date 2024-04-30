@@ -1,0 +1,16 @@
+tags:
+  - Eventos
+summary: Criação de um evento.
+description: Cria um evento com os dados informados.
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/event/post-minimal.yaml'
+responses:
+  '201':
+    description: Evento criado com sucesso.
+    content:
+      application/json:
+        schema:
+          $ref: '../../responses/event/created.yaml'

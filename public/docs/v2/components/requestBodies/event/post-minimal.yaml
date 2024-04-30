@@ -1,0 +1,21 @@
+type: object
+properties:
+  name:
+    type: string
+    example: "Evento para teste"
+    description: O nome do Evento
+  shortDescription:
+    type: string
+    example: "texto."
+    description: Uma breve descrição do Evento.
+  classificacaoEtaria:
+    type: string
+    example: "18 anos"
+    description: A classificação etária do Evento.
+  terms:
+    type: array
+    items:
+      type: string
+    example:
+      "linguagem": ["Artes Circenses"]
+    description: Os termos relacionados ao Evento.
