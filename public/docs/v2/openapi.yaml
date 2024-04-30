@@ -52,7 +52,7 @@ paths:
   /opportunities/{id}:
     $ref: './components/paths/opportunity/get-one.yaml'
   /projects:
-    $ref: './components/paths/project/get-list.yaml'
+    $ref: './components/paths/project/group-get-post.yaml'
   /projects/{id}:
     $ref: './components/paths/project/get-one.yaml'
   /seals:

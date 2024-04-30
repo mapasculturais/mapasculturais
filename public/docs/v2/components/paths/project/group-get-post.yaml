@@ -1,0 +1,5 @@
+get:
+  $ref: './get-list.yaml'
+
+post:
+  $ref: './create.yaml'

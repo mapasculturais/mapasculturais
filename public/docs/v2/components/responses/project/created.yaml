@@ -1,0 +1,18 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 10
+    description: Identificador único do projeto recém criado
+  name:
+    type: string
+    example: "Nome do projeto"
+    description: Nome do projeto recém criado
+  shortDescription:
+    type: string
+    example: "Uma breve descrição do projeto"
+    description: Uma breve descrição do projeto recém criado
+  type:
+    type: integer
+    example: 1
+    description: Linguagem cultural do projeto recém criado. 1 - Festival, 2 - Encontro, etc...

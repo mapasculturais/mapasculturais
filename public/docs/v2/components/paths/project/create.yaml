@@ -1,0 +1,16 @@
+tags:
+  - Projetos
+summary: Cria um novo projeto
+description: Cadastra um novo projeto no sistema com as informações fornecidas.
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/project/post-minimal.yaml'
+responses:
+  '201':
+    description: O projeto criado
+    content:
+      application/json:
+        schema:
+          $ref: '../../responses/project/created.yaml'
