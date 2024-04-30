@@ -1998,9 +1998,9 @@ $$
         $count = count($fields);
         foreach($fields as $i => $field) {
             echo "migrando registration_field_configuration ({$i} / $count)\n";
-            $field['config'] = json_encode(unserialize($field['config']));
-            $field['field_options'] = json_encode(unserialize($field['field_options']));
-            $field['categories'] = json_encode(unserialize($field['categories']));
+            $field['config'] = $field['config'] ? json_encode(unserialize($field['config'])) : json_encode([]);
+            $field['field_options'] = $field['field_options'] ? json_encode(unserialize($field['field_options'])) : json_encode([]);
+            $field['categories'] = $field['categories'] ? json_encode(unserialize($field['categories'])) : json_encode([]);
 
             $conn->executeQuery("
                 UPDATE registration_field_configuration 
@@ -2015,7 +2015,7 @@ $$
         $count = count($files);
         foreach($files as $i => $file) {
             echo "migrando registration_file_configuration ({$i} / $count)\n";
-            $file['categories'] = json_encode(unserialize($file['categories']));
+            $file['categories'] = $file['categories'] ? json_encode(unserialize($file['categories'])) : json_encode([]);
 
             $conn->executeQuery("
                 UPDATE registration_file_configuration 
@@ -2028,7 +2028,7 @@ $$
         foreach($requests as $i => $request) {
             echo "migrando request ({$i} / $count)\n";
             $id = $request['id'];
-            $metadata = json_encode(unserialize($request['metadata']));
+            $metadata = $request['metadata'] ? json_encode(unserialize($request['metadata'])) : json_encode([]);
 
             $conn->executeQuery("
                 UPDATE request 
