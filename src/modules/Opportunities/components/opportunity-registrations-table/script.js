@@ -202,13 +202,11 @@ app.component('opportunity-registrations-table', {
 
             itens.splice(3,0,{ text: "Pontuação", value: "score"});
 
-            itens = itens.filter((item) => {
-                return this.avaliableColumns.indexOf(item.value) >= 0;
-            });
-
-            debugger;
-            // console.log(this.avaliableColumns);
-            // console.log(itens);
+            if(this.avaliableColumns) {
+                itens = itens.filter((item) => {
+                    return this.avaliableColumns.indexOf(item.value) >= 0;
+                });
+            }
 
             return itens;
         },
