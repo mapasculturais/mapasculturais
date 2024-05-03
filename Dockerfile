@@ -57,7 +57,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	sass themes/BaseV1/assets/css/sass/main.scss:themes/BaseV1/assets/css/main.css && \
 	# alteração das permissões
 	mkdir -p /var/www/var/DoctrineProxies && \
-	ln -s /var/www/html /var/www/public && \
+	cd /var/www && ln -s ./html /var/www/public && \
 	chown www-data:www-data -R /var/www && \
 	# Limpeza do apt
 	rm -rf /var/lib/apt/lists
