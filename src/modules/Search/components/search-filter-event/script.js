@@ -83,6 +83,10 @@ app.component('search-filter-event', {
                 label: __('próximos 30 dias', 'search-filter-event'), 
                 range: [today, Dates.addDays(today,30)]
             },
+            thisCurrentMonth: {
+                label: __('este mês', 'search-filter-event'),
+                range: [startOfMonth, endOfMonth],
+            },
             thisMonth: {
                 label: Utils.ucfirst(mctoday.month()),
                 range: [startOfMonth, endOfMonth],
@@ -141,6 +145,7 @@ app.component('search-filter-event', {
             this.ranges.tomorrow,
             this.ranges.thisWeek,
             this.ranges.thisWeekend,
+            this.ranges.thisCurrentMonth,
             this.ranges.nextWeekend,
             this.ranges.next7days,
             this.ranges.next30days,
