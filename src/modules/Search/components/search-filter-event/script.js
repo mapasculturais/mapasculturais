@@ -160,8 +160,8 @@ app.component('search-filter-event', {
     methods: {
         clearFilters() {
             this.date = [this.defaultDateFrom, this.defaultDateTo];
-            this.pseudoQuery['@from'] = d0.date('sql');
-            this.pseudoQuery['@to'] = d1.date('sql');
+            this.pseudoQuery['@from'] = new McDate(new Date(this.date[0])).date('sql');
+            this.pseudoQuery['@to'] = new McDate(new Date(this.date[1])).date('sql');
             delete this.pseudoQuery['event:@verified'];
             this.pseudoQuery['event:classificacaoEtaria'].length = 0;
             this.pseudoQuery['event:term:linguagem'].length = 0;        
