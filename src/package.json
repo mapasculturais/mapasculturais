@@ -1,19 +1,21 @@
 {
-    "name": "mapasculturais",
-    "private": true,
-    "scripts": {
-        "dev": "pnpm run --parallel --recursive dev",
-        "build": "pnpm run --parallel --recursive build",
-        "watch": "pnpm run --parallel --recursive watch"
-    },
-    "devDependencies": {
-        "fast-glob": "^3.3.2",
-        "laravel-mix": "^6.0.49",
-        "postcss": "^8.4.31",
-        "@babel/preset-env": "*",
-        "resolve-url-loader": "^5.0.0",
-        "sass": "^1.69.5",
-        "sass-loader": "^12.6.0",
-        "webpack": "^5.89.0"
-    }
+  "name": "mapasculturais",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm run --parallel --recursive dev",
+    "build": "pnpm run --parallel --recursive build",
+    "watch": "pnpm run --parallel --recursive watch",
+    "cypress:open": "npx cypress open",
+    "cypress:run": "npx cypress run"
+  },
+  "devDependencies": {
+    "fast-glob": "^3.3.2",
+    "laravel-mix": "^6.0.49",
+    "postcss": "^8.4.31",
+    "@babel/preset-env": "*",
+    "resolve-url-loader": "^5.0.0",
+    "sass": "^1.69.5",
+    "sass-loader": "^12.6.0",
+    "webpack": "^5.89.0"
+  }
 }
