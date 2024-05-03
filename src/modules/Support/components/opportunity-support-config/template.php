@@ -53,7 +53,7 @@ $this->import('
                     <div v-for="(field, index) in fields" :key="index">
                         <label>
                             <input v-model="selectedFields[field.ref]" :checked="selectAll" type="checkbox"/>
-                            {{ field.title }}
+                            #{{ field.id }} {{ field.title }}
                         </label>
                         <mc-select :options="permissions" :default-value="relation.metadata?.registrationPermissions[field.ref]" small hide-filter @change-option="setPerssion($event,field)">
                         </mc-select>
