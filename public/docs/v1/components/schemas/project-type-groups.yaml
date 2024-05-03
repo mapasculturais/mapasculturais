@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Identificador do grupo de tipos de projeto.
+  name:
+    type: string
+    example: tipo de projeto
+    description: Nome do grupo.
+  types:
+    type: array
+    items:
+      $ref: './project-type.yaml'

@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Selos
+  summary: Recupera a lista de selos
+  description: Recupera a lista de selos
+  parameters:
+    - $ref: '../../parameters/select.yaml'
+  responses:
+    '200':
+      description: Um array com todos os selos, caso não tenha o parametro @select na busca, ele trará apenas id e @entityType
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: '../../schemas/seal.yaml'
+                - type: object
+                  properties:
+                    '@entityType':
+                      type: string
+                      example: seal
+                      description: Um texto que representa qual a entity é retornada

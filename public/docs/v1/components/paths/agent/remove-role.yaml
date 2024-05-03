@@ -1,0 +1,37 @@
+delete:
+  tags:
+    - Agentes
+  summary: Remover função de um agente
+  description: Remove uma função de um agente
+  parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do agente
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            role:
+              type: string
+              example: "saasSuperAdmin"
+              description: "Nome da função"
+            id:
+              type: integer
+              example: 1
+              description: "ID da função"
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: boolean
+            example: true
+            description: "Retorna true se a função foi removida com sucesso"
+    '404':
+      $ref: '../../responses/error/404.yaml'

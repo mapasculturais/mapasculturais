@@ -1,0 +1,11 @@
+tags:
+  - Projetos
+summary: Apaga um projeto
+description: Apaga um projeto
+parameters:
+  - $ref: '../../parameters/path/id.yaml'
+responses:
+  '204':
+    description: O projeto foi excluído com sucesso.
+  '404':
+    $ref: '../../responses/error/404.yaml'

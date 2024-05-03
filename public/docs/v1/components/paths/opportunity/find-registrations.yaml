@@ -1,0 +1,11 @@
+get:
+  tags:
+    - Oportunidades
+  summary: Recupera uma lista de registros das oportunidades
+  description: Recuperar uma lista de registros das oportunidades
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          example: ok

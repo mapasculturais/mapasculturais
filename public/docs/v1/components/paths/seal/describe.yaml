@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Selos
+  summary: Recupera os detalhes de mapeamento da entity Selos
+  description: Recupera os detalhes de mapeamento da entity Selos
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/seal-describe.yaml'

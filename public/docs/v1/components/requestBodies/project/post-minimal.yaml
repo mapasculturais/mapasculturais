@@ -1,0 +1,14 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Projeto teste
+    description: Nome do Projeto
+  shortDescription:
+    type: string
+    example: apenas um projeto teste
+    description: Uma breve descrição do Projeto
+  type:
+    type: integer
+    example: 1
+    description: Tipo do projeto

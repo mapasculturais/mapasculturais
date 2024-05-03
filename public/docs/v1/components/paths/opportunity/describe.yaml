@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Oportunidades
+  summary: Recupera os detalhes de mapeamento da entity Oportunidade
+  description: Recupera os detalhes de mapeamento da entity Oportunidade
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/describe-item.yaml'

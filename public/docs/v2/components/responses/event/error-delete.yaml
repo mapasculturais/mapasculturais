@@ -1,0 +1,10 @@
+description: Não encontrado
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Event not found or already deleted."
+          description: O erro retornado quando o evento não é encontrado ou quando já foi deletado.

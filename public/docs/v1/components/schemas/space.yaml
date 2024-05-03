@@ -1,0 +1,298 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 5
+    description: Um id numérico que representa o espaço
+  location:
+    type: object
+    properties:
+      latitude:
+        type: string
+        example: "0"
+        description: Latitude do espaço
+      longitude:
+        type: string
+        example: "0"
+        description: Longitude do espaço
+  name:
+    type: string
+    example: Secult
+    description: Um texto que representa o nome do espaço
+  public:
+    type: boolean
+    example: false
+    description: Indica se o espaço é público ou não
+  shortDescription:
+    type: string
+    example: Secult
+    description: Uma breve descrição do espaço
+  longDescription:
+    type: string
+    example: null
+    description: Descrição detalhada do espaço
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  status:
+    type: integer
+    example: 1
+    description: Status do espaço
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  parent:
+    type: integer
+    description: O espaço pai (se houver)
+  owner:
+    type: integer
+    example: 1
+    description: Proprietário do espaço
+  subsite:
+    type: integer
+    description: Subsite do espaço (se houver)
+  currentUserPermissions:
+    type: object
+    properties:
+       '@control':
+         type: boolean
+         example: true
+         description: Controle do usuário atual
+       view:
+         type: boolean
+         example: true
+         description: Permissão de visualização
+       create:
+         type: boolean
+         example: true
+         description: Permissão de criação
+       modify:
+         type: boolean
+         example: true
+         description: Permissão de modificação
+       remove:
+         type: boolean
+         example: true
+         description: Permissão de remoção
+       _control:
+         type: boolean
+         example: true
+         description: Controle especial
+       viewPrivateFiles:
+         type: boolean
+         example: true
+         description: Visualizar arquivos privados
+       changeOwner:
+         type: boolean
+         example: true
+         description: Alterar proprietário
+       viewPrivateData:
+         type: boolean
+         example: true
+         description: Visualizar dados privados
+       createAgentRelation:
+         type: boolean
+         example: true
+         description: Criar relação de agente
+       createAgentRelationWithControl:
+         type: boolean
+         example: true
+         description: Criar relação de agente com controle
+       removeAgentRelation:
+         type: boolean
+         example: true
+         description: Remover relação de agente
+       removeAgentRelationWithControl:
+         type: boolean
+         example: true
+         description: Remover relação de agente com controle
+       createSealRelation:
+         type: boolean
+         example: true
+         description: Criar relação de selo
+       removeSealRelation:
+         type: boolean
+         example: true
+         description: Remover relação de selo
+       destroy:
+         type: boolean
+         example: true
+         description: Destruir
+       publish:
+         type: boolean
+         example: true
+         description: Publicar
+       archive:
+         type: boolean
+         example: true
+         description: Arquivar
+       unarchive:
+         type: boolean
+         example: true
+         description: Desarquivar
+  eventOccurrences:
+    type: array
+    items:
+      type: integer
+    example: []
+    description: Ocorrências de eventos associados ao espaço
+  children:
+    type: array
+    items:
+      type: integer
+    example: []
+    description: Espaços filhos (se houver)
+  relatedOpportunities:
+    type: array
+    items:
+      type: integer
+    example: []
+    description: Oportunidades relacionadas
+  terms:
+    type: object
+    properties:
+      tag:
+        type: array
+        items:
+          type: string
+        example: []
+        description: Tags associadas ao espaço
+      area:
+        type: array
+        items:
+          type: string
+        example: ["Outros", "Patrimônio Cultural"]
+        description: Áreas relacionadas ao espaço
+  metalists:
+    type: array
+    items:
+      type: string
+    example: []
+    description: Meta-listas associadas ao espaço
+  files:
+    type: array
+    items:
+      type: integer
+    example: []
+    description: Arquivos associados ao espaço
+  seals:
+    type: array
+    items:
+      type: integer
+    example: []
+    description: Selos associados ao espaço
+  type:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 50
+        description: ID do tipo de espaço
+      name:
+        type: string
+        example: Arquivo Público
+        description: Nome do tipo de espaço
+  ownerId:
+    type: integer
+    description: ID do proprietário (se houver)
+  subsiteId:
+    type: integer
+    description: ID do subsite (se houver)
+  emailPublico:
+    type: string
+    description: Email público (se houver)
+  emailPrivado:
+    type: string
+    description: Email privado (se houver)
+  cnpj:
+    type: string
+    description: CNPJ (se houver)
+  razaoSocial:
+    type: string
+    description: Razão social (se houver)
+  telefonePublico:
+    type: string
+    description: Telefone público (se houver)
+  telefone1:
+    type: string
+    description: Telefone 1 (se houver)
+  telefone2:
+    type: string
+    description: Telefone 2 (se houver)
+  acessibilidade:
+    type: string
+    description: Acessibilidade (se houver)
+  acessibilidade_fisica:
+    type: array
+    items:
+      type: string
+    example: ["Banheiros adaptados", "Bebedouro adaptado", "Circuito de visitação adaptado", "Sanitário adaptado", "Vaga de estacionamento exclusiva para idosos"]
+    description: Acessibilidade física (se houver)
+  capacidade:
+    type: integer
+    description: Capacidade (se houver)
+  endereco:
+    type: string
+    description: Endereço (se houver)
+  En_CEP:
+    type: string
+    description: CEP (se houver)
+  En_Nome_Logradouro:
+    type: string
+    description: Nome do logradouro (se houver)
+  En_Num:
+    type: integer
+    description: Número do endereço (se houver)
+  En_Complemento:
+    type: string
+    description: Complemento do endereço (se houver)
+  En_Bairro:
+    type: string
+    description: Bairro (se houver)
+  En_Municipio:
+    type: string
+    description: Município (se houver)
+  En_Estado:
+    type: string
+    description: Estado (se houver)
+  horario:
+    type: integer
+    description: Horário (se houver)
+  criterios:
+    type: string
+    description: Critérios (se houver)
+  site:
+    type: integer
+    description: Site (se houver)
+  facebook:
+    type: string
+    description: Facebook (se houver)
+  twitter:
+    type: string
+    description: Twitter (se houver)
+  instagram:
+    type: string
+    description: Instagram (se houver)
+  linkedin:
+    type: string
+    description: LinkedIn (se houver)
+  vimeo:
+    type: string
+    description: Vimeo (se houver)
+  spotify:
+    type: string
+    description: Spotify (se houver)
+  youtube:
+    type: string
+    description: YouTube (se houver)
+  pinterest:
+    type: string
+    description: Pinterest (se houver)
+  sentNotification:
+    type: integer
+    description: Notificação enviada (se houver)
+  relatedAgents:
+    type: integer
+    description: Agentes relacionados (se houver)
+  '@entityType':
+    type: string
+    example: space
+    description: Tipo de entidade

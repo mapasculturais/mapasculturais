@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Oportunidades
+  summary: Recupera uma única oportunidade
+  description: Recuperar um única oportunidade
+  parameters:
+    - $ref: '../../parameters/id.yaml'
+    - $ref: '../../parameters/select.yaml'
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/opportunity.yaml'

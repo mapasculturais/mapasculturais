@@ -1,0 +1,16 @@
+tags:
+  - Agentes
+summary: Cria um novo agente
+description: Cadastra um novo agente no sistema com as informações fornecidas.
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/agent/post-minimal.yaml'
+responses:
+  '201':
+    description: O agente criado
+    content:
+      application/json:
+        schema:
+          $ref: '../../responses/agent/created.yaml'

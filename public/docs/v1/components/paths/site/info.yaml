@@ -1,0 +1,16 @@
+/info:
+  git-info:
+    type: object
+    properties:
+      tag:
+        type: string
+        example: 4.0.2
+      commit hash:
+        type: string
+        example: 733d63962e0737823b3d5f7b730b5278abd4a2fa
+      commit date:
+        type: string
+        example: "2024-04-01 11:21:04"
+      branch:
+        type: string
+        example: master

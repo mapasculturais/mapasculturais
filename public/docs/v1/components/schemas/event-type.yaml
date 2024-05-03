@@ -1,0 +1,13 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id numérico que representa o Tipo do Evento
+  name:
+    type: string
+    example: "Conferência"
+    description: Um texto que representa o Tipo do Evento
+required:
+  - id
+  - name

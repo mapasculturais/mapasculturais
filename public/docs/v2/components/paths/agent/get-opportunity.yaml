@@ -1,0 +1,16 @@
+get:
+  tags:
+    - Agentes
+  summary: Recupera as oportunidades de um agente
+  description: Recupera as oportunidades de um agente
+  parameters:
+    - $ref: '../../parameters/path/id.yaml'
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/opportunity.yaml'

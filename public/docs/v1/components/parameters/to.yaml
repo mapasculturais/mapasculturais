@@ -1,0 +1,8 @@
+name: '@to'
+in: query
+schema:
+  type: string
+  format: date
+required: false
+description: "Data final do período."
+example: '2021-02-01'

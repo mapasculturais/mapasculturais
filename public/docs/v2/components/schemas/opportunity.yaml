@@ -1,0 +1,56 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 11
+  _type:
+    type: integer
+    example: 1
+  name:
+    type: string
+    example: "Teste de oportunidade"
+  shortDescription:
+    type: string
+    example: "Teste de oportunidade"
+  registrationFrom:
+    type: object
+    properties:
+      date:
+        type: string
+        example: "2024-04-01 14:31:00.000000"
+      timezone_type:
+        type: integer
+        example: 3
+      timezone:
+        type: string
+        example: "Etc/GMT+3"
+  registrationTo:
+    $ref: '../common-types/date.yaml'
+  publishedRegistrations:
+    type: boolean
+    example: false
+  registrationCategories:
+    type: array
+    items: {}
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  publishTimestamp:
+    type: ['string', 'null']
+    example: null
+  autoPublish:
+    type: boolean
+    example: false
+  status:
+    type: integer
+    example: 1
+  _subsiteId:
+    type: ['integer', 'null']
+    example: null
+  avaliableEvaluationFields:
+    type: array
+    items: {}
+  object_type:
+    type: string
+    example: "MapasCulturais\\Entities\\Space"

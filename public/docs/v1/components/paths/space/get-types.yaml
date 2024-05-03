@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Espaços
+  summary: Recupera uma lista de tipos de espaço
+  description: Recupera uma lista de tipos de espaço
+  responses:
+    '200':
+      description: Sucesso
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/space-type.yaml'

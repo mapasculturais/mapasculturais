@@ -1,0 +1,74 @@
+type: object
+properties:
+  startsOn:
+    type: object
+    properties:
+      date:
+        type: string
+        example: "2024-04-16 00:00:00.000000"
+        description: A data de início do evento
+      timezone_type:
+        type: integer
+        example: 3
+        description: O tipo de fuso horário
+      timezone:
+        type: string
+        example: "Etc/GMT+3"
+        description: O fuso horário
+  endsOn:
+    type: object
+    properties:
+      date:
+        type: string
+        example: "2024-04-20 00:00:00.000000"
+        description: A data de término do evento
+      timezone_type:
+        type: integer
+        example: 3
+        description: O tipo de fuso horário
+      timezone:
+        type: string
+        example: "Etc/GMT+3"
+        description: O fuso horário
+  startsAt:
+    type: object
+    properties:
+      date:
+        type: string
+        example: "2024-04-16 10:26:00.000000"
+        description: A hora de início do evento
+      timezone_type:
+        type: integer
+        example: 3
+        description: O tipo de fuso horário
+      timezone:
+        type: string
+        example: "Etc/GMT+3"
+        description: O fuso horário
+  endsAt:
+    type: object
+    properties:
+      date:
+        type: string
+        example: "2024-04-20 10:26:00.000000"
+        description: A hora de término do evento
+      timezone_type:
+        type: integer
+        example: 3
+        description: O tipo de fuso horário
+      timezone:
+        type: string
+        example: "Etc/GMT+3"
+        description: O fuso horário
+  price:
+    type: string
+    example: "R$ 10,00"
+    description: O preço do evento
+  priceInfo:
+    type: string
+    example: "Aceitamos pix"
+    description: Informações sobre o preço do evento
+  frequency:
+    type: string
+    example: "Diário"
+    description: A frequência do evento

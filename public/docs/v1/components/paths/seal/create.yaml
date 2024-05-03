@@ -1,0 +1,17 @@
+post:
+  tags:
+    - Selos
+  summary: Cria um selo
+  description: Cria um selo
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../requestBodies/seal/post-minimal.yaml'
+  responses:
+    '200':
+      description: O selo criado
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/seal.yaml'

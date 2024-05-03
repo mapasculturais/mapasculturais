@@ -1,0 +1,11 @@
+get:
+  tags:
+    - Oportunidades
+  summary: Recupera uma lista de campos da entity Oportunidades
+  description: Recuperar uma lista de campos da entity Oportunidades
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          example: ok

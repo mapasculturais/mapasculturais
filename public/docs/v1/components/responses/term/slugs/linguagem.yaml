@@ -1,0 +1,27 @@
+description: Sucesso
+content:
+  application/json:
+    schema:
+      type: array
+      items:
+        type: string
+      example:
+        - "Artes Circenses"
+        - "Artes Integradas"
+        - "Artes Visuais"
+        - "Audiovisual"
+        - "Cinema"
+        - "Cultura Digital"
+        - "Cultura Indígena"
+        - "Cultura Tradicional"
+        - "Curso ou Oficina"
+        - "Dança"
+        - "Exposição"
+        - "Hip Hop"
+        - "Livro e Literatura"
+        - "Música Erudita"
+        - "Música Popular"
+        - "Outros"
+        - "Palestra, Debate ou Encontro"
+        - "Rádio"
+        - "Teatro"

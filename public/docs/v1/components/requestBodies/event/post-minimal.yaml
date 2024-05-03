@@ -1,0 +1,45 @@
+post:
+  tags:
+    - Eventos
+  summary: Cria um evento
+  description: Cria um novo evento com as informações fornecidas
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - shortDescription
+            - classificacaoEtaria
+          properties:
+            name:
+              type: string
+              description: "Nome do evento"
+            shortDescription:
+              type: string
+              description: "Descrição curta do evento"
+            classificacaoEtaria:
+              type: object
+              properties:
+                options:
+                  type: array
+                  items:
+                    type: string
+                  description: "Classificação etária do evento"
+            term-linguagem:
+              type: array
+              items:
+                type: string
+              description: "Linguagens do evento"
+  responses:
+    '201':
+      description: Evento criado com sucesso
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/event.yaml'
+    '400':
+      description: Dados inválidos fornecidos
+

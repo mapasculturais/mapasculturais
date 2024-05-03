@@ -1,0 +1,7 @@
+name: '@limit'
+in: query
+schema:
+  type: integer
+required: false
+description: Um inteiro que limita a quantidade de registro retornadas
+example: 20

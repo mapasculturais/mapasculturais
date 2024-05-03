@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Eventos
+  summary: Ocorrências de um evento
+  description: Retorna as ocorrências de um evento.
+  parameters:
+    - $ref: '../../parameters/from.yaml'
+    - $ref: '../../parameters/to.yaml'
+    - $ref: '../../parameters/limit.yaml'
+    - $ref: '../../parameters/offset.yaml'
+    - $ref: '../../parameters/page.yaml'
+    - $ref: '../../parameters/space.yaml'
+  responses:
+    '200':
+      description: Ocorrências do evento.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/event-find-occurrences.yaml'
+    '404':
+      $ref: '../../responses/error/404.yaml'

@@ -1,0 +1,15 @@
+get:
+  tags:
+    - Eventos
+  summary: Recupera a lista de tipos de eventos
+  description: Recupera a lista de todos os tipos de eventos cadastrados
+  responses:
+    '200':
+      description: Um array com todos os tipos de eventos
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: '../../schemas/event-type.yaml'

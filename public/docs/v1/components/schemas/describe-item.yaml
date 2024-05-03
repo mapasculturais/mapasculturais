@@ -1,0 +1,26 @@
+type: object
+properties:
+  field:
+    type: object
+    properties:
+      isMetadata:
+        type: string
+        description: Identifica se o campo é um metadado.
+      isEntityRelation:
+        type: string
+        description: Identifica se o campo é uma relação com outra entity.
+      required:
+        type: boolean
+        description: Identifica se o campo é requerido.
+      type:
+        type: string
+        description: O tipo de dado.
+      length:
+        type: integer
+        description: O tamanho.
+      label:
+        type: boolean
+        description: O nome do campo.
+      isPK:
+        type: boolean
+        description: Identifica se o campo é uma primary key.

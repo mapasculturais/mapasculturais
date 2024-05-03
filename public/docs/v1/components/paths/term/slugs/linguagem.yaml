@@ -1,0 +1,10 @@
+get:
+  tags:
+    - Termos
+  summary: Lista os slugs de linguagem
+  description: Lista os slugs de linguagem cultural
+  responses:
+    '200':
+      $ref: '../../../responses/term/slugs/linguagem.yaml'
+    '404':
+      $ref: '../../../responses/error/404.yaml'

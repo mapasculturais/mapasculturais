@@ -99,6 +99,10 @@ $config = $app->config['social-media'];
                     <li>
                         <a href="<?= $app->createUrl('faq') ?>"><?php i::_e('Dúvidas frequentes'); ?></a>
                     </li>
+
+                    <li>
+                        <a href="<?= $app->config['module.home']['report-bug-url'] ?>" target="_blank"><?php i::_e('Reporte um bug'); ?></a>
+                    </li>
                     
                 <?php if (count($app->config['module.LGPD']) > 0): ?>
                     <?php foreach ($app->config['module.LGPD'] as $slug => $cfg) : ?>

@@ -1,0 +1,8 @@
+tags:
+  - Agentes
+patch:
+  $ref: './patch.yaml'
+put:
+  $ref: './put.yaml'
+delete:
+  $ref: './delete.yaml'

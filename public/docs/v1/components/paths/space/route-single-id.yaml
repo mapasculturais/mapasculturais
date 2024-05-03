@@ -1,0 +1,8 @@
+tags:
+  - Espaços
+patch:
+  $ref: './patch.yaml'
+put:
+  $ref: './put.yaml'
+delete:
+  $ref: './delete.yaml'

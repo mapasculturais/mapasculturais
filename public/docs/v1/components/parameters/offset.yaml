@@ -1,0 +1,6 @@
+name: '@offset'
+in: query
+schema:
+  type: integer
+required: false
+description: Offset para deslocamento da quantidade de registros

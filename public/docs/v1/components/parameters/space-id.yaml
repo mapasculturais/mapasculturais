@@ -1,0 +1,8 @@
+name: 'spaceId'
+in: query
+schema:
+  type: string
+  example: 1
+required: true
+description: Este é um campo de filtro personalizável para a consulta. Ele requer a entrada de um número, que será usado para buscar um espaço cujo ID corresponda ao número fornecido.
+example: '1'

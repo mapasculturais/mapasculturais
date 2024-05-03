@@ -1,0 +1,12 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Identificador do grupo de tipos de agente.
+  name:
+    type: string
+    description: Nome do grupo.
+  types:
+    type: array
+    items:
+      $ref: './agent-type.yaml'

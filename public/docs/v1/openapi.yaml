@@ -1,0 +1,189 @@
+openapi: 3.0.2
+info:
+  title: API Mapas Culturais - OpenAPI 3.0
+  description: |-
+    Descreva aqui o que a API do Mapas faz
+
+    Links Importantes:
+    - [Mapa Cultural do Ceará](https://mapacultural.secult.ce.gov.br/)
+  contact:
+    email: contato@email.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.18
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: /
+tags:
+  - name: Agentes
+    description: Rotas relacionadas aos agentes
+  - name: Espaços
+    description: Rotas relacionadas aos espaços
+  - name: Eventos
+    description: Rotas relacionadas aos eventos
+  - name: Oportunidades
+    description: Rotas relacionadas às oportunidades
+  - name: Projetos
+    description: Rotas relacionadas aos projetos
+  - name: Selos
+    description: Rotas relacionadas aos selos
+  - name: Site
+    description: Rotas relacionadas ao site
+  - name: Termos
+    description: Rotas relacionadas aos termos
+paths:
+  /agent/addRole/{id}:
+    $ref: './components/paths/agent/add-role.yaml'
+  /agent/archive/{id}:
+    $ref: './components/paths/agent/archive.yaml'
+  /agente/{id}:
+    $ref: './components/paths/agent/route-single-id.yaml'
+  /agent/index:
+    $ref: './components/paths/agent/create.yaml'
+  /agent/publish/{id}:
+     $ref: './components/paths/agent/publish.yaml'
+  /agent/removeRole/{id}:
+    $ref: './components/paths/agent/remove-role.yaml'
+  /agent/setAsUserProfile:
+    $ref: './components/paths/agent/set-as-user-profile.yaml'
+  /agent/undelete/{id}:
+    $ref: './components/paths/agent/undelete.yaml'
+  /api/agent/describe:
+    $ref: './components/paths/agent/describe.yaml'
+  /api/agent/find:
+    $ref: './components/paths/agent/find.yaml'
+  /api/agent/findOne:
+    $ref: './components/paths/agent/find-one.yaml'
+  /api/agent/getTypeGroups:
+    $ref: './components/paths/agent/get-type-groups.yaml'
+  /api/agent/getTypes:
+    $ref: './components/paths/agent/get-types.yaml'
+  /api/event/describe:
+    $ref: './components/paths/event/describe.yaml'
+  /api/event/find:
+    $ref: './components/paths/event/find.yaml'
+  /api/event/findByLocation:
+    $ref: './components/paths/event/find-by-location.yaml'
+  /api/event/findBySpace:
+    $ref: './components/paths/event/find-by-space.yaml'
+  /api/event/findOccurrences:
+    $ref: './components/paths/event/find-occurrences.yaml'
+  /api/event/findOne:
+    $ref: './components/paths/event/find-one.yaml'
+  /api/event/getTypeGroups:
+    $ref: './components/paths/event/get-type-groups.yaml'
+  /api/event/getTypes:
+    $ref: './components/paths/event/get-types.yaml'
+  /api/event/create:
+    $ref: './components/paths/event/create.yaml'
+  /event/single/{id}:
+    $ref: './components/paths/event/route-single-id.yaml'
+  /api/opportunity/describe:
+    $ref: './components/paths/opportunity/describe.yaml'
+  /api/opportunity/find:
+    $ref: './components/paths/opportunity/find.yaml'
+  /api/opportunity/findRegistrations:
+    $ref: './components/paths/opportunity/find-registrations.yaml'
+  /api/opportunity/findOne:
+    $ref: './components/paths/opportunity/find-one.yaml'
+  /api/opportunity/getTypes:
+    $ref: './components/paths/opportunity/get-types.yaml'
+  /api/opportunity/selectFields:
+    $ref: './components/paths/opportunity/select-fields.yaml'
+  /api/project/describe:
+    $ref: './components/paths/project/describe.yaml'
+  /api/project/find:
+    $ref: './components/paths/project/find.yaml'
+  /api/project/findOne:
+    $ref: './components/paths/project/find-one.yaml'
+  /api/project/getTypeGroups:
+    $ref: './components/paths/project/get-type-groups.yaml'
+  /api/project/getTypes:
+    $ref: './components/paths/project/get-types.yaml'
+  /project/index:
+    $ref: './components/paths/project/create.yaml'
+  /project/single/{id}:
+    $ref: './components/paths/project/route-single-id.yaml'
+  /api/seal/describe:
+    $ref: './components/paths/seal/describe.yaml'
+  /api/seal/find:
+    $ref: './components/paths/seal/find.yaml'
+  /api/seal/findOne:
+    $ref: './components/paths/seal/find-one.yaml'
+  /api/seal/getTypeGroups:
+    $ref: './components/paths/seal/get-type-groups.yaml'
+  /api/seal/getTypes:
+    $ref: './components/paths/seal/get-types.yaml'
+  /seal/index:
+    $ref: './components/paths/seal/create.yaml'
+  /seal/single/{id}:
+    $ref: './components/paths/seal/route-single-id.yaml'
+  /api/space/describe:
+    $ref: './components/paths/space/describe.yaml'
+  /api/space/find:
+    $ref: './components/paths/space/find.yaml'
+  /api/space/findByEvents:
+    $ref: './components/paths/space/find-by-events.yaml'
+  /api/space/findOne:
+    $ref: './components/paths/space/find-one.yaml'
+  /api/space/getTypeGroups:
+    $ref: './components/paths/space/get-type-groups.yaml'
+  /api/space/getTypes:
+    $ref: './components/paths/space/get-types.yaml'
+  /space/index:
+    $ref: './components/paths/space/create.yaml'
+  /espaco/{id}:
+    $ref: './components/paths/space/route-single-id.yaml'
+  /site/version:
+    $ref: './components/paths/site/version.yaml'
+  /site/info:
+    $ref: './components/paths/site/info.yaml'
+  /term/list/area:
+    $ref: './components/paths/term/slugs/area.yaml'
+  /term/list/funcao:
+    $ref: './components/paths/term/slugs/funcao.yaml'
+  /term/list/linguagem:
+    $ref: './components/paths/term/slugs/linguagem.yaml'
+  /term/list/tag:
+    $ref: './components/paths/term/slugs/tag.yaml'
+components:
+  schemas:
+    Agent:
+      $ref: './components/schemas/agent.yaml'
+    AgentType:
+      $ref: './components/schemas/agent-type.yaml'
+    AgentTypeGroup:
+      $ref: './components/schemas/agent-type-groups.yaml'
+    Event:
+      $ref: './components/schemas/event.yaml'
+    EventOccurrence:
+      $ref: './components/schemas/event-find-occurrences.yaml'
+    EventType:
+      $ref: './components/schemas/event-type.yaml'
+    EventTypeGroup:
+      $ref: './components/schemas/event-type-groups.yaml'
+    Opportunity:
+      $ref: './components/schemas/opportunity.yaml'
+    OpportunityType:
+      $ref: './components/schemas/opportunity-type.yaml'
+    Project:
+      $ref: './components/schemas/project.yaml'
+    ProjectType:
+      $ref: './components/schemas/project-type.yaml'
+    ProjectTypeGroup:
+      $ref: './components/schemas/project-type-groups.yaml'
+    Seal:
+      $ref: './components/schemas/seal.yaml'
+    SealType:
+      $ref: './components/schemas/seal-type.yaml'
+    SealTypeGroup:
+      $ref: './components/schemas/seal-type-groups.yaml'
+    Space:
+      $ref: './components/schemas/space.yaml'
+    SpaceType:
+      $ref: './components/schemas/space-type.yaml'
+    SpaceTypeGroup:
+      $ref: './components/schemas/space-type-group.yaml'

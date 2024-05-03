@@ -1,0 +1,25 @@
+tags:
+  - Agentes
+summary: Atualiza um agente
+description: Atualiza completamente um agente
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do agente
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/agent/patch.yaml'
+responses:
+  '200':
+    description: O agente atualizado
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/agent.yaml'
+  '404':
+    $ref: '../../responses/error/404.yaml'

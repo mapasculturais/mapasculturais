@@ -1,0 +1,7 @@
+name: 'count'
+in: query
+schema:
+  example:
+required: false
+description: Faz com que seja retornado a quantidade de registros encontrados na consulta.
+example: ''

@@ -38,7 +38,7 @@ fi
 
 if [ $BUILD_ASSETS = "1" ]; then
     cd /var/www/src
-    pnpm install --recursive 
+    pnpm install --recursive --no-lockfile
     pnpm run dev
 fi
 

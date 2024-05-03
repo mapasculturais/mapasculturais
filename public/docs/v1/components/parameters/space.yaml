@@ -1,0 +1,7 @@
+name: 'space:id'
+in: query
+schema:
+  type: string
+  example: EQ(2)
+required: false
+description: Realizar a pesquisa das ocorrências de eventos por espaço.

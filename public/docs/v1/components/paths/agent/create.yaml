@@ -1,0 +1,17 @@
+post:
+  tags:
+    - Agentes
+  summary: Cria um agente
+  description: Cria um agente
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../requestBodies/agent/post-minimal.yaml'
+  responses:
+    '200':
+      description: O agente criado
+      content:
+        application/json:
+          schema:
+            $ref: '../../schemas/agent.yaml'

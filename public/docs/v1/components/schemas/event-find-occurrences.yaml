@@ -1,0 +1,113 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Identificador único do evento
+  "@entityType":
+    type: string
+    example: event
+    description: Tipo de entidade
+  occurrence_id:
+    type: integer
+    example: 2
+    description: Identificador da ocorrência
+  event_id:
+    type: integer
+    example: 1
+    description: Identificador do evento
+  starts_on:
+    type: string
+    format: date
+    example: 2024-03-01
+    description: Data de início do evento
+  starts_at:
+    type: string
+    example: 11:26:00
+    description: Hora de início do evento
+  ends_on:
+    type: string
+    format: date
+    example: null
+    description: Data de término do evento
+  ends_at:
+    type: string
+    example: 11:26:00
+    description: Hora de término do evento
+  rule:
+    type: object
+    properties:
+      startsOn:
+        type: string
+        format: date
+        example: 2024-03-01
+        description: Data de início da regra
+      startsAt:
+        type: string
+        example: 11:26
+        description: Hora de início da regra
+      endsAt:
+        type: string
+        example: 11:26
+        description: Hora de término da regra
+      frequency:
+        type: string
+        example: once
+        description: Frequência da regra
+      description:
+        type: string
+        example: Dia 01 de Março de 2024 das 11:26 às 15:30
+        description: Descrição da regra
+      price:
+        type: string
+        example: Gratuito
+        description: Preço da regra
+      priceInfo:
+        type: string
+        example: ""
+        description: Informação de preço da regra
+      spaceId:
+        type: integer
+        example: 1
+        description: Identificador do espaço da regra
+      space:
+        type: integer
+        example: 1
+        description: Espaço da regra
+      until:
+        type: string
+        format: date
+        example: null
+        description: Data de término da regra
+      duration:
+        type: integer
+        example: 0
+        description: Duração da regra
+      day:
+        type: string
+        example: null
+        description: Dia da regra
+    required: [startsOn, startsAt, endsAt, frequency, description, price, priceInfo, spaceId, space, until, duration, day]
+    description: Regra do evento
+  space:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+        description: Identificador do espaço
+      "@entityType":
+        type: string
+        example: space
+        description: Tipo de entidade do espaço
+    required: [id, "@entityType"]
+    description: Espaço do evento
+  attendance:
+    type: string
+    example: null
+    description: Presença no evento
+  _reccurrence_string:
+    type: string
+    example: 2.2024-03-01.11:26:00..11:26:00
+    description: String de recorrência do evento
+description: Objeto de evento

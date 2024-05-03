@@ -1,0 +1,8 @@
+[submodule "src/plugins/MultipleLocalAuth"]
+	path = src/plugins/MultipleLocalAuth
+	url = https://github.com/mapasculturais/plugin-MultipleLocalAuth
+	branch = master
+[submodule "src/themes/MapasCE"]
+	path = src/themes/MapasCE
+	url = https://github.com/secultce/theme-MapasCE
+	branch = main

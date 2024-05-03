@@ -1,0 +1,56 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 101
+    description: Um id numérico que representa o Evento
+  name:
+    type: string
+    example: "Evento para teste"
+    description: O nome do Evento
+  shortDescription:
+    type: string
+    example: "texto."
+    description: Uma breve descrição do Evento.
+  longDescription:
+    type: string
+    example: "texto longo."
+    description: Uma descrição detalhada do Evento.
+  startsOn:
+    type: string
+    format: date-time
+    example: "2024-05-01T09:00:00Z"
+    description: Data e hora de início do Evento
+  endsOn:
+    type: string
+    format: date-time
+    example: "2024-05-01T17:00:00Z"
+    description: Data e hora de término do Evento
+  status:
+    type: integer
+    example: 1
+    description: Um número que representa o status do Evento.
+  categoryId:
+    type: integer
+    example: 3
+    description: O id da categoria do Evento
+  isPublic:
+    type: boolean
+    example: true
+    description: Indica se o Evento é público ou privado
+  contactEmail:
+    type: string
+    example: "contato@eventoteste.com"
+    description: E-mail de contato para o Evento
+  contactPhone:
+    type: string
+    example: "+5511999999999"
+    description: Telefone de contato para o Evento
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
+  _subsiteId:
+    type: integer
+    example: null
+    description: ID do Subsite associado ao Evento

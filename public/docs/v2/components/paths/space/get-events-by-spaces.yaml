@@ -1,0 +1,31 @@
+get:
+  tags:
+    - Espaços
+  summary: Recupera a lista de eventos pelo o espaço
+  description: Recupera a lista de eventos pelo o id do espaço
+  parameters:
+    - $ref: '../../parameters/path/id.yaml'
+  responses:
+    '200':
+      description: Um array com todos os eventos do espaço
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                      description: Um id numérico que representa o evento
+                    name:
+                      type: string
+                      example: "Individual"
+                      description: O nome do evento
+                    shortDescription:
+                      type: string
+                      example: "Evento de teste"
+                      description: Uma descrição curta do evento
+                - $ref: '../../schemas/event-occurrence.yaml'

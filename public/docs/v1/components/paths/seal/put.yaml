@@ -1,0 +1,30 @@
+tags:
+  - Selos
+summary: Atualiza um selo
+description: Atualiza um selo
+parameters:
+  - in: put
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do selo
+requestBody:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Selo teste
+            description: Nome do selo
+responses:
+  '200':
+    description: O selo atualizado
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/seal.yaml'
+  '404':
+    $ref: '../../responses/error/404.yaml'

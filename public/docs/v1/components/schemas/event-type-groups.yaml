@@ -1,0 +1,14 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Identificador do grupo de tipos de eventos.
+  name:
+    type: string
+    example: Tipo de Evento
+    description: Nome do grupo.
+  types:
+    type: array
+    items:
+      $ref: './event-type.yaml'

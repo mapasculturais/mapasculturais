@@ -1,0 +1,10 @@
+get:
+  tags:
+    - Termos
+  summary: Lista os slugs de areas
+  description: Lista os slugs de areas de interesse
+  responses:
+    '200':
+      $ref: '../../../responses/term/slugs/area.yaml'
+    '404':
+      $ref: '../../../responses/error/404.yaml'

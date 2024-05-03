@@ -18,7 +18,7 @@ $this->import('
 
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
-    ['label' => i::__('Agentes'), 'url' => $app->createUrl('agents')],
+    ['label' => i::__('Agentes'), 'url' => $app->createUrl('agentes')],
 ]; 
 ?>
 <search page-title="<?php i::esc_attr_e('Agentes') ?>" entity-type="agent" :initial-pseudo-query="{'term:area':[]}">

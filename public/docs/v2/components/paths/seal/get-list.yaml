@@ -1,0 +1,21 @@
+get:
+  tags:
+    - Selos
+  summary: Recupera a lista de selos
+  description: Recupera a lista de selos
+  responses:
+    '200':
+      description: Um array com todos os selos
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: '../../schemas/seal.yaml'
+                - type: object
+                  properties:
+                    '@entityType':
+                      type: string
+                      example: seal
+                      description: Um texto que representa qual a entity é retornada

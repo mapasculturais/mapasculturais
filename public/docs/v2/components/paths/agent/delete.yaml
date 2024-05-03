@@ -1,0 +1,11 @@
+tags:
+  - Agentes
+summary: Apaga um agente
+description: Apaga um agente
+parameters:
+  - $ref: '../../parameters/path/id.yaml'
+responses:
+  '204':
+    description: O agente foi excluído com sucesso.
+  '404':
+    $ref: '../../responses/error/404.yaml'

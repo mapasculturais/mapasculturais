@@ -1,0 +1,6 @@
+tags:
+  - Eventos
+patch:
+  $ref: './patch.yaml'
+delete:
+  $ref: './delete.yaml'

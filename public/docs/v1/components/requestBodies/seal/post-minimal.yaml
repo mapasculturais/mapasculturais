@@ -1,0 +1,18 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Selo teste
+    description: Nome do Selo
+  shortDescription:
+    type: string
+    example: apenas um Selo teste
+    description: Uma breve descrição do Selo
+  validPeriod:
+    type: integer
+    example: 1
+    description: Período de validade do selo
+  owner:
+    type: integer
+    example: 1
+    description: Usuario proprietário do selo

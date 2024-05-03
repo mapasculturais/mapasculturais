@@ -1,0 +1,221 @@
+description: Sucesso
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        "@entityType":
+          type: string
+          example: "agent"
+        id:
+          type: integer
+          example: 3
+        name:
+          type: string
+          example: "teste"
+        publicLocation:
+          type: boolean
+          example: false
+        location:
+          type: object
+          properties:
+            latitude:
+              type: number
+              example: 0
+            longitude:
+              type: number
+              example: 0
+        shortDescription:
+          type: string
+          example: "teste"
+        longDescription:
+          type: string
+          example: null
+        createTimestamp:
+          type: object
+          properties:
+            date:
+              type: string
+              example: "2024-03-04 14:01:32.000000"
+            timezone_type:
+              type: integer
+              example: 3
+            timezone:
+              type: string
+              example: "Etc/GMT+3"
+        status:
+          type: integer
+          example: 1
+        parent:
+          type: string
+          example: null
+        userId:
+          type: integer
+          example: 3
+        updateTimestamp:
+          type: object
+          properties:
+            date:
+              type: string
+              example: "2024-04-01 16:29:06.000000"
+            timezone_type:
+              type: integer
+              example: 3
+            timezone:
+              type: string
+              example: "Etc/GMT+3"
+        subsite:
+          type: string
+          example: null
+        escolaridade:
+          type: string
+          example: null
+        pessoaDeficiente:
+          type: string
+          example: null
+        localizacao:
+          type: string
+          example: null
+        emailPublico:
+          type: string
+          example: null
+        telefonePublico:
+          type: string
+          example: null
+        En_Pais:
+          type: string
+          example: "BR"
+        site:
+          type: string
+          example: null
+        facebook:
+          type: string
+          example: null
+        twitter:
+          type: string
+          example: null
+        instagram:
+          type: string
+          example: null
+        linkedin:
+          type: string
+          example: null
+        vimeo:
+          type: string
+          example: null
+        spotify:
+          type: string
+          example: null
+        youtube:
+          type: string
+          example: null
+        pinterest:
+          type: string
+          example: null
+        sentNotification:
+          type: string
+          example: null
+        type:
+          type: integer
+          example: 1
+        terms:
+          type: object
+          properties:
+            tag:
+              type: array
+              items:
+                type: string
+              example: []
+            area:
+              type: array
+              items:
+                type: string
+              example: ["Música"]
+            funcao:
+              type: array
+              items:
+                type: string
+              example: []
+        controllerId:
+          type: string
+          example: "agent"
+        deleteUrl:
+          type: string
+          example: "http://localhost/agent/apaga/3/"
+        editUrl:
+          type: string
+          example: "http://localhost/edicao-de-agente/3/"
+        singleUrl:
+          type: string
+          example: "http://localhost/agente/3/"
+        lockedFields:
+          type: array
+          items:
+            type: string
+          example: []
+        currentUserPermissions:
+          type: object
+          properties:
+            "@control":
+              type: boolean
+              example: false
+            create:
+              type: boolean
+              example: true
+            changeUserProfile:
+              type: boolean
+              example: false
+            changeType:
+              type: boolean
+              example: false
+            remove:
+              type: boolean
+              example: false
+            destroy:
+              type: boolean
+              example: false
+            changeOwner:
+              type: boolean
+              example: false
+            archive:
+              type: boolean
+              example: false
+            view:
+              type: boolean
+              example: true
+            modify:
+              type: boolean
+              example: false
+            _control:
+              type: boolean
+              example: false
+            viewPrivateFiles:
+              type: boolean
+              example: false
+            viewPrivateData:
+              type: boolean
+              example: false
+            createAgentRelation:
+              type: boolean
+              example: false
+            createAgentRelationWithControl:
+              type: boolean
+              example: false
+            removeAgentRelation:
+              type: boolean
+              example: false
+            removeAgentRelationWithControl:
+              type: boolean
+              example: false
+            createSealRelation:
+              type: boolean
+              example: false
+            removeSealRelation:
+              type: boolean
+              example: false
+            publish:
+              type: boolean
+              example: false
+            unarchive:
+              type: boolean
+              example: false

@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Agentes
+  summary: Recupera a lista de tipos de agentes
+  description: Recupera a lista de tipos de agentes
+  responses:
+    '200':
+      description: Um array com os vários de tipos que um agente pode ter
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/agent-type.yaml'

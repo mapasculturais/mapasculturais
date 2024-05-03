@@ -74,6 +74,7 @@ COPY config /var/www/config
 COPY public /var/www/html
 COPY scripts /var/www/scripts
 COPY src /var/www/src
+COPY app /var/www/app
 COPY var /var/www/var
 
 WORKDIR /var/www/src/

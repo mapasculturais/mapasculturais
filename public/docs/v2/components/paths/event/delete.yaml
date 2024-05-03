@@ -1,0 +1,11 @@
+tags:
+  - Eventos
+summary: Apaga um evento
+description: Apaga um evento específico usando seu ID.
+parameters:
+  - $ref: '../../parameters/path/id.yaml'
+responses:
+  '200':
+    description: "[]"
+  '400':
+    $ref: '../../responses/event/error-delete.yaml'

@@ -1,0 +1,48 @@
+tags:
+  - Agentes
+summary: Apaga um agente
+description: Apaga um agente
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do agente
+responses:
+  '200':
+    description: Informações sobre o agente apagado
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            '@entityType':
+              type: string
+              example: agent
+              description: Tipo de entidade
+            id:
+              type: integer
+              example: 5
+              description: Um id numérico que representa o agente
+            name:
+              type: string
+              example: "Nome do agente"
+              description: Um texto que representa o nome do agente
+            type:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                  description: ID do tipo de agente (1 - Individual, 2 - Coletivo)
+                name:
+                  type: string
+                  example: "Individual"
+                  description: Nome do tipo de agente
+            status:
+              type: integer
+              example: -10
+              description: Status do agente
+  '404':
+    $ref: '../../responses/error/404.yaml'

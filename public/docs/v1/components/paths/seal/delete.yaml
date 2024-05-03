@@ -1,0 +1,41 @@
+tags:
+  - Selos
+summary: Apaga um selo
+description: Apaga um selo
+parameters:
+  - in: path
+    name: id
+    schema:
+      type: integer
+    required: true
+    description: Identificador do selo
+responses:
+  '200':
+    description: Informações sobre o objeto apagado
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            '@entityType':
+              type: string
+              example: seal
+              description: Tipo de entidade
+            id:
+              type: integer
+              example: 3
+              description: Um id numérico que representa o selo
+            name:
+              type: string
+              example: selo teste
+              description: Um texto que representa o nome do selo
+            type:
+              type: integer
+              example: null
+              description: Tipo do selo
+            status:
+              type: integer
+              example: -10
+              description: Status do selo
+  '404':
+    $ref: '../../responses/error/404.yaml'

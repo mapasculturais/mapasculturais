@@ -1,0 +1,7 @@
+name: '@from'
+in: query
+schema:
+  type: string
+  format: date
+description: Data inicial do período.
+example: '2021-01-01'

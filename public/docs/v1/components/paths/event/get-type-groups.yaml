@@ -1,0 +1,14 @@
+get:
+  tags:
+    - Eventos
+  summary: Recupera uma lista de tipos de eventos de forma agrupada
+  description: Recupera uma lista de tipos de eventos de forma agrupada
+  responses:
+    '200':
+      description: Sucess
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../../schemas/event-type-groups.yaml'

@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Eventos
+  summary: Recupera a lista de eventos de um espaço
+  description: Busca os eventos de um espaço.
+  parameters:
+    - $ref: '../../parameters/space-id.yaml'
+    - $ref: '../../parameters/from.yaml'
+    - $ref: '../../parameters/to.yaml'
+    - $ref: '../../parameters/count.yaml'
+  responses:
+    '200':
+      description: Lista de eventos do espaço.
+      content:
+        application/json:
+          schema:
+            type: array
+            example: []
+    '404':
+      $ref: '../../responses/error/404.yaml'

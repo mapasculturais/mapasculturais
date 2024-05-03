@@ -1,0 +1,17 @@
+post:
+  tags:
+    - Agentes
+  summary: Restaura um agente
+  description: Restaura um agente após ser deletado
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: integer
+      required: true
+      description: Identificador do agente
+  responses:
+    '200':
+      $ref: '../../responses/agent/undelete.yaml'
+    '404':
+      $ref: '../../responses/error/404.yaml'

@@ -1,0 +1,27 @@
+{
+  "name": "mapacultural",
+  "version": "1.0.0",
+  "description": "[![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)",
+  "main": "cypress.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/secultce/mapacultural.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/secultce/mapacultural/issues"
+  },
+  "homepage": "https://github.com/secultce/mapacultural#readme",
+  "devDependencies": {
+    "cypress": "^9.0.0"
+  }
+}
