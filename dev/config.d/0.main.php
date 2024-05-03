@@ -4,10 +4,10 @@ $__process_assets = false;
 
 return [
     /* MAIN */
-    'themes.active' => 'MapasCE',
+    'themes.active' => 'MapasCulturais\Themes\BaseV2',
     'app.mode' => $_ENV['APP_MODE'],
     'doctrine.isDev' => false, // deixe true somente se estiver trabalhando nos mapeamentos das entidades
-    
+
     /* SELOS */
     'app.verifiedSealsIds' => [1],
 
@@ -19,12 +19,12 @@ return [
         'mergeStyles' => $__process_assets,
 
         'process.js' => !$__process_assets ?
-                'cp {IN} {OUT}':
-                'terser {IN} --source-map --output {OUT} ',
+            'cp {IN} {OUT}' :
+            'terser {IN} --source-map --output {OUT} ',
 
         'process.css' => !$__process_assets ?
-                'cp {IN} {OUT}':
-                'uglifycss {IN} > {OUT}',
+            'cp {IN} {OUT}' :
+            'uglifycss {IN} > {OUT}',
 
         'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
     ]),
