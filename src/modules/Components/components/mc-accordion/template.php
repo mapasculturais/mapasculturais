@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 <section  class="mc-accordion">
-    <header @click="toggle()" class="mc-accordion__header">
+    <header @click="toggle()" :class="{ 'mc-accordion__header--active': active }" class="mc-accordion__header">
         <mc-title tag="h3" class="bold mc-accordion__title">
             <slot name="title"></slot>
         </mc-title>
