@@ -24,8 +24,7 @@ $this->import('
         <p><?php  i::_e(' Adicione Agentes que darão suporte à essa Oportunidade.')?></p>
     </div>
 
-    <select-entity type="agent" @select="addAgent($event)" permissions="" select="id,name,files.avatar,terms,type"  openside="down-right">
-        <!-- :query="queries[groupName]" -->
+    <select-entity type="agent" @select="addAgent($event)" permissions="" :query="query" select="id,name,files.avatar,terms,type" openside="down-right">
         <template #button="{ toggle }">
             <button class="button button--icon button--primary" @click="toggle()">
                 <mc-icon name="add"></mc-icon>
