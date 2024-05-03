@@ -33,7 +33,7 @@ app.component('opportunity-support-config', {
 
     computed: {
         relations() {
-            return this.entity.agentRelations["@support"];
+            return this.entity.agentRelations["@support"] || [];
         },
         
         query() {
