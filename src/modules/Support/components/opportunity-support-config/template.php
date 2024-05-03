@@ -41,40 +41,35 @@ $this->import('
                 <mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{relation.agent.name}}</mc-title>
             </div>
             <div class="opportunity-support-config__agent-actions">
-                <mc-modal title="<?= i::__('Campos que o Agente pode editar') ?>" classes="complaint-sugestion__modal">
+                <mc-modal title="<?= i::__('Campos que o Agente pode editar') ?>">
                     <template #actions="modal">
-                        <button class="button button--primary" @click="send(modal)"><?= i::__('Concluir') ?></button>
+                        <button class="button button--primary" @click="send(modal,relation)"><?= i::__('Concluir') ?></button>
                     </template>
                     <div class="grid-12">
-                        <input type="checkbox" v-model="selectAll"><?php i::_e("Selecionar todos");?>
-                        <mc-select  @change-option="optionHandlers">
-                            <option value=""><?php i::_e("Selecione"); ?></option>
-                            <option value=""><?php i::_e("Sem permissão"); ?></option>
-                            <option value="ro"><?php i::_e("Visualizar"); ?></option>
-                            <option value="rw"><?php i::_e("Modificar"); ?></option>
+                        <input type="checkbox" @change="toggleSelectAll($event)"  v-model="selectAll"><?php i::_e("Selecionar todos"); ?>
+                        <mc-select :options="permissions" :default-value="allPermissions" small hide-filter @change-option="setAllPerssions($event)">
                         </mc-select>
                     </div>
                     <div v-for="(field, index) in fields" :key="index">
-                        <input type="checkbox" v-model="field.selected"><?php i::_e('Título do campo inserido pelo usuário'); ?>
-                        <mc-select  @change-option="optionHandler">
-                            <option value=""><?php i::_e("Selecione"); ?></option>
-                            <option value=""><?php i::_e("Sem permissão"); ?></option>
-                            <option value="ro"><?php i::_e("Visualizar"); ?></option>
-                            <option value="rw"><?php i::_e("Modificar"); ?></option>
+                        <label>
+                            <input v-model="selectedFields[field.ref]" :checked="selectAll" type="checkbox"/>
+                            {{ field.title }}
+                        </label>
+                        <mc-select :options="permissions" :default-value="relation.metadata?.registrationPermissions[field.ref]" small hide-filter @change-option="setPerssion($event,field)">
                         </mc-select>
                     </div>
                     <template #button="modal">
-                        <button  type="button" @click="modal.open(); initFormData('sendSuggestionMessage')" class="button button--primary button--icon"> <?= i::__("Gerenciar permissões") ?> </button>
+                        <button type="button" @click="modal.open()" class="button button--primary button--icon"> <?= i::__("Gerenciar permissões") ?> </button>
                     </template>
                 </mc-modal>
                 <mc-confirm-button @confirm="removeAgent(relation.agent)">
                     <template #button="modal">
                         <button class="button button--delete" @click="modal.open()">
-                            <mc-icon name="trash"></mc-icon><?= i::__("Excluir") ?> 
+                            <mc-icon name="trash"></mc-icon><?= i::__("Excluir") ?>
                         </button>
                     </template>
                     <template #message>
-                        <?= i::__("Deseja remover o agente relacionado?");?>
+                        <?= i::__("Deseja remover o agente relacionado?"); ?>
                     </template>
                 </mc-confirm-button>
             </div>
