@@ -1,6 +1,12 @@
 app.component('opportunity-support-config', {
     template: $TEMPLATES['opportunity-support-config'],
 
+    setup() {
+        const messages = useMessages();
+        const text = Utils.getTexts('opportunity-support-config')
+        return { text, messages }
+    },
+
     props: {
         entity: {
             type: Entity,
