@@ -20,8 +20,8 @@ $this->import('
 
 <div>
     <div>
-        <h2>Configuração de suporte</h2>
-        <p>Adicione Agentes que darão suporte à essa Oportunidade.</p>
+        <h2><?php i::_e('Configuração de suporte')?></h2>
+        <p><?php  i::_e(' Adicione Agentes que darão suporte à essa Oportunidade.')?></p>
     </div>
 
     <select-entity type="agent" @select="addAgent($event)" permissions="" select="id,name,files.avatar,terms,type"  openside="down-right">
