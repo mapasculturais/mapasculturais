@@ -1,0 +1,35 @@
+services:
+  adminer:
+    image: adminer
+    ports:
+      - 8888:8080
+  roadrunner:
+    build:
+      context: ./containers/roadrunner
+      args:
+        RR_VERSION: ${RR_VERSION}
+        PHP_IMAGE_VERSION: ${PHP_IMAGE_VERSION}
+    ports:
+      - 8080:8080
+    environment:
+      RR_VERSION: ${RR_VERSION}
+      APP_MODE: development
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - ./containers/roadrunner/config/.rr.yaml:/etc/rr.yaml:ro
+
+  db:
+    image: postgis/postgis:14-master
+    environment:
+      - POSTGRES_PASSWORD=mapas
+      - POSTGRES_USER=mapas
+      - POSTGRES_DB=mapas
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis_data:/var/lib/postgresql/data
+      - ./dev/db:/docker-entrypoint-initdb.d
+
+volumes:
+  postgis_data:
