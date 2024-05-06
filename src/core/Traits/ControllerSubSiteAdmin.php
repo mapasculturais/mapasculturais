@@ -6,7 +6,7 @@ use MapasCulturais\App;
 /**
  * Implements actions to work with subsite administrators
  */
-trait ControllerSubsiteAdmin{
+trait ControllerSubSiteAdmin{
 
     /**
      * This controller uses subsite
