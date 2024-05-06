@@ -466,6 +466,7 @@ class App {
         $this->persistPCachePendingQueue();
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
         $this->applyHookBoundTo($this, 'slim.after');
+        return $this->response;
     }
 
     /**
@@ -732,6 +733,7 @@ class App {
      * @return void 
      */
     protected function _initSubsite() {
+        return ;
         $domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
 
         if(($pos = strpos($domain, ':')) !== false){
