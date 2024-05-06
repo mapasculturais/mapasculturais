@@ -13,15 +13,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class SpaceApiController
 {
     private SpaceRepository $repository;
-    private SpaceService $spaceService;
     private SpaceRequest $spaceRequest;
+    private SpaceService $spaceService;
 
     public function __construct()
     {
         $this->repository = new SpaceRepository();
-
-        $this->spaceService = new SpaceService();
         $this->spaceRequest = new SpaceRequest();
+        $this->spaceService = new SpaceService();
     }
 
     public function getList(): JsonResponse
@@ -43,6 +42,26 @@ class SpaceApiController
         try {
             $spaceData = $this->spaceRequest->validatePost();
             $space = $this->spaceService->create((object) $spaceData);
+
+            $responseData = [
+                'id' => $space->getId(),
+                'name' => $space->getName(),
+                'shortDescription' => $space->getShortDescription(),
+                'terms' => $space->getTerms(),
+                'type' => $space->getType(),
+            ];
+
+            return new JsonResponse($responseData, 201);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], 400);
+        }
+    }
+
+    public function patch(array $params): JsonResponse
+    {
+        try {
+            $spaceData = $this->spaceRequest->validateUpdate();
+            $space = $this->spaceService->update((int) $params['id'], (object) $spaceData);
 
             $responseData = [
                 'id' => $space->getId(),
