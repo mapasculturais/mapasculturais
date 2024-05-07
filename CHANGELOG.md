@@ -4,6 +4,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.7] - 2024-05-07
+### Correções
+-  Corrige erro na criação de ocorrencias onde o importador de eventos salva os dias das ocorrencias errado
+
 ## [5.7.6] - 2023-09-12
 ### Melhorias
 -  Permite que a busca de agentes no gerenciador de usuários faça busca pelo nomeCompleto, nomeSocial, CPF e agentes ainda em rascunho
