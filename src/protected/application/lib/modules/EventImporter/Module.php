@@ -40,13 +40,13 @@ class Module extends \MapasCulturais\Module
                 i::__('1')
             ],
             'week_days' => [
+                'SUNDAY' => i::__('dom'),
                 'MODAY' => i::__('seg'),
                 'TUESDAY' => i::__('ter'),
                 'WEDNESDAY' => i::__('qua'),
                 'THURSDAY' => i::__('qui'),
                 'FRIDAY' => i::__('sex'),
-                'SATURDAY' => i::__('sab'),
-                'SUNDAY' => i::__('dom')
+                'SATURDAY' => i::__('sab')
             ],
             'use_endson' => [i::__('semanal'),i::__('diariamente'),'weekly','daily'],
             'clear_ocurrence_ref' => [i::__('limpar ocorrencias'),i::__('apagar ocorrencias'), i::__('zerar ocorrencias'), i::__('apagar'), i::__('limpar'), 'clear'],
