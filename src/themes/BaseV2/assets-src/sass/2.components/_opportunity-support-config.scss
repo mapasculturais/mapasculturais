@@ -1,0 +1,115 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-support-config {
+    padding: size(20);
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: size(14);
+        padding-bottom: size(20);
+    }
+
+    &__add-agents {
+        padding-bottom: size(20);
+    }
+
+    &__agents {
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
+    }
+
+    &__agent {
+        display: grid;
+        grid-template-columns: calc(60% - size(16)) calc(40% - size(16));
+        gap: size(24);
+        background-color: var(--mc-white);
+        min-height: size(111);
+        height: 100%;
+        padding: size(20);
+
+        @media (max-width: 600px) {
+            grid-template-columns: 1fr;
+        }
+
+        &-info {
+            display: flex;
+            align-items: center;
+            gap: size(24);
+        }
+
+        &-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: size(24);
+
+            @media (max-width: 400px) {
+                display: grid;
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
+
+            .modal-content {
+                max-width: size(1170);
+                width: 100%;
+                padding: size(20);
+
+                .modal__content {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .modal__action {
+                    justify-content: flex-end;
+                }
+            }
+                
+        }
+    }
+
+    &__modal-select-header {
+        display: flex;
+        justify-content: space-between;
+        padding: size(16) 0;
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+
+        .title__header {
+            display: flex;
+            align-items: center;
+            gap: size(8);
+            justify-content: center;
+        }
+    }
+
+    &__modal-select {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: size(20);
+        min-height: size(100);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+
+        .title__select {
+            display: flex;
+            align-items: center;
+            gap: size(48);
+            justify-content: center;
+
+            @media (max-width: 400px) {
+                gap: size(8);
+            }
+        }
+    }
+
+    &__checkbox {
+        width: size(16);
+        height: size(16);
+    }
+
+    .mc-select {
+        max-width: size(166);
+        width: 100%;
+    }
+}
