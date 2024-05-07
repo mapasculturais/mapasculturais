@@ -529,7 +529,7 @@ msgstr "Página web"
 #: application/conf/space-types.php:207 application/conf/space-types.php:214
 #: application/conf/space-types.php:227 application/conf/space-types.php:234
 #: application/conf/space-types.php:241 application/conf/space-types.php:248
-msgid "A url informada é inválida."
+msgid "A URL informada é inválida. Informe no formato https://www.site.com e tente novamente."
 msgstr "La url ingresada no es válida."
 
 #: application/conf/agent-types.php:416 application/conf/event-types.php:70

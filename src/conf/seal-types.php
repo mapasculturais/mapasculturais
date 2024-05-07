@@ -11,7 +11,7 @@ return array(
     	'site' => array(
     			'label' => \MapasCulturais\i::__('Site'),
     			'validations' => array(
-    				"v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
+    				"v::url()" => \MapasCulturais\i::__("A URL informada é inválida. Informe no formato https://www.site.com e tente novamente.")
     			)
     	),
     ),

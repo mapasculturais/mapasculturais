@@ -554,7 +554,7 @@ msgstr ""
 #: conf/space-types.php:200 conf/space-types.php:207 conf/space-types.php:214
 #: conf/space-types.php:227 conf/space-types.php:234 conf/space-types.php:240
 #: conf/space-types.php:247 conf/space-types.php:254
-msgid "A url informada é inválida."
+msgid "A URL informada é inválida. Informe no formato https://www.site.com e tente novamente."
 msgstr ""
 
 #: conf/agent-types.php:438 conf/event-types.php:70
