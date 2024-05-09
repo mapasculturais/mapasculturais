@@ -66,6 +66,7 @@ app.component('entity-table', {
         hideFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
+        rawProcessor: Function,
     },
 
     created() {
