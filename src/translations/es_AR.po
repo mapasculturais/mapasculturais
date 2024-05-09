@@ -1897,7 +1897,7 @@ msgstr "Barrio"
 #: src/conf/agent-types.php:428 src/conf/event-types.php:68
 #: src/conf/opportunity-types.php:97 src/conf/project-types.php:60
 #: src/conf/seal-types.php:14 src/conf/space-types.php:436
-msgid "A url informada é inválida."
+msgid "A URL informada é inválida. Informe no formato https://www.site.com e tente novamente."
 msgstr "La url ingresada no es válida."
 
 #: src/conf/agent-types.php:434 src/conf/event-types.php:73

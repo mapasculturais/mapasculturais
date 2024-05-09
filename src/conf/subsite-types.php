@@ -126,7 +126,7 @@ return array(
             'label' => 'URL',
             'type' => 'text',
             'validations' => array(
-                'v::url()' => 'A URL informada é inválida.'
+                'v::url()' => 'A URL informada é inválida. Informe no formato https://www.site.com e tente novamente.'
             )
         ),
         'entidades_habilitadas' => array(
