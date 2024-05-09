@@ -31,6 +31,12 @@ class OpportunityRepository extends AbstractRepository
         return $this->repository->find($id);
     }
 
+    public function save(Opportunity $opportunity): void
+    {
+        $this->mapaCulturalEntityManager->persist($opportunity);
+        $this->mapaCulturalEntityManager->flush();
+    }
+
     public function findOpportunitiesByAgentId(int $agentId): array
     {
         $queryBuilder = $this->getEntityManager()

@@ -49,6 +49,8 @@ paths:
     $ref: './components/paths/event/get-type-list.yaml'
   /opportunities:
     $ref: './components/paths/opportunity/get-list.yaml'
+  post:
+    $ref: './components/paths/opportunity/post.yaml'
   /opportunities/{id}:
     $ref: './components/paths/opportunity/get-one.yaml'
   /projects:
