@@ -591,7 +591,7 @@ class Event extends \MapasCulturais\Entity
         $this->shortDescription = $shortDescription;
     }
 
-    public function getLongDescription(): string
+    public function getLongDescription(): ?string
     {
         return $this->longDescription;
     }
