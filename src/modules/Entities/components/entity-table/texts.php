@@ -21,5 +21,13 @@ return [
     'selecionadas' => i::__('Selecionadas'),
     'suplentes' => i::__('Suplentes'),
 
+    // Status payments
+    'pendente' => i::__('Pendente'),
+    'em processo' => i::__('Em processo'),
+    'disponivel' => i::__('Disponível'),
+    'falha' => i::__('Falha'),
+    'exportado' => i::__('Exportado'),
+    'pago' => i::__('Pago'),
+
     'palavras-chave' => i::__('Palavras-chave'),
 ];
