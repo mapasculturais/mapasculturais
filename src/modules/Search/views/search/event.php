@@ -11,8 +11,7 @@ $this->import('
     mc-breadcrumb
     mc-tab
     mc-tabs 
-    search
-    search-list
+    search 
     search-filter-event
     search-list-event 
     search-map-event 
@@ -41,11 +40,7 @@ $this->breadcrumb = [
             </template>
             <mc-tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
                 <div class="search__tabs--list">
-                <search-list :pseudo-query="pseudoQuery" type="event" select="name,type,shortDescription,files.avatar,seals,endereco,terms" >
-                        <template #filter>
-                            <search-filter-event :pseudo-query="pseudoQuery"></search-filter-event>
-                        </template>
-                </search-list>
+                    <search-list-event :pseudo-query="pseudoQuery"></search-list-event>
                 </div>
             </mc-tab>
             <mc-tab icon="map" label="<?php i::esc_attr_e('Mapa') ?>"  slug="map">
