@@ -2,5 +2,6 @@
 
 return [
     'plugins' => [
+        "MultipleLocalAuth"
     ]
 ];
