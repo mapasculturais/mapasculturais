@@ -44,6 +44,7 @@ class ProjectApiControllerTest extends AbstractTestCase
         $this->assertEquals($data['name'], $content['name']);
         $this->assertEquals($data['shortDescription'], $content['shortDescription']);
         $this->assertEquals($data['type'], $content['type']);
+    }
 
     public function testDeleteProjectShouldReturnSuccess(): void
     {
