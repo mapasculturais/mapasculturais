@@ -42,6 +42,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige método para limpeza de hooks
 - resolve aplicar filtros para pesquisa de eventos
 
+## [7.3.53] - 2024-05-13
+### Correçoes
+- Ajusta o enfileiramento da folha de estilo que controla os termos de uso e privacidade
+
 ## [7.3.52] - 2024-05-08
 ### Correçoes
 - Corrige erro que impedia o carregamento das categorias no filtro das tabelas de inscrições e avaliações
