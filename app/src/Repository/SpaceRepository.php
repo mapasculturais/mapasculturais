@@ -19,6 +19,8 @@ class SpaceRepository extends AbstractRepository
 
     public function save(Space $space): void
     {
+        $space->saveMetadata();
+        $space->saveTerms();
         $this->mapaCulturalEntityManager->persist($space);
         $this->mapaCulturalEntityManager->flush();
     }
@@ -31,7 +33,7 @@ class SpaceRepository extends AbstractRepository
             ->getArrayResult();
     }
 
-    public function find(int $id): Space
+    public function find(int $id): ?Space
     {
         return $this->repository->find($id);
     }

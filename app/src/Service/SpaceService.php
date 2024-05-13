@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Exception\ResourceNotFoundException;
 use App\Repository\SpaceRepository;
 use MapasCulturais\Entities\Space;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -49,9 +50,16 @@ class SpaceService
         return $space;
     }
 
+    /**
+     * @throws ResourceNotFoundException
+     */
     public function update($id, $data): Space
     {
         $spaceFromDB = $this->repository->find($id);
+
+        if (null === $spaceFromDB || -10 === $spaceFromDB->status) {
+            throw new ResourceNotFoundException('Space not found');
+        }
 
         $spaceUpdated = $this->serializer->denormalize($data, Space::class, null, ['object_to_populate' => $spaceFromDB]);
 

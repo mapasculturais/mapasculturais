@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\DataFixtures\SpaceFixtures;
+use App\Tests\fixtures\SpaceTestFixtures;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 class SpaceApiControllerTest extends AbstractTestCase
 {
     public function testGetSpacesShouldRetrieveAList(): void
@@ -58,5 +63,43 @@ class SpaceApiControllerTest extends AbstractTestCase
 
         $response = $this->client->request('GET', '/api/v2/spaces/'.$spaceId);
         $this->assertEquals(404, $response->getStatusCode());
+    }
+
+    public function testUpdate(): void
+    {
+        $requestBody = SpaceTestFixtures::partial();
+        $url = sprintf('/api/v2/spaces/%s', SpaceFixtures::SPACE_ID_3);
+
+        $response = $this->client->request(Request::METHOD_PATCH, $url, [
+            'headers' => ['Content-Type' => 'application/json'],
+            'body' => json_encode($requestBody),
+        ]);
+
+        $content = json_decode($response->getContent(), true);
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertIsArray($content);
+        foreach (array_keys($requestBody) as $key) {
+            $this->assertEquals($requestBody[$key], $content[$key]);
+        }
+    }
+
+    public function testUpdateNotFoundedResource(): void
+    {
+        $requestData = json_encode(SpaceTestFixtures::partial());
+        $url = sprintf('/api/v2/spaces/%s', 1024);
+
+        $response = $this->client->request(Request::METHOD_PATCH, $url, [
+            'headers' => ['Content-Type' => 'application/json'],
+            'body' => $requestData,
+        ]);
+
+        $error = [
+            'error' => 'Space not found',
+        ];
+
+        $content = json_decode($response->getContent(false), true);
+        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertIsArray($content);
+        $this->assertEquals($error, $content);
     }
 }
