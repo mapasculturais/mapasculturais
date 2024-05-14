@@ -61,4 +61,16 @@ class OpportunityApiController
 
         return new JsonResponse($opportunities);
     }
+
+    public function delete(array $params): JsonResponse
+    {
+        try {
+            $opportunity = $this->opportunityRequest->validateDelete($params);
+            $this->repository->softDelete($opportunity);
+
+            return new JsonResponse([], Response::HTTP_NO_CONTENT);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }

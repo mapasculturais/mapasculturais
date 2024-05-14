@@ -38,4 +38,19 @@ class OpportunityRequest
 
         return $data;
     }
+
+    public function validateDelete(array $params): Opportunity
+    {
+        if (!isset($params['id'])) {
+            throw new Exception('ID is required.');
+        }
+
+        $opportunity = $this->repository->find((int) $params['id']);
+
+        if (!$opportunity || $opportunity->status === -10) {
+            throw new Exception('Opportunity not found or already deleted.');
+        }
+
+        return $opportunity;
+    }
 }

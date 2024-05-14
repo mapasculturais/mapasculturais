@@ -49,4 +49,10 @@ class OpportunityRepository extends AbstractRepository
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
+
+    public function softDelete(Opportunity $opportunity): void
+    {
+        $opportunity->setStatus(-10);
+        $this->save($opportunity);
+    }
 }

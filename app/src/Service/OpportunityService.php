@@ -37,7 +37,6 @@ class OpportunityService
         $opportunity->setName($data['title']);
         $opportunity->terms['area'] = $data['terms']['area'];
 
-
         if (isset($data['project'])) {
             $opportunity->setObjectType("MapasCulturais\Entities\Project");
             $opportunity->setProject($data['project']);

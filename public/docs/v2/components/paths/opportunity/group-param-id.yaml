@@ -1,0 +1,6 @@
+tags:
+  - Oportunidade:
+get:
+  $ref: './get-one.yaml'
+delete:
+  $ref: './delete.yaml'
