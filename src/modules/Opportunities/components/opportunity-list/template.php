@@ -22,7 +22,11 @@ $this->import('
                     <div class="col-12 grid-12 opportunity-list__card">
                         <div class="col-12 opportunity-list__cardheader">
                             <mc-avatar :entity="opp" size="xsmall"></mc-avatar>
-                            <p class="opportunity-list__name opportunity__color bold"> {{opp.name}}</p>
+                            <p class="opportunity-list__name opportunity__color bold"> 
+                                <mc-link :entity="opp" class="opportunity-list__link primary__color bold">
+                                    {{opp.name}}
+                                </mc-link>
+                            </p>
                         </div>
                         <div v-if="!opp.isLastPhase && opp.registrationFrom.isFuture()" class="col-12">
                             <p v-if="opp.registrationTo" class="semibold opportunity-list__registration"> <?= i::__('Inscrições de') ?> <span v-if="opp.registrationFrom"> {{opp.registrationFrom.date('2-digit year')}} às {{opp.registrationFrom.hour('2-digit')}}h </span> <?= i::__('até') ?> {{opp.registrationTo.date('2-digit year')}} às {{opp.registrationTo.hour('2-digit')}}h</p>
