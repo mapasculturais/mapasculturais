@@ -24,5 +24,4 @@ jobs:
             git pull
             cd ${{ secrets._STACK_PATH }}
             docker compose -f ${{ secrets._STACK_FILE }} stop
-            docker compose -f ${{ secrets._STACK_FILE }} build
             docker compose -f ${{ secrets._STACK_FILE }} up -d
