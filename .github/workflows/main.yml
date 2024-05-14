@@ -21,7 +21,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets._PROJECT_PATH }}
-            git pull
+            git pull origin main
             cd ${{ secrets._STACK_PATH }}
             docker compose -f ${{ secrets._STACK_FILE }} stop
             docker compose -f ${{ secrets._STACK_FILE }} up -d
