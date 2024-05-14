@@ -42,6 +42,26 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige método para limpeza de hooks
 - resolve aplicar filtros para pesquisa de eventos
 
+## [7.3.55] - 2024-05-14
+### Correçoes
+- Faz com que na single perfil, seja exibito os projetos relacionados 
+- Corrije erro que impede a exibição de projetos na listagem devido a falta do tipo
+
+### Melhorias
+- Na single do agente, ordena as oportunidades vinculadas pela data de encerramento de forma ascendente
+
+## [7.3.54] - 2024-05-13
+### Correçoes
+- Aplica internecionalização na tela de edição de eventos
+
+## [7.3.53] - 2024-05-13
+### Correçoes
+- Ajusta o enfileiramento da folha de estilo que controla os termos de uso e privacidade
+
+## [7.3.52] - 2024-05-08
+### Correçoes
+- Corrige erro que impedia o carregamento das categorias no filtro das tabelas de inscrições e avaliações
+
 ## [7.3.51] - 2024-04-19
 ### Melhorias
 - Adiciona o campo Comunidade tradicional para ser possível gerar gráficos no módulo de relatórios

@@ -1,3 +1,7 @@
+.lgpd-title {
+    text-align: center;
+}
+
 nav.sidebar-panel ul a.active {
     background: #fff;
     border-left-color: #1c5690;

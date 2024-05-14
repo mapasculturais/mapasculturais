@@ -57,7 +57,7 @@ $this->breadcrumb = [
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                            <div v-if="entity.spaces?.length > 0 || entity.children?.length > 0 || entity.events?.length > 0" class="col-12">
+                            <div v-if="entity.spaces?.length > 0 || entity.children?.length > 0 || entity.events?.length > 0 || entity.projects?.length > 0" class="col-12">
                                 <h4 class="property-list"> <?php i::_e('Propriedades do Agente:');?> </h4>
                                 <entity-list v-if="entity.spaces?.length>0" title="<?php i::esc_attr_e('Espaços');?>" type="space" :ids="entity.spaces"></entity-list>
                                 <entity-list v-if="entity.events?.length>0" title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>
