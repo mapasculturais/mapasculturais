@@ -16,7 +16,11 @@ $this->import('
 <panel--entity-card :entity="entity">
     <template #title>
         <?php $this->applyComponentHook('title', 'begin') ?>
-        <slot v-if="entity.profile" name="card-title" :entity="entity">{{username}}</slot>
+        <slot v-if="entity.profile" name="card-title" :entity="entity">
+            <mc-link route="panel/user-detail" :params="[entity.id]">
+                {{username}}
+            </mc-link>
+        </slot>
         <?php $this->applyComponentHook('title', 'end') ?>
     </template>
     <template #header-actions>
