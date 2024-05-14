@@ -4,6 +4,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.55] - 2024-05-14
+### Correçoes
+- Faz com que na single perfil, seja exibito os projetos relacionados 
+- Corrije erro que impede a exibição de projetos na listagem devido a falta do tipo
+
+### Melhorias
+- Na single do agente, ordena as oportunidades vinculadas pela data de encerramento de forma ascendente
+
 ## [7.3.54] - 2024-05-13
 ### Correçoes
 - Aplica internecionalização na tela de edição de eventos
