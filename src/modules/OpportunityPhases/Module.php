@@ -211,7 +211,16 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
         $self = $this;
         $registration_repository = $app->repo('Registration');
-        
+
+        // Redireciona o usuario sempre para a primeira fase
+        $app->hook("GET(opportunity.<<single|edit>>):<<*>>", function() use ($app) {
+            $entity = $this->requestedEntity;
+            if(!$entity->isFirstPhase){
+                $url = $app->createUrl("opportunity",$this->action,[$entity->firstPhase->id]);
+                $app->redirect($url);
+            }
+        });
+
         $app->hook('view.partial(singles/registration-edit--categories).params', function(&$params, &$template) use ($app) {
             if($this->controller->requestedEntity->opportunity->isOpportunityPhase && !$this->controller->requestedEntity->preview) {
                 $template = '_empty';
