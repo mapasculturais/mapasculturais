@@ -10,6 +10,10 @@
     margin: 0 auto;
     padding: size(40) size(16);
     min-height: size(500);
+
+    &--bound {
+      max-width: size(1200);
+    }
   }
 
   &__observation {
