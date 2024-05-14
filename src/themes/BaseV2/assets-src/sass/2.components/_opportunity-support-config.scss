@@ -2,16 +2,17 @@
 
 .opportunity-support-config {
     padding: size(20);
+    display: grid;
+    gap: size(20);
 
     &__header {
         display: flex;
         flex-direction: column;
         gap: size(14);
-        padding-bottom: size(20);
     }
 
     &__add-agents {
-        padding-bottom: size(20);
+        width: fit-content;
     }
 
     &__agents {
@@ -70,26 +71,62 @@
     }
 
     &__modal-select-header {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
         display: flex;
         justify-content: space-between;
-        padding: size(16) 0;
-        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: size(24);
 
         .title__header {
-            display: flex;
             align-items: center;
+            display: flex;
             gap: size(8);
             justify-content: center;
+            min-height: size(49);
+        }
+    }
+
+    &__field {
+        align-items: center;
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        display: flex;
+        gap: size(20);
+        justify-content: space-between;
+        padding: size(24);
+    }
+
+    &__field-content {
+        display: grid;
+        gap: size(56);
+        grid-template-columns: size(23) 1fr;
+    }
+
+    &__field-title {
+        align-items: center;
+        display: grid;
+        gap: size(16);
+        grid-template-columns: size(32) 1fr;
+        justify-items: center;
+        margin-bottom: size(4);
+    }
+
+    &__field-icon {
+        align-items: center;
+        background: var(--mc-gray-100);
+        border-radius: size(5);
+        display: flex;
+        height: size(32);
+        justify-content: center;
+        padding: size(5);
+        width: size(32);
+
+        .iconify {
+            font-size: size(19);
         }
     }
 
     &__modal-select {
-        display: flex;
-        justify-content: space-between;
         align-items: center;
-        gap: size(20);
         min-height: size(100);
-        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
 
         .title__select {
             display: flex;

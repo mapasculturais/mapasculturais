@@ -23,11 +23,11 @@ $this->import('
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity">
         <template #button>
-            <mc-link class="button button--primary button--icon" :entity="entity.parent || entity" route="single" hash="support" icon="arrow-left"><?= i::__('Voltar') ?></mc-link>
+            <mc-link class="button button--primary-outline button--icon" :entity="entity.parent || entity" route="single" hash="support" icon="arrow-left"><?= i::__('Voltar') ?></mc-link>
         </template>
     </opportunity-header>
 
-    <div class="opportunity-registrations__container">
+    <div class="opportunity-registrations__container opportunity-registrations__container--bound">
         <opportunity-phase-header :phase="entity"></opportunity-phase-header>
         <opportunity-support-config :entity="entity"><opportunity-support-config>
     </div>
