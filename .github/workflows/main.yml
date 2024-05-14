@@ -1,0 +1,28 @@
+name: "Deploy to VPS"
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout code"
+        uses: actions/checkout@v4
+
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets._PROJECT_PATH }}
+            git pull
+            cd ${{ secrets._STACK_PATH }}
+            docker compose -f ${{ secrets._STACK_FILE }} stop
+            docker compose -f ${{ secrets._STACK_FILE }} build
+            docker compose -f ${{ secrets._STACK_FILE }} up -d
