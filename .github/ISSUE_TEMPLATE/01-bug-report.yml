@@ -1,0 +1,34 @@
+name: Relatar um problema técnico/visual no mapas
+description: 'Algo não está funcionando como esperado? Você encontrou uma falha ou bug no mapas?'
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por relatar um problema encontrado no mapas.
+        Por favor preencha o modelo abaixo. Se você estiver relatando uma falha visual, será muito mais fácil
+        para que possamos corrigi-lo quando você anexar uma captura de tela também.
+  - type: input
+    attributes:
+      label: 'Navegador:'
+      description: Que tipo de navegador você está usando?
+      placeholder: Chrome
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: 'Navegador versão:'
+      description: Qual versão do navegador você está usando?
+      placeholder: '103.0.5060.134'
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: 'Como reproduzir o problema:'
+      placeholder: |
+        1. O que eu fiz.
+        2. O que eu esperava que acontecesse.
+        3. O que eu realmente consegui.
+        4. Se possível, imagens ou vídeos são bem-vindos.
+    validations:
+      required: true

@@ -1,0 +1,19 @@
+name: Sugira uma nova funcionalidade ou melhoria para o mapas.
+description: 'Você tem uma ideia ou sugestão e quer compartilhar?'
+labels: [Sugira um novo recurso ou melhoria]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Você tem uma ideia de como melhorar o mapas? Fantástico!
+        Antes de enviar, dê uma olhada nos problemas existentes, se já houver
+        algo relacionado à sua sugestão.
+  - type: textarea
+    attributes:
+      label: 'Insira suas sugestões em detalhes:'
+      placeholder: |
+        1. O que eu esperava que acontecesse.
+        2. Seu motivo (se possível, imagens ou vídeos são bem-vindos).
+        3. O que pretendo fazer (opcional, mas melhor).
+    validations:
+      required: true
