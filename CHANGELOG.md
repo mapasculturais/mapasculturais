@@ -7,18 +7,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.4 - RELEASE CANDIDATE] 
 ### Novas funcionalidades
-- Adiciona campos _total de vagas_ e _valor total_ nas oportunidades
-- Implementa funcionalidade de faixas/linhas de inscrição nas oportunidades, onde é possível configurar valores de premiação e número de vagas e que, quando configurado, fará com que o proponente tenha que escolher uma faixa de inscrição no momento da inscrição
-- Implementa funcionalidade de tipos de proponente para inscrição nas oportunidades que quando configurado fará com que o proponente tenha que escolher um tipo de proponente no momento da inscrição
-- Implementa funcionalidade de critérios de desempate nas fases de avaliação técnica
-- Implementa funcionalidade de cotas nas fases de avaliação técnica
-- Renomeada a funcionaliade `políticas afirmativas` para `bônus por pontuação` na fase de avaliação técnica
-- Implementa funcionalidade de distribuição de inscrições por região nas fases de avaliação técnica
-- Reimplementa da tabela de listagem de inscrições, com uma nova interface e uma variedade de opções de ordenação e filtros
+- Adiciona campos **total de vagas** e **valor total** nas oportunidades
+- Implementa funcionalidade de **faixas/linhas** de inscrição nas oportunidades, onde é possível configurar valores de premiação e número de vagas e que, quando configurado, fará com que o proponente tenha que escolher uma faixa de inscrição no momento da inscrição
+- Implementa funcionalidade de **tipos de proponente** para inscrição nas oportunidades que quando configurado fará com que o proponente tenha que escolher um tipo de proponente no momento da inscrição
+- Implementa funcionalidade de **critérios de desempate** nas fases de avaliação técnica
+- Implementa funcionalidade de **cotas** nas fases de avaliação técnica
+- Renomeada a funcionaliade **políticas afirmativas** para **bônus por pontuação** na fase de avaliação técnica
+- Implementa funcionalidade de **distribuição de inscrições por região** nas fases de avaliação técnica
+- Reimplementa da **tabela de listagem de inscrições**, com uma nova interface e uma variedade de opções de ordenação e filtros
 - A lista de inscrições da última fase agora exibe todas as inscrições enviadas na primeira fase, deixando claro onde na listagem onde a inscrição foi deixada como suplente, não selecionada ou invalidada
-- Implementa botão de aplicar avaliações para avaliações técnicas
-- Implementa exibição de parecer na avaliação documental
-- Implementa exibição de parecer na avaliação qualificação documental
+- Implementa botão de **aplicar avaliações** para **avaliações técnicas**
+- Implementa exibição de **parecer** na **avaliação documental**
+- Implementa exibição de **parecer** na **avaliação qualificação documental**
 - Implementa campo de dados bancários vinculado ao agente responsável via campo @
 - Implementa botão que faz a sincronia das inscrições entre as fases
 
