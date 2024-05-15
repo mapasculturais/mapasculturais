@@ -32,7 +32,9 @@ $this->import('
                 
                 
                     <template #title>
-                        <mc-title small tag="h4" :shortLength="0" :longlength="1000" class="bold">{{entity.parent?.name || entity.name}}</mc-title>
+                        <mc-link :entity="entity" route="userEvaluations">
+                            <mc-title small tag="h4" :shortLength="0" :longlength="1000" class="bold">{{entity.parent?.name || entity.name}}</mc-title>
+                        </mc-link>
                         <h5 class="panel--pending-evaluations__phase-name opportunity__color--dark">{{entity.phaseName}}</h5>
                     </template>
 
