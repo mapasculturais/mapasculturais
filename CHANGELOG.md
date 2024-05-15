@@ -28,6 +28,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
 - melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
 - log de hooks agora exibe um backtrace
+- Faz com que seja possivel clicar no nome da entidade para acessar a single da mesma
+- Em oportunidades multifases, redireciona o usuário para primeira fase caso ele tente acessar via url a edição de oportunidades posteriores
 
 ### Correções
 - Corrige seleção de relacionamentos OneToOne
@@ -41,6 +43,26 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 - resolve aplicar filtros para pesquisa de eventos
+
+## [7.3.55] - 2024-05-14
+### Correçoes
+- Faz com que na single perfil, seja exibito os projetos relacionados 
+- Corrije erro que impede a exibição de projetos na listagem devido a falta do tipo
+
+### Melhorias
+- Na single do agente, ordena as oportunidades vinculadas pela data de encerramento de forma ascendente
+
+## [7.3.54] - 2024-05-13
+### Correçoes
+- Aplica internecionalização na tela de edição de eventos
+
+## [7.3.53] - 2024-05-13
+### Correçoes
+- Ajusta o enfileiramento da folha de estilo que controla os termos de uso e privacidade
+
+## [7.3.52] - 2024-05-08
+### Correçoes
+- Corrige erro que impedia o carregamento das categorias no filtro das tabelas de inscrições e avaliações
 
 ## [7.3.51] - 2024-04-19
 ### Melhorias

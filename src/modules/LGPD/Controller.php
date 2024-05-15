@@ -15,6 +15,8 @@ class Controller  extends \MapasCulturais\Controller
     public function GET_view() {
         $app = App::i();
         $this->layout = 'lgpdV2';
+        
+        $app->view->enqueueStyle('app-v2', 'lgpd-file-v2', 'css/lgpd.css');
         $config_lgpd = $app->config['module.LGPD'];
 
         $slug = $this->data[0] ?? false;
@@ -58,6 +60,7 @@ class Controller  extends \MapasCulturais\Controller
             $this->render('accept', ['url' => $url, 'title' => $title, 'text' => $text, 'accepted' => $accepted]);
         } else {
             $this->layout = 'lgpdV2';
+            $app->view->enqueueStyle('app-v2', 'lgpd-file-v2', 'css/lgpd.css');
             $this->render('terms', ['terms' => $config_lgpd]);
         }
        

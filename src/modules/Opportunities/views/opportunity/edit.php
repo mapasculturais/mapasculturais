@@ -6,12 +6,6 @@
 
 use MapasCulturais\i;
 
-$entity = $this->controller->requestedEntity;
-if(!$entity->isFirstPhase){
-    $url = $app->createUrl("opportunity","edit",[$entity->firstPhase->id]);
-    $app->redirect($url);
-}
-
 $this->layout = 'entity';
 
 $this->import('
