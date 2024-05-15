@@ -28,6 +28,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
 - melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
 - log de hooks agora exibe um backtrace
+- Faz com que seja possivel clicar no nome da entidade para acessar a single da mesma
+- Em oportunidades multifases, redireciona o usuário para primeira fase caso ele tente acessar via url a edição de oportunidades posteriores
 
 ### Correções
 - Corrige seleção de relacionamentos OneToOne
