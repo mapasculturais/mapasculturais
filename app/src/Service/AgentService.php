@@ -41,7 +41,7 @@ class AgentService
     {
         $agentFromDB = $this->repository->find($id);
 
-        if(null === $agentFromDB || -10 === $agentFromDB->status) {
+        if (null === $agentFromDB || -10 === $agentFromDB->status) {
             throw new ResourceNotFoundException('Agent not found');
         }
 
