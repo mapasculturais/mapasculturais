@@ -1,0 +1,97 @@
+type: object
+properties:
+  name:
+    type: string
+    example: "Evento de Cultura"
+    description: O nome do Evento
+  shortDescription:
+    type: string
+    example: "Este é um evento incrível organizado por todos."
+    description: Uma breve descrição do Evento.
+  longDescription:
+    type: string
+    example: "Junte-se a nós para uma experiência única e emocionante! O evento de Cultura oferece uma variedade de atividades e entretenimento para todos os gostos."
+    description: A descrição completa do Evento.
+  rules:
+    type: string
+    example: "Por favor, siga todas as regras e regulamentos do local."
+    description: As regras do Evento.
+  subTitle:
+    type: string
+    example: "subtitulo do evento"
+    description: O subtítulo do Evento.
+  registrationInfo:
+    type: string
+    example: "informações do evento"
+    description: Informações de registro do Evento.
+  classificacaoEtaria:
+    type: string
+    example: "Livre"
+    description: A classificação etária do Evento.
+  telefonePublico:
+    type: string
+    example: "(85) 99999-9999"
+    description: O telefone público do Evento.
+  traducaoLibras:
+    type: string
+    example: "Sim"
+    description: Se o Evento tem tradução para Libras.
+  descricaoSonora:
+    type: string
+    example: "Não"
+    description: Se o Evento tem descrição sonora.
+  site:
+    type: string
+    example: "https://www.google.com.br/?hl=pt-BR"
+    description: O site do Evento.
+  facebook:
+    type: string
+    example: "Facebook"
+    description: O Facebook do Evento.
+  twitter:
+    type: string
+    example: "Twitter"
+    description: O Twitter do Evento.
+  instagram:
+    type: string
+    example: "Instagram"
+    description: O Instagram do Evento.
+  linkedin:
+    type: string
+    example: "LinkedIn"
+    description: O LinkedIn do Evento.
+  vimeo:
+    type: string
+    example: "Vimeo"
+    description: O Vimeo do Evento.
+  spotify:
+    type: string
+    example: "Spotify"
+    description: O Spotify do Evento.
+  youtube:
+    type: string
+    example: "YouTube"
+    description: O YouTube do Evento.
+  pinterest:
+    type: string
+    example: "Pinterest"
+    description: O Pinterest do Evento.
+  event_attendance:
+    type: integer
+    example: 50
+    description: A quantidade permitidas de pessoas para o Evento.
+  terms:
+    type: object
+    properties:
+      tag:
+        type: array
+        items:
+          type: string
+        example: []
+        description: As tags do Evento.
+      linguagem:
+        type: array
+        items:
+          type: string
+        example: ["Dança"]
+        description: As linguagens do Evento.
