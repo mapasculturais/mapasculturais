@@ -11,42 +11,43 @@ use MapasCulturais\Entities\User;
 class AgentFixtures extends Fixture
 {
     public const AGENT_ID_PREFIX = 'agent';
-    public const AGENT_ID_1 = 2;
-    public const AGENT_ID_2 = 3;
-    public const AGENT_ID_3 = 4;
-    public const AGENT_ID_4 = 5;
+    public const AGENT_ID_2 = 2;
+    public const AGENT_ID_3 = 3;
+    public const AGENT_ID_4 = 4;
+    public const AGENT_ID_5 = 5;
+    public const AGENT_ID_6 = 6;
 
     public const AGENTS = [
         [
-            'id' => self::AGENT_ID_1,
+            'id' => self::AGENT_ID_2,
             'name' => 'Alessandro Feitoza',
             'shortDescription' => 'Agente Feitoza',
             'longDescription' => '',
             'status' => 1,
         ],
         [
-            'id' => self::AGENT_ID_2,
+            'id' => self::AGENT_ID_3,
             'name' => 'Henrique Lima',
             'shortDescription' => 'Agente Lima',
             'longDescription' => '',
             'status' => 1,
         ],
         [
-            'id' => self::AGENT_ID_3,
+            'id' => self::AGENT_ID_4,
             'name' => 'Anna Kelly Moura',
             'shortDescription' => 'Agente Moura',
             'longDescription' => '',
             'status' => 1,
         ],
         [
-            'id' => self::AGENT_ID_4,
+            'id' => self::AGENT_ID_5,
             'name' => 'Sara Camilo',
             'shortDescription' => 'Agente Camilo',
             'longDescription' => '',
             'status' => 1,
         ],
         [
-            'id' => self::AGENT_ID_4,
+            'id' => self::AGENT_ID_6,
             'name' => 'Talyson Soares',
             'shortDescription' => 'Agente Soares',
             'longDescription' => 'talyson soares',
