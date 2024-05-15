@@ -31,8 +31,6 @@ properties:
     type: string
     example: null
     description: Descrição detalhada do espaço
-  createTimestamp:
-    $ref: '../common-types/date.yaml'
   status:
     type: integer
     example: 1
@@ -44,8 +42,6 @@ properties:
     type: integer
     example: 1
     description: Proprietário do espaço
-  updateTimestamp:
-    $ref: '../common-types/date.yaml'
   subsite:
     type: integer
     description: Subsite do espaço (se houver)
