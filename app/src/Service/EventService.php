@@ -5,16 +5,26 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Repository\EventRepository;
+use App\Request\EventRequest;
 use MapasCulturais\Entities\Event;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class EventService
 {
     protected EventRepository $repository;
+    protected EventRequest $eventRequest;
+
     public const FILE_TYPES = '/src/conf/event-types.php';
+    private SerializerInterface $serializer;
 
     public function __construct()
     {
         $this->repository = new EventRepository();
+        $this->eventRequest = new EventRequest();
+        $this->serializer = new Serializer([new ObjectNormalizer()]);
     }
 
     public function getTypes(): array
@@ -36,5 +46,25 @@ class EventService
         $this->repository->save($event);
 
         return $event;
+    }
+
+    public function update(int $id, object $data): Event
+    {
+        $eventFromDB = $this->repository->find($id);
+
+        if (null === $eventFromDB || -10 === $eventFromDB->status) {
+            throw new ResourceNotFoundException('Event not found or already deleted.');
+        }
+
+        $eventUpdated = $this->serializer->denormalize(
+            data: $data,
+            type: Event::class,
+            context: ['object_to_populate' => $eventFromDB]
+        );
+        $eventUpdated->saveTerms();
+
+        $this->repository->update($eventUpdated);
+
+        return $eventUpdated;
     }
 }

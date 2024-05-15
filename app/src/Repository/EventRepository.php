@@ -63,6 +63,11 @@ class EventRepository extends AbstractRepository
     public function softDelete(Event $event): void
     {
         $event->setStatus(-10);
+        $this->save($event);
+    }
+
+    public function update(Event $event): void
+    {
         $this->mapaCulturalEntityManager->persist($event);
         $this->mapaCulturalEntityManager->flush();
     }

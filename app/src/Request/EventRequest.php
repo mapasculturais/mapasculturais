@@ -39,7 +39,7 @@ class EventRequest
         return $data;
     }
 
-    public function validateDelete(array $params): Event
+    public function validateEventExistent(array $params): Event
     {
         $event = $this->repository->find((int) $params['id']);
 
@@ -48,5 +48,13 @@ class EventRequest
         }
 
         return $event;
+    }
+
+    public function validateUpdate(): array
+    {
+        $jsonData = $this->request->getContent();
+        $data = json_decode($jsonData, true);
+
+        return $data;
     }
 }
