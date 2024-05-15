@@ -35,4 +35,12 @@ class AgentRequest
 
         return $data;
     }
+
+    public function validateUpdate(): array
+    {
+        return json_decode(
+            json: $this->request->getContent(),
+            associative: true
+        );
+    }
 }

@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Exception\ResourceNotFoundException;
 use App\Repository\AgentRepository;
 use MapasCulturais\Entities\Agent;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class AgentService
 {
     protected AgentRepository $repository;
+    private SerializerInterface $serializer;
     public const FILE_TYPES = '/src/conf/agent-types.php';
 
     public function __construct()
     {
         $this->repository = new AgentRepository();
+        $this->serializer = new Serializer([new ObjectNormalizer()]);
     }
 
     public function getTypes(): array
@@ -26,6 +32,29 @@ class AgentService
             array_keys($typesFromConf),
             $typesFromConf
         );
+    }
+
+    /**
+     * @throws ResourceNotFoundException
+     */
+    public function update(int $id, object $data): Agent
+    {
+        $agentFromDB = $this->repository->find($id);
+
+        if(null === $agentFromDB || -10 === $agentFromDB->status) {
+            throw new ResourceNotFoundException('Agent not found');
+        }
+
+        $agentUpdated = $this->serializer->denormalize(
+            data: $data,
+            type: Agent::class,
+            context: ['object_to_populate' => $agentFromDB]
+        );
+
+        $agentUpdated->saveTerms();
+        $this->repository->save($agentUpdated);
+
+        return $agentUpdated;
     }
 
     public function create($data): Agent

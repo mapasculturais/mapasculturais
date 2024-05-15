@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Exception\ResourceNotFoundException;
 use App\Repository\AgentRepository;
 use App\Request\AgentRequest;
 use App\Service\AgentService;
@@ -65,6 +66,20 @@ class AgentApiController
             return new JsonResponse($responseData, 201);
         } catch (Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], 400);
+        }
+    }
+
+    public function patch(array $params): JsonResponse
+    {
+        try {
+            $agentData = $this->agentRequest->validateUpdate();
+            $agent = $this->agentService->update((int) $params['id'], (object) $agentData);
+
+            return new JsonResponse($agent, Response::HTTP_CREATED);
+        } catch (ResourceNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 
