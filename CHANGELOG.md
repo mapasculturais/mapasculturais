@@ -43,6 +43,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 - resolve aplicar filtros para pesquisa de eventos
+- Faz as abas `com permissão` das entidades do painel listarem também as entidades em rascunho
 
 ## [7.3.55] - 2024-05-14
 ### Correçoes

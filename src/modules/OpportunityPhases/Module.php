@@ -1086,6 +1086,10 @@ class Module extends \MapasCulturais\Module{
             $current_phase = $this->opportunity;
             if($next_phase = $current_phase->nextPhase){
                 $next_phase->enqueueRegistrationSync([$this]);
+                if(!$next_phase->isLastPhase) {
+                    $last_phase = $current_phase->lastPhase;
+                    $last_phase->enqueueRegistrationSync([$this]);
+                }
             }
         });
 
