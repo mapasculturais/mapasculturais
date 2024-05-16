@@ -2,16 +2,17 @@ type: object
 properties:
   id:
     type: integer
-    example: 11
-  _type:
-    type: integer
     example: 1
+    description: ID do projeto
   name:
     type: string
-    example: "Teste de oportunidade"
+    example: "Projeto de Cultura"
+    description: Nome do projeto
   shortDescription:
     type: string
-    example: "Teste de oportunidade"
-  object_type:
-    type: string
-    example: "MapasCulturais\\Entities\\Space"
+    example: "Descrição curta do projeto"
+    description: Descrição curta do projeto
+  type:
+    type: integer
+    example: 16
+    description: ID do tipo de projeto
