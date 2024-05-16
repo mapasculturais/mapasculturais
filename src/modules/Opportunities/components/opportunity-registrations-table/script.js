@@ -117,6 +117,7 @@ app.component('opportunity-registrations-table', {
             resultStatus:[],
             query: {
                 '@opportunity': this.phase.id,
+                'status': 'GTE(0)',
             },
             selectedCategories: [],
             selectedProponentTypes: [],
