@@ -46,13 +46,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 - Corrige aplicar filtros para pesquisa de eventos
+- Faz as abas `com permissão` das entidades do painel listarem também as entidades em rascunho
 
 ### Melhorias não funcionais
 - Implementa novos componentes vuejs para implementação de tabelas (entity-table)
 - Nova lib instalada (league/csv), para manipulação de arquivos csv.
 - Log de hooks agora exibe um backtrace
-
-
 
 ## [7.3.55] - 2024-05-14
 ### Correçoes
