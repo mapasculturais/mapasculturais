@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\DataFixtures\ProjectFixtures;
+use App\Tests\fixtures\ProjectTestFixtures;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 class ProjectApiControllerTest extends AbstractTestCase
 {
     public function testGetProjectsShouldRetrieveAList(): void
@@ -56,5 +61,43 @@ class ProjectApiControllerTest extends AbstractTestCase
 
         $response = $this->client->request('GET', '/api/v2/projects/'.$projectId);
         $this->assertEquals(404, $response->getStatusCode());
+    }
+
+    public function testUpdateProjectShouldUpdateAProject(): void
+    {
+        $requestBody = ProjectTestFixtures::partial();
+        $url = sprintf('/api/v2/projects/%s', ProjectFixtures::PROJECT_ID_2);
+
+        $response = $this->client->request(Request::METHOD_PATCH, $url, [
+            'headers' => ['Content-Type' => 'application/json'],
+            'body' => json_encode($requestBody),
+        ]);
+
+        $content = json_decode($response->getContent(), true);
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertIsArray($content);
+        foreach ($requestBody as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
+        }
+    }
+
+    public function testUpdateNotFoundedProjectResource(): void
+    {
+        $requestData = json_encode(ProjectTestFixtures::partial());
+        $url = sprintf('/api/v2/projects/%s', 1024);
+
+        $response = $this->client->request(Request::METHOD_PATCH, $url, [
+            'headers' => ['Content-Type' => 'application/json'],
+            'body' => $requestData,
+        ]);
+
+        $error = [
+            'error' => 'Project not found or already deleted.',
+        ];
+
+        $content = json_decode($response->getContent(false), true);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertIsArray($content);
+        $this->assertEquals($error, $content);
     }
 }
