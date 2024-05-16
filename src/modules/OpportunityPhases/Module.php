@@ -1061,7 +1061,7 @@ class Module extends \MapasCulturais\Module{
                     $registration->save(true);
 
                     if(!$as_draft){
-                        $current_phase_registration->send();
+                        $current_phase_registration->send(false);
                     }
 
                     $new_registrations[] = $current_phase_registration->number;
