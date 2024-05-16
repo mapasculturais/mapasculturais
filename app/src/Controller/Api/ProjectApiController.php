@@ -60,6 +60,19 @@ class ProjectApiController
         }
     }
 
+    public function patch(array $params): JsonResponse
+    {
+        try {
+            $projectData = $this->projectRequest->validateUpdate();
+
+            $project = $this->projectService->update((int) $params['id'], (object) $projectData);
+
+            return new JsonResponse($project, Response::HTTP_CREATED);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
     public function delete(array $params): JsonResponse
     {
         $project = $this->repository->find((int) $params['id']);
