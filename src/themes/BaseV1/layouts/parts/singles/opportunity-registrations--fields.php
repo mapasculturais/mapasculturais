@@ -154,7 +154,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                                 <input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
                         </p>
 
-                        <p ng-if="data.entity.object.registrationRanges">
+                        <p ng-if="data.entity.object.registrationRanges.length > 0">
                             <small><?php i::_e("Selecione em quais Faixas este campo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label">
                                 <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.registrationRanges = []" ng-checked="allRanges(field)"> <?php i::_e("Todas"); ?>
@@ -211,7 +211,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                         </p>
                         <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
 
-                        <p ng-if="data.entity.object.registrationRanges">
+                        <p ng-if="data.entity.object.registrationRanges.length > 0">
                             <small><?php i::_e("Selecione em quais Faixas este campo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label">
                                 <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.registrationRanges = []" ng-checked="allRanges(field)"> <?php i::_e("Todas"); ?>
