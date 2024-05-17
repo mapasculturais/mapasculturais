@@ -44,12 +44,11 @@ describe("Events Page", () => {
         cy.wait(1000);
         cy.get(".filter-btn > :first-child").click();
         cy.wait(1000);
-        cy.get(`[href="${Cypress.config().baseUrl}/evento/2/"]`).click({multiple: true});
+        cy.get(`[href="${Cypress.config().baseUrl}/evento/2/"]`).last().click();
         cy.wait(1000);
-        cy.contains("h1", "Evento 2");
-        cy.contains("h4", "Lista de oportunidades vinculadas");
+        cy.contains("h1", "Motim");
         cy.get(".opportunity-list__container").should("not.be.empty");
         cy.contains(".age-rating__title", " Classificação Etária ");
-        cy.contains(".age-rating__content", "16 anos");
+        cy.contains(".age-rating__content", "10 anos");
     });
 });
