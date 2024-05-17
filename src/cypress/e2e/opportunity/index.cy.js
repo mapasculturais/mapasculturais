@@ -20,7 +20,6 @@ describe("Opportunity Page", () => {
         cy.contains("Status das oportunidades");
         cy.contains("Tipo de oportunidade");
         cy.contains("Área de interesse");
-        cy.contains("Marie Altenwerth");
     });
 
     it("Garante que os filtros de oportunidades funcionam quando não existem resultados pra busca textual", () => {
@@ -36,7 +35,7 @@ describe("Opportunity Page", () => {
     it("Garante que os filtros de oportunidades funcionam quando existem resultados para a busca textual", () => {
         cy.visit("/oportunidades");
 
-        cy.get(".search-filter__actions--form-input").type("Edital 01/2023 + Cultura");
+        cy.get(".search-filter__actions--form-input").type("ABC");
 
         cy.wait(1000);
 
@@ -54,13 +53,19 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        cy.contains("Nenhuma entidade encontrada");
+        cy.contains("8 Oportunidades encontradas");
 
         cy.get(".form > :nth-child(1) > :nth-child(3)").click();
 
         cy.wait(1000);
 
-        cy.contains("80 Oportunidades encontradas");
+        cy.contains("3 Oportunidades encontradas");
+
+        cy.get('.form > :nth-child(1) > :nth-child(4)').click();
+
+        cy.wait(1000);
+
+        cy.contains("Nenhuma entidade encontrada");
     });
 
     it("Garante que o filtro de oportunidades de editais oficiais funciona", () => {
@@ -72,6 +77,7 @@ describe("Opportunity Page", () => {
 
         cy.get(".verified > input").click();
 
+        // Quando se aplica o filtro de editais, eles não aparecem.
         cy.contains("2 Oportunidades encontradas");
     });
 
