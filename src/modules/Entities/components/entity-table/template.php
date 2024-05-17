@@ -58,7 +58,7 @@ $this->import('
                         </div>
                     </template>
 
-                    <template #content>
+                    <template v-if="advancedFilters.length > 0 || hasSlot('advanced-filters')"  #content>
                         <div class="entity-table__advanced-filters custom-scrollbar">
                             <slot name="advanced-filters" :entities="entities" :filters="filters">
 

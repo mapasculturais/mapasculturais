@@ -29,6 +29,9 @@ app.component('opportunity-evaluations-table', {
             query: {
                 '@opportunity': this.phase.opportunity.id,
             },
+            locale: $MAPAS.config.locale,
+            firstDate: null,
+            lastDate: null,
         }
     },
 
@@ -42,6 +45,27 @@ app.component('opportunity-evaluations-table', {
             ];
 
             return itens;
+        },
+
+        status() {
+            return [
+                {
+                    value: 0,
+                    label: __('iniciada', 'opportunity-evaluations-table'),
+                },
+                {
+                    value: 1,
+                    label: __('avaliada', 'opportunity-evaluations-table'),
+                },
+                {
+                    value: 2,
+                    label: __('enviada', 'opportunity-evaluations-table'),
+                },
+                {
+                    value: 'null',
+                    label: __('pendente', 'opportunity-evaluations-table'),
+                }
+            ]
         },
     },
     
@@ -72,10 +96,6 @@ app.component('opportunity-evaluations-table', {
             registration.populate(rawData.registration, true);
             registration.evaluation = rawData.evaluation;
 
-            console.log('----------------------------');
-            console.log(rawData);
-            console.log(registration);
-
             return registration;
         },
 
@@ -94,6 +114,80 @@ app.component('opportunity-evaluations-table', {
 
         getResultString(result) {
             return result ?? __('não avaliado', 'opportunity-evaluations-table');
+        },
+
+        filterByStatus(option, entities) {
+            this.selectedStatus = option.value;
+
+            if (this.selectedStatus == "null") {
+                this.query["@pending"] = true;
+
+                if (this.query['status']) {
+                    delete this.query['status'];
+                }
+            } else {
+                delete this.query["@pending"];
+
+                if (this.selectedStatus.length > 0) {
+                    this.query['status'] = `IN(${this.selectedStatus.toString()})`;
+                } else {
+                    delete this.query['status'];
+                }
+            }
+
+            entities.refresh();
+        },
+
+        dateFormat(date) {
+            let mcdate = new McDate (date);
+            return mcdate.date('2-digit year');
+        },
+
+        onChange(event, onInput, entities) {
+            if(event instanceof InputEvent) {
+                setTimeout(() => onInput(event), 50);
+            }
+
+            if (this.firstDate && this.lastDate) {
+                this.query['@date'] = `BETWEEN '${this.dateFormat(this.firstDate)}' AND '${this.dateFormat(this.lastDate)}'`
+            } else if (this.firstDate) {
+                this.query['@date'] = `>= '${this.dateFormat(this.firstDate)}'`;
+            } else if (this.lastDate) {
+                this.query['@date'] = `<= '${this.dateFormat(this.lastDate)}'`;
+            } else {
+                delete this.query['@date'];
+            }
+            
+            entities.refresh();
+        },
+
+        clearFilters(entities) {
+            this.firstDate = null;
+            this.lastDate = null;
+            delete this.query['status'];
+            delete this.query['@date'];
+
+            entities.refresh();
+        },
+
+        removeFilter(filter) {
+
+            if (filter.prop == '@date') {
+                if (filter.value.includes('>=')) {
+                    this.firstDate = null;
+                }
+
+                if (filter.value.includes('<=')) {
+                    this.lastDate = null;
+                }
+
+                if (filter.value.includes('BETWEEN')) {
+                    this.firstDate = null;
+                    this.lastDate = null;
+                }
+            
+                delete this.query['@date'];
+            }
         }
     }
 });

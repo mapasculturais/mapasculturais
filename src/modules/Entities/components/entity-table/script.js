@@ -195,6 +195,10 @@ app.component('entity-table', {
             if (prop == '@keyword') {
                 return [{prop, value, label: __('palavras-chave', 'entity-table')}]
             }
+
+            if (prop == '@date') {
+                return [{prop, value, label: __('data', 'entity-table')}]
+            }
             
             let values = this.getFilterValues(value);
             if (values) {
@@ -206,6 +210,8 @@ app.component('entity-table', {
                         '-1': __('arquivadas', 'entity-table'),
                     }
 
+                    console.log(this.type);
+                    
                     if(this.type == 'registration') {
                         statusDict = {
                             '0': __('rascunhos', 'entity-table'),
