@@ -45,6 +45,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - resolve aplicar filtros para pesquisa de eventos
 - Faz as abas `com permissão` das entidades do painel listarem também as entidades em rascunho
 
+## [7.3.57] - 2024-05-17
+### Melhorias
+- Não solicita o campo País em ambientes com a configuração statesAndCitiesCountryCode definida como BR
+
+### Correçoes
+- Corrige mascaras dos telefones no cadastro dos agentes para que aceite telefones residênciais e celulares
+
 ## [7.3.56] - 2024-05-16
 ### Melhorias
 - Padroniza altura dos cards das entidades da home 
