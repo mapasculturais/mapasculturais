@@ -210,8 +210,6 @@ app.component('entity-table', {
                         '-1': __('arquivadas', 'entity-table'),
                     }
 
-                    console.log(this.type);
-                    
                     if(this.type == 'registration') {
                         statusDict = {
                             '0': __('rascunhos', 'entity-table'),

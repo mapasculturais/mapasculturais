@@ -32,6 +32,7 @@ app.component('opportunity-evaluations-table', {
             locale: $MAPAS.config.locale,
             firstDate: null,
             lastDate: null,
+            selectedStatus: null,
         }
     },
 
@@ -164,6 +165,7 @@ app.component('opportunity-evaluations-table', {
         clearFilters(entities) {
             this.firstDate = null;
             this.lastDate = null;
+            this.selectedStatus = null;
             delete this.query['status'];
             delete this.query['@date'];
 
@@ -187,6 +189,11 @@ app.component('opportunity-evaluations-table', {
                 }
             
                 delete this.query['@date'];
+            }
+
+            if (filter.prop == 'status') {
+                this.selectedStatus = null;
+                delete this.query['status'];
             }
         }
     }
