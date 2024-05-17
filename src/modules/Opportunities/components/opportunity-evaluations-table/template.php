@@ -43,7 +43,7 @@ $this->import('
                 <template #filters="{entities,filters}">
                     <div class="opportunity-evaluations-table__filters grid-12">
                         <div class="col-4">
-                            <mc-select :options="status" @change-option="filterByStatus($event, entities)" placeholder="<?= i::__("Estado da avaliação") ?>" hide-filters></mc-select>
+                            <mc-select :options="status" :default-value="selectedStatus" @change-option="filterByStatus($event, entities)" placeholder="<?= i::__("Estado da avaliação") ?>" hide-filters></mc-select>
                         </div>
 
                         <div class="field col-4">

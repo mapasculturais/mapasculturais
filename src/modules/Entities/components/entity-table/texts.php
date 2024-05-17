@@ -4,6 +4,8 @@ use MapasCulturais\i;
 return [
     'item obrigatório' => i::__('Não é permitido desabilitar a coluna'),
 
+    'data' => i::__('Data'),
+
     // Opções de ordenação
     'mais recentes primeiro' => i::__('mais recentes primeiro'),
     'mais antidas primeiro' => i::__('mais antigas primeiro'),
