@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Seal;
 use Doctrine\Persistence\ObjectRepository;
+use MapasCulturais\Entities\Seal;
 
 class SealRepository extends AbstractRepository
 {
@@ -15,7 +15,7 @@ class SealRepository extends AbstractRepository
     {
         parent::__construct();
 
-        $this->repository = $this->entityManager->getRepository(Seal::class);
+        $this->repository = $this->mapaCulturalEntityManager->getRepository(Seal::class);
     }
 
     public function findAll(): array
@@ -26,8 +26,21 @@ class SealRepository extends AbstractRepository
             ->getArrayResult();
     }
 
-    public function find(int $id): Seal
+    public function find(int $id): ?Seal
     {
         return $this->repository->find($id);
+    }
+
+    public function create(Seal $seal): void
+    {
+        $this->mapaCulturalEntityManager->persist($seal);
+        $this->mapaCulturalEntityManager->flush();
+    }
+
+    public function softDelete(Seal $space): void
+    {
+        $space->setStatus(-10);
+        $this->mapaCulturalEntityManager->persist($space);
+        $this->mapaCulturalEntityManager->flush();
     }
 }
