@@ -7,7 +7,7 @@ function login () {
   confirmRecaptcha();
   cy.wait(1000);
   cy.get("button[type='submit']").click();
-  cy.url().should("include", "/painel/");
+  cy.url().should("include", "/painel");
 }
 
 function loginWith (username, password) {
