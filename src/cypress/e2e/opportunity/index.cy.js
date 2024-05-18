@@ -77,7 +77,7 @@ describe("Opportunity Page", () => {
 
         cy.get(".verified > input").click();
 
-        /* Quando se aplica o filtro de editais, eles não aparecem. Esta é apenas uma solução paleativa. */
+        /* Quando se aplica o filtro de editais, eles não aparecem. Esta é apenas uma solução paliativa. */
         cy.contains("Nenhuma entidade encontrada");
     });
 
