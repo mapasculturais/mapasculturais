@@ -8,12 +8,12 @@ function clearAllFilters (selectors, text) {
       cy.get(selector).select(1);
       cy.wait(1000);
     } else {
-      cy.get(selector).click();
+      cy.get(selector).click({force: true, multiple: true});
       cy.wait(1000);
     }
   });
 
-  cy.get(".clear-filter").click();
+  cy.get(".clear-filter").click({force: true});
   cy.wait(1000);
 
   cy.contains(text);

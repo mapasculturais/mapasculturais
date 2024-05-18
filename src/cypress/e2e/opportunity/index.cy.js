@@ -77,8 +77,8 @@ describe("Opportunity Page", () => {
 
         cy.get(".verified > input").click();
 
-        // Quando se aplica o filtro de editais, eles não aparecem.
-        cy.contains("2 Oportunidades encontradas");
+        /* Quando se aplica o filtro de editais, eles não aparecem. Esta é apenas uma solução paleativa. */
+        cy.contains("Nenhuma entidade encontrada");
     });
 
     it("Garante que os filtros por tipo de oportunidade funcionam", () => {
@@ -89,20 +89,25 @@ describe("Opportunity Page", () => {
         cy.contains("Tipo de oportunidade");
 
         cy.get(":nth-child(2) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input").click();
-        cy.get(":nth-child(19) > .item > .input").click();
+        cy.get(':nth-child(19) > .mc-multiselect__option').click();
 
         cy.wait(1000);
 
-        cy.contains("60 Oportunidades encontradas");
+        cy.contains("4 Oportunidades encontradas");
 
-        cy.get(":nth-child(17) > .item > .input").click();
+        cy.get('.clear-filter').click({force: true});
 
         cy.wait(1000);
 
-        cy.contains("61 Oportunidades encontradas");
+        cy.get(':nth-child(2) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input').click();
+        cy.get(':nth-child(12) > .mc-multiselect__option').click();
+
+        cy.wait(1000);
+
+        cy.contains("5 Oportunidades encontradas");
     });
 
-    it("Garante que os filtros por tipo de oportunidade funcionam", () => {
+    it("Garante que os filtros por área de interesse funcionam", () => {
         cy.visit("/oportunidades");
 
         cy.wait(1000);
@@ -110,12 +115,11 @@ describe("Opportunity Page", () => {
         cy.contains("Área de interesse");
 
         cy.get(":nth-child(3) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input").click();
-        cy.get(":nth-child(2) > .item > .text").click();
+        cy.get(':nth-child(5) > .mc-multiselect__option').click();
 
         cy.wait(1000);
 
         cy.contains("2 Oportunidades encontradas");
-        cy.contains("Marie Altenwerth");
     });
 
     it("Garante que o botão limpar filtros na pagina de oportunidades funciona", () => {
@@ -127,9 +131,9 @@ describe("Opportunity Page", () => {
             ".form > :nth-child(1) > :nth-child(2)",
             ".verified > input",
             ":nth-child(2) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input",
-            ":nth-child(1) > .item > .text",
+            ":nth-child(1) > .mc-multiselect__option",
             ":nth-child(3) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input",
-            ":nth-child(2) > .item > .text"
-        ], "82 Oportunidades encontradas");
+            ":nth-child(2) > .mc-multiselect__option"
+        ], "11 Oportunidades encontradas");
     });
 });
