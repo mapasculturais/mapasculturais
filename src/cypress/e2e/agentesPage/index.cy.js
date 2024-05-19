@@ -27,6 +27,7 @@ describe("Agents Page", () => {
         cy.contains("Nenhuma entidade encontrada");
     });
 
+    //Coloquei o Cleodon pois, por ser uma homenagem, acredito ser mais difícil ser removido
     it("Garante que os filtros de agentes funcionam quando existem resultados para a busca textual", () => {
         cy.get(".search-filter__actions--form-input").type("Cleodon");
 
@@ -68,7 +69,7 @@ describe("Agents Page", () => {
             // Extraia o número da string
             expectedCount = parseInt(text.match(/\d+/)[0], 10);
             
-            // Agora, verifique se o número de imagens encontradas é igual ao esperado
+            // Agora, verifique se o número de agentes do tipo coletivo encontrados é igual ao esperado
             cy.get(".upper.agent__color").should('have.length', expectedCount);
             cy.contains(expectedCount + " Agentes encontrados")
         });
@@ -82,7 +83,7 @@ describe("Agents Page", () => {
             // Extraia o número da string
             expectedCount = parseInt(text.match(/\d+/)[0], 10);
             
-            // Agora, verifique se o número de imagens encontradas é igual ao esperado
+            // Agora, verifique se o número de agentes do tipo individual encontrados é igual ao esperado
             cy.get(".upper.agent__color").should('have.length', expectedCount);
             cy.contains(expectedCount + " Agentes encontrados");
         });
@@ -103,7 +104,7 @@ describe("Agents Page", () => {
             // Extraia o número da string
             expectedCount = parseInt(text.match(/\d+/)[0], 10);
             
-            // Agora, verifique se o número de imagens encontradas é igual ao esperado
+            // Agora, verifique se o número de agentes por área de atuação encontrados é igual ao esperado
             cy.get(".entity-card__content--terms-area > .terms.agent__color").should('have.length', expectedCount);
             cy.contains(expectedCount + " Agentes encontrados");
         });
