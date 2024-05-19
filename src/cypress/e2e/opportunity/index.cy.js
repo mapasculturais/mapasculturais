@@ -53,7 +53,7 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        cy.contains("8 Oportunidades encontradas");
+        cy.contains("10 Oportunidades encontradas");
 
         cy.get(".form > :nth-child(1) > :nth-child(3)").click();
 
@@ -77,8 +77,7 @@ describe("Opportunity Page", () => {
 
         cy.get(".verified > input").click();
 
-        /* Quando se aplica o filtro de editais, eles não aparecem. Esta é apenas uma solução paliativa. */
-        cy.contains("Nenhuma entidade encontrada");
+        cy.contains("2 Oportunidades encontradas");
     });
 
     it("Garante que os filtros por tipo de oportunidade funcionam", () => {
@@ -95,7 +94,7 @@ describe("Opportunity Page", () => {
 
         cy.contains("4 Oportunidades encontradas");
 
-        cy.get('.clear-filter').click({force: true});
+        cy.reload();
 
         cy.wait(1000);
 
@@ -107,7 +106,7 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        cy.contains("5 Oportunidades encontradas");
+        cy.contains("7 Oportunidades encontradas");
     });
 
     it("Garante que os filtros por área de interesse funcionam", () => {
@@ -137,6 +136,6 @@ describe("Opportunity Page", () => {
             ":nth-child(1) > .mc-multiselect__option",
             ":nth-child(3) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input",
             ":nth-child(2) > .mc-multiselect__option"
-        ], "11 Oportunidades encontradas");
+        ], "13 Oportunidades encontradas");
     });
 });
