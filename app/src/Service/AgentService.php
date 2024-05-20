@@ -70,4 +70,18 @@ class AgentService
 
         return $agent;
     }
+
+    /**
+     * @throws ResourceNotFoundException
+     */
+    public function discard(int $id): void
+    {
+        $agent = $this->repository->find($id);
+
+        if (null === $agent || -10 === $agent->status) {
+            throw new ResourceNotFoundException('Agent not found');
+        }
+
+        $this->repository->softDelete($agent);
+    }
 }

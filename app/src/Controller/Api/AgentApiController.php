@@ -85,14 +85,14 @@ class AgentApiController
 
     public function delete(array $params): JsonResponse
     {
-        $agent = $this->repository->find((int) $params['id']);
+        try {
+            $this->agentService->discard((int) $params['id']);
 
-        if (!$agent || -10 === $agent->status) {
-            return new JsonResponse(status: Response::HTTP_NOT_FOUND);
+            return new JsonResponse(status: Response::HTTP_NO_CONTENT);
+        } catch (ResourceNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-
-        $this->repository->softDelete($agent);
-
-        return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 }
