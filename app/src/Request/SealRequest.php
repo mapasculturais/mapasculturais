@@ -22,4 +22,12 @@ class SealRequest
 
         return $data;
     }
+
+    public function validatePatch(): array
+    {
+        return json_decode(
+            json: $this->request->getContent(),
+            associative: true
+        );
+    }
 }

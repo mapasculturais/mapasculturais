@@ -31,7 +31,7 @@ class SealRepository extends AbstractRepository
         return $this->repository->find($id);
     }
 
-    public function create(Seal $seal): void
+    public function save(Seal $seal): void
     {
         $this->mapaCulturalEntityManager->persist($seal);
         $this->mapaCulturalEntityManager->flush();

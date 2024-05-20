@@ -8,6 +8,7 @@ use App\Exception\ResourceNotFoundException;
 use App\Repository\SealRepository;
 use App\Request\SealRequest;
 use App\Service\SealService;
+use Exception;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,6 +49,20 @@ class SealApiController
             return new JsonResponse($seal, Response::HTTP_CREATED);
         } catch (InvalidArgumentException $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function patch(array $params): JsonResponse
+    {
+        try {
+            $sealData = $this->sealRequest->validatePatch();
+            $seal = $this->sealService->update((int) $params['id'], (object) $sealData);
+
+            return new JsonResponse($seal, Response::HTTP_CREATED);
+        } catch (ResourceNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage(), Response::HTTP_NOT_FOUND]);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage(), Response::HTTP_BAD_REQUEST]);
         }
     }
 

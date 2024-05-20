@@ -32,7 +32,7 @@ class SealService extends AbstractService
     {
         $seal = $this->serializer->denormalize($data, Seal::class);
         $this->setProperty($seal, 'owner', $this->agentRepository->find(1));
-        $this->sealRepository->create($seal);
+        $this->sealRepository->save($seal);
 
         return $seal;
     }
@@ -51,5 +51,27 @@ class SealService extends AbstractService
         $this->sealRepository->softDelete($seal);
 
         return true;
+    }
+
+    /**
+     * @throws ResourceNotFoundException
+     */
+    public function update(int $id, object $data): Seal
+    {
+        $sealFromDB = $this->sealRepository->find($id);
+
+        if (null === $sealFromDB || -10 === $sealFromDB->status) {
+            throw new ResourceNotFoundException('Seal not found');
+        }
+
+        $sealUpdated = $this->serializer->denormalize(
+            data: $data,
+            type: Seal::class,
+            context: ['object_to_populate' => $sealFromDB]
+        );
+
+        $this->sealRepository->save($sealUpdated);
+
+        return $sealUpdated;
     }
 }
