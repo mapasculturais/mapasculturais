@@ -36,6 +36,9 @@ describe("Events Page", () => {
         cy.contains("2024").click();
         cy.wait(1000);
         cy.get(".filter-btn > :first-child").click();
+        cy.wait(1000);
+        cy.get('.dp__pointer').click();
+        cy.contains("2023");
     });
 
     it("Garantir que é possível acessar um evento e carregar as informações", () => {

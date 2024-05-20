@@ -7,7 +7,7 @@ describe("Pagina de Espaços", () => {
     });
 
     it("clica em \"Acessar\" e entra na pagina no espaço selecionado", () => {
-        cy.get(":nth-child(2) > .entity-card__footer > .entity-card__footer--action > .button").click();
+        cy.get(`[href="https://mapas.tec.br/espaco/13/"]`).last().click();
         cy.url().should("include", "/espaco/13/#info");
         cy.contains('h1', 'Teatro Deodoro');
     });
@@ -20,6 +20,6 @@ describe("Pagina de Espaços", () => {
             ":nth-child(1) > .mc-multiselect__option",
             ":nth-child(3) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input",
             ":nth-child(1) > .mc-multiselect__option"
-        ], "11 Espaços encontrados");
+        ], "12 Espaços encontrados");
     });
 });
