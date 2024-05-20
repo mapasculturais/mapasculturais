@@ -8,15 +8,15 @@ describe("Pagina de Projetos", () => {
 
     it("clica em \"Acessar\" e entra na pagina no projeto selecionado", () => {
         cy.get(":nth-child(2) > .entity-card__footer > .entity-card__footer--action > .button").click();
-        cy.url().should("include", "/projeto/21/#info");
-        cy.contains("Conner Kshlerin-D'Amore");
+        cy.url().should("include", "/projeto/19/#info");
+        cy.contains('h1', 'Oficina');
     });
 
     it("Garante que o botão limpar filtros na pagina de projetos funciona", () => {
         clearAllFilters([
             ".verified",
             ".mc-multiselect--input",
-            ":nth-child(1) > .item > .text"
-        ], "18 Projetos encontrados");
+            ":nth-child(1) > .mc-multiselect__option"
+        ], "19 Projetos encontrados");
     });
 });
