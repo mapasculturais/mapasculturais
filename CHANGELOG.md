@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.4.10]
 ## Correções
+- Corrige reatividade do componente mc-select
 
 ## [7.4.9] - 2024-07-03
 ### Correções
