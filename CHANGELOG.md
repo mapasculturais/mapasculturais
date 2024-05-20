@@ -30,6 +30,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - log de hooks agora exibe um backtrace
 - Faz com que seja possivel clicar no nome da entidade para acessar a single da mesma
 - Em oportunidades multifases, redireciona o usuário para primeira fase caso ele tente acessar via url a edição de oportunidades posteriores
+- Melhora texto de boas vindas padrão da plataforma
+- Faz com que a data de envio da inscrição se propague entre as fases
 
 ### Correções
 - Corrige seleção de relacionamentos OneToOne
@@ -43,6 +45,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
 - resolve aplicar filtros para pesquisa de eventos
+- Faz as abas `com permissão` das entidades do painel listarem também as entidades em rascunho
+
+## [7.3.57] - 2024-05-17
+### Melhorias
+- Não solicita o campo País em ambientes com a configuração statesAndCitiesCountryCode definida como BR
+
+### Correçoes
+- Corrige mascaras dos telefones no cadastro dos agentes para que aceite telefones residênciais e celulares
+
+## [7.3.56] - 2024-05-16
+### Melhorias
+- Padroniza altura dos cards das entidades da home 
 
 ## [7.3.55] - 2024-05-14
 ### Correçoes

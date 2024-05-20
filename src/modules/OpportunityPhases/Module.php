@@ -212,6 +212,18 @@ class Module extends \MapasCulturais\Module{
         $self = $this;
         $registration_repository = $app->repo('Registration');
 
+        $app->hook("entity(Registration).<<insert|sent>>:before", function(){
+            if(!$this->opportunity->isDataCollection){
+              $this->sentTimestamp = $this->previousPhase->sentTimestamp;
+            }
+        });
+
+        $app->hook("entity(Registration).status(<<*>>)", function(){
+            if(!$this->opportunity->isDataCollection && $this->status > 0){
+                $this->sentTimestamp = $this->previousPhase->sentTimestamp;
+            }
+        });
+
         // Redireciona o usuario sempre para a primeira fase
         $app->hook("GET(opportunity.<<single|edit>>):<<*>>", function() use ($app) {
             $entity = $this->requestedEntity;
@@ -1061,7 +1073,7 @@ class Module extends \MapasCulturais\Module{
                     $registration->save(true);
 
                     if(!$as_draft){
-                        $current_phase_registration->send();
+                        $current_phase_registration->send(false);
                     }
 
                     $new_registrations[] = $current_phase_registration->number;
@@ -1086,6 +1098,10 @@ class Module extends \MapasCulturais\Module{
             $current_phase = $this->opportunity;
             if($next_phase = $current_phase->nextPhase){
                 $next_phase->enqueueRegistrationSync([$this]);
+                if(!$next_phase->isLastPhase) {
+                    $last_phase = $current_phase->lastPhase;
+                    $last_phase->enqueueRegistrationSync([$this]);
+                }
             }
         });
 
