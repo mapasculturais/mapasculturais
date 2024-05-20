@@ -877,7 +877,11 @@ class Opportunity extends EntityController {
         if (isset($this->data['status'])) {
             if(preg_match('#EQ\( *(-?\d) *\)#', $this->data['status'], $matches)) {
                 $status = $matches[1];
-                $sql_status = " AND evaluation_status = {$status}";
+                if(isset($this->data['@date'])){
+                    $sql_status = " AND e.evaluation_status = {$status}";
+                } else {
+                    $sql_status = " AND evaluation_status = {$status}";
+                }
             }
         }
 
@@ -905,7 +909,7 @@ class Opportunity extends EntityController {
 
         $registration_ids = implode(",", $registrations_query->findIds() ?: [-1]);
 
-        $evaluations = $conn->fetchAll("
+        $query = "
             SELECT 
                 registration_id, 
                 evaluation_id, 
@@ -915,11 +919,34 @@ class Opportunity extends EntityController {
                 {$where_pending}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users}) AND
-                registration_id IN ({$registration_ids})
+                registration_id IN({$registration_ids})
                 $sql_status
             ORDER BY registration_sent_timestamp ASC
             $sql_limit
-        ", $params);
+        ";
+
+        if(isset($this->data['@date'])){
+            $query = "
+                SELECT 
+                    e.registration_id, 
+                    e.evaluation_id, 
+                    e.valuer_agent_id
+                FROM evaluations e
+                LEFT JOIN registration_evaluation re ON re.registration_id = e.registration_id
+                WHERE
+                    {$where_pending}
+                    e.opportunity_id = :opp AND
+                    e.valuer_user_id IN({$users}) AND
+                    e.registration_id IN({$registration_ids}) AND
+                    re.create_timestamp {$this->data['@date']}
+                    $sql_status
+                ORDER BY e.registration_sent_timestamp ASC
+                $sql_limit
+            ";
+        }
+
+
+        $evaluations = $conn->fetchAll($query, $params);
         
         
         $registration_ids = array_filter(array_unique(array_map(function($r) { return $r['registration_id']; }, $evaluations)));
