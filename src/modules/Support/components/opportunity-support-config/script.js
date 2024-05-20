@@ -64,6 +64,10 @@ app.component('opportunity-support-config', {
                     label: this.text('Modificar'),
                 }
             ]
+        },
+
+        hasSelectedField() {
+            return Object.values(this.selectedFields).some(value => value === true);
         }
     },
 
@@ -84,6 +88,7 @@ app.component('opportunity-support-config', {
             for (let field in this.selectedFields) {
                 if (this.selectedFields[field]) {
                     this.permissionsFields[field] = event.value;
+                    this.entity.agentRelations["@support"][0].metadata.registrationPermissions[field] = event.value
                 }
             }
         },
