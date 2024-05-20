@@ -33,6 +33,50 @@ app.component('mc-select', {
         },
     },
 
+    watch: {
+        defaultValue(newValue, oldValue) {
+            setTimeout(() => {
+                const options = this.$refs.options.children;
+                this.defaultOptions = Object.freeze(Array.from(options));
+                
+                for (const [index, option] of Object.entries(options)) {                            
+                    const refOptions = this.$refs.options;
+                    const refSelected = this.$refs.selected;
+    
+                    while (!option.hasAttribute('value') && option != refOptions) {
+                        option = option.parentElement;
+                    }
+        
+                    if (!option.hasAttribute('value')) {
+                        console.error('Atributo value não encontrado');
+                        return;
+                    }
+    
+                    if (newValue != null || newValue != '') {
+                        
+        
+                        let optionText = option.text ?? option.textContent;
+                        let optionValue = option.value ?? option.getAttribute('value');
+                        let optionItem = option.outerHTML;
+        
+                        if (optionValue == newValue) {
+                            this.optionSelected = {
+                                text: optionText,
+                                value: optionValue,
+                            }
+        
+                            refSelected.innerHTML = optionItem;
+                        }
+                    }
+                }
+        
+                if (newValue === null || newValue === '' || this.$refs.selected.innerHTML === '') {
+                    this.$refs.selected.innerHTML = this.placeholder;
+                }
+            });
+        },
+    },
+
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -41,15 +85,36 @@ app.component('mc-select', {
     },
 
     mounted() {
-
         setTimeout(() => {
             const options = this.$refs.options.children;
             this.defaultOptions = Object.freeze(Array.from(options));
             
-            for (let [index, option] of Object.entries(options)) {              
-                if(option.tagName === 'OPTGROUP') {
-                    for (let [_index, _option] of Object.entries(option.children)) {
-                        this.setMatchingOption(_option);
+            for (const [index, option] of Object.entries(options)) {                            
+                const refOptions = this.$refs.options;
+                const refSelected = this.$refs.selected;
+
+                while (!option.hasAttribute('value') && option != refOptions) {
+                    option = option.parentElement;
+                }
+    
+                if (!option.hasAttribute('value')) {
+                    console.error('Atributo value não encontrado');
+                    return;
+                }
+
+                if (this.defaultValue != null || this.defaultValue != '') {
+    
+                    let optionText = option.text ?? option.textContent;
+                    let optionValue = option.value ?? option.getAttribute('value');
+                    let optionItem = option.outerHTML;
+    
+                    if (optionValue == this.defaultValue) {
+                        this.optionSelected = {
+                            text: optionText,
+                            value: optionValue,
+                        }
+    
+                        refSelected.innerHTML = optionItem;
                     }
                 } else {
                     this.setMatchingOption(option);
