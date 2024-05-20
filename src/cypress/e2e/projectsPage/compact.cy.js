@@ -19,7 +19,7 @@ describe("Pagina de Projetos", () => {
 
     it("Clica em \"Acessar\" e entra na pagina no projeto selecionado", () => {
         cy.get(':nth-child(4) > .entity-card__footer > .entity-card__footer--action > .button').click();
-        cy.url().should("include", "/projeto/17/#info");
-        cy.contains('h1', 'Projeto 17 MAIO');
+        cy.url().should("include", "/projeto/21/#info");
+        cy.contains('h1', 'UFPR');
     });
 });

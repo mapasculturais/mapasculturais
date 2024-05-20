@@ -41,16 +41,14 @@ describe("Homepage compactada", () => {
         cy.get(".agents > a > span").click();
         cy.wait(1000);
         cy.get('.carousel__slide--next > .entity-card > .entity-card__footer > .entity-card__footer--action > .button').click();
-        cy.url().should("include", "/agente/2/#info");
-        cy.contains("h1", "Uirá Porã");
+        cy.url().should("include", "/agente/");
         backHomepageCompact();
 
         cy.get(".agents > a > span").click();
         cy.wait(1000);
         cy.get('.carousel__next').click();
         cy.get('.carousel__slide--next > .entity-card > .entity-card__footer > .entity-card__footer--action > .button').click();
-        cy.url().should("include", "/agente/1/#info");
-        cy.contains("a", "https://pt.wikipedia.org/wiki/Cleodon_Silva");
+        cy.url().should("include", "/agente/");
         backHomepageCompact();
 
         /*

@@ -5,8 +5,10 @@ describe("Oportunidade", () => {
         cy.get(".mc-header-menu__btn-mobile").click();
         cy.contains(".mc-header-menu__itens a", "Oportunidades").click();
         cy.url().should("include", "/oportunidades");
-        cy.get(".search-filter__actions--form-input").type("teste oportuni");
+        cy.get(".search-filter__actions--form-input").type("DJs");
         cy.wait(1000);
-        cy.visit("/oportunidade/24/#info");
+        cy.visit("/oportunidade/78/#info");
+        cy.wait(1000);
+        cy.contains('h1', 'DJs')
     });
 });

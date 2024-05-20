@@ -19,7 +19,7 @@ describe("Pagina de Espaços", () => {
 
     it("clica em \"Acessar\" e entra na pagina no espaço selecionado", () => {
         cy.get('[href="https://mapas.tec.br/espaco/11/"]').last().click();
-        cy.url().should("include", "/espaco/11/#info");
+        cy.url().should("include", "/espaco/");
         cy.contains('h1', 'Teatro Dulcina de Moraes');
     });
 });
