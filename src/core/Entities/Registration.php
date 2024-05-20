@@ -928,7 +928,7 @@ class Registration extends \MapasCulturais\Entity
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
     }
 
-    function send(){
+    function send($update_sent_timestamp = true, $flush = true){
         $this->checkPermission('send');
         $app = App::i();
 
@@ -944,10 +944,12 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $this->status = self::STATUS_SENT;
-        $this->sentTimestamp = new \DateTime;
+        if($update_sent_timestamp){
+            $this->sentTimestamp = new \DateTime;
+        }
         $this->agentsData = $this->_getAgentsData();
         $this->_spaceData = $this->_getSpaceData();
-        $this->save(true);
+        $this->save($flush);
 
         $app->enableAccessControl();
         
