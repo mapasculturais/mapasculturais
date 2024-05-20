@@ -57,8 +57,7 @@ $this->import('
                             <label class="title__header semibold">
                                 <input class="opportunity-support-config__checkbox" type="checkbox" @change="toggleSelectAll($event)" v-model="selectAll"><?php i::_e("Selecionar todos"); ?>
                             </label>
-
-                            <mc-select v-if="selectAll" :options="permissions" :default-value="allPermissions" hide-filter @change-option="setAllPerssions($event)"></mc-select>
+                            <mc-select v-if="hasSelectedField" :options="permissions" :default-value="allPermissions" hide-filter @change-option="setAllPerssions($event)"></mc-select>
                         </div>
        
                         <div class="opportunity-support-config__field" v-for="(field, index) in fields" :key="index">
@@ -72,12 +71,8 @@ $this->import('
                                             <mc-icon :name="field.type"></mc-icon>
                                         </span>
     
-                                        <h4 class="bold"> {{ field.title }} </h4>
+                                        <h4 class="bold"> #{{field.id}} - {{ field.title }} </h4>
                                     </span>
-                                    
-                                    <small class="opportunity-support-config__field-subtitle">
-                                        <?= i::__('TIPO:') ?> {{ field.typeDescription }}
-                                    </small>
                                 </span>
                             </label>
 
