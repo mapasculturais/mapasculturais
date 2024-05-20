@@ -54,4 +54,18 @@ class ProjectService
 
         return $projectUpdated;
     }
+
+    /**
+     * @throws ResourceNotFoundException
+     */
+    public function discard(int $id): void
+    {
+        $project = $this->projectRepository->find($id);
+
+        if (null === $project || -10 === $project->status) {
+            throw new ResourceNotFoundException('Project not found or already deleted.');
+        }
+
+        $this->$project->softDelete($project);
+    }
 }
