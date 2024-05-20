@@ -1246,7 +1246,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $this->name = $name;
     }
 
-    public function getShortDescription(): string
+    public function getShortDescription(): ?string
     {
         return $this->shortDescription;
     }

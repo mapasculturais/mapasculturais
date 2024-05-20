@@ -26,7 +26,7 @@ class OpportunityRepository extends AbstractRepository
             ->getArrayResult();
     }
 
-    public function find(int $id): Opportunity
+    public function find(int $id): ?Opportunity
     {
         return $this->repository->find($id);
     }

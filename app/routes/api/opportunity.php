@@ -12,6 +12,7 @@ return [
     ],
     '/api/v2/opportunities/{id}' => [
         Request::METHOD_GET => [OpportunityApiController::class, 'getOne'],
+        Request::METHOD_PATCH => [OpportunityApiController::class, 'patch'],
         Request::METHOD_DELETE => [OpportunityApiController::class, 'delete'],
     ],
 ];

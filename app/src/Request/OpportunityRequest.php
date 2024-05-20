@@ -21,7 +21,7 @@ class OpportunityRequest
         $jsonData = $this->request->getContent();
         $data = json_decode($jsonData, true);
 
-        $requiredFields = ['opportunityType', 'title', 'area'];
+        $requiredFields = ['objectType', 'name', 'terms', 'type'];
 
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || empty($data[$field])) {
@@ -37,6 +37,14 @@ class OpportunityRequest
         }
 
         return $data;
+    }
+
+    public function validateUpdate(): array
+    {
+        return json_decode(
+            json: $this->request->getContent(),
+            associative: true
+        );
     }
 
     public function validateDelete(array $params): Opportunity

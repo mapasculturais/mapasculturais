@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Exception\ResourceNotFoundException;
 use App\Repository\OpportunityRepository;
 use MapasCulturais\Entities\Opportunity;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class OpportunityService
 {
@@ -13,9 +17,12 @@ class OpportunityService
 
     public const FILE_TYPES = '/src/conf/opportunity-types.php';
 
+    private SerializerInterface $serializer;
+
     public function __construct()
     {
         $this->repository = new OpportunityRepository();
+        $this->serializer = new Serializer([new ObjectNormalizer()]);
     }
 
     public function getTypes(): array
@@ -27,6 +34,26 @@ class OpportunityService
             array_keys($typesFromConf),
             $typesFromConf
         );
+    }
+
+    public function update(int $id, object $data): Opportunity
+    {
+        $opportunityFromDB = $this->repository->find($id);
+
+        if (null === $opportunityFromDB || -10 === $opportunityFromDB->status) {
+            throw new ResourceNotFoundException('Opportunity not found');
+        }
+
+        $opportunityUpdated = $this->serializer->denormalize(
+            data: $data,
+            type: Opportunity::class,
+            context: ['object_to_populate' => $opportunityFromDB]
+        );
+
+        $opportunityUpdated->saveTerms();
+        $this->repository->save($opportunityUpdated);
+
+        return $opportunityUpdated;
     }
 
     public function create($data): Opportunity

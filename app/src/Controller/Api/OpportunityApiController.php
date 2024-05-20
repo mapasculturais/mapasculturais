@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Repository\OpportunityRepository;
+use App\Request\OpportunityRequest;
+use App\Service\OpportunityService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class OpportunityApiController
 {
@@ -60,6 +63,18 @@ class OpportunityApiController
         $opportunities = $this->repository->findOpportunitiesByAgentId($agentId);
 
         return new JsonResponse($opportunities);
+    }
+
+   public function patch(array $params): JsonResponse
+    {
+        try {
+            $opportunityData = $this->opportunityRequest->validateUpdate();
+            $opportunity = $this->opportunityService->update((int) $params['id'], (object) $opportunityData);
+
+            return new JsonResponse($opportunity, Response::HTTP_CREATED);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     public function delete(array $params): JsonResponse
