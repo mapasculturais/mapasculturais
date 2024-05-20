@@ -56,7 +56,7 @@ paths:
   /projects/{id}:
     $ref: './components/paths/project/group-param-id.yaml'
   /seals:
-    $ref: './components/paths/seal/get-list.yaml'
+    $ref: './components/paths/seal/group-get-post.yaml'
   /spaces:
     $ref: './components/paths/space/group-get-post.yaml'
   /spaces/{id}:

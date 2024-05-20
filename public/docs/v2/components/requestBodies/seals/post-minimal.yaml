@@ -1,0 +1,18 @@
+type: object
+properties:
+  name:
+    type: string
+    example: "Selo Mapas"
+    description: O nome do Selo
+  shortDescription:
+    type: string
+    example: "Descrição curta do Selo Mapas"
+    description: Uma breve descrição do Selo
+  longDescription:
+    type: string
+    example: "Descrição longa do Selo Mapas"
+    description: Uma descrição detalhada do Selo
+  validPeriod:
+    type: boolean
+    example: true
+    description: Se o Selo terá um período de validade
