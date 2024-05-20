@@ -23,7 +23,7 @@ final class AgentTestFixtures implements TestFixtures
             'vimeo' => 'agent',
             'youtube' => 'agent',
             'spotify' => 'agent',
-            'pinterest' => 'agent'
+            'pinterest' => 'agent',
         ];
     }
 
