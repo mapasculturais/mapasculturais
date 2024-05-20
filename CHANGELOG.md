@@ -4,6 +4,17 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.3.57] - 2024-05-17
+### Melhorias
+- Não solicita o campo País em ambientes com a configuração statesAndCitiesCountryCode definida como BR
+
+### Correçoes
+- Corrige mascaras dos telefones no cadastro dos agentes para que aceite telefones residênciais e celulares
+
+## [7.3.56] - 2024-05-16
+### Melhorias
+- Padroniza altura dos cards das entidades da home 
+
 ## [7.3.55] - 2024-05-14
 ### Correçoes
 - Faz com que na single perfil, seja exibito os projetos relacionados 
