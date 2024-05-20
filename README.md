@@ -20,8 +20,8 @@ Temos muito a agradecer tudo que foi construído até a versão XXX, e a partir 
 
 - [Nova Arquitetura](./app/README.md) de arquivos e diretórios
 - [Conexão](./app/README.md) com o Banco de Dados
-- [Como colaborar](./app/README.md) criando issues
-- [Como implementar](./app/README.md) novos códigos através de pull requests
+- [Como colaborar](./help/CREATE-ISSUES.md) criando issues
+- [Como implementar](./app/CREATE-PULL-REQUESTS.md) novos códigos através de pull requests
 
 ## Tecnologias
 
@@ -36,23 +36,26 @@ Temos muito a agradecer tudo que foi construído até a versão XXX, e a partir 
 ---
 
 ## Instalação
-A maneira mais simples e segura para instalar o MapaCultural é seguindo [Este tutorial]()
+A maneira mais simples e segura para instalar o MapaCultural é seguindo [Este tutorial](./help/INSTALL.md)
 
-## Documentação do Código
+## Documentação do Novo Código
 
-- [Getting Started]()
+- [Getting Started](./app/README.md)
 - API
-  - [API V1](https://mapacultural.secult.ce.gov.br/api/v2/docs) do projeto original
-  - [API V2](https://mapacultural.secult.ce.gov.br/api/v2/docs) baseada em RestFul, implementada neste fork
+  - [API V1](https://mapacultural.secult.ce.gov.br/mapas/docs/v1) do projeto original
+  - [API V2](https://mapacultural.secult.ce.gov.br/mapas/docs/v2) baseada em RestFul, implementada neste fork
 - Autenticação
-  - Web
-  - API V2
+  - Web (ainda em desenvolvimento)
+  - API V2 (ainda em desenvolvimento)
 
 ## Documentação Legada
 
 A documentação pode ser navegada no endereço (http://docs.mapasculturais.org)
 
-Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências: 
+<details>
+<summary>Saiba mais</summary>
+
+Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências:
 - [API](http://docs.mapasculturais.org/apidoc/index.html?doctype=api)
 - [API - exemplos](documentation/docs/mc_config_api.md)
 - [Guia do desenvolvedor](documentation/docs/mc_developer_guide.md)
@@ -61,6 +64,8 @@ Toda documentação da aplicação está na pasta [documentation](documentation)
 - [Importação de arquivos de dados geoespaciais (Shapefiles)](documentation/docs/mc_deploy_shapefiles.md)
 - [Deploy diretamente no sistema operacional](https://docs.mapasculturais.org/mc_deploy/) - **NÃO RECOMENDADO**
 - [Habilitar um novo tema](documentation/docs/mc_deploy_theme.md)
+</details>
+
 
 ## Mais Informações
 
