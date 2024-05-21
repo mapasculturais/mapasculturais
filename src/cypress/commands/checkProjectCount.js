@@ -1,6 +1,6 @@
 function checkProjectCount() {
-        cy.get('.foundResults').then(($foundResultsVar) => {
-                let resultsTextArray = $foundResultsVar.text().split(" ");
+        cy.get('.foundResults').then(($foundResults) => {
+                let resultsTextArray = $foundResults.text().split(" ");
                 let resultsCount = Number(resultsTextArray[0]);
                 
                 cy.get(".upper.project__color").should("have.length", resultsCount);
