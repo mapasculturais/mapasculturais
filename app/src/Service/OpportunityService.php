@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Enum\EntityStatusEnum;
 use App\Exception\ResourceNotFoundException;
 use App\Repository\OpportunityRepository;
 use MapasCulturais\Entities\Opportunity;
@@ -40,7 +41,7 @@ class OpportunityService
     {
         $opportunityFromDB = $this->repository->find($id);
 
-        if (null === $opportunityFromDB || -10 === $opportunityFromDB->status) {
+        if (null === $opportunityFromDB || EntityStatusEnum::TRASH->getValue() === $opportunityFromDB->status) {
             throw new ResourceNotFoundException('Opportunity not found');
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Enum\EntityStatusEnum;
 use App\Exception\ResourceNotFoundException;
 use App\Repository\AgentRepository;
 use App\Repository\ProjectRepository;
@@ -44,7 +45,7 @@ class SealService extends AbstractService
     {
         $seal = $this->sealRepository->find($id);
 
-        if (null === $seal || -10 === $seal->status) {
+        if (null === $seal || EntityStatusEnum::TRASH->getValue() === $seal->status) {
             throw new ResourceNotFoundException('Seal not found');
         }
 
@@ -60,7 +61,7 @@ class SealService extends AbstractService
     {
         $sealFromDB = $this->sealRepository->find($id);
 
-        if (null === $sealFromDB || -10 === $sealFromDB->status) {
+        if (null === $sealFromDB || EntityStatusEnum::TRASH->getValue() === $sealFromDB->status) {
             throw new ResourceNotFoundException('Seal not found');
         }
 

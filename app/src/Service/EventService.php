@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Enum\EntityStatusEnum;
 use App\Repository\EventRepository;
 use App\Request\EventRequest;
 use MapasCulturais\Entities\Event;
@@ -52,7 +53,7 @@ class EventService
     {
         $eventFromDB = $this->repository->find($id);
 
-        if (null === $eventFromDB || -10 === $eventFromDB->status) {
+        if (null === $eventFromDB || EntityStatusEnum::TRASH->getValue() === $eventFromDB->status) {
             throw new ResourceNotFoundException('Event not found or already deleted.');
         }
 

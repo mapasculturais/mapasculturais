@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Enum\EntityStatusEnum;
 use App\Exception\ResourceNotFoundException;
 use App\Repository\SpaceRepository;
 use MapasCulturais\Entities\Space;
@@ -57,7 +58,7 @@ class SpaceService
     {
         $spaceFromDB = $this->repository->find($id);
 
-        if (null === $spaceFromDB || -10 === $spaceFromDB->status) {
+        if (null === $spaceFromDB || EntityStatusEnum::TRASH->getValue() === $spaceFromDB->status) {
             throw new ResourceNotFoundException('Space not found');
         }
 

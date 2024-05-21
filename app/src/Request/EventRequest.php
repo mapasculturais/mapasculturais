@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Request;
 
+use App\Enum\EntityStatusEnum;
 use App\Repository\EventRepository;
 use Exception;
 use MapasCulturais\Entities\Event;
@@ -43,7 +44,7 @@ class EventRequest
     {
         $event = $this->repository->find((int) $params['id']);
 
-        if (!$event || -10 === $event->status) {
+        if (!$event || EntityStatusEnum::TRASH->getValue() === $event->status) {
             throw new Exception('Event not found or already deleted.');
         }
 

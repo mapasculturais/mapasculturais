@@ -4,19 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\EntityStatusEnum;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 class Seal
 {
-    public const STATUS_RELATED = -1;
-    public const STATUS_ENABLED = 1;
-    public const STATUS_DRAFT = 0;
-    public const STATUS_DISABLED = -9;
-    public const STATUS_TRASH = -10;
-    public const STATUS_ARCHIVED = -2;
-
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'SEQUENCE')]
@@ -42,8 +36,13 @@ class Seal
     private DateTimeInterface $createTimestamp;
 
     #[ORM\Column(type: 'smallint')]
-    private int $status = self::STATUS_ENABLED;
+    private int $status;
 
     #[ORM\Column(type: 'json', name: 'locked_fields', nullable: true, options: ['default' => '[]'])]
     private iterable $lockedFields;
+
+    public function __construct()
+    {
+        $this->status = EntityStatusEnum::TRASH->getValue();
+    }
 }

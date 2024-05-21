@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Request;
 
+use App\Enum\EntityStatusEnum;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -55,7 +56,7 @@ class OpportunityRequest
 
         $opportunity = $this->repository->find((int) $params['id']);
 
-        if (!$opportunity || $opportunity->status === -10) {
+        if (!$opportunity || EntityStatusEnum::TRASH->getValue() === $opportunity->status) {
             throw new Exception('Opportunity not found or already deleted.');
         }
 

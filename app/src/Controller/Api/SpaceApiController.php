@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Enum\EntityStatusEnum;
 use App\Exception\ResourceNotFoundException;
 use App\Repository\SpaceRepository;
 use App\Request\SpaceRequest;
@@ -77,7 +78,7 @@ class SpaceApiController
     {
         $space = $this->repository->find((int) $params['id']);
 
-        if (-10 === $space->status) {
+        if (EntityStatusEnum::TRASH->getValue() === $space->status) {
             return new JsonResponse(['error' => 'Espaço não encontrado'], JsonResponse::HTTP_NOT_FOUND);
         }
 

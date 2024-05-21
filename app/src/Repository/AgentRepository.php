@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Enum\EntityStatusEnum;
 use Doctrine\Persistence\ObjectRepository;
 use MapasCulturais\Entities\Agent;
 
@@ -38,7 +39,7 @@ class AgentRepository extends AbstractRepository
 
     public function softDelete(Agent $agent): void
     {
-        $agent->setStatus(-10);
+        $agent->setStatus(EntityStatusEnum::TRASH->getValue());
         $this->mapaCulturalEntityManager->persist($agent);
         $this->mapaCulturalEntityManager->flush();
     }

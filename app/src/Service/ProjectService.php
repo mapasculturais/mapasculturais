@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Enum\EntityStatusEnum;
 use App\Repository\ProjectRepository;
 use MapasCulturais\Entities\Project;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -38,7 +39,7 @@ class ProjectService
     {
         $projectFromDB = $this->projectRepository->find($id);
 
-        if (null === $projectFromDB || -10 === $projectFromDB->status) {
+        if (null === $projectFromDB || EntityStatusEnum::TRASH->getValue() === $projectFromDB->status) {
             throw new ResourceNotFoundException('Project not found or already deleted.');
         }
 
@@ -62,7 +63,7 @@ class ProjectService
     {
         $project = $this->projectRepository->find($id);
 
-        if (null === $project || -10 === $project->status) {
+        if (null === $project || EntityStatusEnum::TRASH->getValue() === $project->status) {
             throw new ResourceNotFoundException('Project not found or already deleted.');
         }
 

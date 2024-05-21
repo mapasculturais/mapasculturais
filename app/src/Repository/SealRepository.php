@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Enum\EntityStatusEnum;
 use Doctrine\Persistence\ObjectRepository;
 use MapasCulturais\Entities\Seal;
 
@@ -39,7 +40,7 @@ class SealRepository extends AbstractRepository
 
     public function softDelete(Seal $space): void
     {
-        $space->setStatus(-10);
+        $space->setStatus(EntityStatusEnum::TRASH->getValue());
         $this->mapaCulturalEntityManager->persist($space);
         $this->mapaCulturalEntityManager->flush();
     }

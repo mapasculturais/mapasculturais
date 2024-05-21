@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Enum\EntityStatusEnum;
 use Doctrine\Persistence\ObjectRepository;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\EventOccurrence;
@@ -62,7 +63,7 @@ class EventRepository extends AbstractRepository
 
     public function softDelete(Event $event): void
     {
-        $event->setStatus(-10);
+        $event->setStatus(EntityStatusEnum::TRASH->getValue());
         $this->save($event);
     }
 

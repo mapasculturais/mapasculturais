@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Enum\EntityStatusEnum;
 use App\Exception\ResourceNotFoundException;
 use App\Repository\AgentRepository;
 use MapasCulturais\Entities\Agent;
@@ -41,7 +42,7 @@ class AgentService
     {
         $agentFromDB = $this->repository->find($id);
 
-        if (null === $agentFromDB || -10 === $agentFromDB->status) {
+        if (null === $agentFromDB || EntityStatusEnum::TRASH->getValue() === $agentFromDB->status) {
             throw new ResourceNotFoundException('Agent not found');
         }
 
@@ -78,7 +79,7 @@ class AgentService
     {
         $agent = $this->repository->find($id);
 
-        if (null === $agent || -10 === $agent->status) {
+        if (null === $agent || EntityStatusEnum::TRASH->getValue() === $agent->status) {
             throw new ResourceNotFoundException('Agent not found');
         }
 
