@@ -1,4 +1,6 @@
 const { clearAllFilters } = require("../../commands/clearAllFilters");
+const { checkOpportunityCount } = require("../../commands/checkOpportunityCount");
+const { checkOpportunityCountWithClear } = require("../../commands/checkOpportunityCountWithClear");
 
 describe("Opportunity Page", () => {
     beforeEach(() => {
@@ -39,16 +41,7 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            
-            cy.get(".upper.opportunity__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Oportunidades encontradas");
-        });
+        checkOpportunityCount();
     });
 
     it("Garante que os filtros por status das oportunidades funcionam", () => {
@@ -62,31 +55,13 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            
-            cy.get(".upper.opportunity__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Oportunidades encontradas");
-        });
+        checkOpportunityCount();
 
         cy.get('.form > :nth-child(1) > :nth-child(4)').click();
 
         cy.wait(1000);
 
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            
-            cy.get(".upper.opportunity__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Oportunidades encontradas");
-        });
+        checkOpportunityCount();
     });
 
     it("Garante que o filtro de oportunidades de editais oficiais funciona", () => {
@@ -99,15 +74,7 @@ describe("Opportunity Page", () => {
         cy.get(".verified > input").click();
         cy.wait(1000);
 
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            cy.get(".upper.opportunity__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Oportunidades encontradas");
-        });
+        checkOpportunityCount();
     });
 
     it("Garante que os filtros por tipo de oportunidade funcionam", () => {
@@ -122,16 +89,7 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            
-            cy.get(".upper.opportunity__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Oportunidades encontradas");
-        });
+        checkOpportunityCount();
 
         cy.reload();
 
@@ -145,16 +103,7 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            
-            cy.get(".upper.opportunity__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Oportunidades encontradas");
-        });
+        checkOpportunityCount();
     });
 
     it("Garante que os filtros por área de interesse funcionam", () => {
@@ -169,16 +118,7 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            
-            cy.get(".upper.opportunity__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Oportunidades encontradas");
-        });
+        checkOpportunityCount();
     });
 
     it("Garante que o botão limpar filtros na pagina de oportunidades funciona", () => {
@@ -197,24 +137,6 @@ describe("Opportunity Page", () => {
 
         cy.wait(1000);
 
-        let countBeforeClear;
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray;
-            resultsTextArray = $foundResults.text().split(" ");
-            countBeforeClear = Number(resultsTextArray[0]);
-        });
-
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            
-            cy.get(".upper.opportunity__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.get(".upper.opportunity__color").should("have.length", countBeforeClear);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Oportunidades encontradas");
-        });
+        checkOpportunityCountWithClear();
     });
 });

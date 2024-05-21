@@ -1,9 +1,12 @@
 const { clearAllFilters } = require("../../commands/clearAllFilters");
+const { checkSpaceCount } = require("../../commands/checkSpaceCount");
+const { checkSpaceCountWithClear } = require("../../commands/checkSpaceCountWithClear");
 
 describe("Pagina de Espaços", () => {
     beforeEach(() => {
         cy.viewport(1920, 1080);
         cy.visit("/espacos/#list");
+        cy.wait(1000);
     });
 
     it("clica em \"Acessar\" e entra na pagina no espaço selecionado", () => {
@@ -12,9 +15,15 @@ describe("Pagina de Espaços", () => {
         cy.contains('h1', 'Teatro Deodoro');
     });
 
-    it("Garante que o botão limpar filtros na pagina de espaços funciona", () => {
+    it("Garante que os filtros de tipos de espaços funcionem", () => {
+        cy.contains("Tipos de espaços");
+        cy.get(':nth-child(2) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input').click();
+        cy.get(':nth-child(86) > .mc-multiselect__option').click();
         cy.wait(1000);
-        
+        checkSpaceCount();
+    });
+
+    it("Garante que o botão limpar filtros na pagina de espaços funciona", () => {        
         clearAllFilters([
             ".form > :nth-child(1) > :nth-child(2)",
             ".verified",
@@ -25,16 +34,6 @@ describe("Pagina de Espaços", () => {
         ]);
 
         cy.wait(1000);
-
-        cy.get('.foundResults').then(($foundResults) => {
-            let resultsTextArray, resultsCount;
-
-            resultsTextArray = $foundResults.text().split(" ");
-            resultsCount = Number(resultsTextArray[0]);
-            
-            cy.get(".upper.space__color").should("have.length", resultsCount);
-            cy.wait(1000);
-            cy.contains(resultsCount + " Espaços encontrados");
-        });
+        checkSpaceCountWithClear();
     });
 });
