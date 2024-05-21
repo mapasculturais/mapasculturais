@@ -1,6 +1,5 @@
 const { clearAllFilters } = require("../../commands/clearAllFilters");
-const { checkSpaceCount } = require("../../commands/checkSpaceCount");
-const { checkSpaceCountWithClear } = require("../../commands/checkSpaceCountWithClear");
+const { checkFilterCountOf } = require("../../commands/checkFilterCountOf");
 
 describe("Pagina de Espaços", () => {
     beforeEach(() => {
@@ -10,7 +9,7 @@ describe("Pagina de Espaços", () => {
     });
 
     it("clica em \"Acessar\" e entra na pagina no espaço selecionado", () => {
-        cy.get(`[href="https://mapas.tec.br/espaco/13/"]`).last().click();
+        cy.get(`[href="${Cypress.config().baseUrl}/espaco/13/"]`).last().click();
         cy.url().should("include", "/espaco/");
         cy.contains('h1', 'Teatro Deodoro');
     });
@@ -20,7 +19,7 @@ describe("Pagina de Espaços", () => {
         cy.get(':nth-child(2) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input').click();
         cy.get(':nth-child(86) > .mc-multiselect__option').click();
         cy.wait(1000);
-        checkSpaceCount();
+        checkFilterCountOf("space", false);
     });
 
     it("Garante que o botão limpar filtros na pagina de espaços funciona", () => {        
@@ -34,6 +33,6 @@ describe("Pagina de Espaços", () => {
         ]);
 
         cy.wait(1000);
-        checkSpaceCountWithClear();
+        checkFilterCountOf("space", true);
     });
 });
