@@ -1736,31 +1736,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if ($scope.useRegistrationsRanges) {
-            
-            let ranges = [];
-            let can = false;
-            $scope.registrationRanges.forEach(function(item) {
-                ranges.push(item.label);
-            })
-
-            field.registrationRanges.forEach(function(item) {
-                if(ranges.includes(item)) {
-                    can = true;
-                }
-            })
-           
-            result = can;
+            if(field.registrationRanges.length > 0  && !field.registrationRanges.includes(MapasCulturais.entity.object.range)) {
+                result = false;
+            }
         }
 
         if ($scope.useProponentTypes) {
-            let can = false;
-            field.proponentTypes.forEach(function(item) {
-                if($scope.registrationProponentTypes.includes(item)) {
-                    can = true;
-                }
-            })
-
-            result = can;
+            if(field.proponentTypes.length > 0 && !field.proponentTypes.includes(MapasCulturais.entity.object.proponentType)) {
+                result = false;
+            }
         }
       
         if(field.conditional){
