@@ -33,6 +33,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
 - Faz com que seja possivel clicar no nome da entidade para acessar a single da mesma
 - Em oportunidades multifases, redireciona o usuário para primeira fase caso ele tente acessar via url a edição de oportunidades posteriores
+- Melhora texto de boas vindas padrão da plataforma
+- Faz com que a data de envio da inscrição se propague entre as fases
 
 ### Correções
 - Corrige seleção de relacionamentos OneToOne
@@ -54,6 +56,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Log de hooks agora exibe um backtrace
 - Adiciona novos índices para melhorar a performance global do sistema
 
+## [7.3.57] - 2024-05-17
+### Melhorias
+- Não solicita o campo País em ambientes com a configuração statesAndCitiesCountryCode definida como BR
+
+### Correçoes
+- Corrige mascaras dos telefones no cadastro dos agentes para que aceite telefones residênciais e celulares
 
 ## [7.3.56] - 2024-05-16
 ### Melhorias
