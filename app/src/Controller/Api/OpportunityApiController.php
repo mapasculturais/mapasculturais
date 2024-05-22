@@ -46,7 +46,7 @@ class OpportunityApiController
 
             $responseData = [
                 'id' => $opportunity->getId(),
-                'title' => $opportunity->getName(),
+                'name' => $opportunity->getName(),
                 'terms' => $opportunity->getTerms(),
                 '_type' => $opportunity->getType(),
             ];

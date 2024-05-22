@@ -62,7 +62,7 @@ class OpportunityService
         $opportunity = new Opportunity();
 
         $opportunity->setType($data['opportunityType']);
-        $opportunity->setName($data['title']);
+        $opportunity->setName($data['name']);
         $opportunity->terms['area'] = $data['terms']['area'];
 
         if (isset($data['project'])) {
