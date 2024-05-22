@@ -493,7 +493,7 @@ class Opportunity extends EntityController {
             $current_phase_query_params['@select'] = implode(',', $current_phase_query_select);
 
             $current_phase_query = new ApiQuery(Registration::class, $current_phase_query_params);
-            if(isset($previous_phase_query)) {
+            if(isset($previous_phase_query) && !$phase->isLastPhase) {
                 $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
             }
             $previous_phase_query = $current_phase_query;
