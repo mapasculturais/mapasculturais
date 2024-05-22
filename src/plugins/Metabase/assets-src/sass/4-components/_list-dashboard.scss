@@ -1,0 +1,64 @@
+@use '../2-atoms/a-mixins' as *;
+
+.list-dashboard {
+    background-color: var(--mc-white);
+    color: var(--mc-black);
+    display: grid;
+    grid-template-columns: 19.0625rem calc(100% - 19.0625rem);
+    max-width: 90rem;
+    margin: 0 auto;
+
+    .selected {
+        background-color: var(--mc-primary-500);
+    }
+
+    &__title {
+        color: var(--mc-gray-700);
+        font-size: size(12);
+        margin: 0 auto;
+        padding: size(16) size(16) size(16) 0;
+        text-transform: uppercase;
+    }
+
+    &__text {
+        font-size: size(14);
+        color: var();
+    }
+    .textselected {
+        color: var(--mc-white);
+    }
+    &__link {
+        color: var(--mc-black);
+        text-decoration: none;
+        a {
+            text-decoration: none;
+        }
+    }
+
+    &__nav {
+        list-style-type: none;
+        background-color: var(--mc-white);
+        padding: size(16) size(32) size(16) size(24);
+        margin: 0;
+        border-right: 1px solid var(--mc-gray-100);
+        display: flex;
+        gap: size(8);
+        flex-direction: column;
+    }
+
+    &__iframe {
+        height: 100%;
+        width: 100%;
+        border-style: none;
+    }
+
+    &__item {
+        padding: size(8) size(16) size(8) size(16);
+        margin: 0;
+        border-radius: size(4);
+        width: size(250);
+        background-color: var(--mc-white);
+        color: var(--mc-black);
+    }
+
+}
