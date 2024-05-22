@@ -60,9 +60,9 @@ class SealApiController
 
             return new JsonResponse($seal, Response::HTTP_CREATED);
         } catch (ResourceNotFoundException $exception) {
-            return new JsonResponse(['error' => $exception->getMessage(), Response::HTTP_NOT_FOUND]);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage(), Response::HTTP_BAD_REQUEST]);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 
