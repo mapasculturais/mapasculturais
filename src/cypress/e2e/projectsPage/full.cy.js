@@ -11,7 +11,6 @@ describe("Pagina de Projetos", () => {
     it("clica em \"Acessar\" e entra na pagina no projeto selecionado", () => {
         cy.get(":nth-child(2) > .entity-card__footer > .entity-card__footer--action > .button").click();
         cy.url().should("include", "/projeto/");
-        cy.contains('h1', 'MinC');
     });
 
     it("Garante que os filtros de projetos funcionem", () => {

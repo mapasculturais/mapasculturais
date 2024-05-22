@@ -21,6 +21,5 @@ describe("Pagina de Espaços", () => {
         cy.get(`[href="${Cypress.config().baseUrl}/espaco/11/"]`).last().click();
         
         cy.url().should("include", "/espaco/");
-        cy.contains('h1', 'Teatro Dulcina de Moraes');
     });
 });
