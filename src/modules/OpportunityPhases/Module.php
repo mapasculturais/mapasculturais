@@ -1492,6 +1492,11 @@ class Module extends \MapasCulturais\Module{
             'default'=> true,
         ]);
 
+        $this->registerOpportunityMetadata("registrationsOutdated", [
+            'label'=> "Indica que as inscrições da fase não estão atualizadas",
+            'type' => 'bool',
+            'default'=> false,
+        ]);
     }
 
 
