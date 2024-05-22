@@ -984,6 +984,35 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
+    /**
+     * Verifica se um campo deve ser exibido com base nas categorias, 
+     * faixas e tipos de proponente definidos na configuração do campo.
+     *
+     * @param RegistrationFieldConfiguration|RegistrationFileConfiguration $field O campo a ser verificado.
+     * @return bool Verdadeiro se o campo deve ser exibido, falso caso contrário.
+     */
+    function isFieldVisisble(RegistrationFieldConfiguration|RegistrationFileConfiguration $field): bool {
+        $opportunity = $this->opportunity;
+
+        $use_category = (bool) $opportunity->registrationCategories;
+        $use_range = (bool) $opportunity->registrationRanges;
+        $use_proponent_types = (bool) $opportunity->registrationProponentTypes;
+
+        if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
+            return false;
+        }
+
+        if ($use_range && count($field->registrationRanges) > 0 && !in_array($this->range, $field->registrationRanges)) {
+            return false;
+        }
+
+        if ($use_proponent_types && count($field->proponentTypes) > 0 && !in_array($this->proponentType, $field->proponentTypes)) {
+            return false;
+        }
+
+        return true;
+    }
+
     function getValidationErrors() {
         if($this->isNew()) {
             return parent::getValidationErrors();
@@ -1073,15 +1102,7 @@ class Registration extends \MapasCulturais\Entity
         // validate attachments
         foreach($opportunity->registrationFileConfigurations as $rfc){
 
-            if($use_category && count($rfc->categories) > 0 && !in_array($this->category, $rfc->categories)){
-                continue;
-            }
-
-            if ($use_range && count($rfc->registrationRanges) > 0 && !in_array($this->range, $rfc->registrationRanges)) {
-                continue;
-            }
-
-            if ($use_proponent_types && count($rfc->proponentTypes) > 0 && !in_array($this->proponentType, $rfc->proponentTypes)) {
+            if(!$this->isFieldVisisble($rfc)){
                 continue;
             }
 
@@ -1106,15 +1127,7 @@ class Registration extends \MapasCulturais\Entity
         // validate fields
         foreach ($opportunity->registrationFieldConfigurations as $field) {
 
-            if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
-                continue;
-            }
-
-            if ($use_range && count($field->registrationRanges) > 0 && !in_array($this->range, $field->registrationRanges)) {
-                continue;
-            }
-
-            if ($use_proponent_types && count($field->proponentTypes) > 0 && !in_array($this->proponentType, $field->proponentTypes)) {
+            if (!$this->isFieldVisisble($field)) {
                 continue;
             }
 
