@@ -55,6 +55,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Adiciona novos índices para melhorar a performance global do sistema
 
 
+## [7.3.56] - 2024-05-16
+### Melhorias
+- Padroniza altura dos cards das entidades da home 
+
 ## [7.3.55] - 2024-05-14
 ### Correçoes
 - Faz com que na single perfil, seja exibito os projetos relacionados 
