@@ -422,10 +422,15 @@ class Opportunity extends EntityController {
             // $phase é a fase que foi informada no parâmetro @opportunity
             if($phase->equals($opportunity)) {
                 if($phase->publishedRegistrations && !$phase->canUser('viewEvaluations') && !$phase->canUser('@control')){
+                    // usuários com permissão na oportunidade podem ver inscrições em rascunho
+                    // usuários sem permissão só podem ver inscrições não pendentes (selecionadas, suplentes, não selecionadas e inválidas [status > 1])
+                    $filter_status = $phase->canUser('@control') ? 
+                        API::GTE(Registration::STATUS_DRAFT) : API::GT(Registration::STATUS_SENT);
+
                     if(isset($data['status'])){
-                        $current_phase_query_params['status'] = API::AND(API::IN([10,8]), $data['status']);
+                        $current_phase_query_params['status'] = API::AND($filter_status, $data['status']);
                     } else {
-                        $current_phase_query_params['status'] = API::IN([10,8]);
+                        $current_phase_query_params['status'] = $filter_status;
                     }
                 } else if(isset($data['status'])) {
                     $current_phase_query_params['status'] = $data['status'];
