@@ -89,9 +89,9 @@ $this->breadcrumb = [
             <mc-container>
                 <main>
                     <div class="grid-12">
-                        <div class="col-12">
+                        <div v-if="entity.longDescription" class="col-12">
                             <h3><?= i::__("Apresentação") ?></h3>
-                            <p v-html="entity.longDescription"></p>
+                            <p class="description" v-html="entity.longDescription"></p>
                         </div>
                         <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Regulamento'); ?>"></opportunity-rules>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
