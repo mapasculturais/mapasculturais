@@ -12,38 +12,60 @@ class Plugin extends \MapasCulturais\Plugin
             'links' => [],
             'cards' => [
                 [
-                    "label" => "Espaços",
-                    "icon"=> "space",
-                    "iconClass"=> "space__color",
-                    "panelLink"=> "painel-espacos",
-                    "data"=> [
+                    'label' => 'Espaços',
+                    'icon'=> 'space',
+                    'iconClass'=> 'space__color',
+                    'panelLink'=> 'painel-espacos',
+                    'data'=> [
                         [
-                            "label" => "espaços cadastrados",
-                            "entity" => "MApasCulturais\\Entities\\Space",
-                            "query" => [],
-                            "value" => null
+                            'label' => 'espaços cadastrados',
+                            'entity' => 'MapasCulturais\\Entities\\Space',
+                            'query' => [],
+                            'value' => null
                         ],
                         [
-                            "label"=> "espaços certificados",
-                            "entity"=> "MApasCulturais\\Entities\\Space",
-                            "query"=> [
-                                "@verified"=> 1
+                            'label'=> 'espaços certificados',
+                            'entity'=> 'MapasCulturais\\Entities\\Space',
+                            'query'=> [
+                                '@verified'=> 1
                             ],
-                            "value"=> null
+                            'value'=> null
                         ]
                     ]
                 ],
                 [
-                    "label" => "Agentes",
-                    "icon"=> "agent-1",
-                    "iconClass"=> "agent__color",
-                    "panelLink"=> "painel-agentes",
-                    "data"=> [
+                    'label' => 'Agentes',
+                    'icon'=> 'agent-1',
+                    'iconClass'=> 'agent__color',
+                    'panelLink'=> 'painel-agentes',
+                    'data'=> [
                         [
-                            "label" => "agentes individuais cadastrados",
-                            "entity" => "MApasCulturais\\Entities\\Agent",
-                            "query" => [],
-                            "value" => 0
+                            'label' => 'agentes individuais cadastrados',
+                            'entity' => 'MapasCulturais\\Entities\\Agent',
+                            'query' => [],
+                            'value' => null
+                        ],
+                    ]
+                ],
+                [
+                    'label' => 'Oportunidades',
+                    'icon'=> 'opportunity',
+                    'iconClass'=> 'opportunity__color',
+                    'panelLink'=> 'painel-oportunidades',
+                    'data'=> [
+                        [
+                            'label' => 'Oportunidades criadas',
+                            'entity' => 'MapasCulturais\\Entities\\Opportunity',
+                            'query' => [],
+                            'value' => null
+                        ],
+                        [
+                            'label' => 'Oportunidades certificadas',
+                            'entity' => 'MapasCulturais\\Entities\\Opportunity',
+                            'query'=> [
+                                '@verified'=> 1
+                            ],
+                            'value' => null
                         ],
                     ]
                 ]
@@ -60,13 +82,13 @@ class Plugin extends \MapasCulturais\Plugin
         $app->hook('<<GET|POST>>(<<metabase|site>>.<<*>>)', function() use ($app) {
             $app->view->enqueueStyle('app-v2', 'metabase', 'css/plugin-metabase.css');
         });
-        $app->hook("component(home-feature):after", function() {
+        $app->hook('component(home-feature):after', function() {
             /** @var \MapasCulturais\Theme $this */
             $this->part('home-metabase');
         });
 
         $self= $this;
-        $app->hook("app.init:after", function() use ($self){
+        $app->hook('app.init:after', function() use ($self){
             $this->view->metabasePlugin = $self;
         });
 
