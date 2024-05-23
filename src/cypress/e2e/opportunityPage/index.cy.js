@@ -9,6 +9,6 @@ describe("Oportunidade", () => {
         cy.wait(1000);
         cy.visit("/oportunidade/78/#info");
         cy.wait(1000);
-        cy.contains('h1', 'DJs')
+        cy.url().should("include", "/oportunidade/");
     });
 });

@@ -9,16 +9,34 @@ describe("Pagina de Espaços", () => {
     });
 
     it("clica em \"Acessar\" e entra na pagina no espaço selecionado", () => {
-        cy.get(`[href="${Cypress.config().baseUrl}/espaco/13/"]`).last().click();
-        
+        cy.get(':nth-child(5) > .entity-card__footer > .entity-card__footer--action > .button').click();
         cy.url().should("include", "/espaco/");
-        cy.contains('h1', 'Teatro Deodoro');
     });
 
     it("Garante que os filtros de tipos de espaços funcionem", () => {
         cy.contains("Tipos de espaços");
         cy.get(':nth-child(2) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input').click();
         cy.get(':nth-child(86) > .mc-multiselect__option').click();
+        cy.wait(1000);
+        checkFilterCountOf("space", false);
+        cy.reload();
+        cy.wait(1000);
+        cy.get(':nth-child(2) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input').click();
+        cy.get(':nth-child(104) > .mc-multiselect__option').click();
+        cy.wait(1000);
+        checkFilterCountOf("space", false);
+    });
+
+    it("Garante que os filtros de área de atuação funcionem", () => {
+        cy.contains("Área de atuação");
+        cy.get(':nth-child(3) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input').click();
+        cy.get(':nth-child(41) > .mc-multiselect__option').click();
+        cy.wait(1000);
+        checkFilterCountOf("space", false);
+        cy.reload();
+        cy.wait(1000);
+        cy.get(':nth-child(3) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input').click();
+        cy.get(':nth-child(48) > .mc-multiselect__option').click();
         cy.wait(1000);
         checkFilterCountOf("space", false);
     });

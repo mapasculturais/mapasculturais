@@ -18,7 +18,7 @@ describe("Pagina de Projetos", () => {
     });
 
     it("Clica em \"Acessar\" e entra na pagina no projeto selecionado", () => {
-        cy.get(`[href="${Cypress.config().baseUrl}/projeto/24/"]`).last().click();
+        cy.get(':nth-child(2) > .entity-card__footer > .entity-card__footer--action > .button').click();
         cy.url().should("include", "/projeto/");
     });
 });

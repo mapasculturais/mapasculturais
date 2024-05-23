@@ -118,6 +118,16 @@ describe("Opportunity Page", () => {
         cy.wait(1000);
 
         checkFilterCountOf("opportunity", false);
+
+        cy.reload();
+        cy.wait(1000);
+
+        cy.get(":nth-child(3) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input").click();
+        cy.get(':nth-child(41) > .mc-multiselect__option').click();
+
+        cy.wait(1000);
+
+        checkFilterCountOf("opportunity", false);
     });
 
     it("Garante que o botão limpar filtros na pagina de oportunidades funciona", () => {

@@ -6,7 +6,7 @@ describe("Projeto", () => {
         cy.url().should("include", "projetos");
         cy.get(".search-filter__actions--form-input").type("Festa Junina");
         cy.wait(1000);
-        cy.get(`[href="${Cypress.config().baseUrl}/projeto/9/"]`).last().click();
+        cy.get('.entity-card__footer--action > .button').click();
         cy.wait(1000);
         cy.url().should("include", "/projeto/");
     });
