@@ -8,6 +8,7 @@ use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\User;
 use MapasCulturais\i;
@@ -38,7 +39,7 @@ class Controller extends \MapasCulturais\Controller
         $app = App::i();
 
         $owner_class_name = $this->entity_class_names[$this->data['ownerType'] ?? 'invalida'] ?? false;
-
+        
         $owner_id = $this->data['ownerId'] ?? false;
         if (!$owner_id || !$owner_class_name) {
             $this->errorJson(i::__('É preciso enviar os parâmetros ownerType e ownerId'));
@@ -104,5 +105,32 @@ class Controller extends \MapasCulturais\Controller
         ]);
         
         $this->json(true);
+    }
+
+    function POST_evaluations()
+    {
+        $this->data = $this->postData;
+        $app = App::i();
+        $extension = $this->getExtension();
+        
+        $owner = $this->getOwner();
+
+        $job_slug = "{$owner->evaluationMethod->slug}-spreadsheets";
+
+        if($job_type = $app->getRegisteredJobType($job_slug)) {
+            $app->enqueueOrReplaceJob($job_slug, [
+                'owner' => $owner,
+                'authenticatedUser' => $app->user,
+                'extension' => $extension,
+                'entityClassName' => RegistrationEvaluation::class,
+                'query' => [
+                    '@select' => $this->data['@select'] ?? 'id,name',
+                ]
+            ]);
+
+            $this->json(true);
+        } else {
+            $this->errorJson(i::__('Método de avaliação inválido'));
+        }
     }
 }
