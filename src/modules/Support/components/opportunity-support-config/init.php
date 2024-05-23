@@ -15,6 +15,9 @@ foreach ($fields_list as $field) {
             "title" => $field->title,
             "ref" => $field->fileGroupName ?? $field->fieldName,
             "type" => $field->fieldType ?? 'attachment',
+            "categories" => $field->categories,
+            "proponentTypes" => $field->proponentTypes,
+            "registrationRanges" => $field->registrationRanges,
         ];
     }
 }
