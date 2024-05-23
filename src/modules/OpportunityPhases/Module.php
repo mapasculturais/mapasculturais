@@ -11,7 +11,6 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Exceptions;
 use MapasCulturais\i;
-use PHPUnit\Util\Annotation\Registry;
 
 class Module extends \MapasCulturais\Module{
 
@@ -991,16 +990,13 @@ class Module extends \MapasCulturais\Module{
                         Registration::STATUS_INVALID => [i::__('Inválida'), i::__('Inválida em "{PHASE_NAME}"')],
                     ];
     
-                    if ($registration->opportunity->equals($previous_phase)) {
-                        $label = $labels[$registration->status][0];
-                    } else {
-                        $opp_phase = $registration->opportunity;
-                        $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
-                        $label = $labels[$registration->status][1];
-                        $label = str_replace('{PHASE_NAME}', $phase->name, $label);
-                    }
-    
+                    $opp_phase = $registration->opportunity;
+                    $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
+                    $label = $labels[$registration->status][1];
+                    $label = str_replace('{PHASE_NAME}', $phase->name, $label);
+
                     $current_phase_registration->consolidatedResult = $label;
+                    $current_phase_registration->score = $registration->score;
 
                     $methods = [
                         Registration::STATUS_DRAFT => 'setStatusToInvalid',
@@ -1013,7 +1009,6 @@ class Module extends \MapasCulturais\Module{
 
                     $method = $methods[$registration->status];
 
-                    $app->log->debug("$current_phase_registration->number  ======= >>>>>>>> $method");
                     $current_phase_registration->$method();
 
                     $new_registrations[] = $current_phase_registration->number;
@@ -1497,6 +1492,11 @@ class Module extends \MapasCulturais\Module{
             'default'=> true,
         ]);
 
+        $this->registerOpportunityMetadata("registrationsOutdated", [
+            'label'=> "Indica que as inscrições da fase não estão atualizadas",
+            'type' => 'bool',
+            'default'=> false,
+        ]);
     }
 
 
