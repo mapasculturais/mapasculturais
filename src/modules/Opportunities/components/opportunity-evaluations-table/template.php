@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    mc-export-spreadsheet
     v1-embed-tool
 ')
 ?>
@@ -24,7 +25,7 @@ $this->import('
             <mc-link :entity="phase.opportunity" route="sendEvaluations" class="button button--primary-outline" :param="phase.opportunity.id"><?= i::__("Enviar avaliações") ?></mc-link>
         </div>
         <div class="col-3" v-if="user == 'all'">
-            <mc-link :entity="phase.opportunity" route="reportEvaluations" class="button button--secondarylight" :param="phase.opportunity.id"><?= i::__("Baixar lista de avaliações") ?></mc-link>
+            <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'owner.{name},registration,user,result,status,evaluationData', '@order': 'id DESC'}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
         </div>
 
         <div class="col-12" >
