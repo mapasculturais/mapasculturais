@@ -12,7 +12,7 @@ final class SealTestFixtures implements TestFixtures
             'name' => 'Seal Test',
             'shortDescription' => 'Descrição curta do selo soares',
             'longDescription' => 'Descrição longa do selo soares',
-            'validPeriod' => true,
+            'validPeriod' => 12,
         ];
     }
 

@@ -27,7 +27,7 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
             'name' => 'Selo Feitoza',
             'shortDescription' => 'descrição curta do selo feitoza',
             'longDescription' => 'descrição longa do selo feitoza',
-            'validPeriod' => 1,
+            'validPeriod' => 12,
             'status' => 1,
         ],
         [
@@ -35,7 +35,7 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
             'name' => 'Selo Lima',
             'shortDescription' => 'descrição curta do selo lima',
             'longDescription' => 'descrição longa do selo lima',
-            'validPeriod' => 1,
+            'validPeriod' => 12,
             'status' => 1,
         ],
         [
@@ -43,7 +43,7 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
             'name' => 'Selo Moura',
             'shortDescription' => 'descrição curta do selo moura',
             'longDescription' => 'descrição longa do selo moura',
-            'validPeriod' => 1,
+            'validPeriod' => 12,
             'status' => 1,
         ],
         [
@@ -51,7 +51,7 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
             'name' => 'Selo Camilo',
             'shortDescription' => 'descrição curta do selo camilo',
             'longDescription' => 'descrição longa do selo camilo',
-            'validPeriod' => 1,
+            'validPeriod' => 12,
             'status' => 1,
         ],
         [
@@ -59,7 +59,7 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
             'name' => 'Selo Soares',
             'shortDescription' => 'descrição curta do selo soares',
             'longDescription' => 'descrição longa do selo soares',
-            'validPeriod' => 1,
+            'validPeriod' => 12,
             'status' => 1,
         ],
     ];
