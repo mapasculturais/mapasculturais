@@ -5,13 +5,15 @@ namespace Spreadsheets;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
 use MapasCulturais\Definitions\JobType;
-use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\i;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Writer\Ods;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 /**
  * @property-read string $fileGroup
@@ -42,32 +44,86 @@ abstract class SpreadsheetJob extends JobType
 
     protected function _execute(Job $job)
     {
+        
         $entity_class_name = $job->entityClassName;
         $file_class = $job->owner->getFileClassName();
-
+        
         $extension = $job->extension ?: 'xlsx';
         $filename = $this->getFilename($job);
-
+        
         $path = sys_get_temp_dir() . '/' . $filename;
         $header = $this->getHeader($job);
-        
+        $has_sub_header = !empty($header[0]);
+        $sub_header = $has_sub_header ? $header[1] : $header;
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->fromArray($header, null, "A1");
+        
+        if($has_sub_header) {
+            foreach($header[0] as $col => $value) {
+                $background_color = $this->getBackgroundColor();
 
-        $row = 2;
+                $last_column_index = count($header[1]) + 1;
+                $last_column_letter = Coordinate::stringFromColumnIndex($last_column_index);
+                $last_cell_coordinate = $last_column_letter . '2';
+    
+                $sheet->getStyle('A1:' . $last_cell_coordinate)->applyFromArray([
+                    'font' => ['bold' => true, 'size' => 10.5],
+                    'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
+                ]);
+                
+                if($col_init = strstr($col, ':', true)) {
+                    // Cor para as células e merge das células
+                    $col_end = strstr($col, ':', false);
+                    $letter = substr($col_end, 1, 1);
+                    $number = substr($col_end, 2);
+                    $new_number = (int)$number+1;
+                    $total_cells = $col_init . ':' . $letter . $new_number;
+
+                    $sheet->getStyle($total_cells)->applyFromArray([
+                        'fill' => [
+                            'fillType' => Fill::FILL_SOLID, 
+                            'startColor' => ['rgb' => $background_color]
+                        ],
+                    ]);
+
+                    $sheet->mergeCells($col);
+                    $sheet->setCellValue($col_init, $value);
+                    continue;
+                }
+
+                // Cor para as células e merge das células
+                $letter = substr($col, 0, 1);
+                $number = substr($col, 1);
+                $new_number = (int)$number+1;
+                $total_cells = $col . ':' . $letter . $new_number;
+
+                $sheet->getStyle($total_cells)->applyFromArray([
+                    'fill' => [
+                        'fillType' => Fill::FILL_SOLID, 
+                        'startColor' => ['rgb' => $background_color]
+                    ],
+                ]);
+
+                $sheet->setCellValue($col, $value);
+            }
+        }
+
+        $sheet->fromArray($sub_header, null, $has_sub_header ? "A2" : "A1");
+        
+        $row = $has_sub_header ? count($header)+1 : 2;
         while($batch = $this->getBatch($job)) {
             foreach ($batch as $data) {
                 $new_data = [];
-                foreach($header as $prop => $label) {
+                foreach($sub_header as $prop => $label) {
                     $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
-                } 
+                }
 
                 $sheet->fromArray($new_data, null, "A$row");
                 $row++;
             }
         }
-
+        
         if($extension === 'xlsx') {
             $writer = new Xlsx($spreadsheet);
         } else if($extension === 'csv') {
@@ -100,6 +156,8 @@ abstract class SpreadsheetJob extends JobType
         
         // Disparo de e-mail
        $this->mailNotification($job->authenticatedUser, $file, $entity_class_name);
+    
+       return true;
     }
 
     function mailNotification($user, $file, $entity_class)
@@ -187,6 +245,28 @@ abstract class SpreadsheetJob extends JobType
         $app->applyHookBoundTo($this, "SpreadsheetJob($this->slug).getFilename:after", [$job, &$result]);
 
         return $result;
+    }
+
+    function getBackgroundColor() {
+        $colors = [
+            'CCCCFF', 
+            'CCFFCC', 
+            'FFAAAA', 
+            'BB8888', 
+            '00AA00',
+            'EEEEEE',
+            '99D6FF',
+            'FFCC99',
+            'FFD700',
+            'E6E6FA',
+            'F0E68C',
+            'FFE4B5',
+            'FFE4E1'
+        ];
+    
+        $color = array_rand($colors);
+    
+        return $colors[$color];
     }
 
     /**
