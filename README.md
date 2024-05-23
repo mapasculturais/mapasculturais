@@ -6,6 +6,8 @@ O projeto originalmente chamado Mapas Culturais é uma plataforma colaborativa q
 
 A plataforma já está em uso em diversos municipios, estados, no governo federal em diversos projetos do ministério da cultura e até mesmo fora do Brasil, no Uruguai. 
 
+Mais detalhes sobre a História: [Clique aqui](https://rede.mapas.tec.br/)
+
 ## Projeto Original (Mapas Culturais)
 O projeto original atualmente é mantido de forma aberta e colaborativa, gerenciada pelo time de desenvolvimento do @HackLab
 
