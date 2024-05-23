@@ -19,16 +19,18 @@ describe("Pagina de Projetos", () => {
         cy.wait(1000);
         cy.get(':nth-child(18) > .mc-multiselect__option').click();
         cy.wait(1000);
-        checkFilterCountOf("project", false);
+        checkFilterCountOf("project");
         cy.reload();
         cy.wait(1000);
         cy.get('.mc-multiselect--input').click();
         cy.get(':nth-child(18) > .mc-multiselect__option').click();
         cy.wait(1000);
-        checkFilterCountOf("project", false);
+        checkFilterCountOf("project");
     });
 
     it("Garante que o botão limpar filtros na pagina de projetos funciona", () => {
+        checkFilterCountOf("project");
+        
         clearAllFilters([
             ".verified",
             ".mc-multiselect--input",
@@ -40,6 +42,6 @@ describe("Pagina de Projetos", () => {
 
         cy.wait(1000);
 
-        checkFilterCountOf("project", true);
+        checkFilterCountOf("project");
     });
 });
