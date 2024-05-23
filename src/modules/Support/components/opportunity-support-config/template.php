@@ -46,6 +46,7 @@ $this->import('
             </div>
    
             <div class="opportunity-support-config__agent-actions">
+
                 <mc-modal title="<?= i::__('Campos que o Agente pode editar') ?>">
                     <template #button="modal">
                         <button type="button" @click="modal.open()" class="button button--primarylight button--icon"> <?= i::__("Gerenciar permissões") ?> </button>
@@ -53,30 +54,54 @@ $this->import('
 
                     <div class="opportunity-support-config__modal-content">
 
-                        <div class="opportunity-support-config__modal-select-header">
-                            <label class="title__header semibold">
+                        <div class="opportunity-support-config__content-header">
+                            <div class="opportunity-support-config__filter">
+                                <div class="opportunity-support-config__filters">
+                                    <div v-if="categories" class="field">
+                                        <label><?= i::__('Categoria do edital') ?></label>
+                                        <mc-select v-model:default-value="categoryFilter" hide-filter :options="categories" ></mc-select>    
+                                    </div>
+    
+                                    <div v-if="proponentTypes" class="field">
+                                        <label><?= i::__('Tipo de Proponente') ?></label>
+                                        <mc-select v-model:default-value="proponentFilter" hide-filter :options="proponentTypes"></mc-select>    
+                                    </div>
+    
+                                    <div v-if="ranges" class="field">
+                                        <label><?= i::__('Tipo de faixa/linha') ?></label>
+                                        <mc-select v-model:default-value="rangeFilter" hide-filter :options="ranges"></mc-select>    
+                                    </div>
+                                </div>    
+
+                                <div v-if="hasSelectedField" class="field">
+                                    <label><?= i::__('Aplicar nos selecionados') ?></label>
+                                    <mc-select :options="permissions" :default-value="allPermissions" hide-filter @change-option="setAllPerssions($event)"></mc-select>
+                                </div>
+                            </div>
+    
+                            <label class="opportunity-support-config__select-all semibold">
                                 <input class="opportunity-support-config__checkbox" type="checkbox" @change="toggleSelectAll($event)" v-model="selectAll"><?php i::_e("Selecionar todos"); ?>
                             </label>
-                            <mc-select v-if="hasSelectedField" :options="permissions" :default-value="allPermissions" hide-filter @change-option="setAllPerssions($event)"></mc-select>
                         </div>
-       
-                        <div class="opportunity-support-config__field" v-for="(field, index) in fields" :key="index">
-                            
+
+                        <div v-if="filteredFields" class="opportunity-support-config__field" v-for="(field, index) in filteredFields" :key="index">
                             <label class="opportunity-support-config__field-content">
                                 <input class="opportunity-support-config__field-checkbox" v-model="selectedFields[field.ref]" :checked="selectAll" type="checkbox"/>
                                 
-                                <span>
-                                    <span class="opportunity-support-config__field-title">
-                                        <span class="opportunity-support-config__field-icon">
-                                            <mc-icon :name="field.type"></mc-icon>
-                                        </span>
-    
-                                        <h4 class="bold"> #{{field.id}} - {{ field.title }} </h4>
+                                <span class="opportunity-support-config__field-title">
+                                    <span class="opportunity-support-config__field-icon">
+                                        <mc-icon :name="field.type"></mc-icon>
                                     </span>
+
+                                    <h4 class="bold"> #{{field.id}} - {{ field.title }} </h4>
                                 </span>
                             </label>
 
                             <mc-select :options="permissions" :default-value="relation.metadata?.registrationPermissions[field.ref]" hide-filter @change-option="setPerssion($event,field)"></mc-select>
+                        </div>
+
+                        <div v-if="filteredFields.length == 0" class="opportunity-support-config__field">
+                            Nenhum campo foi encontrado
                         </div>
                     
                     </div>

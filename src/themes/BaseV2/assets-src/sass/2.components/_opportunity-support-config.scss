@@ -33,56 +33,68 @@
         @media (max-width: 600px) {
             grid-template-columns: 1fr;
         }
+    }
 
-        &-info {
-            display: flex;
-            align-items: center;
-            gap: size(24);
+    &__agent-info {
+        display: flex;
+        align-items: center;
+        gap: size(24);
+    }
+
+    &__agent-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: size(24);
+
+        @media (max-width: 400px) {
+            display: grid;
+            grid-template-columns: 1fr;
+            justify-items: center;
         }
 
-        &-actions {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: size(24);
+        .modal-content {
+            max-width: size(1170);
+            width: 100%;
+            padding: size(20);
 
-            @media (max-width: 400px) {
-                display: grid;
-                grid-template-columns: 1fr;
-                justify-items: center;
+            .modal__content {
+                margin: 0;
+                padding: 0;
             }
 
-            .modal-content {
-                max-width: size(1170);
-                width: 100%;
-                padding: size(20);
-
-                .modal__content {
-                    margin: 0;
-                    padding: 0;
-                }
-
-                .modal__action {
-                    justify-content: flex-end;
-                }
+            .modal__action {
+                justify-content: flex-end;
             }
-                
         }
     }
 
-    &__modal-select-header {
+    &__content-header {
+        padding: size(18) size(24);
+        display: grid;
+        gap: size(18);
         border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+    }
+
+    &__filter {
         display: flex;
         justify-content: space-between;
-        padding: size(24);
 
-        .title__header {
-            align-items: center;
-            display: flex;
-            gap: size(8);
-            justify-content: center;
-            min-height: size(49);
+        .field {
+            width: fit-content;
         }
+    }
+
+    &__filters {
+        display: flex;
+        gap: size(18);
+    }
+
+    &__select-all {
+        align-items: center;
+        display: flex;
+        gap: size(8);
+        min-height: size(49);
     }
 
     &__field {
