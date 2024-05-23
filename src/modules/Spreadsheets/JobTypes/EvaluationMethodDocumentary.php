@@ -36,7 +36,7 @@ class EvaluationMethodDocumentary extends SpreadsheetJob
             'C1' => i::__('Informações sobre o avaliador'),
         ];
         
-        $column_prefixes = $this->generateExcelSheetStructure(1, 300);
+        $column_prefixes = $this->generateSpreadsheetStructure(1, 300);
         array_splice($column_prefixes, 0, 3);
 
         foreach($properties as $property) {
@@ -154,7 +154,7 @@ class EvaluationMethodDocumentary extends SpreadsheetJob
         return $columnName;
     }
     
-    function generateExcelSheetStructure($numRows, $numCols) {
+    function generateSpreadsheetStructure($numRows, $numCols) {
         $sheet = [];
         for ($row = 1; $row <= $numRows; $row++) {
             for ($col = 1; $col <= $numCols; $col++) {

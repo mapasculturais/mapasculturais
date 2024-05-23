@@ -145,7 +145,7 @@ class EvaluationMethodQualification extends SpreadsheetJob
         return $columnName;
     }
     
-    function generateExcelSheetStructure($numRows, $numCols) {
+    function generateSpreadsheetStructure($numRows, $numCols) {
         $sheet = [];
         for ($row = 1; $row <= $numRows; $row++) {
             for ($col = 1; $col <= $numCols; $col++) {
