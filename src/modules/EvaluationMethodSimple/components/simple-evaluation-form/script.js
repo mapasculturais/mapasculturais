@@ -43,6 +43,10 @@ app.component('simple-evaluation-form', {
 
         evaluationData() {
             return $MAPAS.config.simpleEvaluationForm.currentEvaluation?.evaluationData;
+        },
+
+        step() {
+            return $MAPAS.config.simpleEvaluationForm.currentEvaluation?.status;
         }
     },
 
@@ -51,28 +55,6 @@ app.component('simple-evaluation-form', {
             this.formData.status = selectedOption.value;
         },
 
-        saveEvaluation() {
-            const messages = useMessages();
-            const api = new API('registration');
-            let url = api.createUrl('saveEvaluation', { id: this.entity.id });
-            if (!this.validateErrors(this.formData)) {
-                api.POST(url, {data: this.formData}).then(res => res.json()).then(response => {
-                    messages.success(this.text('success'));
-                });
-            }
-        },
-
-        validateErrors(data) {
-            const messages = useMessages();
-            let error = false;
-            Object.keys(data).forEach(key => { 
-                if (!this.formData[key] || this.formData[key] === '') {
-                    messages.error(this.text('emptyField') + ' ' + this.text(this.dictFields(key)) + ' ' + this.text('required'));
-                    error = true;
-                }
-            });
-            return error;
-        },
 
         skeleton() {
             return {
@@ -81,15 +63,5 @@ app.component('simple-evaluation-form', {
                 obs: null,
             };
         },
-
-        dictFields(field) {
-            const fields = {
-                status: this.text('field_status_name'),
-                obs: this.text('field_obs_name'),
-                uid: this.text('field_uid_name'),
-            };
-
-            return fields[field];
-        }
     },
 });
