@@ -21,8 +21,8 @@ class Event
     #[ORM\SequenceGenerator(sequenceName: 'event_id_seq', allocationSize: 1, initialValue: 1)]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Project::class, fetch: "LAZY")]
-    #[ORM\JoinColumn(name: "project_id", referencedColumnName: "id", onDelete: "SET NULL")]
+    #[ORM\ManyToOne(targetEntity: Project::class, fetch: 'LAZY')]
+    #[ORM\JoinColumn(name: 'project_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?Project $project = null;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -53,14 +53,13 @@ class Event
     private DateTimeInterface $createTimestamp;
 
     #[ORM\ManyToOne(targetEntity: Subsite::class)]
-    #[ORM\JoinColumn(name: "subsite_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    #[ORM\JoinColumn(name: 'subsite_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
     private ?Subsite $subsite = null;
 
     public function __construct()
     {
         $this->status = EntityStatusEnum::TRASH->getValue();
     }
-
 
     public function getId(): int
     {
@@ -155,16 +154,6 @@ class Event
     public function setType(int $type): void
     {
         $this->type = $type;
-    }
-
-    public function getCreateTimestamp(): DateTimeInterface
-    {
-        return $this->createTimestamp;
-    }
-
-    public function setCreateTimestamp(DateTimeInterface $createTimestamp): void
-    {
-        $this->createTimestamp = $createTimestamp;
     }
 
     public function getSubsite(): ?Subsite
