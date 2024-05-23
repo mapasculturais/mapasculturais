@@ -196,7 +196,7 @@ class Opportunity extends EntityController {
         $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUsersAndStatus($entity, $users);
 
         $filename = sprintf(\MapasCulturais\i::__("oportunidade-%s--avaliacoes"), $entity->id);
-
+        
         $all_evaluations = $this->API_findEvaluations($ID);
 
         $cfg = $entity->getEvaluationMethod()->getReportConfiguration($entity);
@@ -497,7 +497,7 @@ class Opportunity extends EntityController {
 
     function API_findRegistrations() {
         $app = App::i();
-
+        
         $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
 
         $opportunity = $this->_getOpportunity();
@@ -567,29 +567,30 @@ class Opportunity extends EntityController {
         return $valuer_by_user;
     }
 
-    function _getOpportunityRegistrations($opportunity, array $registration_ids){
-        if (empty($registration_ids)) {
+    function _getOpportunityRegistrations($opportunity, array $registration_numbers, array $query_data){
+        if (empty($registration_numbers)) {
             return [];
         }
 
-        sort($registration_ids);
-        if($registration_ids){
+        $select = $query_data['registration:@select'] ?? 
+                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId';
+
+        sort($registration_numbers);
+        if($registration_numbers){
             $rdata = [
-                '@select' => 'id,status,category,consolidatedResult,singleUrl,owner.name,previousPhaseRegistrationId',
-                'id' => API::IN($registration_ids),
+                '@select' => $select,
+                'number' => API::IN($registration_numbers),
                 'opportunity' => API::EQ($opportunity->id),
                 '@permissions' => 'view'
             ];
-
-            foreach($this->data as $k => $v){
-                if(strtolower(substr($k, 0, 13)) === 'registration:'){
+            
+            foreach($query_data as $k => $v){
+                if(strtolower(substr($k, 0, 13)) === 'registration:' && $k != 'registration:@select'){
                     $rdata[substr($k, 13)] = $v;
                 }
             }
-
-            $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
             $registrations = [];
-            foreach($registrations_query->find() as $reg){
+            foreach($this->apiFindRegistrations($opportunity, $rdata)->registrations as $reg){
                 $registrations[$reg['id']] = $reg;
             }
 
@@ -786,7 +787,18 @@ class Opportunity extends EntityController {
 
     function API_findEvaluations($opportunity_id = null) {
         $this->requireAuthentication();
+        
+        $result = $this->apiFindEvaluations($opportunity_id, $this->data);
 
+        if (!is_null($opportunity_id) && is_int($opportunity_id)) {
+            return $result->evaluations;
+        }
+
+        $this->apiAddHeaderMetadata($this->data, $result->evaluations, $result->count);
+        $this->apiResponse($result->evaluations);
+    }
+
+    function apiFindEvaluations(int $opportunity_id = null, array $query_data = []) {
         $app = App::i();
         $conn = $app->em->getConnection();
 
@@ -807,7 +819,7 @@ class Opportunity extends EntityController {
         }
 
         if(empty($users)){
-            $this->apiAddHeaderMetadata($this->data, [], 0);
+            $this->apiAddHeaderMetadata($query_data, [], 0);
             $this->apiResponse([]);
             return;
         }
@@ -815,7 +827,7 @@ class Opportunity extends EntityController {
         $params = ['opp' => $opportunity->id];
 
         $where_pending = "";
-        if(isset($this->data['@pending'])){
+        if(isset($query_data['@pending'])){
             $where_pending = "evaluation_id IS NULL AND ";
         }
 
@@ -839,21 +851,21 @@ class Opportunity extends EntityController {
         }
 
         $sql_limit = "";
-        if (isset($this->data['@limit'])) {
-            $limit = intval($this->data['@limit']);
+        if (isset($query_data['@limit'])) {
+            $limit = intval($query_data['@limit']);
 
             $sql_limit = "LIMIT $limit";
 
-            if (isset($this->data['@page'])) {
-                $page = intval($this->data['@page']);
+            if (isset($query_data['@page'])) {
+                $page = intval($query_data['@page']);
                 $offset = ($page - 1) * $limit;
                 $sql_limit .= " OFFSET {$offset}";
             }
         }
 
         $sql_status = "";
-        if (isset($this->data['status'])) {
-            if(preg_match('#EQ\( *(-?\d) *\)#', $this->data['status'], $matches)) {
+        if (isset($query_data['status'])) {
+            if(preg_match('#EQ\( *(-?\d) *\)#', $query_data['status'], $matches)) {
                 $status = $matches[1];
                 $sql_status = " AND evaluation_status = {$status}";
             }
@@ -865,14 +877,14 @@ class Opportunity extends EntityController {
             '@permissions' => 'viewUserEvaluation'
         ];
 
-        foreach($this->data as $k => $v){
-            if(strtolower(substr($k, 0, 13)) === 'registration:'){
+        foreach($query_data as $k => $v){
+            if(strtolower(substr($k, 0, 13)) === 'registration:' && $k != 'registration:@select'){
                 $rdata[substr($k, 13)] = $v;
             }
         }
       
-        if(isset($this->data['valuer:id'])){
-            if(preg_match('#EQ\( *(\d+) *\)#', $this->data['valuer:id'], $matches)) {
+        if(isset($query_data['valuer:id'])){
+            if(preg_match('#EQ\( *(\d+) *\)#', $query_data['valuer:id'], $matches)) {
                 $valuer_id = $matches[1];
                 $valuer = $app->repo("Agent")->find($valuer_id);
                 $rdata['@permissionsuser'] = $valuer->userId;
@@ -885,7 +897,8 @@ class Opportunity extends EntityController {
 
         $evaluations = $conn->fetchAll("
             SELECT 
-                registration_id, 
+                registration_id,
+                registration_number, 
                 evaluation_id, 
                 valuer_agent_id
             FROM evaluations
@@ -900,10 +913,10 @@ class Opportunity extends EntityController {
         ", $params);
         
         
-        $registration_ids = array_filter(array_unique(array_map(function($r) { return $r['registration_id']; }, $evaluations)));
+        $registration_numbers = array_filter(array_unique(array_map(function($r) { return $r['registration_number']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
 
-        $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_ids);
+        $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_numbers, $query_data);
         $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
 
         $_result = [];
@@ -926,12 +939,7 @@ class Opportunity extends EntityController {
             }
         }
 
-        if (!is_null($opportunity_id) && is_int($opportunity_id)) {
-            return $_result;
-        }
-
-        $this->apiAddHeaderMetadata($this->data, $_result, $queryNumberOfResults);
-        $this->apiResponse($_result);
+        return (object) ['evaluations' => $_result, 'count' => $queryNumberOfResults];
     }
 
     function ALL_reconsolidateResults() {
