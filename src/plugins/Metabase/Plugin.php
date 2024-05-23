@@ -21,7 +21,7 @@ class Plugin extends \MapasCulturais\Plugin
                             "label" => "espaços cadastrados",
                             "entity" => "MApasCulturais\\Entities\\Space",
                             "query" => [],
-                            "value" => 2140
+                            "value" => null
                         ],
                         [
                             "label"=> "espaços certificados",
@@ -29,7 +29,7 @@ class Plugin extends \MapasCulturais\Plugin
                             "query"=> [
                                 "@verified"=> 1
                             ],
-                            "value"=> 0
+                            "value"=> null
                         ]
                     ]
                 ],
@@ -43,7 +43,7 @@ class Plugin extends \MapasCulturais\Plugin
                             "label" => "agentes individuais cadastrados",
                             "entity" => "MApasCulturais\\Entities\\Agent",
                             "query" => [],
-                            "value" => 2140
+                            "value" => 0
                         ],
                     ]
                 ]
