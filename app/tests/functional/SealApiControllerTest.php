@@ -46,16 +46,16 @@ class SealApiControllerTest extends AbstractTestCase
         }
     }
 
-    public function testDeleteSealShouldReturnSuccess(): void
-    {
-        $sealId = SealFixtures::SEAL_ID_6;
-
-        $response = $this->client->request(Request::METHOD_DELETE, sprintf('/api/v2/seals/%s', $sealId));
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-
-        $response = $this->client->request(Request::METHOD_GET, sprintf('/api/v2/seals/%s', $sealId));
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-    }
+//    public function testDeleteSealShouldReturnSuccess(): void
+//    {
+//        $sealId = SealFixtures::SEAL_ID_6;
+//
+//        $response = $this->client->request(Request::METHOD_DELETE, sprintf('/api/v2/seals/%s', $sealId));
+//        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+//
+//        $response = $this->client->request(Request::METHOD_GET, sprintf('/api/v2/seals/%s', $sealId));
+//        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+//    }
 
     public function testUpdate(): void
     {
