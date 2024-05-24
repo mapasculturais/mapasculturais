@@ -9,7 +9,7 @@ app.component('simple-evaluation-form', {
 
         editable: {
             type: Boolean,
-            default: false
+            default: true
         },
     },
 
@@ -21,15 +21,17 @@ app.component('simple-evaluation-form', {
     data() {
         return {
             formData: {},
+            isEditable: true,
         };
     },
 
     created() {
         this.formData = this.evaluationData || this.skeleton();
+        this.handleCurrentEvaluationForm();
     },
 
     mounted() {
-
+        window.addEventListener('responseEvaluation', this.processResponse);
     },
 
     computed: {
@@ -45,9 +47,9 @@ app.component('simple-evaluation-form', {
             return $MAPAS.config.simpleEvaluationForm.currentEvaluation?.evaluationData;
         },
 
-        step() {
-            return $MAPAS.config.simpleEvaluationForm.currentEvaluation?.status;
-        }
+        currentEvaluation() {
+            return $MAPAS.config.simpleEvaluationForm.currentEvaluation;
+        },
     },
 
     methods: {
@@ -55,6 +57,27 @@ app.component('simple-evaluation-form', {
             this.formData.status = selectedOption.value;
         },
 
+        processResponse(data) {
+            console.log(data.detail);
+            if (data.detail.response.status > 0) {
+                this.isEditable = false;
+            }
+        },
+
+        handleCurrentEvaluationForm() {
+            return this.currentEvaluation.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
+        },
+
+        statusToString(status) {
+            let result = '';
+            this.statusList.forEach((item) => {
+                if (item.value == status) {
+                    result = item.label;
+                }
+            });
+
+            return result;
+        },
 
         skeleton() {
             return {

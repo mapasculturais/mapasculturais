@@ -9,6 +9,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-select
+    evaluation-actions
 ');
 ?>
 
@@ -18,13 +19,18 @@ $this->import('
             <label class="mc-select-label">
                 <?php i::_e('Selecione o status dessa inscrição') ?>
             </label>
-            <mc-select :default-value="formData.status" :disabled="!editable" @change-option="handleOptionChange" :options="statusList"></mc-select>
+            <mc-select v-if="isEditable" :default-value="formData.status" @change-option="handleOptionChange" :options="statusList"></mc-select>
+            <input v-if="!isEditable" type="text" :value="statusToString(formData.status)" disabled>
         </div>
         <div class="simple-evaluation-form__content field col-12">
             <label class="textarea-label">
                 <?php i::_e('Insira suas Justificativas ou observações') ?>
             </label>
-            <textarea v-model="formData.obs"></textarea>
+            <textarea v-if="isEditable" v-model="formData.obs"></textarea>
+            <textarea v-if="!isEditable" disabled>{{formData.obs}}</textarea>
         </div>
+    </div>
+    <div class="simple-evaluation-form__actions">
+        <evaluation-actions :formData="formData" :entity="entity"></evaluation-actions>
     </div>
 </div>

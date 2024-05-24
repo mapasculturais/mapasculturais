@@ -102,7 +102,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                         <?php endif ?>
                     </div>
                     <?php if (!in_array($entity->opportunity->evaluationMethod->slug, ['simple'])) : ?>
-                        <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
+	                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
                     <?php endif; ?>
                 </div>
         </div>
