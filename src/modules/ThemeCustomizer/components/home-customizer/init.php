@@ -175,4 +175,7 @@ $texts = [
         ],
     ],
 ];
-$this->jsObject['config']['homeConfigurations'] = $texts;
+
+$app->applyHook('home-customizer', [&$texts]);
+
+$this->jsObject['config']['homeCustomizer'] = $texts;

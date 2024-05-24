@@ -34,7 +34,11 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook('mapas.printJsObject:before', function () use($app) {
-            $this->jsObject['subsite'] = $app->subsite;
+            if($app->subsite) {
+                $this->jsObject['subsite'] = $app->subsite;
+            } else {
+                $this->subsite = null;
+            }
         });
 
         $app->hook('view.render(<<*>>):before', function () use($app) {
