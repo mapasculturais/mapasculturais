@@ -1,0 +1,76 @@
+@use '../2-atoms/a-mixins' as *;
+
+.home-metabase {
+    margin: 0 auto;
+    background-color: var(--mc-home-opportunities);
+    padding: 3.75rem 1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    flex-direction: column;
+
+    &__header {
+        margin: 0 auto;
+        max-width: 73.125rem;
+        width: 100%;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr size(455);
+
+        @media (max-width:size(600)) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    &__left {
+        color: var(--mc-white);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+        align-items: flex-start;
+
+        @media (max-width:size(600)) {
+            align-items: center;
+        }
+    }
+
+    &__text {
+        @media (max-width:size(600)) {
+            text-align: center;
+        }
+    }
+
+    &__img {
+        width: size(285);
+        max-width: 100%;
+    }
+    &__panel {
+        display: flex;
+        flex-direction: column;
+        gap: size(12);
+    }
+
+
+    &__subtitle {
+        color: var(--mc-white);
+    }
+
+    &__content {
+        align-items: stretch;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 0 auto;
+        max-width: size(1170);
+        z-index: 2;
+        gap: size(18) size(13);
+
+
+        @media (max-width:size(500)) {
+            gap: size(18) 0;
+        }
+    }
+}

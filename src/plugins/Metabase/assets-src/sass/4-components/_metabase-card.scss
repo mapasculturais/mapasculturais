@@ -1,0 +1,96 @@
+@use '../2-atoms/a-mixins' as *;
+
+.metabase-card {
+    width: size(371);
+    max-width: 100%;
+    background-color: var(--mc-white);
+    border: size(1) solid var(--mc-gray-100);
+    padding: size(16);
+    border-radius: size(8);
+    display: grid;
+    align-content: space-between;
+
+    &__header {
+        display: grid;
+        grid-template-columns: size(32) 1fr;
+        gap: size(16);
+    }
+    &__icon {
+        background-color: var(--mc-white);
+        font-size: size(24);
+        justify-self: center;
+    }
+
+    &__content {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: end;
+        text-align: center;
+        gap: size(26);
+    }
+
+    &__number {
+        font-size: var(--mc-font-size-lg)
+    }
+
+    &__label {
+
+        font-weight: 600;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin: size(18) 0;
+    }
+
+    &__number {
+        font-size: var(--mc-font-size-xl);
+       
+        &--long {
+            font-size: var(--mc-font-size-sm);
+
+        }
+    }
+
+    &--double & {
+        &__content {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        &__info:first-of-type .metabase-card__number {
+            font-size: var(--mc-font-size-lg);
+
+            &--long {
+                font-size: var(--mc-font-size-sm);
+            }
+        }
+        
+        &__number {
+            font-size: var(--mc-font-size-md);
+        }
+       
+    }
+    @media (max-width:size(500)){
+        min-width: size(297);
+        width: 100%;
+    }
+}
+
+// $font-size-xl: 3rem;
+// $font-size-lg: 2rem;
+// $font-size-md: 1.5rem;
+// $font-size-sm: 1.125rem;
+// $font-size-xs: 1rem;
+// $font-size-xxs: 0.875rem;
+// $font-size-xxxs: 0.75rem;
+
+// --mc-font-size-xl: $font-size-xl;
+// --mc-font-size-lg: $font-size-lg;
+// --mc-font-size-md: $font-size-md;
+// --mc-font-size-sm: $font-size-sm;
+// --mc-font-size-xs: $font-size-xs;
+// --mc-font-size-xxs: $font-size-xxs;
+// --mc-font-size-xxxs: $font-size-xxxs;

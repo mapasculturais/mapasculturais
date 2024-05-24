@@ -1,0 +1,6 @@
+@use '../2-atoms/a-mixins' as *;
+
+.controller-metabase {
+    background-color: var(--mc-gray-100);
+
+}
