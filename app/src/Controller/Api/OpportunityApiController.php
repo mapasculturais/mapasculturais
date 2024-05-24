@@ -65,7 +65,7 @@ class OpportunityApiController
         return new JsonResponse($opportunities);
     }
 
-   public function patch(array $params): JsonResponse
+    public function patch(array $params): JsonResponse
     {
         try {
             $opportunityData = $this->opportunityRequest->validateUpdate();

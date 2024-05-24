@@ -7,8 +7,6 @@ namespace App\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use MapasCulturais\Entities\Opportunity;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class OpportunityFixtures extends Fixture implements DependentFixtureInterface
@@ -35,7 +33,7 @@ class OpportunityFixtures extends Fixture implements DependentFixtureInterface
         'tag' => [
             'Concurso',
             'Artes',
-            'Teste'
+            'Teste',
         ],
     ];
 
