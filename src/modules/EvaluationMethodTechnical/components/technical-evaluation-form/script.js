@@ -4,7 +4,7 @@ app.component('technical-evaluation-form', {
     setup() {
         const messages = useMessages();
         const text = Utils.getTexts('technical-evaluation-form');
-        return { text, messages }
+        return { text, messages };
     },
 
     props: {
@@ -14,13 +14,22 @@ app.component('technical-evaluation-form', {
         },
     },
 
+    mounted() {
+        for (let sectionIndex in this.sections) {
+            for (let criterion of this.sections[sectionIndex].criteria) {
+                this.formData.data[criterion.id] = 0;
+            }
+        }
+    },
+
     data() {
         const sections = $MAPAS.config.technicalEvaluationForm.sections;
+        const enabledViablity = $MAPAS.config.technicalEvaluationForm.enableViability;
         return {
             obs: '',
             viability: null,
+            enabledViablity,
             sections,
-            resultNotes: '',
             formData: {
                 uid: $MAPAS.userId,
                 data: {},
@@ -32,7 +41,7 @@ app.component('technical-evaluation-form', {
         notesResult() {
             let result = 0;
             for (let sectionIndex in this.sections) {
-                for (let criterion in this.sections[sectionIndex].criteria) {
+                for (let criterion of this.sections[sectionIndex].criteria) {
                     const value = this.formData.data[criterion.id];
                     if (value !== null && value !== undefined) {
                         result += parseFloat(value);
@@ -58,6 +67,11 @@ app.component('technical-evaluation-form', {
             let value = this.formData.data[criterionId];
             const max = this.sections[sectionIndex].criteria.find(criterion => criterion.id === criterionId).max;
 
+            if (!value && value !== 0) {
+                this.messages.error(this.text('mandatory-note'));
+                return;
+            }
+        
             if (value > max) {
                 this.messages.error(this.text('note-higher-configured'));
                 this.formData.data[criterionId] = max;
@@ -69,8 +83,7 @@ app.component('technical-evaluation-form', {
         subtotal(sectionIndex) {
             let subtotal = 0;
             const section = this.sections[sectionIndex];
-
-            for (let criterion in section.criteria) {
+            for (let criterion of section.criteria) {
                 const value = this.formData.data[criterion.id];
                 if (value !== null && value !== undefined) {
                     subtotal += parseFloat(value);
@@ -81,13 +94,29 @@ app.component('technical-evaluation-form', {
         },
 
         validaErrors() {
-            let isValid = false;
-
-            if (!this.formData.data.obs) {
-                this.messages.error(this.text('technical-mandatory'));
-                isValid = true;
+            let isValid = true;
+            
+            for (let sectionIndex in this.sections) {
+                for (let criterion of this.sections[sectionIndex].criteria) {
+                    let value = this.formData.data[criterion.id];
+                    
+                    if (!this.formData.data.obs) {
+                        this.messages.error(this.text('technical-mandatory'));
+                        isValid = false;
+                    }
+        
+                    if (!this.viability && this.enabledViablity) {
+                        this.messages.error(this.text('technical-checkViability'));
+                        isValid = false;
+                    }
+                    
+                    if (!value && value !== 0) {
+                        this.messages.error(this.text('mandatory-note'));
+                        isValid = false;
+                    }
+                }
             }
-
+            
             return isValid;
         },
     }
