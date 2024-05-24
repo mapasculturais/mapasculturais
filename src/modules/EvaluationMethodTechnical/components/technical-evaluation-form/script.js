@@ -79,20 +79,16 @@ app.component('technical-evaluation-form', {
 
             return parseFloat(subtotal.toFixed(2));
         },
-        async saveEvaluation() {
-            const api = new API('registration');
-            let url = api.createUrl('saveEvaluation', { id: this.entity.id });
-            await api.POST(url, this.formData).then(res => res.json()).then(response => {
-                this.sendEvaluation();
-            });
-        },
 
-        async sendEvaluation() {
-            const api = new API('registration');
-            let url = api.createUrl('sendEvaluation', { id: this.entity.id });
-            await api.POST(url, this.formData).then(res => res.json()).then(response => {
-                this.messages.success(this.text('evaluation-successfully'));
-            });
+        validaErrors() {
+            let isValid = false;
+
+            if (!this.formData.data.obs) {
+                this.messages.error(this.text('technical-mandatory'));
+                isValid = true;
+            }
+
+            return isValid;
         },
     }
 });
