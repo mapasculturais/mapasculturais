@@ -19,7 +19,6 @@ $this->import('
             <h4 class="bold">{{ section.sectionName }}</h4>
         </legend>
 
-
         <div :class="['home-customizer__group', {'home-customizer__group--hasImg' : section.image}]" ref="homeTextsContent">
             <div class="home-customizer__texts">
                 <div class="field" v-for="(text, textIndex) in section.texts" :key="textIndex">
@@ -31,7 +30,7 @@ $this->import('
             <div class="home-customizer__image" v-if="section.image">
                 <p class="home-customizer__image-title"> {{section.image.description}} </p>
                 
-                <mc-image-uploader class="home-customizer__uploader" :entity="subsite" group="section.image.group" :aspect-ratio="1920/386" deleteFile>
+                <mc-image-uploader class="home-customizer__uploader" :entity="subsite" :group="section.image.group" :aspect-ratio="1920/386" deleteFile>
                     <template #default="modal">
                         <div class="home-customizer__uploader-wrapper">
                             <div class="home-customizer__uploader-content">
