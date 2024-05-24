@@ -4,11 +4,14 @@ on:
   pull_request:
     branches:
       - develop
+    types:
+      - closed
 
   workflow_dispatch:
 
 jobs:
   BUILD:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
 
