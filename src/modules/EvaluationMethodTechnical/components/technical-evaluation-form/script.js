@@ -32,14 +32,14 @@ app.component('technical-evaluation-form', {
         notesResult() {
             let result = 0;
             for (let sectionIndex in this.sections) {
-                for (let criterion of this.sections[sectionIndex].criteria) {
+                for (let criterion in this.sections[sectionIndex].criteria) {
                     const value = this.formData.data[criterion.id];
                     if (value !== null && value !== undefined) {
-                        result += parseInt(value);
+                        result += parseFloat(value);
                     }
                 }
             }
-            return result;
+            return parseFloat(result.toFixed(2));
         },
         totalMaxScore() {
             let total = 0;
@@ -51,19 +51,17 @@ app.component('technical-evaluation-form', {
             }
             return total;
         }
-
     },
 
     methods: {
         handleInput(sectionIndex, criterionId) {
-            const value = this.formData.data[criterionId];
+            let value = this.formData.data[criterionId];
             const max = this.sections[sectionIndex].criteria.find(criterion => criterion.id === criterionId).max;
 
             if (value > max) {
                 this.messages.error(this.text('note-higher-configured'));
                 this.formData.data[criterionId] = max;
-            }
-            if (value < 0) {
+            } else if (value < 0) {
                 this.formData.data[criterionId] = 0;
             }
         },
@@ -72,14 +70,14 @@ app.component('technical-evaluation-form', {
             let subtotal = 0;
             const section = this.sections[sectionIndex];
 
-            for (let criterion of section.criteria) {
+            for (let criterion in section.criteria) {
                 const value = this.formData.data[criterion.id];
                 if (value !== null && value !== undefined) {
-                    subtotal += parseInt(value);
+                    subtotal += parseFloat(value);
                 }
             }
 
-            return subtotal;
+            return parseFloat(subtotal.toFixed(2));
         },
         async saveEvaluation() {
             const api = new API('registration');
