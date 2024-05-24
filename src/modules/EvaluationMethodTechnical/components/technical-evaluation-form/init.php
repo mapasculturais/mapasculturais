@@ -12,6 +12,7 @@ $entity = $this->controller->requestedEntity;
 
 $sections = $entity->opportunity->evaluationMethodConfiguration->sections;
 $criteria = $entity->opportunity->evaluationMethodConfiguration->criteria;
+$enabledViability = $entity->opportunity->evaluationMethodConfiguration->enableViability;
 
 $data = [];
 
@@ -26,6 +27,9 @@ foreach ($sections as $section) {
     }
 }
 
-$this->jsObject['config']['technicalEvaluationForm']['sections'] = $data;
+$this->jsObject['config']['technicalEvaluationForm'] = [
+    "section" => $data,
+    "enableViability" => $enabledViability === "true" ? true : false ,
+];
 
 ?>
