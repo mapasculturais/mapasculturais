@@ -28,7 +28,7 @@ foreach ($sections as $section) {
 }
 
 $this->jsObject['config']['technicalEvaluationForm'] = [
-    "section" => $data,
+    "sections" => $data,
     "enableViability" => $enabledViability === "true" ? true : false ,
 ];
 
