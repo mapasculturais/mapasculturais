@@ -15,7 +15,8 @@ app.component('technical-evaluation-form', {
     },
 
     created() {
-        this.formData = this.evaluationData || this.skeleton();
+        this.formData['data'] = this.evaluationData || this.skeleton();
+        this.formData.uid = this.userId;
     },
 
     mounted() {
