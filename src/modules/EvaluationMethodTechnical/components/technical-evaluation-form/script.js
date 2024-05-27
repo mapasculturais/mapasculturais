@@ -15,11 +15,7 @@ app.component('technical-evaluation-form', {
     },
 
     mounted() {
-        for (let sectionIndex in this.sections) {
-            for (let criterion of this.sections[sectionIndex].criteria) {
-                this.formData.data[criterion.id] = 0;
-            }
-        }
+       
     },
 
     data() {
@@ -93,28 +89,28 @@ app.component('technical-evaluation-form', {
             return parseFloat(subtotal.toFixed(2));
         },
 
-        validaErrors() {
-            let isValid = true;
-            
+        validateErrors() {
+            let isValid = false;
+
             for (let sectionIndex in this.sections) {
-                for (let criterion of this.sections[sectionIndex].criteria) {
-                    let value = this.formData.data[criterion.id];
-                    
-                    if (!this.formData.data.obs) {
-                        this.messages.error(this.text('technical-mandatory'));
-                        isValid = false;
-                    }
-        
-                    if (!this.viability && this.enabledViablity) {
-                        this.messages.error(this.text('technical-checkViability'));
-                        isValid = false;
-                    }
-                    
-                    if (!value && value !== 0) {
-                        this.messages.error(this.text('mandatory-note'));
-                        isValid = false;
+                for (let crit of this.sections[sectionIndex].criteria) {
+                    let sectionName = this.sections[sectionIndex].name;
+                    let value = this.formData.data[crit.id];
+                    if (!value || value < 0) {
+                        this.messages.error(`${this.text('on_section')} ${sectionName}, ${this.text('the_field')} ${crit.title} ${this.text('is_required')}`);
+                        isValid = true;
                     }
                 }
+            }
+            
+            if (!this.formData.data.obs) {
+                this.messages.error(this.text('technical-mandatory'));
+                isValid = true;
+            }
+
+            if (this.enabledViablity && !this.formData.data.viability) {
+                this.messages.error(this.text('technical-checkViability'));
+                isValid = true;
             }
             
             return isValid;
