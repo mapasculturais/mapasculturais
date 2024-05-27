@@ -1,6 +1,10 @@
 <?php
 
 use MapasCulturais\i;
+
+$this->import('
+    evaluation-actions
+')
 ?>
 
 <div>
@@ -37,4 +41,6 @@ use MapasCulturais\i;
             <label><?php i::_e('Pontuação máxima:') ?> {{ totalMaxScore }}</label>
         </div>
     </div>
+
+    <evaluation-actions :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
 </div>
