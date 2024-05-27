@@ -68,7 +68,7 @@ app.component('simple-evaluation-form', {
         },
 
         handleCurrentEvaluationForm() {
-            return this.currentEvaluation.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
+            return this.currentEvaluation?.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
         },
 
         statusToString(status) {
