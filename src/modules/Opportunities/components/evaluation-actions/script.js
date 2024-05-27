@@ -77,7 +77,7 @@ app.component('evaluation-actions', {
                 args['status'] = 'evaluated';
             }
 
-            this.requestEvaluation('saveEvaluation', {data: this.formData}, args).then(res => res.json()).then(response => {
+            this.requestEvaluation('saveEvaluation', this.formData, args).then(res => res.json()).then(response => {
                 this.dispatchResponse('saveEvaluation', response);
                 finish ? messages.success(this.text('finish')) : messages.success(this.text('success'));
             });
@@ -88,7 +88,7 @@ app.component('evaluation-actions', {
             api = new API('registration');
             let url = api.createUrl('sendEvaluation', {id: registration.id});
             if (!this.validateErrors(this.formData)) {
-                api.POST(url, {data: this.formData}).then(res => res.json()).then(response => {
+                api.POST(url, this.formData).then(res => res.json()).then(response => {
                     this.dispatchResponse('sendEvaluation', response);
                     messages.success(this.text('send'));
                 });
