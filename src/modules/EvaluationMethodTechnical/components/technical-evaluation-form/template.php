@@ -15,7 +15,7 @@ $this->import('
         <h3>{{ section.name }}</h3>
         <div v-for="criterion in section.criteria" :key="criterion.id">
             <label>{{ criterion.title }}
-                <input v-model.number="formData.data[criterion.id]" min="0" step="0.1" type="number" @input="handleInput(sectionIndex, criterion.id)">
+                <input v-model="formData.data[criterion.id]" min="0" step="0.1" type="number" @input="handleInput(sectionIndex, criterion.id)">
             </label>
         </div>
         <div>
