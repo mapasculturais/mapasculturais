@@ -17,7 +17,7 @@ $this->import('
 <div class="evaluation-actions" v-if="evaluationRegistrationList">
     <div class="grid-12">
         <div class="col-12" v-if="showActions('finishEvaluation')">
-            <button class="button button--primary button--large" @click="finishEvaluation(entity)">
+            <button class="button button--primary button--large" @click="finishEvaluation()">
                 <?= i::__('Finalizar avaliação') ?>
             </button>
         </div>
@@ -30,8 +30,8 @@ $this->import('
                 </template>
 
                 <template #actions="modal">
-                    <button class="button button--text button--text-del" @click="finishEvaluationSendLater(entity); modal.close()"><?= i::__('Enviar Depois') ?></button>
-                    <button class="button button--primary" @click="finishEvaluationSend(entity); modal.close()"><?= i::__('Enviar agora') ?></button>
+                    <button class="button button--text button--text-del" @click="finishEvaluationSendLater(); modal.close()"><?= i::__('Enviar Depois') ?></button>
+                    <button class="button button--primary" @click="finishEvaluationSend(); modal.close()"><?= i::__('Enviar agora') ?></button>
                 </template>
                 <template #button="modal">
                     <button class="button button--primary button--icon button--large" @click="modal.open()">
@@ -44,10 +44,10 @@ $this->import('
         </div>
 
         <div class="col-12" v-if="showActions('reopen')">
-            <button class="button button--primary button--large button--large" @click="reopen(entity)"> <?= i::__('Reabrir avaliação') ?> </button>
+            <button class="button button--primary button--large button--large" @click="reopen()"> <?= i::__('Reabrir avaliação') ?> </button>
         </div>
         <div class="col-12" v-if="showActions('send')">
-            <button class="button button--primary button--icon button--large evaluation-actions__buttons__send" @click="finishEvaluationSend(entity)">
+            <button class="button button--primary button--icon button--large evaluation-actions__buttons__send" @click="finishEvaluationSend()">
                 <?= i::__('Enviar avaliação') ?>
                 <mc-icon name="send"></mc-icon>
             </button>
