@@ -16,6 +16,7 @@
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.69.5",
     "sass-loader": "^12.6.0",
-    "webpack": "^5.89.0"
+    "webpack": "^5.89.0",
+    "cypress": "^13.0.0"
   }
 }

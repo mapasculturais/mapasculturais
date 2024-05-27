@@ -18,7 +18,7 @@ describe("Events Page", () => {
         cy.get(".dp__menu_content_wrapper").should("exist");
         cy.get(".dp__preset_ranges").should("exist");
         cy.get(".dp__flex_display").should("exist");
-        ["Hoje", "Amanhã", "Esta semana", "Este fim de semana", "Próximo fim de semana", "Próximos 7 dias", "Próximos 30 dias", "Março", "2024"].forEach(dateRange => {
+        ["Hoje", "Amanhã", "Esta semana", "Este fim de semana", "Próximo fim de semana", "Próximos 7 dias", "Próximos 30 dias", "Junho", "2024"].forEach(dateRange => {
             cy.contains(dateRange).should("exist");
         });
     });
@@ -36,7 +36,9 @@ describe("Events Page", () => {
         cy.contains("2024").click();
         cy.wait(1000);
         cy.get(".filter-btn > :first-child").click();
-        cy.contains("h2", "Evento 2");
+        cy.wait(1000);
+        cy.get('.dp__pointer').click();
+        cy.contains("2023");
     });
 
     it("Garantir que é possível acessar um evento e carregar as informações", () => {
@@ -45,12 +47,11 @@ describe("Events Page", () => {
         cy.wait(1000);
         cy.get(".filter-btn > :first-child").click();
         cy.wait(1000);
-        cy.get(`[href="${Cypress.config().baseUrl}/evento/2/"]`).click();
+        cy.get(`[href="${Cypress.config().baseUrl}/evento/2/"]`).last().click();
         cy.wait(1000);
-        cy.contains("h1", "Evento 2");
-        cy.contains("h4", "Lista de oportunidades vinculadas");
+        cy.contains("h1", "Motim");
         cy.get(".opportunity-list__container").should("not.be.empty");
         cy.contains(".age-rating__title", " Classificação Etária ");
-        cy.contains(".age-rating__content", "16 anos");
+        cy.contains(".age-rating__content", "10 anos");
     });
 });

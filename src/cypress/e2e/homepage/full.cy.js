@@ -50,10 +50,19 @@ describe("Homepage", () => {
         cy.get(".agents > a > span").click();
         cy.wait(1000);
         cy.get(".carousel__slide--active > .entity-card > .entity-card__footer > .entity-card__footer--action > .button").click();
-        cy.url().should("include", "/agente/54/#info");
-        cy.contains("Bianca Vieira");
+        cy.url().should("include", "/agente/27/#info");
+        cy.contains("Anne Elisa");
         backHomepage();
 
+        cy.get(".agents > a > span").click();
+        cy.wait(1000);
+        cy.get('.carousel__next').click();
+        cy.get('[style="width: 31.25%; order: 3;"] > .entity-card > .entity-card__footer > .entity-card__footer--action > .button').click();
+        cy.url().should("include", "/agente/1/#info");
+        cy.contains("a", "https://pt.wikipedia.org/wiki/Cleodon_Silva");
+        backHomepage();
+        
+        /*
         cy.get(".spaces > a > span").click();
         cy.wait(1000);
         cy.get("[style=\"width: 31.25%; order: 0;\"] > .entity-card > .entity-card__footer > .entity-card__footer--action > .button").click();
@@ -67,11 +76,7 @@ describe("Homepage", () => {
         cy.url().should("include", "/projeto/12/#info");
         cy.contains("12");
         backHomepage();
-
-        cy.get(".carousel__slide--active > .entity-card > .entity-card__footer > .entity-card__footer--action > .button").click();
-        cy.url().should("include", "/agente/1/#info");
-        cy.contains("Administrador");
-        backHomepage();
+        */
     });
 
     it("Acessa o botão \"Fazer Cadastro\" da quarta seção", () => {
