@@ -267,7 +267,7 @@ class Registration extends EntityController {
            
             if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
                 $evaluation->send(true);
-                $this->json($entity);
+                $this->json($evaluation);
             }
 
             return null;
