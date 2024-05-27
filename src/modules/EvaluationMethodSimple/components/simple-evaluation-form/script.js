@@ -58,9 +58,12 @@ app.component('simple-evaluation-form', {
         },
 
         processResponse(data) {
-            console.log(data.detail);
             if (data.detail.response.status > 0) {
                 this.isEditable = false;
+            }
+
+            if (data.detail.response.status == 0) {
+                this.isEditable = true;
             }
         },
 
