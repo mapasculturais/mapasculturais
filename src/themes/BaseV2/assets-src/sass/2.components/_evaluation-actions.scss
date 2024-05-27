@@ -1,0 +1,40 @@
+@use '../0.settings/mixins' as *;
+
+.evaluation-actions {
+    padding-top: size(24);
+
+    .modal-content {
+        max-width: size(732);
+    }
+
+    &__buttons {
+        &__saveAfter {
+            background-color:var(--mc-high-500);
+            color: var(--mc-primary-500);
+            border-color: var(--mc-primary-500);
+            &:hover {
+                background-color:var(--mc-primary-500);
+                color: var(--mc-high-500);
+                border-color: var(--mc-primary-500);
+            }
+        }
+
+        &__send {
+            display: block;
+            text-align: center;
+            background-color:var(--mc-gray-300);
+            color: var(--mc-high-500);
+            border-color:  var(--mc-gray-300);
+            &:hover {
+                background-color:var(--mc-primary-500);
+                color:var(--mc-high-500);
+                border-color:  var(--mc-primary-500);
+
+            }
+            svg {
+                float: right;
+                font-size: size(21);
+            }
+        }
+    }
+}
