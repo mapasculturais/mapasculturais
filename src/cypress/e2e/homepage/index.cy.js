@@ -4,6 +4,6 @@ describe("Homepage", () => {
     });
 
     it("Garante que a home page funciona", () => {
-        cy.contains("Bem-vinde ao Mapas Culturais");
+        cy.contains("label", "Boas vindas ao Mapa Cultural");
     });
 });

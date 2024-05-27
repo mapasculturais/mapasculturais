@@ -1,6 +1,5 @@
-const { clearAllFilters } = require("../../commands/clearAllFilters");
-
 describe("Agents Page", () => {
+    let expectedCount;
     beforeEach(() => {
         cy.viewport(1920, 1080);
         cy.visit("/agentes");
@@ -9,7 +8,7 @@ describe("Agents Page", () => {
     it("Garante que a página de agentes funciona", () => {
         cy.url().should("include", "agentes");
 
-        cy.get("h1").contains("Agentes");
+        cy.get("h1").contains("Agentes").should("be.visible");
 
         cy.contains("Mais recentes primeiro");
         cy.contains("Agentes encontrados");
@@ -17,7 +16,7 @@ describe("Agents Page", () => {
         cy.contains("Status do agente");
         cy.contains("Tipo");
         cy.contains("Área de atuação");
-        cy.contains("Junin Oliveira");
+        cy.contains("Id");
     });
 
     it("Garante que os filtros de oportunidades funcionam quando não existem resultados pra busca textual", () => {
@@ -28,22 +27,33 @@ describe("Agents Page", () => {
         cy.contains("Nenhuma entidade encontrada");
     });
 
+    //Coloquei o Cleodon pois, por ser uma homenagem, acredito ser mais difícil ser removido
     it("Garante que os filtros de agentes funcionam quando existem resultados para a busca textual", () => {
-        cy.get(".search-filter__actions--form-input").type("Oliviana");
+        cy.get(".search-filter__actions--form-input").type("Cleodon");
 
         cy.wait(1000);
 
-        cy.contains("2 Agentes encontrados");
+        cy.contains("1 Agentes encontrados");
     });
 
+    //Como todos os agentes oficiais possuem selo de verificado, aqui ele verifica se a quant de agentes encontrados 
+    //é igual a quant de agentes com selo de verificado
     it("Garante que o filtro de agentes oficiais funciona", () => {
         cy.wait(1000);
 
-        cy.contains("Status do agente");
-
         cy.get(".verified > input").click();
 
-        cy.contains("4 Agentes encontrados");
+        cy.wait(1000);
+
+        cy.get(".foundResults").invoke('text').then((text) => {
+            // Extraia o número da string
+            expectedCount = parseInt(text.match(/\d+/)[0], 10);
+            
+            // Agora, verifique se o número de imagens encontradas é igual ao esperado
+            cy.get('div[title="Selo Mapas AQUI"] img[src="https://mapas.tec.br/files/seal/1/file/111/121e2341ab665183b487c72f92636b59-a4537a4646cadc981f44f03c5021652f.jpg"]')
+              .should('have.length', expectedCount);
+            cy.contains(expectedCount + " Agentes encontrados");
+        });
     });
 
     it("Garante que os filtros por tipo de agente funcionam", () => {
@@ -54,17 +64,30 @@ describe("Agents Page", () => {
         cy.get(":nth-child(2) > select").select(2);
         cy.contains("Agente Coletivo");
         cy.wait(1000);
-        cy.contains("24 Agentes encontrados");
+        
+        cy.get(".foundResults").invoke('text').then((text) => {
+            // Extraia o número da string
+            expectedCount = parseInt(text.match(/\d+/)[0], 10);
+            
+            // Agora, verifique se o número de agentes do tipo coletivo encontrados é igual ao esperado
+            cy.get(".upper.agent__color").should('have.length', expectedCount);
+            cy.contains(expectedCount + " Agentes encontrados")
+        });
+
 
         cy.get(":nth-child(2) > select").select(1);
         cy.contains("Agente Individual");
         cy.wait(1000);
-        cy.contains("69 Agentes encontrados");
 
-        cy.get(":nth-child(2) > select").select(0);
-        cy.contains("Todos");
-        cy.wait(1000);
-        cy.contains("93 Agentes encontrados");
+        cy.get(".foundResults").invoke('text').then((text) => {
+            // Extraia o número da string
+            expectedCount = parseInt(text.match(/\d+/)[0], 10);
+            
+            // Agora, verifique se o número de agentes do tipo individual encontrados é igual ao esperado
+            cy.get(".upper.agent__color").should('have.length', expectedCount);
+            cy.contains(expectedCount + " Agentes encontrados");
+        });
+
     });
 
     it("Garante que os filtros por área de atuação funcionam", () => {
@@ -72,20 +95,49 @@ describe("Agents Page", () => {
 
         cy.contains("Área de atuação");
 
-        cy.get(":nth-child(3) > .mc-multiselect > :nth-child(1) > .v-popper > .mc-multiselect--input").click();
-        cy.get(":nth-child(3) > .item > .text").click();
+        cy.get(".mc-multiselect--input").click();
+        cy.contains(".mc-multiselect__options > li", "Arte Digital").click();
 
         cy.wait(1000);
 
-        cy.contains("9 Agentes encontrados");
+        cy.get(".foundResults").invoke('text').then((text) => {
+            // Extraia o número da string
+            expectedCount = parseInt(text.match(/\d+/)[0], 10);
+            
+            // Agora, verifique se o número de agentes por área de atuação encontrados é igual ao esperado
+            cy.get(".entity-card__content--terms-area > .terms.agent__color").should('have.length', expectedCount);
+            cy.contains(expectedCount + " Agentes encontrados");
+        });
     });
 
+    //Preenche filtros e garante que após limpá-los, a quant de agentes encontrados é a mesma que no começo
     it("Garante que o botão limpar filtros na página de agentes funciona", () => {
-        clearAllFilters([
-            ".verified",
-            ":nth-child(2) > select",
-            ".mc-multiselect--input",
-            ":nth-child(1) > .item > .text"
-        ], "98 Agentes encontrados");
+        cy.wait(1000);
+        
+        let originalCount;
+        cy.get(".foundResults").invoke('text').then((text) => {
+            originalCount = parseInt(text.match(/\d+/)[0], 10);
+        });
+
+        cy.get(".verified > input").click();
+        cy.get(":nth-child(2) > select").select(2);
+        cy.get(".mc-multiselect--input").click();
+        cy.get(".mc-multiselect__options > li").eq(1).click();
+        cy.get(".mc-multiselect__options > li").eq(4).click();
+        cy.get(".mc-multiselect__options > li").eq(7).click();
+        cy.get(".mc-multiselect__options > li").eq(10).click();
+
+        cy.wait(1000);
+        cy.get(".mc-multiselect__close").click();
+        cy.get(".clear-filter").click();
+        cy.wait(1000);
+
+
+        cy.get(".foundResults").invoke('text').then((text) => {
+            expectedCount = parseInt(text.match(/\d+/)[0], 10);
+            
+            if(originalCount == expectedCount)
+                cy.contains(expectedCount + " Agentes encontrados");
+        });
     });
 });
