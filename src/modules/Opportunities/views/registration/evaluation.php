@@ -99,7 +99,10 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                                 <?php endif;?>
                             <?php endif ?>
                         </div>
-                        <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
+                        <?php if (!in_array($entity->opportunity->evaluationMethod->slug, ['simple'])) : ?>
+	                        <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
+                        <?php endif; ?>
+
                     </div>
                 </div>
             </aside>
