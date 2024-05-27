@@ -12,6 +12,10 @@ app.component('evaluation-actions', {
             type: Object,
             required: true
         },
+        validateErrors: {
+            type: Function,
+            required: true
+        }
     },
 
     setup() {
