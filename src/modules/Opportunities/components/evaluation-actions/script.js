@@ -53,6 +53,17 @@ app.component('evaluation-actions', {
             }
         },
         
+        requestEvaluation(action, data = {}, args = {}, controller = 'registration') {
+            return new Promise((resolve, reject) => {
+                if (!this.validateErrors()) {
+                    const api = new API(controller);
+                    let url = api.createUrl(action, args);
+                    let result = api.POST(url, data);
+                    resolve(result);
+                } 
+            });
+        },
+
         dispatchResponse(type, response) {
             this.currentEvaluation = response;
             window.dispatchEvent(new CustomEvent('responseEvaluation', {detail:{response: response, type: type}}));
@@ -66,15 +77,10 @@ app.component('evaluation-actions', {
                 args['status'] = 'evaluated';
             }
 
-            const api = new API('registration');
-            let url = api.createUrl('saveEvaluation', args);
-            if (!this.validateErrors(this.formData)) {
-                api.POST(url, {data: this.formData}).then(res => res.json()).then(response => {
-                    this.dispatchResponse('saveEvaluation', response);
-                    finish ? messages.success(this.text('finish')) : messages.success(this.text('success'));
-
-                });
-            }
+            this.requestEvaluation('saveEvaluation', {data: this.formData}, args).then(res => res.json()).then(response => {
+                this.dispatchResponse('saveEvaluation', response);
+                finish ? messages.success(this.text('finish')) : messages.success(this.text('success'));
+            });
         },
 
         sendEvaluation(registration){
