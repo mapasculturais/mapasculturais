@@ -113,7 +113,7 @@ describe("Agents Page", () => {
     //Preenche filtros e garante que após limpá-los, a quant de agentes encontrados é a mesma que no começo
     it("Garante que o botão limpar filtros na página de agentes funciona", () => {
         cy.wait(1000);
-
+        
         let originalCount;
         cy.get(".foundResults").invoke('text').then((text) => {
             originalCount = parseInt(text.match(/\d+/)[0], 10);
