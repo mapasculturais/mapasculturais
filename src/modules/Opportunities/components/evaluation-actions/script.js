@@ -30,7 +30,7 @@ app.component('evaluation-actions', {
     data() {
         return {
             evaluationRegistrationList: null,
-            currentEvaluation: $MAPAS.config.simpleEvaluationForm?.currentEvaluation || null
+            currentEvaluation: $MAPAS.config.evaluationActions?.currentEvaluation || null
         }
     },
 
