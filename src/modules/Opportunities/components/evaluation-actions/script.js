@@ -118,28 +118,6 @@ app.component('evaluation-actions', {
             }
         },
         
-        validateErrors(data) {
-            const messages = useMessages();
-            let error = false;
-            Object.keys(data).forEach(key => { 
-                if (!this.formData[key] || this.formData[key] === '') {
-                    messages.error(this.text('emptyField') + ' ' + this.text(this.dictFields(key)) + ' ' + this.text('required'));
-                    error = true;
-                }
-            });
-            return error;
-        },
-
-        dictFields(field) {
-            const fields = {
-                status: this.text('field_status_name'),
-                obs: this.text('field_obs_name'),
-                uid: this.text('field_uid_name'),
-            };
-
-            return fields[field];
-        },
-
         reloadPage() {
             window.location.reload();
         },
