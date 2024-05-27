@@ -97,32 +97,27 @@ app.component('evaluation-actions', {
 
         finishEvaluation() {
             this.saveEvaluation(true);
-            this.reloadPage();
         },
 
         finishEvaluationSend() {
             this.sendEvaluation();
             if (this.lastRegistration?.registrationid != this.entity.id){
                 this.next();
-            } else {
-                this.reloadPage();
-            }
+            } 
         },
 
         finishEvaluationSendLater(){
             this.saveEvaluation(true);
             if (this.lastRegistration?.registrationid != this.entity.id){
                 this.next();
-            } else if (this.lastRegistration?.registrationid == registration.id){
-                this.reloadPage();
-            }
+            } 
         },
         
         reloadPage() {
             window.location.reload();
         },
 
-        reopen(registration){
+        reopen(){
             const messages = useMessages();
             api = new API('registration');
             let url = api.createUrl('reopenEvaluation', {id: this.entity.id});
@@ -131,7 +126,6 @@ app.component('evaluation-actions', {
             api.POST(url, args).then(res => res.json()).then(response => {
                 this.dispatchResponse('reopenEvaluation', response);
                 messages.success(this.text('reopen'));
-                this.reloadPage();
             });
         },
 
