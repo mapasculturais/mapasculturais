@@ -31,6 +31,6 @@ $this->import('
         </div>
     </div>
     <div class="simple-evaluation-form__actions">
-        <evaluation-actions :formData="formData" :entity="entity"></evaluation-actions>
+        <evaluation-actions :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
     </div>
 </div>
