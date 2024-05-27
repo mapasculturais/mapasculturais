@@ -83,10 +83,10 @@ app.component('evaluation-actions', {
             });
         },
 
-        sendEvaluation(registration){
+        sendEvaluation(){
             const messages = useMessages();
             api = new API('registration');
-            let url = api.createUrl('sendEvaluation', {id: registration.id});
+            let url = api.createUrl('sendEvaluation', {id: this.entity.id});
             if (!this.validateErrors(this.formData)) {
                 api.POST(url, this.formData).then(res => res.json()).then(response => {
                     this.dispatchResponse('sendEvaluation', response);
@@ -95,23 +95,23 @@ app.component('evaluation-actions', {
             }
         },
 
-        finishEvaluation(registration) {
+        finishEvaluation() {
             this.saveEvaluation(true);
             this.reloadPage();
         },
 
-        finishEvaluationSend(registration) {
-            this.sendEvaluation(registration);
-            if (this.lastRegistration?.registrationid != registration.id){
+        finishEvaluationSend() {
+            this.sendEvaluation();
+            if (this.lastRegistration?.registrationid != this.entity.id){
                 this.next();
             } else {
                 this.reloadPage();
             }
         },
 
-        finishEvaluationSendLater(registration){
+        finishEvaluationSendLater(){
             this.saveEvaluation(true);
-            if (this.lastRegistration?.registrationid != registration.id){
+            if (this.lastRegistration?.registrationid != this.entity.id){
                 this.next();
             } else if (this.lastRegistration?.registrationid == registration.id){
                 this.reloadPage();
@@ -125,7 +125,7 @@ app.component('evaluation-actions', {
         reopen(registration){
             const messages = useMessages();
             api = new API('registration');
-            let url = api.createUrl('reopenEvaluation', {id: registration.id});
+            let url = api.createUrl('reopenEvaluation', {id: this.entity.id});
             const args = {};
 
             api.POST(url, args).then(res => res.json()).then(response => {
