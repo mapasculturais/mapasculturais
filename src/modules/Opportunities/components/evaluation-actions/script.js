@@ -26,6 +26,7 @@ app.component('evaluation-actions', {
     data() {
         return {
             evaluationRegistrationList: null,
+            currentEvaluation: $MAPAS.config.simpleEvaluationForm.currentEvaluation || null
         }
     },
 
@@ -49,6 +50,7 @@ app.component('evaluation-actions', {
         },
         
         dispatchResponse(type, response) {
+            this.currentEvaluation = response;
             window.dispatchEvent(new CustomEvent('responseEvaluation', {detail:{response: response, type: type}}));
         },
 
@@ -153,39 +155,35 @@ app.component('evaluation-actions', {
             window.dispatchEvent(new CustomEvent('nextEvaluation', {detail:{registrationId:this.entity.id}}));
         },
 
-        showActions(entity, action) {
-            if (!entity.currentUserPermissions.evaluate){
-                return false;
-            }
-
+        showActions(action) {
             let result = false;
-            this.evaluationRegistrationList.forEach(function(item){
-                if (item.registrationid == entity.id) {
-                    switch (action) {
-                        case 'finishEvaluation':
-                        case 'save':
-                            if(item.status < 1){
-                                result = true;
-                            }
-
-                            if(item.status === undefined){
-                                result =  true;
-                            }
-
-                            if(item.status == ""){
-                                result =  true;
-                            }
-                            break;
-                        case 'send':
-                        case 'reopen':
-                            result = item.status == 1;
-                            break;
-                        default:
-                            result = false;
-                            break;
+            switch (action) {
+                case 'finishEvaluation':
+                case 'save':
+                    if (!this.currentEvaluation) {
+                        result = true;
                     }
-                }
-            });
+
+                    if (this.currentEvaluation?.status < 1) {
+                        result = true;
+                    }
+
+                    if (this.currentEvaluation?.status === undefined) {
+                        result = true;
+                    }
+
+                    if (this.currentEvaluation?.status == "") {
+                        result = true;
+                    }
+                    break;
+                case 'send':
+                case 'reopen':
+                    result = this.currentEvaluation?.status == 1;
+                    break;
+                default:
+                    result = false;
+                    break;
+            }
             return result;
         },
     }

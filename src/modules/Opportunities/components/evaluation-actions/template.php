@@ -16,12 +16,12 @@ $this->import('
 
 <div class="evaluation-actions" v-if="evaluationRegistrationList">
     <div class="grid-12">
-        <div class="col-12" v-if="showActions(entity, 'finishEvaluation')">
+        <div class="col-12" v-if="showActions('finishEvaluation')">
             <button class="button button--primary button--large" @click="finishEvaluation(entity)">
                 <?= i::__('Finalizar avaliação') ?>
             </button>
         </div>
-        <div class="col-12" v-if="showActions(entity, 'finishEvaluation')">
+        <div class="col-12" v-if="showActions('finishEvaluation')">
             <mc-modal button-label="Finalizar e Avançar" title="<?= i::__('Avaliação feita!') ?>">
                 <template #default>
                     <div class="finish-send-evaluation__text">
@@ -43,17 +43,17 @@ $this->import('
             </mc-modal>
         </div>
 
-        <div class="col-12" v-if="showActions(entity, 'reopen')">
+        <div class="col-12" v-if="showActions('reopen')">
             <button class="button button--primary button--large button--large" @click="reopen(entity)"> <?= i::__('Reabrir avaliação') ?> </button>
         </div>
-        <div class="col-12" v-if="showActions(entity, 'send')">
+        <div class="col-12" v-if="showActions('send')">
             <button class="button button--primary button--icon button--large evaluation-actions__buttons__send" @click="finishEvaluationSend(entity)">
                 <?= i::__('Enviar avaliação') ?>
                 <mc-icon name="send"></mc-icon>
             </button>
         </div>
         
-        <div class="col-12" v-if="showActions(entity, 'save')">
+        <div class="col-12" v-if="showActions('save')">
             <button class="button button--primary button--large evaluation-actions__buttons__saveAfter" @click="saveEvaluation()">
                 <?php i::_e('Salvar e continuar depois') ?>
             </button>
