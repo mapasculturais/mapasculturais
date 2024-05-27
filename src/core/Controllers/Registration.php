@@ -241,7 +241,7 @@ class Registration extends EntityController {
                 $evaluation->registration->checkPermission('evaluate');
                 $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
                 $evaluation->save(true);
-                $this->json($entity);
+                $this->json($evaluation);
             }
 
             return null;
