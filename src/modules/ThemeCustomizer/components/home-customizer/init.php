@@ -25,6 +25,7 @@ $texts = [
         'image' => [
             'description' => i::__('Imagem do header da home'),
             'group' => 'header',
+            'aspectRatio' => 1500/600,
         ]
     ],
     [
@@ -64,6 +65,7 @@ $texts = [
         'image' => [
             'description' => i::__('Imagem de fundo da oportunidade'),
             'group' => 'opportunityBanner',
+            'aspectRatio' => 800/300,
         ]
     ],
     [
@@ -77,6 +79,7 @@ $texts = [
         'image' => [
             'description' => i::__('Imagem de fundo do evento'),
             'group' => 'eventBanner',
+            'aspectRatio' => 800/300,
         ]
     ],
     [
@@ -90,6 +93,7 @@ $texts = [
         'image' => [
             'description' => i::__('Imagem de fundo do espaço'),
             'group' => 'spaceBanner',
+            'aspectRatio' => 800/300,
         ]
     ],
     [
@@ -103,6 +107,7 @@ $texts = [
         'image' => [
             'description' => i::__('Imagem de fundo do agente'),
             'group' => 'agentBanner',
+            'aspectRatio' => 800/300,
         ]
     ],
     [
@@ -116,6 +121,7 @@ $texts = [
         'image' => [
             'description' => i::__('Imagem de fundo do projeto'),
             'group' => 'projectBanner',
+            'aspectRatio' => 800/300,
         ]
     ],
     [
@@ -146,6 +152,7 @@ $texts = [
         'image' => [
             'description' => i::__('Imagem de fundo da seção de fazer cadastro'),
             'group' => 'signupBanner',
+            'aspectRatio' => 1920/386,
         ]
     ],
     [
