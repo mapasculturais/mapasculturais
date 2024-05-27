@@ -14,26 +14,38 @@ app.component('technical-evaluation-form', {
         },
     },
 
+    created() {
+        this.formData = this.evaluationData || this.skeleton();
+    },
+
     mounted() {
        
     },
 
     data() {
-        const sections = $MAPAS.config.technicalEvaluationForm.sections;
-        const enabledViablity = $MAPAS.config.technicalEvaluationForm.enableViability;
         return {
             obs: '',
             viability: null,
-            enabledViablity,
-            sections,
-            formData: {
-                uid: $MAPAS.userId,
-                data: {},
-            },
+            formData: {},
         };
     },
 
     computed: {
+        enableViability() {
+            return $MAPAS.config.technicalEvaluationForm.enableViability;
+        },
+        sections() {
+            return $MAPAS.config.technicalEvaluationForm.sections;
+        },
+        userId() {
+            return $MAPAS.userId;
+        },
+        evaluationData() {
+            return $MAPAS.config.technicalEvaluationForm.currentEvaluation?.evaluationData;
+        },
+        currentEvaluation() {
+            return $MAPAS.config.technicalEvaluationForm.currentEvaluation;
+        },
         notesResult() {
             let result = 0;
             for (let sectionIndex in this.sections) {
@@ -114,6 +126,13 @@ app.component('technical-evaluation-form', {
             }
             
             return isValid;
+        },
+        
+        skeleton() {
+            return {
+                uid: this.userId,
+                data: {},
+            };
         },
     }
 });

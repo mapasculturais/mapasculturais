@@ -14,6 +14,12 @@ $sections = $entity->opportunity->evaluationMethodConfiguration->sections;
 $criteria = $entity->opportunity->evaluationMethodConfiguration->criteria;
 $enabledViability = $entity->opportunity->evaluationMethodConfiguration->enableViability;
 
+if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
+    $user = $app->repo("User")->find($this->controller->data['user']);
+}else{
+    $user = $app->user;
+}
+
 $data = [];
 
 foreach ($sections as $section) {
@@ -28,6 +34,7 @@ foreach ($sections as $section) {
 }
 
 $this->jsObject['config']['technicalEvaluationForm'] = [
+    'currentEvaluation' => $entity->getUserEvaluation($user),
     "sections" => $data,
     "enableViability" => $enabledViability === "true" ? true : false ,
 ];

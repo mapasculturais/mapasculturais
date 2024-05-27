@@ -27,7 +27,7 @@ $this->import('
         <h3><?php i::_e('Informe o Parecer técnico') ?></h3>
         <textarea v-model="formData.data.obs" rows="10" cols="30"></textarea>
     </div>
-    <div v-if="enabledViablity">
+    <div v-if="enableViability">
         <h4><strong><?php i::_e('Exequibilidade orçamentária') ?></strong></h4>
         <p><?php i::_e('Esta proposta está adequada ao orçamento apresentado? Os custos orçamentários estão compatíveis com os praticados no mercado?') ?></p>
         <input v-model="formData.data.viability" type="radio" name="confirmation" value="valid" /> <?php i::_e('Sim') ?>
