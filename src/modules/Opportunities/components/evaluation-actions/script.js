@@ -12,6 +12,7 @@ app.component('evaluation-actions', {
             type: Object,
             required: true
         },
+        
         validateErrors: {
             type: Function,
             required: true
@@ -85,14 +86,12 @@ app.component('evaluation-actions', {
 
         sendEvaluation(){
             const messages = useMessages();
-            api = new API('registration');
-            let url = api.createUrl('sendEvaluation', {id: this.entity.id});
-            if (!this.validateErrors(this.formData)) {
-                api.POST(url, this.formData).then(res => res.json()).then(response => {
-                    this.dispatchResponse('sendEvaluation', response);
-                    messages.success(this.text('send'));
-                });
-            }
+            let args = {id: this.entity.id};
+
+            this.requestEvaluation('sendEvaluation', {data: this.formData}, args).then(res => res.json()).then(response => {
+                this.dispatchResponse('sendEvaluation', response);
+                messages.success(this.text('send'));
+            });
         },
 
         finishEvaluation() {
@@ -112,18 +111,12 @@ app.component('evaluation-actions', {
                 this.next();
             } 
         },
-        
-        reloadPage() {
-            window.location.reload();
-        },
 
         reopen(){
             const messages = useMessages();
-            api = new API('registration');
-            let url = api.createUrl('reopenEvaluation', {id: this.entity.id});
-            const args = {};
+            let args = {id: this.entity.id};
 
-            api.POST(url, args).then(res => res.json()).then(response => {
+            this.requestEvaluation('reopenEvaluation', {data: this.formData}, args).then(res => res.json()).then(response => {
                 this.dispatchResponse('reopenEvaluation', response);
                 messages.success(this.text('reopen'));
             });
