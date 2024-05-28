@@ -55,6 +55,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Nova lib instalada (league/csv), para manipulação de arquivos csv.
 - Log de hooks agora exibe um backtrace
 - Adiciona novos índices para melhorar a performance global do sistema
+- Atualiza bibliotecas PHP e JS
 
 ## [7.3.58] - 2024-05-22
 ### Correções
