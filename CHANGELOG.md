@@ -56,6 +56,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Log de hooks agora exibe um backtrace
 - Adiciona novos índices para melhorar a performance global do sistema
 
+## [7.3.58] - 2024-05-22
+### Correções
+- Remove webmanifest para evitar erros no carregamento atravez do safari
+
 ## [7.3.57] - 2024-05-17
 ### Melhorias
 - Não solicita o campo País em ambientes com a configuração statesAndCitiesCountryCode definida como BR
