@@ -1,0 +1,25 @@
+name: End-to-end tests
+on: push
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      # Install npm dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+      
+      - uses: actions/upload-artifact@v4
+        # add the line below to store screenshots only on failures
+        if: failure()
+        with:
+            name: cypress-screenshots
+            path: cypress/screenshots
+            if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+      - uses: actions/upload-artifact@v4
+        with:
+            name: cypress-videos
+            path: cypress/videos
+            if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
