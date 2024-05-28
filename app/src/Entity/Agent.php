@@ -114,7 +114,7 @@ class Agent
 
     public function __construct()
     {
-        $this->status = EntityStatusEnum::TRASH->getValue();
+        $this->status = EntityStatusEnum::ENABLED->getValue();
     }
 
     public function getId(): int
