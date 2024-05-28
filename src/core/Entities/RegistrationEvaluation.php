@@ -84,6 +84,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      */
     protected $createTimestamp;
 
+     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="sent_timestamp", type="datetime", nullable=true)
+     */
+    protected $sentTimestamp;
+
     /**
      * @var \DateTime
      *
