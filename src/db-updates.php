@@ -2264,6 +2264,12 @@ $$
                 (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
                 geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
         ");
-    }
+    },
+
+    'Cria coluna send_timestamp para registrar o envio das avaliações' => function() use($conn) {
+        if(!__column_exists('registration_evaluation', 'sent_timestamp')) {
+            __exec("ALTER TABLE registration_evaluation ADD sent_timestamp TIMESTAMP NULL");
+        }
+    },
 
 ] + $updates ;   
