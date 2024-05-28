@@ -3,10 +3,6 @@
 .controller-project {
     &.action-single {
         .single-project {
-            &__longdescription {
-                white-space: pre-line;
-            }
-
             &__subproject {
                 .entity-card {
                     background-color: var(--mc-gray-100);
