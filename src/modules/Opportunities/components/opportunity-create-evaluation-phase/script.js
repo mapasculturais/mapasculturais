@@ -26,6 +26,12 @@ app.component('opportunity-create-evaluation-phase' , {
     },
 
     computed: {
+        placeholder() {
+            const labels = $DESCRIPTIONS.evaluationmethodconfiguration.type.options;
+
+            return this.phase.type ? labels[this.phase.type] : '';
+        },
+
         maxDate () {
             return this.lastPhase.publishTimestamp?._date || null;
         },

@@ -73,12 +73,12 @@ app.component('opportunity-phase-publish-config-registration' , {
     methods: {
         publishRegistration () {
             this.phase.POST('publishRegistrations', this.phase).then(item => {
-                this.phase.populate(item);
+                this.phase.publishedRegistrations = true;
             });
         },
         unpublishRegistration () {
             this.phase.POST('unpublishRegistrations', this.phase).then(item => {
-                this.phase.populate(item);
+                this.phase.publishedRegistrations = false;
             });
         }
     }

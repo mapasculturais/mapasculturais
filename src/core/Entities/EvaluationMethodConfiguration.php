@@ -34,7 +34,9 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     use Traits\EntityTypes,
         Traits\EntityMetadata,
         Traits\EntityAgentRelation,
-        Traits\EntityPermissionCache;
+        Traits\EntityPermissionCache{
+            Traits\EntityTypes::setType as traitSetType;
+        }
         
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
@@ -147,6 +149,18 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
     }
 
+    function setType($value) {
+        $app = App::i();
+        
+        $this->traitSetType($value);
+
+        $definition = $app->getRegisteredEntityTypeById($this, $this->_type);
+
+        if(!$this->name && $definition) {
+            $this->name = $definition->name;
+        }
+    }
+
     function setOpportunity($value) {
         if($value instanceof Opportunity) {
             $this->opportunity = $value;
@@ -178,8 +192,15 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
     public function jsonSerialize(): array {
         $result = parent::jsonSerialize();
-        $result['type'] = $this->_type;
+        $result['type'] = $this->type;
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl,summary');
+
+        /**
+         * @todo Arranjar um modo de colocar isso no módulo de avaliação técnica
+         */
+        if ($this->_type == 'technical') {
+            $result['opportunity']->affirmativePoliciesEligibleFields = $this->opportunity->getFields();
+        }
         
         return $result;
     }

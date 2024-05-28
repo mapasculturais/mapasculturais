@@ -1,0 +1,103 @@
+@use "../0.settings/mixins" as *;
+
+.affirmative-policy--bonus-config {
+  &__active {
+    align-items: center;
+    display: flex;
+    gap: size(19);
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  &__card {
+    border: size(1) solid var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-xs);
+    margin-bottom: 1.5625rem;
+  }
+
+  &__field {
+    max-width: 120px;
+    display: flex;
+    span {
+      display: flex;
+      justify-content: center;
+      gap: 9px;
+      align-items: center;
+    }
+  }
+
+  &__header {
+    align-items: center;
+    display: flex;
+    gap: size(8);
+    padding: size(13) size(23);
+    flex-wrap: wrap;
+    border-bottom: size(1) solid var(--mc-gray-300);
+    .iconify {
+      font-size: size(24);
+    }
+    h4 {
+      width: 100%;
+    }
+  }
+
+  &__quota {
+    align-items: start;
+    border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+    display: grid;
+    gap: size(30);
+    grid-template-columns:
+      calc(60% - size(65))
+      calc(40% - size(65))
+      size(70);
+    padding: size(16) size(20);
+
+    &:first-child {
+      border-top: var(--mc-border-hairline) var(--mc-gray-300);
+    }
+  }
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: size(15);
+
+    &--center {
+      height: 100%;
+      justify-content: center;
+    }
+
+    &:nth-child(2) {
+      justify-self: center;
+      max-width: size(300);
+      width: 100%;
+    }
+    label {
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 9px;
+      }
+    }
+  }
+
+  &__group-field {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: size(20) size(40);
+    justify-content: flex-start;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+  }
+}

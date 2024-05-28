@@ -38,7 +38,7 @@ $this->breadcrumb = [
 <div class="main-app single-1">
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity"></entity-header>
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>
                 <main>
@@ -50,7 +50,7 @@ $this->breadcrumb = [
                             <span>   
                                 <h3 class="single-1__description bold"><?php i::_e('Descrição Detalhada');?></h3>
                             </span>
-                            <p class="single-1__longdescription" v-html="entity.longDescription"></p>
+                            <p class="description" v-html="entity.longDescription"></p>
                         </div>
                         <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                         <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>

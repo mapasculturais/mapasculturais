@@ -69,29 +69,17 @@ $this->breadcrumb = [
     </template>
   </entity-header>
 
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
+        <?php $this->applyTemplateHook("tabs", "begin")?>
         <mc-tab label="<?= i::__('Informações') ?>" slug="info">
             <mc-container class="opportunity">
                 <main class="grid-12">
                     <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
                     <opportunity-subscription-list class="col-12"></opportunity-subscription-list>
-                </main>
-                <aside>
                     <div class="grid-12">
-                        <opportunity-phases-timeline class="col-12"></opportunity-phases-timeline>
-                        <div v-if="entity.files.rules" class="col-12">
-                            <a :href="entity.files.rules.url" class="button button--primary-outline" target="_blank"><?= i::__("Baixar regulamento") ?></a>
-                        </div>
-                    </div>
-                </aside>
-            </mc-container>
-
-            <mc-container>
-                <main>
-                    <div class="grid-12">
-                        <div class="col-12">
+                        <div v-if="entity.longDescription" class="col-12">
                             <h3><?= i::__("Apresentação") ?></h3>
-                            <p v-html="entity.longDescription"></p>
+                            <p class="description" v-html="entity.longDescription"></p>
                         </div>
                         <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Regulamento'); ?>"></opportunity-rules>
                         <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
@@ -101,6 +89,12 @@ $this->breadcrumb = [
                     </div>
                 </main>
                 <aside>
+                    <div class="grid-12">
+                        <opportunity-phases-timeline class="col-12"></opportunity-phases-timeline>
+                        <div v-if="entity.files.rules" class="col-12">
+                            <a :href="entity.files.rules.url" class="button button--primary-outline" target="_blank"><?= i::__("Baixar regulamento") ?></a>
+                        </div>
+                    </div>
                     <div class="flex-container">
                         <entity-terms :entity="entity" hide-required title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
@@ -112,6 +106,9 @@ $this->breadcrumb = [
                         <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
                     </div>  
                 </aside>
+            </mc-container>
+
+            <mc-container>
                 <aside>
                     <div class="grid-12">
                         <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>
@@ -125,7 +122,7 @@ $this->breadcrumb = [
         <?php $this->part('opportunity-tab-results', ['entity' => $entity]); ?>
         
         <?php $this->part('opportunity-tab-support', ['entity' => $entity]); ?>
-
+        <?php $this->applyTemplateHook("tabs", "end")?>
     </mc-tabs>
     <entity-actions :entity="entity"></entity-actions>
 </div>

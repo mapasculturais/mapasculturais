@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -27,14 +28,20 @@ $this->import('
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
 		<div v-if="global.auth.isLoggedIn" class="logged">
-			<p v-if="categories && entitiesLength > 1" class="logged__description"> <?= i::__("Selecione as opções abaixo e clique no botão para se inscrever.") ?> </p>
-			<p v-if="(categories && entitiesLength == 1) || (!categories && entitiesLength > 1)" class="logged__description"> <?= i::__("Escolha uma opção abaixo e clique no botão para se inscrever.") ?> </p>
-			<p v-if="!categories && entitiesLength == 1" class="logged__description"> <?= i::__("Clique no botão para se inscrever.") ?> </p>
+			<p v-if="numberFields > 1" class="logged__description">
+				<?= i::__('Selecione as opções abaixo e clique no botão para se inscrever') ?>
+			</p>
+			<p v-if="numberFields == 1" class="logged__description">
+				<?= i::__('Selecione uma opções abaixo e clique no botão para se inscrever') ?>
+			</p>
+			<p v-if="numberFields == 0" class="logged__description">
+				<?= i::__('Clique no botão para se inscrever') ?>
+			</p>
 
 			<!-- Logado -->
 			<form class="logged__form grid-12" @submit.prevent>
-				<div class="col-6 sm:col-12">
-					<select-entity v-if="!hideSelect" type="agent" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
+				<div class="col-6 sm:col-12" v-if="entitiesLength > 1">
+					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 						<template #button="{ toggle }">
 							<span v-if="!agent" class="fakeInput" @click="toggle()">
 								<div class="fakeInput__img">
@@ -48,23 +55,30 @@ $this->import('
 								<mc-avatar :entity="agent" size="xsmall"></mc-avatar>
 								{{agent.name}}
 							</span>
-
 						</template>
 					</select-entity>
-
-					<span v-if="hideSelect && agent" class="fakeInput fakeInput--no-select">
-						<mc-icon name="selected"></mc-icon>
-						<mc-avatar :entity="agent" size="xsmall"></mc-avatar>
-						{{agent.name}}
-					</span>
 				</div>
 
-				<div v-if="categories" class="col-6 sm:col-12 field">
+				<div v-if="categories.length > 0" class="col-6 sm:col-12 field">
 					<select name="category" v-model="category">
-						<option value="null" disabled selected> <?= i::__('Categoria') ?> </option>
+						<option value="null" disabled selected> <?= $this->text('placeholder-category', i::__('Selecione a categoria')) ?> </option>
 						<option v-for="category in categories" :value="category"> {{category}} </option>
 					</select>
 				</div>
+				<div v-if="registrationRanges.length > 0" class="col-6 sm:col-12 field">
+					<select name="registrationRanges" v-model="registrationRange">
+						<option value="null" disabled selected> <?= $this->text('placeholder-range', i::__('Selecione a faixa')) ?> </option>
+						<option v-for="registrationRange in registrationRanges" :value="registrationRange.label"> {{registrationRange.label}} </option>
+					</select>
+				</div>
+
+				<div v-if="registrationProponentTypes.length > 0" class="col-6 sm:col-12 field">
+					<select name="registrationProponentTypes" v-model="registrationProponentType">
+						<option value="null" disabled selected> <?= $this->text('placeholder-proponentType', i::__('Selecione o tipo de proponente')) ?> </option>
+						<option v-for="registrationProponentType in registrationProponentTypes" :value="registrationProponentType"> {{registrationProponentType}} </option>
+					</select>
+				</div>
+
 
 				<div class="logged__button col-12">
 					<button v-if="!processing" @click="subscribe()" class="button button--xbg button--primary">

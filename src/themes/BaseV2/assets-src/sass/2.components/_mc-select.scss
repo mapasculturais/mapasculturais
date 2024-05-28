@@ -1,0 +1,184 @@
+@use '../0.settings/mixins' as *;
+
+.mc-select {
+    outline: none;
+    position: relative;
+    text-align: left;
+    width: 100%;
+
+    &__selected-option {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+        color: var(--mc-low-500);
+        cursor: pointer;
+        line-height: size(22);
+        max-width: 100%;
+        overflow: hidden;
+        padding: size(12.5) size(48) size(12.5) size(14);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        & > * {
+            max-height: size(22);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        &:after {
+            border: size(5) solid transparent;
+            border-color: var(--mc-low-500) transparent transparent transparent;
+            content: "";
+            height: 0;
+            position: absolute;
+            right: size(24);
+            top: size(22);
+            width: 0;
+        }
+
+        &--open {
+            &:after {
+                border-color: transparent transparent var(--mc-low-500) transparent;
+                top: size(16);
+            }
+        }
+    }
+
+    &__dropdown {
+        background-color: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-500);
+    }
+
+    &__filter {
+        padding: size(5) size(10);
+        display: flex;
+        gap: size(8);
+        justify-content: flex-end;
+        border-bottom: var(--mc-border-hairline);
+    }
+
+    &__filter-input {
+        width: 100%;
+        padding: size(6) size(16);
+        font-family: var(--mc-font-body);
+    }
+
+    &__close {
+        display: flex;
+        align-items: center;
+        padding: size(10);
+        cursor: pointer;
+    }
+
+    &__options {
+        max-height: size(384);
+        overflow: auto;
+
+        & > * {
+            border-radius: var(--mc-border-radius-xs);
+            color: var(--mc-low-500);
+            cursor: pointer;
+            padding: size(5) size(10);
+    
+            &.active {
+                background-color: var(--mc-gray-100);
+            }
+
+            &:hover {
+                background-color: var(--mc-gray-300);
+            }
+        }
+
+        &--groups {
+            & > * {
+                cursor: default;
+
+                &:hover {
+                    background-color: unset;
+                }
+            }
+
+            & > optgroup > * {
+                border-radius: var(--mc-border-radius-xs);
+                color: var(--mc-low-500);
+                cursor: pointer;
+                padding: size(5) size(10) size(5) size(15);
+                z-index: 2;
+
+                &:hover,
+                &.active {
+                    background-color: var(--mc-gray-300);
+                }
+            }
+        }
+    }
+
+    &__popper {
+        &.v-popper {
+            &__popper {
+                .v-popper {
+                    &__inner {
+                        border: none;
+                    }
+
+                    &__arrow-container {
+                        display: none;
+                    }
+                }
+            }
+
+            &__popper--no-positioning {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+
+                & > .v-popper {
+                    &__backdrop {
+                        position: absolute;
+                        /* top: 0; */
+                        /* left: 0; */
+                        width: 100vw;
+                        height: 100vh;
+                        display: block;
+                        background: rgba(0, 0, 0, .5);
+                    }
+
+                    &__wrapper {
+                        position: fixed;
+                        width: 100%;
+                        bottom: 0;                        
+                    }
+                }
+
+                .mc-select__options {
+                    max-height: calc(100vh - size(46));
+                }
+            }
+        }
+    }
+
+    &--sm & {
+        line-height: size(20);
+
+        &__selected-option {
+            padding-block: 3px;
+
+            &::after {
+                top: 12px;
+                right: 20px;
+            }
+
+            &--open {
+                &:after {
+                    border-color: transparent transparent var(--mc-low-500) transparent;
+                    top: 8px;
+                }
+            }
+        }
+
+        &__option {
+            padding-block: 3px;
+        }
+    }
+}

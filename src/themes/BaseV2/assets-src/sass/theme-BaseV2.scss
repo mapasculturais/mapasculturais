@@ -8,13 +8,17 @@
 @import '0.settings/atoms';
 
 // OBJECTS
+@import '1.objects/load-more';
 @import '1.objects/mc-title';
 @import '1.objects/mc-avatar';
 
 // COMPONENTS
+@import '2.components/affirmative-policies--geo-quota-configuration';
+@import '2.components/affirmative-policies--quota-configuration';
 @import '2.components/_mc-fake-user-create';
 @import '2.components/agent-data';
 @import '2.components/app-card-content';
+@import '2.components/apply-evaluations';
 @import '2.components/button';
 @import '2.components/claim-support';
 @import '2.components/complaint-suggestion';
@@ -23,6 +27,7 @@
 @import '2.components/create-entity-modal';
 @import '2.components/create-modal';
 @import '2.components/create-occurrence';
+@import '2.components/data-table';
 @import '2.components/datepicker';
 @import '2.components/debug';
 @import '2.components/entity-actions';
@@ -36,10 +41,10 @@
 @import '2.components/entity-list';
 @import '2.components/entity-location';
 @import '2.components/entity-log';
+@import '2.components/entity-link-project';
 @import '2.components/entity-occurrence-list';
 @import '2.components/entity-owner';
 @import '2.components/entity-parent-edit';
-@import '2.components/entity-link-project';
 @import '2.components/entity-profile';
 @import '2.components/entity-related-agents';
 @import '2.components/entity-request-ownership';
@@ -49,7 +54,9 @@
 @import '2.components/event-age-rating';
 @import '2.components/event-importer-files';
 @import '2.components/event-importer-upload';
+@import '2.components/entity-table';
 @import '2.components/faq-accordion';
+@import '2.components/faq-info';
 @import '2.components/faq-search';
 @import '2.components/faq-search-results';
 @import '2.components/error-display';
@@ -73,7 +80,9 @@
 @import '2.components/mc-breadcrumb';
 @import '2.components/mc-alert';
 @import '2.components/mc-card';
+@import '2.components/mc-collapse';
 @import '2.components/mc-confirm-button';
+@import '2.components/mc-file';
 @import '2.components/mc-header-menu-user';
 @import '2.components/mc-header-menu';
 @import '2.components/mc-linked-entity';
@@ -84,6 +93,8 @@
 @import '2.components/mc-multiselect';
 @import '2.components/mc-notification';
 @import '2.components/mc-relation-card';
+@import '2.components/mc-select';
+@import '2.components/mc-status';
 @import '2.components/mc-stepper-vertical';
 @import '2.components/mc-summary-agent-info';
 @import '2.components/mc-summary-agent';
@@ -97,6 +108,7 @@
 @import '2.components/opportunity-basic-info';
 @import '2.components/opportunity-category-list';
 @import '2.components/opportunity-category';
+@import '2.components/opportunity-evaluation-committee';
 @import '2.components/opportunity-evaluations-list';
 @import '2.components/opportunity-evaluations';
 @import '2.components/opportunity-form-export';
@@ -111,6 +123,7 @@
 @import '2.components/opportunity-phase-publish-date-config';
 @import '2.components/opportunity-phase-status';
 @import '2.components/opportunity-phases-timeline';
+@import '2.components/opportunity-ranges-config';
 @import '2.components/opportunity-registrations';
 @import '2.components/opportunity-rules';
 @import '2.components/opportunity-subscription-list';
@@ -151,6 +164,9 @@
 @import '2.components/stepper';
 @import '2.components/tabs';
 @import '2.components/theme-logo';
+@import '2.components/technical-assessment-section';
+@import '2.components/tiebreaker-criteria-configuration';
+@import '2.components/_affirmative-policy--bonus-config';
 @import '2.components/timeline';
 @import '2.components/user-accepted-terms';
 @import '2.components/user-mail';

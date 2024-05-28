@@ -36,14 +36,18 @@ $this->import('
             <h3><?= i::__("Informações obrigatórias") ?></h3>
         </template>
         <template #content>
+            <?php $this->applyTemplateHook('opportunity-basic-info','before')?>
             <div class="grid-12">
+                <?php $this->applyTemplateHook('opportunity-basic-info','begin')?>
                 <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
                 <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
 
                 <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="3000" classes="col-6">
                     <label><?= i::__("Publicação final de resultados (data e hora)") ?></label>
                 </entity-field>
+                <?php $this->applyTemplateHook('opportunity-basic-info','afeter')?>
             </div>
+            <?php $this->applyTemplateHook('opportunity-basic-info','end')?>
         </template>
     </mc-card>
 </div>

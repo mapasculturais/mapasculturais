@@ -181,17 +181,17 @@ class Module extends \MapasCulturais\Module {
         /**
          * Filtra usuários por palavras chaves na view user-management
          */
-        $app->hook('repo(User).getIdsByKeywordDQL.where', function (&$where, $keyword) {
+        $app->hook('repo(User).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) {
             $where .= " 
             (
-                unaccent(lower(e.email)) LIKE unaccent(lower(:keyword)) OR 
-                unaccent(lower(a.name)) LIKE unaccent(lower(:keyword)) OR
-                unaccent(lower(nomeCompleto.value)) LIKE unaccent(lower(:keyword)) OR
-                unaccent(lower(nomeSocial.value)) LIKE unaccent(lower(:keyword)) OR
+                unaccent(lower(e.email)) LIKE unaccent(lower(:{$alias})) OR 
+                unaccent(lower(a.name)) LIKE unaccent(lower(:{$alias})) OR
+                unaccent(lower(nomeCompleto.value)) LIKE unaccent(lower(:{$alias})) OR
+                unaccent(lower(nomeSocial.value)) LIKE unaccent(lower(:{$alias})) OR
 
-                unaccent(lower(children.name)) LIKE unaccent(lower(:keyword)) OR
-                unaccent(lower(child_nomeCompleto.value)) LIKE unaccent(lower(:keyword)) OR
-                unaccent(lower(child_nomeSocial.value)) LIKE unaccent(lower(:keyword))
+                unaccent(lower(children.name)) LIKE unaccent(lower(:{$alias})) OR
+                unaccent(lower(child_nomeCompleto.value)) LIKE unaccent(lower(:{$alias})) OR
+                unaccent(lower(child_nomeSocial.value)) LIKE unaccent(lower(:{$alias}))
             )";
 
             $doc = preg_replace("/\D/", '', $keyword);

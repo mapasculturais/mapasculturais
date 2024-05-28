@@ -44,7 +44,7 @@ $this->breadcrumb = [
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
 
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>

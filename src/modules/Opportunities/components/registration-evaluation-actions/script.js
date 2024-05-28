@@ -142,9 +142,12 @@ app.component('registration-evaluation-actions', {
             promise.then(() => {
                 this.reloadPage();
             }).catch((res) => {
-                for (let error of res){
-                    console.log(error)
-                    messages.error(error);
+                if(typeof res == "array") {
+                    for (let error of res){
+                        messages.error(error);
+                    }
+                }else {
+                    messages.error(res);
                 }
             })
         },

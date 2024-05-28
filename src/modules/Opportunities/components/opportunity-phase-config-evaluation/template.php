@@ -10,22 +10,50 @@ $this->import('
     entity-field
     mc-confirm-button
     mc-modal
+    opportunity-evaluation-committee
     opportunity-phase-publish-date-config
+    tiebreaker-criteria-configuration
     v1-embed-tool
+
+    affirmative-policies--geo-quota-configuration
 ');
+
+$evaluation_methods = $app->getRegisteredEvaluationMethods();
 ?>
-<mc-card>
+<mc-card> 
     <div class="evaluation-step grid-12">
-        <section class="evaluation-section col-12 grid-12">
-            <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
-            <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>    
-            <entity-field :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
+
+        <section class="col-12 evaluation-step__section">
+            <div class="evaluation-step__section-content">
+                <div class="grid-12">
+                    <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
+                    <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>    
+                    <entity-field :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
+                </div>
+            </div>
         </section>
 
-        <div class="evaluation-line col-12"></div>
-        
-        <section class="evaluation-section col-12">
-            <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
+        <?php foreach($evaluation_methods as $evaluation_method): ?>
+            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'before') ?>
+            <template v-if="phase.type.id == '<?=$evaluation_method->slug?>'">
+                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'begin') ?>
+                <?= $this->part("{$evaluation_method->slug}/phase-config") ?>
+                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'end') ?>
+            </template>
+            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
+        <?php endforeach; ?>
+
+        <section class="col-12 evaluation-step__section">
+            <div class="evaluation-step__section-header">
+                <div class="evaluation-step__section-label">
+                    <h3><?= i::__('Comissão de avaliação') ?></h3>
+                </div>
+            </div>
+
+            <div class="evaluation-step__section-content">
+                <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
+                <!-- <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool> -->
+            </div>
         </section>
 
         <section class="evaluation-section col-12">
@@ -41,8 +69,7 @@ $this->import('
                 <template #button="modal">
                     <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
                 </template>
-            </mc-modal>  
-
+            </mc-modal>
         </section>
 
         <section class="evaluation-section col-12">
