@@ -8,7 +8,6 @@
 use MapasCulturais\i;
 
 $this->import('
-    v1-embed-tool
     mc-icon
     mc-modal
 ');
