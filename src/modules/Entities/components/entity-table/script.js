@@ -199,10 +199,14 @@ app.component('entity-table', {
             if (prop == '@date') {
                 return [{prop, value, label: __('data', 'entity-table')}]
             }
+
+            if (prop == '@pending') {
+                return [{prop, value: 'null', label: __('pendente', 'entity-table')}]
+            }
             
             let values = this.getFilterValues(value);
             if (values) {
-                if (prop == 'status') {
+                if (prop == 'status' || prop == '@pending') {
                     let statusDict = {
                         '0': __('rascunhos', 'entity-table'),
                         '1': __('publicadas', 'entity-table'),
@@ -218,6 +222,14 @@ app.component('entity-table', {
                             '3': __('nao selecionadas', 'entity-table'),
                             '8': __('suplentes', 'entity-table'),
                             '10': __('selecionadas', 'entity-table'),
+                        }
+                    }
+
+                    if (this.endpoint == 'findEvaluations') {
+                        statusDict = {
+                            '0': __('iniciada', 'entity-table'),
+                            '1': __('avaliada', 'entity-table'),
+                            '2': __('enviada', 'entity-table'),
                         }
                     }
 
@@ -249,7 +261,11 @@ app.component('entity-table', {
             if (values) {
                 const operator = values[1];
                 const _values = values[2];
-                
+
+                if (operator == '@pending') {
+                    return 'null';
+                }
+
                 if (_values) {
                     if(operator == 'IN') {
                         values = _values.replace(/([^\\]),/g, '$1%break%');
@@ -350,6 +366,8 @@ app.component('entity-table', {
             if (filter.prop == '@keyword') {
                 delete this.query[filter.prop];
                 this.searchText = '';
+            } else if (filter.prop == '@pending'){ 
+                delete this.query[filter.prop];
             } else {
                 if (_values) {
                     let operator = _values[1];

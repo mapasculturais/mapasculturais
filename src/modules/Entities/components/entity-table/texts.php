@@ -22,6 +22,10 @@ return [
     'rascunhos' => i::__('Rascunhos'),
     'selecionadas' => i::__('Selecionadas'),
     'suplentes' => i::__('Suplentes'),
+    'invalida' => i::__('Inválida'),
+    'avaliada' => i::__('Avaliada'),
+    'enviada' => i::__('Enviada'),
+    'pendente' => i::__('Pendente'),
 
     'palavras-chave' => i::__('Palavras-chave'),
 ];

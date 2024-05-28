@@ -173,7 +173,6 @@ app.component('opportunity-evaluations-table', {
         },
 
         removeFilter(filter) {
-
             if (filter.prop == '@date') {
                 if (filter.value.includes('>=')) {
                     this.firstDate = null;
@@ -191,7 +190,7 @@ app.component('opportunity-evaluations-table', {
                 delete this.query['@date'];
             }
 
-            if (filter.prop == 'status') {
+            if (filter.prop == 'status' || filter.prop == '@pending') {
                 this.selectedStatus = null;
                 delete this.query['status'];
             }
