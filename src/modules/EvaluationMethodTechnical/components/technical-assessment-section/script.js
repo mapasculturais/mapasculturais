@@ -2,6 +2,12 @@
 app.component('technical-assessment-section', {
     template: $TEMPLATES['technical-assessment-section'],
 
+    setup() {
+        const messages = useMessages();
+        const text = Utils.getTexts('technical-assessment-section');
+        return { text, messages };
+    },
+
     props: {
         entity: {
             type: Entity,
@@ -90,7 +96,10 @@ app.component('technical-assessment-section', {
             });
             
             if (valid) {
-            this.entity.save(3000);
+                this.entity.save(3000);
+            } else {
+                this.messages.error(this.text('criterion-field'));
+            }
         },
         editSections(sectionId) {
             this.editingSections[sectionId] = !this.editingSections[sectionId];
