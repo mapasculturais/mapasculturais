@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Exception\ResourceNotFoundException;
+use App\Exception\ValidatorException;
 use App\Repository\SealRepository;
 use App\Request\SealRequest;
 use App\Service\SealService;
@@ -47,6 +48,11 @@ class SealApiController
             $seal = $this->sealService->create($sealData);
 
             return new JsonResponse($seal, Response::HTTP_CREATED);
+        } catch (ValidatorException $exception) {
+            return new JsonResponse([
+                'error' => $exception->getMessage(),
+                'fields' => $exception->getFields(),
+            ], Response::HTTP_BAD_REQUEST);
         } catch (InvalidArgumentException $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -61,6 +67,11 @@ class SealApiController
             return new JsonResponse($seal, Response::HTTP_CREATED);
         } catch (ResourceNotFoundException $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        } catch (ValidatorException $exception) {
+            return new JsonResponse([
+                'error' => $exception->getMessage(),
+                'fields' => $exception->getFields(),
+            ], Response::HTTP_BAD_REQUEST);
         } catch (Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
