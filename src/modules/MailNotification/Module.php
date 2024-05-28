@@ -34,13 +34,36 @@ class Module extends \MapasCulturais\Module
         $self = $this;
 
         $app->hook("entity(Registration).send:after", function () use ($self) {
-            if(!$this->opportunity->parent){
+            $sendMail = false;
+            if($this->opportunity->isDataCollection) {
+                if(!$this->opportunity->parent) {
+                    $sendMail = true;
+                }else {
+                    if ($this->opportunity->getRegistrationFieldConfigurations() || $this->opportunity->getRegistrationFileConfigurations()) {
+                        $sendMail = true;
+                    }
+                }
+            }
+
+            if($sendMail) {
                 $self->registrationSend($this);
             }
         });
 
         $app->hook("entity(Registration).insert:finish", function () use ($self) {
-            if(!$this->opportunity->parent){
+            $sendMail = false;
+            if($this->status ===  Registration::STATUS_DRAFT && $this->opportunity->isDataCollection) {
+                if(!$this->opportunity->parent) {
+                    $sendMail = true;
+                }else {
+                    if ($this->opportunity->getRegistrationFieldConfigurations() || $this->opportunity->getRegistrationFileConfigurations()) {
+                        $sendMail = true;
+                    }
+    
+                }
+            }
+           
+            if($sendMail) {
                 $self->registrationStart($this);
             }
         });

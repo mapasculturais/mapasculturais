@@ -14,9 +14,17 @@ app.component('panel--card-user', {
     data() {
         let username = `${this.entity.profile?.name} <${this.entity.email}>`;
         return {
-            roles: this.entity.roles,
             username
         };
+    },
+
+    computed: {
+        roles() {
+            if(!this.entity.roles) {
+                this.entity.roles = [];
+            }
+            return this.entity.roles;
+        }
     },
 
     props: {

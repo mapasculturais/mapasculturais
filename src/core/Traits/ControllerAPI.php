@@ -108,7 +108,7 @@ trait ControllerAPI{
         $responder->outputArray($data, $singular_name, $plural_name);
     }
 
-    protected function apiAddHeaderMetadata($qdata, $data, $count){
+    public function apiAddHeaderMetadata($qdata, $data, $count){
         if (headers_sent())
             return;
         $count = (int) $count;

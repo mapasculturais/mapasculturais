@@ -27,6 +27,8 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * @property \DateTime $registrationFrom
  * @property \DateTime $registrationTo
  * @property array $registrationCategories
+ * @property array $registrationProponentTypes
+ * @property array $registrationRanges
  * @property self $parent
  * @property Agent $owner
  * 
@@ -175,6 +177,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     protected $status = self::STATUS_ENABLED;
 
+     /**
+     * @var string
+     *
+     * @ORM\Column(name="registration_proponent_types", type="json", nullable=true)
+     */
+    protected $registrationProponentTypes;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="registration_ranges", type="json", nullable=true)
+     */
+    protected $registrationRanges;
+
     /**
      * @var \MapasCulturais\Entities\Opportunity
      *
@@ -276,6 +292,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
     
     abstract function getSpecializedClassName();
 
+    public static function getPropertiesMetadata($include_column_name = false){
+        $app = App::i();
+        $result = parent::getPropertiesMetadata($include_column_name);
+        $result["registrationProponentTypes"]["type"] = "multiselect";
+        $options = [];
+        foreach($app->config["registration.proponentTypes"] as $value){
+            $options[$value] = $value;
+        }
+        $result["registrationProponentTypes"]["options"] = $options;
+        $result["registrationProponentTypes"]["optionsOrder"] = $app->config["registration.proponentTypes"];
+        
+        return $result;
+    }
+
     /**
      * 
      * @return RegistrationFileConfiguration[]
@@ -296,7 +326,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     public function getRegistrationFieldConfigurations() {
         $app = App::i();
-
+        
         $result = App::i()->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationFieldConfigurations", [&$result]);
@@ -445,7 +475,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     static function getClassName() {
-        return get_class();
+        return Opportunity::class;
     }
 
     function getExtraPermissionCacheUsers(){
@@ -997,6 +1027,41 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $data;
     }
 
+    /**
+     * Retorna os campos de seleção e/ou seleção múltipla e/ou booleanos ou todos
+     * 
+     * @return array
+     */
+    function getFields($select = true, $multiselect = true, $boolean = true, $all = false, $include_previous_phases = true) {
+        $data = [];
+        $currentPhase = $this;
+        $phases[] = $currentPhase;
+
+        if($include_previous_phases) {
+            $phases = $currentPhase->allPhases;
+        }
+
+        foreach($phases as $phase) {
+            if($phase->isDataCollection) {
+                if($fields = $phase->registrationFieldConfigurations) {
+                    foreach($fields as $field) {
+                        if($all 
+                            || ($select && $field->fieldType == 'select') 
+                            || ($multiselect && $field->fieldType == 'checkboxes') 
+                            || ($boolean && $field->fieldType == 'checkbox')
+                        ){
+                            if (!in_array($field, $data)) {
+                                $data[] = $field;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
     function unregisterRegistrationMetadata(){
         $app = App::i();
 
@@ -1013,7 +1078,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
 
-    function registerRegistrationMetadata(){
+    function registerRegistrationMetadata($also_previous_phases = false){
        
         $app = App::i();
 
@@ -1072,6 +1137,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $metadata = new MetadataDefinition ($field->fieldName, $cfg);
 
             $app->registerMetadata($metadata, Registration::class);
+        }
+
+        if($also_previous_phases && $this->parent) {
+            $this->previousPhase->registerRegistrationMetadata();
         }
         
     }

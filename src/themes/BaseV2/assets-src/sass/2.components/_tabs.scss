@@ -14,7 +14,6 @@
         max-width: size(1170);
         margin: 0 auto;
         overflow-x: auto;
-        padding: 0 size(16);
 
         &--left {
             align-items: baseline;
@@ -26,6 +25,12 @@
 
         }
 
+    }
+
+    &__alert {
+        max-width: size(1170);
+        margin: 0 auto size(30);
+        display: flex;
     }
 
     &__buttons {

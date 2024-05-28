@@ -31,6 +31,6 @@ class EventOpportunity extends Opportunity{
     protected $parent;
     
     public function getSpecializedClassName() {
-        return get_class();
+        return EventOpportunity::class;
     }
 }

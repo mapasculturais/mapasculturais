@@ -1,0 +1,103 @@
+@use '../0.settings/mixins' as *;
+
+.geo-quota {
+    &__active {
+        align-items: center;
+        display: flex;
+        gap: size(19);
+    }
+
+    &__card {
+        border-radius: var(--mc-border-radius-xs);
+        border: size(1) solid var(--mc-gray-300);
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: size(10);
+        padding: size(20) size(20) size(8);
+    }
+
+    &__title {
+        align-items: flex-start;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__options {
+        align-items: flex-end;
+        display: flex;
+        gap: size(10) size(45);
+        justify-content: space-between;
+
+        @media (max-width: size(800)) {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__field {
+        max-width: size(450);
+    }
+
+    &__description {
+        color: var(--mc-gray-700);
+        font-size: var(--mc-font-size-xxs);
+        padding: 0 size(10);
+
+        @media (min-width: size(800)) {
+            max-width: size(438);
+        }
+    }
+
+    &__table {
+        & > thead > tr,
+        & > tbody > tr {
+            & > th,
+            & > td {
+                border-bottom: size(1) solid var(--mc-gray-300);
+                
+                &:first-child {
+                    padding: 0 size(24);
+                    width: 60%;
+                    @media (max-width: size(800)) {
+                        width: 50%;
+                    }
+                }   
+            }
+        }
+
+        & > thead > tr {
+            height: size(35);
+            font-size: var(--mc-font-size-xxs);
+        }
+
+        & > tbody > tr {
+            height: size(61);
+
+            &:last-child {
+                & > th, 
+                & > td {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+
+    &__input-area {
+        align-items: center;
+        display: flex;
+        gap: size(8);
+    }
+
+    &__input {
+        border-radius: var(--mc-border-radius-xs);
+        border: size(1) solid var(--mc-gray-500);
+        font-family: Open Sans;
+        font-size: var(--mc-font-size-xxs);
+        line-height: normal;
+        max-width: size(92);
+        padding: size(8) size(14);
+        width: 100%;
+    }
+}

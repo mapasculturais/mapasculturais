@@ -1,0 +1,31 @@
+@use '../0.settings/mixins' as *;
+
+.faq-info {
+    max-width: size(400);
+    max-height: size(400);
+    overflow: auto;
+
+    &__title {
+        font-weight: 700;
+        color: var(--mc-primary-500);
+        padding-bottom: size(15);
+        border-bottom: size(1) solid var(--mc-gray-500);
+        margin-bottom: size(15);
+    }
+
+    &__content {
+        white-space: pre-line;
+        text-align: justify;
+        overflow: auto;
+        margin-right: size(15);
+    }
+
+    &__tags  {
+        & ul {
+            margin-bottom: size(15);
+            & li {
+                background-color: var(--mc-faq-500);
+            }
+        }
+    }
+}

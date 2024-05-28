@@ -203,10 +203,15 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     protected function canUserView($user){
-        if($owner = $this->owner){
-            return $owner->canUser('view');
-        }else{
-            return false;
+        $owner = $this->owner;
+        if($this->private) {
+            return $owner->canUser("viewPrivateFiles", $user);
+        }else {
+            if($owner->isPrivateEntity()) {
+                return $this->canUser('view', $user);
+            }else {
+                return true;
+            }
         }
     }
 

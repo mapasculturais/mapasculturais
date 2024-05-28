@@ -2721,6 +2721,8 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['registrationFieldTypes'] = $field_types;
 
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+        $this->jsObject['entity']['registrationRanges'] = $entity->registrationRanges;
+        $this->jsObject['entity']['registrationProponentTypes'] = $entity->registrationProponentTypes;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
 
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');

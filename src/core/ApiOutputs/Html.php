@@ -335,17 +335,12 @@ class Html extends \MapasCulturais\ApiOutput{
     /**
      * Converte os caracteres para UTF-16 para
      * não haver quebra dos caracteres
-     *
+     * @todo Verificar possibilidade de remover a função
      * @param string $text
      * @return string
      */
     protected function convertToUTF16($text){
-        
-        if(mb_check_encoding($text, 'UTF-8')){
-            return $text;
-        }
-        
-        return mb_convert_encoding($text,'utf-16','utf-8');
+        return $text;
     }
 
     /**
@@ -407,9 +402,10 @@ class Html extends \MapasCulturais\ApiOutput{
         <?php foreach($data as $item):
             $item = (array) $item;
             unset($item['rules']);
+            unset($item['@entityType']);
 
             if($first){
-                if($entity === 'MapasCulturais\Entities\Event'){
+                if($entity === 'MapasCulturais\Entities\Event' && isset($item['ocurrences'])){
                     $first_item_keys = $this->setEventKeys($item);
                 }else{
                     $first_item_keys = array_keys($item);
@@ -417,9 +413,13 @@ class Html extends \MapasCulturais\ApiOutput{
             } 
             
             $item = json_decode(json_encode($item));
+            $occs = [];
             ?>
             <?php if(isset($item->occurrences)) : //Occurrences to the end
-                $occs = $item->occurrences; unset($item->occurrences); $item->occurrences = $occs; ?>
+                $occs = $item->occurrences; 
+                unset($item->occurrences); 
+                $item->occurrences = $occs; 
+            ?>
             <?php endif; ?>
             
             <?php 
@@ -476,7 +476,7 @@ class Html extends \MapasCulturais\ApiOutput{
             </thead>
             <tbody>
             <?php endif; ?>
-                <?php if($entity === 'MapasCulturais\Entities\Event'){
+                <?php if($entity === 'MapasCulturais\Entities\Event' && $occs){
                     $this->printEventsBodyTable($occs, $first_item_keys, $item);
                 }else{
                     $this->printBodyTable($first_item_keys, $item);
@@ -491,27 +491,36 @@ class Html extends \MapasCulturais\ApiOutput{
     }
 
     protected function printOneItemTable($item){
+        $item = (array)$item;
+        if(count($item) === 3){
+            unset($item['id'], $item['@entityType']);
+            echo implode("", $item);
+            return;
+        }
+
+        $item = (object) $item;
+
         ?>
-        <table>
-            <?php foreach($item as $p => $v): ?>
-            <tr>
-                <th><?php echo $p ?></th>
-                <td><?php
-                    if(is_object($v) && $p==='type'){
-                        echo $v->name;
-                    }elseif($p==='tag' || $p==='area'){
-                        echo implode(', ',$v);
-                        
-                    }elseif(is_object($v) || is_array($v)){
-                        $this->printTable($v);
-                    }elseif(is_string($v) || is_numeric($v)){
-                        echo $v;
-                    }
-                    ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
+            <table>
+                <?php foreach($item as $p => $v): ?>
+                <tr>
+                    <th><?php echo $p ?></th>
+                    <td><?php
+                        if(is_object($v) && $p==='type'){
+                            echo $v->name;
+                        }elseif($p==='tag' || $p==='area'){
+                            echo implode(', ',$v);
+                            
+                        }elseif(is_object($v) || is_array($v)){
+                            $this->printTable($v);
+                        }elseif(is_string($v) || is_numeric($v)){
+                            echo $v;
+                        }
+                        ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
         <?php
     }
 
@@ -525,7 +534,11 @@ class Html extends \MapasCulturais\ApiOutput{
         <!DOCTYPE html>
         <html>
             <head>
-                <title><?php echo sprintf(App::txts("%s $singular_object_name encontrado.", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></title>
+                <?php if(count($data) === 1):?>
+                    <title><?php echo sprintf("%s $singular_object_name encontrado.", count($data)) ?></title>
+                <?php else:?>
+                    <title><?php echo sprintf("%s $plural_object_name encontrados.", count($data)) ?></title>
+                <?php endif?>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <style>
@@ -533,9 +546,15 @@ class Html extends \MapasCulturais\ApiOutput{
                 </style>
             </head>
             <body>
-                <h1><?php
-
-                echo sprintf(App::txts("%s $singular_object_name encontrado", "%s $plural_object_name encontrados.", count($data)), count($data)) ?></h1>
+                <h1>
+                    <?php
+                        if(count($data) === 1){
+                            echo sprintf("%s $singular_object_name encontrado.", count($data));
+                        }else {
+                            echo sprintf("%s $plural_object_name encontrados.", count($data));
+                        }
+                    ?>
+                </h1>
                 
                 <h4><?php echo \MapasCulturais\i::__('Planilha gerada em: ') . \date("d/m/Y H:i") ?></h4>
                 <?php $this->printTable($data) ?>
@@ -672,36 +691,36 @@ class Html extends \MapasCulturais\ApiOutput{
                         ?>
                         <?php if($k==='terms'): ?>
                             <?php if(property_exists($v, 'area')): ?>
-                                <td><?php echo mb_convert_encoding(implode(', ', $v->area),"HTML-ENTITIES","UTF-8"); ?></td>
+                                <td><?php echo htmlentities(implode(', ', $v->area)); ?></td>
                             <?php endif; ?>
                             <?php if(property_exists($v, 'tag')): ?>
-                                <td><?php echo mb_convert_encoding(implode(', ', $v->tag),"HTML-ENTITIES","UTF-8"); ?></td>
+                                <td><?php echo htmlentities(implode(', ', $v->tag)); ?></td>
                             <?php endif; ?>
                             <?php if(property_exists($v, 'linguagem')): ?>
-                                <td><?php echo mb_convert_encoding(implode(', ', $v->linguagem),"HTML-ENTITIES","UTF-8"); ?></td>
+                                <td><?php echo htmlentities(implode(', ', $v->linguagem)); ?></td>
                             <?php endif; ?> 
                         <?php elseif(strpos($k,'@files')===0):  continue; ?>
                         <?php elseif($k==='occurrences'): ?>
                             <td>
                                 <?php foreach($v as $occ): $occ->rule = $occ->rule;?>
-                                    <?php echo mb_convert_encoding($occ->rule->description,"HTML-ENTITIES","UTF-8");?>,
-                                    <a href="<?php echo $occ->space->singleUrl?>"><?php echo mb_convert_encoding($occ->space->name,"HTML-ENTITIES","UTF-8");?></a>
+                                    <?php echo htmlentities($occ->rule->description);?>,
+                                    <a href="<?php echo $occ->space->singleUrl?>"><?php echo htmlentities($occ->space->name);?></a>
                                     <?php if($occ->rule->price): ?>
-                                        <?php echo mb_convert_encoding($occ->rule->price,"HTML-ENTITIES","UTF-8");?> <br>
+                                        <?php echo htmlentities($occ->rule->price);?> <br>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </td>
                         <?php elseif($k==='project'):?>
                             <?php if(is_object($v)): ?>
-                                <td><a href="<?php echo $v->singleUrl?>"><?php echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");?></a></td>
+                                <td><a href="<?php echo $v->singleUrl?>"><?php echo htmlentities($v->name);?></a></td>
                             <?php else: ?>
                                 <td></td>
                             <?php endif; ?>
                         <?php else:
                             if($k==='name' && !empty($item->singleUrl)){
-                                $v = '<a rel="noopener noreferrer" href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
+                                $v = '<a rel="noopener noreferrer" href="'.$item->singleUrl.'">'.htmlentities($v).'</a>';
                             }else if($k==='number' && !empty($item->singleUrl)){
-                                    $v = '<a rel="noopener noreferrer" href="'.$item->singleUrl.'">'.mb_convert_encoding($v,"HTML-ENTITIES","UTF-8").'</a>';
+                                    $v = '<a rel="noopener noreferrer" href="'.$item->singleUrl.'">'.htmlentities($v).'</a>';
                             }else if(in_array($k,['singleUrl','occurrencesReadable','spaces'])){
                                 continue;
                             }
@@ -711,9 +730,9 @@ class Html extends \MapasCulturais\ApiOutput{
                                 if(is_bool($v)){
                                     echo $v ? 'true' : 'false';
                                 }elseif(is_object($v) && $k==='type'){
-                                    echo mb_convert_encoding($v->name,"HTML-ENTITIES","UTF-8");
+                                    echo htmlentities($v->name);
                                 }elseif(is_string($v) || is_numeric($v)){
-                                    echo mb_convert_encoding($v,"HTML-ENTITIES","UTF-8");
+                                    echo htmlentities($v);
                                 }elseif(is_object($v) && isset($v->date)){
 									echo date_format(date_create($v->date),'Y-m-d H:i:s');
                                 }elseif(is_object($v) && isset($v->latitude) && isset($v->longitude) ){

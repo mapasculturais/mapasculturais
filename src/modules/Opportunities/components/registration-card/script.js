@@ -29,7 +29,12 @@ app.component('registration-card', {
         const text = Utils.getTexts('registration-card');
         return { text }
     },
-
+    data() {
+        return{
+            faixa: $MAPAS.EntitiesDescription.opportunity.registrationRanges,
+            proponent: $MAPAS.EntitiesDescription.opportunity.registrationProponentTypes.optionsOrder,
+        }
+    },
     computed: {
         status() {
             let status = '';

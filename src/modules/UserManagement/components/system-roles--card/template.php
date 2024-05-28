@@ -25,6 +25,14 @@ $this->import('
             </div>
         </section>
     </div>
+
+    <template #title>
+        <slot name="title" :entity="entity"> 
+            <mc-title tag="h2" :shortLength="100" :longLength="110">
+                {{ entity.name || entity.email || entity.number || entity.id }}
+            </mc-title>           
+        </slot>
+    </template>
     
     <template #entity-actions-left>
         <mc-confirm-button

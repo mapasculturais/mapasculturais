@@ -37,6 +37,7 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueStyle($vendor_group, 'floating-vue', '../node_modules/floating-vue/dist/style.css');
             $app->view->enqueueStyle($vendor_group, 'components-carousel', 'css/components-base/carousel.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet', '../node_modules/leaflet/dist/leaflet.css');
+            $app->view->enqueueStyle($vendor_group, 'slider', '../node_modules/@vueform/slider/themes/default.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster', '../node_modules/leaflet.markercluster/dist/MarkerCluster.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster.default', '../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css');
             $app->view->assetManager->publishFolder('js/vue-init/', 'js/vue-init/');

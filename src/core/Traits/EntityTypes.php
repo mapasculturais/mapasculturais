@@ -33,7 +33,7 @@ trait EntityTypes{
      * @return \MapasCulturais\Definitions\EntityType The Entity Type Definitions object
      */
     public function getType(){
-        return App::i()->getRegisteredEntityTypeById($this, (int) $this->_type);
+        return App::i()->getRegisteredEntityTypeById($this, $this->_type);
     }
 
     /**
