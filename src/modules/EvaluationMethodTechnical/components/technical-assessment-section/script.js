@@ -74,6 +74,22 @@ app.component('technical-assessment-section', {
             });
         },
         sendConfigs() {
+            let valid = true;
+            this.entity.criteria = this.entity.criteria.filter(criteria => {
+                let isValid = true;
+                if (!criteria.title.trim()) {
+                    isValid = false;
+                }
+                if (criteria.max === null || criteria.max === 0) {
+                    isValid = false;
+                }
+                if (!isValid) {
+                    valid = false;
+                }
+                return isValid;
+            });
+            
+            if (valid) {
             this.entity.save(3000);
         },
         editSections(sectionId) {
