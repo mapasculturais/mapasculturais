@@ -17,7 +17,8 @@ $this->import('
             <label>{{ criterion.title }}</label>
             <div class="field tecnical-evaluation-form__maxScore">
                 <label>Nota Máxima
-                    <input class="maxScore-input" v-model="formData.data[criterion.id]" min="0" step="0.1" type="number" @input="handleInput(sectionIndex, criterion.id)">
+                    <input class="maxScore-input" v-if="isEditable" v-model="formData.data[criterion.id]" min="0" step="0.1" type="number" @input="handleInput(sectionIndex, criterion.id)">
+                    <input class="maxScore-input" v-if="!isEditable" disabled min="0" step="0.1" type="number" :value="formData.data[criterion.id]" @input="handleInput(sectionIndex, criterion.id)">
                 </label>
             </div>
         </div>
@@ -28,17 +29,20 @@ $this->import('
 
     <div class="tecnical-evaluation-form__textarea">
         <h4 class="bold"><?php i::_e('Informe o Parecer técnico') ?></h4>
-        <textarea v-model="formData.data.obs"></textarea>
+        <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
+        <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
     </div>
 
     <div class="tecnical-evaluation-form__viability-radio-group" v-if="enableViability">
         <h4 class="bold"><?php i::_e('Exequibilidade orçamentária') ?></h4>
         <p><?php i::_e('Esta proposta está adequada ao orçamento apresentado? Os custos orçamentários estão compatíveis com os praticados no mercado?') ?></p>
         <label>
-            <input v-model="formData.data.viability" type="radio" name="confirmation" value="valid" /> <?php i::_e('Sim') ?>
+            <span v-if="isEditable"> <input v-model="formData.data.viability" type="radio" name="confirmation" value='valid' /> <?php i::_e('Sim') ?> </span>
+            <span v-if="!isEditable"> <input type="radio" name="confirmation" value="valid" disabled :checked="formData.data.viability == 'valid'"/> <?php i::_e('Sim') ?> </span>
         </label>
         <label>
-            <input v-model="formData.data.viability" type="radio" name="confirmation" value="invalid" /> <?php i::_e('Não') ?>
+            <span v-if="isEditable"> <input v-model="formData.data.viability" type="radio" name="confirmation" value='invalid' /> <?php i::_e('Não') ?> </span>
+            <span v-if="!isEditable"> <input type="radio" name="confirmation" value="invalid" disabled :checked="formData.data.viability == 'invalid'"/> <?php i::_e('Não') ?> </span>
         </label>
     </div>
     <div class="tecnical-evaluation-form__results">
