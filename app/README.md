@@ -134,6 +134,89 @@ E deve estar retornando algo como:
 
 ---
 
+## Validation
+A camada de validação é responsável por validar as entradas e saídas de dados
+
+Documentação do Validator: <https://symfony.com/doc/current/components/validator.html>
+
+Para organizar e validar esses dados nós utilizaremos o componente de validação atrelados a um DTO, cada propriedade terá suas regras e grupos
+
+<details>
+<summary>Como criar um novo DTO</summary>
+
+#### 1 - Data Transfer Object (DTO)
+Crie uma nova classe em `/app/DTO/`, por exemplo, `SealDTO.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\DTO;
+
+final class SealDTO
+{
+    ...   
+}
+```
+
+#### 2 - Propriedades
+Para cada propriedade do DTO, descreva as regras de validação e os grupos
+
+> [Lista completa](https://symfony.com/doc/current/reference/constraints.html) de regras do componente
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\DTO;
+
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Sequentially;
+use Symfony\Component\Validator\Constraints\Type;
+
+final class SealDTO
+{
+    #[Sequentially([new NotBlank(), new Type('string')], groups: ['post'])]
+    #[Type('string', groups: ['patch'])]
+    public mixed $name;
+
+    [...]   
+}
+```
+
+#### 3 - Validando
+
+Como mostrado no código acima a propriedade tem uma regra de validação e um grupo, esse grupo é importante para discernir o contexto de quais regras devem ser utilizadas
+> Por exemplo, no código acima temos uma regra em especial para o post, a propriedade _name_ é requerida.
+
+Agora como esse DTO será usado para validar algo?!
+
+Após a requisição ser enviada, o corpo será transformado de array para SealDTO, então iremos passar o objeto e o grupo para o validator, caso tenha alguma violação ela será retornada
+
+```php
+[...]
+
+$seal = $this->serializer->denormalize($data, SealDto::class);
+
+$validation = Validation::createValidatorBuilder()->enableAttributeMapping()->getValidator();
+
+$violations = $validation->validate($seal, groups: ['patch']);
+
+if (0 < count($violations)) {
+    throw new ValidatorException(violations: $violations);
+}
+
+[...] 
+```
+> O código acima normalmente estará no _Controller_ ou _Request_
+
+O objeto dessa validação é validar dados e não regra de négocio
+
+</details>
+
+---
+
 ## Repository
 
 A camada responsável pela comunicação entre nosso código e o banco de dados.
