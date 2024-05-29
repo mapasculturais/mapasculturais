@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+# start containers
+function up {
+  docker compose up -d $@
+}
+
+# stop containers
+function down {
+  docker compose down
+}
+
+# initialize application
+function init {
+  echo "Stating Initialization..."
+
+  echo "Copy .env file..."
+  cp -n .env.example .env
+
+  echo "Build docker images..."
+  docker compose build
+
+  echo "Install PHP dependencies..."
+  docker compose run roadrunner sh -c 'composer require spiral/roadrunner:${RR_VERSION}'
+
+  echo "Initialization completed!"
+}
+
+# login to container
+function login {
+  container=${1:-roadrunner}
+
+  echo "Attempt to login ${container} container..."
+  docker compose exec ${container} bash
+}
+
+# show container logs
+function logs {
+  docker compose logs $1
+}
+
+# execute RoadRunner command
+function rr {
+  docker compose exec roadrunner rr -c /etc/rr.yaml $1
+}
+
+subcommand=$1
+shift
+
+case $subcommand in
+up)
+  up $@
+  ;;
+down)
+  down
+  ;;
+init)
+  init
+  ;;
+login)
+  login $1
+  ;;
+logs)
+  logs $1
+  ;;
+rr)
+  rr $1
+  ;;
+*)
+  echo "help"
+  ;;
+esac

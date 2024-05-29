@@ -2,8 +2,6 @@
 
 require_once 'bootstrap.php';
 
-require 'Entity.inc.TestEntities.php';
-
 class EntityTests extends MapasCulturais_TestCase {
 
     function testValidations() {

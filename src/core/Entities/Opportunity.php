@@ -9,6 +9,9 @@ use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Definitions\Metadata as MetadataDefinition;
 /**
+ * 
+
+ * 
  * Opportunity
  *
  * @property-read int $id
@@ -475,7 +478,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     static function getClassName() {
-        return Opportunity::class;
+        return static::class;
     }
 
     function getExtraPermissionCacheUsers(){

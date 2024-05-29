@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/functions.php';
+// require __DIR__ . '/functions.php';
 
 define('MINUTE_IN_SECONDS', 60);
 define('HOUR_IN_SECONDS', MINUTE_IN_SECONDS * 60);
@@ -8,8 +8,8 @@ define('WEEK_IN_SECONDS', DAY_IN_SECONDS * 7);
 define('MONTH_IN_SECONDS', DAY_IN_SECONDS * 30);
 define('YEAR_IN_SECONDS', DAY_IN_SECONDS * 365 );
 
-define('PROTECTED_PATH', realpath(__DIR__ . '/..') . '/');
-define('PUBLIC_PATH', PROTECTED_PATH . 'public/');
+define('PROTECTED_PATH', realpath(__DIR__) . '/');
+define('PUBLIC_PATH', PROTECTED_PATH . '../public/');
 define('BASE_PATH', PUBLIC_PATH);
 define('APPLICATION_PATH', realpath(__DIR__) . '/');
 define('LANGUAGES_PATH', APPLICATION_PATH . 'translations/');
@@ -17,7 +17,7 @@ define('THEMES_PATH', APPLICATION_PATH . 'themes/');
 define('PLUGINS_PATH', APPLICATION_PATH . 'plugins/');
 define('MODULES_PATH', APPLICATION_PATH . 'modules/');
 define('VAR_PATH', PROTECTED_PATH . 'var/');
-define('CONFIG_PATH', PROTECTED_PATH . 'config/');
+define('CONFIG_PATH', PROTECTED_PATH . '../config/');
 
 define('DOCTRINE_PROXIES_PATH', VAR_PATH . 'DoctrineProxies/');
 define('PRIVATE_FILES_PATH', env('PRIVATE_FILES_PATH', VAR_PATH . 'private-files/'));
@@ -59,7 +59,6 @@ if (REDIS_SESSION) {
 ini_set( "session.gc_maxlifetime", SESSION_TIMEOUT );
 ini_set( "session.cookie_lifetime", SESSION_TIMEOUT );
 
-if(!isset($_SERVER['HTTP_HOST'])) {
-    $_SERVER['HTTP_HOST'] = 'localhost';
-}
-require_once PROTECTED_PATH . 'vendor/autoload.php';
+// if(!isset($_SERVER['HTTP_HOST'])) {
+//     $_SERVER['HTTP_HOST'] = 'localhost';
+// }

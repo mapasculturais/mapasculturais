@@ -6,6 +6,9 @@ use MapasCulturais\i;
 use MapasCulturais\Traits;
 
 /**
+ *
+ * @OA\Info(title="Mapas Culturais", version="0.1")
+ *
  * Site Controller
  *
  * By default this is the default controller and is registered with the id 'site'
@@ -133,6 +136,12 @@ class Site extends \MapasCulturais\Controller {
     }
 
     /**
+     * 
+     * @OA\Get(
+     *     path="/api/site/version",
+     *     @OA\Response(response="200", description="An example version")
+     * )
+     * 
      * @api {GET} /api/site/version Versão Mapas Culturais 
      * @apiDescription Obtem a versão do Mapas Culturais
      * @apiGroup SITE
@@ -174,6 +183,12 @@ class Site extends \MapasCulturais\Controller {
         $this->json($data);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/site/info",
+     *     @OA\Response(response="200", description="An example info")
+     * )
+     */
     function API_info(){
         $app = App::i();
         

@@ -282,6 +282,12 @@ class Opportunity extends EntityController {
 
     }
 
+    /**
+     * @api {GET} /api/opportunity/findByUserApprovedRegistration Recuperar descrição da entidade Espaço
+     * @apiUse APIdescribe
+     * @apiGroup SPACE
+     * @apiName GETdescribe
+     */
 
     function API_findByUserApprovedRegistration(){
         ini_set('max_execution_time', 0);

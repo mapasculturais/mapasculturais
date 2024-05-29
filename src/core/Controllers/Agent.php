@@ -117,7 +117,6 @@ class Agent extends EntityController {
      * @apiGroup AGENT
      * @apiName setAsUserProfile
      * @apiPermission user
-     * @apiVersion 4.0.0
     */
     function ALL_setAsUserProfile(){
         $this->requireAuthentication();
@@ -224,7 +223,6 @@ class Agent extends EntityController {
      * @apiParam {String} nome do "role" a ser removida de usuário. 
      * @apiParam {Number} [subsiteId] identificador do subsite.
      * @apiPermission user
-     * @apiVersion 4.0.0
      * 
      * @deprecated 6.0.0
     */
