@@ -66,6 +66,7 @@ $this->import('
                         <entity-field :entity="entity" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type" classes="header-opp__field--name col-12"></entity-field>
                     </div>
                     <entity-field :entity="entity" classes="header-opp__field--name col-12" prop="shortDescription"></entity-field>
+                    <entity-field :entity="entity" classes="header-opp__field--name col-12" prop="longDescription"></entity-field>
                     <entity-files-list :entity="entity" classes="content-fileList col-12" group="downloads" title="<?php i::esc_attr_e('Adicionar arquivos'); ?>" editable></entity-files-list>
                     <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar links'); ?>" editable></entity-links>
                     <entity-gallery-video :entity="entity" classes="col-12" editable></entity-gallery-video>

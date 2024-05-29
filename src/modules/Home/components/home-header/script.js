@@ -26,7 +26,7 @@ app.component('home-header', {
     },
     computed: {
         background(){
-            if(this.subsite && this.subsite.files.header){
+            if(this.subsite?.files?.header){
                 return this.subsite.files.header.url;
             }
             return $MAPAS.config.homeHeader.background;
