@@ -40,6 +40,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
+- resolve aplicar filtros para pesquisa de eventos
+
+## [7.3.51] - 2024-04-19
+### Melhorias
+- Adiciona o campo Comunidade tradicional para ser possível gerar gráficos no módulo de relatórios
+
+## [7.3.50] - 2024-04-18
+### Correçoes
+- Corrige erro ao pegar resumo das avaliações de uma oportunidade sem avaliações
+- Insere opção de alterar a descrição longa da oportunidade na tela de edição
 
 ## [7.3.49] - 2024-04-16
 ### Correçoes

@@ -463,6 +463,7 @@ class Subsite extends \MapasCulturais\Entity
     public function jsonSerialize(): array
     {
         $result = parent::jsonSerialize();
+        $result['owner'] = $result['owner']->simplify('id,name,avatar');
         $result['files'] = $this->files;
 
         return $result;
