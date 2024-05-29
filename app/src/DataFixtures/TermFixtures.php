@@ -24,6 +24,8 @@ class TermFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $this->deleteAllDataFromTable(Term::class);
+
         $termsCollections = (require dirname(__DIR__, 3).self::TERMS) ?? [];
         $terms = $this->mountTerms($termsCollections);
 

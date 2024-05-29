@@ -16,4 +16,21 @@ abstract class Fixture extends AbstractFixture implements FixtureInterface
         $owner = $reflection->getProperty($property);
         $owner->setValue($obj, $value);
     }
+
+    public function deleteAllDataFromTable(string $entityName, bool $resetSequence = true): void
+    {
+        $entityManager = $this->referenceRepository->getManager();
+        $connection = $entityManager->getConnection();
+        $tableName = $entityManager->getClassMetadata($entityName)->getTableName();
+
+        if (true === $resetSequence) {
+            $statement = $connection->prepare("
+                ALTER SEQUENCE {$tableName}_id_seq RESTART WITH 1;
+            ");
+            $statement->execute();
+        }
+
+        $statement = $connection->prepare("DELETE FROM {$tableName}");
+        $statement->execute();
+    }
 }

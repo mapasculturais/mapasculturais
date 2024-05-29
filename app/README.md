@@ -386,3 +386,15 @@ php app/bin/console debug:router
 
 > Podemos usar as flags --show-actions e --show-controllers
 </details>
+
+<details>
+<summary>DOCTRINE</summary>
+
+### Doctrine
+Para listas todos os comandos disponiveis para gerenciamento do banco de dados através do doctrine basta entrar no container da aplicação e executar
+```
+php app/bin/doctrine
+```
+
+</details>
+
