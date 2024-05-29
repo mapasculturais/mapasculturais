@@ -1,5 +1,5 @@
 <?php
-/*
+
 require_once __DIR__.'/bootstrap.php';
 
 use MapasCulturais\App;
@@ -20,6 +20,7 @@ class CreateEntitiesForDoctrineProxyTest extends MapasCulturais_TestCase{
 
         $user = new User;
         $user->authUid = 'fakes';
+        $user->authProvider = 3;
         $user->email = 'user@doamain.com';
         $user->save(true);
 
@@ -91,4 +92,3 @@ class CreateEntitiesForDoctrineProxyTest extends MapasCulturais_TestCase{
         }
     }
 }
-*/

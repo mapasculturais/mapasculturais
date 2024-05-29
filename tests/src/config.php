@@ -1,14 +1,17 @@
 <?php
-use \Slim\Log;
 
-$config = include 'conf-base.php';
+use MapasCulturais\App;
+
+
+$config = require __DIR__ . "/../../src/conf/config.php";
+
 return array_merge($config,
     array(
-        'themes.active' => 'SpCultura',
+        'themes.active' => '\MapasCulturais\Themes\BaseV2',
         'base.url' => 'http://localhost:8888/',
         'site.url' => 'http://localhost:8888/',
         'app.log.translations' => false,
-        'slim.log.level' => Log::DEBUG,
+        'slim.log.level' => 3,
         'slim.log.enabled' => false,
 //        'app.log.query' => true,
         'slim.debug' => false,
@@ -24,14 +27,6 @@ return array_merge($config,
         
         'doctrine.isDev' => false,
 
-        'doctrine.database' => array(
-            'dbname'    => 'mapas',
-            'user'      => 'mapas',
-            'password'  => 'mapas',
-            'host'      => 'db',
-
-        ),
-
         'userIds' => array(
             'superAdmin' => array(1,2),
 //            'admin' => 2,
@@ -44,9 +39,10 @@ return array_merge($config,
         ),
 
         // disable cache
+        'db.host' => 'db',
 
         'app.usePermissionsCache' => false,
-        'app.chace' => new \Doctrine\Common\Cache\ArrayCache()
+        'app.chace' => new \Symfony\Component\Cache\Adapter\ArrayAdapter()
 //        'app.cache' => function_exists('apc_store') ? new \Doctrine\Common\Cache\ApcCache() : new \Doctrine\Common\Cache\ArrayCache(),
     )
 );

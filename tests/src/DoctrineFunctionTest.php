@@ -49,7 +49,7 @@ class DoctrineFunctionTest extends MapasCulturais_TestCase{
             'date_to' => $date_to
         ));
         $result = $query->getResult();
-        var_dump($result);
+        // var_dump($result);
     }
 
 }
