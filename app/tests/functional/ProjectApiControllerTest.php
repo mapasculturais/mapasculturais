@@ -11,21 +11,23 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProjectApiControllerTest extends AbstractTestCase
 {
+    private const BASE_URL = '/api/v2/projects';
+
     public function testGetProjectsShouldRetrieveAList(): void
     {
-        $response = $this->client->request('GET', '/api/v2/projects');
+        $response = $this->client->request(Request::METHOD_GET, self::BASE_URL);
         $content = json_decode($response->getContent());
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertIsArray($content);
     }
 
     public function testGetOneProjectShouldRetrieveAObject(): void
     {
-        $response = $this->client->request('GET', '/api/v2/projects/1');
+        $response = $this->client->request(Request::METHOD_GET, self::BASE_URL.'/1');
         $content = json_decode($response->getContent());
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertIsObject($content);
     }
 
@@ -37,12 +39,11 @@ class ProjectApiControllerTest extends AbstractTestCase
             'type' => 1,
         ];
 
-        $response = $this->client->request('POST', '/api/v2/projects', [
-            'headers' => ['Content-Type' => 'application/json'],
+        $response = $this->client->request(Request::METHOD_POST, self::BASE_URL, [
             'body' => json_encode($data),
         ]);
 
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
 
         $content = json_decode($response->getContent(), true);
 
@@ -51,25 +52,23 @@ class ProjectApiControllerTest extends AbstractTestCase
         $this->assertEquals($data['type'], $content['type']);
     }
 
-//    public function testDeleteProjectShouldReturnSuccess(): void
-//    {
-//        $projectId = 1;
-//
-//        $response = $this->client->request('DELETE', '/api/v2/projects/'.$projectId);
-//
-//        $this->assertEquals(204, $response->getStatusCode());
-//
-//        $response = $this->client->request('GET', '/api/v2/projects/'.$projectId);
-//        $this->assertEquals(404, $response->getStatusCode());
-//    }
+    public function testDeleteProjectShouldReturnSuccess(): void
+    {
+        $this->markTestSkipped();
+        $response = $this->client->request(Request::METHOD_DELETE, self::BASE_URL.'/1');
+
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+
+        $response = $this->client->request(Request::METHOD_GET, self::BASE_URL.'/1');
+        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
 
     public function testUpdateProjectShouldUpdateAProject(): void
     {
         $requestBody = ProjectTestFixtures::partial();
-        $url = sprintf('/api/v2/projects/%s', ProjectFixtures::PROJECT_ID_2);
+        $url = sprintf(self::BASE_URL.'/%s', ProjectFixtures::PROJECT_ID_2);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'headers' => ['Content-Type' => 'application/json'],
             'body' => json_encode($requestBody),
         ]);
 
@@ -84,10 +83,9 @@ class ProjectApiControllerTest extends AbstractTestCase
     public function testUpdateNotFoundedProjectResource(): void
     {
         $requestData = json_encode(ProjectTestFixtures::partial());
-        $url = sprintf('/api/v2/projects/%s', 1024);
+        $url = sprintf(self::BASE_URL.'/%s', 1024);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'headers' => ['Content-Type' => 'application/json'],
             'body' => $requestData,
         ]);
 
