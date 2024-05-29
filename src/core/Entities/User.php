@@ -379,6 +379,11 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         return $ids;
     }
 
+    public function setAuthUid(string $authUid): void
+    {
+        $this->authUid = $authUid;
+    }
+
     public function getRegistrationsByStatus($status = 0){
         
         $app = App::i();
