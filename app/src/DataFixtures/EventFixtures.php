@@ -6,7 +6,6 @@ namespace App\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -114,23 +113,22 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             TermFixtures::class,
+            AgentFixtures::class,
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
-        $manager = $this->referenceRepository->getManager();
+        $this->deleteAllDataFromTable(Event::class);
 
-        $user = $manager->getRepository(Agent::class)->find(1);
+        $user = $this->getReference(AgentFixtures::AGENT_ID_PREFIX.'-'.AgentFixtures::AGENT_ID_1);
 
         foreach (self::EVENTS as $eventData) {
             $event = $this->serializer->denormalize($eventData, Event::class);
-            $manager->persist($event);
-            $this->setProperty($event, 'owner', $user);
             $event->setTerms($eventData['terms']);
+            $this->setProperty($event, 'owner', $user);
+            
             $this->setReference(sprintf('%s-%s', self::EVENT_ID_PREFIX, $eventData['id']), $event);
-            $event->saveMetadata();
-            $event->saveTerms();
             $manager->persist($event);
         }
 

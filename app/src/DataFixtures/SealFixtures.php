@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Enum\EntityStatusEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Seal;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -15,6 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SealFixtures extends Fixture implements DependentFixtureInterface
 {
     public const SEAL_ID_PREFIX = 'seal';
+    public const SEAL_ID_1 = 1;
     public const SEAL_ID_2 = 2;
     public const SEAL_ID_3 = 3;
     public const SEAL_ID_4 = 4;
@@ -23,12 +24,20 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
 
     public const SEALS = [
         [
+            'id' => self::SEAL_ID_1,
+            'name' => 'Selo Mapas',
+            'shortDescription' => '',
+            'longDescription' => '',
+            'validPeriod' => 9000,
+            'status' => EntityStatusEnum::DISABLED,
+        ],
+        [
             'id' => self::SEAL_ID_2,
             'name' => 'Selo Feitoza',
             'shortDescription' => 'descrição curta do selo feitoza',
             'longDescription' => 'descrição longa do selo feitoza',
-            'validPeriod' => 12,
-            'status' => 1,
+            'validPeriod' => 24,
+            'status' => EntityStatusEnum::DISABLED,
         ],
         [
             'id' => self::SEAL_ID_3,
@@ -36,15 +45,15 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
             'shortDescription' => 'descrição curta do selo lima',
             'longDescription' => 'descrição longa do selo lima',
             'validPeriod' => 12,
-            'status' => 1,
+            'status' => EntityStatusEnum::ENABLED,
         ],
         [
             'id' => self::SEAL_ID_4,
             'name' => 'Selo Moura',
             'shortDescription' => 'descrição curta do selo moura',
             'longDescription' => 'descrição longa do selo moura',
-            'validPeriod' => 12,
-            'status' => 1,
+            'validPeriod' => 18,
+            'status' => EntityStatusEnum::ENABLED,
         ],
         [
             'id' => self::SEAL_ID_5,
@@ -52,15 +61,15 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
             'shortDescription' => 'descrição curta do selo camilo',
             'longDescription' => 'descrição longa do selo camilo',
             'validPeriod' => 12,
-            'status' => 1,
+            'status' => EntityStatusEnum::ENABLED,
         ],
         [
             'id' => self::SEAL_ID_6,
             'name' => 'Selo Soares',
             'shortDescription' => 'descrição curta do selo soares',
             'longDescription' => 'descrição longa do selo soares',
-            'validPeriod' => 12,
-            'status' => 1,
+            'validPeriod' => 6,
+            'status' => EntityStatusEnum::ENABLED,
         ],
     ];
 
@@ -80,11 +89,12 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        $manager = $this->referenceRepository->getManager();
+        $this->deleteAllDataFromTable(Seal::class);
 
-        $owner = $manager->getRepository(Agent::class)->find(1);
+        $owner = $this->getReference(AgentFixtures::AGENT_ID_PREFIX.'-'.AgentFixtures::AGENT_ID_1);
 
         foreach (self::SEALS as $sealData) {
+            $sealData['status'] = $sealData['status']->getValue();
             $seal = $this->serializer->denormalize($sealData, Seal::class);
             $this->setProperty($seal, 'owner', $owner);
             $this->setReference(sprintf('%s-%s', self::SEAL_ID_PREFIX, $sealData['id']), $seal);
