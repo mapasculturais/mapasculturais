@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\fixtures;
 
-final class EventTestFixtures implements TestFixtures
+final class EventTestFixtures extends AbstractTestFixtures implements TestFixtures
 {
-    public static function partial(): array
+    public static function partial(): self
     {
-        return [
+        return new self([
             'name' => 'Event Test',
             'shortDescription' => 'Event Test Description',
             'classificacaoEtaria' => 'livre',
@@ -16,7 +16,7 @@ final class EventTestFixtures implements TestFixtures
                 'tag' => ['teste'],
                 'linguagem' => ['Artes Circenses'],
             ],
-        ];
+        ]);
     }
 
     public static function complete(): array

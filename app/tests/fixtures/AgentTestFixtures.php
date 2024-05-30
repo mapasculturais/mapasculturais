@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\fixtures;
 
-final class AgentTestFixtures implements TestFixtures
+final class AgentTestFixtures extends AbstractTestFixtures implements TestFixtures
 {
-    public static function partial(): array
+    public static function partial(): self
     {
-        return [
+        return new self([
             'name' => 'Agent Test',
             'shortDescription' => 'A test agent.',
             'longDescription' => 'A test agent for the Mapas Culturais platform.',
@@ -19,12 +19,12 @@ final class AgentTestFixtures implements TestFixtures
             'escolaridade' => 'Superior Completo',
             'instagram' => 'agent',
             'linkedin' => 'agent',
-            'twitter' => 'ageny',
+            'twitter' => 'agent',
             'vimeo' => 'agent',
             'youtube' => 'agent',
             'spotify' => 'agent',
             'pinterest' => 'agent',
-        ];
+        ]);
     }
 
     public static function complete(): array

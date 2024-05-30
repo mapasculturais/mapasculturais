@@ -6,7 +6,7 @@ namespace App\Tests\fixtures;
 
 interface TestFixtures
 {
-    public static function partial(): array;
+    public static function partial(): self;
 
     public static function complete(): array;
 }

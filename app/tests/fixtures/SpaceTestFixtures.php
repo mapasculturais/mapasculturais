@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\fixtures;
 
-final class SpaceTestFixtures implements TestFixtures
+final class SpaceTestFixtures extends AbstractTestFixtures implements TestFixtures
 {
-    public static function partial(): array
+    public static function partial(): self
     {
-        return [
+        return new self([
             'location' => [
                 'latitude' => '10',
                 'longitude' => '10',
@@ -36,7 +36,7 @@ final class SpaceTestFixtures implements TestFixtures
             'En_Municipio' => 'Test',
             'En_Estado' => 'CE',
             'horario' => '7:00 - 22:00',
-        ];
+        ]);
     }
 
     public static function complete(): array

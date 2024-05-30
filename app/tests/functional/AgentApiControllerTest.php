@@ -53,27 +53,19 @@ class AgentApiControllerTest extends AbstractTestCase
     public function testCreateAgentShouldCreateAnAgent(): void
     {
         $this->markTestSkipped();
-        $data = [
-            'name' => 'Fulano',
-            'shortDescription' => 'o brabro do 085',
-            'terms' => [
-                'area' => ['Arqueologia'],
-            ],
-            'type' => 1,
-        ];
+        $agentTestFixtures = AgentTestFixtures::partial();
 
         $response = $this->client->request(Request::METHOD_POST, self::BASE_URL, [
-            'body' => json_encode($data),
+            'body' => $agentTestFixtures->json(),
         ]);
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
 
         $content = json_decode($response->getContent(), true);
 
-        $this->assertEquals($data['name'], $content['name']);
-        $this->assertEquals($data['shortDescription'], $content['shortDescription']);
-        $this->assertEquals($data['terms'], $content['terms']);
-        $this->assertEquals($data['type'], $content['type']);
+        foreach ($agentTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
+        }
     }
 
     public function testDeleteAgentShouldReturnSuccess(): void
@@ -89,29 +81,30 @@ class AgentApiControllerTest extends AbstractTestCase
 
     public function testUpdate(): void
     {
-        $this->markTestSkipped();
-        $requestBody = AgentTestFixtures::partial();
+        $agentTestFixtures = AgentTestFixtures::partial();
+
         $url = sprintf(self::BASE_URL.'/%s', AgentFixtures::AGENT_ID_4);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => json_encode($requestBody),
+            'body' => $agentTestFixtures->json(),
         ]);
 
         $content = json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertIsArray($content);
-        foreach (array_keys($requestBody) as $key) {
-            $this->assertEquals($requestBody[$key], $content[$key]);
+        foreach ($agentTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
         }
     }
 
     public function testUpdateNotFoundedResource(): void
     {
-        $requestData = json_encode(AgentTestFixtures::partial());
+        $agentTestFixtures = AgentTestFixtures::partial();
+
         $url = sprintf(self::BASE_URL.'/%s', 1969);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => $requestData,
+            'body' => $agentTestFixtures->json(),
         ]);
 
         $error = [

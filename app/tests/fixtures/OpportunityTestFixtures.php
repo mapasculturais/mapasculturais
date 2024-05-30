@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\fixtures;
 
-final class OpportunityTestFixtures implements TestFixtures
+final class OpportunityTestFixtures extends AbstractTestFixtures implements TestFixtures
 {
-    public static function partial(): array
+    public static function partial(): self
     {
-        return [
+        return new self([
             'id' => 1,
             '_type' => 10,
             'name' => 'Opportunity Test',
@@ -16,7 +16,7 @@ final class OpportunityTestFixtures implements TestFixtures
                 'tag' => ['teste'],
                 'linguagem' => ['Artes Visuais'],
             ],
-        ];
+        ]);
     }
 
     public static function complete(): array

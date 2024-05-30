@@ -34,17 +34,17 @@ class SealApiControllerTest extends AbstractTestCase
     public function testCreateSealShouldReturnCreatedSeal(): void
     {
         $this->markTestSkipped();
-        $requestBody = SealTestFixtures::partial();
+        $sealTestFixtures = SealTestFixtures::partial();
 
         $response = $this->client->request(Request::METHOD_POST, self::BASE_URL, [
-            'body' => json_encode($requestBody),
+            'body' => $sealTestFixtures->json(),
         ]);
 
         $content = json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertIsArray($content);
-        foreach (array_keys($requestBody) as $key) {
-            $this->assertEquals($requestBody[$key], $content[$key]);
+        foreach ($sealTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
         }
     }
 
@@ -63,29 +63,28 @@ class SealApiControllerTest extends AbstractTestCase
     public function testUpdate(): void
     {
         $this->markTestSkipped();
-        $requestBody = SealTestFixtures::partial();
+        $sealTestFixtures = SealTestFixtures::partial();
         $url = sprintf(self::BASE_URL.'/%s', SealFixtures::SEAL_ID_3);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => json_encode($requestBody),
+            'body' => $sealTestFixtures->json(),
         ]);
 
         $content = json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertIsArray($content);
-        foreach (array_keys($requestBody) as $key) {
-            $this->assertEquals($requestBody[$key], $content[$key]);
+        foreach ($sealTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
         }
     }
 
     public function testUpdateNotFoundedResource(): void
     {
-        $this->markTestSkipped();
-        $requestData = json_encode(SealTestFixtures::partial());
+        $sealTestFixtures = SealTestFixtures::partial();
         $url = sprintf(self::BASE_URL.'/%s', 80);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => $requestData,
+            'body' => $sealTestFixtures->json(),
         ]);
 
         $error = [

@@ -33,23 +33,19 @@ class ProjectApiControllerTest extends AbstractTestCase
 
     public function testCreateProjectShouldCreateAProject(): void
     {
-        $data = [
-            'name' => 'PHP com Rapadura',
-            'shortDescription' => 'php com rapadura',
-            'type' => 1,
-        ];
+        $projectTestFixtures = ProjectTestFixtures::partial();
 
         $response = $this->client->request(Request::METHOD_POST, self::BASE_URL, [
-            'body' => json_encode($data),
+            'body' => $projectTestFixtures->json(),
         ]);
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
 
         $content = json_decode($response->getContent(), true);
 
-        $this->assertEquals($data['name'], $content['name']);
-        $this->assertEquals($data['shortDescription'], $content['shortDescription']);
-        $this->assertEquals($data['type'], $content['type']);
+        foreach ($projectTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
+        }
     }
 
     public function testDeleteProjectShouldReturnSuccess(): void
@@ -65,28 +61,28 @@ class ProjectApiControllerTest extends AbstractTestCase
 
     public function testUpdateProjectShouldUpdateAProject(): void
     {
-        $requestBody = ProjectTestFixtures::partial();
+        $projectTestFixtures = ProjectTestFixtures::partial();
         $url = sprintf(self::BASE_URL.'/%s', ProjectFixtures::PROJECT_ID_2);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => json_encode($requestBody),
+            'body' => $projectTestFixtures->json(),
         ]);
 
         $content = json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertIsArray($content);
-        foreach ($requestBody as $key => $value) {
+        foreach ($projectTestFixtures->toArray() as $key => $value) {
             $this->assertEquals($value, $content[$key]);
         }
     }
 
     public function testUpdateNotFoundedProjectResource(): void
     {
-        $requestData = json_encode(ProjectTestFixtures::partial());
+        $projectTestFixtures = ProjectTestFixtures::partial();
         $url = sprintf(self::BASE_URL.'/%s', 1024);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => $requestData,
+            'body' => $projectTestFixtures->json(),
         ]);
 
         $error = [

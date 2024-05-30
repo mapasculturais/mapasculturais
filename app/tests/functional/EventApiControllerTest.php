@@ -44,15 +44,10 @@ class EventApiControllerTest extends AbstractTestCase
     public function testPostEventShouldCreateANewEvent(): void
     {
         $this->markTestSkipped();
+        $eventTestFixtures = EventTestFixtures::partial();
+
         $response = $this->client->request(Request::METHOD_POST, self::BASE_URL, [
-            'json' => [
-                'name' => 'Event Test',
-                'shortDescription' => 'Event Test Description',
-                'classificacaoEtaria' => 'livre',
-                'terms' => [
-                    'linguagem' => 'Artes Circenses',
-                ],
-            ],
+            'body' => $eventTestFixtures->json(),
         ]);
         $content = json_decode($response->getContent());
 
@@ -72,29 +67,29 @@ class EventApiControllerTest extends AbstractTestCase
 
     public function testUpdateEventShouldUpdateAnEvent(): void
     {
-        $this->markTestSkipped();
-        $requestBody = EventTestFixtures::partial();
+        $eventTestFixtures = EventTestFixtures::partial();
+
         $url = sprintf(self::BASE_URL.'/%s', EventFixtures::EVENT_ID_2);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => json_encode($requestBody),
+            'body' => $eventTestFixtures->json(),
         ]);
 
         $content = json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertIsArray($content);
-        foreach (array_keys($requestBody) as $key) {
-            $this->assertEquals($requestBody[$key], $content[$key]);
+        foreach ($eventTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
         }
     }
 
     public function testUpdateNotFoundedEventResource(): void
     {
-        $requestData = json_encode(EventTestFixtures::partial());
+        $eventTestFixtures = EventTestFixtures::partial();
         $url = sprintf(self::BASE_URL.'/%s', 1024);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => $requestData,
+            'body' => $eventTestFixtures->json(),
         ]);
 
         $error = [

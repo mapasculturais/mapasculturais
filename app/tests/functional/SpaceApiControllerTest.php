@@ -34,25 +34,18 @@ class SpaceApiControllerTest extends AbstractTestCase
     public function testCreateSpaceShouldReturnCreatedSpace(): void
     {
         $this->markTestSkipped();
-        $requestData = json_encode([
-            'name' => 'Novo Espaço',
-            'location' => [
-                'latitude' => '45.4215',
-                'longitude' => '-75.6981',
-            ],
-            'public' => true,
-            'shortDescription' => 'Uma breve descrição do espaço.',
-            'longDescription' => 'Descrição longa e detalhada do espaço.',
-        ]);
+        $spaceTestFixtures = SpaceTestFixtures::partial();
 
         $response = $this->client->request(Request::METHOD_POST, self::BASE_URL, [
-            'body' => $requestData,
+            'body' => $spaceTestFixtures->json(),
         ]);
 
         $content = json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertIsArray($content);
-        $this->assertEquals('Novo Espaço', $content['name']);
+        foreach ($spaceTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
+        }
     }
 
     public function testDeleteSpaceShouldReturnSuccess(): void
@@ -68,29 +61,28 @@ class SpaceApiControllerTest extends AbstractTestCase
 
     public function testUpdate(): void
     {
-        $this->markTestSkipped();
-        $requestBody = SpaceTestFixtures::partial();
+        $spaceTestFixtures = SpaceTestFixtures::partial();
         $url = sprintf(self::BASE_URL.'/%s', SpaceFixtures::SPACE_ID_3);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => json_encode($requestBody),
+            'body' => $spaceTestFixtures->json(),
         ]);
 
         $content = json_decode($response->getContent(), true);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertIsArray($content);
-        foreach (array_keys($requestBody) as $key) {
-            $this->assertEquals($requestBody[$key], $content[$key]);
+        foreach ($spaceTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
         }
     }
 
     public function testUpdateNotFoundedResource(): void
     {
-        $requestData = json_encode(SpaceTestFixtures::partial());
+        $spaceTestFixtures = SpaceTestFixtures::partial();
         $url = sprintf(self::BASE_URL.'/%s', 1024);
 
         $response = $this->client->request(Request::METHOD_PATCH, $url, [
-            'body' => $requestData,
+            'body' => $spaceTestFixtures->json(),
         ]);
 
         $error = [
