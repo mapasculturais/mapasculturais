@@ -6,10 +6,22 @@ on:
       - develop
     types:
       - closed
+      - ready_for_review
+      - review_requested
 
   workflow_dispatch:
 
 jobs:
+  CODE_STYLE:
+    name: PHP-CS-Fixer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run PHP-CS-Fixer
+        uses: erkenes/php-cs-fixer-action@main
+        with:
+          args: '--dry-run --diff -vvv'
+
   BUILD:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest

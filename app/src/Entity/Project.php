@@ -9,8 +9,8 @@ use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Entities\Agent;
-use MapasCulturais\Entities\Subsite;
 use MapasCulturais\Entities\Event;
+use MapasCulturais\Entities\Subsite;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'project')]
@@ -100,7 +100,6 @@ class Project
     {
         $this->status = EntityStatusEnum::ENABLED->getValue();
     }
-
 
     public function getId(): int
     {

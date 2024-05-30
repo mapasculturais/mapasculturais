@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EventApiControllerTest extends AbstractTestCase
 {
     private const BASE_URL = '/api/v2/events';
-    
+
     public function testGetEventTypesShouldRetrieveAList(): void
     {
         $response = $this->client->request(Request::METHOD_GET, self::BASE_URL.'/types');

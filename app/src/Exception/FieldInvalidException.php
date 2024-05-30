@@ -15,5 +15,3 @@ class FieldInvalidException extends InvalidRequestException
         parent::__construct($message);
     }
 }
-
-

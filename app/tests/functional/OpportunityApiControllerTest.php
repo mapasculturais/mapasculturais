@@ -7,7 +7,6 @@ namespace App\Tests;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 class OpportunityApiControllerTest extends AbstractTestCase
 {
     private const BASE_URL = '/api/v2/opportunities';

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Enum\EntityStatusEnum;
-use App\Entity\Agent;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
