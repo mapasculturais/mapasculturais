@@ -1,25 +1,28 @@
-name: End-to-end tests
-on: push
+name: cypress-ci
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+      - 'feature/upgrade-cypress'
+  push:
+    branches:
+      - 'main'
+      - 'feature/upgrade-cypress'
 jobs:
   cypress-run:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Git Checkout
         uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-      
-      - uses: actions/upload-artifact@v4
-        # add the line below to store screenshots only on failures
+
+      - name: Instala as dependências, cria configs e executa testes
+        run: cd src/ && npm install && npx cypress run --spec "cypress/e2e/**/*.js"
+
+      - name: Cypress Screenshots
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
             name: cypress-screenshots
             path: cypress/screenshots
-            if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
-      - uses: actions/upload-artifact@v4
-        with:
-            name: cypress-videos
-            path: cypress/videos
-            if-no-files-found: ignore # 'warn' or 'error' are also available, defaults to `warn`
+            if-no-files-found: ignore
