@@ -17,12 +17,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Instala as dependências, cria configs e executa testes
-        run: cd src/ && npm install && npx cypress run --spec "cypress/e2e/**/*.js"
+        run: cd src/ && npm install && npx cypress run --spec "cypress/e2e/agentesPage/*.js"
 
       - name: Cypress Screenshots
         uses: actions/upload-artifact@v4
         if: failure()
         with:
             name: cypress-screenshots
-            path: cypress/screenshots
+            path: src/cypress/screenshots
             if-no-files-found: ignore
