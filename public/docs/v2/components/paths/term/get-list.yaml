@@ -1,0 +1,14 @@
+tags:
+  - Termos
+summary: Recupera a lista de termos
+description: Recupera a lista de termos
+responses:
+  '200':
+    description: Um array com todos os termos
+    content:
+      application/json:
+        schema:
+          type: array
+          items:
+            allOf:
+              - $ref: '../../schemas/term.yaml'

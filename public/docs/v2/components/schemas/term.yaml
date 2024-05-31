@@ -1,0 +1,38 @@
+type: object
+properties:
+  "@entityType":
+    type: string
+    example: "term"
+    description: O tipo de entidade
+  id:
+    type: integer
+    example: 1819
+    description: Um id numérico que representa o termo
+  taxonomy:
+    type: string
+    example: "area"
+    description: A taxonomia do termo
+  term:
+    type: string
+    example: "Artes Circenses"
+    description: O termo
+  description:
+    type: string
+    example: "Área de Atuação"
+    description: A descrição do termo
+  controllerId:
+    type: string
+    example: "term"
+    description: ID do controlador do termo
+  deleteUrl:
+    type: string
+    example: "http://localhost/term/apaga/1819/"
+    description: URL para deletar o termo
+  editUrl:
+    type: string
+    example: "http://localhost/term/edita/1819/"
+    description: URL para editar o termo
+  singleUrl:
+    type: string
+    example: "http://localhost/term/acesso/1819/"
+    description: URL do termo

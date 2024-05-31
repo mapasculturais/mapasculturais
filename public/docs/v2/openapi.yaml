@@ -32,6 +32,8 @@ tags:
     description: Rotas relacionadas aos projetos
   - name: Selos
     description: Rotas relacionadas aos selos
+  - name: Termos
+    description: Rotas relacionadas aos termos
 paths:
   /agents:
     $ref: './components/paths/agent/group-get-post.yaml'
@@ -65,6 +67,10 @@ paths:
     $ref: './components/paths/space/group-param-id.yaml'
   /spaces/{id}/events:
     $ref: './components/paths/space/get-events-by-spaces.yaml'
+  /terms:
+    $ref: './components/paths/term/group-get-post.yaml'
+  /terms/{id}:
+    $ref: './components/paths/term/group-param-id.yaml'
 components:
   schemas:
     Agent:
@@ -81,3 +87,5 @@ components:
       $ref: './components/schemas/seal.yaml'
     Space:
       $ref: './components/schemas/space.yaml'
+    Term:
+      $ref: './components/schemas/term.yaml'
