@@ -5,10 +5,7 @@ on:
     branches:
       - 'main'
       - 'feature/upgrade-cypress'
-  push:
-    branches:
-      - 'main'
-      - 'feature/upgrade-cypress'
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
