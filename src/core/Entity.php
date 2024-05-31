@@ -1243,12 +1243,12 @@ abstract class Entity implements \JsonSerializable{
         
         $hook_prefix = $this->getHookPrefix();
 
-        $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after");
-
-        if ($this->usesPermissionCache()) {
-            $this->createPermissionsCacheForUsers([$this->ownerUser]);
-            $app->enqueueEntityToPCacheRecreation($this);
-        }
+//        $app->applyHookBoundTo($this, "{$hook_prefix}.insert:after");
+//
+//        if ($this->usesPermissionCache()) {
+//            $this->createPermissionsCacheForUsers([$this->ownerUser]);
+//            $app->enqueueEntityToPCacheRecreation($this);
+//        }
     }
 
     /**

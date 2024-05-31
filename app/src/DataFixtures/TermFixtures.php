@@ -6,21 +6,11 @@ namespace App\DataFixtures;
 
 use Doctrine\Persistence\ObjectManager;
 use MapasCulturais\Entities\Term;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class TermFixtures extends Fixture
 {
     public const TERM_ID_PREFIX = 'term';
     public const TERMS = '/src/conf/taxonomies.php';
-
-    private SerializerInterface $serializer;
-
-    public function __construct()
-    {
-        $this->serializer = new Serializer([new ObjectNormalizer()]);
-    }
 
     public function load(ObjectManager $manager): void
     {
@@ -30,7 +20,7 @@ class TermFixtures extends Fixture
         $terms = $this->mountTerms($termsCollections);
 
         foreach ($terms as $termData) {
-            $term = $this->serializer->denormalize($termData, Term::class);
+            $term = $this->getSerializer()->denormalize($termData, Term::class);
             $this->setReference(sprintf('%s-%s', self::TERM_ID_PREFIX, $term->id), $term);
             $manager->persist($term);
         }

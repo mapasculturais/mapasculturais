@@ -6,11 +6,8 @@ namespace App\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use MapasCulturais\Entities\Agent;
+use MapasCulturais\Definitions\EntityType;
 use MapasCulturais\Entities\Project;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class ProjectFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -41,14 +38,13 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             'telefonePublico' => '(85) 99999-9999',
             'telefone1' => '(85) 99999-9999',
             'telefone2' => '(85) 99999-9999',
-            'type' => 16,
             'terms' => [
                 'tag' => ['teste'],
             ],
         ],
         [
             'id' => self::PROJECT_ID_2,
-            'name' => 'Projeto de Cultura',
+            'name' => 'Projeto de Mais Cultura',
             'shortDescription' => 'descrição curta',
             'longDescription' => 'Uma descrição mais detalhada sobre o projeto...',
             'startsOn' => '2024-05-01 00:00:00.000000',
@@ -67,14 +63,13 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             'telefonePublico' => '(85) 99999-9999',
             'telefone1' => '(85) 99999-9999',
             'telefone2' => '(85) 99999-9999',
-            'type' => 16,
             'terms' => [
                 'tag' => ['teste'],
             ],
         ],
         [
             'id' => self::PROJECT_ID_3,
-            'name' => 'Projeto de Cultura',
+            'name' => 'Projeto de Mais Cultura ainda',
             'shortDescription' => 'descrição curta',
             'longDescription' => 'Uma descrição mais detalhada sobre o projeto...',
             'startsOn' => '2024-05-01 00:00:00.000000',
@@ -93,41 +88,35 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
             'telefonePublico' => '(85) 99999-9999',
             'telefone1' => '(85) 99999-9999',
             'telefone2' => '(85) 99999-9999',
-            'type' => 16,
             'terms' => [
                 'tag' => ['teste'],
             ],
         ],
     ];
 
-    private SerializerInterface $serializer;
-
-    public function __construct()
-    {
-        $this->serializer = new Serializer([new ObjectNormalizer()]);
-    }
-
     public function getDependencies(): array
     {
         return [
+            UserFixtures::class,
             TermFixtures::class,
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
-        $manager = $this->referenceRepository->getManager();
+        $this->deleteAllDataFromTable(Project::class);
 
-        $user = $manager->getRepository(Agent::class)->find(1);
+        $user = $this->getReference(UserFixtures::USER_ID_PREFIX.'-'.UserFixtures::USER_ID_1);
 
         foreach (self::PROJECTS as $projectData) {
-            $project = $this->serializer->denormalize($projectData, Project::class);
-            $manager->persist($project);
-            $this->setProperty($project, 'owner', $user);
+            $projectData['type'] = new EntityType(Project::class, 1, 'test');
+
+            $project = $this->getSerializer()->denormalize($projectData, Project::class);
             $project->setTerms($projectData['terms']);
+            $this->setProperty($project, 'owner', $user);
+
             $this->setReference(sprintf('%s-%s', self::PROJECT_ID_PREFIX, $projectData['id']), $project);
-            $project->saveMetadata();
-            $project->saveTerms();
+
             $manager->persist($project);
         }
 

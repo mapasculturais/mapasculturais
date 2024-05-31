@@ -7,9 +7,6 @@ namespace App\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use MapasCulturais\Entities\Event;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class EventFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -102,13 +99,6 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
-    private SerializerInterface $serializer;
-
-    public function __construct()
-    {
-        $this->serializer = new Serializer([new ObjectNormalizer()]);
-    }
-
     public function getDependencies(): array
     {
         return [
@@ -124,10 +114,10 @@ class EventFixtures extends Fixture implements DependentFixtureInterface
         $user = $this->getReference(AgentFixtures::AGENT_ID_PREFIX.'-'.AgentFixtures::AGENT_ID_1);
 
         foreach (self::EVENTS as $eventData) {
-            $event = $this->serializer->denormalize($eventData, Event::class);
+            $event = $this->getSerializer()->denormalize($eventData, Event::class);
             $event->setTerms($eventData['terms']);
             $this->setProperty($event, 'owner', $user);
-            
+
             $this->setReference(sprintf('%s-%s', self::EVENT_ID_PREFIX, $eventData['id']), $event);
             $manager->persist($event);
         }

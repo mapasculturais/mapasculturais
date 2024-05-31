@@ -4,54 +4,123 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use DateTime;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use MapasCulturais\Entities\EventOpportunity;
 use MapasCulturais\Entities\Opportunity;
-use Symfony\Component\Serializer\SerializerInterface;
+use MapasCulturais\Entities\ProjectOpportunity;
 
 class OpportunityFixtures extends Fixture implements DependentFixtureInterface
 {
     public const OPPORTUNITY_ID_PREFIX = 'opportunity';
     public const OPPORTUNITY_ID_1 = 1;
+    public const OPPORTUNITY_ID_2 = 2;
+    public const OPPORTUNITY_ID_3 = 3;
+    public const OPPORTUNITY_ID_4 = 4;
 
-    private SerializerInterface $serializer;
-
-    public const OPPORTUNITY = [
-        'id' => self::OPPORTUNITY_ID_1,
-        'name' => 'Concurso Teste',
-        'shortDescription' => 'Desperte sua criatividade e mostre seu talento no Concurso de Artes! Inscreva suas obras originais e concorra a prêmios incríveis.',
-        'registrationFrom' => [
-            'date' => '2024-05-01 00:00:00.000000',
+    public const EVENT_OPPORTUNITTIES = [
+        [
+            'id' => self::OPPORTUNITY_ID_1,
+            'name' => 'Concurso Teste',
+            'shortDescription' => 'Desperte sua criatividade e mostre seu talento no Concurso de Artes! Inscreva suas obras originais e concorra a prêmios incríveis.',
+            'publishedRegistrations' => false,
+            'area' => ['Arquitetura-Urbanismo'],
+            'twitter' => 'admin',
+            'instagram' => 'admin',
+            'tag' => [
+                'Concurso',
+                'Artes',
+                'Teste',
+            ],
         ],
-        'registrationTo' => [
-            'date' => '2024-06-05 11:13:00.000000',
-        ],
-        'publishedRegistrations' => false,
-        'area' => ['Arquitetura-Urbanismo'],
-        'twitter' => 'admin',
-        'instagram' => 'admin',
-        'tag' => [
-            'Concurso',
-            'Artes',
-            'Teste',
+        [
+            'id' => self::OPPORTUNITY_ID_2,
+            'name' => 'Concurso Teste 2',
+            'shortDescription' => 'Desperte sua criatividade e mostre seu talento no Concurso de Artes! Inscreva suas obras originais e concorra a prêmios incríveis.',
+            'publishedRegistrations' => false,
+            'area' => ['Arquitetura-Urbanismo'],
+            'twitter' => 'admin',
+            'instagram' => 'admin',
+            'tag' => [
+                'Concurso',
+                'Artes',
+                'Teste',
+            ],
         ],
     ];
 
+    public const PROJECT_OPPORTUNITTIES = [
+        [
+            'id' => self::OPPORTUNITY_ID_3,
+            'name' => 'Projeto de Verão',
+            'shortDescription' => 'Desperte sua criatividade e mostre seu talento no Concurso de Artes! Inscreva suas obras originais e concorra a prêmios incríveis.',
+            'publishedRegistrations' => false,
+            'area' => ['Arquitetura-Urbanismo'],
+            'twitter' => 'admin',
+            'instagram' => 'admin',
+            'tag' => [
+                'Concurso',
+                'Artes',
+                'Teste',
+            ],
+        ],
+        [
+            'id' => self::OPPORTUNITY_ID_4,
+            'name' => 'O Projeto de verão falhou',
+            'shortDescription' => 'Desperte sua criatividade e mostre seu talento no Concurso de Artes! Inscreva suas obras originais e concorra a prêmios incríveis.',
+            'publishedRegistrations' => false,
+            'area' => ['Arquitetura-Urbanismo'],
+            'twitter' => 'admin',
+            'instagram' => 'admin',
+            'tag' => [
+                'Concurso',
+                'Artes',
+                'Teste',
+            ],
+        ],
+    ];
+
+    public function getDependencies(): array
+    {
+        return [
+            AgentFixtures::class,
+            EventFixtures::class,
+            ProjectFixtures::class,
+        ];
+    }
+
     public function load(ObjectManager $manager): void
     {
-        global $opportunity;
-        $manager = $this->referenceRepository->getManager();
+        $this->deleteAllDataFromTable(Opportunity::class);
 
-        $user = $manager->getRepository(Opportunity::class)->find(1);
+        $agent = $this->getReference(AgentFixtures::AGENT_ID_PREFIX.'-'.AgentFixtures::AGENT_ID_1);
+        $event = $this->getReference(EventFixtures::EVENT_ID_PREFIX.'-'.EventFixtures::EVENT_ID_1);
+        $project = $this->getReference(ProjectFixtures::PROJECT_ID_PREFIX.'-'.ProjectFixtures::PROJECT_ID_3);
 
-        foreach (self::OPPORTUNITY as $opportunityData) {
-            $event = $this->serializer->denormalize($opportunityData, Opportunity::class);
-            $manager->persist($opportunity);
-            $this->setProperty($opportunity, 'owner', $user);
-            $event->setTerms($opportunityData['terms']);
+        foreach (self::EVENT_OPPORTUNITTIES as $opportunityData) {
+            /** @var EventOpportunity $opportunity */
+            $opportunity = $this->getSerializer()->denormalize($opportunityData, EventOpportunity::class);
+            $opportunity->setRegistrationTo(new DateTime());
+            $opportunity->setRegistrationFrom(new DateTime());
+            $opportunity->setOwnerEntity($event);
+
+            $this->setProperty($opportunity, 'owner', $agent);
             $this->setReference(sprintf('%s-%s', self::OPPORTUNITY_ID_PREFIX, $opportunityData['id']), $opportunity);
-            $opportunity->saveMetadata();
-            $opportunity->saveTerms();
+
+            $manager->persist($opportunity);
+        }
+
+        foreach (self::PROJECT_OPPORTUNITTIES as $opportunityData) {
+            /** @var ProjectOpportunity $opportunity */
+            $opportunity = $this->getSerializer()->denormalize($opportunityData, ProjectOpportunity::class);
+            $opportunity->setRegistrationTo(new DateTime());
+            $opportunity->setRegistrationFrom(new DateTime());
+            $opportunity->setOwnerEntity($project);
+
+            $this->setProperty($opportunity, 'owner', $agent);
+            $this->setReference(sprintf('%s-%s', self::OPPORTUNITY_ID_PREFIX, $opportunityData['id']), $opportunity);
+
             $manager->persist($opportunity);
         }
 

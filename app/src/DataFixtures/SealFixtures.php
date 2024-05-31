@@ -8,9 +8,6 @@ use App\Enum\EntityStatusEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use MapasCulturais\Entities\Seal;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class SealFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -73,13 +70,6 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
-    private SerializerInterface $serializer;
-
-    public function __construct()
-    {
-        $this->serializer = new Serializer([new ObjectNormalizer()]);
-    }
-
     public function getDependencies(): array
     {
         return [
@@ -95,7 +85,7 @@ class SealFixtures extends Fixture implements DependentFixtureInterface
 
         foreach (self::SEALS as $sealData) {
             $sealData['status'] = $sealData['status']->getValue();
-            $seal = $this->serializer->denormalize($sealData, Seal::class);
+            $seal = $this->getSerializer()->denormalize($sealData, Seal::class);
             $this->setProperty($seal, 'owner', $owner);
             $this->setReference(sprintf('%s-%s', self::SEAL_ID_PREFIX, $sealData['id']), $seal);
             $manager->persist($seal);

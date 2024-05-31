@@ -6,11 +6,7 @@ namespace App\DataFixtures;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Space;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class SpaceFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -115,34 +111,25 @@ class SpaceFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
-    private SerializerInterface $serializer;
-
-    public function __construct()
-    {
-        $this->serializer = new Serializer([new ObjectNormalizer()]);
-    }
-
     public function getDependencies(): array
     {
         return [
             TermFixtures::class,
+            UserFixtures::class,
         ];
     }
 
     public function load(ObjectManager $manager): void
     {
-        $manager = $this->referenceRepository->getManager();
+        $this->deleteAllDataFromTable(Space::class);
 
-        $user = $manager->getRepository(Agent::class)->find(1);
+        $user = $this->getReference(UserFixtures::USER_ID_PREFIX.'-'.UserFixtures::USER_ID_1);
 
         foreach (self::SPACES as $spaceData) {
-            $space = $this->serializer->denormalize($spaceData, Space::class);
-            $manager->persist($space);
+            $space = $this->getSerializer()->denormalize($spaceData, Space::class);
             $this->setProperty($space, 'owner', $user);
-            $space->setTerms($spaceData['terms']);
             $this->setReference(sprintf('%s-%s', self::SPACE_ID_PREFIX, $spaceData['id']), $space);
-            $space->saveMetadata();
-            $space->saveTerms();
+
             $manager->persist($space);
         }
 
