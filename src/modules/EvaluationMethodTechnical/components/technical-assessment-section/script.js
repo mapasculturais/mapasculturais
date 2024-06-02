@@ -32,6 +32,9 @@ app.component('technical-assessment-section', {
             }
 
             return totalScore;
+        },
+        fieldsDict() {
+            return $MAPAS.config.technicalAssessmentsection.fieldsDict;
         }
     },
 
