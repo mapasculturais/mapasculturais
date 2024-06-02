@@ -12,15 +12,21 @@ app.component('technical-evaluation-form', {
             type: Object,
             required: true
         },
+
+        editable: {
+            type: Boolean,
+            default: true
+        },
     },
 
     created() {
         this.formData['data'] = this.evaluationData || this.skeleton();
+        this.handleCurrentEvaluationForm();
         this.formData.uid = this.userId;
     },
 
     mounted() {
-       
+        window.addEventListener('responseEvaluation', this.processResponse);
     },
 
     data() {
@@ -28,6 +34,7 @@ app.component('technical-evaluation-form', {
             obs: '',
             viability: null,
             formData: {},
+            isEditable: true,
         };
     },
 
@@ -127,6 +134,20 @@ app.component('technical-evaluation-form', {
             }
             
             return isValid;
+        },
+
+        processResponse(data) {
+            if (data.detail.response.status > 0) {
+                this.isEditable = false;
+            }
+
+            if (data.detail.response.status == 0) {
+                this.isEditable = true;
+            }
+        },
+
+        handleCurrentEvaluationForm() {
+            return this.currentEvaluation?.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
         },
         
         skeleton() {
