@@ -24,7 +24,8 @@ app.component('technical-assessment-section', {
 
     data() {
         return {
-            editingSections: []
+            editingSections: [],
+            autoSaveTimeOut:  null,
         }
     },
 
@@ -65,64 +66,59 @@ app.component('technical-assessment-section', {
             this.editingSections[sectionId] = true;
         },
         addCriteria(sid) {
-            let sectionId = sid;
+            if (!this.validateErrors(true)) {
+                let sectionId = sid;
 
-            if(!this.entity.criteria) {
-                this.entity.criteria = [];
-            }
+                if (!this.entity.criteria) {
+                    this.entity.criteria = [];
+                }
 
-            this.entity.criteria.push({
-                id: 'c-'+this.generateUniqueNumber(),
-                sid: sectionId,
-                title: '',
-                min: 0,
-                max: null,
-                weight: 1
-            });
+                this.entity.criteria.push({
+                    id: 'c-' + this.generateUniqueNumber(),
+                    sid: sectionId,
+                    title: '',
+                    min: 0,
+                    max: null,
+                    weight: 1
+                });
 
 
-            this.$nextTick(() => {
-                const criteriaInputs = this.$refs['criteriaTitleInput'];
-                const lastInput = criteriaInputs[criteriaInputs.length - 1];
-                if (lastInput) {
-                    lastInput.focus();
-                }
-            });
-        },
-        sendConfigs() {
-            let valid = true;
-            this.entity.criteria = this.entity.criteria.filter(criteria => {
-                let isValid = true;
-                if (!criteria.title.trim()) {
-                    isValid = false;
-                }
-                if (criteria.max === null || criteria.max === 0) {
-                    isValid = false;
-                }
-                if (!isValid) {
-                    valid = false;
-                }
-                return isValid;
-            });
-            
-            if (valid) {
-                this.entity.save(3000);
-            } else {
-                this.messages.error(this.text('criterion-field'));
+                this.$nextTick(() => {
+                    const criteriaInputs = this.$refs['criteriaTitleInput'];
+                    const lastInput = criteriaInputs[criteriaInputs.length - 1];
+                    if (lastInput) {
+                        lastInput.focus();
+                    }
+                });
             }
         },
+    
         editSections(sectionId) {
             this.editingSections[sectionId] = !this.editingSections[sectionId];
         },
         delSection(sectionId) {
-            const criterias = this.entity.criteria.filter(criteria => criteria.sid !== sectionId);
-            this.entity.criteria = criterias;
+            if(this.entity.criteria) {
+                const criterias = this.entity.criteria.filter(criteria => criteria.sid !== sectionId);
+                this.entity.criteria = criterias;
+            }
+            
             this.entity.sections = this.entity.sections.filter(section => section.id !== sectionId);
-            this.autoSave();
+            this.save();
         },
         delCriteria(criteriaId) {
             this.entity.criteria = this.entity.criteria.filter(criteria => criteria.id !== criteriaId);
-            this.autoSave();
+            this.save();
+        },
+        change() {
+            this.save(1000);
+        },
+        save(time = 100) {
+            clearTimeout(this.autoSaveTimeOut)
+            this.autoSaveTimeOut = setTimeout(() => {
+                if(!this.validateErrors()) {
+                    this.entity.save()
+                }
+            }, time);
         },
         validateErrors(addCriteria = false) {
             let hasError = false;
