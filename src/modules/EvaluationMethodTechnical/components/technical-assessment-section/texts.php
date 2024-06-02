@@ -1,8 +1,13 @@
 <?php
-
 use MapasCulturais\i;
 
 return [
-'criterion-field' => i::__('O Campo criterio ou nota precisar estar preenchido'),
-'name-section' => i::__('O campo nome da sessão precisa ser preenchido'),
+    'fieldSectionName' => i::__('Nome sessão'),
+    'fieldCriterionTitle' => i::__('Nome do critério'),
+    'fieldCriterionMax' => i::__('Pontuação máxima'),
+    'fieldCriterionWeight' => i::__('Peso'),
+    'theField' => i::__('O campo'),
+    'isRequired' => i::__('é obrigatório'),
+    'checkField' => i::__('Verifique o campo'),
+    'lastCriterion' => i::__('no último critério'),
 ];
