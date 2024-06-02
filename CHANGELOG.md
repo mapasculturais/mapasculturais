@@ -5,29 +5,32 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased - 7.4]
+## [7.4] 2024-05-28
 ### Novas funcionalidades
-- Implementa botão de aplicar avaliações para avaliações técnicas
-- Implementa exibição de parecer na avaliação documental
-- Implementa exibição de parecer na avaliação qualificação documental
+- Adiciona campos **total de vagas** e **valor total** nas oportunidades
+- Implementa funcionalidade de **faixas/linhas** de inscrição nas oportunidades, onde é possível configurar valores de premiação e número de vagas e que, quando configurado, fará com que o proponente tenha que escolher uma faixa de inscrição no momento da inscrição
+- Implementa funcionalidade de **tipos de proponente** para inscrição nas oportunidades que quando configurado fará com que o proponente tenha que escolher um tipo de proponente no momento da inscrição
+- Implementa funcionalidade de **critérios de desempate** nas fases de avaliação técnica
+- Implementa funcionalidade de **cotas** nas fases de avaliação técnica
+- Renomeada a funcionaliade **políticas afirmativas** para **bônus por pontuação** na fase de avaliação técnica
+- Implementa funcionalidade de **distribuição de inscrições por região** nas fases de avaliação técnica
+- Reimplementa da **tabela de listagem de inscrições**, com uma nova interface e uma variedade de opções de ordenação e filtros
+- A lista de inscrições da última fase agora exibe todas as inscrições enviadas na primeira fase, deixando claro onde na listagem onde a inscrição foi deixada como suplente, não selecionada ou invalidada
+- Implementa botão de **aplicar avaliações** para **avaliações técnicas**
+- Implementa exibição de **parecer** na **avaliação documental**
+- Implementa exibição de **parecer** na **avaliação qualificação documental**
 - Implementa campo de dados bancários vinculado ao agente responsável via campo @
 - Implementa botão que faz a sincronia das inscrições entre as fases
 
 ### Melhorias
-- Nova lib instalada (league/csv), para geração de arquivos csv.
 - Adicionado novo ícone para o histórico de alterações.
 - Adiciona data de envio da inscrição na tela de impressão da ficha
-- Implementa novos componentes vuejs para trabalhar implementação de tabelas 
-- Refatora listagem de inscrições para uma tabela visualmente mais agradavel
 - Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
 - Exibe campo de pessoa idosa na single do agente
-- Implementa a exibição de nova coluna na listagem de inscrições para baixar os anexos
-- Altera nome da coluna resultado final da avaliação para "Avaliação" na listagem de inscrições
 - Implementa estêncil circular para definir tamanho do avatar durante o recorte
-- torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
-- possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
-- melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
-- log de hooks agora exibe um backtrace
+- Torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
+- Possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
+- Melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
 - Faz com que seja possivel clicar no nome da entidade para acessar a single da mesma
 - Em oportunidades multifases, redireciona o usuário para primeira fase caso ele tente acessar via url a edição de oportunidades posteriores
 - Melhora texto de boas vindas padrão da plataforma
@@ -44,8 +47,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
-- resolve aplicar filtros para pesquisa de eventos
+- Corrige aplicar filtros para pesquisa de eventos
 - Faz as abas `com permissão` das entidades do painel listarem também as entidades em rascunho
+
+### Melhorias não funcionais
+- Implementa novos componentes vuejs para implementação de tabelas (entity-table)
+- Nova lib instalada (league/csv), para manipulação de arquivos csv.
+- Log de hooks agora exibe um backtrace
+- Adiciona novos índices para melhorar a performance global do sistema
+- Atualiza bibliotecas PHP e JS
 
 ## [7.3.58] - 2024-05-22
 ### Correções
