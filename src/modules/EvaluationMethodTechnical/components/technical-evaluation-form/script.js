@@ -153,7 +153,6 @@ app.component('technical-evaluation-form', {
         skeleton() {
             return {
                 uid: this.userId,
-                data: {},
             };
         },
     }
