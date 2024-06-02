@@ -15,6 +15,13 @@ app.component('technical-assessment-section', {
         }
     },
 
+    setup() {
+        // os textos estão localizados no arquivo texts.php deste componente
+        const messages = useMessages();
+        const text = Utils.getTexts("technical-assessment-section");
+        return { text, messages };
+      },
+
     data() {
         return {
             editingSections: []
@@ -117,8 +124,35 @@ app.component('technical-assessment-section', {
             this.entity.criteria = this.entity.criteria.filter(criteria => criteria.id !== criteriaId);
             this.autoSave();
         },
-        autoSave() {
-            this.entity.save(3000)
+        validateErrors(addCriteria = false) {
+            let hasError = false;
+
+            this.entity.sections.forEach((section) => {
+                Object.keys(this.fieldsDict.sections).forEach((field) => {
+                    let _field = this.fieldsDict.sections[field];
+                    if (_field.isRequired && !section[field]) {
+                        this.messages.error(`${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')}`)
+                        hasError = true;
+                    }
+                })
+            })
+
+            this.entity.criteria.forEach((criterion) => {
+                Object.keys(this.fieldsDict.criteria).forEach((field) => {
+                    let _field = this.fieldsDict.criteria[field];
+                    if (_field.isRequired && !criterion[field]) {
+                        let message = `${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')} `;
+                        debugger
+                        if(addCriteria) {
+                            message = message + this.text('lastCriterion');
+                        }
+                        this.messages.error(message)
+                        hasError = true;
+                    }
+                })
+            })
+
+            return hasError;
         }
     }
 });
