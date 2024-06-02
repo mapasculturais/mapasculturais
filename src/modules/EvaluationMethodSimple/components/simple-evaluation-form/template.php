@@ -16,14 +16,14 @@ $this->import('
 <div class="simple-evaluation-form">
     <div class="simple-evaluation-form__form grid-12">
         <div class="simple-evaluation-form__header field col-12">
-            <label class="mc-select-label">
+            <label class="field__label">
                 <?php i::_e('Selecione o status dessa inscrição') ?>
             </label>
             <mc-select v-if="isEditable" :default-value="formData.status" @change-option="handleOptionChange" :options="statusList"></mc-select>
             <input v-if="!isEditable" type="text" :value="statusToString(formData.status)" disabled>
         </div>
         <div class="simple-evaluation-form__content field col-12">
-            <label class="textarea-label">
+            <label class="field__label">
                 <?php i::_e('Insira suas Justificativas ou observações') ?>
             </label>
             <textarea v-if="isEditable" v-model="formData.obs"></textarea>
