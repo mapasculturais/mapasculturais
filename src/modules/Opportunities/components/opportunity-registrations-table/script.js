@@ -206,7 +206,7 @@ app.component('opportunity-registrations-table', {
 
             itens.splice(3,0,{ text: "Pontuação", value: "score"});
 
-            if (this.avaliableColumns) {
+            if(this.avaliableColumns) {
                 itens = itens.filter((item) => {
                     return this.avaliableColumns.indexOf(item.value) >= 0;
                 });
