@@ -109,7 +109,6 @@ class Controller extends \MapasCulturais\Controller
 
     function POST_evaluations()
     {
-        $this->data = $this->postData;
         $app = App::i();
         $extension = $this->getExtension();
         
