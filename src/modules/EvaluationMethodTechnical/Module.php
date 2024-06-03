@@ -82,6 +82,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
     
     protected function _register() {
+        $app = App::i();
+        
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
             'label' => i::__('Seções'),
             'type' => 'json',
@@ -208,6 +210,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'private' => false,
             'default' => true,
         ]);
+
+        $app->registerJobType(new JobTypes\Spreadsheet('technical-spreadsheets'));
     }
 
     function enqueueScriptsAndStyles() {
