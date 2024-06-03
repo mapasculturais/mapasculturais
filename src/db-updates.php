@@ -2272,4 +2272,23 @@ $$
         }
     },
 
+    'Define os valores da nova coluna sent_timestamp na tabela de avaliações' => function() use($conn) {
+        if (__column_exists('registration_evaluation', 'sent_timestamp')) {
+            __exec("
+                WITH er_data AS (
+                    SELECT er.object_id, er.create_timestamp
+                    FROM entity_revision er
+                    JOIN entity_revision_revision_data errd ON errd.revision_id = er.id
+                    JOIN entity_revision_data rd ON rd.id = errd.revision_data_id
+                    WHERE rd.key = 'status' AND rd.value = '2' AND er.object_type = 'MapasCulturais\Entities\RegistrationEvaluation'
+                    ORDER BY er.create_timestamp ASC
+                )
+                UPDATE registration_evaluation
+                SET sent_timestamp = er_data.create_timestamp
+                FROM er_data
+                WHERE registration_evaluation.id = er_data.object_id;
+            ");
+        }
+    },
+
 ] + $updates ;   
