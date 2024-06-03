@@ -72,6 +72,9 @@ app.component('create-space', {
             this.entity.type = 1;
             this.entity.terms = { area: [] }
 
+            this.entity.removeOptions = [
+                'Ponto de Cultura',
+            ];
         },
         createDraft(modal) {
             this.entity.status = 0;
