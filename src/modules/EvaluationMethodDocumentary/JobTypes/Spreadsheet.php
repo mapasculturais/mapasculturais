@@ -1,14 +1,14 @@
 <?php
-namespace Spreadsheets\JobTypes;
+namespace EvaluationMethodDocumentary\JobTypes;
 
 use MapasCulturais\App;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\i;
-use Spreadsheets\SpreadsheetJob;
+use Spreadsheets\EvaluationsSpreadsheetJob;
 
-class EvaluationMethodDocumentary extends SpreadsheetJob
+class Spreadsheet extends EvaluationsSpreadsheetJob
 {
     protected function _getFileGroup() : string {
         return $this->slug;
@@ -18,37 +18,18 @@ class EvaluationMethodDocumentary extends SpreadsheetJob
         return [RegistrationEvaluation::class];
     }
 
-    protected function _getHeader(Job $job) : array {
-        $sub_header = [];
-
-        $entity_class_name = $job->entityClassName;
+    protected function _getEvaluationDataHeader(Job $job, $total_properties) : array {
         $opportunity = $job->owner;
+
         $evaluations_fields_configurations = $opportunity->getRegistrationFieldConfigurations();
         $evaluations_files_configurations = $opportunity->getRegistrationFileConfigurations();
-
         $evaluations_fields = array_merge($evaluations_fields_configurations, $evaluations_files_configurations);
 
-        $query = $job->query;
-        $properties = explode(',', $query['@select']);
-        
-        $header = [
-            'A1:B1' => i::__('Informações sobre as inscrições e proponentes'), 
-            'C1' => i::__('Informações sobre o avaliador'),
-        ];
-        
         $column_prefixes = $this->generateSpreadsheetStructure(1, 300);
-        array_splice($column_prefixes, 0, 3);
+        array_splice($column_prefixes, 0, $total_properties);
 
-        foreach($properties as $property) {
-            if (!in_array($property, ['result', 'status', 'evaluationData'])) {
-                $sub_header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
-            } else {
-                if($property != 'evaluationData') {
-                    $sub_header_fields[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
-                }
-            }
-        }
-        
+        $header = [];
+        $sub_header = [];
         foreach($evaluations_fields as $evaluation_field) {
             $columns = array_splice($column_prefixes, 0, 3);
             $first_column = reset($columns);
@@ -61,33 +42,33 @@ class EvaluationMethodDocumentary extends SpreadsheetJob
             $sub_header['obs-item-'.$evaluation_field->id] = i::__('Descumprimento do(s) item(s) do edital');
         }
 
-        $columns_evaluations = array_splice($column_prefixes, 0, 2);
-        $first_column_evaluation = reset($columns_evaluations);
-        $last_column_evaluation = end($columns_evaluations);
-
-        $header["{$first_column_evaluation}1:{$last_column_evaluation}1"] = i::__('Avaliações');
-        
-        $sub_header += $sub_header_fields;
-
-        $result = [$header, $sub_header];
-        
-        return $result;
+        return ['header' => $header, 'subHeader' => $sub_header, 'columnPrefixes' => $column_prefixes];
     }
 
-    protected function _getBatch(Job $job) : array {
-        $app = App::i();
+    protected function _getEvaluationResultHeader(Job $job, $properties, $column_prefixes) : array {
+        $entity_class_name = $job->entityClassName;
+
+        $sub_header = [];
+        foreach($properties as $property) {
+            if (in_array($property, ['result', 'status', 'evaluationData'])) {
+                if($property != 'evaluationData') {
+                    $sub_header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
+                }
+            }
+        }
+
+        $columns_evaluations = array_splice($column_prefixes, 0, count($sub_header));
+        $first_column_evaluation = reset($columns_evaluations);
+        $last_column_evaluation = end($columns_evaluations);
         
-        $opportunity = $job->owner;
+        $header["{$first_column_evaluation}1:{$last_column_evaluation}1"] = i::__('Avaliações');
 
-        $query = [];
-        $query['@limit'] = $this->limit;
-        $query['@page'] = $this->page;
-        $opportunity_controller = $app->controller('opportunity');
-        $opportunity_controller->data = $opportunity_controller->postData;
-        $evaluations = $opportunity_controller->apiFindEvaluations($opportunity->id, $query);
+        return ['header' => $header, 'subHeader' => $sub_header];
+    }
 
+    protected function _getEvaluationDataBatch(Job $job, $evaluations) : array {
         $result = [];
-        foreach ($evaluations->evaluations as $evaluation) {
+        foreach ($evaluations['evaluations'] as $evaluation) {
             $evaluation_data = $evaluation['evaluation']['evaluationData'] ?? [];
 
             $result_evaluation_data = [];
@@ -97,12 +78,20 @@ class EvaluationMethodDocumentary extends SpreadsheetJob
                 $result_evaluation_data['obs-item-' . $key] = $value['obs_items'];
             }
 
+            $registration_data = $evaluation['registration'];
+
             $result[] = [
-                'owner.{name}' => $evaluation['registration']['owner']['name'],
-                'registration' => $evaluation['registration']['number'],
+                'projectName' => $registration_data['projectName'],
+                'category' => $registration_data['category'],
+                'owner.{name}' => $registration_data['owner']['name'],
+                'number' => $registration_data['number'],
+                'range' => $registration_data['range'],
+                'score' => $registration_data['score'],
+                'proponentType' => $registration_data['proponentType'],
+                'eligible' => $registration_data['eligible'],
                 'user' => $evaluation['valuer']['name'],
                 'result' => $evaluation['evaluation']['resultString'] ?? null,
-                'status' => $evaluation['registration']['status'],
+                'status' => $registration_data['status'],
             ] + $result_evaluation_data;
         }
 
