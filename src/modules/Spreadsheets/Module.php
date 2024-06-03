@@ -27,9 +27,5 @@ class Module extends \MapasCulturais\Module {
 
         $app->registerJobType(new JobTypes\Entities('entities-spreadsheets'));  
         $app->registerJobType(new JobTypes\Registrations('registrations-spreadsheets'));  
-        $app->registerJobType(new JobTypes\EvaluationMethodSimple('simple-spreadsheets')); 
-        $app->registerJobType(new JobTypes\EvaluationMethodTechnical('technical-spreadsheets'));
-        $app->registerJobType(new JobTypes\EvaluationMethodDocumentary('documentary-spreadsheets'));
-        $app->registerJobType(new JobTypes\EvaluationMethodQualification('qualification-spreadsheets')); 
     }
 }
