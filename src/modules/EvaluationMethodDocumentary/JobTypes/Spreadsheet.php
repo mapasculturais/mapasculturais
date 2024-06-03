@@ -132,26 +132,4 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
 
         return $field->label;
     }
-
-    function getExcelColumnName($index) {
-        $columnName = '';
-        while ($index > 0) {
-            $mod = ($index - 1) % 26;
-            $columnName = chr($mod + 65) . $columnName;
-            $index = (int)(($index - $mod) / 26);
-        }
-        return $columnName;
-    }
-    
-    function generateSpreadsheetStructure($numRows, $numCols) {
-        $sheet = [];
-        for ($row = 1; $row <= $numRows; $row++) {
-            for ($col = 1; $col <= $numCols; $col++) {
-                $columnName = $this->getExcelColumnName($col);
-                $cellReference = $columnName;
-                $sheet[] = $cellReference;
-            }
-        }
-        return $sheet;
-    }
 }
