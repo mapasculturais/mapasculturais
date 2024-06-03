@@ -1,14 +1,13 @@
 <?php
-namespace Spreadsheets\JobTypes;
+namespace EvaluationMethodTechnical\JobTypes;
 
 use MapasCulturais\App;
-use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\i;
-use Spreadsheets\SpreadsheetJob;
+use Spreadsheets\EvaluationsSpreadsheetJob;
 
-class EvaluationMethodTechnical extends SpreadsheetJob
+class Spreadsheet extends EvaluationsSpreadsheetJob
 {
     protected function _getFileGroup() : string {
         return $this->slug;
@@ -18,39 +17,17 @@ class EvaluationMethodTechnical extends SpreadsheetJob
         return [RegistrationEvaluation::class];
     }
 
-    protected function _getHeader(Job $job) : array {
-        $sub_header = [];
-
-        $entity_class_name = $job->entityClassName;
+    protected function _getEvaluationDataHeader(Job $job, $total_properties) : array {
         $opportunity = $job->owner;
+
         $sections = json_decode(json_encode($opportunity->evaluationMethodConfiguration->sections), true);
         $criteria = json_decode(json_encode($opportunity->evaluationMethodConfiguration->criteria), true);
-        
-        $query = $job->query;
-        $properties = explode(',', $query['@select']);
-        
-        $header = [
-            'A1:B1' => i::__('Informações sobre as inscrições e proponentes'), 
-            'C1' => i::__('Informações sobre o avaliador'), 
-        ];
-        
-        $column_prefixes = [
-            'D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN','BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ',
-        ];
 
-        foreach($properties as $property) {
-            if (!in_array($property, ['result', 'status', 'evaluationData'])) {
-                $sub_header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
-            } else {
-                if($property === 'evaluationData') {
-                    $evaluations_fields['obs'] = i::__('Parecer Técnico');
-                    $evaluations_fields['viability'] = i::__('Esta proposta apresenta exequibilidade?');
-                } else {
-                    $evaluations_fields[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
-                }
-            }
-        }
+        $column_prefixes = $this->generateSpreadsheetStructure(1, 300);
+        array_splice($column_prefixes, 0, $total_properties);
 
+        $header = [];
+        $sub_header = [];
         foreach($sections as &$section) {
             $section['criteria'] = array_filter($criteria, function($cri) use ($section) {
                 return $cri['sid'] === $section['id'];
@@ -72,38 +49,43 @@ class EvaluationMethodTechnical extends SpreadsheetJob
             
             $header["{$first_column}1:{$last_column}1"] = $section['name'];
 
-            $sub_header['subtotal-'.$section['id']] = "Subtotal (max: {$subtotal})";
+            $sub_header['subtotal-'.$section['id']] = i::__('Subtotal') . " (". i::__('max') . ": {$subtotal})";
         }
 
-        $columns_evaluations = array_splice($column_prefixes, 0, 4);
-        $first_column_evaluation = reset($columns_evaluations);
-        $last_column_evaluation = end($columns_evaluations);
-
-        $header["{$first_column_evaluation}1:{$last_column_evaluation}1"] = i::__('Avaliações');
-
-        $sub_header += $evaluations_fields;
-        
-        $result = [$header, $sub_header];
-        
-        return $result;
+        return ['header' => $header, 'subHeader' => $sub_header, 'columnPrefixes' => $column_prefixes];
     }
 
-    protected function _getBatch(Job $job) : array {
-        $app = App::i();
+    protected function _getEvaluationResultHeader(Job $job, $properties, $column_prefixes) : array {
+        $entity_class_name = $job->entityClassName;
+
+        $sub_header = [];
+        foreach($properties as $property) {
+            if (in_array($property, ['result', 'status', 'evaluationData'])) {
+                if($property === 'evaluationData') {
+                    $sub_header['obs'] = i::__('Parecer Técnico');
+                    $sub_header['viability'] = i::__('Esta proposta apresenta exequibilidade?');
+                } else {
+                    $sub_header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
+                }
+            }
+        }
+
+        $columns_evaluations = array_splice($column_prefixes, 0, count($sub_header));
+        $first_column_evaluation = reset($columns_evaluations);
+        $last_column_evaluation = end($columns_evaluations);
         
+        $header["{$first_column_evaluation}1:{$last_column_evaluation}1"] = i::__('Avaliações');
+
+        return ['header' => $header, 'subHeader' => $sub_header];
+    }
+
+    protected function _getEvaluationDataBatch(Job $job, $evaluations) : array {
         $opportunity = $job->owner;
         $sections = json_decode(json_encode($opportunity->evaluationMethodConfiguration->sections), true);
         $criteria = json_decode(json_encode($opportunity->evaluationMethodConfiguration->criteria), true);
 
-        $query = [];
-        $query['@limit'] = $this->limit;
-        $query['@page'] = $this->page;
-        $opportunity_controller = $app->controller('opportunity');
-        $opportunity_controller->data = $opportunity_controller->postData;
-        $evaluations = $opportunity_controller->apiFindEvaluations($opportunity->id, $query);
-
         $result = [];
-        foreach ($evaluations->evaluations as $evaluation) {
+        foreach ($evaluations['evaluations'] as $evaluation) {
             $evaluation_data = $evaluation['evaluation']['evaluationData'] ?? [];
             unset($evaluation_data['obs']);
 
@@ -126,13 +108,20 @@ class EvaluationMethodTechnical extends SpreadsheetJob
             }
 
             $evaluation_data = array_merge($evaluation_data, $section_data);
+            $registration_data = $evaluation['registration'];
             
             $result[] = [
-                'owner.{name}' => $evaluation['registration']['owner']['name'],
-                'registration' => $evaluation['registration']['number'],
+                'projectName' => $registration_data['projectName'],
+                'category' => $registration_data['category'],
+                'owner.{name}' => $registration_data['owner']['name'],
+                'number' => $registration_data['number'],
+                'range' => $registration_data['range'],
+                'score' => $registration_data['score'],
+                'proponentType' => $registration_data['proponentType'],
+                'eligible' => $registration_data['eligible'],
                 'user' => $evaluation['valuer']['name'],
                 'result' => $evaluation['evaluation']['resultString'] ?? null,
-                'status' => $evaluation['registration']['status'],
+                'status' => $registration_data['status'],
                 'obs' => $evaluation['evaluation']['evaluationData']['obs'] ?? null,
                 'viability' => $evaluation['evaluation']['evaluationData']['viability'] ?? null
             ] + $evaluation_data;
