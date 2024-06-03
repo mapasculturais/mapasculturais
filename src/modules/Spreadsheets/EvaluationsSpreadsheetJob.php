@@ -21,7 +21,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
 
         $query = $job->query;
         $properties = explode(',', $query['@select']);
-        
+
         //@TO DO: AJUSTAR owner.{name}
         $header = [
             'A1:H1' => i::__('Informações sobre as inscrições e proponentes'), 
@@ -100,6 +100,22 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
             }
         }
         return $sheet;
+    }
+
+    function statusName($status) {
+        if($status === 10) {
+            return i::__('Selecionada');
+        } elseif($status === 8) {
+            return i::__('Suplente');
+        } elseif($status === 3) {
+            return i::__('Não selecionada');
+        } elseif($status === 2) {
+            return i::__('Inválida');
+        } elseif($status === 1) {
+            return i::__('Pendente');
+        } else {
+            return i::__('Rascunho');
+        }
     }
 
     function getEvaluationDataHeader(Job $job, int $total_properties)

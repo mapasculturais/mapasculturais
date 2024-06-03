@@ -91,7 +91,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                 'eligible' => $registration_data['eligible'],
                 'user' => $evaluation['valuer']['name'],
                 'result' => $evaluation['evaluation']['resultString'] ?? null,
-                'status' => $registration_data['status'],
+                'status' => $this->statusName($registration_data['status']),
             ] + $result_evaluation_data;
         }
 
