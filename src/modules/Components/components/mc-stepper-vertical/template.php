@@ -11,9 +11,9 @@ $this->import('
 ')
 ?>
 <div class="mc-stepper-vertical-wrapper">
-<?php $this->applyTemplateHook('mc-stepper-vertical','before'); ?>
+<?php $this->applyTemplateHook('mc-stepper-vertical:before'); ?>
     <ol class="mc-stepper-vertical">
-        <?php $this->applyTemplateHook('mc-stepper-vertical','begin'); ?>
+        <?php $this->applyTemplateHook('mc-stepper-vertical:begin'); ?>
         <template v-for="(step, index) in steps">
             <li :class="{active: step.active}">
                 <section class="stepper-step">
@@ -37,7 +37,7 @@ $this->import('
                 <slot name="after-li" :index="index" :step="step" :item="step.item"></slot>
             </div>
         </template>
-        <?php $this->applyTemplateHook('mc-stepper-vertical','end'); ?>
+        <?php $this->applyTemplateHook('mc-stepper-vertical:end'); ?>
     </ol>
-    <?php $this->applyTemplateHook('mc-stepper-vertical','after'); ?>
+    <?php $this->applyTemplateHook('mc-stepper-vertical:after'); ?>
 </div>
