@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Melhorias
 - Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
+- Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
 
 ## [7.4] 2024-05-28
 ### Novas funcionalidades
