@@ -710,6 +710,11 @@ return [
             PRIMARY KEY(id)
         );");
     },
+    
+    "corrigindo status da fila de criação de cache de permissão" => function() {
+        __exec("UPDATE permission_cache_pending SET status = 0;");
+        return false;
+    },
 
     'create opportunity tables' => function () {
         if(!__table_exists('opportunity')){
@@ -2242,5 +2247,23 @@ $$
         __try('CREATE INDEX registration_score_idx ON registration (score)');
         __try('CREATE INDEX registration_eligible_idx ON registration (eligible)');
     },
+
+    'adiciona novos índices na tabela file' => function () {
+        __try('CREATE INDEX file_parent_idx ON file (parent_id)');
+        __try('CREATE INDEX file_parent_object_type_idx ON file (parent_id, object_type)');
+    },
+    'Corrige constraint enforce_geotype_geom da tabela geo_division' => function() use($conn) {
+        __try("ALTER TABLE geo_division DROP CONSTRAINT enforce_geotype_geom");
+
+        __exec(
+            "ALTER TABLE 
+                geo_division 
+            ADD CONSTRAINT 
+                enforce_geotype_geom
+            CHECK 
+                (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
+                geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
+        ");
+    }
 
 ] + $updates ;   

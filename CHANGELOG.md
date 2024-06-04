@@ -5,28 +5,36 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased - 7.4]
+## [7.4] 2024-05-28
 ### Novas funcionalidades
-- Implementa botão de aplicar avaliações para avaliações técnicas
-- Implementa exibição de parecer na avaliação documental
-- Implementa exibição de parecer na avaliação qualificação documental
+- Adiciona campos **total de vagas** e **valor total** nas oportunidades
+- Implementa funcionalidade de **faixas/linhas** de inscrição nas oportunidades, onde é possível configurar valores de premiação e número de vagas e que, quando configurado, fará com que o proponente tenha que escolher uma faixa de inscrição no momento da inscrição
+- Implementa funcionalidade de **tipos de proponente** para inscrição nas oportunidades que quando configurado fará com que o proponente tenha que escolher um tipo de proponente no momento da inscrição
+- Implementa funcionalidade de **critérios de desempate** nas fases de avaliação técnica
+- Implementa funcionalidade de **cotas** nas fases de avaliação técnica
+- Renomeada a funcionaliade **políticas afirmativas** para **bônus por pontuação** na fase de avaliação técnica
+- Implementa funcionalidade de **distribuição de inscrições por região** nas fases de avaliação técnica
+- Reimplementa da **tabela de listagem de inscrições**, com uma nova interface e uma variedade de opções de ordenação e filtros
+- A lista de inscrições da última fase agora exibe todas as inscrições enviadas na primeira fase, deixando claro onde na listagem onde a inscrição foi deixada como suplente, não selecionada ou invalidada
+- Implementa botão de **aplicar avaliações** para **avaliações técnicas**
+- Implementa exibição de **parecer** na **avaliação documental**
+- Implementa exibição de **parecer** na **avaliação qualificação documental**
 - Implementa campo de dados bancários vinculado ao agente responsável via campo @
 - Implementa botão que faz a sincronia das inscrições entre as fases
 
 ### Melhorias
-- Nova lib instalada (league/csv), para geração de arquivos csv.
 - Adicionado novo ícone para o histórico de alterações.
 - Adiciona data de envio da inscrição na tela de impressão da ficha
-- Implementa novos componentes vuejs para trabalhar implementação de tabelas 
-- Refatora listagem de inscrições para uma tabela visualmente mais agradavel
 - Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
 - Exibe campo de pessoa idosa na single do agente
-- Implementa a exibição de nova coluna na listagem de inscrições para baixar os anexos
-- Altera nome da coluna resultado final da avaliação para "Avaliação" na listagem de inscrições
 - Implementa estêncil circular para definir tamanho do avatar durante o recorte
-- torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
-- possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
-- melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
+- Torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
+- Possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
+- Melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
+- Faz com que seja possivel clicar no nome da entidade para acessar a single da mesma
+- Em oportunidades multifases, redireciona o usuário para primeira fase caso ele tente acessar via url a edição de oportunidades posteriores
+- Melhora texto de boas vindas padrão da plataforma
+- Faz com que a data de envio da inscrição se propague entre as fases
 
 ### Correções
 - Corrige seleção de relacionamentos OneToOne
@@ -38,6 +46,123 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige permissão de visualização de arquivos privados
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
+- Corrige método para limpeza de hooks
+- Corrige aplicar filtros para pesquisa de eventos
+- Faz as abas `com permissão` das entidades do painel listarem também as entidades em rascunho
+
+### Melhorias não funcionais
+- Implementa novos componentes vuejs para implementação de tabelas (entity-table)
+- Nova lib instalada (league/csv), para manipulação de arquivos csv.
+- Log de hooks agora exibe um backtrace
+- Adiciona novos índices para melhorar a performance global do sistema
+- Atualiza bibliotecas PHP e JS
+
+## [7.3.58] - 2024-05-22
+### Correções
+- Remove webmanifest para evitar erros no carregamento atravez do safari
+
+## [7.3.57] - 2024-05-17
+### Melhorias
+- Não solicita o campo País em ambientes com a configuração statesAndCitiesCountryCode definida como BR
+
+### Correçoes
+- Corrige mascaras dos telefones no cadastro dos agentes para que aceite telefones residênciais e celulares
+
+## [7.3.56] - 2024-05-16
+### Melhorias
+- Padroniza altura dos cards das entidades da home 
+
+## [7.3.55] - 2024-05-14
+### Correçoes
+- Faz com que na single perfil, seja exibito os projetos relacionados 
+- Corrije erro que impede a exibição de projetos na listagem devido a falta do tipo
+
+### Melhorias
+- Na single do agente, ordena as oportunidades vinculadas pela data de encerramento de forma ascendente
+
+## [7.3.54] - 2024-05-13
+### Correçoes
+- Aplica internecionalização na tela de edição de eventos
+
+## [7.3.53] - 2024-05-13
+### Correçoes
+- Ajusta o enfileiramento da folha de estilo que controla os termos de uso e privacidade
+
+## [7.3.52] - 2024-05-08
+### Correçoes
+- Corrige erro que impedia o carregamento das categorias no filtro das tabelas de inscrições e avaliações
+
+## [7.3.51] - 2024-04-19
+### Melhorias
+- Adiciona o campo Comunidade tradicional para ser possível gerar gráficos no módulo de relatórios
+
+## [7.3.50] - 2024-04-18
+### Correçoes
+- Corrige erro ao pegar resumo das avaliações de uma oportunidade sem avaliações
+- Insere opção de alterar a descrição longa da oportunidade na tela de edição
+
+## [7.3.49] - 2024-04-16
+### Correçoes
+- Corrige problema que conflitava um agente gestor com usuarios do suporte
+
+## [7.3.48] - 2024-04-12
+### Correçoes
+- Corrige problema causado pela criação da pasta DoctineProxies como root
+- Cria db-update para corrigir status da fila de criação de cache de permissão no start da aplicação
+
+## [7.3.47] - 2024-04-11
+### Correçoes
+- Remove caracter desnecessário
+
+## [7.3.46] - 2024-04-10
+### Correçoes
+- Corrige ortografia da palavra Eventos escrita errada em algumas telas
+
+## [7.3.45] - 2024-04-09
+### Correçoes
+- Cria método register() necessário no Theme.php do BaseV1
+
+## [7.3.44] - 2024-04-09
+### Correçoes
+- Corrije o salvamento dos dados de DeoDivision
+
+## [7.3.43] - 2024-04-08
+### Correçoes
+- Corrige erro no db-update das geo_divisions
+
+## [7.3.42] - 2024-04-08
+### Correçoes
+- Corrige criação das geo divisões 
+
+## [7.3.41] - 2024-04-04
+### Correçoes
+- Ajusta exibição dos resumos de inscrições na aba Inscrições e resultados
+- Ajusta exibição dos resumos de inscrições da ultima fase Publicação final do resultado na aba Inscrições e resultados
+
+## [7.3.40] - 2024-04-04
+### Correçoes
+- Corrige o retorno dos selos das oportunidades na api
+
+### Melhorias
+- Adiciona mensagem para o avaliador informando que o período de avaliação já se ecerrou
+- Exibe todos os selos nos cards das entidades
+
+## [7.3.39] - 2024-04-04
+### Correçoes
+- Corrige exibição da imagem do selo após a vinculação deste com uma entidade
+- Oculta botão de carregar mais eventos quando não houver mais eventos a serem carregados
+
+## [7.3.38] - 2024-04-04
+### Correçoes
+- Corrige paginação das ocorrências dos eventos
+
+## [7.3.37] - 2024-04-02
+### Correçoes
+- Corrige campos @ das redes sociais
+
+## [7.3.36] - 2024-04-02
+### Correçoes
+- Corrige hooks duplicados no componente mc-header
 
 ## [7.3.35] - 2024-04-01
 ### Melhorias

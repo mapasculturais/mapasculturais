@@ -26,17 +26,6 @@ class Theme extends \MapasCulturais\Theme
         $this->enqueueStyle('app-v2', 'main', 'css/theme-BaseV2.css');
         $this->assetManager->publishFolder('fonts');
 
-        // Manifest do five icon
-        $app->hook('GET(site.webmanifest)', function() use ($app) {
-            /** @var \MapasCulturais\Controller $this */
-            $this->json([
-                'icons' => [
-                    [ 'src' => $app->view->asset('img/favicon-192x192.png', false), 'type' => 'image/png', 'sizes' => '192x192' ],
-                    [ 'src' => $app->view->asset('img/favicon-512x512.png', false), 'type' => 'image/png', 'sizes' => '512x512' ],
-                ],
-            ]);
-        });
-
         $app->hook('template(<<*>>.head):end', function () {
             echo "<script>
                     document.addEventListener('DOMContentLoaded', (e) => {

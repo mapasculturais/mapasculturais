@@ -12,7 +12,7 @@ app.component('mc-tabs', {
         },
         syncHash: {
             type: Boolean,
-            default: true
+            default: false
         },
         iconPosition:{
             type: String,

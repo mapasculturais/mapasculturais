@@ -4,6 +4,18 @@ app.component('opportunity-registrations-table', {
         phase: {
             type: Entity,
             required: true
+        },
+        visibleColumns: {
+            type: Array,
+            default: ["agent", "status", "category", "consolidatedResult", "score"],
+        },
+        avaliableColumns: Array,
+        hideFilters: Boolean,
+        hideSort: Boolean,
+        statusNotEditable: Boolean,
+        order: {
+            type: String,
+            default: "",
         }
     },
     setup() {
@@ -19,7 +31,7 @@ app.component('opportunity-registrations-table', {
         const hadTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.hadTechnicalEvaluationPhase;
         const isTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.isTechnicalEvaluationPhase;
         
-        let visibleColumns = "agent,status,category,consolidatedResult,score";
+        let visible = this.visibleColumns.join(',');
         let order = 'score DESC';
         let consolidatedResultOrder = 'consolidatedResult';
         
@@ -69,30 +81,37 @@ app.component('opportunity-registrations-table', {
         }
 
         const sortOptions = [
-            { value: `status DESC,${consolidatedResultOrder} DESC`, label: 'por status descendente' },
-            { value: `status ASC,${consolidatedResultOrder} ASC`, label: 'por status ascendente' },
-            { value: `${consolidatedResultOrder} DESC`, label: 'resultado das avaliações' },
-            { value: 'createTimestamp ASC', label: 'mais antigas primeiro' },
-            { value: 'createTimestamp DESC', label: 'mais recentes primeiro' },
             { value: 'sentTimestamp ASC', label: 'enviadas a mais tempo primeiro' },
             { value: 'sentTimestamp DESC', label: 'enviadas a menos tempo primeiro' },
         ];
 
-        if(hadTechnicalEvaluationPhase) {
-            order = 'score DESC';
+        if(this.phase.isLastPhase) {
+            order = `status DESC,score DESC`;
             sortOptions.splice(0, 0, {value: 'score DESC', label: 'pontuação final'});
-        }
+            sortOptions.splice(0, 0, { value: `status ASC,score ASC`, label: 'por status ascendente' });
+            sortOptions.splice(0, 0, { value: `status DESC,score DESC`, label: 'por status descendente' });
 
-        if(isAffirmativePoliciesActive) {
-            avaliableFields.push({
-                title: __('concorrendo por cota', 'opportunity-registrations-table'),
-                fieldName: 'eligible',
-                fieldType: 'boolean'
-            });
+        } else { 
+            sortOptions.splice(0, 0, { value: `${consolidatedResultOrder} DESC`, label: 'resultado das avaliações' });
+            sortOptions.splice(0, 0, { value: `status ASC,${consolidatedResultOrder} ASC`, label: 'por status ascendente' });
+            sortOptions.splice(0, 0, { value: `status DESC,${consolidatedResultOrder} DESC`, label: 'por status descendente' });
 
-            visibleColumns += ',eligible';
-            order = '@quota';
-            sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
+            if(hadTechnicalEvaluationPhase) {
+                order = 'score DESC';
+                sortOptions.splice(0, 0, {value: 'score DESC', label: 'pontuação final'});
+            }
+            
+            if(isAffirmativePoliciesActive) {
+                avaliableFields.push({
+                    title: __('concorrendo por cota', 'opportunity-registrations-table'),
+                    fieldName: 'eligible',
+                    fieldType: 'boolean'
+                });
+
+                visible += ',eligible';
+                order = '@quota';
+                sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
+            }
         }
 
         return {
@@ -101,6 +120,7 @@ app.component('opportunity-registrations-table', {
             resultStatus:[],
             query: {
                 '@opportunity': this.phase.id,
+                'status': 'GTE(0)',
             },
             selectedCategories: [],
             selectedProponentTypes: [],
@@ -109,7 +129,7 @@ app.component('opportunity-registrations-table', {
             selectedAvaliation:null,
             order,
             avaliableFields,
-            visibleColumns,
+            visible,
             isAffirmativePoliciesActive,
             hadTechnicalEvaluationPhase,
         }
@@ -171,15 +191,26 @@ app.component('opportunity-registrations-table', {
                 { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
                 { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
                 { text: __('data de envio', 'opportunity-registrations-table'), value: "sentTimestamp" },
-                { text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true},
             ];
 
             if(this.phase.evaluationMethodConfiguration){
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
             }
 
+            if(this.phase.isLastPhase){
+                itens.splice(2,0,{ text: "Status", value: "consolidatedResult"});
+                itens.push({ text: __('resultado final', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
+            } else {
+                itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
+            }
+
             itens.splice(3,0,{ text: "Pontuação", value: "score"});
 
+            if(this.avaliableColumns) {
+                itens = itens.filter((item) => {
+                    return this.avaliableColumns.indexOf(item.value) >= 0;
+                });
+            }
 
             return itens;
         },
@@ -196,6 +227,10 @@ app.component('opportunity-registrations-table', {
     },
 
     methods: {
+        getStatus(actualStatus) {
+            return this.statusDict.find(status => status.value === actualStatus);
+        },
+
         setStatus(selected, entity) {
             entity.status = selected.value;
             entity.save();
@@ -287,6 +322,8 @@ app.component('opportunity-registrations-table', {
                 }else{
                     return this.statusEvaluation[type][entity.consolidatedResult];
                 }
+            } else if (this.phase.isLastPhase) {
+                return entity.consolidatedResult;
             }
             return "";
         },

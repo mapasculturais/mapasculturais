@@ -343,9 +343,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $ranges_config[$range['label']] = $range['limit'];
         }
 
+        $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
         $quota_config = $phase_evaluation_config->quotaConfiguration ?: (object) ['rules' => (object) []];
         $geo_quota_config = $phase_evaluation_config->geoQuotaConfiguration ?: (object) ['distribution' => (object) [], 'geoDivision' => null];
-        $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
+        $geo_quota_config->distribution = (object) $geo_quota_config->distribution;
         
         $selected_global = [];
         $selected_by_quotas = [];
@@ -485,9 +486,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var Registration $this */
             $app->disableAccessControl();
 
-            if( $this->nextPhase){
-                $this->nextPhase->eligible = $this->eligible;
-                $this->nextPhase->save(true);
+            if($next_phase = $this->nextPhase){
+                $next_phase->eligible = $this->eligible;
+                $next_phase->save(true);
             }
             $app->enableAccessControl();
         });
@@ -703,7 +704,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         });
 
-        $app->hook('POST(opportunity.appyTechnicalEvaluation)', function() use($self) {
+        $app->hook('POST(opportunity.applyTechnicalEvaluation)', function() use($self) {
             $this->requireAuthentication();
 
             set_time_limit(0);
@@ -711,7 +712,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             ini_set('memory_limit', '-1');
     
             $app = App::i();
-    
+
             $opp = $this->requestedEntity;
     
             $opp->checkPermission('@control');
@@ -722,8 +723,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $this->errorJson(i::__('Somente para avaliações técnicas'), 400);
                 die;
             }
-
-            $statusIn = API::GT(0);
+            
+            $statusIn = API::IN([1,3,8,10]);
             $query_params = [
                 '@select' => 'id,score', 
                 'opportunity' => "EQ({$opp->id})",
@@ -755,7 +756,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                 foreach($registrations as $i => $reg) {
                     $count = $i+1;
+                    /** @var Registration $registration */
                     $registration = $app->repo('Registration')->find($reg);
+                    $registration->skipSync = true;
+                    $registration->__skipQueuingPCacheRecreation = true;
 
                     $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
                     switch ($new_status) {
@@ -812,7 +816,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $count = $i+1;
                         if($registrations[$i]['score'] >= $cutoff_score) {
                             $registration_id = $registrations[$i]['id'];
+                            /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($registration_id);
+                            $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
+
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SELECIONADO");
                             $registration->setStatusToApproved();
                             $app->em->clear();
@@ -827,7 +835,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $count = $i+1;
                         if($registrations[$i]['score'] >= $cutoff_score) {
                             $registration_id = $registrations[$i]['id'];
+                            /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($registration_id);
+                            $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
+
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para SUPLENTE");
                             $registration->setStatusToWaitlist();
                             $app->em->clear();
@@ -840,7 +852,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     foreach($registrations as $i => $reg) {
                         $count = $i+1;
                         if($reg['score'] < $cutoff_score) {
+                            /** @var Registration $registration */
                             $registration = $app->repo('Registration')->find($reg['id']);
+                            $registration->skipSync = true;
+                            $registration->__skipQueuingPCacheRecreation = true;
+
                             $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para INVÁLIDO");
                             $registration->setStatusToNotApproved();
                             $app->em->clear();
@@ -848,6 +864,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     }
                 }
             }
+
+            if($next_phase = $opp->nextPhase) {
+                $next_phase->enqueueRegistrationSync();
+            }
+
+            $opp->enqueueToPCacheRecreation();
 
             $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
         });
@@ -1397,12 +1419,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     public static function tiebreaker($tiebreaker_configuration, $registrations) {
-        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration) {
+        $app = App::i();
+        $self = $app->modules['EvaluationMethodTechnical']; 
+
+        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration, $self) {
             $result = $registration2->score <=> $registration1->score;
             if($result != 0) {
                 return $result;
             }
-            
+
             foreach($tiebreaker_configuration as $tiebreaker) {
                 $selected = $tiebreaker->selected;
                 if($selected !== null && $selected->fieldType == 'select') {
@@ -1462,9 +1487,110 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         }
                     }
                 }
+
+                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'criterion') {
+                    $registration1Has = $self->tiebreakerCriterion($tiebreaker->preferences, $registration1->id);
+                    $registration2Has = $self->tiebreakerCriterion($tiebreaker->preferences, $registration2->id);
+
+                    if($registration1Has != $registration2Has) {
+                        return $registration2Has <=> $registration1Has;
+                    }
+                }
+
+                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'sectionCriteria') {
+                    $registration1Has = $self->tiebreakerSectionCriteria($tiebreaker->preferences, $registration1->id);
+                    $registration2Has = $self->tiebreakerSectionCriteria($tiebreaker->preferences, $registration2->id);
+
+                    if($registration1Has != $registration2Has) {
+                        return $registration2Has <=> $registration1Has;
+                    }
+                }
+
             }
         });
         
         return $registrations;
+    }
+
+    public function tiebreakerCriterion($criteriaId, $registrationId) {
+        $app = App::i();
+        
+        $registration = $app->repo('Registration')->find($registrationId);
+        $criteria = $registration->evaluationMethodConfiguration->criteria;
+
+        $findCriteria = [];
+        foreach($criteria as $criterion) {
+            if($criterion->id === $criteriaId) {
+                $findCriteria[] = $criterion;
+            }
+        }
+
+        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
+        ];
+
+        $committee = $registration->opportunity->getEvaluationCommittee();
+
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
+
+        $result = 0;
+        foreach ($evaluations as $eval) {
+            foreach($eval->evaluationData as $key => $data) {
+                foreach($findCriteria as $cri) {
+                    if($key === $criteriaId) {
+                        $result += $data * $cri->weight;
+                    }
+                }
+            }
+        }
+
+        $num = count($evaluations);
+
+        return $num ? number_format($result / $num, 2) : null;
+    }
+
+    public function tiebreakerSectionCriteria($sectionId, $registrationId) {
+        $app = App::i();
+        
+        $registration = $app->repo('Registration')->find($registrationId);
+        $criteria = $registration->evaluationMethodConfiguration->criteria;
+
+        $findCriteria = [];
+        foreach($criteria as $criterion) {
+            if($criterion->sid === $sectionId) {
+                $findCriteria[] = $criterion;
+            }
+        }
+
+        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
+        ];
+
+        $committee = $registration->opportunity->getEvaluationCommittee();
+
+        $users = [];
+        foreach ($committee as $item) {
+            $users[] = $item->agent->user->id;
+        }
+
+        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
+
+        $result = 0;
+        foreach ($evaluations as $eval) {
+            foreach($eval->evaluationData as $key => $data) {
+                foreach($findCriteria as $cri) {
+                    if($key === $cri->id) {
+                        $result += $data * $cri->weight;
+                    }
+                }
+            }
+        }
+
+        return number_format($result, 2);
     }
 }

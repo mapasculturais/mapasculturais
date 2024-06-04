@@ -1,7 +1,7 @@
 <?php
 
 use MapasCulturais\i; ?>
-<p ng-if="data.entity.object.registrationRanges">
+<p ng-if="data.entity.object.registrationRanges.length > 0">
     <small><?php i::_e("Selecione em quais Faixas este campo é utilizado"); ?>:</small><br>
     <label class="checkbox-label">
         <input type="checkbox" onclick="if (!this.checked) return false" ng-click="data.newFieldConfiguration.registrationRanges = []" ng-checked="allRanges(data.newFieldConfiguration)"> <?php i::_e("Todas"); ?>

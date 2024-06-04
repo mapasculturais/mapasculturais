@@ -92,7 +92,7 @@ $this->import('
             </nav>
             <div :class="['description', {'description--event':entity.__objectType=='event'}]">
                 <slot name="description">
-                    <p v-html="entity.shortDescription" ></p>
+                    <p class="description" v-html="entity.shortDescription" ></p>
                 </slot>
             </div>
             <div v-if="entity.site" class="site">
