@@ -1139,6 +1139,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $app->registerMetadata($metadata, Registration::class);
         }
 
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationMetadada");
+        
         if($also_previous_phases && $this->parent) {
             $this->previousPhase->registerRegistrationMetadata();
         }
