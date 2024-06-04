@@ -69,9 +69,9 @@ class EventApiController
                 'terms' => $event->getTerms(),
             ];
 
-            return new JsonResponse($responseData, 201);
+            return new JsonResponse($responseData, Response::HTTP_CREATED);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], 400);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -93,9 +93,9 @@ class EventApiController
             $event = $this->eventRequest->validateEventExistent($params);
             $this->repository->softDelete($event);
 
-            return new JsonResponse([], 200);
+            return new JsonResponse([], Response::HTTP_OK);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], 400);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 }

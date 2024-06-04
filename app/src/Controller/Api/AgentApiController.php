@@ -63,9 +63,9 @@ class AgentApiController
                 'type' => $agent->getType(),
             ];
 
-            return new JsonResponse($responseData, 201);
+            return new JsonResponse($responseData, Response::HTTP_CREATED);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], 400);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 

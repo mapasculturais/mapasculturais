@@ -54,9 +54,9 @@ class SpaceApiController
                 'type' => $space->getType(),
             ];
 
-            return new JsonResponse($responseData, 201);
+            return new JsonResponse($responseData, Response::HTTP_CREATED);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], 400);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -79,11 +79,11 @@ class SpaceApiController
         $space = $this->repository->find((int) $params['id']);
 
         if (EntityStatusEnum::TRASH->getValue() === $space->status) {
-            return new JsonResponse(['error' => 'Espaço não encontrado'], JsonResponse::HTTP_NOT_FOUND);
+            return new JsonResponse(['error' => 'Espaço não encontrado'], Response::HTTP_NOT_FOUND);
         }
 
         $this->repository->softDelete($space);
 
-        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }
