@@ -18,9 +18,11 @@ $this->import('
         <div class="entity-card__header occurrence-card__header">
             <mc-avatar :entity="event" size="medium"></mc-avatar>
             <div class="user-info">
-                <mc-title  tag="h2" class="bold">
-                    {{event.name}}
-                </mc-title>
+                <a :href="event.singleUrl">
+                    <mc-title  tag="h2" class="bold">
+                        {{event.name}}
+                    </mc-title>
+                </a>
                 <div class="user-info__attr">
                     <span> {{event.subTitle}} </span>
                 </div>

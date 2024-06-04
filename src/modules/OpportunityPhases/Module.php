@@ -11,7 +11,6 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Exceptions;
 use MapasCulturais\i;
-use PHPUnit\Util\Annotation\Registry;
 
 class Module extends \MapasCulturais\Module{
 
@@ -211,7 +210,28 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
         $self = $this;
         $registration_repository = $app->repo('Registration');
-        
+
+        $app->hook("entity(Registration).<<insert|sent>>:before", function(){
+            if(!$this->opportunity->isDataCollection){
+              $this->sentTimestamp = $this->previousPhase->sentTimestamp;
+            }
+        });
+
+        $app->hook("entity(Registration).status(<<*>>)", function(){
+            if(!$this->opportunity->isDataCollection && $this->status > 0){
+                $this->sentTimestamp = $this->previousPhase->sentTimestamp;
+            }
+        });
+
+        // Redireciona o usuario sempre para a primeira fase
+        $app->hook("GET(opportunity.<<single|edit>>):<<*>>", function() use ($app) {
+            $entity = $this->requestedEntity;
+            if(!$entity->isFirstPhase){
+                $url = $app->createUrl("opportunity",$this->action,[$entity->firstPhase->id]);
+                $app->redirect($url);
+            }
+        });
+
         $app->hook('view.partial(singles/registration-edit--categories).params', function(&$params, &$template) use ($app) {
             if($this->controller->requestedEntity->opportunity->isOpportunityPhase && !$this->controller->requestedEntity->preview) {
                 $template = '_empty';
@@ -970,16 +990,13 @@ class Module extends \MapasCulturais\Module{
                         Registration::STATUS_INVALID => [i::__('Inválida'), i::__('Inválida em "{PHASE_NAME}"')],
                     ];
     
-                    if ($registration->opportunity->equals($previous_phase)) {
-                        $label = $labels[$registration->status][0];
-                    } else {
-                        $opp_phase = $registration->opportunity;
-                        $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
-                        $label = $labels[$registration->status][1];
-                        $label = str_replace('{PHASE_NAME}', $phase->name, $label);
-                    }
-    
+                    $opp_phase = $registration->opportunity;
+                    $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
+                    $label = $labels[$registration->status][1];
+                    $label = str_replace('{PHASE_NAME}', $phase->name, $label);
+
                     $current_phase_registration->consolidatedResult = $label;
+                    $current_phase_registration->score = $registration->score;
 
                     $methods = [
                         Registration::STATUS_DRAFT => 'setStatusToInvalid',
@@ -992,7 +1009,6 @@ class Module extends \MapasCulturais\Module{
 
                     $method = $methods[$registration->status];
 
-                    $app->log->debug("$current_phase_registration->number  ======= >>>>>>>> $method");
                     $current_phase_registration->$method();
 
                     $new_registrations[] = $current_phase_registration->number;
@@ -1052,7 +1068,7 @@ class Module extends \MapasCulturais\Module{
                     $registration->save(true);
 
                     if(!$as_draft){
-                        $current_phase_registration->send();
+                        $current_phase_registration->send(false);
                     }
 
                     $new_registrations[] = $current_phase_registration->number;
@@ -1077,6 +1093,10 @@ class Module extends \MapasCulturais\Module{
             $current_phase = $this->opportunity;
             if($next_phase = $current_phase->nextPhase){
                 $next_phase->enqueueRegistrationSync([$this]);
+                if(!$next_phase->isLastPhase) {
+                    $last_phase = $current_phase->lastPhase;
+                    $last_phase->enqueueRegistrationSync([$this]);
+                }
             }
         });
 
@@ -1472,6 +1492,11 @@ class Module extends \MapasCulturais\Module{
             'default'=> true,
         ]);
 
+        $this->registerOpportunityMetadata("registrationsOutdated", [
+            'label'=> "Indica que as inscrições da fase não estão atualizadas",
+            'type' => 'bool',
+            'default'=> false,
+        ]);
     }
 
 

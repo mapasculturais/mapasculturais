@@ -73,6 +73,10 @@ class Module extends \MapasCulturais\Module
             $fields = $opportunity->getRegistrationFieldConfigurations();
 
             foreach($fields as $field) {
+                if(!$this->isFieldVisisble($field)) {
+                    continue;
+                }
+                
                 if($field->fieldType == 'agent-owner-field') {
                     $entity = $this->owner;
 
