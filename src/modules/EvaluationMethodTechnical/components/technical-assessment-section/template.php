@@ -19,7 +19,7 @@ $this->import('
             <div class="technical-assessment-section__header">
                 <div class="title">
                     <input class="title__input" v-if="editingSections[section.id]" type="text" v-model="section.name" @blur="sendConfigs();editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
-                    <span v-else class="bold">{{section.name}}</span>
+                    <h4 v-else class="bold">{{section.name}}</h4>
                     <div class="title__buttons">
                         <button class="button button--text" @click="editSections(section.id)">
                             <mc-icon name="edit"></mc-icon>

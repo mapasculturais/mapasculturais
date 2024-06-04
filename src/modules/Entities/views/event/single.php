@@ -28,7 +28,7 @@ $this->import('
     opportunity-list
 ');
 
-$label = $this->isRequestedEntityMine() ? i::__('Meus eventos') : i::__('Evantos');
+$label = $this->isRequestedEntityMine() ? i::__('Meus eventos') : i::__('Eventos');
 $this->breadcrumb = [
     ['label' => i::__('Painel'), 'url' => $app->createUrl('panel', 'index')],
     ['label' => $label, 'url' => $app->createUrl('search', 'events')],
@@ -48,7 +48,7 @@ $this->breadcrumb = [
             </dl>
         </template>
     </entity-header>    
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <mc-tab icon="exclamation" label="<?= i::_e('Informações') ?>" slug="info">
             <div class="tabs__info">
                 <mc-container>
@@ -60,7 +60,7 @@ $this->breadcrumb = [
                             <event-info classes="col-12" :entity="entity"></event-info>
                             <div v-if="entity.longDescription" class="col-12 long-description">
                                 <h3><?php i::_e('Descrição Detalhada');?></h3>
-                                <p v-html="entity.longDescription" class="single-event__longdescription"></p>
+                                <p class="description"  v-html="entity.longDescription"></p>
                             </div> 
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity"  classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>

@@ -43,6 +43,8 @@ return [
      o padrão é ~/var/logs, onde ~ é a raíz do projeto, no docker é /var/www
      */
     'monolog.logsDir'          => env('LOG_DIR', VAR_PATH . 'logs/'),
+    
+    'app.log.hook.traceDepth' => env('LOG_HOOK_TRACE_DEPTH', 5),
 
     'app.log.query'         => env('LOG_QUERY', false),
     'app.log.hook'          => env('LOG_HOOK', false),

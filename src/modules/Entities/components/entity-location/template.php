@@ -25,7 +25,7 @@ $this->import('
             <entity-field @change="address()" classes="col-2 sm:col-4" :entity="entity" prop="En_Num"></entity-field>
             <entity-field @change="address()" classes="col-10 sm:col-8" :entity="entity" prop="En_Bairro"></entity-field>
             <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Complemento" label="<?php i::_e('Complemento ou ponto de referência')?>"></entity-field>
-            <entity-field @change="address()" classes="col-12" :entity="entity" prop="En_Pais" label="<?php i::_e('País')?>"></entity-field>
+            <entity-field v-if="statesAndCitiesCountryCode != 'BR'" @change="address()" classes="col-12" :entity="entity" prop="En_Pais" label="<?php i::_e('País') ?>"></entity-field>
         </div>
     </div>
 

@@ -276,6 +276,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      */
     protected $_subsiteId;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="long_description", type="text", nullable=true)
+     */
+    protected $longDescription;
+
      /**
      * @var object
      *
@@ -1006,14 +1013,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 if ($value['status'] > 0) {
                     $data['sent'] += $value['qtd'];
                 }
-                
-                if ($this->evaluationMethodConfiguration){
-                    if (in_array($value['status'], [0,1])){
-                        $data[$status] = $value['qtd'];
-                    } 
-                } else {
-                    $data[$status] = $value['qtd'];
-                }
+
+                $data[$status] = $value['qtd'];
             }
         }
 

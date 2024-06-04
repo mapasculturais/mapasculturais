@@ -227,13 +227,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $count = 0;
             $total = count($registrations);
             
-            if ($total > 0) {
-                $opp->enqueueToPCacheRecreation();
-            }
             // faça um foreach em cada registration e pegue as suas avaliações
             foreach ($registrations as $reg) {
                 $count++;
+                /** @var Registration $registration */
                 $registration = $app->repo('Registration')->find($reg['id']);
+                $registration->skipSync = true;
                 $registration->__skipQueuingPCacheRecreation = true;
 
                 $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
@@ -257,12 +256,18 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $registration->_setStatusTo($new_status);
                     
                 }
-                $app->disableAccessControl();
-                $registration->save(true);
-                $app->enableAccessControl();
+
+                $app->em->clear();
             }
 
 
+            if($next_phase = $opp->nextPhase) {
+                $next_phase->enqueueRegistrationSync();
+            }
+
+            if ($total > 0) {
+                $opp->enqueueToPCacheRecreation();
+            }
     
             $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
     

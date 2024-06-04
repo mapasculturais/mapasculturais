@@ -55,14 +55,14 @@ $this->import('
 
                 <?php $this->applyTemplateHook('mc-header-menu-agent', 'before') ?>
                 <li v-if="global.enabledEntities.agents">
-                    <?php $this->applyTemplateHook('mc-header-menu-opportunity', 'begin') ?>
+                    <?php $this->applyTemplateHook('mc-header-menu-agent', 'begin') ?>
                     <a href="<?= $app->createUrl('search', 'agents') ?>" class="mc-header-menu--item agent">
                         <span class="icon"> <mc-icon name="agent-2"> </span>
                         <p class="label"> <?php i::_e('Agentes') ?> </p>
                     </a>
-                    <?php $this->applyTemplateHook('mc-header-menu-opportunity', 'end') ?>
+                    <?php $this->applyTemplateHook('mc-header-menu-agent', 'end') ?>
                 </li>
-                <?php $this->applyTemplateHook('mc-header-menu-opportunity', 'after') ?>
+                <?php $this->applyTemplateHook('mc-header-menu-agent', 'after') ?>
 
                 <?php $this->applyTemplateHook('mc-header-menu-events', 'before') ?>
                 <li v-if="global.enabledEntities.events">

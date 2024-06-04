@@ -13,7 +13,8 @@ use MapasCulturais\Entities\User;
 use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
-    use Traits\MagicGetter;
+    use Traits\MagicGetter,
+        Traits\MagicCallers;
     
     /**
      * Number of query objects to generate query ids
@@ -1032,8 +1033,8 @@ class ApiQuery {
         } else {
             $where = $where_dqls;
         }
-        
-        if($this->usesStatus && (!$this->_subsiteId && !isset($this->apiParams['status']) || $this->_permission != 'view')){
+
+        if($this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
             $params = $this->apiParams;
             
             if($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
@@ -1197,7 +1198,10 @@ class ApiQuery {
                         $new_oder = str_replace('.', '_', preg_replace('#^([^ ]+)#', '$1_' . $cast, $_order));
                         $alias = preg_replace("# .*#", '', $new_oder);
                         $_prop = preg_replace("# .*#", '', $_order);
-                        $this->orderCasts[] = "CAST({$_prop} AS $cast) AS HIDDEN $alias";
+                        $order_cast = "CAST({$_prop} AS $cast) AS HIDDEN $alias";
+                        if(!in_array($order_cast, $this->orderCasts)){
+                            $this->orderCasts[] = $order_cast;
+                        }
                         $_order = $new_oder;
 
                     }
@@ -1211,6 +1215,10 @@ class ApiQuery {
     }
     
     protected function processEntities(array &$entities) {
+        if(empty($entities)) {
+            return;
+        }
+
         $this->appendCurrentUserPermissions($entities);
         $this->appendMetadata($entities);
         $this->appendRelations($entities);
@@ -3118,7 +3126,7 @@ class ApiQuery {
                     $admin_where = implode(' OR ', $admin_where);
                     $admin_where = "OR ($admin_where)";
                 }
-
+                $view_where = '';
                 if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
                     $params = $this->apiParams;
                     if($this->entityClassName === Opportunity::class && (isset($params['id']) || isset($params['parent']) || isset($params['status']))) {

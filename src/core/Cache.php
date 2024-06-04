@@ -13,7 +13,8 @@ use Symfony\Component\Cache\CacheItem;
  * @package MapasCulturais
  */
 class Cache {
-    use Traits\MagicGetter;
+    use Traits\MagicGetter,
+        Traits\MagicCallers;
 
     protected AdapterInterface $adapter;
 

@@ -985,11 +985,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     $scope.data = {
         fields: [],
         avaliableEvaluationFields: {},
-        category:{
-            fieldName: "category",
-            checked: false,
-            title: labels['category']
-        },
+       
         projectName:{
             fieldName: "projectName",
             checked: false,
@@ -1034,7 +1030,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     }
 
     $scope.data.fields = [
-        $scope.data.category,
+        // $scope.data.category,
         $scope.data.projectName,
         $scope.data.agentsSummary,
         $scope.data.spaceSummary,
@@ -1063,11 +1059,11 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
             item.checked = true;
         }
 
-        if(MapasCulturais.entity.object.avaliableEvaluationFields["category"] != "true" && item.categories?.length > 0){
-            item.disabled = true;
-            item.titleDisabled = labels['activateField'];
+        // if(MapasCulturais.entity.object.avaliableEvaluationFields["category"] != "true" && item.categories?.length > 0){
+        //     item.disabled = true;
+        //     item.titleDisabled = labels['activateField'];
             
-        }
+        // }
 
         var field_condition = item.config?.require?.field;
         if(field_condition && MapasCulturais.entity.object.avaliableEvaluationFields[field_condition] != "true"){
@@ -1740,11 +1736,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if ($scope.useRegistrationsRanges) {
-            result = result && (field.registrationRanges.length === 0 || field.registrationRanges.indexOf(MapasCulturais.entity.object.range) >= 0);
+            if(field.registrationRanges.length > 0  && !field.registrationRanges.includes(MapasCulturais.entity.object.range)) {
+                result = false;
+            }
         }
 
         if ($scope.useProponentTypes) {
-            result = result && (field.proponentTypes.length === 0 || field.proponentTypes.indexOf(MapasCulturais.entity.object.proponentType) >= 0);
+            if(field.proponentTypes.length > 0 && !field.proponentTypes.includes(MapasCulturais.entity.object.proponentType)) {
+                result = false;
+            }
         }
       
         if(field.conditional){
