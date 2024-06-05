@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro no carregamento do formulário de avaliação para o avaliador
 - Ajusta estẽncil do upload de imagem para carregar ja no tamanho máximo permitido
+- Corrige db-update que atualiza legado da distribuição de avaliaçações por categoria
 
 ## [7.4] 2024-05-28
 ### Novas funcionalidades
