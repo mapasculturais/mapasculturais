@@ -1,0 +1,16 @@
+tags:
+  - Selos
+summary: Cria um selo.
+description: Cria um selo com os dados informados.
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/seals/post-minimal.yaml'
+responses:
+  '201':
+    description: Selo criado com sucesso.
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/seal.yaml'

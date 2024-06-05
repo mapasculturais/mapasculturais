@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+require dirname(__DIR__, 2).'/vendor/autoload.php';
+require dirname(__DIR__, 2).'/public/bootstrap.php';
+
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+
+$entityManager = $app->em ?? null;
+
+$commands = [];
+
+ConsoleRunner::run(
+    new SingleManagerProvider($entityManager),
+    $commands
+);

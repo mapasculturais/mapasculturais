@@ -2,25 +2,36 @@
 
 Essa é a nova documentação do MapaCultural, voltada para desenvolvedores e/ou entusiastas do código.
 
-## Instalação
+<details>
+    <summary>Acesso Rápido</summary>
+    
+[Instalação dos Pacotes](#Instalação)<br>
+[Controller](#API)<br>
+[Repository](#Repository)<br>
+[Command](#Command)<br>
+[Data Fixtures](#Data-Fixtures)<br>
+[Testes](#Testes)<br>
+[Console](#console-commands)<br>
+
+</details>
+
+## Getting Started
+
+### Instalação dos pacotes
 
 Para instalar as dependências e atualizar o autoload, entre no container da aplicação e execute:
 ```shell
 composer.phar install
 ```
 
----
-
-## Arquitetura
-
-
-### Web
-
-
 --- 
 
-### API
-Para criar novos endpoints siga o passo a passo:
+## Controller
+
+Os `Controllers` em conjunto com as `Routes` permitem criar endpoints para diversas finalidades.
+
+<details>
+<summary>Como criar um novo controller</summary>
 
 #### 1 - Controller
 Crie uma nova classe em `/app/Controller/Api/`, por exemplo, `EventApiController.php`:
@@ -119,13 +130,101 @@ E deve estar retornando algo como:
 ]
 ```
 
+</details>
+
 ---
 
-### Repository
+## Validation
+A camada de validação é responsável por validar as entradas e saídas de dados
+
+Documentação do Validator: <https://symfony.com/doc/current/components/validator.html>
+
+Para organizar e validar esses dados nós utilizaremos o componente de validação atrelados a um DTO, cada propriedade terá suas regras e grupos
+
+<details>
+<summary>Como criar um novo DTO</summary>
+
+#### 1 - Data Transfer Object (DTO)
+Crie uma nova classe em `/app/DTO/`, por exemplo, `SealDTO.php`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\DTO;
+
+final class SealDTO
+{
+    ...   
+}
+```
+
+#### 2 - Propriedades
+Para cada propriedade do DTO, descreva as regras de validação e os grupos
+
+> [Lista completa](https://symfony.com/doc/current/reference/constraints.html) de regras do componente
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\DTO;
+
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Sequentially;
+use Symfony\Component\Validator\Constraints\Type;
+
+final class SealDTO
+{
+    #[Sequentially([new NotBlank(), new Type('string')], groups: ['post'])]
+    #[Type('string', groups: ['patch'])]
+    public mixed $name;
+
+    [...]   
+}
+```
+
+#### 3 - Validando
+
+Como mostrado no código acima a propriedade tem uma regra de validação e um grupo, esse grupo é importante para discernir o contexto de quais regras devem ser utilizadas
+> Por exemplo, no código acima temos uma regra em especial para o post, a propriedade _name_ é requerida.
+
+Agora como esse DTO será usado para validar algo?!
+
+Após a requisição ser enviada, o corpo será transformado de array para SealDTO, então iremos passar o objeto e o grupo para o validator, caso tenha alguma violação ela será retornada
+
+```php
+[...]
+
+$seal = $this->serializer->denormalize($data, SealDto::class);
+
+$validation = Validation::createValidatorBuilder()->enableAttributeMapping()->getValidator();
+
+$violations = $validation->validate($seal, groups: ['patch']);
+
+if (0 < count($violations)) {
+    throw new ValidatorException(violations: $violations);
+}
+
+[...] 
+```
+> O código acima normalmente estará no _Controller_ ou _Request_
+
+O objeto dessa validação é validar dados e não regra de négocio
+
+</details>
+
+---
+
+## Repository
 
 A camada responsável pela comunicação entre nosso código e o banco de dados.
 
-Para criar um novo Repository, siga o passo a passo a seguir:
+<details>
+<summary>Como criar um novo repository</summary>
+
+Siga o passo a passo a seguir:
 
 #### Passo 1 - Crie sua classe no `/app/src/Repository` e extenda a classe abstrata `AbstractRepository`
 
@@ -175,9 +274,15 @@ public function __construct()
     $this->repository = $this->mapaCulturalEntityManager->getRepository(MyEntity::class);
 }
 ```
+</details>
 
-### Command
+---
+
+## Command
 Comandos são entradas via CLI (linha de comando) que permitem automatizar alguns processos, como rodar testes, veririfcar estilo de código, e debugar rotas
+
+<details>
+<summary>Como criar um novo console command</summary>
 
 #### Passo 1 - Criar uma nova classe em `app/src/Command/`:
 
@@ -186,7 +291,9 @@ Comandos são entradas via CLI (linha de comando) que permitem automatizar algun
 
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;use Symfony\Component\Console\Input\InputInterface;use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class MyCommand extends Command
 {
@@ -214,7 +321,56 @@ Você deverá ver na tela o texto `Hello World!`
 #### Passo 3 - Documentação do pacote
 Para criar e gerenciar os nosso commands estamos utilizando o pacote `symfony/console`, para ver sua documentação acesse:
 
-Saiba mais em <https://symfony.com/doc/current/console.html>
+> Saiba mais em <https://symfony.com/doc/current/console.html>
+
+Para ver outros console commands da aplicação acesse a seção [Console Commands](#console-commands)
+
+</details>
+
+---
+
+## Data Fixtures
+Data Fixtures são dados falsos, normalmente criados para testar a aplicação, algumas vezes são chamados de "Seeders".
+
+<details>
+<summary>Como criar uma DataFixture para uma Entidade</summary>
+
+#### Passo 1 - Criar uma nova classe em `app/src/DataFixtures/`:
+
+```php
+<?php
+
+namespace App\DataFixtures;
+
+use Doctrine\Persistence\ObjectManager;
+use MapasCulturais\Entities\Agent;
+
+class AgentFixtures extends Fixture
+{
+    public function load(ObjectManager $manager): void
+    {
+        $agent = new Agent();
+        $agent->name = 'Agente Teste da Silva';
+        
+        $manager->persist($agent);
+        $manager->flush();
+    }
+} 
+```
+
+#### Passo 2 - Executar sua fixture no CLI
+
+Entre no container da aplicação PHP e execute isso
+
+```shell
+php app/bin/console app:fixtures
+```
+
+Pronto, você deverá ter um novo Agente criado de acordo com a sua Fixture.
+
+> Saiba mais sobre DataFixtures em <https://www.doctrine-project.org/projects/doctrine-data-fixtures/en/1.7/index.html>
+
+</details>
 
 ---
 
@@ -222,6 +378,9 @@ Saiba mais em <https://symfony.com/doc/current/console.html>
 Estamos utilizando o PHPUnit para criar e gerenciar os testes automatizados, focando principalmente nos testes funcionais, ao invés dos testes unitários.
 
 Documentação do PHPUnit: <https://phpunit.de/index.html>
+
+<details>
+<summary>Como criar um novo teste</summary>
 
 ### Criar um novo teste
 Para criar um no cenário de teste funcional, basta adicionar sua nova classe no diretório `/app/tests/functional/`, com o seguinte código:
@@ -253,8 +412,18 @@ public function testIfOneIsOne(): void
 }
 ```
 
+Para executar os testes veja a seção <a href="#console-commands">Console Commands</a>
+</details>
 
-### Execução
+---
+
+## Console Commands
+
+
+<details>
+<summary>TESTS</summary>
+
+### Testes Automatizados
 Para executar os testes, entre no container da aplicação e execute o seguinte comando:
 
 ```shell
@@ -262,23 +431,53 @@ php app/bin/console tests:backend {path}
 ```
 
 O `path` é opcional, o padrão é "app/tests"
+</details>
 
-## Style Code
+<details>
+<summary>STYLE CODE</summary>
+
+### Style Code
 Para executar o PHP-CS-FIXER basta entrar no container da aplicação e executar
-```
+
+```shwll
 php app/bin/console app:code-style
 ```
+</details>
 
-## Fixtures
+<details>
+<summary>DATA FIXTURES</summary>
+
+### Fixtures
+
+:memo: Fixtures são dados falsos com a finalidade de testes.
+
+
 Para executar o conjunto de fixtures basta entrar no container da aplicação e executar
 ```
 php app/bin/console app:fixtures
 ```
+</details>
 
-## Debug router
+<details>
+<summary>DEBUG ROUTES</summary>
+
+### Debug router
 Para listas as routas basta entrar no container da aplicação e executar
 ```
 php app/bin/console debug:router
 ```
 
 > Podemos usar as flags --show-actions e --show-controllers
+</details>
+
+<details>
+<summary>DOCTRINE</summary>
+
+### Doctrine
+Para listas todos os comandos disponiveis para gerenciamento do banco de dados através do doctrine basta entrar no container da aplicação e executar
+```
+php app/bin/doctrine
+```
+
+</details>
+

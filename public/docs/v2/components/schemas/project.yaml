@@ -1,42 +1,244 @@
 type: object
 properties:
+  '@entityType':
+     type: string
+     example: "project"
+     description: Tipo de entidade
   id:
-    type: integer
-    example: 15
-    description: Um id numérico que representa o Projeto
-  _type:
-    type: integer
-    example: 1
-    description: Um número que representa o tipo do Projeto
+     type: integer
+     example: 1
+     description: ID do projeto
   name:
-    type: string
-    example: "Projeto ABC"
-    description: Um texto que representa o nome do Projeto
+     type: string
+     example: "Projeto de Cultura"
+     description: Nome do projeto
   shortDescription:
-    type: string
-    example: "texto."
-    description: Uma breve descrição do Projeto
+     type: string
+     example: "descrição curta do projeto"
+     description: Descrição curta do projeto
   longDescription:
-    type: 'string'
-    example: "texto longo."
-    description: Uma descrição detalhada do Projeto
+     type: string
+     example: "Uma descrição mais detalhada sobre o projeto..."
+     description: Descrição detalhada do projeto
   updateTimestamp:
-    $ref: '../common-types/date.yaml'
+    $ref: "../common-types/date.yaml"
   startsOn:
-    type: 'string'
-    example: null
-    description: Data de início do Projeto
+   type: object
+   properties:
+     date:
+       type: string
+       example: "2024-05-01 00:00:00.000000"
+       description: Data de início do projeto
+     timezone_type:
+       type: integer
+       example: 3
+       description: Tipo de fuso horário
+     timezone:
+       type: string
+       example: "Etc/GMT+3"
+       description: Fuso horário
   endsOn:
-    type: 'string'
-    example: null
-    description: Data de término do Projeto
+   type: object
+   properties:
+     date:
+       type: string
+       example: "2024-05-31 15:39:00.000000"
+       description: Data de término do projeto
+     timezone_type:
+       type: integer
+       example: 3
+       description: Tipo de fuso horário
+     timezone:
+       type: string
+       example: "Etc/GMT+3"
+       description: Fuso horário
   createTimestamp:
-    $ref: '../common-types/date.yaml'
+    $ref: "../common-types/date.yaml"
   status:
     type: integer
     example: 1
-    description: Um número que representa o status do Projeto
-  _subsiteId:
-    type: 'integer'
+    description: Status do projeto
+  parent:
+    type: integer
     example: null
-    description: ID do Subsite associado ao Projeto
+    description: Projeto pai, se aplicável
+  owner:
+    $ref: "../common-types/owner.yaml"
+  subsite:
+    type: string
+    example: null
+    description: Subsite do projeto, se aplicável
+  terms:
+    type: object
+    properties:
+      tag:
+        type: array
+        items:
+          type: string
+        example: [ "teste" ]
+        description: Tags associadas ao projeto
+  site:
+    type: string
+    example: "https://www.google.com.br/?hl=pt-BR"
+    description: Site do projeto
+  facebook:
+    type: string
+    example: "Facebook"
+    description: Facebook do projeto
+  twitter:
+    type: string
+    example: "twitter"
+    description: Twitter do projeto
+  instagram:
+    type: string
+    example: "instagram"
+    description: Instagram do projeto
+  linkedin:
+    type: string
+    example: "linkindln"
+    description: LinkedIn do projeto
+  vimeo:
+    type: string
+    example: "vimeo"
+    description: Vimeo do projeto
+  spotify:
+    type: string
+    example: "spotfy"
+    description: Spotify do projeto
+  youtube:
+    type: string
+    example: "youtube"
+    description: YouTube do projeto
+  pinterest:
+    type: string
+    example: "pinterest"
+    description: Pinterest do projeto
+  emailPublico:
+    type: string
+    example: "email.publico@email.com"
+    description: Email público do projeto
+  emailPrivado:
+    type: string
+    example: "email.privado@email.com"
+    description: Email privado do projeto
+  telefonePublico:
+    type: string
+    example: "(85) 99999-9999"
+    description: Telefone público do projeto
+  telefone1:
+    type: string
+    example: "(85) 99999-9999"
+    description: Telefone 1 do projeto
+  telefone2:
+    type: string
+    example: "(85) 99999-9999"
+    description: Telefone 2 do projeto
+  type:
+    type: integer
+    example: 16
+    description: Tipo do projeto
+  controllerId:
+    type: string
+    example: "project"
+    description: ID do controlador do projeto
+  deleteUrl:
+    type: string
+    example: "http://localhost/project/apaga/1/"
+    description: URL para deletar o projeto
+  editUrl:
+    type: string
+    example: "http://localhost/edicao-de-projeto/1/"
+    description: URL para editar o projeto
+  singleUrl:
+    type: string
+    example: "http://localhost/projeto/1/"
+    description: URL do projeto
+  lockedFields:
+    type: array
+    items:
+      type: string
+    example: [ ]
+    description: Campos bloqueados
+  currentUserPermissions:
+    type: object
+    properties:
+      '@control':
+        type: boolean
+        example: true
+        description: Se o usuário atual tem controle
+      create:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar
+      modify:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode modificar
+      unpublish:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode despublicar
+      publish:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode publicar
+      view:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar
+      remove:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover
+      _control:
+        type: boolean
+        example: true
+        description: Se o usuário atual tem controle
+      viewPrivateFiles:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar arquivos privados
+      changeOwner:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode alterar o proprietário
+      viewPrivateData:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar dados privados
+      createAgentRelation:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar uma relação de agente
+      createAgentRelationWithControl:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar uma relação de agente com controle
+      removeAgentRelation:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover uma relação de agente
+      removeAgentRelationWithControl:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover uma relação de agente com controle
+      createSealRelation:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar uma relação de selo
+      removeSealRelation:
+        type: boolean
+        example: true
+        description: Se o usuário pode remover uma relação de selo
+      destroy:
+        type: boolean
+        example: true
+        description: Se o usuário pode apagar
+      archive:
+        type: boolean
+        example: true
+        description: Se o usuário pode arquivar
+      unarchive:
+        type: boolean
+        example: true
+        description: Se o usuário pode desarquivar

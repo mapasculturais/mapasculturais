@@ -37,8 +37,6 @@ properties:
     type: integer
     example: 1
     description: Status do espaço
-  updateTimestamp:
-    $ref: '../common-types/date.yaml'
   parent:
     type: integer
     description: O espaço pai (se houver)
@@ -46,6 +44,133 @@ properties:
     type: integer
     example: 1
     description: Proprietário do espaço
+  updateTimestamp:
+    $ref: '../common-types/date.yaml'
   subsite:
     type: integer
     description: Subsite do espaço (se houver)
+  emailPublico:
+    type: string
+    example: null
+    description: O email público do espaço
+  emailPrivado:
+    type: string
+    example: null
+    description: O email privado do espaço
+  cnpj:
+    type: string
+    example: null
+    description: O cnpj do espaço
+  razaoSocial:
+    type: string
+    example: null
+    description: A razão social do espaço
+  telefonePublico:
+    type: string
+    example: null
+    description: O telefone público do espaço
+  telefone1:
+    type: string
+    example: null
+    description: O primeiro telefone do espaço
+  telefone2:
+    type: string
+    example: null
+    description: O segundo telefone do espaço
+  capacidade:
+    type: string
+    example: null
+    description: Quantidade de pessoas para o espaço
+  endereco:
+    type: string
+    example: null
+    description: O endereço do espaço
+  En_CEP:
+    type: string
+    example: null
+    description: O CEP do espaço
+  En_Nome_Logradouro:
+    type: string
+    example: null
+    description: O nome do logradouro do espaço
+  En_Num:
+    type: string
+    example: null
+    description: O número do endereço do espaço
+  En_Complemento:
+    type: string
+    example: null
+    description: O complemento do endereço do espaço
+  En_Bairro:
+    type: string
+    example: null
+    description: O bairro do espaço
+  En_Municipio:
+    type: string
+    example: null
+    description: O município do espaço
+  En_Estado:
+    type: string
+    example: null
+    description: O estado do espaço
+  horario:
+    type: string
+    example: null
+    description: O horário de disponibilidade do espaço
+  criterios:
+    type: string
+    example: null
+    description: Os critérios do espaço
+  site:
+    type: string
+    example: null
+    description: O site do espaço
+  facebook:
+    type: string
+    example: null
+    description: O Facebook do espaço
+  twitter:
+    type: string
+    example: null
+    description: O Twitter do espaço
+  instagram:
+    type: string
+    example: null
+    description: O Instagram do espaço
+  linkedin:
+    type: string
+    example: null
+    description: O LinkedIn do espaço
+  vimeo:
+    type: string
+    example: null
+    description: O Vimeo do espaço
+  spotify:
+    type: string
+    example: null
+    description: O Spotify do espaço
+  youtube:
+    type: string
+    example: null
+    description: O YouTube do espaço
+  pinterest:
+    type: string
+    example: null
+    description: O Pinterest do espaço
+  sentNotification:
+    type: string
+    example: null
+  type:
+    type: string
+    example: 51
+    description: O tipo do espaço
+  terms:
+    type: object
+    properties:
+      area:
+        type: array
+        items:
+          type: string
+        example: [ ]
+        description: As áreas do espaço
+

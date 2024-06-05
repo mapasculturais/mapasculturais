@@ -1,5 +1,9 @@
 type: object
 properties:
+  "@entityType":
+    type: string
+    example: Seal
+    description: O tipo de entidade
   id:
     type: integer
     example: 1
@@ -10,19 +14,19 @@ properties:
     description: Um texto que representa o nome do Selo
   shortDescription:
     type: string
-    example: Descrição curta Selo Mapas
+    example: Descrição curta do Selo Mapas
     description: Uma breve descrição do Selo
   longDescription:
     type: string
-    example: Descrição longa Selo Mapas
+    example: Descrição longa do Selo Mapas
     description: Uma descrição detalhada do Selo
   certificateText:
     type: string
-    nullable: true
+    example: null
     description: Texto do certificado do Selo
   validPeriod:
     type: integer
-    example: 0
+    example: 1
     description: Período de validade do Selo
   createTimestamp:
     $ref: '../common-types/date.yaml'
@@ -30,10 +34,8 @@ properties:
     type: integer
     example: 1
     description: Um número que representa o status do Selo
-  _ownerId:
-    type: integer
-    example: 1
-    description: O ID do Agente que criou o Selo
+  owner:
+    $ref: '../common-types/owner.yaml'
   lockedFields:
     type: array
     items:
@@ -41,7 +43,98 @@ properties:
     description: Campos bloqueados do Selo
   updateTimestamp:
     $ref: '../common-types/date.yaml'
-  _subsiteId:
+  subsite:
     type: string
     nullable: true
-    description: ID do Subsite associado ao Selo
+    description: Subsite do Selo
+  site:
+    type: string
+    nullable: true
+    description: Site do Selo
+  controllerId:
+    type: string
+    example: "seal"
+    description: ID do controlador do selo
+  deleteUrl:
+    type: string
+    example: "http://localhost/seal/apaga/1/"
+    description: URL para deletar o selo
+  editUrl:
+    type: string
+    example: "http://localhost/edicao-de-selo/1/"
+    description: URL para editar o selo
+  singleUrl:
+    type: string
+    example: "http://localhost/selo/1/"
+    description: URL do selo
+  currentUserPermissions:
+    type: object
+    properties:
+      '@control':
+        type: boolean
+        example: true
+        description: Se o usuário atual tem controle
+      remove:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover
+      archive:
+        type: boolean
+        example: true
+        description: Se o usuário pode arquivar
+      view:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar
+      create:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar
+      modify:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode modificar
+      _control:
+        type: boolean
+        example: true
+        description: Se o usuário atual tem controle
+      viewPrivateFiles:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar arquivos privados
+      viewPrivateData:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar dados privados
+      changeOwner:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode alterar o proprietário
+      createAgentRelation:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar uma relação de agente
+      createAgentRelationWithControl:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar uma relação de agente com controle
+      removeAgentRelation:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover uma relação de agente
+      removeAgentRelationWithControl:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover uma relação de agente com controle
+      destroy:
+        type: boolean
+        example: true
+        description: Se o usuário pode apagar
+      publish:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode publicar
+      unarchive:
+        type: boolean
+        example: true
+        description: Se o usuário pode desarquivar

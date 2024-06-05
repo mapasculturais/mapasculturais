@@ -1,0 +1,21 @@
+tags:
+  - Selos
+summary: Atualiza um selo
+description: Atualiza um selo no sistema com as informações fornecidas.
+parameters:
+  - $ref: '../../parameters/path/id.yaml'
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/seals/post-complete.yaml'
+responses:
+  '201':
+    description: Selo atualizado com sucesso
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/seal.yaml'
+  '404':
+    description: Selo não encontrado

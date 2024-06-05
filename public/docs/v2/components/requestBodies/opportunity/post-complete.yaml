@@ -1,0 +1,93 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 3
+    description: Um id numérico que representa a oportunidade
+  _type:
+    type: integer
+    example: 20
+    description: O tipo de oportunidade (ex. festival de música)
+  name:
+    type: string
+    example: "Festival de Música Anual"
+    description: O nome da oportunidade
+  shortDescription:
+    type: string
+    example: "Um festival de música que reúne artistas locais e internacionais."
+    description: Uma breve descrição da oportunidade
+  registrationFrom:
+    type: string
+    format: date-time
+    example: "2024-06-01T00:00:00Z"
+    description: A data de início das inscrições
+  registrationTo:
+    type: string
+    format: date-time
+    example: "2024-06-30T23:59:59Z"
+    description: A data de término das inscrições
+  publishedRegistrations:
+    type: boolean
+    example: true
+    description: Indica se as inscrições foram publicadas
+  registrationCategories:
+    type: array
+    items:
+      type: string
+    example: ["Banda", "Solo", "DJ"]
+    description: As categorias de inscrição da oportunidade
+  createTimestamp:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date-time
+        example: "2024-05-01 11:44:15.000000"
+        description: A data de criação da oportunidade
+      timezone_type:
+        type: integer
+        example: 3
+        description: O tipo de fuso horário
+      timezone:
+        type: string
+        example: "Etc/GMT+3"
+        description: O fuso horário da data de criação
+  updateTimestamp:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date-time
+        example: "2024-05-01 11:44:15.000000"
+        description: A data de atualização da oportunidade
+      timezone_type:
+        type: integer
+        example: 3
+        description: O tipo de fuso horário
+      timezone:
+        type: string
+        example: "Etc/GMT+3"
+        description: O fuso horário da data de atualização
+  publishTimestamp:
+    type: string
+    format: date-time
+    example: "2024-07-01T00:00:00Z"
+    description: A data de publicação da oportunidade
+  autoPublish:
+    type: boolean
+    example: true
+    description: Indica se a oportunidade será publicada automaticamente
+  status:
+    type: integer
+    example: 1
+    description: O status da oportunidade
+  _subsiteId:
+    type: integer
+    example: 2
+    description: O ID do subsite vinculado à oportunidade
+  avaliableEvaluationFields:
+    type: array
+    items:
+      type: string
+    example: ["Performance", "Originalidade", "Técnica"]
+    description: Os campos de avaliação disponíveis para a oportunidade

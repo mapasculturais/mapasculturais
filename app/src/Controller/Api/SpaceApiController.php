@@ -4,24 +4,26 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Enum\EntityStatusEnum;
+use App\Exception\ResourceNotFoundException;
 use App\Repository\SpaceRepository;
 use App\Request\SpaceRequest;
 use App\Service\SpaceService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class SpaceApiController
 {
     private SpaceRepository $repository;
-    private SpaceService $spaceService;
     private SpaceRequest $spaceRequest;
+    private SpaceService $spaceService;
 
     public function __construct()
     {
         $this->repository = new SpaceRepository();
-
-        $this->spaceService = new SpaceService();
         $this->spaceRequest = new SpaceRequest();
+        $this->spaceService = new SpaceService();
     }
 
     public function getList(): JsonResponse
@@ -52,9 +54,23 @@ class SpaceApiController
                 'type' => $space->getType(),
             ];
 
-            return new JsonResponse($responseData, 201);
+            return new JsonResponse($responseData, Response::HTTP_CREATED);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], 400);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function patch(array $params): JsonResponse
+    {
+        try {
+            $spaceData = $this->spaceRequest->validateUpdate();
+            $space = $this->spaceService->update((int) $params['id'], (object) $spaceData);
+
+            return new JsonResponse($space, Response::HTTP_CREATED);
+        } catch (ResourceNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -62,12 +78,12 @@ class SpaceApiController
     {
         $space = $this->repository->find((int) $params['id']);
 
-        if (-10 === $space->status) {
-            return new JsonResponse(['error' => 'Espaço não encontrado'], JsonResponse::HTTP_NOT_FOUND);
+        if (EntityStatusEnum::TRASH->getValue() === $space->status) {
+            return new JsonResponse(['error' => 'Espaço não encontrado'], Response::HTTP_NOT_FOUND);
         }
 
         $this->repository->softDelete($space);
 
-        return new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

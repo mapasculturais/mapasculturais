@@ -1,0 +1,16 @@
+tags:
+  - Oportunidades
+summary: Atualiza de uma oportunidade.
+description: Atualiza uma oportunidade existente com os dados fornecidos.
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/opportunity/post-complete.yaml'
+responses:
+  '201':
+    description: Oportunidade atualizada com sucesso.
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/opportunity.yaml'

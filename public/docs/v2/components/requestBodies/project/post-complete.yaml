@@ -1,0 +1,93 @@
+type: object
+properties:
+  name:
+    type: string
+    example: "Projeto de Cultura"
+    description: Nome do projeto
+  shortDescription:
+    type: string
+    example: "descrição curta do projeto"
+    description: Descrição curta do projeto
+  longDescription:
+    type: string
+    example: "Uma descrição mais detalhada sobre o projeto..."
+    description: Descrição longa do projeto
+  startsOn:
+    type: string
+    format: date-time
+    example: "2024-05-01 00:00:00.000000"
+    description: Data de início do projeto
+  endsOn:
+    type: string
+    format: date-time
+    example: "2024-05-31 15:39:00.000000"
+    description: Data de término do projeto
+  site:
+    type: string
+    example: "https://www.google.com.br/?hl=pt-BR"
+    description: Site do projeto
+  facebook:
+    type: string
+    example: "Facebook"
+    description: Facebook do projeto
+  twitter:
+    type: string
+    example: "twitter"
+    description: Twitter do projeto
+  instagram:
+    type: string
+    example: "instagram"
+    description: Instagram do projeto
+  linkedin:
+    type: string
+    example: "linkindln"
+    description: LinkedIn do projeto
+  vimeo:
+    type: string
+    example: "vimeo"
+    description: Vimeo do projeto
+  spotify:
+    type: string
+    example: "spotfy"
+    description: Spotify do projeto
+  youtube:
+    type: string
+    example: "youtube"
+    description: YouTube do projeto
+  pinterest:
+    type: string
+    example: "pinterest"
+    description: Pinterest do projeto
+  emailPublico:
+    type: string
+    example: "email.publico@email.com"
+    description: Email público do projeto
+  emailPrivado:
+    type: string
+    example: "email.privado@email.com"
+    description: Email privado do projeto
+  telefonePublico:
+    type: string
+    example: "(85) 99999-9999"
+    description: Telefone público do projeto
+  telefone1:
+    type: string
+    example: "(85) 99999-9999"
+    description: Telefone 1 do projeto
+  telefone2:
+    type: string
+    example: "(85) 99999-9999"
+    description: Telefone 2 do projeto
+  type:
+    type: integer
+    example: 16
+    description: Tipo do projeto
+  terms:
+    type: object
+    properties:
+      tag:
+        type: array
+        items:
+          type: string
+        example: ["teste"]
+        description: Tags associadas ao projeto

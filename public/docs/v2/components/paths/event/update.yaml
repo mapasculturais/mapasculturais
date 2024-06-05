@@ -1,0 +1,16 @@
+tags:
+  - Eventos
+summary: Atualiza de um evento.
+description: Atualiza um evento existente com os dados fornecidos.
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/event/post-complete.yaml'
+responses:
+  '201':
+    description: Evento atualizado com sucesso.
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/event.yaml'

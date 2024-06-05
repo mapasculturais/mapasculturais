@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Request;
 
+use App\Enum\EntityStatusEnum;
 use App\Repository\EventRepository;
 use Exception;
 use MapasCulturais\Entities\Event;
@@ -39,14 +40,22 @@ class EventRequest
         return $data;
     }
 
-    public function validateDelete(array $params): Event
+    public function validateEventExistent(array $params): Event
     {
         $event = $this->repository->find((int) $params['id']);
 
-        if (!$event || -10 === $event->status) {
+        if (!$event || EntityStatusEnum::TRASH->getValue() === $event->status) {
             throw new Exception('Event not found or already deleted.');
         }
 
         return $event;
+    }
+
+    public function validateUpdate(): array
+    {
+        $jsonData = $this->request->getContent();
+        $data = json_decode($jsonData, true);
+
+        return $data;
     }
 }
