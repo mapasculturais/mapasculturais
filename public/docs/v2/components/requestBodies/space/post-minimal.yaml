@@ -1,0 +1,39 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 5
+    description: Um id numérico que representa o espaço
+  location:
+    type: object
+    properties:
+      latitude:
+        type: string
+        example: "0"
+        description: Latitude do espaço
+      longitude:
+        type: string
+        example: "0"
+        description: Longitude do espaço
+  name:
+    type: string
+    example: Secult
+    description: Um texto que representa o nome do espaço
+  status:
+    type: integer
+    example: 1
+    description: Status do espaço
+  type:
+    type: string
+    example: 51
+    description: O tipo do espaço
+  terms:
+    type: object
+    properties:
+      area:
+        type: array
+        items:
+          type: string
+        example: [ ]
+        description: As áreas do espaço
+

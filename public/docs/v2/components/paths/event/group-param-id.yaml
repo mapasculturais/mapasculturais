@@ -1,5 +1,8 @@
 get:
   $ref: './get-one.yaml'
 
+patch:
+  $ref: './update.yaml'
+
 delete:
   $ref: './delete.yaml'

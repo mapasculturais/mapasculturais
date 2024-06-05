@@ -1,56 +1,223 @@
 type: object
 properties:
+  '@entityType':
+    type: string
+    example: "event"
+    description: O tipo de entidade
   id:
     type: integer
-    example: 101
-    description: Um id numérico que representa o Evento
+    example: 1
+    description: O ID do evento
   name:
     type: string
-    example: "Evento para teste"
-    description: O nome do Evento
+    example: "Evento de Cultura"
+    description: O nome do evento
   shortDescription:
     type: string
-    example: "texto."
-    description: Uma breve descrição do Evento.
+    example: "Este é um evento incrível organizado por todos."
+    description: Uma descrição curta do evento
   longDescription:
     type: string
-    example: "texto longo."
-    description: Uma descrição detalhada do Evento.
-  startsOn:
+    example: "Junte-se a nós para uma experiência única e emocionante! O evento de Cultura oferece uma variedade de atividades e entretenimento para todos os gostos."
+    description: Uma descrição longa do evento
+  rules:
     type: string
-    format: date-time
-    example: "2024-05-01T09:00:00Z"
-    description: Data e hora de início do Evento
-  endsOn:
-    type: string
-    format: date-time
-    example: "2024-05-01T17:00:00Z"
-    description: Data e hora de término do Evento
+    example: "Por favor, siga todas as regras e regulamentos do local."
+    description: As regras do evento
+  createTimestamp:
+    $ref: '../common-types/date.yaml'
   status:
     type: integer
     example: 1
-    description: Um número que representa o status do Evento.
-  categoryId:
-    type: integer
-    example: 3
-    description: O id da categoria do Evento
-  isPublic:
-    type: boolean
-    example: true
-    description: Indica se o Evento é público ou privado
-  contactEmail:
-    type: string
-    example: "contato@eventoteste.com"
-    description: E-mail de contato para o Evento
-  contactPhone:
-    type: string
-    example: "+5511999999999"
-    description: Telefone de contato para o Evento
-  createTimestamp:
-    $ref: '../common-types/date.yaml'
+    description: O status do evento
+  owner:
+    $ref: '../common-types/owner.yaml'
+  project:
+    type: object
+    example: null
+    description: O projeto do evento
   updateTimestamp:
     $ref: '../common-types/date.yaml'
-  _subsiteId:
+  subTitle:
+    type: string
+    example: "subtitulo do evento"
+    description: O subtítulo do Evento.
+  registrationInfo:
+    type: string
+    example: "informações do evento"
+    description: Informações de registro do Evento.
+  classificacaoEtaria:
+    type: string
+    example: "Livre"
+    description: A classificação etária do Evento.
+  telefonePublico:
+    type: string
+    example: "(85) 99999-9999"
+    description: O telefone público do Evento.
+  traducaoLibras:
+    type: string
+    example: "Sim"
+    description: Se o Evento tem tradução para Libras.
+  descricaoSonora:
+    type: string
+    example: "Não"
+    description: Se o Evento tem descrição sonora.
+  site:
+    type: string
+    example: "https://www.google.com.br/?hl=pt-BR"
+    description: O site do Evento.
+  facebook:
+    type: string
+    example: "Facebook"
+    description: O Facebook do Evento.
+  twitter:
+    type: string
+    example: "Twitter"
+    description: O Twitter do Evento.
+  instagram:
+    type: string
+    example: "Instagram"
+    description: O Instagram do Evento.
+  linkedin:
+    type: string
+    example: "LinkedIn"
+    description: O LinkedIn do Evento.
+  vimeo:
+    type: string
+    example: "Vimeo"
+    description: O Vimeo do Evento.
+  spotify:
+    type: string
+    example: "Spotify"
+    description: O Spotify do Evento.
+  youtube:
+    type: string
+    example: "YouTube"
+    description: O YouTube do Evento.
+  pinterest:
+    type: string
+    example: "Pinterest"
+    description: O Pinterest do Evento.
+  event_attendance:
     type: integer
-    example: null
-    description: ID do Subsite associado ao Evento
+    example: 50
+    description: A quantidade permitidas de pessoas para o Evento.
+  terms:
+    type: object
+    properties:
+      tag:
+        type: array
+        items:
+          type: string
+        example: [ ]
+        description: As tags do Evento.
+      linguagem:
+        type: array
+        items:
+          type: string
+        example: [ "Dança" ]
+        description: As linguagens do Evento.
+  controllerId:
+    type: string
+    example: "event"
+    description: O ID do controlador
+  deleteUrl:
+    type: string
+    example: "http://localhost/event/apaga/1/"
+    description: A URL para deletar o evento
+  editUrl:
+    type: string
+    example: "http://localhost/edicao-de-evento/1/"
+    description: A URL para editar o evento
+  singleUrl:
+    type: string
+    example: "http://localhost/evento/1/"
+    description: A URL do evento
+  lockedFields:
+    type: array
+    items:
+      type: string
+    description: Os campos bloqueados do evento
+  currentUserPermissions:
+    type: object
+    properties:
+      '@control':
+        type: boolean
+        example: true
+        description: Se o usuário atual tem controle
+      create:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar
+      modify:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode modificar
+      unpublish:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode despublicar
+      publish:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode publicar
+      view:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar
+      remove:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover
+      _control:
+        type: boolean
+        example: true
+        description: Se o usuário atual tem controle
+      viewPrivateFiles:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar arquivos privados
+      changeOwner:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode alterar o proprietário
+      viewPrivateData:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode visualizar dados privados
+      createAgentRelation:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar uma relação de agente
+      createAgentRelationWithControl:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar uma relação de agente com controle
+      removeAgentRelation:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover uma relação de agente
+      removeAgentRelationWithControl:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode remover uma relação de agente com controle
+      createSealRelation:
+        type: boolean
+        example: true
+        description: Se o usuário atual pode criar uma relação de selo
+      removeSealRelation:
+        type: boolean
+        example: true
+        description: Se o usuário pode remover uma relação de selo
+      destroy:
+        type: boolean
+        example: true
+        description: Se o usuário pode apagar
+      archive:
+        type: boolean
+        example: true
+        description: Se o usuário pode arquivar
+      unarchive:
+        type: boolean
+        example: true
+        description: Se o usuário pode desarquivar

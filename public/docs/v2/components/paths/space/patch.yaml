@@ -1,0 +1,27 @@
+tags:
+  - Espaços
+summary: Atualiza um espaço existente
+description: Atualiza um novo espaço no sistema com as informações fornecidas.
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: integer
+    description: ID do espaço a ser atualizado
+    example: 1
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/space/post-complete.yaml'
+responses:
+  '201':
+    description: Espaço atualizado com sucesso
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/space.yaml'
+  '404':
+    description: Espaço não encontrado

@@ -1,0 +1,95 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id númerico que representa o Agente
+  name:
+    type: string
+    example: "Agente 1"
+    description: O nome do Agente
+  publicLocation:
+    type: boolean
+    exemple: false
+    description: Se o Agente possui localização pública
+  shortDescription:
+    type: string
+    example: "Descrição curta Agente 1"
+    description: Uma breve descrição do Agente
+  longDescription:
+    type: string
+    example: "Descrição longa Agente 1"
+    description: Uma descrição detalhada do Agente
+  terms:
+    type: object
+    properties:
+      area:
+        type: array
+        items:
+          type: string
+        example: [ "Música" ]
+        description: Áreas relacionadas ao agente
+      funcao:
+        type: array
+        items:
+          type: string
+        example: [ "Cantor" ]
+        description: Funções do Agente
+      tag:
+        type: array
+        items:
+          type: string
+        example: [ "Rock" ]
+        description: Tags do Agente
+  escolaridade:
+    type: string
+    example: "Superior Completo"
+    description: Escolaridade do Agente
+  emailPublico:
+    type: string
+    example: "agent@gmail.com"
+    description: Email público do Agente
+  pessoaDeficiente:
+    type: array
+    exemple: [ "Auditiva", "Visual" ]
+    description: Deficiências do Agente (se houver)
+  type:
+    type: integer
+    example: 1
+    description: Tipo do agente (1 - Individual, 2 - Coletivo)
+  site:
+    type: string
+    example: "www.site.com"
+    description: Site do Agente
+  instagram:
+    type: string
+    example: "www.instagram.com"
+    description: Instagram do Agente
+  facebook:
+    type: string
+    example: "www.facebook.com"
+    description: Facebook do Agente
+  twitter:
+    type: string
+    example: "www.twitter.com"
+    description: Twitter do Agente
+  linkedin:
+    type: string
+    example: "www.linkedin.com"
+    description: Linkedin do Agente
+  youtube:
+    type: string
+    example: "www.youtube.com"
+    description: Youtube do Agente
+  spotify:
+    type: string
+    example: "www.spotify.com"
+    description: Spotify do Agente
+  vimeo:
+    type: string
+    example: "www.vimeo.com"
+    description: Vimeo do Agente
+  pinterest:
+    type: string
+    example: "www.pinterest.com"
+    description: Pinterest do Agente

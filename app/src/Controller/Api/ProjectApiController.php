@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Exception\ResourceNotFoundException;
 use App\Repository\ProjectRepository;
 use App\Request\ProjectRequest;
 use App\Service\ProjectService;
@@ -60,16 +61,29 @@ class ProjectApiController
         }
     }
 
+    public function patch(array $params): JsonResponse
+    {
+        try {
+            $projectData = $this->projectRequest->validateUpdate();
+
+            $project = $this->projectService->update((int) $params['id'], (object) $projectData);
+
+            return new JsonResponse($project, Response::HTTP_CREATED);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
     public function delete(array $params): JsonResponse
     {
-        $project = $this->repository->find((int) $params['id']);
+        try {
+            $this->projectService->discard((int) $params['id']);
 
-        if (!$project || -10 === $project->status) {
-            return new JsonResponse(status: Response::HTTP_NOT_FOUND);
+            return new JsonResponse(status: Response::HTTP_NO_CONTENT);
+        } catch (ResourceNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-
-        $this->repository->softDelete($project);
-
-        return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 }

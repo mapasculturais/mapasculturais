@@ -1,0 +1,16 @@
+tags:
+  - Projetos
+summary: Edita um projeto
+description: Edita um projeto com as informações fornecidas.
+requestBody:
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/project/post-complete.yaml'
+responses:
+  '201':
+    description: O projeto atualizado
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/project.yaml'

@@ -1,0 +1,13 @@
+tags:
+  - Termos
+summary: Recupera um único termo
+description: Permite a recuperação de detalhes de um termo específico usando seu ID.
+parameters:
+  - $ref: '../../parameters/path/id.yaml'
+responses:
+  '200':
+    description: Detalhes do termo recuperado.
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/term.yaml'

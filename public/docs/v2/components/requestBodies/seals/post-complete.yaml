@@ -1,0 +1,26 @@
+type: object
+properties:
+  id:
+    type: integer
+    example: 1
+    description: Um id númerico que representa o Selo
+  name:
+    type: string
+    example: "Selo 1"
+    description: O nome do Selo
+  shortDescription:
+    type: string
+    example: "Descrição curta Selo 1"
+    description: Uma breve descrição do Selo
+  longDescription:
+    type: string
+    example: "Descrição longa Selo 1"
+    description: Uma descrição detalhada do Selo
+  certificateText:
+    type: string
+    example: "Certificado de Selo 1"
+    description: Texto do certificado do Selo
+  validPeriod:
+    type: number
+    example: 10
+    description: Período de validade do Selo em meses
