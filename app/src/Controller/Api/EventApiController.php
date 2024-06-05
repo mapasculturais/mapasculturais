@@ -9,6 +9,7 @@ use App\Request\EventRequest;
 use App\Service\EventService;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class EventApiController
 {
@@ -68,21 +69,33 @@ class EventApiController
                 'terms' => $event->getTerms(),
             ];
 
-            return new JsonResponse($responseData, 201);
+            return new JsonResponse($responseData, Response::HTTP_CREATED);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], 400);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function patch(array $params): JsonResponse
+    {
+        try {
+            $eventData = $this->eventRequest->validateUpdate();
+            $event = $this->eventService->update((int) $params['id'], (object) $eventData);
+
+            return new JsonResponse($event, Response::HTTP_CREATED);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 
     public function delete($params): JsonResponse
     {
         try {
-            $event = $this->eventRequest->validateDelete($params);
+            $event = $this->eventRequest->validateEventExistent($params);
             $this->repository->softDelete($event);
 
-            return new JsonResponse([], 200);
+            return new JsonResponse([], Response::HTTP_OK);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], 400);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 }

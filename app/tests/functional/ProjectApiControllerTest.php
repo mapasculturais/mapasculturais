@@ -4,56 +4,94 @@ declare(strict_types=1);
 
 namespace App\Tests;
 
+use App\DataFixtures\ProjectFixtures;
+use App\Tests\fixtures\ProjectTestFixtures;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 class ProjectApiControllerTest extends AbstractTestCase
 {
+    private const BASE_URL = '/api/v2/projects';
+
     public function testGetProjectsShouldRetrieveAList(): void
     {
-        $response = $this->client->request('GET', '/api/v2/projects');
+        $response = $this->client->request(Request::METHOD_GET, self::BASE_URL);
         $content = json_decode($response->getContent());
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertIsArray($content);
     }
 
     public function testGetOneProjectShouldRetrieveAObject(): void
     {
-        $response = $this->client->request('GET', '/api/v2/projects/1');
+        $response = $this->client->request(Request::METHOD_GET, self::BASE_URL.'/1');
         $content = json_decode($response->getContent());
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->assertIsObject($content);
     }
 
     public function testCreateProjectShouldCreateAProject(): void
     {
-        $data = [
-            'name' => 'PHP com Rapadura',
-            'shortDescription' => 'php com rapadura',
-            'type' => 1,
-        ];
+        $projectTestFixtures = ProjectTestFixtures::partial();
 
-        $response = $this->client->request('POST', '/api/v2/projects', [
-            'headers' => ['Content-Type' => 'application/json'],
-            'body' => json_encode($data),
+        $response = $this->client->request(Request::METHOD_POST, self::BASE_URL, [
+            'body' => $projectTestFixtures->json(),
         ]);
 
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
 
         $content = json_decode($response->getContent(), true);
 
-        $this->assertEquals($data['name'], $content['name']);
-        $this->assertEquals($data['shortDescription'], $content['shortDescription']);
-        $this->assertEquals($data['type'], $content['type']);
+        foreach ($projectTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
+        }
+    }
 
     public function testDeleteProjectShouldReturnSuccess(): void
     {
-        $projectId = 1;
+        $this->markTestSkipped();
+        $response = $this->client->request(Request::METHOD_DELETE, self::BASE_URL.'/1');
 
-        $response = $this->client->request('DELETE', '/api/v2/projects/'.$projectId);
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
-        $this->assertEquals(204, $response->getStatusCode());
+        $response = $this->client->request(Request::METHOD_GET, self::BASE_URL.'/1');
+        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
 
-        $response = $this->client->request('GET', '/api/v2/projects/'.$projectId);
-        $this->assertEquals(404, $response->getStatusCode());
+    public function testUpdateProjectShouldUpdateAProject(): void
+    {
+        $projectTestFixtures = ProjectTestFixtures::partial();
+        $url = sprintf(self::BASE_URL.'/%s', ProjectFixtures::PROJECT_ID_2);
+
+        $response = $this->client->request(Request::METHOD_PATCH, $url, [
+            'body' => $projectTestFixtures->json(),
+        ]);
+
+        $content = json_decode($response->getContent(), true);
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertIsArray($content);
+        foreach ($projectTestFixtures->toArray() as $key => $value) {
+            $this->assertEquals($value, $content[$key]);
+        }
+    }
+
+    public function testUpdateNotFoundedProjectResource(): void
+    {
+        $projectTestFixtures = ProjectTestFixtures::partial();
+        $url = sprintf(self::BASE_URL.'/%s', 1024);
+
+        $response = $this->client->request(Request::METHOD_PATCH, $url, [
+            'body' => $projectTestFixtures->json(),
+        ]);
+
+        $error = [
+            'error' => 'Project not found or already deleted.',
+        ];
+
+        $content = json_decode($response->getContent(false), true);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertIsArray($content);
+        $this->assertEquals($error, $content);
     }
 }

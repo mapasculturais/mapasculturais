@@ -383,14 +383,4 @@ class Project extends \MapasCulturais\Entity
     {
         $this->shortDescription = $shortDescription;
     }
-
-    public function getType(): int
-    {
-        return $this->_type;
-    }
-
-    public function setType(int $type): void
-    {
-        $this->_type = $type;
-    }
 }

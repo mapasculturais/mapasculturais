@@ -35,4 +35,12 @@ class SpaceRequest
 
         return $data;
     }
+
+    public function validateUpdate(): array
+    {
+        $jsonData = $this->request->getContent();
+        $data = json_decode($jsonData, true);
+
+        return $data;
+    }
 }

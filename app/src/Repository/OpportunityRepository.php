@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Enum\EntityStatusEnum;
 use Doctrine\Persistence\ObjectRepository;
 use MapasCulturais\Entities\AgentOpportunity;
 use MapasCulturais\Entities\Opportunity;
@@ -26,9 +27,15 @@ class OpportunityRepository extends AbstractRepository
             ->getArrayResult();
     }
 
-    public function find(int $id): Opportunity
+    public function find(int $id): ?Opportunity
     {
         return $this->repository->find($id);
+    }
+
+    public function save(Opportunity $opportunity): void
+    {
+        $this->mapaCulturalEntityManager->persist($opportunity);
+        $this->mapaCulturalEntityManager->flush();
     }
 
     public function findOpportunitiesByAgentId(int $agentId): array
@@ -42,5 +49,11 @@ class OpportunityRepository extends AbstractRepository
             ->setParameter('agentId', $agentId);
 
         return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    public function softDelete(Opportunity $opportunity): void
+    {
+        $opportunity->setStatus(EntityStatusEnum::TRASH->getValue());
+        $this->save($opportunity);
     }
 }

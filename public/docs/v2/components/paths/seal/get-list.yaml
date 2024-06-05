@@ -1,4 +1,3 @@
-get:
   tags:
     - Selos
   summary: Recupera a lista de selos

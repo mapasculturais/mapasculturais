@@ -12,6 +12,7 @@ return [
     ],
     '/api/v2/projects/{id}' => [
         Request::METHOD_GET => [ProjectApiController::class, 'getOne'],
+        Request::METHOD_PATCH => [ProjectApiController::class, 'patch'],
         Request::METHOD_DELETE => [ProjectApiController::class, 'delete'],
     ],
 ];

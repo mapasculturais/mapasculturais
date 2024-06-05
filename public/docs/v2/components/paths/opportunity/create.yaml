@@ -1,0 +1,17 @@
+tags:
+  - Oportunidades
+summary: Criação de uma nova oportunidade.
+description: Cadastra uma nova oportunidade no sistema com as informações fornecidas.
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/opportunity/post-minimal.yaml'
+responses:
+  '201':
+    description: Oportunidade criada com sucesso.
+    content:
+      application/json:
+        schema:
+          $ref: '../../responses/opportunity/created.yaml'

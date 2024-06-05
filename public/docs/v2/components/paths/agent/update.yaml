@@ -1,0 +1,25 @@
+tags:
+  - Agentes
+summary: Atualiza um agente
+description: Atualiza um agente no sistema com as informações fornecidas.
+parameters:
+  - in: path
+    name: id
+    required: true
+    description: ID do agente a ser atualizado
+    example: 1
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        $ref: '../../requestBodies/agent/post-complete.yaml'
+responses:
+  '201':
+    description: Agente atualizado com sucesso
+    content:
+      application/json:
+        schema:
+          $ref: '../../schemas/agent.yaml'
+  '404':
+    description: Agente não encontrado

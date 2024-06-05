@@ -1,0 +1,18 @@
+- tags:
+    - Oportunidades
+  summary: Exclui uma oportunidade existente
+  description: Remove uma oportunidade do sistema com base no ID fornecido.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      schema:
+        type: integer
+      description: ID da oportunidade a ser excluída
+  responses:
+    '204':
+      description: Oportunidade excluída com sucesso
+    '404':
+      description: Oportunidade não encontrada
+    '400':
+      description: Solicitação inválida (ID incorreto ou faltando)

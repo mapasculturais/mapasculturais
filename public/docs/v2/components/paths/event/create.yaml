@@ -1,6 +1,6 @@
 tags:
   - Eventos
-summary: Criação de um evento.
+summary: Cria um evento.
 description: Cria um evento com os dados informados.
 requestBody:
   content:

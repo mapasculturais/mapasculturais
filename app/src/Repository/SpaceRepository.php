@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Enum\EntityStatusEnum;
 use Doctrine\Persistence\ObjectRepository;
 use MapasCulturais\Entities\Space;
 
@@ -19,6 +20,8 @@ class SpaceRepository extends AbstractRepository
 
     public function save(Space $space): void
     {
+        $space->saveMetadata();
+        $space->saveTerms();
         $this->mapaCulturalEntityManager->persist($space);
         $this->mapaCulturalEntityManager->flush();
     }
@@ -31,14 +34,14 @@ class SpaceRepository extends AbstractRepository
             ->getArrayResult();
     }
 
-    public function find(int $id): Space
+    public function find(int $id): ?Space
     {
         return $this->repository->find($id);
     }
 
     public function softDelete(Space $space): void
     {
-        $space->setStatus(-10);
+        $space->setStatus(EntityStatusEnum::TRASH->getValue());
         $this->mapaCulturalEntityManager->persist($space);
         $this->mapaCulturalEntityManager->flush();
     }

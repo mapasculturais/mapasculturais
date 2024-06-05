@@ -16,6 +16,9 @@ abstract class AbstractTestCase extends TestCase
     {
         $this->client = HttpClient::create()->withOptions([
             'base_uri' => 'http://localhost',
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
         ]);
 
         parent::setUp();

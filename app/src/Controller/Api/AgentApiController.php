@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Exception\ResourceNotFoundException;
 use App\Repository\AgentRepository;
 use App\Request\AgentRequest;
 use App\Service\AgentService;
@@ -62,22 +63,36 @@ class AgentApiController
                 'type' => $agent->getType(),
             ];
 
-            return new JsonResponse($responseData, 201);
+            return new JsonResponse($responseData, Response::HTTP_CREATED);
         } catch (Exception $exception) {
-            return new JsonResponse(['error' => $exception->getMessage()], 400);
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function patch(array $params): JsonResponse
+    {
+        try {
+            $agentData = $this->agentRequest->validateUpdate();
+            $agent = $this->agentService->update((int) $params['id'], (object) $agentData);
+
+            return new JsonResponse($agent, Response::HTTP_CREATED);
+        } catch (ResourceNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
     }
 
     public function delete(array $params): JsonResponse
     {
-        $agent = $this->repository->find((int) $params['id']);
+        try {
+            $this->agentService->discard((int) $params['id']);
 
-        if (!$agent || -10 === $agent->status) {
-            return new JsonResponse(status: Response::HTTP_NOT_FOUND);
+            return new JsonResponse(status: Response::HTTP_NO_CONTENT);
+        } catch (ResourceNotFoundException $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_NOT_FOUND);
+        } catch (Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-
-        $this->repository->softDelete($agent);
-
-        return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }
 }
