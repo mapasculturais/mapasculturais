@@ -1,0 +1,25 @@
+name: cypress-ci
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+      - 'feature/upgrade-cypress'
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v4
+
+      - name: Instala as dependências, cria configs e executa testes
+        run: cd src/ && npm install && npx cypress run --spec "cypress/e2e/**/*.js"
+
+      - name: Cypress Screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+            name: cypress-screenshots
+            path: src/cypress/screenshots
+            if-no-files-found: ignore
