@@ -2198,24 +2198,32 @@ $$
             __exec("ALTER TABLE Registration ADD COLUMN eligible BOOLEAN NULL");
         }
     },
-    'corrige os valores da distribuição de avaliação por categorias' => function() use ($conn, $app) {
-        if($values = $conn->fetchAll("SELECT * FROM evaluationMethodConfiguration_meta WHERE key = 'fetchCategories'")) {
+    'corrige os valores da distribuição de avaliação por categorias - correção' => function() use ($conn, $app) {
+        if($values = $conn->fetchAll("SELECT * FROM evaluationmethodconfiguration_meta WHERE key = 'fetchCategories'")) {
+            
             foreach($values as $value) {
                 if($fetchCategories = json_decode($value['value'], true)) {
                     $data = [];
                     $id = $value['id'];
                     $val_id = $value['object_id'];
+                    $users = [];
                     foreach($fetchCategories as $user => $fetchCategorie ) {
-                        if(is_array($fetchCategorie)) {
-                            $data[$user] = $fetchCategorie;
-                        }else {
+                        if(!is_array($fetchCategorie)) {
                             $categories = explode(";",$fetchCategorie);
-                            $data[$user] = [implode(",", $categories)];
+                        
+                            $data[$user] = $categories;
+                            
+                            $_data = json_encode($data);
+                            __exec("UPDATE evaluationmethodconfiguration_meta SET value = '{$_data}' WHERE id = {$id}");
+                            $users[] = $app->repo("User")->find($user);
+                            $app->log->debug("Campo fetchCategories atualizado na avaliação {$val_id}");
                         }
-                        $_data = json_encode($data);
-                        __exec("UPDATE evaluationMethodConfiguration_meta SET value = '{$_data}' WHERE id = {$id}");
-                        $app->log->debug("Campo fetchCategories atualizado na avaliação {$val_id}");
+                       
                     }
+
+                    $em = $app->repo('EvaluationMethodConfiguration')->find($value['object_id']);
+                    $em->owner->enqueueToPCacheRecreation($users);
+                    $app->em->clear();
                 }
             }
         }
