@@ -42,6 +42,8 @@ $today = new DateTime();
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
     <registration-print :registration="entity"></registration-print>
     <mc-tabs sync-hash>
+        <?php $this->applyTemplateHook('single-tab', 'begin') ?>
+        
         <mc-tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
                 <mc-card>
@@ -299,5 +301,7 @@ $today = new DateTime();
                 <?php endwhile ?>
             </div>
         </mc-tab>
+        
+        <?php $this->applyTemplateHook('single-tab', 'end') ?>
     </mc-tabs>
 </div>
