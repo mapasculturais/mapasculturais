@@ -8,11 +8,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
 - Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
-- Ajusta para que o recorte da imagem durante o upload inicie já no tamanho máximo permitido
 
 ### Correções
 - Corrige erro no carregamento do formulário de avaliação para o avaliador
-- Ajusta estẽncil do upload de imagem para carregar ja no tamanho máximo permitido
+- Ajusta estêncil do upload de imagem para carregar ja no tamanho máximo permitido
 - Corrige db-update que atualiza legado da distribuição de avaliaçações por categoria
 - Corrige db-update que cria as colunas eligible e score
 
