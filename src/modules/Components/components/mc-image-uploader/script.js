@@ -74,32 +74,6 @@ app.component("mc-image-uploader", {
       }
     },
 
-    defaultSize() {
-      let width = this.width;
-      let height = this.height;
-
-      if (this.circular && this.image.width && this.image.height) {
-        return {
-          width: this.image.width,
-          height: this.image.height,
-        };
-      }
-
-      let aspectRatio = this.aspectRatio;
-      if (aspectRatio && width && !height) {
-        height = width / aspectRatio;
-      } else if (aspectRatio && height && !width) {
-        width = height * aspectRatio;
-      }
-
-      if (width && height) {
-        return {
-          width: width,
-          height: height,
-        };
-      }
-    },
-
     blobUrl() {
       return this.blob ? URL.createObjectURL(this.blob) : "";
     },
@@ -213,6 +187,46 @@ app.component("mc-image-uploader", {
         };
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsArrayBuffer(files[0]);
+      }
+    },
+    defaultSize() {
+      let width, height;
+
+      if(this.aspectRatio && this.image) {
+        if(this.image.width > this.image.height) {
+          height = this.image.height;
+        }else {
+          width = this.image.width;
+        }
+      }else if(this.image) {
+        if(this.image.width > this.image.height) {
+          height = this.image.height;
+          width = Math.max(this.image.width, this.image.height * 16/9)
+        }else {
+          width = this.image.width;
+          height = Math.max(this.image.height, this.image.width * 16/9)
+        }
+      }
+  
+      if (this.circular && this.image.width && this.image.height) {
+        return {
+          width: this.image.width,
+          height: this.image.height,
+        };
+      }
+
+      let aspectRatio = this.aspectRatio;
+      if (aspectRatio && width && !height) {
+        height = width / aspectRatio;
+      } else if (aspectRatio && height && !width) {
+        width = height * aspectRatio;
+      }
+
+      if (width && height) {
+        return {
+          width: width,
+          height: height,
+        };
       }
     },
   },
