@@ -1553,7 +1553,6 @@ class Theme extends MapasCulturais\Theme {
     
             
             $this->jsObject['registration']->id = $current_registration->id;
-            $this->jsObject['registration']->status = $current_registration->status;
             $this->jsObject['registration']->opportunity = $current_registration->opportunity;            
     
         }
