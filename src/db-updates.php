@@ -2281,7 +2281,7 @@ $$
                     JOIN entity_revision_revision_data errd ON errd.revision_id = er.id
                     JOIN entity_revision_data rd ON rd.id = errd.revision_data_id
                     WHERE rd.key = 'status' AND rd.value = '2' AND er.object_type = 'MapasCulturais\Entities\RegistrationEvaluation'
-                    ORDER BY er.create_timestamp ASC
+                    ORDER BY er.create_timestamp DESC
                 )
                 UPDATE registration_evaluation
                 SET sent_timestamp = er_data.create_timestamp
