@@ -9,6 +9,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
 - Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
 
+### Correções
+- Corrige erro no carregamento do formulário de avaliação para o avaliador
+- Ajusta estêncil do upload de imagem para carregar ja no tamanho máximo permitido
+- Corrige db-update que atualiza legado da distribuição de avaliaçações por categoria
+- Corrige db-update que cria as colunas eligible e score
+
 ## [7.4] 2024-05-28
 ### Novas funcionalidades
 - Adiciona campos **total de vagas** e **valor total** nas oportunidades
