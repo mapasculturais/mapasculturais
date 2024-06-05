@@ -2190,12 +2190,12 @@ $$
             }
         }
     },
-    "Cria colunas score e eligible na entidade Registration" => function() use ($conn){
-       if(!__column_exists('Registration', 'score')) {
-            __exec("ALTER TABLE Registration ADD COLUMN score FLOAT NULL");
+    "Cria colunas score e eligible na entidade Registration - correcao" => function() use ($conn){
+       if(!__column_exists('registration', 'score')) {
+            __exec("ALTER TABLE registration ADD COLUMN score FLOAT NULL");
         } 
-        if(!__column_exists('Registration', 'eligible')) {
-            __exec("ALTER TABLE Registration ADD COLUMN eligible BOOLEAN NULL");
+        if(!__column_exists('registration', 'eligible')) {
+            __exec("ALTER TABLE registration ADD COLUMN eligible BOOLEAN NULL");
         }
     },
     'corrige os valores da distribuição de avaliação por categorias - correção' => function() use ($conn, $app) {
