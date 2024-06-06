@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
 - Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
+- Implementa possibilidade de definir mascaras em inputs do entity-field
 
 ### Correções
 - Corrige erro no carregamento do formulário de avaliação para o avaliador
