@@ -69,6 +69,15 @@ app.component('mc-tab', {
             })
         })
 
+        Vue.onBeforeUnmount(() => {
+            const tab = tabsProvider.tabs.find((tab) => tab.hash == hash);
+
+            const index = tabsProvider.tabs.indexOf(tab);
+            if (index > -1) {
+                tabsProvider.tabs.splice(index, 1);
+            }
+        });
+
         return {
             cached,
             hash,
