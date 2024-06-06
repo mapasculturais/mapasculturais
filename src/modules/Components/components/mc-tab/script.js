@@ -34,12 +34,14 @@ app.component('mc-tab', {
         const hash = '#' + (!props.disabled ? props.slug : '')
         const isActive = Vue.ref(false)
         const tabsProvider = Vue.inject('tabsProvider')
+        const global = useGlobalState();
 
         let timeout = null
         Vue.watch(
             () => tabsProvider.activeTab,
             () => {
                 isActive.value = props.slug === tabsProvider.activeTab?.slug
+                global.mcTabActive = tabsProvider.activeTab?.slug;
 
                 window.clearTimeout(timeout)
                 if (props.cache) {
