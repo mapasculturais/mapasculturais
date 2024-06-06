@@ -551,6 +551,11 @@ class Module extends \MapasCulturais\Module{
              return;
         });
 
+        $app->hook('entity(Registration).get(lastPhase)', function(&$value) use ($app) {
+            /** @var Registration $this */
+            $value = $app->repo('Registration')->findOneBy(['number' => $this->number, 'opportunity' => $this->opportunity->lastPhase]);
+        });
+
         /**
          * Getters das fases de avaliação
          */

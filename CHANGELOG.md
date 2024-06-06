@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
 - Implementa possibilidade de definir mascaras em inputs do entity-field
 - Implementa contante global mcTabActive para guadar a aba que o mc-tab está selecionada
+- Implementa getter lastPhase() para as inscrições, possibilitando recuperar a entidade da inscrição na ultima fase
 
 ### Correções
 - Corrige erro no carregamento do formulário de avaliação para o avaliador
