@@ -1015,10 +1015,12 @@ class Registration extends \MapasCulturais\Entity
 
     function getValidationErrors() {
         if($this->isNew()) {
-            return parent::getValidationErrors();
+            $errors = parent::getValidationErrors();
         } else {
-            return $this->getSendValidationErrors();
+            $errors = [...parent::getValidationErrors(), ...$this->getSendValidationErrors()];
         }
+
+        return $errors;
     }
 
     function getSendValidationErrors(string $field_prefix = 'field_', $file_prefix = 'file_', $agent_prefix = 'agent_'){

@@ -11,6 +11,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa possibilidade de definir mascaras em inputs do entity-field
 - Implementa contante global mcTabActive para guadar a aba que o mc-tab está selecionada
 - Implementa getter lastPhase() para as inscrições, possibilitando recuperar a entidade da inscrição na ultima fase
+- Implementa hook no metodo getValidationErrors possibilitando a mainipulação final dos erros
+- Melhora fluxo das mensagens de validação de erros da inscrição
 
 ### Correções
 - Corrige erro no carregamento do formulário de avaliação para o avaliador
