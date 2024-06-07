@@ -79,8 +79,19 @@ app.component('evaluation-actions', {
             }
 
             this.requestEvaluation('saveEvaluation', this.formData, args).then(res => res.json()).then(response => {
-                this.dispatchResponse('saveEvaluation', response);
-                finish ? messages.success(this.text('finish')) : messages.success(this.text('success'));
+                if (response.error) {
+                    messages.error(response.data);
+                } else {
+                    this.dispatchResponse('saveEvaluation', response);
+
+                    if (finish) {
+                        messages.success(this.text('finish'));
+                        this.updateSummaryEvaluations('completed');
+                    } else {
+                        messages.success(this.text('success'));
+                        this.updateSummaryEvaluations('started');
+                    }
+                }
             });
         },
 
@@ -89,13 +100,19 @@ app.component('evaluation-actions', {
             let args = {id: this.entity.id};
 
             this.requestEvaluation('sendEvaluation', {data: this.formData}, args).then(res => res.json()).then(response => {
-                this.dispatchResponse('sendEvaluation', response);
-                messages.success(this.text('send'));
+                if (response.error) {
+                    messages.error(response.data);
+                } else {
+                    this.dispatchResponse('sendEvaluation', response);
+                    this.updateSummaryEvaluations('sent');
+                    messages.success(this.text('send'));
+                }
             });
         },
 
         finishEvaluation() {
             this.saveEvaluation(true);
+            this.updateSummaryEvaluations('completed');
         },
 
         finishEvaluationSend() {
@@ -117,8 +134,13 @@ app.component('evaluation-actions', {
             let args = {id: this.entity.id};
 
             this.requestEvaluation('reopenEvaluation', {data: this.formData}, args).then(res => res.json()).then(response => {
-                this.dispatchResponse('reopenEvaluation', response);
-                messages.success(this.text('reopen'));
+                if (response.error) {
+                    messages.error(response.data);
+                } else {
+                    this.dispatchResponse('reopenEvaluation', response);
+                    messages.success(this.text('reopen'));
+                    this.updateSummaryEvaluations('started');
+                }
             });
         },
 
@@ -161,5 +183,40 @@ app.component('evaluation-actions', {
             }
             return result;
         },
+
+        updateSummaryEvaluations(newStatus) {            
+            // remove status anterior
+            if (!this.currentEvaluation) {
+                this.global.summaryEvaluations.pending -= 1;
+            } else {
+                switch (this.currentEvaluation.status) {
+                    case 0:
+                        this.global.summaryEvaluations.started -= 1;
+                        break;
+                    case 1:
+                        this.global.summaryEvaluations.completed -= 1;
+                        break;
+                    case 2:
+                        this.global.summaryEvaluations.sent -= 1;
+                        break;
+                }
+            }
+
+            // adiciona novo status
+            switch(newStatus) {
+                case 'pending':
+                    this.global.summaryEvaluations.pending += 1;
+                    break;
+                case 'started':
+                    this.global.summaryEvaluations.started += 1;
+                    break;
+                case 'completed':
+                    this.global.summaryEvaluations.completed += 1;
+                    break;
+                case 'sent':
+                    this.global.summaryEvaluations.sent += 1;
+                    break;    
+            }
+        }
     }
 });
