@@ -9,7 +9,7 @@ $this->import('
     mc-icon
 ');
 ?>
-<div :class="['mc-summary-evaluate', classes]" v-if="summary.isActive">
+<div :class="['mc-summary-evaluate', classes]" v-if="isActive">
 
     <div class="mc-summary-evaluate__box pending">
         <div class="mc-summary-evaluate__box--icon">
@@ -17,7 +17,7 @@ $this->import('
         </div>
         <div class="mc-summary-evaluate__box--content">
             <h4><?= i::__('Avaliações pendente') ?></h4>
-            <span>{{summary.pending}} <?= i::__('avaliações disponíveis') ?></span>
+            <span>{{pending}} <?= i::__('avaliações disponíveis') ?></span>
         </div>
     </div>
 
@@ -27,7 +27,7 @@ $this->import('
         </div>
         <div class="mc-summary-evaluate__box--content">
             <h4><?= i::__('Avaliações iniciadas') ?></h4>
-            <span>{{summary.started}} <?= i::__('avaliações') ?></span>
+            <span>{{started}} <?= i::__('avaliações') ?></span>
         </div>
     </div>
 
@@ -37,7 +37,7 @@ $this->import('
         </div>
         <div class="mc-summary-evaluate__box--content">
             <h4><?= i::__('Avaliações concluídas') ?></h4>
-            <span>{{summary.completed}} <?= i::__('avaliações') ?></span>
+            <span>{{completed}} <?= i::__('avaliações') ?></span>
         </div>
     </div>
 
@@ -47,7 +47,7 @@ $this->import('
         </div>
         <div class="mc-summary-evaluate__box--content">
             <h4><?= i::__('Avaliações enviadas') ?></h4>
-            <span>{{summary.send}} <?= i::__('avaliações') ?></span>
+            <span>{{sent}} <?= i::__('avaliações') ?></span>
         </div>
     </div>
 </div>

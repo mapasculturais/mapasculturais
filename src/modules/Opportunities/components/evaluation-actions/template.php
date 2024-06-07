@@ -15,11 +15,15 @@ $this->import('
 
 <div class="evaluation-actions" v-if="evaluationRegistrationList">
     <div class="grid-12">
+        <div class="col-12">
+            {{this.currentEvaluation.status}}
+        </div>
         <div class="col-12" v-if="showActions('finishEvaluation')">
             <button class="button button--primary button--large" @click="finishEvaluation()">
                 <?= i::__('Finalizar avaliação') ?>
             </button>
         </div>
+
         <div class="col-12" v-if="showActions('finishEvaluation')">
             <mc-modal button-label="Finalizar e Avançar" title="<?= i::__('Avaliação feita!') ?>">
                 <template #default>
@@ -32,6 +36,7 @@ $this->import('
                     <button class="button button--text button--text-del" @click="finishEvaluationSendLater(); modal.close()"><?= i::__('Enviar Depois') ?></button>
                     <button class="button button--primary" @click="finishEvaluationSend(); modal.close()"><?= i::__('Enviar agora') ?></button>
                 </template>
+        
                 <template #button="modal">
                     <button class="button button--primary button--icon button--large" @click="modal.open()">
                         <span v-if="lastRegistration?.registrationid != entity.id"><?= i::__('Finalizar e avançar') ?></span>
@@ -45,6 +50,7 @@ $this->import('
         <div class="col-12" v-if="showActions('reopen')">
             <button class="button button--primary button--large button--large" @click="reopen()"> <?= i::__('Reabrir avaliação') ?> </button>
         </div>
+
         <div class="col-12" v-if="showActions('send')">
             <button class="button button--primary button--icon button--large evaluation-actions__buttons__send" @click="finishEvaluationSend()">
                 <?= i::__('Enviar avaliação') ?>
@@ -64,6 +70,7 @@ $this->import('
                 <?= i::__('Anterior') ?>
             </button>
         </div>
+        
         <div class="col-6">
             <button v-if="lastRegistration?.registrationid != entity.id" class="button button--primary-outline button--icon button--large" @click="next()">
                 <?= i::__('Próximo') ?>
