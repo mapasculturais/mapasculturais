@@ -211,7 +211,7 @@ class Module extends \MapasCulturais\Module{
         $self = $this;
         $registration_repository = $app->repo('Registration');
 
-        $app->hook("entity(Registration).<<insert|sent>>:before", function(){
+        $app->hook("entity(Registration).<<insert|send>>:before", function(){
             if(!$this->opportunity->isDataCollection){
               $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
