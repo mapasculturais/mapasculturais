@@ -140,7 +140,6 @@ app.component("mc-image-uploader", {
 
         loadImage(event, modal) {
             const { files } = event.target;
-            console.log(files);
 
             if (files && files[0]) {
                 modal.open();
