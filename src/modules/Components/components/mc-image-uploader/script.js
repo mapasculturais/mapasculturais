@@ -139,13 +139,14 @@ app.component("mc-image-uploader", {
         },
 
         loadImage(event, modal) {
-            modal.open();
-            // Reference to the DOM input element
             const { files } = event.target;
-            const filename = event.target.value.split(/(\\|\/)/g).pop();
+            console.log(files);
 
-            // Ensure that you have a file before attempting to read it
             if (files && files[0]) {
+                modal.open();
+                const filename = event.target.value.split(/(\\|\/)/g).pop();
+
+                // Ensure that you have a file before attempting to read it
                 // 1. Revoke the object URL, to allow the garbage collector to destroy the uploaded before file
                 if (this.image.src) {
                     URL.revokeObjectURL(this.image.src);
