@@ -4,6 +4,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [unreleased]
+## Correções
+- Ajusta getter lastPhase() na inscrição para que quando for a última fase na inscrição base, ele consiga devolver a entidade de forma correta
+- evita que a single da inscrição se quebre quando nao existe data de envio da inscrição
+
 ## [7.4.1] 2024-06-10
 ### Melhorias
 - Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
@@ -11,6 +17,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa possibilidade de definir mascaras em inputs do entity-field
 - Implementa contante global mcTabActive para guadar a aba que o mc-tab está selecionada
 - Implementa getter lastPhase() para as inscrições, possibilitando recuperar a entidade da inscrição na ultima fase
+- Implementa hook no metodo getValidationErrors possibilitando a mainipulação final dos erros
+- Melhora fluxo das mensagens de validação de erros da inscrição
 - Melhorias na interface e filtro na lista de inscrições da página de avaliação
 - Melhora performance do componente home-opportunities
 
