@@ -129,41 +129,41 @@ $today = new DateTime();
                             <span class="info"> 
                                 <strong><?= i::__('Dados do proponente') ?></strong> 
                             </span>
-                            <span class="info" v-if="entity.agentsData.owner.name"> 
+                            <span class="info" v-if="entity.agentsData.owner?.name"> 
                                 <strong> <?= i::__('Nome') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.name}}</span>
+                                <span>{{entity.agentsData.owner?.name}}</span>
                             </span>
-                            <span class="info" v-if="entity.agentsData.owner.shortDescription"> 
+                            <span class="info" v-if="entity.agentsData.owner?.shortDescription"> 
                                 <strong> <?= i::__('Descrição curta') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.shortDescription}}</span>
+                                <span>{{entity.agentsData.owner?.shortDescription}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.documento || entity.agentsData.owner.cnpj"> 
+                            <span class="info" v-if="entity.agentsData.owner?.documento || entity.agentsData.owner?.cnpj"> 
                                 <strong> <?= i::__('CPF ou CNPJ') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.documento || entity.agentsData.owner.cnpj}}</span>
+                                <span>{{entity.agentsData.owner?.documento || entity.agentsData.owner?.cnpj}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.dataDeNascimento"> 
+                            <span class="info" v-if="entity.agentsData.owner?.dataDeNascimento"> 
                                 <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.dataDeNascimento}}</span><!-- .date('2-digit year') -->
+                                <span>{{entity.agentsData.owner?.dataDeNascimento}}</span><!-- .date('2-digit year') -->
                             </span>  
-                            <span class="info" v-if="entity.agentsData.owner.emailPublico"> 
+                            <span class="info" v-if="entity.agentsData.owner?.emailPublico"> 
                                 <strong> <?= i::__('Email') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.emailPublico}}</span>
+                                <span>{{entity.agentsData.owner?.emailPublico}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.raca"> 
+                            <span class="info" v-if="entity.agentsData.owner?.raca"> 
                                 <strong> <?= i::__('Raça') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.raca}}</span>
+                                <span>{{entity.agentsData.owner?.raca}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.genero"> 
+                            <span class="info" v-if="entity.agentsData.owner?.genero"> 
                                 <strong> <?= i::__('Genero') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.genero}}</span>
+                                <span>{{entity.agentsData.owner?.genero}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.endereco"> 
+                            <span class="info" v-if="entity.agentsData.owner?.endereco"> 
                                 <strong> <?= i::__('Endereço') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.endereco}}</span>
+                                <span>{{entity.agentsData.owner?.endereco}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.En_CEP"> 
+                            <span class="info" v-if="entity.agentsData.owner?.En_CEP"> 
                                 <strong> <?= i::__('CEP') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.En_CEP}}</span>
+                                <span>{{entity.agentsData.owner?.En_CEP}}</span>
                             </span>
                         </div>
                     </template>
