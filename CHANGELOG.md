@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa contante global mcTabActive para guadar a aba que o mc-tab está selecionada
 - Implementa getter lastPhase() para as inscrições, possibilitando recuperar a entidade da inscrição na ultima fase
 - Melhorias na interface e filtro na lista de inscrições da página de avaliação
+- Melhora performance do componente home-opportunities
 
 ### Correções
 - Corrige erro no carregamento do formulário de avaliação para o avaliador
