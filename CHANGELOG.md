@@ -20,6 +20,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige db-update que cria as colunas eligible e score
 - Corrige remoção de abas do componente mc-tabs
 - Corrige link dos botões de acessar inscrição na lista de inscrições da página de avaliação
+- Possibilita a configuração de metadados com opções value => label com valores numéricos através da flag `numericKeyValueOptions`
 
 ### Melhorias não funcionais
 - Refatora script start.sh e middleware ExecutionTime para fornecer um log mais limpo para o desenvolvedor
