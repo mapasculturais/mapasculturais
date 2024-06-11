@@ -4,7 +4,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [unreleased]
+## Correções
+- Ajusta getter lastPhase() na inscrição para que quando for a última fase na inscrição base, ele consiga devolver a entidade de forma correta
+- evita que a single da inscrição se quebre quando nao existe data de envio da inscrição
+
+## [7.4.1] 2024-06-10
 ### Melhorias
 - Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
 - Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
