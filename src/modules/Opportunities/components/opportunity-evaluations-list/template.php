@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-icon
+    mc-loading
 ');
 ?>
 <div class="opportunity-evaluations-list" v-if="showList()">
@@ -18,39 +19,37 @@ $this->import('
 
         <div class="find">
             <div class="content">
-                <input type="text" v-model="keywords">
-                
-                <button class="button-filter button--primary" @click="filterKeywordExec()">
-                    <mc-icon name="filter"></mc-icon>
-                    <label class="button-label"><?= i::__('Filtrar') ?></label>
-                </button>
+                <input type="text" v-model="keywords" @input="timeOutFind()" @keyup.enter="timeOutFind(0)" class="label-evaluation__search">
             </div>
             <div class="label-evaluation">
                 <div class="label-evaluation__check">
-                    <input type="checkbox" v-model="pending" class="label-evaluation__check--pending">
-                    <span class="label-evaluation__check--label"><?= i::__('Mostrar somente pendentes') ?></span>
+                    <label class="label-evaluation__check--label">
+                        <input type="checkbox" v-model="pending" class="label-evaluation__check--pending">
+                        <?= i::__('Mostrar somente pendentes') ?>
+                    </label>
                 </div>
             </div>
         </div>
-        <ul class="evaluation-list">
-            <li v-for="evaluation in evaluations" :class="[{'evaluation-list__card--modify': entity.id == evaluation.registrationid}, 'evaluation-list__card']">
+        <mc-loading :condition="loading"><?= i::__('carregando...') ?></mc-loading>
+        <ul v-if="!loading" class="evaluation-list">
+            <li v-for="evaluation in evaluations" :key="evaluation.registrationId" :class="[{'evaluation-list__card--modify': entity.id == evaluation.registrationid}, 'evaluation-list__card']">
                 <div class="evaluation-list__content">
                     <a :href="evaluation.url" class="link">
                         <div class="card-header">
-                            <mc-icon name='agent-1'></mc-icon>
-                            <span class="card-header__name">{{evaluation.agentname}}</span>
+                            <span class="card-header__name">{{evaluation.registrationNumber}}</span>
                         </div>
                         <div class="card-content">
-                            <div class=" card-content__middle">
-                                <span class="subscribe"><?= i::__('Inscrição') ?></span>
+                            <div v-if="evaluation.agentname" class="card-content__middle">
+                                <mc-icon name='agent-1'></mc-icon>
+
                                 <span class="value">
-                                    <strong>{{evaluation.registrationid}}</strong>
+                                    <strong>{{evaluation.agentname}}</strong>
                                 </span>
                             </div>
                             <div class="card-content__middle">
                                 <span class="subscribe"><?= i::__('Data da inscrição') ?></span>
                                 <span class="value">
-                                    <strong>{{dateFormat(entity.createTimestamp)}}</strong>
+                                    <strong>{{evaluation.registrationSentTimestamp.date()}} {{evaluation.registrationSentTimestamp.time()}}</strong>
                                 </span>
                             </div>
                         </div>
@@ -61,8 +60,7 @@ $this->import('
                                 <h5 class="bold" v-if="evaluation.resultString">{{evaluation.resultString}}</h5>
                                 <h5 class="bold" v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></h5>
                             </span>
-                            <mc-link route="registration/evaluation/" :params="[evaluation.registrationid]"  class="button button--primary-outline"><?= i::__('Acessar') ?></mc-link>
-
+                            <mc-link route="registration/evaluation/" :params="[evaluation.registrationId]" icon="arrowPoint-right" right-icon class="button button--primary-outline"><?= i::__('Acessar') ?></mc-link>
                         </div>
                     </a>
                 </div>
