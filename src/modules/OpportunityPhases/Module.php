@@ -211,7 +211,7 @@ class Module extends \MapasCulturais\Module{
         $self = $this;
         $registration_repository = $app->repo('Registration');
 
-        $app->hook("entity(Registration).<<insert|sent>>:before", function(){
+        $app->hook("entity(Registration).<<insert|send>>:before", function(){
             if(!$this->opportunity->isDataCollection){
               $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
@@ -551,6 +551,12 @@ class Module extends \MapasCulturais\Module{
              return;
         });
 
+        $app->hook('entity(Registration).get(lastPhase)', function(&$value) use ($app) {
+            /** @var Registration $this */
+            $opportunity = $this->opportunity->isLastPhase ? $this->opportunity : $this->opportunity->lastPhase;
+            $value = $app->repo('Registration')->findOneBy(['number' => $this->number, 'opportunity' => $opportunity]);
+        });
+
         /**
          * Getters das fases de avaliação
          */
@@ -634,6 +640,17 @@ class Module extends \MapasCulturais\Module{
                 $value = $previous_phase->$field_name;
                 $app->enableAccessControl();
             }
+        });
+
+        $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
+            /** @var Registration $this */
+            
+            $this->enableCacheGetterResult('firstPhase');
+
+            $opportunity = $this->opportunity;
+
+            $value = $registration_repository->findOneBy(['opportunity' => $opportunity->firstPhase, 'number' => $this->number]);
+
         });
 
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {

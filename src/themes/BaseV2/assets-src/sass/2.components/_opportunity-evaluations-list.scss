@@ -64,7 +64,7 @@
                         position: relative;
                         border-radius: size(69);
                         height: size(40);
-                        border: size(1) solid var(--mc-gray-100);
+                        border: size(1) solid $gray-700;
                         background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat calc(100% - size(10)) center/size(20);
                         width: 100%;
                         padding: size(12) size(30) size(12) size(20);
@@ -101,6 +101,10 @@
             }
 
             .label-evaluation {
+                &__search {
+                    border-color: $gray-700;
+                }
+
                 &__check {
                     margin-top: size(15);
                     display: flex;
@@ -174,9 +178,9 @@
                                     font-family: 'Open Sans';
                                     font-style: normal;
                                     font-weight: 700;
-                                    font-size: size(14);
+                                    font-size: size(22);
                                     line-height: size(19);
-                                    color: var(--mc-primary-500);
+                                    color: $opportunities-500;
                                 }
                             }
 

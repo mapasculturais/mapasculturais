@@ -122,8 +122,7 @@ $this->import('
 				<label class="seals__title">
 					<?php i::_e('Selos') ?>:
 				</label>
-				<mc-avatar v-for="seal in entity.seals" :title="seal.name + ' AQUI'" :entity="seal" square size="xsmall"></mc-avatar>
-				
+				<mc-avatar v-for="seal in entity.seals" :title="seal.name" :entity="seal" square size="xsmall"></mc-avatar>
 			</div>
 		</div>
 

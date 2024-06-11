@@ -602,7 +602,7 @@ class Registration extends EntityController {
             $entity->$field = $value;
         }
         
-        if ($errors = $entity->getSendValidationErrors()) {
+        if ($errors = $entity->getValidationErrors()) {
             $this->errorJson($errors);
         } else {
             $this->json(true);
@@ -623,7 +623,7 @@ class Registration extends EntityController {
             $entity->$field = $value;
         }
 
-        if ($_errors = $entity->getSendValidationErrors()) {
+        if ($_errors = $entity->getValidationErrors()) {
             $errors = [];
             foreach($this->postData as $field => $value){
                 if(key_exists($field, $_errors)){
