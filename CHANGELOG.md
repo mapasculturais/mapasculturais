@@ -8,12 +8,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
 - Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
+- Implementa possibilidade de definir mascaras em inputs do entity-field
+- Implementa contante global mcTabActive para guadar a aba que o mc-tab está selecionada
+- Implementa getter lastPhase() para as inscrições, possibilitando recuperar a entidade da inscrição na ultima fase
 
 ### Correções
 - Corrige erro no carregamento do formulário de avaliação para o avaliador
 - Ajusta estêncil do upload de imagem para carregar ja no tamanho máximo permitido
 - Corrige db-update que atualiza legado da distribuição de avaliaçações por categoria
 - Corrige db-update que cria as colunas eligible e score
+- Corrige remoção de abas do componente mc-tabs
+
+### Melhorias não funcionais
+- Refatora script start.sh e middleware ExecutionTime para fornecer um log mais limpo para o desenvolvedor
 
 ## [7.4] 2024-05-28
 ### Novas funcionalidades
