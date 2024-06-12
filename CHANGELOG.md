@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.4.4] 2024-06-12
 ### Correções
 - Corrige lista de inscrições da publicação de resultado final
+- Corrige exibição dos botões de baixar rascunhos e baixar lista de inscrições
 
 ## [7.4.3] 2024-06-11
 ### Correções
