@@ -160,6 +160,35 @@ return [
             $$ LANGUAGE plpgsql strict immutable;");
     },
 
+    'create table system_role' => function () {
+        __exec("CREATE SEQUENCE system_role_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        __exec("CREATE TABLE system_role (
+                    id INT NOT NULL, 
+                    slug VARCHAR(64) NOT NULL, 
+                    name VARCHAR(255) NOT NULL, 
+                    subsite_context BOOLEAN NOT NULL, 
+                    permissions JSON DEFAULT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
+                    status SMALLINT NOT NULL, 
+                    PRIMARY KEY(id));");
+        __exec("COMMENT ON COLUMN system_role.permissions IS '(DC2Type:json_array)';");
+    },
+
+    'alter system_role.permissions comment' => function () {
+        __exec("COMMENT ON COLUMN system_role.permissions IS '(DC2Type:json)';");
+    },
+
+    "Cria colunas proponent_type e registration na tabela registration" => function() use ($conn){
+        if(!__column_exists('registration', 'proponent_type')) {
+            __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
+        }
+
+        if(!__column_exists('registration', 'range')) {
+            __exec("ALTER TABLE registration ADD COLUMN range VARCHAR(255) NULL");
+        }
+    },
+
     'migrate gender' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
         $conn->executeQuery("UPDATE agent_meta SET value='Mulher' WHERE key='genero' AND value='Feminino'");
@@ -2078,16 +2107,6 @@ $$
                 p1.object_type = p2.object_type AND 
                 p1.object_id = p2.object_id AND 
                 p1.action = p2.action;");
-    },
-    
-    "Cria colunas proponent_type e registration na tabela registration" => function() use ($conn){
-        if(!__column_exists('registration', 'proponent_type')) {
-            __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
-        }
-
-        if(!__column_exists('registration', 'range')) {
-            __exec("ALTER TABLE registration ADD COLUMN range VARCHAR(255) NULL");
-        }
     },
     
     "Cria colunas registration_proponent_types e registration_ranges na tabela opportunity" => function() use ($conn){
