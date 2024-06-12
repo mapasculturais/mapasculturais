@@ -492,6 +492,17 @@ class Opportunity extends EntityController {
 
             $current_phase_query_params['@select'] = implode(',', $current_phase_query_select);
 
+            if($phase->isLastPhase && $phase->publishedRegistrations) {
+                $app->hook('ApiQuery(Registration).parseQueryParams', function() use ($current_phase_query_params) {
+                    if($this->apiParams['opportunity'] == $current_phase_query_params['opportunity']) {
+                        $this->joins = "";
+                        $params = $this->_dqlParams;
+                        array_pop($params);
+                        $this->_dqlParams = $params;
+                    }
+                });
+            }
+
             $current_phase_query = new ApiQuery(Registration::class, $current_phase_query_params);
             if(isset($previous_phase_query) && !$phase->isLastPhase) {
                 $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
