@@ -5,7 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.4.3]
+## [7.4.4] 2024-06-12
+### Correções
+- Corrige lista de inscrições da publicação de resultado final
+
+## [7.4.3] 2024-06-11
 ### Correções
 - Reordena db-updates para evitar problemas com colunas e tabelas nao criadas
 - Corrige db-update que ajusta configurações dos campos das inscrições
