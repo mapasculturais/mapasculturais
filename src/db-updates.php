@@ -1951,13 +1951,19 @@ $$
     },
 
     'Adiciona a coluna description para a descrição da ocorrência' => function() {
-        __exec("ALTER TABLE event_occurrence ADD description TEXT DEFAULT NULL;");
+        if(!__column_exists('event_occurrence', 'description')) {
+            __exec("ALTER TABLE event_occurrence ADD description TEXT DEFAULT NULL;");
+        }
     },
     'Adiciona a coluna price para a o valor de entrada da ocorrência' => function() {
-        __exec("ALTER TABLE event_occurrence ADD price TEXT DEFAULT NULL;");
+        if(!__column_exists('event_occurrence', 'price')) {
+            __exec("ALTER TABLE event_occurrence ADD price TEXT DEFAULT NULL;");
+        }
     },
     'Adiciona a coluna priceInfo para a informações sobre o valor de entrada da ocorrência' => function() {
-        __exec("ALTER TABLE event_occurrence ADD priceInfo TEXT DEFAULT NULL;");
+        if(!__column_exists('event_occurrence', 'priceInfo')) {
+            __exec("ALTER TABLE event_occurrence ADD priceInfo TEXT DEFAULT NULL;");
+        }
     },
     
     'Apaga registro do db-update de "Definição dos cammpos cpf e cnpj com base no documento" para que rode novamente' => function() use ($conn, $app){
