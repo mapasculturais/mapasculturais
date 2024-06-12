@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro no carregamento da single de projetos
 - Ajusta exibição dos campos do tipo checkebox do formulário
+- Corrige endpoit apiFindRegistrations para que um usuario comum posso ver as inscrições na fase de publicação de resultado
 
 ## [7.4.4] 2024-06-12
 ### Correções
