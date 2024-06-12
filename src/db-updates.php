@@ -2036,11 +2036,25 @@ $$
     "migra valores das colunas do tipo array para do tipo json" => function() use ($conn) {
         $fields = $conn->fetchAll("SELECT id, config, field_options, categories from registration_field_configuration");
         $count = count($fields);
+
+        $json_validate = function (string $string): bool {
+            json_decode($string);
+            return json_last_error() === JSON_ERROR_NONE;
+        };
+        
+        $check_serialize = function($value) use ($json_validate) {
+            if((is_string($value) && $json_validate($value)) || !$value) {
+                return $value;
+            }
+
+            return json_encode(unserialize($value));
+        };
+
         foreach($fields as $i => $field) {
             echo "migrando registration_field_configuration ({$i} / $count)\n";
-            $field['config'] = json_encode(unserialize($field['config']));
-            $field['field_options'] = json_encode(unserialize($field['field_options']));
-            $field['categories'] = json_encode(unserialize($field['categories']));
+            $field['config'] = $check_serialize($field['config']);
+            $field['field_options'] = $check_serialize($field['field_options']);
+            $field['categories'] = $check_serialize($field['categories']);
 
             $conn->executeQuery("
                 UPDATE registration_field_configuration 
@@ -2055,7 +2069,7 @@ $$
         $count = count($files);
         foreach($files as $i => $file) {
             echo "migrando registration_file_configuration ({$i} / $count)\n";
-            $file['categories'] = json_encode(unserialize($file['categories']));
+            $file['categories'] = $check_serialize($file['categories']);
 
             $conn->executeQuery("
                 UPDATE registration_file_configuration 
@@ -2068,7 +2082,7 @@ $$
         foreach($requests as $i => $request) {
             echo "migrando request ({$i} / $count)\n";
             $id = $request['id'];
-            $metadata = json_encode(unserialize($request['metadata']));
+            $metadata = $check_serialize($request['metadata']);
 
             $conn->executeQuery("
                 UPDATE request 
