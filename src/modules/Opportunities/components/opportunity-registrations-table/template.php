@@ -115,7 +115,7 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #agent="{entity}">
-                    <a :href="entity.owner.singleUrl">{{entity.owner.name}}</a>
+                    <a :href="entity.owner?.singleUrl">{{entity.owner?.name}}</a>
                 </template>
 
                 <template #number="{entity}">
