@@ -11,7 +11,7 @@ $this->import('
 ');
 ?>
 
-<opportunity-registrations-table :phase="lastPhase" :visible-columns="visibleColumns" :avaliable-columns="visibleColumns" hide-filters hide-sort status-not-editable>
+<opportunity-registrations-table :phase="lastPhase" :visible-columns="visibleColumns" :avaliable-columns="visibleColumns" hide-filters hide-sort status-not-editable hide-actions>
     <template #title>
         <b><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas.") ?></b>
     </template>
