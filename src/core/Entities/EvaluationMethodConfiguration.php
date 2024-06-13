@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
+ * @property-read string summaryCacheKey Chave do cache do resumo das avaliações
  * @property int $opportunity ownerId
  * @property-read \MapasCulturais\Entities\Opportunity owner
  * @property-read boolean publishedRegistration
@@ -266,22 +267,32 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $this->opportunity->publishTimestamp;
     }
 
-      /**
+    
+    /**
+     * Retorna uma chave única para o cache do resumo das avaliações.
+     * 
+     * @return string A chave única para o cache do resumo da avaliações .
+     */
+    public function getSummaryCacheKey(): string
+    {
+        return "evaluation-summary-{$this->id}";
+    }
+
+    /**
      * Retorna um resumo do número de inscrições de uma oportunidade
      * 
      * @return array
      */
-    public function getSummary()
-    {
+    public function getSummary($skip_cache = false): array {
         if($this->isNew()) {
             return [];
         }
         
         /** @var App $app */
         $app = App::i();
-
-        if($app->config['app.useOpportunitySummaryCache']) {
-            $cache_key = __METHOD__ . ':' . $this->id; 
+        
+        $cache_key = $this->summaryCacheKey;
+        if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
             if ($app->cache->contains($cache_key)) {
                 return $app->cache->fetch($cache_key);
             }

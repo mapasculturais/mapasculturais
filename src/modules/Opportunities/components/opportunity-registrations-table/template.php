@@ -39,7 +39,7 @@ $entity = $this->controller->requestedEntity;
         <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
 
         <div class="col-12"> 
-            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort">
+            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort" :hide-actions='hideActions'>
                 <template #title>
                     <slot name="title">
                         <h5>
@@ -50,7 +50,7 @@ $entity = $this->controller->requestedEntity;
                 </template>
                 
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
-                <template #actions="{entities,filters}">
+                <template v-if="!hideActions" #actions="{entities,filters}">
                     <h4 class="bold"><?= i::__('Ações:') ?></h4>
                     <div class="opportunity-payment-table__actions">
                         <div class="opportunity-payment-table__actions grid-12">

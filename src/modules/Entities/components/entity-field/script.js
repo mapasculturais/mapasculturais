@@ -143,6 +143,10 @@ app.component('entity-field', {
             type: Boolean,
             default: false
         },
+        mask: {
+            type: String,
+            default: null,
+        },
     },
 
     computed: {
