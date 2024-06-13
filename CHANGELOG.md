@@ -14,6 +14,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta exibição dos campos do tipo checkebox do formulário
 - Corrige endpoit apiFindRegistrations para que um usuario comum posso ver as inscrições na fase de publicação de resultado
 - Corrige formulário de inscriçào em casos onde foi configurado tipo de proponente ou faixa após envio de inscrições
+- Ajusta distribução de avaliações através dos finais das inscrições para que seja possível usar mais caracteres
 
 ## [7.4.4] 2024-06-12
 ### Correções
