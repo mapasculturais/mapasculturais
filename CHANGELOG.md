@@ -7,7 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 ### Melhorias
-- melhora exibição do header da tabela de publicação de resultados
+- Melhora exibição do header da tabela de publicação de resultados
 
 ### Correções
 - Corrige erro no carregamento da single de projetos
@@ -15,6 +15,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige endpoit apiFindRegistrations para que um usuario comum posso ver as inscrições na fase de publicação de resultado
 - Corrige formulário de inscriçào em casos onde foi configurado tipo de proponente ou faixa após envio de inscrições
 - Ajusta distribução de avaliações através dos finais das inscrições para que seja possível usar mais caracteres
+- Só exibe categoria, tipo de proponente e faixa quando há essa informação na inscrição
 
 ## [7.4.4] 2024-06-12
 ### Correções
