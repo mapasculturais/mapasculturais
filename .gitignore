@@ -10,3 +10,5 @@ mix-manifest.json
 dev/docker-data/
 src/themes/BaseV1/assets/css/main.css
 src/themes/BaseV1/assets/css/main.css.map
+src/plugins/
+.env
