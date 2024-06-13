@@ -13,6 +13,8 @@ app.component('opportunity-registrations-table', {
         hideFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
+        hideTitle: Boolean,
+        hideHeader: Boolean,
         statusNotEditable: Boolean,
     },
     setup() {

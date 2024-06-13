@@ -24,7 +24,7 @@ $this->import('
     <mc-entities :select="select" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" @fetch="resize()" watch-query>
 
         <template #header="{entities, filters}">
-            <div class="entity-table__header">
+            <div v-if="!hideHeader" class="entity-table__header">
                 <!-- título - opcional -->
                 <div v-if="hasSlot('title')" class="entity-table__title">
                     <slot name="title"></slot>
