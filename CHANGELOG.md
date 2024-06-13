@@ -6,10 +6,14 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+### Melhorias
+- melhora exibição do header da tabela de publicação de resultados
+
 ### Correções
 - Corrige erro no carregamento da single de projetos
 - Ajusta exibição dos campos do tipo checkebox do formulário
 - Corrige endpoit apiFindRegistrations para que um usuario comum posso ver as inscrições na fase de publicação de resultado
+- Corrige formulário de inscriçào em casos onde foi configurado tipo de proponente ou faixa após envio de inscrições
 
 ## [7.4.4] 2024-06-12
 ### Correções

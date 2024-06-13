@@ -998,15 +998,20 @@ class Registration extends \MapasCulturais\Entity
         $use_range = (bool) $opportunity->registrationRanges;
         $use_proponent_types = (bool) $opportunity->registrationProponentTypes;
 
-        if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
+        $field_categories = $field->categories ?: [];
+        $field_ranges = $field->registrationRanges ?: [];
+        $field_proponent_types = $field->proponentTypes ?: [];
+
+
+        if ($use_category && count($field_categories) > 0 && !in_array($this->category, $field_categories)) {
             return false;
         }
 
-        if ($use_range && count($field->registrationRanges) > 0 && !in_array($this->range, $field->registrationRanges)) {
+        if ($use_range && count($field_ranges) > 0 && !in_array($this->range, $field_ranges)) {
             return false;
         }
 
-        if ($use_proponent_types && count($field->proponentTypes) > 0 && !in_array($this->proponentType, $field->proponentTypes)) {
+        if ($use_proponent_types && count($field_proponent_types) > 0 && !in_array($this->proponentType, $field_proponent_types)) {
             return false;
         }
 
