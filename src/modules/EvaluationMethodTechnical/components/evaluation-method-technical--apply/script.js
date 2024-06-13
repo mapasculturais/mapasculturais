@@ -15,22 +15,26 @@ app.component('evaluation-method-technical--apply', {
     },
 
     data() {
-        let max = parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
-        applyData = {
-            from: [0, max],
-        };
-        const api = new API();
-
+        const max = parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
         return {
             processing: false,
-            applyData,
+            applyData: {
+                from: [0, max],
+                setStatusTo: '',
+                cutoffScore: 0,
+                earlyRegistrations: false,
+                waitList: false,
+                invalidateRegistrations: false,
+                considerQuotas: true,
+                quantityVacancies: 0
+            },
             considerQuotas: true,
             enableConsiderQuotas: $MAPAS.config.evaluationMethodTechnicalApply.isAffirmativePoliciesActive,
             selectionType: [],
             tabSelected: 'score',
             cutoffScore: this.entity.evaluationMethodConfiguration?.cutoffScore ?? 0,
-            api
-        }
+            api: new API()
+        };
     },
 
     computed: {
@@ -56,12 +60,7 @@ app.component('evaluation-method-technical--apply', {
         },
 
         modalClose() {
-            if (this.applyData.hasOwnProperty('from')) {
-                delete this.applyData.setStatusTo;
-                this.applyData.from[0] = 0;
-                this.applyData.from[1] = this.maxResult;
-            }
-            this.selectionType = [];
+            this.resetApplyData();
         },
 
         apply(modal, entity) {
@@ -124,6 +123,23 @@ app.component('evaluation-method-technical--apply', {
             }
 
             this.applyData.tabSelected = this.tabSelected;
+        },
+
+        resetApplyData() {
+            const max = this.maxResult;
+            this.applyData = {
+                from: [0, max],
+                setStatusTo: '',
+                cutoffScore: 0,
+                earlyRegistrations: false,
+                waitList: false,
+                invalidateRegistrations: false,
+                considerQuotas: true,
+                quantityVacancies: 0
+            };
+            this.selectionType = [];
+            this.tabSelected = 'score';
+            this.cutoffScore = this.entity.evaluationMethodConfiguration?.cutoffScore ?? 0;
         }
     },
 });
