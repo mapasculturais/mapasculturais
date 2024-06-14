@@ -15,6 +15,10 @@ app.component("affirmative-policy--bonus-config", {
     return { text, messages };
   },
 
+  updated () {
+    this.autoSave();
+  },
+
   data() {
     const config = this.entity.affirmativePolicyBonusConfig || {};
     return {
@@ -86,7 +90,6 @@ app.component("affirmative-policy--bonus-config", {
       quota.valuesList = field.fieldOptions;
       quota.value = "";
       quota.viewDataValues = field.fieldType;
-      this.autoSave();
     },
     checkboxUpdate(event, quota) {
       if (event.target.checked) {
@@ -102,11 +105,14 @@ app.component("affirmative-policy--bonus-config", {
       } else {
         delete quota.value[event.target.value];
       }
-
-      this.autoSave();
     },
 
     addConfig() {
+      if(this.entity.opportunity.affirmativePoliciesEligibleFields.length == 0) {
+        this.messages.error(this.text('emptyAffimativePolicies'));
+        return;
+      }
+
       if (!this.entity.pointReward) {
         this.entity.pointReward = [{}];
       } else {
@@ -115,7 +121,6 @@ app.component("affirmative-policy--bonus-config", {
 
       if (!this.entity.isActivePointReward) {
         this.entity.isActivePointReward = "true";
-        this.autoSave();
       }
     },
 
@@ -129,7 +134,7 @@ app.component("affirmative-policy--bonus-config", {
       if (!this.entity.pointReward.length) {
         this.entity.isActivePointReward = false;
       }
-      this.autoSave();
+      this.autoSave(true);
     },
 
     optionValue(option) {
@@ -142,8 +147,21 @@ app.component("affirmative-policy--bonus-config", {
       return _option.length > 1 ? _option[1] : _option[0];
     },
 
-    autoSave() {
-      this.entity.save(3000);
+    autoSave(updated = false) {
+      const filled = Object.values(this.entity.pointReward).filter(
+        pointReward => {
+            return pointReward.field !== undefined 
+                && pointReward.field 
+                && (pointReward.value !== "" || pointReward.eligibleValues !== undefined)
+                && (pointReward.value || pointReward.eligibleValues)
+                && pointReward.fieldPercent !== undefined
+                && pointReward.fieldPercent 
+        }
+      );
+      
+      if(filled.length || updated) {
+        this.entity.save(3000);
+      }
     },
   },
 });
