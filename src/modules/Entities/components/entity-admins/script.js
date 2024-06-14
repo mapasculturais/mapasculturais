@@ -34,6 +34,8 @@ app.component('entity-admins', {
             if (idFilter) {
                 query['id'] = idFilter;
             }
+            
+            query['parent'] = 'NULL()'
 
             return query;
 
