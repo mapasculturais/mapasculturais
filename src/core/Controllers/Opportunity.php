@@ -1059,7 +1059,9 @@ class Opportunity extends EntityController {
             'introInscricoes',
             'useSpaceRelationIntituicao',
             'registrationSeals',
-            'registrationLimit'
+            'registrationLimit',
+            'registrationRanges',
+            'registrationProponentTypes',
         );
 
         $metadata = [];
