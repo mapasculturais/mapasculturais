@@ -120,8 +120,19 @@ app.component('tiebreaker-criteria-configuration', {
         },
 
         async save() {
-            this.phase.tiebreakerCriteriaConfiguration = this.criteria;
-            await this.phase.save(3000);
+            const filled = Object.values(this.criteria).filter(
+                cri => {
+                    return cri.criterionType !== undefined 
+                        && cri.criterionType 
+                        && cri.preferences !== undefined 
+                        && cri.preferences
+                }
+            );
+
+            if(filled.length) {
+                this.phase.tiebreakerCriteriaConfiguration = filled;
+                await this.phase.save(3000);
+            }
         }
     },
 });
