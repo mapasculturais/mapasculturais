@@ -325,6 +325,18 @@ textarea {
     line-height: 19px;
 }
 
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field] .two-column {
+    display: inline-flex;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field] .field_checkbox {
+    margin-bottom: 8px;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field] .field_checkbox:last-child {
+    margin-bottom: 0;
+}
+
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
     background-color: #F5F5F5 !important;
     padding: 40px 0 24px!important;
