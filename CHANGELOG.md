@@ -16,6 +16,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige formulário de inscriçào em casos onde foi configurado tipo de proponente ou faixa após envio de inscrições
 - Ajusta distribução de avaliações através dos finais das inscrições para que seja possível usar mais caracteres
 - Só exibe categoria, tipo de proponente e faixa quando há essa informação na inscrição
+- Validação da área de interesse das fases de coleta de dados
 
 ## [7.4.4] 2024-06-12
 ### Correções
