@@ -7,7 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 ### Melhorias
-- melhora exibição do header da tabela de publicação de resultados
+- Melhora exibição do header da tabela de publicação de resultados
 
 ### Correções
 - Corrige erro no carregamento da single de projetos
@@ -18,6 +18,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Evita que seja possível selecionar sub-agentes como administradores de entidades
 - Corrige atualização do campo pessoa idosa
 - Ordena os termos das entidades em ordem alfabética
+- Só exibe categoria, tipo de proponente e faixa quando há essa informação na inscrição
 
 ## [7.4.4] 2024-06-12
 ### Correções
