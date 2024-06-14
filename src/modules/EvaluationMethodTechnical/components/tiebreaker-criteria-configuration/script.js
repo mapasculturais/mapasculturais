@@ -120,12 +120,20 @@ app.component('tiebreaker-criteria-configuration', {
         },
 
         async save() {
-            const filled = Object.values(this.criteria).filter(
+            const criterias = Object.values(this.criteria);
+            
+            if(criterias.length == 0) {
+                this.phase.tiebreakerCriteriaConfiguration = [];
+                await this.phase.save(3000);
+                return;
+            }
+
+            const filled = criterias.filter(
                 cri => {
                     return cri.criterionType !== undefined 
-                        && cri.criterionType 
-                        && cri.preferences !== undefined 
-                        && cri.preferences
+                    && cri.criterionType 
+                    && cri.preferences !== undefined 
+                    && cri.preferences
                 }
             );
 
