@@ -22,6 +22,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Só exibe categoria, tipo de proponente e faixa quando há essa informação na inscrição
 - Validação da área de interesse das fases de coleta de dados
 - Serialização de roles do usuário logado as vezes quebrando a página de gestão de usuários
+- Implementa mc-update para garantir/corrigir que o campo de pessoa idosa corresponda com a data de nascimento fornecida no cadastro do agente
 
 ## [7.4.4] 2024-06-12
 ### Correções
