@@ -51,13 +51,13 @@ $this->breadcrumb = [
                             <entity-location :entity="entity" classes="col-12"></entity-location>
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada'); ?></h2>
-                                <p v-html="entity.longDescription" class="single-2__longdescription"  ></p>
+                                <p class="description"  v-html="entity.longDescription"></p>
                             </div>
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download'); ?>"></entity-files-list>
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
                             <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                            <div v-if="entity.spaces?.length > 0 || entity.children?.length > 0 || entity.events?.length > 0" class="col-12">
+                            <div v-if="entity.spaces?.length > 0 || entity.children?.length > 0 || entity.events?.length > 0 || entity.projects?.length > 0" class="col-12">
                                 <h4 class="property-list"> <?php i::_e('Propriedades do Agente:');?> </h4>
                                 <entity-list v-if="entity.spaces?.length>0" title="<?php i::esc_attr_e('Espaços');?>" type="space" :ids="entity.spaces"></entity-list>
                                 <entity-list v-if="entity.events?.length>0" title="<?php i::esc_attr_e('Eventos');?>" type="event" :ids="entity.events"></entity-list>

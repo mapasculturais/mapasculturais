@@ -12,11 +12,10 @@ app.component('opportunity-registrations-table', {
         avaliableColumns: Array,
         hideFilters: Boolean,
         hideSort: Boolean,
+        hideActions: Boolean,
+        hideTitle: Boolean,
+        hideHeader: Boolean,
         statusNotEditable: Boolean,
-        order: {
-            type: String,
-            default: "",
-        }
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
@@ -81,42 +80,47 @@ app.component('opportunity-registrations-table', {
         }
 
         const sortOptions = [
-            { value: `status DESC,${consolidatedResultOrder} DESC`, label: 'por status descendente' },
-            { value: `status ASC,${consolidatedResultOrder} ASC`, label: 'por status ascendente' },
-            { value: `${consolidatedResultOrder} DESC`, label: 'resultado das avaliações' },
-            { value: 'createTimestamp ASC', label: 'mais antigas primeiro' },
-            { value: 'createTimestamp DESC', label: 'mais recentes primeiro' },
             { value: 'sentTimestamp ASC', label: 'enviadas a mais tempo primeiro' },
             { value: 'sentTimestamp DESC', label: 'enviadas a menos tempo primeiro' },
         ];
 
-        if(hadTechnicalEvaluationPhase) {
-            order = 'score DESC';
-            sortOptions.splice(0, 0, {value: 'score DESC', label: 'pontuação final'});
-        }
-
-        if(isAffirmativePoliciesActive) {
-            avaliableFields.push({
-                title: __('concorrendo por cota', 'opportunity-registrations-table'),
-                fieldName: 'eligible',
-                fieldType: 'boolean'
-            });
-
-            visible += ',eligible';
-            order = '@quota';
-            sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
-        }
-
         if(this.phase.isLastPhase) {
             order = `status DESC,score DESC`;
-        }
+            sortOptions.splice(0, 0, {value: 'score DESC', label: 'pontuação final'});
+            sortOptions.splice(0, 0, { value: `status ASC,score ASC`, label: 'por status ascendente' });
+            sortOptions.splice(0, 0, { value: `status DESC,score DESC`, label: 'por status descendente' });
 
+        } else { 
+            sortOptions.splice(0, 0, { value: `${consolidatedResultOrder} DESC`, label: 'resultado das avaliações' });
+            sortOptions.splice(0, 0, { value: `status ASC,${consolidatedResultOrder} ASC`, label: 'por status ascendente' });
+            sortOptions.splice(0, 0, { value: `status DESC,${consolidatedResultOrder} DESC`, label: 'por status descendente' });
+
+            if(hadTechnicalEvaluationPhase) {
+                order = 'score DESC';
+                sortOptions.splice(0, 0, {value: 'score DESC', label: 'pontuação final'});
+            }
+            
+            if(isAffirmativePoliciesActive) {
+                avaliableFields.push({
+                    title: __('concorrendo por cota', 'opportunity-registrations-table'),
+                    fieldName: 'eligible',
+                    fieldType: 'boolean'
+                });
+
+                visible += ',eligible';
+                order = '@quota';
+                sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
+            }
+        }
+        
         return {
             sortOptions,
             filters: {},
             resultStatus:[],
             query: {
                 '@opportunity': this.phase.id,
+                'status': 'GTE(0)',
+                '@permission': 'view'
             },
             selectedCategories: [],
             selectedProponentTypes: [],
@@ -202,13 +206,11 @@ app.component('opportunity-registrations-table', {
 
             itens.splice(3,0,{ text: "Pontuação", value: "score"});
 
-            itens = itens.filter((item) => {
-                return this.avaliableColumns.indexOf(item.value) >= 0;
-            });
-
-            debugger;
-            // console.log(this.avaliableColumns);
-            // console.log(itens);
+            if(this.avaliableColumns) {
+                itens = itens.filter((item) => {
+                    return this.avaliableColumns.indexOf(item.value) >= 0;
+                });
+            }
 
             return itens;
         },

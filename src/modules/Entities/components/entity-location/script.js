@@ -64,7 +64,7 @@ app.component('entity-location', {
 
     watch: {
         'entity.En_Pais'(_new, _old){
-            if(_new != _old) {
+            if(_new != _old && this.statesAndCitiesCountryCode != 'BR') {
                 this.entity.En_Nome_Logradouro = "";
                 this.entity.En_Num             = "";
                 this.entity.En_Complemento     = "";
@@ -97,7 +97,7 @@ app.component('entity-location', {
             return result;
         },
         address() {
-            this.entity.En_Pais == null ? '' : this.entity.En_Pais;
+            this.entity.En_Pais = this.statesAndCitiesCountryCode == 'BR' ? this.statesAndCitiesCountryCode : this.entity.En_Pais;
             let rua         = this.entity.En_Nome_Logradouro == null ? '' : this.entity.En_Nome_Logradouro;
             let numero      = this.entity.En_Num             == null ? '' : this.entity.En_Num;
             let complemento = this.entity.En_Complemento     == null ? '' : this.entity.En_Complemento;

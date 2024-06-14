@@ -1,6 +1,7 @@
 <?php
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
 use MapasCulturais\Utils;
@@ -426,4 +427,15 @@ return [
         }
         $app->auth->logout();
     },
+
+    'sync last opportunity phases registrations' => function() {
+        DB_UPDATE::enqueue(Opportunity::class, "id in (SELECT object_id FROM opportunity_meta WHERE key = 'isLastPhase')", function (Opportunity $opportunity) {
+            if($opportunity->publishedRegistrations){
+                $opportunity->registrationsOutdated = true;
+                $opportunity->save(true);
+            } else {
+                $opportunity->enqueueRegistrationSync();
+            }
+        });
+    }
 ];

@@ -34,33 +34,29 @@ app.component('opportunity-evaluations-list', {
             keywords: "",
             timeOut: null,
             roles: $MAPAS.currentUserRoles,
-            filterKeyword: false
+            filterKeyword: false,
+            loading: false
         }
     },
     watch: {
         'pending'(_new, _old) {
-            this.timeOutFind(_new, _old);
+            this.getEvaluations();
         }
     },
     methods: {
-        timeOutFind(_new, _old) {
-            if (_new != _old) {
-                clearTimeout(this.timeOut);
-                this.timeOut = setTimeout(() => {
-                    this.getEvaluations();
-                }, 1500);
-            }
-        },
-        filterKeywordExec(_new, _old) {
-            if(!this.keywords){
-                messages.error(this.text('Informe a palavra chave'));
-            }else{
+        timeOutFind(delay = 1500) {
+            clearTimeout(this.timeOut);
+
+            this.timeOut = setTimeout(() => {
                 this.getEvaluations();
-            }
+            }, delay);
         },
         async getEvaluations() {
+            this.loading = true;
+
             let args = {};
             args['@select'] = "id,owner.name";
+            args['registration:@select'] = "id,owner.name,sentTimestamp";
             args['@opportunity'] = this.entity.opportunity.id;
 
             if(this.keywords){
@@ -77,7 +73,10 @@ app.component('opportunity-evaluations-list', {
             await api.GET(url).then(response => response.json().then(objs => {
                 this.evaluations = objs.map(function(item){
                     return {
-                        registrationid:item.registration.id,
+                        evaluationId: item.evaluation?.id,
+                        registrationNumber: item.registration.number,
+                        registrationId: item.registration.id,
+                        registrationSentTimestamp: new McDate(item.registration.sentTimestamp.date),
                         agentname: item.registration.owner?.name,
                         status: item?.evaluation?.status,
                         resultString: item?.evaluation?.resultString || null,
@@ -85,8 +84,10 @@ app.component('opportunity-evaluations-list', {
                     }
                 });
                 this.filterKeyword = false;
-                this.evaluations.sort((a, b) => (a.registrationid - b.registrationid));
+                this.evaluations.sort((a, b) => (a.registrationId - b.registrationId));
                 window.dispatchEvent(new CustomEvent('evaluationRegistrationList', {detail:{evaluationRegistrationList:this.evaluations}}));
+
+                this.loading = false;
             }));
 
             const globalState = useGlobalState();

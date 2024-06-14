@@ -7,7 +7,7 @@ $future_date = date_format($date->modify('+1 month'),"Y-m-d");
 
 $queryParams =  [
     '@order' => 'registrationFrom ASC',
-    '@select' => 'id,name,shortDescription,terms,seals,singleUrl,registrationFrom,registrationTo,files', 
+    '@select' => 'id,name,shortDescription,terms,seals,singleUrl,registrationFrom,registrationTo,files.avatar', 
     'registrationFrom' => 'LTE('.$future_date.')',
     'registrationTo' => 'GTE('.$actual_date.')',
 ];
