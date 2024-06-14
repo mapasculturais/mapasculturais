@@ -15,6 +15,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige endpoit apiFindRegistrations para que um usuario comum posso ver as inscrições na fase de publicação de resultado
 - Corrige formulário de inscriçào em casos onde foi configurado tipo de proponente ou faixa após envio de inscrições
 - Ajusta distribução de avaliações através dos finais das inscrições para que seja possível usar mais caracteres
+- Evita que seja possível selecionar sub-agentes como administradores de entidades
+- Corrige atualização do campo pessoa idosa
+- Ordena os termos das entidades em ordem alfabética
 
 ## [7.4.4] 2024-06-12
 ### Correções
