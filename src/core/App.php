@@ -62,6 +62,7 @@ use Throwable;
  * @property-read Slim\App $slim instância do Slim
  * @property-read Hooks $hooks gerenciador de hooks
  * @property-read EntityManager $em Doctrine Entity Manager
+ * @property-read AuthProvider $auth Auth provider
  * @property-read string $siteName nome do site
  * @property-read string $siteDescription descrição do site
  * @property-read string $currentLCode código da linguagem configurada. ex: pt_BR
