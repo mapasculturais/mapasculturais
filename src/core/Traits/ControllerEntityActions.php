@@ -69,6 +69,8 @@ trait ControllerEntityActions {
         }
 
         $entity->enqueueToPCacheRecreation($users);
+
+        $this->json(true);
     }
 
     /**
