@@ -819,6 +819,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newField->displayOrder = $field->displayOrder;
                 $newField->conditional = $field->conditional;
                 $newField->conditionalValue = $field->conditionalValue;
+                $newField->proponentTypes = $field->proponentTypes;
+                $newField->registrationRanges = $field->registrationRanges;
 
                 $field->newField = $newField;
 
@@ -860,6 +862,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
+                $newFile->proponentTypes = $field->proponentTypes;
+                $newField->registrationRanges = $field->registrationRanges;
 
                 $app->em->persist($newFile);
 
