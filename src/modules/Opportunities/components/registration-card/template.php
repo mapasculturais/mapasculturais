@@ -71,6 +71,7 @@ $this->import('
             <div v-if="!pictureCard" class="status">
                 {{status}}
             </div>
+            <slot name="entity-actions-left" :entity="entity"></slot>
         </div>
         <div class="right">
             <slot name="button" :entity="entity">

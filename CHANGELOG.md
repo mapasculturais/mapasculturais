@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Melhorias
 - Melhora exibição do header da tabela de publicação de resultados
+- Botão para recriar caches de permissão das entidades na página de gestão de usuários
 
 ### Correções
 - Corrige erro no carregamento da single de projetos
