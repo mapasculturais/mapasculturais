@@ -122,6 +122,7 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: size(20) 0;
+        z-index: 0;
 
         @media (max-width: 1181px) {
             grid-template-columns: repeat(2, 1fr);

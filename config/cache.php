@@ -36,7 +36,7 @@ return [
     'app.useRegisterCache'           => __env_not_false('CACHE_REGISTER'),
     'app.useApiCache'                => env('CACHE_API', false),
     'app.useQuotasCache'             => env('CACHE_QUOTAS', false),
-    'app.useOpportunitySummaryCache' =>false,
+    'app.useOpportunitySummaryCache' => __env_not_false('CACHE_OPPORTUNITY_SUMARY'),
 
 
     'app.registeredAutoloadCache.lifetime'  => env('CACHE_AUTOLOAD', YEAR_IN_SECONDS),

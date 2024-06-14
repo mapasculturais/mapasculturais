@@ -964,12 +964,21 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     /**
+     * Retorna uma chave única para o cache do resumo da fase
+     * 
+     * @return string A chave única para o cache do resumo da fase.
+     */
+    public function getSummaryCacheKey(): string
+    {
+        return "opportunity-summary-{$this->id}";
+    }
+
+    /**
      * Retorna um resumo do número de inscrições de uma oportunidade
      * 
      * @return array
      */
-    public function getSummary()
-    {
+    public function getSummary($skip_cache = false): array {
         if($this->isNew()) {
             return [];
         }
@@ -977,8 +986,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
         /** @var App $app */
         $app = App::i();
 
-        if($app->config['app.useOpportunitySummaryCache']) {
-            $cache_key = __METHOD__ . ':' . $this->id; 
+        $cache_key = $this->summaryCacheKey;
+        
+        if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
+
             if ($app->cache->contains($cache_key)) {
                 return $app->cache->fetch($cache_key);
             }
@@ -1139,6 +1150,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $app->registerMetadata($metadata, Registration::class);
         }
 
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationMetadata");
+        
         if($also_previous_phases && $this->parent) {
             $this->previousPhase->registerRegistrationMetadata();
         }

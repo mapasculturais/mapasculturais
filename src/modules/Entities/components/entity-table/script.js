@@ -66,6 +66,7 @@ app.component('entity-table', {
         hideFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
+        hideHeader: Boolean,
     },
 
     created() {
@@ -172,6 +173,7 @@ app.component('entity-table', {
             
             delete query['@limit'];
             delete query['@opportunity'];
+            delete query['opportunity'];
             delete query['@order'];
             delete query['@select'];
             delete query['@page'];
@@ -182,6 +184,14 @@ app.component('entity-table', {
                     result = result.concat(this.getFilterLabels(key, query[key]));
                 } 
             }
+
+            result = result.filter((actualResult, index) => {
+                const duplicityIndex = result.findIndex(compareResult => {
+                    return JSON.stringify(compareResult) === JSON.stringify(actualResult);
+                });
+                return duplicityIndex === index;
+            });
+
             return result;
         },
     },
@@ -191,7 +201,7 @@ app.component('entity-table', {
             // Exemplo: 
             //      key = status  value = EQ(1)
 
-            if (prop == '@keyword') {
+            if (prop == '@keyword' && value != '') {
                 return [{prop, value, label: __('palavras-chave', 'entity-table')}]
             }
             
@@ -213,6 +223,17 @@ app.component('entity-table', {
                             '3': __('nao selecionadas', 'entity-table'),
                             '8': __('suplentes', 'entity-table'),
                             '10': __('selecionadas', 'entity-table'),
+                        }
+                    }
+
+                    if(this.type == 'payment') {
+                        statusDict = {
+                            '0': __('pendente', 'entity-table'),
+                            '1': __('em processo', 'entity-table'),
+                            '2': __('disponivel', 'entity-table'),
+                            '3': __('falha', 'entity-table'),
+                            '8': __('exportado', 'entity-table'),
+                            '10': __('pago', 'entity-table'),
                         }
                     }
 
@@ -240,10 +261,15 @@ app.component('entity-table', {
             // Exemplos: 
             //      EQ(10), EQ(preto), IN(8, 10), IN(preto, pardo)                
             let values = /(EQ|IN|GT|GTE|LT|LTE)\(([^\)]+,?)+\)/.exec(value); 
+            let exclude = ['GT','GTE','LT','LTE'];
 
             if (values) {
                 const operator = values[1];
                 const _values = values[2];
+                
+                if (exclude.includes(operator)) {
+                    return null;
+                }
                 
                 if (_values) {
                     if(operator == 'IN') {
@@ -257,6 +283,7 @@ app.component('entity-table', {
                     return null;
                 }
             }
+
             return null;
         },
 

@@ -70,7 +70,7 @@ $this->import('
                 <div v-if="!infoReviewer.default" class="opportunity-evaluation-committee__distributions">
                     <div class="field opportunity-evaluation-committee__distribution">
                         <label><?php i::_e('Distribuição') ?></label>
-                        <input type="text" placeholder="0-9" maxlength="3" @change="sendDefinition('addDistribution', infoReviewer.agentUserId)" v-model="entity.fetch[infoReviewer.agentUserId]"/>
+                        <input type="text" placeholder="00-99" maxlength="5" @change="sendDefinition('addDistribution', infoReviewer.agentUserId)" v-model="entity.fetch[infoReviewer.agentUserId]"/>
                     </div>
                     <div v-if="registrationCategories.length > 0" class="field">
                         <label><?php i::_e('Categorias a serem avaliadas') ?></label>
