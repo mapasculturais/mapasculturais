@@ -1015,6 +1015,12 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
+        if($field->conditional){
+            $_fied_name = $field->conditionalField;
+            $_fied_value = $field->conditionalValue;
+            return $this->$_fied_name == $_fied_value;
+        }
+
         return true;
     }
 
@@ -1114,6 +1120,8 @@ class Registration extends \MapasCulturais\Entity
             }
 
             $field_required = $rfc->required;
+            
+            /** @todo Verificar se este if ainda é necessário após a implementação do isFieldVisisble()*/
             if($rfc->conditional){
                 $_fied_name = $rfc->conditionalField;
                 $_fied_value = $rfc->conditionalValue;
@@ -1145,6 +1153,7 @@ class Registration extends \MapasCulturais\Entity
             $field_name = $field_prefix . $field->id;
             $field_required = $field->required;
             
+            /** @todo Verificar se este if ainda é necessário após a implementação do isFieldVisisble()*/
             if($metadata_definition && $metadata_definition->config && $metadata_definition->config['registrationFieldConfiguration'] && $metadata_definition->config['registrationFieldConfiguration']->conditional){
                 $conf =  $metadata_definition->config['registrationFieldConfiguration'];
               
