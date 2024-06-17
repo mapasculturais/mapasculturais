@@ -24,6 +24,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Serialização de roles do usuário logado as vezes quebrando a página de gestão de usuários
 - Implementa mc-update para garantir/corrigir que o campo de pessoa idosa corresponda com a data de nascimento fornecida no cadastro do agente
 - Ajusta importação e exportação do formulário para garantir que as faixas e tipos de proponentes sejam enviados
+- Corrige validação de erros dos metadados de inscrições
 
 ## [7.4.4] 2024-06-12
 ### Correções
