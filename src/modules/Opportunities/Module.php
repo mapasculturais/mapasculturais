@@ -34,6 +34,52 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
 
 
+        $app->hook('GET(<<registration>>.<<*>>):before', function() use ($app) {
+            $registration = $this->requestedEntity;
+            $app->hook('entity(Registration).propertiesMetadata', function(&$metadada) use ($registration) {
+                $metadada['category']['field_type'] = 'select';
+                $metadada['proponentType']['field_type'] = 'select';
+                $metadada['range']['field_type'] = 'select';
+
+                $opportunity = $registration->opportunity;
+                if(($categories = $opportunity->registrationCategories) || true) {
+                    $options = [];
+
+                    foreach($categories as $category) {
+                        $options[$category] =  $category;
+                    }
+
+                    $metadada['category']['options'] = $options;
+                    $metadada['category']['optionsOrder'] = $categories;
+                    $metadada['category']['required'] = true;
+                }
+
+                if(($proponentTypes = $opportunity->registrationProponentTypes) || true) {
+                    $options = [];
+
+                    foreach($proponentTypes as $proponentType) {
+                        $options[$proponentType] =  $proponentType;
+                    }
+
+                    $metadada['proponentType']['options'] = $options;
+                    $metadada['proponentType']['optionsOrder'] = $proponentTypes;
+                }
+
+                if($ranges = $opportunity->registrationRanges) {
+                    $options = [];
+                    $_ranges = [];
+                    foreach($ranges as $range) {
+                        $range = (object) $range;
+                        $options[$range->label] =  $range->label;
+                        $_ranges[] = $range->label;
+                    }
+
+                    $metadada['range']['options'] = $options;
+                    $metadada['range']['optionsOrder'] = $_ranges;
+                }
+            });
+        });
+
         // ajusta validação da área de interesse
         $app->hook('entity(Opportunity).validationErrors', function(&$errors) use ($app){
             /** @var Opportunity $this */
