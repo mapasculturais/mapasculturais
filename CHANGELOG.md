@@ -25,6 +25,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa mc-update para garantir/corrigir que o campo de pessoa idosa corresponda com a data de nascimento fornecida no cadastro do agente
 - Ajusta importação e exportação do formulário para garantir que as faixas e tipos de proponentes sejam enviados
 - Corrige validação de erros dos metadados de inscrições
+- Corrige validação de erros para campos não visíveis
 
 ## [7.4.4] 2024-06-12
 ### Correções
