@@ -189,14 +189,18 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Pessoa idosa'),
             'type' => 'readonly',
-            'serialize' => function($value, $entity = null){
-                if($entity->dataDeNascimento){
+            'serialize' => function($value, $entity = null) {
+                if ($entity->dataDeNascimento) {
                     $today = new DateTime('now');
-                    $calc = (new DateTime($entity->dataDeNascimento))->diff($today);
-                    return ($calc->y >= 60) ? "1" : "0";
-                }else{
-                    return null;
+                    $birthdate = new DateTime($entity->dataDeNascimento);
+                    $age = $birthdate->diff($today)->y;
+                    return ($age >= 60);
+                } else {
+                    return false;
                 }
+            },
+            'unserialize' => function($value){
+                return $value ? true : false;
             },
             'available_for_opportunities' => true
         ),

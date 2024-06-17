@@ -57,25 +57,35 @@ app.component('mc-link', {
 
     },
 
-    data() {
-        let url = '';
-        let classes = this.class;
-        let queryString = this.serializeQueryString();
-        queryString = queryString ? `?${queryString}` : queryString;
+    computed: {
+        url() {
+            let url = '';
+            let queryString = this.serializeQueryString();
+            queryString = queryString ? `?${queryString}` : queryString;
 
-        if (this.entity) {
-            url = this.entity.getUrl(this.route, this.params) + queryString;
-            classes += ` ${this.entity.__objectType}__color` ;
-        } else {
-            const parts = this.route.split('/');
-            url = Utils.createUrl(parts[0], parts[1], this.params)  + queryString;
+            if (this.entity) {
+                url = this.entity.getUrl(this.route, this.params) + queryString;
+            } else {
+                const parts = this.route.split('/');
+                url = Utils.createUrl(parts[0], parts[1], this.params)  + queryString;
+            }
+
+            if (this.hash) {
+                url = url+'#'+this.hash;
+            }
+
+            return url;
+        },
+
+        classes() {
+            let classes = this.class;
+
+            if (this.entity) {
+                classes += ` ${this.entity.__objectType}__color` ;
+            }
+
+            return classes;
         }
-
-        if (this.hash) {
-            url = url+'#'+this.hash;
-        }
-
-        return {url, classes};
     },
 
     methods: {

@@ -11,7 +11,6 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
-use PHPUnit\Util\Annotation\Registry;
 
 class Module extends \MapasCulturais\Module{
 
@@ -32,6 +31,46 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\FinishEvaluationPhase(Jobs\FinishEvaluationPhase::SLUG));
         $app->registerJobType(new Jobs\FinishDataCollectionPhase(Jobs\FinishDataCollectionPhase::SLUG));
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
+        $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
+
+
+        // ajusta validação da área de interesse
+        $app->hook('entity(Opportunity).validationErrors', function(&$errors) use ($app){
+            /** @var Opportunity $this */
+            if(isset($errors['term-area'])) {
+                if($this->parent){
+                    unset($errors['term-area']);
+                } else {
+                    foreach($errors['term-area'] as &$termError) {
+                        if(strpos($termError, i::__('área de atuação')) !== false) {
+                            $termError = str_replace(i::__('área de atuação'), i::__('área de interesse'), $termError);
+                        }
+                    }
+                }
+            }
+        });
+
+        // atualiza o cache dos resumos das fase de avaliação
+        $app->hook("entity(Registration).sent:before", function() use ($app) {
+            /** @var Registration $this */
+            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                'opportunity' => $this->opportunity,
+                'evaluationMethodConfiguration' => $this->opportunity->evaluationMethodConfiguration ?: null
+            ], '10 seconds');
+        });
+        $app->hook("entity(Registration).status(<<*>>)", function() use ($app) {
+            $app->log->debug("Registration {$this->id} status changed to {$this->status}");
+            /** @var Registration $this */
+            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                'opportunity' => $this->opportunity
+            ], '10 seconds');
+        });
+        $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {
+            /** @var RegistrationEvaluation $this */
+            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                'evaluationMethodConfiguration' => $this->registration->opportunity->evaluationMethodConfiguration
+            ], '10 seconds');
+        });
 
         // Método para que devolve se existe avaliações técnicas nas fases anteriores
         $app->hook("Entities\\Opportunity::hasPreviousTechnicalEvaluation", function() use ($app) {

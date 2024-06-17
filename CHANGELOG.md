@@ -4,13 +4,55 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [unreleased]
+
+## [7.4.5] - 2024-06-17
+### Melhorias
+- Melhora exibição do header da tabela de publicação de resultados
+- Botão para recriar caches de permissão das entidades na página de gestão de usuários
+
+### Correções
+- Corrige erro no carregamento da single de projetos
+- Ajusta exibição dos campos do tipo checkebox do formulário
+- Corrige endpoit apiFindRegistrations para que um usuario comum posso ver as inscrições na fase de publicação de resultado
+- Corrige formulário de inscriçào em casos onde foi configurado tipo de proponente ou faixa após envio de inscrições
+- Ajusta distribução de avaliações através dos finais das inscrições para que seja possível usar mais caracteres
+- Evita que seja possível selecionar sub-agentes como administradores de entidades
+- Corrige atualização do campo pessoa idosa
+- Ordena os termos das entidades em ordem alfabética
+- Só exibe categoria, tipo de proponente e faixa quando há essa informação na inscrição
+- Validação da área de interesse das fases de coleta de dados
+- Serialização de roles do usuário logado as vezes quebrando a página de gestão de usuários
+- Implementa mc-update para garantir/corrigir que o campo de pessoa idosa corresponda com a data de nascimento fornecida no cadastro do agente
+- Ajusta importação e exportação do formulário para garantir que as faixas e tipos de proponentes sejam enviados
+- Corrige validação de erros dos metadados de inscrições
+- Corrige validação de erros para campos não visíveis
+
+## [7.4.4] 2024-06-12
+### Correções
+- Corrige lista de inscrições da publicação de resultado final
+- Corrige exibição dos botões de baixar rascunhos e baixar lista de inscrições
+
+## [7.4.3] 2024-06-11
+### Correções
+- Reordena db-updates para evitar problemas com colunas e tabelas nao criadas
+- Corrige db-update que ajusta configurações dos campos das inscrições
+
+## [7.4.2] 2024-06-11
+## Correções
+- Ajusta getter lastPhase() na inscrição para que quando for a última fase na inscrição base, ele consiga devolver a entidade de forma correta
+- evita que a single da inscrição se quebre quando nao existe data de envio da inscrição
+
+## [7.4.1] 2024-06-10
 ### Melhorias
 - Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
 - Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
 - Implementa possibilidade de definir mascaras em inputs do entity-field
 - Implementa contante global mcTabActive para guadar a aba que o mc-tab está selecionada
 - Implementa getter lastPhase() para as inscrições, possibilitando recuperar a entidade da inscrição na ultima fase
+- Implementa hook no metodo getValidationErrors possibilitando a mainipulação final dos erros
+- Melhora fluxo das mensagens de validação de erros da inscrição
+- Melhorias na interface e filtro na lista de inscrições da página de avaliação
+- Melhora performance do componente home-opportunities
 
 ### Correções
 - Corrige erro no carregamento do formulário de avaliação para o avaliador
@@ -18,6 +60,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige db-update que atualiza legado da distribuição de avaliaçações por categoria
 - Corrige db-update que cria as colunas eligible e score
 - Corrige remoção de abas do componente mc-tabs
+- Corrige link dos botões de acessar inscrição na lista de inscrições da página de avaliação
+- Possibilita a configuração de metadados com opções value => label com valores numéricos através da flag `numericKeyValueOptions`
 
 ### Melhorias não funcionais
 - Refatora script start.sh e middleware ExecutionTime para fornecer um log mais limpo para o desenvolvedor

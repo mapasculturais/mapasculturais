@@ -286,7 +286,7 @@ class ApiQuery {
      * List of parameters that will be used to run the DQL
      * @var array
      */
-    protected $_dqlParams = [];
+    public $_dqlParams = [];
 
     /**
      * Fields that are being selected
@@ -3065,6 +3065,8 @@ class ApiQuery {
         if($class::isPrivateEntity() && !isset($this->apiParams['@permissions'])){
             $this->_addFilterByPermissions('view');
         }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.parseQueryParams");
     }
     
     protected function _addFilterBySeals($seals_ids){

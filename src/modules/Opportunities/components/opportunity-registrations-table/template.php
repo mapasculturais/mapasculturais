@@ -22,35 +22,30 @@ $this->import('
 $entity = $this->controller->requestedEntity;
 ?>
 <div class="opportunity-registration-table grid-12">
-    <div class="col-12">
+    <div v-if="!hideTitle" class="col-12">
         <h2 class="opportunity-status" v-if="phase.publishedRegistrations"><?= i::__("Os resultados já foram publicados") ?></h2>
         <h2 class="opportunity-status" v-if="!phase.publishedRegistrations && isPast()"><?= i::__("A fase já está encerrada") ?></h2>
         <h2 class="opportunity-status" v-if="isHappening()"><?= i::__("A fase está em andamento") ?></h2>
         <h2 class="opportunity-status" v-if="isFuture()"><?= i::__("A fase ainda não iniciou") ?></h2>
     </div>
     <template v-if="!isFuture()">
-
-        <?php $this->applyTemplateHook('registration-list-actions', 'before', ['entity' => $entity]); ?>
-        <div class="col-12 opportunity-registration-table__buttons">
-            <?php $this->applyTemplateHook('registration-list-actions', 'begin', ['entity' => $entity]); ?>
-            
-            <?php $this->applyTemplateHook('registration-list-actions', 'end', ['entity' => $entity]); ?>
-        </div>
-        <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
-
+        <template v-if="!hideActions">
+            <?php $this->applyTemplateHook('registration-list-actions', 'before', ['entity' => $entity]); ?>
+            <div class="col-12 opportunity-registration-table__buttons">
+                <?php $this->applyTemplateHook('registration-list-actions', 'begin', ['entity' => $entity]); ?>
+                
+                <?php $this->applyTemplateHook('registration-list-actions', 'end', ['entity' => $entity]); ?>
+            </div>
+            <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
+        </template>
         <div class="col-12"> 
-            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort">
+            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort" :hide-actions='hideActions' :hide-header="hideHeader">
                 <template #title>
-                    <slot name="title">
-                        <h5>
-                            <strong><?= i::__("Clique no número de uma inscrição para conferir todas as avaliações realizadas.") ?></strong>
-                            <?= i::__("Após conferir, você pode alterar os status das inscrições de maneira coletiva ou individual e aplicar os resultados das avaliações.") ?>
-                        </h5>
-                    </slot>
+                    <slot name="title"></slot>
                 </template>
                 
                 <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'before', ['entity' => $entity]); ?>
-                <template #actions="{entities,filters}">
+                <template v-if="!hideActions" #actions="{entities,filters}">
                     <h4 class="bold"><?= i::__('Ações:') ?></h4>
                     <div class="opportunity-payment-table__actions">
                         <div class="opportunity-payment-table__actions grid-12">
@@ -120,7 +115,7 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #agent="{entity}">
-                    <a :href="entity.owner.singleUrl">{{entity.owner.name}}</a>
+                    <a :href="entity.owner?.singleUrl">{{entity.owner?.name}}</a>
                 </template>
 
                 <template #number="{entity}">

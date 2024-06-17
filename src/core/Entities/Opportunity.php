@@ -275,6 +275,16 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
+    
+    /**
+    * @var \MapasCulturais\Entities\Subsite
+    *
+    * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+    * @ORM\JoinColumns({
+    *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
+    * })
+    */
+   protected $subsite;
 
     /**
      * @var string
@@ -809,6 +819,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newField->displayOrder = $field->displayOrder;
                 $newField->conditional = $field->conditional;
                 $newField->conditionalValue = $field->conditionalValue;
+                $newField->proponentTypes = $field->proponentTypes;
+                $newField->registrationRanges = $field->registrationRanges;
 
                 $field->newField = $newField;
 
@@ -850,6 +862,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
+                $newFile->proponentTypes = $field->proponentTypes;
+                $newField->registrationRanges = $field->registrationRanges;
 
                 $app->em->persist($newFile);
 
@@ -964,12 +978,21 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     /**
+     * Retorna uma chave única para o cache do resumo da fase
+     * 
+     * @return string A chave única para o cache do resumo da fase.
+     */
+    public function getSummaryCacheKey(): string
+    {
+        return "opportunity-summary-{$this->id}";
+    }
+
+    /**
      * Retorna um resumo do número de inscrições de uma oportunidade
      * 
      * @return array
      */
-    public function getSummary()
-    {
+    public function getSummary($skip_cache = false): array {
         if($this->isNew()) {
             return [];
         }
@@ -977,8 +1000,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
         /** @var App $app */
         $app = App::i();
 
-        if($app->config['app.useOpportunitySummaryCache']) {
-            $cache_key = __METHOD__ . ':' . $this->id; 
+        $cache_key = $this->summaryCacheKey;
+        
+        if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
+
             if ($app->cache->contains($cache_key)) {
                 return $app->cache->fetch($cache_key);
             }
