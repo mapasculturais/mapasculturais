@@ -97,8 +97,10 @@ $this->import('
     </template>
 
     <template v-if="!processing" #actions="modal">
-        <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
-        <button class="button button--primary" @click="apply(modal)"><?php i::_e('Aplicar') ?></button>
+        <div class="grid-12">
+            <button class="button button--text button--text-del col-6" @click="modal.close()"><?php i::_e('Cancelar') ?></button>
+            <button class="button button--primary col-6" @click="apply(modal)"><?php i::_e('Aplicar') ?></button>  
+        </div>
     </template>
     <template v-if="processing" #actions="modal">
         <mc-loading condition><?= i::__('aplicando avaliações') ?></mc-loading>
