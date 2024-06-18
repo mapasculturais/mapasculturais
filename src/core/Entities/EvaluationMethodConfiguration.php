@@ -324,51 +324,17 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $data['evaluated'] = $evaluated['qtd'];
 
         // Conta as inscrições avaliadas por status
-        $query = $app->em->createQuery("
-            SELECT 
-                r.status, 
-                count(r) as qtd 
-            FROM 
-                MapasCulturais\\Entities\\Registration r  
-            WHERE 
-                r.opportunity = :opp AND r.status > 0 AND 
-                r.id IN (:reg_ids) GROUP BY r.status
-        ");
-
-        $query->setParameters([
-            "opp" => $opportunity,
-            "reg_ids" => $registrations_ids
-        ]);
-        
-        if($result = $query->getResult()){
+        if($result = $conn->fetchAll("SELECT  r.status, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.status")) {
             foreach($result as $values){
                 $data[$values['status']] = $values['qtd'];
             }
         }
 
-        // status das avaliações
-
-        // Conta as inscrições avaliadas por status
-        $query = $app->em->createQuery("
-            SELECT 
-                r.consolidatedResult, 
-                count(r) as qtd 
-            FROM 
-                MapasCulturais\\Entities\\Registration r  
-            WHERE 
-                r.opportunity = :opp AND r.status > 0 AND 
-                r.id IN (:reg_ids) GROUP BY r.consolidatedResult
-        ");
-
-        $query->setParameters([
-            "opp" => $opportunity,
-            "reg_ids" => $registrations_ids
-        ]);
-        
-        $em = $this->evaluationMethod;
-        if($result = $query->getResult()){
+        // Conta as inscrições avaliadas por consolidatedResult
+        if($result = $conn->fetchAll("SELECT r.consolidated_result, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.consolidated_result")) {
+            $em = $this->evaluationMethod;
             foreach($result as $values){
-                $status = $em->valueToString($values['consolidatedResult']);
+                $status = $em->valueToString($values['consolidated_result']);
                 if($status) {
                     $data['evaluations'][$status] = $values['qtd'];
                 } else {

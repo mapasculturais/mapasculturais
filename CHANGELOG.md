@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Possibilita que o proponente selecione faixa, tipo de proponente e categoria após criar a inscrição quando esses forem configurados na oportunidade posteriormente a criação da inscrição
 
+### Correções
+- Melhora processamento do resumo de avaliações
+
 ## [7.4.5] - 2024-06-17
 ### Melhorias
 - Melhora exibição do header da tabela de publicação de resultados
