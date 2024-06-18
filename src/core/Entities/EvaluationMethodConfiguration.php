@@ -297,7 +297,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 return $app->cache->fetch($cache_key);
             }
         }
-
+        $em = $this->evaluationMethod;
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;
         $data = [
@@ -331,7 +331,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         // Conta as inscrições avaliadas por consolidatedResult
         if($reg_ids && $result = $conn->fetchAll("SELECT r.consolidated_result, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.consolidated_result")) {
-            $em = $this->evaluationMethod;
             foreach($result as $values){
                 $status = $em->valueToString($values['consolidated_result']);
                 if($status) {
