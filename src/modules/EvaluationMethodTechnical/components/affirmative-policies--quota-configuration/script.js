@@ -16,6 +16,10 @@ app.component('affirmative-policies--quota-configuration', {
         return { text, messages }
     },
 
+    updated () {
+        this.autoSave();
+    },
+
     mounted() {
         if(this.phase.quotaConfiguration && this.phase.quotaConfiguration.rules.length > 0) {
             if(this.totalVacancies > 0) {
@@ -141,6 +145,10 @@ app.component('affirmative-policies--quota-configuration', {
                 if(!load) {
                     this.autoSave();
                 }
+
+                if(removeQuota) {
+                    this.autoSave(true);                    
+                }
             }
         },
 
@@ -154,8 +162,25 @@ app.component('affirmative-policies--quota-configuration', {
             return _option.length > 1 ? _option[1] : _option[0];
         },
 
-        autoSave() {
-            this.phase.save(3000)            
+        autoSave(updated = false) {
+            const filled = Object.values(this.phase.quotaConfiguration.rules).filter(
+                quotaConfiguration => {
+                    return quotaConfiguration.title !== undefined 
+                        && quotaConfiguration.title 
+                        && quotaConfiguration.percentage !== undefined
+                        && quotaConfiguration.percentage
+                        && quotaConfiguration.vacancies !== undefined
+                        && quotaConfiguration.vacancies
+                        && quotaConfiguration.fields.some(field => 
+                            field.eligibleValues !== undefined && field.eligibleValues.length > 0
+                            && field.fieldName !== undefined && field.fieldName
+                        );
+                }
+            );
+            
+            if(filled.length || updated) {
+                this.phase.save(3000)            
+            }
         },
     },
 });
