@@ -46,8 +46,7 @@ app.component('affirmative-policies--geo-quota-configuration', {
         },
 
         close() {
-            this.geoQuota = { geoDivision: '', distribution: {} };
-            this.save();
+            this.save(true);
             this.isActive = false;
         },
 
@@ -75,8 +74,19 @@ app.component('affirmative-policies--geo-quota-configuration', {
             this.geoQuota.distribution = distribution;
         },
 
-        async save() {
-            this.phase.geoQuotaConfiguration = this.geoQuota;
+        async save(updated = false) {
+            if(updated) {
+                this.geoQuota = { geoDivision: '', distribution: {} };
+                this.phase.geoQuotaConfiguration = this.geoQuota;
+            }
+
+            if(this.geoQuota.geoDivision !== '' 
+                && this.geoQuota
+                && this.geoQuota.distribution !== null
+            ) {
+                this.phase.geoQuotaConfiguration = this.geoQuota;
+            }
+
             await this.phase.save(3000);
         }
     },
