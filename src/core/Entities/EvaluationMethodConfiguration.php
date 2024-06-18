@@ -312,7 +312,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             return $evaluation['registration_id'];
         }, $buildQuery());
         $reg_ids = implode(',', $registrations_ids);
-        
         // Conta as inscrições enviadas
         if($reg_ids){
             if($count_reg = $conn->fetchAssoc("SELECT count(r.status) as qtd FROM registration r WHERE r.id IN ({$reg_ids}) AND r.status > 0"));
@@ -324,14 +323,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $data['evaluated'] = $evaluated['qtd'];
 
         // Conta as inscrições avaliadas por status
-        if($result = $conn->fetchAll("SELECT  r.status, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.status")) {
+        if($reg_ids && $result = $conn->fetchAll("SELECT  r.status, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.status")) {
             foreach($result as $values){
                 $data[$values['status']] = $values['qtd'];
             }
         }
 
         // Conta as inscrições avaliadas por consolidatedResult
-        if($result = $conn->fetchAll("SELECT r.consolidated_result, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.consolidated_result")) {
+        if($reg_ids && $result = $conn->fetchAll("SELECT r.consolidated_result, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.consolidated_result")) {
             $em = $this->evaluationMethod;
             foreach($result as $values){
                 $status = $em->valueToString($values['consolidated_result']);
