@@ -11,7 +11,7 @@ class ExecutionTime {
         $app = App::i();
 
         $app->log->info('=========================================================================');
-        $app->log->debug($_SERVER['REQUEST_METHOD'] . ' ' . urldecode($_SERVER['REQUEST_URI']));
+        $app->log->debug($_SERVER['REQUEST_METHOD'] . ' ' . $_SERVER['REQUEST_URI']);
 
         $response = $handler->handle($request);
 

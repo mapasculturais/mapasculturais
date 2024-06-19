@@ -553,8 +553,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).get(lastPhase)', function(&$value) use ($app) {
             /** @var Registration $this */
-            $opportunity = $this->opportunity->isLastPhase ? $this->opportunity : $this->opportunity->lastPhase;
-            $value = $app->repo('Registration')->findOneBy(['number' => $this->number, 'opportunity' => $opportunity]);
+            $value = $app->repo('Registration')->findOneBy(['number' => $this->number, 'opportunity' => $this->opportunity->lastPhase]);
         });
 
         /**
