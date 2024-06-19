@@ -82,7 +82,7 @@ app.component('tiebreaker-criteria-configuration', {
             let counter = 1;
             this.autoSaveTime = 200;
             for (const criterion in this.criteria) {
-                if (criterion == id) {
+                if (this.criteria[criterion].id == id) {
                     delete this.criteria[criterion];
                 }
                 counter++;
