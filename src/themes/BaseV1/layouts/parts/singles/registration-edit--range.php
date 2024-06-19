@@ -12,10 +12,11 @@ use MapasCulturais\i;
                 </div>
             <?php endif?>
             
-            <div>
+            <div class="attachment">
                 <!-- TODO: ng-required="requiredField(field)" -->
                 <!-- foi trocado ng-blur para ng-change, para dar o trigger na função sempre que uma nova opção no select for escolhida -->
-                <select  ng-model="entity.registrationRanges" ng-change="saveField({fieldName:'registrationRanges'}, entity.registrationRanges)" >
+                <label><?= i::__('Faixas / Linhas') ?></label>
+                <select ng-model="entity.registrationRanges" ng-change="saveField({fieldName:'registrationRanges'}, entity.registrationRanges)" >
                     <option ng-repeat="option in registrationRanges" value="{{option.label}}">{{option.label}}</option>
                 </select>
             </div>
