@@ -1,0 +1,126 @@
+@use '../2-atoms/a-mixins' as *;
+
+
+.entity-cards {
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    flex-direction: column;
+    padding: 2px;
+
+    &__header {
+        margin: 0 auto;
+        width: 100%;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr size(455);
+
+        @media (max-width:size(600)) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    &__panel {
+        display: flex;
+        flex-direction: column;
+        gap: size(12);
+    }
+
+
+    &__content {
+        align-items: stretch;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 0 auto;
+        max-width: size(1170);
+        z-index: 2;
+        gap: size(18) size(13);
+
+
+        @media (max-width:size(500)) {
+            gap: size(18) 0;
+        }
+    }
+}
+
+.entity-cards-cards {
+    width: size(220);
+    max-width: 100%;
+    background-color: var(--mc-white);
+    border: size(2) solid var(--mc-gray-100);
+    box-shadow: 2px 2px 8px 0px #00000040;
+    // border: size(1) solid red;
+    border-radius: size(8);
+    display: grid;
+    align-content: space-between;
+    padding: size(5);
+
+    &__header {
+        display: grid;
+        grid-template-columns: size(32) 1fr;
+        gap: size(16);
+    }
+    &__icon {
+        background-color: var(--mc-white);
+        align-self:self-start;
+        color: #EF7B45;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: end;
+        text-align: center;
+        border-radius: size(8);
+
+    }
+
+    &__number {
+        font-size: var(--mc-font-size-lg)
+    }
+
+    &__label {
+
+        color: #666666;
+        font-size: var(--mc-font-size-xxxs);
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        align-items: left;
+        text-align: left;
+        margin-left: size(2);
+    }
+
+    &--double & {
+        &__content {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        &__info:first-of-type .metabase-card__number {
+            font-size: var(--mc-font-size-lg);
+
+            &--long {
+                font-size: var(--mc-font-size-sm);
+            }
+        }
+        
+        &__number {
+            font-size: var(--mc-font-size-md);
+        }
+       
+    }
+    @media (max-width:size(500)){
+        min-width: size(297);
+        width: 100%;
+    }
+}
