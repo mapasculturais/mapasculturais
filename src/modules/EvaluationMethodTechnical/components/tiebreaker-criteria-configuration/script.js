@@ -16,6 +16,7 @@ app.component('tiebreaker-criteria-configuration', {
     
     updated () {
         this.save();
+        this.autoSaveTime = 3000;
     },
 
     data() {
@@ -25,6 +26,7 @@ app.component('tiebreaker-criteria-configuration', {
         let isActive = !!Object.keys(criteria).length;
 
         return {
+            autoSaveTime: 3000,
             isActive,
             totalCriteria,
             criteria,
@@ -78,6 +80,7 @@ app.component('tiebreaker-criteria-configuration', {
 
         unsetCriterion(id) {
             let counter = 1;
+            this.autoSaveTime = 200;
             for (const criterion in this.criteria) {
                 if (criterion == id) {
                     delete this.criteria[criterion];
@@ -121,10 +124,9 @@ app.component('tiebreaker-criteria-configuration', {
 
         async save() {
             const criterias = Object.values(this.criteria);
-            
             if(criterias.length == 0) {
                 this.phase.tiebreakerCriteriaConfiguration = [];
-                await this.phase.save(3000);
+                await this.phase.save(this.autoSaveTime);
                 return;
             }
 
@@ -151,7 +153,7 @@ app.component('tiebreaker-criteria-configuration', {
 
             if(filled.length) {
                 this.phase.tiebreakerCriteriaConfiguration = filled;
-                await this.phase.save(3000);
+                await this.phase.save(this.autoSaveTime);
             }
         }
     },
