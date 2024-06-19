@@ -30,8 +30,10 @@ app.component('affirmative-policies--quota-configuration', {
 
     data() {
         const firstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
+        const proponentTypes = firstPhase.registrationProponentTypes;
         return {
             firstPhase,
+            proponentTypes,
             totalVacancies: firstPhase.vacancies ?? 0,
             totalQuota: this.phase.quotaConfiguration ? this.phase.quotaConfiguration.vacancies : 0,
             totalPercentage: 0,
