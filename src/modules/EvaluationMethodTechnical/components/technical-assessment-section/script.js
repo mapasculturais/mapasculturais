@@ -133,20 +133,22 @@ app.component('technical-assessment-section', {
                 })
             })
 
-            this.entity.criteria.forEach((criterion) => {
-                Object.keys(this.fieldsDict.criteria).forEach((field) => {
-                    let _field = this.fieldsDict.criteria[field];
-                    if (_field.isRequired && !criterion[field]) {
-                        let message = `${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')} `;
-                        debugger
-                        if(addCriteria) {
-                            message = message + this.text('lastCriterion');
+            if(this.entity.criteria) {
+                this.entity.criteria.forEach((criterion) => {
+                    Object.keys(this.fieldsDict.criteria).forEach((field) => {
+                        let _field = this.fieldsDict.criteria[field];
+                        if (_field.isRequired && !criterion[field]) {
+                            let message = `${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')} `;
+                            debugger
+                            if(addCriteria) {
+                                message = message + this.text('lastCriterion');
+                            }
+                            this.messages.error(message)
+                            hasError = true;
                         }
-                        this.messages.error(message)
-                        hasError = true;
-                    }
+                    })
                 })
-            })
+            }
 
             return hasError;
         }
