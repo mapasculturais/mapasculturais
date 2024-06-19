@@ -18,6 +18,7 @@ app.component('affirmative-policies--quota-configuration', {
 
     updated () {
         this.autoSave();
+        this.autoSaveTime = 3000;
     },
 
     mounted() {
@@ -35,6 +36,7 @@ app.component('affirmative-policies--quota-configuration', {
     data() {
         const firstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
         return {
+            autoSaveTime: 3000,
             firstPhase,
             totalVacancies: firstPhase.vacancies ?? 0,
             totalQuota: this.phase.quotaConfiguration ? this.phase.quotaConfiguration.vacancies : 0,
@@ -103,6 +105,7 @@ app.component('affirmative-policies--quota-configuration', {
         },
 
         removeField(ruleIndex, fieldIndex) {
+            this.autoSaveTime = 200;
             this.phase.quotaConfiguration.rules[ruleIndex].fields = this.phase.quotaConfiguration.rules[ruleIndex].fields.filter(function(value, key) {
                 return fieldIndex != key;
             });
@@ -179,7 +182,7 @@ app.component('affirmative-policies--quota-configuration', {
             );
             
             if(filled.length || updated) {
-                this.phase.save(3000)            
+                this.phase.save(this.autoSaveTime)            
             }
         },
     },
