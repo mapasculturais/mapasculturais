@@ -145,7 +145,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="registration_categories", type="json", nullable=true)
      */
-    protected $registrationCategories = [];
+    protected array $registrationCategories = [];
 
     /**
      * @var \DateTime
@@ -187,14 +187,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="registration_proponent_types", type="json", nullable=true)
      */
-    protected $registrationProponentTypes;
+    protected array $registrationProponentTypes = [];
 
     /**
      * @var string
      *
      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
      */
-    protected $registrationRanges;
+    protected array $registrationRanges = [];
 
     /**
      * @var \MapasCulturais\Entities\Opportunity
