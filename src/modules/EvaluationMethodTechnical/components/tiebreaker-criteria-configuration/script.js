@@ -130,10 +130,22 @@ app.component('tiebreaker-criteria-configuration', {
 
             const filled = criterias.filter(
                 cri => {
+                    checPreferences = function(value) {
+                        if(Array.isArray(value)) {
+                            return value.length > 0
+                        }
+
+                        if(value) {
+                            return true;
+                        }
+
+                        return false;
+                    };
+
                     return cri.criterionType !== undefined 
                     && cri.criterionType 
                     && cri.preferences !== undefined 
-                    && cri.preferences
+                    && checPreferences(cri.preferences)
                 }
             );
 
