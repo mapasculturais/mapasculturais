@@ -7,7 +7,8 @@ src/modules/Components/assets/js/media-query/
 node_modules
 mix-manifest.json
 .pnpm-store
-dev/docker-data/
+**/docker-data/
 src/themes/BaseV1/assets/css/main.css
 src/themes/BaseV1/assets/css/main.css.map
-.env
+**/.env
+!/dev/.env
