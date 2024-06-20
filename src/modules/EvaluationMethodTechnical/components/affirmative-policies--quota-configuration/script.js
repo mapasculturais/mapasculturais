@@ -170,10 +170,8 @@ app.component('affirmative-policies--quota-configuration', {
                 quotaConfiguration => {
                     return quotaConfiguration.title !== undefined 
                         && quotaConfiguration.title 
-                        && quotaConfiguration.percentage !== undefined
-                        && quotaConfiguration.percentage
                         && quotaConfiguration.vacancies !== undefined
-                        && quotaConfiguration.vacancies
+                        && quotaConfiguration.vacancies > 0
                         && quotaConfiguration.fields.some(field => 
                             field.eligibleValues !== undefined && field.eligibleValues.length > 0
                             && field.fieldName !== undefined && field.fieldName
