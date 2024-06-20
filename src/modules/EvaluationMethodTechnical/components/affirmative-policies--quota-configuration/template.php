@@ -77,8 +77,9 @@ $this->import('
         <div class="affirmative-policies--quota-configuration__card-content">
             <div v-for="(field, indexF) in quota.fields" :key="indexF" class="affirmative-policies--quota-configuration__quota-field">
                 <div class="field">
+                    <label>{{ indexF === 'default' ? 'Selecione o campo que define a cota' :'Selecione o campo que define a cota para' + ' ' + indexF}}</label>
                     <mc-select v-model:default-value="field.fieldName" placeholder="Selecione um campo">
-                        <option v-for="(item, index) in phase.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
+                        <option v-for="(item, index) in filteredOptions(indexF)" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
                     </mc-select>
                 </div>
 
