@@ -16,6 +16,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhora processamento do resumo de avaliações
 - Só exibe categoria, tipo de proponente e faixa na singe da inscrição quando há essa informação
 - Garante que o resumo das avaliações seja montado somente se existir avaliações mapeadas
+- Corrige modal de aplicar avaliações técnicas
 
 ## [7.4.5] - 2024-06-17
 ### Melhorias
