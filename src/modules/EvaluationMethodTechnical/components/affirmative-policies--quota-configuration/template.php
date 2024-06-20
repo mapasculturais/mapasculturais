@@ -45,7 +45,7 @@ $this->import('
 
             <div class="field">
                 <label><?= i::__('Descrição da cota:') ?></label>
-                <input type="text" v-model="quota.title" @blur="autoSave()">
+                <input type="text" v-model="quota.title">
             </div>
 
             <div v-if="totalVacancies > 0" class="field">
@@ -99,7 +99,7 @@ $this->import('
 
                     <div class="field field--horizontal">
                         <label v-for="option in getFieldOptions(field)">
-                            <input type="checkbox" :value="optionValue(option)" :true-value="[]" v-model="field.eligibleValues" @change="autoSave()" />
+                            <input type="checkbox" :value="optionValue(option)" :true-value="[]" v-model="field.eligibleValues" />
                             <span>{{optionLabel(option)}}</span>
                         </label>
                     </div>
@@ -110,12 +110,12 @@ $this->import('
 
                     <div class="field field--horizontal">
                         <label>
-                            <input type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="field.eligibleValues" @change="autoSave()">
+                            <input type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="field.eligibleValues">
                             <span><?= i::__('Sim / Marcado') ?></span>
                         </label>
 
                         <label>
-                            <input type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="field.eligibleValues" @change="autoSave()">
+                            <input type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="field.eligibleValues">
                             <span><?= i::__('Não / Desmarcado') ?></span>
                         </label>
                     </div>
