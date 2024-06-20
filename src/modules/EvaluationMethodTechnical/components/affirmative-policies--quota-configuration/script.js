@@ -30,7 +30,8 @@ app.component('affirmative-policies--quota-configuration', {
 
     data() {
         const firstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
-        const proponentTypes = firstPhase.registrationProponentTypes;
+        const proponentTypes = firstPhase.registrationProponentTypes.length ? firstPhase.registrationProponentTypes : ["default"];
+
         return {
             firstPhase,
             proponentTypes,
@@ -53,7 +54,14 @@ app.component('affirmative-policies--quota-configuration', {
                 fieldName: '',
                 eligibleValues: []
             }
-            return rules;
+
+            const fields = {};
+            
+            this.proponentTypes.forEach((type) => {
+                fields[type] = { ...rules };
+            });
+
+            return fields;
         },
 
         getField(quota) {
@@ -78,19 +86,15 @@ app.component('affirmative-policies--quota-configuration', {
                     rules: [{
                         title: '',
                         vacancies: 0,
-                        fields: [this.skeleton()]
+                        fields: this.skeleton()
                     }]
                 };
             } else {
                 this.phase.quotaConfiguration.rules.push({
                     vacancies: 0,
-                    fields: [this.skeleton()]
+                    fields: this.skeleton()
                 });
             }
-        },
-
-        addField(index) {
-            this.phase.quotaConfiguration.rules[index].fields.push(this.skeleton());
         },
 
         removeConfig(item) {
