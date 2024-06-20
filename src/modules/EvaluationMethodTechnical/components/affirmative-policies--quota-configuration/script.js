@@ -161,7 +161,38 @@ app.component('affirmative-policies--quota-configuration', {
         },
 
         autoSave() {
-            this.phase.save(3000)            
+            if (this.validateFields()) {
+                this.phase.save(3000);
+            }
         },
+
+        validateFields() {
+            for (let quota of this.phase.quotaConfiguration.rules) {
+                for (let field of Object.values(quota.fields)) {
+                    // Verifica se o campo foi selecionado
+                    if (!field.fieldName) {
+                        return false;
+                    }
+                    // Verifica se pelo menos uma opção foi selecionada 
+                    if ((this.getFieldType(field) === 'select' || this.getFieldType(field) === 'multiselect' || this.getFieldType(field) === 'checkboxes' || this.getFieldType(field) === 'boolean') &&
+                        (!field.eligibleValues || field.eligibleValues.length === 0)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        },
+
+        updateField(quota, field) {
+            const fieldData = this.getField(quota);
+            if (fieldData) {
+                field.eligibleValues = fieldData.eligibleValues;
+            }
+        },
+
+        filteredOptions(proponentType) {
+            const field = this.fields.filter(field => field.proponentTypes.includes(proponentType) || field.proponentTypes.length === 0);
+            return field;
+        }
     },
 });
