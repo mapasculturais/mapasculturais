@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Possibilita que o proponente selecione faixa, tipo de proponente e categoria após criar a inscrição quando esses forem configurados na oportunidade posteriormente a criação da inscrição
 - Impede a remoção de faixas, categorias e tipos de proponentes que estejam sendo utilzadas em condicionais de campos ou inscrições
 - Implementa db-update para padronizar as de tipo de proponente, faixas e categorias das oportunidades quando estão vazias
+- Ajusta para evitar que dados vazios sejam inseridos nas configurações de cotas e pol´titicas afirmatívas
 
 ### Correções
 - Melhora processamento do resumo de avaliações
