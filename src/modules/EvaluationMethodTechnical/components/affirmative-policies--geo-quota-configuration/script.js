@@ -21,10 +21,17 @@ app.component('affirmative-policies--geo-quota-configuration', {
     data() {
         let geoQuota = this.phase.geoQuotaConfiguration || { geoDivision: '', distribution: {} };
         let isActive = !!Object.keys(geoQuota.distribution).length;
-        
+        const oppFirstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
+
         return {
             isActive,
             geoQuota,
+            oppFirstPhase,
+            hasProponentType: oppFirstPhase.registrationProponentTypes && oppFirstPhase.registrationProponentTypes.length > 0,
+            hasCollective: oppFirstPhase.registrationProponentTypes.includes('Coletivo'),
+            hasMEI: oppFirstPhase.registrationProponentTypes.includes('MEI'),
+            hasNaturalPerson: oppFirstPhase.registrationProponentTypes.includes('Pessoa Física'),
+            hasLegalEntity: oppFirstPhase.registrationProponentTypes.includes('Pessoa Jurídica')
         }
     },
 
@@ -73,6 +80,25 @@ app.component('affirmative-policies--geo-quota-configuration', {
 
             this.geoQuota.geoDivision = option.value;
             this.geoQuota.distribution = distribution;
+        },
+
+        setGeoQuotaField(option, proponentType) {
+            if (!this.geoQuota.fields || typeof this.geoQuota.fields !== 'object') {
+                this.geoQuota.fields = {};
+            }
+            
+            this.geoQuota.fields[`${proponentType}`] = option.value;
+        },
+
+        getFields(proponentType = '') {
+            return this.oppFirstPhase.affirmativePoliciesEligibleFields.filter(field => {
+                if (proponentType === '') {
+                    return !field.proponentTypes || field.proponentTypes.length == 0;
+                } else {
+                    return (!field.proponentTypes || field.proponentTypes.length == 0) 
+                            || (field.proponentTypes && field.proponentTypes.includes(proponentType));
+                }
+            });
         },
 
         async save() {
