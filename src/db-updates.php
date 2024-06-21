@@ -2313,7 +2313,7 @@ $$
         ");
     },
     'Ajusta as colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades para setar um array vazio quando as mesmas estiverem null' => function() use ($conn, $app){
-        __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_categories = '\"\"'");
+        __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types = '\"\"'");
         __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges = '\"\"'");
         __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories = '\"\"'");
     },
