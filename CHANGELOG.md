@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias não funcionais
 - Implementa método para recriar o ponteiro das inscrições entre fases
+- Implementa endpoint para recriar o ponteiro das inscrições entre fases
 
 ## [7.4.6] - 2024-06-21
 ### Melhorias
