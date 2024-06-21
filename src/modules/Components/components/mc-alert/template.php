@@ -11,7 +11,7 @@ $this->import('
 ')
 ?>
 
-<div class="alert" :class="['alert', {'success': type=='success'}, {'helper': type=='helper'}, {'warning': type=='warning'}, {'danger': type=='danger'}]" v-if="showAlert">
+<div class="alert" :class="['alert', {'success': type=='success'}, {'helper': type=='helper'}, {'warning': type=='warning'}, {'danger': type=='danger'}, {'alert--sm': small}]" v-if="showAlert">
     <div class="alert__message">
         <mc-icon v-if="type === 'helper'" name="info-full"></mc-icon>
         <mc-icon v-if="type === 'success'" name="circle-checked"></mc-icon>

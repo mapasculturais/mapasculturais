@@ -34,7 +34,7 @@ return [
     
     ex: `["genero","raca"]` 
     */
-    'registration.reportOwnerProperties' => json_decode(env('REGISTRATION_REPORT_OWNER_PROPERTIES', '["genero"]')),
+    'registration.reportOwnerProperties' => json_decode(env('REGISTRATION_REPORT_OWNER_PROPERTIES', '["name","genero","raca","documento"]')),
 
     'registration.propertiesToExport' => array(
         'id',

@@ -2311,6 +2311,11 @@ $$
                 (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
                 geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
         ");
+    },
+
+    'Adiciona as colunas subsite_id e user_id à tabela job' => function () {
+        __exec("ALTER TABLE job ADD COLUMN subsite_id INTEGER NULL");
+        __exec("ALTER TABLE job ADD COLUMN user_id INTEGER NULL");
     }
 
 ] + $updates ;   

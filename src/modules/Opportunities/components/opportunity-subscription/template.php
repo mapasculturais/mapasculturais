@@ -103,7 +103,6 @@ $this->import('
 					<?= i::__("Acessar ou criar conta") ?>
 				</button>
 			</div>
-
 		</div>
 	</div>
 </div>

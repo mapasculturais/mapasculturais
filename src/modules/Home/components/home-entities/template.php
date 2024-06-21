@@ -36,7 +36,7 @@ $this->import('
                         </div>
                     </div>
                     <div class="card__left--img">
-                        <img src="<?php $this->asset($app->config['module.home']['home-opportunities']) ?>" />
+                        <img :src="subsite?.files?.opportunityBanner ? subsite?.files?.opportunityBanner?.url : '<?php $this->asset($app->config['module.home']['home-opportunities']) ?>'" />
                     </div>
                 </div>
                 <div class="card__right">
@@ -61,7 +61,7 @@ $this->import('
                         </div>
                     </div>
                     <div class="card__left--img">
-                        <img src="<?php $this->asset($app->config['module.home']['home-events']) ?>" />
+                        <img :src="subsite?.files?.eventBanner ? subsite?.files?.eventBanner?.url : '<?php $this->asset($app->config['module.home']['home-events']) ?>'" />
                     </div>
                 </div>
                 <div class="card__right">
@@ -86,7 +86,7 @@ $this->import('
                         </div>
                     </div>
                     <div class="card__left--img">
-                        <img src="<?php $this->asset($app->config['module.home']['home-spaces']) ?>" />
+                        <img :src="subsite?.files?.spaceBanner ? subsite?.files?.spaceBanner?.url : '<?php $this->asset($app->config['module.home']['home-spaces']) ?>'" />
                     </div>
                 </div>
                 <div class="card__right">
@@ -111,7 +111,7 @@ $this->import('
                         </div>
                     </div>
                     <div class="card__left--img">
-                        <img src="<?php $this->asset($app->config['module.home']['home-agents']) ?>" />
+                        <img :src="subsite?.files?.agentBanner ? subsite?.files?.agentBanner?.url : '<?php $this->asset($app->config['module.home']['home-agents']) ?>'" />
                     </div>
                 </div>
                 <div class="card__right">
@@ -136,7 +136,7 @@ $this->import('
                         </div>
                     </div>
                     <div class="card__left--img">
-                        <img src="<?php $this->asset($app->config['module.home']['home-projects']) ?>" />
+                        <img :src="subsite?.files?.projectBanner ? subsite?.files?.projectBanner?.url : '<?php $this->asset($app->config['module.home']['home-projects']) ?>'" />
                     </div>
                 </div>
                 <div class="card__right">

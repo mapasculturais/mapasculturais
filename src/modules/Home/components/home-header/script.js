@@ -9,7 +9,7 @@ app.component('home-header', {
 
     data() {
         return {
-            background: $MAPAS.config.homeHeader.background,
+            subsite: $MAPAS.subsite ?? {},
             
             banner: $MAPAS.config.homeHeader.banner,
             bannerLink: $MAPAS.config.homeHeader.bannerLink,
@@ -22,6 +22,14 @@ app.component('home-header', {
             thirdBanner: $MAPAS.config.homeHeader.thirdBanner,
             thirdBannerLink: $MAPAS.config.homeHeader.thirdBannerLink,
             thirdDownloadableLink: $MAPAS.config.homeHeader.thirdDownloadableLink,
+        }
+    },
+    computed: {
+        background(){
+            if(this.subsite?.files?.header){
+                return this.subsite.files.header.url;
+            }
+            return $MAPAS.config.homeHeader.background;
         }
     },
 });

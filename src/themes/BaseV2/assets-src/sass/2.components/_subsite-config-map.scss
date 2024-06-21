@@ -1,0 +1,44 @@
+@use '../0.settings/mixins' as *;
+
+.subsite-config-map {
+    display: grid;
+    gap: size(20);
+
+    &__content {
+        display: grid;
+        gap: size(30);
+    }
+
+    &__instructions {
+        margin: 0;
+        
+        & > li {
+            list-style: decimal;
+            padding: 0 0 size(8) size(8);
+        }
+    }
+
+    &__filter {
+        display: flex;
+        gap: size(15);
+        flex-direction: column;
+    }
+
+    &__filter-results {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__filter-result {
+        border-bottom: var(--mc-border-hairline);
+        padding: size(5) size(16);
+        cursor: pointer;
+    }
+
+    &__buttons {
+        display: flex;
+        gap: size(20);
+        flex-wrap: wrap;
+    }
+}
