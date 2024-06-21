@@ -57,7 +57,7 @@ return [
 
         'MapasCulturais\Entities\Registration' => [
             'category' => i::__('Categoria'),
-            'range' => i::__('Faixa'),
+            'range' => i::__('Faixa/Linha'),
             'proponentType' => i::__('Tipo de proponente'),
             'number' => i::__('Número da inscrição'),
             'sentTimestamp' => i::__('Data e hora de envio'),

@@ -60,17 +60,17 @@ $today = new DateTime();
                                             <div class="reg__label"> <?= i::__('Nº de inscrição') ?> </div>
                                             <div class="reg__info"> {{entity.number}} </div>
                                         </div>
-                                        <div class="category">
+                                        <div class="category" v-if="entity.opportunity.registrationCategories?.length > 0">
                                             <div class="category__label"> <?= i::__('Categoria de inscrição') ?> </div>
                                             <div v-if="entity.category" class="category__info"> {{entity.category}} </div>
                                             <div v-if="!entity.category" class="category__info"> <?= i::__('Sem categoria') ?> </div>
                                         </div>
-                                        <div class="category">
+                                        <div class="category" v-if="entity.opportunity.registrationRanges?.length > 0">
                                             <div class="category__label"> <?= i::__('Faixa') ?> </div>
                                             <div v-if="entity.range" class="category__info"> {{entity.range}} </div>
                                             <div v-if="!entity.range" class="category__info"> <?= i::__('Faixa não informada') ?> </div>
                                         </div>
-                                        <div class="category">
+                                        <div class="category" v-if="entity.opportunity.registrationProponentTypes?.length > 0">
                                             <div class="category__label"> <?= i::__('Tipo de proponente') ?> </div>
                                             <div v-if="entity.proponentType" class="category__info"> {{entity.proponentType}} </div>
                                             <div v-if="!entity.proponentType" class="category__info"> <?= i::__('Tipo de proponente não informado') ?> </div>

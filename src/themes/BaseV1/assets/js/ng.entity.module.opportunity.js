@@ -1732,17 +1732,17 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         var result = true;
 
         if ($scope.useCategories) {
-            result = result && (field.categories?.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0);
+            result = result && (field.categories?.length === 0 || field.categories.indexOf($scope.entity.category) >= 0);
         }
 
         if ($scope.useRegistrationsRanges) {
-            if(field.registrationRanges?.length > 0  && !field.registrationRanges.includes(MapasCulturais.entity.object.range)) {
+            if(field.registrationRanges?.length > 0  && !field.registrationRanges.includes($scope.entity.registrationRanges)) {
                 result = false;
             }
         }
 
         if ($scope.useProponentTypes) {
-            if(field.proponentTypes?.length > 0 && !field.proponentTypes.includes(MapasCulturais.entity.object.proponentType)) {
+            if(field.proponentTypes?.length > 0 && !field.proponentTypes.includes($scope.entity.registrationProponentTypes)) {
                 result = false;
             }
         }
