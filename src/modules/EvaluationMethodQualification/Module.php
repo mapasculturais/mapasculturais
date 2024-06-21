@@ -159,7 +159,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return json_encode($val);
             },
             'unserialize' => function ($val) {
-                return json_decode($val);
+                return $val ? json_decode($val) : $val;
             }
         ]);
 
@@ -170,7 +170,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return json_encode($val);
             },
             'unserialize' => function ($val) {
-                return json_decode($val);
+                return $val ? json_decode($val) : $val;
             }
         ]);
 

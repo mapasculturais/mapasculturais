@@ -5,6 +5,19 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.6] - 2024-06-21
+### Melhorias
+- Possibilita que o proponente selecione faixa, tipo de proponente e categoria após criar a inscrição quando esses forem configurados na oportunidade posteriormente a criação da inscrição
+- Impede a remoção de faixas, categorias e tipos de proponentes que estejam sendo utilzadas em condicionais de campos ou inscrições
+- Implementa db-update para padronizar as de tipo de proponente, faixas e categorias das oportunidades quando estão vazias
+- Ajusta para evitar que dados vazios sejam inseridos nas configurações de cotas e pol´titicas afirmatívas
+
+### Correções
+- Melhora processamento do resumo de avaliações
+- Só exibe categoria, tipo de proponente e faixa na singe da inscrição quando há essa informação
+- Garante que o resumo das avaliações seja montado somente se existir avaliações mapeadas
+- Corrige modal de aplicar avaliações técnicas
+
 ## [7.4.5] - 2024-06-17
 ### Melhorias
 - Melhora exibição do header da tabela de publicação de resultados
