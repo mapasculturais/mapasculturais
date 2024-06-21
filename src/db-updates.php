@@ -2323,5 +2323,16 @@ $$
         __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_categories = '\"\"'");
         __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories = '\"\"'");
     },
+    "Cria colunas editableUntil editSentTimestamp e editableFields na tabela registration" => function() use ($conn){
+        if(!__column_exists('registration', 'editable_until')) {
+             __exec("ALTER TABLE registration ADD COLUMN editable_until TIMESTAMP NULL");
+        }
+        if(!__column_exists('registration', 'edit_sent_timestamp')) {
+            __exec("ALTER TABLE registration ADD COLUMN edit_sent_timestamp TIMESTAMP NULL");
+        }
+        if(!__column_exists('registration', 'editable_fields')) {
+            __exec("ALTER TABLE registration ADD COLUMN editable_fields JSON NULL");
+        }
+    } 
 
 ] + $updates ;   
