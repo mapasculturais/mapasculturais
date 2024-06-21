@@ -149,7 +149,8 @@ abstract class SpreadsheetJob extends JobType
             'tmp_name' => $path,
             'size' => filesize($path),
         ]);
-
+        
+        $file->private = true;
         $file->group = $this->fileGroup;
         $file->owner = $job->owner;
         $file->save(true);
