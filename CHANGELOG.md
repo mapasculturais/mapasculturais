@@ -10,6 +10,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - correção no db-update que corrige os valores das colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades
 - Corrige erro que impede os botões de ações das avaliações serem exibidos para o avaliador
 
+### Melhorias não funcionais
+- Implementa método para recriar o ponteiro das inscrições entre fases
+
 ## [7.4.6] - 2024-06-21
 ### Melhorias
 - Possibilita que o proponente selecione faixa, tipo de proponente e categoria após criar a inscrição quando esses forem configurados na oportunidade posteriormente a criação da inscrição
