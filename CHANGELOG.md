@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.7] - unreleased
+### Correções
+- correção no db-update que corrige os valores das colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades
+
 ## [7.4.6] - 2024-06-21
 ### Melhorias
 - Possibilita que o proponente selecione faixa, tipo de proponente e categoria após criar a inscrição quando esses forem configurados na oportunidade posteriormente a criação da inscrição
