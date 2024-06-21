@@ -644,6 +644,72 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
 
+    /**
+     * Recria ponteiros entre fases das inscrições
+     * @return void 
+     * @throws PermissionDenied 
+     */
+    public function fixNextPhaseRegistrationIds(): void
+    {
+        $this->checkPermission('modify');
+
+        $app = App::i();
+        $opportunity = $this;
+        $conn = $app->em->getConnection();
+
+        if($next_phase = $opportunity->nextPhase) {
+            $conn->executeQuery("DELETE FROM registration_meta where key = 'nextPhaseRegistrationId' AND object_id in (SELECT id FROM registration WHERE opportunity_id = {$opportunity->id})");
+            $conn->executeQuery("DELETE FROM registration_meta where key = 'previousPhaseRegistrationId' AND object_id in (SELECT id FROM registration WHERE opportunity_id = {$next_phase->id})");
+
+            $_current_phase_registrations = $conn->fetchAll("SELECT id, number FROM registration WHERE opportunity_id = {$opportunity->id}");
+            $_next_phase_registrations = $conn->fetchAll("SELECT id, number FROM registration WHERE opportunity_id = {$next_phase->id}");
+
+            $current_phase_registrations = [];
+            foreach($_current_phase_registrations as $registration) {
+                $current_phase_registrations[$registration['number']] = $registration['id'];
+            }
+
+            $next_phase_registrations = [];
+            foreach($_next_phase_registrations as $registration) {
+                $next_phase_registrations[$registration['number']] = $registration['id'];
+            }
+
+            // Corrige o ponteiro para próxima fase
+            foreach($next_phase_registrations as $number => $id) {
+                if(!isset($current_phase_registrations[$number])) {
+                    continue;
+                }
+
+                $parms = [
+                    'object_id' => $current_phase_registrations[$number],
+                    'key' => 'nextPhaseRegistrationId',
+                    'value' => $id,
+                ];
+
+                $conn->executeQuery("INSERT INTO registration_meta (object_id, key, value, id) VALUES (:object_id, :key, :value, nextval('registration_meta_id_seq'::regclass))", $parms);
+                $app->log->debug("Corrigido ponteiro nextPhase para inscrição {$id} ({$number})");
+            }
+
+             // Corrige o ponteiro para fase anterior
+             foreach($current_phase_registrations as $number => $id) {
+                if(!isset($next_phase_registrations[$number])) {
+                    continue;
+                }
+
+                $parms = [
+                    'object_id' => $next_phase_registrations[$number],
+                    'key' => 'previousPhaseRegistrationId',
+                    'value' => $id,
+                ];
+
+                $conn->executeQuery("INSERT INTO registration_meta (object_id, key, value, id) VALUES (:object_id, :key, :value, nextval('registration_meta_id_seq'::regclass))", $parms);
+                $app->log->debug("Corrigido ponteiro previousPhase para inscrição {$id} ({$number})");
+            }
+
+        }
+    }
+    
+
     function validateDate($value){
         return !$value || $value instanceof \DateTime;
     }
