@@ -40,7 +40,8 @@ return [
 
             'suporte/lista-de-inscricoes'  => ['support', 'list'],
             'suporte/formulario'  => ['support', 'form'],
-
+            'suporte/configuracao' => ['support', 'supportConfig'],
+            
             'baixar-rascunhos' => ['opportunity', 'reportDrafts'],
             'baixar-inscritos' => ['opportunity', 'report'],
             'baixar-avaliacoes' => ['opportunity', 'reportEvaluations'],
