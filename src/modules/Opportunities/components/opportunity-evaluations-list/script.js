@@ -104,7 +104,7 @@ app.component('opportunity-evaluations-list', {
 
             var index = null;
             this.evaluations.forEach((obj, i) => {
-                if (obj.registrationid === data.detail.registrationId) {
+                if (obj.registrationId === data.detail.registrationId) {
                     index = data.type === "nextEvaluation" ? i + 1 : i - 1;
                 }
             });
