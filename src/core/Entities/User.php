@@ -30,7 +30,8 @@ use MapasCulturais\Traits;
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
     use Traits\EntityMetadata,
         Traits\EntitySoftDelete,
-        Traits\EntityPermissionCache;
+        Traits\EntityPermissionCache,
+        Traits\EntityFiles;
 
     const STATUS_ENABLED = 1;
 

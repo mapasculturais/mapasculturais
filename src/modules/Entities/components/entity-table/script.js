@@ -67,6 +67,7 @@ app.component('entity-table', {
         hideSort: Boolean,
         hideActions: Boolean,
         hideHeader: Boolean,
+        rawProcessor: Function,
     },
 
     created() {
@@ -204,10 +205,18 @@ app.component('entity-table', {
             if (prop == '@keyword' && value != '') {
                 return [{prop, value, label: __('palavras-chave', 'entity-table')}]
             }
+
+            if (prop == '@date') {
+                return [{prop, value, label: __('data', 'entity-table')}]
+            }
+
+            if (prop == '@pending') {
+                return [{prop, value: 'null', label: __('pendente', 'entity-table')}]
+            }
             
             let values = this.getFilterValues(value);
             if (values) {
-                if (prop == 'status') {
+                if (prop == 'status' || prop == '@pending') {
                     let statusDict = {
                         '0': __('rascunhos', 'entity-table'),
                         '1': __('publicadas', 'entity-table'),
@@ -234,6 +243,14 @@ app.component('entity-table', {
                             '3': __('falha', 'entity-table'),
                             '8': __('exportado', 'entity-table'),
                             '10': __('pago', 'entity-table'),
+                        }
+                    }
+
+                    if (this.endpoint == 'findEvaluations') {
+                        statusDict = {
+                            '0': __('iniciada', 'entity-table'),
+                            '1': __('avaliada', 'entity-table'),
+                            '2': __('enviada', 'entity-table'),
                         }
                     }
 
@@ -269,6 +286,10 @@ app.component('entity-table', {
                 
                 if (exclude.includes(operator)) {
                     return null;
+                }
+
+                if (operator == '@pending') {
+                    return 'null';
                 }
                 
                 if (_values) {
@@ -372,6 +393,8 @@ app.component('entity-table', {
             if (filter.prop == '@keyword') {
                 delete this.query[filter.prop];
                 this.searchText = '';
+            } else if (filter.prop == '@pending'){ 
+                delete this.query[filter.prop];
             } else {
                 if (_values) {
                     let operator = _values[1];

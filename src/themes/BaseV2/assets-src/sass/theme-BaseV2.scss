@@ -21,6 +21,7 @@
 @import '2.components/apply-evaluations';
 @import '2.components/button';
 @import '2.components/claim-support';
+@import '2.components/colors-customizer';
 @import '2.components/complaint-suggestion';
 @import '2.components/container';
 @import '2.components/create-app';
@@ -66,6 +67,7 @@
 @import '2.components/field';
 @import '2.components/files-list';
 @import '2.components/gallery';
+@import '2.components/home-customizer';
 @import '2.components/home-developers';
 @import '2.components/home-entities';
 @import '2.components/home-feature';
@@ -74,14 +76,16 @@
 @import '2.components/home-opportunities';
 @import '2.components/home-register';
 @import '2.components/home-search';
-@import '2.components/link-project';
 @import '2.components/link-opportunity';
+@import '2.components/link-project';
+@import '2.components/logo-customizer';
 @import '2.components/mc-accordion';
 @import '2.components/mc-breadcrumb';
 @import '2.components/mc-alert';
 @import '2.components/mc-card';
 @import '2.components/mc-collapse';
 @import '2.components/mc-confirm-button';
+@import '2.components/mc-export-spreadsheet';
 @import '2.components/mc-file';
 @import '2.components/mc-header-menu-user';
 @import '2.components/mc-header-menu';
@@ -110,6 +114,7 @@
 @import '2.components/opportunity-category';
 @import '2.components/opportunity-evaluation-committee';
 @import '2.components/opportunity-evaluations-list';
+@import '2.components/opportunity-evaluations-table';
 @import '2.components/opportunity-evaluations';
 @import '2.components/opportunity-form-export';
 @import '2.components/opportunity-form-import';
@@ -128,6 +133,7 @@
 @import '2.components/opportunity-rules';
 @import '2.components/opportunity-subscription-list';
 @import '2.components/opportunity-subscription';
+@import '2.components/opportunity-support-config';
 @import '2.components/panel--entities-summary';
 @import '2.components/panel--carousel';
 @import '2.components/panel--entity-support';
@@ -162,6 +168,7 @@
 @import '2.components/space-info';
 @import '2.components/stack';
 @import '2.components/stepper';
+@import '2.components/subsite-config-map';
 @import '2.components/tabs';
 @import '2.components/theme-logo';
 @import '2.components/technical-assessment-section';
@@ -181,21 +188,22 @@
 
 // PAGES
 @import 'pages/agents';
-@import 'pages/seals';
 @import 'pages/events';
 @import 'pages/faq';
+@import 'pages/form-builder';
+@import 'pages/form-preview';
 @import 'pages/opportunity';
 @import 'pages/panel-evaluations';
 @import 'pages/panel-registrations';
 @import 'pages/print-registration';
 @import 'pages/projects';
 @import 'pages/registrations';
+@import 'pages/seals';
 @import 'pages/search';
 @import 'pages/spaces';
 @import 'pages/support';
-@import 'pages/terms';
-@import 'pages/user-detail';
-@import 'pages/form-builder';
-@import 'pages/form-preview';
-@import 'pages/system-roles';
 @import 'pages/system-roles-modal';
+@import 'pages/system-roles';
+@import 'pages/terms';
+@import 'pages/theme-customizer';
+@import 'pages/user-detail';

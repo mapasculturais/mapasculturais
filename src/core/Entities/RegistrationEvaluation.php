@@ -263,6 +263,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         return App::i()->createUrl('registration', 'view', [$this->registration->id, 'uid' => $this->user->id]);
     }
 
+    public static function getEntityTypeLabel($plural = false): string {
+        if ($plural)
+            return \MapasCulturais\i::__('Avaliações de Inscrições');
+        else
+            return \MapasCulturais\i::__('Avaliação de Inscrição');
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
