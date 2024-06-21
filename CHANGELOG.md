@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5]
+### Novas funcionalidades
+- Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
+
 ## [7.4.6] - 2024-06-21
 ### Melhorias
 - Possibilita que o proponente selecione faixa, tipo de proponente e categoria após criar a inscrição quando esses forem configurados na oportunidade posteriormente a criação da inscrição

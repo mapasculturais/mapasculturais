@@ -225,6 +225,27 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $eligible;
 
+    /**
+     * @var dateTime
+     *
+     * @ORM\Column(name="editable_until", type="datetime", nullable=true)
+     */
+    protected $editableUntil;
+
+    /**
+     * @var dateTime
+     *
+     * @ORM\Column(name="edit_sent_timestamp", type="datetime", nullable=true)
+     */
+    protected $editSentTimestamp;
+
+     /**
+     * @var array
+     *
+     * @ORM\Column(name="editable_fields", type="json", nullable=true)
+     */
+    protected $editableFields;
+
      /**
      * @var \MapasCulturais\Entities\Subsite
      *
