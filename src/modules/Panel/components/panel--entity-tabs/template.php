@@ -78,7 +78,11 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
             <template #default="{entities}">
                 <slot name='before-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
                 <slot v-for="entity in entities" :key="entity.__objectId" :entity="entity" :moveEntity="moveEntity">
-                    <registration-card v-if="entity.__objectType=='registration'" :entity="entity" pictureCard hasBorders class="panel__row"></registration-card>
+                    <registration-card v-if="entity.__objectType=='registration'" :entity="entity" pictureCard hasBorders class="panel__row">
+                        <template #entity-actions-left>
+                            <slot name="entity-actions-left" :entity="entity"></slot>
+                        </template>
+                    </registration-card>
                     <panel--entity-card  v-if="entity.__objectType!='registration'" :key="entity.id" :entity="entity" 
                         @undeleted="moveEntity(entity, $event)" 
                         @deleted="moveEntity(entity, $event)" 
