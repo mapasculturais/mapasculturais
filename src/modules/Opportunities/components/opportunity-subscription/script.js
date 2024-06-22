@@ -191,7 +191,7 @@ app.component('opportunity-subscription' , {
                 messages.error(this.text('selecione faixa'));
                 return;
             } else if (this.registrationProponentTypes?.length && !this.registrationProponentType) {
-                messages.error(this.text('selecione tipo do preponente'));
+                messages.error(this.text('selecione tipo do proponente'));
                 return;
             }
             this.processing = true;
