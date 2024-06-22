@@ -16,6 +16,7 @@ $this->import('
     mc-icon
     opportunity-header
     registration-actions
+    registration-form
     request-agent-avatar 
     registration-related-agents
     registration-related-space
