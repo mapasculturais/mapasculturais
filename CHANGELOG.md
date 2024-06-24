@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - correção no db-update que corrige os valores das colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades
 - Corrige erro que impede os botões de ações das avaliações serem exibidos para o avaliador
+- Corrige exibição condicional de campos de faixas e tipos de proponente
 
 ### Melhorias não funcionais
 - Implementa método para recriar o ponteiro das inscrições entre fases
