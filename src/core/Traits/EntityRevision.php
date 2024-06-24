@@ -164,10 +164,13 @@ trait EntityRevision{
         return $revision;
     }
 
-    public function _newModifiedRevision() {
+    public function _newModifiedRevision(string $message = null) { 
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_MODIFIED;
-        $message = i::__("Registro atualizado.");
+        
+        if(is_null($message)) {
+            $message = i::__("Registro atualizado.");
+        }
         
         $last_revision = $this->getLastRevision();
         if(!$last_revision) {
