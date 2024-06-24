@@ -8,10 +8,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
-## [7.4.7] - unreleased
+## [7.4.7] - 2024-06-24
 ### Correções
 - correção no db-update que corrige os valores das colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades
 - Corrige erro que impede os botões de ações das avaliações serem exibidos para o avaliador
+- Corrige exibição condicional de campos de faixas e tipos de proponente
 
 ### Melhorias não funcionais
 - Implementa método para recriar o ponteiro das inscrições entre fases
