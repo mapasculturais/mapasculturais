@@ -1284,6 +1284,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $data;
     }
 
+    public function getRevisionData() {
+        $registration_fields = $this->registrationFieldConfigurations;
+        $registration_files = $this->registrationFileConfigurations;
+
+        $revision_data = [];
+        foreach($registration_fields as $field) {
+            $revision_data[$field->fieldName] = $field->jsonSerialize();
+        }
+
+        foreach($registration_files as $field) {
+            $revision_data[$field->fileGroupName] = $field->jsonSerialize();
+        }
+
+        return $revision_data;
+    }
+
     function unregisterRegistrationMetadata(){
         $app = App::i();
 
