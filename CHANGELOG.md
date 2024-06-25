@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.4.8] - 2024-06-25
 ### Correções
 - Corrige exibição da categoria na planilha de lista de inscrições
+- Corrige exibição do botão de preencher formulário na aba de ficha de inscrição
 
 ### Melhorias
 - Adiciona novas colunas na planilha de lista inscrições: Tipo de proponente e Faixa/Linha
