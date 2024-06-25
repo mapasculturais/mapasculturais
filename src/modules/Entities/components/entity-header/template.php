@@ -52,6 +52,9 @@ $this->import('
                 <a v-if="entity.whatsapp" class="button button--text button--icon" aria-label="Whatsapp" target="_blank" :href="buildSocialMediaLink('whatsapp')">
                     <mc-icon name="whatsapp"></mc-icon>
                 </a>
+                <a v-if="entity.tiktok" class="button button--text button--icon" aria-label="tiktok" target="_blank" :href="buildSocialMediaLink('tiktok')">
+                    <mc-icon name="tiktok"></mc-icon>
+                </a>
             </nav>
         </div>
         <div class="rightSide">
