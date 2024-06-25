@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Adiciona novas colunas na planilha de lista inscrições: Tipo de proponente e Faixa/Linha
+- Adiciona nome da fase de coleta de dados na página de preenchimento do formulário de inscrição
 
 ## [7.4.7] - 2024-06-24
 ### Correções
