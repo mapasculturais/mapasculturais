@@ -50,7 +50,7 @@ describe("Agents Page", () => {
             expectedCount = parseInt(text.match(/\d+/)[0], 10);
             
             // Agora, verifique se o número de imagens encontradas é igual ao esperado
-            cy.get('div[title="Selo Mapas AQUI"] img[src="https://mapas.tec.br/files/seal/1/file/111/121e2341ab665183b487c72f92636b59-a4537a4646cadc981f44f03c5021652f.jpg"]')
+            cy.get('div[title="Selo Mapas"] img[src="https://mapas.tec.br/files/seal/1/file/111/121e2341ab665183b487c72f92636b59-a4537a4646cadc981f44f03c5021652f.jpg"]')
               .should('have.length', expectedCount);
             cy.contains(expectedCount + " Agentes encontrados");
         });
@@ -139,5 +139,29 @@ describe("Agents Page", () => {
             if(originalCount == expectedCount)
                 cy.contains(expectedCount + " Agentes encontrados");
         });
+    });
+
+    it("Garante que os cards de indicadores dos agentes funciona", () => {
+        cy.get(':nth-child(1) > .entity-cards-cards__content > .entity-cards-cards__info > .entity-cards-cards__label').should('have.text', 'Agentes cadastrados');
+        cy.get(':nth-child(2) > .entity-cards-cards__content > .entity-cards-cards__info > .entity-cards-cards__label').should('have.text', 'Agentes individuais');
+        cy.get(':nth-child(3) > .entity-cards-cards__content > .entity-cards-cards__info > .entity-cards-cards__label').should('have.text', 'Agentes coletivos');
+        cy.get(':nth-child(4) > .entity-cards-cards__content > .entity-cards-cards__info > .entity-cards-cards__label').should('have.text', 'Cadastrados nos últimos 7 dias');
+    
+        cy.wait(1000);
+
+        cy.get(".foundResults").invoke('text').then((text) => {
+            expectedCount = Number(text.match(/\d+/), 10);
+            cy.get('#main-app > div.search > div.entity-cards > div > div > div:nth-child(1) > div > div.entity-cards-cards__info > strong').should('have.text', expectedCount);
+        });
+
+    });
+
+    it("Garante que a tab dashboard funciona", () => {
+        cy.get('.indicator > a > span').should('have.text', 'Indicadores');
+        cy.get('.indicator > a').click();
+
+        cy.wait(1000);
+
+        cy.get('#iFrameResizer0').should('be.visible');
     });
 });
