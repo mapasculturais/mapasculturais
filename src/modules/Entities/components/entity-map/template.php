@@ -11,7 +11,7 @@ $this->import('
 ?>
 
 <?php $this->applyTemplateHook('entity-map','before'); ?>
-<mc-map :center="entity.location" v-if="entity.endereco">
+<mc-map v-if="entity.endereco" :center="entity.location">
     <mc-map-marker :entity="entity" :draggable="editable" @moved="change($event)"></mc-map-marker>
 </mc-map>
 <?php $this->applyTemplateHook('entity-map','after'); ?>
