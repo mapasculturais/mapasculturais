@@ -41,9 +41,18 @@
         width: 100%;
 
     }
-    &__text-filter {
-
+    
+    &__actions {
+        display: grid;
+        gap: size(12);
     }
+
+    &__actions-buttons {
+        display: flex;
+        gap: size(12);
+        flex-wrap: wrap;
+    }
+    
     &__select-tag {
         & > select {
             border-radius: var(--mc-border-radius-xs);
