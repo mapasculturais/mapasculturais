@@ -345,6 +345,11 @@
                     max-width: size(1170);
                     padding: 0 size(16);
                     width: 100%;
+
+                    h3 {
+                        line-height: normal;
+                        margin: size(16) auto;
+                    }
                 }
 
                 &__steps {

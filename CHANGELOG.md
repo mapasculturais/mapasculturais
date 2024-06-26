@@ -9,9 +9,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige exibição da categoria na planilha de lista de inscrições
 - Corrige exibição do botão de preencher formulário na aba de ficha de inscrição
+- Corrige quebra em consultas da API quando passado o nome da classe com uma barra inicial
 
 ### Melhorias
 - Adiciona novas colunas na planilha de lista inscrições: Tipo de proponente e Faixa/Linha
+- Adiciona nome da fase de coleta de dados na página de preenchimento do formulário de inscrição
 
 ## [7.4.7] - 2024-06-24
 ### Correções
