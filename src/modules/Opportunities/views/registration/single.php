@@ -262,7 +262,7 @@ $today = new DateTime();
                         <?php else: ?>
                             <h2><?= $opportunity->name ?></h2>
                         <?php endif ?>
-                        <?php if($phase->status < 1 && !$opportunity->isFirstPhase): ?>
+                        <?php if($phase->status < 1 && !$opportunity->isFirstPhase && $today <= $opportunity->registrationTo): ?>
                             <mc-alert type="warning">
                                 <?= i::__('Nesta etapa, é necessário inserir informações. Por favor, clique no botão para acessar o formulário e preenchê-lo') ?> <br>
                                 <?= i::__('dentro do período de') ?>  <?=$phase->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$phase->opportunity->registrationTo->format("d/m/Y H:i:s")?>
