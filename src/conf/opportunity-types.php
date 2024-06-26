@@ -200,7 +200,6 @@ return array(
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
         ),
-
         'tiktok' => array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Tiktok'),
