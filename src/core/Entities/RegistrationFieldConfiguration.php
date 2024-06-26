@@ -234,14 +234,14 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
         'config' => $this->config,
-        'categories' => $this->categories,
+        'categories' => $this->categories ?: [],
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder,
         'conditional' => $this->conditional ? true : false,
         'conditionalField' => $this->conditionalField,
         'conditionalValue' => $this->conditionalValue,
-        'registrationRanges' => $this->registrationRanges,
-        'proponentTypes' => $this->proponentTypes
+        'registrationRanges' => $this->registrationRanges ?: [],
+        'proponentTypes' => $this->proponentTypes ?: []
         ];
 
         $app = App::i();
