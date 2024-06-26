@@ -8,6 +8,17 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
+## [7.4.8] - 2024-06-26
+### Correções
+- Corrige exibição da categoria na planilha de lista de inscrições
+- Corrige exibição do botão de preencher formulário na aba de ficha de inscrição
+- Corrige quebra em consultas da API quando passado o nome da classe com uma barra inicial
+- Corrige formulário de configuração de campo do formulário que quebrava em algumas situações
+
+### Melhorias
+- Adiciona novas colunas na planilha de lista inscrições: Tipo de proponente e Faixa/Linha
+- Adiciona nome da fase de coleta de dados na página de preenchimento do formulário de inscrição
+
 ## [7.4.7] - 2024-06-24
 ### Correções
 - correção no db-update que corrige os valores das colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades
