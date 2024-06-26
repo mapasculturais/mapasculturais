@@ -2302,7 +2302,7 @@ $$
     'Corrige constraint enforce_geotype_geom da tabela geo_division' => function() use($conn) {
         __try("ALTER TABLE geo_division DROP CONSTRAINT enforce_geotype_geom");
 
-        __exec(
+        __try(
             "ALTER TABLE 
                 geo_division 
             ADD CONSTRAINT 
@@ -2319,8 +2319,8 @@ $$
     },
     
     'Ajusta as colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades para setar um array vazio quando as mesmas estiverem null' => function() use ($conn, $app){
-        __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_categories = '\"\"'");
-        __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_categories = '\"\"'");
+        __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types = '\"\"'");
+        __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges = '\"\"'");
         __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories = '\"\"'");
     },
     "Cria colunas editableUntil editSentTimestamp e editableFields na tabela registration" => function() use ($conn){
@@ -2334,5 +2334,7 @@ $$
             __exec("ALTER TABLE registration ADD COLUMN editable_fields JSON NULL");
         }
     } 
+
+    
 
 ] + $updates ;   

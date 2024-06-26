@@ -5,9 +5,30 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.5]
+## [unreleased]
 ### Novas funcionalidades
 - Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
+
+## [7.4.8] - 2024-06-26
+### Correções
+- Corrige exibição da categoria na planilha de lista de inscrições
+- Corrige exibição do botão de preencher formulário na aba de ficha de inscrição
+- Corrige quebra em consultas da API quando passado o nome da classe com uma barra inicial
+- Corrige formulário de configuração de campo do formulário que quebrava em algumas situações
+
+### Melhorias
+- Adiciona novas colunas na planilha de lista inscrições: Tipo de proponente e Faixa/Linha
+- Adiciona nome da fase de coleta de dados na página de preenchimento do formulário de inscrição
+
+## [7.4.7] - 2024-06-24
+### Correções
+- correção no db-update que corrige os valores das colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades
+- Corrige erro que impede os botões de ações das avaliações serem exibidos para o avaliador
+- Corrige exibição condicional de campos de faixas e tipos de proponente
+
+### Melhorias não funcionais
+- Implementa método para recriar o ponteiro das inscrições entre fases
+- Implementa endpoint para recriar o ponteiro das inscrições entre fases
 
 ## [7.4.6] - 2024-06-21
 ### Melhorias
