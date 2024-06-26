@@ -14,18 +14,6 @@
         text-align: center;
     }
 
-    .apply-evaluations {
-        .modal-content {
-            max-width: size(570);
-            padding: size(32);
-
-            .modal__content {
-                margin: size(24) 0 0;
-                padding: 0;
-            }
-        }
-    }
-
     &__filter {
         max-width: size(1170);
         border-radius: var(--mc-border-radius-xs);
