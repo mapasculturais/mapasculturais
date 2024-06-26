@@ -1736,25 +1736,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if ($scope.useRegistrationsRanges) {
-            if(field.registrationRanges?.length > 0  && !field.registrationRanges.includes($scope.entity.registrationRanges)) {
+            if(field.registrationRanges?.length > 0  && !field.registrationRanges.includes($scope.entity.range)) {
                 result = false;
             }
         }
 
         if ($scope.useProponentTypes) {
-            if(field.proponentTypes?.length > 0 && !field.proponentTypes.includes($scope.entity.registrationProponentTypes)) {
+            if(field.proponentTypes?.length > 0 && !field.proponentTypes.includes($scope.entity.proponentType)) {
                 result = false;
             }
         }
-      
+
         if(field.conditional){
             result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
-        }
-
-        if (field.config && field.config.require && field.config.require.condition && field.config.require.hide) {
-            var requiredFieldName = field.config.require.field;
-            var requeredFieldValue = field.config.require.value;
-
         }
 
         if(MapasCulturais.entity.canUserEvaluate){
