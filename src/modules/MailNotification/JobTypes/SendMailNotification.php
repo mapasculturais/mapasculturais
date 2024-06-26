@@ -21,13 +21,17 @@ class SendMailNotification extends JobType
         $app = App::i();
 
         $registration = $app->repo("Registration")->find($job->registrationId);
-       
+        $phase = $registration->opportunity;
+        $first_phase = $registration->opportunity->firstPhase;
+
         $message = $app->renderMailerTemplate($job->template, [
             'siteName' => $app->siteName,
             'baseUrl' => $app->getBaseUrl(),
             'userName' => $registration->owner->name,
-            'projectId' => $registration->opportunity->id,
-            'projectName' => $registration->opportunity->name,
+            'projectId' => $first_phase->id,
+            'projectName' => $first_phase->name,
+            'phaseId' => $phase->id,
+            'phaseName' => $phase->name,
             'registrationId' => $registration->id,
             'registrationNumber' => $registration->number,
             'statusTitle' => $registration->getStatusNameById($registration->status),
