@@ -14,7 +14,7 @@ $this->import('
 
 <mc-modal :title="modalTitle" classes="apply-evaluations">
     <template #button="modal">
-        <button class="button button--primary button--md button--large" @click="modal.open()">
+        <button class="button button--primary" @click="modal.open()">
             <?php i::_e('Aplicar resultado das avaliações') ?>
         </button>
     </template> 
