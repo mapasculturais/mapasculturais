@@ -240,8 +240,41 @@ return [
                                 ],
                             ]
                         ],
+                        [
+                            'type' => 'opportunity',
+                            'label' => 'Oportunidades',
+                            'icon'=> 'opportunity',
+                            'iconClass'=> 'opportunity__color',
+                            'panelLink'=> 'painel-oportunidades',
+                            'data'=> [
+                                [
+                                    'icon'=> 'opportunity',
+                                    'label' => 'Oportunidades criadas',
+                                    'entity' => 'MapasCulturais\\Entities\\Opportunity',
+                                    'query' => [],
+                                    'value' => null
+                                ],
+                            ]
+                        ],
+                        [
+                            'type' => 'opportunity',
+                            'label' => 'Oportunidades certificadas',
+                            'icon'=> 'opportunity',
+                            'iconClass'=> 'opportunity__color',
+                            'panelLink'=> 'painel-oportunidades',
+                            'data'=> [
+                                [
+                                    'icon'=> 'opportunity',
+                                    'label' => 'Oportunidades certificadas',
+                                    'entity' => 'MapasCulturais\\Entities\\Opportunity',
+                                    'query'=> [
+                                        '@verified'=> 1
+                                    ],
+                                    'value' => null
+                                ],
+                            ]
+                        ]
                     ]
-                
             ]
         ]
     ]
