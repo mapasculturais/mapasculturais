@@ -14,3 +14,4 @@ src/themes/BaseV1/assets/css/main.css.map
 .phpunit.result.cache
 .php-cs-fixer.cache
 docker-data
+media-query.js.LICENSE.txt
