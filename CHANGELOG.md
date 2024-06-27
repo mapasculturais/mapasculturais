@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige salvamento tratamento dos links das redes sociais
 
+### Adições
+ - Adiciona a rede social tiktok
+
 ## [7.4.8] - 2024-06-26
 ### Correções
 - Corrige exibição da categoria na planilha de lista de inscrições
