@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correções
+- Corrige salvamento tratamento dos links das redes sociais
+
 ## [7.4.8] - 2024-06-26
 ### Correções
 - Corrige exibição da categoria na planilha de lista de inscrições
