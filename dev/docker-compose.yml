@@ -32,8 +32,8 @@ services:
       - ./config.d:/var/www/config/config.d
 
       - ./docker-data/assets:/var/www/html/assets
-      - /var/lib/docker/volumes/mapas-culturaisv7_public-files/_data:/var/www/html/files
-      - /var/lib/docker/volumes/mapas-culturaisv7_private-files/_data:/var/www/var/private-files
+      - ./docker-data/public-files:/var/www/html/files
+      - ./docker-data/private-files:/var/www/var/private-files
       
 
     links:
@@ -43,14 +43,8 @@ services:
       
     environment:
       - BUILD_ASSETS=1
-      - PENDING_PCACHE_RECREATION_INTERVAL=5
-      - JOBS_INTERVAL=5
       - REDIS_CACHE=redis
       
-      # chaves de teste do google recaptcha
-      - GOOGLE_RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-      - GOOGLE_RECAPTCHA_SECRET=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
-
       - SESSIONS_SAVE_PATH=tcp://sessions:6379
 
     depends_on:

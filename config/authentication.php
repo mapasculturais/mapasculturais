@@ -1,8 +1,10 @@
 <?php
 return [
+    /*
     'auth.provider' => 'Fake',
     'auth.config' => [],
-    /*
+     */
+
     // https://github.com/kterva/MultipleLocalAuth
     'auth.provider' => '\MultipleLocalAuth\Provider',
 
@@ -19,14 +21,14 @@ return [
             'Google' => [
                 'client_id' => env('AUTH_GOOGLE_CLIENT_ID', null),
                 'client_secret' => env('AUTH_GOOGLE_CLIENT_SECRET', null),
-                'redirect_uri' => APP_BASE_URL . 'autenticacao/google/oauth2callback',
+                'redirect_uri' => env('BASE_URL', '') . 'autenticacao/google/oauth2callback',
                 'scope' => env('AUTH_GOOGLE_SCOPE', 'email'),
             ],
 
             'LinkedIn' => [
                 'api_key' => env('AUTH_LINKEDIN_API_KEY', null),
                 'secret_key' => env('AUTH_LINKEDIN_SECRET_KEY', null),
-                'redirect_uri' => APP_BASE_URL . 'autenticacao/linkedin/oauth2callback',
+                'redirect_uri' => env('BASE_URL', '') . 'autenticacao/linkedin/oauth2callback',
                 'scope' => env('AUTH_LINKEDIN_SCOPE', 'r_emailaddress')
             ],
 
@@ -37,6 +39,7 @@ return [
         ]
     ]
 
+    /*
     //Example Authentik
     auth.provider' => 'MapasCulturais\AuthProviders\OpauthAuthentik',
     'auth.config' => [
@@ -48,5 +51,5 @@ return [
         'login_url' => env('AUTH_AUTHENTIK_LOGIN_URL', ''),
         'login_url' => env('AUTH_AUTHENTIK_LOGOUT_URL', ''),
     ]
-    */
+     */
 ];
