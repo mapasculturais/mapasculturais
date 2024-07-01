@@ -9,5 +9,5 @@ use MapasCulturais\i;
 <div v-if="entityLock">
    <p>{{entityLock.agent.name}} <?= i::__('já está editando') ?></p>
    <p><?= i::__('Desde:') ?> {{formatDate(entityLock.lockTimestamp)}}</p>
-   <button @click="unlock()"><?= i::__('Assumir controle') ?></button>
+   <button class="button button--primary" @click="unlock()"><?= i::__('Assumir controle') ?></button>
 </div>
