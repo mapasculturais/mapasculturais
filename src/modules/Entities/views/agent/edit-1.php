@@ -19,6 +19,7 @@ $this->import('
     entity-owner
     entity-profile
     entity-related-agents
+    entity-renew-lock
     entity-social-media
     entity-terms
     entity-status
@@ -39,9 +40,10 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
+    <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-
+    
     <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
