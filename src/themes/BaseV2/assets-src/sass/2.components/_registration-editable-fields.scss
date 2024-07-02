@@ -11,11 +11,6 @@
         }
     }
 
-    &__fields {
-        max-height: size(400);
-        overflow-y: auto;
-    }
-
     &__field {
         align-items: center;
         background-color: var(--mc-white);

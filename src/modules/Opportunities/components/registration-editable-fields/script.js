@@ -18,8 +18,8 @@ app.component('registration-editable-fields', {
 
         return {
             fields,
-            selectedFields: [],
-            editableUntil: this.registration.editableUntil,
+            selectedFields: this.registration.editableFields ?? [],
+            editableUntil: this.registration.editableUntil ? this.registration.editableUntil._date : null,
         }
     },
 
