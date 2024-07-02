@@ -49,6 +49,7 @@ $this->import('
 
                         <div class="field col-4">
                             <datepicker 
+                                teleport
                                 v-model="firstDate" 
                                 :format="dateFormat" 
                                 :locale="locale" 
@@ -64,6 +65,7 @@ $this->import('
 
                         <div class="field col-4">
                             <datepicker 
+                                teleport
                                 v-model="lastDate" 
                                 :format="dateFormat" 
                                 :locale="locale" 

@@ -24,6 +24,7 @@ $this->import('
                         <label> <?php i::_e('Data limite de edição') ?></label>
                         <div class="datepicker">
                             <datepicker 
+                                teleport
                                 :weekStart="0"
                                 v-model="editableUntil" 
                                 :enableTimePicker='false' 
