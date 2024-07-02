@@ -22,10 +22,6 @@ app.component('entity-renew-lock', {
                 data: {token: this.token}, callback: data => {}
             }).catch((data) => {
                 messages.error(data.data);
-
-                setTimeout(function() {
-                    window.location.href = document.location.origin;
-                }, 3000);
             });
         }
     },
