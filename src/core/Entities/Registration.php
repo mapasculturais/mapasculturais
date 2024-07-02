@@ -483,6 +483,18 @@ class Registration extends \MapasCulturais\Entity
         return RegistrationSpaceRelation::class;
     }
 
+    function setEditableUntil($datetime) {
+        if ($this->opportunity->canUser('@control')) {
+            $this->editableUntil = new DateTime($datetime);
+        }
+    }
+
+    function setEditableFields($fields) {
+        if ($this->opportunity->canUser('@control')) {
+            $this->editableFields = $fields;
+        }
+    }
+
     function setOwnerId($id){
         $agent = App::i()->repo('Agent')->find($id);
         $this->setOwner($agent);
