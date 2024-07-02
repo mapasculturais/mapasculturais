@@ -30,9 +30,6 @@ app.component('entity-renew-lock', {
         setInterval(() => {
             this.renewLock();
         }, 45000);
-
-        const url = this.entity.getUrl($MAPAS.request.action, {token: this.token}).toString();
-        window.history.replaceState({}, '',  url + document.location.hash);
     }
     
 });
