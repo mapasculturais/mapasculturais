@@ -22,7 +22,7 @@
     margin: 0 1rem;
     max-height: 90%;
     min-width: 200px;
-    /* overflow-y: auto; */
+    overflow-y: auto;
     position: relative;
 }
 
@@ -45,6 +45,7 @@
 
 .modal__content {
     padding: 0 1.5rem;
+    overflow-y: auto;
 }
 
 .modal__action {

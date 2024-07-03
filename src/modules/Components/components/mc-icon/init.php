@@ -21,6 +21,7 @@ $iconset = [
     'pinterest' => 'fa6-brands:pinterest-p',
     'spotify' => 'akar-icons:spotify-fill',
     'telegram' => 'cib:telegram-plane',
+    'tiktok' => 'akar-icons:tiktok-fill',
     'twitter' => 'akar-icons:twitter-fill',
     'whatsapp' => 'akar-icons:whatsapp-fill',
     'vimeo' => 'brandico:vimeo',
