@@ -1533,8 +1533,11 @@ class Module extends \MapasCulturais\Module{
             $params = [
                 "siteName" => $app->siteName,
                 "user" => $registration->owner->name,
-                "baseUrl" => $app->getBaseUrl(),
-                "opportunityTitle" => $opportunity->name
+                "baseUrl" => $registration->singleUrl,
+                "opportunityId" => $opportunity->id,
+                "opportunityTitle" => $opportunity->firstPhase->name,
+                "registrationId" => $registration->id,
+                "registrationUrl" => $registration->singleUrl
             ];
             $email_params = [
                 "from" => $app->config["mailer.from"],
@@ -1543,7 +1546,7 @@ class Module extends \MapasCulturais\Module{
                          $registration->ownerUser->email),
                 "subject" => sprintf(i::__("Aviso sobre a sua inscrição na " .
                                            "oportunidade %s"),
-                                     $opportunity->name),
+                                           $opportunity->firstPhase->name),
                 "body" => $app->renderMustacheTemplate($template, $params)
             ];
             if (!isset($email_params["to"])) {
