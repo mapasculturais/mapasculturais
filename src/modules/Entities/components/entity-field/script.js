@@ -146,6 +146,21 @@ app.component('entity-field', {
         },
         value() {
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
+        },
+        isReadonly() {
+            if(this.value && !this.entity.currentUserPermissions.modifyReadonlyData) {
+                if(this.is('cpf') && this.value.length == 14) {
+                    return true;
+                }
+
+                if(this.is('cnpj') && this.value.length == 18) {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return false;
         }
     },
     
