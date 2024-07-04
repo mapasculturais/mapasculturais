@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas funcionalidades
 - Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
 
+### Melhorias
+- Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
+
 ## [7.4.9] - 2024-07-03
 ### Correções
 - Corrige salvamento e tratamento dos links das redes sociais
