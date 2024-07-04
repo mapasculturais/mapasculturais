@@ -8,6 +8,12 @@
         align-items: end;
     }
 
+    &__apply-all {
+        display: grid;
+        gap: size(16);
+        margin-top: size(14);
+    }
+
     .classification__panel {
         margin-top: size(20);
     }
@@ -18,5 +24,20 @@
     
     .field__input[type=checkbox] {
         width: size(29.6);
+    }
+
+    .tabs-component__header {
+        justify-content: center;
+    }
+    
+    .tabs-component__panels {
+        margin: 0 auto !important;
+    }
+
+    @media (min-width: size(800)) {
+        .modal-content {
+            max-width: size(570);
+            min-width: size(570);
+        }
     }
 }

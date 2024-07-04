@@ -8,6 +8,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
+## [7.4.9] - 2024-07-03
+### Correções
+- Corrige salvamento e tratamento dos links das redes sociais
+- Correções e padronização nos estilos das modais
+- Corrige exibição de campo numérico com valor zero em fases
+- Corrige edição, por usuários de suporte, de campos opcionais não preenchidos em inscrições
+
+### Melhorias
+ - Adiciona a rede social tiktok
+
 ## [7.4.8] - 2024-06-26
 ### Correções
 - Corrige exibição da categoria na planilha de lista de inscrições
