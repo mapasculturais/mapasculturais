@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Novas funcionalidades
 - Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
+- Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
