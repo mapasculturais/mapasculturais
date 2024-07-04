@@ -90,26 +90,27 @@ trait ControllerEntityViews {
         }
 
         $entity->checkPermission('modify');
-        
-        if($entity->usesLock() && ($lock = $entity->isLocked())) {
-            $current_token = $this->urlData['token'] ?? null;
-
-            if(!($current_token 
-                && $current_token == $lock['token']
-                && $app->user->id == $lock['userId'])   
-            ) {
-                unset($lock['token']);
-                $app->view->jsObject['entityLock'] = $lock;
-
-                $app->hook("controller({$this->id}).render(edit)", function(&$template) use($entity) {
-                    $template = "lock";
-                });
+        if($entity->usesLock()) {
+            if($lock = $entity->isLocked()) {
+                $current_token = $this->urlData['token'] ?? null;
+    
+                if(!($current_token 
+                    && $current_token == $lock['token']
+                    && $app->user->id == $lock['userId'])   
+                ) {
+                    unset($lock['token']);
+                    $app->view->jsObject['entityLock'] = $lock;
+    
+                    $app->hook("controller({$this->id}).render(edit)", function(&$template) use($entity) {
+                        $template = "lock";
+                    });
+                } else {
+                    $app->view->jsObject['lockToken'] = $current_token;
+                }
             } else {
-                $app->view->jsObject['lockToken'] = $current_token;
+                $lock_token = $entity->lock();
+                $app->view->jsObject['lockToken'] = $lock_token;
             }
-        } else {
-            $lock_token = $entity->lock();
-            $app->view->jsObject['lockToken'] = $lock_token;
         }
 
         if($entity->usesNested()){
