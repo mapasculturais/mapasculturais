@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## Correções
 - Corrige reatividade do componente mc-select
 - Corrige exibição da categoria, tipo de proponente e faixa/linha para os avaliadores, deixando sempre visível
+- Corrige ordem dos campos na lista de seleção dos campos visíveis para os avaliadores
 
 ## [7.4.9] - 2024-07-03
 ### Correções
