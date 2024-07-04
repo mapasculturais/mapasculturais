@@ -22,35 +22,38 @@ $this->import('
             </div>
             <!-- <mc-icon  v-if="!entity.files.avatar" :entity="entity"></mc-icon> -->
             <nav class="share" aria-label="<?= i::__('Compartilhar') ?>">
-                <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
+                <a v-if="entity.twitter"  class="button button--text button--icon" aria-label="Twitter" target="_blank" :href="buildSocialMediaLink('twitter')">
                     <mc-icon name="twitter"></mc-icon>
                 </a>
-                <a v-if="entity.linkedin" :href="entity.linkedin" class="button button--text button--icon" aria-label="Linkedin" target="_blank">
+                <a v-if="entity.linkedin"  class="button button--text button--icon" aria-label="Linkedin" target="_blank" :href="buildSocialMediaLink('linkedin')">
                     <mc-icon name="linkedin"></mc-icon>
                 </a>
-                <a v-if="entity.youtube" :href="entity.youtube" class="button button--text button--icon" aria-label="Youtube" target="_blank">
+                <a v-if="entity.youtube"  class="button button--text button--icon" aria-label="Youtube" target="_blank" :href="buildSocialMediaLink('youtube')">
                     <mc-icon name="youtube"></mc-icon>
                 </a>
-                <a v-if="entity.vimeo" :href="entity.vimeo" class="button button--text button--icon" aria-label="Vimeo" target="_blank">
+                <a v-if="entity.vimeo" class="button button--text button--icon" aria-label="Vimeo" target="_blank" :href="buildSocialMediaLink('vimeo')">
                     <mc-icon name="vimeo"></mc-icon>
                 </a>
-                <a v-if="entity.spotify" :href="entity.spotify" class="button button--text button--icon" aria-label="Spotify" target="_blank">
+                <a v-if="entity.spotify" class="button button--text button--icon" aria-label="Spotify" target="_blank" :href="buildSocialMediaLink('spotify')">
                     <mc-icon name="spotify"></mc-icon>
                 </a>
-                <a v-if="entity.facebook" :href="entity.facebook" class="button button--text button--icon" aria-label="Facebook" target="_blank">
+                <a v-if="entity.facebook" class="button button--text button--icon" aria-label="Facebook" target="_blank" :href="buildSocialMediaLink('facebook')">
                     <mc-icon name="facebook"></mc-icon>
                 </a>
-                <a v-if="entity.instagram" :href="entity.instagram" class="button button--text button--icon" aria-label="Instagram" target="_blank">
+                <a v-if="entity.instagram" class="button button--text button--icon" aria-label="Instagram" target="_blank" :href="buildSocialMediaLink('instagram')">
                     <mc-icon name="instagram"></mc-icon>
                 </a>
-                <a v-if="entity.telegram" :href="entity.telegram" class="button button--text button--icon" aria-label="Telegram" target="_blank">
+                <a v-if="entity.telegram" class="button button--text button--icon" aria-label="Telegram" target="_blank" :href="buildSocialMediaLink('telegram')">
                     <mc-icon name="telegram"></mc-icon>
                 </a>
-                <a v-if="entity.pinterest" :href="entity.pinterest" class="button button--text button--icon" aria-label="Pinterest" target="_blank">
+                <a v-if="entity.pinterest" class="button button--text button--icon" aria-label="Pinterest" target="_blank" :href="buildSocialMediaLink('pinterest')">
                     <mc-icon name="pinterest"></mc-icon>
                 </a>
-                <a v-if="entity.whatsapp" :href="entity.whatsapp" class="button button--text button--icon" aria-label="WhatsApp" target="_blank">
+                <a v-if="entity.whatsapp" class="button button--text button--icon" aria-label="Whatsapp" target="_blank" :href="buildSocialMediaLink('whatsapp')">
                     <mc-icon name="whatsapp"></mc-icon>
+                </a>
+                <a v-if="entity.tiktok" class="button button--text button--icon" aria-label="tiktok" target="_blank" :href="buildSocialMediaLink('tiktok')">
+                    <mc-icon name="tiktok"></mc-icon>
                 </a>
             </nav>
         </div>

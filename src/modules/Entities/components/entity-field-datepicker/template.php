@@ -6,6 +6,7 @@
 ?>
 <div>
     <datepicker 
+        :teleport="true"
         v-if="is('date')" 
         v-model="model" 
         @update:model-value="change" 
@@ -26,6 +27,7 @@
     </datepicker>
 
     <datepicker 
+        :teleport="true"
         v-if="is('datetime')" 
         v-model="model" 
         @update:model-value="change" 
@@ -45,6 +47,7 @@
     </datepicker>
 
     <datepicker 
+        :teleport="true"
         v-if="is('time')" 
         @update:model-value="change" 
         :locale="locale"
