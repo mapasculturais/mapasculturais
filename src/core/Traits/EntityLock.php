@@ -65,10 +65,7 @@ trait EntityLock {
     function renewLock($token) {
         $filename = $this->generateFilename();
 
-        if(file_exists($filename)) {
-            $lock_data_json = file_get_contents($filename);
-            $lock_data = json_decode($lock_data_json, true);
-
+        if($lock_data = $this->isLocked()) {
             $valid_until = strtotime($lock_data['validUntil']);
             $token_data = $lock_data['token'];
 
