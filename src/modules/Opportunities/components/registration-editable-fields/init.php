@@ -14,7 +14,11 @@ foreach ($fields_list as $field) {
             "id" => $field->id,
             "title" => $field->title,
             "ref" => $field->fileGroupName ?? $field->fieldName,
+            "displayOrder" => $field->displayOrder,
         ];
     }
 }
+
+usort($result, fn($field1, $field2) => $field1['displayOrder'] <=> $field2['displayOrder']);
+
 $this->jsObject['config']['registrationEditableFields'] = $result;
