@@ -18,7 +18,7 @@ app.component('entity-renew-lock', {
         renewLock() {
             const messages = useMessages();
 
-            this.entity.POST('renew', {
+            this.entity.POST('renewLock', {
                 data: {token: this.token}, callback: data => {}
             }).catch((data) => {
                 messages.error(data.data);

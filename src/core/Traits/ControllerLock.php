@@ -17,7 +17,7 @@ trait ControllerLock {
         $app->redirect($entity->editUrl);
     }
 
-    function POST_renew() {
+    function POST_renewLock() {
         $app = App::i();
         
         $token = $this->data['token'];
