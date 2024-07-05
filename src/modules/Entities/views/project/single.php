@@ -72,7 +72,7 @@ $this->breadcrumb = [
 
                                 <div v-if="entity.emailPublico" class="additional-info__item">
                                     <p class="additional-info__item__title"><?php i::_e("email:"); ?></p>
-                                    <p class="additional-info__item__content">{{entity.emailPublico}}</p>
+                                    <p>{{entity.emailPublico}}</p>
                                 </div>
                             </div>
                             <div v-if="entity.longDescription!=null" class="col-12">
