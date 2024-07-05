@@ -55,7 +55,9 @@ $this->import('
         </template>
         
         <template #button="modal">
-            <button class="button button--primary" @click="modal.open()"><?= i::__("Configurar campos editáveis") ?></button>
+            <slot :modal="modal">
+                <button class="button button--primary" @click="modal.open()"><?= i::__("Configurar campos editáveis") ?></button>
+            </slot>
         </template>
     </mc-modal>
 </div>
