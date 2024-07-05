@@ -79,6 +79,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
+        Traits\EntityLock,
         Traits\EntityArchive{
             Traits\EntityNested::setParent as nestedSetParent;
         }
