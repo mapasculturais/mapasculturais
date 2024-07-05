@@ -19,7 +19,7 @@ trait EntityLock {
      * @param int $timeout Lock timeout in seconds (default is 60).
      * @return string Generated token for the lock.
      */
-    function lock($timeout = 60): string {
+    function lock(int $timeout = 60) {
         $app = App::i();
         $token = $app->getToken(32);
         $filename = $this->generateFilename();
@@ -70,7 +70,7 @@ trait EntityLock {
      *
      * @return void
      */
-    function unlock(): void {
+    function unlock() {
         $filename = $this->generateFilename();
 
         if(file_exists($filename)) {
@@ -84,7 +84,7 @@ trait EntityLock {
      * @param string $token Token to renew the lock.
      * @return bool True if the lock was successfully renewed, false otherwise.
      */
-    function renewLock($token): bool {
+    function renewLock(string $token) {
         $filename = $this->generateFilename();
 
         if($lock_data = $this->isLocked()) {
@@ -111,7 +111,7 @@ trait EntityLock {
      *
      * @return string Generated filename.
      */
-    function generateFilename(): string {
+    function generateFilename() {
         $app = App::i();
         
         $name = $app->slugify("{$this}");
