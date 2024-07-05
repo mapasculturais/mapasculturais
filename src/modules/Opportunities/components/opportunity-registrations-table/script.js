@@ -7,7 +7,7 @@ app.component('opportunity-registrations-table', {
         },
         visibleColumns: {
             type: Array,
-            default: ["agent", "status", "category", "consolidatedResult", "score"],
+            default: ["agent", "status", "category", "consolidatedResult", "score", "editable"],
         },
         avaliableColumns: Array,
         hideFilters: Boolean,
@@ -191,6 +191,7 @@ app.component('opportunity-registrations-table', {
                 { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
                 { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
                 { text: __('data de envio', 'opportunity-registrations-table'), value: "sentTimestamp" },
+                { text: __('Editavel para o proponente', 'opportunity-registrations-table'), slug: "editable"}
             ];
 
             if(this.phase.evaluationMethodConfiguration){
@@ -217,7 +218,7 @@ app.component('opportunity-registrations-table', {
         select() {
             const fields = this.avaliableFields.map((item) => item.fieldName);
             
-            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao}', ...fields].join(',');
+            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields', ...fields].join(',');
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
@@ -354,6 +355,28 @@ app.component('opportunity-registrations-table', {
                 return phase.publishTimestamp?.isPast();
             } else {
                 return phase.registrationTo?.isPast();
+            }
+        },
+
+
+        statusEditRegistration(registration) {
+            let editableUntil = registration.editableUntil ?? null;
+            let editSentTimestamp = registration.editSentTimestamp ?? null;
+
+            if (!editableUntil) {
+                return null;
+            }
+
+            if (!editSentTimestamp && editableUntil.isFuture()) {
+                return 'open';
+            }
+
+            if (registration.editableFields && editSentTimestamp) {
+                return 'sent';
+            }
+
+            if (!editSentTimestamp && editableUntil.isPast()) {
+                return 'missed';
             }
         }
     }
