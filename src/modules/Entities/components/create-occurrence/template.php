@@ -100,6 +100,7 @@ $this->import('
                             <span class="label"><?= i::_e('Data inicial:') ?></span>   
 
                             <datepicker 
+                                teleport
                                 :locale="locale" 
                                 format="dd/MM/yyyy"
                                 :weekStart="0"
@@ -123,6 +124,7 @@ $this->import('
                             <span class="label"><?= i::_e('Data inicial - Data final:') ?></span>            
 
                             <datepicker 
+                                teleport
                                 :locale="locale" 
                                 format="dd/MM/yyyy"
                                 :weekStart="0"
