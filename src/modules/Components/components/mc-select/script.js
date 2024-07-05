@@ -86,7 +86,8 @@ app.component('mc-select', {
 
     mounted() {
         setTimeout(() => {
-            const options = this.$refs.options.children;
+            const options = this.$refs.options.querySelectorAll('[value]');
+            
             this.defaultOptions = Object.freeze(Array.from(options));
             
             for (const [index, option] of Object.entries(options)) {                            
