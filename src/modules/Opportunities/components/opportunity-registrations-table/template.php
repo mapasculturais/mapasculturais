@@ -17,6 +17,7 @@ $this->import('
     mc-select
     mc-status
     mc-tag-list
+    registration-editable-fields
     v1-embed-tool
 ');
 
@@ -126,6 +127,28 @@ $entity = $this->controller->requestedEntity;
                 <template #eligible="{entity}">
                     <span v-if="entity.eligible"><?= i::__('Sim') ?></span>
                     <span v-else> &nbsp; </span>
+                </template>
+
+                <template #editable={entity}>
+                    <registration-editable-fields :registration="entity">
+                        <template #default="{modal}">
+                            <button @click="modal.open()" v-if="!statusEditRegistration(entity)" class="button button--icon button--sm button--text opportunity-registration-table__edit">
+                                <mc-icon name="edit"></mc-icon> <?= i::__('Abrir para edição') ?>
+                            </button>
+
+                            <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'open'" class="button button--icon button--sm button--text opportunity-registration-table__edit-open">
+                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}}
+                            </button>
+
+                            <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'sent'" class="button button--icon button--sm button--text opportunity-registration-table__edit-sent">
+                                <mc-icon name="circle-checked"></mc-icon> {{entity.editSentTimestamp.date('2-digit year')}}
+                            </button>
+
+                            <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'missed'" class="button button--icon button--sm button--text opportunity-registration-table__edit-missed">
+                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}}
+                            </button>
+                        </template>
+                    </registration-editable-fields>
                 </template>
 
             </entity-table>
