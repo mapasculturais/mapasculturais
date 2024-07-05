@@ -12,6 +12,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige ordem dos campos na lista de seleção dos campos visíveis para os avaliadores
 - Corrige exibição de campo selecionado do componente de seleção quando há grupos de valores
 
+## Melhorias
+- Melhora o texto da modal de confirmação de avaliador explicando que todas as avaliações serão excluídas permanentemente.
+
 ## [7.4.9] - 2024-07-03
 ### Correções
 - Corrige salvamento e tratamento dos links das redes sociais
