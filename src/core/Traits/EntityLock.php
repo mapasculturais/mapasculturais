@@ -9,11 +9,17 @@ trait EntityLock {
      *
      * @return bool true
      */
-    public static function usesLock() {
+    public static function usesLock(): bool {
         return true;
     }
 
-    function lock($timeout = 60) {
+    /**
+     * Acquires a lock on the entity.
+     *
+     * @param int $timeout Lock timeout in seconds (default is 60).
+     * @return string Generated token for the lock.
+     */
+    function lock($timeout = 60): string {
         $app = App::i();
         $token = $app->getToken(32);
         $filename = $this->generateFilename();
@@ -34,6 +40,11 @@ trait EntityLock {
         return $token;
     }
 
+    /**
+     * Checks if the entity is currently locked.
+     *
+     * @return array|false Lock data array if locked, otherwise false.
+     */
     public function isLocked() {
         $filename = $this->generateFilename();
 
@@ -54,7 +65,12 @@ trait EntityLock {
         return false;
     }
 
-    function unlock() {
+    /**
+     * Releases the lock on the entity.
+     *
+     * @return void
+     */
+    function unlock(): void {
         $filename = $this->generateFilename();
 
         if(file_exists($filename)) {
@@ -62,7 +78,13 @@ trait EntityLock {
         }
     }
 
-    function renewLock($token) {
+    /**
+     * Renews the lock if it's still valid and matches the provided token.
+     *
+     * @param string $token Token to renew the lock.
+     * @return bool True if the lock was successfully renewed, false otherwise.
+     */
+    function renewLock($token): bool {
         $filename = $this->generateFilename();
 
         if($lock_data = $this->isLocked()) {
@@ -84,7 +106,12 @@ trait EntityLock {
         return true;
     }
 
-    function generateFilename() {
+    /**
+     * Generates a unique filename for storing the lock data.
+     *
+     * @return string Generated filename.
+     */
+    function generateFilename(): string {
         $app = App::i();
         
         $name = $app->slugify("{$this}");
