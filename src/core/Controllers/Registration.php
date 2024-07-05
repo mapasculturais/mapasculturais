@@ -21,6 +21,7 @@ class Registration extends EntityController {
     use Traits\ControllerUploads,
         Traits\ControllerAgentRelation,
     	Traits\ControllerSealRelation,
+        Traits\ControllerLock,
         Traits\ControllerAPI;
 
     function __construct() {
