@@ -256,6 +256,12 @@ globalThis.Utils = {
     },
 
     buildSocialMediaLink(entity, socialMedia){
+        if(socialMedia == 'linkedin' ){
+            return "https://" + socialMedia + ".com/in/" + entity[socialMedia];
+        }
+        if(socialMedia == 'spotify' ){
+            return "https://open." + socialMedia + ".com/user/" + entity[socialMedia];
+        }
         return "https://" + socialMedia + ".com/" + entity[socialMedia];
     },
 

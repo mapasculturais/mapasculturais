@@ -45,6 +45,7 @@
 
 .modal__content {
     padding: 0 1.5rem;
+    overflow-y: auto;
 }
 
 .modal__action {

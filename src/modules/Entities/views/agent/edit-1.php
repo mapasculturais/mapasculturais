@@ -132,12 +132,6 @@ $this->breadcrumb = [
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="escolaridade" label="<?= i::__('Selecione a sua Escolaridade') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="agenteItinerante" label="<?= i::__('É agente itinerante?') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="payment_bank_account_type"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="payment_bank_number"></entity-field>
-                                <entity-field :entity="entity" classes="col-7 sm:col-12" prop="payment_bank_account_number"></entity-field>
-                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="payment_bank_dv_account_number"></entity-field>
-                                <entity-field :entity="entity" classes="col-7 sm:col-12" prop="payment_bank_branch"></entity-field>
-                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="payment_bank_dv_branch"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="pessoaDeficiente" class="pcd col-12" label="<?= i::__('Pessoa com Deficiência') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicional" label="<?= i::__('Comunidades tradicionais') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicionalOutros" label="<?= i::__('Não encontrou sua comunidade Tradicional') ?>"></entity-field>
