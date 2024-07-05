@@ -40,18 +40,18 @@ app.component('registration-editable-fields', {
     
     methods: {
         save(modal) {
-            this.registration.editableFields = this.selectedFields;
-            this.registration.editableUntil = this.editableUntil;
-
-            if (this.registration.editableFields.length == 0) {
+            if (this.selectedFields.length == 0) {
                 this.messages.error(__('campos para edição','registration-editable-fields'));
                 return false;
             }
 
-            if (!this.registration.editableUntil) {
+            if (!this.editableUntil) {
                 this.messages.error(__('data limite','registration-editable-fields'));
                 return false;
             }
+
+            this.registration.editableFields = this.selectedFields;
+            this.registration.editableUntil = this.editableUntil;
 
             this.registration.save();
             modal.close();
@@ -61,6 +61,6 @@ app.component('registration-editable-fields', {
             this.registration.editSentTimestamp = null;
             this.registration.save();
             modal.close();
-        }
+        },
     },
 });

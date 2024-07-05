@@ -1,5 +1,5 @@
 <?php
-$entity = $this->controller->requestedEntity->opportunity;
+$entity = $this->controller->requestedEntity;
 
 $result = [];
 $fields = $entity->registrationFieldConfigurations;
