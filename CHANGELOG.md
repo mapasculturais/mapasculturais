@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige exibição de campo selecionado do componente de seleção quando há grupos de valores
 - Evita que a página de avaliação quebre no caso de haver uma inscrição sem data de envio
 - Permite que avaliadores avaliem inscrições mesmo com a fase publicada. O que importa é são as datas de avaliação.
+- Corrige obtenção de metadados para inscrições da última fase que não foram selecionadas em todas as fases anteriores
 
 ## Melhorias
 - Melhora o texto da modal de confirmação de avaliador explicando que todas as avaliações serão excluídas permanentemente.
