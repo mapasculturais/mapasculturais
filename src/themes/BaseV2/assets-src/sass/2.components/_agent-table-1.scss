@@ -1,0 +1,9 @@
+@use '../0.settings/mixins' as *;
+
+.agent-table-1 {
+    &__multiselects {
+        display: flex;
+        gap: size(24);
+        flex-wrap: wrap;
+    }
+}
