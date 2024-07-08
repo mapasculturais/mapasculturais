@@ -17,7 +17,6 @@ app.component('entity-table', {
         controller: {
             type: String
         },
-        select: String,
         limit: {
             type: Number,
             default: 50
@@ -50,10 +49,6 @@ app.component('entity-table', {
             type: String,
             default: 'find'
         },
-        showIndex: {
-            type: Boolean,
-            default: false
-        },
         sortOptions: {
             type: Array,
             default: [
@@ -63,6 +58,12 @@ app.component('entity-table', {
                 { value: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
             ]
         },
+        identifier: {
+            type: String,
+            required: true,
+        },
+        select: String,
+        showIndex: Boolean,
         hideFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
@@ -110,7 +111,7 @@ app.component('entity-table', {
     },
 
     data() {
-        let sessionTitle = this.controller+':'+this.query["@opportunity"]+':'+this.endpoint;
+        const sessionTitle = this.controller+':'+this.endpoint+':'+this.query['@opportunity']+':'+this.identifier;
 
         return {
             apiController: this.controller || this.type,
