@@ -46,5 +46,8 @@ app.component('entity-header', {
         url (source) {
             return `url(${source})`
         },
+        buildSocialMediaLink(socialMedia){
+            return Utils.buildSocialMediaLink(this.entity, socialMedia);
+        }
     },
 })

@@ -9,6 +9,10 @@ app.component('opportunity-registrations-table', {
             type: Array,
             default: ["agent", "status", "category", "consolidatedResult", "score", "editable"],
         },
+        identifier: {
+            type: String,
+            required: true,
+        },
         avaliableColumns: Array,
         hideFilters: Boolean,
         hideSort: Boolean,
