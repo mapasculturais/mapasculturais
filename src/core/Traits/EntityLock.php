@@ -5,7 +5,7 @@ use MapasCulturais\App;
 trait EntityLock {
 
     /**
-     * This entity uses Lock
+     * Esta entidade utiliza Lock
      *
      * @return bool true
      */
@@ -14,13 +14,14 @@ trait EntityLock {
     }
 
     /**
-     * Acquires a lock on the entity.
+     * Faz o lock na entidade.
      *
-     * @param int $timeout Lock timeout in seconds (default is 60).
-     * @return string Generated token for the lock.
+     * @param int $timeout Lock Tempo limite do bloqueio em segundos (padrão é 60).
+     * @return string Token gerado para o bloqueio.
      */
-    function lock(int $timeout = 60) {
+    function lock(int $timeout = null): string {
         $app = App::i();
+        $timeout = $timeout ?: $app->config['entity.lock.timeout']; 
         $token = $app->getToken(32);
         $filename = $this->generateFilename();
         
@@ -41,9 +42,9 @@ trait EntityLock {
     }
 
     /**
-     * Checks if the entity is currently locked.
+     * Verifica se a entidade está atualmente bloqueada.
      *
-     * @return array|false Lock data array if locked, otherwise false.
+     * @return array|false Array de dados do lock se estiver bloqueado, caso contrário false.
      */
     public function isLocked() {
         $filename = $this->generateFilename();
@@ -66,11 +67,11 @@ trait EntityLock {
     }
 
     /**
-     * Releases the lock on the entity.
+     * Libera o lock da entidade.
      *
      * @return void
      */
-    function unlock() {
+    function unlock(): void {
         $filename = $this->generateFilename();
 
         if(file_exists($filename)) {
@@ -79,39 +80,39 @@ trait EntityLock {
     }
 
     /**
-     * Renews the lock if it's still valid and matches the provided token.
+     * Renova o lock se ainda estiver válido e corresponder ao token fornecido.
      *
-     * @param string $token Token to renew the lock.
-     * @return bool True if the lock was successfully renewed, false otherwise.
+     * @param string $token Token para renovar o lock.
+     * @return bool True se o bloqueio foi renovado com sucesso, false caso contrário.
      */
-    function renewLock(string $token) {
+    function renewLock(string $token): bool {
         $filename = $this->generateFilename();
 
         if($lock_data = $this->isLocked()) {
             $valid_until = strtotime($lock_data['validUntil']);
             $token_data = $lock_data['token'];
 
-            if($valid_until < time() && $token == $token_data) {
+            if($valid_until >= time() && $token == $token_data) {
                 $lock_data['validUntil'] = date('Y-m-d H:i:s', time() + $lock_data['timeout']);
                 $lock_data_json = json_encode($lock_data, JSON_PRETTY_PRINT);
 
                 file_put_contents($filename, $lock_data_json);
 
-                return false;
-            } else {
                 return true;
+            } else {
+                return false;
             }
         }
 
-        return true;
+        return false;
     }
 
     /**
-     * Generates a unique filename for storing the lock data.
+     * Gera um nome de arquivo para armazenar os dados do lock.
      *
-     * @return string Generated filename.
+     * @return string Nome do arquivo gerado.
      */
-    function generateFilename() {
+    function generateFilename(): string {
         $app = App::i();
         
         $name = $app->slugify("{$this}");
