@@ -6,7 +6,7 @@ O componente mc-breadcrumb exibe um breadcrumb de navegação, ajudando os usuá
 - Tipo: Array
 - Exemplo de estrutura: [ { label: 'Home', url: '/' }, { label: 'Seção', url: '/section' }, { label: 'Subseção', url: '/section/subsection' } ]
 
-### cover
+### Cover
 - cover: Um booleano que indica se a entidade solicitada possui um cabeçalho com imagem.
 - Tipo: Boolean
 - Valor inicial: !!$MAPAS.requestedEntity?.files?.header
