@@ -29,7 +29,7 @@ app.component('entity-renew-lock', {
     mounted() {
         setInterval(() => {
             this.renewLock();
-        }, 45000);
+        }, $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
     }
     
 });
