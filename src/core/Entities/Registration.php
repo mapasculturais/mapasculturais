@@ -9,6 +9,7 @@ use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\Definitions\EvaluationMethod;
+use MapasCulturais\GuestUser;
 
 /**
  * Registration
@@ -493,6 +494,18 @@ class Registration extends \MapasCulturais\Entity
         if ($this->opportunity->canUser('@control')) {
             $this->editableFields = $fields;
         }
+    }
+
+    function reopenEditableFields() {
+        $this->opportunity->checkPermission('@control');
+        $this->editSentTimestamp = null;
+        $this->save(true);
+    }
+
+    function sendEditableFields() {
+        $this->checkPermission('sendEditableFields');
+        $this->editSentTimestamp = new DateTime();
+        $this->save(true);
     }
 
     function setOwnerId($id){
@@ -1482,6 +1495,18 @@ class Registration extends \MapasCulturais\Entity
         }
 
         return $this->canUser('@control');
+    }
+
+    protected function canUserSendEditableFields(User | GuestUser $user):bool {
+        if (!$this->canUser('@control')) {
+            return false;
+        }
+
+        if ($this->editableUntil < new DateTime() || $this->editSentTimestamp) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function canUserModify($user){
