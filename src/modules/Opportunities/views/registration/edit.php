@@ -47,6 +47,7 @@ $this->breadcrumb = $breadcrumb;
 
  $this->import('
     entity-field
+    entity-renew-lock
     mc-avatar
     opportunity-header
     registration-info
@@ -55,6 +56,7 @@ $this->breadcrumb = $breadcrumb;
 ?>
 
 <div class="main-app registration edit">
+    <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
