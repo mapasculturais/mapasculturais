@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5]
 ### Novas funcionalidades
 - Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
+- Implementa modo de visualização das entidades em tabelas para admins do sistema
 
 ## [7.4.6] - 2024-06-21
 ### Melhorias
