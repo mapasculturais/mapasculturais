@@ -71,7 +71,7 @@ app.component('entity-table', {
     },
 
     created() {
-        const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
+        const visible = localStorage[this.sessionTitle] ? localStorage[this.sessionTitle].split(",") : this.visible instanceof Array ? this.visible : this.visible.split(",");
         const required = this.required instanceof Array ? this.required : this.required.split(",");
 
         this.originalQuery = JSON.parse(JSON.stringify(this.query));
@@ -110,6 +110,8 @@ app.component('entity-table', {
     },
 
     data() {
+        let sessionTitle = this.controller+':'+this.query["@opportunity"]+':'+this.endpoint;
+
         return {
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
@@ -123,12 +125,17 @@ app.component('entity-table', {
             ready: false,
             tableWidth: 'auto',
             headerHeight: 'auto',
+            sessionTitle,
         }
     },
 
     watch: {
         columns: {
             handler(){
+                if (this.showIndex) {
+                    localStorage.setItem(this.sessionTitle, this.visibleColumns.map((column) => column.slug));
+                }
+
                 if(this.$refs.contentTable) {
                     this.$refs.contentTable.style.width = 'auto';
                 }
