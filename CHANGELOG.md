@@ -11,6 +11,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige exibição da categoria, tipo de proponente e faixa/linha para os avaliadores, deixando sempre visível
 - Corrige ordem dos campos na lista de seleção dos campos visíveis para os avaliadores
 - Corrige exibição de campo selecionado do componente de seleção quando há grupos de valores
+- Evita que a página de avaliação quebre no caso de haver uma inscrição sem data de envio
 
 ## Melhorias
 - Melhora o texto da modal de confirmação de avaliador explicando que todas as avaliações serão excluídas permanentemente.
