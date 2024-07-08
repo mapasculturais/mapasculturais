@@ -1511,10 +1511,6 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($this->opportunity->publishedRegistrations){
-            return false;
-        }
-
         $can = $this->canUserEvaluateOnTime($user);
 
         $evaluation = $this->getUserEvaluation($user);

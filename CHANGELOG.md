@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige ordem dos campos na lista de seleção dos campos visíveis para os avaliadores
 - Corrige exibição de campo selecionado do componente de seleção quando há grupos de valores
 - Evita que a página de avaliação quebre no caso de haver uma inscrição sem data de envio
+- Permite que avaliadores avaliem inscrições mesmo com a fase publicada. O que importa é são as datas de avaliação.
 
 ## Melhorias
 - Melhora o texto da modal de confirmação de avaliador explicando que todas as avaliações serão excluídas permanentemente.
