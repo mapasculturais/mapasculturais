@@ -117,6 +117,7 @@ $iconset = [
     'sort' => 'mdi:sort',
     'spaces' => 'clarity:building-line',
     'sync' => 'material-symbols:sync',
+    'table-view' => 'ic:outline-table-view',
     'text' => 'ic:sharp-text-fields',
     'ticket' => 'mdi:ticket-confirmation-outline',  
     'trash' => 'ooui:trash',

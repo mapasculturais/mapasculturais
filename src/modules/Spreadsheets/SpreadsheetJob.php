@@ -116,7 +116,11 @@ abstract class SpreadsheetJob extends JobType
             foreach ($batch as $data) {
                 $new_data = [];
                 foreach($sub_header as $prop => $label) {
-                    $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
+                    if (isset($data[$prop]) && is_array($data[$prop])) {
+                        $new_data[] = implode(', ', $data[$prop]);
+                    } else {
+                        $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
+                    }
                 }
 
                 $sheet->fromArray($new_data, null, "A$row");
