@@ -17,7 +17,6 @@ app.component('entity-table', {
         controller: {
             type: String
         },
-        select: String,
         limit: {
             type: Number,
             default: 50
@@ -50,10 +49,6 @@ app.component('entity-table', {
             type: String,
             default: 'find'
         },
-        showIndex: {
-            type: Boolean,
-            default: false
-        },
         sortOptions: {
             type: Array,
             default: [
@@ -63,6 +58,12 @@ app.component('entity-table', {
                 { value: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
             ]
         },
+        identifier: {
+            type: String,
+            required: true,
+        },
+        select: String,
+        showIndex: Boolean,
         hideFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
@@ -71,7 +72,7 @@ app.component('entity-table', {
     },
 
     created() {
-        const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
+        const visible = localStorage[this.sessionTitle] ? localStorage[this.sessionTitle].split(",") : this.visible instanceof Array ? this.visible : this.visible.split(",");
         const required = this.required instanceof Array ? this.required : this.required.split(",");
 
         this.originalQuery = JSON.parse(JSON.stringify(this.query));
@@ -110,6 +111,8 @@ app.component('entity-table', {
     },
 
     data() {
+        const sessionTitle = this.controller+':'+this.endpoint+':'+this.query['@opportunity']+':'+this.identifier;
+
         return {
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
@@ -123,12 +126,17 @@ app.component('entity-table', {
             ready: false,
             tableWidth: 'auto',
             headerHeight: 'auto',
+            sessionTitle,
         }
     },
 
     watch: {
         columns: {
             handler(){
+                if (this.showIndex) {
+                    localStorage.setItem(this.sessionTitle, this.visibleColumns.map((column) => column.slug));
+                }
+
                 if(this.$refs.contentTable) {
                     this.$refs.contentTable.style.width = 'auto';
                 }

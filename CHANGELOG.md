@@ -8,6 +8,20 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Novas funcionalidades
 - Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
+- Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
+
+### Melhorias
+- Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
+
+## [7.4.9] - 2024-07-03
+### Correções
+- Corrige salvamento e tratamento dos links das redes sociais
+- Correções e padronização nos estilos das modais
+- Corrige exibição de campo numérico com valor zero em fases
+- Corrige edição, por usuários de suporte, de campos opcionais não preenchidos em inscrições
+
+### Melhorias
+ - Adiciona a rede social tiktok
 
 ## [7.4.8] - 2024-06-26
 ### Correções

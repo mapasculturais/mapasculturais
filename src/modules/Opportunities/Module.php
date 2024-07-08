@@ -406,6 +406,48 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['config']['evaluationMethods'] = $app->getRegisteredEvaluationMethods();
         });
 
+        // Na edição de campo enviar revisão
+        $app->hook('entity(RegistrationFieldConfiguration).update:after', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('campo "%s" modificado'), $this->fieldName));
+        });
+
+        // Na criação de campo enviar revisão
+        $app->hook('entity(RegistrationFieldConfiguration).insert:after', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('campo "%s" adicionado'), $this->fieldName));
+        });
+
+        // Na remoção de campo enviar revisão
+        $app->hook('entity(RegistrationFieldConfiguration).remove:before', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('campo "%s" removido'), $this->fieldName));
+        });
+
+        // Na edição de anexo enviar revisão
+        $app->hook('entity(RegistrationFileConfiguration).update:after', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('anexo "%s" modificado'), $this->fileGroupName));
+        });
+
+        // Na criação de anexo enviar revisão
+        $app->hook('entity(RegistrationFileConfiguration).insert:after', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('anexo "%s" adicionado'), $this->fileGroupName));
+        });
+
+        // Na criação de anexo enviar revisão
+        $app->hook('entity(RegistrationFileConfiguration).remove:before', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('anexo "%s" removido'), $this->fileGroupName));
+        });
+
         // adiciona o parecer ao jsonSerialize da registration
         $app->hook('entity(Registration).jsonSerialize', function (&$data) use($app) {
             /** @var \MapasCulturais\Entities\Registration $this */

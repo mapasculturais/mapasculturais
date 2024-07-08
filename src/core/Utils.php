@@ -192,13 +192,19 @@ class Utils {
             $_value = preg_replace("~^(?:https?:\/\/)?(?:www\.)?~i", "", $_value);
             $_value = rtrim($_value, '/');
     
-            if (preg_match("/(?:{$domain})\/(profile\.php\?id=)?([\w\d\.]+)/i", $_value, $matches)) {
-                $result = $matches[2];
-            } else if(preg_match("/^@?([\w\d\.]+)$/i", $_value, $matches)){
+            if (preg_match("~(?:{$domain}/(?:profile\.php\?id=)?((@|channel/)?[-\w\d.]+))~i", $_value, $matches)) {
+                $result = $matches[1];
+            }
+            if (preg_match("~{$domain}/in/([-_\w\d]+)~i", $_value, $matches)) {
+                $result = $matches[1];
+            }
+            if (preg_match("~^open\.spotify\.com/user/([-_\w\d]+)~i", $_value, $matches)) {
+                $result = $matches[1];
+            }
+            else if(preg_match("/^((@|channel\/)?[-\w\d\.]+)$/i", $_value, $matches)){
                 $result = $matches[1];
             }
         }
-
         return $result;
     }
 

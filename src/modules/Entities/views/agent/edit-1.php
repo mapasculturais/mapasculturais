@@ -19,6 +19,7 @@ $this->import('
     entity-owner
     entity-profile
     entity-related-agents
+    entity-renew-lock
     entity-social-media
     entity-terms
     entity-status
@@ -39,9 +40,10 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
+    <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-
+    
     <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
@@ -130,12 +132,6 @@ $this->breadcrumb = [
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="escolaridade" label="<?= i::__('Selecione a sua Escolaridade') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="agenteItinerante" label="<?= i::__('É agente itinerante?') ?>"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="payment_bank_account_type"></entity-field>
-                                <entity-field :entity="entity" classes="col-6 sm:col-12" prop="payment_bank_number"></entity-field>
-                                <entity-field :entity="entity" classes="col-7 sm:col-12" prop="payment_bank_account_number"></entity-field>
-                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="payment_bank_dv_account_number"></entity-field>
-                                <entity-field :entity="entity" classes="col-7 sm:col-12" prop="payment_bank_branch"></entity-field>
-                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="payment_bank_dv_branch"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="pessoaDeficiente" class="pcd col-12" label="<?= i::__('Pessoa com Deficiência') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicional" label="<?= i::__('Comunidades tradicionais') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="comunidadesTradicionalOutros" label="<?= i::__('Não encontrou sua comunidade Tradicional') ?>"></entity-field>
