@@ -46,14 +46,22 @@ $this->import('
                         <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
                     </button>
     
-                    <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)">
+                    <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Cancelar') ?>" yes="<?= i::esc_attr__('Excluir') ?>">
                         <template #button="{open}">
                             <button class="button button--delete button--icon button--sm" @click="open()">
                                 <mc-icon name="trash"></mc-icon> <?= i::__('Excluir') ?>
                             </button>
                         </template> 
                         <template #message="message">
-                            <?php i::_e('Você tem certeza que deseja remover este avaliador?') ?>
+                            <p>
+                                <?= i::__('Você tem certeza que deseja excluir <strong>{{infoReviewer.agent.name}}</strong> da função de avaliador(a)?') ?>
+                            </p>
+                            <br><br>
+                            <p>
+                                <mc-alert type="warning">
+                                    <strong><?= i::__('ATENÇÃO') ?>: </strong> <?= i::__('TODAS as avaliações realizadas por <strong>{{infoReviewer.agent.name}}</strong> serão <strong>excluídas permanentemente</strong>.') ?>
+                                </mc-alert>
+                            </p>
                         </template> 
                     </mc-confirm-button>
                 </div>

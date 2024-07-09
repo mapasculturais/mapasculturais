@@ -457,6 +457,10 @@ class Registration extends \MapasCulturais\Entity
 
     public function canSee($key)
     {
+        if(in_array($key, ['id', 'number', 'category', 'range', 'proponentType'])){
+            return true;
+        }
+
         $avaliableEvaluationFields = ($this->opportunity->avaliableEvaluationFields != "null") ? $this->opportunity->avaliableEvaluationFields : [];
         if(in_array($key, array_keys($avaliableEvaluationFields))){
             return true;
@@ -1569,10 +1573,6 @@ class Registration extends \MapasCulturais\Entity
         }
         
         if(new DateTime('now') < $this->opportunity->evaluationMethodConfiguration->evaluationFrom || new DateTime('now') > $this->opportunity->evaluationMethodConfiguration->evaluationTo){
-            return false;
-        }
-
-        if($this->opportunity->publishedRegistrations){
             return false;
         }
 
