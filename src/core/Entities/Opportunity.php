@@ -1531,10 +1531,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return true;
         }
 
-        if($this->publishedRegistrations){
-            return false;
-        }
-
         if (!$this->evaluationMethodConfiguration) {
             return false;
         }

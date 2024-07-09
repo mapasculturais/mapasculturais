@@ -8,6 +8,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
+## [7.4.10] - 2024-07-08
+## Correções
+- Corrige reatividade do componente mc-select
+- Corrige exibição da categoria, tipo de proponente e faixa/linha para os avaliadores, deixando sempre visível
+- Corrige ordem dos campos na lista de seleção dos campos visíveis para os avaliadores
+- Corrige exibição de campo selecionado do componente de seleção quando há grupos de valores
+- Evita que a página de avaliação quebre no caso de haver uma inscrição sem data de envio
+- Permite que avaliadores avaliem inscrições mesmo com a fase publicada. O que importa é são as datas de avaliação.
+- Corrige obtenção de metadados para inscrições da última fase que não foram selecionadas em todas as fases anteriores
+
+## Melhorias
+- Melhora o texto da modal de confirmação de avaliador explicando que todas as avaliações serão excluídas permanentemente.
+
 ## [7.4.9] - 2024-07-03
 ### Correções
 - Corrige salvamento e tratamento dos links das redes sociais
