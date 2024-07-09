@@ -584,17 +584,16 @@
     .search {
         .tabs-component__panels {
             background: var(--mc-gray-100);
-            margin-top: size(88);
             padding-bottom: size(40);
             margin-bottom: 0;
             min-height: size(500);
 
             @media (max-width: size(800)) {
-                margin-top: size(123);
+                margin-top: size(5);
             }
 
             @media (max-width: size(500)) {
-                margin-top: size(130);
+                margin-top: size(5);
             }
         }
 

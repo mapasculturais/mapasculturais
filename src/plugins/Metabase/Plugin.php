@@ -27,12 +27,20 @@ class Plugin extends \MapasCulturais\Plugin
             $this->part('search-tabs/agent');
         });
 
+        $app->hook('template(search.opportunities.search-tabs):after', function(){
+            $this->part('search-tabs/opportunity');
+        });
+
         // $app->hook('template(search.spaces.search-tabs):after', function(){
         //     $this->part('search-tabs/space');
         // });
 
         $app->hook('template(search.agents.search-header):after', function(){
             $this->part('search-tabs/entity-agent-cards');
+        });
+
+        $app->hook('template(search.opportunities.search-header):after', function(){
+            $this->part('search-tabs/entity-opportunity-cards');
         });
 
         // $app->hook('template(search.spaces.search-header):after', function(){
