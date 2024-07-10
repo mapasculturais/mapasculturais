@@ -179,7 +179,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'groupName' => $this->fileGroupName,
             'categories' => $this->categories ?: [],
             'displayOrder' => $this->displayOrder,
-            'conditional' => $this->conditional ? true : false,
+            'conditional' => filter_var($this->conditional, FILTER_VALIDATE_BOOLEAN),
             'conditionalField' => $this->conditionalField,
             'conditionalValue' => $this->conditionalValue,
             'registrationRanges' => $this->registrationRanges ?: [],
