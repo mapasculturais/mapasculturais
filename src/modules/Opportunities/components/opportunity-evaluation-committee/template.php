@@ -80,7 +80,7 @@ $this->import('
                         <label><?php i::_e('Distribuição') ?></label>
                         <input type="text" placeholder="00-99" maxlength="5" @change="sendDefinition('addDistribution', infoReviewer.agentUserId, 'categories')" v-model="entity.fetch[infoReviewer.agentUserId]"/>
                     </div>
-                    <div v-if="registrationCategories.length > 0 || registrationRanges.length > 0 || registrationProponentTypes.length > 0">
+                    <div class="opportunity-evaluation-committee__all-settings" v-if="registrationCategories.length > 0 || registrationRanges.length > 0 || registrationProponentTypes.length > 0">
                         <div v-if="registrationCategories.length > 0" class="field">
                             <label><?php i::_e('Categorias a serem avaliadas') ?></label>
                             <div class="opportunity-evaluation-committee__settings">
@@ -108,7 +108,7 @@ $this->import('
                         </div>
 
                         <div v-if="registrationProponentTypes.length > 0" class="field">
-                            <label><?php i::_e('Proponentes a serem avaliadas') ?></label>
+                            <label><?php i::_e('Proponentes a serem avaliados') ?></label>
                             <div class="opportunity-evaluation-committee__settings">
                                 <mc-multiselect :model="entity.fetchProponentTypes[infoReviewer.agentUserId]" :items="registrationProponentTypes" #default="{popover, setFilter}" @selected="sendDefinition('addProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')" @removed="sendDefinitionRanges('removeProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')">
                                     <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
