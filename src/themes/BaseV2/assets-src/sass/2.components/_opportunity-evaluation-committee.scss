@@ -74,4 +74,10 @@
         gap: size(10);
         min-height: size(49);
     }
+
+    &__all-settings {
+        display: flex;
+        flex-direction: column;
+        gap: size(10);
+    }
 }
