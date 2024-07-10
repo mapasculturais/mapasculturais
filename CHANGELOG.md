@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
+- Permite que seja feita a distribuição de avaliações por faixas
 
 ## [7.4.10] - 2024-07-08
 ## Correções
