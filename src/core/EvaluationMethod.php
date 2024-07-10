@@ -202,6 +202,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $fetch = [];
             $config_fetch = is_array($config->fetch) ? $config->fetch : (array) $config->fetch;
             $config_fetchCategories = is_array($config->fetchCategories) ? $config->fetchCategories : (array) $config->fetchCategories;
+            $config_ranges = is_array($config->fetchRanges) ? $config->fetchRanges : (array) $config->fetchRanges;
 
             if(is_array($config_fetch)){
                 foreach($config_fetch as $id => $val){
@@ -212,6 +213,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             if(is_array($config_fetchCategories)){
                 foreach($config_fetchCategories as $id => $val){
                     $fetch_categories [(int)$id] = $val;
+                }
+            }
+
+            $fetch_ranges = [];
+            if(is_array($config_ranges)){
+                foreach($config_ranges as $id => $val){
+                    $fetch_ranges [(int)$id] = $val;
                 }
             }
 
@@ -247,6 +255,30 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         foreach($ucategories as $cat){
                             $cat = trim($cat);
                             if(strtolower((string)$registration->category) === strtolower($cat)){
+                                $found = true;
+                            }
+                        }
+
+                        if(!$found) {
+                            $can = false;
+                        }
+                    }
+                }
+            }
+
+            if(isset($fetch_ranges[$user->id])){
+                $ucranges = $fetch_ranges[$user->id];
+                if($ucranges){
+                    if(!is_array($ucranges)) {
+                        $ucranges = explode(';', $ucranges);
+                    }
+
+                    if($ucranges){
+                        $found = false;
+
+                        foreach($ucranges as $ran){
+                            $ran = trim($ran);
+                            if(strtolower((string)$registration->range) === strtolower($ran)){
                                 $found = true;
                             }
                         }
