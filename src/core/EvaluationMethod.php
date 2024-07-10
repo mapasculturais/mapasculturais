@@ -409,6 +409,16 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 }
             ]);
 
+            $this->registerEvaluationMethodConfigurationMetadata('fetchProponentTypes', [
+                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por tipo de proponente'),
+                'serialize' => function ($val) {
+                    return json_encode($val);
+                },
+                'unserialize' => function($val) {
+                    return json_decode((string) $val);
+                }
+            ]);
+
             $this->registerEvaluationMethodConfigurationMetadata('infos', [
                 'label' => i::__('Textos informativos para os avaliadores'),
                 'type' => 'json',
