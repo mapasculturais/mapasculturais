@@ -159,6 +159,27 @@ class EvaluationMethodConfiguration extends Controller {
             }
         }
 
+         // pega os ids dos usuários que tiveram a configuração de tipo de proponente alterada
+         $entity_fetch_proponent_types = $entity->fetchProponentTypes ? $entity->fetchProponentTypes : new \stdClass;
+         $data_fetch_proponent_types = isset($this->data['fetchProponentTypes']) ? (object) $this->data['fetchProponentTypes'] : new \stdClass;
+         if($data_fetch_proponent_types){
+             foreach($data_fetch_proponent_types as $id => $val){
+                 if(!is_numeric($id)) {
+                     continue;
+                 }
+ 
+                 if(!isset($entity_fetch_proponent_types->$id) || $entity_fetch_proponent_types->$id != $val){
+                     $user_ids[] = $id;
+                 }
+             }
+ 
+             foreach($entity_fetch_proponent_types as $id => $val){
+                 if(!isset($data_fetch_proponent_types->$id)){
+                     $user_id[] = $id;
+                 }
+             }
+         }
+
         if($user_ids) {
             $users = $app->repo('User')->findBy(['id' => $user_ids]);
             $entity->enqueueToPCacheRecreation($users);

@@ -50,8 +50,10 @@ app.component('opportunity-evaluation-committee', {
                 ... (this.entity.opportunity.registrationCategories ?? [])
             ],
             registrationRanges: [
-                'sem avaliações',
                 ... (ranges ?? [])
+            ],
+            registrationProponentTypes: [
+                ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
         }
     },
@@ -143,7 +145,13 @@ app.component('opportunity-evaluation-committee', {
         sendDefinition(field, userId, event = null, type) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
-            let fetchField = type === 'categories' ? 'fetchCategories' : 'fetchRanges';
+            const fetchFieldMap = {
+                categories: 'fetchCategories',
+                ranges: 'fetchRanges',
+                proponentTypes: 'fetchProponentTypes'
+            };
+              
+            let fetchField = fetchFieldMap[type];
             
             if (event && event === 'sem avaliações' && this.entity[fetchField][userId].length > 1) {
                 this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item === 'sem avaliações');
@@ -157,18 +165,18 @@ app.component('opportunity-evaluation-committee', {
             };
     
             api.POST(url, testData).then(res => res.json()).then(data => {
-                switch (field) {
-                    case 'addDistribution':
-                        this.messages.success(this.text('addDistribution'));
-                        break;
-                    case 'addCategory':
-                    case 'addRange':
-                        this.messages.success(this.text('addCategory'));
-                        break;
-                    case 'removeCategory':
-                    case 'removeRange':
-                        this.messages.success(this.text('removeCategory'));
-                        break;
+                const successMessages = {
+                    addDistribution: 'addDistribution',
+                    addCategory: 'addCategory',
+                    addRange: 'addRange',
+                    addProponentType: 'addProponentType',
+                    removeCategory: 'removeCategory',
+                    removeRange: 'removeRange',
+                    removeProponentType: 'removeProponentType'
+                };
+        
+                if (successMessages[field]) {
+                    this.messages.success(this.text(successMessages[field]));
                 }
                 this.loadReviewers();
             });
@@ -204,7 +212,16 @@ app.component('opportunity-evaluation-committee', {
                         this.entity.fetchRanges[info.agentUserId] = [];
                     }
 
-                    info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0) ? false : true;
+                    if(!this.entity.fetchProponentTypes) {
+                        this.entity.fetchProponentTypes = {};
+                        this.entity.fetchProponentTypes[info.agentUserId] = [];
+                    }
+
+                    if(this.entity.fetchProponentTypes && !this.entity.fetchProponentTypes[info.agentUserId]) {
+                        this.entity.fetchProponentTypes[info.agentUserId] = [];
+                    }
+
+                    info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
 
                 });
             }
