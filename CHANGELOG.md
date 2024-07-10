@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.4.11]
 ### Melhorias
 - Permite que seja feita a distribuição de avaliações por faixas
+- Permite que seja feita a distribuição de avaliações por tipo de proponente
 
 ## [7.4.10] - 2024-07-08
 ## Correções
