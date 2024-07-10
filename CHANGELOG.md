@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.12]
+### Correções
+- Corrige erro que deixava a condicionalidade dos campos ativada ao editar um campo mesmo ele não estando condicionado a outro
+
 ## [7.4.11] - 2024-07-10
 ### Melhorias
 - Permite que seja feita a distribuição de avaliações por faixas
