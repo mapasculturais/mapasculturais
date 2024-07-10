@@ -11,6 +11,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Permite que administradores de oportunidades que não sejam admin convidem avaliadores
+- Corrige permissões para gestores de oportunidades que não sejam administradores do sistema remover, habilitar e desabilitar avaliadores
+- Exibe o status de pendente para avaliadores que ainda não aceitaram ser avaliadores de uma oportunidade
 
 ## [7.4.10] - 2024-07-08
 ## Correções

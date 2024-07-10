@@ -23,7 +23,26 @@ $this->import('
 
     <div v-if="showReviewers" class="opportunity-evaluation-committee__card-grouping">
         <div class="opportunity-evaluation-committee__card" v-for="infoReviewer in infosReviewers" :key="infoReviewer.id">
-            <div class="opportunity-evaluation-committee__card-header">
+            <div v-if="infoReviewer.status == -5" class="grid-12">
+                <mc-alert type="warning" class="col-9">
+                    <div class="col-9">
+                        <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?>
+                    </div>
+                </mc-alert>
+                <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
+                    <template #button="{open}">
+                        <button class="button button--delete button--icon button--sm col-3" @click="open()">
+                            <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
+                        </button>
+                    </template> 
+                    <template #message="message">
+                        <p>
+                            <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?>
+                        </p>
+                    </template> 
+                </mc-confirm-button>
+            </div>
+            <div v-else class="opportunity-evaluation-committee__card-header">
                 <div class="opportunity-evaluation-committee__card-header-info">
                     <mc-avatar :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
 
@@ -41,7 +60,6 @@ $this->import('
                             <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
                         </template> 
                     </mc-confirm-button>
-                    
                     <button class="button button--disable button--icon button--sm" @click="disableOrEnableReviewer(infoReviewer)">
                         <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
                     </button>
