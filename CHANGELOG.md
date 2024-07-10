@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Permite que seja feita a distribuição de avaliações por faixas
 
+### Correções
+- Permite que administradores de oportunidades que não sejam admin convidem avaliadores
+
 ## [7.4.10] - 2024-07-08
 ## Correções
 - Corrige reatividade do componente mc-select

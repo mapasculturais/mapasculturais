@@ -109,7 +109,7 @@ $this->import('
     </div>
 
     <div class="opportunity-evaluation-committee__add-new-evaluator">
-        <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right">
+        <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right" permissions="">
             <template #button="{ toggle }">
                 <button class="button button--icon button--primary" @click="toggle()">
                     <mc-icon name="add"></mc-icon>
