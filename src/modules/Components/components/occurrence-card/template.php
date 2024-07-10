@@ -60,17 +60,17 @@ $this->import('
             </div>
         </div>
         <div class="entity-card__content--terms">
-            <div v-if="tags" class="entity-card__content--terms-tag">
+            <div v-if="tags" class="-tag">
                 <label class="tag__title">
-                    <?php i::_e('Tags:') ?> ({{event.terms.tag.length}}):
+                    <?php i::_e('Tags') ?> ({{event.terms.tag.length}}):
                 </label>
-                <p :class="['terms', 'event__color']"> {{tags}} </p>
+                <p :class="'terms'"> {{tags}} </p>
             </div>
             <div v-if="linguagens" class="entity-card__content--terms-linguagem">
                 <label class="linguagem__title">
-                    <?php i::_e('linguagens:') ?> ({{event.terms.linguagem.length}}):
+                    <?php i::_e('linguagens') ?> ({{event.terms.linguagem.length}}):
                 </label>
-                <p :class="['terms', 'event__color']"> {{linguagens}} </p>
+                <p :class="'terms'"> {{linguagens}} </p>
             </div>
         </div>
     </div>
