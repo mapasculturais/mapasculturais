@@ -267,16 +267,16 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
 
             if(isset($fetch_ranges[$user->id])){
-                $ucranges = $fetch_ranges[$user->id];
-                if($ucranges){
-                    if(!is_array($ucranges)) {
-                        $ucranges = explode(';', $ucranges);
+                $uranges = $fetch_ranges[$user->id];
+                if($uranges){
+                    if(!is_array($uranges)) {
+                        $uranges = explode(';', $uranges);
                     }
 
-                    if($ucranges){
+                    if($uranges){
                         $found = false;
 
-                        foreach($ucranges as $ran){
+                        foreach($uranges as $ran){
                             $ran = trim($ran);
                             if(strtolower((string)$registration->range) === strtolower($ran)){
                                 $found = true;
