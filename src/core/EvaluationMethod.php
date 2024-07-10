@@ -203,6 +203,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $config_fetch = is_array($config->fetch) ? $config->fetch : (array) $config->fetch;
             $config_fetchCategories = is_array($config->fetchCategories) ? $config->fetchCategories : (array) $config->fetchCategories;
             $config_ranges = is_array($config->fetchRanges) ? $config->fetchRanges : (array) $config->fetchRanges;
+            $config_proponent_types = is_array($config->fetchProponentTypes) ? $config->fetchProponentTypes : (array) $config->fetchProponentTypes;
 
             if(is_array($config_fetch)){
                 foreach($config_fetch as $id => $val){
@@ -220,6 +221,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             if(is_array($config_ranges)){
                 foreach($config_ranges as $id => $val){
                     $fetch_ranges [(int)$id] = $val;
+                }
+            }
+
+            $fetch_proponent_types = [];
+            if(is_array($config_proponent_types)){
+                foreach($config_proponent_types as $id => $val){
+                    $fetch_proponent_types [(int)$id] = $val;
                 }
             }
 
@@ -279,6 +287,30 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         foreach($uranges as $ran){
                             $ran = trim($ran);
                             if(strtolower((string)$registration->range) === strtolower($ran)){
+                                $found = true;
+                            }
+                        }
+
+                        if(!$found) {
+                            $can = false;
+                        }
+                    }
+                }
+            }
+            
+            if(isset($fetch_proponent_types[$user->id])){
+                $uproponet_types = $fetch_proponent_types[$user->id];
+                if($uproponet_types){
+                    if(!is_array($uproponet_types)) {
+                        $uproponet_types = explode(';', $uproponet_types);
+                    }
+
+                    if($uproponet_types){
+                        $found = false;
+
+                        foreach($uproponet_types as $ran){
+                            $ran = trim($ran);
+                            if(strtolower((string)$registration->proponentType) === strtolower($ran)){
                                 $found = true;
                             }
                         }
