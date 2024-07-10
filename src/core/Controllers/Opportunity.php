@@ -1263,7 +1263,11 @@ class Opportunity extends EntityController {
 
         $opportunity = $this->repository->find($this->data['opportunityId']);
 
-        $opportunity->checkPermission('reopenValuerEvaluations');
+        if(!$opportunity ||!$opportunity->evaluationMethodConfiguration) {
+            $app->pass();
+        }
+
+        $opportunity->evaluationMethodConfiguration->checkPermission('manageEvaluationCommittee');
         
         $user = $app->repo("User")->find($this->data['uid']);
 
