@@ -8,6 +8,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
+## [7.4.11] - 2024-07-10
+### Melhorias
+- Permite que seja feita a distribuição de avaliações por faixas
+- Permite que seja feita a distribuição de avaliações por tipo de proponente
+
+### Correções
+- Permite que administradores de oportunidades que não sejam admin convidem avaliadores
+- Corrige permissões para gestores de oportunidades que não sejam administradores do sistema remover, habilitar e desabilitar avaliadores
+- Exibe o status de pendente para avaliadores que ainda não aceitaram ser avaliadores de uma oportunidade
+
 ## [7.4.10] - 2024-07-08
 ## Correções
 - Corrige reatividade do componente mc-select
