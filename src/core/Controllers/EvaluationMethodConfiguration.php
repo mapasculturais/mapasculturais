@@ -138,6 +138,27 @@ class EvaluationMethodConfiguration extends Controller {
             }
         }
 
+         // pega os ids dos usuários que tiveram a configuração de faixa alterada
+        $entity_fetch_ranges = $entity->fetchRanges ? $entity->fetchRanges : new \stdClass;
+        $data_fetch_ranges = isset($this->data['fetchRanges']) ? (object) $this->data['fetchRanges'] : new \stdClass;
+        if($data_fetch_ranges){
+            foreach($data_fetch_ranges as $id => $val){
+                if(!is_numeric($id)) {
+                    continue;
+                }
+
+                if(!isset($entity_fetch_ranges->$id) || $entity_fetch_ranges->$id != $val){
+                    $user_ids[] = $id;
+                }
+            }
+
+            foreach($entity_fetch_ranges as $id => $val){
+                if(!isset($data_fetch_ranges->$id)){
+                    $user_id[] = $id;
+                }
+            }
+        }
+
         if($user_ids) {
             $users = $app->repo('User')->findBy(['id' => $user_ids]);
             $entity->enqueueToPCacheRecreation($users);
