@@ -98,27 +98,44 @@ $this->import('
                         <label><?php i::_e('Distribuição') ?></label>
                         <input type="text" placeholder="00-99" maxlength="5" @change="sendDefinition('addDistribution', infoReviewer.agentUserId, 'categories')" v-model="entity.fetch[infoReviewer.agentUserId]"/>
                     </div>
-                    <div v-if="registrationCategories.length > 0 || registrationRanges.length > 0" class="field">
-                        <label><?php i::_e('Categorias a serem avaliadas') ?></label>
-                        <div class="opportunity-evaluation-committee__categories">
-                            <mc-multiselect :model="entity.fetchCategories[infoReviewer.agentUserId]" :items="registrationCategories" #default="{popover, setFilter}" @selected="sendDefinition('addCategory', infoReviewer.agentUserId, $event, 'categories')" @removed="sendDefinition('removeCategory', 'categories'), infoReviewer.agentUserId">
-                                <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
-                                    <?php i::_e("Adicionar categoria") ?>
-                                    <mc-icon name="add"></mc-icon>
-                                </button>
-                            </mc-multiselect>
-                            <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeCategory', infoReviewer.agentUserId, 'categories')" editable></mc-tag-list>
+                    <div class="opportunity-evaluation-committee__all-settings" v-if="registrationCategories.length > 0 || registrationRanges.length > 0 || registrationProponentTypes.length > 0">
+                        <div v-if="registrationCategories.length > 0" class="field">
+                            <label><?php i::_e('Categorias a serem avaliadas') ?></label>
+                            <div class="opportunity-evaluation-committee__settings">
+                                <mc-multiselect :model="entity.fetchCategories[infoReviewer.agentUserId]" :items="registrationCategories" #default="{popover, setFilter}" @selected="sendDefinition('addCategory', infoReviewer.agentUserId, $event, 'categories')" @removed="sendDefinition('removeCategory', infoReviewer.agentUserId, $event, 'categories')">
+                                    <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
+                                        <?php i::_e("Adicionar categoria") ?>
+                                        <mc-icon name="add"></mc-icon>
+                                    </button>
+                                </mc-multiselect>
+                                <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeCategory', infoReviewer.agentUserId, $event, 'categories')" editable></mc-tag-list>
+                            </div>
                         </div>
 
-                        <label><?php i::_e('Faixas a serem avaliadas') ?></label>
-                        <div class="opportunity-evaluation-committee__categories">
-                            <mc-multiselect :model="entity.fetchRanges[infoReviewer.agentUserId]" :items="registrationRanges" #default="{popover, setFilter}" @selected="sendDefinition('addRange', infoReviewer.agentUserId, $event, 'ranges')" @removed="sendDefinitionRanges('removeRange', 'ranges'), infoReviewer.agentUserId">
-                                <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
-                                    <?php i::_e("Adicionar faixa") ?>
-                                    <mc-icon name="add"></mc-icon>
-                                </button>
-                            </mc-multiselect>
-                            <mc-tag-list :tags="entity.fetchRanges[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeRange', infoReviewer.agentUserId, 'ranges')" editable></mc-tag-list>
+                        <div v-if="registrationRanges.length > 0" class="field">
+                            <label><?php i::_e('Faixas a serem avaliadas') ?></label>
+                            <div class="opportunity-evaluation-committee__settings">
+                                <mc-multiselect :model="entity.fetchRanges[infoReviewer.agentUserId]" :items="registrationRanges" #default="{popover, setFilter}" @selected="sendDefinition('addRange', infoReviewer.agentUserId, $event, 'ranges')" @removed="sendDefinitionRanges('removeRange', infoReviewer.agentUserId, $event, 'ranges')">
+                                    <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
+                                        <?php i::_e("Adicionar faixa") ?>
+                                        <mc-icon name="add"></mc-icon>
+                                    </button>
+                                </mc-multiselect>
+                                <mc-tag-list :tags="entity.fetchRanges[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeRange', infoReviewer.agentUserId, $event, 'ranges')" editable></mc-tag-list>
+                            </div>
+                        </div>
+
+                        <div v-if="registrationProponentTypes.length > 0" class="field">
+                            <label><?php i::_e('Proponentes a serem avaliados') ?></label>
+                            <div class="opportunity-evaluation-committee__settings">
+                                <mc-multiselect :model="entity.fetchProponentTypes[infoReviewer.agentUserId]" :items="registrationProponentTypes" #default="{popover, setFilter}" @selected="sendDefinition('addProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')" @removed="sendDefinitionRanges('removeProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')">
+                                    <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
+                                        <?php i::_e("Adicionar proponente") ?>
+                                        <mc-icon name="add"></mc-icon>
+                                    </button>
+                                </mc-multiselect>
+                                <mc-tag-list :tags="entity.fetchProponentTypes[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')" editable></mc-tag-list>
+                            </div>
                         </div>
                     </div>
                 </div>
