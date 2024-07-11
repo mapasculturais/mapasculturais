@@ -22,7 +22,6 @@
     margin: 0 1rem;
     max-height: 90%;
     min-width: 200px;
-    overflow-y: auto;
     position: relative;
 }
 

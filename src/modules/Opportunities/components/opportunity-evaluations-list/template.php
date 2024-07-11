@@ -48,7 +48,7 @@ $this->import('
                             </div>
                             <div class="card-content__middle">
                                 <span class="subscribe"><?= i::__('Data da inscrição') ?></span>
-                                <span class="value">
+                                <span v-if="evaluation.registrationSentTimestamp" class="value">
                                     <strong>{{evaluation.registrationSentTimestamp.date()}} {{evaluation.registrationSentTimestamp.time()}}</strong>
                                 </span>
                             </div>

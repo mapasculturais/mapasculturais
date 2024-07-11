@@ -422,6 +422,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         return parent::canUserRemove($user);
+    }    
+    
+    protected function canUserManageEvaluationCommittee($user){
+        if(!$this->canUser('@controll', $user)){
+            return false;
+        }
+
+        return true;
     }
 
     protected function canUser_control($user) {
