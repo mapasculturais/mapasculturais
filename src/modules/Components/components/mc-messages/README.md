@@ -1,5 +1,5 @@
 # Componente `<mc-messages>`
-Componente que exibe um snackbar de erro, confirmação ou aviso.
+O componente `mc-messages` é utilizado para exibir mensagens temporárias de sucesso, aviso ou erro na interface do usuário. Este componente gerencia automaticamente a exibição e remoção das mensagens após um período de tempo definido.
 
 ### Importando componente
 ```PHP
@@ -11,3 +11,4 @@ $this->import('mc-messages');
 ```HTML
 <!-- utilizaçao básica -->
 <mc-messages></mc-messages>
+```
