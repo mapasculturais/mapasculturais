@@ -39,10 +39,10 @@ $this->import('
             <?php $this->applyTemplateHook('opportunity-basic-info','before')?>
             <div class="grid-12">
                 <?php $this->applyTemplateHook('opportunity-basic-info','begin')?>
-                <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
-                <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
+                <entity-field :entity="entity" prop="registrationFrom" :min="today" :max="entity.registrationTo?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
+                <entity-field :entity="entity" prop="registrationTo" :min="registrationToMinDate" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
 
-                <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="3000" classes="col-6">
+                <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :min="this.entity.registrationTo?._date || today" :autosave="3000" classes="col-6">
                     <label><?= i::__("Publicação final de resultados (data e hora)") ?></label>
                 </entity-field>
                 <?php $this->applyTemplateHook('opportunity-basic-info','afeter')?>
