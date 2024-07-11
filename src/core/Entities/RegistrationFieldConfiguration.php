@@ -237,7 +237,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'categories' => $this->categories ?: [],
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder,
-        'conditional' => $this->conditional ? true : false,
+        'conditional' => filter_var($this->conditional, FILTER_VALIDATE_BOOLEAN),
         'conditionalField' => $this->conditionalField,
         'conditionalValue' => $this->conditionalValue,
         'registrationRanges' => $this->registrationRanges ?: [],
