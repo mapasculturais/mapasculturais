@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro que deixava a condicionalidade dos campos/anexos ativada ao editar, mesmo ele não estando condicionado a outro
 - Corrige erro na tabela de listagem de inscrições que impedia a listagem de todas as inscrições de oportunidades multifases
+- Corrige erro do entity-field que impedia as opções serem exibidas e salvas quando se usava campo do tipo radio
 
 ## [7.4.11] - 2024-07-10
 ### Melhorias
