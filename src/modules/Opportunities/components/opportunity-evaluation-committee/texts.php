@@ -8,4 +8,8 @@ return [
     'addDistribution' => i::__('A distribuição de avaliações foi atualizada com sucesso.'),
     'addCategory' => i::__('Categoria adicionada com sucesso.'),
     'removeCategory' => i::__('Categoria removida com sucesso.'),
+    'addRange' => i::__('Faixa/Linha adicionada com sucesso.'),
+    'removeRange' => i::__('Faixa/Linha removida com sucesso.'),
+    'addProponentType' => i::__('Tipo de proponente adicionado com sucesso.'),
+    'removeProponentType' => i::__('Tipo de proponente removido com sucesso.'),
 ];
