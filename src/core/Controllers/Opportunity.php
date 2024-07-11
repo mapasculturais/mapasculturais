@@ -395,7 +395,7 @@ class Opportunity extends EntityController {
 
         $_opportunity = $opportunity;
         $opportunity_tree = [$opportunity];
-        while($_opportunity && ($parent = $app->modules['OpportunityPhases']->getPreviousPhase($_opportunity))){
+        while($_opportunity && ($parent = $_opportunity->previousPhase)){
             $opportunity_tree[] = $parent;
             $_opportunity = $parent;
         }
