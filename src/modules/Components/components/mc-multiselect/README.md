@@ -1,6 +1,12 @@
 # Componente `<mc-tag-list>`
 Componente para exibição e edição dos termos das taxonomias de uma entidade. 
   
+### Eventos
+- **open** :Emitido quando o popover é aberto. Passa o componente do popover como argumento.
+- **close** :Emitido quando o popover é fechado. Passa o componente do popover como argumento.
+- **selected** :Emitido quando um item é selecionado. Passa a chave do item selecionado como argumento.
+- **removed** :Emitido quando um item é removido. Passa a chave do item removido como argumento.
+
 ## Propriedades
 - *String **title*** - Título da modal/popover;
 - *Boolean **editable** = false* - Habilita o modo de edição do componente;
