@@ -217,7 +217,7 @@ app.component('entity-field', {
         },
 
         isReadonly() {
-            const userPermission = this.entity.currentUserPermissions.modifyReadonlyData;
+            const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
 
             if(this.description.readonly) {
                 if(userPermission || !this.value) {
