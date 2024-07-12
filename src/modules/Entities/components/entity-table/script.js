@@ -111,7 +111,8 @@ app.component('entity-table', {
     },
 
     data() {
-        const sessionTitle = this.controller+':'+this.endpoint+':'+this.query['@opportunity']+':'+this.identifier;
+        const id = this.query['@opportunity'] ?? '';
+        const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
 
         return {
             apiController: this.controller || this.type,
@@ -161,14 +162,16 @@ app.component('entity-table', {
         advancedFilters() {
             let filters = {};
 
-            for (let visibleColumn of this.visibleColumns) {
-                const description = this.$description[visibleColumn.slug];
+            if (this.$description) {
+                for (let visibleColumn of this.visibleColumns) {
+                    const description = this.$description[visibleColumn.slug];
 
-                if (description && description.hasOwnProperty('options')) {
-                    if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0) {
-                        filters[visibleColumn.slug] = {
-                            label: description.label,
-                            options: description.options, 
+                    if (description && description.hasOwnProperty('options')) {
+                        if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0) {
+                            filters[visibleColumn.slug] = {
+                                label: description.label,
+                                options: description.options, 
+                            }
                         }
                     }
                 }
