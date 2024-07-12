@@ -1,6 +1,7 @@
 # Componente<mc-avatar>`
 O componente `mc-avatar` é utilizado para exibir avatares de entidades. Ele pode ser configurado para diferentes tamanhos e formatos, e pode exibir uma imagem ou um ícone, dependendo da disponibilidade da imagem de avatar.
 
+## Propriedades
 - *entity **Entity*** : A entidade que possui o avatar a ser exibido.
 - *size **String*** : O tamanho do avatar. Os valores válidos são `big`, `medium`, `small`, e `xsmall`.
 - *square **Boolean*** : Define se o avatar deve ser exibido em formato quadrado.
