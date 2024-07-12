@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro ao definir a latitude e longitude em campos do agente responsável que fazem sincronia com a inscrição (Campos @)
 - Corrige erro que não deixava a autorização de publicar a localização atravez do formulario de inscrição em campos @
 - Corrige o processo de limpeza do cache dos resumos de inscrições para que seja atualizado corretamente nas mudanças de status das inscrições
+- Corrige sincronização de inscrição no botão do resumo de inscrições
 
 ## [7.4.11] - 2024-07-10
 ### Melhorias
