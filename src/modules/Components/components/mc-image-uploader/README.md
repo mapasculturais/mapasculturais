@@ -1,6 +1,10 @@
 # Componente `<mc-image-uploader>`
 O componente `mc-image-uploader` é utilizado para carregar e recortar imagens, permitindo o upload para uma entidade específica.
 
+### Eventos
+- **cropped** :Emitido quando a imagem é recortada. O payload é o próprio componente.
+- **uploaded** :Emitido quando o upload da imagem é concluído com sucesso. O payload é o próprio componente.
+
 ## Propriedades
 - *Entity **entity*** (obrigatório): Entidade à qual a imagem será associada.
 - *Group **string*** (obrigatório): Grupo de arquivos ao qual a imagem pertence.
