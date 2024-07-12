@@ -17,6 +17,7 @@ $this->import('
     mc-select
     mc-status
     mc-tag-list
+    registration-editable-fields
     v1-embed-tool
 ');
 
@@ -40,7 +41,7 @@ $entity = $this->controller->requestedEntity;
             <?php $this->applyTemplateHook('registration-list-actions', 'after', ['entity' => $entity]); ?>
         </template>
         <div class="col-12"> 
-            <entity-table controller="opportunity" endpoint="findRegistrations" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort" :hide-actions='hideActions' :hide-header="hideHeader">
+            <entity-table controller="opportunity" endpoint="findRegistrations" :identifier="identifier" type="registration" :query="query" :limit="100" :sort-options="sortOptions" :order="order" :select="select" :headers="headers" phase:="phase" required="number,options" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" show-index :hide-filters="hideFilters" :hide-sort="hideSort" :hide-actions='hideActions' :hide-header="hideHeader">
                 <template #title>
                     <slot name="title"></slot>
                 </template>
@@ -126,6 +127,28 @@ $entity = $this->controller->requestedEntity;
                 <template #eligible="{entity}">
                     <span v-if="entity.eligible"><?= i::__('Sim') ?></span>
                     <span v-else> &nbsp; </span>
+                </template>
+
+                <template #editable={entity}>
+                    <registration-editable-fields :registration="entity">
+                        <template #default="{modal}">
+                            <button @click="modal.open()" v-if="!statusEditRegistration(entity)" class="button button--icon button--sm button--text opportunity-registration-table__edit">
+                                <mc-icon name="edit"></mc-icon> <?= i::__('Abrir para edição') ?>
+                            </button>
+
+                            <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'open'" class="button button--icon button--sm button--text opportunity-registration-table__edit-open">
+                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}}
+                            </button>
+
+                            <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'sent'" class="button button--icon button--sm button--text opportunity-registration-table__edit-sent">
+                                <mc-icon name="circle-checked"></mc-icon> {{entity.editSentTimestamp.date('2-digit year')}}
+                            </button>
+
+                            <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'missed'" class="button button--icon button--sm button--text opportunity-registration-table__edit-missed">
+                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}}
+                            </button>
+                        </template>
+                    </registration-editable-fields>
                 </template>
 
             </entity-table>

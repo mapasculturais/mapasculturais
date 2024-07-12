@@ -3,6 +3,7 @@ namespace MapasCulturais\Entities;
 
 use MapasCulturais\App;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\GuestUser;
 use MapasCulturais\JobTypes\ReopenEvaluations;
 
 /**
@@ -29,16 +30,23 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     protected $owner;
     
     function delete($flush = false) {
+        $app = App::i();
+        
+        $this->checkPermission('remove');
+
         $evaluations = \MapasCulturais\App::i()->repo('RegistrationEvaluation')->findByOpportunityAndUser($this->owner->opportunity, $this->agent->user);
+        $app->disableAccessControl();    
         foreach($evaluations as $eval){
             $eval->delete($flush);
         }
+        $app->enableAccessControl();
+
         $this->owner->opportunity->enqueueToPCacheRecreation();
         parent::delete($flush);
     }
     
     function reopen($flush = true){
-        $this->owner->opportunity->checkPermission('reopenValuerEvaluations');
+        $this->owner->checkPermission('manageEvaluationCommittee');
 
         $app = App::i();
 
@@ -52,26 +60,38 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     }
 
     function disable($flush = true){
-        $this->owner->opportunity->checkPermission('@control');
+        $this->owner->checkPermission('manageEvaluationCommittee');
 
         $app = App::i();
 
         $app->applyHookBoundTo($this,"{$this->hookPrefix}.disable:before");
-        $this->status = self::STATUS_DISABLED;
 
+        $app->disableAccessControl();
+        $this->status = self::STATUS_DISABLED;
+        eval(\psy\sh());
         $this->save($flush);
+        $app->enableAccessControl();
+
         $app->applyHookBoundTo($this,"{$this->hookPrefix}.disable:after");
     }
 
     function enable($flush = true){
-        $this->owner->opportunity->checkPermission('@control');
+        $this->owner->checkPermission('manageEvaluationCommittee');
 
         $app = App::i();
 
         $app->applyHookBoundTo($this,"{$this->hookPrefix}.enable:before");
-        $this->status = self::STATUS_ENABLED;
 
+        $app->disableAccessControl();
+        $this->status = self::STATUS_ENABLED;
         $this->save($flush);
+        $app->enableAccessControl();
+        
         $app->applyHookBoundTo($this,"{$this->hookPrefix}.enable:after");
+    }
+
+    protected function canUserRemove($user): bool
+    {
+        return $this->owner->canUser('manageEvaluationCommittee', $user);
     }
 }

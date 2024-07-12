@@ -58,9 +58,14 @@ $this->breadcrumb = $breadcrumb;
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
-    <h1 class="registration__title">
-        <?= i::__('Formulário de inscrição') ?>
-    </h1>
+    <div class="registration__title">
+        <h1>
+            <?= i::__('Formulário de inscrição') ?>
+        </h1>
+        <h3>
+            <?= $opportunity->name ?>
+        </h3>
+    </div>
 
     <div class="registration__content">
         <div class="registration__steps">

@@ -76,7 +76,7 @@ app.component('opportunity-evaluations-list', {
                         evaluationId: item.evaluation?.id,
                         registrationNumber: item.registration.number,
                         registrationId: item.registration.id,
-                        registrationSentTimestamp: new McDate(item.registration.sentTimestamp.date),
+                        registrationSentTimestamp: item.registration.sentTimestamp ? new McDate(item.registration.sentTimestamp.date) : null,
                         agentname: item.registration.owner?.name,
                         status: item?.evaluation?.status,
                         resultString: item?.evaluation?.resultString || null,
@@ -104,7 +104,7 @@ app.component('opportunity-evaluations-list', {
 
             var index = null;
             this.evaluations.forEach((obj, i) => {
-                if (obj.registrationid === data.detail.registrationId) {
+                if (obj.registrationId === data.detail.registrationId) {
                     index = data.type === "nextEvaluation" ? i + 1 : i - 1;
                 }
             });
