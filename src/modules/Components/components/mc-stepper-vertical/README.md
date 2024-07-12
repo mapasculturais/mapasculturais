@@ -1,7 +1,5 @@
 # Componente `<mc-stepper-vertical>`
 O componente `mc-stepper-vertical` é utilizado para exibir uma barra de navegação vertical, onde cada item pode ser expandido ou contraído. É ideal para mostrar processos ou fluxos de trabalho que possuem múltiplas etapas.
-
-### Eventos
   
 ## Propriedades
 - *Array **items*** - Lista de itens
