@@ -42,12 +42,10 @@ class Entities extends SpreadsheetJob
         $properties = explode(',', $query['@select']);
 
         foreach($properties as $property) {
-            if($entity_class_name == Opportunity::class) {
-                if($property == 'terms') {
-                    $header['area'] = i::__('Area de interesse');
-                    $header['tag'] = i::__('Tags');
-                    continue;
-                }
+            if($property == 'terms') {
+                $header['area'] = i::__('Área de interesse');
+                $header['tag'] = i::__('Tags');
+                continue;
             }
 
             $header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
@@ -67,18 +65,16 @@ class Entities extends SpreadsheetJob
         $result = $query->getFindResult();
 
         foreach($result as &$entity) {
-            if($entity['@entityType'] == 'opportunity') {
-                $entity['type'] = $entity['type']->name;
-                $entity['area'] = implode(', ', $entity['terms']['area']);
-                $entity['tag'] = implode(', ', $entity['terms']['tag']);
-                $sealNames = array_map(function($seal) {
-                    return $seal['name'];
-                }, $entity['seals']);
-                $entity['seals'] = implode(', ', $sealNames);
+            $terms = $entity['terms'] ?? null;
+            $entity['type'] = $entity['type']->name;
+            $entity['area'] = $terms ? implode(', ', $entity['terms']['area']) : null;
+            $entity['tag'] = $terms ? implode(', ', $entity['terms']['tag']) : null;
+            $sealNames = array_map(function($seal) {
+                return $seal['name'];
+            }, $entity['seals']);
+            $entity['seals'] = implode(', ', $sealNames);
 
-                unset($entity['terms']);
-            }
-            
+            unset($entity['terms']);
             unset($entity['@entityType']);
         }
         
