@@ -67,11 +67,14 @@ class Controller extends \MapasCulturais\Controller
 
         $query = $this->data['query'];
 
-        unset($query['@select']);
         unset($query['@limit']);
         unset($query['@page']);
-        $query['@select'] = $this->data['@select'];
-                
+        
+        if($select = $this->data['@select']) {
+            unset($query['@select']);
+            $query['@select'] = $select;
+        }
+              
         $app->enqueueOrReplaceJob('entities-spreadsheets', [
             'owner' => $owner,
             'authenticatedUser' => $app->user,
