@@ -61,7 +61,7 @@ $this->import('
         <template v-if="entity.__objectType == 'project'">
             <span v-if="entity.status == 0">
                 <strong><?= i::__('Este projeto está em rascunho.'); ?></strong>
-                <?= i::__('Você Você precisa <strong>publicar</strong> para exibir para todas as pessoas.') ?>
+                <?= i::__('Você precisa <strong>publicar</strong> para exibir para todas as pessoas.') ?>
             </span>
             <span v-if="entity.status == -10">
                 <strong><?= i::__('Este projeto está na lixeira.'); ?></strong>
@@ -75,15 +75,15 @@ $this->import('
 
         <template v-if="entity.__objectType == 'opportunity'">
             <span v-if="entity.status == 0">
-                <strong><?= i::__('Este oportunidade está em rascunho.'); ?></strong>
-                <?= i::__('Você Você precisa <strong>publicar</strong> para exibir para todas as pessoas.') ?>
+                <strong><?= i::__('Esta oportunidade está em rascunho.'); ?></strong>
+                <?= i::__('Você precisa <strong>publicar</strong> para exibir para todas as pessoas.') ?>
             </span>
             <span v-if="entity.status == -10">
-                <strong><?= i::__('Este oportunidade está na lixeira.'); ?></strong>
+                <strong><?= i::__('Esta oportunidade está na lixeira.'); ?></strong>
                 <?= i::__('Você pode <strong>recuperar</strong> ou <strong>excluir em definitivo</strong>') ?>
             </span>
             <span v-if="entity.status == -2">
-            <strong><?= i::__('Este oportunidade está arquivada.'); ?></strong>
+            <strong><?= i::__('Esta oportunidade está arquivada.'); ?></strong>
                 <?= i::__('Você pode <strong>publicar</strong> novamente para desarquivá-la.') ?>
             </span>
         </template>
