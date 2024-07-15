@@ -48,6 +48,10 @@ class Entities extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'files.avatar') {
+                continue;
+            }
+
             $header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
         }
         
@@ -66,7 +70,7 @@ class Entities extends SpreadsheetJob
 
         foreach($result as &$entity) {
             $terms = $entity['terms'] ?? null;
-            
+
             $entity['type'] = $entity['type']->name;
             $entity['area'] = isset($terms['area']) ? implode(', ', $terms['area']) : null;
             $entity['tag'] = isset($terms['tag']) ? implode(', ', $terms['tag']) : null;
