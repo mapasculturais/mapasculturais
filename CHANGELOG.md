@@ -16,6 +16,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige sincronização de inscrição no botão do resumo de inscrições
 - Faz o enfileiramento do job UpdateSummaryCaches no endpoint syncRegistrations para que atualize tambem o resumo de inscrições
 
+### Melhorias
+- Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
+
 ## [7.4.11] - 2024-07-10
 ### Melhorias
 - Permite que seja feita a distribuição de avaliações por faixas
