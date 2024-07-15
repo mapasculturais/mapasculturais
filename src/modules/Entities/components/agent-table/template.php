@@ -19,7 +19,7 @@ $this->import('
         <template #actions="{entities}">
             <div class="agent-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
-                <mc-export-spreadsheet :owner="owner" endpoint="entities" :params="{entityType: 'agent', ...query}" group="entities-spreadsheets"></mc-export-spreadsheet>
+                <mc-export-spreadsheet :owner="owner" endpoint="entities" :params="{entityType: 'agent', query}" group="entities-spreadsheets"></mc-export-spreadsheet>
             </div>
         </template>
 
