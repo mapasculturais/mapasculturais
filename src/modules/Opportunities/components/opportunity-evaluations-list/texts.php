@@ -3,7 +3,7 @@ use MapasCulturais\i;
 
 return [
     'Informe a palavra chave' => i::__('Informe a palavra chave'),
-    'select' => i::__('Todas'),
+    'all' => i::__('Todas'),
     'pending' => i::__('Avaliações pendente'),
     'started' => i::__('Avaliações iniciadas'),
     'completed' => i::__('Avaliações concluídas'),
