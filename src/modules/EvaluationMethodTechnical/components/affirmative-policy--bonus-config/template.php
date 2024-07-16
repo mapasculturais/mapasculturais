@@ -24,7 +24,7 @@ $this->import('
                     <?= i::__('Percentual total de indução:') ?>
                 </label>
                 <span>
-                    <input type="number" v-model="entity.pointRewardRoof" @change="autoSave()" min="0" max="100" /> %
+                    <input type="number" v-model="entity.pointRewardRoof" @change="autoSave(true)" min="0" max="100" /> %
                 </span>
             </div>
         </div>
@@ -55,7 +55,7 @@ $this->import('
                 <div v-if="getFieldType(quota) === 'checkboxes'" class="field">
                     <div class="field field--horizontal">
                         <label v-for="option in getFieldOptions(quota)">
-                            <input type="checkbox" :value="option" :true-value="[]" v-model="quota.eligibleValues" @change="autoSave()" />
+                            <input type="checkbox" :value="option" :true-value="[]" v-model="quota.eligibleValues" />
                             <span>{{option}}</span>
                         </label>
                     </div>
@@ -64,11 +64,11 @@ $this->import('
                     <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
                         <label>
 
-                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.value" @change="autoSave()">
+                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="quota.value">
                             <?= i::__('Sim / Marcado') ?>
                         </label>
                         <label>
-                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.value" @change="autoSave()">
+                            <input class="input" type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="quota.value">
                             <?= i::__('Não / Desmarcado') ?>
                         </label>
                     </div>
@@ -78,7 +78,7 @@ $this->import('
             <div class="affirmative-policy--bonus-config__column">
                 <label class="field"><?= i::__('Porcentagem') ?>
                     <div>
-                        <input type="number" v-model="quota.fieldPercent" @change="autoSave()" min="0" max="100"> %
+                        <input type="number" v-model="quota.fieldPercent" min="0" max="100"> %
                     </div>
                 </label>
             </div>

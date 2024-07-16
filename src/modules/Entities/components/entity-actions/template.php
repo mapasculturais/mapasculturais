@@ -60,7 +60,7 @@ $this->import('
                         <?php i::_e('Deseja sair?') ?>
                     </template>
                 </mc-confirm-button>
-                <button v-if="entity.currentUserPermissions?.modify" @click="entity.save()" class="button button--md publish publish-exit">
+                <button v-if="entity.currentUserPermissions?.modify" @click="save()" class="button button--md publish publish-exit">
                     <?php i::_e("Salvar") ?>
                 </button>
                 <mc-confirm-button v-if="entity.status == 0 || entity.status == -2 && entity.currentUserPermissions?.publish" @confirm="entity.publish()">

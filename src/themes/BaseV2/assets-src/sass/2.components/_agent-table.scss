@@ -1,0 +1,33 @@
+@use '../0.settings/mixins' as *;
+
+.agent-table {
+    &__multiselects {
+        display: flex;
+        gap: size(24);
+        flex-wrap: wrap;
+    }
+
+    &__inputs {
+        .verified {
+            display: flex;
+            align-items: center;
+            gap: size(4);
+
+            .iconify {
+                color: var(--mc-success-500);
+            }
+        }
+
+        .field {
+            &--horizontal {
+                display: flex;
+                gap: size(10);
+            }
+        }
+    }
+
+    &__actions {
+        display: grid;
+        gap: size(12);
+    }
+}

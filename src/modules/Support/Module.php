@@ -96,7 +96,8 @@ class Module extends \MapasCulturais\Module
             if(!$this->canUser("@control") && $self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
-                        if( $relation->metadata && $userAllowedFields = $relation->metadata['registrationPermissions']) {
+                        if( $relation->metadata) {
+                            $userAllowedFields = $relation->metadata['registrationPermissions'];
                             foreach($result as $key => $field){
                                 $field = "field_".$field->id;
                                 if(!isset($userAllowedFields[$field])){
@@ -116,7 +117,7 @@ class Module extends \MapasCulturais\Module
             if(!$this->canUser("@control") && $self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
-                        if( $relation->metadata && $userAllowedFields = $relation->metadata['registrationPermissions']) {
+                        if( $relation->metadata) {
                             $userAllowedFields = $relation->metadata['registrationPermissions'];
                             foreach($result as $key => $field){
                                 $field = $field->getFileGroupName();
@@ -151,19 +152,23 @@ class Module extends \MapasCulturais\Module
             return;
         });
         $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) use ($self) {
+            
             if (!$this->owner->canUser("@control")) {
                 if ($self->grantedCoarse) {
                     $result = false;
                 }
-                $key = $this->group ?? $this->key;
-                foreach ($this->owner->opportunity->agentRelations as $relation) {
-                    if ((($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)) &&
-                        (($relation->metadata["registrationPermissions"][$key] ?? "") == "rw")) {
-                            $result = true;
-                            return;
-                        }
-                }
+
             }
+
+            $key = $this->group ?? $this->key;
+            foreach ($this->owner->opportunity->agentRelations as $relation) {
+                if ((($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)) &&
+                    (($relation->metadata["registrationPermissions"][$key] ?? "") == "rw")) {
+                        $result = true;
+                        return;
+                    }
+            }
+        
             return;
         });
         $app->hook("entity(Registration).permissionCacheUsers", function (&$users) {

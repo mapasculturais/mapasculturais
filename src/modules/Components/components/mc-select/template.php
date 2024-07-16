@@ -18,8 +18,8 @@ $this->import('
 
         <template #popper ref="popperr">
             <div class="mc-select__dropdown">
-                <div class="mc-select__filter" ref="filter">
-                    <input v-if="!hideFilter" class="mc-select__filter-input" v-model="filter" type="text" placeholder="<?= i::esc_attr__('Filtro') ?>" @input="filterOptions()" />
+                <div v-if="showFilter" class="mc-select__filter" ref="filter">
+                    <input class="mc-select__filter-input" v-model="filter" type="text" placeholder="<?= i::esc_attr__('Filtro') ?>" @input="filterOptions()" />
                     <span class="mc-select__close" @click="closeSelect()">
                         <mc-icon name="close"></mc-icon>
                     </span>

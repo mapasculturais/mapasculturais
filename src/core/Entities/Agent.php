@@ -49,6 +49,7 @@ class Agent extends \MapasCulturais\Entity
         Traits\EntityArchive,
         Traits\EntityOriginSubsite,
         Traits\EntityOpportunities,
+        Traits\EntityLock,
         Traits\EntityNested {
             Traits\EntityNested::setParent as nestedSetParent;
         }

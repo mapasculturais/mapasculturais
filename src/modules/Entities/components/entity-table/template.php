@@ -21,7 +21,7 @@ $this->import('
 ?>
 <div class="entity-table">
     
-    <mc-entities :select="select" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" @fetch="resize()" watch-query>
+    <mc-entities :select="select" :raw-processor="rawProcessor" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" @fetch="resize()" watch-query>
 
         <template #header="{entities, filters}">
             <div v-if="!hideHeader" class="entity-table__header">
@@ -58,7 +58,7 @@ $this->import('
                         </div>
                     </template>
 
-                    <template #content>
+                    <template v-if="advancedFilters.length > 0 || hasSlot('advanced-filters')"  #content>
                         <div class="entity-table__advanced-filters custom-scrollbar">
                             <slot name="advanced-filters" :entities="entities" :filters="filters">
 

@@ -1543,6 +1543,17 @@ table {
     display: none;
 }
 
+.action-registrationformpreview .attachment {
+    display: grid;
+    gap: 5px;
+}
+
+.action-registrationformpreview .attachment label {
+    font-weight: 600;
+    font-size: 13px;
+    color: #333333;
+}
+
 .action-registrationformpreview .btn {
     width: min-content;
     padding: 11px 12px;
@@ -1661,4 +1672,5 @@ table {
 .action-registrationformpreview #registration-attachments ul.attachment-list li.attachment-list-item {
     background-color: #FFFFFF;
     padding: 16px;
+    margin-bottom: 20px;
 }
