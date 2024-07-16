@@ -41,12 +41,13 @@ app.component('opportunity-evaluations-list', {
             loading: false,
             onlyMe: true,
             filtersOptions: [
+                {label: this.text('all'), value: 'all'},
                 {label: this.text('pending'), value: 'pending'},
                 {label: this.text('started'), value: '0'},
                 {label: this.text('completed'), value: 1},
                 {label: this.text('sent'), value: 2},
             ],
-            filterStatus: $MAPAS.config.opportunityEvaluationsList.evaluationStatusFilterCache || 'pending'
+            filterStatus: $MAPAS.config.opportunityEvaluationsList?.evaluationStatusFilterCache || 'all'
         }
     },
     watch: {
