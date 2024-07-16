@@ -16,6 +16,13 @@ app.component('opportunity-form-builder' , {
           descriptionsOpportunity: null
       }
     },
+
+    created() {
+        this.entity.useAgentRelationColetivo = this.entity.useAgentRelationColetivo ?? 'dontUse';
+        this.entity.useAgentRelationInstituicao = this.entity.useAgentRelationInstituicao ?? 'dontUse';
+        this.entity.useSpaceRelationIntituicao = this.entity.useSpaceRelationIntituicao ?? 'dontUse';
+    },
+
     mounted () {
         this.descriptionsOpportunity = $DESCRIPTIONS.opportunity;
     }

@@ -23,6 +23,7 @@ class Agent extends EntityController {
         Traits\ControllerArchive,
         Traits\ControllerAPI,
         Traits\ControllerAPINested,
+        Traits\ControllerLock,
         Traits\ControllerOpportunities;
 
     /**

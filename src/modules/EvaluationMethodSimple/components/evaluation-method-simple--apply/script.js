@@ -29,9 +29,6 @@ app.component('evaluation-method-simple--apply', {
     },
 
     computed: {
-        modalTitle() {
-            return this.text('modalTitle');
-        },
         statusList() {
             return $MAPAS.config['evaluation-method-simple--apply'].statusList;
         },

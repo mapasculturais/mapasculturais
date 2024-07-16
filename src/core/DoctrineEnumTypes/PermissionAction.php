@@ -32,6 +32,7 @@ class PermissionAction extends DoctrineEnumType
             'evaluate' => 'evaluate',
             'evaluateOnTime' => 'evaluateOnTime',
             'evaluateRegistrations' => 'evaluateRegistrations',
+            'manageEvaluationCommittee' => 'manageEvaluationCommittee',
             'modify' => 'modify',
             'modifyRegistrationFields' => 'modifyRegistrationFields',
             'modifyValuers' => 'modifyValuers',
@@ -45,7 +46,7 @@ class PermissionAction extends DoctrineEnumType
             'removeAgentRelationWithControl' => 'removeAgentRelationWithControl',
             'removeSealRelation' => 'removeSealRelation',
             'removeSpaceRelation' => 'removeSpaceRelation',
-            'reopenValuerEvaluations' => 'reopenValuerEvaluations',
+            'reopenValuerEvaluations' => 'reopenValuerEvaluations',  //deprecated
             'requestEventRelation' => 'requestEventRelation',
             'send' => 'send',
             'sendUserEvaluations' => 'sendUserEvaluations',
@@ -59,6 +60,7 @@ class PermissionAction extends DoctrineEnumType
             'viewPrivateFiles' => 'viewPrivateFiles',
             'viewRegistrations' => 'viewRegistrations',
             'viewUserEvaluation' => 'viewUserEvaluation',
+            'modifyReadonlyData' => 'modifyReadonlyData'
         ];
     }
 }

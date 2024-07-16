@@ -1,0 +1,44 @@
+@use '../0.settings/mixins' as *;
+
+.logo-customizer {
+    border: var(--mc-border-hairline);
+    border-radius: var(--mc-border-radius-sm);
+    padding: size(10) size(25) size(25);
+
+    &__legend {
+        padding: 0 size(10);
+    }
+
+    &__content {
+        align-items: center;    
+        display: grid;
+        gap: size(40);
+        justify-items: start;
+        padding: size(10) 0;
+    }
+
+    &__color-inputs {
+        align-items: center;
+        display: flex;
+
+        & > * {
+            align-items: center;
+        }
+    }
+
+    &__preview {        
+        display: flex;
+        justify-content: center;
+        width: 100%;
+
+        .theme-logo {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            &__logo {
+                margin: 0;
+            }
+        }
+    }
+}

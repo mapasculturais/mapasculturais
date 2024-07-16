@@ -79,6 +79,9 @@
         .mc-select {
             max-width: size(870);
         }
+        .field--horizontal {
+            flex-wrap: wrap;
+        }
     }
 
     &__quota-field-sufix {

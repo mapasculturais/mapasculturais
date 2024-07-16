@@ -810,6 +810,14 @@ abstract class Entity implements \JsonSerializable{
 
         $hook_prefix = $this->getHookPrefix();
 
+        if($this->usesLock() && $this->isLocked()) {
+            $lock_info = $this->isLocked();
+
+            if($lock_info['userId'] != $app->user->id) {
+                throw new Exceptions\PermissionDenied($app->user);
+            }
+        }
+
         try {
             $app->applyHookBoundTo($this, "{$hook_prefix}.save:requests", [&$requests]);
             $app->applyHookBoundTo($this, "entity({$this}).save:requests", [&$requests]);

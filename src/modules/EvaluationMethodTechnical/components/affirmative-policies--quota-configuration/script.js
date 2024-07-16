@@ -16,6 +16,11 @@ app.component('affirmative-policies--quota-configuration', {
         return { text, messages }
     },
 
+    updated () {
+        this.autoSave();
+        this.autoSaveTime = 3000;
+    },
+
     mounted() {
         if(this.phase.quotaConfiguration && this.phase.quotaConfiguration.rules.length > 0) {
             if(this.totalVacancies > 0) {
@@ -33,6 +38,7 @@ app.component('affirmative-policies--quota-configuration', {
         const proponentTypes = firstPhase.registrationProponentTypes.length ? firstPhase.registrationProponentTypes : ["default"];
 
         return {
+            autoSaveTime: 3000,
             firstPhase,
             proponentTypes,
             totalVacancies: firstPhase.vacancies ?? 0,
@@ -105,6 +111,7 @@ app.component('affirmative-policies--quota-configuration', {
         },
 
         removeField(ruleIndex, fieldIndex) {
+            this.autoSaveTime = 200;
             this.phase.quotaConfiguration.rules[ruleIndex].fields = this.phase.quotaConfiguration.rules[ruleIndex].fields.filter(function(value, key) {
                 return fieldIndex != key;
             });
@@ -147,6 +154,10 @@ app.component('affirmative-policies--quota-configuration', {
                 if(!load) {
                     this.autoSave();
                 }
+
+                if(removeQuota) {
+                    this.autoSave(true);                    
+                }
             }
         },
 
@@ -160,9 +171,22 @@ app.component('affirmative-policies--quota-configuration', {
             return _option.length > 1 ? _option[1] : _option[0];
         },
 
-        autoSave() {
-            if (this.validateFields()) {
-                this.phase.save(3000);
+        autoSave(updated = false) {
+            const filled = Object.values(this.phase.quotaConfiguration.rules).filter(
+                quotaConfiguration => {
+                    return quotaConfiguration.title !== undefined 
+                        && quotaConfiguration.title 
+                        && quotaConfiguration.vacancies !== undefined
+                        && quotaConfiguration.vacancies > 0
+                        && quotaConfiguration.fields.some(field => 
+                            field.eligibleValues !== undefined && field.eligibleValues.length > 0
+                            && field.fieldName !== undefined && field.fieldName
+                        );
+                }
+            );
+            
+            if(filled.length || updated) {
+                this.phase.save(this.autoSaveTime)            
             }
         },
 
