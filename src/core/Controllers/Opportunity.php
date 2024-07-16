@@ -865,11 +865,14 @@ class Opportunity extends EntityController {
 
         if(isset($this->data['@filterStatus'])){
             $filter = $this->data['@filterStatus'];
-            if($filter === 'pending') {
-                $complement_where = "evaluation_id IS NULL AND ";
-            }else {
-                $complement_where = "evaluation_status = {$filter} AND ";
+            if($filter != 'all') {
+                if($filter === 'pending') {
+                    $complement_where = "evaluation_id IS NULL AND ";
+                }else {
+                    $complement_where = "evaluation_status = {$filter} AND ";
+                }
             }
+            
             $_SESSION[$cookie_key] = $filter;
         }
 
