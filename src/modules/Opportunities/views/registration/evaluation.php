@@ -53,7 +53,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
     <div class="registration__content">
         <div class="grid-12 registration__grid">
             <aside class="col-3">
-                <opportunity-evaluations-list text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity">
+                <opportunity-evaluations-list text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity" user-evaluator-id="<?=$userEvaluator->id?>">
                     <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
                 </opportunity-evaluations-list>
             </aside>
