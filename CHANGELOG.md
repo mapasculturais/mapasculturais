@@ -13,6 +13,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro que deixava a condicionalidade dos campos/anexos ativada ao editar, mesmo ele não estando condicionado a outro
 - Corrige erro na tabela de listagem de inscrições que impedia a listagem de todas as inscrições de oportunidades multifases
 - Corrige erro do entity-field que impedia as opções serem exibidas e salvas quando se usava campo do tipo radio
+- Corrige erro ao definir a latitude e longitude em campos do agente responsável que fazem sincronia com a inscrição (Campos @)
+- Corrige erro que não deixava a autorização de publicar a localização atravez do formulario de inscrição em campos @
+- Corrige o processo de limpeza do cache dos resumos de inscrições para que seja atualizado corretamente nas mudanças de status das inscrições
+- Corrige sincronização de inscrição no botão do resumo de inscrições
+- Faz o enfileiramento do job UpdateSummaryCaches no endpoint syncRegistrations para que atualize tambem o resumo de inscrições
+
+### Melhorias
+- Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
 
 ## [7.4.11] - 2024-07-10
 ### Melhorias
