@@ -297,7 +297,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 return $app->cache->fetch($cache_key);
             }
         }
-
+        $em = $this->evaluationMethod;
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;
         $data = [
@@ -336,26 +336,25 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         // status das avaliações
 
-        // Conta as inscrições avaliadas por consolidatedResult
+        // Conta as inscrições avaliadas por consolidated_result
         $query = $app->em->createQuery("
             SELECT 
-                r.consolidatedResult, 
+                r.consolidated_result, 
                 count(r) as qtd 
             FROM 
                 MapasCulturais\\Entities\\Registration r  
             WHERE 
                 r.opportunity = :opp AND r.status > 0
-            GROUP BY r.consolidatedResult
+            GROUP BY r.consolidated_result
         ");
 
         $query->setParameters([
             "opp" => $opportunity,
         ]);
         
-        $em = $this->evaluationMethod;
         if($result = $query->getResult()){
             foreach($result as $values){
-                $status = $em->valueToString($values['consolidatedResult']);
+                $status = $em->valueToString($values['consolidated_result']);
                 if($status) {
                     $data['evaluations'][$status] = $values['qtd'];
                 } else {
@@ -445,6 +444,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         return parent::canUserRemove($user);
+    }    
+    
+    protected function canUserManageEvaluationCommittee($user){
+        if(!$this->canUser('@controll', $user)){
+            return false;
+        }
+
+        return true;
     }
 
     protected function canUser_control($user) {

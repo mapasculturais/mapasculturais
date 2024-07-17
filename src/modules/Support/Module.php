@@ -151,19 +151,23 @@ class Module extends \MapasCulturais\Module
             return;
         });
         $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) use ($self) {
+            
             if (!$this->owner->canUser("@control")) {
                 if ($self->grantedCoarse) {
                     $result = false;
                 }
-                $key = $this->group ?? $this->key;
-                foreach ($this->owner->opportunity->agentRelations as $relation) {
-                    if ((($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)) &&
-                        (($relation->metadata["registrationPermissions"][$key] ?? "") == "rw")) {
-                            $result = true;
-                            return;
-                        }
-                }
+
             }
+
+            $key = $this->group ?? $this->key;
+            foreach ($this->owner->opportunity->agentRelations as $relation) {
+                if ((($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)) &&
+                    (($relation->metadata["registrationPermissions"][$key] ?? "") == "rw")) {
+                        $result = true;
+                        return;
+                    }
+            }
+        
             return;
         });
         $app->hook("entity(Registration).permissionCacheUsers", function (&$users) {

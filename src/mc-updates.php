@@ -1,10 +1,11 @@
 <?php
 
+use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Utils;
+use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
-use MapasCulturais\i;
-use MapasCulturais\Utils;
 
 return [
     'recreate pcache' => function () {
@@ -436,6 +437,22 @@ return [
             } else {
                 $opportunity->enqueueRegistrationSync();
             }
+        });
+    },
+    'Atualiza campo pessoa idosa' => function() {
+        DB_UPDATE::enqueue(Agent::class, "id > 0", function (Agent $agent) {
+            $app = \MapasCulturais\App::i();
+            $app->disableAccessControl();
+            if ($agent->dataDeNascimento) {
+                $today = new \DateTime('now');
+                $calc = (new \DateTime($agent->dataDeNascimento))->diff($today);
+                $idoso = ($calc->y >= 60) ? "1" : "0";
+                if($agent->idoso != $idoso){
+                    $agent->idoso = $idoso;
+                    $agent->save(true);
+                }
+            } 
+            $app->enableAccessControl();
         });
     }
 ];

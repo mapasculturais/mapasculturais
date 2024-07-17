@@ -48,6 +48,21 @@ class Module extends \MapasCulturais\Module
             $module->entities = [];
         });
 
+        $app->hook("entity(Registration).validationErrors", function(&$errors) use($module, $app) {
+            /** @var Registration $this */
+
+            $fields = $this->opportunity->registrationFieldConfigurations;
+            foreach($errors as $field_name => $error) {
+                foreach($fields as $field) {
+                    if($field->fieldName == $field_name) {
+                        if(!$this->isFieldVisisble($field)) {
+                            unset($errors[$field_name]);
+                        }
+                    }
+                }
+            }
+        });
+
         $app->hook("entity(Registration).save:before", function() use($module, $app) {
             /** @var Registration $this */
             $fix_field = function($entity, $field) use($module){
