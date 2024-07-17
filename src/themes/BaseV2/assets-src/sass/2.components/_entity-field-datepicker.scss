@@ -1,0 +1,11 @@
+@use '../0.settings/mixins' as *;
+
+.entity-field-datepicker {
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+
+    .date-input, .time-input {
+        padding-left: size(40);
+    }
+}
