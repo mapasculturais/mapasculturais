@@ -5,6 +5,95 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.11] - 2024-07-10
+### Melhorias
+- Permite que seja feita a distribuição de avaliações por faixas
+- Permite que seja feita a distribuição de avaliações por tipo de proponente
+
+### Correções
+- Permite que administradores de oportunidades que não sejam admin convidem avaliadores
+- Corrige permissões para gestores de oportunidades que não sejam administradores do sistema remover, habilitar e desabilitar avaliadores
+- Exibe o status de pendente para avaliadores que ainda não aceitaram ser avaliadores de uma oportunidade
+
+## [7.4.10] - 2024-07-08
+## Correções
+- Corrige reatividade do componente mc-select
+- Corrige exibição da categoria, tipo de proponente e faixa/linha para os avaliadores, deixando sempre visível
+- Corrige ordem dos campos na lista de seleção dos campos visíveis para os avaliadores
+- Corrige exibição de campo selecionado do componente de seleção quando há grupos de valores
+- Evita que a página de avaliação quebre no caso de haver uma inscrição sem data de envio
+- Permite que avaliadores avaliem inscrições mesmo com a fase publicada. O que importa é são as datas de avaliação.
+- Corrige obtenção de metadados para inscrições da última fase que não foram selecionadas em todas as fases anteriores
+
+## Melhorias
+- Melhora o texto da modal de confirmação de avaliador explicando que todas as avaliações serão excluídas permanentemente.
+
+## [7.4.9] - 2024-07-03
+### Correções
+- Corrige salvamento e tratamento dos links das redes sociais
+- Correções e padronização nos estilos das modais
+- Corrige exibição de campo numérico com valor zero em fases
+- Corrige edição, por usuários de suporte, de campos opcionais não preenchidos em inscrições
+
+### Melhorias
+ - Adiciona a rede social tiktok
+
+## [7.4.8] - 2024-06-26
+### Correções
+- Corrige exibição da categoria na planilha de lista de inscrições
+- Corrige exibição do botão de preencher formulário na aba de ficha de inscrição
+- Corrige quebra em consultas da API quando passado o nome da classe com uma barra inicial
+- Corrige formulário de configuração de campo do formulário que quebrava em algumas situações
+
+### Melhorias
+- Adiciona novas colunas na planilha de lista inscrições: Tipo de proponente e Faixa/Linha
+- Adiciona nome da fase de coleta de dados na página de preenchimento do formulário de inscrição
+
+## [7.4.7] - 2024-06-24
+### Correções
+- correção no db-update que corrige os valores das colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades
+- Corrige erro que impede os botões de ações das avaliações serem exibidos para o avaliador
+- Corrige exibição condicional de campos de faixas e tipos de proponente
+
+### Melhorias não funcionais
+- Implementa método para recriar o ponteiro das inscrições entre fases
+- Implementa endpoint para recriar o ponteiro das inscrições entre fases
+
+## [7.4.6] - 2024-06-21
+### Melhorias
+- Possibilita que o proponente selecione faixa, tipo de proponente e categoria após criar a inscrição quando esses forem configurados na oportunidade posteriormente a criação da inscrição
+- Impede a remoção de faixas, categorias e tipos de proponentes que estejam sendo utilzadas em condicionais de campos ou inscrições
+- Implementa db-update para padronizar as de tipo de proponente, faixas e categorias das oportunidades quando estão vazias
+- Ajusta para evitar que dados vazios sejam inseridos nas configurações de cotas e pol´titicas afirmatívas
+
+### Correções
+- Melhora processamento do resumo de avaliações
+- Só exibe categoria, tipo de proponente e faixa na singe da inscrição quando há essa informação
+- Garante que o resumo das avaliações seja montado somente se existir avaliações mapeadas
+- Corrige modal de aplicar avaliações técnicas
+
+## [7.4.5] - 2024-06-17
+### Melhorias
+- Melhora exibição do header da tabela de publicação de resultados
+- Botão para recriar caches de permissão das entidades na página de gestão de usuários
+
+### Correções
+- Corrige erro no carregamento da single de projetos
+- Ajusta exibição dos campos do tipo checkebox do formulário
+- Corrige endpoit apiFindRegistrations para que um usuario comum posso ver as inscrições na fase de publicação de resultado
+- Corrige formulário de inscriçào em casos onde foi configurado tipo de proponente ou faixa após envio de inscrições
+- Ajusta distribução de avaliações através dos finais das inscrições para que seja possível usar mais caracteres
+- Evita que seja possível selecionar sub-agentes como administradores de entidades
+- Corrige atualização do campo pessoa idosa
+- Ordena os termos das entidades em ordem alfabética
+- Só exibe categoria, tipo de proponente e faixa quando há essa informação na inscrição
+- Validação da área de interesse das fases de coleta de dados
+- Serialização de roles do usuário logado as vezes quebrando a página de gestão de usuários
+- Implementa mc-update para garantir/corrigir que o campo de pessoa idosa corresponda com a data de nascimento fornecida no cadastro do agente
+- Ajusta importação e exportação do formulário para garantir que as faixas e tipos de proponentes sejam enviados
+- Corrige validação de erros dos metadados de inscrições
+- Corrige validação de erros para campos não visíveis
+
 ## [7.4.4] 2024-06-12
 ### Correções
 - Corrige lista de inscrições da publicação de resultado final

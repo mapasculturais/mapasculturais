@@ -492,7 +492,7 @@ class Opportunity extends EntityController {
 
             $current_phase_query_params['@select'] = implode(',', $current_phase_query_select);
 
-            if($phase->isLastPhase && $phase->publishedRegistrations) {
+            if($phase->isLastPhase && $phase->publishedRegistrations && !$phase->canUser('@control')) {
                 $app->hook('ApiQuery(Registration).parseQueryParams', function() use ($current_phase_query_params) {
                     if($this->apiParams['opportunity'] == $current_phase_query_params['opportunity']) {
                         $this->joins = "";
@@ -1059,7 +1059,9 @@ class Opportunity extends EntityController {
             'introInscricoes',
             'useSpaceRelationIntituicao',
             'registrationSeals',
-            'registrationLimit'
+            'registrationLimit',
+            'registrationRanges',
+            'registrationProponentTypes',
         );
 
         $metadata = [];
@@ -1261,7 +1263,11 @@ class Opportunity extends EntityController {
 
         $opportunity = $this->repository->find($this->data['opportunityId']);
 
-        $opportunity->checkPermission('reopenValuerEvaluations');
+        if(!$opportunity ||!$opportunity->evaluationMethodConfiguration) {
+            $app->pass();
+        }
+
+        $opportunity->evaluationMethodConfiguration->checkPermission('manageEvaluationCommittee');
         
         $user = $app->repo("User")->find($this->data['uid']);
 
@@ -1290,4 +1296,19 @@ class Opportunity extends EntityController {
         }
         $this->json($opportunity);
     }
+
+    /**
+     * Recria ponteiros entre fases das inscrições
+     * @return void 
+     */
+    public function ALL_fixNextPhaseRegistrationIds():void
+    {
+        $this->requireAuthentication();
+
+        $opportunity = $this->requestedEntity;
+
+        $opportunity->fixNextPhaseRegistrationIds();
+
+    }
+    
 }

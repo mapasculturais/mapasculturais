@@ -40,8 +40,8 @@ $this->import('
         </div>
 
         <div class="opportunity-data-collection__preponent col-12" v-if="phase.isFirstPhase">
-            <h4 class="bold"><?= i::__("Tipos do preponente")?></h4>
-            <h6><?= i::__("Selecione um ou mais tipos de preponente que poderá participar do edital")?></h6>
+            <h4 class="bold"><?= i::__("Tipos do proponente")?></h4>
+            <h6><?= i::__("Selecione um ou mais tipos de proponente que poderá participar do edital")?></h6>
             <div>
                 <entity-field class="field__preponent"  :entity="phase" prop="registrationProponentTypes" :autosave="3000" hide-label></entity-field>
             </div>
