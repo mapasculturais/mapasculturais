@@ -52,21 +52,6 @@
             grid-template-columns: 1fr;
             justify-items: center;
         }
-
-        .modal-content {
-            max-width: size(1170);
-            width: 100%;
-            padding: size(20);
-
-            .modal__content {
-                margin: 0;
-                padding: 0;
-            }
-
-            .modal__action {
-                justify-content: flex-end;
-            }
-        }
     }
 
     &__content-header {
@@ -150,6 +135,10 @@
                 gap: size(8);
             }
         }
+    }
+
+    &__modal-content {
+        min-width: size(1170);
     }
 
     &__checkbox {

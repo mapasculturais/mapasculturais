@@ -74,15 +74,15 @@ $this->breadcrumb = [
                                 </div>
                                 
                                 <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" label="Link para página ou site do evento" prop="site"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Link para página ou site do evento") ?>" prop="site"></entity-field>
                             </div>
                         </div>
                         <div class="divider"></div>
                         <div class="right">
                             <div class="grid-12">
                                 <entity-link-project :entity="entity" type="project" classes="col-12" label="<?php i::esc_attr_e('Vincular a um projeto') ?>"></entity-link-project>
-                                <entity-field :entity="entity" classes="col-12" label="Classificação etária" prop="classificacaoEtaria"></entity-field>
-                                <entity-terms :entity="entity" classes="col-12" taxonomy="linguagem" editable title="Linguagens culturais"></entity-terms>
+                                <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Classificação etária") ?>" prop="classificacaoEtaria"></entity-field>
+                                <entity-terms :entity="entity" classes="col-12" taxonomy="linguagem" editable title="<?php i::esc_attr_e('Linguagens culturais') ?>"></entity-terms>
                                 <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>
                             </div>
                         </div>
@@ -104,9 +104,9 @@ $this->breadcrumb = [
                         </template>
                         <template #content>
                             <div class="grid-12">
-                                <entity-field :entity="entity" classes="col-12" label="Total de público" prop="event_attendance"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" label="Telefone para informações sobre o evento" prop="telefonePublico"></entity-field>
-                                <entity-field :entity="entity" classes="col-12" label="Informações sobre a inscrição" prop="registrationInfo"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Total de público"); ?>" prop="event_attendance"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Telefone para informações sobre o evento"); ?>" prop="telefonePublico"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Informações sobre a inscrição"); ?>" prop="registrationInfo"></entity-field>
                             </div>
                         </template>
                     </mc-card>
@@ -138,9 +138,9 @@ $this->breadcrumb = [
                         <template #content>
                             <div class="grid-12">
                                 <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
-                                <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="Tags" editable></entity-terms>
+                                <entity-terms :entity="entity" classes="col-12" taxonomy="tag" title="<?php i::_e("Tags")?>" editable></entity-terms>
                                 <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
-                                <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
+                                <entity-owner :entity="entity" classes="col-12" title="<?php i::_e("Publicado por")?>" editable></entity-owner>
                             </div>
                         </template>
                     </mc-card>

@@ -1142,6 +1142,8 @@ abstract class Entity implements \JsonSerializable{
         if($this->usesTaxonomies())
             $errors = $errors + $this->getTaxonomiesValidationErrors();
 
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.validationErrors", [&$errors]);
+        
         return $errors;
     }
 
