@@ -111,7 +111,13 @@ app.component('entity-table', {
     },
 
     data() {
-        const sessionTitle = this.controller+':'+this.endpoint+':'+this.query['@opportunity']+':'+this.identifier;
+        const getSeals = $MAPAS.config.entityTable.seals;
+        let seals = {}
+        for (const seal of getSeals) {
+            seals[seal.id] = seal.name;
+        }
+        const id = this.query['@opportunity'] ?? '';
+        const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
 
         const getSeals = $MAPAS.config.entityTable.seals;
         let seals = {}
@@ -132,6 +138,10 @@ app.component('entity-table', {
             ready: false,
             tableWidth: 'auto',
             headerHeight: 'auto',
+            opportunityTypes: $DESCRIPTIONS.opportunity.type.options,
+            projectTypes: $DESCRIPTIONS.project.type.options,
+            spaceTypes: $DESCRIPTIONS.space.type.options,
+            seals,
             sessionTitle,
             opportunityTypes: $DESCRIPTIONS.opportunity.type.options,
             projectTypes: $DESCRIPTIONS.project.type.options,
@@ -171,14 +181,16 @@ app.component('entity-table', {
         advancedFilters() {
             let filters = {};
 
-            for (let visibleColumn of this.visibleColumns) {
-                const description = this.$description[visibleColumn.slug];
+            if (this.$description) {
+                for (let visibleColumn of this.visibleColumns) {
+                    const description = this.$description[visibleColumn.slug];
 
-                if (description && description.hasOwnProperty('options')) {
-                    if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0) {
-                        filters[visibleColumn.slug] = {
-                            label: description.label,
-                            options: description.options, 
+                    if (description && description.hasOwnProperty('options')) {
+                        if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0) {
+                            filters[visibleColumn.slug] = {
+                                label: description.label,
+                                options: description.options, 
+                            }
                         }
                     }
                 }

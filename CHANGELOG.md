@@ -7,12 +7,31 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 ### Novas funcionalidades
+- **Bloqueio de edição de entidades**, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
+- **Customizador do tema BaseV2** para subsites, possibilitando a configuração de cores, imagens, textos, posição do mapa etc
+- **Novo exportação de planilhas**
+  - Possibilidade do usuário escolher o tipo de arquivo exportado entre `.csv`, `.xlsx` e `.ods`
+  - Processamento em background enviando o link para donwload do arquivo por email quando a planilha estiver pronta.
+- **Edição de campos de inscrições enviadas** - permite que o gestor abra alguns campos de uma determinada inscrição, por um tempo definido, para que o proponente possa modificar somente esses campos, fazendo com que não seja necessário colocar a inscriçào inteira como rascunho.
+- **Visualização das entidades em tabelas** na página de busca, para admins do sistema, com botão para exportar planilha com as entidades filtradas.
+- Nova opção para o gestor solicitar o avatar do agente responsável no formulário de inscrição.
 - Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
 - Implementa modo de visualização das entidades em tabelas para admins do sistema
 - Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
+- Refatoração dos campos datepicker e detetimepicker para melhorar a usabilidade
+- Faz dos campos CPF e CNPJ somente leitura
+- Redesign da tabela de avaliações
+- Refatoraçào na configuração de cotas, para que seja possível escolher os campos que representam as cotas por tipo de proponente, evitando conflitos
+- Refatoração na configuração de distribuição de vagas por território, para que seja possível definir quais campos representam a região para cada tipo de proponente.
+- Refatoração no cálculo das cotas, para que sejam respeitadas dentro de cada faixa/linha e região.
+
+### Correções
+
+### Melhorias não funcionais
+- Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
 
 ## [7.4.11] - 2024-07-10
 ### Melhorias
