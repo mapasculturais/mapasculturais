@@ -317,8 +317,8 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
         $validations = [
             'owner' => [
-                'required' => \MapasCulturais\i::__("O agente responsável é obrigatório."),
-                '$this->validateOwnerLimit()' => \MapasCulturais\i::__('Foi excedido o limite de inscrições para este agente responsável.'),
+                'required' => i::__("O agente responsável é obrigatório."),
+                '$this->validateOwnerLimit()' => i::__('Foi excedido o limite de inscrições para este agente responsável.'),
             ]
         ];
 
@@ -428,6 +428,10 @@ class Registration extends \MapasCulturais\Entity
 
     public function canSee($key)
     {
+        if(in_array($key, ['id', 'number', 'category', 'range', 'proponentType'])){
+            return true;
+        }
+
         $avaliableEvaluationFields = ($this->opportunity->avaliableEvaluationFields != "null") ? $this->opportunity->avaliableEvaluationFields : [];
         if(in_array($key, array_keys($avaliableEvaluationFields))){
             return true;
@@ -928,7 +932,7 @@ class Registration extends \MapasCulturais\Entity
         App::i()->applyHookBoundTo($this, 'entity(Registration).status(sent)');
     }
 
-    function send(){
+    function send($update_sent_timestamp = true, $flush = true){
         $this->checkPermission('send');
         $app = App::i();
 
@@ -944,10 +948,12 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $this->status = self::STATUS_SENT;
-        $this->sentTimestamp = new \DateTime;
+        if($update_sent_timestamp){
+            $this->sentTimestamp = new \DateTime;
+        }
         $this->agentsData = $this->_getAgentsData();
         $this->_spaceData = $this->_getSpaceData();
-        $this->save(true);
+        $this->save($flush);
 
         $app->enableAccessControl();
         
@@ -982,12 +988,54 @@ class Registration extends \MapasCulturais\Entity
         $app->enableAccessControl();
     }
 
+    /**
+     * Verifica se um campo deve ser exibido com base nas categorias, 
+     * faixas e tipos de proponente definidos na configuração do campo.
+     *
+     * @param RegistrationFieldConfiguration|RegistrationFileConfiguration $field O campo a ser verificado.
+     * @return bool Verdadeiro se o campo deve ser exibido, falso caso contrário.
+     */
+    function isFieldVisisble(RegistrationFieldConfiguration|RegistrationFileConfiguration $field): bool {
+        $opportunity = $this->opportunity;
+
+        $use_category = (bool) $opportunity->registrationCategories;
+        $use_range = (bool) $opportunity->registrationRanges;
+        $use_proponent_types = (bool) $opportunity->registrationProponentTypes;
+
+        $field_categories = $field->categories ?: [];
+        $field_ranges = $field->registrationRanges ?: [];
+        $field_proponent_types = $field->proponentTypes ?: [];
+
+
+        if ($use_category && count($field_categories) > 0 && !in_array($this->category, $field_categories)) {
+            return false;
+        }
+
+        if ($use_range && count($field_ranges) > 0 && !in_array($this->range, $field_ranges)) {
+            return false;
+        }
+
+        if ($use_proponent_types && count($field_proponent_types) > 0 && !in_array($this->proponentType, $field_proponent_types)) {
+            return false;
+        }
+
+        if($field->conditional){
+            $_fied_name = $field->conditionalField;
+            $_fied_value = $field->conditionalValue;
+            return $this->$_fied_name == $_fied_value;
+        }
+
+        return true;
+    }
+
     function getValidationErrors() {
         if($this->isNew()) {
-            return parent::getValidationErrors();
+            $errors = parent::getValidationErrors();
         } else {
-            return $this->getSendValidationErrors();
+            $errors = [...parent::getValidationErrors(), ...$this->getSendValidationErrors()];
         }
+
+        return $errors;
     }
 
     function getSendValidationErrors(string $field_prefix = 'field_', $file_prefix = 'file_', $agent_prefix = 'agent_'){
@@ -1006,15 +1054,15 @@ class Registration extends \MapasCulturais\Entity
         $use_proponent_types = (bool) $opportunity->registrationProponentTypes;
 
         if($use_range && !$this->range) {
-            $errorsResult['range'] = [\MapasCulturais\i::__('Faixa é um campo obrigatório.')];
+            $errorsResult['range'] = [i::__('Faixa é um campo obrigatório.')];
         }
 
         if($use_proponent_types && !$this->proponentType) {
-            $errorsResult['proponentType'] = [\MapasCulturais\i::__('Tipo de proponente é um campo obrigatório.')];
+            $errorsResult['proponentType'] = [i::__('Tipo de proponente é um campo obrigatório.')];
         }
 
         if($use_category && !$this->category){
-            $errorsResult['category'] = [\MapasCulturais\i::__('Categoria é um campo obrigatório.')];
+            $errorsResult['category'] = [i::__('Categoria é um campo obrigatório.')];
         }
 
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
@@ -1027,17 +1075,17 @@ class Registration extends \MapasCulturais\Entity
 
             if($def->use === 'required'){
                 if(!$def->agent){
-                    $errors[] = sprintf(\MapasCulturais\i::__('O agente "%s" é obrigatório.'), $def->label);
+                    $errors[] = sprintf(i::__('O agente "%s" é obrigatório.'), $def->label);
                 }
             }
 
             if($def->agent){
                 if($def->relationStatus < 0){
-                    $errors[] = sprintf(\MapasCulturais\i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);
+                    $errors[] = sprintf(i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);
                 }else{
                     if($def->agent->type->id !== $def->type){
                         $typeDescription = $app->getRegisteredEntityTypeById($def->agent, $def->type)->name;
-                        $errors[] = sprintf(\MapasCulturais\i::__('Este agente deve ser do tipo "%s".'), $typeDescription);
+                        $errors[] = sprintf(i::__('Este agente deve ser do tipo "%s".'), $typeDescription);
                     }
                 }
             }
@@ -1057,13 +1105,13 @@ class Registration extends \MapasCulturais\Entity
         if(isset($isSpaceRelationRequired)){
             if($isSpaceRelationRequired === 'required'){
                 if($spaceDefined === null) {
-                    $errorsResult['space'] = [\MapasCulturais\i::__('O espaço é obrigatório')];
+                    $errorsResult['space'] = [i::__('O espaço é obrigatório')];
                 }
             }
             if($isSpaceRelationRequired === 'required' || $isSpaceRelationRequired === 'optional'){
                 //Espaço não autorizado
                 if( $spaceDefined && $spaceDefined->status < 0){
-                    $errorsResult['space'] = [\MapasCulturais\i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável')];
+                    $errorsResult['space'] = [i::__('O espaço vinculado a esta inscrição aguarda autorização do responsável')];
                 }
             }
         }       
@@ -1071,19 +1119,13 @@ class Registration extends \MapasCulturais\Entity
         // validate attachments
         foreach($opportunity->registrationFileConfigurations as $rfc){
 
-            if($use_category && count($rfc->categories) > 0 && !in_array($this->category, $rfc->categories)){
-                continue;
-            }
-
-            if ($use_range && count($rfc->registrationRanges) > 0 && !in_array($this->range, $rfc->registrationRanges)) {
-                continue;
-            }
-
-            if ($use_proponent_types && count($rfc->proponentTypes) > 0 && !in_array($this->proponentType, $rfc->proponentTypes)) {
+            if(!$this->isFieldVisisble($rfc)){
                 continue;
             }
 
             $field_required = $rfc->required;
+            
+            /** @todo Verificar se este if ainda é necessário após a implementação do isFieldVisisble()*/
             if($rfc->conditional){
                 $_fied_name = $rfc->conditionalField;
                 $_fied_value = $rfc->conditionalValue;
@@ -1093,7 +1135,7 @@ class Registration extends \MapasCulturais\Entity
             $errors = [];
             if($field_required){
                 if(!isset($this->files[$rfc->fileGroupName])){
-                    $errors[] = \MapasCulturais\i::__('O arquivo é obrigatório.');
+                    $errors[] = i::__('O arquivo é obrigatório.');
                 }
             }
             if($errors){
@@ -1104,15 +1146,7 @@ class Registration extends \MapasCulturais\Entity
         // validate fields
         foreach ($opportunity->registrationFieldConfigurations as $field) {
 
-            if ($use_category && count($field->categories) > 0 && !in_array($this->category, $field->categories)) {
-                continue;
-            }
-
-            if ($use_range && count($field->registrationRanges) > 0 && !in_array($this->range, $field->registrationRanges)) {
-                continue;
-            }
-
-            if ($use_proponent_types && count($field->proponentTypes) > 0 && !in_array($this->proponentType, $field->proponentTypes)) {
+            if (!$this->isFieldVisisble($field)) {
                 continue;
             }
 
@@ -1123,6 +1157,7 @@ class Registration extends \MapasCulturais\Entity
             $field_name = $field_prefix . $field->id;
             $field_required = $field->required;
             
+            /** @todo Verificar se este if ainda é necessário após a implementação do isFieldVisisble()*/
             if($metadata_definition && $metadata_definition->config && $metadata_definition->config['registrationFieldConfiguration'] && $metadata_definition->config['registrationFieldConfiguration']->conditional){
                 $conf =  $metadata_definition->config['registrationFieldConfiguration'];
               
@@ -1152,7 +1187,7 @@ class Registration extends \MapasCulturais\Entity
 
             if ($empty) {
                 if($field_required) {
-                    $errors[] = \MapasCulturais\i::__('O campo é obrigatório.');
+                    $errors[] = i::__('O campo é obrigatório.');
                 }
             } else {
                 
@@ -1181,7 +1216,7 @@ class Registration extends \MapasCulturais\Entity
         // @TODO: validar o campo projectName
 
         if($opportunity->projectName == 2 && !$this->projectName){
-            $errorsResult['projectName'] = [\MapasCulturais\i::__('O nome do projeto é obrigatório.')];
+            $errorsResult['projectName'] = [i::__('O nome do projeto é obrigatório.')];
         }
 
         $app->applyHookBoundTo($this, "entity($this->getHookClassPath()).sendValidationErrors", [&$errorsResult]);
@@ -1473,10 +1508,6 @@ class Registration extends \MapasCulturais\Entity
         }
         
         if(new DateTime('now') < $this->opportunity->evaluationMethodConfiguration->evaluationFrom || new DateTime('now') > $this->opportunity->evaluationMethodConfiguration->evaluationTo){
-            return false;
-        }
-
-        if($this->opportunity->publishedRegistrations){
             return false;
         }
 

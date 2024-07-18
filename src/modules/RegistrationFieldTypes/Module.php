@@ -48,6 +48,21 @@ class Module extends \MapasCulturais\Module
             $module->entities = [];
         });
 
+        $app->hook("entity(Registration).validationErrors", function(&$errors) use($module, $app) {
+            /** @var Registration $this */
+
+            $fields = $this->opportunity->registrationFieldConfigurations;
+            foreach($errors as $field_name => $error) {
+                foreach($fields as $field) {
+                    if($field->fieldName == $field_name) {
+                        if(!$this->isFieldVisisble($field)) {
+                            unset($errors[$field_name]);
+                        }
+                    }
+                }
+            }
+        });
+
         $app->hook("entity(Registration).save:before", function() use($module, $app) {
             /** @var Registration $this */
             $fix_field = function($entity, $field) use($module){
@@ -73,6 +88,10 @@ class Module extends \MapasCulturais\Module
             $fields = $opportunity->getRegistrationFieldConfigurations();
 
             foreach($fields as $field) {
+                if(!$this->isFieldVisisble($field)) {
+                    continue;
+                }
+                
                 if($field->fieldType == 'agent-owner-field') {
                     $entity = $this->owner;
 
@@ -621,7 +640,7 @@ class Module extends \MapasCulturais\Module
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
             if ($entity_field == "@location" && is_array($value)) {
-                if($value['location'] instanceof GeoPoint) {
+                if(isset($value['location']) && $value['location'] instanceof GeoPoint) {
                     $value["location"] = [
                         'latitude' => $value['location']->latidude,
                         'longitude' => $value['location']->longitude,

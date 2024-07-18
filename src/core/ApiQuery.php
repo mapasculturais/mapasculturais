@@ -286,7 +286,7 @@ class ApiQuery {
      * List of parameters that will be used to run the DQL
      * @var array
      */
-    protected $_dqlParams = [];
+    public $_dqlParams = [];
 
     /**
      * Fields that are being selected
@@ -518,6 +518,10 @@ class ApiQuery {
         }
 
         $controller =  $app->getControllerByEntity($class::getClassName());
+
+        if($class[0] == '\\'){
+            $class = substr($class, 1);
+        }
 
         $this->entityClassName = $class;
         $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
@@ -988,7 +992,7 @@ class ApiQuery {
             }
             $subdql = "e.{$this->pk} IN (". implode(' OR ', $dqls) . ')';
         }
-        
+
         return $subdql;
     }
 
@@ -1033,8 +1037,8 @@ class ApiQuery {
         } else {
             $where = $where_dqls;
         }
-        
-        if($this->usesStatus && (!$this->_subsiteId && !isset($this->apiParams['status']) || $this->_permission != 'view')){
+
+        if($this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
             $params = $this->apiParams;
             
             if($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
@@ -3065,6 +3069,8 @@ class ApiQuery {
         if($class::isPrivateEntity() && !isset($this->apiParams['@permissions'])){
             $this->_addFilterByPermissions('view');
         }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.parseQueryParams");
     }
     
     protected function _addFilterBySeals($seals_ids){

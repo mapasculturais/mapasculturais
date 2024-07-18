@@ -10,35 +10,35 @@ function compareNamesOpportunity ($item1, $item2) {
 }
 
 $items = array(
-    1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),
-    2 =>  array( 'name' => \MapasCulturais\i::__("Encontro")),
-    3 =>  array( 'name' => \MapasCulturais\i::__("Sarau")),
-    4 =>  array( 'name' => \MapasCulturais\i::__("Reunião")),
-    5 =>  array( 'name' => \MapasCulturais\i::__("Mostra")),
-    6 =>  array( 'name' => \MapasCulturais\i::__("Convenção")),
     7 =>  array( 'name' => \MapasCulturais\i::__("Ciclo")),
-    8 =>  array( 'name' => \MapasCulturais\i::__("Programa")),
-    9 =>  array( 'name' => \MapasCulturais\i::__("Edital")),
-    10 => array( 'name' => \MapasCulturais\i::__("Concurso")),
-    11 => array( 'name' => \MapasCulturais\i::__("Exposição")),
-    12 => array( 'name' => \MapasCulturais\i::__("Jornada")),
-    13 => array( 'name' => \MapasCulturais\i::__("Exibição")),
-    14 => array( 'name' => \MapasCulturais\i::__("Feira")),
-    15 => array( 'name' => \MapasCulturais\i::__("Intercâmbio Cultural")),
-    16 => array( 'name' => \MapasCulturais\i::__("Festa Popular")),
-    17 => array( 'name' => \MapasCulturais\i::__("Festa Religiosa")),
-    18 => array( 'name' => \MapasCulturais\i::__("Seminário")),
-    19 => array( 'name' => \MapasCulturais\i::__("Congresso")),
-    20 => array( 'name' => \MapasCulturais\i::__("Palestra")),
-    21 => array( 'name' => \MapasCulturais\i::__("Simpósio")),
-    22 => array( 'name' => \MapasCulturais\i::__("Fórum")),
-    23 => array( 'name' => \MapasCulturais\i::__("Curso")),
-    24 => array( 'name' => \MapasCulturais\i::__("Oficina")),
-    25 => array( 'name' => \MapasCulturais\i::__("Jornada")),
     26 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Setorial")),
     27 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Nacional")),
     28 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Estadual")),
     29 => array( 'name' => \MapasCulturais\i::__("Conferência Pública Municipal")),
+    10 => array( 'name' => \MapasCulturais\i::__("Concurso")),
+    6 =>  array( 'name' => \MapasCulturais\i::__("Convenção")),
+    19 => array( 'name' => \MapasCulturais\i::__("Congresso")),
+    23 => array( 'name' => \MapasCulturais\i::__("Curso")),
+    9 =>  array( 'name' => \MapasCulturais\i::__("Edital")),
+    11 => array( 'name' => \MapasCulturais\i::__("Exposição")),
+    2 =>  array( 'name' => \MapasCulturais\i::__("Encontro")),
+    13 => array( 'name' => \MapasCulturais\i::__("Exibição")),
+    1 =>  array( 'name' => \MapasCulturais\i::__("Festival")),
+    16 => array( 'name' => \MapasCulturais\i::__("Festa Popular")),
+    17 => array( 'name' => \MapasCulturais\i::__("Festa Religiosa")),
+    14 => array( 'name' => \MapasCulturais\i::__("Feira")),
+    22 => array( 'name' => \MapasCulturais\i::__("Fórum")),
+    15 => array( 'name' => \MapasCulturais\i::__("Intercâmbio Cultural")),
+    25 => array( 'name' => \MapasCulturais\i::__("Jornada")),
+    12 => array( 'name' => \MapasCulturais\i::__("Jornada")),
+    5 =>  array( 'name' => \MapasCulturais\i::__("Mostra")),
+    24 => array( 'name' => \MapasCulturais\i::__("Oficina")),
+    20 => array( 'name' => \MapasCulturais\i::__("Palestra")),
+    8 =>  array( 'name' => \MapasCulturais\i::__("Programa")),
+    4 =>  array( 'name' => \MapasCulturais\i::__("Reunião")),
+    3 =>  array( 'name' => \MapasCulturais\i::__("Sarau")),
+    21 => array( 'name' => \MapasCulturais\i::__("Simpósio")),
+    18 => array( 'name' => \MapasCulturais\i::__("Seminário")),
 //        30 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Militar")),
 //        31 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Cívico")),
 //        32 => array( 'name' => \MapasCulturais\i::__("Parada e Desfile Festivo")),
@@ -107,7 +107,7 @@ return array(
                 return Utils::parseSocialMediaUser('facebook.com', $value);
             },
             'validations' => array(
-                "v::oneOf(v::urlDomain('facebook.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL válida ou o nome ou id do usuário.")
+                "v::oneOf(v::urlDomain('facebook.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL válida ou o nome ou id do usuário.")
             ),
             'placeholder' => "nomedousuario ou iddousuario",
             'available_for_opportunities' => true
@@ -116,10 +116,10 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Twitter'),
             'serialize' =>function($value){
-                return Utils::parseSocialMediaUser('twitter.com', $value);
+                return Utils::parseSocialMediaUser('x.com', $value);
             },
             'validations' => array(
-                "v::oneOf(v::urlDomain('twitter.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('x.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
@@ -129,10 +129,14 @@ return array(
             'label' => \MapasCulturais\i::__('Instagram'),
             'available_for_opportunities' => true,
             'serialize' =>function($value){
-                return Utils::parseSocialMediaUser('instagram.com', $value);
+                $result = Utils::parseSocialMediaUser('instagram.com', $value);
+                if($result && $result[0] == '@'){
+                    $result = substr($result,1);
+                }
+                return $result;
             },
             'validations' => array(
-                "v::oneOf(v::urlDomain('instagram.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('instagram.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'placeholder' => "nomedousuario",
         ),
@@ -140,10 +144,10 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Linkedin'),
             'serialize' =>function($value){
-                return Utils::parseSocialMediaUser('linkedin.com', $value);
+                return Utils::parseSocialMediaUser('linkedin.com', $value, 'linkedin');
             },
             'validations' => array(
-                "v::oneOf(v::urlDomain('linkedin.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('linkedin.com'), v::regex('/^@?([\-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
@@ -152,7 +156,7 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Vimeo'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('vimeo.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('vimeo.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'serialize' =>function($value){
                 return Utils::parseSocialMediaUser('vimeo.com', $value);
@@ -164,10 +168,10 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Spotify'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('spotify.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('open.spotify.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
-            'serialize' =>function($value){
-                return Utils::parseSocialMediaUser('spotify.com', $value);
+            'serialize' => function($value) {
+                return Utils::parseSocialMediaUser('open.spotify.com', $value);
             },
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
@@ -176,7 +180,7 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('YouTube'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('youtube.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('youtube.com'), v::regex('/^(@|channel\/)?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'serialize' =>function($value){
                 return Utils::parseSocialMediaUser('youtube.com', $value);
@@ -188,11 +192,23 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Pinterest'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('pinterest.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('pinterest.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'serialize' =>function($value){
                 return Utils::parseSocialMediaUser('pinterest.com', $value);
             },
+            'placeholder' => "nomedousuario",
+            'available_for_opportunities' => true
+        ),
+        'tiktok' => array(
+            'type' => "socialMedia",
+            'label' => \MapasCulturais\i::__('Tiktok'),
+            'serialize' =>function($value){
+                return Utils::parseSocialMediaUser('tiktok.com', $value);
+            },
+            'validations' => array(
+                "v::oneOf(v::urlDomain('tiktok.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+            ),
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
         ),

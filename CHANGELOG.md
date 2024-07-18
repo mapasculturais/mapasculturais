@@ -5,29 +5,178 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased - 7.4]
+## [7.4.12]
+### Correções
+- Corrige erro que deixava a condicionalidade dos campos/anexos ativada ao editar, mesmo ele não estando condicionado a outro
+- Corrige erro na tabela de listagem de inscrições que impedia a listagem de todas as inscrições de oportunidades multifases
+- Corrige erro do entity-field que impedia as opções serem exibidas e salvas quando se usava campo do tipo radio
+- Corrige erro ao definir a latitude e longitude em campos do agente responsável que fazem sincronia com a inscrição (Campos @)
+- Corrige erro que não deixava a autorização de publicar a localização atravez do formulario de inscrição em campos @
+- Corrige o processo de limpeza do cache dos resumos de inscrições para que seja atualizado corretamente nas mudanças de status das inscrições
+- Corrige sincronização de inscrição no botão do resumo de inscrições
+- Faz o enfileiramento do job UpdateSummaryCaches no endpoint syncRegistrations para que atualize tambem o resumo de inscrições
+
+### Melhorias
+- Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
+
+## [7.4.11] - 2024-07-10
+### Melhorias
+- Permite que seja feita a distribuição de avaliações por faixas
+- Permite que seja feita a distribuição de avaliações por tipo de proponente
+
+### Correções
+- Permite que administradores de oportunidades que não sejam admin convidem avaliadores
+- Corrige permissões para gestores de oportunidades que não sejam administradores do sistema remover, habilitar e desabilitar avaliadores
+- Exibe o status de pendente para avaliadores que ainda não aceitaram ser avaliadores de uma oportunidade
+
+## [7.4.10] - 2024-07-08
+## Correções
+- Corrige reatividade do componente mc-select
+- Corrige exibição da categoria, tipo de proponente e faixa/linha para os avaliadores, deixando sempre visível
+- Corrige ordem dos campos na lista de seleção dos campos visíveis para os avaliadores
+- Corrige exibição de campo selecionado do componente de seleção quando há grupos de valores
+- Evita que a página de avaliação quebre no caso de haver uma inscrição sem data de envio
+- Permite que avaliadores avaliem inscrições mesmo com a fase publicada. O que importa é são as datas de avaliação.
+- Corrige obtenção de metadados para inscrições da última fase que não foram selecionadas em todas as fases anteriores
+
+## Melhorias
+- Melhora o texto da modal de confirmação de avaliador explicando que todas as avaliações serão excluídas permanentemente.
+
+## [7.4.9] - 2024-07-03
+### Correções
+- Corrige salvamento e tratamento dos links das redes sociais
+- Correções e padronização nos estilos das modais
+- Corrige exibição de campo numérico com valor zero em fases
+- Corrige edição, por usuários de suporte, de campos opcionais não preenchidos em inscrições
+
+### Melhorias
+ - Adiciona a rede social tiktok
+
+## [7.4.8] - 2024-06-26
+### Correções
+- Corrige exibição da categoria na planilha de lista de inscrições
+- Corrige exibição do botão de preencher formulário na aba de ficha de inscrição
+- Corrige quebra em consultas da API quando passado o nome da classe com uma barra inicial
+- Corrige formulário de configuração de campo do formulário que quebrava em algumas situações
+
+### Melhorias
+- Adiciona novas colunas na planilha de lista inscrições: Tipo de proponente e Faixa/Linha
+- Adiciona nome da fase de coleta de dados na página de preenchimento do formulário de inscrição
+
+## [7.4.7] - 2024-06-24
+### Correções
+- correção no db-update que corrige os valores das colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades
+- Corrige erro que impede os botões de ações das avaliações serem exibidos para o avaliador
+- Corrige exibição condicional de campos de faixas e tipos de proponente
+
+### Melhorias não funcionais
+- Implementa método para recriar o ponteiro das inscrições entre fases
+- Implementa endpoint para recriar o ponteiro das inscrições entre fases
+
+## [7.4.6] - 2024-06-21
+### Melhorias
+- Possibilita que o proponente selecione faixa, tipo de proponente e categoria após criar a inscrição quando esses forem configurados na oportunidade posteriormente a criação da inscrição
+- Impede a remoção de faixas, categorias e tipos de proponentes que estejam sendo utilzadas em condicionais de campos ou inscrições
+- Implementa db-update para padronizar as de tipo de proponente, faixas e categorias das oportunidades quando estão vazias
+- Ajusta para evitar que dados vazios sejam inseridos nas configurações de cotas e pol´titicas afirmatívas
+
+### Correções
+- Melhora processamento do resumo de avaliações
+- Só exibe categoria, tipo de proponente e faixa na singe da inscrição quando há essa informação
+- Garante que o resumo das avaliações seja montado somente se existir avaliações mapeadas
+- Corrige modal de aplicar avaliações técnicas
+
+## [7.4.5] - 2024-06-17
+### Melhorias
+- Melhora exibição do header da tabela de publicação de resultados
+- Botão para recriar caches de permissão das entidades na página de gestão de usuários
+
+### Correções
+- Corrige erro no carregamento da single de projetos
+- Ajusta exibição dos campos do tipo checkebox do formulário
+- Corrige endpoit apiFindRegistrations para que um usuario comum posso ver as inscrições na fase de publicação de resultado
+- Corrige formulário de inscriçào em casos onde foi configurado tipo de proponente ou faixa após envio de inscrições
+- Ajusta distribução de avaliações através dos finais das inscrições para que seja possível usar mais caracteres
+- Evita que seja possível selecionar sub-agentes como administradores de entidades
+- Corrige atualização do campo pessoa idosa
+- Ordena os termos das entidades em ordem alfabética
+- Só exibe categoria, tipo de proponente e faixa quando há essa informação na inscrição
+- Validação da área de interesse das fases de coleta de dados
+- Serialização de roles do usuário logado as vezes quebrando a página de gestão de usuários
+- Implementa mc-update para garantir/corrigir que o campo de pessoa idosa corresponda com a data de nascimento fornecida no cadastro do agente
+- Ajusta importação e exportação do formulário para garantir que as faixas e tipos de proponentes sejam enviados
+- Corrige validação de erros dos metadados de inscrições
+- Corrige validação de erros para campos não visíveis
+
+## [7.4.4] 2024-06-12
+### Correções
+- Corrige lista de inscrições da publicação de resultado final
+- Corrige exibição dos botões de baixar rascunhos e baixar lista de inscrições
+
+## [7.4.3] 2024-06-11
+### Correções
+- Reordena db-updates para evitar problemas com colunas e tabelas nao criadas
+- Corrige db-update que ajusta configurações dos campos das inscrições
+
+## [7.4.2] 2024-06-11
+## Correções
+- Ajusta getter lastPhase() na inscrição para que quando for a última fase na inscrição base, ele consiga devolver a entidade de forma correta
+- evita que a single da inscrição se quebre quando nao existe data de envio da inscrição
+
+## [7.4.1] 2024-06-10
+### Melhorias
+- Implementa hook no método registerRegistrationMetadata da oportunidade, para possibilitar incremento de novos registros atrevéz de plugins e módulos
+- Implementa novos hook's para possibilitar manipulação da tela de listagem de fases
+- Implementa possibilidade de definir mascaras em inputs do entity-field
+- Implementa contante global mcTabActive para guadar a aba que o mc-tab está selecionada
+- Implementa getter lastPhase() para as inscrições, possibilitando recuperar a entidade da inscrição na ultima fase
+- Implementa hook no metodo getValidationErrors possibilitando a mainipulação final dos erros
+- Melhora fluxo das mensagens de validação de erros da inscrição
+- Melhorias na interface e filtro na lista de inscrições da página de avaliação
+- Melhora performance do componente home-opportunities
+
+### Correções
+- Corrige erro no carregamento do formulário de avaliação para o avaliador
+- Ajusta estêncil do upload de imagem para carregar ja no tamanho máximo permitido
+- Corrige db-update que atualiza legado da distribuição de avaliaçações por categoria
+- Corrige db-update que cria as colunas eligible e score
+- Corrige remoção de abas do componente mc-tabs
+- Corrige link dos botões de acessar inscrição na lista de inscrições da página de avaliação
+- Possibilita a configuração de metadados com opções value => label com valores numéricos através da flag `numericKeyValueOptions`
+
+### Melhorias não funcionais
+- Refatora script start.sh e middleware ExecutionTime para fornecer um log mais limpo para o desenvolvedor
+
+## [7.4] 2024-05-28
 ### Novas funcionalidades
-- Implementa botão de aplicar avaliações para avaliações técnicas
-- Implementa exibição de parecer na avaliação documental
-- Implementa exibição de parecer na avaliação qualificação documental
+- Adiciona campos **total de vagas** e **valor total** nas oportunidades
+- Implementa funcionalidade de **faixas/linhas** de inscrição nas oportunidades, onde é possível configurar valores de premiação e número de vagas e que, quando configurado, fará com que o proponente tenha que escolher uma faixa de inscrição no momento da inscrição
+- Implementa funcionalidade de **tipos de proponente** para inscrição nas oportunidades que quando configurado fará com que o proponente tenha que escolher um tipo de proponente no momento da inscrição
+- Implementa funcionalidade de **critérios de desempate** nas fases de avaliação técnica
+- Implementa funcionalidade de **cotas** nas fases de avaliação técnica
+- Renomeada a funcionaliade **políticas afirmativas** para **bônus por pontuação** na fase de avaliação técnica
+- Implementa funcionalidade de **distribuição de inscrições por região** nas fases de avaliação técnica
+- Reimplementa da **tabela de listagem de inscrições**, com uma nova interface e uma variedade de opções de ordenação e filtros
+- A lista de inscrições da última fase agora exibe todas as inscrições enviadas na primeira fase, deixando claro onde na listagem onde a inscrição foi deixada como suplente, não selecionada ou invalidada
+- Implementa botão de **aplicar avaliações** para **avaliações técnicas**
+- Implementa exibição de **parecer** na **avaliação documental**
+- Implementa exibição de **parecer** na **avaliação qualificação documental**
 - Implementa campo de dados bancários vinculado ao agente responsável via campo @
 - Implementa botão que faz a sincronia das inscrições entre as fases
 
 ### Melhorias
-- Nova lib instalada (league/csv), para geração de arquivos csv.
 - Adicionado novo ícone para o histórico de alterações.
 - Adiciona data de envio da inscrição na tela de impressão da ficha
-- Implementa novos componentes vuejs para trabalhar implementação de tabelas 
-- Refatora listagem de inscrições para uma tabela visualmente mais agradavel
 - Insere a opção de alterar o tipo dos agentes no modo de edição do perfil quando o usuario logado tem essa permissão
 - Exibe campo de pessoa idosa na single do agente
-- Implementa a exibição de nova coluna na listagem de inscrições para baixar os anexos
-- Altera nome da coluna resultado final da avaliação para "Avaliação" na listagem de inscrições
 - Implementa estêncil circular para definir tamanho do avatar durante o recorte
-- torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
-- possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
-- melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
-- log de hooks agora exibe um backtrace
+- Torna o preenchimento do nome da fase de avaliação opcional, definindo automaticamente o tipo de avaliação como nome
+- Possibilidade de passar vários termos para a busca por palavra-chave, separando-os por ponto e vírgula
+- Melhoria de performance na criação de novas revisões, deixando o salvamento de todas as entidades mais rápidas
+- Faz com que seja possivel clicar no nome da entidade para acessar a single da mesma
+- Em oportunidades multifases, redireciona o usuário para primeira fase caso ele tente acessar via url a edição de oportunidades posteriores
+- Melhora texto de boas vindas padrão da plataforma
+- Faz com que a data de envio da inscrição se propague entre as fases
 
 ### Correções
 - Corrige seleção de relacionamentos OneToOne
@@ -40,7 +189,46 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta métodos de listagem de fases para devolver tambem os arquivos das fases
 - Corrige configuração do crop da imagem do avatar
 - Corrige método para limpeza de hooks
-- resolve aplicar filtros para pesquisa de eventos
+- Corrige aplicar filtros para pesquisa de eventos
+- Faz as abas `com permissão` das entidades do painel listarem também as entidades em rascunho
+
+### Melhorias não funcionais
+- Implementa novos componentes vuejs para implementação de tabelas (entity-table)
+- Nova lib instalada (league/csv), para manipulação de arquivos csv.
+- Log de hooks agora exibe um backtrace
+- Adiciona novos índices para melhorar a performance global do sistema
+- Atualiza bibliotecas PHP e JS
+
+## [7.3.58] - 2024-05-22
+### Correções
+- Remove webmanifest para evitar erros no carregamento atravez do safari
+
+## [7.3.57] - 2024-05-17
+### Melhorias
+- Não solicita o campo País em ambientes com a configuração statesAndCitiesCountryCode definida como BR
+
+### Correçoes
+- Corrige mascaras dos telefones no cadastro dos agentes para que aceite telefones residênciais e celulares
+
+## [7.3.56] - 2024-05-16
+### Melhorias
+- Padroniza altura dos cards das entidades da home 
+
+## [7.3.55] - 2024-05-14
+### Correçoes
+- Faz com que na single perfil, seja exibito os projetos relacionados 
+- Corrije erro que impede a exibição de projetos na listagem devido a falta do tipo
+
+### Melhorias
+- Na single do agente, ordena as oportunidades vinculadas pela data de encerramento de forma ascendente
+
+## [7.3.54] - 2024-05-13
+### Correçoes
+- Aplica internecionalização na tela de edição de eventos
+
+## [7.3.53] - 2024-05-13
+### Correçoes
+- Ajusta o enfileiramento da folha de estilo que controla os termos de uso e privacidade
 
 ## [7.3.52] - 2024-05-08
 ### Correçoes

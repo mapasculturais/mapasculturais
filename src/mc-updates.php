@@ -1,9 +1,11 @@
 <?php
 
-use MapasCulturais\App;
-use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
+use MapasCulturais\App;
 use MapasCulturais\Utils;
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 
 return [
     'recreate pcache' => function () {
@@ -426,4 +428,31 @@ return [
         }
         $app->auth->logout();
     },
+
+    'sync last opportunity phases registrations' => function() {
+        DB_UPDATE::enqueue(Opportunity::class, "id in (SELECT object_id FROM opportunity_meta WHERE key = 'isLastPhase')", function (Opportunity $opportunity) {
+            if($opportunity->publishedRegistrations){
+                $opportunity->registrationsOutdated = true;
+                $opportunity->save(true);
+            } else {
+                $opportunity->enqueueRegistrationSync();
+            }
+        });
+    },
+    'Atualiza campo pessoa idosa' => function() {
+        DB_UPDATE::enqueue(Agent::class, "id > 0", function (Agent $agent) {
+            $app = \MapasCulturais\App::i();
+            $app->disableAccessControl();
+            if ($agent->dataDeNascimento) {
+                $today = new \DateTime('now');
+                $calc = (new \DateTime($agent->dataDeNascimento))->diff($today);
+                $idoso = ($calc->y >= 60) ? "1" : "0";
+                if($agent->idoso != $idoso){
+                    $agent->idoso = $idoso;
+                    $agent->save(true);
+                }
+            } 
+            $app->enableAccessControl();
+        });
+    }
 ];

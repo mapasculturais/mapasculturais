@@ -18,7 +18,7 @@ app.component('mc-select', {
             default: false,
         },
 
-        hideFilter: {
+        showFilter: {
             type: Boolean,
             default: false,
         },
@@ -86,7 +86,8 @@ app.component('mc-select', {
 
     mounted() {
         setTimeout(() => {
-            const options = this.$refs.options.children;
+            const options = this.$refs.options.querySelectorAll('[value]');
+            
             this.defaultOptions = Object.freeze(Array.from(options));
             
             for (const [index, option] of Object.entries(options)) {                            
@@ -116,6 +117,8 @@ app.component('mc-select', {
     
                         refSelected.innerHTML = optionItem;
                     }
+                } else {
+                    this.setMatchingOption(option);
                 }
             }
     
@@ -163,7 +166,7 @@ app.component('mc-select', {
     computed: {
         selectOptions() {
             const result = [];
-
+            
             for(let option of this.options) {
                 // debugger;
                 if (typeof option == "string") {
@@ -288,5 +291,30 @@ app.component('mc-select', {
                 this.$refs.options.innerHTML = 'Nenhuma opção encontrada';
             }
         },
+
+        setMatchingOption(option) {
+            const refSelected = this.$refs.selected;
+            
+            if (!option.hasAttribute('value')) {
+                console.error('Atributo value não encontrado');
+                return;
+            }
+
+            if (this.defaultValue != null || this.defaultValue != '') {
+
+                let optionText = option.text ?? option.textContent;
+                let optionValue = option.value ?? option.getAttribute('value');
+                let optionItem = option.outerHTML;
+
+                if (optionValue == this.defaultValue) {
+                    this.optionSelected = {
+                        text: optionText,
+                        value: optionValue,
+                    }
+
+                    refSelected.innerHTML = optionItem;
+                }
+            }
+        }
     },
 });

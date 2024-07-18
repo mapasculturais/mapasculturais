@@ -92,7 +92,9 @@ $header = array_values(array_filter([
     i::__("Status"),
     i::__("Inscrição - Data de envio"),
     i::__("Inscrição - Hora de envio"),
-    showIfField($entity->registrationCategories, $entity->registrationCategTitle),
+    showIfField($entity->registrationCategories, i::__("Categoria")),
+    showIfField($entity->registrationProponentTypes, i::__("Tipo de Proponente")),
+    showIfField($entity->registrationRanges, i::__("Faixa/Linha")),
 ]));
 
 foreach ($app->config['registration.reportOwnerProperties'] as $field) {
@@ -155,7 +157,9 @@ foreach($registrations as $i => $r) {
         returnStatus($r) ?: '""',
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('d-m-Y') : '-'),
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('H:i') : '-'),
-        showIfField($entity->registrationCategories, $r->category)
+        showIfField($entity->registrationCategories, $r->category),
+        showIfField($entity->registrationProponentTypes, $r->proponentType),
+        showIfField($entity->registrationRanges, $r->range)
     ]));
 
     foreach ($app->config['registration.reportOwnerProperties'] as $field) {

@@ -19,9 +19,11 @@ $this->import('
 				<mc-avatar :entity="entity" size="small"></mc-avatar>
 			</slot>
 			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
-				<slot name="title">
-					<mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{entity.name}}</mc-title>
-				</slot>
+				<a :href="entity.singleUrl">
+					<slot name="title">
+						<mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{entity.name}}</mc-title>
+					</slot>
+				</a>
 				<slot name="type">
 					<div v-if="entity.type" class="user-info__attr">
 						<?php i::_e('Tipo:') ?> {{entity.type.name}}
@@ -120,8 +122,7 @@ $this->import('
 				<label class="seals__title">
 					<?php i::_e('Selos') ?>:
 				</label>
-				<mc-avatar v-for="seal in entity.seals" :title="seal.name + ' AQUI'" :entity="seal" square size="xsmall"></mc-avatar>
-				
+				<mc-avatar v-for="seal in entity.seals" :title="seal.name" :entity="seal" square size="xsmall"></mc-avatar>
 			</div>
 		</div>
 
