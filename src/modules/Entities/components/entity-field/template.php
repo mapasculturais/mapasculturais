@@ -41,7 +41,7 @@ $this->import('
         
         <input v-if="is('socialMedia')" :value="value" :id="propId" :name="prop" :type="fieldType" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder">
         
-        <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change"></entity-field-datepicker>
+        <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change($event, true)"></entity-field-datepicker>
         
         <div  v-if="is('textarea') && prop=='shortDescription'" class="field__shortdescription">
             <textarea :id="propId" :value="value" :name="prop" @input="change($event)" @blur="change($event,true)" :maxlength="400"></textarea>
