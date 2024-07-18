@@ -11,6 +11,7 @@ use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\Space;
 use MapasCulturais\Entities\Subsite;
 use MapasCulturais\Entities\User;
+use MapasCulturais\i;
 use Spreadsheets\SpreadsheetJob;
 
 class Entities extends SpreadsheetJob
@@ -41,9 +42,19 @@ class Entities extends SpreadsheetJob
         $properties = explode(',', $query['@select']);
 
         foreach($properties as $property) {
-            $header[$property] = $entity_class_name::getPropertyLabel($property);
-        }
+            if($property == 'terms') {
+                $header['area'] = i::__('Área de interesse');
+                $header['tag'] = i::__('Tags');
+                continue;
+            }
 
+            if($property == 'files.avatar') {
+                continue;
+            }
+
+            $header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
+        }
+        
         return $header;
     }
 
@@ -55,10 +66,20 @@ class Entities extends SpreadsheetJob
         $query['@page'] = $this->page;
 
         $query = new ApiQuery($entity_class_name, $query);
-        
         $result = $query->getFindResult();
 
         foreach($result as &$entity) {
+            $terms = $entity['terms'] ?? null;
+
+            $entity['type'] = $entity['type']->name;
+            $entity['area'] = isset($terms['area']) ? implode(', ', $terms['area']) : null;
+            $entity['tag'] = isset($terms['tag']) ? implode(', ', $terms['tag']) : null;
+            $sealNames = array_map(function($seal) {
+                return $seal['name'];
+            }, $entity['seals']);
+            $entity['seals'] = implode(', ', $sealNames);
+
+            unset($entity['terms']);
             unset($entity['@entityType']);
         }
         
