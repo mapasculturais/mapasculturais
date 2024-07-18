@@ -5,12 +5,11 @@
  */
 ?>
 <div class="entity-field-datepicker">
-    <div class="datepicker-date">
+    <div v-if="is('date') || is('datetime')" class="entity-field-datepicker__date">
         <input v-model="dateInput" class="date-input" type="text" data-maska="##/##/####" @focus="isDateInputFocused = true" @blur="handleBlur('date')" v-maska >
         <datepicker
             ref="datepickerCalendar"
             :teleport="true"
-            v-if="is('date') || is('datetime')" 
             v-model="modelDate" 
             @update:model-value="onDateChange" 
             :dayNames="dayNames" 
@@ -29,12 +28,11 @@
         </datepicker>
     </div>
         
-    <div class="datepicker-time">
+    <div v-if="is('time') || is('datetime')" class="entity-field-datepicker__time">
         <input v-model="timeInput" class="time-input" type="text" data-maska="##:##" @focus="isTimeInputFocused = true" @blur="handleBlur('time')" v-maska>
         <datepicker
             ref="datepickerClock"
             :teleport="true"
-            v-if="is('time') || is('datetime')" 
             @update:model-value="onTimeChange" 
             v-model="modelTime"
             :format="timeFormat"
