@@ -74,6 +74,10 @@
             padding-top: 0;
             border: 0;
         }
+
+        .field--horizontal {
+            flex-wrap: wrap;
+        }
     }
 
     &__quota-field-sufix {

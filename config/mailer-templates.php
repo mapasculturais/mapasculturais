@@ -47,6 +47,14 @@ return [
             'title' => i::__("Inscrição iniciada"),
             'template' => 'start_registration.html'
         ],
+        'start_data_collection_phase' => [
+            'title' => i::__("Sua inscrição avaçou de fase"),
+            'template' => 'start_data_collection_phase.html'
+        ],
+        'export_spreadsheet' => [
+            'title' => i::__("Arquivo gerado"),
+            'template' => 'export_spreadsheet.html'
+        ],
         'send_registration' => [
             'title' => i::__("Inscrição enviada"),
             'template' => 'send_registration.html'

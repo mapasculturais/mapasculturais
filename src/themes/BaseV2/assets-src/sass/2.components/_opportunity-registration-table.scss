@@ -14,18 +14,6 @@
         text-align: center;
     }
 
-    .apply-evaluations {
-        .modal-content {
-            max-width: size(570);
-            padding: size(32);
-
-            .modal__content {
-                margin: size(24) 0 0;
-                padding: 0;
-            }
-        }
-    }
-
     &__filter {
         max-width: size(1170);
         border-radius: var(--mc-border-radius-xs);
@@ -41,9 +29,18 @@
         width: 100%;
 
     }
-    &__text-filter {
-
+    
+    &__actions {
+        display: grid;
+        gap: size(12);
     }
+
+    &__actions-buttons {
+        display: flex;
+        gap: size(12);
+        flex-wrap: wrap;
+    }
+    
     &__select-tag {
         & > select {
             border-radius: var(--mc-border-radius-xs);
@@ -102,7 +99,7 @@
         text-align: center;
 
         .button {
-            min-width: size(272);
+            min-width: size(224);
         }
 
         @media (max-width: 980px) {

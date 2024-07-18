@@ -90,7 +90,7 @@ class Module extends \MapasCulturais\Module {
                 }
             }
             
-            $this->jsObject['currentUserRoles'] = array_unique($roles);
+            $this->jsObject['currentUserRoles'] = array_values(array_unique($roles));
 
             /* Definindo entidades desligadas */
             $entities = ['agents', 'events', 'projects', 'opportunities', 'spaces', 'seals', 'subsites', 'apps'];

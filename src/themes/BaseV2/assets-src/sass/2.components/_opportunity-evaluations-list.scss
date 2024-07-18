@@ -6,6 +6,10 @@
     top: size(40);
     z-index: 1;
 
+    .count {
+        margin: 15px;
+    }
+
     &__container {
         width: size(140);
         display: flex;
@@ -141,6 +145,10 @@
                 overflow-y: auto;
                 overflow-x: hidden;
                 max-height: size(880);
+
+                li.no-records {
+                    padding: 15px;
+                }
                 
                 li.evaluation-list__card:last-child {
                     margin-bottom: size(16);
@@ -155,7 +163,22 @@
                         border-radius: var(--mc-border-radius-xs);
                         padding: size(16);
                         background-color: var(--mc-white);
-    
+
+                        &.pending {
+                            border-top: solid #FFB5B5 4px;
+                        }
+
+                        &.started {
+                            border-top: solid #FFCF8F 4px;
+                        }
+
+                        &.completed {
+                            border-top: solid #99D6FF 4px;
+                        }
+
+                        &.sent {
+                            border-top: solid #BFE88B 4px;
+                        }
                     }
                 
                     .link {

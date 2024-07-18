@@ -1038,6 +1038,17 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
 
     if(MapasCulturais.evaluationFieldsList){
+        MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort((a,b) => {
+            console.log(a,b)
+            if(a.displayOrder > b.displayOrder){
+                return 1;
+            }else if(a.displayOrder < b.displayOrder){
+                return -1;
+            }else{
+                return 0;
+            }
+        });
+
         MapasCulturais.evaluationFieldsList.forEach(function(item){
             $scope.data.fields.push(item);
         })
@@ -1732,29 +1743,23 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         var result = true;
 
         if ($scope.useCategories) {
-            result = result && (field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0);
+            result = result && (field.categories?.length === 0 || field.categories.indexOf($scope.entity.category) >= 0);
         }
 
         if ($scope.useRegistrationsRanges) {
-            if(field.registrationRanges.length > 0  && !field.registrationRanges.includes(MapasCulturais.entity.object.range)) {
+            if(field.registrationRanges?.length > 0  && !field.registrationRanges.includes($scope.entity.range)) {
                 result = false;
             }
         }
 
         if ($scope.useProponentTypes) {
-            if(field.proponentTypes.length > 0 && !field.proponentTypes.includes(MapasCulturais.entity.object.proponentType)) {
+            if(field.proponentTypes?.length > 0 && !field.proponentTypes.includes($scope.entity.proponentType)) {
                 result = false;
             }
         }
-      
+
         if(field.conditional){
             result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
-        }
-
-        if (field.config && field.config.require && field.config.require.condition && field.config.require.hide) {
-            var requiredFieldName = field.config.require.field;
-            var requeredFieldValue = field.config.require.value;
-
         }
 
         if(MapasCulturais.entity.canUserEvaluate){
