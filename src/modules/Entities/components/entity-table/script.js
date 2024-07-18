@@ -111,11 +111,6 @@ app.component('entity-table', {
     },
 
     data() {
-        const getSeals = $MAPAS.config.entityTable.seals;
-        let seals = {}
-        for (const seal of getSeals) {
-            seals[seal.id] = seal.name;
-        }
         const id = this.query['@opportunity'] ?? '';
         const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
 
