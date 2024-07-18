@@ -8,7 +8,12 @@ function orderEntities($a, $b) {
 
 usort($relatedOpportunities, 'orderEntities');
 
+$opportunities = [];
 
-$this->jsObject['opportunityList']['opportunity'] = $relatedOpportunities;
+foreach($relatedOpportunities as $opportunity) {
+    $opportunities[] = $opportunity->simplify("id,name,avatar,registrationFrom,registrationTo");
+}
+
+$this->jsObject['opportunityList']['opportunity'] = $opportunities;
 
 

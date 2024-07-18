@@ -17,15 +17,16 @@ $this->import('
             <h3 v-if="group.label">{{group.label}}</h3>
             <ul v-if="group.items.length > 0">
                 <li v-for="item in group.items" :key="`${group.id}:${item.route}`">
-                    <mc-link :route="item.route" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
+                    <mc-link :route="item.route" :params="item.params" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
                 </li>
             </ul>
         </template>
         <template v-if="sidebar">
             <div class="panel-nav__line"></div>
-            <div class="panel-nav__right">
-                <li class="myaccount"><mc-link :entity='entity' icon><?= i::__('Meu Perfil') ?></mc-link></li>
-                <li class="exit"><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
+            <div class="panel-nav__right panel-nav__right--user">
+                <li v-for="item in userGroup.items" :key="`user:${item.route}`">
+                    <mc-link :route="item.route" :params="item.params" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
+                </li>
             </div>
         </template>
     </div>
@@ -35,14 +36,15 @@ $this->import('
             <h3 v-if="group.label">{{group.label}}</h3>
             <ul v-if="group.items.length > 0">
                 <li v-for="item in group.items" :key="`${group.id}:${item.route}`">
-                    <mc-link :route="item.route" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
+                    <mc-link :route="item.route" :params="item.params" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
                 </li>
             </ul>
         </template>
         <div class="panel-nav__line"></div>
-        <div class="panel-nav__right">
-            <li class="myaccount"><mc-link :entity='entity' icon><?= i::__('Meu Perfil') ?></mc-link></li>
-            <li class="exit"><mc-link route='auth/logout' icon="logout"><?= i::__('Sair') ?></mc-link></li>
+        <div class="panel-nav__right panel-nav__right--user">
+            <li v-for="item in userGroup.items" :key="`user:${item.route}`">
+                <mc-link :route="item.route" :params="item.params" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
+            </li>
         </div>
     </div>
 </nav>
@@ -52,7 +54,7 @@ $this->import('
         <h3 v-if="group.label">{{group.label}}</h3>
         <ul v-if="group.items.length > 0">
             <li v-for="item in group.items" :key="`${group.id}:${item.route}`">
-                <mc-link :route="item.route" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
+                <mc-link :route="item.route" :params="item.params" :icon="item.icon" :class="{'active': active(item)}">{{item.label}}</mc-link>
             </li>
         </ul>
     </template>

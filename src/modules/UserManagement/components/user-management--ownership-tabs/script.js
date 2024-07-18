@@ -42,6 +42,12 @@ app.component('user-management--ownership-tabs', {
             default: 'id,name,status,subsite.name,files'
         },
     },
+
+    data() {
+        return {
+            recreatingPCache: false
+        };
+    },
     computed: {
         newSelect() {
             if(this.type=='registration') {
@@ -52,4 +58,13 @@ app.component('user-management--ownership-tabs', {
         },
 
     },
+
+    methods: {
+        recreatePCache(entity) {
+            entity.recreatingPCache = true;
+            entity.POST('enqueuePCache',{callback: () => {
+                entity.recreatingPCache = false;
+            }});
+        }
+    }
 });

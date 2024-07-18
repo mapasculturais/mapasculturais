@@ -12,11 +12,10 @@ app.component('opportunity-registrations-table', {
         avaliableColumns: Array,
         hideFilters: Boolean,
         hideSort: Boolean,
+        hideActions: Boolean,
+        hideTitle: Boolean,
+        hideHeader: Boolean,
         statusNotEditable: Boolean,
-        order: {
-            type: String,
-            default: "",
-        }
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
@@ -113,7 +112,7 @@ app.component('opportunity-registrations-table', {
                 sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
             }
         }
-
+        
         return {
             sortOptions,
             filters: {},
@@ -121,6 +120,7 @@ app.component('opportunity-registrations-table', {
             query: {
                 '@opportunity': this.phase.id,
                 'status': 'GTE(0)',
+                '@permission': 'view'
             },
             selectedCategories: [],
             selectedProponentTypes: [],

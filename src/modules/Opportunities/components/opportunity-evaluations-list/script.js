@@ -15,6 +15,9 @@ app.component('opportunity-evaluations-list', {
             type: String,
             default: 'Content'
         },
+        userEvaluatorId: {
+            type: String,
+        }
     },
 
     setup() {
@@ -35,15 +38,54 @@ app.component('opportunity-evaluations-list', {
             timeOut: null,
             roles: $MAPAS.currentUserRoles,
             filterKeyword: false,
-            loading: false
+            loading: false,
+            onlyMe: true,
+            filtersOptions: [
+                {label: this.text('all'), value: 'all'},
+                {label: this.text('pending'), value: 'pending'},
+                {label: this.text('started'), value: '0'},
+                {label: this.text('completed'), value: 1},
+                {label: this.text('sent'), value: 2},
+            ],
+            filterStatus: $MAPAS.config.opportunityEvaluationsList?.evaluationStatusFilterCache || 'all'
         }
     },
     watch: {
         'pending'(_new, _old) {
             this.getEvaluations();
+        },
+        'filterStatus'(_new, _old) {
+            this.getEvaluations();
+        },
+        'onlyMe' (_new, _old) {
+            this.getEvaluations();
         }
     },
     methods: {
+        colorByStatus(evaluation) {
+            let result = 'pending';
+
+            
+            let eval = evaluation ? evaluation.status : null
+            switch (eval) {
+                case null:
+                case "":
+                case undefined:
+                    result = 'pending'
+                    break;
+                case '0':
+                    result = 'started'
+                    break;
+                case 1:
+                    result = 'completed'
+                    break;
+                case 2:
+                    result = 'sent'
+                    break;
+            }
+
+            return result;
+        },
         timeOutFind(delay = 1500) {
             clearTimeout(this.timeOut);
 
@@ -52,12 +94,13 @@ app.component('opportunity-evaluations-list', {
             }, delay);
         },
         async getEvaluations() {
-            this.loading = true;
 
+            this.loading = true;
             let args = {};
             args['@select'] = "id,owner.name";
             args['registration:@select'] = "id,owner.name,sentTimestamp";
             args['@opportunity'] = this.entity.opportunity.id;
+            args['@evaluationId'] = `${this.userEvaluatorId}`
 
             if(this.keywords){
                 args['registration:@keyword'] = this.keywords;
@@ -65,6 +108,14 @@ app.component('opportunity-evaluations-list', {
 
             if (this.pending) {
                 args['@pending'] = true;
+            }
+
+            if (this.filterStatus) {
+                args['@filterStatus'] = this.filterStatus;
+            }
+
+            if (this.onlyMe) {
+                args['@onlyMe'] = true;
             }
 
             api = new API('opportunity');
@@ -76,7 +127,7 @@ app.component('opportunity-evaluations-list', {
                         evaluationId: item.evaluation?.id,
                         registrationNumber: item.registration.number,
                         registrationId: item.registration.id,
-                        registrationSentTimestamp: new McDate(item.registration.sentTimestamp.date),
+                        registrationSentTimestamp: item.registration.sentTimestamp ? new McDate(item.registration.sentTimestamp.date) : null,
                         agentname: item.registration.owner?.name,
                         status: item?.evaluation?.status,
                         resultString: item?.evaluation?.resultString || null,
@@ -104,7 +155,7 @@ app.component('opportunity-evaluations-list', {
 
             var index = null;
             this.evaluations.forEach((obj, i) => {
-                if (obj.registrationid === data.detail.registrationId) {
+                if (obj.registrationId === data.detail.registrationId) {
                     index = data.type === "nextEvaluation" ? i + 1 : i - 1;
                 }
             });
