@@ -1650,7 +1650,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.removeFile = function (id, $index) {
         if(confirm(labels['confirmRemoveAttachment'])){
-            $http.get($scope.data.fields[$index].file.deleteUrl).success(function(response){
+            let url = MapasCulturais.createUrl('file','single',{id:$scope.data.fields[$index].file.id});
+            $http.delete(url).success(function(response){
+                MapasCulturais.Messages.success(labels['attachmentRemoved']);
                 delete $scope.data.fields[$index].file;
             });
         }
@@ -2728,7 +2730,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
                 if(confirm('Deseja remover este anexo?')){
-                    $http.get($scope.data.entity.registrationRulesFile.deleteUrl).success(function(response){
+                    let url = MapasCulturais.createUrl('file','single',{id:$scope.data.entity.registrationRulesFile.id});
+                    $http.delete(url).success(function(response){
                         $scope.data.entity.registrationRulesFile = null;
                     });
                 }
