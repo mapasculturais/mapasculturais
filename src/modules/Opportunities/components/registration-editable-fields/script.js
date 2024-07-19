@@ -20,7 +20,6 @@ app.component('registration-editable-fields', {
         return {
             fields,
             selectedFields: this.registration.editableFields ?? [],
-            editableUntil: this.registration.editableUntil ? this.registration.editableUntil._date : null,
             processing: false
         }
     },
@@ -42,18 +41,18 @@ app.component('registration-editable-fields', {
     
     methods: {
         async save(modal) {
+
             if (this.selectedFields.length == 0) {
                 this.messages.error(__('campos para edição','registration-editable-fields'));
                 return false;
             }
 
-            if (!this.editableUntil) {
+            if (!this.registration.editableUntil) {
                 this.messages.error(__('data limite','registration-editable-fields'));
                 return false;
             }
 
             this.registration.editableFields = this.selectedFields;
-            this.registration.editableUntil = this.editableUntil;
 
             this.processing = 'saving';
             await this.registration.save();
