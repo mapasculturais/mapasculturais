@@ -9,8 +9,9 @@ app.component('registration-editable-fields', {
     },
     
     setup() {
+        const text = Utils.getTexts('registration-editable-fields')
         const messages = useMessages();
-        return { messages }
+        return { messages, text }
     },
 
     data() {
@@ -20,6 +21,7 @@ app.component('registration-editable-fields', {
             fields,
             selectedFields: this.registration.editableFields ?? [],
             editableUntil: this.registration.editableUntil ? this.registration.editableUntil._date : null,
+            processing: false
         }
     },
 
@@ -31,15 +33,15 @@ app.component('registration-editable-fields', {
             return !this.registration.editSentTimestamp ? false : true;
         },
         afterDeadline() {
-            return this.registration.editableUntil && new McDate(this.registration.editableUntil).isPast() ? true : false;
+            return this.registration.editableUntil && this.registration.editableUntil.isPast() ? true : false;
         },
         canReopen() {
-            return this.registration.editSentTimestamp && new McDate(this.registration.editableUntil).isFuture() ? true : false;
+            return this.registration.editSentTimestamp && this.registration.editableUntil.isFuture() ? true : false;
         }
     },
     
     methods: {
-        save(modal) {
+        async save(modal) {
             if (this.selectedFields.length == 0) {
                 this.messages.error(__('campos para edição','registration-editable-fields'));
                 return false;
@@ -53,14 +55,19 @@ app.component('registration-editable-fields', {
             this.registration.editableFields = this.selectedFields;
             this.registration.editableUntil = this.editableUntil;
 
-            this.registration.save();
+            this.processing = 'saving';
+            await this.registration.save();
+            this.processing = false;
             modal.close();
         },
 
-        reopen(modal) {
-            this.registration.editSentTimestamp = null;
-            this.registration.save();
-            modal.close();
+        reopen() {
+            this.processing = 'reopening';
+            this.registration.POST('reopenEditableFields', {callback: (response) => {
+                this.registration.editSentTimestamp = null;
+                this.processing = false;
+                this.messages.success(this.text('campos reabertos para edição'));
+            }})
         },
     },
 });
