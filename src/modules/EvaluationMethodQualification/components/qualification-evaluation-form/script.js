@@ -24,6 +24,20 @@ app.component('qualification-evaluation-form', {
             },
         };
     },
+    computed: {
+        sections() {
+            return $MAPAS.config.qualificationEvaluationForm.sections || [];
+        },
+        userId() {
+            return $MAPAS.userId;
+        },
+        entityId() {
+            return this.entity && this.entity.id ? this.entity.id : null;
+        }
+    },
+    mounted() {
+        this.fetchEvaluations();
+    },
 
     methods: {
     
