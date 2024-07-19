@@ -1,0 +1,28 @@
+@use '../0.settings/mixins' as *;
+
+.registration-editable-fields {
+    &__modal {
+        max-width: size(900);
+        width: 100%;
+        margin: 0 auto;
+
+        .modal-content {
+            width: 100%;
+        }
+    }
+
+    &__field {
+        align-items: center;
+        background-color: var(--mc-white);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        cursor: pointer;
+        display: flex;
+        gap: size(20);
+        justify-content: flex-start;
+        padding: size(24);
+
+        &:hover {
+            background-color: var(--mc-gray-100);
+        }
+    }
+}

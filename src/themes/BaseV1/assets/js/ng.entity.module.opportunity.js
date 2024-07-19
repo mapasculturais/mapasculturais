@@ -1038,6 +1038,17 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
 
     if(MapasCulturais.evaluationFieldsList){
+        MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort((a,b) => {
+            console.log(a,b)
+            if(a.displayOrder > b.displayOrder){
+                return 1;
+            }else if(a.displayOrder < b.displayOrder){
+                return -1;
+            }else{
+                return 0;
+            }
+        });
+
         MapasCulturais.evaluationFieldsList.forEach(function(item){
             $scope.data.fields.push(item);
         })
@@ -1198,6 +1209,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         errors: {},
         avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
+
+    $scope.canUserEdit = function(field){
+        if(!MapasCulturais.registrationEditableFields.canUserSendEditableFields) {
+            return false;
+        }
+
+        if(MapasCulturais.registrationEditableFields.fields.includes(field.fieldType == 'file' ? field.groupName : field.fieldName)) {
+            return true;
+        }
+
+        return false;
+    }
 
     $timeout(function(){
         $scope.ibge = MapasCulturais.ibge;
@@ -1779,7 +1802,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.printField = function(field, value){
-
+        
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         } else if (field.fieldType === 'url'){
