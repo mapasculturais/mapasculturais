@@ -30,6 +30,7 @@ app.component('mc-select', {
 
         options: {
             type: Array,
+            default: []
         },
     },
 
@@ -168,7 +169,6 @@ app.component('mc-select', {
             const result = [];
             
             for(let option of this.options) {
-                // debugger;
                 if (typeof option == "string") {
                     result.push({
                         value: option,
