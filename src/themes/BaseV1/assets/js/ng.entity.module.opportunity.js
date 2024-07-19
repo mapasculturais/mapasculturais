@@ -1210,6 +1210,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
 
+    $scope.canUserEdit = function(field){
+        if(!MapasCulturais.registrationEditableFields.canUserSendEditableFields) {
+            return false;
+        }
+
+        if(MapasCulturais.registrationEditableFields.fields.includes(field.fieldType == 'file' ? field.groupName : field.fieldName)) {
+            return true;
+        }
+
+        return false;
+    }
+
     $timeout(function(){
         $scope.ibge = MapasCulturais.ibge;
     }, 200)
@@ -1790,7 +1802,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.printField = function(field, value){
-
+        
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         } else if (field.fieldType === 'url'){
