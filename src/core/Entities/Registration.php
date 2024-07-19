@@ -376,7 +376,10 @@ class Registration extends \MapasCulturais\Entity
             'files' => [],
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl,
-            'appliedForQuota' => $this->appliedForQuota
+            'appliedForQuota' => $this->appliedForQuota,
+            'editableUntil' => $this->editableUntil,
+            'editableFields' => $this->editableFields,
+            'editSentTimestamp' => $this->editSentTimestamp,
         ];
 
         if($this->canUser('viewConsolidatedResult')){
@@ -500,6 +503,10 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    protected function setEditSentTimestamp($datetime) {
+        return false;
+    }
+
     function reopenEditableFields() {
         $this->opportunity->checkPermission('@control');
         $this->editSentTimestamp = null;
@@ -507,9 +514,12 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function sendEditableFields() {
+        $app = App::i();
         $this->checkPermission('sendEditableFields');
         $this->editSentTimestamp = new DateTime();
+        $app->disableAccessControl();
         $this->save(true);
+        $app->enableAccessControl();
     }
 
     function setOwnerId($id){
