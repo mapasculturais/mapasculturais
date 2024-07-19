@@ -122,9 +122,10 @@ class Module extends \MapasCulturais\Module
         ];
 
         $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) use ($module) {
-            if ($module->inEditableTransaction) {
-                $result = true;
-                $module->grantedCoarse = true;
+            if (!$result) {
+                /** @var Registration $this */
+                $result = $this->canUser('sendEditableFields');
+                $module->grantedCoarse = $result;
             }
         });
 
