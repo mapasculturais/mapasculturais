@@ -402,7 +402,7 @@ class Registration extends EntityController {
         
         $this->layout = 'edit-layout';
 
-        $this->render("registration-edit", ['entity' => $entity]);
+        $this->render("registration-editable-field", ['entity' => $entity]);
     }
 
     function POST_setStatusTo(){
@@ -683,7 +683,7 @@ class Registration extends EntityController {
         $this->json(true);
     
     }
-    
+
     function POST_reopenEditableFields() {
         $this->requireAuthentication();
         $entity = $this->requestedEntity;
