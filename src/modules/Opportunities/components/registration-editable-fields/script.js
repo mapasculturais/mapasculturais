@@ -20,7 +20,8 @@ app.component('registration-editable-fields', {
         return {
             fields,
             selectedFields: this.registration.editableFields ?? [],
-            processing: false
+            processing: false,
+            selectAll: false
         }
     },
 
@@ -68,5 +69,13 @@ app.component('registration-editable-fields', {
                 this.messages.success(this.text('campos reabertos para edição'));
             }})
         },
+
+        updateAllSelection() {
+            if (this.selectAll) {
+                this.selectedFields = this.fields.map(field => field.ref);
+            } else {
+                this.selectedFields = this.registration.editableFields ?? [];
+            }
+        }
     },
 });
