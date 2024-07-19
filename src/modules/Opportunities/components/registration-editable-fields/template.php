@@ -37,6 +37,12 @@ $this->import('
 
                 <div class="field col-12">
                     <label><?= i::__('Selecione os campos que ficarão disponíveis para edição') ?></label>
+
+                    <label>  
+                        <input type="checkbox" v-model="selectAll" @change="updateAllSelection"/> 
+                        <span class="semibold"><?= i::__('Selecionar todos') ?></span>
+                    </label>
+
                     <div class="registration-editable-fields__fields">
                         <label v-for="field in fields" :for="field.id" class="registration-editable-fields__field">  
                             <input type="checkbox" v-model="selectedFields" :id="field.id" :value="field.ref" /> 
