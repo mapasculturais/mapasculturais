@@ -1,6 +1,6 @@
 app.component('qualification-evaluation-form', {
     template: $TEMPLATES['qualification-evaluation-form'],
-    
+
     setup() {
         const messages = useMessages();
         const text = Utils.getTexts('qualification-evaluation-form');
@@ -13,10 +13,15 @@ app.component('qualification-evaluation-form', {
             required: true
         },
     },
-    
+
     data() {
         return {
-            sections: $MAPAS.config.qualificationEvaluationForm.sections || [],
+            formData: {
+                sectionStatus: {},
+                obs: '',
+                data: {},
+
+            },
         };
     },
 
