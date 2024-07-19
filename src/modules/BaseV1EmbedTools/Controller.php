@@ -211,7 +211,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->layout = "embedtools-registration";
         $entity = $this->requestedEntity;
 
-        $this->render("registration-edit", ['entity' => $entity]);
+        $this->render("registration-editable-field", ['entity' => $entity]);
     }
 
     function getEntityAndCheckPermission($permission) 
