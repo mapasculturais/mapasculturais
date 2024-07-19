@@ -33,7 +33,7 @@ $this->import('
                 </span>
             </div>
             
-            <template v-if="item.isFirstPhase">
+            <template v-if="registration && item.isFirstPhase">
                 <registration-form-timeline :entity="registration"></registration-form-timeline>
             </template>
 
