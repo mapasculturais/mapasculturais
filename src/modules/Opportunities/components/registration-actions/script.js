@@ -6,6 +6,11 @@ app.component('registration-actions', {
             type: Entity,
             required: true
         },
+
+        editableFields: {
+            type: Boolean,
+            default: false
+        }
     },
 
     setup() {
@@ -69,6 +74,7 @@ app.component('registration-actions', {
 
         },
         async send() {
+            const route = this.editableFields ? 'sendEditableFields' : 'send';
             const data = {id: this.registration.id};
             if (this.registration.category) {
                 data.category = this.registration.category;
@@ -78,8 +84,12 @@ app.component('registration-actions', {
                 this.registration.disableMessages();
                 await this.save();
                 this.registration.enableMessages();
-                await this.registration.POST('send', {data});
-                document.location.reload();
+                await this.registration.POST(route, {data});
+                if(this.editableFields) {
+                    document.location = this.registration.singleUrl;
+                } else {
+                    document.location.reload();
+                }
             } catch(error) {
                 console.error(error);
             }
