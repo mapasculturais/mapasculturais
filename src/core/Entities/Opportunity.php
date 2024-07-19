@@ -1548,10 +1548,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return true;
         }
 
-        if($this->publishedRegistrations){
-            return false;
-        }
-
         if (!$this->evaluationMethodConfiguration) {
             return false;
         }
@@ -1559,18 +1555,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
 
         return $relation && $relation->status === AgentRelation::STATUS_ENABLED;
-    }
-
-    protected function canUserReopenValuerEvaluations($user){
-        if(!$this->canUser('@controll', $user)){
-            return false;
-        }
-
-        if($this->publishedRegistrations){
-            return false;
-        }
-
-        return true;
     }
 
     protected function canUserViewEvaluations($user){

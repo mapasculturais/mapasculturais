@@ -15,6 +15,7 @@ return [
     // Status
     'arquivadas' => i::__('Arquivadas'),
     'invalidas' => i::__('Inválidas'),
+    'iniciada' => i::__('Iniciada'),
     'lixeira' => i::__('Lixeira'),
     'nao selecionadas' => i::__('Não selecionadas'),
     'pendentes' => i::__('Pendentes'),
@@ -36,4 +37,6 @@ return [
     'pago' => i::__('Pago'),
 
     'palavras-chave' => i::__('Palavras-chave'),
+    'pessoa idosa' => i::__('Pessoa Idosa'),
+    'acessibilidade' => i::__('Possui acessibilidade'),
 ];

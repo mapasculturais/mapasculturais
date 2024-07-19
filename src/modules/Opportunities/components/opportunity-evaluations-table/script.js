@@ -6,16 +6,18 @@ app.component('opportunity-evaluations-table', {
             type: Entity,
             required: true
         },
-        
         classes: {
             type: [String, Array, Object],
             required: false
         },
-
         user: {
             type: [String, Number],
             required: true
-        }
+        },
+        identifier: {
+            type: String,
+            required: true,
+        },
     },
 
     setup() {

@@ -1,0 +1,20 @@
+@use '../0.settings/mixins' as *;
+
+.entity-field-datepicker {
+    display: flex;
+    gap: size(16);
+
+    .date-input, .time-input {
+        padding-left: size(40);
+    }
+
+    &__date {
+        max-width: 100%;
+        width: 60%;
+    }
+
+    &__time {
+        max-width: 100%;
+        width: 30%;
+    }
+}

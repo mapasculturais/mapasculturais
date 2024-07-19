@@ -64,16 +64,23 @@ class Controller extends \MapasCulturais\Controller
         }
 
         $owner = $this->getOwner();
-                
+
+        $query = $this->data['query'];
+
+        unset($query['@limit']);
+        unset($query['@page']);
+        
+        if($select = $this->data['@select']) {
+            unset($query['@select']);
+            $query['@select'] = $select;
+        }
+              
         $app->enqueueOrReplaceJob('entities-spreadsheets', [
             'owner' => $owner,
             'authenticatedUser' => $app->user,
             'extension' => $extension,
             'entityClassName' => $entity_class_name,
-            'query' => [
-                '@select' => $this->data['@select'] ?? 'id,name',
-                '@order' => $this->data['@order'] ?? 'id ASC'
-            ] 
+            'query' => $query
         ]);
 
         $this->json(true);
