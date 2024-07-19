@@ -106,10 +106,6 @@ $this->breadcrumb = $breadcrumb;
                                 <entity-field :entity="entity" prop="appliedForQuota"></entity-field>
                             </div>
                         </div>
-
-                        <registration-related-agents :registration="entity"></registration-related-agents>
-                        <registration-related-space :registration="entity"></registration-related-space>
-                        <registration-related-project :registration="entity"></registration-related-project>
                     </div>
                 </section>
 
