@@ -1763,7 +1763,7 @@ class App {
 
         if($user && is_numeric($user)) {
             $user = $this->repo('User')->find($user);
-        } else if (is_null($user)) {
+        } else if (is_null($user) && !$this->user->is('guest')) {
             $user = $this->user;
         }
 
@@ -1811,7 +1811,11 @@ class App {
             $job->$key = $value;
         }
 
-        $job->save(true);
+        try{
+            $job->save(true);
+        } catch (\Exception $e) {
+            $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
+        }
 
         return $job;
     }
