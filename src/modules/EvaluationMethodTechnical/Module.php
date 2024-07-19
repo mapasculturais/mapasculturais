@@ -411,7 +411,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $quota_data->quota = new Quotas($phase_id);
 
                 unset($params['@order']);
-                $quota_order = $quota_data->quota->getRegistrationsForQuotaSorting($params);
+                $quota_order = $quota_data->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
 
