@@ -23,4 +23,7 @@ return [
     'agente' => i::__('Responsável pela inscrição'), 
     'anexos' => i::__('Anexos'), 
     'status' => i::__('Status'), 
+    'data de envio' => i::__('Data de envio'),
+    'data de criação' => i::__('Data de criação'),
+    'Editavel para o proponente' => i::__('Editável para o proponente'),
 ];

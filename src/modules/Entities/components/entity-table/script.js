@@ -111,13 +111,14 @@ app.component('entity-table', {
     },
 
     data() {
+        const id = this.query['@opportunity'] ?? '';
+        const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
+
         const getSeals = $MAPAS.config.entityTable.seals;
         let seals = {}
         for (const seal of getSeals) {
             seals[seal.id] = seal.name;
         }
-        const id = this.query['@opportunity'] ?? '';
-        const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
 
         return {
             apiController: this.controller || this.type,
@@ -137,6 +138,10 @@ app.component('entity-table', {
             spaceTypes: $DESCRIPTIONS.space.type.options,
             seals,
             sessionTitle,
+            opportunityTypes: $DESCRIPTIONS.opportunity.type.options,
+            projectTypes: $DESCRIPTIONS.project.type.options,
+            spaceTypes: $DESCRIPTIONS.space.type.options,
+            seals,
         }
     },
 
