@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use DateTime;
 use Exception;
 use MapasCulturais\i;
 use MapasCulturais\API;
@@ -8,10 +9,11 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity as EntitiesOpportunity;
-use MapasCulturais\Entities\Registration;
+use MapasCulturais\Utils;
 
 /**
  * Opportunity Controller
@@ -940,7 +942,8 @@ class Opportunity extends EntityController {
                 registration_id,
                 registration_number, 
                 evaluation_id, 
-                valuer_agent_id
+                valuer_agent_id,
+                evaluation_status
             FROM evaluations
             WHERE
                 {$complement_where}
