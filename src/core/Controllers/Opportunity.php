@@ -953,19 +953,49 @@ class Opportunity extends EntityController {
         ";
 
         if(isset($this->data['@date'])){
+            $oper =  "";
+            $between = "/(BETWEEN) '(\d{2}\/\d{2}\/\d{4})' AND '(\d{2}\/\d{2}\/\d{4})'/";
+            if(preg_match($between, $this->data['@date'], $matches)) {
+                $oper = $matches[1];
+                $firstDate = DateTime::createFromFormat(Utils::detectDateFormat($matches[2]), $matches[2]);
+                $_firstDate = $firstDate->format('Y-m-d');
+
+                $lastDate = DateTime::createFromFormat(Utils::detectDateFormat($matches[3]), $matches[3]);
+                $_lastDate = $lastDate->format('Y-m-d');
+
+                $complement_where = " re.create_timestamp {$oper} '{$_firstDate}' AND '{$_lastDate}' AND";
+            }
+
+            $gte = "/(>=) '(\d{2}\/\d{2}\/\d{4})'/";
+            if(preg_match($gte, $this->data['@date'], $matches)) {
+                $oper = $matches[1];
+                $date = DateTime::createFromFormat(Utils::detectDateFormat($matches[2]), $matches[2]);
+                $_date = $date->format('Y-m-d');
+                $complement_where = " re.create_timestamp {$oper} '{$_date}' AND";
+            }
+
+            $lte = "/(<=) '(\d{2}\/\d{2}\/\d{4})'/";
+            if(preg_match($gte, $this->data['@date'], $matches)) {
+                $oper = $matches[1];
+                $date = DateTime::createFromFormat(Utils::detectDateFormat($matches[2]), $matches[2]);
+                $_date = $date->format('Y-m-d');
+                $complement_where = " re.create_timestamp {$oper} '{$_date}' AND";
+            }
+
             $query = "
                 SELECT 
                     e.registration_id, 
                     e.evaluation_id, 
-                    e.valuer_agent_id
+                    e.valuer_agent_id,
+                    e.registration_number,
+                    e.evaluation_status
                 FROM evaluations e
                 LEFT JOIN registration_evaluation re ON re.registration_id = e.registration_id
                 WHERE
-                    {$where_pending}
+                    {$complement_where}
                     e.opportunity_id = :opp AND
                     e.valuer_user_id IN({$users}) AND
-                    e.registration_id IN({$registration_ids}) AND
-                    re.create_timestamp {$this->data['@date']}
+                    e.registration_id IN({$registration_ids})
                     $sql_status
                 ORDER BY e.registration_sent_timestamp ASC
                 $sql_limit
