@@ -374,7 +374,7 @@ class Opportunity extends EntityController {
 
         $_opportunity = $opportunity;
         $opportunity_tree = [$opportunity];
-        while($_opportunity && ($parent = $app->modules['OpportunityPhases']->getPreviousPhase($_opportunity))){
+        while($_opportunity && ($parent = $_opportunity->previousPhase)){
             $opportunity_tree[] = $parent;
             $_opportunity = $parent;
         }
@@ -828,7 +828,11 @@ class Opportunity extends EntityController {
         }
 
         if ($opportunity->canUser('@control')) {
-            $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+            if(isset($this->data['@evaluationId'])) {
+                $users = [$this->data['@evaluationId']];
+            }else {
+                $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+            }
         } else if($app->auth->isUserAuthenticated()) {
             $users = [$app->user->id];
         } else {
@@ -843,9 +847,24 @@ class Opportunity extends EntityController {
 
         $params = ['opp' => $opportunity->id];
 
-        $where_pending = "";
-        if(isset($query_data['@pending'])){
-            $where_pending = "evaluation_id IS NULL AND ";
+        $complement_where = "";
+        if(isset($this->data['@pending'])){
+            $complement_where = "evaluation_id IS NULL AND ";
+        }
+        
+        $cookie_key = "evaluation-status-filter-{$opportunity->id}";
+
+        if(isset($this->data['@filterStatus'])){
+            $filter = $this->data['@filterStatus'];
+            if($filter != 'all') {
+                if($filter === 'pending') {
+                    $complement_where = "evaluation_id IS NULL AND ";
+                }else {
+                    $complement_where = "evaluation_status = {$filter} AND ";
+                }
+            }
+            
+            $_SESSION[$cookie_key] = $filter;
         }
 
         if(is_array($users)){
@@ -856,7 +875,7 @@ class Opportunity extends EntityController {
             SELECT count(*) 
             FROM evaluations 
             WHERE 
-                {$where_pending}
+                {$complement_where}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users})
         ", $params);
@@ -924,7 +943,7 @@ class Opportunity extends EntityController {
                 valuer_agent_id
             FROM evaluations
             WHERE
-                {$where_pending}
+                {$complement_where}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users}) AND
                 registration_id IN({$registration_ids})

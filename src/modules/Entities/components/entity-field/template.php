@@ -55,8 +55,8 @@ $this->import('
         </select>
 
         <template v-if="is('radio')">
-            <label class="input__label input__radioLabel" v-for="optionValue in description.optionsOrder">
-                <input :checked="value == optionValue" type="radio" :value="optionValue" @input="change($event)" @blur="change($event,true)"> {{description.options[optionValue]}} 
+            <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
+                <input :checked="value == optionValue" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)"> {{description.options[optionValue]}} 
             </label>
         </template>
         
