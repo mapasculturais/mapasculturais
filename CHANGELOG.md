@@ -29,6 +29,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Refatoraçào na configuração de cotas, para que seja possível escolher os campos que representam as cotas por tipo de proponente, evitando conflitos
 - Refatoração na configuração de distribuição de vagas por território, para que seja possível definir quais campos representam a região para cada tipo de proponente.
 - Refatoração no cálculo das cotas, para que sejam respeitadas dentro de cada faixa/linha e região.
+- Implementa slot no entity-table para permirir subistiruição do filtro por palavra chave
 
 ### Correções
 
