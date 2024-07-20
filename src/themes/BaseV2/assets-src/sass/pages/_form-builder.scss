@@ -27,8 +27,18 @@
                 flex-direction: row;
                 gap: size(24);
 
-                &.no-padding-bottom {
-                    padding-bottom: 0;
+                & .input-box {
+                    display: flex;
+                    flex-direction: row;
+                    gap: size(24);
+
+                    .field__title {
+                        display: none;
+                    }
+                }
+
+                & .input__label {
+                    font-weight: normal;
                 }
             }
 
