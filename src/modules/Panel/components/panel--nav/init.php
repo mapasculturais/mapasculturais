@@ -70,17 +70,18 @@ $nav_items = [
         },
         'items' => []
     ],
+];
 
-    'user' => [
+if ($app->user->profile) {
+    $nav_items['user'] = [
         'label' => i::__('Usuário Logado'),
         'column' => 'user',
         'items' => [
             ['route' => 'agent/single', 'params' => [$app->user->profile->id], 'icon' => 'agent', 'label' => i::__('Meu Perfil')],
             ['route' => 'auth/logout', 'icon' => 'logout', 'label' => i::__('Sair')],
-
         ]
-    ]
-];
+    ];
+}
 
 $app->applyHook('panel.nav', [&$nav_items]);
 
