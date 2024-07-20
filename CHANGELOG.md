@@ -23,6 +23,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
 - Corrige erro que ao publicar a entidade a mesma permanece em rascunho
 - Implementa possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição
+- Implementa nova tela para configuração dos agentes de suporte
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
