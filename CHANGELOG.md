@@ -19,7 +19,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa modo de visualização das entidades em tabelas para admins do sistema
 - Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
 - Corrige erro que ao publicar a entidade a mesma permanece em rascunho
-- Implementa método detectDateFormat() no Utils para detectar o formato de uma data
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
@@ -29,7 +28,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Refatoraçào na configuração de cotas, para que seja possível escolher os campos que representam as cotas por tipo de proponente, evitando conflitos
 - Refatoração na configuração de distribuição de vagas por território, para que seja possível definir quais campos representam a região para cada tipo de proponente.
 - Refatoração no cálculo das cotas, para que sejam respeitadas dentro de cada faixa/linha e região.
-- Implementa slot no entity-table para permirir subistiruição do filtro por palavra chave
+- Implementa slot no entity-table para permitir substituição do filtro por palavra-chave
+- Implementa método detectDateFormat() no Utils para detectar o formato de uma data
+- Implementa nova tabela de listagem de avaliações
 
 ### Correções
 
