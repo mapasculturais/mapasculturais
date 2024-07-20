@@ -81,6 +81,10 @@ $this->import('
                     </div>
                 </template>
 
+                <template #number="{entity}">
+                    <a :href="createUrl(entity)">{{entity.registration.number}}</a>
+                </template>
+
                 <template #result="{entity}">
                     {{getResultString(entity.evaluation?.resultString)}}
                 </template>

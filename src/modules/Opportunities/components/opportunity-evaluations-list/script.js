@@ -64,7 +64,6 @@ app.component('opportunity-evaluations-list', {
     methods: {
         colorByStatus(evaluation) {
             let result = 'pending';
-
             
             let eval = evaluation ? evaluation.status : null
             switch (eval) {
@@ -74,6 +73,7 @@ app.component('opportunity-evaluations-list', {
                     result = 'pending'
                     break;
                 case '0':
+                case 0:
                     result = 'started'
                     break;
                 case 1:

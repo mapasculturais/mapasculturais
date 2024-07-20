@@ -263,7 +263,7 @@ app.component('entity-table', {
         
             let values = this.getFilterValues(value);
             if (values) {
-                if (prop == 'status' || prop == '@pending') {
+                if (prop == 'status' || prop == '@pending' || prop == '@filterStatus') {
                     let statusDict = {
                         '0': __('rascunhos', 'entity-table'),
                         '1': __('publicadas', 'entity-table'),
@@ -295,9 +295,11 @@ app.component('entity-table', {
 
                     if (this.endpoint == 'findEvaluations') {
                         statusDict = {
-                            '0': __('iniciada', 'entity-table'),
-                            '1': __('avaliada', 'entity-table'),
-                            '2': __('enviada', 'entity-table'),
+                            'all': __('Todas', 'entity-table'),
+                            'pending': __('Avaliações pendente', 'entity-table'),
+                            '0': __('Avaliações iniciadas', 'entity-table'),
+                            '1': __('Avaliações concluídas', 'entity-table'),
+                            '2': __('Avaliações enviadas', 'entity-table'),
                         }
                     }
 
