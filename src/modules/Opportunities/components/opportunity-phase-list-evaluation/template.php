@@ -38,7 +38,7 @@ $this->import('
                         </mc-link>
                     </div>
                     <div>
-                        <button class="button button--primary" @click="sync()"><mc-icon name="sync" ></mc-icon></button>
+                        <button class="button button--primary" @click="sync(entity.opportunity)"><mc-icon name="sync" ></mc-icon></button>
                     </div>
                 </div>
             </div>

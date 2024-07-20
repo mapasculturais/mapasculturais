@@ -3,12 +3,15 @@ namespace MapasCulturais;
 
 $app = App::i();
 $em = $app->em;
+
+/** @var $conn Connection */
 $conn = $em->getConnection();
 
 
 function __table_exists($table_name) {
     $app = App::i();
     $em = $app->em;
+    /** @var $conn Connection */
     $conn = $em->getConnection();
 
     if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '$table_name';")){
@@ -21,6 +24,7 @@ function __table_exists($table_name) {
 function __sequence_exists($sequence_name) {
     $app = App::i();
     $em = $app->em;
+    /** @var $conn Connection */
     $conn = $em->getConnection();
 
     if($conn->fetchAll("SELECT sequence_name FROM information_schema.sequences WHERE sequence_schema = 'public' AND sequence_name = '$sequence_name';")){
@@ -33,6 +37,7 @@ function __sequence_exists($sequence_name) {
 function __column_exists($table_name, $column_name) {
     $app = App::i();
     $em = $app->em;
+    /** @var $conn Connection */
     $conn = $em->getConnection();
 
     if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name='$table_name' and column_name='$column_name'")){
@@ -45,11 +50,12 @@ function __column_exists($table_name, $column_name) {
 function __exec($sql){
     $app = App::i();
     $em = $app->em;
+    /** @var $conn Connection */
     $conn = $em->getConnection();
 
     try{
         $conn->executeQuery($sql);
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
         echo "
 SQL ========================= 
 $sql
@@ -1961,8 +1967,8 @@ $$
         }
     },
     'Adiciona a coluna priceInfo para a informações sobre o valor de entrada da ocorrência' => function() {
-        if(!__column_exists('event_occurrence', 'priceInfo')) {
-            __exec("ALTER TABLE event_occurrence ADD priceInfo TEXT DEFAULT NULL;");
+        if(!__column_exists('event_occurrence', 'priceinfo')) {
+            __exec("ALTER TABLE event_occurrence ADD priceinfo TEXT DEFAULT NULL;");
         }
     },
     
@@ -2319,9 +2325,9 @@ $$
     },
     
     'Ajusta as colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades para setar um array vazio quando as mesmas estiverem null' => function() use ($conn, $app){
-        __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types = '\"\"'");
-        __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges = '\"\"'");
-        __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories = '\"\"'");
+        __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types::VARCHAR = '\"\"'");
+        __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges::VARCHAR = '\"\"'");
+        __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories::VARCHAR = '\"\"'");
     },
     "Cria colunas editableUntil editSentTimestamp e editableFields na tabela registration" => function() use ($conn){
         if(!__column_exists('registration', 'editable_until')) {

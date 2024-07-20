@@ -21,19 +21,31 @@ $this->import('
             <div class="content">
                 <input type="text" v-model="keywords" @input="timeOutFind()" @keyup.enter="timeOutFind(0)" class="label-evaluation__search">
             </div>
-            <div class="label-evaluation">
+            <div v-if="!pending" class="label-evaluation">
                 <div class="label-evaluation__check">
-                    <label class="label-evaluation__check--label">
-                        <input type="checkbox" v-model="pending" class="label-evaluation__check--pending">
-                        <?= i::__('Mostrar somente pendentes') ?>
-                    </label>
+                    <div class="field">
+                        <label class="label-evaluation__check--label">
+                            <?= i::__('Selecione para filtrar') ?>
+                        </label>
+                        <select v-model="filterStatus">
+                            <template v-for="option in filtersOptions">
+                                <option :value="option.value">{{option.label}}</option>
+                            </template>
+                        </select>
+                    </div>
                 </div>
+            </div>
+            <div v-if="evaluations.length > 0" class="count">
+                <?= i::__('Total') ?> {{evaluations.length}} <?= i::__('Avaliações') ?>
             </div>
         </div>
         <mc-loading :condition="loading"><?= i::__('carregando...') ?></mc-loading>
         <ul v-if="!loading" class="evaluation-list">
-            <li v-for="evaluation in evaluations" :key="evaluation.registrationId" :class="[{'evaluation-list__card--modify': entity.id == evaluation.registrationid}, 'evaluation-list__card']">
-                <div class="evaluation-list__content">
+            <li v-if="evaluations.length <= 0" class="no-records">
+                <?= i::__('Não foram encontrados registros') ?>
+            </li>
+            <li v-if="evaluations.length > 0" v-for="evaluation in evaluations" :key="evaluation.registrationId" :class="[{'evaluation-list__card--modify': entity.id == evaluation.registrationid}, 'evaluation-list__card']">
+                <div :class="'evaluation-list__content '+colorByStatus(evaluation)">
                     <a :href="evaluation.url" class="link">
                         <div class="card-header">
                             <span class="card-header__name">{{evaluation.registrationNumber}}</span>

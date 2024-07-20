@@ -13,6 +13,7 @@ $nav_items = [
 
     'opportunities' => [
         'label' => i::__('Editais e oportunidades'),
+        'column' => 'left',
         'items' => [],
         'condition' => function () use ($app) {
             return $app->isEnabled('opportunities');
@@ -21,6 +22,7 @@ $nav_items = [
 
     'main' => [
         'label' => 'Gerenciamento de entidades',
+        'column' => 'left',
         'items' => [
             [
                 'route' => 'panel/agents', 'icon' => 'agent', 'label' => i::__('Meus Agentes'),
@@ -67,8 +69,19 @@ $nav_items = [
             return $app->user->is('admin');
         },
         'items' => []
-    ]
+    ],
 ];
+
+if ($app->user->profile) {
+    $nav_items['user'] = [
+        'label' => i::__('Usuário Logado'),
+        'column' => 'user',
+        'items' => [
+            ['route' => 'agent/single', 'params' => [$app->user->profile->id], 'icon' => 'agent', 'label' => i::__('Meu Perfil')],
+            ['route' => 'auth/logout', 'icon' => 'logout', 'label' => i::__('Sair')],
+        ]
+    ];
+}
 
 $app->applyHook('panel.nav', [&$nav_items]);
 
