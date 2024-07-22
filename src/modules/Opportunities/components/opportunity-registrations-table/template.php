@@ -100,6 +100,9 @@ $entity = $this->controller->requestedEntity;
                     </div>
                 </template>
 
+                <template #advanced-filters>
+                </template>
+
                 <template #attachments={entity}>
                     <a v-if="entity.files?.zipArchive?.url" :href="entity.files?.zipArchive?.url"><?= i::__('Anexo') ?></a>
                 </template>
