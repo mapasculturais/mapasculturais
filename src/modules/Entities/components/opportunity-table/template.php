@@ -59,8 +59,5 @@ $this->import('
                 </div>
             </div>
         </template>
-        
-        <template #advanced-filters="{entities}">
-        </template>
     </entity-table>
 </div>
