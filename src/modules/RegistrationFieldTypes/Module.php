@@ -17,6 +17,7 @@ use MapasCulturais\Types\GeoPoint;
 class Module extends \MapasCulturais\Module
 {
     protected $entities = [];
+    protected $grantedCoarse = false;
 
     public function _init()
     {
@@ -119,6 +120,58 @@ class Module extends \MapasCulturais\Module
         $app->view->jsObject['flatpickr'] = [
             'altFormat' => env('DATEPICKER_VIEW_FORMAT', i::__("d/m/Y"))
         ];
+
+        $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) use ($module) {
+            if (!$result) {
+                /** @var Registration $this */
+                $result = $this->canUser('sendEditableFields');
+                $module->grantedCoarse = $result;
+            }
+        });
+
+        $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) use ($module) {
+            /* 
+                A permissão vem como true, por que o owner canUserModify vai sempre retornar true 
+                por causa do hook can(Registration.<<view|modify|viewPrivateData>>). Por isso começamos
+                definindo como false para depois verificar a permissão sobre o campo específico.
+            */
+            if ($module->grantedCoarse) {
+                if (!$this->owner->canUser("@control")) {
+                    $result = false;
+                }
+                
+                $key = $this->group ?? $this->key;
+
+                if(in_array($key, $this->owner->editableFields)) {
+                    $result = true;
+                    return;
+                }
+            }
+        });
+
+        $app->hook("PATCH(registration.single):before", function () use($app, $module) {
+            $entity = $this->requestedEntity;
+
+            if($entity->canUser('sendEditableFields')) {
+                $module->inEditableTransaction = true;
+                $app->em->beginTransaction();
+            }
+        });
+        $app->hook("entity(RegistrationMeta).update:before", function () use ($app, $module) {
+            $entity = $this->owner;
+            if($module->inEditableTransaction) {
+                if(!in_array($this->key, $entity->editableFields)) {
+                    $app->em->rollback();
+                    throw new \Exception("Permission denied.");
+                }
+            }
+        });
+        $app->hook("slim.after", function () use ($app, $module) {
+            if ($module->inEditableTransaction) {
+                $app->em->commit();
+            }
+            return;
+        });
     }
 
     public function register()
@@ -640,7 +693,7 @@ class Module extends \MapasCulturais\Module
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
             if ($entity_field == "@location" && is_array($value)) {
-                if($value['location'] instanceof GeoPoint) {
+                if(isset($value['location']) && $value['location'] instanceof GeoPoint) {
                     $value["location"] = [
                         'latitude' => $value['location']->latidude,
                         'longitude' => $value['location']->longitude,

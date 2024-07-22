@@ -245,6 +245,18 @@ return array(
             'label' => \MapasCulturais\i::__('Total de vagas'),
             // 'description' => \MapasCulturais\i::__("Quantidades de vagas que esse edital irá disponibilizar."),
         ),
+        
+        'requestAgentAvatar' => array(
+            'label' => \MapasCulturais\i::__('Solicitar avatar'),
+            'type' => 'radio',
+            'options' => (object) array(
+                '0' => \MapasCulturais\i::__('Não Utilizar'),
+                '1' => \MapasCulturais\i::__('Obrigatório'),
+            ),
+            'unserialize' => function($value) {
+               return ($value == 0 || $value == "") ? false : true;
+            }
+        ),
     ),
     'items' => $items,
     

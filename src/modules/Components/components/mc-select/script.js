@@ -30,6 +30,7 @@ app.component('mc-select', {
 
         options: {
             type: Array,
+            default: []
         },
     },
 
@@ -86,13 +87,36 @@ app.component('mc-select', {
 
     mounted() {
         setTimeout(() => {
-            const options = this.$refs.options.children;
+            const options = this.$refs.options.querySelectorAll('[value]');
+            
             this.defaultOptions = Object.freeze(Array.from(options));
             
-            for (let [index, option] of Object.entries(options)) {              
-                if(option.tagName === 'OPTGROUP') {
-                    for (let [_index, _option] of Object.entries(option.children)) {
-                        this.setMatchingOption(_option);
+            for (const [index, option] of Object.entries(options)) {                            
+                const refOptions = this.$refs.options;
+                const refSelected = this.$refs.selected;
+
+                while (!option.hasAttribute('value') && option != refOptions) {
+                    option = option.parentElement;
+                }
+    
+                if (!option.hasAttribute('value')) {
+                    console.error('Atributo value não encontrado');
+                    return;
+                }
+
+                if (this.defaultValue != null || this.defaultValue != '') {
+    
+                    let optionText = option.text ?? option.textContent;
+                    let optionValue = option.value ?? option.getAttribute('value');
+                    let optionItem = option.outerHTML;
+    
+                    if (optionValue == this.defaultValue) {
+                        this.optionSelected = {
+                            text: optionText,
+                            value: optionValue,
+                        }
+    
+                        refSelected.innerHTML = optionItem;
                     }
                 } else {
                     this.setMatchingOption(option);
@@ -145,7 +169,6 @@ app.component('mc-select', {
             const result = [];
             
             for(let option of this.options) {
-                // debugger;
                 if (typeof option == "string") {
                     result.push({
                         value: option,
@@ -162,7 +185,7 @@ app.component('mc-select', {
 
     methods: {
         focus() {
-            const inputs = this.$refs.filter.getElementsByTagName('input');
+            const inputs = this.$refs.selected.getElementsByTagName('input');
             if (inputs.length) {
                 setTimeout(() => {
                     if (inputs[0].getAttribute("type") == 'text') {

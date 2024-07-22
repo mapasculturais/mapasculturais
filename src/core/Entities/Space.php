@@ -42,6 +42,7 @@ class Space extends \MapasCulturais\Entity
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
         Traits\EntityRevision,
+        Traits\EntityLock,
         Traits\EntityOpportunities;
         
     protected $__enableMagicGetterHook = true;

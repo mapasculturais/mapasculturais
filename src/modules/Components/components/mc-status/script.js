@@ -22,7 +22,6 @@ app.component('mc-status', {
             switch (this.statusName.toLowerCase()) {
                 case 'rascunho':
                 case 'iniciado':
-                case 'iniciada':
                     classes.push('mc-status--draft');
                     break;
                 
@@ -32,8 +31,6 @@ app.component('mc-status', {
                 case 'aceito':
                 case 'disponível':
                 case 'pago':
-                case 'avaliado':
-                case 'avaliada':
                     classes.push('mc-status--success');
                     break;
                 
@@ -58,7 +55,30 @@ app.component('mc-status', {
                 case 'enviada':
                     classes.push('mc-status--primary');
                     break;
-                
+                case 'Avaliações pendentes':
+                case 'Avaliação pendente':
+                case 'avaliação pendente':
+                case 'pendente':
+                        classes.push('mc-status--evaluation-pending');
+                        break;
+                case 'Avaliações iniciadas':
+                case 'Avaliação iniciada':
+                case 'avaliação iniciada':
+                case 'iniciada':
+                    classes.push('mc-status--evaluation-started');
+                    break;
+                case 'Avaliações concluídas':
+                case 'Avaliação concluída':
+                case 'avaliação concluída':
+                case 'concluída':
+                    classes.push('mc-status--evaluation-completed');
+                    break;
+                case 'Avaliações enviadas':
+                case 'Avaliação enviada':
+                case 'avaliação enviada':
+                case 'enviada':
+                    classes.push('mc-status--evaluation-sent');
+                    break;
                 case 'pendente':
                 case 'enviado':
                 default:

@@ -10,7 +10,8 @@ app.component('entity-lock', {
 
     data() {
         return {
-            entityLock: $MAPAS.entityLock ?? null
+            entityLock: $MAPAS.entityLock ?? null,
+            prefix: this.text(this.entity.__objectType),
         }
     },
 

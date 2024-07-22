@@ -9,6 +9,7 @@ use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\Definitions\EvaluationMethod;
+use MapasCulturais\GuestUser;
 
 /**
  * Registration
@@ -41,6 +42,7 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
+        Traits\EntityLock,
         Traits\EntityRevision {
             Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
         }
@@ -375,7 +377,10 @@ class Registration extends \MapasCulturais\Entity
             'files' => [],
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl,
-            'appliedForQuota' => $this->appliedForQuota
+            'appliedForQuota' => $this->appliedForQuota,
+            'editableUntil' => $this->editableUntil,
+            'editableFields' => $this->editableFields,
+            'editSentTimestamp' => $this->editSentTimestamp,
         ];
 
         if($this->canUser('viewConsolidatedResult')){
@@ -456,6 +461,10 @@ class Registration extends \MapasCulturais\Entity
 
     public function canSee($key)
     {
+        if(in_array($key, ['id', 'number', 'category', 'range', 'proponentType'])){
+            return true;
+        }
+
         $avaliableEvaluationFields = ($this->opportunity->avaliableEvaluationFields != "null") ? $this->opportunity->avaliableEvaluationFields : [];
         if(in_array($key, array_keys($avaliableEvaluationFields))){
             return true;
@@ -481,6 +490,37 @@ class Registration extends \MapasCulturais\Entity
 
     static function getSpaceRelationEntityClassName() {
         return RegistrationSpaceRelation::class;
+    }
+
+    function setEditableUntil($datetime) {
+        if ($this->opportunity->canUser('@control')) {
+            $this->editableUntil = new DateTime($datetime);
+        }
+    }
+
+    function setEditableFields($fields) {
+        if ($this->opportunity->canUser('@control')) {
+            $this->editableFields = $fields;
+        }
+    }
+
+    protected function setEditSentTimestamp($datetime) {
+        return false;
+    }
+
+    function reopenEditableFields() {
+        $this->opportunity->checkPermission('@control');
+        $this->editSentTimestamp = null;
+        $this->save(true);
+    }
+
+    function sendEditableFields() {
+        $app = App::i();
+        $this->checkPermission('sendEditableFields');
+        $this->editSentTimestamp = new DateTime();
+        $app->disableAccessControl();
+        $this->save(true);
+        $app->enableAccessControl();
     }
 
     function setOwnerId($id){
@@ -1089,6 +1129,10 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['category'] = [i::__('Categoria é um campo obrigatório.')];
         }
 
+        if($this->opportunity->requestAgentAvatar && !array_key_exists("avatar", $this->owner->files)){
+            $errorsResult['avatar'] = [sprintf(\MapasCulturais\i::__('A imagem avatar do agente "%s" é obrigatório.'),$this->owner->name)];
+        }
+
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
         
         // validate agents
@@ -1104,6 +1148,7 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if($def->agent){
+
                 if($def->relationStatus < 0){
                     $errors[] = sprintf(i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);
                 }else{
@@ -1472,6 +1517,18 @@ class Registration extends \MapasCulturais\Entity
         return $this->canUser('@control');
     }
 
+    protected function canUserSendEditableFields(User | GuestUser $user):bool {
+        if (!$this->canUser('@control')) {
+            return false;
+        }
+
+        if ($this->editableUntil < new DateTime() || $this->editSentTimestamp) {
+            return false;
+        }
+
+        return true;
+    }
+
     protected function canUserModify($user){
         if($this->status !== self::STATUS_DRAFT){
             return false;
@@ -1532,10 +1589,6 @@ class Registration extends \MapasCulturais\Entity
         }
         
         if(new DateTime('now') < $this->opportunity->evaluationMethodConfiguration->evaluationFrom || new DateTime('now') > $this->opportunity->evaluationMethodConfiguration->evaluationTo){
-            return false;
-        }
-
-        if($this->opportunity->publishedRegistrations){
             return false;
         }
 
