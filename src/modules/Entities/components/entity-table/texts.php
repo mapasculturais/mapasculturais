@@ -14,6 +14,10 @@ return [
 
     // Status
     'arquivadas' => i::__('Arquivadas'),
+    'Avaliações concluídas' => i::__('Avaliações concluídas'),
+    'Avaliações enviadas' => i::__('Avaliações enviadas'),
+    'Avaliações iniciadas' => i::__('Avaliações iniciadas'),
+    'Avaliações pendente' => i::__('Avaliações pendente'),
     'invalidas' => i::__('Inválidas'),
     'lixeira' => i::__('Lixeira'),
     'nao selecionadas' => i::__('Não selecionadas'),
@@ -22,10 +26,8 @@ return [
     'rascunhos' => i::__('Rascunhos'),
     'selecionadas' => i::__('Selecionadas'),
     'suplentes' => i::__('Suplentes'),
+    'Todas' => i::__('Todas'),
     'invalida' => i::__('Inválida'),
-    'avaliada' => i::__('Avaliada'),
-    'enviada' => i::__('Enviada'),
-    'pendente' => i::__('Pendente'),
 
     // Status payments
     'pendente' => i::__('Pendente'),
@@ -36,4 +38,6 @@ return [
     'pago' => i::__('Pago'),
 
     'palavras-chave' => i::__('Palavras-chave'),
+    'pessoa idosa' => i::__('Pessoa Idosa'),
+    'acessibilidade' => i::__('Possui acessibilidade'),
 ];

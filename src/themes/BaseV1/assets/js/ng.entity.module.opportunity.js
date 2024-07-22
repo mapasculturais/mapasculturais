@@ -1038,6 +1038,17 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
 
     if(MapasCulturais.evaluationFieldsList){
+        MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort((a,b) => {
+            console.log(a,b)
+            if(a.displayOrder > b.displayOrder){
+                return 1;
+            }else if(a.displayOrder < b.displayOrder){
+                return -1;
+            }else{
+                return 0;
+            }
+        });
+
         MapasCulturais.evaluationFieldsList.forEach(function(item){
             $scope.data.fields.push(item);
         })
@@ -1198,6 +1209,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         errors: {},
         avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
+
+    $scope.canUserEdit = function(field){
+        if(!MapasCulturais.registrationEditableFields.canUserSendEditableFields) {
+            return false;
+        }
+
+        if(MapasCulturais.registrationEditableFields.fields.includes(field.fieldType == 'file' ? field.groupName : field.fieldName)) {
+            return true;
+        }
+
+        return false;
+    }
 
     $timeout(function(){
         $scope.ibge = MapasCulturais.ibge;
@@ -1627,7 +1650,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.removeFile = function (id, $index) {
         if(confirm(labels['confirmRemoveAttachment'])){
-            $http.get($scope.data.fields[$index].file.deleteUrl).success(function(response){
+            let url = MapasCulturais.createUrl('file','single',{id:$scope.data.fields[$index].file.id});
+            $http.delete(url).success(function(response){
+                MapasCulturais.Messages.success(labels['attachmentRemoved']);
                 delete $scope.data.fields[$index].file;
             });
         }
@@ -1779,7 +1804,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.printField = function(field, value){
-
+        
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         } else if (field.fieldType === 'url'){
@@ -2705,7 +2730,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
                 if(confirm('Deseja remover este anexo?')){
-                    $http.get($scope.data.entity.registrationRulesFile.deleteUrl).success(function(response){
+                    let url = MapasCulturais.createUrl('file','single',{id:$scope.data.entity.registrationRulesFile.id});
+                    $http.delete(url).success(function(response){
                         $scope.data.entity.registrationRulesFile = null;
                     });
                 }

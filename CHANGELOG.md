@@ -4,14 +4,81 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [7.5.0-RC]
+### Melhorias
+- Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
 ## [unreleased]
 ### Novas funcionalidades
+- **Bloqueio de edição de entidades**, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
+- **Customizador do tema BaseV2** para subsites, possibilitando a configuração de cores, imagens, textos, posição do mapa etc
+- **Novo exportação de planilhas**
+  - Possibilidade do usuário escolher o tipo de arquivo exportado entre `.csv`, `.xlsx` e `.ods`
+  - Processamento em background enviando o link para donwload do arquivo por email quando a planilha estiver pronta.
+- **Edição de campos de inscrições enviadas** - permite que o gestor abra alguns campos de uma determinada inscrição, por um tempo definido, para que o proponente possa modificar somente esses campos, fazendo com que não seja necessário colocar a inscriçào inteira como rascunho.
+- **Visualização das entidades em tabelas** na página de busca, para admins do sistema, com botão para exportar planilha com as entidades filtradas.
+- Nova opção para o gestor solicitar o avatar do agente responsável no formulário de inscrição.
 - Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
+- Implementa modo de visualização das entidades em tabelas para admins do sistema
 - Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
+- Corrige erro que ao publicar a entidade a mesma permanece em rascunho
+- Implementa possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição
+- Implementa nova tela para configuração dos agentes de suporte
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
+- Refatoração dos campos datepicker e detetimepicker para melhorar a usabilidade
+- Faz dos campos CPF e CNPJ somente leitura
+- Redesign da tabela de avaliações
+- Refatoraçào na configuração de cotas, para que seja possível escolher os campos que representam as cotas por tipo de proponente, evitando conflitos
+- Refatoração na configuração de distribuição de vagas por território, para que seja possível definir quais campos representam a região para cada tipo de proponente.
+- Refatoração no cálculo das cotas, para que sejam respeitadas dentro de cada faixa/linha e região.
+- Implementa slot no entity-table para permitir substituição do filtro por palavra-chave
+- Implementa método detectDateFormat() no Utils para detectar o formato de uma data
+- Implementa nova tabela de listagem de avaliações
+
+### Correções
+
+### Melhorias não funcionais
+- Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
+
+## [7.4.12]
+### Correções
+- Corrige erro que deixava a condicionalidade dos campos/anexos ativada ao editar, mesmo ele não estando condicionado a outro
+- Corrige erro na tabela de listagem de inscrições que impedia a listagem de todas as inscrições de oportunidades multifases
+- Corrige erro do entity-field que impedia as opções serem exibidas e salvas quando se usava campo do tipo radio
+- Corrige erro ao definir a latitude e longitude em campos do agente responsável que fazem sincronia com a inscrição (Campos @)
+- Corrige erro que não deixava a autorização de publicar a localização atravez do formulario de inscrição em campos @
+- Corrige o processo de limpeza do cache dos resumos de inscrições para que seja atualizado corretamente nas mudanças de status das inscrições
+- Corrige sincronização de inscrição no botão do resumo de inscrições
+- Faz o enfileiramento do job UpdateSummaryCaches no endpoint syncRegistrations para que atualize tambem o resumo de inscrições
+- Corrige carregamento do menu 'Meu Perfil' no menu principal quando a pessoa esta deslogada
+
+### Melhorias
+- Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
+
+## [7.4.11] - 2024-07-10
+### Melhorias
+- Permite que seja feita a distribuição de avaliações por faixas
+- Permite que seja feita a distribuição de avaliações por tipo de proponente
+
+### Correções
+- Permite que administradores de oportunidades que não sejam admin convidem avaliadores
+- Corrige permissões para gestores de oportunidades que não sejam administradores do sistema remover, habilitar e desabilitar avaliadores
+- Exibe o status de pendente para avaliadores que ainda não aceitaram ser avaliadores de uma oportunidade
+
+## [7.4.10] - 2024-07-08
+## Correções
+- Corrige reatividade do componente mc-select
+- Corrige exibição da categoria, tipo de proponente e faixa/linha para os avaliadores, deixando sempre visível
+- Corrige ordem dos campos na lista de seleção dos campos visíveis para os avaliadores
+- Corrige exibição de campo selecionado do componente de seleção quando há grupos de valores
+- Evita que a página de avaliação quebre no caso de haver uma inscrição sem data de envio
+- Permite que avaliadores avaliem inscrições mesmo com a fase publicada. O que importa é são as datas de avaliação.
+- Corrige obtenção de metadados para inscrições da última fase que não foram selecionadas em todas as fases anteriores
+
+## Melhorias
+- Melhora o texto da modal de confirmação de avaliador explicando que todas as avaliações serão excluídas permanentemente.
 
 ## [7.4.9] - 2024-07-03
 ### Correções

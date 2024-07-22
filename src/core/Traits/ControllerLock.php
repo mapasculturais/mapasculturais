@@ -7,7 +7,6 @@ use MapasCulturais\i;
 trait ControllerLock {
     
     function GET_unlock() {
-        //verificar userid
         $app = App::i();
 
         $entity = $this->requestedEntity;
@@ -17,9 +16,7 @@ trait ControllerLock {
         $app->redirect($entity->editUrl);
     }
 
-    function POST_renew() {
-        $app = App::i();
-        
+    function POST_renewLock() {
         $token = $this->data['token'];
 
         $entity = $this->requestedEntity;

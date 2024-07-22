@@ -21,9 +21,9 @@ $this->import('
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
 
         <!-- masked fields -->
-        <input v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off">
+        <input v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" :readonly="readonly" autocomplete="off">
         
-        <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off">
+        <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" :readonly="readonly" autocomplete="off">
 
         <input v-if="is('brPhone')" v-maska data-maska="['(##) #####-####','(##) ####-####']" data-maska-tokens="0:[0-9]:optional" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off">
         <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off">
@@ -41,7 +41,7 @@ $this->import('
         
         <input v-if="is('socialMedia')" :value="value" :id="propId" :name="prop" :type="fieldType" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder">
         
-        <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change"></entity-field-datepicker>
+        <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change($event, true)"></entity-field-datepicker>
         
         <div  v-if="is('textarea') && prop=='shortDescription'" class="field__shortdescription">
             <textarea :id="propId" :value="value" :name="prop" @input="change($event)" @blur="change($event,true)" :maxlength="400"></textarea>
@@ -55,8 +55,8 @@ $this->import('
         </select>
 
         <template v-if="is('radio')">
-            <label class="input__label input__radioLabel" v-for="optionValue in description.optionsOrder">
-                <input :checked="value == optionValue" type="radio" :value="optionValue" @input="change($event)" @blur="change($event,true)"> {{description.options[optionValue]}} 
+            <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
+                <input :checked="value == optionValue" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)"> {{description.options[optionValue]}} 
             </label>
         </template>
         

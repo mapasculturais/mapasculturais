@@ -5,6 +5,7 @@
  */
 
 use MapasCulturais\i;
+$userId = $app->user->id;
 ?>
 <div class="stepper-evaluations">
     <div class="stepper-evaluations__title"><label><?= i::__('Avaliações abertas e disponíveis') ?></label></div>
@@ -21,7 +22,7 @@ use MapasCulturais\i;
                 </div>
             </div>
             <div class="btn">
-                <mc-link route="opportunity/userEvaluations" :params="[item.opportunity.id]" class="button button--primary evaluation-button"> <?= i::__('Avaliar') ?><mc-icon name="arrow-right-ios"></mc-icon></mc-link>
+                <mc-link route="opportunity/userEvaluations" :params="{id: item.opportunity.id, user:<?=$userId ?>}" class="button button--primary evaluation-button"> <?= i::__('Avaliar') ?><mc-icon name="arrow-right-ios"></mc-icon></mc-link>
             </div>
         </div>
     </div>
@@ -42,7 +43,7 @@ use MapasCulturais\i;
                 </div>
             </div>
             <div class="btn">
-                <mc-link route="opportunity/userEvaluations" :params="[item.opportunity.id]" class="button button--primary evaluation-button"> <?= i::__('Avaliar') ?><mc-icon name="arrow-right-ios"></mc-icon></mc-link>
+                <mc-link route="opportunity/userEvaluations" :params="{id: item.opportunity.id, user:<?=$userId ?>}" class="button button--primary evaluation-button"> <?= i::__('Avaliar') ?><mc-icon name="arrow-right-ios"></mc-icon></mc-link>
             </div>
         </div>
     </div>

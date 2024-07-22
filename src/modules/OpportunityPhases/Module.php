@@ -11,6 +11,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Exceptions;
 use MapasCulturais\i;
+use Opportunities\Jobs\UpdateSummaryCaches;
 
 class Module extends \MapasCulturais\Module{
 
@@ -627,18 +628,28 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) use($app) {
+        /** @var \MapasCulturais\Connection $conn */
+        $conn = $app->em->getConnection();
+        
+        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) use($conn, $app) {
             /** @var Registration $this */
 
             if(!$this->canUser('viewPrivateData')) {
                 return;
             }
-            if(!isset($value) && ($previous_phase = $this->previousPhase)){
-                $previous_phase->registerFieldsMetadata();
-
-                $app->disableAccessControl();
-                $value = $previous_phase->$field_name;
-                $app->enableAccessControl();
+            if(!isset($value)){
+                $reg = $conn->fetchAssociative("SELECT object_id, value FROM registration_meta WHERE key = '{$field_name}' AND object_id in (SELECT id FROM registration WHERE number = '{$this->number}')");
+                
+                if($reg && $this->id != $reg['object_id']){
+                    $value = $reg['value'];
+                    if($def = $this->getRegisteredMetadata($field_name)){
+                        if(is_callable($def->unserialize)){
+                            $registration = $app->repo('Registration')->find($reg['object_id']);
+                            $cb = $def->unserialize;
+                            $value = $cb($value, $registration, $def);
+                        }
+                    }
+                }
             }
         });
 
@@ -691,9 +702,11 @@ class Module extends \MapasCulturais\Module{
             $opportunity = $this->requestedEntity;
 
             $opportunity->enqueueRegistrationSync();
-            $cache_key = "MapasCulturais\Entities\Opportunity::getSummary:{$opportunity->id}";
-
-            $app->cache->delete($cache_key);
+            
+           $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
+                'opportunity' => $opportunity,
+                'evaluationMethodConfiguration' => $opportunity->evaluationMethodConfiguration?: null
+            ], '10 seconds');
 
             $this->finish(['message' => i::__('Sincronização das inscrições enfileirada para processamento em segundo plano')]);
         });
