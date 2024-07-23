@@ -16,6 +16,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige sincronização de inscrição no botão do resumo de inscrições
 - Faz o enfileiramento do job UpdateSummaryCaches no endpoint syncRegistrations para que atualize tambem o resumo de inscrições
 - Corrige carregamento do menu 'Meu Perfil' no menu principal quando a pessoa esta deslogada
+- Corrige erro no ranqueamento por cota que deixava o ranqueamento mal ordenado
 
 ### Melhorias
 - Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
