@@ -1,3 +1,11 @@
+<?php
+
+use MapasCulturais\i;
+
+$this->import('
+    evaluation-actions
+')
+?>
 <div>
     <p>Critérios de Avaliação</p>
     <div v-for="section in sections" :key="section.id">
@@ -17,4 +25,5 @@
         <p>Observações</p>
         <textarea v-model="formData.data.obs"></textarea>
     </div>
+    <evaluation-actions :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
 </div>
