@@ -16,6 +16,10 @@ app.component('qualification-evaluation-form', {
             type: Object,
             required: true
         },
+        editable: {
+            type: Boolean,
+            default: true
+        },
     },
 
     data() {
