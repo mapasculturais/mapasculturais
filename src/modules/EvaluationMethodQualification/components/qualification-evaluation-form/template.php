@@ -7,12 +7,12 @@ $this->import('
 ')
 ?>
 <div>
-    <p>Critérios de Avaliação</p>
+    <p><?php i::_e('Critérios de Avaliação') ?></p>
     <div v-for="section in sections" :key="section.id">
         <h3>{{ section.name }}</h3>
         <div v-for="crit in section.criteria" :key="crit.id">
             <label>{{ crit.name }}</label>
-            <div>  
+            <div>
                 <select v-model="formData.data[crit.id]" @change="handleChange(section.id)">
                     <option value=""><?php i::_e('Selecione') ?></option>
                     <option v-if="crit.notApplyOption == 'true'" value="Não se aplica"><?php i::_e('Não se aplica') ?></option>
@@ -22,10 +22,13 @@ $this->import('
                 </select>
             </div>
         </div>
-        <label>Resultado da seção: {{ formData.sectionStatus[section.id] || section.status }}</label>
+        <label><?php i::_e('Resultado da seção:') ?> {{ formData.sectionStatus[section.id] || section.status }}</label>
+    </div>
+    <div v-if="statusText">
+        <label><?php i::_e('Resultado da seção:') ?> {{statusText}}</label>
     </div>
     <div>
-        <p>Observações</p>
+        <p><?php i::_e('Observações') ?></p>
         <textarea v-model="formData.data.obs"></textarea>
     </div>
     <evaluation-actions :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
