@@ -501,19 +501,16 @@ class Module extends \MapasCulturais\EvaluationMethod {
              **/
             $registration = $this;
             $em = $registration->evaluationMethodConfiguration;
-
-            $allPhases = $registration->opportunity->allPhases;
-            $appliedForQuota = true;
-            foreach($allPhases as $phase) {
-                if($phase->enableQuotasQuestion && !$registration->appliedForQuota) {
-                    $appliedForQuota = false;
-                }
-            }
-
-            if(!$appliedForQuota) {
+            
+            $opportunity_first_phase = $registration->opportunity->firstPhase;
+            if($opportunity_first_phase->enableQuotasQuestion && !$registration->firstPhase->appliedForQuota) {
                 return false;
             }
             
+            if(!$em) {
+                return false;
+            }
+
             $_rules = [];
             if($em->isActivePointReward) {
                 if($pointRewards = $em->pointReward) {
@@ -634,16 +631,17 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->hook('ApiQuery(registration).params', function(&$params) use($app, $self, &$quota_data) {
             /** @var ApiQuery $this */
 
-            if(is_null($quota_data)) {
-                $quota_data = (object) [];
-            } else {
-                return;
-            }
-
             $order = $params['@order'] ?? '';
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
             if($phase_id && str_starts_with(strtolower(trim($order)), '@quota')){
+
+                if(is_null($quota_data)) {
+                    $quota_data = (object) [];
+                } else {
+                    return;
+                }
+
                 $quota_data->objectId = spl_object_id($this);
                 $quota_data->params = $params;
 
