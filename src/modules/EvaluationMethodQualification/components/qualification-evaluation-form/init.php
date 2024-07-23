@@ -39,6 +39,7 @@ foreach ($sections as $section) {
                 'name' => $crit->name,
                 'description' => isset($crit->description) ? $crit->description : '',
                 'options' => isset($crit->options) ? $crit->options : [],
+                'notApplyOption' => $crit->notApplyOption,
                 'status' => $critStatus
             ];
             
@@ -54,6 +55,6 @@ foreach ($sections as $section) {
 }
 
 $this->jsObject['config']['qualificationEvaluationForm'] = [
+    'evaluationData' => $entity->getUserEvaluation($user),
     'sections' => $data,
-    'statusList' => $statusList,
 ];
