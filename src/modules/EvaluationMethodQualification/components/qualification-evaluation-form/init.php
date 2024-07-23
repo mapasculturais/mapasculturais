@@ -25,13 +25,13 @@ foreach ($sections as $section) {
         'id' => $section->id,
         'name' => $section->name,
         'criteria' => [],
-        'status' => 'não avalidada'
+        'status' => i::__('Não avaliada')
     ];
     
     foreach ($criteria as $crit) {
         if ($crit->sid === $section->id) {
             
-            $critStatus = isset($crit->status) ? $crit->status : 'não avalidada';
+            $critStatus = isset($crit->status) ? $crit->status : i::__('Não avaliada');
             
             $sectionData['criteria'][] = [
                 'id' => $crit->id,
@@ -42,10 +42,10 @@ foreach ($sections as $section) {
                 'status' => $critStatus
             ];
             
-            if ($critStatus === 'avalidada') {
-                $sectionData['status'] = 'avalidada';
-            } elseif ($critStatus === 'suplente' && $sectionData['status'] !== 'avalidada') {
-                $sectionData['status'] = 'suplente';
+            if ($critStatus === 'avaliada') {
+                $sectionData['status'] = i::__('avaliada');
+            } elseif ($critStatus === 'suplente' && $sectionData['status'] !== i::__('avaliada')) {
+                $sectionData['status'] = i::__('suplente');
             }
         }
     }
