@@ -83,5 +83,12 @@ app.component('qualification-evaluation-form', {
                 isValid = true;
             }
 
-    }
+            return isValid;
+        },
+        skeleton() {
+            return {
+                uid: this.userId,
+            };
+        }
+    },
 });
