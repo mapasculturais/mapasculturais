@@ -63,8 +63,25 @@ app.component('qualification-evaluation-form', {
         handleChange(sectionId) {
             this.formData.sectionStatus[sectionId] = 'Inabilitado';
         },
+        validateErrors() {
+            let isValid = false;
+            this.errors = [];
 
-    methods: {
-    
+            for (let sectionIndex in this.sections) {
+                for (let crit of this.sections[sectionIndex].criteria) {
+                    let sectionName = this.sections[sectionIndex].name;
+                    let value = this.formData.data[crit.id];
+                    if (!value || value === "") {
+                        this.messages.error(`${this.text('on_section')} ${sectionName}, ${this.text('the_field')} ${crit.name} ${this.text('is_required')}`);
+                        isValid = true;
+                    }
+                }
+            }
+
+            if (!this.formData.data.obs || this.formData.data.obs === "") {
+                this.messages.error(this.text('technical-mandatory'));
+                isValid = true;
+            }
+
     }
 });
