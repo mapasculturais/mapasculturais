@@ -57,13 +57,12 @@ app.component('qualification-evaluation-form', {
         userId() {
             return $MAPAS.userId;
         },
-        entityId() {
-            return this.entity && this.entity.id ? this.entity.id : null;
-        }
     },
-    mounted() {
-        this.fetchEvaluations();
-    },
+
+    methods: {
+        handleChange(sectionId) {
+            this.formData.sectionStatus[sectionId] = 'Inabilitado';
+        },
 
     methods: {
     
