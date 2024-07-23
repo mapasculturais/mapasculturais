@@ -14,7 +14,10 @@ $this->import('
             <label>{{ crit.name }}</label>
             <div>  
                 <select v-model="formData.data[crit.id]" @change="handleChange(section.id)">
-                    <option value="">selecione</option>
+                    <option value=""><?php i::_e('Selecione') ?></option>
+                    <option v-if="crit.notApplyOption == 'true'" value="Não se aplica"><?php i::_e('Não se aplica') ?></option>
+                    <option value="Habilitado"><?php i::_e('Habilitado') ?></option>
+                    <option value="Inabilitado"><?php i::_e('Inabilitado') ?></option>
                     <option v-for="option in crit.options" :key="option" :value="option">{{ option }}</option>
                 </select>
             </div>
