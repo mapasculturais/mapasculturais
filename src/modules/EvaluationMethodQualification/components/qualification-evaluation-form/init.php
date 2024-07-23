@@ -12,13 +12,11 @@ $entity = $this->controller->requestedEntity;
 $sections = $entity->opportunity->evaluationMethodConfiguration->sections;
 $criteria = $entity->opportunity->evaluationMethodConfiguration->criteria;
 $data = [];
-
-$statusList = [
-    ['value' => '2', 'label' => i::__('Inválida')],
-    ['value' => '3', 'label' => i::__('Não selecionada')],
-    ['value' => '8', 'label' => i::__('Suplente')],
-    ['value' => '10', 'label' => i::__('Selecionada')],
-];
+if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
+    $user = $app->repo("User")->find($this->controller->data['user']);
+}else{
+    $user = $app->user;
+}
 
 foreach ($sections as $section) {
     $sectionData = [
