@@ -1156,7 +1156,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $totalPercent = 0.00;
         $appliedPolicies = [];
         foreach($affirmativePoliciesConfig as $rules){
-            if(empty($metadata)){
+            if(empty($metadata) || empty($rules) || !$rules){
                 continue;
             }
             
