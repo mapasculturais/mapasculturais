@@ -100,7 +100,7 @@ $entity = $this->controller->requestedEntity;
                     </div>
                 </template>
 
-                <template #advanced-filters>
+                <template #advanced-filters="{entities}">
                 </template>
 
                 <template #attachments={entity}>
