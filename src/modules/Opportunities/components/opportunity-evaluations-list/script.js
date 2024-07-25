@@ -161,7 +161,7 @@ app.component('opportunity-evaluations-list', {
             
             if (index >= 0 && index < this.evaluations.length) {
                 var url = this.evaluations[index].url.href;
-                window.location.href = url + 'user:' + data.detail.valuer;
+                window.location.href = url;
             }
 
         },
