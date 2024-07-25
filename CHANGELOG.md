@@ -8,6 +8,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
+## [7.4.13]
+- Atualiza bibliotecas PHP
+
 ## [7.4.12] - 2024-07-25
 ### Correções
 - Corrige erro que deixava a condicionalidade dos campos/anexos ativada ao editar, mesmo ele não estando condicionado a outro
