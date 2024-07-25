@@ -511,27 +511,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return false;
             }
 
-            $_rules = [];
-            if($em->isActivePointReward) {
-                if($pointRewards = $em->pointReward) {
-                    foreach($pointRewards as $pointReward) {
-                        if(isset($pointReward->value)) {
-                            $field_name = "field_" . $pointReward->field;
-                            $data = [
-                                'fieldName' => $field_name,
-                                'eligibleValues' => $pointReward->value
-                            ];
-    
-                            $_rules['fields'][] =  $data;
-                        }
-                    }
-                    
-                    if($_rules && $self->qualifiesForQuotaRule(json_decode(json_encode($_rules)), $registration)) {
-                        return true;
-                    }
-                }
-            }
-
             if($quota_configurations = $em->quotaConfiguration) {
                 if($rules = $quota_configurations->rules) {
                     foreach($rules as $rule) {
