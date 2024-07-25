@@ -152,17 +152,16 @@ app.component('opportunity-evaluations-list', {
             this.goTo(data)
         },
         goTo(data) {
-
             var index = null;
             this.evaluations.forEach((obj, i) => {
                 if (obj.registrationId === data.detail.registrationId) {
                     index = data.type === "nextEvaluation" ? i + 1 : i - 1;
                 }
             });
-
+            
             if (index >= 0 && index < this.evaluations.length) {
                 var url = this.evaluations[index].url.href;
-                window.location.href = url;
+                window.location.href = url + 'user:' + data.detail.valuer;
             }
 
         },
