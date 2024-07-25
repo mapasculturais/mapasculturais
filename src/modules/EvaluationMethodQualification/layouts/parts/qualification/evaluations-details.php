@@ -23,7 +23,7 @@ $this->import('
             <p>
                 <label><?= i::__('Resultado: ') ?></label>
                 <strong v-if="registration.consolidatedResult === 'Habilitado'" class="success__color">
-                    <mc-icon name="circle" class="success__color"></mc-icon>{{registration.consolidatedResult}}
+                    <mc-icon name="circle" class="success__color"></mc-icon>{{registration.score}}
                 </strong>
                 <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="danger__color">
                     <mc-icon name="circle" class="danger__color"></mc-icon>{{registration.consolidatedResult}}
