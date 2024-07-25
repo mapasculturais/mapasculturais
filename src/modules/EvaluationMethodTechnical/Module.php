@@ -1151,9 +1151,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 continue;
             }
 
-            if(isset($field_conf->config['require']['condition']) && $field_conf->config['require']['condition']){
-                $_field_name = $field_conf->config['require']['field'];
-                if(trim($registration->$_field_name) != trim($field_conf->config['require']['value'])){
+            if($field_conf->conditional){
+                $_field_name = $field_conf->conditionalField;
+                if(trim($registration->$_field_name) != trim($field_conf->conditionalValue)){
                     continue;
                 }
             }
