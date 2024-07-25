@@ -1205,6 +1205,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'percentage' => $percentage,
             'rules' => $appliedPolicies
         ];
+
+        $registration->save(true);
+
         if($percentage > 0){
             return $this->percentCalc($result, $percentage);
         }else{
