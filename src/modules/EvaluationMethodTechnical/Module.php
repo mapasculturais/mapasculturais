@@ -331,7 +331,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $phase_opportunity = $app->repo('Opportunity')->find($phase_id);
         $phase_evaluation_config = $phase_opportunity->evaluationMethodConfiguration;
         $first_phase = $phase_opportunity->firstPhase;
-
+        $cutoff_score = $phase_evaluation_config->cutoffScore;
+        
         // número total de vagas no edital
         $vacancies = $first_phase->vacancies;
         $exclude_ampla_concorrencia = !$first_phase->considerQuotasInGeneralList;
@@ -395,6 +396,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             
             foreach($registrations as $i => &$reg) {
                 if($exclude_ampla_concorrencia && $i < $total_ampla_concorrencia) {
+                    continue;
+                }
+                if((float)$reg->score < (float) $cutoff_score) {
                     continue;
                 }
 
