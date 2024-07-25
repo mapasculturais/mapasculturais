@@ -511,6 +511,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 return false;
             }
 
+            if((float) $registration->score <= 0.00 || (float) $registration->score < (float) $em->cutoffScore) {
+                return false;
+            }
+            
             if($quota_configurations = $em->quotaConfiguration) {
                 if($rules = $quota_configurations->rules) {
                     foreach($rules as $rule) {
