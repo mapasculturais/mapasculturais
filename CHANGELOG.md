@@ -42,7 +42,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias não funcionais
 - Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
 
-## [7.4.12]
+## [7.4.12] - 2024-07-25
 ### Correções
 - Corrige erro que deixava a condicionalidade dos campos/anexos ativada ao editar, mesmo ele não estando condicionado a outro
 - Corrige erro na tabela de listagem de inscrições que impedia a listagem de todas as inscrições de oportunidades multifases
@@ -53,9 +53,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige sincronização de inscrição no botão do resumo de inscrições
 - Faz o enfileiramento do job UpdateSummaryCaches no endpoint syncRegistrations para que atualize tambem o resumo de inscrições
 - Corrige carregamento do menu 'Meu Perfil' no menu principal quando a pessoa esta deslogada
+- Corrige erro no ranqueamento por cota que deixava o ranqueamento mal ordenado
+- Melhora a funcionalidade de autosave do componente de bônus por pontuação
+- Corrige a exibição do detalhamento das avaliações para mostrar a nota 'score' em vez de 'consolidatedResult', incluindo a soma dos bônus por pontuações aplicados
+- Corrige o método isEligibleForAffirmativePolicies para não considerar bônus por pontuação
+- Corrige o método applyPointReward para considerar corretamente os campos condicionais
+- Persiste os dados do appliedPointReward após o cálculo de bônus por pontuações
+- Garante que o método que busca valores recursivamente entre os campos de uma inscrição verifique as fases anteriores quando os valores não existirem na fase atual
+- Corrige exibição dos valores de pessoas deficientes na tabela de inscrições
+- Não considera cotistas com nota inferior a nota de corte
 
 ### Melhorias
 - Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
+- Exibe o nome da cota no botão de adicionar campo
 
 ## [7.4.11] - 2024-07-10
 ### Melhorias
