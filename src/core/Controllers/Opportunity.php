@@ -107,7 +107,8 @@ class Opportunity extends EntityController {
         if($this->isAjax()){
             $this->json($opportunity);
         }else{
-            $app->redirect($app->request->getReferer());
+            $referer = $app->request->getReferer();
+            $app->redirect($referer[0]);
         }
     }
 
