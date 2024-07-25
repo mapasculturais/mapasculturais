@@ -28,6 +28,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
+- Exibe o nome da cota no botão de adicionar campo
 
 ## [7.4.11] - 2024-07-10
 ### Melhorias
