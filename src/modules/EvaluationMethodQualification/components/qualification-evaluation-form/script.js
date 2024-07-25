@@ -8,6 +8,7 @@ app.component('qualification-evaluation-form', {
     },
     created() {
         this.formData['data'] = this.evaluationData || this.skeleton();
+        this.handleCurrentEvaluationForm();
         this.formData.uid = this.userId;
     },
 
@@ -29,25 +30,29 @@ app.component('qualification-evaluation-form', {
                 obs: '',
                 data: {},
             },
+            superteste: [],
+            isEditable: true,
             evaluationId: null,
         };
     },
-    
+    mounted() {
+        window.addEventListener('responseEvaluation', this.processResponse);
+        this.isEditable = this.status > 0 ? false : this.editable;
+    },
+
     computed: {
         sections() {
             return $MAPAS.config.qualificationEvaluationForm.sections || [];
-
         },
         status() {
-            return $MAPAS.config.qualificationEvaluationForm.evaluationData || [];
+            return $MAPAS.config.qualificationEvaluationForm.evaluationData?.status || 0;
         },
         statusText() {
             const statusMap = {
-                0: 'Não Enviada',
-                1: 'Em andamento',
-                2: 'Enviada',
+                0: this.text('Not_sent'),
+                1: this.text('In_progress'),
+                2: this.text('Sent'),
             };
-
             return statusMap[this.status];
         },
         evaluationData() {
@@ -57,11 +62,42 @@ app.component('qualification-evaluation-form', {
         userId() {
             return $MAPAS.userId;
         },
+        currentEvaluation() {
+            return $MAPAS.config.qualificationEvaluationForm.currentEvaluation;
+        },
     },
 
     methods: {
-        handleChange(sectionId) {
-            this.formData.sectionStatus[sectionId] = 'Inabilitado';
+        handleChange(sectionId, criteriaId, event) {
+            let section = {
+                [sectionId]:{
+                    [criteriaId]: event.value,
+                }
+            }
+            this.superteste.push(section);
+            this.testeSection();
+
+            // this.sections.forEach((sec,index) => {
+            //     if(sec.id == sectionId){
+            //         sect.criteria.forEach((crit, critIndex) => {
+            //             if(crit.id == criteriaId){
+            //                 this.testeSection();
+            //             }
+            //         })
+            //     }
+            //     console.log('section ->',sect);
+            // });
+
+            // if(sectionId)
+            
+            return this.formData.sectionStatus;
+
+        },
+        testeSection(){
+            this.superteste.forEach((test,index) => {
+                console.log(test);
+                console.log(index);
+            });
         },
         validateErrors() {
             let isValid = false;
@@ -84,6 +120,17 @@ app.component('qualification-evaluation-form', {
             }
 
             return isValid;
+        },
+        processResponse(data) {
+            if (data.detail.response.status > 0) {
+                this.isEditable = false;
+            } else {
+                this.isEditable = true;
+            }
+        },
+
+        handleCurrentEvaluationForm() {
+            this.isEditable = this.currentEvaluation?.status > 0 ? false : this.editable;
         },
         skeleton() {
             return {
