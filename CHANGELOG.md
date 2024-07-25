@@ -22,6 +22,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o método isEligibleForAffirmativePolicies para não considerar bônus por pontuação
 - Garante que o método isEligibleForAffirmativePolicies não considere elegíveis inscrições com pontuação zero ou abaixo da nota de corte
 - Corrige o método applyPointReward para considerar corretamente os campos condicionais
+- Persiste os dados do appliedPointReward após o cálculo de bônus por pontuações
 
 ### Melhorias
 - Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
