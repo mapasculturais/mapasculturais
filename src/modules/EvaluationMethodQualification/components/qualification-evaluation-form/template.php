@@ -14,7 +14,7 @@ $this->import('
         <div v-for="crit in section.criteria" :key="crit.id">
             <label>{{ crit.name }}</label>
             <div>
-                <mc-select v-if="isEditable" v-model="formData.data[crit.id]" @change-option="handleChange(section.id, crit.id, $event)" :disabled="!isEditable">
+                <mc-select v-if="isEditable" v-model="formData.data[crit.id]" @change-option="updateSectionStatus(section.id, crit.id, $event)" :disabled="!isEditable">
                     <option value=""><?php i::_e('Selecione') ?></option>
                     <option v-if="crit.notApplyOption == 'true'" value="Não se aplica"><?php i::_e('Não se aplica') ?></option>
                     <option value="Habilitado"><?php i::_e('Habilitado') ?></option>
@@ -24,7 +24,7 @@ $this->import('
                 <input v-if="!isEditable" type="text" :value="formData.data[crit.id]" disabled>
             </div>
         </div>
-        <label><?php i::_e('Resultado da seção:') ?> </label>
+        <label><?php i::_e('Resultado da seção:') ?> {{sectionStatus(section.id)}} </label>
     </div>
     <div v-if="statusText">
         <label><?php i::_e('Resultado da seção:') ?> {{statusText}}</label>

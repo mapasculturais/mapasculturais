@@ -10,5 +10,6 @@ return [
     'Not_sent'=> i::__('Não Enviada'),
     'In_progress'=> i::__('Em andamento'),
     'Sent'=> i::__('Enviada'),
-    'Disabled'=>i::__('Inabilitado')
+    'Disabled'=>i::__('Inabilitado'),
+    'Enabled'=>i::__('Habilitado')
 ];

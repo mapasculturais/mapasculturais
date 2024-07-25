@@ -30,7 +30,6 @@ app.component('qualification-evaluation-form', {
                 obs: '',
                 data: {},
             },
-            superteste: [],
             isEditable: true,
             evaluationId: null,
         };
@@ -38,6 +37,10 @@ app.component('qualification-evaluation-form', {
     mounted() {
         window.addEventListener('responseEvaluation', this.processResponse);
         this.isEditable = this.status > 0 ? false : this.editable;
+
+        if(!this.isEditable) {
+            this.updateSectionStatusByFromData();
+        }
     },
 
     computed: {
@@ -68,36 +71,42 @@ app.component('qualification-evaluation-form', {
     },
 
     methods: {
-        handleChange(sectionId, criteriaId, event) {
-            let section = {
-                [sectionId]:{
-                    [criteriaId]: event.value,
-                }
+        updateSectionStatus(sectionId, criteriaId, event) {
+            this.formData.data = {
+                ...this.formData.data,
+                [criteriaId]: event.value
+            };
+
+            const section = this.sections.find(sec => sec.id === sectionId);
+
+            if(section) {
+                const criteriaEnabled = section.criteria.every(crit => this.formData.data[crit.id] === 'Habilitado');
+                const newStatus = criteriaEnabled ? this.text('Enabled') : this.text('Disabled');
+        
+                this.formData.sectionStatus = {
+                    ...this.formData.sectionStatus,
+                    [sectionId]: newStatus
+                };
             }
-            this.superteste.push(section);
-            this.testeSection();
-
-            // this.sections.forEach((sec,index) => {
-            //     if(sec.id == sectionId){
-            //         sect.criteria.forEach((crit, critIndex) => {
-            //             if(crit.id == criteriaId){
-            //                 this.testeSection();
-            //             }
-            //         })
-            //     }
-            //     console.log('section ->',sect);
-            // });
-
-            // if(sectionId)
-            
-            return this.formData.sectionStatus;
-
         },
-        testeSection(){
-            this.superteste.forEach((test,index) => {
-                console.log(test);
-                console.log(index);
+        sectionStatus(sectionId){
+            return this.formData.sectionStatus[sectionId];
+        },
+        updateSectionStatusByFromData() {
+            const updatedSectionStatus = {};
+    
+            this.sections.forEach(section => {
+                const criteriaEnabled = section.criteria.every(crit => {
+                    const status = this.formData.data[crit.id];
+                    return status === 'Habilitado';
+                });
+    
+                const newStatus = criteriaEnabled ? this.text('Enabled') : this.text('Disabled');
+    
+                updatedSectionStatus[section.id] = newStatus;
             });
+    
+            this.formData.sectionStatus = updatedSectionStatus;
         },
         validateErrors() {
             let isValid = false;
