@@ -104,13 +104,23 @@ class Module extends \MapasCulturais\Module{
                 'evaluationMethodConfiguration' => $this->opportunity->evaluationMethodConfiguration ?: null
             ], '10 seconds');
         });
+
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app) {
             $app->log->debug("Registration {$this->id} status changed to {$this->status}");
+            
             /** @var Registration $this */
-            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                'opportunity' => $this->opportunity
-            ], '10 seconds');
+            /** @var Opportunity $opportunity */
+            $opportunity = $this->opportunity;
+            do{
+                $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                    'opportunity' => $opportunity
+                ], '10 seconds');
+
+                $opportunity = $opportunity->nextPhase;
+                
+            } while ($opportunity);
         });
+        
         $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {
             /** @var RegistrationEvaluation $this */
             $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [

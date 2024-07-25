@@ -1611,7 +1611,7 @@ class App {
      *
      * If the 'app.sanitize_filename_function' configuration key is callable, this method call it after sanitizes the filename.
      *
-     * @param type $filename
+     * @param string $filename
      *
      * @return string The sanitized filename.
      */
@@ -1823,6 +1823,7 @@ class App {
      * @throws Exception 
      */
     public function executeJob(): int|false {
+        /** @var $conn Connection */
         $conn = $this->em->getConnection();
         $now = date('Y-m-d H:i:s');
         $job_id = $conn->fetchScalar("
