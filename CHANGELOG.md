@@ -24,6 +24,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige o método applyPointReward para considerar corretamente os campos condicionais
 - Persiste os dados do appliedPointReward após o cálculo de bônus por pontuações
 - Garante que o método que busca valores recursivamente entre os campos de uma inscrição verifique as fases anteriores quando os valores não existirem na fase atual
+- Corrige exibição dos valores de pessoas deficientes na tabela de inscrições
 
 ### Melhorias
 - Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
