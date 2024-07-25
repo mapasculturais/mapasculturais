@@ -376,6 +376,13 @@ app.component('entity-table', {
                 }
             }
 
+            if(Array.isArray(val)) {
+                const desc = this.$description[value];
+                if(desc.type == 'agent-owner-field') {
+                    val = val.filter(item => item !== "null" && item !== "").join(', ');
+                }
+            }
+
             return val;
         },
 
