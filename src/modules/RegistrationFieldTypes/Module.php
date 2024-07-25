@@ -640,7 +640,7 @@ class Module extends \MapasCulturais\Module
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
             if ($entity_field == "@location" && is_array($value)) {
-                if($value['location'] instanceof GeoPoint) {
+                if(isset($value['location']) && $value['location'] instanceof GeoPoint) {
                     $value["location"] = [
                         'latitude' => $value['location']->latidude,
                         'longitude' => $value['location']->longitude,
