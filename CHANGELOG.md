@@ -20,7 +20,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Melhora a funcionalidade de autosave do componente de bônus por pontuação
 - Corrige a exibição do detalhamento das avaliações para mostrar a nota 'score' em vez de 'consolidatedResult', incluindo a soma dos bônus por pontuações aplicados
 - Corrige o método isEligibleForAffirmativePolicies para não considerar bônus por pontuação
-- Garante que o método isEligibleForAffirmativePolicies não considere elegíveis inscrições com pontuação zero ou abaixo da nota de corte
 - Corrige o método applyPointReward para considerar corretamente os campos condicionais
 - Persiste os dados do appliedPointReward após o cálculo de bônus por pontuações
 - Garante que o método que busca valores recursivamente entre os campos de uma inscrição verifique as fases anteriores quando os valores não existirem na fase atual
