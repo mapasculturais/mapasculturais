@@ -15,8 +15,6 @@ app.component('mc-summary-evaluate', {
     data() {
         this.global.summaryEvaluations = $MAPAS.config.summaryEvaluations;
 
-        console.log(this.global);
-        
         return {
             summary: this.global.summaryEvaluations,
         }
