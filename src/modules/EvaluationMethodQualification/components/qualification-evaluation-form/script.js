@@ -14,7 +14,7 @@ app.component('qualification-evaluation-form', {
 
     props: {
         entity: {
-            type: Object,
+            type: Entity,
             required: true
         },
         editable: {
