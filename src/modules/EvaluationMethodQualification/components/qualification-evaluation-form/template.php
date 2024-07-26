@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->import('
     evaluation-actions
     mc-select
+    mc-popover
 ')
 ?>
 <div>
@@ -12,7 +13,26 @@ $this->import('
     <div v-for="section in sections" :key="section.id">
         <h3>{{ section.name }}</h3>
         <div v-for="crit in section.criteria" :key="crit.id">
-            <label>{{ crit.name }}</label>
+            <div>
+                <label>{{ crit.name }}</label>
+                <mc-popover @open="img.newDescription = img.description" openside="down-right">
+                    <template #button="popover">
+                        <a @click="popover.toggle()"> <mc-icon name="info"></mc-icon> </a>
+                    </template>
+                    <template #default="{popover, close}">
+                        <form @submit="$event.preventDefault()" class="entity-gallery__addNew--newGroup">
+                            <div class="grid-12">
+                                <div class="col-12">
+                                    <a @click="close()"> <mc-icon name="close"></mc-icon> </a>
+                                    <div class="field">
+                                        <p>{{ crit.description }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </template>
+                </mc-popover>
+            </div>
             <div>
                 <mc-select v-if="isEditable" v-model="formData.data[crit.id]" @change-option="updateSectionStatus(section.id, crit.id, $event)" :disabled="!isEditable">
                     <option v-if="crit.notApplyOption == 'true'" value="Não se aplica"><?php i::_e('Não se aplica') ?></option>
