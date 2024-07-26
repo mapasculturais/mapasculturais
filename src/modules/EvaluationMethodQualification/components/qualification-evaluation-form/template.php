@@ -36,17 +36,17 @@ $this->import('
             <div>
                 <mc-select v-if="isEditable" v-model="formData.data[crit.id]" @change-option="updateSectionStatus(section.id, crit.id, $event)" :disabled="!isEditable">
                     <option v-if="crit.notApplyOption == 'true'" value="Não se aplica"><?php i::_e('Não se aplica') ?></option>
-                    <option value="Habilitado"><?php i::_e('Habilitado') ?></option>
-                    <option value="Inabilitado"><?php i::_e('Inabilitado') ?></option>
+                    <option class="qualification-enabled" value="Habilitado"><?php i::_e('Habilitado') ?></option>
+                    <option class="qualification-disabled" value="Inabilitado"><?php i::_e('Inabilitado') ?></option>
                     <option v-for="option in crit.options" :key="option" :value="option">{{ option }}</option>
                 </mc-select>
                 <input v-if="!isEditable" type="text" :value="formData.data[crit.id]" disabled>
             </div>
         </div>
-        <label><?php i::_e('Resultado da seção:') ?> {{sectionStatus(section.id)}} </label>
+        <label :class="sectionStatus(section.id) == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'"><?php i::_e('Resultado da seção:') ?> {{sectionStatus(section.id)}} </label>
     </div>
-    <div v-if="statusText">
-        <label><?php i::_e('Status da avaliação:') ?> {{statusText}}</label>
+    <div>
+        <label :class="consolidatedResult == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'"><?php i::_e('Status da avaliação:') ?> {{consolidatedResult}}</label>
     </div>
     <div>
         <p><?php i::_e('Observações') ?></p>
