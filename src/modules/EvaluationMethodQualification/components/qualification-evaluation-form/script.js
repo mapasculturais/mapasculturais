@@ -30,6 +30,7 @@ app.component('qualification-evaluation-form', {
                 obs: '',
                 data: {},
             },
+            consolidatedResult: this.text('Habilitado'),
             isEditable: true,
             evaluationId: null,
         };
@@ -49,14 +50,6 @@ app.component('qualification-evaluation-form', {
         },
         status() {
             return $MAPAS.config.qualificationEvaluationForm.evaluationData?.status || 0;
-        },
-        statusText() {
-            const statusMap = {
-                0: this.text('Not_sent'),
-                1: this.text('In_progress'),
-                2: this.text('Sent'),
-            };
-            return statusMap[this.status];
         },
         evaluationData() {
             const evaluation = $MAPAS.config.qualificationEvaluationForm.evaluationData;
@@ -80,17 +73,29 @@ app.component('qualification-evaluation-form', {
             const section = this.sections.find(sec => sec.id === sectionId);
 
             if(section) {
-                const criteriaEnabled = section.criteria.every(crit => this.formData.data[crit.id] === 'Habilitado');
-                const newStatus = criteriaEnabled ? this.text('Enabled') : this.text('Disabled');
+                const criteriaEnabled = section.criteria.every(crit => this.formData.data[crit.id] === this.text('Habilitado'));
+                const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');
         
                 this.formData.sectionStatus = {
                     ...this.formData.sectionStatus,
                     [sectionId]: newStatus
                 };
             }
+            this.consolidated();
+        },
+        consolidated (){
+            let totalSections = this.sections.length;
+            let sectionsEvaluated = Object.values(this.formData.sectionStatus).length;
+            
+            if(sectionsEvaluated > 0 && sectionsEvaluated < totalSections){
+                this.consolidatedResult = this.text('Inabilitado');
+                return;
+            }
+
+            this.consolidatedResult = Object.values(this.formData.sectionStatus).includes(this.text('Inabilitado')) ? this.text('Inabilitado') :this.text('Habilitado');
         },
         sectionStatus(sectionId){
-            return this.formData.sectionStatus[sectionId];
+            return this.formData.sectionStatus[sectionId] ?? this.text('Inabilitado');
         },
         updateSectionStatusByFromData() {
             const updatedSectionStatus = {};
@@ -101,12 +106,13 @@ app.component('qualification-evaluation-form', {
                     return status === 'Habilitado';
                 });
     
-                const newStatus = criteriaEnabled ? this.text('Enabled') : this.text('Disabled');
+                const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');
     
                 updatedSectionStatus[section.id] = newStatus;
             });
     
             this.formData.sectionStatus = updatedSectionStatus;
+            this.consolidated();
         },
         validateErrors() {
             let isValid = false;
@@ -117,14 +123,14 @@ app.component('qualification-evaluation-form', {
                     let sectionName = this.sections[sectionIndex].name;
                     let value = this.formData.data[crit.id];
                     if (!value || value === "") {
-                        this.messages.error(`${this.text('on_section')} ${sectionName}, ${this.text('the_field')} ${crit.name} ${this.text('is_required')}`);
+                        this.messages.error(`${this.text('Na sessão')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
                         isValid = true;
                     }
                 }
             }
 
             if (!this.formData.data.obs || this.formData.data.obs === "") {
-                this.messages.error(this.text('technical-mandatory'));
+                this.messages.error(this.text('O campo Observação é obrigatório.'));
                 isValid = true;
             }
 
