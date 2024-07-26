@@ -3,13 +3,10 @@
 use MapasCulturais\i;
 
 return [
-    'technical-mandatory' => i::__('O campo Observação é obrigatório.'),
-    'the_field' => i::__('O campo'),
-    'is_required' => i::__('é obrigatório'),
-    'on_section' => i::__('Na sessão'),
-    'Not_sent'=> i::__('Não Enviada'),
-    'In_progress'=> i::__('Em andamento'),
-    'Sent'=> i::__('Enviada'),
-    'Disabled'=>i::__('Inabilitado'),
-    'Enabled'=>i::__('Habilitado')
+    'O campo Observação é obrigatório.' => i::__('O campo Observação é obrigatório.'),
+    'O campo' => i::__('O campo'),
+    'é obrigatório' => i::__('é obrigatório'),
+    'Na sessão' => i::__('Na sessão'),
+    'Inabilitado'=>i::__('Inabilitado'),
+    'Habilitado'=>i::__('Habilitado')
 ];
