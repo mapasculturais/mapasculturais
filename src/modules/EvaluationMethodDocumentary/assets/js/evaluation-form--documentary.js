@@ -181,7 +181,9 @@ $(function(){
                 if (insideEmbedTools) {
                     window.parent.postMessage({
                         type: 'evaluationForm.openForm',
-                        element: $field.get(0).outerHTML
+                        element: $field.get(0).outerHTML,
+                        fieldName: $field.get(0).id,
+                        fieldId: $field.get(0).dataset.fieldId
                     })
                 } else {
                     openForm($field);
