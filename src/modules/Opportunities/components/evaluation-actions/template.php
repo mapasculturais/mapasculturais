@@ -15,8 +15,8 @@ $this->import('
 
 <div class="evaluation-actions" v-if="evaluationRegistrationList">
     <div class="grid-12">
-        <div class="col-12">
-            {{this.currentEvaluation.status}}
+        <div v-if="currentEvaluation && currentEvaluation.status" class="col-12">
+            {{currentEvaluation.status}}
         </div>
         <div class="col-12" v-if="showActions('finishEvaluation')">
             <button class="button button--primary button--large" @click="finishEvaluation()">
