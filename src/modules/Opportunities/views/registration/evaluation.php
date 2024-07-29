@@ -94,7 +94,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                         <?php if ($valuer_user) : ?>
                             <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
                         <?php else : ?>
-                            <?php if (in_array($entity->opportunity->evaluationMethod->slug, ['simple', 'technical', 'qualification'])) : ?>
+                            <?php if (in_array($entity->opportunity->evaluationMethod->slug, ['simple', 'technical', 'qualification', 'documentary'])) : ?>
                                 <?php $this->part("{$entity->opportunity->evaluationMethod->slug}/evaluation-form"); ?>
                             <?php else : ?>
                                 <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
