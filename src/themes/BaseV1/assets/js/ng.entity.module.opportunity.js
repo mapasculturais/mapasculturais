@@ -193,6 +193,14 @@
                     },50)
                 });
             },
+
+            getSelectedRange: function(){
+                return $q(function(resolve){
+                    setTimeout(function(){
+                            resolve(MapasCulturais.entity.object.range);
+                    },50)
+                });
+            },
             
             registrationStatuses: MapasCulturais.entity.registrationStatuses,
             registrationStatusesToFilter: [{label: 'Todos os status', value: undefined}, ...MapasCulturais.entity.registrationStatuses],
@@ -351,6 +359,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         conditional : false,
         conditionalField : null,
         conditionalValue : null,
+        registrationRanges : [],
+        proponentTypes : []
     };
 
     var fieldConfigurationSkeleton = {
@@ -365,6 +375,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         conditional : false,
         conditionalField : null,
         conditionalValue : null,
+        registrationRanges : [],
+        proponentTypes : [],
     };
 
     $scope.isBlockedFields = function(fieldID){
@@ -433,7 +445,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldsRequiredLabel: labels['requiredLabel'],
             fieldsOptionalLabel: labels['optionalLabel'],
             categories: MapasCulturais.entity.registrationCategories,
-            taxonomies: MapasCulturais.Taxonomies
+            taxonomies: MapasCulturais.Taxonomies,
+            registrationRanges : MapasCulturais.entity.object.registrationRanges,
+            proponentTypes : MapasCulturais.entity.object.registrationProponentTypes,
         };
         
         $scope.allowedFieldCondition = function(type){
@@ -460,6 +474,14 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.allCategories = function(model){
             return model.categories.length === 0;
+        }
+
+        $scope.allRanges = function(model){
+            return model.registrationRanges.length === 0;
+        }
+
+        $scope.allProponentTypes = function(model){
+            return model.proponentTypes.length === 0;
         }
 
         function sortFields(){
@@ -598,7 +620,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 categories: model.categories.length ? model.categories : '',
                 conditional: model.conditional ? true : false,
                 conditionalField: model.conditionalField,
-                conditionalValue: model.conditionalValue
+                conditionalValue: model.conditionalValue,
+                registrationRanges: model.registrationRanges.length ? model.registrationRanges : '',
+                proponentTypes: model.proponentTypes.length ? model.proponentTypes : '',
 
             };
 
@@ -697,7 +721,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 categories: model.categories.length ? model.categories : '',
                 conditional: model.conditional ? true : false,
                 conditionalField: model.conditionalField,
-                conditionalValue: model.conditionalValue
+                conditionalValue: model.conditionalValue,
+                registrationRanges: model.registrationRanges.length ? model.registrationRanges : '',
+                proponentTypes: model.proponentTypes.length ? model.proponentTypes : '',
             };
 
             if(data.fieldType == "section"){
@@ -959,11 +985,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     $scope.data = {
         fields: [],
         avaliableEvaluationFields: {},
-        category:{
-            fieldName: "category",
-            checked: false,
-            title: labels['category']
-        },
+       
         projectName:{
             fieldName: "projectName",
             checked: false,
@@ -1008,7 +1030,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
     }
 
     $scope.data.fields = [
-        $scope.data.category,
+        // $scope.data.category,
         $scope.data.projectName,
         $scope.data.agentsSummary,
         $scope.data.spaceSummary,
@@ -1016,6 +1038,17 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
 
     if(MapasCulturais.evaluationFieldsList){
+        MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort((a,b) => {
+            console.log(a,b)
+            if(a.displayOrder > b.displayOrder){
+                return 1;
+            }else if(a.displayOrder < b.displayOrder){
+                return -1;
+            }else{
+                return 0;
+            }
+        });
+
         MapasCulturais.evaluationFieldsList.forEach(function(item){
             $scope.data.fields.push(item);
         })
@@ -1037,11 +1070,11 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
             item.checked = true;
         }
 
-        if(MapasCulturais.entity.object.avaliableEvaluationFields["category"] != "true" && item.categories?.length > 0){
-            item.disabled = true;
-            item.titleDisabled = labels['activateField'];
+        // if(MapasCulturais.entity.object.avaliableEvaluationFields["category"] != "true" && item.categories?.length > 0){
+        //     item.disabled = true;
+        //     item.titleDisabled = labels['activateField'];
             
-        }
+        // }
 
         var field_condition = item.config?.require?.field;
         if(field_condition && MapasCulturais.entity.object.avaliableEvaluationFields[field_condition] != "true"){
@@ -1636,8 +1669,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     };
     
 
-    $scope.useCategories = MapasCulturais.entity.registrationCategories.length > 0;
+    $scope.useCategories = MapasCulturais.entity.registrationCategories?.length > 0;
+    $scope.useRegistrationsRanges = MapasCulturais.entity.registrationRanges?.length > 0;
+    $scope.useProponentTypes = MapasCulturais.entity.registrationProponentTypes?.length > 0;
 
+    $scope.registrationRanges = $scope.useRegistrationsRanges ? MapasCulturais.entity.registrationRanges : [];
+    $scope.registrationProponentTypes = $scope.useProponentTypes ? MapasCulturais.entity.registrationProponentTypes: [];
 
     if($scope.useCategories){
         $scope.registrationCategories = MapasCulturais.entity.registrationCategories;
@@ -1703,21 +1740,26 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.showField = function(field){
         
-        var result;
-        if (!$scope.useCategories){
-            result = true;
-        } else {
-            result = field.categories.length === 0 || field.categories.indexOf($scope.selectedCategory) >= 0;
+        var result = true;
+
+        if ($scope.useCategories) {
+            result = result && (field.categories?.length === 0 || field.categories.indexOf($scope.entity.category) >= 0);
+        }
+
+        if ($scope.useRegistrationsRanges) {
+            if(field.registrationRanges?.length > 0  && !field.registrationRanges.includes($scope.entity.range)) {
+                result = false;
+            }
+        }
+
+        if ($scope.useProponentTypes) {
+            if(field.proponentTypes?.length > 0 && !field.proponentTypes.includes($scope.entity.proponentType)) {
+                result = false;
+            }
         }
 
         if(field.conditional){
             result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
-        }
-
-        if (field.config && field.config.require && field.config.require.condition && field.config.require.hide) {
-            var requiredFieldName = field.config.require.field;
-            var requeredFieldValue = field.config.require.value;
-
         }
 
         if(MapasCulturais.entity.canUserEvaluate){

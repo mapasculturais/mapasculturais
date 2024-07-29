@@ -99,12 +99,53 @@ class Module extends \MapasCulturais\EvaluationMethod
     function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
 
-        return [];
+        $sections = $evaluation_configuration->sections ?: [];
+        $criteria = $evaluation_configuration->criteria ?: [];
+
+        foreach($sections as &$section) {
+            $section->criteria = [];
+
+            foreach($criteria as &$cri){
+                if(($cri->sid ?? false) == $section->id) {
+                    unset($cri->sid);
+                    $result = isset($evaluation->evaluationData->{$cri->id}) ? $evaluation->evaluationData->{$cri->id} : '';
+                    
+                    $cri->result = $result;
+                    $section->criteria[] = $cri;
+                }
+            }
+        }
+        
+        return [
+            'scores' => $sections,
+            'obs' => $evaluation->evaluationData->obs
+        ];
     }
 
     function _getConsolidatedDetails(Entities\Registration $registration): array {
         $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
-        return [];
+        $sections =  [];
+        $criteria = [];
+
+        if($registration->sentEvaluations){
+            $sections = $evaluation_configuration->sections ?: [];
+            $criteria = $evaluation_configuration->criteria ?: [];
+    
+            foreach($sections as &$section) {
+                $section->criteria = [];
+    
+                foreach($criteria as &$cri){
+                    if(($cri->sid ?? false) == $section->id) {
+                        unset($cri->sid);
+                        $section->criteria[] = $cri;
+                    }
+                }
+            }
+        }
+        
+        return [
+            'scores' => $sections,
+        ];
     }
 
     protected function _register()
@@ -116,7 +157,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return json_encode($val);
             },
             'unserialize' => function ($val) {
-                return json_decode($val);
+                return $val ? json_decode($val) : $val;
             }
         ]);
 
@@ -127,7 +168,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return json_encode($val);
             },
             'unserialize' => function ($val) {
-                return json_decode($val);
+                return $val ? json_decode($val) : $val;
             }
         ]);
     }
@@ -139,7 +180,10 @@ class Module extends \MapasCulturais\EvaluationMethod
         foreach($evaluation_method_configuration->criteria as $key => $c){
             if(isset($data[$c->id])){
                 $val = $data[$c->id];
-                $options = array_merge($c->options, ['Habilitado', 'Inabilitado', 'Não se aplica']);
+                $options = ['Habilitado', 'Inabilitado', 'Não se aplica'];
+                if($c->options) {
+                    $options = array_merge($c->options, $options);
+                }
                 if(!in_array($val, $options)){
                     $errors[] = i::__("O valor do critério {$c->name} é inválido");
                     break;

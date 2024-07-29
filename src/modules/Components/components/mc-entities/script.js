@@ -109,7 +109,7 @@ app.component('mc-entities', {
             let query = {...this.query};
             this.populateQuery(query);
 
-            const options = {list: this.entities};
+            const options = {list: this.entities, refresh: true};
 
             if (this.limit && this.page) {
                 query['@page'] = this.page;

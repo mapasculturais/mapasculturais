@@ -1,23 +1,18 @@
 <?php
 $action = preg_replace("#^(\w+/)#", "", $this->template);
 
-
 $avaliable_evaluationFields = $entity->opportunity->avaliableEvaluationFields ?? [];
-$app->view->jsObject['avaliableEvaluationFields'] = $avaliable_evaluationFields;
+$avaliable_evaluationFields['proponentType'] = true;
+$avaliable_evaluationFields['range'] = true;
+$avaliable_evaluationFields['category'] = true;
 
+$app->view->jsObject['avaliableEvaluationFields'] = $avaliable_evaluationFields;
 
 $_params = [
     'entity' => $entity,
     'action' => $action,
     'opportunity' => $entity->opportunity
 ];
-?>
-<?php 
-if($entity->opportunity->evaluationMethodConfiguration){
-    if($entity->opportunity->evaluationMethodConfiguration->committee){
-        $this->part('singles/registration--valuers-list', $_params); 
-    }
-}
 ?>
 
 <?php $this->part('singles/registration-single--fields', $_params) ?>

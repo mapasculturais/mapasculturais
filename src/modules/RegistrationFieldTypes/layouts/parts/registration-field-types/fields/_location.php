@@ -70,7 +70,7 @@ $this->includeGeocodingAssets();
     </section>
     <p ng-if="::field.config.setPrivacy" class="rfc-input rfc-En_">
         <label>
-            <input ng-model="entity[fieldName].publicLocation" ng-true-value="'true'" ng-false-value="" type="checkbox" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-publicLocation" />
+            <input ng-model="entity[fieldName].publicLocation" ng-true-value="true" ng-false-value="" type="checkbox" ng-blur="saveField(field, entity[fieldName])" ng-focus="saveField(field, entity[fieldName],10000)" class="js-rfc-input js-rfc-input-publicLocation" />
             <?= i::__('Marque para deixar tornar sua localização pública.') ?><br>
         </label>
     </p>

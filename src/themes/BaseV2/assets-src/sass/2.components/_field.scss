@@ -57,18 +57,22 @@
     }
 
     &__group {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
         &::-webkit-scrollbar {
-            width: size(8);               /* width of the entire scrollbar */
+            width: size(8);
         }
         
         &::-webkit-scrollbar-track {
-            background: var(--mc-gray-100);        /* color of the tracking area */
+            background: var(--mc-gray-100);
         }
         
         &::-webkit-scrollbar-thumb {
-            background-color: var(--mc-gray-500);    /* color of the scroll thumb */
-            border-radius: size(5);       /* roundness of the scroll thumb */
-            border: size(2) solid var(--mc-gray-100);  /* creates padding around scroll thumb */
+            background-color: var(--mc-gray-500);
+            border-radius: size(5);
+            border: size(2) solid var(--mc-gray-100);
         }
     }
 

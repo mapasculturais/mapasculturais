@@ -8,6 +8,7 @@ import * as VueLeaflet from "@vue-leaflet/vue-leaflet";
 import * as Leaflet from 'leaflet';
 import { MarkerClusterGroup } from 'leaflet.markercluster';
 import Datepicker from '@vuepic/vue-datepicker';
+import * as CurrencyInput from 'vue-currency-input';
 import * as Dates from 'date-fns';
 import * as FloatingVue from 'floating-vue'
 import MediaQuery from './media-query'
@@ -43,6 +44,7 @@ globalThis.VueLeaflet = VueLeaflet
 globalThis.MarkerClusterGroup = MarkerClusterGroup
 globalThis.Leaflet = Leaflet
 globalThis.Datepicker = Datepicker
+globalThis.CurrencyInput = CurrencyInput
 globalThis.Dates = Dates;
 globalThis.VueRecaptcha = VueRecaptcha;
 // globalThis.Vue3EasyDataTable = Vue3EasyDataTable;

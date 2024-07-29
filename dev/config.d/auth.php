@@ -2,7 +2,7 @@
 
 return [
     'auth.provider' => 'Fake',
-    /* 'auth.provider' => '\MultipleLocalAuth\Provider',
+    // 'auth.provider' => '\MultipleLocalAuth\Provider',
     'auth.config' => [
         'salt' => env('AUTH_SALT', null),
         'timeout' => '24 hours',
@@ -29,7 +29,7 @@ return [
                 'app_secret' => env('AUTH_TWITTER_APP_SECRET', null),
             ],
         ]
-    ] */
+    ]
 
     //auth.provider' => 'MapasCulturais\AuthProviders\OpauthAuthentik',
     //'auth.config' => [

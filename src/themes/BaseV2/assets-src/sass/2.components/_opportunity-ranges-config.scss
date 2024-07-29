@@ -1,0 +1,60 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-ranges-config {
+    display: flex;
+    flex-direction: column;
+    gap: size(16);
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: size(8);
+        gap: size(8);
+    }
+
+    &__content {
+        display: grid;
+        grid-template-columns:
+            calc(50% - size(24))
+            calc(20% - size(16))
+            calc(20% - size(16))
+            size(100);
+        gap: size(20) size(20);
+        border-top: 1px solid var(--mc-gray-300);
+        align-items: center;
+        justify-items: center;
+        padding-top: size(8);
+        width: 100%;
+        
+        .field {
+            &__input {
+                border: 0.0625rem solid var(--mc-gray-500);
+                border-radius: var(--mc-border-radius-xs);
+                padding: size(8);
+                font-family: var(--mc-font-family);
+                font-size: var(--mc-font-size-xxs);
+                line-height: normal;
+            }
+        }
+
+        @media (max-width: 932px) {
+            grid-template-columns:
+                calc(40% - 1rem)
+                calc(30% - 1rem)
+                calc(15% - 1rem)
+                size(85);
+        }
+
+        @media (max-width: 675px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__button {
+        border-top: 1px solid var(--mc-gray-300);
+
+        &__add {
+            margin-top: size(8);
+        }
+    }
+}

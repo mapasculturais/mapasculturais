@@ -8,10 +8,13 @@
 @import '0.settings/atoms';
 
 // OBJECTS
+@import '1.objects/load-more';
 @import '1.objects/mc-title';
 @import '1.objects/mc-avatar';
 
 // COMPONENTS
+@import '2.components/affirmative-policies--geo-quota-configuration';
+@import '2.components/affirmative-policies--quota-configuration';
 @import '2.components/_mc-fake-user-create';
 @import '2.components/agent-data';
 @import '2.components/app-card-content';
@@ -21,7 +24,6 @@
 @import '2.components/complaint-suggestion';
 @import '2.components/container';
 @import '2.components/create-app';
-@import '2.components/create-entity-modal';
 @import '2.components/create-modal';
 @import '2.components/create-occurrence';
 @import '2.components/data-table';
@@ -53,6 +55,7 @@
 @import '2.components/event-importer-upload';
 @import '2.components/entity-table';
 @import '2.components/faq-accordion';
+@import '2.components/faq-info';
 @import '2.components/faq-search';
 @import '2.components/faq-search-results';
 @import '2.components/error-display';
@@ -105,6 +108,7 @@
 @import '2.components/opportunity-basic-info';
 @import '2.components/opportunity-category-list';
 @import '2.components/opportunity-category';
+@import '2.components/opportunity-evaluation-committee';
 @import '2.components/opportunity-evaluations-list';
 @import '2.components/opportunity-evaluations';
 @import '2.components/opportunity-form-export';
@@ -119,6 +123,7 @@
 @import '2.components/opportunity-phase-publish-date-config';
 @import '2.components/opportunity-phase-status';
 @import '2.components/opportunity-phases-timeline';
+@import '2.components/opportunity-ranges-config';
 @import '2.components/opportunity-registrations';
 @import '2.components/opportunity-rules';
 @import '2.components/opportunity-subscription-list';
@@ -159,6 +164,9 @@
 @import '2.components/stepper';
 @import '2.components/tabs';
 @import '2.components/theme-logo';
+@import '2.components/technical-assessment-section';
+@import '2.components/tiebreaker-criteria-configuration';
+@import '2.components/_affirmative-policy--bonus-config';
 @import '2.components/timeline';
 @import '2.components/user-accepted-terms';
 @import '2.components/user-mail';

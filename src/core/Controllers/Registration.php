@@ -602,7 +602,7 @@ class Registration extends EntityController {
             $entity->$field = $value;
         }
         
-        if ($errors = $entity->getSendValidationErrors()) {
+        if ($errors = $entity->getValidationErrors()) {
             $this->errorJson($errors);
         } else {
             $this->json(true);
@@ -623,7 +623,7 @@ class Registration extends EntityController {
             $entity->$field = $value;
         }
 
-        if ($_errors = $entity->getSendValidationErrors()) {
+        if ($_errors = $entity->getValidationErrors()) {
             $errors = [];
             foreach($this->postData as $field => $value){
                 if(key_exists($field, $_errors)){
@@ -640,22 +640,22 @@ class Registration extends EntityController {
     }
 
 
-  function GET_evaluation() {
-    
-    $this->requireAuthentication();
-    $app = App::i();
+    function GET_evaluation() {
 
-    $entity = $app->repo('Registration')->find($this->data['id']);
-    
-    if (!$entity) {
-        $app->pass();
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $entity = $app->repo('Registration')->find($this->data['id']);
+
+        if (!$entity) {
+            $app->pass();
+        }
+
+        $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1);
+
+
+        $entity->checkPermission('viewUserEvaluation');
+
+        $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
     }
-
-    $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1);
-   
-    
-    $entity->checkPermission('viewUserEvaluation');
-
-    $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
-  }
 }

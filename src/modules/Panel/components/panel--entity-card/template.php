@@ -22,14 +22,16 @@ $this->import('
             </slot>
             <div class="panel-entity-card__header--info">
                 <slot name="title" :entity="entity">
-                    <mc-title tag="h2" :shortLength="100" :longLength="110">
-                        {{ entity.name || entity.email || entity.number || entity.id }}
-                    </mc-title>
+                    <a :href="entity.singleUrl" class="panel-entity-card__header--info-link">
+                        <mc-title tag="h2" :shortLength="100" :longLength="110">
+                            {{ entity.name || entity.email || entity.number || entity.id }}
+                        </mc-title>
+                    </a>            
                 </slot>
                 <p class="panel-entity-card__header--info-subtitle">
                     <slot name="subtitle" :entity="entity"></slot>
                 </p>
-            </div>            
+            </div>
         </div>
         <div class="right">
             <div class="panel-entity-card__header-actions">

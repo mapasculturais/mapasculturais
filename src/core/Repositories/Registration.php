@@ -133,12 +133,12 @@ class Registration extends \MapasCulturais\Repository {
      * 
      * @hook **repo({ENTITY}).getIdsByKeywordDQL.join**
      */
-    protected function _getKeywordDQLFrom($keyword){
+    protected function _getKeywordDQLFrom($keyword, $alias = 'keyword'){
         $class = $this->getClassName();
 
         $join = '';
 
-        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.join', [&$join, $keyword]);
+        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.join', [&$join, $keyword, $alias]);
 
         return "$class e JOIN e.owner o $join";
     }
@@ -152,18 +152,20 @@ class Registration extends \MapasCulturais\Repository {
      * 
      * @hook **repo({ENTITY}).getIdsByKeywordDQL.where**
      */
-    protected function _getKeywordDQLWhere($keyword){
+    protected function _getKeywordDQLWhere($keyword, $alias = 'keyword'){
         $class = $this->getClassName();
 
         $where = '';
 
-        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', [&$where, $keyword]);
+        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', [&$where, $keyword, $alias]);
 
         return "
             (
-                unaccent(lower(e.number)) LIKE unaccent(lower(:keyword)) OR 
-                unaccent(lower(e.category)) LIKE unaccent(lower(:keyword)) OR 
-                unaccent(lower(o.name)) LIKE unaccent(lower(:keyword))
+                unaccent(lower(e.number)) LIKE unaccent(lower(:{$alias})) OR 
+                unaccent(lower(e.category)) LIKE unaccent(lower(:{$alias})) OR 
+                unaccent(lower(e.range)) LIKE unaccent(lower(:{$alias})) OR 
+                unaccent(lower(e.proponentType)) LIKE unaccent(lower(:{$alias})) OR 
+                unaccent(lower(o.name)) LIKE unaccent(lower(:{$alias}))
             )
             $where";
     }

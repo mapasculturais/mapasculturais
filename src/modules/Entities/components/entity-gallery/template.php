@@ -57,9 +57,9 @@ $this->import('
     </div>   
 
     <div v-if="editable" class="entity-gallery__addNew">
-        <mc-image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false">
+        <mc-image-uploader :useDescription="true" :entity="entity" group="gallery" :circular="false" >
             <template #default='uploader'>
-                <a class="button button--primary button--icon button--primary-outline" @click="toggle()">
+                <a class="button button--primary button--icon button--primary-outline">
                     <mc-icon name="add"></mc-icon>
                     <?php i::_e("Adicionar imagem")?>
                 </a>

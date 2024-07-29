@@ -26,17 +26,6 @@ class Theme extends \MapasCulturais\Theme
         $this->enqueueStyle('app-v2', 'main', 'css/theme-BaseV2.css');
         $this->assetManager->publishFolder('fonts');
 
-        // Manifest do five icon
-        $app->hook('GET(site.webmanifest)', function() use ($app) {
-            /** @var \MapasCulturais\Controller $this */
-            $this->json([
-                'icons' => [
-                    [ 'src' => $app->view->asset('img/favicon-192x192.png', false), 'type' => 'image/png', 'sizes' => '192x192' ],
-                    [ 'src' => $app->view->asset('img/favicon-512x512.png', false), 'type' => 'image/png', 'sizes' => '512x512' ],
-                ],
-            ]);
-        });
-
         $app->hook('template(<<*>>.head):end', function () {
             echo "<script>
                     document.addEventListener('DOMContentLoaded', (e) => {
@@ -66,11 +55,15 @@ class Theme extends \MapasCulturais\Theme
         $entity = $this->controller->requestedEntity;
 
         $site_name = $app->siteName;
+        $image_url_twitter = $app->view->asset($app->config['share.image_twitter'], false);
+        $image_url = $app->view->asset($app->config['share.image'], false);
+
         $title = $app->view->getTitle($entity);
         if ($entity) {
             $description = $entity->shortDescription ? $entity->shortDescription : $title;
             if ($entity->avatar && $entity->avatar->transform('avatarBig')){
                 $image_url = $entity->avatar->transform('avatarBig')->url;
+                $image_url_twitter = $entity->avatar->transform('avatarBig')->url;
             }
         }else {
             $description = $app->siteDescription;
@@ -85,14 +78,12 @@ class Theme extends \MapasCulturais\Theme
         $this->documentMeta[] = array("name" => 'application-name', 'content' => $site_name);
 
         // for twitter
-        $image_url_twitter = $app->view->asset($app->config['share.image_twitter'], false);
         $this->documentMeta[] = array("name" => 'twitter:card', 'content' => 'photo');
         $this->documentMeta[] = array("name" => 'twitter:title', 'content' => $title);
         $this->documentMeta[] = array("name" => 'twitter:description', 'content' => $description);
         $this->documentMeta[] = array("name" => 'twitter:image', 'content' => $image_url_twitter);
 
         // for facebook/Linkedin
-        $image_url = $app->view->asset($app->config['share.image'], false);
         $this->documentMeta[] = array("property" => 'og:title', 'content' => $title);
         $this->documentMeta[] = array("property" => 'og:type', 'content' => 'article');
         $this->documentMeta[] = array("property" => 'og:image', 'content' => $image_url);

@@ -62,6 +62,7 @@ use Throwable;
  * @property-read Slim\App $slim instância do Slim
  * @property-read Hooks $hooks gerenciador de hooks
  * @property-read EntityManager $em Doctrine Entity Manager
+ * @property-read AuthProvider $auth Auth provider
  * @property-read string $siteName nome do site
  * @property-read string $siteDescription descrição do site
  * @property-read string $currentLCode código da linguagem configurada. ex: pt_BR
@@ -1610,7 +1611,7 @@ class App {
      *
      * If the 'app.sanitize_filename_function' configuration key is callable, this method call it after sanitizes the filename.
      *
-     * @param type $filename
+     * @param string $filename
      *
      * @return string The sanitized filename.
      */
@@ -1822,6 +1823,7 @@ class App {
      * @throws Exception 
      */
     public function executeJob(): int|false {
+        /** @var $conn Connection */
         $conn = $this->em->getConnection();
         $now = date('Y-m-d H:i:s');
         $job_id = $conn->fetchScalar("
@@ -2221,7 +2223,6 @@ class App {
         if(($this->view) instanceof Themes\BaseV1\Theme ) {
             $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
         }
-        $this->registerController('geoDivision',    'MapasCulturais\Controllers\GeoDivision');
 
         $this->registerController('user',   'MapasCulturais\Controllers\User');
 
@@ -3265,7 +3266,7 @@ class App {
      * @throws ReflectionException 
      * @throws MappingException 
      */
-    function getRegisteredEntityTypeById(Entity|string $entity, int|string $type_id): Definitions\EntityType|null {
+    function getRegisteredEntityTypeById(Entity|string $entity, int|string|null $type_id): Definitions\EntityType|null {
         if (is_object($entity)) {
             $entity = $entity->getClassName();
         }

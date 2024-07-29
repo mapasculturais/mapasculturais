@@ -35,6 +35,16 @@ trait EntityPermissionCache {
         return false;
     }
     
+    function getCurrentUserPermissions() {
+        $permissions_list = $this->getPermissionsList();
+        $permissions = [];
+        foreach($permissions_list as $action) {
+            $permissions[$action] = $this->canUser($action);
+        }
+
+        return $permissions;
+    }
+
     function getPCacheObjectType(){
         $class_name = $this->getClassName();
         $metadata = App::i()->em->getClassMetadata($class_name);

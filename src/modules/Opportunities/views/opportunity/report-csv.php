@@ -92,7 +92,9 @@ $header = array_values(array_filter([
     i::__("Status"),
     i::__("Inscrição - Data de envio"),
     i::__("Inscrição - Hora de envio"),
-    showIfField($entity->registrationCategories, $entity->registrationCategTitle),
+    showIfField($entity->registrationCategories, i::__("Categoria")),
+    showIfField($entity->registrationProponentTypes, i::__("Tipo de Proponente")),
+    showIfField($entity->registrationRanges, i::__("Faixa/Linha")),
 ]));
 
 foreach ($app->config['registration.reportOwnerProperties'] as $field) {
@@ -155,7 +157,9 @@ foreach($registrations as $i => $r) {
         returnStatus($r) ?: '""',
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('d-m-Y') : '-'),
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('H:i') : '-'),
-        showIfField($entity->registrationCategories, $r->category)
+        showIfField($entity->registrationCategories, $r->category),
+        showIfField($entity->registrationProponentTypes, $r->proponentType),
+        showIfField($entity->registrationRanges, $r->range)
     ]));
 
     foreach ($app->config['registration.reportOwnerProperties'] as $field) {
@@ -171,8 +175,8 @@ foreach($registrations as $i => $r) {
         }
 
         if(is_entity_location_field($field)) {
-            $outRow[] = str_replace(';', ',', $_field_val['En_Estado']);
-            $outRow[] = str_replace(';', ',', $_field_val['En_Municipio']);
+            $outRow[] = str_replace(';', ',', $_field_val['En_Estado'] ?? '');
+            $outRow[] = str_replace(';', ',', $_field_val['En_Municipio'] ?? '');
         }
 
         if(isset($_field_val["endereco"]) && $_field_val["endereco"] != null){
@@ -203,7 +207,7 @@ foreach($registrations as $i => $r) {
             $result =  (is_array($_field_val)) ? '"' . implode(" - ", $_field_val) . '"' : $_field_val;
         }
 
-        $outRow[] = str_replace(';', ',', $result);
+        $outRow[] = str_replace(';', ',', (string) $result);
         
     }
         

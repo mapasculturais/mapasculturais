@@ -52,6 +52,16 @@ $this->import('
                     <p class="title"> <?= i::__("Categoria") ?> </p>
                     <p class="data"> {{entity.category}} </p>
                 </div>
+
+                <div v-if="entity.range" class="registerData">
+                    <p class="title"> <?= i::__("Faixa") ?> </p>
+                    <p class="data"> {{entity.range}} </p>
+                </div>
+
+                <div v-if="entity.proponentType" class="registerData">
+                    <p class="title"> <?= i::__("Proponente") ?> </p>
+                    <p class="data"> {{entity.proponentType}} </p>
+                </div>
             </div>
         </div>
     </div>
@@ -61,6 +71,7 @@ $this->import('
             <div v-if="!pictureCard" class="status">
                 {{status}}
             </div>
+            <slot name="entity-actions-left" :entity="entity"></slot>
         </div>
         <div class="right">
             <slot name="button" :entity="entity">

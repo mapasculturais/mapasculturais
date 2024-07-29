@@ -120,6 +120,20 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
       */
     protected $conditionalValue;
 
+     /**
+      * @var boolean
+      *
+      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
+      */
+    protected $registrationRanges = [];
+
+     /**
+      * @var boolean
+      *
+      * @ORM\Column(name="proponent_types", type="json", nullable=true)
+      */
+    protected $proponentTypes = [];
+
     static function getValidations() {
         $app = App::i();
         $validations = [
@@ -177,6 +191,24 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         }
         $this->categories = $value;
     }
+
+    public function setRegistrationRanges($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->registrationRanges = $value;
+    }
+
+    public function setProponentTypes($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->proponentTypes = $value;
+    }
     
     public function getFieldName(){
         return 'field_' . $this->id;
@@ -202,12 +234,14 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'fieldType' => $this->fieldType,
         'fieldOptions' => $this->fieldOptions,
         'config' => $this->config,
-        'categories' => $this->categories,
+        'categories' => $this->categories ?: [],
         'fieldName' => $this->getFieldName(),
         'displayOrder' => $this->displayOrder,
-        'conditional' => $this->conditional ? true : false,
+        'conditional' => filter_var($this->conditional, FILTER_VALIDATE_BOOLEAN),
         'conditionalField' => $this->conditionalField,
-        'conditionalValue' => $this->conditionalValue
+        'conditionalValue' => $this->conditionalValue,
+        'registrationRanges' => $this->registrationRanges ?: [],
+        'proponentTypes' => $this->proponentTypes ?: []
         ];
 
         $app = App::i();

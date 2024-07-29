@@ -46,6 +46,7 @@ return [
         'client_secret' => env('AUTH_AUTHENTIK_APP_SECRET', ''),
         'scope' => env('AUTH_AUTHENTIK_SCOPE', 'openid profile email'),
         'login_url' => env('AUTH_AUTHENTIK_LOGIN_URL', ''),
+        'login_url' => env('AUTH_AUTHENTIK_LOGOUT_URL', ''),
     ]
     */
 ];
