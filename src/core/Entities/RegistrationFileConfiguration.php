@@ -94,6 +94,20 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      */
     protected $conditionalValue;
 
+     /**
+      * @var boolean
+      *
+      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
+      */
+    protected $registrationRanges = [];
+
+     /**
+      * @var boolean
+      *
+      * @ORM\Column(name="proponent_types", type="json", nullable=true)
+      */
+    protected $proponentTypes = [];
+
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
@@ -136,6 +150,24 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         $this->categories = $value;
     }
 
+    public function setRegistrationRanges($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->registrationRanges = $value;
+    }
+
+    public function setProponentTypes($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->proponentTypes = $value;
+    }
+
     public function jsonSerialize(): array {
         $result = [
             'id' => $this->id,
@@ -145,11 +177,13 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'required' => $this->required,
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName,
-            'categories' => $this->categories,
+            'categories' => $this->categories ?: [],
             'displayOrder' => $this->displayOrder,
-            'conditional' => $this->conditional ? true : false,
+            'conditional' => filter_var($this->conditional, FILTER_VALIDATE_BOOLEAN),
             'conditionalField' => $this->conditionalField,
-            'conditionalValue' => $this->conditionalValue
+            'conditionalValue' => $this->conditionalValue,
+            'registrationRanges' => $this->registrationRanges ?: [],
+            'proponentTypes' => $this->proponentTypes ?: [],
         ];
 
         $app = App::i();

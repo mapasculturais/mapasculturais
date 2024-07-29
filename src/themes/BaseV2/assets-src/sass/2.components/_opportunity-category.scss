@@ -1,8 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .opportunity-category {
-  border-right: 1px solid var(--mc-gray-300);
-  padding-right: size(35);
+  margin-bottom: size(16);
 
   &__header {
     display: flex;

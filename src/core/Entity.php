@@ -161,27 +161,6 @@ abstract class Entity implements \JsonSerializable{
                         $e->className = $this->getClassName();
                     break;
 
-                    case 'files':
-                        $e->files = $e->files ?? [];
-
-                        foreach ($this->files as $group => $files){
-
-                            if(is_array($files)){
-                                if(!isset($e->files[$group])){
-                                    $e->files[$group] = [];
-                                }
-
-                                foreach($files as $f){
-                                    $e->files[$group][] = $f->simplify('id,name,description,url,files');
-                                }
-                            }else if(is_object($files)){
-                                $e->files[$group] = $files->simplify('id,name,description,url,files');
-                            }else{
-                                $e->files[$group] = null;
-                            }
-                        }
-                    break;
-
                     case 'avatar':
                         if($this->usesAvatar()){
                             $e->avatar = [];
@@ -500,7 +479,11 @@ abstract class Entity implements \JsonSerializable{
      * 
      */ 
     protected function canUserViewPrivateFiles($user) {
-        return $this->canUser('view', $user);
+        if($this->isPrivateEntity()) {
+            return $this->canUser('view', $user);
+        }else {
+            return $this->canUser('@control', $user);
+        }
     }
 
     public function isUserAdmin(UserInterface $user, $role = 'admin'){
@@ -886,7 +869,6 @@ abstract class Entity implements \JsonSerializable{
                     $app->em->flush();
                 }
             }
-            $this->refresh();
 
             if($this->usesRevision()) {
                 if($is_new){
@@ -1021,13 +1003,7 @@ abstract class Entity implements \JsonSerializable{
 
         // adiciona as permissões do usuário sobre a entidade:
         if ($this->usesPermissionCache()) {
-            $permissions_list = $this->getPermissionsList();
-            $permissions = [];
-            foreach($permissions_list as $action) {
-                $permissions[$action] = $this->canUser($action);
-            }
-
-            $result['currentUserPermissions'] = $permissions;
+            $result['currentUserPermissions'] = $this->currentUserPermissions;
         }
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
@@ -1166,6 +1142,8 @@ abstract class Entity implements \JsonSerializable{
         if($this->usesTaxonomies())
             $errors = $errors + $this->getTaxonomiesValidationErrors();
 
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.validationErrors", [&$errors]);
+        
         return $errors;
     }
 

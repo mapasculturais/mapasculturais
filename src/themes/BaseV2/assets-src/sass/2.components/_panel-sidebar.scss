@@ -50,8 +50,7 @@
 
     &__right {
 
-        li.exit,
-        li.myaccount {
+        &--user li{
             svg {
                 color: var(--mc-primary-500);
             }
@@ -60,8 +59,7 @@
                 svg {
                     color: var(--mc-high-500);
                 }
-
-        }
+            }
         }
     }
 

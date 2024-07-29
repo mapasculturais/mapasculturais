@@ -23,11 +23,11 @@ app.component('support-actions', {
             const iframe = document.getElementById('support-form');
             if (iframe) {
                 const promise = new Promise((resolve, reject) => {
-                    this.registration.save(false).then(values => resolve(values[0]));
+                    this.registration.save(300, false).then(values => resolve(values[0]));
                 });
                 return promise;
             } else {
-                return this.registration.save(false);
+                return this.registration.save(300, false);
             }
         },
 

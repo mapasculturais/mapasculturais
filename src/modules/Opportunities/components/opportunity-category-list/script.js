@@ -40,10 +40,7 @@ app.component('opportunity-category-list', {
         },
 
         autoSave() {
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                this.entity.save();
-            }, 1500);
+            this.entity.save(3000);
         }
     }
 });

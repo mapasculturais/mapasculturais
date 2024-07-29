@@ -6,23 +6,35 @@ app.component('evaluation-method-technical--apply', {
         entity: {
             type: Entity,
             required: true
+        },
+
+        entities: {
+            type: Array,
+            required: true
         }
     },
 
     data() {
-        applyAll = false;
-        let max = parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
-        applyData = {
-            from:[0,max]
-        };
-
+        const max = parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
         return {
-            applyData,
-            applyAll,
-        }
-    },
-    watch: {
-
+            processing: false,
+            applyData: {
+                from: [0, max],
+                setStatusTo: '',
+                cutoffScore: 0,
+                earlyRegistrations: false,
+                waitList: false,
+                invalidateRegistrations: false,
+                considerQuotas: true,
+                quantityVacancies: 0
+            },
+            considerQuotas: true,
+            enableConsiderQuotas: $MAPAS.config.evaluationMethodTechnicalApply.isAffirmativePoliciesActive,
+            selectionType: [],
+            tabSelected: 'score',
+            cutoffScore: this.entity.evaluationMethodConfiguration?.cutoffScore ?? 0,
+            api: new API()
+        };
     },
 
     computed: {
@@ -38,7 +50,7 @@ app.component('evaluation-method-technical--apply', {
         validateValues() {
             const min = 0;
             const max = this.maxResult;
-            
+
             if (this.applyData.from[0] < min) {
                 this.applyData.from[0] = min;
             }
@@ -48,35 +60,86 @@ app.component('evaluation-method-technical--apply', {
         },
 
         modalClose() {
-            delete this.applyData.to;
-            this.applyData.from[0] = 0;
-            this.applyData.from[1] = this.maxResult;
-            
+            this.resetApplyData();
         },
 
-        apply(modal,entity) {
-            this.applyData.status = this.applyData.applyAll ? 'all' : false;
+        apply(modal, entity) {
+            const messages = useMessages();
+            
+            this.infosApplyData();
             this.entity.disableMessages();
-            this.entity.POST('appyTechnicalEvaluation', {
+            this.processing = true;
+
+            this.entity.POST('applyTechnicalEvaluation', {
                 data: this.applyData, callback: data => {
-                    const messages = useMessages();
-                    if (data.error) {
-                        messages.error(data.data)
-                    } else {
-                        messages.success(data);
-                        modal.close();
-                        this.reloadPage();
-                    }
+                    this.processing = false;
+                    messages.success(data);
+                    modal.close();
+                    this.reloadPage();
                     this.entity.enableMessages();
                 }
-            })
+            }).catch((data) => {
+                this.processing = false;
+                messages.error(data.data)
+            });
         },
-        
-        reloadPage(timeout = 1500) {
-            setTimeout(() => {
-                document.location.reload(true)
-            }, timeout);
-        }
 
+        reloadPage(timeout = 1500) {
+            this.entities.refresh();
+        },
+
+        changed(event) {
+            this.tabSelected = event.tab.slug;
+        },
+
+        setTabClassification() {
+            this.applyData.cutoffScore = this.cutoffScore;
+            this.applyData.earlyRegistrations = this.selectionType.includes('earlyRegistrations') ? true : false;
+            this.applyData.waitList = this.selectionType.includes('waitList') ? true : false;
+            this.applyData.invalidateRegistrations = this.selectionType.includes('invalidateRegistrations') ? true : false;
+            this.applyData.considerQuotas = this.considerQuotas;
+            this.applyData.quantityVacancies = this.entity.vacancies;
+            delete this.applyData.from;
+            delete this.applyData.setStatusTo;
+        },
+
+        setTabScore() {
+            const propertiesToRemove = ['cutoffScore', 'earlyRegistrations', 'waitList', 'invalidateRegistrations', 'considerQuotas'];
+
+            for (const prop of propertiesToRemove) {
+                if (this.applyData.hasOwnProperty(prop)) {
+                    delete this.applyData[prop];
+                }
+            }
+        },
+
+        infosApplyData() {
+            if (this.tabSelected === 'classification') {
+                this.setTabClassification();
+            } 
+            
+            if (this.tabSelected === 'score') {
+                this.setTabScore();
+            }
+
+            this.applyData.tabSelected = this.tabSelected;
+        },
+
+        resetApplyData() {
+            const max = this.maxResult;
+            this.applyData = {
+                from: [0, max],
+                setStatusTo: '',
+                cutoffScore: 0,
+                earlyRegistrations: false,
+                waitList: false,
+                invalidateRegistrations: false,
+                considerQuotas: true,
+                quantityVacancies: 0
+            };
+            this.selectionType = [];
+            this.tabSelected = 'score';
+            this.cutoffScore = this.entity.evaluationMethodConfiguration?.cutoffScore ?? 0;
+        }
     },
 });

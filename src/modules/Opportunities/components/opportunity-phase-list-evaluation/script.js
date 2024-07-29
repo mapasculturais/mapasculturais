@@ -18,5 +18,16 @@ app.component('opportunity-phase-list-evaluation' , {
     },
 
     methods: {
+        sync(opportunity) {
+            api = new API('opportunity');
+            let url = api.createUrl('syncRegistrations', {id: opportunity._id});
+
+            var args = {};
+            api.POST(url, args).then(res => res.json()).then(data => {
+                const messages = useMessages();
+                messages.success(this.text('success'));
+                window.location.reload();
+            });
+        },
     }
 });

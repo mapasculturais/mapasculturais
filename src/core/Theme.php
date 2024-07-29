@@ -116,7 +116,8 @@ abstract class Theme {
         $this->jsObject['EntitiesDescription'] = [];
         $this->jsObject['config'] = [
             'locale' => str_replace('_', '-', $app->config['app.lcode']),
-            'timezone' => date_default_timezone_get()
+            'timezone' => date_default_timezone_get(),
+            'currency' => $app->config['app.currency']
         ];
         $this->jsObject['routes'] = $app->config['routes'];
         
@@ -133,6 +134,16 @@ abstract class Theme {
         });
         
         $app->hook('mapas.printJsObject:before', function () use($app) {
+            if ($app->view->version >= 2) {
+                $this->jsObject['request'] = [
+                    'controller' => $app->view->controller->id,
+                    'action' => $app->view->controller->action,
+                    'urlData' => $app->view->controller->urlData,
+                ];
+
+                $this->jsObject['request']['id'] = $app->view->controller->data['id'] ?? null;
+            }
+          
             $this->jsObject['EntitiesDescription'] = [
                 "user"          => Entities\User::getPropertiesMetadata(),
                 "agent"         => Entities\Agent::getPropertiesMetadata(),
@@ -868,6 +879,10 @@ abstract class Theme {
 
             if(property_exists ($entity_class_name, 'project')) {
                 $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
+            }
+
+            if(property_exists ($entity_class_name, 'evaluationMethodConfiguration')) {
+                $query_params['@select'] .= ',evaluationMethodConfiguration.*';
             }
             
             if ($entity_class_name::usesAgentRelation()) {

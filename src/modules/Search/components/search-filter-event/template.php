@@ -23,6 +23,7 @@ $this->import('
             <label> <?php i::_e('Eventos acontecendo') ?></label>
             <div class="datepicker">
                 <datepicker 
+                    teleport
                     :locale="locale" 
                     :weekStart="0"
                     v-model="date" 

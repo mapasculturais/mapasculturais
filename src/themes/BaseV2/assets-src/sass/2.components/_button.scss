@@ -318,4 +318,33 @@
             }
         }
     }
+
+    &--delete {
+        background-color: var(--mc-white);
+        color: var(--mc-black);
+
+        .iconify {
+            font-size: var(--mc-font-size-sm);
+            color: var(--mc-error);
+        }
+
+        &:hover {
+            color: var(--mc-error);
+        }
+    }
+
+    &--disable {
+        background-color: var(--mc-white);
+        color: var(--mc-black);
+
+        .iconify {
+            font-size: var(--mc-font-size-sm);
+            background-color: var(--mc-warning-500);
+            color: var(--mc-white);
+        }
+
+        &:hover {
+            color: var(--mc-warning-500);
+        }
+    }
 }

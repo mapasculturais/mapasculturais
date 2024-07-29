@@ -90,6 +90,10 @@ class Metadata extends \MapasCulturais\Definition{
 
     public $field_type;
 
+    public array $options = [];
+
+    public bool $numericKeyValueOptions = false;
+
     /**
      * Creates a new Metadata Definition.
      *
@@ -148,17 +152,20 @@ class Metadata extends \MapasCulturais\Definition{
 
         $this->_validations = key_exists('validations', $config) && is_array($config['validations']) ? $config['validations'] : [];
 
+        $this->numericKeyValueOptions = $config['numericKeyValueOptions'] ?? false;
+
         if (isset($config['options']) && is_array($config['options'])) {
             $new_array = [];
             foreach ($config['options'] as $k => $value) {
 
-                if (is_int($k)) {
+                if (is_int($k) && !$this->numericKeyValueOptions) {
                     $k = $value;
                 }
                 $new_array[$k] = $value;
             }
 
             $config['options'] = $new_array;
+            $this->options = $new_array;
         }
 
         $this->serialize = $config['serialize'] ?? $this->getDefaultSerializer();
@@ -357,9 +364,10 @@ class Metadata extends \MapasCulturais\Definition{
             'field_type' => $this->field_type,
         ];
 
-        if(key_exists('options', $this->config)){
-            $result['options'] = $this->config['options'];
-            $result['optionsOrder'] = array_keys((array)$this->config['options']);
+        if($this->options){
+            $result['options'] = $this->options;
+            $result['optionsOrder'] = array_keys($this->options);
+            $result['numericKeyValueOptions'] = $this->numericKeyValueOptions;
         }
 
         foreach($this->config as $key => $val) {

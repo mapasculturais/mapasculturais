@@ -73,4 +73,14 @@ class API{
     static function NOT_BET($value_1, $value_2) {
         return '!' . self::BET($value_1, $value_2);
     }
+
+    static function OR(...$values) {
+        $values = implode(',', $values);
+        return "OR($values)";
+    }
+
+    static function AND(...$values) {
+        $values = implode(',', $values);
+        return "AND($values)";
+    }
 }

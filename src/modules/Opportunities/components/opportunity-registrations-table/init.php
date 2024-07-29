@@ -31,4 +31,14 @@ $data['evaluationStatusDict'] = [
     ]
 ];
 
+$phase = $this->controller->requestedEntity;
+
+$data['isAffirmativePoliciesActive'] = $phase->isAffirmativePoliciesActive();
+$data['hadTechnicalEvaluationPhase'] = $phase->hadTechnicalEvaluationPhase();
+if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type == 'technical') {
+    $data['isTechnicalEvaluationPhase'] = true;
+} else {
+    $data['isTechnicalEvaluationPhase'] = false;
+}
+
 $this->jsObject['config']['opportunityRegistrationTable'] = $data;

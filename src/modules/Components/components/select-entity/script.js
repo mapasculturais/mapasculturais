@@ -94,7 +94,6 @@ app.component('select-entity', {
     },
     
     methods: {
-
         selectEntity(entity, close) {
             this.$emit('select', entity);
             close();
@@ -102,7 +101,10 @@ app.component('select-entity', {
         
         fetch(entities) {
             this.$emit('fetch', entities);
-        }
-        
+        },
+
+        clearField() {
+            delete this.query['@keyword'];
+        },        
     },
 });
