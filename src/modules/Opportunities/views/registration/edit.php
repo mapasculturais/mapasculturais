@@ -16,12 +16,12 @@ $this->import('
     mc-icon
     opportunity-header
     registration-actions
+    registration-form
     registration-related-agents
     registration-related-space
     registration-related-project
     registration-steps
     select-entity
-    v1-embed-tool
 ');
 
 $this->useOpportunityAPI();
@@ -58,9 +58,14 @@ $this->breadcrumb = $breadcrumb;
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
-    <h1 class="registration__title">
-        <?= i::__('Formulário de inscrição') ?>
-    </h1>
+    <div class="registration__title">
+        <h1>
+            <?= i::__('Formulário de inscrição') ?>
+        </h1>
+        <h3>
+            <?= $opportunity->name ?>
+        </h3>
+    </div>
 
     <div class="registration__content">
         <div class="registration__steps">
@@ -109,7 +114,7 @@ $this->breadcrumb = $breadcrumb;
                 </section>
 
                 <section class="section">
-                    <v1-embed-tool iframe-id="registration-form" route="registrationform" :id="entity.id"></v1-embed-tool>
+                    <registration-form :registration="entity"></registration-form>
                 </section>
             </main>
 

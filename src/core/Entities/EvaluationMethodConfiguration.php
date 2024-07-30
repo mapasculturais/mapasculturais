@@ -17,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
+ * @property-read string summaryCacheKey Chave do cache do resumo das avaliações
  * @property int $opportunity ownerId
  * @property-read \MapasCulturais\Entities\Opportunity owner
  * @property-read boolean publishedRegistration
@@ -266,27 +267,37 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $this->opportunity->publishTimestamp;
     }
 
-      /**
+    
+    /**
+     * Retorna uma chave única para o cache do resumo das avaliações.
+     * 
+     * @return string A chave única para o cache do resumo da avaliações .
+     */
+    public function getSummaryCacheKey(): string
+    {
+        return "evaluation-summary-{$this->id}";
+    }
+
+    /**
      * Retorna um resumo do número de inscrições de uma oportunidade
      * 
      * @return array
      */
-    public function getSummary()
-    {
+    public function getSummary($skip_cache = false): array {
         if($this->isNew()) {
             return [];
         }
         
         /** @var App $app */
         $app = App::i();
-
-        if($app->config['app.useOpportunitySummaryCache']) {
-            $cache_key = __METHOD__ . ':' . $this->id; 
+        
+        $cache_key = $this->summaryCacheKey;
+        if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
             if ($app->cache->contains($cache_key)) {
                 return $app->cache->fetch($cache_key);
             }
         }
-
+        $em = $this->evaluationMethod;
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;
         $data = [
@@ -301,7 +312,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             return $evaluation['registration_id'];
         }, $buildQuery());
         $reg_ids = implode(',', $registrations_ids);
-        
         // Conta as inscrições enviadas
         if($reg_ids){
             if($count_reg = $conn->fetchAssoc("SELECT count(r.status) as qtd FROM registration r WHERE r.id IN ({$reg_ids}) AND r.status > 0"));
@@ -313,51 +323,16 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $data['evaluated'] = $evaluated['qtd'];
 
         // Conta as inscrições avaliadas por status
-        $query = $app->em->createQuery("
-            SELECT 
-                r.status, 
-                count(r) as qtd 
-            FROM 
-                MapasCulturais\\Entities\\Registration r  
-            WHERE 
-                r.opportunity = :opp AND r.status > 0 AND 
-                r.id IN (:reg_ids) GROUP BY r.status
-        ");
-
-        $query->setParameters([
-            "opp" => $opportunity,
-            "reg_ids" => $registrations_ids
-        ]);
-        
-        if($result = $query->getResult()){
+        if($reg_ids && $result = $conn->fetchAll("SELECT  r.status, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.status")) {
             foreach($result as $values){
                 $data[$values['status']] = $values['qtd'];
             }
         }
 
-        // status das avaliações
-
-        // Conta as inscrições avaliadas por status
-        $query = $app->em->createQuery("
-            SELECT 
-                r.consolidatedResult, 
-                count(r) as qtd 
-            FROM 
-                MapasCulturais\\Entities\\Registration r  
-            WHERE 
-                r.opportunity = :opp AND r.status > 0 AND 
-                r.id IN (:reg_ids) GROUP BY r.consolidatedResult
-        ");
-
-        $query->setParameters([
-            "opp" => $opportunity,
-            "reg_ids" => $registrations_ids
-        ]);
-        
-        $em = $this->evaluationMethod;
-        if($result = $query->getResult()){
+        // Conta as inscrições avaliadas por consolidatedResult
+        if($reg_ids && $result = $conn->fetchAll("SELECT r.consolidated_result, count(r) as qtd  FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0 AND  r.id IN ({$reg_ids}) GROUP BY r.consolidated_result")) {
             foreach($result as $values){
-                $status = $em->valueToString($values['consolidatedResult']);
+                $status = $em->valueToString($values['consolidated_result']);
                 if($status) {
                     $data['evaluations'][$status] = $values['qtd'];
                 } else {
@@ -447,6 +422,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         return parent::canUserRemove($user);
+    }    
+    
+    protected function canUserManageEvaluationCommittee($user){
+        if(!$this->canUser('@controll', $user)){
+            return false;
+        }
+
+        return true;
     }
 
     protected function canUser_control($user) {

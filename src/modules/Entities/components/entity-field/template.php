@@ -25,6 +25,7 @@ $this->import('
         <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off">
         <input v-if="is('brPhone')" v-maska data-maska="['(##) #####-####','(##) ####-####']" data-maska-tokens="0:[0-9]:optional" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off">
         <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off">
+        <input v-if="is('fieldMask')" v-maska :data-maska="mask" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off">
 
         <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder">
         <div  v-if="is('textarea') && prop=='shortDescription'" class="field__shortdescription">
@@ -50,8 +51,8 @@ $this->import('
         </select>
         
         <template v-if="is('radio')">
-            <label class="input__label input__radioLabel" v-for="optionValue in description.optionsOrder">
-                <input :checked="value == optionValue" type="radio" :value="optionValue" @input="change($event)" @blur="change($event,true)"> {{description.options[optionValue]}} 
+            <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
+                <input :checked="value == optionValue" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)"> {{description.options[optionValue]}} 
             </label>
         </template>
         

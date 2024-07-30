@@ -12,6 +12,7 @@ $this->import('
 ');
 ?>
 <section :class="['timeline', {'center': center}, {'big': big}]">
+    <?php $this->applyComponentHook('item', 'before'); ?>
     <div v-for="item in phases" :class="['item', {'active': isActive(item)}, {'happened': itHappened(item)}]" :set="registration = getRegistration(item)">
         <div class="item__dot"> <span class="dot"></span> </div>
         <div class="item__content">
@@ -44,4 +45,5 @@ $this->import('
             <?php $this->applyComponentHook('item', 'end'); ?>
         </div>
     </div>
+    <?php $this->applyComponentHook('item', 'after'); ?>
 </section>
