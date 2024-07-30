@@ -24,6 +24,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro que ao publicar a entidade a mesma permanece em rascunho
 - Implementa possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição
 - Implementa nova tela para configuração dos agentes de suporte
+- Implementa a data de envio das avaliações
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
