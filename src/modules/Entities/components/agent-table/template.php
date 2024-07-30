@@ -15,7 +15,7 @@ $this->import('
 ?>
 
 <div class="agent-table">
-    <entity-table type="agent" :query="{...query, ...extraQuery}" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
+    <entity-table type="agent" identifier="agentTable" :query="{...query, ...extraQuery}" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
         <template #actions="{entities}">
             <div class="agent-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
