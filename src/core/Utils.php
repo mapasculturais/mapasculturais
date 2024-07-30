@@ -192,13 +192,37 @@ class Utils {
             $_value = preg_replace("~^(?:https?:\/\/)?(?:www\.)?~i", "", $_value);
             $_value = rtrim($_value, '/');
     
-            if (preg_match("/(?:{$domain})\/(profile\.php\?id=)?([\w\d\.]+)/i", $_value, $matches)) {
-                $result = $matches[2];
-            } else if(preg_match("/^@?([\w\d\.]+)$/i", $_value, $matches)){
+            if (preg_match("~(?:{$domain}/(?:profile\.php\?id=)?((@|channel/)?[-\w\d.]+))~i", $_value, $matches)) {
+                $result = $matches[1];
+            }
+            if (preg_match("~{$domain}/in/([-_\w\d]+)~i", $_value, $matches)) {
+                $result = $matches[1];
+            }
+            if (preg_match("~^open\.spotify\.com/user/([-_\w\d]+)~i", $_value, $matches)) {
+                $result = $matches[1];
+            }
+            else if(preg_match("/^((@|channel\/)?[-\w\d\.]+)$/i", $_value, $matches)){
                 $result = $matches[1];
             }
         }
-
         return $result;
+    }
+
+    /**
+     * Converte uma string contendo valores separados por nova linha em um array.
+     *
+     * Esta função é útil para converter entradas de texto em uma lista de valores, como
+     * uma lista de tags ou categorias.
+     *
+     * @param string $string A string contendo os valores separados por nova linha.
+     * @return array Um array contendo os valores únicos e trimados da string de entrada.
+     */
+    static function nl2array(string $string): array
+    {
+        $values = preg_split('/\r\n|\r|\n/', $string);
+        $values = array_map('trim', $values);
+        $values = array_filter($values);
+        $values = array_unique($values);
+        return $values;
     }
 }

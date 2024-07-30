@@ -11,6 +11,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Exceptions;
 use MapasCulturais\i;
+use Opportunities\Jobs\UpdateSummaryCaches;
 
 class Module extends \MapasCulturais\Module{
 
@@ -211,7 +212,7 @@ class Module extends \MapasCulturais\Module{
         $self = $this;
         $registration_repository = $app->repo('Registration');
 
-        $app->hook("entity(Registration).<<insert|sent>>:before", function(){
+        $app->hook("entity(Registration).<<insert|send>>:before", function(){
             if(!$this->opportunity->isDataCollection){
               $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
@@ -551,6 +552,12 @@ class Module extends \MapasCulturais\Module{
              return;
         });
 
+        $app->hook('entity(Registration).get(lastPhase)', function(&$value) use ($app) {
+            /** @var Registration $this */
+            $opportunity = $this->opportunity->isLastPhase ? $this->opportunity : $this->opportunity->lastPhase;
+            $value = $app->repo('Registration')->findOneBy(['number' => $this->number, 'opportunity' => $opportunity]);
+        });
+
         /**
          * Getters das fases de avaliação
          */
@@ -621,19 +628,43 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) use($app) {
+        /** @var \MapasCulturais\Connection $conn */
+        $conn = $app->em->getConnection();
+        
+        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) use($conn, $app) {
             /** @var Registration $this */
 
             if(!$this->canUser('viewPrivateData')) {
                 return;
             }
-            if(empty($value) && ($previous_phase = $this->previousPhase)){
-                $previous_phase->registerFieldsMetadata();
-
+            
+            if(!isset($value) || empty($value) || $value == ""){
                 $app->disableAccessControl();
-                $value = $previous_phase->$field_name;
+                $reg = $conn->fetchAssociative("SELECT object_id, value FROM registration_meta WHERE key = '{$field_name}' AND object_id in (SELECT id FROM registration WHERE number = '{$this->number}')");
+                
+                if($reg && $this->id != $reg['object_id']){
+                    $value = $reg['value'];
+                    if($def = $this->getRegisteredMetadata($field_name)){
+                        if(is_callable($def->unserialize)){
+                            $registration = $app->repo('Registration')->find($reg['object_id']);
+                            $cb = $def->unserialize;
+                            $value = $cb($value, $registration, $def);
+                        }
+                    }
+                }
                 $app->enableAccessControl();
             }
+        });
+
+        $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
+            /** @var Registration $this */
+            
+            $this->enableCacheGetterResult('firstPhase');
+
+            $opportunity = $this->opportunity;
+
+            $value = $registration_repository->findOneBy(['opportunity' => $opportunity->firstPhase, 'number' => $this->number]);
+
         });
 
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
@@ -674,9 +705,11 @@ class Module extends \MapasCulturais\Module{
             $opportunity = $this->requestedEntity;
 
             $opportunity->enqueueRegistrationSync();
-            $cache_key = "MapasCulturais\Entities\Opportunity::getSummary:{$opportunity->id}";
-
-            $app->cache->delete($cache_key);
+            
+           $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
+                'opportunity' => $opportunity,
+                'evaluationMethodConfiguration' => $opportunity->evaluationMethodConfiguration?: null
+            ], '10 seconds');
 
             $this->finish(['message' => i::__('Sincronização das inscrições enfileirada para processamento em segundo plano')]);
         });
@@ -1516,8 +1549,11 @@ class Module extends \MapasCulturais\Module{
             $params = [
                 "siteName" => $app->siteName,
                 "user" => $registration->owner->name,
-                "baseUrl" => $app->getBaseUrl(),
-                "opportunityTitle" => $opportunity->name
+                "baseUrl" => $registration->singleUrl,
+                "opportunityId" => $opportunity->id,
+                "opportunityTitle" => $opportunity->firstPhase->name,
+                "registrationId" => $registration->id,
+                "registrationUrl" => $registration->singleUrl
             ];
             $email_params = [
                 "from" => $app->config["mailer.from"],
@@ -1526,7 +1562,7 @@ class Module extends \MapasCulturais\Module{
                          $registration->ownerUser->email),
                 "subject" => sprintf(i::__("Aviso sobre a sua inscrição na " .
                                            "oportunidade %s"),
-                                     $opportunity->name),
+                                           $opportunity->firstPhase->name),
                 "body" => $app->renderMustacheTemplate($template, $params)
             ];
             if (!isset($email_params["to"])) {

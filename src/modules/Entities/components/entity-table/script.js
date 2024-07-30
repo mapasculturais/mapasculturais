@@ -66,6 +66,7 @@ app.component('entity-table', {
         hideFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
+        hideHeader: Boolean,
     },
 
     created() {
@@ -302,6 +303,13 @@ app.component('entity-table', {
                     val = val.date('numeric year') + ' ' + val.time('2-digit');
                 } else {
                     val = val.date('numeric year');
+                }
+            }
+
+            if(Array.isArray(val)) {
+                const desc = this.$description[value];
+                if(desc.type == 'agent-owner-field') {
+                    val = val.filter(item => item !== "null" && item !== "").join(', ');
                 }
             }
 

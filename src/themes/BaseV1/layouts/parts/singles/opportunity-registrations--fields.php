@@ -155,7 +155,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                         </p>
 
                         <p ng-if="data.entity.object.registrationRanges.length > 0">
-                            <small><?php i::_e("Selecione em quais Faixas este campo é utilizado"); ?>:</small><br>
+                            <small><?php i::_e("Selecione em quais faixas/linhas este campo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label">
                                 <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.registrationRanges = []" ng-checked="allRanges(field)"> <?php i::_e("Todas"); ?>
                             </label>
@@ -164,8 +164,8 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             </label>
                         </p>
 
-                        <p ng-if="data.entity.object.registrationProponentTypes">
-                            <small><?php i::_e("Selecione em quais Tipos do preponente este campo é utilizado"); ?>:</small><br>
+                        <p ng-if="data.entity.object.registrationProponentTypes.length > 0">
+                            <small><?php i::_e("Selecione em quais tipos de proponente este campo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label">
                                 <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.proponentTypes = []" ng-checked="allProponentTypes(field)"> <?php i::_e("Todas"); ?>
                             </label>
@@ -222,7 +222,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                         </p>
 
                         <p ng-if="data.entity.object.registrationProponentTypes">
-                            <small><?php i::_e("Selecione em quais Tipos do preponente este campo é utilizado"); ?>:</small><br>
+                            <small><?php i::_e("Selecione em quais Tipos do proponente este campo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label">
                                 <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.proponentTypes = []" ng-checked="allProponentTypes(field)"> <?php i::_e("Todas"); ?>
                             </label>

@@ -29,9 +29,6 @@ app.component('evaluation-method-documentary--apply', {
     },
 
     computed: {
-        modalTitle() {
-            return this.text('modalTitle');
-        },
         statusList() {
             return $MAPAS.config['evaluation-method-documentary--apply'].statusList;
         },
