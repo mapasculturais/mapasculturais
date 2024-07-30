@@ -1036,6 +1036,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         foreach($evaluations as $evaluation){
             if($evaluation->status == 1) {
                 $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+                $evaluation->sentTimestamp = new \DateTime;
                 $evaluation->save(true);
             }
         }
