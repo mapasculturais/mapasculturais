@@ -58,25 +58,21 @@ app.component('mc-status', {
                 case 'Avaliações pendentes':
                 case 'Avaliação pendente':
                 case 'avaliação pendente':
-                case 'pendente':
                         classes.push('mc-status--evaluation-pending');
                         break;
                 case 'Avaliações iniciadas':
                 case 'Avaliação iniciada':
                 case 'avaliação iniciada':
-                case 'iniciada':
                     classes.push('mc-status--evaluation-started');
                     break;
                 case 'Avaliações concluídas':
                 case 'Avaliação concluída':
                 case 'avaliação concluída':
-                case 'concluída':
                     classes.push('mc-status--evaluation-completed');
                     break;
                 case 'Avaliações enviadas':
                 case 'Avaliação enviada':
                 case 'avaliação enviada':
-                case 'enviada':
                     classes.push('mc-status--evaluation-sent');
                     break;
                 case 'pendente':
