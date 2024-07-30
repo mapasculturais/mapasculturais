@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.4.13]
 - Atualiza bibliotecas PHP
+- Corrige erro no carregamento dos subprojetos na single de projetos
 
 ## [7.4.12] - 2024-07-25
 ### Correções
