@@ -55,7 +55,7 @@ $this->import('
                     <label><input @click="openForRegistrations()" ref="open" type="radio" name="opportunityType"> <?php i::_e('Inscrições abertas') ?> </label>
                     <label><input @click="closedForRegistrations()" ref="closed" type="radio" name="opportunityType"> <?php i::_e('Inscrições encerradas') ?> </label>
                     <label><input @click="futureRegistrations()" ref="future" type="radio" name="opportunityType"> <?php i::_e('Inscrições futuras') ?> </label>
-                    <label class="verified"><input v-model="query['@verified']" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Oportunidades oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
+                    <label class="verified"><input v-model="verified" @change="getVerified()" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Oportunidades oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
                 </div>
             </div>
         </template>
