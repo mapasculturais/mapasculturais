@@ -43,7 +43,7 @@ $this->import('
             </div>
             <div class="project-table__inputs">
                 <div class="field--horizontal">
-                    <label class="verified"><input v-model="query['@verified']" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Projetos oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
+                    <label class="verified"><input v-model="verified" @change="getVerified()" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Projetos oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
                 </div>
             </div>
         </template>
