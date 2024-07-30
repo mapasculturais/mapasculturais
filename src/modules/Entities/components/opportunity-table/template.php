@@ -16,7 +16,7 @@ $this->import('
 ?>
 
 <div class="opportunity-table">
-    <entity-table type="opportunity" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
+    <entity-table type="opportunity"  identifier="OpportunityTable" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
         <template #actions="{entities}">
             <div class="opportunity-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
