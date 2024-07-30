@@ -142,6 +142,7 @@ app.component('entity-table', {
             projectTypes: $DESCRIPTIONS.project.type.options,
             spaceTypes: $DESCRIPTIONS.space.type.options,
             seals,
+            likeQuery: []
         }
     },
 
@@ -323,9 +324,10 @@ app.component('entity-table', {
         },
 
         getFilterValues(value) {
+
             // Exemplos: 
             //      EQ(10), EQ(preto), IN(8, 10), IN(preto, pardo)
-            let values = /(EQ|IN|GT|GTE|LT|LTE)\((.+)\)/.exec(value); 
+            let values = /(EQ|IN|GT|GTE|LT|LTE|OR)\((.+)\)/.exec(value); 
             let exclude = ['GT','GTE','LT','LTE'];
         
             if (!values) {
@@ -333,7 +335,13 @@ app.component('entity-table', {
             }
         
             const operator = values[1];
-            const _values = values[2];
+            let _values = values[2];
+
+            if(operator == "OR") {
+                const regex = /%([^%]+)%/g;
+                const matches = [...value.matchAll(regex)].map(match => match[1]);
+                return matches;
+            }
         
             if (exclude.includes(operator)) {
                 return null;
@@ -482,8 +490,8 @@ app.component('entity-table', {
         },
 
         toggleAdvancedFilter(fieldName, option) {
+            this.likeQuery = []
             const currentValues = this.getFilterValues(this.query[fieldName] ?? '') || [];
-
             if (currentValues.includes(option)) {
                 currentValues.splice(currentValues.indexOf(option), 1);    
             } else {
@@ -491,7 +499,17 @@ app.component('entity-table', {
             }
             
             if (currentValues.length > 0) {
-                this.query[fieldName] = `IN(${currentValues.toString()})`;
+                for(const _value of currentValues) {
+                    if(_value.trim() != '') {
+                        this.likeQuery.push(`LIKE(%${_value}%)`)
+                    }
+                }
+
+                let likeQuery = `OR(${this.likeQuery.join(",")})`
+                this.query[fieldName] = likeQuery;
+
+
+                // this.query[fieldName] = `IN(${currentValues.toString()})`;
             } else {
                 delete this.query[fieldName];
             }
