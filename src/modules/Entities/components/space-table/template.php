@@ -52,7 +52,7 @@ $this->import('
             <div class="space-table__inputs">
                 <div class="field--horizontal">
                     <label><input @click="filterByAccessibility($event,entities)" ref="acessibility" type="checkbox" name="spaceType"> <?php i::_e('Possui acessibilidade') ?> </label>
-                    <label class="verified"><input v-model="query['@verified']" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Espaços oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
+                    <label class="verified"><input v-model="verified" @change="getVerified()" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Espaços oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
                 </div>
             </div>
         </template>
