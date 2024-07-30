@@ -808,14 +808,14 @@ class Opportunity extends EntityController {
     function API_findEvaluations($opportunity_id = null) {
         $this->requireAuthentication();
         
-        $result = $this->apiFindEvaluations($opportunity_id, $this->data);
-
-        if (!is_null($opportunity_id) && is_int($opportunity_id)) {
-            return $result->evaluations;
+        if($result = $this->apiFindEvaluations($opportunity_id, $this->data)) {
+            if (!is_null($opportunity_id) && is_int($opportunity_id)) {
+                return $result->evaluations;
+            }
+    
+            $this->apiAddHeaderMetadata($this->data, $result->evaluations, $result->count);
+            $this->apiResponse($result->evaluations);
         }
-
-        $this->apiAddHeaderMetadata($this->data, $result->evaluations, $result->count);
-        $this->apiResponse($result->evaluations);
     }
 
     function apiFindEvaluations(int $opportunity_id = null, array $query_data = []) {
