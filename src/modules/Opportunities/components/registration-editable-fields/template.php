@@ -7,7 +7,10 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-field
     mc-alert
+    mc-confirm-button
+    mc-loading
 ');
 ?>
 
@@ -16,27 +19,30 @@ $this->import('
         <template #default="modal">
             <div class="grid-12">
                 <mc-alert class="col-12" v-if="openToEdit && !sent && afterDeadline" type="danger"> <?= i::__('O proponente perdeu o prazo de edição') ?> </mc-alert>
-                <mc-alert class="col-12" v-if="sent" type="success"> <?= i::__('O proponente enviou a edição em: ') ?> 00/00/00 00:00 </mc-alert>
+                <mc-alert class="col-12" v-if="sent" type="success"> <?= i::__('O proponente enviou a edição em: ') ?> 
+                    {{registration.editSentTimestamp.date('numeric year')}} 
+                    <?= i::__('às') ?> 
+                    {{registration.editSentTimestamp.time('numeric')}}
+                </mc-alert>
                 <mc-alert class="col-12" v-if="openToEdit && !sent && !afterDeadline"type="warning"> <?= i::__('O proponente ainda não enviou as edições') ?> </mc-alert>
                 
                 <div class="registration-editable-fields__limit-field col-12">
                     <div class="field">
                         <label> <?php i::_e('Data limite de edição') ?></label>
                         <div class="datepicker">
-                            <datepicker 
-                                teleport
-                                :weekStart="0"
-                                v-model="editableUntil" 
-                                :enableTimePicker='false' 
-                                format="dd/mm/yy"
-                                :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
-                                multiCalendars multiCalendarsSolo autoApply utc></datepicker>
+                            <entity-field :entity="registration" prop="editableUntil"></entity-field>
                         </div>
                     </div>
                 </div>
 
                 <div class="field col-12">
                     <label><?= i::__('Selecione os campos que ficarão disponíveis para edição') ?></label>
+
+                    <label>  
+                        <input type="checkbox" v-model="selectAll" @change="updateAllSelection"/> 
+                        <span class="semibold"><?= i::__('Selecionar todos') ?></span>
+                    </label>
+
                     <div class="registration-editable-fields__fields">
                         <label v-for="field in fields" :for="field.id" class="registration-editable-fields__field">  
                             <input type="checkbox" v-model="selectedFields" :id="field.id" :value="field.ref" /> 
@@ -49,9 +55,23 @@ $this->import('
         </template>
         
         <template #actions="modal">
-            <button class="button button--text" @click="modal.close()"><?= i::__("Cancelar") ?></button>
-            <button v-if="canReopen" class="button button--primary" @click="reopen(modal)"><?= i::__("Reabrir edição") ?></button>
-            <button class="button button--primary" @click="save(modal)"><?= i::__("Salvar") ?></button>
+            <template v-if="!processing">
+                <button class="button button--text" @click="modal.close()"><?= i::__("Cancelar") ?></button>
+                <mc-confirm-button v-if="canReopen" @confirm="reopen()">
+                    <template #button="modal">
+                        <button @click="modal.open()" class="button button--secondary">
+                            <?php i::_e('Reabrir edição') ?>
+                        </button>
+                    </template>
+
+                    <template #message="message">
+                        <?php i::_e('Deseja reabrir os campos para edição?') ?>
+                    </template>
+                </mc-confirm-button>
+                <button class="button button--primary" @click="save(modal)"><?= i::__("Salvar") ?></button>
+            </template>
+            <mc-loading :condition="processing == 'saving'"><?php i::_e('Salvando') ?></mc-loading>
+            <mc-loading :condition="processing == 'reopening'"><?php i::_e('Reabrindo') ?></mc-loading>
         </template>
         
         <template #button="modal">

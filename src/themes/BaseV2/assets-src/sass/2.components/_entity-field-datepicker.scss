@@ -1,19 +1,20 @@
 @use '../0.settings/mixins' as *;
 
 .entity-field-datepicker {
+    display: flex;
+    gap: size(16);
 
     .date-input, .time-input {
         padding-left: size(40);
     }
 
     &__date {
-        display: inline-block;
-        width: 150px;
-        margin-right: 1em;
+        max-width: 100%;
+        width: 60%;
     }
 
     &__time {
-        display: inline-block;
-        width: 100px;
+        max-width: 100%;
+        width: 30%;
     }
 }

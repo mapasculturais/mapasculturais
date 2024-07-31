@@ -62,6 +62,10 @@ app.component('entity-table', {
             type: String,
             required: true,
         },
+        filtersDictComplement: {
+            type: [Boolean, Object],
+            default: false
+        },
         select: String,
         showIndex: Boolean,
         hideFilters: Boolean,
@@ -111,13 +115,14 @@ app.component('entity-table', {
     },
 
     data() {
+        const id = this.query['@opportunity'] ?? '';
+        const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
+
         const getSeals = $MAPAS.config.entityTable.seals;
         let seals = {}
         for (const seal of getSeals) {
             seals[seal.id] = seal.name;
         }
-        const id = this.query['@opportunity'] ?? '';
-        const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
 
         return {
             apiController: this.controller || this.type,
@@ -137,6 +142,10 @@ app.component('entity-table', {
             spaceTypes: $DESCRIPTIONS.space.type.options,
             seals,
             sessionTitle,
+            opportunityTypes: $DESCRIPTIONS.opportunity.type.options,
+            projectTypes: $DESCRIPTIONS.project.type.options,
+            spaceTypes: $DESCRIPTIONS.space.type.options,
+            seals,
         }
     },
 
@@ -258,8 +267,8 @@ app.component('entity-table', {
         
             let values = this.getFilterValues(value);
             if (values) {
-                if (prop == 'status' || prop == '@pending') {
-                    let statusDict = {
+                if (prop == 'status' || prop == '@pending' || prop == '@filterStatus' || prop == '@evaluationId') {
+                    let _filtersDict = {
                         '0': __('rascunhos', 'entity-table'),
                         '1': __('publicadas', 'entity-table'),
                         '-10': __('lixeira', 'entity-table'),
@@ -267,7 +276,7 @@ app.component('entity-table', {
                     }
 
                     if(this.type == 'registration') {
-                        statusDict = {
+                        _filtersDict = {
                             '0': __('rascunhos', 'entity-table'),
                             '1': __('pendentes', 'entity-table'),
                             '2': __('invalidas', 'entity-table'),
@@ -278,7 +287,7 @@ app.component('entity-table', {
                     }
 
                     if(this.type == 'payment') {
-                        statusDict = {
+                        _filtersDict = {
                             '0': __('pendente', 'entity-table'),
                             '1': __('em processo', 'entity-table'),
                             '2': __('disponivel', 'entity-table'),
@@ -289,21 +298,31 @@ app.component('entity-table', {
                     }
 
                     if (this.endpoint == 'findEvaluations') {
-                        statusDict = {
-                            '0': __('iniciada', 'entity-table'),
-                            '1': __('avaliada', 'entity-table'),
-                            '2': __('enviada', 'entity-table'),
+                        _filtersDict = {
+                            'all': __('Todas', 'entity-table'),
+                            'pending': __('Avaliações pendente', 'entity-table'),
+                            '0': __('Avaliações iniciadas', 'entity-table'),
+                            '1': __('Avaliações concluídas', 'entity-table'),
+                            '2': __('Avaliações enviadas', 'entity-table'),
+                        }
+                    }
+
+                    filtersDict = _filtersDict;
+                    if(this.filtersDictComplement) {
+                        filtersDict = {
+                            ..._filtersDict,
+                            ...this.filtersDictComplement
                         }
                     }
 
                     return values.map((value) => { 
-                        return {prop, value, label: statusDict[value]} 
+                        return {prop, value, label: filtersDict[value]} 
                     });
                 }
         
                 const fieldDescription = this.$description[prop];
                 if (fieldDescription?.field_type === 'select') {
-                    return values.map(val => ({ prop, value: val, label: fieldDescription.options[val] }));
+                    return values.map(val => ({ prop, value: val, label: fieldDescription.options[val] || val }));
                 } else {
                     return values.map(val => {
                         const label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
@@ -318,7 +337,7 @@ app.component('entity-table', {
         getFilterValues(value) {
             // Exemplos: 
             //      EQ(10), EQ(preto), IN(8, 10), IN(preto, pardo)
-            let values = /(EQ|IN|GT|GTE|LT|LTE)\(([^\)]+,?)+\)/.exec(value); 
+            let values = /(EQ|IN|GT|GTE|LT|LTE)\((.+)\)/.exec(value); 
             let exclude = ['GT','GTE','LT','LTE'];
         
             if (!values) {
@@ -338,7 +357,8 @@ app.component('entity-table', {
         
             if (_values) {
                 if (operator == 'IN') {
-                    values = _values.replace(/([^\\]),/g, '$1%break%');
+                    let commaValues = _values.startsWith(',') ? _values.slice(1) : _values;
+                    values = commaValues.replace(/([^\\]),/g, '$1%break%');
                 } else {
                     values = _values;
                 }
@@ -365,6 +385,13 @@ app.component('entity-table', {
                     val = val.date('numeric year') + ' ' + val.time('2-digit');
                 } else {
                     val = val.date('numeric year');
+                }
+            }
+
+            if(Array.isArray(val)) {
+                const desc = this.$description[value];
+                if(desc.type == 'agent-owner-field') {
+                    val = val.filter(item => item !== "null" && item !== "").join(', ');
                 }
             }
 

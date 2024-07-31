@@ -102,7 +102,7 @@ trait ControllerEntityViews {
                     $app->view->jsObject['entityLock'] = $lock;
     
                     $app->hook("controller({$this->id}).render(edit)", function(&$template) use($entity) {
-                        $template = "lock";
+                        $template = "locked";
                     });
                 } else {
                     $app->view->jsObject['lockToken'] = $current_token;

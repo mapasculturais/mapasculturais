@@ -84,6 +84,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      */
     protected $createTimestamp;
 
+     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="sent_timestamp", type="datetime", nullable=true)
+     */
+    protected $sentTimestamp;
+
     /**
      * @var \DateTime
      *
@@ -121,6 +128,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         $this->registration->checkPermission('evaluate');
         $this->_sending = true;
         $this->status = RegistrationEvaluation::STATUS_SENT;
+        $this->sentTimestamp = new \DateTime;
         $this->save($flush);
     }
     

@@ -100,6 +100,9 @@ $entity = $this->controller->requestedEntity;
                     </div>
                 </template>
 
+                <template #advanced-filters="{entities}">
+                </template>
+
                 <template #attachments={entity}>
                     <a v-if="entity.files?.zipArchive?.url" :href="entity.files?.zipArchive?.url"><?= i::__('Anexo') ?></a>
                 </template>
@@ -132,7 +135,15 @@ $entity = $this->controller->requestedEntity;
                 <template #editable={entity}>
                     <registration-editable-fields :registration="entity">
                         <template #default="{modal}">
-                            <button @click="modal.open()" v-if="!statusEditRegistration(entity)" class="button button--icon button--sm button--text opportunity-registration-table__edit">
+                            <button v-if="!statusEditRegistration(entity)" class="button button--icon button--sm button--text opportunity-registration-table__edit">
+                                <?= i::__('Inscrição em andamento') ?>
+                            </button>
+
+                            <button v-if="statusEditRegistration(entity) === 'notEditable'" class="button button--icon button--sm button--text opportunity-registration-table__edit">
+                                <?= i::__('Inscrição não enviada') ?>
+                            </button>
+                            
+                            <button @click="modal.open()" v-if="statusEditRegistration(entity) === 'editable'" class="button button--icon button--sm button--text opportunity-registration-table__edit">
                                 <mc-icon name="edit"></mc-icon> <?= i::__('Abrir para edição') ?>
                             </button>
 

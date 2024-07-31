@@ -46,11 +46,13 @@ $this->import('
                     <template #header>
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
-                                <textarea ref="search" v-model="this.query['@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
-                                
-                                <button @click="keyword(entities)" class="entity-table__search-button">
-                                    <mc-icon name="search"></mc-icon>
-                                </button>
+                                <slot name="searchKeyword" :query="query">
+                                    <textarea ref="search" v-model="this.query['@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+                                    
+                                    <button @click="keyword(entities)" class="entity-table__search-button">
+                                        <mc-icon name="search"></mc-icon>
+                                    </button>
+                                </slot>
                             </div>
                             
                             <slot name="filters" :entities="entities" :filters="filters">

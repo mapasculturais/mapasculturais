@@ -15,7 +15,7 @@ $this->import('
 ?>
 
 <div class="agent-table">
-    <entity-table type="agent" :query="{...query, ...extraQuery}" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
+    <entity-table type="agent" identifier="agentTable" :query="{...query, ...extraQuery}" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
         <template #actions="{entities}">
             <div class="agent-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
@@ -67,7 +67,7 @@ $this->import('
 
             <div class="agent-table__inputs">
                 <div class="field--horizontal">
-                    <label class="verified"><input v-model="query['@verified']" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Agentes oficiais') ?> <mc-icon name="circle-checked"></mc-icon></label>
+                    <label class="verified"><input v-model="verified" @change="getVerified()" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Agentes oficiais') ?> <mc-icon name="circle-checked"></mc-icon></label>
                 </div>
             </div>
         </template>

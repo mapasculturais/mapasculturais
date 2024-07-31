@@ -42,6 +42,7 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
+        Traits\EntityLock,
         Traits\EntityRevision {
             Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
         }
@@ -376,7 +377,10 @@ class Registration extends \MapasCulturais\Entity
             'files' => [],
             'singleUrl' => $this->singleUrl,
             'editUrl' => $this->editUrl,
-            'appliedForQuota' => $this->appliedForQuota
+            'appliedForQuota' => $this->appliedForQuota,
+            'editableUntil' => $this->editableUntil,
+            'editableFields' => $this->editableFields,
+            'editSentTimestamp' => $this->editSentTimestamp,
         ];
 
         if($this->canUser('viewConsolidatedResult')){
@@ -500,6 +504,10 @@ class Registration extends \MapasCulturais\Entity
         }
     }
 
+    protected function setEditSentTimestamp($datetime) {
+        return false;
+    }
+
     function reopenEditableFields() {
         $this->opportunity->checkPermission('@control');
         $this->editSentTimestamp = null;
@@ -507,9 +515,12 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function sendEditableFields() {
+        $app = App::i();
         $this->checkPermission('sendEditableFields');
         $this->editSentTimestamp = new DateTime();
+        $app->disableAccessControl();
         $this->save(true);
+        $app->enableAccessControl();
     }
 
     function setOwnerId($id){
@@ -1118,6 +1129,10 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['category'] = [i::__('Categoria é um campo obrigatório.')];
         }
 
+        if($this->opportunity->requestAgentAvatar && !array_key_exists("avatar", $this->owner->files)){
+            $errorsResult['avatar'] = [sprintf(\MapasCulturais\i::__('A imagem avatar do agente "%s" é obrigatório.'),$this->owner->name)];
+        }
+
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
         
         // validate agents
@@ -1133,6 +1148,7 @@ class Registration extends \MapasCulturais\Entity
             }
 
             if($def->agent){
+
                 if($def->relationStatus < 0){
                     $errors[] = sprintf(i::__('O agente %s ainda não confirmou sua participação neste projeto.'), $def->agent->name);
                 }else{

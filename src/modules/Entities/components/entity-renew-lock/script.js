@@ -10,26 +10,39 @@ app.component('entity-renew-lock', {
 
     data() {
         return {
-            token: $MAPAS.lockToken ?? null
+            token: $MAPAS.lockToken ?? null,
+            message: '',
         }
     },
 
     methods: {
         renewLock() {
-            const messages = useMessages();
+            // const messages = useMessages();
 
-            this.entity.POST('renew', {
+            this.entity.POST('renewLock', {
                 data: {token: this.token}, callback: data => {}
             }).catch((data) => {
-                messages.error(data.data);
+                if (data.error) {
+                    // messages.error(data.data);
+                    this.$refs.modalBlock.open();
+                }
             });
+        },
+
+        unlock() {
+            document.location = this.entity.getUrl('unlock');
+        },
+
+        exit() {
+            document.location = this.entity.getUrl('single');
         }
     },
 
     mounted() {
         setInterval(() => {
             this.renewLock();
-        }, 45000);
+        }, 
+        $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
     }
     
 });

@@ -16,7 +16,7 @@ $this->import('
 ?>
 
 <div class="opportunity-table">
-    <entity-table type="opportunity" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
+    <entity-table type="opportunity" identifier="opportunityTable" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
         <template #actions="{entities}">
             <div class="opportunity-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
@@ -55,12 +55,9 @@ $this->import('
                     <label><input @click="openForRegistrations()" ref="open" type="radio" name="opportunityType"> <?php i::_e('Inscrições abertas') ?> </label>
                     <label><input @click="closedForRegistrations()" ref="closed" type="radio" name="opportunityType"> <?php i::_e('Inscrições encerradas') ?> </label>
                     <label><input @click="futureRegistrations()" ref="future" type="radio" name="opportunityType"> <?php i::_e('Inscrições futuras') ?> </label>
-                    <label class="verified"><input v-model="query['@verified']" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Oportunidades oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
+                    <label class="verified"><input v-model="verified" @change="getVerified()" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Oportunidades oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
                 </div>
             </div>
-        </template>
-        
-        <template #advanced-filters="{entities}">
         </template>
     </entity-table>
 </div>

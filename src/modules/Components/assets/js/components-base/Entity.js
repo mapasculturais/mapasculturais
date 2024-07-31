@@ -44,6 +44,10 @@ class Entity {
                 val = this[prop];
             }
 
+            if(prop === 'status' && preserveValues && this[prop] <= 0 && obj[prop] > 0) {
+                this[prop] = obj[prop];
+            }
+
             if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
                 if (typeof val == 'string') {
                     val = new McDate(val);

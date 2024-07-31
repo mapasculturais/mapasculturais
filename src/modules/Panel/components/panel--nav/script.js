@@ -22,7 +22,10 @@ app.component('panel--nav', {
         const global = useGlobalState();
         const sidebar = this.sidebar;
         const leftGroups = $MAPAS.config.panelNav.filter((group)=>{
-            if(group.column != 'right' || sidebar) {
+            if(group.column == 'user' && sidebar) {
+                return;
+            }
+            if(group.column == 'left' || sidebar) {
                 return group;
             }
         });
@@ -31,14 +34,18 @@ app.component('panel--nav', {
                 return group;
             }
         });
+        const userGroup = $MAPAS.config.panelNav.filter((group)=>{
+            if(group.column == 'user') {
+                return group;
+            }
+        })[0];
 
         return {
             entity: global.auth.user?.profile,
             grouspColumn : $MAPAS.config.panelNav,
             leftGroups,
             rightGroups,
-
-
+            userGroup,
         }
     },
 

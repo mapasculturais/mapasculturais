@@ -110,18 +110,23 @@ class Module extends \MapasCulturais\Module{
                 $app->cache->delete($cache_key);
             }
         });
+
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app) {
             $app->log->debug("Registration {$this->id} status changed to {$this->status}");
+            
             /** @var Registration $this */
-            $cache_key = "updateSummary::{$this->opportunity}";
-            if(!$app->cache->contains($cache_key)) {
-                $app->cache->save($cache_key, true, 10);
+            /** @var Opportunity $opportunity */
+            $opportunity = $this->opportunity;
+            do{
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                    'opportunity' => $this->opportunity
+                    'opportunity' => $opportunity
                 ], '10 seconds');
-                $app->cache->delete($cache_key);
-            }
+
+                $opportunity = $opportunity->nextPhase;
+                
+            } while ($opportunity);
         });
+        
         $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {
             /** @var RegistrationEvaluation $this */
             $cache_key = "updateSummary::{$this->registration->opportunity->evaluationMethodConfiguration}";
