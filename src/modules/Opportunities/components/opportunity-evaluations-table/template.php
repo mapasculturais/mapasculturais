@@ -90,7 +90,7 @@ $this->import('
                 </template>
 
                 <template #number="{entity}">
-                    <a :href="createUrl(entity)">{{entity.registration.number}}</a>
+                    <a :href="createUrl(entity)">{{entity.number}}</a>
                 </template>
 
                 <template #result="{entity}">

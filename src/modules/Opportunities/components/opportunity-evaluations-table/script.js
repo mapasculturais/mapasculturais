@@ -41,8 +41,8 @@ app.component('opportunity-evaluations-table', {
     computed: {
         headers () {
             let itens = [
-                { text: __('inscrição', 'opportunity-evaluations-table'), value: "registration.number", slug: "number", sticky: true, width: '160px' },
-                { text: __('agente', 'opportunity-evaluations-table'), value: "registration.owner.name", slug: "agent"},
+                { text: __('inscrição', 'opportunity-evaluations-table'), value: "number", slug: "number", sticky: true, width: '160px' },
+                { text: __('agente', 'opportunity-evaluations-table'), value: "owner.name", slug: "agent"},
                 { text: __('resultado final', 'opportunity-evaluations-table'), value: "evaluation.resultString", slug: "result"},
                 { text: __('estado', 'opportunity-evaluations-table'), value: "evaluation.status", slug: "status"},
             ];
@@ -85,7 +85,7 @@ app.component('opportunity-evaluations-table', {
                 user = entity.evaluation?.user;
             }
             
-            return Utils.createUrl('registration', 'evaluation', { id: entity.registration.id, user });
+            return Utils.createUrl('registration', 'evaluation', { id: entity.id, user });
         },
         canSee(action) {
             if (this.phase.opportunity.currentUserPermissions[action]) {
