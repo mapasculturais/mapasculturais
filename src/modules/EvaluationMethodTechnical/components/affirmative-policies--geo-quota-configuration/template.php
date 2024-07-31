@@ -27,7 +27,7 @@ $this->import('
             <div class="geo-quota__title">
                 <h4 class="bold"><?= i::__('Configuração de distribuição de vagas por território') ?></h4>
 
-                <button class="button button--md button--text-danger button-icon" @click="close()">
+                <button class="button button--md button--text-danger button-icon" @click="trash()">
                     <mc-icon name="trash"></mc-icon>
                 </button>
             </div>
