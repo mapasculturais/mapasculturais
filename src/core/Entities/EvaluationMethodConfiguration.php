@@ -339,13 +339,13 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         // Conta as inscrições avaliadas por consolidated_result
         $query = $app->em->createQuery("
             SELECT 
-                r.consolidated_result, 
+                r.consolidatedResult, 
                 count(r) as qtd 
             FROM 
                 MapasCulturais\\Entities\\Registration r  
             WHERE 
                 r.opportunity = :opp AND r.status > 0
-            GROUP BY r.consolidated_result
+            GROUP BY r.consolidatedResult
         ");
 
         $query->setParameters([
