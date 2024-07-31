@@ -62,6 +62,10 @@ app.component('entity-table', {
             type: String,
             required: true,
         },
+        filtersDictComplement: {
+            type: [Boolean, Object],
+            default: false
+        },
         select: String,
         showIndex: Boolean,
         hideFilters: Boolean,
@@ -263,8 +267,8 @@ app.component('entity-table', {
         
             let values = this.getFilterValues(value);
             if (values) {
-                if (prop == 'status' || prop == '@pending' || prop == '@filterStatus') {
-                    let statusDict = {
+                if (prop == 'status' || prop == '@pending' || prop == '@filterStatus' || prop == '@evaluationId') {
+                    let _filtersDict = {
                         '0': __('rascunhos', 'entity-table'),
                         '1': __('publicadas', 'entity-table'),
                         '-10': __('lixeira', 'entity-table'),
@@ -272,7 +276,7 @@ app.component('entity-table', {
                     }
 
                     if(this.type == 'registration') {
-                        statusDict = {
+                        _filtersDict = {
                             '0': __('rascunhos', 'entity-table'),
                             '1': __('pendentes', 'entity-table'),
                             '2': __('invalidas', 'entity-table'),
@@ -283,7 +287,7 @@ app.component('entity-table', {
                     }
 
                     if(this.type == 'payment') {
-                        statusDict = {
+                        _filtersDict = {
                             '0': __('pendente', 'entity-table'),
                             '1': __('em processo', 'entity-table'),
                             '2': __('disponivel', 'entity-table'),
@@ -294,7 +298,7 @@ app.component('entity-table', {
                     }
 
                     if (this.endpoint == 'findEvaluations') {
-                        statusDict = {
+                        _filtersDict = {
                             'all': __('Todas', 'entity-table'),
                             'pending': __('Avaliações pendente', 'entity-table'),
                             '0': __('Avaliações iniciadas', 'entity-table'),
@@ -303,8 +307,16 @@ app.component('entity-table', {
                         }
                     }
 
+                    filtersDict = _filtersDict;
+                    if(this.filtersDictComplement) {
+                        filtersDict = {
+                            ..._filtersDict,
+                            ...this.filtersDictComplement
+                        }
+                    }
+
                     return values.map((value) => { 
-                        return {prop, value, label: statusDict[value]} 
+                        return {prop, value, label: filtersDict[value]} 
                     });
                 }
         
