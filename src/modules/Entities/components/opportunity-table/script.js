@@ -43,7 +43,8 @@ app.component('opportunity-table', {
            query,
            types: $DESCRIPTIONS.opportunity.type.options,
            terms: $TAXONOMIES.area.terms,
-           seals,  
+           seals,
+           verified: undefined
         }
     },
 
@@ -159,6 +160,13 @@ app.component('opportunity-table', {
             delete this.query['registrationTo'];
         },
 
+        getVerified() {
+            if(this.verified === 1) {
+                this.query['@verified'] = this.verified;
+            } else {
+                delete this.query['@verified'];
+            }
+        }
     },
     
 });
