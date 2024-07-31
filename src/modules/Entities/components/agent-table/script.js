@@ -69,6 +69,7 @@ app.component('agent-table', {
             seals,
             getCities,
             municipio,
+            verified: undefined
         }
     },
 
@@ -203,6 +204,13 @@ app.component('agent-table', {
             this.$emit('remove-filter', filter);
         },
 
+        getVerified() {
+            if(this.verified === 1) {
+                this.query['@verified'] = this.verified;
+            } else {
+                delete this.query['@verified'];
+            }
+        }
     }
     
 });

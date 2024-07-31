@@ -134,7 +134,7 @@ app.component('entity-field', {
 
         window.addEventListener(
             "entitySave",
-            this.isReadonly()
+            this.isReadonly
         );
     },
 

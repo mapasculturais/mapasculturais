@@ -19,7 +19,7 @@ $this->import('
         <template #actions="{entities}">
             <div class="space-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
-                <mc-export-spreadsheet :owner="owner" endpoint="entities" :params="{entityType: 'space', ...query}" group="entities-spreadsheets"></mc-export-spreadsheet>
+                <mc-export-spreadsheet :owner="owner" endpoint="entities" :params="{entityType: 'space', query}" group="entities-spreadsheets"></mc-export-spreadsheet>
             </div>
         </template>
 
@@ -52,7 +52,7 @@ $this->import('
             <div class="space-table__inputs">
                 <div class="field--horizontal">
                     <label><input @click="filterByAccessibility($event,entities)" ref="acessibility" type="checkbox" name="spaceType"> <?php i::_e('Possui acessibilidade') ?> </label>
-                    <label class="verified"><input v-model="query['@verified']" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Espaços oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
+                    <label class="verified"><input v-model="verified" @change="getVerified()" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Espaços oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
                 </div>
             </div>
         </template>

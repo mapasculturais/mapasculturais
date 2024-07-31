@@ -42,6 +42,7 @@ app.component('project-table', {
            query,
            types: $DESCRIPTIONS.project.type.options,
            seals,
+           verified: undefined
         }
     },
 
@@ -105,6 +106,14 @@ app.component('project-table', {
                     break;
             }
         },
+
+        getVerified() {
+            if(this.verified === 1) {
+                this.query['@verified'] = this.verified;
+            } else {
+                delete this.query['@verified'];
+            }
+        }
     },
     
 });
