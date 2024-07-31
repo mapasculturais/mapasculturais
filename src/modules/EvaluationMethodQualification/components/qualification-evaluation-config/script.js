@@ -48,7 +48,6 @@ app.component('qualification-evaluation-config', {
                     name: ''
                 }
             );
-            console.log(this.entity.sections);
             this.editingSections[sectionId] = true;
         },
 
@@ -166,8 +165,4 @@ app.component('qualification-evaluation-config', {
             this.save();
         }
     },
-
-    mounted() {
-        console.log("entity", this.entity)
-    }
 });
