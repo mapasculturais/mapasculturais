@@ -8,6 +8,7 @@ return [
 
     'auth.config' => [
         'salt' => env('AUTH_SALT', 'SECURITY_SALT'),
+        'wizard' => 'true',
         'timeout' => '24 hours',
         'strategies' => [
            'Facebook' => [
