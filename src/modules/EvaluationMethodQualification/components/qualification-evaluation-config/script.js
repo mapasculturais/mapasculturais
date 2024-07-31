@@ -97,23 +97,8 @@ app.component('qualification-evaluation-config', {
             this.save();
         },
 
-        validateSection() {
-            let sectionsWithCriteria = this.entity.criteria.map(criterion => criterion.sid);
-            console.log("UM",sectionsWithCriteria);
-
-            this.entity.sections = this.entity.sections.filter(section => sectionsWithCriteria.includes(section.id));
-            console.log("DOIS",filteredSections);
-            console.log("TRES",this.entity.sections);
-            // this.entity.sections = filteredSections;
-
-        },
-
-        change(sectionId) {
-            const section = this.entity.sections.find(section => section.id === sectionId);
-            const hasCriteria = this.entity.criteria.some(criterion => criterion.sid === section.id);
-            if (hasCriteria) {
-                this.save();
-            }
+        setSectionName() {
+            this.save();
         },
 
         save(time = 100) {
@@ -136,6 +121,10 @@ app.component('qualification-evaluation-config', {
                         hasError = true;
                     }
                 })
+
+                if (!addCriteria && !this.entity.criteria.some(criterion => criterion.sid === section.id)) {
+                    hasError = true;
+                }
             })
 
             if(this.entity.criteria) {
@@ -144,7 +133,7 @@ app.component('qualification-evaluation-config', {
                         let _field = this.fieldsDict.criteria[field];
                         if (_field.isRequired && !criterion[field]) {
                             let message = `${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')} `;
-                            debugger
+                            
                             if(addCriteria) {
                                 message = message + this.text('lastCriterion');
                             }
