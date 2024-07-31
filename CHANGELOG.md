@@ -43,6 +43,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias não funcionais
 - Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
+- Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
 
 ## [7.4.13]
 - Atualiza bibliotecas PHP
