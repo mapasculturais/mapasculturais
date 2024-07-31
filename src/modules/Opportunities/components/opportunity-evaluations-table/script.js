@@ -35,10 +35,27 @@ app.component('opportunity-evaluations-table', {
             firstDate: null,
             lastDate: null,
             selectedStatus: null,
+            evaluatiorFilter: null,
         }
     },
 
     computed: {
+        hasControl() {
+            return this.phase.opportunity.currentUserPermissions['@control'];
+        },
+        evaluationsFiltersOptions() {
+            return $MAPAS.config.opportunityEvaluationsTable.committee
+        },
+        filtersDictComplement() {
+            let committee = $MAPAS.config.opportunityEvaluationsTable.committee;
+            let result = {};
+            for(const item of committee) {
+                result[item.value] = item.label 
+                
+            }
+
+            return result;
+        },
         headers () {
             let itens = [
                 { text: __('inscrição', 'opportunity-evaluations-table'), value: "number", slug: "number", sticky: true, width: '160px' },
@@ -155,6 +172,18 @@ app.component('opportunity-evaluations-table', {
                 this.query['@filterStatus'] = `${this.selectedStatus.toString()}`;
             } else {
                 delete this.query['@filterStatus'];
+            }
+
+            entities.refresh();
+        },
+
+        filterByEvaluator(option, entities) {
+            this.evaluatiorFilter = option.value;
+
+            if (this.evaluatiorFilter != "all") {
+                this.query['@evaluationId'] = `${this.evaluatiorFilter.toString()}`;
+            } else {
+                delete this.query['@evaluationId'];
             }
 
             entities.refresh();
