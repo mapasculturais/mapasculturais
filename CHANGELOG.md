@@ -5,10 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [7.5.0-RC]
-### Melhorias
-- Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
-## [unreleased]
 ### Novas funcionalidades
 - **Bloqueio de edição de entidades**, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
 - **Customizador do tema BaseV2** para subsites, possibilitando a configuração de cores, imagens, textos, posição do mapa etc
@@ -37,9 +34,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa slot no entity-table para permitir substituição do filtro por palavra-chave
 - Implementa método detectDateFormat() no Utils para detectar o formato de uma data
 - Implementa nova tabela de listagem de avaliações
+- Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
 ### Correções
 - Impede a exibição da coluna "Agente Responsável" no componente "opportunity-evaluation-table" quando a configuração de campos visíveis não permite o resumo dos agentes.
+- Corrige API.js para que o rawProcessor funcione corretamente
 
 ### Melhorias não funcionais
 - Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
