@@ -22,7 +22,7 @@ $this->import('
                     <input v-if="editingSections[section.id]" type="text" v-model="section.name" @keyup="change()" @blur="editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
                     <input class="bold" v-if="!editingSections[section.id]" type="text" :value="section.name" @blur="editSections(section.id);" disabled placeholder="<?= i::esc_attr__('Nome sessão') ?>">
                     <div class="title__buttons">
-                        <button class="button button--text" @click="editSections(section.id)">
+                        <button class="button button--icon button--text" @click="editSections(section.id)">
                             <mc-icon name="edit"></mc-icon>
                             <?php i::_e("Editar") ?>
                         </button>
@@ -30,7 +30,7 @@ $this->import('
                         <div class="field__trash">
                             <mc-confirm-button @confirm="delSection(section.id)">
                                 <template #button="{open}">
-                                    <button class="button button-icon button--text-danger" @click="open()">
+                                    <button class="button button--delete button--icon" @click="open()">
                                         <mc-icon class="danger__color" name="trash"></mc-icon>
                                         <label class="semibold field__title"><?php i::_e("Excluir") ?></label>
                                     </button>
