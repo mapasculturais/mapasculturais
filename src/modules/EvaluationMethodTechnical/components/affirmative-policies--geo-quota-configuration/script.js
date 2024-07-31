@@ -82,16 +82,13 @@ app.component('affirmative-policies--geo-quota-configuration', {
             this.geoQuota.distribution = distribution;
         },
 
-        setGeoQuotaField(option, proponentType) {
-            if (!this.geoQuota.fields || typeof this.geoQuota.fields !== 'object') {
-                this.geoQuota.fields = {};
-            }
-            
+        setGeoQuotaField(option, proponentType) { 
             this.geoQuota.fields[`${proponentType}`] = option.value;
         },
 
         getFields(proponentType = '') {
-            return this.oppFirstPhase.affirmativePoliciesEligibleFields.filter(field => {
+            const affirmativePoliciesEligibleFields = this.phase.opportunity.parent.affirmativePoliciesEligibleFields ?? this.phase.opportunity.affirmativePoliciesEligibleFields;
+            return affirmativePoliciesEligibleFields.filter(field => {
                 if (proponentType === '') {
                     return !field.proponentTypes || field.proponentTypes.length == 0;
                 } else {
@@ -104,6 +101,12 @@ app.component('affirmative-policies--geo-quota-configuration', {
         async save() {
             this.phase.geoQuotaConfiguration = this.geoQuota;
             await this.phase.save(3000);
-        }
+        },
     },
+
+    mounted() {
+        if (!this.geoQuota.fields || typeof this.geoQuota.fields !== 'object') {
+            this.geoQuota.fields = {};
+        }
+    }
 });
