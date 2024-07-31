@@ -109,11 +109,15 @@ app.component('opportunity-evaluations-table', {
         rawProcessor(rawData) {
             const registrationApi = new API('registration');
             const registration = registrationApi.getEntityInstance(rawData.registration.id);
-
             registration.populate(rawData.registration, true);
-            registration.evaluation = rawData.evaluation;
+            
+            let reg = {};
+            reg = {...registration};
 
-            return registration;
+            reg.evaluation = rawData.evaluation;
+            reg.valuer = rawData.valuer;
+
+            return reg;
         },
 
         getStatus(status) {
