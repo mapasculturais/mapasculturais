@@ -519,6 +519,10 @@ class ApiQuery {
 
         $controller =  $app->getControllerByEntity($class::getClassName());
 
+        if($class[0] == '\\'){
+            $class = substr($class, 1);
+        }
+
         $this->entityClassName = $class;
         $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
         $this->rootEntityClassName = $this->entityClassMetadata->rootEntityName;
@@ -988,7 +992,7 @@ class ApiQuery {
             }
             $subdql = "e.{$this->pk} IN (". implode(' OR ', $dqls) . ')';
         }
-        
+
         return $subdql;
     }
 

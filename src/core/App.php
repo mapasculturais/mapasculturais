@@ -30,6 +30,7 @@ use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
 use MapasCulturais\Definitions\RegistrationFieldType;
+use MapasCulturais\Entities\Subsite;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\MailTemplateNotFound;
 use MapasCulturais\Exceptions\NotFound;
@@ -54,6 +55,8 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\File;
 use TypeError;
 use Throwable;
 
@@ -62,9 +65,11 @@ use Throwable;
  * @property-read Slim\App $slim instância do Slim
  * @property-read Hooks $hooks gerenciador de hooks
  * @property-read EntityManager $em Doctrine Entity Manager
- * @property-read AuthProvider $auth Auth provider
+ * @property-read AuthProvider $auth provedor de autenticação
  * @property-read string $siteName nome do site
  * @property-read string $siteDescription descrição do site
+ * @property-read Subsite $subsite Subsite atual
+ * @property-read Subsite $currentSubsite Subsite atual
  * @property-read string $currentLCode código da linguagem configurada. ex: pt_BR
  * @property-read int|null $currentSubsiteId id do subsite atual
  * @property-read string|float|int $maxUploadSize tamanho máximo de arquivo para upload aceito pelo PHP
@@ -537,7 +542,7 @@ class App {
      * @return void 
      */
     protected function _initAutoloader() {
-        $config = $this->config;
+        $config = &$this->config;
 
         // list of modules
         if($handle = opendir(MODULES_PATH)){
@@ -565,15 +570,19 @@ class App {
             }
         }
 
-        spl_autoload_register(function($class) use ($config){
+        spl_autoload_register(function($class) use (&$config){
             $namespaces = $config['namespaces'];
 
             $namespaces['MapasCulturais\\DoctrineProxies'] = DOCTRINE_PROXIES_PATH;
 
             $subfolders = ['Controllers','Entities','Repositories','Jobs'];
 
-            foreach($config['plugins'] as $plugin){
-                if(is_string($plugin)) {
+            foreach($config['plugins'] as $key => &$plugin){
+                if(is_array($plugin) && isset($plugin['namespace'])) {
+                    // do nothing
+                } else if (is_string($key) && is_array($plugin) && !isset($plugin['namespace'])) {
+                    $plugin = ['namespace' => $key, 'config' => $plugin];
+                } else if (is_numeric($key) && is_string($plugin)) {
                     $plugin = ['namespace' => $plugin];
                 }
                 $namespace = $plugin['namespace'];
@@ -732,8 +741,10 @@ class App {
      * 
      * @return void 
      */
-    protected function _initSubsite() {
-        $domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    protected function _initSubsite($domain = null) {
+        if (!$domain){
+            $domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        }
 
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
@@ -1716,36 +1727,50 @@ class App {
      **********************************************/
 
     /**
-     * Enfileira um job, substituindo um já existente
-     * 
-     * @param string $type_slug 
-     * @param array $data 
-     * @param string $start_string 
-     * @param string $interval_string 
-     * @param int $iterations 
-     * @return Job 
-     * @throws Exception 
+     * Enfileira um job e substitui um job existente com o mesmo ID, se necessário.
+     *
+     * @param string $type_slug Tipo do job a ser enfileirado
+     * @param array $data Dados do job a ser enfileirado
+     * @param string $start_string Data/hora de início do job, no formato 'now' ou uma data/hora válida
+     * @param string $interval_string Intervalo de execução do job, no formato de intervalo do PHP (ex: '1 hour', '30 minutes')
+     * @param int $iterations Número de vezes que o job deve ser executado
+     * @param User|int $user Usuário responsável pelo job, pode ser um objeto User ou um ID de usuário
+     * @param Subsite|int $subsite Subsite responsável pelo job, pode ser um objeto Subsite ou um ID de subsite
+     * @return Job Retorna o objeto Job criado
      */
-    public function enqueueOrReplaceJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
-        return $this->enqueueJob($type_slug, $data, $start_string, $interval_string, $iterations, true);
+    public function enqueueOrReplaceJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, User|int $user = null, Subsite|int $subsite = null) {
+        return $this->enqueueJob($type_slug, $data, $start_string, $interval_string, $iterations, true, $user, $subsite);
     }
-
     
     /**
      * Enfileira um job
-     * 
-     * @param string $type_slug 
-     * @param array $data 
-     * @param string $start_string 
-     * @param string $interval_string 
-     * @param int $iterations 
-     * @param bool $replace
-     * @return Job 
-     * @throws Exception 
+     *
+     * @param string $type_slug Tipo do job a ser enfileirado
+     * @param array $data Dados do job a ser enfileirado
+     * @param string $start_string Data/hora de início do job, no formato 'now' ou uma data/hora válida
+     * @param string $interval_string Intervalo de execução do job, no formato de intervalo do PHP (ex: '1 hour', '30 minutes')
+     * @param int $iterations Número de vezes que o job deve ser executado
+     * @param bool $replace Se verdadeiro, substitui o job existente com o mesmo ID
+     * @param User|int $user Usuário responsável pelo job, pode ser um objeto User ou um ID de usuário
+     * @param Subsite|int $subsite Subsite responsável pelo job, pode ser um objeto Subsite ou um ID de subsite
+     * @return Job Retorna o objeto Job criado
+     * @throws Exception Se o tipo de job for inválido
      */
-    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false) {
+    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false, User|int $user = null, Subsite|int $subsite = null) {
         if($this->config['app.log.jobs']) {
             $this->log->debug("ENQUEUED JOB: $type_slug");
+        }
+
+        if($user && is_numeric($user)) {
+            $user = $this->repo('User')->find($user);
+        } else if (is_null($user) && !$this->user->is('guest')) {
+            $user = $this->user;
+        }
+
+        if($subsite && is_numeric($subsite)) {
+            $subsite = $this->repo('Subsite')->find($subsite);
+        } else if (is_null($subsite)) {
+            $subsite = $this->subsite;
         }
 
         $type = $this->getRegisteredJobType($type_slug);
@@ -1767,6 +1792,14 @@ class App {
 
         $job = new Job($type);
 
+        if($subsite) {
+            $job->subsite = $subsite;
+        }
+
+        if($user) {
+            $job->user = $user;
+        }
+
         $job->id = $id;
 
         $job->iterations = $iterations;
@@ -1778,7 +1811,11 @@ class App {
             $job->$key = $value;
         }
 
-        $job->save(true);
+        try{
+            $job->save(true);
+        } catch (\Exception $e) {
+            $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
+        }
 
         return $job;
     }
@@ -1817,10 +1854,19 @@ class App {
     }
 
     /**
-     * Executa um job
+     * Executa um trabalho agendado (job) que esteja pronto para ser executado.
      * 
-     * @return int|false 
-     * @throws Exception 
+     * Essa função verifica se há algum trabalho agendado que esteja pronto para ser executado (com base na data de próxima execução e no número de iterações restantes), e então executa esse trabalho.
+     * 
+     * Ela também realiza algumas tarefas adicionais, como:
+     * - Atualiza o status do trabalho para "em execução"
+     * - Inicializa o subsite associado ao trabalho, se houver
+     * - Autentica o usuário associado ao trabalho
+     * - Registra informações de log sobre a execução do trabalho
+     * - Aplica os hooks "app.executeJob:before" e "app.executeJob:after" antes e depois da execução do trabalho
+     * - Persiste a fila de reprocessamento do cache de permissões
+     * 
+     * @return int|false O ID do trabalho executado, ou false se nenhum trabalho estiver pronto para ser executado
      */
     public function executeJob(): int|false {
         $conn = $this->em->getConnection();
@@ -1839,12 +1885,25 @@ class App {
             /** @var Job $job */
             $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
             $job = $this->repo('Job')->find($job_id);
-            
-            $this->disableAccessControl();
+
+            if($job->subsite) {
+                $this->_initSubsite($job->subsite->url);
+            }
+            $this->auth->authenticatedUser = $job->user;
+
+
+            if($this->config['app.log.jobs']) {
+                $this->log->debug("EXECUTING JOB: {$job->id} of type {$job->type}");
+                $this->log->debug("AUTHENTICATED USER: {$this->user->id}");
+                $this->log->debug("SUBSITE: {$this->subsite->url}");
+
+            }
+
+            // $this->disableAccessControl();
             $this->applyHookBoundTo($this, "app.executeJob:before");
             $job->execute();
             $this->applyHookBoundTo($this, "app.executeJob:after");
-            $this->enableAccessControl();
+            // $this->enableAccessControl();
             $this->persistPCachePendingQueue();
             return (int) $job_id;
         } else {
@@ -2097,9 +2156,16 @@ class App {
                 }
     
                 if(method_exists($message, $method_name)){
-                    $message->$method_name($value);
+                    if($method_name == 'attach' && $value) {
+                        if (file_exists($value)) {
+                            $message->addPart(new DataPart(new File($value)));
+                        }
+                    } else {
+                        $message->$method_name($value);
+                    }
                 }
             }
+
         }
 
         if($this->config['mailer.alwaysTo']){
@@ -2365,11 +2431,6 @@ class App {
 
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
-        $this->registerFileGroup('subsite',$file_groups['logo']);
-        $this->registerFileGroup('subsite',$file_groups['background']);
-        $this->registerFileGroup('subsite',$file_groups['share']);
-        $this->registerFileGroup('subsite',$file_groups['institute']);
-        $this->registerFileGroup('subsite',$file_groups['favicon']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
 
         if ($theme_image_transformations = $this->view->resolveFilename('','image-transformations.php')) {

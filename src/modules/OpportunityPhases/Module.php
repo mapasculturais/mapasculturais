@@ -627,18 +627,28 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) use($app) {
+        /** @var \MapasCulturais\Connection $conn */
+        $conn = $app->em->getConnection();
+        
+        $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) use($conn, $app) {
             /** @var Registration $this */
 
             if(!$this->canUser('viewPrivateData')) {
                 return;
             }
-            if(empty($value) && ($previous_phase = $this->previousPhase)){
-                $previous_phase->registerFieldsMetadata();
-
-                $app->disableAccessControl();
-                $value = $previous_phase->$field_name;
-                $app->enableAccessControl();
+            if(!isset($value)){
+                $reg = $conn->fetchAssociative("SELECT object_id, value FROM registration_meta WHERE key = '{$field_name}' AND object_id in (SELECT id FROM registration WHERE number = '{$this->number}')");
+                
+                if($reg && $this->id != $reg['object_id']){
+                    $value = $reg['value'];
+                    if($def = $this->getRegisteredMetadata($field_name)){
+                        if(is_callable($def->unserialize)){
+                            $registration = $app->repo('Registration')->find($reg['object_id']);
+                            $cb = $def->unserialize;
+                            $value = $cb($value, $registration, $def);
+                        }
+                    }
+                }
             }
         });
 
@@ -1533,8 +1543,11 @@ class Module extends \MapasCulturais\Module{
             $params = [
                 "siteName" => $app->siteName,
                 "user" => $registration->owner->name,
-                "baseUrl" => $app->getBaseUrl(),
-                "opportunityTitle" => $opportunity->name
+                "baseUrl" => $registration->singleUrl,
+                "opportunityId" => $opportunity->id,
+                "opportunityTitle" => $opportunity->firstPhase->name,
+                "registrationId" => $registration->id,
+                "registrationUrl" => $registration->singleUrl
             ];
             $email_params = [
                 "from" => $app->config["mailer.from"],
@@ -1543,7 +1556,7 @@ class Module extends \MapasCulturais\Module{
                          $registration->ownerUser->email),
                 "subject" => sprintf(i::__("Aviso sobre a sua inscrição na " .
                                            "oportunidade %s"),
-                                     $opportunity->name),
+                                           $opportunity->firstPhase->name),
                 "body" => $app->renderMustacheTemplate($template, $params)
             ];
             if (!isset($email_params["to"])) {

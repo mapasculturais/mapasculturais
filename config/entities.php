@@ -41,6 +41,7 @@ return [
             'registrationTo' => i::__('Data final das inscrições'),
             'evaluationFrom' => i::__('Data de início das avaliações'), 
             'evaluationTo' => i::__('Data final das avaliações'),
+            'number' => i::__('Número')
         ),
 
         'MapasCulturais\Entities\Agent' => array(
@@ -56,8 +57,13 @@ return [
 
         'MapasCulturais\Entities\Registration' => [
             'category' => i::__('Categoria'),
-            'range' => i::__('Faixa'),
+            'range' => i::__('Faixa/Linha'),
             'proponentType' => i::__('Tipo de proponente'),
+            'number' => i::__('Número da inscrição'),
+            'sentTimestamp' => i::__('Data e hora de envio'),
+            'score' => i::__('Pontuação'),
+            'eligible' => i::__('Elegível'),
+            'consolidatedResult' => i::__('Resultado consolidado'),
         ]
     ),
 

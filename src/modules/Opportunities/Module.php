@@ -34,6 +34,52 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
 
 
+        $app->hook('GET(<<registration>>.<<*>>):before', function() use ($app) {
+            $registration = $this->requestedEntity;
+            $app->hook('entity(Registration).propertiesMetadata', function(&$metadada) use ($registration) {
+                $metadada['category']['field_type'] = 'select';
+                $metadada['proponentType']['field_type'] = 'select';
+                $metadada['range']['field_type'] = 'select';
+
+                $opportunity = $registration->opportunity;
+                if(($categories = $opportunity->registrationCategories) || true) {
+                    $options = [];
+
+                    foreach($categories as $category) {
+                        $options[$category] =  $category;
+                    }
+
+                    $metadada['category']['options'] = $options;
+                    $metadada['category']['optionsOrder'] = $categories;
+                    $metadada['category']['required'] = true;
+                }
+
+                if(($proponentTypes = $opportunity->registrationProponentTypes) || true) {
+                    $options = [];
+
+                    foreach($proponentTypes as $proponentType) {
+                        $options[$proponentType] =  $proponentType;
+                    }
+
+                    $metadada['proponentType']['options'] = $options;
+                    $metadada['proponentType']['optionsOrder'] = $proponentTypes;
+                }
+
+                if($ranges = $opportunity->registrationRanges) {
+                    $options = [];
+                    $_ranges = [];
+                    foreach($ranges as $range) {
+                        $range = (object) $range;
+                        $options[$range->label] =  $range->label;
+                        $_ranges[] = $range->label;
+                    }
+
+                    $metadada['range']['options'] = $options;
+                    $metadada['range']['optionsOrder'] = $_ranges;
+                }
+            });
+        });
+
         // ajusta validação da área de interesse
         $app->hook('entity(Opportunity).validationErrors', function(&$errors) use ($app){
             /** @var Opportunity $this */
@@ -53,23 +99,40 @@ class Module extends \MapasCulturais\Module{
         // atualiza o cache dos resumos das fase de avaliação
         $app->hook("entity(Registration).sent:before", function() use ($app) {
             /** @var Registration $this */
-            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                'opportunity' => $this->opportunity,
-                'evaluationMethodConfiguration' => $this->opportunity->evaluationMethodConfiguration ?: null
-            ], '10 seconds');
+            $evaluation_method_configuration = $this->opportunity->evaluationMethodConfiguration ?: null;
+            $cache_key = "updateSummary::{$this->opportunity}::{$evaluation_method_configuration}";
+            if(!$app->cache->contains($cache_key)) {
+                $app->cache->save($cache_key, true, 10);
+                $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                    'opportunity' => $this->opportunity,
+                    'evaluationMethodConfiguration' => $evaluation_method_configuration,
+                ], '10 seconds');
+                $app->cache->delete($cache_key);
+            }
         });
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app) {
             $app->log->debug("Registration {$this->id} status changed to {$this->status}");
             /** @var Registration $this */
-            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                'opportunity' => $this->opportunity
-            ], '10 seconds');
+            $cache_key = "updateSummary::{$this->opportunity}";
+            if(!$app->cache->contains($cache_key)) {
+                $app->cache->save($cache_key, true, 10);
+                $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                    'opportunity' => $this->opportunity
+                ], '10 seconds');
+                $app->cache->delete($cache_key);
+            }
         });
         $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {
             /** @var RegistrationEvaluation $this */
-            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                'evaluationMethodConfiguration' => $this->registration->opportunity->evaluationMethodConfiguration
-            ], '10 seconds');
+            $cache_key = "updateSummary::{$this->registration->opportunity->evaluationMethodConfiguration}";
+            if(!$app->cache->contains($cache_key)) {
+                $app->cache->save($cache_key, true, 10);
+                $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                    'evaluationMethodConfiguration' => $this->registration->opportunity->evaluationMethodConfiguration
+                ], '10 seconds');
+                $app->cache->delete($cache_key);
+            }
+            
         });
 
         // Método para que devolve se existe avaliações técnicas nas fases anteriores
@@ -358,6 +421,48 @@ class Module extends \MapasCulturais\Module{
         $app->hook('mapas.printJsObject:before', function() use($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             $this->jsObject['config']['evaluationMethods'] = $app->getRegisteredEvaluationMethods();
+        });
+
+        // Na edição de campo enviar revisão
+        $app->hook('entity(RegistrationFieldConfiguration).update:after', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('campo "%s" modificado'), $this->fieldName));
+        });
+
+        // Na criação de campo enviar revisão
+        $app->hook('entity(RegistrationFieldConfiguration).insert:after', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('campo "%s" adicionado'), $this->fieldName));
+        });
+
+        // Na remoção de campo enviar revisão
+        $app->hook('entity(RegistrationFieldConfiguration).remove:before', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('campo "%s" removido'), $this->fieldName));
+        });
+
+        // Na edição de anexo enviar revisão
+        $app->hook('entity(RegistrationFileConfiguration).update:after', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('anexo "%s" modificado'), $this->fileGroupName));
+        });
+
+        // Na criação de anexo enviar revisão
+        $app->hook('entity(RegistrationFileConfiguration).insert:after', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('anexo "%s" adicionado'), $this->fileGroupName));
+        });
+
+        // Na criação de anexo enviar revisão
+        $app->hook('entity(RegistrationFileConfiguration).remove:before', function() use($app) {
+            /** @var \MapasCulturais\Entities\Opportunity $owner */
+            $owner = $this->owner;
+            $owner->_newModifiedRevision(sprintf(i::__('anexo "%s" removido'), $this->fileGroupName));
         });
 
         // adiciona o parecer ao jsonSerialize da registration

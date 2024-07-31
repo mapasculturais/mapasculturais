@@ -443,7 +443,7 @@ return array(
                 return Utils::parseSocialMediaUser('facebook.com', $value);
             },
             'validations' => array(
-                "v::oneOf(v::urlDomain('facebook.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL válida ou o nome ou id do usuário.")
+                "v::oneOf(v::urlDomain('facebook.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL válida ou o nome ou id do usuário.")
             ),
             'placeholder' => "nomedousuario ou iddousuario",
             'available_for_opportunities' => true
@@ -452,10 +452,10 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Twitter'),
             'serialize' =>function($value){
-                return Utils::parseSocialMediaUser('twitter.com', $value);
+                return Utils::parseSocialMediaUser('x.com', $value);
             },
             'validations' => array(
-                "v::oneOf(v::urlDomain('twitter.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('x.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
@@ -465,10 +465,14 @@ return array(
             'label' => \MapasCulturais\i::__('Instagram'),
             'available_for_opportunities' => true,
             'serialize' =>function($value){
-                return Utils::parseSocialMediaUser('instagram.com', $value);
+                $result = Utils::parseSocialMediaUser('instagram.com', $value);
+                if($result && $result[0] == '@'){
+                    $result = substr($result,1);
+                }
+                return $result;
             },
             'validations' => array(
-                "v::oneOf(v::urlDomain('instagram.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('instagram.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'placeholder' => "nomedousuario",
         ),
@@ -476,10 +480,10 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Linkedin'),
             'serialize' =>function($value){
-                return Utils::parseSocialMediaUser('linkedin.com', $value);
+                return Utils::parseSocialMediaUser('linkedin.com', $value, 'linkedin');
             },
             'validations' => array(
-                "v::oneOf(v::urlDomain('linkedin.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('linkedin.com'), v::regex('/^@?([\-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
@@ -488,7 +492,7 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Vimeo'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('vimeo.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('vimeo.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'serialize' =>function($value){
                 return Utils::parseSocialMediaUser('vimeo.com', $value);
@@ -500,10 +504,10 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Spotify'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('spotify.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('open.spotify.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
-            'serialize' =>function($value){
-                return Utils::parseSocialMediaUser('spotify.com', $value);
+            'serialize' => function($value) {
+                return Utils::parseSocialMediaUser('open.spotify.com', $value);
             },
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
@@ -512,7 +516,7 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('YouTube'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('youtube.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('youtube.com'), v::regex('/^(@|channel\/)?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'serialize' =>function($value){
                 return Utils::parseSocialMediaUser('youtube.com', $value);
@@ -524,11 +528,23 @@ return array(
             'type' => "socialMedia",
             'label' => \MapasCulturais\i::__('Pinterest'),
             'validations' => array(
-                "v::oneOf(v::urlDomain('pinterest.com'), v::regex('/^@?([\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+                "v::oneOf(v::urlDomain('pinterest.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
             ),
             'serialize' =>function($value){
                 return Utils::parseSocialMediaUser('pinterest.com', $value);
             },
+            'placeholder' => "nomedousuario",
+            'available_for_opportunities' => true
+        ),
+        'tiktok' => array(
+            'type' => "socialMedia",
+            'label' => \MapasCulturais\i::__('Tiktok'),
+            'serialize' =>function($value){
+                return Utils::parseSocialMediaUser('tiktok.com', $value);
+            },
+            'validations' => array(
+                "v::oneOf(v::urlDomain('tiktok.com'), v::regex('/^@?([-\w\d\.]+)$/i'))" => \MapasCulturais\i::__("O valor deve ser uma URL ou usuário válido.")
+            ),
             'placeholder' => "nomedousuario",
             'available_for_opportunities' => true
         ),

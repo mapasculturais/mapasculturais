@@ -165,7 +165,7 @@
     &--primarylight {
         background-color: var(--mc-primary-300);
         border: size(2) solid var(--mc-primary-300);
-        color: var(--mc-low-500);
+        color: var(--mc-white);
 
         &:hover {
             border-color: var(--mc-primary-700);
@@ -307,7 +307,7 @@
         }
 
         &-danger {
-            background-color: var(--mc-white);
+            background-color: transparent;
             color: var(--mc-black);
             .iconify {
                 color: var(--mc-error);

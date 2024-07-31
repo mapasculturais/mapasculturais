@@ -8,6 +8,11 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Definitions\Metadata as MetadataDefinition;
+use MapasCulturais\Exceptions\BadRequest;
+use MapasCulturais\Exceptions\PermissionDenied;
+use MapasCulturais\i;
+use MapasCulturais\Utils;
+
 /**
  * Opportunity
  *
@@ -34,8 +39,8 @@ use MapasCulturais\Definitions\Metadata as MetadataDefinition;
  * 
  * 
  * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
- * @property RegistrationFileConfiguration $registrationFileConfigurations
- * @property RegistrationFieldConfiguration $registrationFieldConfigurations
+ * @property RegistrationFileConfiguration[] $registrationFileConfigurations
+ * @property RegistrationFieldConfiguration[] $registrationFieldConfigurations
  * @property \MapasCulturais\Entity $ownerEntity
  * 
  *
@@ -140,7 +145,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="registration_categories", type="json", nullable=true)
      */
-    protected $registrationCategories = [];
+    protected array $registrationCategories = [];
 
     /**
      * @var \DateTime
@@ -180,16 +185,16 @@ abstract class Opportunity extends \MapasCulturais\Entity
      /**
      * @var string
      *
-     * @ORM\Column(name="registration_proponent_types", type="json", nullable=true)
+     * @ORM\Column(name="registration_proponent_types", type="json", nullable=false)
      */
-    protected $registrationProponentTypes;
+    protected array $registrationProponentTypes = [];
 
     /**
      * @var string
      *
      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
      */
-    protected $registrationRanges;
+    protected array $registrationRanges = [];
 
     /**
      * @var \MapasCulturais\Entities\Opportunity
@@ -639,6 +644,72 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
     }
 
+    /**
+     * Recria ponteiros entre fases das inscrições
+     * @return void 
+     * @throws PermissionDenied 
+     */
+    public function fixNextPhaseRegistrationIds(): void
+    {
+        $this->checkPermission('modify');
+
+        $app = App::i();
+        $opportunity = $this;
+        $conn = $app->em->getConnection();
+
+        if($next_phase = $opportunity->nextPhase) {
+            $conn->executeQuery("DELETE FROM registration_meta where key = 'nextPhaseRegistrationId' AND object_id in (SELECT id FROM registration WHERE opportunity_id = {$opportunity->id})");
+            $conn->executeQuery("DELETE FROM registration_meta where key = 'previousPhaseRegistrationId' AND object_id in (SELECT id FROM registration WHERE opportunity_id = {$next_phase->id})");
+
+            $_current_phase_registrations = $conn->fetchAll("SELECT id, number FROM registration WHERE opportunity_id = {$opportunity->id}");
+            $_next_phase_registrations = $conn->fetchAll("SELECT id, number FROM registration WHERE opportunity_id = {$next_phase->id}");
+
+            $current_phase_registrations = [];
+            foreach($_current_phase_registrations as $registration) {
+                $current_phase_registrations[$registration['number']] = $registration['id'];
+            }
+
+            $next_phase_registrations = [];
+            foreach($_next_phase_registrations as $registration) {
+                $next_phase_registrations[$registration['number']] = $registration['id'];
+            }
+
+            // Corrige o ponteiro para próxima fase
+            foreach($next_phase_registrations as $number => $id) {
+                if(!isset($current_phase_registrations[$number])) {
+                    continue;
+                }
+
+                $parms = [
+                    'object_id' => $current_phase_registrations[$number],
+                    'key' => 'nextPhaseRegistrationId',
+                    'value' => $id,
+                ];
+
+                $conn->executeQuery("INSERT INTO registration_meta (object_id, key, value, id) VALUES (:object_id, :key, :value, nextval('registration_meta_id_seq'::regclass))", $parms);
+                $app->log->debug("Corrigido ponteiro nextPhase para inscrição {$id} ({$number})");
+            }
+
+             // Corrige o ponteiro para fase anterior
+             foreach($current_phase_registrations as $number => $id) {
+                if(!isset($next_phase_registrations[$number])) {
+                    continue;
+                }
+
+                $parms = [
+                    'object_id' => $next_phase_registrations[$number],
+                    'key' => 'previousPhaseRegistrationId',
+                    'value' => $id,
+                ];
+
+                $conn->executeQuery("INSERT INTO registration_meta (object_id, key, value, id) VALUES (:object_id, :key, :value, nextval('registration_meta_id_seq'::regclass))", $parms);
+                $app->log->debug("Corrigido ponteiro previousPhase para inscrição {$id} ({$number})");
+            }
+
+        }
+    }
+    
+
     function validateDate($value){
         return !$value || $value instanceof \DateTime;
     }
@@ -664,24 +735,216 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $cdate >= $this->registrationFrom && $cdate <= $this->registrationTo;
     }
 
-    function setRegistrationCategories($value){
-        $new_value = $value;
-        if(is_string($value) && trim($value)){
-            $cats = [];
-            foreach(explode("\n", trim($value)) as $opt){
-                $opt = trim($opt);
-                if($opt && !in_array($opt, $cats)){
-                    $cats[] = $opt;
+    function setRegistrationCategories(string|array $categories) {
+        $app = App::i();
+        
+        $new_categories = $categories;
+        if(is_string($categories) && trim($categories)){
+            $new_categories = Utils::nl2array($categories);
+        }
+
+        $removed_categories = array_diff($this->registrationCategories, $new_categories);
+        $errors = [];
+
+        foreach ($removed_categories as $removed_category) {
+            $errors[$removed_category] = [];
+            if($this->hasRegistrationOfCategory($removed_category)){
+                $errors[$removed_category]['registration'] = true;
+            }
+            if($this->hasFieldOfCategory($removed_category)){
+                $errors[$removed_category]['field'] = true;
+            }
+
+            if($errors[$removed_category]) {
+                $errors[$removed_category]['message'] = '';
+                if(isset($errors[$removed_category]['registration']) && isset($errors[$removed_category]['field'])) {
+                    $errors[$removed_category]['message'] = sprintf(i::__('A categoria %s está sendo utilizada em campos e em inscrições.'), $removed_category);
+                } else if (isset($errors[$removed_category]['registration'])) {
+                    $errors[$removed_category]['message'] = sprintf(i::__('A categoria %s está sendo utilizada em inscrições.'), $removed_category);
+                } else if (isset($errors[$removed_category]['field'])) {
+                    $errors[$removed_category]['message'] = sprintf(i::__('A categoria %s está sendo utilizada em campos.'), $removed_category);
+                }
+
+                throw new PermissionDenied($app->user, message: $errors[$removed_category]['message']);
+
+            } else {
+                unset($errors[$removed_category]);
+            }
+        }
+        
+        $this->registrationCategories = $new_categories;
+    }
+
+    function setRegistrationProponentTypes(string|array $proponent_types) {
+        $app = App::i();
+        
+        $new_proponent_types = $proponent_types;
+        if(is_string($proponent_types) && trim($proponent_types)){
+            $new_proponent_types = Utils::nl2array($proponent_types);
+        }
+
+        $removed_proponent_types = array_diff($this->registrationProponentTypes, $new_proponent_types);
+        $errors = [];
+        foreach ($removed_proponent_types as $removed_proponent_type) {
+            $errors[$removed_proponent_type] = [];
+            if($this->hasRegistrationOfProponentType($removed_proponent_type)){
+                $errors[$removed_proponent_type]['registration'] = true;
+            }
+            if($this->hasFieldOfProponentType($removed_proponent_type)){
+                $errors[$removed_proponent_type]['field'] = true;
+            }
+
+            if($errors[$removed_proponent_type]) {
+                $errors[$removed_proponent_type]['message'] = '';
+                if(isset($errors[$removed_proponent_type]['registration']) && isset($errors[$removed_proponent_type]['field'])) {
+                    $errors[$removed_proponent_type]['message'] = sprintf(i::__('O tipo de proponente %s está sendo utilizado em campos e em inscrições.'), $removed_proponent_type);
+                } else if (isset($errors[$removed_proponent_type]['registration'])) {
+                    $errors[$removed_proponent_type]['message'] = sprintf(i::__('O tipo de proponente %s está sendo utilizado em inscrições.'), $removed_proponent_type);
+                } else if (isset($errors[$removed_proponent_type]['field'])) {
+                    $errors[$removed_proponent_type]['message'] = sprintf(i::__('O tipo de proponente %s está sendo utilizado em campos.'), $removed_proponent_type);
+                }
+
+                throw new PermissionDenied($app->user, message: $errors[$removed_proponent_type]['message']);
+
+            } else {
+                unset($errors[$removed_proponent_type]);
+            }
+        }
+
+        $this->registrationProponentTypes = $new_proponent_types;
+    }
+
+    function setRegistrationRanges(array $registration_ranges){
+        $app = App::i();
+        
+        $new_registration_ranges = $registration_ranges;
+
+        $current_range_labels = array_map(fn ($range) => $range['label'], $this->registrationRanges);
+        $new_range_labels = array_map(fn ($range) => $range['label'], $registration_ranges);
+
+        $removed_ranges = array_diff($current_range_labels, $new_range_labels);
+
+        $errors = [];
+        foreach ($removed_ranges as $removed_range) {
+            $errors[$removed_range] = [];
+            if($this->hasRegistrationOfRange($removed_range)){
+                $errors[$removed_range]['registration'] = true;
+            }
+            if($this->hasFieldOfRange($removed_range)){
+                $errors[$removed_range]['field'] = true;
+            }
+
+            if($errors[$removed_range]) {
+                $errors[$removed_range]['message'] = '';
+                if(isset($errors[$removed_range]['registration']) && isset($errors[$removed_range]['field'])) {
+                    $errors[$removed_range]['message'] = sprintf(i::__('A faixa/linha %s está sendo utilizada em campos e em inscrições.'), $removed_range);
+                } else if (isset($errors[$removed_range]['registration'])) {
+                    $errors[$removed_range]['message'] = sprintf(i::__('A faixa/linha %s está sendo utilizada em inscrições.'), $removed_range);
+                } else if (isset($errors[$removed_range]['field'])) {
+                    $errors[$removed_range]['message'] = sprintf(i::__('A faixa/linha %s está sendo utilizada em campos.'), $removed_range);
+                }
+                throw new PermissionDenied($app->user, message: $errors[$removed_range]['message']);
+
+            } else {
+                unset($errors[$removed_range]);
+            }
+        }
+
+        $this->registrationRanges = $new_registration_ranges;
+    }
+
+    /**
+     * Verifica se existe uma inscrição com o valor especificado para o campo informado.
+     *
+     * @param string $field O campo a ser verificado (por exemplo, 'proponent_type')
+     * @param string $value O valor a ser verificado
+     * @return bool Verdadeiro se existir uma inscrição com o valor especificado, falso caso contrário
+     *
+     */
+    protected function hasRegistrationOf(string $field, string $value): bool {
+        $app = App::i();
+        
+        $registration = $app->repo('Registration')->findOneBy([
+            'opportunity' => $this->firstPhase,
+            $field => $value,
+            'status' => [10,8,3,2,1]
+        ]);
+
+        return $registration ? true : false;
+    }
+
+    protected function hasFieldOf (string $registration_field, string $value): bool {
+        
+        foreach($this->allPhases as $phase) {
+            /** @var Opportunity $phase */
+            foreach([...$phase->registrationFieldConfigurations, ...$phase->registrationFileConfigurations] as $field) {
+                if(is_array($field->$registration_field) && in_array($value, $field->$registration_field)) {
+                    return true;
                 }
             }
-            $new_value = $cats;
         }
 
-        if($new_value != $this->registrationCategories){
-            $this->checkPermission('modifyRegistrationFields');
-        }
+        return false;
+    }
 
-        $this->registrationCategories = $new_value;
+    /**
+     * Verifica se existe uma inscrição com o valor especificado para a categoria.
+     *
+     * @param string $category A categoria a ser verificada
+     * @return bool Verdadeiro se existir uma inscrição com a categoria especificada, falso caso contrário
+     */
+    public function hasRegistrationOfCategory(string $category): bool {
+        return $this->hasRegistrationOf('category', $category);
+    }
+
+    /**
+     * Verifica se existe uma inscrição com o valor especificado para o tipo de proponente.
+     *
+     * @param string $proponent_type O tipo de proponente a ser verificado
+     * @return bool Verdadeiro se existir uma inscrição com o tipo de proponente especificado, falso caso contrário
+     */
+    public function hasRegistrationOfProponentType(string $proponent_type): bool {
+        return $this->hasRegistrationOf('proponentType', $proponent_type);
+    }
+    
+    /**
+     * Verifica se existe uma inscrição com o valor especificado para o intervalo.
+     *
+     * @param string $range_label O intervalo a ser verificado
+     * @return bool Verdadeiro se existir uma inscrição com o intervalo especificado, falso caso contrário
+     */
+    public function hasRegistrationOfRange(string $range_label): bool {
+        return $this->hasRegistrationOf('range', $range_label);
+    }
+
+    /**
+     * Verifica se existe um campo com o valor especificado para a categoria.
+     *
+     * @param string $category A categoria a ser verificada
+     * @return bool Verdadeiro se existir um campo com a categoria especificada, falso caso contrário
+     */
+    public function hasFieldOfCategory(string $category): bool {
+        return $this->hasFieldOf('categories', $category);
+    }
+
+    /**
+     * Verifica se existe um campo com o valor especificado para o tipo de proponente.
+     *
+     * @param string $proponent_type O tipo de proponente a ser verificado
+     * @return bool Verdadeiro se existir um campo com o tipo de proponente especificado, falso caso contrário
+     */
+    public function hasFieldOfProponentType(string $proponent_type): bool {
+        return $this->hasFieldOf('proponentTypes', $proponent_type);
+    }
+
+    /**
+     * Verifica se existe um campo com o valor especificado para a faixa
+     *
+     * @param string $proponent_type a faixa a ser verificado
+     * @return bool Verdadeiro se existir um campo com a faixa especificado, falso caso contrário
+     */
+    public function hasFieldOfRange(string $range_label): bool {
+        return $this->hasFieldOf('registrationRanges', $range_label);
     }
 
     function publishRegistrations(){
@@ -1087,6 +1350,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $data;
     }
 
+    public function getRevisionData() {
+        $registration_fields = $this->registrationFieldConfigurations;
+        $registration_files = $this->registrationFileConfigurations;
+
+        $revision_data = [];
+        foreach($registration_fields as $field) {
+            $revision_data[$field->fieldName] = $field->jsonSerialize();
+        }
+
+        foreach($registration_files as $field) {
+            $revision_data[$field->fileGroupName] = $field->jsonSerialize();
+        }
+
+        return $revision_data;
+    }
+
     function unregisterRegistrationMetadata(){
         $app = App::i();
 
@@ -1268,10 +1547,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return true;
         }
 
-        if($this->publishedRegistrations){
-            return false;
-        }
-
         if (!$this->evaluationMethodConfiguration) {
             return false;
         }
@@ -1279,18 +1554,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $relation = $this->evaluationMethodConfiguration->getUserRelation($user);
 
         return $relation && $relation->status === AgentRelation::STATUS_ENABLED;
-    }
-
-    protected function canUserReopenValuerEvaluations($user){
-        if(!$this->canUser('@controll', $user)){
-            return false;
-        }
-
-        if($this->publishedRegistrations){
-            return false;
-        }
-
-        return true;
     }
 
     protected function canUserViewEvaluations($user){

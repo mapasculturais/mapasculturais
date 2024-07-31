@@ -150,6 +150,8 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     protected function _register()
     {
+        $app = App::i();
+
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
             'label' => i::__('Seções'),
             'type' => 'json',
@@ -157,7 +159,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return json_encode($val);
             },
             'unserialize' => function ($val) {
-                return json_decode($val);
+                return $val ? json_decode($val) : $val;
             }
         ]);
 
@@ -168,9 +170,11 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return json_encode($val);
             },
             'unserialize' => function ($val) {
-                return json_decode($val);
+                return $val ? json_decode($val) : $val;
             }
         ]);
+
+        $app->registerJobType(new JobTypes\Spreadsheet('qualification-spreadsheets'));
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)

@@ -21,6 +21,8 @@ app.component('mc-status', {
 
             switch (this.statusName.toLowerCase()) {
                 case 'rascunho':
+                case 'iniciado':
+                case 'iniciada':
                     classes.push('mc-status--draft');
                     break;
                 
@@ -30,6 +32,8 @@ app.component('mc-status', {
                 case 'aceito':
                 case 'disponível':
                 case 'pago':
+                case 'avaliado':
+                case 'avaliada':
                     classes.push('mc-status--success');
                     break;
                 
@@ -50,6 +54,8 @@ app.component('mc-status', {
                 case 'aguardando avaliação':
                 case 'concluído':
                 case 'em análise':
+                case 'enviado':
+                case 'enviada':
                     classes.push('mc-status--primary');
                     break;
                 

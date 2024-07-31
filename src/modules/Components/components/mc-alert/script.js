@@ -16,7 +16,11 @@ app.component('mc-alert', {
         closeButton: {
             type: Boolean,
             default: false
-        }
+        },
+        small: {
+            type: Boolean,
+            default: false,
+        },
     },
     
     setup(props, { slots }) {

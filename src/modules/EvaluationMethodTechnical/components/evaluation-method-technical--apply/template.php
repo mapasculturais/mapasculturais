@@ -18,7 +18,7 @@ $this->import('
 
 <mc-modal title="<?= i::esc_attr__('Aplicar resultados das avaliações') ?>" classes="apply-evaluations" @close="modalClose()">
     <template #button="modal">
-        <button class="button button--primary button--icon col-4" @click="modal.open()">
+        <button class="button button--primary button--icon" @click="modal.open()">
             <mc-icon name="add"></mc-icon>
             <?php i::_e('Aplicar resultados das avaliações') ?>
         </button>
@@ -44,7 +44,7 @@ $this->import('
                     </div>
 
                     <div class="field col-12">
-                        <label><?php i::_e('Status') ?></label>
+                        <label><?php i::_e('Selecione o status que deseja aplicar') ?></label>
                         <select v-model="applyData.setStatusTo">
                             <option v-for="item in statusList" :value="item.value">{{item.label}}</option>
                         </select>
@@ -97,8 +97,8 @@ $this->import('
     </template>
 
     <template v-if="!processing" #actions="modal">
-        <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar') ?></button>
-        <button class="button button--primary" @click="apply(modal)"><?php i::_e('Aplicar') ?></button>
+            <button class="button button--text button--text-del" @click="modal.close()"><?php i::_e('Cancelar') ?></button>
+            <button class="button button--primary" @click="apply(modal)"><?php i::_e('Aplicar') ?></button>  
     </template>
     <template v-if="processing" #actions="modal">
         <mc-loading condition><?= i::__('aplicando avaliações') ?></mc-loading>

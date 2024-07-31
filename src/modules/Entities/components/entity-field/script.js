@@ -60,6 +60,7 @@ app.component('entity-field', {
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType,
             currencyValue: this.entity[this.prop],
+            readonly: false
         }
     },
 
@@ -126,6 +127,15 @@ app.component('entity-field', {
             type: String,
             default: null,
         },
+    },
+
+    created() {
+        this.isReadonly();
+
+        window.addEventListener(
+            "entitySave",
+            this.isReadonly()
+        );
     },
 
     computed: {
@@ -204,6 +214,18 @@ app.component('entity-field', {
 
         is(type) {
             return this.fieldType == type;
+        },
+
+        isReadonly() {
+            const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
+
+            if(this.description.readonly) {
+                if(userPermission || !this.value) {
+                    this.readonly = false;
+                } else {
+                    this.readonly = true;
+                }
+            }
         }
     },
 });
