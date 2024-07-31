@@ -71,6 +71,7 @@ class Module extends \MapasCulturais\Module
                 return;
             }
             foreach ($this->owner->opportunity->agentRelations as $relation) {
+                // Se o usuário logado, não é um usuário de suporte, continua.
                 if (($relation->group != self::SUPPORT_GROUP) || ($relation->agent->user->id != $app->user->id)) {
                     continue;
                 }

@@ -19,11 +19,19 @@ $this->import('
 
     <template v-if="!isFuture()">
         <div class="col-12">
-            <entity-table controller="opportunity" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)"> 
+            <entity-table controller="opportunity" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)"> 
                 <template #title>
                     <h2 v-if="isPast()"><?= i::__("As avaliações já estão encerradas") ?></h2>
                     <h2 v-if="isHappening()"><?= i::__("As avaliações estão em andamento") ?></h2>
                     <h2 v-if="isFuture()"><?= i::__("As avaliações ainda não iniciaram") ?></h2>
+                </template>
+
+                <template #searchKeyword='{query}'>
+                    <textarea ref="search" v-model="this.query['registration:@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+                    
+                    <button @click="keyword(entities)" class="entity-table__search-button">
+                        <mc-icon name="search"></mc-icon>
+                    </button>
                 </template>
 
                 <template #actions="{entities,filters}">
@@ -79,6 +87,10 @@ $this->import('
                             </datepicker>
                         </div>
                     </div>
+                </template>
+
+                <template #number="{entity}">
+                    <a :href="createUrl(entity)">{{entity.number}}</a>
                 </template>
 
                 <template #result="{entity}">

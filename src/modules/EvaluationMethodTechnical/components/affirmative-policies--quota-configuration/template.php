@@ -123,6 +123,13 @@ $this->import('
                 </div>
             </div>
         </div>
+
+        <div class="affirmative-policies--quota-configuration__card-footer">
+            <button class="button button--primary button--icon" @click="addField(index)">
+                <mc-icon name="add"></mc-icon>
+                <?php i::_e("Adicionar campo para {{quota.title}}") ?> 
+            </button>
+        </div>
     </div>
 
     <div v-if="isActive" class="affirmative-policies--quota-configuration__add-category">

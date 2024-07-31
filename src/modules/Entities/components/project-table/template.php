@@ -15,7 +15,7 @@ $this->import('
 ?>
 
 <div class="project-table">
-    <entity-table type="project" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
+    <entity-table type="project" identifier="projectTable" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
         <template #actions="{entities}">
             <div class="project-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
@@ -43,7 +43,7 @@ $this->import('
             </div>
             <div class="project-table__inputs">
                 <div class="field--horizontal">
-                    <label class="verified"><input v-model="query['@verified']" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Projetos oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
+                    <label class="verified"><input v-model="verified" @change="getVerified()" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Projetos oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
                 </div>
             </div>
         </template>

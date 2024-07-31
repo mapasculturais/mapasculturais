@@ -34,6 +34,22 @@
         color: var(--mc-low-500);
     }
 
+    &--evaluation-pending {
+        color: #fe4f4f;
+    }
+
+    &--evaluation-started {
+        color: #faae4a;
+    }
+
+    &--evaluation-completed {
+        color: #3fb1fd;
+    }
+
+    &--evaluation-sent {
+        color: #96df37;
+    }
+
     .iconify {
         font-size: size(16);
     }

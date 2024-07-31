@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Controllers;
 
+use DateTime;
 use Exception;
 use MapasCulturais\i;
 use MapasCulturais\API;
@@ -8,10 +9,11 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity as EntitiesOpportunity;
-use MapasCulturais\Entities\Registration;
+use MapasCulturais\Utils;
 
 /**
  * Opportunity Controller
@@ -32,6 +34,7 @@ class Opportunity extends EntityController {
         Traits\ControllerArchive,
         Traits\ControllerAPI,
         Traits\ControllerAPINested,
+        Traits\ControllerLock,
         Traits\ControllerEntityActions {
             Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
         }
@@ -104,7 +107,8 @@ class Opportunity extends EntityController {
         if($this->isAjax()){
             $this->json($opportunity);
         }else{
-            $app->redirect($app->request->getReferer());
+            $referer = $app->request->getReferer();
+            $app->redirect($referer[0]);
         }
     }
 
@@ -373,7 +377,7 @@ class Opportunity extends EntityController {
 
         $_opportunity = $opportunity;
         $opportunity_tree = [$opportunity];
-        while($_opportunity && ($parent = $app->modules['OpportunityPhases']->getPreviousPhase($_opportunity))){
+        while($_opportunity && ($parent = $_opportunity->previousPhase)){
             $opportunity_tree[] = $parent;
             $_opportunity = $parent;
         }
@@ -804,14 +808,14 @@ class Opportunity extends EntityController {
     function API_findEvaluations($opportunity_id = null) {
         $this->requireAuthentication();
         
-        $result = $this->apiFindEvaluations($opportunity_id, $this->data);
-
-        if (!is_null($opportunity_id) && is_int($opportunity_id)) {
-            return $result->evaluations;
+        if($result = $this->apiFindEvaluations($opportunity_id, $this->data)) {
+            if (!is_null($opportunity_id) && is_int($opportunity_id)) {
+                return $result->evaluations;
+            }
+    
+            $this->apiAddHeaderMetadata($this->data, $result->evaluations, $result->count);
+            $this->apiResponse($result->evaluations);
         }
-
-        $this->apiAddHeaderMetadata($this->data, $result->evaluations, $result->count);
-        $this->apiResponse($result->evaluations);
     }
 
     function apiFindEvaluations(int $opportunity_id = null, array $query_data = []) {
@@ -827,7 +831,11 @@ class Opportunity extends EntityController {
         }
 
         if ($opportunity->canUser('@control')) {
-            $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+            if(isset($this->data['@evaluationId'])) {
+                $users = [$this->data['@evaluationId']];
+            }else {
+                $users = implode(',', array_map(function ($el){ return $el['user']; }, $committee));
+            }
         } else if($app->auth->isUserAuthenticated()) {
             $users = [$app->user->id];
         } else {
@@ -842,9 +850,24 @@ class Opportunity extends EntityController {
 
         $params = ['opp' => $opportunity->id];
 
-        $where_pending = "";
-        if(isset($query_data['@pending'])){
-            $where_pending = "evaluation_id IS NULL AND ";
+        $complement_where = "";
+        if(isset($this->data['@pending'])){
+            $complement_where = "evaluation_id IS NULL AND ";
+        }
+        
+        $cookie_key = "evaluation-status-filter-{$opportunity->id}";
+
+        if(isset($this->data['@filterStatus'])){
+            $filter = $this->data['@filterStatus'];
+            if($filter != 'all') {
+                if($filter === 'pending') {
+                    $complement_where = "evaluation_id IS NULL AND ";
+                }else {
+                    $complement_where = "evaluation_status = {$filter} AND ";
+                }
+            }
+            
+            $_SESSION[$cookie_key] = $filter;
         }
 
         if(is_array($users)){
@@ -855,7 +878,7 @@ class Opportunity extends EntityController {
             SELECT count(*) 
             FROM evaluations 
             WHERE 
-                {$where_pending}
+                {$complement_where}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users})
         ", $params);
@@ -920,10 +943,11 @@ class Opportunity extends EntityController {
                 registration_id,
                 registration_number, 
                 evaluation_id, 
-                valuer_agent_id
+                valuer_agent_id,
+                evaluation_status
             FROM evaluations
             WHERE
-                {$where_pending}
+                {$complement_where}
                 opportunity_id = :opp AND
                 valuer_user_id IN({$users}) AND
                 registration_id IN({$registration_ids})
@@ -933,19 +957,49 @@ class Opportunity extends EntityController {
         ";
 
         if(isset($this->data['@date'])){
+            $oper =  "";
+            $between = "/(BETWEEN) '(\d{2}\/\d{2}\/\d{4})' AND '(\d{2}\/\d{2}\/\d{4})'/";
+            if(preg_match($between, $this->data['@date'], $matches)) {
+                $oper = $matches[1];
+                $firstDate = DateTime::createFromFormat(Utils::detectDateFormat($matches[2]), $matches[2]);
+                $_firstDate = $firstDate->format('Y-m-d');
+
+                $lastDate = DateTime::createFromFormat(Utils::detectDateFormat($matches[3]), $matches[3]);
+                $_lastDate = $lastDate->format('Y-m-d');
+
+                $complement_where = " re.create_timestamp {$oper} '{$_firstDate}' AND '{$_lastDate}' AND";
+            }
+
+            $gte = "/(>=) '(\d{2}\/\d{2}\/\d{4})'/";
+            if(preg_match($gte, $this->data['@date'], $matches)) {
+                $oper = $matches[1];
+                $date = DateTime::createFromFormat(Utils::detectDateFormat($matches[2]), $matches[2]);
+                $_date = $date->format('Y-m-d');
+                $complement_where = " re.create_timestamp {$oper} '{$_date}' AND";
+            }
+
+            $lte = "/(<=) '(\d{2}\/\d{2}\/\d{4})'/";
+            if(preg_match($gte, $this->data['@date'], $matches)) {
+                $oper = $matches[1];
+                $date = DateTime::createFromFormat(Utils::detectDateFormat($matches[2]), $matches[2]);
+                $_date = $date->format('Y-m-d');
+                $complement_where = " re.create_timestamp {$oper} '{$_date}' AND";
+            }
+
             $query = "
                 SELECT 
                     e.registration_id, 
                     e.evaluation_id, 
-                    e.valuer_agent_id
+                    e.valuer_agent_id,
+                    e.registration_number,
+                    e.evaluation_status
                 FROM evaluations e
                 LEFT JOIN registration_evaluation re ON re.registration_id = e.registration_id
                 WHERE
-                    {$where_pending}
+                    {$complement_where}
                     e.opportunity_id = :opp AND
                     e.valuer_user_id IN({$users}) AND
-                    e.registration_id IN({$registration_ids}) AND
-                    re.create_timestamp {$this->data['@date']}
+                    e.registration_id IN({$registration_ids})
                     $sql_status
                 ORDER BY e.registration_sent_timestamp ASC
                 $sql_limit

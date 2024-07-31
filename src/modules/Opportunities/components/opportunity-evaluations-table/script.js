@@ -41,11 +41,15 @@ app.component('opportunity-evaluations-table', {
     computed: {
         headers () {
             let itens = [
-                { text: __('inscrição', 'opportunity-evaluations-table'), value: "registration.number", slug: "number", sticky: true, width: '160px' },
-                { text: __('agente', 'opportunity-evaluations-table'), value: "registration.owner.name", slug: "agent"},
+                { text: __('inscrição', 'opportunity-evaluations-table'), value: "number", slug: "number", sticky: true, width: '160px' },
+                { text: __('avaliador', 'opportunity-evaluations-table'), value: "valuer.name", slug: "evaluator", visible: true},
                 { text: __('resultado final', 'opportunity-evaluations-table'), value: "evaluation.resultString", slug: "result"},
                 { text: __('estado', 'opportunity-evaluations-table'), value: "evaluation.status", slug: "status"},
             ];
+
+            if(this.avaliableEvaluationFields('agentsSummary')) {
+                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "owner.name", slug: "agent"});
+            }
 
             return itens;
         },
@@ -53,26 +57,47 @@ app.component('opportunity-evaluations-table', {
         status() {
             return [
                 {
-                    value: 0,
-                    label: __('iniciada', 'opportunity-evaluations-table'),
+                    value: 'all',
+                    label: __('Todas', 'opportunity-evaluations-table'),
+                },
+                {
+                    value: 'pending',
+                    label: __('Avaliações pendentes', 'opportunity-evaluations-table'),
+                },
+                {
+                    value: '0',
+                    label: __('Avaliações iniciadas', 'opportunity-evaluations-table'),
                 },
                 {
                     value: 1,
-                    label: __('avaliada', 'opportunity-evaluations-table'),
+                    label: __('Avaliações concluídas', 'opportunity-evaluations-table'),
                 },
                 {
                     value: 2,
-                    label: __('enviada', 'opportunity-evaluations-table'),
+                    label: __('Avaliações enviadas', 'opportunity-evaluations-table'),
                 },
-                {
-                    value: 'null',
-                    label: __('pendente', 'opportunity-evaluations-table'),
-                }
             ]
         },
     },
     
     methods: {
+        avaliableEvaluationFields(field) {
+            if(this.phase.opportunity.currentUserPermissions['@control']) {
+                return true;
+            }
+            
+            return this.phase.opportunity.avaliableEvaluationFields[field]
+        },
+        createUrl(entity) {
+            let user = this.user;
+            if (user === 'all' && entity.evaluation?.status == null) {
+                return 'javascript:void(0)';
+            } else if (user === 'all' && entity.evaluation) {
+                user = entity.evaluation?.user;
+            }
+            
+            return Utils.createUrl('registration', 'evaluation', { id: entity.id, user });
+        },
         canSee(action) {
             if (this.phase.opportunity.currentUserPermissions[action]) {
                 return true;
@@ -95,23 +120,27 @@ app.component('opportunity-evaluations-table', {
         rawProcessor(rawData) {
             const registrationApi = new API('registration');
             const registration = registrationApi.getEntityInstance(rawData.registration.id);
-
             registration.populate(rawData.registration, true);
-            registration.evaluation = rawData.evaluation;
+            
+            let reg = {};
+            reg = {...registration};
 
-            return registration;
+            reg.evaluation = rawData.evaluation;
+            reg.valuer = rawData.valuer;
+
+            return reg;
         },
 
         getStatus(status) {
             switch(status) {
                 case 0:
-                    return  __('iniciada', 'opportunity-evaluations-table');
+                    return  __('Avaliação iniciada', 'opportunity-evaluations-table');
                 case 1:
-                    return  __('avaliada', 'opportunity-evaluations-table');
+                    return  __('Avaliação concluída', 'opportunity-evaluations-table');
                 case 2:
-                    return  __('enviada', 'opportunity-evaluations-table');
+                    return  __('Avaliação enviada', 'opportunity-evaluations-table');
                 default:
-                    return  __('pendente', 'opportunity-evaluations-table');
+                    return  __('Avaliação pendente', 'opportunity-evaluations-table');
             }
         },
 
@@ -122,20 +151,10 @@ app.component('opportunity-evaluations-table', {
         filterByStatus(option, entities) {
             this.selectedStatus = option.value;
 
-            if (this.selectedStatus == "null") {
-                this.query["@pending"] = true;
-
-                if (this.query['status']) {
-                    delete this.query['status'];
-                }
+            if (this.selectedStatus.length > 0) {
+                this.query['@filterStatus'] = `${this.selectedStatus.toString()}`;
             } else {
-                delete this.query["@pending"];
-
-                if (this.selectedStatus.length > 0) {
-                    this.query['status'] = `IN(${this.selectedStatus.toString()})`;
-                } else {
-                    delete this.query['status'];
-                }
+                delete this.query['@filterStatus'];
             }
 
             entities.refresh();

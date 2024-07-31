@@ -45,6 +45,7 @@ app.component('space-table', {
            types: $DESCRIPTIONS.space.type.options,
            terms: $TAXONOMIES.area.terms,
            seals,
+           verified: undefined
         }
     },
 
@@ -139,6 +140,14 @@ app.component('space-table', {
                     break;
             }
         },
+
+        getVerified() {
+            if(this.verified === 1) {
+                this.query['@verified'] = this.verified;
+            } else {
+                delete this.query['@verified'];
+            }
+        }
     },
     
 });

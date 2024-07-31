@@ -15,7 +15,7 @@ $this->import('
 ?>
 
 <div class="space-table">
-    <entity-table type="space" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
+    <entity-table type="space" identifier="spaceTable" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
         <template #actions="{entities}">
             <div class="space-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
@@ -52,7 +52,7 @@ $this->import('
             <div class="space-table__inputs">
                 <div class="field--horizontal">
                     <label><input @click="filterByAccessibility($event,entities)" ref="acessibility" type="checkbox" name="spaceType"> <?php i::_e('Possui acessibilidade') ?> </label>
-                    <label class="verified"><input v-model="query['@verified']" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Espaços oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
+                    <label class="verified"><input v-model="verified" @change="getVerified()" :true-value="1" :false-value="undefined" type="checkbox"> <?php i::_e('Espaços oficiais') ?><mc-icon name="circle-checked"></mc-icon> </label>
                 </div>
             </div>
         </template>

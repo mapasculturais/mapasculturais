@@ -16,7 +16,7 @@ app.component("affirmative-policy--bonus-config", {
   },
 
   updated () {
-    this.autoSave();
+    this.autoSave(true, 200);
   },
 
   data() {
@@ -120,7 +120,7 @@ app.component("affirmative-policy--bonus-config", {
       }
 
       if (!this.entity.isActivePointReward) {
-        this.entity.isActivePointReward = "true";
+        this.entity.isActivePointReward = true;
       }
     },
 
@@ -134,7 +134,7 @@ app.component("affirmative-policy--bonus-config", {
       if (!this.entity.pointReward.length) {
         this.entity.isActivePointReward = false;
       }
-      this.autoSave(true);
+      this.autoSave(true, 200);
     },
 
     optionValue(option) {
@@ -147,7 +147,7 @@ app.component("affirmative-policy--bonus-config", {
       return _option.length > 1 ? _option[1] : _option[0];
     },
 
-    autoSave(updated = false) {
+    autoSave(updated = false, time = 3000) {
       const filled = Object.values(this.entity.pointReward).filter(
         pointReward => {
             return pointReward.field !== undefined 
@@ -160,7 +160,7 @@ app.component("affirmative-policy--bonus-config", {
       );
       
       if(filled.length || updated) {
-        this.entity.save(3000);
+        this.entity.save(time);
       }
     },
   },

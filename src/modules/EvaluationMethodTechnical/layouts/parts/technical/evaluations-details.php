@@ -16,7 +16,7 @@
         </div>
 
         <div>
-            <p><label><?= i::__('Pontuação total: ') ?></label> <strong>{{registration.consolidatedResult}}</strong></p>
+            <p><label><?= i::__('Pontuação total: ') ?></label> <strong>{{registration.score}}</strong></p>
             <p><label><?= i::__('Pontuação máxima: ') ?></label> <strong>{{registration.consolidatedDetails.maxScore}}</strong></p>
         </div>
     </div>

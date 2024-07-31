@@ -11,6 +11,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Exceptions;
 use MapasCulturais\i;
+use Opportunities\Jobs\UpdateSummaryCaches;
 
 class Module extends \MapasCulturais\Module{
 
@@ -636,7 +637,9 @@ class Module extends \MapasCulturais\Module{
             if(!$this->canUser('viewPrivateData')) {
                 return;
             }
-            if(!isset($value)){
+            
+            if(!isset($value) || empty($value) || $value == ""){
+                $app->disableAccessControl();
                 $reg = $conn->fetchAssociative("SELECT object_id, value FROM registration_meta WHERE key = '{$field_name}' AND object_id in (SELECT id FROM registration WHERE number = '{$this->number}')");
                 
                 if($reg && $this->id != $reg['object_id']){
@@ -649,6 +652,7 @@ class Module extends \MapasCulturais\Module{
                         }
                     }
                 }
+                $app->enableAccessControl();
             }
         });
 
@@ -701,9 +705,11 @@ class Module extends \MapasCulturais\Module{
             $opportunity = $this->requestedEntity;
 
             $opportunity->enqueueRegistrationSync();
-            $cache_key = "MapasCulturais\Entities\Opportunity::getSummary:{$opportunity->id}";
-
-            $app->cache->delete($cache_key);
+            
+           $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
+                'opportunity' => $opportunity,
+                'evaluationMethodConfiguration' => $opportunity->evaluationMethodConfiguration?: null
+            ], '10 seconds');
 
             $this->finish(['message' => i::__('Sincronização das inscrições enfileirada para processamento em segundo plano')]);
         });
