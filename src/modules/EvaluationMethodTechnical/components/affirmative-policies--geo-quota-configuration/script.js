@@ -14,6 +14,12 @@ app.component('affirmative-policies--geo-quota-configuration', {
         return { text, hasSlot }
     },
 
+    mounted() {
+        if (!this.geoQuota.fields || typeof this.geoQuota.fields !== 'object') {
+            this.geoQuota.fields = {};
+        }
+    },
+    
     updated () {
         this.save();
     },
@@ -22,6 +28,7 @@ app.component('affirmative-policies--geo-quota-configuration', {
         let geoQuota = this.phase.geoQuotaConfiguration || { geoDivision: '', distribution: {} };
         let isActive = !!Object.keys(geoQuota.distribution).length;
         const oppFirstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
+        let autosaveTime = 3000;
 
         return {
             isActive,
@@ -31,7 +38,8 @@ app.component('affirmative-policies--geo-quota-configuration', {
             hasCollective: oppFirstPhase.registrationProponentTypes.includes('Coletivo'),
             hasMEI: oppFirstPhase.registrationProponentTypes.includes('MEI'),
             hasNaturalPerson: oppFirstPhase.registrationProponentTypes.includes('Pessoa Física'),
-            hasLegalEntity: oppFirstPhase.registrationProponentTypes.includes('Pessoa Jurídica')
+            hasLegalEntity: oppFirstPhase.registrationProponentTypes.includes('Pessoa Jurídica'),
+            autosaveTime,
         }
     },
 
@@ -52,7 +60,8 @@ app.component('affirmative-policies--geo-quota-configuration', {
             this.isActive = true;
         },
 
-        close() {
+        trash() {
+            this.autosaveTime = 600;
             this.save(true);
             this.isActive = false;
         },
@@ -82,7 +91,9 @@ app.component('affirmative-policies--geo-quota-configuration', {
         },
 
         setGeoQuotaField(option, proponentType) { 
+            this.autosaveTime = 600;
             this.geoQuota.fields[`${proponentType}`] = option.value;
+            this.phase.geoQuotaConfiguration = this.geoQuota;
         },
 
         getFields(proponentType = '') {
@@ -99,7 +110,7 @@ app.component('affirmative-policies--geo-quota-configuration', {
 
         async save(updated = false) {
             if(updated) {
-                this.geoQuota = { geoDivision: '', distribution: {} };
+                this.geoQuota = { geoDivision: '', distribution: {}, fields: {} };
                 this.phase.geoQuotaConfiguration = this.geoQuota;
             }
 
@@ -110,13 +121,8 @@ app.component('affirmative-policies--geo-quota-configuration', {
                 this.phase.geoQuotaConfiguration = this.geoQuota;
             }
 
-            await this.phase.save(3000);
+            await this.phase.save(this.autosaveTime);
+            this.autosaveTime = 3000;
         },
     },
-
-    mounted() {
-        if (!this.geoQuota.fields || typeof this.geoQuota.fields !== 'object') {
-            this.geoQuota.fields = {};
-        }
-    }
 });
