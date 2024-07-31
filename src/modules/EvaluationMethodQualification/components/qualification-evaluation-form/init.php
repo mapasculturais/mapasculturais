@@ -35,8 +35,8 @@ foreach ($sections as $section) {
                 'id' => $crit->id,
                 'sid' => $crit->sid,
                 'name' => $crit->name,
-                'description' => $crit->description ?: '',
-                'options' => $crit->options ?: [],
+                'description' => $crit->description ?? '',
+                'options' => $crit->options ?? [],
                 'notApplyOption' => $crit->notApplyOption,
                 'status' => $critStatus
             ];
