@@ -19,7 +19,7 @@ $this->import('
         <div v-for="(section, index) in entity.sections" :key="index" class="qualification-evaluation-config__card">
             <div class="qualification-evaluation-config__header">
                 <div class="title field">
-                    <input v-if="editingSections[section.id]" type="text" v-model="section.name" @keyup="change()" @blur="editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
+                    <input v-if="editingSections[section.id]" type="text" v-model="section.name" @keyup="change(section.id)" @blur="editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
                     <input class="bold" v-if="!editingSections[section.id]" type="text" :value="section.name" @blur="editSections(section.id);" disabled placeholder="<?= i::esc_attr__('Nome sessão') ?>">
                     <div class="title__buttons">
                         <button class="button button--icon button--text" @click="editSections(section.id)">
