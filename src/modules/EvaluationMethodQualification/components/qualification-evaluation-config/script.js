@@ -97,8 +97,23 @@ app.component('qualification-evaluation-config', {
             this.save();
         },
 
-        change() {
-            this.save(1000);
+        validateSection() {
+            let sectionsWithCriteria = this.entity.criteria.map(criterion => criterion.sid);
+            console.log("UM",sectionsWithCriteria);
+
+            this.entity.sections = this.entity.sections.filter(section => sectionsWithCriteria.includes(section.id));
+            console.log("DOIS",filteredSections);
+            console.log("TRES",this.entity.sections);
+            // this.entity.sections = filteredSections;
+
+        },
+
+        change(sectionId) {
+            const section = this.entity.sections.find(section => section.id === sectionId);
+            const hasCriteria = this.entity.criteria.some(criterion => criterion.sid === section.id);
+            if (hasCriteria) {
+                this.save();
+            }
         },
 
         save(time = 100) {
