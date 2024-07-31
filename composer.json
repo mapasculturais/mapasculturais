@@ -26,7 +26,8 @@
         "symfony/mailgun-mailer": "^6.3",
         "symfony/mime": "^6.3",
         "symfony/sendgrid-mailer": "^6.3",
-        "league/csv": "^9.6.2"
+        "league/csv": "^9.6.2",
+        "phpoffice/phpspreadsheet": "^2.0"
     },
     "autoload": {
         "psr-4": {

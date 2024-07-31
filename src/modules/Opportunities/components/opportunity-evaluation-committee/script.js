@@ -37,6 +37,8 @@ app.component('opportunity-evaluation-committee', {
     },
 
     data() {
+        let ranges = this.entity.opportunity.registrationRanges.map((range) => range.label);
+
         return {
             agentData: null,
             showReviewers: false,
@@ -46,7 +48,13 @@ app.component('opportunity-evaluation-committee', {
             registrationCategories: [
                 'sem avaliações',
                 ... (this.entity.opportunity.registrationCategories ?? [])
-            ]
+            ],
+            registrationRanges: [
+                ... (ranges ?? [])
+            ],
+            registrationProponentTypes: [
+                ... (this.entity.opportunity.registrationProponentTypes ?? [])
+            ],
         }
     },
     
@@ -134,33 +142,41 @@ app.component('opportunity-evaluation-committee', {
             return status === 8 ? this.text('enable') : this.text('disable');
         },
 
-        sendDefinition(field, userId, event = null) {
+        sendDefinition(field, userId, event = null, type) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
+            const fetchFieldMap = {
+                categories: 'fetchCategories',
+                ranges: 'fetchRanges',
+                proponentTypes: 'fetchProponentTypes'
+            };
+              
+            let fetchField = fetchFieldMap[type];
             
-
-            if (event && event == 'sem avaliações' && this.entity.fetchCategories[userId].length > 1) {
-                this.entity.fetchCategories[userId] = this.entity.fetchCategories[userId].filter((category) => category == 'sem avaliações');
-            } else if (event && event != 'sem avaliações' && this.entity.fetchCategories[userId].includes('sem avaliações')) {
-                this.entity.fetchCategories[userId] = this.entity.fetchCategories[userId].filter((category) => category != 'sem avaliações');
+            if (event && event === 'sem avaliações' && this.entity[fetchField][userId].length > 1) {
+                this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item === 'sem avaliações');
+            } else if (event && event !== 'sem avaliações' && this.entity[fetchField][userId].includes('sem avaliações')) {
+                this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item !== 'sem avaliações');
             }
-
+    
             let testData = {
                 fetch: this.entity.fetch,
-                fetchCategories: this.entity.fetchCategories
+                [fetchField]: this.entity[fetchField]
             };
-            
+    
             api.POST(url, testData).then(res => res.json()).then(data => {
-                switch (field) {
-                    case 'addDistribution':
-                        this.messages.success(this.text('addDistribution'));
-                        break;
-                    case 'addCategory':
-                        this.messages.success(this.text('addCategory'));
-                        break;
-                    case 'removeCategory':
-                        this.messages.success(this.text('removeCategory'));
-                        break;
+                const successMessages = {
+                    addDistribution: 'addDistribution',
+                    addCategory: 'addCategory',
+                    addRange: 'addRange',
+                    addProponentType: 'addProponentType',
+                    removeCategory: 'removeCategory',
+                    removeRange: 'removeRange',
+                    removeProponentType: 'removeProponentType'
+                };
+        
+                if (successMessages[field]) {
+                    this.messages.success(this.text(successMessages[field]));
                 }
                 this.loadReviewers();
             });
@@ -187,7 +203,25 @@ app.component('opportunity-evaluation-committee', {
                         this.entity.fetchCategories[info.agentUserId] = [];
                     }
 
-                    info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0) ? false : true;
+                    if(!this.entity.fetchRanges) {
+                        this.entity.fetchRanges = {};
+                        this.entity.fetchRanges[info.agentUserId] = [];
+                    }
+
+                    if(this.entity.fetchRanges && !this.entity.fetchRanges[info.agentUserId]) {
+                        this.entity.fetchRanges[info.agentUserId] = [];
+                    }
+
+                    if(!this.entity.fetchProponentTypes) {
+                        this.entity.fetchProponentTypes = {};
+                        this.entity.fetchProponentTypes[info.agentUserId] = [];
+                    }
+
+                    if(this.entity.fetchProponentTypes && !this.entity.fetchProponentTypes[info.agentUserId]) {
+                        this.entity.fetchProponentTypes[info.agentUserId] = [];
+                    }
+
+                    info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
 
                 });
             }

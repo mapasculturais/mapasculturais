@@ -68,9 +68,7 @@
         }
 
         @media (max-width: size(700)) {
-            max-width: size(500);
-            width: 100%;
-
+            min-width: size(500);
             .modal__action {
                 .desktop {
                     display: none;
