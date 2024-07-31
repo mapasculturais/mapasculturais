@@ -5,7 +5,8 @@ return [
     // 'auth.provider' => '\MultipleLocalAuth\Provider',
     'auth.config' => [
         'salt' => env('AUTH_SALT', null),
-        'timeout' => '24 hours',
+        'wizard' => 'true',
+	'timeout' => '24 hours',
         'strategies' => [
             'Facebook' => [
                 'app_id' => env('AUTH_FACEBOOK_APP_ID', null),
