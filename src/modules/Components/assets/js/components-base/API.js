@@ -292,11 +292,7 @@ class API {
                 list.metadata = JSON.parse(response.headers.get('API-Metadata'));
                 return list;
             }else {
-            result.metadata = JSON.parse(response.headers.get('API-Metadata'));
-            result.metadata = JSON.parse(response.headers.get('API-Metadata'));
-            
                 result.metadata = JSON.parse(response.headers.get('API-Metadata'));
-            
                 return result;
             }
         }));
