@@ -47,6 +47,10 @@ app.component('opportunity-evaluations-table', {
                 { text: __('estado', 'opportunity-evaluations-table'), value: "evaluation.status", slug: "status"},
             ];
 
+            if(this.avaliableEvaluationFields('agentsSummary')) {
+                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "owner.name", slug: "agent"});
+            }
+
             return itens;
         },
 
@@ -77,6 +81,13 @@ app.component('opportunity-evaluations-table', {
     },
     
     methods: {
+        avaliableEvaluationFields(field) {
+            if(this.phase.opportunity.currentUserPermissions['@control']) {
+                return true;
+            }
+            
+            return this.phase.opportunity.avaliableEvaluationFields[field]
+        },
         createUrl(entity) {
             let user = this.user;
             if (user === 'all' && entity.evaluation?.status == null) {

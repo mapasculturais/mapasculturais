@@ -39,6 +39,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa nova tabela de listagem de avaliações
 
 ### Correções
+- Impede a exibição da coluna "Agente Responsável" no componente "opportunity-evaluation-table" quando a configuração de campos visíveis não permite o resumo dos agentes.
 
 ### Melhorias não funcionais
 - Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
