@@ -10,5 +10,5 @@ return [
     'mandatory-note' => i::__('nota obrigatoria'),
     'the_field' => i::__('O campo'),
     'is_required' => i::__('é obrigatório'),
-    'on_section' => i::__('Na sessão'),
+    'on_section' => i::__('Na seção'),
 ];
