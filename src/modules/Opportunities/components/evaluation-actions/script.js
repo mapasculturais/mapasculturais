@@ -96,6 +96,7 @@ app.component('evaluation-actions', {
         },
 
         sendEvaluation(){
+            this.saveEvaluation(true);
             const messages = useMessages();
             let args = {id: this.entity.id};
 
