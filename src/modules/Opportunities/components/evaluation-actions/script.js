@@ -49,6 +49,10 @@ app.component('evaluation-actions', {
     },
 
     methods: {
+        buttonActionsActive(action){
+            let reg = eval(`this.${action}?.registrationId`);
+            return reg != this.entity.id;
+        },
         getEvaluationList(data){
             if (data.detail.evaluationRegistrationList){
                 this.evaluationRegistrationList = data.detail.evaluationRegistrationList;
