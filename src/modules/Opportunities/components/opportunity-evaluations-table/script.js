@@ -113,7 +113,7 @@ app.component('opportunity-evaluations-table', {
                 user = entity.evaluation?.user;
             }
             
-            return Utils.createUrl('registration', 'evaluation', { id: entity.id, user });
+            return Utils.createUrl('registration', 'evaluation', { id: entity._id, user });
         },
         canSee(action) {
             if (this.phase.opportunity.currentUserPermissions[action]) {
