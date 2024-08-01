@@ -51,10 +51,11 @@ $this->import('
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
                     <div class="criterion" v-if="criteria.sid == section.id">
                         <div class="field">
+                            <small class="required" v-if="!criteria.name" ><i> <?= i::esc_attr__('Digite o nome critério') ?></i></small>
                             <input type="text" v-model="criteria.name" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaNameInput">
                         </div>
                         <div class="criterion__buttons">
-                            <mc-modal :title="titleModal(criteria.name)" button-label="<?php i::_e("Configurar critério") ?>">
+                            <mc-modal v-if="criteria.name" :title="titleModal(criteria.name)" button-label="<?php i::_e("Configurar critério") ?>">
                                 <div class="qualification-evaluation-config__modal-content grid-12 field">
                                     <label class="qualification-evaluation-config__modal-content__label col-12">
                                         <?php i::_e("Descrição do critério") ?>
