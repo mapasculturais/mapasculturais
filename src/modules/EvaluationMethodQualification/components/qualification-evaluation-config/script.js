@@ -139,7 +139,7 @@ app.component('qualification-evaluation-config', {
             if (addSection) {
                 this.entity.sections.forEach((section) => {
                     if (!this.entity.criteria.some(criterion => criterion.sid === section.id)) {
-                        this.messages.error(`Criterio obrigatorio`);
+                        this.messages.error(`${this.text('theField')} ${this.text('fieldCriterionName')} ${this.text('isRequired')}`);
                         hasError = true;
                     }
                 });

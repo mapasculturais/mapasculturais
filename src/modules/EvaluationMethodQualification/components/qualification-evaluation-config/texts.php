@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 
 return [
-    'fieldSectionName' => i::__('Nome sessão'),
+    'fieldSectionName' => i::__('Nome seção'),
     'fieldCriterionName' => i::__('Nome do critério'),
     'fieldCriterionWeight' => i::__('Peso'),
     'theField' => i::__('O campo'),
