@@ -8,4 +8,5 @@ return [
     'event' => i::__('Este evento'),
     'space' => i::__('Este espaço'),
     'project' => i::__('Este projeto'),
+    'registration' => i::__('Esta inscrição'),
 ];
