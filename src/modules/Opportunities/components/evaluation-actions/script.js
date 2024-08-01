@@ -31,7 +31,8 @@ app.component('evaluation-actions', {
     data() {
         return {
             evaluationRegistrationList: null,
-            currentEvaluation: $MAPAS.config.evaluationActions?.currentEvaluation || null
+            currentEvaluation: $MAPAS.config.evaluationActions?.currentEvaluation || null,
+            oldEvaluation: null
         }
     },
 
@@ -66,6 +67,7 @@ app.component('evaluation-actions', {
         },
 
         dispatchResponse(type, response) {
+            this.oldEvaluation = this.currentEvaluation;
             this.currentEvaluation = response;
             window.dispatchEvent(new CustomEvent('responseEvaluation', {detail:{response: response, type: type}}));
         },
@@ -185,24 +187,27 @@ app.component('evaluation-actions', {
             return result;
         },
 
-        updateSummaryEvaluations(newStatus) {            
+        updateSummaryEvaluations(newStatus) {     
             // remove status anterior
-            if (!this.currentEvaluation) {
-                this.global.summaryEvaluations.pending -= 1;
-            } else {
-                switch (this.currentEvaluation.status) {
-                    case 0:
-                        this.global.summaryEvaluations.started -= 1;
-                        break;
-                    case 1:
-                        this.global.summaryEvaluations.completed -= 1;
-                        break;
-                    case 2:
-                        this.global.summaryEvaluations.sent -= 1;
-                        break;
-                }
+            if(!this.oldEvaluation) {
+                this.oldEvaluation = {status: null}
             }
-
+            
+            switch(this.oldEvaluation.status) {
+                case 0:
+                    this.global.summaryEvaluations.started -= 1;
+                    break;
+                case 1:
+                    this.global.summaryEvaluations.completed -= 1;
+                    break;
+                case 2:
+                    this.global.summaryEvaluations.sent -= 1;
+                    break;
+                default:
+                    this.global.summaryEvaluations.pending -= 1;
+                    break;
+            }
+            
             // adiciona novo status
             switch(newStatus) {
                 case 'pending':
