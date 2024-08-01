@@ -36,19 +36,28 @@ app.component('qualification-evaluation-config', {
         },
 
         addSection() {
-            let sectionId = 's-'+this.generateUniqueNumber();
-
-            if(!this.entity.sections) {
-                this.entity.sections = [];
-            }
-
-            this.entity.sections.push(
-                {
+            if (!this.validateErrors(false,true)) {
+                let sectionId = 's-' + this.generateUniqueNumber();
+        
+                if (!this.entity.sections) {
+                    this.entity.sections = [];
+                }
+        
+                this.entity.sections.push({
                     id: sectionId,
                     name: ''
-                }
-            );
-            this.editingSections[sectionId] = true;
+                });
+                
+                this.editingSections[sectionId] = true;
+              
+                this.$nextTick(() => {
+                    const sectionInputs = this.$refs['sectionNameInput']; 
+                    const lastInput = sectionInputs[sectionInputs.length - 1]; 
+                    if (lastInput) {
+                        lastInput.focus();
+                    }
+                });
+            } 
         },
 
         addCriteria(sid) {
@@ -110,7 +119,7 @@ app.component('qualification-evaluation-config', {
             }, time);
         },
 
-        validateErrors(addCriteria = false) {
+        validateErrors(addCriteria = false, addSection = false) {
             let hasError = false;
 
             this.entity.sections.forEach((section) => {
@@ -127,6 +136,15 @@ app.component('qualification-evaluation-config', {
                 }
             })
 
+            if (addSection) {
+                this.entity.sections.forEach((section) => {
+                    if (!this.entity.criteria.some(criterion => criterion.sid === section.id)) {
+                        this.messages.error(`Criterio obrigatorio`);
+                        hasError = true;
+                    }
+                });
+            }
+            
             if(this.entity.criteria) {
                 this.entity.criteria.forEach((criterion) => {
                     Object.keys(this.fieldsDict.criteria).forEach((field) => {
