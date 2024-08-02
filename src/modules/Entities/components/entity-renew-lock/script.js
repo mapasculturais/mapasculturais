@@ -12,6 +12,7 @@ app.component('entity-renew-lock', {
         return {
             token: $MAPAS.lockToken ?? null,
             message: '',
+            usesLock: $MAPAS.config['entity-renew-lock']['usesLock']
         }
     },
 
@@ -39,10 +40,12 @@ app.component('entity-renew-lock', {
     },
 
     mounted() {
-        setInterval(() => {
-            this.renewLock();
-        }, 
-        $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
+        if(this.usesLock) {
+            setInterval(() => {
+                this.renewLock();
+            }, 
+            $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
+        }
     }
     
 });
