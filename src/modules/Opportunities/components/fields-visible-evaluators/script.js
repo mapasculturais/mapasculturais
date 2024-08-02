@@ -4,7 +4,7 @@ app.component("fields-visible-evaluators", {
   props: {
     entity: {
       type: Entity,
-      riquered: true,
+      required: true,
     },
   },
 
@@ -16,23 +16,12 @@ app.component("fields-visible-evaluators", {
     return { hasSlot, messages, text };
   },
 
-  beforeCreate() {},
-  created() {},
-
-  beforeMount() {},
-  mounted() {},
-
-  beforeUpdate() {},
-  updated() {},
-
-  beforeUnmount() {},
-  unmounted() {},
-
   data() {
     return {
       avaliableEvaluationFields: {
         ...this.entity.opportunity.avaliableEvaluationFields,
       },
+      selectAll: false,
     };
   },
 
@@ -64,7 +53,7 @@ app.component("fields-visible-evaluators", {
 
       let avaliableFields = $MAPAS.requestedEntity.avaliableEvaluationFields;
 
-      fields.map(function (item) {
+      fields.forEach((item) => {
         item.checked = !!avaliableFields[item.fieldName];
 
         if (!avaliableFields["category"] && item.categories?.length > 0) {
@@ -86,20 +75,32 @@ app.component("fields-visible-evaluators", {
   },
 
   methods: {
-    save() {
-      const resume = Object.keys(this.avaliableEvaluationFields)
-        .map((value) => {
-          return { name: value, value: this.avaliableEvaluationFields[value] };
-        })
-        .filter((field) => field.value);
+    toggleSelectAll() {
+      this.fields.forEach((field) => {
+        if (this.selectAll) {
+          if (!field.checked) {
+            field.checked = true;
+            this.avaliableEvaluationFields[field.fieldName] = "true";
+          }
 
-      this.entity.opportunity.avaliableEvaluationFields = Object.fromEntries(
-        resume.map((t) => [t.name, t.value])
-      );
-
-      this.entity.opportunity.save().then((response) => {
-        console.log(response);
+        } else {
+          if (field.checked) {
+            field.checked = false;
+            this.avaliableEvaluationFields[field.fieldName] = "false";
+          }
+        }
       });
+
+      this.entity.opportunity.avaliableEvaluationFields = this.avaliableEvaluationFields;
+      this.save();
     },
+
+    toggleSelect(fieldName) {
+      this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.avaliableEvaluationFields[fieldName] ? "true" : "false";
+      this.save();
+    },
+    async save() {
+      await this.entity.opportunity.save();
+    }
   },
 });
