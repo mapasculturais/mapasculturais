@@ -21,25 +21,24 @@ $this->import('
 
     <mc-modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores') ?>" classes="modalEmbedTools">
         <template #default="modal">
-
+            <div>
+                <label>Filtrar campo</label>
+            </div>
+            <div>
+                <small>Pesquise pelo título ou pelo ID</small>
+            </div>
+            <input type="text">
             <div class="fields-visible-evaluators__content">
-                <div class="fields-visible-evaluators__filter">
-                    <!--   <?= i::__('Filtrar por categoria') ?>
-                   <mc-select placeholder="<?= i::esc_attr__('Selecione uma categoria') ?>">
-               
-                    </mc-select> -->
+                <div>
+                <input type="checkbox" v-model="selectAll" @change="toggleSelectAll()">
+                    <label>Selecionar todos os campos</label>
                 </div>
-
                 <div class="fields-visible-evaluators__fields">
                     <div v-for="field in fields" :class="['fields-visible-evaluators__field' , {'disabled':field.disabled}]">
                         <label>
-                            <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName]" /> <span v-if="field.id">#{{field.id}}</span> {{field.title}}
+                            <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName]" @change="toggleSelect(field.fieldName)" /> <span v-if="field.id">#{{field.id}}</span> {{field.title}}
                         </label>
                     </div>
-                </div>
-                <div class="fields-visible-evaluators__buttons">
-                    <button class='button button--secondary' @click="modal.close()">Cancelar</button>
-                    <button class='button button--primary' @click="save();modal.close();">Salvar</button>
                 </div>
             </div>
 
