@@ -367,11 +367,11 @@ app.component('opportunity-registrations-table', {
             let editableUntil = registration.editableUntil ?? null;
             let editSentTimestamp = registration.editSentTimestamp ?? null;
 
-            if(this.phase.registrationTo.isFuture() && registration.status === 0) {
+            if(this.phase.registrationTo?.isFuture() && registration.status === 0) {
                 return false;
             }
 
-            if(this.phase.registrationTo.isPast() && registration.status === 0) {
+            if(this.phase.registrationTo?.isPast() && registration.status === 0) {
                 return 'notEditable';
             }
 
