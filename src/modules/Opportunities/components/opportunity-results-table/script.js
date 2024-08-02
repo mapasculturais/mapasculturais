@@ -4,6 +4,7 @@ app.component('opportunity-results-table', {
     data() {
         return {
             visibleColumns: $MAPAS.config.opportunityResultsTable.visibleColumns,
+            columns: $MAPAS.config.opportunityResultsTable.columns,
         };
     },
 
