@@ -10,7 +10,7 @@ app.component('opportunity-results-table', {
     computed: {
         lastPhase() {
             const lastPhase = $MAPAS.opportunityPhases[$MAPAS.opportunityPhases.length - 1];
-            console.log(lastPhase);
+            
             if (lastPhase.isLastPhase) {
                 return lastPhase;
             } else {
