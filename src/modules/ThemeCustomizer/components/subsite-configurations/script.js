@@ -35,7 +35,7 @@ app.component('subsite-configurations', {
     data() {
         return {
             verifiedSeals: [],
-            selectEntityQuery: '',
+            selectEntityQuery: {},
         }
     },
 
