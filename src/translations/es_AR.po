@@ -10344,7 +10344,7 @@ msgstr ""
 "territorios."
 
 #: src/modules/Home/components/home-map/template.php:14
-msgid "Visualize também no mapa"
+msgid "Visualize também no Mapa"
 msgstr "Visualice también en el mapa"
 
 #: src/modules/Home/components/home-map/template.php:15
@@ -24469,7 +24469,7 @@ msgstr "Acerca del sitio web"
 #~ "organización de una agenda cultural y la difusión de espacios culturales "
 #~ "de los territorios."
 
-#~ msgid "Visualize também no mapa"
+#~ msgid "Visualize também no Mapa"
 #~ msgstr "Visualice también en el mapa"
 
 #~ msgid ""

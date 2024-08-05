@@ -9105,7 +9105,7 @@ msgid ""
 msgstr ""
 
 #: modules/Home/components/home-map/template.php:14
-msgid "Visualize também no mapa"
+msgid "Visualize também no Mapa"
 msgstr ""
 
 #: modules/Home/components/home-map/template.php:15
