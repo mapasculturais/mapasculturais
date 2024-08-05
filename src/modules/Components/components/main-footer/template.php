@@ -124,7 +124,7 @@ $config = $app->config['social-media'];
             <p>
                 <?php i::_e("plataforma criada pela comunidade") ?> 
                 <span class="mapas"> <mc-icon name="map"></mc-icon><?php i::_e("mapas culturais"); ?> </span> 
-                <?php i::_e("e desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span></strong>
+                <?php i::_e("e desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span>. Versão MinC </strong>
             </p>
 
             <a class="link" href="https://github.com/culturagovbr/mapasculturais">
