@@ -9,27 +9,7 @@ app.component('subsite-configurations', {
     },
 
     async created() {
-        if (!this.subsite.lang_config) {
-            this.subsite.lang_config = [];
-        }
-
-        const ids = this.subsite.verifiedSeals.map((item) => item).join(',');
-        if (ids) {
-            this.selectEntityQuery = ids ? { id: `!IN(${ids})` } : {};
-            
-            const sealAPI = new API('seal');
-
-            const query = {};
-            query['@select'] = 'id,name,files.avatar';
-            query['@order'] = 'id ASC';
-            query['@permissions'] = '@control';
-            query['id'] = `IN(${ids})`;
-
-            Promise.all([sealAPI.find(query)])
-                .then((values) => {
-                    this.verifiedSeals = values[0] ?? [];
-                });
-        }
+        this.getSeals();
     },
 
     data() {
@@ -54,19 +34,49 @@ app.component('subsite-configurations', {
         },
 
         seals() {
-            console.log(this.verifiedSeals);
             return this.verifiedSeals;
         },
     },
 
     methods: {
+        getSeals() {
+            this.selectEntityQuery = {};
+            if (!this.subsite.lang_config) {
+                this.subsite.lang_config = [];
+            }
+    
+            const ids = this.subsite.verifiedSeals.map((item) => item).join(',');
+            
+            if (ids) {
+                this.selectEntityQuery = { id: `!IN(${ids})` };
+                
+                const sealAPI = new API('seal');
+    
+                const query = {};
+                query['@select'] = 'id,name,files.avatar';
+                query['@order'] = 'id ASC';
+                query['@permissions'] = '@control';
+                query['id'] = `IN(${ids})`;
+    
+                Promise.all([sealAPI.find(query)])
+                    .then((values) => {
+                        this.verifiedSeals = values[0] ?? [];
+                    });
+            }
+        },
+
         addSeal(seal) {
             this.subsite.verifiedSeals.push(seal._id);
-            this.subsite.save();
+            this.verifiedSeals = this.subsite.verifiedSeals;
+            this.subsite.save(50, true);
+            this.getSeals();
         },
+        
         removeSeal(seal) {
             this.subsite.verifiedSeals = this.subsite.verifiedSeals.filter(_seal => _seal !== seal._id);
-            this.subsite.save();
+            this.verifiedSeals = this.subsite.verifiedSeals;
+            this.getSeals();
+            this.subsite.save(50, true);
         },
     },
 });
