@@ -140,7 +140,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="card__right">
-                    <p><?= $this->text('projects', i::__('Aqui você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma.')) ?></p>
+                    <p><?= $this->text('projects', i::__('Aqui você encontra projetos culturais cadastrados pelos agentes culturais usuários da plataforma Mapa da Cultura.')) ?></p>
                     <mc-link route="search/projects" class="button button--icon button--sm project__color">
                         <?= i::__('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
