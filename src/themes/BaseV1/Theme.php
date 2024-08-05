@@ -198,7 +198,7 @@ class Theme extends MapasCulturais\Theme {
             'home: agents' => [
                 'name' => i::__('texto da seção "agentes" da home'),
                 'description' => '',
-                'text' => i::__('Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.')
+                'text' => i::__('Você pode colaborar na gestão da cultura com suas próprias informações, preenchendo seu perfil de agente cultural. Neste espaço, é possível buscar e conhecer os agentes culturais cadastrados no Mapa da Cultura. Explore a diversidade de artistas, produtores, grupos, coletivos, bandas, instituições, que fazem parte da cultura! Participe e seja protagonista da cultura brasileira!, além de associar ao seu perfil eventos e espaços culturais com divulgação gratuita.')
             ],
             'home: spaces' => [
                 'name' => i::__('texto da seção "espaços" da home'),

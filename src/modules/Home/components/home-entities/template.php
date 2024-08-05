@@ -115,7 +115,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="card__right">
-                    <p><?= $this->text('agents', i::__('Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), (...)')) ?></p>
+                    <p><?= $this->text('agents', i::__('Neste espaço, é possível buscar e conhecer os agentes culturais cadastrados no Mapa da Cultura. Explore a diversidade de artistas, produtores, grupos, coletivos, bandas, instituições, que fazem parte da cultura! Participe e seja protagonista da cultura brasileira!')) ?></p>
                     <mc-link route="search/agents" class="button button--icon button--sm agent__color">
                         <?= i::__('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
