@@ -15,10 +15,10 @@ $this->import('
     <div class="home-entities__content">
         <div class="home-entities__content--header">
             <label class="title">
-                <?= $this->text('title', i::__('Aqui você encontra as informações da cultura de sua região!')) ?>
+                <?= $this->text('title', i::__('Aqui você encontra informações de editais e oportunidades do Ministério da Cultura.')) ?>
             </label>
             <label class="description">
-                <?= $this->text('description', i::__('Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre seus projetos, espaços e eventos.')) ?>
+                <?= $this->text('description', i::__('Você também pode cadastrar seus projetos, espaços e eventos. E contribuir para o mapeamento cultural brasileiro.')) ?>
             </label>
         </div>
         
