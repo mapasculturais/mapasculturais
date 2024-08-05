@@ -496,6 +496,36 @@ class Module extends \MapasCulturais\Module{
                 'label' => i::__('Detalhes das avaliações')
             ];
         });
+
+        // Atualiza a coluna metadata da relação do agente com a inscrição com summary das avaliações
+        $app->hook("entity(RegistrationEvaluation).<<insert|update>>:after", function() use ($app) {
+            $opportunity = $this->registration->opportunity;
+
+            $user = $app->user;
+            if($opportunity->canUser('@control')) {
+                $user = $this->user;
+            }
+
+            if($em = $this->getEvaluationMethodConfiguration()) {
+                $em->getUserRelation($user)->updateSummary();
+            }
+        });
+
+        $app->hook("entity(RegistrationEvaluation).setStatus(<<*>>)", function() use ($app) {
+
+            $opportunity = $this->registration->opportunity;
+
+            $user = $app->user;
+            if($opportunity->canUser('@control')) {
+                $user = $this->user;
+            }
+
+            if($em = $this->getEvaluationMethodConfiguration()) {
+                $em->getUserRelation($user)->updateSummary();
+            }
+        });
+
+        
     }
 
     function register(){
