@@ -22,7 +22,6 @@ app.component('technical-evaluation-form', {
     created() {
         this.formData['data'] = this.evaluationData || this.skeleton();
         this.handleCurrentEvaluationForm();
-        this.formData.uid = this.userId;
     },
 
     mounted() {

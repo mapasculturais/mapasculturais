@@ -15,9 +15,6 @@ $this->import('
 
 <div class="evaluation-actions" v-if="evaluationRegistrationList">
     <div class="grid-12">
-        <div v-if="currentEvaluation && currentEvaluation.status" class="col-12">
-            {{currentEvaluation.status}}
-        </div>
         <div class="col-12" v-if="showActions('finishEvaluation')">
             <button class="button button--primary button--large" @click="finishEvaluation()">
                 <?= i::__('Finalizar avaliação') ?>
@@ -65,14 +62,14 @@ $this->import('
         </div>
 
         <div class="col-6">
-            <button v-if="firstRegistration?.registrationid != entity.id" class="button button--primary-outline button--icon button--large" @click="previous()">
+            <button class="button button--primary-outline button--icon button--large" :class="{'btn disabled' : !buttonActionsActive('firstRegistration')}" @click="previous()">
                 <mc-icon name="arrow-left-ios"></mc-icon>
                 <?= i::__('Anterior') ?>
             </button>
         </div>
         
         <div class="col-6">
-            <button v-if="lastRegistration?.registrationid != entity.id" class="button button--primary-outline button--icon button--large" @click="next()">
+            <button class="button button--primary-outline button--icon button--large" :class="{'btn disabled' : !buttonActionsActive('lastRegistration')}" @click="next()">
                 <?= i::__('Próximo') ?>
                 <mc-icon name="arrow-right-ios"></mc-icon>
             </button>
