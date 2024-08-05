@@ -22,23 +22,26 @@ app.component('documentary-evaluation-form', {
     data() {
         return {
             enableForm: false,
+            formData: {
+                data: {}
+            },
             fieldName: '',
-            fieldLabel: '',
             fieldId: null,
-            obsItems: '',
-            obs: '',
-            evaluation: ''
         };
     },
 
     watch: {
         evaluationData: {
             handler(newValue) {
-                if (newValue) {
-                    this.obsItems = newValue.obs_items || '';
-                    this.obs = newValue.obs || '';
-                    this.fieldLabel = newValue.label || '';
-                    this.evaluation = newValue.evaluation || '';
+                if (newValue && this.fieldId) {
+                    if (!this.formData.data[this.fieldId]) {
+                        this.formData.data[this.fieldId] = {};
+                    }
+                    
+                    this.formData.data[this.fieldId].obsItems = newValue.obs_items || '';
+                    this.formData.data[this.fieldId].obs = newValue.obs || '';
+                    this.formData.data[this.fieldId].label = newValue.label || '';
+                    this.formData.data[this.fieldId].evaluation = newValue.evaluation || '';
                 }
             },
             deep: true,
@@ -61,24 +64,28 @@ app.component('documentary-evaluation-form', {
 
     methods: {
         getDocumentaryData(data) {
-            //console.log('DATA', data);
             this.fieldName = data.detail.fieldName;
             this.enableForm = data.detail.type === 'evaluationForm.openForm';
             this.fieldId = data.detail.fieldId;
-            
-            if(this.enableForm) {
-                this.fieldLabel = $DESCRIPTIONS.registration[this.fieldName].label
+
+            if (this.enableForm) {
+                this.formData.data[this.fieldId] = {
+                    label: $DESCRIPTIONS.registration[this.fieldName]?.label || '',
+                    obsItems: '',
+                    obs: '',
+                    evaluation: ''
+                };
             }
         },
-        superTeste(data) {
-            if(data.data?.type !== 'resize') {
-                console.log(data)
-            }
+
+        validateErrors() {
+            //let isValid = false;
+            let isValid = true;
+            return isValid;
         }
     },
 
     mounted() {
         window.addEventListener('documentaryData', this.getDocumentaryData);
-        window.addEventListener('message', this.superTeste);
     }
 });
