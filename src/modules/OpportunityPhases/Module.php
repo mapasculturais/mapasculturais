@@ -625,7 +625,7 @@ class Module extends \MapasCulturais\Module{
 
             if($value == $this) {
                 $value = null;
-            }0
+            }
         });
 
         /** @var \MapasCulturais\Connection $conn */
