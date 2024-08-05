@@ -98,6 +98,11 @@ $config = $app->config['social-media'];
                     
                     <li>
                         <a href="<?= $app->createUrl('faq') ?>"><?php i::_e('Dúvidas frequentes'); ?></a>
+                        <p style="margin-top: 15px !important;">
+                            <strong>
+                                <?= $this->text('description', i::__('Dúvidas ou problemas com o sistema entrar em <br> contato pelo <a href="mailto:suporte.mapas@cultura.gov.br" style="color: #00a2f0; display: inline;">suporte.mapas@cultura.gov.br</a>')) ?>
+                            </strong>
+                        </p>
                     </li>
                     
                 <?php if (count($app->config['module.LGPD']) > 0): ?>
@@ -122,7 +127,7 @@ $config = $app->config['social-media'];
                 <?php i::_e("e desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span></strong>
             </p>
 
-            <a class="link" href="https://github.com/mapasculturais">
+            <a class="link" href="https://github.com/culturagovbr/mapasculturais">
                 <?php i::_e("Conheça o repositório") ?>
                 <mc-icon name="github"></mc-icon>
             </a>
