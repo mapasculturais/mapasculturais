@@ -18,16 +18,25 @@ app.component("fields-visible-evaluators", {
 
   data() {
     return {
-      avaliableEvaluationFields: {
-        ...this.entity.opportunity.avaliableEvaluationFields,
-      },
+      fields: this.fieldSkeleton(),
+      avaliableEvaluationFields: this.entity.opportunity.avaliableEvaluationFields,
       selectAll: false,
       searchQuery: "",
     };
   },
 
   computed: {
-    fields() {
+    filteredFields() {
+      const query = this.searchQuery.toLowerCase();
+      let fields  = this.getFields();
+      return fields.filter(field =>
+        field.title.toLowerCase().includes(query) || (field.id && field.id.toString().includes(query))
+      );
+    }
+  },
+
+  methods: {
+    fieldSkeleton() {
       let fields = [
         {
           checked: false,
@@ -51,60 +60,56 @@ app.component("fields-visible-evaluators", {
         },
         ...$MAPAS?.config?.fieldsToEvaluate,
       ];
+      console.log(fields);
+      return fields;
+    },
+    getFields() {
+      let fields = {...this.fields};
+      let avaliableFields = this.entity.opportunity.avaliableEvaluationFields;
 
-      let avaliableFields = $MAPAS.requestedEntity.avaliableEvaluationFields;
-
-      fields.forEach((item) => {
-        item.checked = !!avaliableFields[item.fieldName];
-
+      this.fields = Object.values(fields).map(item => {
+        item.checked = JSON.parse(avaliableFields[item.fieldName]);
         if (!avaliableFields["category"] && item.categories?.length > 0) {
           item.disabled = true;
           item.titleDisabled = __("activateField", "fields-visible-evaluators");
         }
+        
+        if(item.fieldName == "field_22"){
+          console.log(this.entity.opportunity.avaliableEvaluationFields);
+        }
 
-        if (item.conditional && !avaliableFields[item.conditionalField]) {
+        if (item.conditional && !JSON.parse(avaliableFields[item.conditionalField])) {
           item.disabled = true;
           item.titleDisabled =
             "Para ativar este campo, ative também o campo '" +
             item.conditionalField +
             "'";
         }
+        return item;
       });
-
-      return fields;
     },
-    
-    filteredFields() {
-      const query = this.searchQuery.toLowerCase();
-      return this.fields.filter(field => 
-        field.title.toLowerCase().includes(query) || (field.id && field.id.toString().includes(query))
-      );
-    }
-  },
-
-  methods: {
     toggleSelectAll() {
-      this.fields.forEach((field) => {
+     this.fields.forEach((field) => {
         if (this.selectAll) {
           if (!field.checked) {
             field.checked = true;
-            this.avaliableEvaluationFields[field.fieldName] = "true";
+            this.entity.opportunity.avaliableEvaluationFields[field.fieldName] = "true";
           }
         } else {
           if (field.checked) {
             field.checked = false;
-            this.avaliableEvaluationFields[field.fieldName] = "false";
+            this.entity.opportunity.avaliableEvaluationFields[field.fieldName] = "false";
           }
         }
       });
 
-      this.entity.opportunity.avaliableEvaluationFields = this.avaliableEvaluationFields;
       this.save();
     },
 
     toggleSelect(fieldName) {
-      this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.avaliableEvaluationFields[fieldName] ? "true" : "false";
+      this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.entity.opportunity.avaliableEvaluationFields[fieldName] ? "true" : "false";
       this.save();
+      this.getFields();
     },
     async save() {
       await this.entity.opportunity.save();
