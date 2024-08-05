@@ -203,7 +203,7 @@ class Theme extends MapasCulturais\Theme {
             'home: spaces' => [
                 'name' => i::__('texto da seção "espaços" da home'),
                 'description' => '',
-                'text' => i::__('Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.')
+                'text' => i::__('Aqui você pode cadastrar seus espaços culturais e colaborar com o Mapa da Cultura! Além disso, você pode pesquisar por espaços culturais cadastrados na sua região; tais como teatros, bibliotecas, centros culturais e outros.')
             ],
             'home: projects' => [
                 'name' => i::__('texto da seção "projetos" da home'),

@@ -90,7 +90,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="card__right">
-                    <p><?= $this->text('spaces', i::__('Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.')) ?></p>
+                    <p><?= $this->text('spaces', i::__('Aqui você pode cadastrar seus espaços culturais e colaborar com o Mapa da Cultura! Além disso, você pode pesquisar por espaços culturais cadastrados na sua região; tais como teatros, bibliotecas, centros culturais e outros.')) ?></p>
                     <mc-link route="search/spaces" class="button button--icon button--sm space__color">
                         <?= i::__('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
