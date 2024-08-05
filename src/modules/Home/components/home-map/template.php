@@ -11,8 +11,8 @@ $this->import('
 ?>
 <div v-if="global.enabledEntities.spaces || global.enabledEntities.agents" class="home-map">
     <div class="home-map__header">
-        <label class="title"><?= $this->text('title', i::__('Visualize também no mapa')) ?></label>
-        <label class="description"><?= $this->text('description', i::__('Os agentes, espaços e eventos cadastrados contam com a geo localização de seus endereços, encontre-os aqui:')) ?></label>
+        <label class="title"><?= $this->text('title', i::__('Visualize também no Mapa')) ?></label>
+        <label class="description"><?= $this->text('description', i::__('Os agentes, espaços e eventos culturais cadastrados podem ser vistos a partir de sua localização no mapa do Brasil. Encontre-os aqui:')) ?></label>
     </div>
 
     <div class="home-map__content">
