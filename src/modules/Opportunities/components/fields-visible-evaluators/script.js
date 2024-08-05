@@ -22,6 +22,7 @@ app.component("fields-visible-evaluators", {
         ...this.entity.opportunity.avaliableEvaluationFields,
       },
       selectAll: false,
+      searchQuery: "",
     };
   },
 
@@ -72,6 +73,13 @@ app.component("fields-visible-evaluators", {
 
       return fields;
     },
+    
+    filteredFields() {
+      const query = this.searchQuery.toLowerCase();
+      return this.fields.filter(field => 
+        field.title.toLowerCase().includes(query) || (field.id && field.id.toString().includes(query))
+      );
+    }
   },
 
   methods: {
@@ -82,7 +90,6 @@ app.component("fields-visible-evaluators", {
             field.checked = true;
             this.avaliableEvaluationFields[field.fieldName] = "true";
           }
-
         } else {
           if (field.checked) {
             field.checked = false;
