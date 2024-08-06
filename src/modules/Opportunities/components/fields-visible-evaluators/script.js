@@ -34,11 +34,14 @@ app.component("fields-visible-evaluators", {
     computed: {
         filteredFields() {
             const query = this.searchQuery.toLowerCase();
-            let fields = this.getFields();
-            return fields.filter(field =>
-                field.title.toLowerCase().includes(query) || (field.id && field.id.toString().includes(query))
+            return this.fields.filter(field => 
+                field.title.toLowerCase().includes(query) || 
+                (field.id?.toString().includes(query))
             );
-        }
+        },
+        combinedFields() {
+            return this.filteredFields;
+        },
     },
 
     methods: {

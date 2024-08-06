@@ -30,10 +30,10 @@ $this->import('
             <div class="fields-visible-evaluators__content">
                 <div>
                     <input type="checkbox" v-model="selectAll" @change="toggleSelectAll()">
-                    <label><?= i::__('Selecionar todos os campos')?></label>
+                    <label><?= i::__('Selecionar todos os campos') ?></label>
                 </div>
                 <div class="fields-visible-evaluators__fields">
-                    <div v-for="field in fields" :class="['fields-visible-evaluators__field' , {'disabled':field.disabled}]">
+                    <div v-for="field in combinedFields" :class="['fields-visible-evaluators__field' , {'disabled':field.disabled}]">
                         <label>
                             <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName]" @change="toggleSelect(field.fieldName)" /> <span v-if="field.id">#{{field.id}}</span> {{field.title}}
                             <small v-if="field.titleDisabled">{{field.titleDisabled}}</small>
