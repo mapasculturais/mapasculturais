@@ -19,10 +19,16 @@ app.component("fields-visible-evaluators", {
   data() {
     return {
       fields: this.fieldSkeleton(),
-      avaliableEvaluationFields: this.entity.opportunity.avaliableEvaluationFields,
+      avaliableEvaluationFields: {
+        ... this.entity.opportunity.avaliableEvaluationFields
+      },
       selectAll: false,
       searchQuery: "",
     };
+  },
+
+  mounted() {
+    this.getFields();
   },
 
   computed: {
@@ -37,7 +43,7 @@ app.component("fields-visible-evaluators", {
 
   methods: {
     fieldSkeleton() {
-      let fields = [
+      let _fields = [
         {
           checked: false,
           fieldName: "category",
@@ -60,32 +66,51 @@ app.component("fields-visible-evaluators", {
         },
         ...$MAPAS?.config?.fieldsToEvaluate,
       ];
-      console.log(fields);
+
+      let fields = [];
+      for (const item of _fields){
+          item.checked = false;
+          item.disabled = false;
+          fields.push(item);
+      }
+
       return fields;
     },
     getFields() {
-      let fields = {...this.fields};
       let avaliableFields = this.entity.opportunity.avaliableEvaluationFields;
 
-      this.fields = Object.values(fields).map(item => {
-        item.checked = JSON.parse(avaliableFields[item.fieldName]);
-        if (!avaliableFields["category"] && item.categories?.length > 0) {
-          item.disabled = true;
-          item.titleDisabled = __("activateField", "fields-visible-evaluators");
+      _fields = Object.values(this.fields).map((item, index) => {
+        let field = {...this.fields[index]}
+
+        field.checked = avaliableFields[item.fieldName] == "true" ? true : false;
+
+        if (avaliableFields["category"] && item.categories?.length > 0) {
+          field.disabled = (avaliableFields["category"] == "true" ? false : true);
+          field.titleDisabled = this.text("activateCategory", "fields-visible-evaluators");
         }
         
-        if(item.fieldName == "field_22"){
-          console.log(this.entity.opportunity.avaliableEvaluationFields);
+        if(item.conditional) {
+          let condidionalField = this.fields.filter(_item => _item.fieldName == item.conditionalField)
+          field.disabled = (avaliableFields[item.conditionalField] == "true" ? false : true);
+          field.titleDisabled = `${this.text('activateField')} '#${condidionalField[0].id}'`
         }
 
-        if (item.conditional && !JSON.parse(avaliableFields[item.conditionalField])) {
-          item.disabled = true;
-          item.titleDisabled =
-            "Para ativar este campo, ative também o campo '" +
-            item.conditionalField +
-            "'";
+        this.fields[index] = field;
+
+        if(!field.checked) {
+          this.fields.forEach((_item, pos) => {
+            if (_item.conditionalField == field.fieldName) {
+              this.avaliableEvaluationFields[_item.fieldName] = false;
+              this.entity.opportunity.avaliableEvaluationFields[_item.fieldName] =  "false"
+            }
+
+            if (field.fieldName === "category" && _item.categories?.length > 0) {
+              this.avaliableEvaluationFields[_item.fieldName] = false;
+              this.entity.opportunity.avaliableEvaluationFields[_item.fieldName] =  "false"
+            }
+          });
         }
-        return item;
+
       });
     },
     toggleSelectAll() {
@@ -93,12 +118,12 @@ app.component("fields-visible-evaluators", {
         if (this.selectAll) {
           if (!field.checked) {
             field.checked = true;
-            this.entity.opportunity.avaliableEvaluationFields[field.fieldName] = "true";
+            this.avaliableEvaluationFields[field.fieldName] = "true";
           }
         } else {
           if (field.checked) {
             field.checked = false;
-            this.entity.opportunity.avaliableEvaluationFields[field.fieldName] = "false";
+            this.avaliableEvaluationFields[field.fieldName] = "false";
           }
         }
       });
@@ -107,7 +132,7 @@ app.component("fields-visible-evaluators", {
     },
 
     toggleSelect(fieldName) {
-      this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.entity.opportunity.avaliableEvaluationFields[fieldName] ? "true" : "false";
+      this.entity.opportunity.avaliableEvaluationFields[fieldName] = this.avaliableEvaluationFields[fieldName] ? "true" : "false";
       this.save();
       this.getFields();
     },
