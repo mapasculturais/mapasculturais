@@ -496,6 +496,48 @@ class Module extends \MapasCulturais\Module{
                 'label' => i::__('Detalhes das avaliações')
             ];
         });
+
+       // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento de inserir, atualizar ou remover.
+        $app->hook("entity(RegistrationEvaluation).<<insert|update|remove>>:after", function() use ($app) {
+            $opportunity = $this->registration->opportunity;
+
+            $user = $app->user;
+            if ($opportunity->canUser('@control')) {
+                $user = $this->user;
+            }
+
+            if ($em = $this->getEvaluationMethodConfiguration()) {
+                $em->getUserRelation($user)->updateSummary(flush: true);
+            }
+        });
+
+        // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento da alteração de status.
+        $app->hook("entity(RegistrationEvaluation).setStatus(<<*>>)", function() use ($app) {
+            /** @var \MapasCulturais\Entities\RegistrationEvaluation $this */
+            $opportunity = $this->registration->opportunity;
+
+            $user = $app->user;
+            if ($opportunity->canUser('@control')) {
+                $user = $this->user;
+            }
+
+            if ($em = $this->getEvaluationMethodConfiguration()) {
+                $em->getUserRelation($user)->updateSummary(flush: true);
+            }
+        });
+
+        // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento que se atribui uma avaliação.
+        $app->hook("entity(EvaluationMethodConfiguration).recreatePermissionCache:after", function(&$users) use ($app) {
+            /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
+            foreach ($users as $user) {
+                $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->findOneBy(['agent' => $user->profile, 'owner' => $this]);
+                if ($relation) {
+                    /** @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation */
+                    $relation->updateSummary(flush: true, started: false, completed: false, sent: false);
+                }
+            }
+        });
+
     }
 
     function register(){

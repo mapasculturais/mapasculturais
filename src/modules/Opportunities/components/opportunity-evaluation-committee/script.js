@@ -59,6 +59,9 @@ app.component('opportunity-evaluation-committee', {
     },
     
     methods: {   
+        showSummary(summary) {
+            return Object.values(summary).some(value => value > 0);
+        },
         selectAgent(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});

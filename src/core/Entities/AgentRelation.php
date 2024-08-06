@@ -116,6 +116,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
         $result['agent'] = $this->agent->simplify('id,name,type,terms,avatar,singleUrl');
         $result['ownerUserId'] = $this->owner->ownerUser->id;
         $result['agentUserId'] = $this->agent->user->id;
+        $result['metadata'] = $this->metadata;
 
         return $result;
     }
