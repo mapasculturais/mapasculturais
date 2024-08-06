@@ -98,6 +98,13 @@ app.component('opportunity-evaluations-table', {
     },
     
     methods: {
+        valuersMetadata() {
+            if(this.user != "all") {
+                return $MAPAS.config.opportunityEvaluationsTable.valuersMetadata[this.user]
+            }
+
+            return null;
+        },
         avaliableEvaluationFields(field) {
             if(this.phase.opportunity.currentUserPermissions['@control']) {
                 return true;
@@ -116,6 +123,11 @@ app.component('opportunity-evaluations-table', {
             return Utils.createUrl('registration', 'evaluation', { id: entity._id, user });
         },
         canSee(action) {
+            let metadata = this.valuersMetadata();
+            if(metadata && metadata.summary.completed <= 0) {
+                return false
+            }
+
             if (this.phase.opportunity.currentUserPermissions[action]) {
                 return true;
             }
