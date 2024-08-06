@@ -118,15 +118,24 @@ app.component("fields-visible-evaluators", {
         },
         toggleSelectAll() {
             this.fields.forEach((field) => {
+                let conditionalField = this.avaliableEvaluationFields[field.conditionalField];
                 if (this.selectAll) {
                     if (!field.checked) {
                         field.checked = true;
                         this.avaliableEvaluationFields[field.fieldName] = "true";
+
+                        if(field.conditional){
+                            field.disabled = conditionalField.checked ? true : false; 
+                        }
                     }
                 } else {
                     if (field.checked) {
                         field.checked = false;
                         this.avaliableEvaluationFields[field.fieldName] = "false";
+
+                        if(field.conditional){
+                            field.disabled = conditionalField.checked ? false : true; 
+                        }
                     }
                 }
             });
