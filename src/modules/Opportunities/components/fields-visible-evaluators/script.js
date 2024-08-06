@@ -127,7 +127,7 @@ app.component("fields-visible-evaluators", {
                     }
                 }
             });
-
+            this.entity.opportunity.avaliableEvaluationFields = this.avaliableEvaluationFields;
             this.save();
         },
 
