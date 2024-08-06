@@ -69,8 +69,13 @@ app.component("fields-visible-evaluators", {
                     fieldName: "spaceSummary",
                     title: __("spaceSummary", "fields-visible-evaluators"),
                 },
-                ...$MAPAS?.config?.fieldsToEvaluate,
             ];
+
+            if($MAPAS?.config?.fieldsToEvaluate.length > 0){
+                $MAPAS?.config?.fieldsToEvaluate.forEach(item =>{
+                    _fields.push(item);
+                })
+            }
 
             let fields = [];
             for (const item of _fields) {
