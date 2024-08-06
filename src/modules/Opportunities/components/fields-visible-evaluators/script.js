@@ -25,6 +25,8 @@ app.component("fields-visible-evaluators", {
             selectAll: false,
             originalFields:[],
             searchQuery: "",
+            searchFielter: null,
+
         };
     },
 
@@ -34,16 +36,19 @@ app.component("fields-visible-evaluators", {
     },
 
     methods: {
+        fieldsResult() {
+           return this.searchFielter || this.fields
+        },
         searchField() {
             const query = this.searchQuery.toLowerCase();
 
             if (query) {
-                this.fields = this.originalFields.filter(field =>
+                this.searchFielter = this.fields.filter(field =>
                     field.title.toLowerCase().includes(query) ||
                     (field.id?.toString().includes(query))
                 );
             } else {
-                this.fields = [...this.originalFields];
+                this.searchFielter = null;
             }
         },
 
