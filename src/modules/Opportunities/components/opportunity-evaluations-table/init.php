@@ -9,6 +9,7 @@
  $entity = $this->controller->requestedEntity;
 
  $committee = [];
+ $valuersMetadata = [];
 
 array_push($committee, [
     "value" => 'all',
@@ -19,13 +20,16 @@ array_push($committee, [
     foreach($comm as $value) {
         array_push($committee, [
             "value" => $value->agent->owner->user->id,
-            "label" => $value->agent->name
+            "label" => $value->agent->name,
         ]);
+
+        $valuersMetadata[$value->agent->owner->user->id] = $value->metadata;
     }
  }
 
 
 $this->jsObject['config']['opportunityEvaluationsTable'] = [
     "isAdmin" => $app->user->is("admin"),
-    "committee" => $committee
+    "committee" => $committee,
+    "valuersMetadata" => $valuersMetadata
 ];
