@@ -23,28 +23,30 @@ app.component("fields-visible-evaluators", {
                 ... this.entity.opportunity.avaliableEvaluationFields
             },
             selectAll: false,
+            originalFields:[],
             searchQuery: "",
         };
     },
 
     mounted() {
         this.getFields();
-    },
-
-    computed: {
-        filteredFields() {
-            const query = this.searchQuery.toLowerCase();
-            return this.fields.filter(field => 
-                field.title.toLowerCase().includes(query) || 
-                (field.id?.toString().includes(query))
-            );
-        },
-        combinedFields() {
-            return this.filteredFields;
-        },
+        this.originalFields = this.fieldSkeleton();
     },
 
     methods: {
+        searchField() {
+            const query = this.searchQuery.toLowerCase();
+
+            if (query) {
+                this.fields = this.originalFields.filter(field =>
+                    field.title.toLowerCase().includes(query) ||
+                    (field.id?.toString().includes(query))
+                );
+            } else {
+                this.fields = [...this.originalFields];
+            }
+        },
+
         fieldSkeleton() {
             let _fields = [
                 {
@@ -124,8 +126,8 @@ app.component("fields-visible-evaluators", {
                         field.checked = true;
                         this.avaliableEvaluationFields[field.fieldName] = "true";
 
-                        if(field.conditional){
-                            field.disabled = conditionalField.checked ? true : false; 
+                        if (field.conditional) {
+                            field.disabled = conditionalField.checked ? true : false;
                         }
                     }
                 } else {
@@ -133,8 +135,8 @@ app.component("fields-visible-evaluators", {
                         field.checked = false;
                         this.avaliableEvaluationFields[field.fieldName] = "false";
 
-                        if(field.conditional){
-                            field.disabled = conditionalField.checked ? false : true; 
+                        if (field.conditional) {
+                            field.disabled = conditionalField.checked ? false : true;
                         }
                     }
                 }
