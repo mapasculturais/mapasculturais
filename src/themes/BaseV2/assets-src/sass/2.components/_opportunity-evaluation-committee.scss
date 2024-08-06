@@ -80,4 +80,42 @@
         flex-direction: column;
         gap: size(10);
     }
+
+    &__user-id {
+        display: flex;
+        justify-content: flex-end;
+        padding: 5px;
+    }
+
+    &__summary {
+        display: flex;
+        justify-content: space-around;
+        border-bottom: solid 1px #000;
+        padding: 30px 0px 30px 0px;
+        
+        
+        span {
+            display: flex;
+            gap: 5px;
+            border-radius: 5px;
+            padding: 8px;
+            align-items: center;
+        }
+        
+        &__sent {
+            background-color: #BFE88B;
+        }
+
+        &__pending {
+            background-color: #FFB5B5
+        }
+
+        &__started {
+            background-color: #FFCF8F;
+        }
+
+        &__completed {
+            background-color: #99D6FF;
+        }
+    }
 }
