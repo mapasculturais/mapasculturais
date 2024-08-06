@@ -5,13 +5,16 @@ $previous_phases = $entity->previousPhases;
 if ($entity->firstPhase->id != $entity->id) {
     $previous_phases[] = $entity;
 }
+$_fields = [];
 
 foreach ($previous_phases as $phase) {
     foreach ($phase->registrationFieldConfigurations as $field) {
-        $this->jsObject['config']['fieldsToEvaluate'][] = $field;
+        $_fields[] = $field;
     }
     
     foreach ($phase->registrationFileConfigurations as $file) {
-        $this->jsObject['config']['fieldsToEvaluate'][] = $file;
+        $_fields[] = $file;
     }
 }
+
+$this->jsObject['config']['fieldsToEvaluate'] = $_fields;
