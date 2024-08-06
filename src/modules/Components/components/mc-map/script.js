@@ -86,11 +86,11 @@ app.component('mc-map', {
     data() {
         return {
             tileServer: $MAPAS.config.map.tileServer,
-            defaultZoom: $MAPAS.config.map.defaultZoom,
+            defaultZoom: parseInt($MAPAS.config.map.defaultZoom),
             approximateZoom: $MAPAS.config.map.approximateZoom,
             preciseZoom: $MAPAS.config.map.preciseZoom,
-            maxZoom: $MAPAS.config.map.maxZoom,
-            minZoom: $MAPAS.config.map.minZoom,
+            maxZoom: parseInt($MAPAS.config.map.maxZoom),
+            minZoom: parseInt($MAPAS.config.map.minZoom),
             popupEntity: null,
         };
     },
