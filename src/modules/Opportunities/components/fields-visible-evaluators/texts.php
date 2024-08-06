@@ -3,7 +3,8 @@
 use MapasCulturais\i;
 
 return [
-    'activateField' => i::__('Para ativar este campo, ative também o campo Categoria'),
+    'activateCategory' => i::__("Para ativar este campo, ative também a 'Categoria'"),
+    'activateField' => i::__("Para ativar este campo, ative também o campo"),
     'category' => i::__('Categoria'),
     'projectName' => i::__('Nome do projeto'),
     'agentsSummary' => i::__('Resumo dos agentes'),
