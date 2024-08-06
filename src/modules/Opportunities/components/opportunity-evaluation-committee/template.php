@@ -45,8 +45,8 @@ $this->import('
             <div v-else class="opportunity-evaluation-committee__card-header">
                 <div class="opportunity-evaluation-committee__card-header-info">
                     <mc-avatar :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
-
-                    <span class="bold">{{infoReviewer.agent.name}}</span>
+                    
+                    <span class="bold">#{{infoReviewer.agent.id}} - {{infoReviewer.agent.name}}</span>
                 </div>
 
                 <div class="opportunity-evaluation-committee__card-header-actions">
