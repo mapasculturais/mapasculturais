@@ -25,7 +25,7 @@ $this->import('
                 <label><?= i::__('Filtrar campo') ?></label>
             </div>
             <div>
-                <input type="text" v-model="searchQuery"><small><?= i::__('Pesquise pelo título ou pelo ID') ?></small>
+                <input type="text" v-model="searchQuery" @input="searchField()"><small><?= i::__('Pesquise pelo título ou pelo ID') ?></small>
             </div>
             <div class="fields-visible-evaluators__content">
                 <div>
@@ -33,7 +33,7 @@ $this->import('
                     <label><?= i::__('Selecionar todos os campos') ?></label>
                 </div>
                 <div class="fields-visible-evaluators__fields">
-                    <div v-for="field in combinedFields" :class="['fields-visible-evaluators__field' , {'disabled':field.disabled}]">
+                    <div v-for="field in fields" :class="['fields-visible-evaluators__field' , {'disabled':field.disabled}]">
                         <label>
                             <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName]" @change="toggleSelect(field.fieldName)" /> <span v-if="field.id">#{{field.id}}</span> {{field.title}}
                             <small v-if="field.titleDisabled">{{field.titleDisabled}}</small>
