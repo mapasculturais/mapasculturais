@@ -99,9 +99,7 @@ $config = $app->config['social-media'];
                     <li>
                         <a href="<?= $app->createUrl('faq') ?>"><?php i::_e('Dúvidas frequentes'); ?></a>
                         <p style="margin-top: 15px !important;">
-                            <strong>
-                                <?= $this->text('description', i::__('Dúvidas ou problemas com o sistema entrar em <br> contato pelo <a href="mailto:suporte.mapas@cultura.gov.br" style="color: #00a2f0; display: inline;">suporte.mapas@cultura.gov.br</a>')) ?>
-                            </strong>
+                            <?= $this->text('description', i::__('Dúvidas ou problemas com o sistema entrar em <br> contato pelo e-mail <a href="mailto:suporte.mapas@cultura.gov.br" style="color: #00a2f0; display: inline; font-weight: bold;">suporte.mapas@cultura.gov.br</a>')) ?>
                         </p>
                     </li>
                     
