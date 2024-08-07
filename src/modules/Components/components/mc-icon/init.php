@@ -1,9 +1,9 @@
 <?php
 // https://icon-sets.iconify.design/
 $iconset = [
-    // minc
-    'cultura-viva-1' => 'minc:cultura-viva-1',
-    'cultura-viva-3' => 'minc:cultura-viva-3',
+    // minc -- descomentar os ícones que forem aceitos na biblioteca Iconify
+    'cultura-viva-1' => 'bi:person-arms-up',//'minc:cultura-viva-1',
+    'cultura-viva-3' => 'ph:person-arms-spread-fill',//'minc:cultura-viva-3',
 
     // entidades
     'app' => 'heroicons-solid:puzzle',
