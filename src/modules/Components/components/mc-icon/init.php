@@ -1,6 +1,10 @@
 <?php
 // https://icon-sets.iconify.design/
 $iconset = [
+    // minc
+    'cultura-viva-1' => 'minc:cultura-viva-1',
+    'cultura-viva-3' => 'minc:cultura-viva-3',
+
     // entidades
     'app' => 'heroicons-solid:puzzle',
     'user' => 'fa-solid:user-friends',
