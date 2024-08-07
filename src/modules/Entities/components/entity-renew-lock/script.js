@@ -36,11 +36,19 @@ app.component('entity-renew-lock', {
 
         exit() {
             document.location = this.entity.getUrl('single');
+        },
+
+        setCookie() {
+            if(this.token) {
+                Utils.cookies.set('lockToken', this.token);
+            }
         }
     },
 
     mounted() {
         if(this.usesLock) {
+            this.setCookie();
+
             setInterval(() => {
                 this.renewLock();
             }, 
