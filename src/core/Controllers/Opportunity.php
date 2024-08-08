@@ -632,7 +632,9 @@ class Opportunity extends EntityController {
 
         $edata = [
             '@select' => 'id,result,evaluationData,registration,user,status',
-            'id' => API::IN($evaluation_ids)
+            'id' => API::IN($evaluation_ids),
+            "status" => API::GTE(0),
+            '@permissions' => 'view'
         ];
 
         foreach($this->data as $k => $v){
