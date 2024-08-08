@@ -2028,17 +2028,17 @@ Corrige erro de tabela apontando para sequencia errada
 - Correção ao utilizar geocoder do google na busca por endereço no Mapa;
 - Correção de envio de mensages de contato para o email privado do agente responsável;
 
-* No perfil do agente, exibe os grupos que ele faz parte em relacionamentos com outras entidades ([#157](https://github.com/culturagovbr/mapasculturais/issues/157))
-* Faz com que os temas presente no diretório `themes` sejam ativados automaticamente. ([#170](https://github.com/culturagovbr/mapasculturais/issues/170))
+* No perfil do agente, exibe os grupos que ele faz parte em relacionamentos com outras entidades ([#157](https://github.com/mapasculturais/mapasculturais/issues/157))
+* Faz com que os temas presente no diretório `themes` sejam ativados automaticamente. ([#170](https://github.com/mapasculturais/mapasculturais/issues/170))
 * Adiciona o campo referente ao shortcuts (singleUrl por exemplo) ao chamar a API describe.
-* Adiciona a opção `Meu Perfil` aos menus, direcionando para o agente padrão. ([#151](https://github.com/culturagovbr/mapasculturais/issues/151))
-* Separa informações geográficas, geradas automaticamente, do endereço informado pelo agente ([#189](https://github.com/culturagovbr/mapasculturais/issues/189))
-* Corrige bug ao utilizar Geocoder do Google e a busca por endereço no mapa ([#202](https://github.com/culturagovbr/mapasculturais/issues/202))
-* Remove botão excluir definitivamente, problemas de permissão ([#160](https://github.com/culturagovbr/mapasculturais/issues/160))
-* Fix envio de e-mails para email privado do agente responsável ([#174](https://github.com/culturagovbr/mapasculturais/issues/174))
-* Cria hook para permitir mudar os destinatários dos forms de contato e denúncia ([#200](https://github.com/culturagovbr/mapasculturais/issues/200))
-* Corrige retorno de URLs de arquivos privados via API ([#192](https://github.com/culturagovbr/mapasculturais/issues/192))
-* Corrige update de dados geográfico ao posicionar o PIN no mapa ([#188](https://github.com/culturagovbr/mapasculturais/issues/188))
+* Adiciona a opção `Meu Perfil` aos menus, direcionando para o agente padrão. ([#151](https://github.com/mapasculturais/mapasculturais/issues/151))
+* Separa informações geográficas, geradas automaticamente, do endereço informado pelo agente ([#189](https://github.com/mapasculturais/mapasculturais/issues/189))
+* Corrige bug ao utilizar Geocoder do Google e a busca por endereço no mapa ([#202](https://github.com/mapasculturais/mapasculturais/issues/202))
+* Remove botão excluir definitivamente, problemas de permissão ([#160](https://github.com/mapasculturais/mapasculturais/issues/160))
+* Fix envio de e-mails para email privado do agente responsável ([#174](https://github.com/mapasculturais/mapasculturais/issues/174))
+* Cria hook para permitir mudar os destinatários dos forms de contato e denúncia ([#200](https://github.com/mapasculturais/mapasculturais/issues/200))
+* Corrige retorno de URLs de arquivos privados via API ([#192](https://github.com/mapasculturais/mapasculturais/issues/192))
+* Corrige update de dados geográfico ao posicionar o PIN no mapa ([#188](https://github.com/mapasculturais/mapasculturais/issues/188))
 
 ## [4.0.0] - 2018-07-30
 - Corrige campo de bairro quando se utiliza um CEP geral de uma cidade e a informação de bairro vem vazia
@@ -2119,7 +2119,7 @@ Agora é possível adicionar uma descrição para as fotos da galeria, que são 
 - A aba Permissões, que mostra os agentes que tem controle sobre a entidade, passa a se chamar Reponsáveis
 
 ### Correções
-- Cor dos pins dos espaços nos subsites (https://github.com/culturagovbr/mapasculturais/issues/69)
+- Cor dos pins dos espaços nos subsites (https://github.com/mapasculturais/mapasculturais/issues/69)
 
 ### Exportação de planilha
 - Adicionado a possibilidade de gerar uma planilha a partir dos perfis de espaço, agente e projeto

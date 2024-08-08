@@ -126,7 +126,7 @@ $config = $app->config['social-media'];
                 e adaptada pelo <strong>minc</strong>
             </p>
 
-            <a class="link" href="https://github.com/culturagovbr/mapasculturais">
+            <a class="link" href="https://github.com/culturagovbr/mapadacultura">
                 <?php i::_e("Conheça o repositório") ?>
                 <mc-icon name="github"></mc-icon>
             </a>

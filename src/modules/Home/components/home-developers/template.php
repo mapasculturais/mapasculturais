@@ -13,7 +13,7 @@ use MapasCulturais\i;
             <?= $this->text('description',i::__('O Mapa da Cultura é um software livre de gestão do fomento à cultura e mapeamento colaborativo. Ele foi criado de forma colaborativa pela hacklab/, órgãos públicos de cultura, organizações não governamentais, empresas e coletivos que acreditam na plataforma. Você pode contribuir para o seu desenvolvimento através do GitHub.')) ?>
         </div>
         <div class="home-developers__content--link">
-            <a class="link" href="https://github.com/culturagovbr/mapasculturais"> 
+            <a class="link" href="https://github.com/culturagovbr/mapadacultura"> 
                 <?php i::_e("Conheça o repositório") ?>
                 <mc-icon name="github"></mc-icon>
             </a>
