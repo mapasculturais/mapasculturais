@@ -12,4 +12,5 @@ return [
     'removeRange' => i::__('Faixa/Linha removida com sucesso.'),
     'addProponentType' => i::__('Tipo de proponente adicionado com sucesso.'),
     'removeProponentType' => i::__('Tipo de proponente removido com sucesso.'),
+    'sem avaliações' => i::__('sem avaliações'),
 ];
