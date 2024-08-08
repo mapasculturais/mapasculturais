@@ -2,6 +2,8 @@
 
 use MapasCulturais\i;
 
+$this->layout = "default";
+
 $this->import('
     mc-link
 ');
@@ -18,8 +20,7 @@ $this->import('
                     <div class="message-error">
                         <label class="text"><br><?= i::__('Identificamos um problema no servidor aqui do nosso lado, mas não se preocupe. ') ?></br></label>
                         <label class="text">
-                            <?= i::__('Já estamos investigando o que aconteceu.
-Tente novamente após alguns minutos..') ?></label>
+                            <?= i::__('Já estamos investigando o que aconteceu. Tente novamente após alguns minutos..') ?></label>
                         </label>
                     </div>
                     <div class="btn">
