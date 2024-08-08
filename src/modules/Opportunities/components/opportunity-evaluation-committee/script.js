@@ -55,6 +55,7 @@ app.component('opportunity-evaluation-committee', {
             registrationProponentTypes: [
                 ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
+            sendTimeOut: null
         }
     },
     
@@ -149,40 +150,47 @@ app.component('opportunity-evaluation-committee', {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
             const fetchFieldMap = {
+                fetch: "fetch",
                 categories: 'fetchCategories',
                 ranges: 'fetchRanges',
                 proponentTypes: 'fetchProponentTypes'
             };
               
             let fetchField = fetchFieldMap[type];
-            
-            if (event && event === 'sem avaliações' && this.entity[fetchField][userId].length > 1) {
-                this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item === 'sem avaliações');
-            } else if (event && event !== 'sem avaliações' && this.entity[fetchField][userId].includes('sem avaliações')) {
-                this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item !== 'sem avaliações');
+
+            if (type != "distribution") {
+                if (event && event === this.text('sem avaliações') && this.entity[fetchField][userId].length > 1) {
+                    this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item === this.text('sem avaliações'));
+                } else if (event && event !== this.text('sem avaliações') && this.entity[fetchField][userId].includes(this.text('sem avaliações'))) {
+                    this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item !== this.text('sem avaliações'));
+                }
             }
-    
+
             let testData = {
                 fetch: this.entity.fetch,
                 [fetchField]: this.entity[fetchField]
             };
-    
-            api.POST(url, testData).then(res => res.json()).then(data => {
-                const successMessages = {
-                    addDistribution: 'addDistribution',
-                    addCategory: 'addCategory',
-                    addRange: 'addRange',
-                    addProponentType: 'addProponentType',
-                    removeCategory: 'removeCategory',
-                    removeRange: 'removeRange',
-                    removeProponentType: 'removeProponentType'
-                };
-        
-                if (successMessages[field]) {
-                    this.messages.success(this.text(successMessages[field]));
-                }
-                this.loadReviewers();
-            });
+
+            clearTimeout(this.sendTimeOut);
+            this.sendTimeOut = setTimeout(() => {
+                api.POST(url, testData).then(res => res.json()).then(data => {
+                    const successMessages = {
+                        addDistribution: 'addDistribution',
+                        addCategory: 'addCategory',
+                        addRange: 'addRange',
+                        addProponentType: 'addProponentType',
+                        removeCategory: 'removeCategory',
+                        removeRange: 'removeRange',
+                        removeProponentType: 'removeProponentType'
+                    };
+
+                    if (successMessages[field]) {
+                        this.messages.success(this.text(successMessages[field]));
+                    }
+                    this.loadReviewers();
+                });
+            }, 800);
+
         },
 
         loadFetchs() {
