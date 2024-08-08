@@ -15,12 +15,9 @@ $this->import('
 ?>
 <div class="registration-evaluation-actions__buttons" v-if="evaluationRegistrationList">
     <div class="grid-12">
-        <div class="col-12" v-if="showActions(registration, 'save')">
-            <button class="button button--primary button--large registration-evaluation-actions__buttons__saveafter" @click="saveReload()"> <?= i::__('Salvar e continuar depois') ?> </button>
-        </div>
         <div class="col-12" v-if="showActions(registration, 'finishEvaluation')">
             <button class="button button--primary button--large registration-evaluation-actions__buttons__final" @click="finishEvaluation(registration)">
-                <?= i::__('Finalizar avaliação') ?>
+                <?= i::__('Concluir avaliação') ?>
             </button>
         </div>
         <div class="col-12" v-if="showActions(registration, 'finishEvaluation')">
@@ -38,12 +35,15 @@ $this->import('
                 </template>
                 <template #button="modal">
                     <button class="button button--primary button--icon button--large registration-evaluation-actions__buttons__finalcontinue" @click="modal.open()">
-                        <span v-if="lastRegistration?.registrationid != registration.id"><?= i::__('Finalizar e avançar') ?></span>
+                        <span v-if="lastRegistration?.registrationid != registration.id"><?= i::__('Enviar avaliação') ?></span>
                         <span v-if="lastRegistration?.registrationid == registration.id"><?= i::__('Finalizar e enviar') ?></span>
                         <mc-icon name="arrow-right-ios"></mc-icon>
                     </button>
                 </template>
             </mc-modal>
+        </div>
+        <div class="col-12" v-if="showActions(registration, 'save')">
+            <button class="button button--primary button--large registration-evaluation-actions__buttons__saveafter" @click="saveReload()"> <?= i::__('Salvar e continuar depois') ?> </button>
         </div>
 
         <div class="col-12" v-if="showActions(registration, 'reopen')">
