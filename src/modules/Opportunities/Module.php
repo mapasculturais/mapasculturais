@@ -526,6 +526,16 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook("entity(Registration).recreatePermissionCache:after", function(&$users) use ($app) {
+            /** @var \MapasCulturais\Entities\Registration $this */
+            if($em = $this->getEvaluationMethodConfiguration()) {
+                $relations = $em->getAgentRelations();
+                foreach($relations as $relation) {
+                    $relation->updateSummary(flush: true, started: false, completed: false, sent: false);
+                }
+            }
+        });
+
         // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento que se atribui uma avaliação.
         $app->hook("entity(EvaluationMethodConfiguration).recreatePermissionCache:after", function(&$users) use ($app) {
             /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
