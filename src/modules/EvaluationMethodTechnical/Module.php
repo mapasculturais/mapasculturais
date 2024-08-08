@@ -196,11 +196,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
         ]);
 
         $this->registerOpportunityMetadata('enableQuotasQuestion', [
-            'label' => i::__('Habilitar opção para o candidato declarar interesse nas cotas ou políticas afirmativas'),
-            'description' => i::__('Ao habilitar esta configuração, será liberada a opção para o candidato se autoidentificar para cotas ou políticas afirmativas.'),
+            'label' => "",
             'type' => 'boolean',
             'private' => false,
-            'field_type' => 'checkbox'
+            'field_type' => 'radio',
+            'default' => '0',
+            'options' => (object) array(
+                '0' => \MapasCulturais\i::__('Desabilitado'),
+                '1' => \MapasCulturais\i::__('Habilitado'),
+            ),
         ]);
 
         $this->registerOpportunityMetadata('considerQuotasInGeneralList', [
