@@ -131,7 +131,8 @@ app.component('opportunity-evaluations-list', {
                         agentname: item.registration.owner?.name,
                         status: item?.evaluation?.status,
                         resultString: item?.evaluation?.resultString || null,
-                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id])
+                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id]),
+                        valuer: item?.valuer
                     }
                 });
                 this.filterKeyword = false;
