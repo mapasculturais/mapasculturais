@@ -221,6 +221,9 @@ trait EntityPermissionCache {
             return false;
         }
 
+        $hook_prefix = $this->hookPrefix;
+        $app->applyHookBoundTo($this, "{$hook_prefix}.recreatePermissionCache:before", [&$users]);
+
         $self = $this;
 
         $app->setEntityPermissionCacheAsRecreated($self);
@@ -262,5 +265,7 @@ trait EntityPermissionCache {
                 $entity->recreatePermissionCache($users, "{$path}->extra({$i}/$total):");
             }
         }
+
+        $app->applyHookBoundTo($this, "{$hook_prefix}.recreatePermissionCache:after", [&$users]);
     }
 }

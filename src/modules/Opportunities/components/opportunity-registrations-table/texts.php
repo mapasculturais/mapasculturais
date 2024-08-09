@@ -26,4 +26,5 @@ return [
     'data de envio' => i::__('Data de envio'),
     'data de criação' => i::__('Data de criação'),
     'Editavel para o proponente' => i::__('Editável para o proponente'),
+    'resultado final' => i::__('Resultado final'),
 ];

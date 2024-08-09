@@ -208,6 +208,7 @@ app.component('entity-table', {
             delete query['@select'];
             delete query['@page'];
             delete query['@permission'];
+            delete query['@permissions'];
            
             if (this.type == 'agent') {
                 delete query['type']
@@ -290,9 +291,9 @@ app.component('entity-table', {
                         _filtersDict = {
                             '0': __('pendente', 'entity-table'),
                             '1': __('em processo', 'entity-table'),
-                            '2': __('disponivel', 'entity-table'),
-                            '3': __('falha', 'entity-table'),
-                            '8': __('exportado', 'entity-table'),
+                            '2': __('falha', 'entity-table'),
+                            '3': __('exportado', 'entity-table'),
+                            '8': __('disponivel', 'entity-table'),
                             '10': __('pago', 'entity-table'),
                         }
                     }
@@ -308,10 +309,10 @@ app.component('entity-table', {
                     }
 
                     filtersDict = _filtersDict;
-                    if(this.filtersDictComplement) {
+                    if(this.filtersDictComplement && this.filtersDictComplement.type == this.type || this.filtersDictComplement.type == this.endpoint) {
                         filtersDict = {
                             ..._filtersDict,
-                            ...this.filtersDictComplement
+                            ...this.filtersDictComplement.dict
                         }
                     }
 

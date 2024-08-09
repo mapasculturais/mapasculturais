@@ -222,6 +222,7 @@ return array(
         'projectName' => array(
             'label' => \MapasCulturais\i::__('Nome do Projeto'),
             'type' => 'select',
+            'default' => '0',
             'options' => (object) array(
                 '0' => \MapasCulturais\i::__('Não Utilizar'),
                 '1' => \MapasCulturais\i::__('Opcional'),
@@ -249,12 +250,13 @@ return array(
         'requestAgentAvatar' => array(
             'label' => \MapasCulturais\i::__('Solicitar avatar'),
             'type' => 'radio',
+            'default' => '0',
             'options' => (object) array(
-                '0' => \MapasCulturais\i::__('Não Utilizar'),
-                '1' => \MapasCulturais\i::__('Obrigatório'),
+                '0' => \MapasCulturais\i::__('Desabilitado'),
+                '1' => \MapasCulturais\i::__('Habilitado'),
             ),
             'unserialize' => function($value) {
-               return ($value == 0 || $value == "") ? false : true;
+               return ($value == 0 || $value == "" || $value == "0") ? false : true;
             }
         ),
     ),

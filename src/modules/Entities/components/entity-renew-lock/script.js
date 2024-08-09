@@ -12,6 +12,7 @@ app.component('entity-renew-lock', {
         return {
             token: $MAPAS.lockToken ?? null,
             message: '',
+            usesLock: $MAPAS.config['entity-renew-lock']['usesLock']
         }
     },
 
@@ -35,14 +36,24 @@ app.component('entity-renew-lock', {
 
         exit() {
             document.location = this.entity.getUrl('single');
+        },
+
+        setCookie() {
+            if(this.token) {
+                Utils.cookies.set('lockToken', this.token);
+            }
         }
     },
 
     mounted() {
-        setInterval(() => {
-            this.renewLock();
-        }, 
-        $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
+        if(this.usesLock) {
+            this.setCookie();
+
+            setInterval(() => {
+                this.renewLock();
+            }, 
+            $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
+        }
     }
     
 });

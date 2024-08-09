@@ -19,7 +19,7 @@ $this->import('
 
     <template v-if="!isFuture()">
         <div class="col-12">
-            <entity-table controller="opportunity" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)"> 
+            <entity-table controller="opportunity" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
                 <template #title>
                     <h2 v-if="isPast()"><?= i::__("As avaliações já estão encerradas") ?></h2>
                     <h2 v-if="isHappening()"><?= i::__("As avaliações estão em andamento") ?></h2>
@@ -51,11 +51,16 @@ $this->import('
 
                 <template #filters="{entities,filters}">
                     <div class="opportunity-evaluations-table__filters grid-12">
-                        <div class="col-4">
+
+                        <div v-if="hasControl" :class="hasControl ? 'col-3' : 'col-4'">
+                            <mc-select :options="evaluationsFiltersOptions" v-model:default-value="evaluatiorFilter" @change-option="filterByEvaluator($event, entities)" placeholder="<?= i::__("Avaliador") ?>" hide-filters></mc-select>
+                        </div>
+
+                        <div :class="hasControl ? 'col-3' : 'col-4'">
                             <mc-select :options="status" v-model:default-value="selectedStatus" @change-option="filterByStatus($event, entities)" placeholder="<?= i::__("Estado da avaliação") ?>" hide-filters></mc-select>
                         </div>
 
-                        <div class="field col-4">
+                        <div class="field" :class="hasControl ? 'col-3' : 'col-4'">
                             <datepicker 
                                 teleport
                                 v-model="firstDate" 
@@ -71,7 +76,7 @@ $this->import('
                             </datepicker>
                         </div>
 
-                        <div class="field col-4">
+                        <div class="field" :class="hasControl ? 'col-3' : 'col-4'">
                             <datepicker 
                                 teleport
                                 v-model="lastDate" 
