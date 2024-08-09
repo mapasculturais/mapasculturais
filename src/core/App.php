@@ -1764,7 +1764,7 @@ class App {
         if($user && is_numeric($user)) {
             $user = $this->repo('User')->find($user);
         } else if (is_null($user) && !$this->user->is('guest')) {
-            $user = $this->user;
+            $user = $this->repo('User')->find($this->user->id);
         }
 
         if($subsite && is_numeric($subsite)) {

@@ -344,7 +344,7 @@ class Opportunity extends EntityController {
 
         if(is_array($relations)){
             $result = array_map(function($e){
-                $r = $e->simplify('id,hasControl,status,createdAt');
+                $r = $e->simplify('id,hasControl,status,createdAt,metadata');
                 $r->owner = $e->owner->id;
                 $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar');
                 $r->agentUserId = $e->agent->userId;
@@ -632,7 +632,9 @@ class Opportunity extends EntityController {
 
         $edata = [
             '@select' => 'id,result,evaluationData,registration,user,status',
-            'id' => API::IN($evaluation_ids)
+            'id' => API::IN($evaluation_ids),
+            "status" => API::GTE(0),
+            '@permissions' => 'view'
         ];
 
         foreach($this->data as $k => $v){
@@ -1339,11 +1341,15 @@ class Opportunity extends EntityController {
         $user = $app->repo("User")->find($this->data['uid']);
 
         $query = $app->em->createQuery(
-            '
-            SELECT e.id 
-            FROM MapasCulturais\\Entities\\RegistrationEvaluation e 
-            JOIN e.registration r
-            WHERE e.user =:user AND r.opportunity =:opportunity AND e.status = 2'
+            "SELECT e.id 
+                FROM 
+                    MapasCulturais\\Entities\\RegistrationEvaluation e 
+                JOIN 
+                    e.registration r
+                WHERE 
+                    e.user =:user AND 
+                    r.opportunity =:opportunity AND 
+                    e.status = 2"
         );
 
         $query->setParameters([
@@ -1356,9 +1362,8 @@ class Opportunity extends EntityController {
                 $id = $id['id'];
                 $evaluation = $app->repo('RegistrationEvaluation')->find($id);
                 $evaluation->status = RegistrationEvaluation::STATUS_EVALUATED;
-                $evaluation->save(true, true);
-                $app->em->clear();
-                $app->log->info("Rebrindo avaliação - " . $evaluation);
+                $evaluation->save(true);
+                $app->log->info("Reabrindo avaliação - " . $evaluation);
             }
         }
         $this->json($opportunity);

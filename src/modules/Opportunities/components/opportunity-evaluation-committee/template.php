@@ -45,14 +45,14 @@ $this->import('
             <div v-else class="opportunity-evaluation-committee__card-header">
                 <div class="opportunity-evaluation-committee__card-header-info">
                     <mc-avatar :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
-
-                    <span class="bold">{{infoReviewer.agent.name}}</span>
+                    
+                    <span class="bold">#{{infoReviewer.agent.id}} - {{infoReviewer.agent.name}}</span>
                 </div>
 
                 <div class="opportunity-evaluation-committee__card-header-actions">
-                    <mc-confirm-button @confirm="reopenEvaluations(infoReviewer.agentUserId)">
+                    <mc-confirm-button v-if="infoReviewer.metadata.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
                         <template #button="{open}">
-                            <button class="button button--primary" @click="open()">
+                            <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
                                 <?php i::_e('Reabrir avaliações') ?>
                             </button>
                         </template>         
@@ -84,6 +84,21 @@ $this->import('
                     </mc-confirm-button>
                 </div>
             </div>
+           
+            <div v-if="showSummary(infoReviewer.metadata.summary)" class="opportunity-evaluation-committee__summary">
+                <span class="opportunity-evaluation-committee__summary__pending">
+                    <mc-icon name="clock"></mc-icon> <?= i::_e('Avaliações pendentes') ?>: {{infoReviewer.metadata.summary.pending}}
+                </span>
+                <span class="opportunity-evaluation-committee__summary__started">
+                    <mc-icon name="clock"></mc-icon> <?= i::_e('Avaliações iniciadas') ?>: {{infoReviewer.metadata.summary.started}}
+                </span>
+                <span class="opportunity-evaluation-committee__summary__completed">
+                    <mc-icon name="check"></mc-icon> <?= i::_e('Avaliações concluídas') ?>: {{infoReviewer.metadata.summary.completed}}
+                </span>
+                <span class="opportunity-evaluation-committee__summary__sent">
+                    <mc-icon name="send"></mc-icon> <?= i::_e('Avaliações enviadas') ?>: {{infoReviewer.metadata.summary.sent}}
+                </span>
+            </div>
 
             <div class="opportunity-evaluation-committee__card-content">
                 <div v-if="infoReviewer.default" class="opportunity-evaluation-committee__change-distributions">
@@ -96,7 +111,7 @@ $this->import('
                 <div v-if="!infoReviewer.default" class="opportunity-evaluation-committee__distributions">
                     <div class="field opportunity-evaluation-committee__distribution">
                         <label><?php i::_e('Distribuição') ?></label>
-                        <input type="text" placeholder="00-99" maxlength="5" @change="sendDefinition('addDistribution', infoReviewer.agentUserId, 'categories')" v-model="entity.fetch[infoReviewer.agentUserId]"/>
+                        <input type="text" placeholder="00-99" maxlength="5" @input="sendDefinition('addDistribution', infoReviewer.agentUserId, $event, 'distribution')" v-model="entity.fetch[infoReviewer.agentUserId]"/>
                     </div>
                     <div class="opportunity-evaluation-committee__all-settings" v-if="registrationCategories.length > 0 || registrationRanges.length > 0 || registrationProponentTypes.length > 0">
                         <div v-if="registrationCategories.length > 0" class="field">
