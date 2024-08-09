@@ -8,32 +8,42 @@
     }
 
     &__buttons {
-        &__saveAfter {
-            background-color:var(--mc-high-500);
-            color: var(--mc-primary-500);
-            border-color: var(--mc-primary-500);
+        &__saveafter, &__reopen {
+            background-color: #FFCF8F;
+            color: var(--mc-black);
+            border-color:  #FFCF8F;
             &:hover {
-                background-color:var(--mc-primary-500);
-                color: var(--mc-high-500);
-                border-color: var(--mc-primary-500);
+                background-color:var(--mc-white);
+                color: var(--mc-black);
+                border-color:  #FFCF8F;
             }
         }
-
-        &__send {
+        
+        &__send, &__finalcontinue {
             display: block;
             text-align: center;
-            background-color:var(--mc-gray-300);
-            color: var(--mc-high-500);
-            border-color:  var(--mc-gray-300);
+            background-color: #BFE88B;
+            color: var(--mc-black);
+            border-color: #BFE88B;
             &:hover {
-                background-color:var(--mc-primary-500);
-                color:var(--mc-high-500);
-                border-color:  var(--mc-primary-500);
-
+                background-color: var(--mc-white);
+                color: var(--mc-black);
+                border-color: #BFE88B;
             }
             svg {
                 float: right;
                 font-size: size(21);
+            }
+        }
+
+        &__final {
+            background-color: #99D6FF;
+            color: var(--mc-black);
+            border-color: #99D6FF;
+            &:hover {
+                background-color: var(--mc-white);
+                color: var(--mc-black);
+                border-color: #99D6FF;
             }
         }
     }
