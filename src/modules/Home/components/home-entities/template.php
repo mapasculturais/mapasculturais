@@ -18,7 +18,7 @@ $this->import('
                 <?= $this->text('title', i::__('Aqui você encontra informações de editais e oportunidades do Ministério da Cultura.')) ?>
             </label>
             <label class="description">
-                <?= $this->text('description', i::__('Você também pode cadastrar seus projetos, espaços e eventos. E contribuir para o mapeamento cultural brasileiro.')) ?>
+                <?= $this->text('description', i::__('Você também pode cadastrar seus projetos, espaços e eventos, e contribuir para o mapeamento cultural brasileiro.')) ?>
             </label>
         </div>
         
