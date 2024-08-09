@@ -16,13 +16,12 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
     function _getHeader(Job $job): array
     {
         // Parte comum a todos os métodos de avaliação
-        $entity_class_name = $job->entityClassName;
+        $entity_class_name = $job->entityClassName;     
         $registration_class_name = Registration::class;
 
         $query = $job->query;
         $properties = explode(',', $query['@select']);
-
-        //@TO DO: AJUSTAR owner.{name}
+        
         $header = [
             'A1:H1' => i::__('Informações sobre as inscrições e proponentes'), 
             'I1' => i::__('Informações sobre o avaliador'),
@@ -34,6 +33,22 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         foreach($properties as $property) {
             if (!in_array($property, ['result', 'status', 'evaluationData'])) {
                 $total_properties++;
+
+                if($property === 'projectName') {
+                    $sub_header[$property] = i::__('Nome do projeto');
+                    continue;
+                }
+
+                if(str_starts_with($property, 'owner.{')) {
+                    $values = $this->extractValues($property);
+
+                    foreach($values as $val) {
+                        if($val === 'name') {
+                            $sub_header[$val] = i::__('Agente responsável');
+                        }
+                    }
+                    continue;
+                }
                 
                 if($property === 'user') {
                     $sub_header[$property] = i::__('Nome');
