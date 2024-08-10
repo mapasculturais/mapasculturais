@@ -51,7 +51,7 @@ $this->import('
                     </div>
             </div>
             <div class="opportunity-phase-publish-config-registration__unpublishedlast" :class="[{'col-6':!phase.isLastPhase}, {'col-12 grid-12' : phase.isLastPhase}]">
-                <div v-if="tab=='registrations' && !phase.isFirstPhase" class="opportunity-phase-publish-config-registration__registrationList col-12">
+                <div v-if="tab=='registrations' && phase.isLastPhase" class="opportunity-phase-publish-config-registration__registrationList col-12">
                     <div class="opportunity-phase-list-registrations__status col-6">
                         <h4 class="bold"><?php i::_e("Status das inscrições") ?></h4>
                         <p v-if="phase.summary.registrations"><?= i::__("Quantidade de inscrições:") ?> <strong>{{phase.summary.registrations}}</strong><strong> <?= i::__('inscrições') ?></strong></p>
