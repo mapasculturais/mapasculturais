@@ -97,6 +97,17 @@ $this->import('
                 </li>
                 <?php $this->applyTemplateHook('mc-header-menu-projects', 'after') ?>
                 
+                <?php $this->applyTemplateHook('mc-header-menu-cultura-viva', 'before') ?>
+                <li>
+                    <?php $this->applyTemplateHook('mc-header-menu-cultura-viva', 'begin') ?>
+                    <a href="https://www.gov.br/culturaviva/pt-br" class="mc-header-menu--item cultura-viva">
+                        <span class="icon"> <mc-icon name="cultura-viva-1"> </span>
+                        <p class="label"> <?php i::_e('Cultura Viva') ?> </p>
+                    </a>
+                    <?php $this->applyTemplateHook('mc-header-menu-cultura-viva', 'end') ?>
+                </li>
+                <?php $this->applyTemplateHook('mc-header-menu-cultura-viva', 'after') ?>
+
                 <?php $this->applyTemplateHook('mc-header-menu', 'end') ?>
             </template>
 
