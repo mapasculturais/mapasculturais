@@ -13,7 +13,7 @@ $this->import('
 ?>
 <mc-card>
     <div :class="[{'grid-12': tab!='registrations'}, {'grid-12':entity.isLastPhase}, 'opportunity-phase-status']">
-        <div v-if="entity.summary?.registrations && !entity.isLastPhase" class="col-12 grid-12">
+        <div v-if="!entity.isLastPhase" class="col-12 grid-12">
             <opportunity-phase-list-registrations :entity="entity" :phases="phases" :tab="tab"></opportunity-phase-list-registrations>
         </div>
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
