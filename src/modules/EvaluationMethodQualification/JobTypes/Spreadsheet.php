@@ -60,6 +60,11 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                     $sub_header['reasonDisqualification'] = i::__('Motivo(s) da inabilitação');
                     $sub_header['obs'] = i::__('Observações');
                 } else {
+                    if($property === 'result') {
+                        $sub_header[$property] = i::__('Resultado');
+                        continue;
+                    }
+
                     $sub_header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
                 }
             }
@@ -83,7 +88,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
             $result[] = [
                 'projectName' => $registration_data['projectName'],
                 'category' => $registration_data['category'],
-                'owner.{name}' => $registration_data['owner']['name'],
+                'name' => $registration_data['owner']['name'],
                 'number' => $registration_data['number'],
                 'range' => $registration_data['range'],
                 'score' => $registration_data['score'],
