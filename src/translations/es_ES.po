@@ -595,11 +595,11 @@ msgstr "Colectivo"
 
 #: application/conf/conf-base.d/0.main.php:21
 #: application/themes/BaseV1/layouts/parts/editable-entity-logo.php:1
-msgid "Mapas Culturais"
+msgid "Mapa da Cultura"
 msgstr "Cultura en Línea"
 
 #: application/conf/conf-base.d/0.main.php:24
-msgid "O Mapas Culturais é uma plataforma livre para mapeamento cultural."
+msgid "O Mapa da Cultura é uma plataforma livre para mapeamento cultural."
 msgstr ""
 "Cultura en Línea es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
@@ -773,12 +773,12 @@ msgid "Setor Censitario"
 msgstr "Sección censal"
 
 #: application/conf/conf-base.d/mailer.php:17
-msgid "Bem-vindo(a) ao Mapas Culturais"
+msgid "Boas vindas ao Mapa da Cultura"
 msgstr "Bienvenido a Cultura en Línea"
 
 #: application/conf/conf-base.d/mailer.php:21
 #: application/conf/conf-base.d/mailer.php:29
-msgid "Acesse a Mapas Culturais"
+msgid "Acesse o Mapa da Cultura"
 msgstr "Acceda a Cultura en Línea"
 
 #: application/conf/conf-base.d/mailer.php:25
@@ -786,11 +786,11 @@ msgid "Novo registro"
 msgstr "Nuevo registro"
 
 #: application/conf/conf-base.d/mailer.php:33
-msgid "Denúncia - Mapas Culturais"
+msgid "Denúncia - Mapa da Cultura"
 msgstr "Denuncia - Cultura en Línea"
 
 #: application/conf/conf-base.d/mailer.php:37
-msgid "Mensagem - Mapas Culturais"
+msgid "Mensagem - Mapa da Cultura"
 msgstr "Mensaje - Cultura en Línea"
 
 #: application/conf/conf-base.d/mailer.php:41
@@ -8208,7 +8208,7 @@ msgid "como usar do site"
 msgstr "cómo usar el sitio"
 
 #: application/themes/BaseV1/Theme.php:120
-msgid "usado para orientar o usuário a utilizar a plataforma Mapas Culturais"
+msgid "usado para orientar o usuário a utilizar a plataforma Mapa da Cultura"
 msgstr "se utiliza para guiar al usuario a usar la plataforma Cultura en Línea"
 
 #: application/themes/BaseV1/Theme.php:121
@@ -8257,7 +8257,7 @@ msgstr ""
 
 #: application/themes/BaseV1/Theme.php:135
 msgid ""
-"O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de "
+"O Mapa da Cultura é uma plataforma livre, gratuita e colaborativa de "
 "mapeamento cultural."
 msgstr ""
 "Cultura en Línea es una plataforma de software libre, de cartografía "
@@ -8329,7 +8329,7 @@ msgid "Colabore com o SpCultura"
 msgstr "Colabore con SpCultura"
 
 #: application/themes/BaseV1/Theme.php:155
-msgid "Colabore com o Mapas Culturais"
+msgid "Colabore com o Mapa da Cultura"
 msgstr "Colabore con Cultura en Línea"
 
 #: application/themes/BaseV1/Theme.php:158
@@ -8422,9 +8422,9 @@ msgid ""
 "hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_api.md\" "
 "target=\"_blank\" rel=\"noopener noreferrer\">API</a>. Com ela você pode "
 "acessar os dados públicos no nosso banco de dados e utilizá-los para "
-"desenvolver aplicações externas. Além disso, o Mapas Culturais é construído "
+"desenvolver aplicações externas. Além disso, o Mapa da Cultura é construído "
 "a partir do sofware livre <a href=\"http://institutotim.org.br/project/mapas-"
-"culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapas Culturais</"
+"culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapa da Cultura</"
 "a>, criado em parceria com o <a href=\"http://institutotim.org.br\" target="
 "\"_blank\" rel=\"noopener noreferrer\">Instituto TIM</a>, e você pode "
 "contribuir para o seu desenvolvimento através do <a href=\"https://github."
@@ -9849,7 +9849,7 @@ msgstr "Fecha de creación"
 
 #: application/themes/BaseV1/Theme.php:1756
 msgid ""
-"Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com "
+"Sua requisição para enviar um contato pelo Mapa da Cultura foi enviada com "
 "sucesso."
 msgstr ""
 "Su solicitud para enviar un contacto por Cultura en Línea fue enviada con "
@@ -10273,7 +10273,7 @@ msgid "Adicionar Imagem na Galeria"
 msgstr "Agregar una imagen a la Galería"
 
 #: application/themes/BaseV1/layouts/parts/header-about-nav.php:4
-msgid "Sobre os Mapas Culturais"
+msgid "Sobre o Mapa da Cultura"
 msgstr "Acerca de Cultura en Línea"
 
 #: application/themes/BaseV1/layouts/parts/header-about-nav.php:5

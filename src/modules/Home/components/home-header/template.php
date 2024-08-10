@@ -16,10 +16,10 @@ $this->import('
 
         <!-- <div class="home-header__main">
             <label class="home-header__title">
-                <? // echo $this->text('title', i::__('Boas vindas ao Mapa Cultural')) ?>
+                <? // echo $this->text('title', i::__('Boas vindas ao Mapa da Cultura')) ?>
             </label>
             <p class="home-header__description">
-                <? // echo $this->text('description', i::__('O Mapas Culturais é uma ferramenta de gestão cultural, que garante a estruturação de Sistemas de Informações e Indicadores. A plataforma oferece soluções para o mapeamento colaborativo de agentes culturais, realização de todas as etapas de editais e fomentos, organização de uma agenda cultural e divulgação espaços culturais dos territórios.')) ?>
+                <? // echo $this->text('description', i::__('O Mapa da Cultura é uma ferramenta de gestão cultural, que garante a estruturação de Sistemas de Informações e Indicadores. A plataforma oferece soluções para o mapeamento colaborativo de agentes culturais, realização de todas as etapas de editais e fomentos, organização de uma agenda cultural e divulgação espaços culturais dos territórios.')) ?>
             </p>
         </div> -->
 
