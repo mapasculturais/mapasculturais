@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     mc-modal
     mc-select
+    mc-icon
 ');
 ?>
 <div class="fields-visible-evaluators">
@@ -34,8 +35,10 @@ $this->import('
                 </div>
                 <div class="fields-visible-evaluators__fields">
                     <div v-for="field in fieldsResult()" :class="['fields-visible-evaluators__field' , {'disabled':field.disabled}]">
+                        <mc-icon :name="fieldType(field)"></mc-icon>
                         <label>
-                            <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName]" @change="toggleSelect(field.fieldName)" /> <span v-if="field.id">#{{field.id}}</span> {{field.title}}
+                            <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName]" @change="toggleSelect(field.fieldName)" /> 
+                            <span v-if="field.id">#{{field.id}}</span>  {{field.title}}
                             <small v-if="field.titleDisabled">{{field.titleDisabled}}</small>
                         </label>
                     </div>
