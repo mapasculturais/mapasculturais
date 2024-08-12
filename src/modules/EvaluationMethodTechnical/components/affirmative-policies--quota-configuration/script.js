@@ -109,18 +109,6 @@ app.component('affirmative-policies--quota-configuration', {
             });
             this.distributeQuotas(true);
         },
-
-        removeField(ruleIndex, fieldIndex) {
-            this.autoSaveTime = 200;
-            this.phase.quotaConfiguration.rules[ruleIndex].fields = this.phase.quotaConfiguration.rules[ruleIndex].fields.filter(function(value, key) {
-                return fieldIndex != key;
-            });
-            if(this.phase.quotaConfiguration.rules[ruleIndex].fields.length === 0) {
-                this.removeConfig(ruleIndex);
-            } else {
-                this.distributeQuotas(true);
-            }
-        },
         
         updateTotalQuotas() {
             this.totalQuota = ((this.totalVacancies * this.totalPercentage) / 100).toFixed(2);

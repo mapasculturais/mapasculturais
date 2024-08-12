@@ -97,8 +97,9 @@ app.component('affirmative-policies--geo-quota-configuration', {
         },
 
         getFields(proponentType = '') {
-            const affirmativePoliciesEligibleFields = this.phase.opportunity.parent.affirmativePoliciesEligibleFields ?? this.phase.opportunity.affirmativePoliciesEligibleFields;
-            return affirmativePoliciesEligibleFields.filter(field => {
+            const opportunity = this.phase.opportunity.parent || this.phase.opportunity;
+            
+            const result = opportunity.affirmativePoliciesEligibleFields.filter((field) => {
                 if (proponentType === '') {
                     return !field.proponentTypes || field.proponentTypes.length == 0;
                 } else {
@@ -106,6 +107,8 @@ app.component('affirmative-policies--geo-quota-configuration', {
                             || (field.proponentTypes && field.proponentTypes.includes(proponentType));
                 }
             });
+
+            return result;
         },
 
         async save(updated = false) {
