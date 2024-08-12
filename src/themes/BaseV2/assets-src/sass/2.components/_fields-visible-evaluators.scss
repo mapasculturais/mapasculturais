@@ -34,7 +34,7 @@
         display: flex;
         align-items: flex-start;
         gap: 10px;
-        flex-direction: column;
+        flex-direction: row;
     }
     &__fields {
       overflow: auto;
