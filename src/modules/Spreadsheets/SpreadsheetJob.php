@@ -275,6 +275,25 @@ abstract class SpreadsheetJob extends JobType
     }
 
     /**
+     * Extrai valores de uma string que está entre chaves `{}`.
+     *
+     * @param string $property A string que contém valores delimitados por chaves.
+     * @return array Um array contendo os valores extraídos entre as chaves, ou um array vazio se as chaves não forem encontradas.
+     */
+    function extractValues(string $property): array {
+        if(strpos($property, '{') !== false && strpos($property, '}') !== false) {
+            $parts = explode('{', $property);
+            $inside = $parts[1];
+            $inside = rtrim($inside, '}');
+            $values = array_map('trim', explode(',', $inside));
+
+            return $values;
+        } else {
+            return [];
+        }
+    }
+
+    /**
      * 
      * @return string 
      */
