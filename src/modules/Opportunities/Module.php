@@ -33,6 +33,15 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
 
+        // Quando a oportunidade é multifases e ocorre uma alteração na propriedade, essa mudança também se reflete nas fases subsequentes.
+        $app->hook("entity(Opportunity).saveOwnerAgent", function() {
+            /** @var \MapasCulturais\Entities\Opportunity $this */
+            $phases = $this->allPhases;
+            foreach($phases as $phase) {
+                $phase->owner = $this->owner;
+                $phase->save(true);
+            }
+        });
 
         $app->hook('GET(<<registration>>.<<*>>):before', function() use ($app) {
             $registration = $this->requestedEntity;
