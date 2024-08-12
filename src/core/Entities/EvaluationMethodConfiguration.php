@@ -162,6 +162,18 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
     }
 
+    function setName($value) {
+        $app = App::i();
+        
+        $definition = $app->getRegisteredEntityTypeById($this, $this->_type);
+        
+        if($value) {
+            $this->name = $value;
+        } else if((!$value && !$this->name) && $definition) {
+            $this->name = $definition->name;    
+        }
+    }
+
     function setOpportunity($value) {
         if($value instanceof Opportunity) {
             $this->opportunity = $value;
