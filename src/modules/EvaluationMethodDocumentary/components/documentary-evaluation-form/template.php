@@ -9,13 +9,15 @@ use MapasCulturais\i;
 
 $this->import('evaluation-actions');
 ?>
-<div>
+<div class="documentary-evaluation-form grid-12 field">
     <label><?= i::__('Avaliador') ?>: {{userName}}</label>
 
-    <div v-if="enableForm" id="evaluation-form">
-        <h3>{{ formData.data[fieldId]?.label || '' }}</h3>
+    <div v-if="enableForm" id="evaluation-form" class="documentary-evaluation-form__content col-12">
+        <div class="documentary-evaluation-form__title">
+            <h3>{{ formData.data[fieldId]?.label || '' }}</h3>
+        </div>
         <input type="hidden" v-model="formData.data[fieldId].label" />
-        <div>
+        <div class="documentary-evaluation-form__fields field">
             <label>
                 <input type="radio" value="" v-model="formData.data[fieldId].evaluation" :disabled="!isEditable"/>
                 <?= i::__('Não avaliar') ?>
@@ -29,17 +31,19 @@ $this->import('evaluation-actions');
                 <?= i::__('Inválida') ?>
             </label>
         </div>
-    
-        <label>
-            <?= i::__('Descumprimento do(s) item(s) do edital:') ?>
-            <textarea v-model="formData.data[fieldId].obsItems" :disabled="!isEditable"></textarea>
-        </label>
-    
-        <label>
-            <?= i::__('Justificativa / Observações') ?>
-            <textarea v-model="formData.data[fieldId].obs" :disabled="!isEditable"></textarea>
-        </label>
+        <div class="documentary-evaluation-form__textarea field">
+            <label>
+                <?= i::__('Descumprimento do(s) item(s) do edital:') ?>
+                <textarea v-model="formData.data[fieldId].obsItems" :disabled="!isEditable"></textarea>
+            </label>
+        </div>
+        <div class="documentary-evaluation-form__textarea field">
+            <label>
+                <?= i::__('Justificativa / Observações') ?>
+                <textarea v-model="formData.data[fieldId].obs" :disabled="!isEditable"></textarea>
+            </label>
+        </div>
     </div>
 
-    <evaluation-actions :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
+    <evaluation-actions class="col-12" :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
 </div>
