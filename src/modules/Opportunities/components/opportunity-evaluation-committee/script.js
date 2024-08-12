@@ -61,7 +61,7 @@ app.component('opportunity-evaluation-committee', {
     
     methods: {   
         showSummary(summary) {
-            return Object.values(summary).some(value => value > 0);
+            return summary ? Object.values(summary).some(value => value > 0) : false;
         },
         selectAgent(agent) {
             const api = new API();
