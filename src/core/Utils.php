@@ -225,4 +225,29 @@ class Utils {
         $values = array_unique($values);
         return $values;
     }
+
+    /**
+     * Detecta o formato de uma data
+     * @param string $dateString 
+     * @return string|bool 
+     */
+    static function detectDateFormat(string $dateString): string | bool
+    {
+        $patterns = [
+            'd/m/Y' => '/^\d{2}\/\d{2}\/\d{4}$/', // dd/mm/yyyy
+            'm/d/Y' => '/^\d{2}\/\d{2}\/\d{4}$/', // mm/dd/yyyy
+            'Y-m-d' => '/^\d{4}-\d{2}-\d{2}$/',    // yyyy-mm-dd
+            'd-m-Y' => '/^\d{2}-\d{2}-\d{4}$/',    // dd-mm-yyyy
+            'm-d-Y' => '/^\d{2}-\d{2}-\d{4}$/',    // mm-dd-yyyy
+            'Y/m/d' => '/^\d{4}\/\d{2}\/\d{2}$/'    // yyyy/mm/dd
+        ];
+
+        foreach ($patterns as $format => $pattern) {
+            if (preg_match($pattern, $dateString)) {
+                return $format;
+            }
+        }
+
+        return false;
+    }
 }

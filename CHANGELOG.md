@@ -4,8 +4,51 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [7.5.0-RC]
 
-## [7.4.12]
+### Novas funcionalidades
+- **Bloqueio de edição de entidades**, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
+- **Customizador do tema BaseV2** para subsites, possibilitando a configuração de cores, imagens, textos, posição do mapa etc
+- **Novo exportação de planilhas**
+  - Possibilidade do usuário escolher o tipo de arquivo exportado entre `.csv`, `.xlsx` e `.ods`
+  - Processamento em background enviando o link para donwload do arquivo por email quando a planilha estiver pronta.
+- **Edição de campos de inscrições enviadas** - permite que o gestor abra alguns campos de uma determinada inscrição, por um tempo definido, para que o proponente possa modificar somente esses campos, fazendo com que não seja necessário colocar a inscriçào inteira como rascunho.
+- **Visualização das entidades em tabelas** na página de busca, para admins do sistema, com botão para exportar planilha com as entidades filtradas.
+- Nova opção para o gestor solicitar o avatar do agente responsável no formulário de inscrição.
+- Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
+- Implementa modo de visualização das entidades em tabelas para admins do sistema
+- Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
+- Corrige erro que ao publicar a entidade a mesma permanece em rascunho
+- Implementa possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição
+- Implementa nova tela para configuração dos agentes de suporte
+- Implementa a data de envio das avaliações
+
+### Melhorias
+- Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
+- Refatoração dos campos datepicker e detetimepicker para melhorar a usabilidade
+- Faz dos campos CPF e CNPJ somente leitura
+- Redesign da tabela de avaliações
+- Refatoraçào na configuração de cotas, para que seja possível escolher os campos que representam as cotas por tipo de proponente, evitando conflitos
+- Refatoração na configuração de distribuição de vagas por território, para que seja possível definir quais campos representam a região para cada tipo de proponente.
+- Refatoração no cálculo das cotas, para que sejam respeitadas dentro de cada faixa/linha e região.
+- Implementa slot no entity-table para permitir substituição do filtro por palavra-chave
+- Implementa método detectDateFormat() no Utils para detectar o formato de uma data
+- Implementa nova tabela de listagem de avaliações
+- Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
+
+### Correções
+- Impede a exibição da coluna "Agente Responsável" no componente "opportunity-evaluation-table" quando a configuração de campos visíveis não permite o resumo dos agentes.
+- Corrige API.js para que o rawProcessor funcione corretamente
+
+### Melhorias não funcionais
+- Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
+- Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
+
+## [7.4.13]
+- Atualiza bibliotecas PHP
+- Corrige erro no carregamento dos subprojetos na single de projetos
+
+## [7.4.12] - 2024-07-25
 ### Correções
 - Corrige erro que deixava a condicionalidade dos campos/anexos ativada ao editar, mesmo ele não estando condicionado a outro
 - Corrige erro na tabela de listagem de inscrições que impedia a listagem de todas as inscrições de oportunidades multifases
@@ -16,9 +59,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige sincronização de inscrição no botão do resumo de inscrições
 - Faz o enfileiramento do job UpdateSummaryCaches no endpoint syncRegistrations para que atualize tambem o resumo de inscrições
 - Corrige carregamento do menu 'Meu Perfil' no menu principal quando a pessoa esta deslogada
+- Corrige erro no ranqueamento por cota que deixava o ranqueamento mal ordenado
+- Melhora a funcionalidade de autosave do componente de bônus por pontuação
+- Corrige a exibição do detalhamento das avaliações para mostrar a nota 'score' em vez de 'consolidatedResult', incluindo a soma dos bônus por pontuações aplicados
+- Corrige o método isEligibleForAffirmativePolicies para não considerar bônus por pontuação
+- Corrige o método applyPointReward para considerar corretamente os campos condicionais
+- Persiste os dados do appliedPointReward após o cálculo de bônus por pontuações
+- Garante que o método que busca valores recursivamente entre os campos de uma inscrição verifique as fases anteriores quando os valores não existirem na fase atual
+- Corrige exibição dos valores de pessoas deficientes na tabela de inscrições
+- Não considera cotistas com nota inferior a nota de corte
 
 ### Melhorias
 - Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
+- Exibe o nome da cota no botão de adicionar campo
 
 ## [7.4.11] - 2024-07-10
 ### Melhorias
@@ -457,6 +510,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções- Corrige erro na listagem de inscrições de um edital quando não exitia nehuma inscrição
 - Corrige erro que ocorria no momento da publicação de resultado final ocasionado pela tentativa de enviar os e-mails
+- Corrige filtros da api de oportunidades e projetos de subsites, fazendo só serem exibidos aqueles criados no subsite atual
 - Corrige validação de metadados preenchidos com valores que o php, com cast para boolean, resolve como false (Ex: 0, [], '')
 - Corrige criação de fase de coleta de dados que ficou quebrada após a implementação das áreas de interesse
 

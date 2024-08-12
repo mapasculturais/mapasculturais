@@ -79,6 +79,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
+        Traits\EntityLock,
         Traits\EntityArchive{
             Traits\EntityNested::setParent as nestedSetParent;
         }
@@ -1035,6 +1036,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         foreach($evaluations as $evaluation){
             if($evaluation->status == 1) {
                 $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+                $evaluation->sentTimestamp = new \DateTime;
                 $evaluation->save(true);
             }
         }
@@ -1348,6 +1350,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
         return $data;
+    }
+
+    public function getRevisionData() {
+        $registration_fields = $this->registrationFieldConfigurations;
+        $registration_files = $this->registrationFileConfigurations;
+
+        $revision_data = [];
+        foreach($registration_fields as $field) {
+            $revision_data[$field->fieldName] = $field->jsonSerialize();
+        }
+
+        foreach($registration_files as $field) {
+            $revision_data[$field->fileGroupName] = $field->jsonSerialize();
+        }
+
+        return $revision_data;
     }
 
     function unregisterRegistrationMetadata(){

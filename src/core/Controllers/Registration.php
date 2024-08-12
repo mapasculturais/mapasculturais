@@ -21,6 +21,7 @@ class Registration extends EntityController {
     use Traits\ControllerUploads,
         Traits\ControllerAgentRelation,
     	Traits\ControllerSealRelation,
+        Traits\ControllerLock,
         Traits\ControllerAPI;
 
     function __construct() {
@@ -390,6 +391,21 @@ class Registration extends EntityController {
         $app->redirect($this->createUrl('view', [$this->data['id']]));
     }
 
+    function GET_registrationEdit() {
+        $this->requireAuthentication();
+
+        $this->entityClassName = "MapasCulturais\\Entities\\Registration";
+        
+        $this->layout = "registration";
+
+        $entity = $this->requestedEntity;
+        $entity->checkPermission('sendEditableFields');
+        
+        $this->layout = 'edit-layout';
+
+        $this->render("registration-editable-field", ['entity' => $entity]);
+    }
+
     function POST_setStatusTo(){
         $this->requireAuthentication();
         $app = App::i();
@@ -657,5 +673,24 @@ class Registration extends EntityController {
         $entity->checkPermission('viewUserEvaluation');
 
         $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
+    }
+
+    function POST_sendEditableFields() {
+        $this->requireAuthentication();
+        $entity = $this->requestedEntity;
+        
+        $entity->sendEditableFields();
+
+        $this->json(true);
+    
+    }
+
+    function POST_reopenEditableFields() {
+        $this->requireAuthentication();
+        $entity = $this->requestedEntity;
+        
+        $entity->reopenEditableFields();
+
+        $this->json(true);
     }
 }
