@@ -18,7 +18,7 @@
         gap: size(14);
 
     } 
-    
+
     .field {
         input {
             max-width: size(370);
@@ -57,7 +57,7 @@
         flex-direction: row;
 
         &__select-all {
-            padding: size(9) size(46);
+            padding: size(16) size(46);
             flex-direction: row;
         }
     }
