@@ -12,7 +12,7 @@ $this->import('
 ?>
 
 <div class="is-locked">
-    <mc-modal ref="modalBlock" title="<?= i::__('Edição bloqueada') ?>" :open-model="" :close-button='false' :esc-to-close="false" :click-to-close="false">
+    <mc-modal ref="modalBlock" title="<?= i::__('Edição bloqueada') ?>" :close-button='false' :esc-to-close="false" :click-to-close="false">
         <div class="content">
             <p> <?= i::__('Outro usuário assumiu o controle e está editando esta entidade') ?> </p>
         </div>
