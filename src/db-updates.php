@@ -2318,11 +2318,52 @@ $$
                 geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
         ");
     },
+
+    'Adiciona as colunas subsite_id e user_id à tabela job' => function () {
+        __exec("ALTER TABLE job ADD COLUMN subsite_id INTEGER NULL");
+        __exec("ALTER TABLE job ADD COLUMN user_id INTEGER NULL");
+    },
+    
+    'Cria coluna send_timestamp para registrar o envio das avaliações' => function() use($conn) {
+        if(!__column_exists('registration_evaluation', 'sent_timestamp')) {
+            __exec("ALTER TABLE registration_evaluation ADD sent_timestamp TIMESTAMP NULL");
+        }
+    },
+
+    'Define os valores da nova coluna sent_timestamp na tabela de avaliações' => function() use($conn) {
+        if (__column_exists('registration_evaluation', 'sent_timestamp')) {
+            __exec("
+                WITH er_data AS (
+                    SELECT er.object_id, er.create_timestamp
+                    FROM entity_revision er
+                    JOIN entity_revision_revision_data errd ON errd.revision_id = er.id
+                    JOIN entity_revision_data rd ON rd.id = errd.revision_data_id
+                    WHERE rd.key = 'status' AND rd.value = '2' AND er.object_type = 'MapasCulturais\Entities\RegistrationEvaluation'
+                    ORDER BY er.create_timestamp DESC
+                )
+                UPDATE registration_evaluation
+                SET sent_timestamp = er_data.create_timestamp
+                FROM er_data
+                WHERE registration_evaluation.id = er_data.object_id;
+            ");
+        }
+    },
     'Ajusta as colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades para setar um array vazio quando as mesmas estiverem null' => function() use ($conn, $app){
         __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types::VARCHAR = '\"\"'");
         __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges::VARCHAR = '\"\"'");
         __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories::VARCHAR = '\"\"'");
     },
+    "Cria colunas editableUntil editSentTimestamp e editableFields na tabela registration" => function() use ($conn){
+        if(!__column_exists('registration', 'editable_until')) {
+             __exec("ALTER TABLE registration ADD COLUMN editable_until TIMESTAMP NULL");
+        }
+        if(!__column_exists('registration', 'edit_sent_timestamp')) {
+            __exec("ALTER TABLE registration ADD COLUMN edit_sent_timestamp TIMESTAMP NULL");
+        }
+        if(!__column_exists('registration', 'editable_fields')) {
+            __exec("ALTER TABLE registration ADD COLUMN editable_fields JSON NULL");
+        }
+    } 
 
     
 

@@ -1,12 +1,14 @@
 @use '../0.settings/mixins' as *;
 
 .mc-status {
-    display: grid;
-    grid-template-columns: size(16) 1fr;
-    align-items: center;
+    width: fit-content;
     white-space: nowrap;
+    margin: 0 auto;
+    grid-template-columns: size(16) 1fr;
     gap: size(8);
     font-weight: var(--mc-font-bold);
+    display: grid;
+    align-items: center;
 
     &--draft {
         color: var(--mc-low-300);
@@ -30,6 +32,22 @@
 
     &--default {
         color: var(--mc-low-500);
+    }
+
+    &--evaluation-pending {
+        color: #fe4f4f;
+    }
+
+    &--evaluation-started {
+        color: #faae4a;
+    }
+
+    &--evaluation-completed {
+        color: #3fb1fd;
+    }
+
+    &--evaluation-sent {
+        color: #96df37;
     }
 
     .iconify {

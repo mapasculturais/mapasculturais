@@ -33,7 +33,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     protected function _register() {
-        ;
+        $app = App::i();
+        
+        $app->registerJobType(new JobTypes\Spreadsheet('simple-spreadsheets'));
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
