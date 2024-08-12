@@ -1,0 +1,32 @@
+@use '../0.settings/mixins' as *;
+
+.documentary-evaluation-form {
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: size(20);
+    }
+
+    &__title {
+        display: flex;
+        justify-content: center;
+
+        h3 {
+            padding: size(10);
+            background-color: #FFCF8F;
+            text-align: center;
+        }
+    }
+
+    &__textarea {
+        label {
+            flex-direction: column;
+        }
+    }
+
+    .field {
+        textarea {
+            min-height: size(155);
+        }
+    }
+}
