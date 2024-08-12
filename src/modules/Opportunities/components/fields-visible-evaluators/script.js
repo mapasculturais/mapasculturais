@@ -36,6 +36,15 @@ app.component("fields-visible-evaluators", {
     },
 
     methods: {
+        fieldType(field) {
+            let name = field?.fieldName || field.groupName;
+
+            if(name.startsWith('field_')) {
+                return 'text'
+            }
+
+            return 'file';
+        },
         fieldsResult() {
            return this.searchFielter || this.fields
         },
