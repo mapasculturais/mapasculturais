@@ -12,6 +12,25 @@
         gap: size(8);
     }
 
+    &__search-wrapper {
+        display: flex;
+        align-items: center;
+        gap: size(14);
+
+    } 
+    
+    .field {
+        input {
+            max-width: size(370);
+        }
+
+        &--horizontal{
+            label {
+                height: size(46);
+            }
+        }
+    }
+
     &__content {
         display: flex;
         flex-direction: column;
@@ -25,25 +44,38 @@
         gap: size(9);
         text-wrap: nowrap;
     }
+
     &__field {
         margin: 0;
-        padding: 9px 20px;
+        padding: size(9) size(20);
         background: #E8E8E8;
-        border-radius: 4px;
-        margin-bottom: 16px;
+        border-radius: size(4);
+        margin-bottom: size(16);
         display: flex;
         align-items: flex-start;
-        gap: 10px;
+        gap: size(10);
         flex-direction: row;
+
+        &__select-all {
+            padding: size(9) size(46);
+            flex-direction: row;
+        }
     }
+
     &__fields {
       overflow: auto;
     }
-    &__buttons {
-      display: flex;
-      justify-content: center;
-      align-self: center;
-      gap: 20px;
+
+    &__button {
+        width: size(358);
+        color: var(--mc-black);
     }
    
+    .modal {
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: size(20);
+        }
+    }
 }

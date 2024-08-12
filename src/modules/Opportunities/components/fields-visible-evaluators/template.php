@@ -22,19 +22,20 @@ $this->import('
 
     <mc-modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores') ?>" classes="modalEmbedTools">
         <template #default="modal">
-            <div>
-                <label><?= i::__('Filtrar campo') ?></label>
-            </div>
-            <div>
-                <input type="text" v-model="searchQuery" @input="searchField()"><small><?= i::__('Pesquise pelo título ou pelo ID') ?></small>
+            <div class="fields-visible-evaluators__search-wrapper field--horizontal">
+                <label class="semibold"><?= i::__('Filtrar campo') ?></label>
+                <div class="fields-visible-evaluators__search field">
+                    <input type="text" v-model="searchQuery" @input="searchField()">
+                    <small><?= i::__('Pesquise pelo título ou pelo ID') ?></small>
+                </div>
             </div>
             <div class="fields-visible-evaluators__content">
-                <div>
-                    <input type="checkbox" v-model="selectAll" @change="toggleSelectAll()">
-                    <label><?= i::__('Selecionar todos os campos') ?></label>
-                </div>
                 <div class="fields-visible-evaluators__fields">
-                    <div v-for="field in fieldsResult()" :class="['fields-visible-evaluators__field' , {'disabled':field.disabled}]">
+                    <div class="fields-visible-evaluators__field__select-all field">
+                        <input type="checkbox" v-model="selectAll" @change="toggleSelectAll()">
+                        <label><?= i::__('Selecionar todos os campos') ?></label>
+                    </div>
+                    <div v-for="field in fieldsResult()" :class="['fields-visible-evaluators__field' , 'field', {'disabled':field.disabled}]">
                         <mc-icon :name="fieldType(field)"></mc-icon>
                         <label>
                             <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName]" @change="toggleSelect(field.fieldName)" /> 
@@ -46,7 +47,7 @@ $this->import('
             </div>
         </template>
         <template #button="modal">
-            <button class="button button--bg button--primarylight" @click="modal.open"><?= i::__('Abrir lista de campos') ?></button>
+            <button class="button button--bg button--primarylight fields-visible-evaluators__button" @click="modal.open"><?= i::__('Abrir lista de campos') ?></button>
         </template>
     </mc-modal>
 
