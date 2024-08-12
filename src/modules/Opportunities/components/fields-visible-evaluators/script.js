@@ -62,28 +62,7 @@ app.component("fields-visible-evaluators", {
         },
 
         fieldSkeleton() {
-            let _fields = [
-                {
-                    checked: false,
-                    fieldName: "category",
-                    title: __("category", "fields-visible-evaluators"),
-                },
-                {
-                    checked: false,
-                    fieldName: "projectName",
-                    title: __("projectName", "fields-visible-evaluators"),
-                },
-                {
-                    checked: false,
-                    fieldName: "agentsSummary",
-                    title: __("agentsSummary", "fields-visible-evaluators"),
-                },
-                {
-                    checked: false,
-                    fieldName: "spaceSummary",
-                    title: __("spaceSummary", "fields-visible-evaluators"),
-                },
-            ];
+            let _fields = [];
 
             if($MAPAS?.config?.fieldsToEvaluate.length > 0){
                 $MAPAS?.config?.fieldsToEvaluate.forEach(item =>{
