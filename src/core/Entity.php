@@ -814,7 +814,7 @@ abstract class Entity implements \JsonSerializable{
             $lock_info = $this->isLocked();
 
             if($lock_info['userId'] != $app->user->id) {
-                throw new Exceptions\PermissionDenied($app->user);
+                throw new Exceptions\PermissionDenied($app->user, message: i::__('A entidade está bloqueada por outro usuário.'), code: Exceptions\PermissionDenied::CODE_ENTITY_LOCKED);
             }
         }
 
