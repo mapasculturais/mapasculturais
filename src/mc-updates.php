@@ -454,5 +454,112 @@ return [
             } 
             $app->enableAccessControl();
         });
+    },
+    'Normalização dos campos que utilizam mascaras' => function() use ($app) {
+    $metadata_list = [
+        'telefone' => function($value,$field,$agent) use ($app) {
+            /** @var App $app */
+
+            if(is_null($value)){
+                $app->log->debug("NÃO ALTERADO - O campo {$field} do agente {$agent->id} está vazio.");
+                return null;
+            }
+
+            $clean_number = preg_replace('/\D/', '', $value);
+            if(strlen($clean_number) < 10 || strlen($clean_number) > 11 ){
+                $app->log->debug("NÃO ALTERADO - O campo {$field} do agente {$agent->id} está inválido.");
+                return null;
+            }
+            
+            if (preg_match('/^\(\d{2}\) \d{4,5}-\d{4}$/', $value)) {
+                $app->log->debug("NÃO ALTERADO - O campo {$field} do agente {$agent->id} já está formatado.");
+                return null;
+            }
+    
+            if (strlen($clean_number) == 10) {
+                $value = preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1) $2-$3', $clean_number);
+            } elseif (strlen($clean_number) == 11) {
+                $value = preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $clean_number);
+            }
+            
+            $app->log->debug("O campo {$field} ({$clean_number}) do agente {$agent->id} foi alterado para ({$value}).");
+            return $value;
+        },
+        'doc' => function($value,$field) use ($app) {
+             /** @var App $app */
+            
+            if(is_null($value)){
+                $app->log->debug('O cpf ' . $field . ' está vazio ou inválido.');
+                return null;
+            }
+        
+            if(preg_match('/^\d{3}\.\d{3}\.\d{3}-\d{2}$/', $value)){
+                $app->log->debug('O CPF ' . $field . 'já está formatado.');
+                return null;
+            }
+        
+            if(preg_match('/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/', $value)){
+                $app->log->debug('O CNPJ ' . $field . 'já está formatado.');
+                return null;
+            }
+        
+            $clean_number = preg_replace('/\D/', '', $value);
+            if (strlen($clean_number) == 11) {
+                $value = preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $clean_number);
+                $app->log->debug('Valor formatado como CPF: ' . $value);
+            }
+            elseif (strlen($clean_number) == 14) {
+                $value = preg_replace('/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/', '$1.$2.$3/$4-$5', $clean_number);
+                $app->log->debug('Valor formatado como CNPJ: ' . $value);
+            } else {
+                $app->log->debug('O valor ' . $field . ' não pode ser formatado' . $value);
+                return $value;
+            }
+        
+            return $value;
+        },
+        'cep' => function($value,$field) use ($app){
+            /** @var App $app */
+            
+            if(is_null($value)){
+                $app->log->debug('O CEP ' . $field . ' está vazio ou inválido.');
+                return null;
+            }
+        
+            if(preg_match('/^\d{5}-\d{3}$/', $value)){
+                $app->log->debug('O CEP ' . $field . 'já está formatado.');
+                return null;
+            }
+        
+            $clean_number = preg_replace('/\D/', '', $value);
+            if (strlen($clean_number) == 8) {
+                $value = preg_replace('/(\d{5})(\d{3})/', '$1-$2', $clean_number);
+            } else {
+                $app->log->debug('O valor do CEP ' . $field . ' não pode ser formatado' . $value);
+            }
+        
+            return $value; 
+        }
+    ];
+        $from_to = [
+            'telefone1' => "telefone",
+            'telefone2' => "telefone",
+            'telefonePublico' => "telefone",
+            'cpf' => 'doc',
+            'cnpj' => 'doc',
+            'documento' => 'doc',
+            'En_CEP' => 'cep'
+        ];
+        DB_UPDATE::enqueue(Agent::class, "id > 0", function (Agent $agent) use ($metadata_list, $app, $from_to) {
+          
+            foreach($from_to as $field => $function) {
+                $_value = $agent->$field;
+                $_function = $metadata_list[$function];
+                if($agent->id == 425 && $result = $_function($_value,$field,$agent)){
+                    $agent->$field = trim($result);
+                    $agent->save(true);
+                }
+            }
+        });
     }
 ];
