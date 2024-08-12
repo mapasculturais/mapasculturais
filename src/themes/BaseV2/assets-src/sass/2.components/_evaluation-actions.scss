@@ -9,6 +9,7 @@
 
     &__buttons {
         &__saveafter, &__reopen {
+            display: block;
             background-color: #FFCF8F;
             color: var(--mc-black);
             border-color:  #FFCF8F;
@@ -16,6 +17,11 @@
                 background-color:var(--mc-white);
                 color: var(--mc-black);
                 border-color:  #FFCF8F;
+            }
+
+            svg {
+                float: left;
+                font-size: size(16);
             }
         }
         
@@ -30,13 +36,19 @@
                 color: var(--mc-black);
                 border-color: #BFE88B;
             }
-            svg {
+            .arrow-icon {
                 float: right;
-                font-size: size(21);
+                font-size: size(16);
+            }
+
+            .send-icon {
+                float: left;
+                font-size: size(16);
             }
         }
 
         &__final {
+            display: block;
             background-color: #99D6FF;
             color: var(--mc-black);
             border-color: #99D6FF;
@@ -44,6 +56,11 @@
                 background-color: var(--mc-white);
                 color: var(--mc-black);
                 border-color: #99D6FF;
+            }
+
+            svg {
+                float: left;
+                font-size: size(16);
             }
         }
     }
