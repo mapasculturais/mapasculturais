@@ -163,7 +163,7 @@ abstract class SpreadsheetJob extends JobType
         if(file_exists($file->path)) {
             $this->sendSuccessMailNotification($job->authenticatedUser, $file, $entity_class_name);
         } else {
-            //$file->delete(true);
+            $file->delete(true);
             $this->sendErrorMailNotification($job->authenticatedUser, $entity_class_name);
         }
     
