@@ -222,7 +222,11 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     public function getEvaluationMethod() {
         $definition = $this->getDefinition();
-        return $definition->evaluationMethod;
+        if ($definition) {
+            return $definition->evaluationMethod;
+        } else {
+            return null;
+        }
     }
 
     public function getUserRelation($user = null){
