@@ -139,4 +139,18 @@ class Controller extends \MapasCulturais\Controller
             $this->errorJson(i::__('Método de avaliação inválido'));
         }
     }
+
+    function GET_filesByGroup() {
+        $this->requireAuthentication();
+
+        $app = App::i();
+        $entity_name = ucfirst($this->data['entityType']);
+
+        $entity = $app->repo($entity_name)->find($this->data['id']);
+        $files = $entity->files;
+
+        if($files && in_array($this->data['group'], array_keys($files))) {
+            return $this->json($files[$this->data['group']]);
+        }
+    }
 }
