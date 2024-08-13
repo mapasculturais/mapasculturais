@@ -9,7 +9,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
 ## [7.4.13]
+### Melhorias
 - Atualiza bibliotecas PHP
+
+### Correções
+- Corrige erro no carregamento dos subprojetos na single de projetos
+- Ajusta o provider OpauthAuthentik para resetar a sessão quando existir error retornado por parte do Authentik
 
 ## [7.4.12] - 2024-07-25
 ### Correções
