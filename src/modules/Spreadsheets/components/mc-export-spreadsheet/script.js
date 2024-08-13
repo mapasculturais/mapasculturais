@@ -33,14 +33,17 @@ app.component('mc-export-spreadsheet', {
         return { messages }
     },
 
-    computed: {
-        lastExported() {
-            return this.owner.files[this.group] ?? [];
+    data() {
+        return {
+            processing: false,
+            lastExported: $MAPAS.config.mcExportSpreadsheet.files[this.group] ?? [],
+            interval: null
         }
     },
     
     methods: {
         exportSpreadsheet(type) {
+            this.processing = 'exporting';
             const api = new API();
             let url = Utils.createUrl('spreadsheets', this.endpoint);
 
@@ -53,9 +56,39 @@ app.component('mc-export-spreadsheet', {
 
             api.POST(url, props).then((data) => {
                 this.messages.success(__('sucesso', 'mc-export-spreadsheet'))
+                this.processing = false;
             }).catch((data) => {
                 this.messages.error(data.data);
             });
+        },
+
+        updateExportedData() {
+            const api = new API('spreadsheets');
+            let props = {
+                entityType: this.owner.__objectType,
+                id: this.owner.id,
+                group: this.group,
+            }
+            let url = api.createUrl('filesByGroup', props);
+
+
+            api.GET(url, props).then(res => res.json()).then(data => {
+                this.lastExported = data;
+            });
+        },
+
+        openModal() {
+            this.interval = setInterval(() => {
+                this.updateExportedData();
+            }, 
+            30 * 1000);
+        },
+
+        closeModal() {
+            if(this.interval) {
+                clearInterval(this.interval);
+                this.interval = null;
+            }
         }
     },
 });
