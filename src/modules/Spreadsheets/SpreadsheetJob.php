@@ -160,13 +160,17 @@ abstract class SpreadsheetJob extends JobType
         $file->save(true);
         
         // Disparo de e-mail
-       $this->mailNotification($job->authenticatedUser, $file, $entity_class_name);
+        if(file_exists($file->path)) {
+            $this->sendSuccessMailNotification($job->authenticatedUser, $file, $entity_class_name);
+        } else {
+            //$file->delete(true);
+            $this->sendErrorMailNotification($job->authenticatedUser, $entity_class_name);
+        }
     
        return true;
     }
 
-    function mailNotification($user, $file, $entity_class)
-    {
+    private function sendSuccessMailNotification($user, $file, $entity_class) {
         $app = App::i();
         
         $template = 'export_spreadsheet';
@@ -182,7 +186,25 @@ abstract class SpreadsheetJob extends JobType
             'to' => $user->email,
             'subject' => sprintf(i::__($message['title'], $entity_class)),
             'body' => $message['body'],
-            //'attach' => $file->path ?? null
+        ]);
+    }
+
+    private function sendErrorMailNotification($user, $entity_class) {
+        $app = App::i();
+        
+        $template = 'export_spreadsheet_error';
+        $data = [
+            'userName' => $user->profile->name,
+            'messageError' => i::__('Infelizmente, ocorreu um erro durante a extração da planilha.')
+        ];
+
+        $message = $app->renderMailerTemplate($template, $data);
+
+        $app->createAndSendMailMessage([
+            'from' => $app->config['mailer.from'],
+            'to' => $user->email,
+            'subject' => sprintf(i::__($message['title'], $entity_class)),
+            'body' => $message['body'],
         ]);
     }
 
