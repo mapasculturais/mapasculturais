@@ -93,7 +93,33 @@ $this->import('
                                         <mc-icon :name="field.type"></mc-icon>
                                     </span>
 
-                                    <h4 class="bold"> #{{field.id}} - {{ field.title }} </h4>
+                                    <div>
+                                        <h4 class="bold"> #{{field.id}} - {{ field.title }} </h4>
+                                        <div class="fields-conditional">
+                                            <small>
+                                                <strong><?= i::__("Categorias")?></strong>
+                                                <span v-if="field.categories.length > 0">: <i>{{field.categories.join(', ')}}</i></span>
+                                                <span v-if="field.categories.length <= 0">: <i><?= i::__("Todas")?></i></span>
+                                                |
+                                            </small> 
+
+                                            <small>
+                                                <strong><?= i::__("Faixas/Linhas")?></strong>
+                                                <span v-if="field.registrationRanges.length > 0">: <i>{{field.registrationRanges.join(', ')}}</i></span>
+                                                <span v-if="field.registrationRanges.length <= 0">: <i><?= i::__("Todas")?></i></span>
+                                                |
+                                            </small> 
+
+                                            <small>
+                                                <strong><?= i::__("Tipos de proponentes")?></strong>
+                                                <span v-if="field.proponentTypes.length > 0">: <i>{{field.proponentTypes.join(', ')}}</i></span>
+                                                <span v-if="field.proponentTypes.length <= 0">: <i><?= i::__("Todos")?></i></span>
+                                            </small> 
+
+                                            
+                                        </div>
+                                    </div>
+                                   
                                 </span>
                             </label>
 
