@@ -52,7 +52,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
 
             <div class="evaluation-step__section-content">
                 <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
-                <!-- <v1-embed-tool route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool> -->
+                <v1-embed-tool v-if="phase.type.id == 'qualification'" route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
             </div>
         </section>
 
