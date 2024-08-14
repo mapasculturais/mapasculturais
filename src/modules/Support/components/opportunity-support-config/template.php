@@ -139,7 +139,7 @@ $this->import('
                         </div>
 
                         <div v-if="filteredFields.length == 0" class="opportunity-support-config__field">
-                            Nenhum campo foi encontrado
+                            <?= i::__("Nenhum campo foi encontrado")?>
                         </div>
                     
                     </div>

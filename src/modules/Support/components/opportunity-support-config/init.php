@@ -7,7 +7,6 @@ $files = $entity->registrationFileConfigurations;
 
 $fields_list = array_merge($fields, $files);
 
-
 foreach ($fields_list as $field) {
     if ($field->fieldType != "section") {
         $result[] = [
@@ -18,6 +17,7 @@ foreach ($fields_list as $field) {
             "categories" => $field->categories,
             "proponentTypes" => $field->proponentTypes,
             "registrationRanges" => $field->registrationRanges,
+            "config" => $field->config
         ];
     }
 }
