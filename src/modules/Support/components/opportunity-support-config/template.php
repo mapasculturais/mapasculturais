@@ -102,7 +102,7 @@ $this->import('
                                 
                                 <span class="opportunity-support-config__field-title">
                                     <span class="opportunity-support-config__field-icon">
-                                        <mc-icon :name="field.type"></mc-icon>
+                                        <mc-icon :name="getFieldType(field)"></mc-icon>
                                     </span>
 
                                     <div>
