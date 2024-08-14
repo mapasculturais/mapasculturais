@@ -5,9 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.4.13]
+## [7.4.13] - 2024-08-14
 ### Melhorias
 - Atualiza bibliotecas PHP
+- Identifica os botões das ações da tela de avaliações por cores
 
 ### Correções
 - Corrige erro no carregamento dos subprojetos na single de projetos
