@@ -45,9 +45,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
 - Quando a oportunidade é multifases e ocorre uma alteração na propriedade, faz com que essa mudança também se reflita nas fases subsequentes
 
-## [7.4.13]
+## [7.4.13] - 2024-08-14
+### Melhorias
 - Atualiza bibliotecas PHP
+- Identifica os botões das ações da tela de avaliações por cores
+
+### Correções
 - Corrige erro no carregamento dos subprojetos na single de projetos
+- Ajusta o provider OpauthAuthentik para resetar a sessão quando existir error retornado por parte do Authentik
+- Corrige exibição do embedTools de configurações de critérios da avaliação de qualificação documental
 
 ## [7.4.12] - 2024-07-25
 ### Correções
