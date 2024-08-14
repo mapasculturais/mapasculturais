@@ -78,7 +78,19 @@ $this->import('
                                     <mc-select :options="permissions" :default-value="allPermissions" hide-filter @change-option="setAllPerssions($event)"></mc-select>
                                 </div>
                             </div>
+
+                            <div class="field grid-12">
+                            <label class="field__title"><?= i::__("Pesquisar")?></label>
+                                <input @input="filterKewWord()" class="col-12" type="text"  v-model="keyword" placeholder="<?= i::__("Pesquise por palavra chave")?>">
+                            </div>
     
+                            <div >
+                                <a href="#" @click="clearFilters()">
+                                    <mc-icon name="trash"></mc-icon>
+                                    <?= i::__("Limpar filtros")?>
+                                </a>
+                            </div>
+
                             <label class="opportunity-support-config__select-all semibold">
                                 <input class="opportunity-support-config__checkbox" type="checkbox" @change="toggleSelectAll($event)" v-model="selectAll"><?php i::_e("Selecionar todos"); ?>
                             </label>
