@@ -217,6 +217,12 @@ app.component('opportunity-support-config', {
                 this.selectedFields[field.ref] = false;
             });
         },
+        clearFilters() {
+            this.categoryFilter = null;
+            this.proponentFilter = null;
+            this.rangeFilter = null;
+            this.keyword = "";
+        },
 
         send(modal, relation) {
             let api = new API();
@@ -231,6 +237,7 @@ app.component('opportunity-support-config', {
                         }
                     }
                     this.clearSelectedFields();
+                    this.clearFilters();
                     this.messages.success(this.text('Permisão enviada com sucesso'));
                     this.selectAll = false;
                     this.allPermissions = null;
