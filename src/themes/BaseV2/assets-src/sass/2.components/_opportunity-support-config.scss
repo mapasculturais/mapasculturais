@@ -104,6 +104,11 @@
         grid-template-columns: size(32) 1fr;
         justify-items: center;
         margin-bottom: size(4);
+
+        .fields-conditional {
+            display: flex;
+            gap: 10px;
+        }
     }
 
     &__field-icon {

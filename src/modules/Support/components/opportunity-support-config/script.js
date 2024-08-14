@@ -145,7 +145,7 @@ app.component('opportunity-support-config', {
 
             if (category && category != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.categories.length > 0 && field.categories.includes(category)) {
+                    if (field.categories.length <= 0 || (field.categories.length > 0 && field.categories.includes(category))) {
                         return field;
                     }
                 });
@@ -153,7 +153,15 @@ app.component('opportunity-support-config', {
 
             if (proponent && proponent != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.proponentTypes && field.proponentTypes.length > 0 && field.proponentTypes.includes(proponent)) {
+                    if (field.proponentTypes.length <= 0 || (field.proponentTypes.length > 0 && field.proponentTypes.includes(proponent))) {
+                        return field;
+                    }
+                });
+            }
+
+            if (range && range != 'Todos') {
+                fields = fields.filter(function(field) {
+                    if (field.registrationRanges.length <= 0 || (field.registrationRanges.length > 0 && field.registrationRanges.includes(range))) {
                         return field;
                     }
                 });
@@ -175,6 +183,14 @@ app.component('opportunity-support-config', {
     methods: {
         filterKewWord() {
             this.filteredFields;
+        },
+
+        getFieldType(field) {
+            if(field.ref.startsWith('field_')) {
+                return 'text';
+            }
+
+            return 'file';
         },
         
         set(option) {
