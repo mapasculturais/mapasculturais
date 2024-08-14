@@ -26,6 +26,7 @@ app.component('opportunity-support-config', {
             categoryFilter: null,
             proponentFilter: null,
             rangeFilter: null,
+            keyword: "",
         };
     },
 
@@ -140,6 +141,7 @@ app.component('opportunity-support-config', {
             const category = this.categoryFilter; 
             const proponent = this.proponentFilter;
             const range = this.rangeFilter;
+            const keyword = this.keyword
 
             if (category && category != 'Todos') {
                 fields = fields.filter(function(field) {
@@ -157,9 +159,9 @@ app.component('opportunity-support-config', {
                 });
             }
 
-            if (range && range != 'Todos') {
+            if (keyword) {
                 fields = fields.filter(function(field) {
-                    if (field.registrationRanges && field.registrationRanges.length > 0 && field.registrationRanges.includes(range)) {
+                    if (field.title.startsWith(keyword) || field.id.toString().startsWith(keyword)) {
                         return field;
                     }
                 });
@@ -171,6 +173,10 @@ app.component('opportunity-support-config', {
     },
 
     methods: {
+        filterKewWord() {
+            this.filteredFields;
+        },
+        
         set(option) {
             this.categoryFilter = option.text;
         },
