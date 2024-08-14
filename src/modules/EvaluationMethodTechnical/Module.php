@@ -13,12 +13,23 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
+    
+    protected static Module $instance;
+    private $viability_status;
+
     function __construct(array $config = []) {
+        self::$instance = $this;
         $config += ['step' => '0.1'];
         parent::__construct($config);
     }
 
-    private $viability_status;
+    /**
+     * Retorna a instância do módulo
+     * @return Module
+     */
+    public static function i(): Module {
+        return self::$instance;
+    }
 
     public function getSlug() {
         return 'technical';
@@ -486,6 +497,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $self = $this;
 
+
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
             /** @var Registration $this */
@@ -662,10 +674,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var ApiQuery $this */
             if(($quota_data->objectId ?? false) == spl_object_id($this)) {
                 $_new_result = [];
+                $quota_fields = $quota_data->quota->registrationFields;
                 foreach($quota_data->ids as $id) {
                     foreach($result as $registration) {
                         if($registration['id'] == $id) {
-                            $_new_result[] = $registration;
+                            $_new_result[] = array_merge($registration, $quota_fields[$id] ?? []);
                         }
                     }
                 }
@@ -1096,7 +1109,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 }
             }
         }
-
 
         return $errors;
     }
