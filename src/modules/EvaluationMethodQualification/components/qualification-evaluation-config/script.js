@@ -131,20 +131,18 @@ app.component('qualification-evaluation-config', {
                     }
                 })
 
-                if (!addCriteria && !this.entity.criteria.some(criterion => criterion.sid === section.id)) {
-                    hasError = true;
-                }
-            })
-
-            if (addSection) {
-                this.entity.sections.forEach((section) => {
+                if (addSection) {
                     if (!this.entity.criteria.some(criterion => criterion.sid === section.id)) {
                         this.messages.error(`${this.text('theField')} ${this.text('fieldCriterionName')} ${this.text('isRequired')}`);
                         hasError = true;
                     }
-                });
-            }
-            
+                }
+
+                if (!addCriteria && this.entity.criteria && !this.entity.criteria.some(criterion => criterion.sid === section.id)) {
+                    hasError = true;
+                }
+            })
+
             if(this.entity.criteria) {
                 this.entity.criteria.forEach((criterion) => {
                     Object.keys(this.fieldsDict.criteria).forEach((field) => {
