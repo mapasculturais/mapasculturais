@@ -24,6 +24,45 @@ app.component('opportunity-registrations-table', {
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('opportunity-registrations-table');
+
+
+        /* adiciona a definição de quotas, tiebreaker e region, 
+           que são retornados pela api mas nào são metadados, 
+           possibilitando a utilização na tabela */
+
+        $DESCRIPTIONS.registration['quotas'] = {
+            isMetadata: false,
+            isEntityRelation: false,
+            required: false,
+            readonly: true,
+            type: "array",
+            length: 255,
+            label: text("Cotas aplicadas"),
+            isPK: false
+        };
+
+        $DESCRIPTIONS.registration['tiebreaker'] = {
+            isMetadata: false,
+            isEntityRelation: false,
+            required: false,
+            readonly: true,
+            type: "object",
+            length: 255,
+            label: text("Critérios de desempate utilizados"),
+            isPK: false
+        };
+
+        $DESCRIPTIONS.registration['region'] = {
+            isMetadata: false,
+            isEntityRelation: false,
+            required: false,
+            readonly: true,
+            type: "string",
+            length: 255,
+            label: text("Região"),
+            isPK: false
+        };
+
         return { text }
     },
     data() {
@@ -105,7 +144,7 @@ app.component('opportunity-registrations-table', {
             }
             
             if(isAffirmativePoliciesActive) {
-                avaliableFields.push({
+                avaliableFields.splice(0,0, {
                     title: __('concorrendo por cota', 'opportunity-registrations-table'),
                     fieldName: 'eligible',
                     fieldType: 'boolean'
@@ -116,7 +155,7 @@ app.component('opportunity-registrations-table', {
                 sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
             }
         }
-        
+
         return {
             sortOptions,
             filters: {},
@@ -136,6 +175,7 @@ app.component('opportunity-registrations-table', {
             visible,
             isAffirmativePoliciesActive,
             hadTechnicalEvaluationPhase,
+            isTechnicalEvaluationPhase
         }
     },
 
@@ -200,6 +240,35 @@ app.component('opportunity-registrations-table', {
 
             if(this.phase.evaluationMethodConfiguration){
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
+
+                if(this.isTechnicalEvaluationPhase) {
+                    const evaluationMethodConfiguration = this.phase.evaluationMethodConfiguration;
+                    const tiebreakerConfiguration = evaluationMethodConfiguration.tiebreakerCriteriaConfiguration;
+                    const quotaConfiguration = evaluationMethodConfiguration.quotaConfiguration;
+                    const geoQuotaConfiguration = evaluationMethodConfiguration.geoQuotaConfiguration;
+                    
+                    if(tiebreakerConfiguration?.length > 0) {
+                        debugger
+                        itens.splice(3,0,{
+                            text: __('Critérios de desempate', 'opportunity-registrations-table'),
+                            value: 'tiebreaker',
+                        });
+                    }
+        
+                    if(quotaConfiguration.rules?.length > 0) {
+                        itens.splice(5,0,{
+                            text: __('Cotas aplicadas', 'opportunity-registrations-table'),
+                            value: 'quotas',
+                        });
+                    }
+        
+                    if(geoQuotaConfiguration?.geoDivision) {
+                        itens.splice(6,0,{
+                            text: __('Região', 'opportunity-registrations-table'),
+                            value: 'region',
+                        });
+                    }
+                }
             }
 
             if(this.phase.isLastPhase){
@@ -216,6 +285,7 @@ app.component('opportunity-registrations-table', {
                     return this.avaliableColumns.indexOf(item.value) >= 0;
                 });
             }
+
 
             return itens;
         },
