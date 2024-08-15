@@ -181,6 +181,20 @@ app.component('opportunity-support-config', {
     },
 
     methods: {
+        getConditionalField(field) {
+            let conditionalField  = null;
+            if(field.conditional) {
+                this.filteredFields.filter((item) => {
+                    if(field.conditionalField === item.ref) {
+                        conditionalField = item.id;
+                        return
+                    }
+                });
+
+            }
+            return conditionalField
+        },
+
         filterKewWord() {
             this.filteredFields;
         },
