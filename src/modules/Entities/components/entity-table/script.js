@@ -209,6 +209,8 @@ app.component('entity-table', {
             delete query['@page'];
             delete query['@permission'];
             delete query['@permissions'];
+            delete query['action'];
+            delete query['userId'];
            
             if (this.type == 'agent') {
                 delete query['type']
