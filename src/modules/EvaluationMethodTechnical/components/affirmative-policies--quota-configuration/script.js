@@ -166,10 +166,10 @@ app.component('affirmative-policies--quota-configuration', {
                         && quotaConfiguration.title 
                         && quotaConfiguration.vacancies !== undefined
                         && quotaConfiguration.vacancies > 0
-                        && quotaConfiguration.fields.some(field => 
-                            field.eligibleValues !== undefined && field.eligibleValues.length > 0
-                            && field.fieldName !== undefined && field.fieldName
-                        );
+                        // && quotaConfiguration.fields.some(field => 
+                        //     field.eligibleValues !== undefined && field.eligibleValues.length > 0
+                        //     && field.fieldName !== undefined && field.fieldName
+                        // );
                 }
             );
             
