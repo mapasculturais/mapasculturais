@@ -36,10 +36,12 @@ class Module extends \MapasCulturais\Module{
         // Quando a oportunidade é multifases e ocorre uma alteração na propriedade, essa mudança também se reflete nas fases subsequentes.
         $app->hook("entity(Opportunity).saveOwnerAgent", function() {
             /** @var \MapasCulturais\Entities\Opportunity $this */
-            $phases = $this->allPhases;
-            foreach($phases as $phase) {
-                $phase->owner = $this->owner;
-                $phase->save(true);
+            if(!$this->isNew()) {
+                $phases = $this->allPhases;
+                foreach($phases as $phase) {
+                    $phase->owner = $this->owner;
+                    $phase->save(true);
+                }
             }
         });
 
