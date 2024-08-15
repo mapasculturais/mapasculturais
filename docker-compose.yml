@@ -6,9 +6,6 @@ services:
     build:
       context: ./
       dockerfile: docker/Dockerfile
-    command: /var/www/dev/start.sh
-    ports:
-      - "80:80"
     volumes:
       - ./.env:/.env
       - ./docker/production/php.ini:/usr/local/etc/php/php.ini
@@ -63,3 +60,27 @@ services:
     command: --maxmemory 512Mb --maxmemory-policy allkeys-lru
     volumes:
       - ./docker-data/sessions:/data
+
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - /dev/null:/var/www/html/index.php
+
+      - ./docker-data/public-files:/var/www/html/files
+      - ./docker-data/assets:/var/www/html/assets
+
+##### versão sem ssl
+      - ./docker/production/nginx.conf:/etc/nginx/conf.d/default.conf
+
+##### versão com ssl
+#     - ./docker/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
+#     - ./docker-data/certs/conf:/etc/letsencrypt
+#     - ./docker-data/certs/www:/var/www/certbot
+    ports:
+     - "80:80"
+    depends_on:
+      - mapas
+    links:
+      - mapas
+
