@@ -77,22 +77,12 @@ $this->import('
         <div class="affirmative-policies--quota-configuration__card-content">
             <div v-for="(field, indexF) in quota.fields" :key="indexF" class="affirmative-policies--quota-configuration__quota-field">
                 <div class="field">
-                    <mc-select v-model:default-value="field.fieldName" placeholder="Selecione um campo">
-                        <option v-for="(item, index) in phase.opportunity.affirmativePoliciesEligibleFields" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
+                    <label v-if="indexF === 'default'"><?= i::__('Selecione o campo que define a cota') ?></label>
+                    <label v-else><?= i::__('Selecione o campo que define a cota para {{indexF}}') ?></label>
+                    <mc-select v-model:default-value="field.fieldName" placeholder="<?= i::esc_attr__('Selecione um campo') ?>" show-filter>
+                        <option v-for="(item, index) in filteredOptions(indexF)" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
                     </mc-select>
                 </div>
-
-                <mc-confirm-button @confirm="removeField(index, indexF)">
-                    <template #button="{open}">
-                        <button class="button button--sm button--text-danger button--icon" @click="open()">
-                            <mc-icon class="danger__color" name="trash"></mc-icon>
-                        </button>
-                    </template>
-
-                    <template #message="message">
-                        <?= i::__('Deseja deletar o campo?') ?>
-                    </template>
-                </mc-confirm-button>
 
                 <div v-if="getFieldType(field) === 'select' || getFieldType(field) === 'multiselect' || getFieldType(field) === 'checkboxes'" class="field">
                     <label><?= i::__('Dar preferência a') ?>:</label>
@@ -121,13 +111,6 @@ $this->import('
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="affirmative-policies--quota-configuration__card-footer">
-            <button class="button button--primary button--icon" @click="addField(index)">
-                <mc-icon name="add"></mc-icon>
-                <?php i::_e("Adicionar campo para {{quota.title}}") ?> 
-            </button>
         </div>
     </div>
 

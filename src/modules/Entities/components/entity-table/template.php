@@ -162,7 +162,7 @@ $this->import('
                         <tbody >
                             <tr v-for="(entity, index) in entities" :key="entity.__objectId">
                                 <td v-if="showIndex" class="entity-table__index sticky table-line">{{index+1}}</td>
-                                <template v-for="header in columns">
+                                <template v-for="header in columns" :key="header.slug">
                                     <td v-if="header.visible" :class="{sticky: header.sticky || header.stickyRight}" :style="headerStyle(header)">
                                         <slot :name="header.slug" :entity="entity" :refresh="refresh">
                                             {{getEntityData(entity, header.value)}}

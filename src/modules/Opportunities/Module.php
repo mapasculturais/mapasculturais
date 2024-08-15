@@ -110,10 +110,16 @@ class Module extends \MapasCulturais\Module{
         // atualiza o cache dos resumos das fase de avaliação
         $app->hook("entity(Registration).sent:before", function() use ($app) {
             /** @var Registration $this */
-            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                'opportunity' => $this->opportunity,
-                'evaluationMethodConfiguration' => $this->opportunity->evaluationMethodConfiguration ?: null
-            ], '10 seconds');
+            $evaluation_method_configuration = $this->opportunity->evaluationMethodConfiguration ?: null;
+            $cache_key = "updateSummary::{$this->opportunity}::{$evaluation_method_configuration}";
+            if(!$app->cache->contains($cache_key)) {
+                $app->cache->save($cache_key, true, 10);
+                $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                    'opportunity' => $this->opportunity,
+                    'evaluationMethodConfiguration' => $evaluation_method_configuration,
+                ], '10 seconds');
+                $app->cache->delete($cache_key);
+            }
         });
 
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app) {
@@ -134,9 +140,15 @@ class Module extends \MapasCulturais\Module{
         
         $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {
             /** @var RegistrationEvaluation $this */
-            $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                'evaluationMethodConfiguration' => $this->registration->opportunity->evaluationMethodConfiguration
-            ], '10 seconds');
+            $cache_key = "updateSummary::{$this->registration->opportunity->evaluationMethodConfiguration}";
+            if(!$app->cache->contains($cache_key)) {
+                $app->cache->save($cache_key, true, 10);
+                $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                    'evaluationMethodConfiguration' => $this->registration->opportunity->evaluationMethodConfiguration
+                ], '10 seconds');
+                $app->cache->delete($cache_key);
+            }
+            
         });
 
         // Método para que devolve se existe avaliações técnicas nas fases anteriores
