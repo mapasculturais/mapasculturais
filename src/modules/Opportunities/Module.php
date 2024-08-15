@@ -112,13 +112,13 @@ class Module extends \MapasCulturais\Module{
             /** @var Registration $this */
             $evaluation_method_configuration = $this->opportunity->evaluationMethodConfiguration ?: null;
             $cache_key = "updateSummary::{$this->opportunity}::{$evaluation_method_configuration}";
-            if(!$app->cache->contains($cache_key)) {
-                $app->cache->save($cache_key, true, 10);
+            if(!$app->mscache->contains($cache_key)) {
+                $app->mscache->save($cache_key, true, 10);
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
                     'opportunity' => $this->opportunity,
                     'evaluationMethodConfiguration' => $evaluation_method_configuration,
                 ], '10 seconds');
-                $app->cache->delete($cache_key);
+                $app->mscache->delete($cache_key);
             }
         });
 
@@ -141,12 +141,12 @@ class Module extends \MapasCulturais\Module{
         $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {
             /** @var RegistrationEvaluation $this */
             $cache_key = "updateSummary::{$this->registration->opportunity->evaluationMethodConfiguration}";
-            if(!$app->cache->contains($cache_key)) {
-                $app->cache->save($cache_key, true, 10);
+            if(!$app->mscache->contains($cache_key)) {
+                $app->mscache->save($cache_key, true, 10);
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
                     'evaluationMethodConfiguration' => $this->registration->opportunity->evaluationMethodConfiguration
                 ], '10 seconds');
-                $app->cache->delete($cache_key);
+                $app->mscache->delete($cache_key);
             }
             
         });
