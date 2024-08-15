@@ -29,37 +29,13 @@ app.component('documentary-evaluation-form', {
             fieldId: null,
             userId: null,
             userName: '',
-            isEditable: this.editable
+            isEditable: this.editable,
+            evaluationData: {},
+            newStatus: null
         };
     },
 
-    watch: {
-        evaluationData: {
-            handler(newValue) {
-                if (newValue && this.fieldId) {
-                    if (!this.formData.data[this.fieldId]) {
-                        this.formData.data[this.fieldId] = {};
-                    }
-                    
-                    this.formData.data[this.fieldId].obsItems = newValue.obsItems || '';
-                    this.formData.data[this.fieldId].obs = newValue.obs || '';
-                    this.formData.data[this.fieldId].label = newValue.label || '';
-                    this.formData.data[this.fieldId].evaluation = newValue.evaluation || '';
-                }
-            },
-            deep: true,
-            immediate: true
-        }
-    },
-
     computed: {
-        evaluationData() {
-            const data = $MAPAS.config?.documentaryEvaluationForm?.evaluationData?.evaluationData;
-            if (data && this.fieldId) {
-                return data[this.fieldId] || {};
-            }
-            return {};
-        },
         status() {
             return $MAPAS.config.documentaryEvaluationForm.evaluationData?.status || 0;
         }
@@ -70,14 +46,16 @@ app.component('documentary-evaluation-form', {
             this.fieldName = data.detail.fieldName;
             this.enableForm = data.detail.type === 'evaluationForm.openForm';
             this.fieldId = data.detail.fieldId;
-
+            
             if (this.enableForm) {
+                this.getEvaluationData();
+
                 this.formData.uid = this.userId;
                 this.formData.data[this.fieldId] = {
-                    label: $DESCRIPTIONS.registration[this.fieldName]?.label || '',
-                    obsItems: '',
-                    obs: '',
-                    evaluation: '',
+                    label: $MAPAS.config.documentaryEvaluationForm.fieldsInfo[this.fieldName]?.label || '',
+                    obsItems: this.evaluationData[this.fieldId]?.obsItems ?? '',
+                    obs: this.evaluationData[this.fieldId]?.obs ?? '',
+                    evaluation: this.evaluationData[this.fieldId]?.evaluation ?? '',
                 };
             }
         },
@@ -86,14 +64,16 @@ app.component('documentary-evaluation-form', {
             let hasError = false;
             
             Object.values(this.formData.data).forEach(item => {
-                if(!item.obsItems) {
-                    this.messages.error(this.text('o campo "Descumprimento do(s) item(s) do edital" não foi avaliado'));
-                    hasError = true;
-                }
-
-                if(!item.obs) {
-                    this.messages.error(this.text('o campo "Justificativa / Observações" não foi avaliado'));
-                    hasError = true;
+                if(this.newStatus && this.newStatus > 0) {
+                    if(!item.obsItems) {
+                        this.messages.error(this.text('o campo "Descumprimento do(s) item(s) do edital" não foi avaliado'));
+                        hasError = true;
+                    }
+    
+                    if(!item.obs) {
+                        this.messages.error(this.text('o campo "Justificativa / Observações" não foi avaliado'));
+                        hasError = true;
+                    }
                 }
             });
 
@@ -116,8 +96,23 @@ app.component('documentary-evaluation-form', {
         },
 
         processResponse(data) {
-            this.isEditable = data.detail.response.status > 0 ? false : true;
-        }
+            this.newStatus = data.detail.response.status;
+            this.isEditable = this.newStatus > 0 ? false : true;
+        },
+
+        setEvaluationData(fieldId) {
+            this.evaluationData[fieldId] = this.formData.data[fieldId];
+        },
+
+        getEvaluationData() {
+            const data = $MAPAS.config?.documentaryEvaluationForm?.evaluationData?.evaluationData;
+            
+            if((data && this.fieldId && !this.isEditable) || (!this.evaluationData)) {
+                return this.evaluationData[this.fieldId] = data[this.fieldId];
+            }
+
+            return {};
+        },
     },
 
     mounted() {

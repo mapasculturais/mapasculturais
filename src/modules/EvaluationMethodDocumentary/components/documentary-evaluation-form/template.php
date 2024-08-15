@@ -16,31 +16,31 @@ $this->import('evaluation-actions');
         <div class="documentary-evaluation-form__title">
             <h3>{{ formData.data[fieldId]?.label || '' }}</h3>
         </div>
-        <input type="hidden" v-model="formData.data[fieldId].label" />
+        <input type="hidden" v-model="formData.data[fieldId].label" @change="setEvaluationData(fieldId)" />
         <div class="documentary-evaluation-form__fields field">
             <label>
-                <input type="radio" value="" v-model="formData.data[fieldId].evaluation" :disabled="!isEditable"/>
+                <input type="radio" value="" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId)" :disabled="!isEditable"/>
                 <?= i::__('Não avaliar') ?>
             </label>
             <label>
-                <input type="radio" value="valid" v-model="formData.data[fieldId].evaluation" :disabled="!isEditable"/>
+                <input type="radio" value="valid" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId)" :disabled="!isEditable"/>
                 <?= i::__('Válida') ?>
             </label>
             <label>
-                <input type="radio" value="invalid" v-model="formData.data[fieldId].evaluation" :disabled="!isEditable"/>
+                <input type="radio" value="invalid" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId)" :disabled="!isEditable"/>
                 <?= i::__('Inválida') ?>
             </label>
         </div>
         <div class="documentary-evaluation-form__textarea field">
             <label>
                 <?= i::__('Descumprimento do(s) item(s) do edital:') ?>
-                <textarea v-model="formData.data[fieldId].obsItems" :disabled="!isEditable"></textarea>
+                <textarea v-model="formData.data[fieldId].obsItems" @change="setEvaluationData(fieldId)" :disabled="!isEditable"></textarea>
             </label>
         </div>
         <div class="documentary-evaluation-form__textarea field">
             <label>
                 <?= i::__('Justificativa / Observações') ?>
-                <textarea v-model="formData.data[fieldId].obs" :disabled="!isEditable"></textarea>
+                <textarea v-model="formData.data[fieldId].obs" @change="setEvaluationData(fieldId)" :disabled="!isEditable"></textarea>
             </label>
         </div>
     </div>
