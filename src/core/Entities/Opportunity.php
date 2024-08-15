@@ -186,7 +186,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      /**
      * @var string
      *
-     * @ORM\Column(name="registration_proponent_types", type="json", nullable=true)
+     * @ORM\Column(name="registration_proponent_types", type="json", nullable=false)
      */
     protected array $registrationProponentTypes = [];
 
