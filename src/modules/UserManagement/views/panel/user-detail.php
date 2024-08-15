@@ -16,9 +16,9 @@ $this->import('
 ');
 ?>
 <mc-entity #default='{entity}'>
-    <?php $this->applyTemplateHook('user-management', 'before') ?>
+    <?php $this->applyTemplateHook('management', 'before') ?>
     <div class="user-management">
-        <?php $this->applyTemplateHook('user-management', 'begin') ?>
+        <?php $this->applyTemplateHook('management', 'begin') ?>
         
         <div class="user-management__return">
             <mc-link route="panel/index" class="button button--icon button--primary-outline">
@@ -69,9 +69,9 @@ $this->import('
         </div>
         <?php $this->applyTemplateHook('config', 'after') ?>
 
-        <?php $this->applyTemplateHook('user-management--properties', 'before') ?>
+        <?php $this->applyTemplateHook('management-properties', 'before') ?>
         <div class="user-management__properties">
-            <?php $this->applyTemplateHook('user-management--properties', 'begin') ?>
+            <?php $this->applyTemplateHook('management-properties', 'begin') ?>
             <h3 class="user-management__properties-label">
                 <?= i::__('Propriedades do usuário') ?>
             </h3>
@@ -107,11 +107,11 @@ $this->import('
                 </mc-tabs>
                 <?php $this->applyTemplateHook('user-detail--tabs', 'after') ?>
             </div>
-            <?php $this->applyTemplateHook('user-management--properties', 'end') ?>
+            <?php $this->applyTemplateHook('management-properties', 'end') ?>
         </div>
-        <?php $this->applyTemplateHook('user-management--properties', 'after') ?>
+        <?php $this->applyTemplateHook('management-properties', 'after') ?>
 
-        <?php $this->applyTemplateHook('user-management', 'end') ?>
+        <?php $this->applyTemplateHook('management', 'end') ?>
     </div>
-    <?php $this->applyTemplateHook('user-management', 'after') ?>
+    <?php $this->applyTemplateHook('management', 'after') ?>
 </mc-entity>
