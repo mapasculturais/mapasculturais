@@ -15,7 +15,7 @@ $this->import('
         <div v-for="crit in section.criteria" :key="crit.id">
             <div>
                 <label>{{ crit.name }}</label>
-                <mc-popover @open="img.newDescription = img.description" openside="down-right">
+                <mc-popover openside="down-right">
                     <template #button="popover">
                         <a @click="popover.toggle()"> <mc-icon name="info"></mc-icon> </a>
                     </template>
