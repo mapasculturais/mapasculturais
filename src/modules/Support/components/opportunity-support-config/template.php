@@ -126,7 +126,7 @@ $this->import('
                                                 </small> 
 
                                                 <small>
-                                                    <strong><?= i::__("Tipos de proponentes")?></strong>
+                                                    <strong><?= i::__("Tipos de proponente")?></strong>
                                                     <span v-if="field.proponentTypes.length > 0">: <i>{{field.proponentTypes.join(', ')}}</i></span>
                                                     <span v-if="field.proponentTypes.length <= 0">: <i><?= i::__("Todos")?></i></span>
                                                 </small> 
