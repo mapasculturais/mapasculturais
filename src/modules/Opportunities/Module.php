@@ -108,7 +108,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         // atualiza o cache dos resumos das fase de avaliação
-        $app->hook("entity(Registration).sent:before", function() use ($app) {
+        $app->hook("entity(Registration).<<send|insert>>:before", function() use ($app) {
             /** @var Registration $this */
             $evaluation_method_configuration = $this->opportunity->evaluationMethodConfiguration ?: null;
             $cache_key = "updateSummary::{$this->opportunity}::{$evaluation_method_configuration}";
