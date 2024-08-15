@@ -17,8 +17,17 @@ foreach ($fields_list as $field) {
             "categories" => $field->categories,
             "proponentTypes" => $field->proponentTypes,
             "registrationRanges" => $field->registrationRanges,
-            "config" => $field->config
+            "config" => $field->config,
+            "order" => $field->displayOrder,
+            "conditional" => $field->conditional,
+            "conditionalField" => $field->conditionalField,
+            "required" => $field->required,
         ];
     }
 }
+
+usort($result, function ($a, $b) {
+    return $a['order'] <=> $b['order'];
+});
+
 $this->jsObject['config']['opportunitySupportConfig'] = $result;
