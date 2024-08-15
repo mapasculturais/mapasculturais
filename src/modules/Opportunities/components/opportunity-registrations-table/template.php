@@ -163,15 +163,15 @@ $entity = $this->controller->requestedEntity;
                             </button>
 
                             <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'open'" class="button button--icon button--sm button--text opportunity-registration-table__edit-open">
-                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}}
+                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}} {{entity.editableUntil.time('numeric')}}
                             </button>
 
                             <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'sent'" class="button button--icon button--sm button--text opportunity-registration-table__edit-sent">
-                                <mc-icon name="circle-checked"></mc-icon> {{entity.editSentTimestamp.date('2-digit year')}}
+                                <mc-icon name="circle-checked"></mc-icon> {{entity.editSentTimestamp.date('2-digit year')}} {{entity.editableUntil.time('numeric')}}
                             </button>
 
                             <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'missed'" class="button button--icon button--sm button--text opportunity-registration-table__edit-missed">
-                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}}
+                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}} {{entity.editableUntil.time('numeric')}}
                             </button>
                         </template>
                     </registration-editable-fields>
