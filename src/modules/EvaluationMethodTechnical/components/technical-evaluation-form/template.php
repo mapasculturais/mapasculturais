@@ -16,14 +16,14 @@ $this->import('
         <div class="bold tecnical-evaluation-form__criterion" v-for="criterion in section.criteria" :key="criterion.id">
             <label>{{ criterion.title }}</label>
             <div class="field tecnical-evaluation-form__maxScore">
-                <label>Nota Máxima
+                <label><?php i::_e('Nota Máxima') ?>
                     <input class="maxScore-input" v-if="isEditable" v-model="formData.data[criterion.id]" min="0" step="0.1" type="number" @input="handleInput(sectionIndex, criterion.id)">
                     <input class="maxScore-input" v-if="!isEditable" disabled min="0" step="0.1" type="number" :value="formData.data[criterion.id]" @input="handleInput(sectionIndex, criterion.id)">
                 </label>
             </div>
         </div>
         <div class="tecnical-evaluation-form__content-subTotal">
-            <h4 class="bold">Subtotal: {{ subtotal (sectionIndex) }}</h4>
+            <h4 class="bold"><?php i::_e('Subtotal') ?>: {{ subtotal (sectionIndex) }}</h4>
         </div>
     </div>
 
