@@ -55,13 +55,12 @@ $this->import('
                     <div class="opportunity-phase-list-registrations__status col-6">
                         <h4 class="bold"><?php i::_e("Status das inscrições") ?></h4>
                         <p v-if="phase.summary.registrations"><?= i::__("Quantidade de inscrições:") ?> <strong>{{phase.summary.registrations}}</strong><strong> <?= i::__('inscrições') ?></strong></p>
-                        <p v-if="phase.summary?.sent"><?= i::__("Quantidade de inscrições <strong>enviadas</strong>:") ?> <strong>{{phase.summary.sent}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
+                        <p v-if="phase.summary?.sent"><?= i::__("Quantidade de inscrições <strong>enviadas/pendentes</strong>:") ?> <strong>{{phase.summary.sent}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Draft"><?= i::__("Quantidade de inscrições <strong>rascunho</strong>:") ?> <strong>{{phase.summary.Draft}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{phase.summary.Approved}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Notapproved"><?= i::__("Quantidade de inscrições <strong>não selecionadas</strong>:") ?> <strong>{{phase.summary.Notapproved}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{phase.summary.Waitlist}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
                         <p v-if="phase.summary?.Invalid"><?= i::__("Quantidade de inscrições <strong>inválida</strong>:") ?> <strong>{{phase.summary.Invalid}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
-                        <p v-if="phase.summary?.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{phase.summary.Pending}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
     
                     </div>
                     <h5 class="bold col-12"><?= i::__("A lista de inscrições pode ser acessada utilizando o botão abaixo")?></h5>

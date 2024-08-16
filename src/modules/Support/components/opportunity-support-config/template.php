@@ -104,31 +104,33 @@ $this->import('
                                     <span class="opportunity-support-config__field-icon">
                                         <mc-icon :name="getFieldType(field)"></mc-icon>
                                     </span>
-
                                     <div>
-                                        <h4 class="bold"> #{{field.id}} - {{ field.title }} </h4>
-                                        <div class="fields-conditional">
-                                            <small>
-                                                <strong><?= i::__("Categorias")?></strong>
-                                                <span v-if="field.categories.length > 0">: <i>{{field.categories.join(', ')}}</i></span>
-                                                <span v-if="field.categories.length <= 0">: <i><?= i::__("Todas")?></i></span>
-                                                |
-                                            </small> 
+                                        <h4 class="bold"> #{{field.id}} - {{ field.title }} <small v-if="field.required" class="required bold"><i>* <?= i::__("Obrigatório")?></i></small></h4> 
+                                        <div class="fields-info">
+                                            <div class="conditional">
+                                                <small v-if="getConditionalField(field)">
+                                                    <strong><?= i::__("Este campo está condicionado ao campo")?></strong>: <i>#{{getConditionalField(field)}}</i>
+                                                </small>
+                                            </div>
+                                            <div class="registration-type">
+                                                <small>
+                                                    <strong><?= i::__("Categorias")?></strong>
+                                                    <span v-if="field.categories.length > 0" class="border-span">: <i>{{field.categories.join(', ')}}</i></span>
+                                                    <span v-if="field.categories.length <= 0" class="border-span">: <i><?= i::__("Todas")?></i></span>
+                                                </small> 
 
-                                            <small>
-                                                <strong><?= i::__("Faixas/Linhas")?></strong>
-                                                <span v-if="field.registrationRanges.length > 0">: <i>{{field.registrationRanges.join(', ')}}</i></span>
-                                                <span v-if="field.registrationRanges.length <= 0">: <i><?= i::__("Todas")?></i></span>
-                                                |
-                                            </small> 
+                                                <small>
+                                                    <strong><?= i::__("Faixas/Linhas")?></strong>
+                                                    <span v-if="field.registrationRanges.length > 0" class="border-span">: <i>{{field.registrationRanges.join(', ')}}</i></span>
+                                                    <span v-if="field.registrationRanges.length <= 0" class="border-span">: <i><?= i::__("Todas")?></i></span>
+                                                </small> 
 
-                                            <small>
-                                                <strong><?= i::__("Tipos de proponentes")?></strong>
-                                                <span v-if="field.proponentTypes.length > 0">: <i>{{field.proponentTypes.join(', ')}}</i></span>
-                                                <span v-if="field.proponentTypes.length <= 0">: <i><?= i::__("Todos")?></i></span>
-                                            </small> 
-
-                                            
+                                                <small>
+                                                    <strong><?= i::__("Tipos de proponente")?></strong>
+                                                    <span v-if="field.proponentTypes.length > 0">: <i>{{field.proponentTypes.join(', ')}}</i></span>
+                                                    <span v-if="field.proponentTypes.length <= 0">: <i><?= i::__("Todos")?></i></span>
+                                                </small> 
+                                            </div>
                                         </div>
                                     </div>
                                    
