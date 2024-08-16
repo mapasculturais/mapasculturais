@@ -527,8 +527,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $registration = $this;
             $em = $registration->evaluationMethodConfiguration;
             
+            $registration->isFirstPhase;
             $opportunity_first_phase = $registration->opportunity->firstPhase;
-            if($opportunity_first_phase->enableQuotasQuestion && !$registration->firstPhase->appliedForQuota) {
+            $_registration = $registration->isFirstPhase ? $this : $this->firstPhase;
+            if($opportunity_first_phase->enableQuotasQuestion && !$_registration->appliedForQuota) {
                 return false;
             }
             
