@@ -30,9 +30,7 @@ if($fields) {
 
 if($files) {
     foreach($files as $file) {
-        $file_group_name = str_replace('rfc_', 'field_', $file->fileGroupName);
-
-        $infos[$file_group_name] = [
+        $infos[$file->fileGroupName] = [
             'label' => $file->title,
             'fieldId' => $file->id
         ];
