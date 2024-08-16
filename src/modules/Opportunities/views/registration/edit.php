@@ -109,11 +109,11 @@ $this->breadcrumb = $breadcrumb;
 
                         <div v-if="entity.opportunity.enableQuotasQuestion" class="card owner">                            
                             <h3 class="card__title"> 
-                                <?= i::__('Declarar interesse em participar das políticas afirmativas') ?> 
+                                <?= i::__('Vai concorrer às cotas?') ?> 
                             </h3>
 
                             <div class="card__content">
-                                <entity-field :entity="entity" prop="appliedForQuota"></entity-field>
+                                <entity-field :entity="entity" prop="appliedForQuota" :hide-label="true"></entity-field>
                             </div>
                         </div>
 
