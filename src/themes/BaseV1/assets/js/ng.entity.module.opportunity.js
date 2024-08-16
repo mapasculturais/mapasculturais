@@ -1210,6 +1210,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
 
+    $scope.getFieldType = function(field) {
+        return field?.fieldName ? 'field' : 'file';
+    };
+
     $timeout(function(){
         $scope.ibge = MapasCulturais.ibge;
     }, 200)

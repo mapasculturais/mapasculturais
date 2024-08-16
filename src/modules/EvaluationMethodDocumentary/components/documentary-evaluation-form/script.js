@@ -27,6 +27,7 @@ app.component('documentary-evaluation-form', {
             },
             fieldName: '',
             fieldId: null,
+            fieldType: null,
             userId: null,
             userName: '',
             isEditable: this.editable,
@@ -43,7 +44,8 @@ app.component('documentary-evaluation-form', {
 
     methods: {
         getDocumentaryData(data) {
-            this.fieldName = data.detail.fieldName;
+            this.fieldType = data.detail.fieldType;
+            this.fieldName = this.fieldType === 'file' ? data.detail.fieldName.replace('field_', 'rfc_') : data.detail.fieldName;
             this.enableForm = data.detail.type === 'evaluationForm.openForm';
             this.fieldId = data.detail.fieldId;
             
