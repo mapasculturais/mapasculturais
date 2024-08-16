@@ -208,7 +208,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         ]);
 
         $this->registerOpportunityMetadata('enableQuotasQuestion', [
-            'label' => "",
+            'label' => "Vai concorrer às cotas",
             'type' => 'boolean',
             'private' => false,
             'field_type' => 'radio',
