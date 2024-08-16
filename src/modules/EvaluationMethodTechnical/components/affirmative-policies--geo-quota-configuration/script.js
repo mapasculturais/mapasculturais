@@ -45,7 +45,7 @@ app.component('affirmative-policies--geo-quota-configuration', {
 
     computed: {
         divisions() {
-            return $MAPAS.config.geoQuotaConfiguration;
+            return $MAPAS.config.geoQuotaConfiguration.geoDivisions;
         },
 
         vacancies() {
@@ -97,9 +97,10 @@ app.component('affirmative-policies--geo-quota-configuration', {
         },
 
         getFields(proponentType = '') {
-            const opportunity = this.phase.opportunity.parent || this.phase.opportunity;
-            
-            const result = opportunity.affirmativePoliciesEligibleFields.filter((field) => {
+            const opportunity = this.phase.opportunity;
+            const fields = $MAPAS.config.geoQuotaConfiguration.fields[opportunity.id];
+
+            const result = fields.filter((field) => {
                 if (proponentType === '') {
                     return !field.proponentTypes || field.proponentTypes.length == 0;
                 } else {
