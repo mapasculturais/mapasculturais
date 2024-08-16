@@ -204,7 +204,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $this->registerEvaluationMethodConfigurationMetadata('cutoffScore', [
             'label' => i::__('Nota de corte'),
-            'type' => 'integer',
+            'type' => 'float',
         ]);
 
         $this->registerOpportunityMetadata('enableQuotasQuestion', [
