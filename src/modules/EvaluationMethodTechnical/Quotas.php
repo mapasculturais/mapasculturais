@@ -5,6 +5,7 @@ use Doctrine\ORM\Exception\NotSupported;
 use MapasCulturais\App;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Traits;
 use Symfony\Component\Cache\Exception\InvalidArgumentException;
 
@@ -599,9 +600,26 @@ class Quotas {
      * @return array 
      */
     public function tiebreaker($registrations) {
-        $module = Module::i(); 
         $tiebreaker_configuration = $this->tiebreakerConfig;
-        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration, $module) {
+
+        $must_fetch_evaluation_data = false;
+        foreach($tiebreaker_configuration as $tiebreaker) {
+            if($tiebreaker->criterionType == 'criterion') {
+                $must_fetch_evaluation_data = true;
+                break;
+            }
+
+            if($tiebreaker->criterionType == 'sectionCriteria') {
+                $must_fetch_evaluation_data = true;
+                break;
+            }
+        }
+
+        if($must_fetch_evaluation_data) {
+            $evaluation_data = $this->fetchEvaluationData($registrations);
+        }
+
+        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration, $evaluation_data) {
             $result = $registration2->score <=> $registration1->score;
             if($result != 0) {
                 return $result;
@@ -609,8 +627,8 @@ class Quotas {
 
             foreach($tiebreaker_configuration as $tiebreaker) {
                 if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'criterion') {
-                    $registration1Has = $module->tiebreakerCriterion($tiebreaker->preferences, $registration1->id);
-                    $registration2Has = $module->tiebreakerCriterion($tiebreaker->preferences, $registration2->id);
+                    $registration1Has = $this->tiebreakerCriterion($tiebreaker->preferences, $registration1->id, $evaluation_data);
+                    $registration2Has = $this->tiebreakerCriterion($tiebreaker->preferences, $registration2->id, $evaluation_data);
                     
                     $this->saveRegistrationTiebreaker($registration1, $tiebreaker, $registration1Has);
                     $this->saveRegistrationTiebreaker($registration2, $tiebreaker, $registration2Has);
@@ -621,8 +639,8 @@ class Quotas {
                 }
                 
                 if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'sectionCriteria') {
-                    $registration1Has = $module->tiebreakerSectionCriteria($tiebreaker->preferences, $registration1->id);
-                    $registration2Has = $module->tiebreakerSectionCriteria($tiebreaker->preferences, $registration2->id);
+                    $registration1Has = $this->tiebreakerSectionCriteria($tiebreaker->preferences, $registration1->id, $evaluation_data);
+                    $registration2Has = $this->tiebreakerSectionCriteria($tiebreaker->preferences, $registration2->id, $evaluation_data);
 
                     $this->saveRegistrationTiebreaker($registration1, $tiebreaker, $registration1Has);
                     $this->saveRegistrationTiebreaker($registration2, $tiebreaker, $registration2Has);
@@ -720,99 +738,124 @@ class Quotas {
         });
         return $registrations;
     }
+
+    /**
+     * Retorna os dados de avaliação das inscrições
+     * 
+     * @param array $registrations 
+     * @return array 
+     */
+    public function fetchEvaluationData(array $registrations): array {
+        $app = App::i();
+        
+        $sql = "SELECT registration_id, evaluation_data FROM registration_evaluation WHERE registration_id IN (:registrations) AND status IN (:status)";
+
+        $status = [ 
+            RegistrationEvaluation::STATUS_EVALUATED,
+            RegistrationEvaluation::STATUS_SENT
+        ];
+
+        $registrations_ids = array_map(fn($reg) => $reg->id, $registrations);
+
+        $evaluations_data = $app->em->getConnection()->executeQuery($sql, [
+            'registrations' => $registrations_ids,
+            'status' => $status
+        ], [
+            'registrations' => \Doctrine\DBAL\ArrayParameterType::INTEGER,
+            'status' => \Doctrine\DBAL\ArrayParameterType::STRING
+        ])->fetchAll();
+
+        $grouped = [];
+
+        foreach($evaluations_data as $data) {
+            $evaluation = json_decode($data['evaluation_data']);
+            $registration_id = $data['registration_id'];
+
+            $grouped[$registration_id] = $grouped[$registration_id] ?? [];
+            $grouped[$registration_id][] = $evaluation;
+        }
+
+        $result = [];
+
+        foreach($grouped as $registration_id => $evaluations) {
+            $result[$registration_id] = [];
+            $keys_count = [];
+            foreach($evaluations as $evaluation) {
+                foreach($evaluation as $key => $value) {
+                    if(!str_starts_with($key, 'c-')) {
+                        continue;
+                    }
+                    $keys_count[$key] = $keys_count[$key] ?? 0;
+                    $keys_count[$key]++;
+
+                    $result[$registration_id][$key] = $result[$registration_id][$key] ?? 0;
+                    $result[$registration_id][$key] += $value;
+                }
+            }
+
+            foreach($result[$registration_id] as $key => $value) {
+                $result[$registration_id][$key] = $value / $keys_count[$key];
+            }
+        }
+
+        return $result;
+    }
     
     /**
      * Retorna a média de um critério de avaliação para uma inscrição
      * 
-     * @param mixed $criteriaId 
-     * @param mixed $registrationId 
+     * @param mixed $criteria_id 
+     * @param mixed $registration_id 
      * @return float 
      */
-    public function tiebreakerCriterion($criteriaId, $registrationId) {
-        $app = App::i();
-        
-        $registration = $app->repo('Registration')->find($registrationId);
-        $criteria = $registration->evaluationMethodConfiguration->criteria;
-
-        $findCriteria = [];
-        foreach($criteria as $criterion) {
-            if($criterion->id === $criteriaId) {
-                $findCriteria[] = $criterion;
+    public function tiebreakerCriterion($criteria_id, $registration_id, $evaluation_data) {
+        $criteria = [];
+        foreach($this->evaluationConfig->criteria as $criterion) {
+            if($criterion->id === $criteria_id) {
+                $criteria[] = $criterion;
             }
         }
 
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
-        ];
-
-        $committee = $registration->opportunity->getEvaluationCommittee();
-
-        $users = [];
-        foreach ($committee as $item) {
-            $users[] = $item->agent->user->id;
-        }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
+        $evaluation_data = $evaluation_data[$registration_id] ?? [];
 
         $result = 0;
-        foreach ($evaluations as $eval) {
-            foreach($eval->evaluationData as $key => $data) {
-                foreach($findCriteria as $cri) {
-                    if($key === $criteriaId) {
-                        $result += $data * $cri->weight;
-                    }
+        foreach($evaluation_data as $key => $data) {
+            foreach($criteria as $cri) {
+                if($key === $cri->id) {
+                    $result = $data * $cri->weight;
                 }
             }
         }
-
-        $num = count($evaluations);
-
-        return $num ? number_format($result / $num, 2) : null;
+        
+        return number_format($result, 2);
     }
 
     /** 
      * Retorna a média de uma seção de critérios de avaliação para uma inscrição
      * 
-     * @param mixed $sectionId 
-     * @param mixed $registrationId 
+     * @param mixed $section_id 
+     * @param mixed $registration_id 
      * @return float 
      */
-    public function tiebreakerSectionCriteria($sectionId, $registrationId) {
-        $app = App::i();
-        
-        $registration = $app->repo('Registration')->find($registrationId);
-        $criteria = $registration->evaluationMethodConfiguration->criteria;
-
-        $findCriteria = [];
-        foreach($criteria as $criterion) {
-            if($criterion->sid === $sectionId) {
-                $findCriteria[] = $criterion;
+    public function tiebreakerSectionCriteria($section_id, $registration_id, array $evaluation_data) {
+        $criteria = [];
+        foreach($this->evaluationConfig->criteria as $criterion) {
+            if($criterion->sid === $section_id) {
+                $criteria[] = $criterion;
             }
         }
 
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
-        ];
-
-        $committee = $registration->opportunity->getEvaluationCommittee();
-
-        $users = [];
-        foreach ($committee as $item) {
-            $users[] = $item->agent->user->id;
-        }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
+        $evaluation_data = $evaluation_data[$registration_id] ?? [];
 
         $result = 0;
-        foreach ($evaluations as $eval) {
-            foreach($eval->evaluationData as $key => $data) {
-                foreach($findCriteria as $cri) {
-                    if($key === $cri->id) {
-                        $result += $data * $cri->weight;
-                    }
+        foreach($evaluation_data as $key => $data) {
+            foreach($criteria as $cri) {
+                if($key === $cri->id) {
+                    $result += $data * $cri->weight;
                 }
             }
         }
+
         return number_format($result, 2);
     }
 }
