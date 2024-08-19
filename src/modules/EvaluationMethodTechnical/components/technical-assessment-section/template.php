@@ -52,9 +52,9 @@ $this->import('
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
                     <div class="criterion" v-if="criteria.sid == section.id">
                         <div class="criterion__fields">
-                            <input type="text" v-model="criteria.title" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaTitleInput">
-                            <input type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>">
-                            <input type="number" v-model="criteria.weight" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Peso') ?>">
+                            <input type="text" v-model="criteria.title" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaTitleInput" >
+                            <input type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>" step="0.25">
+                            <input type="number" v-model="criteria.weight" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Peso') ?>" step="0.25">
                         </div>
                         <div class="field__trash">
                             <mc-confirm-button @confirm="delCriteria(criteria.id)">
@@ -91,7 +91,7 @@ $this->import('
         </div>
         <div class="field">
             <label><?php i::_e("Nota de corte:") ?>
-                <input class="field__input" type="number" v-model="entity.cutoffScore" min="0" @blur="change()" placeholder="<?= i::esc_attr__('Nota de corte') ?>">
+                <input class="field__input" type="number" v-model="entity.cutoffScore" min="0" step="0.25" @blur="change()" placeholder="<?= i::esc_attr__('Nota de corte') ?>">
             </label>
         </div>
     </div>
