@@ -248,7 +248,6 @@ app.component('opportunity-registrations-table', {
                     const geoQuotaConfiguration = evaluationMethodConfiguration.geoQuotaConfiguration;
                     
                     if(tiebreakerConfiguration?.length > 0) {
-                        debugger
                         itens.splice(3,0,{
                             text: __('Critérios de desempate', 'opportunity-registrations-table'),
                             value: 'tiebreaker',
