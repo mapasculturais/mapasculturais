@@ -25,12 +25,10 @@ class Module extends \MapasCulturais\Module{
                 if(!$app->cache->contains($cache_key)){
                     $entity = $app->user->profile;
                     if($entity->dataDeNascimento){
-                        $app->log->debug('Entrou aqui 1');
                         $today = new \DateTime('now');
                         $calc = (new \DateTime($entity->dataDeNascimento))->diff($today);
                         $idoso = ($calc->y >= 60) ? "1" : "0";
                         if($entity->idoso != $idoso){
-                            $app->log->debug('Entrou aqui 2');
                             $entity->idoso = $idoso;
                             $entity->save(true);
                         }

@@ -475,6 +475,17 @@ class Module extends \MapasCulturais\Module
                 'configTemplate' => 'registration-field-types/agent-owner-field-config',
                 'requireValuesConfiguration' => true,
                 'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    if(is_array($value)) {
+                        $_result =  array_filter($value, function($val) {
+                            $val = trim($val);
+                            if($val != "" && $val != "null" && !is_null($val) && $val !== "null;" && $val !== '[]') {
+                                return $val;
+                            }
+                        });
+                      
+                        $value = $_result ?? [""]; 
+                    }
+
                     $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
 
                     if(is_object($value) || is_array($value)) {
@@ -526,6 +537,18 @@ class Module extends \MapasCulturais\Module
                 'requireValuesConfiguration' => true,
                 'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     $agent = $registration->getRelatedAgents('coletivo');
+
+                    if(is_array($value)) {
+                        $_result =  array_filter($value, function($val) {
+                            $val = trim($val);
+                            if($val != "" && $val != "null" && !is_null($val) && $val !== "null;" && $val !== '[]') {
+                                return $val;
+                            }
+                        });
+                      
+                        $value = $_result ?? [""]; 
+                    }
+
                     if($agent){
                         $module->saveToEntity($agent[0], $value, $registration, $metadata_definition);
                     }
