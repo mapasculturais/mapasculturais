@@ -130,7 +130,11 @@ class Registrations extends SpreadsheetJob
 
                         if($entity_type_field['ft'] == 'pessoaDeficiente') {
                             if(is_array($entity[$field->fieldName])) {
-                                $entity_field_value = implode(', ', $entity[$field->fieldName]);
+                                $filter_values = array_filter($entity[$field->fieldName], function($value) {
+                                    return $value !== 'null';
+                                });
+
+                                $entity_field_value = implode(', ', $filter_values);
                                 
                                 $entity[$field->fieldName] = $entity_field_value;
                             }
