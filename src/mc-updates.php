@@ -454,5 +454,97 @@ return [
             } 
             $app->enableAccessControl();
         });
+    },
+    'Corrige campo pessoa deficiente dos agentes' => function () use ($app) {
+        $ajust_array_value = function ($value) {
+            $result =  array_filter($value, function ($val) {
+                $val = trim($val);
+                $teste[$val] =  $val;
+
+                if ($val !== "" && $val != "null" && !is_null($val) && $val != "null;" && $val != "[]") {
+                    return $val;
+                }
+            });
+
+            $result = implode('","', $result);
+            $result = '["' . $result . '"]';
+
+            return $result ?: [""];
+        };
+
+        $app->disableAccessControl();
+
+        DB_UPDATE::enqueue(Agent::class, "id > 0", function (Agent $agent) use ($app, $ajust_array_value) {
+            $conn = $app->em->getConnection();
+
+            if ($value = $agent->pessoaDeficiente) {
+
+                if (is_array($value)) {
+                    $_result = $ajust_array_value($value);
+                } else {
+                    if ($value == "" || $value == "null" || is_null($value) || $value == "null;") {
+                        $_result = '[""]';
+                    } else {
+                        if ($value = explode(";", $value)) {
+                            $_result = $ajust_array_value($value);
+                        }
+                    }
+                }
+
+                $conn->executeQuery("UPDATE agent_meta set value = '{$_result}' where object_id = {$agent->id} AND key = 'pessoaDeficiente'");
+            }
+        });
+        $app->enableAccessControl();
+    },
+    'Corrige campo pessoa deficiente das inscrições' => function () use ($app) {
+        $conn = $app->em->getConnection();
+        $opportunity_ids = [];
+        if($values = $conn->fetchAll("SELECT * from registration_field_configuration WHERE field_type = 'agent-owner-field' and config LIKE '%pessoaDeficiente%'")) {
+            foreach($values as $value) {
+                $field_name = "field_{$value['id']}";
+                $fields_data[$value['opportunity_id']] = $field_name;
+            }
+        }
+
+        $ajust_array_value = function ($value) {
+            $result =  array_filter($value, function ($val) {
+                $val = trim($val);
+                $teste[$val] =  $val;
+
+                if ($val !== "" && $val != "null" && !is_null($val) && $val != "null;" && $val != "[]") {
+                    return $val;
+                }
+            });
+
+            $result = implode('","', $result);
+            $result = '["' . $result . '"]';
+
+            return $result ?: [""];
+        };
+
+        $opportunity_ids =  array_keys($fields_data);
+        foreach($opportunity_ids as $opp_id) {
+            DB_UPDATE::enqueue(Registration::class, "opportunity_id  = {$opp_id}", function (Registration $registration) use ($app, $fields_data, $opp_id, $ajust_array_value, $conn) {
+                $registration->registerFieldsMetadata();
+
+                $field_name =  $fields_data[$opp_id];
+
+                if($value = $registration->$field_name) {
+                    if (is_array($value)) {
+                        $_result = $ajust_array_value($value);
+                    } else {
+                        if ($value == "" || $value == "null" || is_null($value) || $value == "null;") {
+                            $_result = '[""]';
+                        } else {
+                            if ($value = explode(";", $value)) {
+                                $_result = $ajust_array_value($value);
+                            }
+                        }
+                    }
+    
+                    $conn->executeQuery("UPDATE registration_meta set value = '{$_result}' where object_id = {$registration->id} AND key = '{$field_name}'");
+                }
+            });
+        }
     }
 ];
