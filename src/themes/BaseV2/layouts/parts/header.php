@@ -26,4 +26,5 @@
     </head>
 
     <body <?php $this->bodyProperties() ?> style="opacity:0" >
+        <?php $this->applyTemplateHook('body','begin'); ?>
         <?php $this->bodyBegin() ?>
