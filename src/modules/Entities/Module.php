@@ -19,7 +19,7 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
 
         // Atualiza o campo pessoa idosa no momento de login
-        $app->hook('GET(<<*>>)', function () use($app){
+        $app->hook('auth.successful', function () use($app){
             if ($app->auth->isUserAuthenticated()) {
                 $cache_key = "profile:idoso:{$app->user->id}";
                 if(!$app->cache->contains($cache_key)){
