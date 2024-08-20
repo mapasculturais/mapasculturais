@@ -35,6 +35,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa método detectDateFormat() no Utils para detectar o formato de uma data
 - Implementa nova tabela de listagem de avaliações
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
+- Exibe na tabela de inscrições colunas exibindo em quais cotas o proponente foi incluído, os critérios de desempate que foram utilizados e a região do proponente
+
+#### Refatoração das políticas afirmativas
+- Os percentuais configurados para as cotas agora são garantidos dentro das regiões e faixas/linhas de inscrição
+- A configuração dos campos que representam os valores que serão utilizados para identificar os cotistas e a região do proponente agora deve ser feita para cada tipo de proponente configurado.
 
 ### Correções
 - Impede a exibição da coluna "Agente Responsável" no componente "opportunity-evaluation-table" quando a configuração de campos visíveis não permite o resumo dos agentes.

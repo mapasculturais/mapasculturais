@@ -23,13 +23,13 @@ class UpdateSummaryCaches extends JobType
         
         /** @var Opportunity $opportunity */
         if($opportunity = $job->opportunity){
-            $app->cache->delete($opportunity->summaryCacheKey);
+            $app->mscache->delete($opportunity->summaryCacheKey);
             $opportunity->getSummary(true);
         }
 
         /** @var EvaluationMethodConfiguration $evaluationMethodConfiguration */
         if($evaluationMethodConfiguration = $job->evaluationMethodConfiguration){
-            $app->cache->delete($evaluationMethodConfiguration->summaryCacheKey);
+            $app->mscache->delete($evaluationMethodConfiguration->summaryCacheKey);
             $evaluationMethodConfiguration->getSummary(true);
         }
        

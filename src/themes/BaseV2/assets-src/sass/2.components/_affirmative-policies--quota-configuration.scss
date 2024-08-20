@@ -54,6 +54,7 @@
         display: grid;
         gap: size(20);
         padding: size(18) size(23);
+        max-width: size(1018);
     }
 
     &__card-footer {
@@ -75,6 +76,9 @@
             border: 0;
         }
 
+        .mc-select {
+            max-width: size(870);
+        }
         .field--horizontal {
             flex-wrap: wrap;
         }
@@ -85,5 +89,10 @@
         display: grid;
         grid-template-columns: 1fr size(20);
         justify-items: center;
+    }
+
+    .field--horizontal {
+        max-width: size(870);
+        flex-wrap: wrap;
     }
 }

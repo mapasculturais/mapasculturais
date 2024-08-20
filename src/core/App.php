@@ -1811,7 +1811,11 @@ class App {
             $job->$key = $value;
         }
 
-        $job->save(true);
+        try{
+            $job->save(true);
+        } catch (\Exception $e) {
+            $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
+        }
 
         return $job;
     }

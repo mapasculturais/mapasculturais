@@ -95,7 +95,7 @@ $this->import('
             <mc-card class="col-12">
                 <template #default>
                     <div class="input-group">
-                        <h4 class="input-group__title"><?= i::__("Solicitar imagem de perfil") ?></h4>
+                        <h4 class="input-group__title"><?= i::__("Habilitar solicitação de imagem de perfil") ?></h4>
                         <h6 class="input-group__subtitle"><?= i::__("Solicita ao usuário que insira a imagem de perfil no formulário de inscrição") ?></h6>
                         <div class="input-group__inputs">
                             <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="requestAgentAvatar" :autosave="3000"></entity-field>
@@ -110,7 +110,7 @@ $this->import('
             <mc-card class="col-12">
                 <template #default>
                     <div class="input-group">
-                        <h4 class="input-group__title"><?= i::__("Habilitar pergunta 'Vai concorrer as cota'") ?></h4>
+                        <h4 class="input-group__title"><?= i::__("Habilitar pergunta 'Vai concorrer às cotas'") ?></h4>
                         <div class="input-group__inputs">
                             <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="enableQuotasQuestion" :autosave="3000"></entity-field>
                         </div>

@@ -69,7 +69,7 @@ return array(
 
         'registrationLimitPerOwner' => array(
             'type' => 'integer',
-            'label' => \MapasCulturais\i::__('Limite de instritos por agente'),
+            'label' => \MapasCulturais\i::__('Limite de inscritos por agente'),
             // 'description' => \MapasCulturais\i::__('Defina o limite de inscritos por agente responsável pela avaliação.'),
             'validations' => array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições por agente responsável deve ser um número inteiro")
