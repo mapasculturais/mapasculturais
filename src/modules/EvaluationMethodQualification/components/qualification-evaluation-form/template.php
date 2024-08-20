@@ -8,12 +8,12 @@ $this->import('
     mc-popover
 ')
 ?>
-<div>
-    <p><?php i::_e('Critérios de Avaliação') ?></p>
-    <div v-for="section in sections" :key="section.id">
+<div class="qualification-evaluation-form">
+    <p class="semibold"><?php i::_e('Critérios de Avaliação') ?></p>
+    <div class="qualification-evaluation-form__section field" v-for="section in sections" :key="section.id">
         <h3>{{ section.name }}</h3>
-        <div v-for="crit in section.criteria" :key="crit.id">
-            <div>
+        <div class="qualification-evaluation-form__criterion" v-for="crit in section.criteria" :key="crit.id">
+            <div class="qualification-evaluation-form__criterion-title">
                 <label>{{ crit.name }}</label>
                 <mc-popover openside="down-right">
                     <template #button="popover">
@@ -43,14 +43,22 @@ $this->import('
                 <input v-if="!isEditable" type="text" :value="formData.data[crit.id]" disabled>
             </div>
         </div>
-        <label :class="sectionStatus(section.id) == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'"><?php i::_e('Resultado da seção:') ?> {{sectionStatus(section.id)}} </label>
+        <label>
+            <?php i::_e('Resultado da seção:') ?> 
+            <span :class="sectionStatus(section.id) == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'">
+                {{ sectionStatus(section.id) }}
+            </span>
+        </label>
     </div>
-    <div>
-        <label :class="consolidatedResult == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'"><?php i::_e('Status da avaliação:') ?> {{consolidatedResult}}</label>
-    </div>
-    <div>
+    <div class="qualification-evaluation-form__observation field">
         <p><?php i::_e('Observações') ?></p>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
+        <label>
+            <?php i::_e('Status da avaliação:') ?> 
+            <span :class="consolidatedResult == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'">
+                {{ consolidatedResult }}
+            </span>
+        </label>
     </div>
     <evaluation-actions :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
 </div>
