@@ -115,6 +115,21 @@ $entity = $this->controller->requestedEntity;
                     <mc-status v-if="statusNotEditable" :value="getStatus(entity.status).status" :status-name="getStatus(entity.status).label"></mc-status>
                 </template>
 
+                <template #tiebreaker="{entity}"> 
+                    <template v-if="entity.tiebreaker">
+                        <div v-for="(item, key) in entity.tiebreaker">
+                            {{key}}: <strong>{{item}}</strong>
+                        </div>
+                    </template>
+                </template>
+
+                <template #quotas="{entity}"> 
+                    <div v-if="entity.quotas.length > 0" v-for="quota in entity.quotas">
+                        {{quota}}
+                    </div>
+                    <span v-else>&nbsp;</span>
+                </template>
+
                 <template #consolidatedResult="{entity}"> 
                     {{consolidatedResultToString(entity)}}
                 </template>
@@ -148,15 +163,15 @@ $entity = $this->controller->requestedEntity;
                             </button>
 
                             <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'open'" class="button button--icon button--sm button--text opportunity-registration-table__edit-open">
-                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}}
+                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}} {{entity.editableUntil.time('numeric')}}
                             </button>
 
                             <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'sent'" class="button button--icon button--sm button--text opportunity-registration-table__edit-sent">
-                                <mc-icon name="circle-checked"></mc-icon> {{entity.editSentTimestamp.date('2-digit year')}}
+                                <mc-icon name="circle-checked"></mc-icon> {{entity.editSentTimestamp.date('2-digit year')}} {{entity.editableUntil.time('numeric')}}
                             </button>
 
                             <button @click="modal.open()" v-if="statusEditRegistration(entity) == 'missed'" class="button button--icon button--sm button--text opportunity-registration-table__edit-missed">
-                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}}
+                                <mc-icon name="exclamation"></mc-icon> {{entity.editableUntil.date('2-digit year')}} {{entity.editableUntil.time('numeric')}}
                             </button>
                         </template>
                     </registration-editable-fields>

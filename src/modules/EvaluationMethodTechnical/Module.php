@@ -7,17 +7,29 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Controller;
+use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
+    
+    protected static Module $instance;
+    private $viability_status;
+
     function __construct(array $config = []) {
+        self::$instance = $this;
         $config += ['step' => '0.1'];
         parent::__construct($config);
     }
 
-    private $viability_status;
+    /**
+     * Retorna a instância do módulo
+     * @return Module
+     */
+    public static function i(): Module {
+        return self::$instance;
+    }
 
     public function getSlug() {
         return 'technical';
@@ -192,11 +204,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $this->registerEvaluationMethodConfigurationMetadata('cutoffScore', [
             'label' => i::__('Nota de corte'),
-            'type' => 'integer',
+            'type' => 'float',
         ]);
 
         $this->registerOpportunityMetadata('enableQuotasQuestion', [
-            'label' => "",
+            'label' => "Vai concorrer às cotas",
             'type' => 'boolean',
             'private' => false,
             'field_type' => 'radio',
@@ -333,157 +345,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return isset($rule->title) ? $app->slugify($rule->title) : md5(json_encode($rule));
     }
 
-    public function getPhaseQuotaRegistrations(int $phase_id, $params = null) {
-        $app = App::i();
-        
-        $phase_opportunity = $app->repo('Opportunity')->find($phase_id);
-        $phase_evaluation_config = $phase_opportunity->evaluationMethodConfiguration;
-        $first_phase = $phase_opportunity->firstPhase;
-        $cutoff_score = $phase_evaluation_config->cutoffScore;
-        
-        // número total de vagas no edital
-        $vacancies = $first_phase->vacancies;
-        $exclude_ampla_concorrencia = !$first_phase->considerQuotasInGeneralList;
-
-        // configuração de faixas
-        $registration_ranges = $first_phase->registrationRanges ?: [];
-        $ranges_config = [];
-        foreach($registration_ranges as $range) {
-            $ranges_config[$range['label']] = $range['limit'];
-        }
-
-        $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
-        $quota_config = $phase_evaluation_config->quotaConfiguration ?: (object) ['rules' => (object) []];
-        $geo_quota_config = $phase_evaluation_config->geoQuotaConfiguration ?: (object) ['distribution' => (object) [], 'geoDivision' => null];
-        $geo_quota_config->distribution = (object) $geo_quota_config->distribution;
-        
-        $selected_global = [];
-        $selected_by_quotas = [];
-        $selected_by_geo = [];
-        $selected_by_ranges = [];
-
-        /** ===  INICIALIZANDO AS LISTAS === */
-        // cotas
-        $total_quota = 0;
-        foreach($quota_config->rules as $rule) {
-            $rule_id = $this->generateRuleId($rule);
-            $selected_by_quotas[$rule_id] = $selected_by_quotas[$rule_id] ?? [];
-            $total_quota += $rule->vacancies;
-        }
-        $total_ampla_concorrencia = $vacancies - $total_quota;
-
-        // distribuição geográfica
-        $total_distribution = 0;
-        foreach($geo_quota_config->distribution as $region => $num) {
-            if($num > 0){
-                $total_distribution += $num;
-                $selected_by_geo[$region] = $selected_by_geo[$region] ?? [];
-            } else {
-                unset($geo_quota_config->distribution->$region);
-            }
-        }
-
-        $geo_quota_config->distribution->OTHERS = $vacancies - $total_distribution;
-    
-        // distribuição nas faixas
-        foreach($ranges_config as $range => $num) {
-            $selected_by_ranges[$range] = $selected_by_ranges[$range] ?? [];
-        }
-
-        $fields_affirmative_policies = $this->getAffirmativePoliciesFields($quota_config, $geo_quota_config);
-        $fields_tiebreaker = $this->getTiebreakerConfigurationFields($tiebreaker_config);
-        $fields = array_unique([...$fields_affirmative_policies, ...$fields_tiebreaker]);
-        $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields, $params);
-        $registrations = $this->tiebreaker($tiebreaker_config, $registrations);
-        
-        /** === POPULANDO AS LISTAS === */
-        // primeiro preenche as cotas
-        foreach($quota_config->rules as $rule) {
-
-            $rule_id = $this->generateRuleId($rule);
-            
-            foreach($registrations as $i => &$reg) {
-                if($exclude_ampla_concorrencia && $i < $total_ampla_concorrencia) {
-                    continue;
-                }
-                if((float)$reg->score < (float) $cutoff_score) {
-                    continue;
-                }
-
-                // se a pessoa não é elegível, ela não conta nas cotas (pode ser pq falou que não quer ser cotista ou pq nenhum critério configurado bateu)
-                if(!$reg->eligible) {
-                    continue;
-                }
-
-                // para impedir que uma inscrição que se enquadre em mais de 1 critério ocupe 2 vagas
-                if(in_array($reg, $selected_global)) {
-                    continue;
-                }
-                
-                $quota_count = count($selected_by_quotas[$rule_id]);
-                
-                $region = $this->getRegistrationRegion($reg, $geo_quota_config, $first_phase);
-
-                /** @todo verificar se não excedeu o máximo de vagas em cada região ou faixa*/
-                foreach($rule->fields as $field){
-                    $field_name = $field->fieldName;
-
-                    if($quota_count < $rule->vacancies && in_array($reg->$field_name, $field->eligibleValues)) {
-                        $selected_by_quotas[$rule_id][] = &$reg;
-                        $selected_global[] = &$reg;
-
-                        $selected_by_geo[$region][] = &$reg;
-                        $selected_by_ranges[$reg->range][] = &$reg;
-                    }
-                }
-            }
-        }
-
-        foreach($registrations as &$reg) {
-            if(in_array($reg, $selected_global)) {
-                continue;
-            }
-
-            $selected = true;
-            
-            $region = $this->getRegistrationRegion($reg, $geo_quota_config, $first_phase);
-            $geo_count = count($selected_by_geo[$region] ?? []);
-            if(isset($geo_quota_config->distribution->$region) && $geo_count >= $geo_quota_config->distribution->$region) {
-                // var_dump([$region, $geo_quota_config->distribution->$region, $reg->regiao]);
-                $selected = false;
-            }
-
-            $range = $reg->range;
-            $range_count = count($selected_by_ranges[$range] ?? []);
-            if(isset($ranges_config[$range]) && $range_count >= $ranges_config[$range]) {
-                $selected = false;
-            }
-
-            if($selected) {
-                $selected_by_geo[$region][] = &$reg;
-                $selected_by_ranges[$range][] = &$reg;
-                $selected_global[] = $reg;
-            }
-        }
-        
-        $selected_global = $this->tiebreaker($tiebreaker_config, $selected_global);
-
-        $result = array_values($selected_global);
-        
-        foreach(array_values($registrations) as &$reg) {
-            if(!in_array($reg, $result)){
-                $result[] = &$reg;
-            }
-        }
-
-        return $result;
-
-    }
-
     public function _init() {
         $app = App::i();
 
         $self = $this;
+
 
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
@@ -514,8 +380,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $registration = $this;
             $em = $registration->evaluationMethodConfiguration;
             
+            $registration->isFirstPhase;
             $opportunity_first_phase = $registration->opportunity->firstPhase;
-            if($opportunity_first_phase->enableQuotasQuestion && !$registration->firstPhase->appliedForQuota) {
+            $_registration = $registration->isFirstPhase ? $this : $this->firstPhase;
+            if($opportunity_first_phase->enableQuotasQuestion && !$_registration->appliedForQuota) {
                 return false;
             }
             
@@ -635,9 +503,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                 $quota_data->objectId = spl_object_id($this);
                 $quota_data->params = $params;
+                $quota_data->quota = new Quotas($phase_id);
 
                 unset($params['@order']);
-                $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id, $params);
+                $quota_order = $quota_data->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
 
@@ -660,10 +529,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var ApiQuery $this */
             if(($quota_data->objectId ?? false) == spl_object_id($this)) {
                 $_new_result = [];
+                $quota_fields = $quota_data->quota->registrationFields;
                 foreach($quota_data->ids as $id) {
                     foreach($result as $registration) {
                         if($registration['id'] == $id) {
-                            $_new_result[] = $registration;
+                            $_new_result[] = array_merge($registration, $quota_fields[$id] ?? []);
                         }
                     }
                 }
@@ -694,6 +564,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
         $app->hook('POST(opportunity.applyTechnicalEvaluation)', function() use($self) {
+            /** @var ControllersOpportunity $this */
             $this->requireAuthentication();
 
             set_time_limit(0);
@@ -1094,7 +965,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         }
 
-
         return $errors;
     }
 
@@ -1408,181 +1278,5 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
 
         return '';
-    }
-
-    public static function tiebreaker($tiebreaker_configuration, $registrations) {
-        $app = App::i();
-        $self = $app->modules['EvaluationMethodTechnical']; 
-
-        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration, $self) {
-            $result = $registration2->score <=> $registration1->score;
-            if($result != 0) {
-                return $result;
-            }
-
-            foreach($tiebreaker_configuration as $tiebreaker) {
-                $selected = $tiebreaker->selected;
-                if($selected !== null && $selected->fieldType == 'select') {
-                    $registration1Has = in_array($registration1->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-                    $registration2Has = in_array($registration2->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-                    if($registration1Has != $registration2Has) {
-                        return $registration2Has <=> $registration1Has;
-                    }
-                }
-
-                if($selected !== null && in_array($selected->fieldType, ['integer', 'numeric', 'number', 'float', 'currency', 'date'])) {
-                    $registration1Has = $registration1->{$tiebreaker->criterionType};
-                    $registration2Has = $registration2->{$tiebreaker->criterionType};
-
-                    $result = $registration1Has <=> $registration2Has;
-
-                    if($tiebreaker->preferences == 'smallest') {
-                        if ($result !== 0) {
-                            return $result;
-                        }
-                    }
-
-                    if($tiebreaker->preferences == 'largest') {
-                        if ($result !== 0) {
-                            return -$result;
-                        }
-                    }
-                }
-
-                if($selected !== null && in_array($selected->fieldType, ['multiselect', 'checkboxes'])) {
-                    $registration1Has = array_intersect($registration1->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-                    $registration2Has = array_intersect($registration2->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-
-                    $registration1Has = !empty($registration1Has);
-                    $registration2Has = !empty($registration2Has);
-
-                    if($registration1Has != $registration2Has) {
-                        return $registration2Has <=> $registration1Has;
-                    }
-                }
-                
-                if($selected !== null && in_array($selected->fieldType, ['boolean', 'checkbox'])) {
-                    $registration1Has = $registration1->{$tiebreaker->criterionType};
-                    $registration2Has = $registration2->{$tiebreaker->criterionType};
-
-                    $result = $registration1Has <=> $registration2Has;
-
-                    if($tiebreaker->preferences == 'marked') {
-                        if ($result !== 0) {
-                            return -$result;
-                        }
-                    }
-
-                    if($tiebreaker->preferences == 'unmarked') {
-                        if ($result !== 0) {
-                            return $result;
-                        }
-                    }
-                }
-
-                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'criterion') {
-                    $registration1Has = $self->tiebreakerCriterion($tiebreaker->preferences, $registration1->id);
-                    $registration2Has = $self->tiebreakerCriterion($tiebreaker->preferences, $registration2->id);
-
-                    if($registration1Has != $registration2Has) {
-                        return $registration2Has <=> $registration1Has;
-                    }
-                }
-
-                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'sectionCriteria') {
-                    $registration1Has = $self->tiebreakerSectionCriteria($tiebreaker->preferences, $registration1->id);
-                    $registration2Has = $self->tiebreakerSectionCriteria($tiebreaker->preferences, $registration2->id);
-
-                    if($registration1Has != $registration2Has) {
-                        return $registration2Has <=> $registration1Has;
-                    }
-                }
-
-            }
-        });
-        
-        return $registrations;
-    }
-
-    public function tiebreakerCriterion($criteriaId, $registrationId) {
-        $app = App::i();
-        
-        $registration = $app->repo('Registration')->find($registrationId);
-        $criteria = $registration->evaluationMethodConfiguration->criteria;
-
-        $findCriteria = [];
-        foreach($criteria as $criterion) {
-            if($criterion->id === $criteriaId) {
-                $findCriteria[] = $criterion;
-            }
-        }
-
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
-        ];
-
-        $committee = $registration->opportunity->getEvaluationCommittee();
-
-        $users = [];
-        foreach ($committee as $item) {
-            $users[] = $item->agent->user->id;
-        }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
-
-        $result = 0;
-        foreach ($evaluations as $eval) {
-            foreach($eval->evaluationData as $key => $data) {
-                foreach($findCriteria as $cri) {
-                    if($key === $criteriaId) {
-                        $result += $data * $cri->weight;
-                    }
-                }
-            }
-        }
-
-        $num = count($evaluations);
-
-        return $num ? number_format($result / $num, 2) : null;
-    }
-
-    public function tiebreakerSectionCriteria($sectionId, $registrationId) {
-        $app = App::i();
-        
-        $registration = $app->repo('Registration')->find($registrationId);
-        $criteria = $registration->evaluationMethodConfiguration->criteria;
-
-        $findCriteria = [];
-        foreach($criteria as $criterion) {
-            if($criterion->sid === $sectionId) {
-                $findCriteria[] = $criterion;
-            }
-        }
-
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
-        ];
-
-        $committee = $registration->opportunity->getEvaluationCommittee();
-
-        $users = [];
-        foreach ($committee as $item) {
-            $users[] = $item->agent->user->id;
-        }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
-
-        $result = 0;
-        foreach ($evaluations as $eval) {
-            foreach($eval->evaluationData as $key => $data) {
-                foreach($findCriteria as $cri) {
-                    if($key === $cri->id) {
-                        $result += $data * $cri->weight;
-                    }
-                }
-            }
-        }
-
-        return number_format($result, 2);
     }
 }

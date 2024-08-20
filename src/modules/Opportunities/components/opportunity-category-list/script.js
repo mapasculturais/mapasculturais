@@ -25,6 +25,15 @@ app.component('opportunity-category-list', {
         };
     },
     methods: {
+        enabledButton() {
+            let value = this.category;
+            
+            if(value && value.trim()) {
+                return true;
+            }
+
+            return false;
+        },
         addCategory() {
             this.entity.registrationCategories.push(this.category);
             this.clear();

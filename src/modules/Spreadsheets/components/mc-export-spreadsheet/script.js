@@ -36,7 +36,7 @@ app.component('mc-export-spreadsheet', {
     data() {
         return {
             processing: false,
-            lastExported: $MAPAS.config.mcExportSpreadsheet.files[this.group] ?? [],
+            lastExported: $MAPAS.config.mcExportSpreadsheet.files ? $MAPAS.config.mcExportSpreadsheet.files[this.group] : [],
             interval: null
         }
     },
