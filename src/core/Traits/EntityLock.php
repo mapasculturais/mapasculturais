@@ -20,7 +20,10 @@ trait EntityLock {
      * @return string Token gerado para o bloqueio.
      */
     function lock(int $timeout = null, string $token = null): string {
+        /** @var \MapasCulturais\Entity $this */
         $app = App::i();
+        $this->checkPermission('lock');
+
         $timeout = $timeout ?: $app->config['entity.lock.timeout']; 
         $token = $token ?: $app->getToken(32);
         $filename = $this->generateLockFilename();
