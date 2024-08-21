@@ -10,6 +10,37 @@
         padding-inline: size(32);
     }
 
+    &--account-privacy {
+        padding-top: 0;
+    }
+
+    &__title {
+        padding: size(50) size(32) size(30);
+        // max-width: 68rem;
+        align-items: center;
+        display: grid;
+        grid-template-columns: size(40) 1.2fr;
+        gap: size(16);
+        background-color: var(--mc-white);
+        margin-bottom: size(40);
+    }
+
+    &__title-icon {
+        align-items: center;
+        border-radius: var(--mc-border-radius-pill);
+        display: flex;
+        height: size(40);
+        justify-content: center;
+        width: size(40);
+        background-color: var(--mc-low-500);
+
+        .iconify {
+            width: size(20);
+            height: size(20);
+            color: var(--mc-high-500);
+        }
+    }
+
     &__return {
         align-items: center;
         display: flex;
