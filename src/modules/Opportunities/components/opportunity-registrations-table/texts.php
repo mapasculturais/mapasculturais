@@ -27,4 +27,7 @@ return [
     'data de criação' => i::__('Data de criação'),
     'Editavel para o proponente' => i::__('Editável para o proponente'),
     'resultado final' => i::__('Resultado final'),
+    'Cotas aplicadas' => i::__('Cotas aplicadas'),
+    'Critérios de desempate utilizados' => i::__('Critérios de desempate utilizados'),
+    'Região' => i::__('Região'),
 ];
