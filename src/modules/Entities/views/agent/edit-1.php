@@ -6,6 +6,7 @@ $this->layout = 'entity';
 
 $this->import('
     confirm-before-exit
+    elderly-person
     entity-actions
     entity-admins
     entity-cover
@@ -121,10 +122,7 @@ $this->breadcrumb = [
                         <template #content>
                             <div class="grid-12">
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="dataDeNascimento" label="<?= i::__('Data de Nascimento') ?>"></entity-field>
-                                <div class="field col-6">
-                                    <label>{{entity.$PROPERTIES['idoso'].label}}</label>
-                                    <input type="text" disabled :value="entity.idoso ? 'Sim' : 'Não'" />
-                                </div>    
+                                <elderly-person :entity="entity" ></elderly-person>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="genero" label="<?= i::__('Selecione o Gênero') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="orientacaoSexual" label="<?= i::__('Selecione a Orientação Sexual') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="raca" label="<?= i::__('Selecione a Raça/Cor') ?>"></entity-field>
