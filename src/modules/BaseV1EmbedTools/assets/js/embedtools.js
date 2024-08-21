@@ -57,6 +57,9 @@
 
             if(val !== undefined && JSON.stringify(val) !== JSON.stringify(window.lastSentRegistrationFields[key])) {
                 window.lastSentRegistrationFields[key] = val;
+                if(val instanceof Array) {
+                    val = val.filter((item) => item !== '[]');
+                } 
                 registrationFields[key] = val;
             }
         }
