@@ -1263,14 +1263,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         delete field.error;
 
         $scope.data.editableEntity[field.fieldName] = value !== undefined ? JSON.parse(angular.toJson(value)) : null;
-
-        $timeout.cancel(saveTimeout);
-        
-        saveTimeout = $timeout(function(){
-            if(MapasCulturais.isEditable){
-                $scope.saveRegistration();
-            }
-        }, MapasCulturais.registrationAutosaveTimeout);
     }
 
     // modifica o botão salvar
