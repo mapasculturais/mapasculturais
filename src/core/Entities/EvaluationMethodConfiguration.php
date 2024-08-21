@@ -222,7 +222,11 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     public function getEvaluationMethod() {
         $definition = $this->getDefinition();
-        return $definition->evaluationMethod;
+        if ($definition) {
+            return $definition->evaluationMethod;
+        } else {
+            return null;
+        }
     }
 
     public function getUserRelation($user = null){
@@ -354,7 +358,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         
         if($result = $query->getResult()){
             foreach($result as $values){
-                $status = $em->valueToString($values['consolidated_result']);
+                $status = $em->valueToString($values['consolidatedResult']);
                 if($status) {
                     $data['evaluations'][$status] = $values['qtd'];
                 } else {

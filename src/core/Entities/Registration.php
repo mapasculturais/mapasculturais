@@ -1342,7 +1342,11 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        $can = $this->opportunity->evaluationMethodConfiguration && $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+        if ($this->getEvaluationMethod()) {
+            $can = $this->opportunity->evaluationMethodConfiguration && $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+        } else {
+            $can = false;
+        }
 
         $exclude_list = $this->getValuersExcludeList();
         $include_list = $this->getValuersIncludeList();
@@ -1561,7 +1565,11 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewConsolidatedResult($user){
-        if($this->status <= 0 || !$this->opportunity->evaluationMethodConfiguration) {
+        if ($this->getEvaluationMethod()) {
+            if($this->status <= 0 || !$this->opportunity->evaluationMethodConfiguration) {
+                return false;
+            }
+        } else {
             return false;
         }
 

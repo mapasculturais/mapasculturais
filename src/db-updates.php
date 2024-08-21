@@ -1304,7 +1304,6 @@ $$
         __exec("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE request ADD CONSTRAINT FK_3B978F9FBA78F12A FOREIGN KEY (requester_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE event_occurrence_recurrence ADD CONSTRAINT FK_388ECCB140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __exec("ALTER TABLE entity_revision ADD CONSTRAINT FK_CF97A98CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A8521DFA7C8F FOREIGN KEY (revision_id) REFERENCES entity_revision (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A852B4906F58 FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE user_app ADD CONSTRAINT FK_22781144A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
@@ -1320,7 +1319,10 @@ $$
         __exec("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;        ");
+        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE chat_message ADD CONSTRAINT FK_FAB3FC16C47D5262 FOREIGN KEY (chat_thread_id) REFERENCES public.chat_thread (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE chat_message ADD CONSTRAINT FK_FAB3FC16727ACA70 FOREIGN KEY (parent_id) REFERENCES public.chat_message (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE chat_message ADD CONSTRAINT FK_FAB3FC16A76ED395 FOREIGN KEY (user_id) REFERENCES public.usr (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         
     },
 
@@ -1553,54 +1555,6 @@ $$
         __exec("ALTER TABLE registration_evaluation ADD create_timestamp TIMESTAMP DEFAULT NOW() NOT NULL;");
         __exec("ALTER TABLE registration_evaluation ADD update_timestamp TIMESTAMP DEFAULT NULL;");
         return true;
-    },
-
-    'create chat tables' => function () {
-        if (!__sequence_exists("chat_thread_id_seq")) {
-            __exec("CREATE SEQUENCE chat_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
-        }
-        if (!__table_exists("chat_thread")) {
-            __exec("CREATE TABLE chat_thread (
-                id INT NOT NULL,
-                object_id INT NOT NULL,
-                object_type VARCHAR(255) NOT NULL,
-                type VARCHAR(255) NOT NULL,
-                identifier VARCHAR(255) NOT NULL,
-                description TEXT DEFAULT NULL,
-                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-                last_message_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
-                status INT NOT NULL,
-                PRIMARY KEY(id))");
-            __exec("COMMENT ON COLUMN chat_thread.object_type IS '(DC2Type:object_type)'");
-        }
-        if (!__sequence_exists("chat_message_id_seq")) {
-            __exec("CREATE SEQUENCE chat_message_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
-        }
-        if (!__table_exists("chat_message")) {
-            __exec("CREATE TABLE chat_message (
-                id INT NOT NULL,
-                chat_thread_id INT NOT NULL,
-                parent_id INT DEFAULT NULL,
-                user_id INT NOT NULL,
-                payload TEXT NOT NULL,
-                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-                PRIMARY KEY(id))");
-            __exec("CREATE INDEX IDX_FAB3FC16C47D5262 ON chat_message (chat_thread_id)");
-            __exec("CREATE INDEX IDX_FAB3FC16727ACA70 ON chat_message (parent_id)");
-            __exec("CREATE INDEX IDX_FAB3FC16A76ED395 ON chat_message (user_id)");
-            __exec("ALTER TABLE chat_message ADD
-                CONSTRAINT FK_FAB3FC16C47D5262
-                FOREIGN KEY (chat_thread_id) REFERENCES chat_thread (id)
-                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
-            __exec("ALTER TABLE chat_message ADD
-                CONSTRAINT FK_FAB3FC16727ACA70
-                FOREIGN KEY (parent_id) REFERENCES chat_message (id)
-                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
-            __exec("ALTER TABLE chat_message ADD
-                CONSTRAINT FK_FAB3FC16A76ED395
-                FOREIGN KEY (user_id) REFERENCES usr (id)
-                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
-        }
     },
 
     'create table job' => function () use($conn) {
