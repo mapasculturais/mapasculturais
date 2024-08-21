@@ -9,6 +9,7 @@ services:
     volumes:
       - ./.env:/.env
       - ./docker/production/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/production/www.conf:/usr/local/etc/php-fpm.d/www.conf
 
       # scripts principais
       - ./docker/entrypoint.sh:/entrypoint.sh
