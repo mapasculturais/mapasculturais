@@ -185,7 +185,9 @@ app.component('entity-table', {
                     const description = this.$description[visibleColumn.slug];
 
                     if (description && description.hasOwnProperty('options')) {
-                        if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0) {
+                        let isDisabledPerson = description?.registrationFieldConfiguration?.config?.entityField === 'pessoaDeficiente';
+
+                        if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0 && !isDisabledPerson) {
                             filters[visibleColumn.slug] = {
                                 label: description.label,
                                 options: description.options, 
