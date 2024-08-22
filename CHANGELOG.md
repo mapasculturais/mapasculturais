@@ -5,10 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [7.5.0-RC]
-### Melhorias
-- Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
-## [unreleased]
 ### Novas funcionalidades
 - **Bloqueio de edição de entidades**, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
 - **Customizador do tema BaseV2** para subsites, possibilitando a configuração de cores, imagens, textos, posição do mapa etc
@@ -24,6 +21,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro que ao publicar a entidade a mesma permanece em rascunho
 - Implementa possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição
 - Implementa nova tela para configuração dos agentes de suporte
+- Implementa a data de envio das avaliações
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
@@ -36,11 +34,37 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa slot no entity-table para permitir substituição do filtro por palavra-chave
 - Implementa método detectDateFormat() no Utils para detectar o formato de uma data
 - Implementa nova tabela de listagem de avaliações
+- Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
+- Exibe na tabela de inscrições colunas exibindo em quais cotas o proponente foi incluído, os critérios de desempate que foram utilizados e a região do proponente
+
+#### Refatoração das políticas afirmativas
+- Os percentuais configurados para as cotas agora são garantidos dentro das regiões e faixas/linhas de inscrição
+- A configuração dos campos que representam os valores que serão utilizados para identificar os cotistas e a região do proponente agora deve ser feita para cada tipo de proponente configurado.
 
 ### Correções
+- Impede a exibição da coluna "Agente Responsável" no componente "opportunity-evaluation-table" quando a configuração de campos visíveis não permite o resumo dos agentes.
+- Corrige API.js para que o rawProcessor funcione corretamente
 
 ### Melhorias não funcionais
 - Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
+- Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
+- Quando a oportunidade é multifases e ocorre uma alteração na propriedade, faz com que essa mudança também se reflita nas fases subsequentes
+
+## [7.4.14]
+### Correções
+- Corrige a exibição do campo "Pessoa com Deficiência" na exportação de planilhas, evitando a exibição de valores nulos
+- Corrige a serialização do campo @ "Pessoa com Deficiência" para evitar que salver valores nulos
+- Corrige perda de configuração de categorias, faixas e tipos de proponente ao criar terceira fase de avaliação
+
+## [7.4.13] - 2024-08-14
+### Melhorias
+- Atualiza bibliotecas PHP
+- Identifica os botões das ações da tela de avaliações por cores
+
+### Correções
+- Corrige erro no carregamento dos subprojetos na single de projetos
+- Ajusta o provider OpauthAuthentik para resetar a sessão quando existir error retornado por parte do Authentik
+- Corrige exibição do embedTools de configurações de critérios da avaliação de qualificação documental
 
 ## [7.4.12] - 2024-07-25
 ### Correções

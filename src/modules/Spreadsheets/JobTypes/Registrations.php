@@ -29,9 +29,21 @@ class Registrations extends SpreadsheetJob
         /*if($job->owner_properties) {
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
+        $query['@select'] .= ',owner.{name}';
         $properties = explode(',', $query['@select']);
-
+        
         foreach($properties as $property) {
+            if(str_starts_with($property, 'owner.{')) {
+                $values = $this->extractValues($property);
+
+                foreach($values as $val) {
+                    if($val === 'name') {
+                        $header[$val] = i::__('Responsável pela inscrição');
+                    }
+                }
+                continue;
+            }
+
             $header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
         }
 
@@ -60,9 +72,11 @@ class Registrations extends SpreadsheetJob
                 }
             }
         } while($opportunity = $opportunity->previousPhase);
-        
+
+        unset($header['id']);
+        unset($header[' id']);
         unset($header['agentsData']);
-        
+
         return $header;
     }
     
@@ -116,7 +130,11 @@ class Registrations extends SpreadsheetJob
 
                         if($entity_type_field['ft'] == 'pessoaDeficiente') {
                             if(is_array($entity[$field->fieldName])) {
-                                $entity_field_value = implode(', ', $entity[$field->fieldName]);
+                                $filter_values = array_filter($entity[$field->fieldName], function($value) {
+                                    return $value !== 'null';
+                                });
+
+                                $entity_field_value = implode(', ', $filter_values);
                                 
                                 $entity[$field->fieldName] = $entity_field_value;
                             }
@@ -140,9 +158,14 @@ class Registrations extends SpreadsheetJob
                         $entity[$field->fieldName] = $formatted_values;
                     }
                 }
-
+                
                 unset($entity['@entityType']);
                 unset($entity['evaluationResultString']);
+
+                if(isset($entity['agentsData']) && is_array($entity['agentsData'])) {
+                    $entity['name'] = $entity['agentsData']['owner']['name'];
+                }
+
                 unset($entity['agentsData']);
 
                 if (isset($entity['owner']) && is_array($entity['owner'])) {

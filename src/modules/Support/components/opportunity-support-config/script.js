@@ -26,6 +26,7 @@ app.component('opportunity-support-config', {
             categoryFilter: null,
             proponentFilter: null,
             rangeFilter: null,
+            keyword: "",
         };
     },
 
@@ -140,10 +141,11 @@ app.component('opportunity-support-config', {
             const category = this.categoryFilter; 
             const proponent = this.proponentFilter;
             const range = this.rangeFilter;
+            const keyword = this.keyword
 
             if (category && category != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.categories.length > 0 && field.categories.includes(category)) {
+                    if (field.categories.length <= 0 || (field.categories.length > 0 && field.categories.includes(category))) {
                         return field;
                     }
                 });
@@ -151,7 +153,7 @@ app.component('opportunity-support-config', {
 
             if (proponent && proponent != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.proponentTypes && field.proponentTypes.length > 0 && field.proponentTypes.includes(proponent)) {
+                    if (field.proponentTypes.length <= 0 || (field.proponentTypes.length > 0 && field.proponentTypes.includes(proponent))) {
                         return field;
                     }
                 });
@@ -159,7 +161,15 @@ app.component('opportunity-support-config', {
 
             if (range && range != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.registrationRanges && field.registrationRanges.length > 0 && field.registrationRanges.includes(range)) {
+                    if (field.registrationRanges.length <= 0 || (field.registrationRanges.length > 0 && field.registrationRanges.includes(range))) {
+                        return field;
+                    }
+                });
+            }
+
+            if (keyword) {
+                fields = fields.filter(function(field) {
+                    if (field.title.startsWith(keyword) || field.id.toString().startsWith(keyword)) {
                         return field;
                     }
                 });
@@ -171,6 +181,32 @@ app.component('opportunity-support-config', {
     },
 
     methods: {
+        getConditionalField(field) {
+            let conditionalField  = null;
+            if(field.conditional) {
+                this.filteredFields.filter((item) => {
+                    if(field.conditionalField === item.ref) {
+                        conditionalField = item.id;
+                        return
+                    }
+                });
+
+            }
+            return conditionalField
+        },
+
+        filterKewWord() {
+            this.filteredFields;
+        },
+
+        getFieldType(field) {
+            if(field.ref.startsWith('field_')) {
+                return 'text';
+            }
+
+            return 'file';
+        },
+        
         set(option) {
             this.categoryFilter = option.text;
         },
@@ -211,6 +247,12 @@ app.component('opportunity-support-config', {
                 this.selectedFields[field.ref] = false;
             });
         },
+        clearFilters() {
+            this.categoryFilter = null;
+            this.proponentFilter = null;
+            this.rangeFilter = null;
+            this.keyword = "";
+        },
 
         send(modal, relation) {
             let api = new API();
@@ -225,6 +267,7 @@ app.component('opportunity-support-config', {
                         }
                     }
                     this.clearSelectedFields();
+                    this.clearFilters();
                     this.messages.success(this.text('Permisão enviada com sucesso'));
                     this.selectAll = false;
                     this.allPermissions = null;

@@ -35,17 +35,38 @@ app.component('opportunity-evaluations-table', {
             firstDate: null,
             lastDate: null,
             selectedStatus: null,
+            evaluatiorFilter: null,
         }
     },
 
     computed: {
+        hasControl() {
+            return this.phase.opportunity.currentUserPermissions['@control'];
+        },
+        evaluationsFiltersOptions() {
+            return $MAPAS.config.opportunityEvaluationsTable.committee
+        },
+        filtersDictComplement() {
+            let committee = $MAPAS.config.opportunityEvaluationsTable.committee;
+            let result = {};
+            for(const item of committee) {
+                result[item.value] = item.label 
+                
+            }
+
+            return result;
+        },
         headers () {
             let itens = [
-                { text: __('inscrição', 'opportunity-evaluations-table'), value: "registration.number", slug: "number", sticky: true, width: '160px' },
-                { text: __('agente', 'opportunity-evaluations-table'), value: "registration.owner.name", slug: "agent"},
+                { text: __('inscrição', 'opportunity-evaluations-table'), value: "number", slug: "number", sticky: true, width: '160px' },
+                { text: __('avaliador', 'opportunity-evaluations-table'), value: "valuer.name", slug: "evaluator", visible: true},
                 { text: __('resultado final', 'opportunity-evaluations-table'), value: "evaluation.resultString", slug: "result"},
                 { text: __('estado', 'opportunity-evaluations-table'), value: "evaluation.status", slug: "status"},
             ];
+
+            if(this.avaliableEvaluationFields('agentsSummary')) {
+                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "owner.name", slug: "agent"});
+            }
 
             return itens;
         },
@@ -77,6 +98,20 @@ app.component('opportunity-evaluations-table', {
     },
     
     methods: {
+        valuersMetadata() {
+            if(this.user != "all") {
+                return $MAPAS.config.opportunityEvaluationsTable.valuersMetadata[this.user]
+            }
+
+            return null;
+        },
+        avaliableEvaluationFields(field) {
+            if(this.phase.opportunity.currentUserPermissions['@control']) {
+                return true;
+            }
+            
+            return this.phase.opportunity.avaliableEvaluationFields[field]
+        },
         createUrl(entity) {
             let user = this.user;
             if (user === 'all' && entity.evaluation?.status == null) {
@@ -85,9 +120,14 @@ app.component('opportunity-evaluations-table', {
                 user = entity.evaluation?.user;
             }
             
-            return Utils.createUrl('registration', 'evaluation', { id: entity.registration.id, user });
+            return Utils.createUrl('registration', 'evaluation', { id: entity._id, user });
         },
         canSee(action) {
+            let metadata = this.valuersMetadata();
+            if(metadata && metadata.summary.completed <= 0) {
+                return false
+            }
+
             if (this.phase.opportunity.currentUserPermissions[action]) {
                 return true;
             }
@@ -109,11 +149,15 @@ app.component('opportunity-evaluations-table', {
         rawProcessor(rawData) {
             const registrationApi = new API('registration');
             const registration = registrationApi.getEntityInstance(rawData.registration.id);
-
             registration.populate(rawData.registration, true);
-            registration.evaluation = rawData.evaluation;
+            
+            let reg = {};
+            reg = {...registration};
 
-            return registration;
+            reg.evaluation = rawData.evaluation;
+            reg.valuer = rawData.valuer;
+
+            return reg;
         },
 
         getStatus(status) {
@@ -140,6 +184,18 @@ app.component('opportunity-evaluations-table', {
                 this.query['@filterStatus'] = `${this.selectedStatus.toString()}`;
             } else {
                 delete this.query['@filterStatus'];
+            }
+
+            entities.refresh();
+        },
+
+        filterByEvaluator(option, entities) {
+            this.evaluatiorFilter = option.value;
+
+            if (this.evaluatiorFilter != "all") {
+                this.query['@evaluationId'] = `${this.evaluatiorFilter.toString()}`;
+            } else {
+                delete this.query['@evaluationId'];
             }
 
             entities.refresh();

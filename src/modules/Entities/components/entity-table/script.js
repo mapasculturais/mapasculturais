@@ -62,6 +62,10 @@ app.component('entity-table', {
             type: String,
             required: true,
         },
+        filtersDictComplement: {
+            type: [Boolean, Object],
+            default: false
+        },
         select: String,
         showIndex: Boolean,
         hideFilters: Boolean,
@@ -181,7 +185,9 @@ app.component('entity-table', {
                     const description = this.$description[visibleColumn.slug];
 
                     if (description && description.hasOwnProperty('options')) {
-                        if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0) {
+                        let isDisabledPerson = description?.registrationFieldConfiguration?.config?.entityField === 'pessoaDeficiente';
+
+                        if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0 && !isDisabledPerson) {
                             filters[visibleColumn.slug] = {
                                 label: description.label,
                                 options: description.options, 
@@ -204,6 +210,11 @@ app.component('entity-table', {
             delete query['@select'];
             delete query['@page'];
             delete query['@permission'];
+            delete query['@permissions'];
+            delete query['action'];
+            delete query['userId'];
+            delete query['ip'];
+            delete query['sessionId'];
            
             if (this.type == 'agent') {
                 delete query['type']
@@ -263,8 +274,8 @@ app.component('entity-table', {
         
             let values = this.getFilterValues(value);
             if (values) {
-                if (prop == 'status' || prop == '@pending' || prop == '@filterStatus') {
-                    let statusDict = {
+                if (prop == 'status' || prop == '@pending' || prop == '@filterStatus' || prop == '@evaluationId') {
+                    let _filtersDict = {
                         '0': __('rascunhos', 'entity-table'),
                         '1': __('publicadas', 'entity-table'),
                         '-10': __('lixeira', 'entity-table'),
@@ -272,7 +283,7 @@ app.component('entity-table', {
                     }
 
                     if(this.type == 'registration') {
-                        statusDict = {
+                        _filtersDict = {
                             '0': __('rascunhos', 'entity-table'),
                             '1': __('pendentes', 'entity-table'),
                             '2': __('invalidas', 'entity-table'),
@@ -283,18 +294,18 @@ app.component('entity-table', {
                     }
 
                     if(this.type == 'payment') {
-                        statusDict = {
+                        _filtersDict = {
                             '0': __('pendente', 'entity-table'),
                             '1': __('em processo', 'entity-table'),
-                            '2': __('disponivel', 'entity-table'),
-                            '3': __('falha', 'entity-table'),
-                            '8': __('exportado', 'entity-table'),
+                            '2': __('falha', 'entity-table'),
+                            '3': __('exportado', 'entity-table'),
+                            '8': __('disponivel', 'entity-table'),
                             '10': __('pago', 'entity-table'),
                         }
                     }
 
                     if (this.endpoint == 'findEvaluations') {
-                        statusDict = {
+                        _filtersDict = {
                             'all': __('Todas', 'entity-table'),
                             'pending': __('Avaliações pendente', 'entity-table'),
                             '0': __('Avaliações iniciadas', 'entity-table'),
@@ -303,8 +314,16 @@ app.component('entity-table', {
                         }
                     }
 
+                    filtersDict = _filtersDict;
+                    if(this.filtersDictComplement && this.filtersDictComplement.type == this.type || this.filtersDictComplement.type == this.endpoint) {
+                        filtersDict = {
+                            ..._filtersDict,
+                            ...this.filtersDictComplement.dict
+                        }
+                    }
+
                     return values.map((value) => { 
-                        return {prop, value, label: statusDict[value]} 
+                        return {prop, value, label: filtersDict[value]} 
                     });
                 }
         

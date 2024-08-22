@@ -32,6 +32,8 @@
         align-items: center;
         border-bottom: size(1) solid var(--mc-low-300);
         display: flex;
+        flex-wrap: wrap;
+        gap: size(16);
         justify-content: space-between;
         padding: size(16) size(24);
     }
@@ -54,6 +56,8 @@
 
     &__change-distributions {
         display: flex;
+        flex-wrap: wrap;
+        gap: size(16);
         justify-content: space-between;
         align-items: center;
     }
@@ -79,5 +83,45 @@
         display: flex;
         flex-direction: column;
         gap: size(10);
+    }
+
+    &__user-id {
+        display: flex;
+        justify-content: flex-end;
+        padding: 5px;
+    }
+
+    &__summary {
+        display: flex;
+        gap: size(32);
+        flex-wrap: wrap;
+        justify-content: center;
+        border-bottom: solid 1px #000;
+        padding: 30px 0px 30px 0px;
+        
+        
+        span {
+            display: flex;
+            gap: 5px;
+            border-radius: 5px;
+            padding: 8px;
+            align-items: center;
+        }
+        
+        &__sent {
+            background-color: #BFE88B;
+        }
+
+        &__pending {
+            background-color: #FFB5B5
+        }
+
+        &__started {
+            background-color: #FFCF8F;
+        }
+
+        &__completed {
+            background-color: #99D6FF;
+        }
     }
 }

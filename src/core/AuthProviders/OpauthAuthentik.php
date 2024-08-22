@@ -93,6 +93,10 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
         switch($this->opauth->env['callback_transport']) {
             case 'session':
                 $response = key_exists('opauth', $_SESSION) ? $_SESSION['opauth'] : null;
+                if(isset($response['error'])) {
+                    unset($_SESSION['opauth']);
+                    return null;
+                }
                 break;
             case 'post':
                 $response = unserialize(base64_decode( $_POST['opauth'] ));

@@ -134,7 +134,7 @@ app.component('entity-field', {
 
         window.addEventListener(
             "entitySave",
-            this.isReadonly()
+            this.isReadonly
         );
     },
 
@@ -160,6 +160,17 @@ app.component('entity-field', {
     },
     
     methods: {
+        isRadioChecked(value, optionValue) {
+            if(value == optionValue) {
+                return true;
+            }
+
+            if(value == null && this.description?.default) {
+                return optionValue == this.description?.default;
+            }
+            
+            return false;            
+        },
         propExists(){
             return !! this.entity.$PROPERTIES[this.prop];
         },

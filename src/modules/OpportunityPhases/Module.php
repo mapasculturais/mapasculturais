@@ -656,6 +656,11 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).get(isFirstPhase)', function(&$value) {
+            /** @var Registration $this */
+            $value = $this->opportunity->isFirstPhase ? true : false;
+        });
+
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
             /** @var Registration $this */
             
