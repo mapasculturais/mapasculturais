@@ -242,10 +242,10 @@ app.component('opportunity-registrations-table', {
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
 
                 if(this.isTechnicalEvaluationPhase) {
-                    const evaluationMethodConfiguration = this.phase.evaluationMethodConfiguration;
-                    const tiebreakerConfiguration = evaluationMethodConfiguration.tiebreakerCriteriaConfiguration;
-                    const quotaConfiguration = evaluationMethodConfiguration.quotaConfiguration;
-                    const geoQuotaConfiguration = evaluationMethodConfiguration.geoQuotaConfiguration;
+                    const evaluationMethodConfiguration = this.phase.evaluationMethodConfiguration || {};
+                    const tiebreakerConfiguration = evaluationMethodConfiguration.tiebreakerCriteriaConfiguration || [];
+                    const quotaConfiguration = evaluationMethodConfiguration.quotaConfiguration || {};
+                    const geoQuotaConfiguration = evaluationMethodConfiguration.geoQuotaConfiguration || {};
                     
                     if(tiebreakerConfiguration?.length > 0) {
                         itens.splice(3,0,{
