@@ -50,6 +50,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
 - Quando a oportunidade é multifases e ocorre uma alteração na propriedade, faz com que essa mudança também se reflita nas fases subsequentes
 
+## [7.4.14]
+### Correções
+- Corrige a exibição do campo "Pessoa com Deficiência" na exportação de planilhas, evitando a exibição de valores nulos
+- Corrige a serialização do campo @ "Pessoa com Deficiência" para evitar que salver valores nulos
+- Corrige perda de configuração de categorias, faixas e tipos de proponente ao criar terceira fase de avaliação
+
 ## [7.4.13] - 2024-08-14
 ### Melhorias
 - Atualiza bibliotecas PHP

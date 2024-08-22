@@ -1,0 +1,15 @@
+# Componente `<elderly-person>`
+Componente que exibe se a entidade é uma pessoa idosa baseada na data de nascimento.
+
+## Propriedades
+- *Entity **entity*** - Entidade que contém a informação de data de nascimento.
+
+### Importando componente
+```PHP
+<?php 
+$this->import('elderly-person');
+?>
+```
+
+<!-- utilizaçao básica -->
+<elderly-person :entity="entity"></elderly-person>
