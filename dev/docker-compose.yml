@@ -89,5 +89,5 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ~/erlei/docker-data/PE/homolog:/docker-entrypoint-initdb.d
-      - ~/erlei/docker-data/PE-homolog-2024-06-17--0855:/var/lib/postgresql/data
+      - ./docker-data/postgres:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d
