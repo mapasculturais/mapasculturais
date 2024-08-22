@@ -1039,7 +1039,6 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
     if(MapasCulturais.evaluationFieldsList){
         MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort((a,b) => {
-            console.log(a,b)
             if(a.displayOrder > b.displayOrder){
                 return 1;
             }else if(a.displayOrder < b.displayOrder){
