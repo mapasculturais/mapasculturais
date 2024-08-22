@@ -122,7 +122,10 @@ app.component('qualification-evaluation-config', {
         validateErrors(addCriteria = false, addSection = false) {
             let hasError = false;
 
-            this.entity.sections.forEach((section) => {
+            let sections = this.entity.sections || [];
+            let criteria = this.entity.criteria || [];
+
+            sections.forEach((section) => {
                 Object.keys(this.fieldsDict.sections).forEach((field) => {
                     let _field = this.fieldsDict.sections[field];
                     if (_field.isRequired && !section[field]) {
@@ -132,19 +135,19 @@ app.component('qualification-evaluation-config', {
                 })
 
                 if (addSection) {
-                    if (!this.entity.criteria.some(criterion => criterion.sid === section.id)) {
+                    if (!criteria.some(criterion => criterion.sid === section.id)) {
                         this.messages.error(`${this.text('theField')} ${this.text('fieldCriterionName')} ${this.text('isRequired')}`);
                         hasError = true;
                     }
                 }
 
-                if (!addCriteria && this.entity.criteria && !this.entity.criteria.some(criterion => criterion.sid === section.id)) {
+                if (!addCriteria && criteria && !criteria.some(criterion => criterion.sid === section.id)) {
                     hasError = true;
                 }
             })
 
-            if(this.entity.criteria) {
-                this.entity.criteria.forEach((criterion) => {
+            if(criteria) {
+                criteria.forEach((criterion) => {
                     Object.keys(this.fieldsDict.criteria).forEach((field) => {
                         let _field = this.fieldsDict.criteria[field];
                         if (_field.isRequired && !criterion[field]) {
