@@ -55,6 +55,10 @@ return [
             'title' => i::__("Arquivo gerado"),
             'template' => 'export_spreadsheet.html'
         ],
+        'export_spreadsheet_error' => [
+            'title' => i::__("Houve um erro com o arquivo"),
+            'template' => 'export_spreadsheet_error.html'
+        ],
         'send_registration' => [
             'title' => i::__("Inscrição enviada"),
             'template' => 'send_registration.html'

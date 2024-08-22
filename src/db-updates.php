@@ -2165,7 +2165,7 @@ $$
         }
     },
     
-    'trigger to update children and parent opportunities' => function () {
+    'create trigger to update children opportunities' => function () {
         __exec("CREATE OR REPLACE FUNCTION fn_propagate_opportunity_update()
                     RETURNS TRIGGER
                     LANGUAGE plpgsql
@@ -2177,7 +2177,7 @@ $$
                             registration_ranges = NEW.registration_ranges,
                             registration_categories = NEW.registration_categories,
                             registration_proponent_types = NEW.registration_proponent_types
-                        WHERE (parent_id = OLD.id OR id = OLD.parent_id)
+                        WHERE parent_id = OLD.id
                         AND (
                             registration_ranges::jsonb IS DISTINCT FROM NEW.registration_ranges::jsonb OR
                             registration_categories::jsonb IS DISTINCT FROM NEW.registration_categories::jsonb OR
@@ -2190,6 +2190,25 @@ $$
                     AFTER UPDATE ON opportunity
                     FOR EACH ROW
                     EXECUTE FUNCTION fn_propagate_opportunity_update()");
+    },
+
+    'create trigger to insert opportunity data to new children' => function () {
+        __exec("CREATE OR REPLACE FUNCTION fn_propagate_opportunity_insert()
+                    RETURNS TRIGGER
+                    LANGUAGE plpgsql
+                    COST 100
+                    VOLATILE NOT LEAKPROOF AS $$
+                    BEGIN
+                        NEW.registration_ranges = (SELECT registration_ranges FROM opportunity WHERE id = NEW.parent_id);
+                        NEW.registration_categories = (SELECT registration_categories FROM opportunity WHERE id = NEW.parent_id);
+                        NEW.registration_proponent_types = (SELECT registration_proponent_types FROM opportunity WHERE id = NEW.parent_id);
+                        RETURN NEW;
+                    END; $$;");
+
+        __try("CREATE TRIGGER trigger_propagate_opportunity_insert
+                    BEFORE INSERT ON opportunity
+                    FOR EACH ROW
+                    EXECUTE FUNCTION fn_propagate_opportunity_insert()");
     },
     'renomeia metadados da funcionalidade AffirmativePollices' => function() use ($conn, $app) {
         $entity_metadada = [
@@ -2324,6 +2343,30 @@ $$
         __exec("ALTER TABLE job ADD COLUMN user_id INTEGER NULL");
     },
     
+    'Cria coluna send_timestamp para registrar o envio das avaliações' => function() use($conn) {
+        if(!__column_exists('registration_evaluation', 'sent_timestamp')) {
+            __exec("ALTER TABLE registration_evaluation ADD sent_timestamp TIMESTAMP NULL");
+        }
+    },
+
+    'Define os valores da nova coluna sent_timestamp na tabela de avaliações' => function() use($conn) {
+        if (__column_exists('registration_evaluation', 'sent_timestamp')) {
+            __exec("
+                WITH er_data AS (
+                    SELECT er.object_id, er.create_timestamp
+                    FROM entity_revision er
+                    JOIN entity_revision_revision_data errd ON errd.revision_id = er.id
+                    JOIN entity_revision_data rd ON rd.id = errd.revision_data_id
+                    WHERE rd.key = 'status' AND rd.value = '2' AND er.object_type = 'MapasCulturais\Entities\RegistrationEvaluation'
+                    ORDER BY er.create_timestamp DESC
+                )
+                UPDATE registration_evaluation
+                SET sent_timestamp = er_data.create_timestamp
+                FROM er_data
+                WHERE registration_evaluation.id = er_data.object_id;
+            ");
+        }
+    },
     'Ajusta as colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades para setar um array vazio quando as mesmas estiverem null' => function() use ($conn, $app){
         __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types::VARCHAR = '\"\"'");
         __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges::VARCHAR = '\"\"'");

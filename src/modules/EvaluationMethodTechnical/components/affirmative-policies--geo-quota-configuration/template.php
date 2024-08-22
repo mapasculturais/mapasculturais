@@ -27,16 +27,62 @@ $this->import('
             <div class="geo-quota__title">
                 <h4 class="bold"><?= i::__('Configuração de distribuição de vagas por território') ?></h4>
 
-                <button class="button button--md button--text-danger button-icon" @click="close()">
+                <button class="button button--md button--text-danger button-icon" @click="trash()">
                     <mc-icon name="trash"></mc-icon>
                 </button>
+            </div>
+
+            <div class="geo-quota__options">
+                <div class="field geo-quota__field" v-if="hasProponentType">
+                    <template v-if="hasCollective">
+                        <label><?= i::__('Campo que representa a localização do proponente Coletivo') ?>:</label>
+                        <mc-select placeholder="<?= i::esc_attr__('Selecione um campo') ?>" :default-value="geoQuota?.fields?.Coletivo" @change-option="setGeoQuotaField($event, 'Coletivo')" show-filter>
+                            <option v-for="(field, index) in getFields('Coletivo')" :key="index" :value="field.fieldName">{{ field.id ? '#' + field.id : '' }} {{ field.title }}</option>
+                            <option value="geo"><?= i::__('Geolocalização do agente coletivo vinculado a inscrição') ?></option>
+                        </mc-select>
+                    </template>
+
+                    <template v-if="hasMEI">
+                        <label><?= i::__('Campo que representa a localização do proponente MEI') ?>:</label>
+                        <mc-select placeholder="<?= i::esc_attr__('Selecione um campo') ?>" :default-value="geoQuota?.fields?.MEI" @change-option="setGeoQuotaField($event, 'MEI')" show-filter>
+                            <option v-for="(field, index) in getFields('MEI')" :key="index" :value="field.fieldName">{{ field.id ? '#' + field.id : '' }} {{ field.title }}</option>
+                            <option value="geo"><?= i::__('Geolocalização do agente responsável pela inscrição') ?></option>
+                        </mc-select>
+                    </template>
+
+                    <template v-if="hasNaturalPerson">
+                        <label><?= i::__('Campo que representa a localização do proponente Pessoa Física') ?>:</label>
+                        <mc-select placeholder="<?= i::esc_attr__('Selecione um campo') ?>" :default-value="geoQuota?.fields?.['Pessoa Física']" @change-option="setGeoQuotaField($event, 'Pessoa Física')" show-filter>
+                            <option v-for="(field, index) in getFields('Pessoa Física')" :key="index" :value="field.fieldName">{{ field.id ? '#' + field.id : '' }} {{ field.title }}</option>
+                            <option value="geo"><?= i::__('Geolocalização do agente responsável pela inscrição') ?></option>
+                        </mc-select>
+                    </template>
+
+                    <template v-if="hasLegalEntity">
+                        <label><?= i::__('Campo que representa a localização do proponente Pessoa Jurídica') ?>:</label>
+                        <mc-select placeholder="<?= i::esc_attr__('Selecione um campo') ?>" :default-value="geoQuota?.fields?.['Pessoa Jurídica']" @change-option="setGeoQuotaField($event, 'Pessoa Jurídica')" show-filter>
+                            <option v-for="(field, index) in getFields('Pessoa Jurídica')" :key="index" :value="field.fieldName">{{ field.id ? '#' + field.id : '' }} {{ field.title }}</option>
+                            <option value="geo"><?= i::__('Geolocalização do agente coletivo vinculado a inscrição') ?></option>
+                        </mc-select>
+                    </template>
+                </div>
+
+                <div class="field geo-quota__field" v-else>
+                    <div>
+                        <label><?= i::__('Campo que representa a localização do proponente') ?>:</label>
+                        <mc-select placeholder="<?= i::esc_attr__('Selecione um campo') ?>" :default-value="geoQuota?.fields?.['default']" @change-option="setGeoQuotaField($event, 'default')" show-filter>
+                            <option v-for="(field, index) in getFields()" :key="index" :value="field.fieldName">{{ field.id ? '#' + field.id : '' }} {{ field.title }}</option>
+                            <option value="geo"><?= i::__('Geolocalização do agente responsável pela inscrição') ?></option>
+                        </mc-select>
+                    </div>
+                </div>
             </div>
 
             <div class="geo-quota__options">
 
                 <div class="field geo-quota__field">
                     <label><?= i::__('Divisão territorial') ?></label>
-                    <mc-select placeholder="Selecione uma divisão" :default-value="geoQuota.geoDivision" @change-option="setDivision"> <!-- :default-value="payment.status" @change-option="setPaymentStatus" -->
+                    <mc-select placeholder="Selecione uma divisão" :default-value="geoQuota.geoDivision" @change-option="setDivision" show-filter> <!-- :default-value="payment.status" @change-option="setPaymentStatus" -->
                         <option v-for="(division, index) in divisions" :key="index" :value="division.metakey">{{division.name}}</option>
                     </mc-select>
                 </div>

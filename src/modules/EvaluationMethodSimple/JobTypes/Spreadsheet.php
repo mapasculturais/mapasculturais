@@ -32,9 +32,15 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
             if (in_array($property, ['result', 'status', 'evaluationData'])) {
                 if($property === 'evaluationData') {
                     $sub_header['obs'] = i::__('Observações');
-                } else {
-                    $sub_header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
+                    continue;
                 }
+                
+                if($property === 'result') {
+                    $sub_header[$property] = i::__('Resultado');
+                    continue;
+                }
+
+                $sub_header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
             }
         }
 
@@ -55,7 +61,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
             $result[] = [
                 'projectName' => $registration_data['projectName'],
                 'category' => $registration_data['category'],
-                'owner.{name}' => $registration_data['owner']['name'],
+                'name' => $registration_data['owner']['name'],
                 'number' => $registration_data['number'],
                 'range' => $registration_data['range'],
                 'score' => $registration_data['score'],

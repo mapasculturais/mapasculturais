@@ -5,6 +5,7 @@ return [
     'inscrição' => i::__('Número da inscrição'),
     'agente' => i::__('Agente responsável'),
     'resultado final' => i::__('Resultado final da avaliação'),
+    'avaliador' => i::__('Avaliador'),
     'estado' => i::__('Estado'),
     'não avaliado' => i::__('Não avaliado'),
     'Avaliação iniciada' => i::__('Avaliação iniciada'),

@@ -186,7 +186,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      /**
      * @var string
      *
-     * @ORM\Column(name="registration_proponent_types", type="json", nullable=true)
+     * @ORM\Column(name="registration_proponent_types", type="json", nullable=false)
      */
     protected array $registrationProponentTypes = [];
 
@@ -1036,6 +1036,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         foreach($evaluations as $evaluation){
             if($evaluation->status == 1) {
                 $evaluation->status = RegistrationEvaluation::STATUS_SENT;
+                $evaluation->sentTimestamp = new \DateTime;
                 $evaluation->save(true);
             }
         }
@@ -1268,8 +1269,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         
         if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
 
-            if ($app->cache->contains($cache_key)) {
-                return $app->cache->fetch($cache_key);
+            if ($app->mscache->contains($cache_key)) {
+                return $app->mscache->fetch($cache_key);
             }
         }
 
@@ -1308,7 +1309,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
         if($app->config['app.useOpportunitySummaryCache']) {
-            $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
+            $app->mscache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
         }
 
         $app->applyHookBoundTo($this, "opportunity.summary", [&$data]);

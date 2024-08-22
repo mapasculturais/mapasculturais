@@ -83,6 +83,7 @@ trait EntityOwnerAgent{
      * @workflow RequestChangeOwnership
      */
     protected function _saveOwnerAgent(){
+        $app = App::i();
 
         if(!$this->owner && $this->_newOwner || $this->_newOwner && !$this->_newOwner->equals($this->owner)){
             try{
@@ -91,6 +92,9 @@ trait EntityOwnerAgent{
                 $this->_newOwner->checkPermission('modify');
                 
                 $this->owner = $this->_newOwner;
+                
+                $hook_prefix = $this->hookPrefix;
+                $app->applyHookBoundTo($this, "{$hook_prefix}.saveOwnerAgent");
 
             }  catch (\MapasCulturais\Exceptions\PermissionDenied $e){
                 $app = App::i();

@@ -8,17 +8,27 @@ app.component('entity-renew-lock', {
         }
     },
 
+    created() {
+        const self = this;
+        globalThis.addEventListener('afterFetch', (e) => {
+            const header = e.detail.headers.get('Error-Code');
+            if(header === '1'){
+                self.$refs.modalBlock.open();
+            }
+        });
+    },
+
     data() {
         return {
             token: $MAPAS.lockToken ?? null,
             message: '',
+            usesLock: $MAPAS.config['entity-renew-lock']['usesLock'],
+            locked: false
         }
     },
 
     methods: {
         renewLock() {
-            // const messages = useMessages();
-
             this.entity.POST('renewLock', {
                 data: {token: this.token}, callback: data => {}
             }).catch((data) => {
@@ -29,20 +39,40 @@ app.component('entity-renew-lock', {
             });
         },
 
-        unlock() {
-            document.location = this.entity.getUrl('unlock');
+        async unlock(modal) {
+            const messages = useMessages();
+          
+            try{
+                await this.entity.POST('unlock', {
+                  data: { token: this.token }, callback: data => { }
+                });
+                modal.close();
+                messages.success(this.text('você assumiu o controle da entidade'));
+            } catch(e) {
+                messages.error(this.text('não foi possível desbloquear a entidade'));
+            }
         },
 
         exit() {
             document.location = this.entity.getUrl('single');
+        },
+
+        setCookie() {
+            if(this.token) {
+                Utils.cookies.set('lockToken', this.token);
+            }
         }
     },
 
     mounted() {
-        setInterval(() => {
-            this.renewLock();
-        }, 
-        $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
+        if(this.usesLock) {
+            this.setCookie();
+
+            setInterval(() => {
+                this.renewLock();
+            }, 
+            $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
+        }
     }
     
 });

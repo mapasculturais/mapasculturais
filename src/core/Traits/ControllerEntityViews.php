@@ -92,7 +92,7 @@ trait ControllerEntityViews {
         $entity->checkPermission('modify');
         if($entity->usesLock()) {
             if($lock = $entity->isLocked()) {
-                $current_token = $this->urlData['token'] ?? null;
+                $current_token = $_COOKIE['lockToken'] ?? null;
     
                 if(!($current_token 
                     && $current_token == $lock['token']

@@ -35,6 +35,16 @@ $this->breadcrumb = [
     ['label' => $label, 'url' => $app->createUrl('search', 'projects')],
     ['label' => $entity->name, 'url' => $app->createUrl('project', 'single', [$entity->id])],
 ];
+
+$children_id = [];
+foreach($entity->children as $children) {
+    $children_id[] = $children->id;
+}
+
+if($children_id ){
+    $children_id  = implode(",", $children_id );
+}
+
 ?>
 
 <div class="main-app">
@@ -110,7 +120,7 @@ $this->breadcrumb = [
             <div class="single-project__subproject">
                 <mc-container>
                     <main class="grid-12">
-                        <mc-entities v-if="entity.children" type="project" select="name,type,shortDescription,files.avatar,seals,terms" :query="{id: `IN(${entity.children})`}" :limit="20" watch-query>
+                        <mc-entities v-if="entity.children" type="project" select="name,type,shortDescription,files.avatar,seals,terms" :query="{id: `IN(<?=$children_id?>)`}" :limit="20" watch-query>
                             <template #default="{entities}">
                                 <entity-card :entity="entity" v-for="entity in entities" :key="entity.__objectId" class="col-12">
                                     <template #avatar>
