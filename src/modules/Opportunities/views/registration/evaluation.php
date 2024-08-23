@@ -91,19 +91,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                     <div class="registration__actions">
                         <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
                         <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-                        <?php if ($valuer_user) : ?>
-                            <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                        <?php else : ?>
-                            <?php if (in_array($entity->opportunity->evaluationMethod->slug, ['simple', 'technical', 'qualification', 'documentary'])) : ?>
-                                <?php $this->part("{$entity->opportunity->evaluationMethod->slug}/evaluation-form"); ?>
-                            <?php else : ?>
-                                <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                            <?php endif; ?>
-                        <?php endif ?>
+                        
+                        <?php $this->part("{$entity->opportunity->evaluationMethod->slug}/evaluation-form"); ?>
                     </div>
-                    <?php if (!in_array($entity->opportunity->evaluationMethod->slug, ['simple', 'technical', 'qualification', 'documentary'])) : ?>
-	                    <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
-                    <?php endif; ?>
                 </div>
         </div>
         </aside>
