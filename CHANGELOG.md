@@ -5,7 +5,23 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.4.12]
+## [7.4.14]
+### Correções
+- Corrige a exibição do campo "Pessoa com Deficiência" na exportação de planilhas, evitando a exibição de valores nulos
+- Corrige a serialização do campo @ "Pessoa com Deficiência" para evitar que salver valores nulos
+- Corrige perda de configuração de categorias, faixas e tipos de proponente ao criar terceira fase de avaliação
+
+## [7.4.13] - 2024-08-14
+### Melhorias
+- Atualiza bibliotecas PHP
+- Identifica os botões das ações da tela de avaliações por cores
+
+### Correções
+- Corrige erro no carregamento dos subprojetos na single de projetos
+- Ajusta o provider OpauthAuthentik para resetar a sessão quando existir error retornado por parte do Authentik
+- Corrige exibição do embedTools de configurações de critérios da avaliação de qualificação documental
+
+## [7.4.12] - 2024-07-25
 ### Correções
 - Corrige erro que deixava a condicionalidade dos campos/anexos ativada ao editar, mesmo ele não estando condicionado a outro
 - Corrige erro na tabela de listagem de inscrições que impedia a listagem de todas as inscrições de oportunidades multifases
@@ -16,9 +32,19 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige sincronização de inscrição no botão do resumo de inscrições
 - Faz o enfileiramento do job UpdateSummaryCaches no endpoint syncRegistrations para que atualize tambem o resumo de inscrições
 - Corrige carregamento do menu 'Meu Perfil' no menu principal quando a pessoa esta deslogada
+- Corrige erro no ranqueamento por cota que deixava o ranqueamento mal ordenado
+- Melhora a funcionalidade de autosave do componente de bônus por pontuação
+- Corrige a exibição do detalhamento das avaliações para mostrar a nota 'score' em vez de 'consolidatedResult', incluindo a soma dos bônus por pontuações aplicados
+- Corrige o método isEligibleForAffirmativePolicies para não considerar bônus por pontuação
+- Corrige o método applyPointReward para considerar corretamente os campos condicionais
+- Persiste os dados do appliedPointReward após o cálculo de bônus por pontuações
+- Garante que o método que busca valores recursivamente entre os campos de uma inscrição verifique as fases anteriores quando os valores não existirem na fase atual
+- Corrige exibição dos valores de pessoas deficientes na tabela de inscrições
+- Não considera cotistas com nota inferior a nota de corte
 
 ### Melhorias
 - Ajusta filtros de avaliações na tela do avaliador possibilitando filtrar pelos status de avanço da avaliação
+- Exibe o nome da cota no botão de adicionar campo
 
 ## [7.4.11] - 2024-07-10
 ### Melhorias
