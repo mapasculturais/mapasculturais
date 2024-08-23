@@ -18,8 +18,8 @@ $this->import('
         <div v-for="(section, index) in entity.sections" :key="index" class="technical-assessment-section__card">
             <div class="technical-assessment-section__header">
                 <div class="title">
-                    <input class="title__input" v-if="editingSections[section.id]" type="text" v-model="section.name" @keyup="change()" @blur="editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
-                    <input class="title__input bold" v-if="!editingSections[section.id]" type="text" :value="section.name" @blur="editSections(section.id);" disabled placeholder="<?= i::esc_attr__('Nome sessão') ?>">
+                    <input class="title__input" v-if="editingSections[section.id]" type="text" v-model="section.name" @keyup="change()" @blur="editSections(section.id);" placeholder="<?= i::esc_attr__('Nome seção') ?>">
+                    <input class="title__input bold" v-if="!editingSections[section.id]" type="text" :value="section.name" @blur="editSections(section.id);" disabled placeholder="<?= i::esc_attr__('Nome seção') ?>">
                     <div class="title__buttons">
                         <button class="button button--text" @click="editSections(section.id)">
                             <mc-icon name="edit"></mc-icon>
@@ -35,7 +35,7 @@ $this->import('
                                     </button>
                                 </template>
                                 <template #message="message">
-                                    <?= i::__('Deseja deletar a sessão?') ?>
+                                    <?= i::__('Deseja deletar a seção?') ?>
                                 </template>
                             </mc-confirm-button>
                         </div>
@@ -100,7 +100,7 @@ $this->import('
         <button @click="addSection" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
             <label>
-                <?php i::_e("Adicionar sessão de critérios de avaliação") ?>
+                <?php i::_e("Adicionar seção de critérios de avaliação") ?>
             </label>
         </button>
     </div>

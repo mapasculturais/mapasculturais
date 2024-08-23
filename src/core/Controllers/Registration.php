@@ -242,7 +242,7 @@ class Registration extends EntityController {
                 $evaluation->registration->checkPermission('evaluate');
                 $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
                 $evaluation->save(true);
-                $this->json($entity);
+                $this->json($evaluation);
             }
 
             return null;
@@ -268,7 +268,7 @@ class Registration extends EntityController {
            
             if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
                 $evaluation->send(true);
-                $this->json($entity);
+                $this->json($evaluation);
             }
 
             return null;
