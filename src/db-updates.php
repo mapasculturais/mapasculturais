@@ -2192,16 +2192,16 @@ $$
                     EXECUTE FUNCTION fn_propagate_opportunity_update()");
     },
 
-    'create trigger to insert opportunity data to new children' => function () {
+    'recreate trigger to insert opportunity data to new children' => function () {
         __exec("CREATE OR REPLACE FUNCTION fn_propagate_opportunity_insert()
                     RETURNS TRIGGER
                     LANGUAGE plpgsql
                     COST 100
                     VOLATILE NOT LEAKPROOF AS $$
                     BEGIN
-                        NEW.registration_ranges = (SELECT registration_ranges FROM opportunity WHERE id = NEW.parent_id);
-                        NEW.registration_categories = (SELECT registration_categories FROM opportunity WHERE id = NEW.parent_id);
-                        NEW.registration_proponent_types = (SELECT registration_proponent_types FROM opportunity WHERE id = NEW.parent_id);
+                        NEW.registration_ranges = (SELECT coalesce((SELECT registration_ranges FROM opportunity WHERE id = NEW.parent_id)::json, '[]'::json));
+                        NEW.registration_categories = (SELECT coalesce((SELECT registration_categories FROM opportunity WHERE id = NEW.parent_id), '[]'));
+                        NEW.registration_proponent_types = (SELECT coalesce((SELECT registration_proponent_types FROM opportunity WHERE id = NEW.parent_id)::json, '[]'::json));
                         RETURN NEW;
                     END; $$;");
 
