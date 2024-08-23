@@ -1,0 +1,78 @@
+@use '../0.settings/mixins' as *;
+
+.tecnical-evaluation-form {
+
+    display: flex;
+    flex-direction: column;
+    gap: size(20);
+
+    &__header {
+        padding-bottom: 1.5rem;
+    }
+
+    &__criterion {
+        background-color: var(--mc-gray-100);
+        padding: size(12);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__maxScore {
+        .maxScore-input {
+            max-width: size(140);
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--mc-font-size-xxxs);
+        }
+    }
+    
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: size(20);
+        border-bottom: var(--mc-border-solid) var(--mc-gray-300);
+
+        &-subTotal {
+            padding-bottom: size(24);
+        }
+    }
+
+    &__results {
+        background-color: var(--mc-gray-100);
+        display: flex;
+        flex-direction: column;
+        gap: size(12);
+        padding: size(12);
+    }
+
+    &__textarea {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
+        textarea {
+            height: size(166);
+        }
+    }
+
+    &__viability-radio-group {
+
+        display: flex;
+        flex-direction: column;
+        gap: size(12);
+
+        label {
+            display: block;
+        }
+
+        input[type="radio"] {
+            display: inline-block;
+            width: size(18);
+            height: size(18);
+        }
+    }
+}

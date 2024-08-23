@@ -1039,7 +1039,6 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
     if(MapasCulturais.evaluationFieldsList){
         MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort((a,b) => {
-            console.log(a,b)
             if(a.displayOrder > b.displayOrder){
                 return 1;
             }else if(a.displayOrder < b.displayOrder){
@@ -1221,6 +1220,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         return false;
     }
+    
+    $scope.getFieldType = function(field) {
+        return field?.fieldName ? 'field' : 'file';
+    };
 
     $timeout(function(){
         $scope.ibge = MapasCulturais.ibge;
