@@ -526,6 +526,7 @@ class Module extends \MapasCulturais\Module
                 'requireValuesConfiguration' => true,
                 'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     $agent = $registration->getRelatedAgents('coletivo');
+
                     if($agent){
                         $module->saveToEntity($agent[0], $value, $registration, $metadata_definition);
                     }

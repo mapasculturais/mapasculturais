@@ -2165,7 +2165,7 @@ $$
         }
     },
     
-    'trigger to update children and parent opportunities' => function () {
+    'create trigger to update children opportunities' => function () {
         __exec("CREATE OR REPLACE FUNCTION fn_propagate_opportunity_update()
                     RETURNS TRIGGER
                     LANGUAGE plpgsql
@@ -2177,7 +2177,7 @@ $$
                             registration_ranges = NEW.registration_ranges,
                             registration_categories = NEW.registration_categories,
                             registration_proponent_types = NEW.registration_proponent_types
-                        WHERE (parent_id = OLD.id OR id = OLD.parent_id)
+                        WHERE parent_id = OLD.id
                         AND (
                             registration_ranges::jsonb IS DISTINCT FROM NEW.registration_ranges::jsonb OR
                             registration_categories::jsonb IS DISTINCT FROM NEW.registration_categories::jsonb OR
@@ -2190,6 +2190,25 @@ $$
                     AFTER UPDATE ON opportunity
                     FOR EACH ROW
                     EXECUTE FUNCTION fn_propagate_opportunity_update()");
+    },
+
+    'create trigger to insert opportunity data to new children' => function () {
+        __exec("CREATE OR REPLACE FUNCTION fn_propagate_opportunity_insert()
+                    RETURNS TRIGGER
+                    LANGUAGE plpgsql
+                    COST 100
+                    VOLATILE NOT LEAKPROOF AS $$
+                    BEGIN
+                        NEW.registration_ranges = (SELECT registration_ranges FROM opportunity WHERE id = NEW.parent_id);
+                        NEW.registration_categories = (SELECT registration_categories FROM opportunity WHERE id = NEW.parent_id);
+                        NEW.registration_proponent_types = (SELECT registration_proponent_types FROM opportunity WHERE id = NEW.parent_id);
+                        RETURN NEW;
+                    END; $$;");
+
+        __try("CREATE TRIGGER trigger_propagate_opportunity_insert
+                    BEFORE INSERT ON opportunity
+                    FOR EACH ROW
+                    EXECUTE FUNCTION fn_propagate_opportunity_insert()");
     },
     'renomeia metadados da funcionalidade AffirmativePollices' => function() use ($conn, $app) {
         $entity_metadada = [
