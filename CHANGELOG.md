@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.4.15] - 2024-08-23
 ### Correções
+- Corrige trigger da criação de oportunidade para definir os valores default das colunas registration_ranges, registration_categories e registration_proponent_types
 - Remove alguns debugs
 
 ## [7.4.14] - 2024-08-22
