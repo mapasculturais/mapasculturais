@@ -109,7 +109,7 @@ app.component('documentary-evaluation-form', {
         getEvaluationData() {
             const data = $MAPAS.config?.documentaryEvaluationForm?.evaluationData?.evaluationData;
             
-            if((data && this.fieldId && !this.isEditable) || (!this.evaluationData)) {
+            if((data && this.fieldId && !this.isEditable) || (data && Object.values(this.evaluationData).length == 0)) {
                 return this.evaluationData[this.fieldId] = data[this.fieldId];
             }
 
