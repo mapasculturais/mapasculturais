@@ -139,7 +139,7 @@ app.component('technical-assessment-section', {
                         let _field = this.fieldsDict.criteria[field];
                         if (_field.isRequired && !criterion[field]) {
                             let message = `${this.text('theField')} ${this.text(_field.label)} ${this.text('isRequired')} `;
-                            debugger
+                            
                             if(addCriteria) {
                                 message = message + this.text('lastCriterion');
                             }
