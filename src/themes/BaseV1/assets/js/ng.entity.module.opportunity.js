@@ -1242,6 +1242,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             val = moment(val).toDate();
         }
 
+        
         $scope.entity[field.fieldName] = val;
     });
 
@@ -1779,6 +1780,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
         
         return false;
+    }
+
+    $scope.checkField =  function(field) {
+        if((field.length === 1 && field[0] === '') || (field.length === 1 && field[0] === 'null')) {
+            return "Não sou";
+        }
+
+        if(!field || field.length <= 0 || (field.length === 1 && !field[0])) {
+            return null;
+        }
+
+        return field;
     }
 
     $scope.printField = function(field, value){
