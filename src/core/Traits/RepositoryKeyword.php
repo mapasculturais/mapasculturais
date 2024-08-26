@@ -91,7 +91,7 @@ trait RepositoryKeyword{
     function getIdsByKeyword($keyword){
         $keywords = explode(';', $keyword);
         $result = [];
-        eval(\psy\sh());
+        
         foreach($keywords as $keyword) {
             $dql = $this->getIdsByKeywordDQL($keyword);
             $query = $this->_em->createQuery($dql);
