@@ -31,6 +31,7 @@ app.component('affirmative-policies--geo-quota-configuration', {
         let autosaveTime = 3000;
 
         return {
+            fields: {},
             isActive,
             geoQuota,
             oppFirstPhase,
@@ -92,7 +93,8 @@ app.component('affirmative-policies--geo-quota-configuration', {
 
         setGeoQuotaField(option, proponentType) { 
             this.autosaveTime = 600;
-            this.geoQuota.fields[`${proponentType}`] = option.value;
+            this.fields[proponentType] = option.value;
+            this.geoQuota.fields = this.fields;
             this.phase.geoQuotaConfiguration = this.geoQuota;
         },
 
@@ -111,9 +113,8 @@ app.component('affirmative-policies--geo-quota-configuration', {
 
             return result;
         },
-
-        async save(updated = false) {
-            if(updated) {
+        async save(trash = false) {
+            if(trash) {
                 this.geoQuota = { geoDivision: '', distribution: {}, fields: {} };
                 this.phase.geoQuotaConfiguration = this.geoQuota;
             }
@@ -121,11 +122,12 @@ app.component('affirmative-policies--geo-quota-configuration', {
             if(this.geoQuota.geoDivision !== '' 
                 && this.geoQuota
                 && this.geoQuota.distribution !== null
+                || trash
             ) {
                 this.phase.geoQuotaConfiguration = this.geoQuota;
+                await this.phase.save(this.autosaveTime);
             }
 
-            await this.phase.save(this.autosaveTime);
             this.autosaveTime = 3000;
         },
     },
