@@ -238,7 +238,7 @@ class Metadata extends \MapasCulturais\Definition{
             'multiselect' => function($value){
                 $result = is_null($value) ? null : json_decode($value, true);
 
-                if($value && !$result && ($temp_result = explode(';', $value))) {
+                if($value && !is_array($result) && ($temp_result = explode(';', $value))) {
                     $result = $temp_result;
                 }
 
@@ -265,7 +265,7 @@ class Metadata extends \MapasCulturais\Definition{
     function validate(\MapasCulturais\Entity $entity, $value){
         $errors = [];
 
-        if($this->is_required && is_null($value)){
+        if($this->is_required && (is_null($value) || $value === [])){
             $errors[] = $this->is_required_error_message;
 
         }elseif(!is_null($value)){

@@ -68,7 +68,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
         $app->disableAccessControl();
         $this->status = self::STATUS_DISABLED;
-        eval(\psy\sh());
+        
         $this->save($flush);
         $app->enableAccessControl();
 

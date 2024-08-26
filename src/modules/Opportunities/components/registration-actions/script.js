@@ -14,10 +14,24 @@ app.component('registration-actions', {
     },
 
     mounted() {
-        window.addEventListener("message", (event) => {
+        const self = this;
+
+        globalThis.addEventListener("message", (event) => {
             if (event.data.type == 'registration.update') {
+                let autoSave = false;
+
                 for (let key in event.data.data) {
                     this.registration[key] = event.data.data[key];
+
+                    if(!autoSave) {
+                        autoSave = true;
+                        
+                        clearTimeout(self.autoSaveTimeout);
+    
+                        self.autoSaveTimeout = setTimeout(() => {
+                            self.save();
+                        }, $MAPAS.config.registrationActions.autosaveDebounce);
+                    }
                 }
             }
         });
