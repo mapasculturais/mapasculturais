@@ -344,33 +344,33 @@ app.component('entity-table', {
         getFilterValues(value) {
             // Exemplos: 
             //      EQ(10), EQ(preto), IN(8, 10), IN(preto, pardo)
-            let values = /(EQ|IN|GT|GTE|LT|LTE)\((.+)\)/.exec(value); 
+            let values = /(EQ|IN|IIN|GT|GTE|LT|LTE)\((.+)\)/.exec(value); 
             let exclude = ['GT','GTE','LT','LTE'];
-        
-            if (!values) {
-                return [value];
-            }
-        
-            const operator = values[1];
-            const _values = values[2];
-        
-            if (exclude.includes(operator)) {
-                return null;
-            }
-        
-            if (operator == '@pending') {
-                return 'null';
-            }
-        
-            if (_values) {
-                if (operator == 'IN') {
-                    let commaValues = _values.startsWith(',') ? _values.slice(1) : _values;
-                    values = commaValues.replace(/([^\\]),/g, '$1%break%');
-                } else {
-                    values = _values;
+
+            if (values) {
+                const operator = values[1];
+                const _values = values[2];
+            
+                if (exclude.includes(operator)) {
+                    return null;
                 }
-        
-                return values.split('%break%').filter(value => value.trim());
+            
+                if (operator == '@pending') {
+                    return 'null';
+                }
+            
+                if (_values) {
+                    if (operator == 'IN' || operator == 'IIN') {
+                        let commaValues = _values.startsWith(',') ? _values.slice(1) : _values;
+                        values = commaValues.replace(/([^\\]),/g, '$1%break%');
+                    } else {
+                        values = _values;
+                    }
+            
+                    return values.split('%break%').filter(value => value.trim());
+                } else {
+                    return null;
+                }
             } else {
                 return null;
             }
