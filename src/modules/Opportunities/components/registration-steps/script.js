@@ -15,27 +15,33 @@ app.component('registration-steps', {
         const globalState = useGlobalState();
 
         const self = this;
-
+    
         window.addEventListener("message", (event) => {    
             if (event.data.type == "section.tops") {
                 
                 const iftop = iframe.offsetTop;
                 const scrollY = window.scrollY;
-                const sections = event.data.data;
+                const sectionsData = event.data.data;
                 let currentLabel = this.text('Informações básicas');
-                for(let section of sections) {
+                self.sections = [this.text('Informações básicas')];
+                
+                for(let section of sectionsData) {
                     if(!self.sectionsByName[section.label]) {
                         continue;
                     }
+
                     self.sectionsByName[section.label].top = section.top + iftop;
+                    self.sections.push(section.label);
+
                     if(scrollY > section.top + iftop + 400) {
                         currentLabel = section.label;
                     }
+
                     if(window.scrollY > document.body.offsetHeight - window.innerHeight - 100) {
                         currentLabel = section.label;
                     }
                 }
-
+                
                 globalState['stepper'] = self.sections.indexOf(currentLabel);
             }
         })
@@ -43,14 +49,11 @@ app.component('registration-steps', {
 
     data() {
         let sectionsByName = {};
-        let sections = [ 
-            this.text('Informações básicas'),
-        ];
+        let sections = [];
 
-        for (let entry of $MAPAS.registrationFields) {
+        for (let entry of $MAPAS.registrationFields) {  
             if (entry.fieldType == 'section') {
                 if(!sectionsByName[entry.title]) {
-                    sections.push(entry.title);
                     sectionsByName[entry.title] = entry;
                 }
             }
@@ -71,7 +74,5 @@ app.component('registration-steps', {
                 window.scroll(0,this.sectionsByName[event].top + 500);
             }
         },
-
-
     },
 });
