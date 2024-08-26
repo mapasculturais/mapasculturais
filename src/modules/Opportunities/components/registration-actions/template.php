@@ -8,11 +8,63 @@ use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
+    mc-icon
 ');
 ?>
 <div class="registration-actions">
     <div class="registration-actions__primary">
-        <div v-if="Object.keys(registration.__validationErrors).length > 0" class="errors">
+
+        <div class="registration-actions__errors">
+            <span class="registration-actions__errors-title"> Ops! Alguns erros foram identificados. </span>
+            <span class="registration-actions__errors-subtitle"> 
+                Para continuar, corrija os campos com os erros listados abaixo: 
+                
+                <span v-if="hideErrors" class="registration-actions__errors-toggle" @click="toggleErrors()">
+                    <?= i::__('Exibir erros') ?> <mc-icon name="arrowPoint-down"></mc-icon>
+                </span>
+                <span  v-if="!hideErrors" class="registration-actions__errors-toggle" @click="toggleErrors()">
+                    <?= i::__('Ocultar erros') ?> <mc-icon name="arrowPoint-up"></mc-icon>
+                </span>
+            </span>
+         
+            <div class="registration-actions__errors-list scrollbar" :class="{'registration-actions__errors-list--hide' : hideErrors}">
+                <div class="registration-actions__error">
+                    <strong>texto:</strong> <p>O campo é obrigatório.</p>
+                </div>
+                <div class="registration-actions__error">
+                    <strong>oto texto:</strong> <p>O campo é obrigatório.</p>
+                </div>
+                <div class="registration-actions__error">
+                    <strong>mais oto texto:</strong> <p>O campo é obrigatório.</p>
+                </div>
+                <div class="registration-actions__error">
+                    <strong>email:</strong> <p>O campo é obrigatório.</p>
+                </div>
+                <div class="registration-actions__error">
+                    <strong>número:</strong> <p>O campo é obrigatório.</p>
+                </div>
+                <div class="registration-actions__error">
+                    <strong>Instituição responsável:</strong> <p>O agente "Instituição responsável" é obrigatório.</p>
+                </div>
+                <div class="registration-actions__error">
+                    <strong>Agente coletivo:</strong> <p>O agente "Coletivo" é obrigatório.</p>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="Object.keys(registration.__validationErrors).length > 0" class="registration-actions__errors">
+            <span class="registration-actions__errors-title"> <?= i::__('Ops! Alguns erros foram identificados.') ?> </span>
+            <span class="registration-actions__errors-subtitle"> <?= i::__('Para continuar, corrija os campos com os erros listados abaixo:') ?> </span>
+
+            <div class="registration-actions__errors-list scrollbar">
+                <div v-for="(error, index) in registration.__validationErrors" class="registration-actions__error">
+                    <strong>{{fieldName(index)}}:</strong> <p v-for="text in error">{{text}}</p>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div v-if="Object.keys(registration.__validationErrors).length > 0" class="errors">
             <span class="errors__title"> <?= i::__('Ops! Alguns erros foram identificados.') ?> </span>
             <span class="errors__subtitle"> <?= i::__('Para continuar, corrija os campos com os erros listados abaixo:') ?> </span>
     
@@ -21,7 +73,7 @@ $this->import('
                     <strong>{{fieldName(index)}}:</strong> <p v-for="text in error">{{text}}</p>
                 </div>    
             </div>
-        </div>
+        </div> -->
 
         <mc-confirm-button @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
             <template #button="modal">

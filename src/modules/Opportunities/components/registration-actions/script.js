@@ -45,10 +45,15 @@ app.component('registration-actions', {
     data() {
         return {
             fields: $MAPAS.registrationFields,
+            hideErrors: false,
         }
     },
     
     methods: {
+        toggleErrors() {
+            this.hideErrors = !this.hideErrors;
+        },
+
         fieldName(field) {
             if (field == 'agent_instituicao') {
                 return this.text('Instituição responsável'); 
