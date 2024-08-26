@@ -716,3 +716,21 @@
 .lowercase {
     text-transform: var(--mc-font-transform-lowercase);
 }
+
+.scrollbar {
+    &::-webkit-scrollbar {
+        width: size(5); 
+        height: size(5);
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: unset;
+        width: size(8);
+        height: size(8);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #6C6C6C;
+        border-radius: var(--mc-border-radius-pill);
+    }
+}
