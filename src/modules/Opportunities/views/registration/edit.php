@@ -51,6 +51,7 @@ $this->breadcrumb = $breadcrumb;
     entity-renew-lock
     mc-avatar
     opportunity-header
+    registration-autosave-notification
     registration-info
     registration-steps
 ');
@@ -83,6 +84,7 @@ $this->breadcrumb = $breadcrumb;
                     <h2 class="section__title" id="main-info">
                         <?= i::__('Informações básicas') ?>
                     </h2>
+                    <registration-autosave-notification :registration="entity"></registration-autosave-notification>
 
                     <div class="section__content">                         
                         <div class="card owner">                            
