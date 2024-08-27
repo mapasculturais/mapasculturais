@@ -50,6 +50,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
 - Quando a oportunidade é multifases e ocorre uma alteração na propriedade, faz com que essa mudança também se reflita nas fases subsequentes
 
+
+## [7.4.16]
+### Correções
+- Corrige exibição doc ampo pessoa com deficiência atravez do embedTools
+- Corrige mc-update que atualiza os dados do campo pessoa com deficiência nas inscrições e agentes
+- Apaga pasta do plugin RegistrationPayment do core
+
 ## [7.4.15] - 2024-08-23
 ### Correções
 - Corrige trigger da criação de oportunidade para definir os valores default das colunas registration_ranges, registration_categories e registration_proponent_types

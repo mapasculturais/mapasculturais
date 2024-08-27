@@ -455,7 +455,7 @@ return [
             $app->enableAccessControl();
         });
     },
-    'Corrige campo pessoa deficiente dos agentes' => function () use ($app) {
+    'Reordena campo pessoa deficiente dos agentes' => function () use ($app) {
         $ajust_array_value = function ($value) {
             $result =  array_filter($value, function ($val) {
                 $val = trim($val);
@@ -476,27 +476,30 @@ return [
 
         DB_UPDATE::enqueue(Agent::class, "id > 0", function (Agent $agent) use ($app, $ajust_array_value) {
             $conn = $app->em->getConnection();
-
-            if ($value = $agent->pessoaDeficiente) {
-
-                if (is_array($value)) {
+            if($data = $conn->fetchAll("SELECT value from agent_meta WHERE object_id = {$agent->id} AND key = 'pessoaDeficiente'")) {
+                $_result = [""];
+                $value = json_decode($data[0]['value']);
+                $modify = false;
+                if(is_array($value)) {
                     $_result = $ajust_array_value($value);
-                } else {
-                    if ($value == "" || $value == "null" || is_null($value) || $value == "null;") {
-                        $_result = '[""]';
-                    } else {
-                        if ($value = explode(";", $value)) {
-                            $_result = $ajust_array_value($value);
-                        }
+                    $modify = true;
+                }else {
+                    $_value = explode(";", $value);
+                    if(is_array($_value)) {
+                        $_result = $ajust_array_value($_value);
+                        $modify = true;
                     }
                 }
-
-                $conn->executeQuery("UPDATE agent_meta set value = '{$_result}' where object_id = {$agent->id} AND key = 'pessoaDeficiente'");
+                
+                if($modify) {
+                    $app->log->debug("Campo de pessoa com deficiencia alterado no agente {$agent->id}");
+                    $conn->executeQuery("UPDATE agent_meta set value = '{$_result}' where object_id = {$agent->id} AND key = 'pessoaDeficiente'");
+                }
             }
         });
         $app->enableAccessControl();
     },
-    'Corrige campo pessoa deficiente das inscrições' => function () use ($app) {
+    'Reordena campo pessoa deficiente das inscrições' => function () use ($app) {
         $conn = $app->em->getConnection();
         $opportunity_ids = [];
         if($values = $conn->fetchAll("SELECT * from registration_field_configuration WHERE field_type = 'agent-owner-field' and config LIKE '%pessoaDeficiente%'")) {
@@ -528,21 +531,24 @@ return [
                 $registration->registerFieldsMetadata();
 
                 $field_name =  $fields_data[$opp_id];
-
-                if($value = $registration->$field_name) {
-                    if (is_array($value)) {
+                if($data = $conn->fetchAll("SELECT value from registration_meta WHERE object_id = {$registration->id} AND key = '{$field_name}'")) {
+                    $_result = [""];
+                    $value = json_decode($data[0]['value']);
+                    if(is_array($value)) {
                         $_result = $ajust_array_value($value);
-                    } else {
-                        if ($value == "" || $value == "null" || is_null($value) || $value == "null;") {
-                            $_result = '[""]';
-                        } else {
-                            if ($value = explode(";", $value)) {
-                                $_result = $ajust_array_value($value);
-                            }
+                        $modify = true;
+                    }else {
+                        $_value = explode(";", $value);
+                        if(is_array($_value)) {
+                            $_result = $ajust_array_value($_value);
+                            $modify = true;
                         }
                     }
-    
-                    $conn->executeQuery("UPDATE registration_meta set value = '{$_result}' where object_id = {$registration->id} AND key = '{$field_name}'");
+
+                    if($modify) {
+                        $app->log->debug("Campo de pessoa com deficiencia alterado na inscrição {$registration->id}");
+                        $conn->executeQuery("UPDATE registration_meta set value = '{$_result}' where object_id = {$registration->id} AND key = '{$field_name}'");
+                    }
                 }
             });
         }

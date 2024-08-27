@@ -40,6 +40,7 @@ app.component('agent-table', {
             '@order': 'createTimestamp DESC',
             '@limit': 20,
             '@page': 1,
+            ... this.extraQuery,
         }
 
         if (this.agentType) {
