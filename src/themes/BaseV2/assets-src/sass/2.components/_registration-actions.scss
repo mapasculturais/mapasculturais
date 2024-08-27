@@ -78,6 +78,12 @@
         }
     }
 
+    &__validation {
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
+    }
+
     &__secondary {
         display: flex;
         flex-direction: column;
