@@ -45,6 +45,7 @@ app.component('registration-actions', {
     data() {
         return {
             fields: $MAPAS.registrationFields,
+            isValidated: false,
         }
     },
     
@@ -114,6 +115,7 @@ app.component('registration-actions', {
                 await this.save();
                 const success = await this.registration.POST('validateEntity', {});
                 if (success) {
+                    this.isValidated = true;
                     messages.success(this.text('Validado'));
                 }
             } catch (error) {

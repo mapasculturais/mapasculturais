@@ -9,6 +9,9 @@
     z-index: 1;
 
     &__primary {
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
         .errors {
             background: var(--mc-high-500);
             border-radius: var(--mc-border-radius-xs);
