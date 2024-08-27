@@ -26,9 +26,9 @@ app.component('agent-table-1', {
             selectedSexualOrientation: [],
             selectedGender: [],
             selectedRace: [],
-            sexualOrientation: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder,
-            gender: $DESCRIPTIONS.agent.genero.optionsOrder,
-            race: $DESCRIPTIONS.agent.raca.optionsOrder,
+            sexualOrientation: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder.filter((value) => value != ''),
+            gender: $DESCRIPTIONS.agent.genero.optionsOrder.filter((value) => value != ''),
+            race: $DESCRIPTIONS.agent.raca.optionsOrder.filter((value) => value != ''),
             extraQuery: {},
         }
     },
