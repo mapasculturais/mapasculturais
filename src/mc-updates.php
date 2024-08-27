@@ -502,6 +502,8 @@ return [
     'Reordena campo pessoa deficiente das inscrições' => function () use ($app) {
         $conn = $app->em->getConnection();
         $opportunity_ids = [];
+        $fields_data = [];
+        
         if($values = $conn->fetchAll("SELECT * from registration_field_configuration WHERE field_type = 'agent-owner-field' and config LIKE '%pessoaDeficiente%'")) {
             foreach($values as $value) {
                 $field_name = "field_{$value['id']}";
