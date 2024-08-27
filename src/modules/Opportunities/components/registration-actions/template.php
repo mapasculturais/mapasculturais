@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
+    mc-alert
 ');
 ?>
 <div class="registration-actions">
@@ -23,7 +24,7 @@ $this->import('
             </div>
         </div>
 
-        <mc-confirm-button @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
+        <mc-confirm-button v-if="isValidated" @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
             <template #button="modal">
                 <button @click="modal.open()" class="button button--large button--xbg button--primary">
                     <?= i::__("Enviar") ?>
@@ -34,10 +35,15 @@ $this->import('
             </template>
         </mc-confirm-button> 
 
+        <div class="registration-actions__primary" v-if="!isValidated">
+            <mc-alert type="warning">
+                <span><?= i::__("Para enviar sua inscrição, você precisa <strong>validá-la</strong> primeiro. Clique no botão <strong>Validar inscrição</strong> abaixo para verificar se todas as informações estão corretas.") ?></span>
+            </mc-alert>
+            <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
+        </div>
         <!-- <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button> -->
     </div>
     <div class="registration-actions__secondary">
-        <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
         <button @click="save();" class="button button--large button--primary-outline">
             <?= i::__("Salvar") ?>
         </button>
