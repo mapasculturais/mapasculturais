@@ -22,6 +22,11 @@
     .field {
         input {
             max-width: size(370);
+            min-width: size(20); 
+        }
+ 
+        label {
+            gap: size(20);
         }
 
         &--horizontal{
@@ -29,6 +34,7 @@
                 height: size(46);
             }
         }
+
     }
 
     &__content {
@@ -50,15 +56,26 @@
         padding: size(9) size(20);
         background: #E8E8E8;
         border-radius: size(4);
-        margin-bottom: size(16);
         display: flex;
         align-items: flex-start;
         gap: size(10);
-        flex-direction: row;
 
         &__select-all {
-            padding: size(16) size(46);
+            padding: size(8) size(70);
             flex-direction: row;
+            gap: size(20);
+        }
+
+        &__title {
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+        }
+
+        .iconify {
+            max-width: 100%;
+            width: size(30);
+            min-width: size(30);
         }
     }
 
