@@ -45,10 +45,16 @@ app.component('registration-actions', {
     data() {
         return {
             fields: $MAPAS.registrationFields,
+            hideErrors: false,
+            isValidated: false,
         }
     },
     
     methods: {
+        toggleErrors() {
+            this.hideErrors = !this.hideErrors;
+        },
+
         fieldName(field) {
             if (field == 'agent_instituicao') {
                 return this.text('Instituição responsável'); 
@@ -114,6 +120,7 @@ app.component('registration-actions', {
                 await this.save();
                 const success = await this.registration.POST('validateEntity', {});
                 if (success) {
+                    this.isValidated = true;
                     messages.success(this.text('Validado'));
                 }
             } catch (error) {

@@ -40,7 +40,6 @@ $this->import('
                         <mc-icon name="send" class="send-icon"></mc-icon>
                         <span v-if="lastRegistration?.registrationid != entity.id"><?= i::__('Enviar avaliação') ?></span>
                         <span v-if="lastRegistration?.registrationid == entity.id"><?= i::__('Finalizar e enviar') ?></span>
-                        <mc-icon name="arrow-right-ios" class="arrow-icon"></mc-icon>
                     </button>
                 </template>
             </mc-modal>
