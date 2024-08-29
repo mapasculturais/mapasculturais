@@ -113,22 +113,22 @@ $this->import('
                                                 </small>
                                             </div>
                                             <div class="registration-type">
-                                                <small>
+                                                <small v-if="field.categories">
                                                     <strong><?= i::__("Categorias")?></strong>
-                                                    <span v-if="field.categories.length > 0" class="border-span">: <i>{{field.categories.join(', ')}}</i></span>
-                                                    <span v-if="field.categories.length <= 0" class="border-span">: <i><?= i::__("Todas")?></i></span>
+                                                    <span v-if="field.categories && field.categories.length > 0" :class="{'border-span' : countRegistrationTypes(field) > 1}">: <i>{{field.categories.join(', ')}}</i></span>
+                                                    <span v-if="field.categories && field.categories.length <= 0" :class="{'border-span' : countRegistrationTypes(field) > 1}">: <i><?= i::__("Todas")?></i></span>
                                                 </small> 
 
-                                                <small>
+                                                <small v-if="field.registrationRanges">
                                                     <strong><?= i::__("Faixas/Linhas")?></strong>
-                                                    <span v-if="field.registrationRanges.length > 0" class="border-span">: <i>{{field.registrationRanges.join(', ')}}</i></span>
-                                                    <span v-if="field.registrationRanges.length <= 0" class="border-span">: <i><?= i::__("Todas")?></i></span>
+                                                    <span v-if="field.registrationRanges && field.registrationRanges.length > 0" :class="{'border-span' : countRegistrationTypes(field) > 1}">: <i>{{field.registrationRanges.join(', ')}}</i></span>
+                                                    <span v-if="field.registrationRanges && field.registrationRanges.length <= 0" :class="{'border-span' : countRegistrationTypes(field) > 1}">: <i><?= i::__("Todas")?></i></span>
                                                 </small> 
 
-                                                <small>
+                                                <small v-if="field.proponentTypes">
                                                     <strong><?= i::__("Tipos de proponente")?></strong>
-                                                    <span v-if="field.proponentTypes.length > 0">: <i>{{field.proponentTypes.join(', ')}}</i></span>
-                                                    <span v-if="field.proponentTypes.length <= 0">: <i><?= i::__("Todos")?></i></span>
+                                                    <span v-if="field.proponentTypes && field.proponentTypes.length > 0">: <i>{{field.proponentTypes.join(', ')}}</i></span>
+                                                    <span v-if="field.proponentTypes && field.proponentTypes.length <= 0">: <i><?= i::__("Todos")?></i></span>
                                                 </small> 
                                             </div>
                                         </div>

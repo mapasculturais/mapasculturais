@@ -175,7 +175,7 @@ app.component('opportunity-support-config', {
                 });
             }
 
-
+            console.log(fields)
             return fields;
         }
     },
@@ -252,6 +252,14 @@ app.component('opportunity-support-config', {
             this.proponentFilter = null;
             this.rangeFilter = null;
             this.keyword = "";
+        },
+
+        countRegistrationTypes(field) {
+            let count = 0;
+            if (field.categories) count++;
+            if (field.registrationRanges) count++;
+            if (field.proponentTypes) count++;
+            return count;
         },
 
         send(modal, relation) {
