@@ -11,9 +11,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.4.16]
 ### Correções
-- Corrige exibição doc ampo pessoa com deficiência atravez do embedTools
+- Corrige exibição do campo pessoa com deficiência atravez do embedTools
 - Corrige mc-update que atualiza os dados do campo pessoa com deficiência nas inscrições e agentes
-- Apaga pasta do plugin RegistrationPayment do core
+- Corrige a pré-visualização do formulário de inscrição
 
 ## [7.4.15] - 2024-08-23
 ### Correções
