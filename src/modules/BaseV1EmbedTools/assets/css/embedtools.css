@@ -260,7 +260,8 @@ select {
 }
 
 textarea {
-    min-height: 5.688rem;
+    min-height: 5.688rem !important;
+    white-space: break-spaces !important;
 }
 
 
