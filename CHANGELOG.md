@@ -7,13 +7,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5.0-RC]
 
 ### Novas funcionalidades
-- **Bloqueio de edição de entidades**, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
-- **Customizador do tema BaseV2** para subsites, possibilitando a configuração de cores, imagens, textos, posição do mapa etc
-- **Novo exportação de planilhas**
-  - Possibilidade do usuário escolher o tipo de arquivo exportado entre `.csv`, `.xlsx` e `.ods`
+- **Bloqueio de edição de entidades**: não permite que dois usuários diferentes editem a mesma entidade simultaneamente.
+- **Customizador do tema BaseV2 para subsites**: possibilita a configuração de cores, imagens, textos, posição do mapa entre outras.
+- **Nova exportação de planilhas**
+  - Possibilita que o usuário escolha o formato do arquivo exportado entre `.csv`, `.xlsx` e `.ods`
   - Processamento em background enviando o link para donwload do arquivo por email quando a planilha estiver pronta.
-- **Edição de campos de inscrições enviadas** - permite que o gestor abra alguns campos de uma determinada inscrição, por um tempo definido, para que o proponente possa modificar somente esses campos, fazendo com que não seja necessário colocar a inscriçào inteira como rascunho.
-- **Visualização das entidades em tabelas** na página de busca, para admins do sistema, com botão para exportar planilha com as entidades filtradas.
+- **Edição de inscrições enviadas**: possibilita ao gestor que configure um ou mais campos, de uma determinada inscrição e por um tempo definido, permitindo que o proponente possa modificá-los, fazendo com que não seja necessário peermitir a edição de toda a inscriçào, como rascunho.
+- **Visualização das entidades em tabelas na página de busca**: para admins do sistema, com botão para exportar planilha com as entidades filtradas.
 - Nova opção para o gestor solicitar o avatar do agente responsável no formulário de inscrição.
 - Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
 - Implementa modo de visualização das entidades em tabelas para admins do sistema
