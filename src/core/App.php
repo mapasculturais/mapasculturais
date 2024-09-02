@@ -1770,7 +1770,7 @@ class App {
         if($subsite && is_numeric($subsite)) {
             $subsite = $this->repo('Subsite')->find($subsite);
         } else if (is_null($subsite)) {
-            $subsite = $this->subsite;
+            $subsite = $this->subsite ? $this->subsite->refreshed() : null;
         }
 
         $type = $this->getRegisteredJobType($type_slug);
