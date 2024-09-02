@@ -671,27 +671,30 @@ class Quotas {
                     }
                 }
 
-                if(in_array($selected->fieldType, ['integer', 'numeric', 'number', 'float', 'currency', 'date'])) {
-                    $registration1Has = $registration1->{$tiebreaker->criterionType};
-                    $registration2Has = $registration2->{$tiebreaker->criterionType};
-
+                if (in_array($selected->fieldType, ['integer', 'numeric', 'number', 'float', 'currency', 'date'])) {
+                    $registration1Has = property_exists($registration1, $tiebreaker->criterionType) ? $registration1->{$tiebreaker->criterionType} : null;
+                    $registration2Has = property_exists($registration2, $tiebreaker->criterionType) ? $registration2->{$tiebreaker->criterionType} : null;
+                
                     $this->saveRegistrationTiebreaker($registration1, $tiebreaker);
                     $this->saveRegistrationTiebreaker($registration2, $tiebreaker);
-
-                    $result = $registration1Has <=> $registration2Has;
-
-                    if($tiebreaker->preferences == 'smallest') {
-                        if ($result !== 0) {
-                            return $result;
+                
+                    if ($registration1Has !== null && $registration2Has !== null) {
+                        $result = $registration1Has <=> $registration2Has;
+                
+                        if ($tiebreaker->preferences == 'smallest') {
+                            if ($result !== 0) {
+                                return $result;
+                            }
                         }
-                    }
-
-                    if($tiebreaker->preferences == 'largest') {
-                        if ($result !== 0) {
-                            return -$result;
+                
+                        if ($tiebreaker->preferences == 'largest') {
+                            if ($result !== 0) {
+                                return -$result;
+                            }
                         }
                     }
                 }
+                
 
                 if(in_array($selected->fieldType, ['multiselect', 'checkboxes'])) {
                     $registration1Has = array_intersect($registration1->{$tiebreaker->criterionType}, $tiebreaker->preferences);
