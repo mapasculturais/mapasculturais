@@ -159,6 +159,9 @@
                     if (angular.isFunction($scope.onCancel)) {
                         $scope.onCancel(attrs);
                     }
+                    
+                    jQuery('#' + attrs.id).find('button[type="submit"]').show();
+
                     jQuery('#' + attrs.id).trigger('cancel');
                 };
 
