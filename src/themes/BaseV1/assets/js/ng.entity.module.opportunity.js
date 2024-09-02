@@ -1210,6 +1210,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
 
+    $scope.openTemplateLink = function($event, url) {
+        $event.preventDefault();
+        window.open(url, '_blank');
+    };
+
     $timeout(function(){
         $scope.ibge = MapasCulturais.ibge;
     }, 200)
