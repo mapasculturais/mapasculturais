@@ -579,15 +579,20 @@ class Quotas {
     private function saveRegistrationTiebreaker($registration, $tiebreaker, $value = null) {
         $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
         $this->registrationFields[$registration->id]['tiebreaker'] = $this->registrationFields[$registration->id]['tiebreaker'] ?? [];
-
-        if($tiebreaker->criterionType == 'criterion') {
+    
+        if ($tiebreaker->criterionType == 'criterion') {
             $key = $this->getCriterionName($tiebreaker->preferences);
         } else if ($tiebreaker->criterionType == 'sectionCriteria') {
             $key = $this->getSectionCriterionName($tiebreaker->preferences);
-
+    
         } else {
             $key = $tiebreaker->selected->title;
-            $value = $registration->{$tiebreaker->criterionType};
+            
+            if (property_exists($registration, $tiebreaker->criterionType)) {
+                $value = $registration->{$tiebreaker->criterionType};
+            } else {
+                $value = null;
+            }
         }
         
         $this->registrationFields[$registration->id]['tiebreaker'][$key] = $value;
