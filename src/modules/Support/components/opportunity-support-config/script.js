@@ -175,7 +175,6 @@ app.component('opportunity-support-config', {
                 });
             }
 
-            console.log(fields)
             return fields;
         }
     },
