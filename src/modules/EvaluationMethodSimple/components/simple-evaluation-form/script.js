@@ -87,7 +87,7 @@ app.component('simple-evaluation-form', {
             let error = false;
             Object.keys(this.formData).forEach(key => { 
                 if (!this.formData[key] || this.formData[key] === '') {
-                    messages.error(this.text('emptyField') + ' ' + this.text(this.dictFields(key)) + ' ' + this.text('required'));
+                    messages.error(this.text('emptyField') + ' ' + this.dictFields(key) + ' ' + this.text('required'));
                     error = true;
                 }
             });
