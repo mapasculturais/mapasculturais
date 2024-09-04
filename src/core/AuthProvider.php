@@ -124,7 +124,8 @@ abstract class AuthProvider {
         } else {
             if ($user->status < 1) {
                 $this->logout();
-                die(i::__('Usuário não está ativo'));
+                throw new PermissionDenied($user, message: i::__('Usuário inativo'));
+                
             } else {
                 return $user;
             }

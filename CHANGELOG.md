@@ -9,11 +9,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
 
-## [7.4.16]
+## [7.4.16] - 2024-09-04
 ### Correções
 - Corrige exibição do campo pessoa com deficiência atravez do embedTools
 - Corrige mc-update que atualiza os dados do campo pessoa com deficiência nas inscrições e agentes
 - Corrige a pré-visualização do formulário de inscrição
+- Corrige exibição do botão excluir em campos de anexos que estão obrigatório
+- Corrige exibição do botão enviar anexo para ficar sempre visível quando o usuário já selecionou um arquivo
 
 ## [7.4.15] - 2024-08-23
 ### Correções
