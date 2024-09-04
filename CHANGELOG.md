@@ -6,7 +6,7 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [7.4.16]
+## [7.4.16] - 2024-09-04
 ### Correções
 - Corrige exibição do campo pessoa com deficiência atravez do embedTools
 - Corrige mc-update que atualiza os dados do campo pessoa com deficiência nas inscrições e agentes
