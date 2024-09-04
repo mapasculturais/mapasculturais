@@ -1223,6 +1223,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     
     $scope.getFieldType = function(field) {
         return field?.fieldName ? 'field' : 'file';
+    }
+    
+    $scope.openTemplateLink = function($event, url) {
+        $event.preventDefault();
+        window.open(url, '_blank');
     };
 
     $timeout(function(){
@@ -1815,7 +1820,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
-        } else if (field.fieldType === 'url'){
+        }else if (field.fieldType === "checkbox") {
+            return value === "true" ? "Sim" : "Não"; 
+        }
+         else if (field.fieldType === 'url'){
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
