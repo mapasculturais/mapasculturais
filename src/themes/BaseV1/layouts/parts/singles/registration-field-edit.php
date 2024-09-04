@@ -19,7 +19,7 @@ foreach ($definitions as $def) {
     <div class="attachment-description">
         <span ng-if="::field.description">{{::field.description}}</span>
         <span ng-if="::field.template">
-            (<a class="attachment-template" target="_blank" href="{{::field.template.url}}" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("baixar modelo"); ?></a>)
+            (<a class="attachment-template" target="_blank" ng-click="openTemplateLink($event, field.template.url)" rel='noopener noreferrer'><?php \MapasCulturais\i::_e("baixar modelo"); ?></a>)
         </span>
     </div>
     <a ng-if="field.file" class="attachment-title" href="{{field.file.url}}" target="_blank" rel='noopener noreferrer'>{{field.file.name}}</a>
@@ -28,7 +28,7 @@ foreach ($definitions as $def) {
         <!-- se já subiu o arquivo-->
         <!-- se não subiu ainda -->
         <a ng-class="{'btn btn-default send':!field.file,'btn btn-default edit':field.file}" ng-click="openFileEditBox(field.id, $index, $event)" title="{{!field.file ? 'enviar' : 'editar'}} <?php \MapasCulturais\i::_e("anexo"); ?>">{{!field.file ? 'Enviar' : 'Editar'}}</a>
-        <a class="btn btn-default delete" ng-if="!field.required && field.file" ng-click="removeFile(field.id, $index)" title="<?php \MapasCulturais\i::esc_attr_e("excluir anexo"); ?>"><?php \MapasCulturais\i::_e("Excluir"); ?></a>
+        <a class="btn btn-default delete" ng-if="field.file" ng-click="removeFile(field.id, $index)" title="<?php \MapasCulturais\i::esc_attr_e("excluir anexo"); ?>"><?php \MapasCulturais\i::_e("Excluir"); ?></a>
     </div>
     <div ng-repeat="error in field.error" class="alert danger">{{error}}</div>
     <edit-box id="editbox-file-{{::field.id}}" position="bottom" title="{{::field.title}} {{::field.required ? '*' : ''}}" cancel-label="<?php \MapasCulturais\i::esc_attr_e("Cancelar"); ?>" submit-label="<?php \MapasCulturais\i::esc_attr_e("Enviar anexo"); ?>" loading-label="<?php \MapasCulturais\i::esc_attr_e("Carregando ..."); ?>" on-submit="sendFile" close-on-cancel='true' index="{{$index}}" spinner-condition="data.uploadSpinner">
