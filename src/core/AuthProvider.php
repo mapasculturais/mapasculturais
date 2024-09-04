@@ -2,6 +2,7 @@
 namespace MapasCulturais;
 
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\Exceptions\PermissionDenied;
 
 abstract class AuthProvider {
     use Traits\MagicCallers,
