@@ -337,9 +337,11 @@ class Agent extends \MapasCulturais\Entity
     }
 
     function setParentAsNull($flush = true){
-        $this->parent = null;
+        if($this->parent) {
+            $this->parent = null;
 
-        $this->save($flush);
+            $this->save($flush);
+        }
     }
 
     function getIsUserProfile(){
