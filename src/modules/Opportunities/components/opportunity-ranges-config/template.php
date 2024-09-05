@@ -23,7 +23,7 @@ $this->import('
     <div class="opportunity-ranges-config__content" v-for="(range, index) in entity.registrationRanges" :key="index">
         <div class="field">
             <label><?= $this->text('input-label', i::__('Faixa/Linha')) ?> {{index+1}}</label>
-            <input class="field__input" type="text" v-model="range.label" @blur="autoSaveRange(range)" placeholder="<?= $this->text('input-placeholder', i::__('Descrição da faixa/linha')) ?>">
+            <input class="field__input" type="text" v-model="range.label" @blur="autoSaveRange(range)" :ref="'description-' + index" placeholder="<?= $this->text('input-placeholder', i::__('Descrição da faixa/linha')) ?>">
         </div>
             
         <div class="field">
