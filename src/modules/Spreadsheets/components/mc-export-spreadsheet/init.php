@@ -7,5 +7,5 @@
 $entity = $this->controller->requestedEntity;
 
 $this->jsObject['config']['mcExportSpreadsheet'] = [
-    'files' => $entity->files
+    'files' => $entity ? $entity->files : []
 ];
