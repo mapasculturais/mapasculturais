@@ -75,37 +75,40 @@ $this->import('
         </div>
 
         <div class="affirmative-policies--quota-configuration__card-content">
-            <div v-for="(field, indexF) in quota.fields" :key="indexF" class="affirmative-policies--quota-configuration__quota-field">
-                <div class="field">
-                    <label v-if="indexF === 'default'"><?= i::__('Selecione o campo que define a cota') ?></label>
-                    <label v-else><?= i::__('Selecione o campo que define a cota para {{indexF}}') ?></label>
-                    <mc-select v-model:default-value="field.fieldName" placeholder="<?= i::esc_attr__('Selecione um campo') ?>" show-filter>
-                        <option v-for="(item, index) in filteredOptions(indexF)" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
-                    </mc-select>
+            
+            <div v-for="proponentType in proponentTypes" :key="proponentType" class="affirmative-policies--quota-configuration__quota-field">
+                <div class="affirmative-policies--quota-configuration__field">
+                    <div class="field">
+                        <label v-if="proponentType === 'default'"><?= i::__('Selecione o campo que define a cota') ?></label>
+                        <label v-else><?= i::__('Selecione o campo que define a cota para {{proponentType}}') ?></label>
+                        <mc-select v-model:default-value="getQuotaField(proponentType,quota).fieldName" placeholder="<?= i::esc_attr__('Selecione um campo') ?>" show-filter>
+                            <option v-for="(item, index) in filteredOptions(proponentType)" :value="item.fieldName">{{ '#' + item.id + ' ' + item.title }}</option>
+                        </mc-select>
+                    </div>
                 </div>
 
-                <div v-if="getFieldType(field) === 'select' || getFieldType(field) === 'multiselect' || getFieldType(field) === 'checkboxes'" class="field">
+                <div v-if="getFieldType(getQuotaField(proponentType,quota)) === 'select' || getFieldType(getQuotaField(proponentType,quota)) === 'multiselect' || getFieldType(getQuotaField(proponentType,quota)) === 'checkboxes'" class="field">
                     <label><?= i::__('Dar preferência a') ?>:</label>
 
                     <div class="field field--horizontal">
-                        <label v-for="option in getFieldOptions(field)">
-                            <input type="checkbox" :value="optionValue(option)" :true-value="[]" v-model="field.eligibleValues" />
+                        <label v-for="option in getFieldOptions(getQuotaField(proponentType,quota))">
+                            <input type="checkbox" :value="optionValue(option)" :true-value="[]" v-model="getQuotaField(proponentType,quota).eligibleValues" />
                             <span>{{optionLabel(option)}}</span>
                         </label>
                     </div>
                 </div>
 
-                <div v-if="getFieldType(field) === 'checkbox' || getFieldType(field) === 'boolean'" class="field">
+                <div v-if="getFieldType(getQuotaField(proponentType,quota)) === 'checkbox' || getFieldType(getQuotaField(proponentType,quota)) === 'boolean'" class="field">
                     <label><?= i::__('Dar preferência a') ?>:</label>
 
                     <div class="field field--horizontal">
                         <label>
-                            <input type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="field.eligibleValues">
+                            <input type="radio" :name="quota.fieldName + ':' + index" :value="true" v-model="getQuotaField(proponentType,quota).eligibleValues">
                             <span><?= i::__('Sim / Marcado') ?></span>
                         </label>
 
                         <label>
-                            <input type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="field.eligibleValues">
+                            <input type="radio" :name="quota.fieldName + ':' + index" :value="false" v-model="getQuotaField(proponentType,quota).eligibleValues">
                             <span><?= i::__('Não / Desmarcado') ?></span>
                         </label>
                     </div>

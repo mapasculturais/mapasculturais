@@ -64,11 +64,7 @@
     // Estilização interna
     &__quota-field {
         border-top: var(--mc-border-hairline) var(--mc-gray-300);
-        display: grid;
-        gap: size(15) size(30);
-        grid-template-columns: 
-            calc(100% - size(100))
-            size(70);
+        
         padding-top: size(20);
 
         &:first-child {
@@ -82,6 +78,10 @@
         .field--horizontal {
             flex-wrap: wrap;
         }
+    }
+
+    &__field {
+        margin-bottom:1rem;
     }
 
     &__quota-field-sufix {

@@ -13,15 +13,12 @@ app.component('affirmative-policies--quota-configuration', {
         // os textos estão localizados no arquivo texts.php deste componente 
         const messages = useMessages();
         const text = Utils.getTexts('affirmative-policies--quota-configuration')
+        
         return { text, messages }
     },
 
-    updated () {
-        this.autoSave();
-        this.autoSaveTime = 3000;
-    },
-
     mounted() {
+        
         if(this.phase.quotaConfiguration && this.phase.quotaConfiguration.rules.length > 0) {
             if(this.totalVacancies > 0) {
                 this.phase.quotaConfiguration.rules.forEach((quota, index) => {
@@ -31,16 +28,31 @@ app.component('affirmative-policies--quota-configuration', {
                 this.distributeQuotas(false, true);
             }
         }
+
+        this.fixConfiguration();
+
+        // salva as modificações
+        this.$watch(() => this.phase.quotaConfiguration, (first, second) => {
+            clearTimeout(this.autosaveTimeout);
+            this.autosaveTimeout = setTimeout(() => {
+                this.autoSave();
+            }, this.autoSaveTime);
+
+        }, { deep: true });
+
+
+        // atualiza a configuração quando houver mudanças nos proponent types
+        this.$watch(() => this.firstPhase.registrationProponentTypes, (first, second) => {
+            this.fixConfiguration();
+        }, { deep: true });
     },
 
     data() {
         const firstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
-        const proponentTypes = firstPhase.registrationProponentTypes.length ? firstPhase.registrationProponentTypes : ["default"];
 
         return {
             autoSaveTime: 3000,
             firstPhase,
-            proponentTypes,
             totalVacancies: firstPhase.vacancies ?? 0,
             totalQuota: this.phase.quotaConfiguration ? this.phase.quotaConfiguration.vacancies : 0,
             totalPercentage: 0,
@@ -52,22 +64,34 @@ app.component('affirmative-policies--quota-configuration', {
         isActive() {
             return this.phase?.quotaConfiguration?.rules.length > 0;
         },
+
+        proponentTypes() {
+            const firstPhase = this.firstPhase;
+            const result = firstPhase.registrationProponentTypes.length ? firstPhase.registrationProponentTypes : ["default"];
+            return result;
+        }
+    },
+
+    watch: {
+        
     },
 
     methods: {
         skeleton() {
-            const rules = {
-                fieldName: '',
-                eligibleValues: []
-            }
-
             const fields = {};
-            
-            this.proponentTypes.forEach((type) => {
-                fields[type] = { ...rules };
-            });
+
+            for(let proponentType of this.proponentTypes) {
+                fields[proponentType] = {
+                    fieldName: '',
+                    eligibleValues: []
+                }
+            };
 
             return fields;
+        },
+
+        getQuotaField(proponentType,quota) {
+            return quota.fields[proponentType] || {};
         },
 
         getField(quota) {
@@ -139,13 +163,6 @@ app.component('affirmative-policies--quota-configuration', {
                 this.totalQuota = countVacancies;
 
                 this.updateQuotaPercentage();
-                if(!load) {
-                    this.autoSave();
-                }
-
-                if(removeQuota) {
-                    this.autoSave(true);                    
-                }
             }
         },
 
@@ -205,6 +222,28 @@ app.component('affirmative-policies--quota-configuration', {
         filteredOptions(proponentType) {
             const field = this.fields.filter(field => field.proponentTypes.includes(proponentType) || field.proponentTypes.length === 0);
             return field;
+        },
+
+        fixConfiguration() {
+            const proponentTypes = this.proponentTypes;
+            for (let quota of this.phase.quotaConfiguration.rules) {
+                for(let key in quota.fields) {
+                    if(!proponentTypes.includes(key)) {
+                        delete quota.fields[key];
+                    }
+                }
+            }
+
+            for (let quota of this.phase.quotaConfiguration.rules) {
+                for (let proponentType of proponentTypes) {
+                    if(!quota.fields[proponentType]) {
+                        quota.fields[proponentType] = {
+                            fieldName: '',
+                            eligibleValues: []
+                        }
+                    }
+                }
+            }
         }
     },
 });
