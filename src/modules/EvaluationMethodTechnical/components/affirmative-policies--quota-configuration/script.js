@@ -226,7 +226,7 @@ app.component('affirmative-policies--quota-configuration', {
 
         fixConfiguration() {
             const proponentTypes = this.proponentTypes;
-            for (let quota of this.phase.quotaConfiguration.rules) {
+            for (let quota of this.phase.quotaConfiguration?.rules || []) {
                 for(let key in quota.fields) {
                     if(!proponentTypes.includes(key)) {
                         delete quota.fields[key];
@@ -234,7 +234,7 @@ app.component('affirmative-policies--quota-configuration', {
                 }
             }
 
-            for (let quota of this.phase.quotaConfiguration.rules) {
+            for (let quota of this.phase.quotaConfiguration?.rules || []) {
                 for (let proponentType of proponentTypes) {
                     if(!quota.fields[proponentType]) {
                         quota.fields[proponentType] = {
