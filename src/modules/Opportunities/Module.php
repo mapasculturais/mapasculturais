@@ -597,6 +597,10 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Publicar o nome dos avaliadores nos pareceres'),
             'type' => 'json',
         ]);
-           
+        
+        $this->registerOpportunityMetadata('proponentSeals', [
+            'label' => i::__('Selos de certificação'),
+            'type' => 'json',
+        ]);
     }
 }
