@@ -37,7 +37,7 @@ app.component('seals-certifier', {
     },
 
     created() {
-        this.proponentSeals = this.entity.proponentSeals || this.proponentSeals;
+        this.proponentSeals = this.entity.opportunity.proponentSeals || this.proponentSeals;
     },
 
     methods: {
@@ -55,8 +55,6 @@ app.component('seals-certifier', {
         },
 
         removeSeal(proponentType, sealId) {
-            // let seal = this.entity.opportunity.seals.find(seal => seal.sealId === sealId);
-           
             this.proponentSeals[proponentType] = this.proponentSeals[proponentType].filter(id => id !== sealId);
             this.entity.opportunity.proponentSeals = this.proponentSeals;
             this.entity.opportunity.save();     
