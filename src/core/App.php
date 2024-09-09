@@ -3826,7 +3826,7 @@ class App {
                     if($function() !== false){
                         $update = new Entities\DbUpdate();
                         $update->name = $name;
-                        $update->save();
+                        $update->save(true);
                     }
                 }catch(\Exception $e){
                     echo "\nERROR " . $e . "\n";
