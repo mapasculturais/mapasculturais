@@ -12,12 +12,13 @@
         &--seals {
             display: flex;
             gap: size(16);
+            flex-wrap: wrap;
         }
 
         &--seal {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: size(4);
             max-width: size(50);
             width: 100%;
 
