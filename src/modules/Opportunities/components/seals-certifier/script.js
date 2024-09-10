@@ -23,41 +23,78 @@ app.component('seals-certifier', {
         },
     },
 
-    data() {
-        let proponentTypes = this.entity.opportunity.registrationProponentTypes;
-        let proponentSeals = {};
-        proponentTypes.forEach(type => {
-            proponentSeals[type] = [];
-        });
+    setup() {
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('seals-certifier')
         
+        return { text }
+    },
+
+    data() {
         return {
-            proponentTypes,  
-            proponentSeals,
+            sealsInfo: $MAPAS.config.sealsCertifier.seals,
+            entityOpportunity: (this.entity.__objectType === 'opportunity') ? this.entity : (this.entity.opportunity || {}),
         }
     },
 
-    created() {
-        this.proponentSeals = this.entity.opportunity.proponentSeals || this.proponentSeals;
+
+    mounted() {
+        this.initializeProponentSeals();
+    },
+
+    computed: {
+        proponentTypes() {
+            return this.entityOpportunity.registrationProponentTypes.length 
+                ? this.entityOpportunity.registrationProponentTypes 
+                : ['default']; 
+        },
+
+        proponentSeals() {
+            let proponentSeals = {};
+
+            for (let proponentType of this.proponentTypes) {
+                proponentSeals[proponentType] = this.entityOpportunity.proponentSeals[proponentType] || [];
+            }
+            console.log(proponentSeals);
+            
+
+            return proponentSeals;
+        }
     },
 
     methods: {
+        initializeProponentSeals() {
+            if (!this.entityOpportunity.proponentSeals || Object.keys(this.entityOpportunity.proponentSeals).length === 0) {
+                this.entityOpportunity.proponentSeals = this.skeleton();
+            } 
+        },
+
+        skeleton() {
+            const seals = {};
+
+            for (let proponentType of this.proponentTypes) {
+                seals[proponentType] = [];
+            }
+
+            return seals;
+        },
+
         getSealDetails(sealId) {
-            return this.entity.opportunity.seals.find(seal => seal.sealId === sealId) || {};
+            return this.sealsInfo.find(seal => seal.id === sealId) || {};
         },
 
         addSeal(proponentType, seal) {
             if (!this.proponentSeals[proponentType].includes(seal._id)) {
                 this.proponentSeals[proponentType].push(seal._id);
+                this.entityOpportunity.proponentSeals = this.proponentSeals;
             }
 
-            this.entity.opportunity.proponentSeals = this.proponentSeals;
-            this.entity.opportunity.save();  
+            this.entityOpportunity.save();  
         },
 
         removeSeal(proponentType, sealId) {
-            this.proponentSeals[proponentType] = this.proponentSeals[proponentType].filter(id => id !== sealId);
-            this.entity.opportunity.proponentSeals = this.proponentSeals;
-            this.entity.opportunity.save();     
+            this.entityOpportunity.proponentSeals[proponentType] = this.entityOpportunity.proponentSeals[proponentType].filter(id => id !== sealId);
+            this.entityOpportunity.save();     
         },
 
         getSealQuery(proponentType) {
