@@ -55,8 +55,6 @@ app.component('seals-certifier', {
             for (let proponentType of this.proponentTypes) {
                 proponentSeals[proponentType] = this.entityOpportunity.proponentSeals[proponentType] || [];
             }
-            console.log(proponentSeals);
-            
 
             return proponentSeals;
         }
@@ -75,7 +73,7 @@ app.component('seals-certifier', {
             for (let proponentType of this.proponentTypes) {
                 seals[proponentType] = [];
             }
-
+            
             return seals;
         },
 
@@ -93,7 +91,8 @@ app.component('seals-certifier', {
         },
 
         removeSeal(proponentType, sealId) {
-            this.entityOpportunity.proponentSeals[proponentType] = this.entityOpportunity.proponentSeals[proponentType].filter(id => id !== sealId);
+            this.proponentSeals[proponentType] = this.proponentSeals[proponentType].filter(id => id !== sealId);
+            this.entityOpportunity.proponentSeals = this.proponentSeals;
             this.entityOpportunity.save();     
         },
 
