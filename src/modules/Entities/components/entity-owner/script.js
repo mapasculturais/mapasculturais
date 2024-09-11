@@ -29,7 +29,8 @@ app.component('entity-owner', {
 
     data() {
         return {
-            query: {}
+            query: {},
+            destinationName: null
         }
     },
 
@@ -39,22 +40,41 @@ app.component('entity-owner', {
         } else {
             this.query.id = `!IN(${this.owner?.id})`;
         }
+
+        const api = new API(this.requestData.destinationEntity);
+        api.findOne(this.requestData.destinationId).then(data => {
+            this.destinationName = data.name;
+        });;
     },
 
     computed: {
         owner() {
             return this.entity.owner || this.entity.parent;
-        }
+        },
+        hasRequest() {
+            return $MAPAS.config['entityOwner'].hasRequest
+        },
+        requestData() {
+            return $MAPAS.config['entityOwner'].requestData
+        },
     },
 
     methods: {
+        
         changeOwner(entity) {
             if (this.entity.__objectType == 'agent') {
                 this.entity.parent = entity;
             } else {
                 this.entity.owner = entity;
             }
+
+            this.entity.save();
+
             this.query.id = `!IN(${this.owner?.id})`;
+
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 1500);
         }
     }
     
