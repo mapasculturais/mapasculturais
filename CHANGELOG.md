@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias não funcionais
 - Ativa criação de setter's via hook na entidate registration
 
+### Correções
+- Corrige aplicação de hook no método sendValidationErrors
+
 ## [7.4.16] - 2024-09-04
 ### Correções
 - Corrige exibição do campo pessoa com deficiência atravez do embedTools
