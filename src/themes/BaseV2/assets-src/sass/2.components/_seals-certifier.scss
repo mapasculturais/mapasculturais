@@ -8,11 +8,11 @@
 
     &__proponent {
         flex-wrap: wrap;
+        gap: size(12);
 
         &--seals {
             display: flex;
             gap: size(16);
-            flex-wrap: wrap;
         }
 
         &--seal {
