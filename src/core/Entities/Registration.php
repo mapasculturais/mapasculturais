@@ -54,6 +54,7 @@ class Registration extends \MapasCulturais\Entity
 
 
     protected $__enableMagicGetterHook = true;
+    protected $__enableMagicSetterHook = true;
 
     /**
      * @var integer

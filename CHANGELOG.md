@@ -5,6 +5,9 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.17]
+### Melhorias não funcionais
+- Ativa criação de setter's via hook na entidate registration
 
 ## [7.4.16] - 2024-09-04
 ### Correções
