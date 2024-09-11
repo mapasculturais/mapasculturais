@@ -8,6 +8,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-alert
     mc-avatar
     mc-icon
     select-entity
@@ -25,6 +26,9 @@ $this->import('
     </a>
 
     <div v-if="editable" class="entity-owner__edit">
+        <mc-alert v-if="hasRequest" type="warning">
+            <?= i::__('Aguardando aprovação de') ?> <strong>{{destinationName}}</strong>
+        </mc-alert>
         <select-entity :query="query" type="agent" @select="changeOwner($event)" permissions="" openside="up-right">
             <template #button="{ toggle }">
                 <a class="entity-owner__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
@@ -34,4 +38,5 @@ $this->import('
             </template>
         </select-entity>
     </div>
+
 </div>
