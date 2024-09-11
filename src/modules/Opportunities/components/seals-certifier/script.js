@@ -1,9 +1,9 @@
 app.component('seals-certifier', {
     template: $TEMPLATES['seals-certifier'],
-    
+
     props: {
         entity: {
-            type: Entity, 
+            type: Entity,
             required: true
         },
 
@@ -26,45 +26,48 @@ app.component('seals-certifier', {
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('seals-certifier')
-        
+
         return { text }
     },
 
     data() {
         return {
+            proponentSeals: {},
             sealsInfo: $MAPAS.config.sealsCertifier.seals,
             entityOpportunity: (this.entity.__objectType === 'opportunity') ? this.entity : (this.entity.opportunity || {}),
         }
     },
 
-
     mounted() {
         this.initializeProponentSeals();
     },
 
+    watch: {
+        proponentTypes: {
+            handler() {
+                this.syncProponentSeals();
+            },
+            deep: true
+        }
+    },
+
     computed: {
         proponentTypes() {
-            return this.entityOpportunity.registrationProponentTypes.length 
-                ? this.entityOpportunity.registrationProponentTypes 
-                : ['default']; 
+            return this.entityOpportunity.registrationProponentTypes.length > 0
+                ? this.entityOpportunity.registrationProponentTypes
+                : ['default'];
         },
-
-        proponentSeals() {
-            let proponentSeals = {};
-
-            for (let proponentType of this.proponentTypes) {
-                proponentSeals[proponentType] = this.entityOpportunity.proponentSeals[proponentType] || [];
-            }
-
-            return proponentSeals;
-        }
     },
 
     methods: {
         initializeProponentSeals() {
-            if (!this.entityOpportunity.proponentSeals || Object.keys(this.entityOpportunity.proponentSeals).length === 0) {
-                this.entityOpportunity.proponentSeals = this.skeleton();
-            } 
+            this.proponentTypes.forEach(proponentType => {
+                if (!this.entityOpportunity.proponentSeals) {
+                    this.entityOpportunity.proponentSeals = this.skeleton();
+                }
+
+                this.proponentSeals[proponentType] = this.entityOpportunity.proponentSeals[proponentType] || [];
+            });
         },
 
         skeleton() {
@@ -73,27 +76,53 @@ app.component('seals-certifier', {
             for (let proponentType of this.proponentTypes) {
                 seals[proponentType] = [];
             }
-            
+
             return seals;
+        },
+
+        syncProponentSeals() {
+            const newProponentTypes = this.proponentTypes;
+            const oldProponentTypes = Object.keys(this.proponentSeals);
+
+            for (let proponentType of newProponentTypes) {
+                if (!oldProponentTypes.includes(proponentType)) {
+                    this.proponentSeals[proponentType] = [];
+                }
+            }
+
+            for (let proponentType of oldProponentTypes) {
+                if (!newProponentTypes.includes(proponentType)) {
+                    delete this.proponentSeals[proponentType];
+                }
+            }
+
+            this.entityOpportunity.proponentSeals = { ...this.proponentSeals };
         },
 
         getSealDetails(sealId) {
             return this.sealsInfo.find(seal => seal.id === sealId) || {};
         },
 
-        addSeal(proponentType, seal) {
-            if (!this.proponentSeals[proponentType].includes(seal._id)) {
-                this.proponentSeals[proponentType].push(seal._id);
-                this.entityOpportunity.proponentSeals = this.proponentSeals;
+        modifySealList(proponentType, sealId, action) {
+            const seals = this.proponentSeals[proponentType];
+            const index = seals.indexOf(sealId);
+
+            if (action === 'add' && index === -1) {
+                seals.push(sealId);
+            } else if (action === 'remove' && index !== -1) {
+                seals.splice(index, 1);
             }
 
-            this.entityOpportunity.save();  
+            this.entityOpportunity.proponentSeals = { ...this.proponentSeals };
+            this.entityOpportunity.save();
+        },
+
+        addSeal(proponentType, seal) {
+            this.modifySealList(proponentType, seal._id, 'add');
         },
 
         removeSeal(proponentType, sealId) {
-            this.proponentSeals[proponentType] = this.proponentSeals[proponentType].filter(id => id !== sealId);
-            this.entityOpportunity.proponentSeals = this.proponentSeals;
-            this.entityOpportunity.save();     
+            this.modifySealList(proponentType, sealId, 'remove');
         },
 
         getSealQuery(proponentType) {

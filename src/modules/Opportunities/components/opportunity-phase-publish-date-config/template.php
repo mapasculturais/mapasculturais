@@ -75,7 +75,7 @@ $this->import('
                 hideRequired 
                 classes="col-4 opportunity-phase-publish-date-config__checkbox"></entity-field>
             
-            <seals-certifier :entity="phases[0]" showName :editable="phase.currentUserPermissions?.createSealRelation"></seals-certifier>
+            <seals-certifier :entity="phases[0]" :editable="phase.currentUserPermissions?.createSealRelation"></seals-certifier>
         </div>
         <div class="col-12 grid-12" v-if="true">
             <div class="col-12" v-if="phase.evaluationMethodConfiguration">
