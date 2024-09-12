@@ -597,6 +597,18 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Publicar o nome dos avaliadores nos pareceres'),
             'type' => 'json',
         ]);
+        
+        $this->registerOpportunityMetadata('isContinuousFlow', [
+            'label' => i::__('Edital de fluxo contínuo'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
+        
+        $this->registerOpportunityMetadata('hasEndDate', [
+            'label' => i::__('Definir data final para inscrições'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
            
     }
 }
