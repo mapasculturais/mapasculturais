@@ -74,7 +74,11 @@ $this->breadcrumb = [
                                 <?php $this->applyTemplateHook('edit1-entity-info-taxonomie-area','after') ?>
 
                                 <?php $this->applyTemplateHook('edit1-entity-info-shortDescription','before') ?>
-                                <entity-field :entity="entity" classes="col-12" prop="shortDescription" label="<?php i::_e('Mini bio') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" prop="shortDescription" label="<?php i::_e('Mini bio') ?>">
+                                    <template #info> 
+                                        <?php $this->info('cadastro -> cadastrando-usuario -> mini-bio') ?>
+                                    </template>
+                                </entity-field>
                                 <?php $this->applyTemplateHook('edit1-entity-info-shortDescription','after') ?>
 
                                 <?php $this->applyTemplateHook('edit1-entity-info-site','before') ?>
