@@ -4,28 +4,36 @@
     max-width: size(400);
     max-height: size(400);
     overflow: auto;
+    padding-right: size(10);
 
     &__title {
         font-weight: 700;
         color: var(--mc-primary-500);
-        padding-bottom: size(15);
+        padding: size(15) 0;
         border-bottom: size(1) solid var(--mc-gray-500);
-        margin-bottom: size(15);
+        text-align: center;
     }
 
     &__content {
-        white-space: pre-line;
         text-align: justify;
         overflow: auto;
-        margin-right: size(15);
+        margin: size(15) 0;
+
+        & > blockquote {
+            padding: size(10) size(16);
+            margin: size(16) 0;
+            background-color: var(--mc-gray-100);
+        }
     }
 
     &__tags  {
         & ul {
             margin-bottom: size(15);
+
             & li {
                 background-color: var(--mc-faq-500);
             }
         }
     }
+
 }
