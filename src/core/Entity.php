@@ -1136,8 +1136,9 @@ abstract class Entity implements \JsonSerializable{
         elseif($this->usesTypes() && !$this->validateType())
             $errors['type'] = [\MapasCulturais\i::__('Tipo inválido')];
 
-        if($this->usesMetadata())
+        if($this->usesMetadata()) {
             $errors = $errors + $this->getMetadataValidationErrors();
+        }
 
         if($this->usesTaxonomies())
             $errors = $errors + $this->getTaxonomiesValidationErrors();
