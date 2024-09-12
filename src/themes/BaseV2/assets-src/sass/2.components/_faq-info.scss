@@ -5,6 +5,13 @@
     max-height: size(400);
     overflow: auto;
     padding-right: size(10);
+    margin: size(10);
+
+    @media (max-width: size(500)) {
+        max-width: unset;
+        max-height: 100%;
+        margin: 0;
+    }
 
     &__title {
         font-weight: 700;
@@ -33,6 +40,22 @@
             & li {
                 background-color: var(--mc-faq-500);
             }
+        }
+    }
+
+    &__button {
+        align-items: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+
+        .iconify {
+            color: var(--mc-primary-500);
+            font-size: size(18);
+            height: size(18);
+            width: size(18);
         }
     }
 

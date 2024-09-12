@@ -14,7 +14,7 @@ $this->import("
 ");
 ?>
 
-<mc-popover openside="down-right">
+<mc-popover classes="v-popper__popper--no-border" title="Informações">
     <div class="faq-info scrollbar">
         <mc-title class="faq-info__title bold">{{title || question.question}}</mc-title>
         <div class="faq-info__content" v-html="answer" ></div>
@@ -22,6 +22,8 @@ $this->import("
     </div>
 
     <template #button="popover">
-        <a href="#" @click.prevent="popover.toggle()" :title="title"><mc-icon name="help"></mc-icon></a>
+        <span class="faq-info__button" @click.prevent="popover.toggle()" :title="title">
+            <mc-icon name="help"></mc-icon>
+        </span>
     </template>
 </mc-popover>
