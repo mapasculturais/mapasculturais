@@ -332,6 +332,9 @@ textarea {
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field] .field_checkbox {
     margin-bottom: 8px;
+    display: flex;
+    gap: 8px;
+    font-weight: 560;
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field] .field_checkbox:last-child {
@@ -371,7 +374,7 @@ textarea {
     margin-bottom: 0.5rem;
 }
 
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .label .field-required {
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .field-required {
     font-size: 0.75rem;
     font-weight: 700;
     line-height: 1rem;
