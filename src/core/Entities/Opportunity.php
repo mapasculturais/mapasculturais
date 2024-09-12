@@ -305,6 +305,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="avaliable_evaluation_fields", type="json", nullable=true)
      */
     protected $avaliableEvaluationFields = [];
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="continuous_flow", type="boolean", nullable=true)
+     */
+    protected $continuousFlow;
     
     abstract function getSpecializedClassName();
 
