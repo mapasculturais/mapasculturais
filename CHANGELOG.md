@@ -5,8 +5,34 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.4.12-minc]
+
+## [7.4.16] - 2024-09-04
 ### Correções
+- Corrige exibição do campo pessoa com deficiência atravez do embedTools
+- Corrige mc-update que atualiza os dados do campo pessoa com deficiência nas inscrições e agentes
+- Corrige a pré-visualização do formulário de inscrição
+- Corrige exibição do botão excluir em campos de anexos que estão obrigatório
+- Corrige exibição do botão enviar anexo para ficar sempre visível quando o usuário já selecionou um arquivo
+
+## [7.4.15] - 2024-08-23
+### Correções
+- Corrige trigger da criação de oportunidade para definir os valores default das colunas registration_ranges, registration_categories e registration_proponent_types
+- Remove alguns debugs
+
+## [7.4.14] - 2024-08-22
+### Correções
+- Corrige a exibição do campo "Pessoa com Deficiência" na exportação de planilhas, evitando a exibição de valores nulos
+- Corrige a serialização do campo @ "Pessoa com Deficiência" para evitar que salver valores nulos
+- Corrige perda de configuração de categorias, faixas e tipos de proponente ao criar terceira fase de avaliação
+
+## [7.4.13] - 2024-08-14
+### Melhorias
+- Atualiza bibliotecas PHP
+- Identifica os botões das ações da tela de avaliações por cores
+
+### Correções
+- Corrige erro no carregamento dos subprojetos na single de projetos
+- Ajusta o provider OpauthAuthentik para resetar a sessão quando existir error retornado por parte do Authentik
 - Corrige exibição do embedTools de configurações de critérios da avaliação de qualificação documental
 
 ## [7.4.12] - 2024-07-25

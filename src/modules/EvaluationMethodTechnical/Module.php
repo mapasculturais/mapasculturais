@@ -876,7 +876,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         // Insere valores das bônus por pontuação aplicadas na planilha de inscritos
         $app->hook('opportunity.registrations.reportCSV', function(\MapasCulturais\Entities\Opportunity $opportunity, $registrations, &$header, &$body) use ($app){
             
-            $isActivePointReward = filter_var($opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL);
+            $isActivePointReward = $opportunity->evaluationMethodConfiguration ? filter_var($opportunity->evaluationMethodConfiguration->isActivePointReward, FILTER_VALIDATE_BOOL) : false;
 
             if($isActivePointReward){
 
