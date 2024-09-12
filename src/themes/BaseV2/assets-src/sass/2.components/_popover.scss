@@ -4,6 +4,7 @@
     &__content {
         position: relative;
         padding: size(16) size(16);
+        border-radius: var(--mc-border-radius-xs);
 
         .field,
         form {
@@ -26,6 +27,21 @@
         .actions {
             display: flex;
             gap: size(10);
+        }
+    }
+}
+
+.v-popper__popper {
+    box-shadow: 0 0 size(10) 0 var(--mc-gray-700);
+    border-radius: var(--mc-border-radius-xs);
+        
+    .v-popper__inner {
+        border-radius: var(--mc-border-radius-xs);
+    }
+
+    &--no-border {
+        .popover__content {
+            padding: 0;
         }
     }
 }
