@@ -26,10 +26,12 @@ $this->import('
     </a>
 
     <div v-if="editable" class="entity-owner__edit">
-        <mc-alert v-if="hasRequest" type="warning">
-            <?= i::__('Aguardando aprovação de') ?> <strong>{{destinationName}}</strong>
+        <mc-alert v-if="hasRequest" type="warning" class="entity-owner-pending">
+            <div>
+                <?= i::__('Aguardando aprovação de') ?> <strong>{{destinationName}}</strong>
+            </div>
         </mc-alert>
-        <select-entity :query="query" type="agent" @select="changeOwner($event)" permissions="" openside="up-right">
+        <select-entity v-if="!hasRequest" :query="query" type="agent" @select="changeOwner($event)" permissions="" openside="up-right">
             <template #button="{ toggle }">
                 <a class="entity-owner__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
                     <mc-icon name="exchange"></mc-icon>

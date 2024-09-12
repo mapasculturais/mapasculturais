@@ -2,12 +2,12 @@ app.component('entity-owner', {
     template: $TEMPLATES['entity-owner'],
     emits: [],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('entity-owner')
         return { text }
     },
-    
+
     props: {
         entity: {
             type: Entity,
@@ -28,9 +28,15 @@ app.component('entity-owner', {
     },
 
     data() {
+        let _requestData = $MAPAS.config['entityOwner'].requestData;
+        const requestData = new Entity('RequestChangeOwnership', _requestData.id);
+        requestData.populate(requestData);
+
         return {
             query: {},
-            destinationName: null
+            destinationName: $MAPAS.config['entityOwner'].destinationName || null,
+            hasRequest: $MAPAS.config['entityOwner'].hasRequest,
+            requestData: requestData
         }
     },
 
@@ -40,27 +46,15 @@ app.component('entity-owner', {
         } else {
             this.query.id = `!IN(${this.owner?.id})`;
         }
-
-        const api = new API(this.requestData.destinationEntity);
-        api.findOne(this.requestData.destinationId).then(data => {
-            this.destinationName = data.name;
-        });;
     },
 
     computed: {
         owner() {
             return this.entity.owner || this.entity.parent;
         },
-        hasRequest() {
-            return $MAPAS.config['entityOwner'].hasRequest
-        },
-        requestData() {
-            return $MAPAS.config['entityOwner'].requestData
-        },
     },
 
     methods: {
-        
         changeOwner(entity) {
             if (this.entity.__objectType == 'agent') {
                 this.entity.parent = entity;
@@ -70,12 +64,11 @@ app.component('entity-owner', {
 
             this.entity.save();
 
-            this.query.id = `!IN(${this.owner?.id})`;
+            this.hasRequest = true;
+            this.destinationName = entity.name;
 
-            setTimeout(() => {
-                window.location.reload(true);
-            }, 1500);
-        }
+            this.query.id = `!IN(${this.owner?.id})`;
+        },
     }
-    
+
 });
