@@ -28,7 +28,6 @@ class RequestChangeOwnership extends Request{
         $entity = $this->origin;
         $entity->owner = $this->destination;
         $entity->save(true);
-        $entity->enqueueToPCacheRecreation();
     }
 
     protected function canUserCreate($user) {
