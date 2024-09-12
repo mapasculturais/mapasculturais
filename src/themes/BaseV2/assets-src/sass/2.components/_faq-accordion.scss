@@ -21,6 +21,14 @@
         }
     }
 
+    &__response {
+        & > blockquote {
+            padding: size(10) size(16);
+            margin: size(16) 0;
+            background-color: var(--mc-gray-100);
+        }
+    }
+
     &__image {
         max-width: size(272);
         height: auto;
@@ -46,6 +54,7 @@
             font-size: size(19);
         }
     }
+
     &__noresults {
         display: flex;
         align-items: center;
@@ -56,8 +65,6 @@
 
     &__context {
         font-size: size(14);
-        border-radius: 0 0 size(8) size(8);
-        font-weight: 600;
     }
 
     &__contexts:first-child {
@@ -66,7 +73,9 @@
 
     &__contexts {
         max-width: size(870);
-        padding: size(24) size(16) size(8) 0;
+        padding: size(24) 0 size(15);
+        display: grid;
+        gap: size(8);
 
     }
 

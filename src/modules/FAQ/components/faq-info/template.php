@@ -15,7 +15,7 @@ $this->import("
 ?>
 
 <mc-popover openside="down-right">
-    <div class="faq-info">
+    <div class="faq-info scrollbar">
         <mc-title class="faq-info__title bold">{{title || question.question}}</mc-title>
         <div class="faq-info__content" v-html="answer" ></div>
         <mc-tag-list class="faq-info__tags" :tags="tags"></mc-tag-list>
