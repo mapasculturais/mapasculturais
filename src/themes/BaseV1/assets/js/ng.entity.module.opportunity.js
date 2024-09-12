@@ -1210,6 +1210,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
 
+    $scope.openTemplateLink = function($event, url) {
+        $event.preventDefault();
+        window.open(url, '_blank');
+    };
+
     $timeout(function(){
         $scope.ibge = MapasCulturais.ibge;
     }, 200)
@@ -1242,6 +1247,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             val = moment(val).toDate();
         }
 
+        
         $scope.entity[field.fieldName] = val;
     });
 
@@ -1263,14 +1269,6 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         delete field.error;
 
         $scope.data.editableEntity[field.fieldName] = value !== undefined ? JSON.parse(angular.toJson(value)) : null;
-
-        $timeout.cancel(saveTimeout);
-        
-        saveTimeout = $timeout(function(){
-            if(MapasCulturais.isEditable){
-                $scope.saveRegistration();
-            }
-        }, MapasCulturais.registrationAutosaveTimeout);
     }
 
     // modifica o botão salvar
@@ -1638,7 +1636,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.removeFile = function (id, $index) {
         if(confirm(labels['confirmRemoveAttachment'])){
-            $http.get($scope.data.fields[$index].file.deleteUrl).success(function(response){
+            let url = MapasCulturais.createUrl('file','single',{id:$scope.data.fields[$index].file.id});
+            $http.delete(url).success(function(response){
+                MapasCulturais.Messages.success(labels['attachmentRemoved']);
                 delete $scope.data.fields[$index].file;
             });
         }
@@ -1789,11 +1789,26 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         return false;
     }
 
+    $scope.checkField =  function(field) {
+        if((field.length === 1 && field[0] === '') || (field.length === 1 && field[0] === 'null')) {
+            return "Não sou";
+        }
+
+        if(!field || field.length <= 0 || (field.length === 1 && !field[0])) {
+            return null;
+        }
+
+        return field;
+    }
+
     $scope.printField = function(field, value){
 
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
-        } else if (field.fieldType === 'url'){
+        }else if (field.fieldType === "checkbox") {
+            return value === "true" ? "Sim" : "Não"; 
+        }
+         else if (field.fieldType === 'url'){
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
@@ -2716,7 +2731,8 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
 
             $scope.removeRegistrationRulesFile = function (id, $index) {
                 if(confirm('Deseja remover este anexo?')){
-                    $http.get($scope.data.entity.registrationRulesFile.deleteUrl).success(function(response){
+                    let url = MapasCulturais.createUrl('file','single',{id:$scope.data.entity.registrationRulesFile.id});
+                    $http.delete(url).success(function(response){
                         $scope.data.entity.registrationRulesFile = null;
                     });
                 }

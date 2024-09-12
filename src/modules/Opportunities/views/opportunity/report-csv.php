@@ -203,8 +203,19 @@ foreach($registrations as $i => $r) {
             if (is_array($_field_val) && isset($_field_val['group']) && isset($_field_val['title']) && isset($_field_val['value'])) {
                 $_field_val = $_field_val['title'] . ' - ' . $_field_val['value'];
             }
-    
-            $result =  (is_array($_field_val)) ? '"' . implode(" - ", $_field_val) . '"' : $_field_val;
+            
+            if(is_array($_field_val)) {
+                $_result =  array_filter($_field_val, function($valor) use ($field) {
+                    $valor = trim($valor);
+                    if($valor != "" && $valor != "null" && !is_null($valor) && $valor !== "null;") {
+                        return $field;
+                    }
+                });
+               
+                $result = implode(", ", $_result);
+            }else {
+                $result =  $_field_val !== "null;" ? $_field_val : "";
+            }
         }
 
         $outRow[] = str_replace(';', ',', (string) $result);

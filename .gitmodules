@@ -2,3 +2,6 @@
 	path = src/plugins/MultipleLocalAuth
 	url = https://github.com/culturagovbr/MultipleLocalAuth.git
 	branch = feature/login-basev2
+[submodule "src/plugins/AdminLoginAsUser"]
+	path = src/plugins/AdminLoginAsUser
+	url = https://github.com/mapasculturais/plugin-AdminLoginAsUser
