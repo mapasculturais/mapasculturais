@@ -273,7 +273,9 @@ $today = new DateTime();
                                 </div>
                             </div>
                         <?php else: ?>
+                            <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
                             <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>
+                            <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
                         <?php endif ?>
                     <?php endif ?>
                     <?php $phase = $phase->nextPhase; ?>
