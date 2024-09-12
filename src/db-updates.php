@@ -2349,4 +2349,10 @@ $$
         __try('CREATE INDEX file_parent_object_type_idx ON file (parent_id, object_type)');
     },
 
+    "Cria coluna continuous_flow na tabela opportunity" => function() use ($conn) {
+        if (!__column_exists('opportunity', 'continuous_flow')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN continuous_flow TIMESTAMP NULL");
+        }
+    },
+
 ] + $updates ;   
