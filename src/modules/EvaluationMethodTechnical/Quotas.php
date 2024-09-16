@@ -67,6 +67,10 @@ class Quotas {
     protected Opportunity $phase;
     protected EvaluationMethodConfiguration $evaluationConfig;
 
+    protected bool $isQuotaActive = false;
+    protected bool $isGeoQuotaActive = false;
+    protected bool $isRangeActive = false;
+
     protected array $tiebreakerConfig;
 
     protected int $vacancies;
@@ -120,6 +124,7 @@ class Quotas {
         $this->tiebreakerConfig = array_values((array) $this->evaluationConfig->tiebreakerCriteriaConfiguration ?: []);
         
         $this->quotaVacancies = 0;
+        $this->isQuotaActive = (bool) $this->quotaRules;
         foreach($this->quotaRules as $rule) {
             $quota_type_slug = $this->getQuotaTypeSlugByRule($rule);
             $this->quotaTypes[] = $quota_type_slug;
@@ -134,6 +139,7 @@ class Quotas {
 
         // proecessa a configuração de faixas
         $registration_ranges = $this->firstPhase->registrationRanges ?: [];
+        $this->isRangeActive = (bool) $registration_ranges;
         foreach($registration_ranges as $range) {
             $range_name = $range['label'];
             $range_vacancies = $range['limit'];
@@ -154,6 +160,7 @@ class Quotas {
             
             $this->geoDivision = $geo_config->geoDivision;
             $this->geoDivisionFields = (object) $geo_config->fields;
+            $this->isGeoQuotaActive = (bool) $this->geoDivision;
 
             foreach($distribution as $region => $num) {
                 $this->geoQuotaConfig[$region] = (object) [
@@ -435,7 +442,8 @@ class Quotas {
 
         // AGRUPANDO AS INSCRIÇÕES
         foreach($registrations as $registration) {
-            $region = $this->getRegistrationRegion($registration);
+            
+            $region = $this->isGeoQuotaActive ? $this->getRegistrationRegion($registration) : '';
             $range = $registration->range;
 
             $group = "{$region}:{$range}:";

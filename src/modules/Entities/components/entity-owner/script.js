@@ -2,12 +2,12 @@ app.component('entity-owner', {
     template: $TEMPLATES['entity-owner'],
     emits: [],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('entity-owner')
         return { text }
     },
-    
+
     props: {
         entity: {
             type: Entity,
@@ -28,8 +28,15 @@ app.component('entity-owner', {
     },
 
     data() {
+        let _requestData = $MAPAS.config['entityOwner'].requestData;
+        const requestData = new Entity('RequestChangeOwnership', _requestData.id);
+        requestData.populate(requestData);
+
         return {
-            query: {}
+            query: {},
+            destinationName: $MAPAS.config['entityOwner'].destinationName || null,
+            hasRequest: $MAPAS.config['entityOwner'].hasRequest,
+            requestData: requestData
         }
     },
 
@@ -44,7 +51,7 @@ app.component('entity-owner', {
     computed: {
         owner() {
             return this.entity.owner || this.entity.parent;
-        }
+        },
     },
 
     methods: {
@@ -54,8 +61,14 @@ app.component('entity-owner', {
             } else {
                 this.entity.owner = entity;
             }
+
+            this.entity.save();
+
+            this.hasRequest = true;
+            this.destinationName = entity.name;
+
             this.query.id = `!IN(${this.owner?.id})`;
-        }
+        },
     }
-    
+
 });
