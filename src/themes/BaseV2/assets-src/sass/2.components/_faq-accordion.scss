@@ -27,6 +27,10 @@
             margin: size(16) 0;
             background-color: var(--mc-gray-100);
         }
+
+        & > p {
+            margin-bottom: size(8);
+        }
     }
 
     &__image {
