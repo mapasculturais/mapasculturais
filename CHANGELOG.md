@@ -15,13 +15,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Edição de inscrições enviadas**: possibilita ao gestor que configure um ou mais campos, de uma determinada inscrição e por um tempo definido, permitindo que o proponente possa modificá-los, fazendo com que não seja necessário peermitir a edição de toda a inscriçào, como rascunho.
 - **Visualização das entidades em tabelas na página de busca**: para admins do sistema, com botão para exportar planilha com as entidades filtradas.
 - Nova opção para o gestor solicitar o avatar do agente responsável no formulário de inscrição.
-- Cria novas colunas na tabela registration para funcionalidade de edição de inscrições
 - Implementa modo de visualização das entidades em tabelas para admins do sistema
 - Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
-- Corrige erro que ao publicar a entidade a mesma permanece em rascunho
 - Implementa possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição
 - Implementa nova tela para configuração dos agentes de suporte
 - Implementa a data de envio das avaliações
+- O endpoint opportunity/findRegistrations, quando ordenado por `@quota` agora retorna as cotas aplicadas, os critérios de desempate aplicados e a região das inscrições.
 
 ### Melhorias
 - Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
@@ -44,12 +43,23 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Impede a exibição da coluna "Agente Responsável" no componente "opportunity-evaluation-table" quando a configuração de campos visíveis não permite o resumo dos agentes.
 - Corrige API.js para que o rawProcessor funcione corretamente
+- Corrige atualização de status da entidade após a publicação
 
 ### Melhorias não funcionais
 - Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
 - Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
 - Quando a oportunidade é multifases e ocorre uma alteração na propriedade, faz com que essa mudança também se reflita nas fases subsequentes
 
+## [7.4.17]
+### Melhorias não funcionais
+- Ativa criação de setter's via hook na entidate registration
+- Implementa novos componentHooks no componente registration-form
+- Cria novos hooks no carregamento do embedtools do formulário de visualização de inscrições
+
+### Correções
+- Corrige aplicação de hook no método sendValidationErrors
+- Faz com que o componente registration-actions analise se existe o campo também no descriptios para lançar os erros
+- Corrige para que a alteração de propriedade de entidades funcione e seja salva corretamente
 
 ## [7.4.16] - 2024-09-04
 ### Correções
