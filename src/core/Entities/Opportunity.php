@@ -307,9 +307,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $avaliableEvaluationFields = [];
 
     /**
-     * @var boolean
+     * @var dateTime
      *
-     * @ORM\Column(name="continuous_flow", type="boolean", nullable=true)
+     * @ORM\Column(name="continuous_flow", type="datetime", nullable=true)
      */
     protected $continuousFlow;
     
