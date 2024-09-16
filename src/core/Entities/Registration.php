@@ -54,6 +54,7 @@ class Registration extends \MapasCulturais\Entity
 
 
     protected $__enableMagicGetterHook = true;
+    protected $__enableMagicSetterHook = true;
 
     /**
      * @var integer
@@ -1224,7 +1225,7 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['projectName'] = [i::__('O nome do projeto é obrigatório.')];
         }
 
-        $app->applyHookBoundTo($this, "entity($this->getHookClassPath()).sendValidationErrors", [&$errorsResult]);
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.sendValidationErrors", [&$errorsResult]);
 
         return $errorsResult;
     }

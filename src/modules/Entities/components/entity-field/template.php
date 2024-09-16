@@ -16,6 +16,7 @@ $this->import('
     <label class="field__title" v-if="!hideLabel && !is('checkbox')" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
+        <slot name="info"></slot>
     </label>
     <slot name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>

@@ -8,6 +8,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
+## [7.4.17]
+### Melhorias não funcionais
+- Ativa criação de setter's via hook na entidate registration
+- Implementa novos componentHooks no componente registration-form
+- Cria novos hooks no carregamento do embedtools do formulário de visualização de inscrições
+
+### Correções
+- Corrige aplicação de hook no método sendValidationErrors
+- Faz com que o componente registration-actions analise se existe o campo também no descriptios para lançar os erros
+- Corrige para que a alteração de propriedade de entidades funcione e seja salva corretamente
 
 ## [7.4.16] - 2024-09-04
 ### Correções
