@@ -35,20 +35,27 @@ app.component('opportunity-basic-info' , {
         'entity.isContinuousFlow'(newVal) {
             if (!newVal) {
                 this.entity.hasEndDate = false;
+                this.entity.continuousFlow = null;
                 this.lastPhase.name = "Publicação final do resultado";
-                this.lastPhase.save();
             } else {
+                const myDate = new McDate(new Date(`2111-01-01 00:00`));
+                
+                this.entity.continuousFlow = myDate;
+                this.entity.registrationTo = myDate;
+                
                 this.lastPhase.name = "Resultado";
-                this.lastPhase.save();
             }
+
+            this.lastPhase.save();
+            this.entity.save();
         },
 
         'entity.hasEndDate'(newVal) {
             if (!newVal) {
                 const myDate = new McDate(new Date(`2111-01-01 00:00`));
                 
-                this.entity.continuousFlow = myDate.sql('full');
-                this.entity.registrationTo = myDate.sql('full');
+                this.entity.continuousFlow = myDate;
+                this.entity.registrationTo = myDate;
             } else {
                 this.entity.continuousFlow = null;
                 this.entity.registrationTo = null;
