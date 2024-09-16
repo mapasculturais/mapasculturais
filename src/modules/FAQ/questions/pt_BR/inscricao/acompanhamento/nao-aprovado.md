@@ -3,8 +3,8 @@
 - edital
 - oportunidade
 - inscrição
-- Resultado 
+- Resultado
 - Recurso
+- Deligência
 
-Verifique no Regulamento do **Edital** inscrito se haverá período de **Recurso** ou **Diligência** para correção e atualização de informações necessárias para aprovação no **Edital**.
-Ou, entre em contato com os **responsáveis pelo Edital**.
+**Calma!** Antes de desistir, dê uma olhada no regulamento do edital. Talvez tenha alguma chance de recorrer durante o periodo de **Recurso/Diligência**. Se precisar de ajuda, entre em contato com a organização.

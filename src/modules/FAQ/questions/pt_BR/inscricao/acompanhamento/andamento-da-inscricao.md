@@ -2,15 +2,12 @@
 
 - oportunidade
 - edital
-- iscrição
+- inscrição
 
+Acesse o edital e clique em "Acompanhar inscrição". Por lá, você pode:
 
-**Não é possível acompanhar o andamento da inscrição. 
+* **Verificar os detalhes da sua inscrição:** Tudo o que você preencheu estará lá para conferir.
+* **Acompanhar as próximas etapas:** Se tiver mais fases, você saberá o que fazer.
+* **Ver o resultado final:** Quando sair a lista dos aprovados, você será notificado.
 
-Em editais com mais de uma fase, para verificar se a inscrição passou para a próxima fase, acesse o Edital e clique em Acompanhar na inscrição desejada. 
-Ocorrerá o direcionamento para a guia de Acompanhamento, nesta página, é possível acessar a guia da inscrição preenchida. 
-Caso a inscrição tenha passado para a próxima fase e deva ser preenchida, haverá um botão Preencher formulário, que direcionará para a inscrição da fase seguinte. 
-Caso a inscrição tenha passado para a próxima fase e não deva ser preenchida, aguarde o Resultado do Edital (ou da fase do Edital). 
-Caso o Edital possua somente uma fase, aguarde o Resultado do Edital (ou da fase do Edital). 
-
-Os Resultados do Edital ficam disponíveis na ficha de inscrição conforme suas fases têm seus Resultados Publicados, ou conforme o Edital tem seu Resultado Final Publicado.**
+> Tudo sobre o seu processo seletivo está em sua ficha de inscrição, consulte-a para acompanhar cada etapa e ver o resultado final.
