@@ -5,4 +5,11 @@
 - suporte
 - recurso
 
-Para contato com os responsável é possivel encaminhar um e-mail com suas solicitações, acessando o edital publicado no mapa cultural, clique em Contato e prencha os campos para envio de e-mail, ou acesse o regulamento do edital onde podem ser encontrados os demais meios de contato.   
+
+**Para esclarecimentos sobre o edital, entre em contato com a equipe responsável.** 
+
+- Acesse a oportunidade no Mapas Culturais
+- Clique no botão "Contato", ao final da página
+- Preencha os campos do formulário de contato
+
+> Outros meios de contato podem ser encontrados no regulamento da oportunidade

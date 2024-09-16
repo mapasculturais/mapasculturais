@@ -5,4 +5,6 @@
 - Acompanhamento
 - Inscrição
 
-Os **Editas** serão divulgados pelos **sites oficiais** dos orgãos responsáveis ou no **Diário Oficial**. A divulgação deve conter a **data de publicação do Edital no Mapa Cultural**.  
+**Quer saber quando sai o próximo edital?** Fique de olho nos sites oficiais dos órgãos responsáveis e no Diário Oficial. 
+
+> A data de publicação também costuma aparecer no Mapa Cultural.

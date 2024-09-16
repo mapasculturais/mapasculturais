@@ -5,7 +5,6 @@
 - inscrição
 - Aprovado
 
+**Ansioso para saber se deu tudo certo?** A lista dos selecionados será divulgada no site da Secretaria de Cultura e/ou no Diário Oficial após o encerramento do edital.
 
-A divulgação dos **resultados** será feita após o **encerramento do edital** via **site da Secretaria de Cultura e/ou pelo Diário Oficial. **
-Após o período de **recurso (ou diligência),** os responsáveis poderão disponilibizar a lista de selecionados na guia de **Resultados** na página do edital na plataforma. 
-
+> Após o período de recurso/diligência, os responsáveis pela oportunidade poderão disponibilizar a lista de selecionados na guia de **Resultados** na página do edital, na plataforma *Mapas Culturais*
