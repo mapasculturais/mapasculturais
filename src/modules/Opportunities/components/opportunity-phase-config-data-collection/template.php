@@ -21,7 +21,7 @@ $this->import('
             <?php $this->applyTemplateHook('opportunity-data-collection-config','begin')?>
             <entity-field v-if="!phase.isFirstPhase" :entity="phase" prop="name" :autosave="3000" classes="col-12 sm:col-12"></entity-field>
             <entity-field :entity="phase" prop="registrationFrom" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
-            <entity-field :entity="phase" prop="registrationTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+            <entity-field v-if="!firstPhase?.isContinuousFlow" :entity="phase" prop="registrationTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
 
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
@@ -62,7 +62,7 @@ $this->import('
             </mc-link>
         </div>
 
-        <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
+        <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration' && !firstPhase?.isContinuousFlow">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
             <opportunity-phase-publish-date-config  :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
         </template>

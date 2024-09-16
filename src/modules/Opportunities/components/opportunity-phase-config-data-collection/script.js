@@ -82,6 +82,10 @@ app.component('opportunity-phase-config-data-collection' , {
 
             return date;
         },
+
+        firstPhase() {
+            return this.phases[0];
+        }
     },
 
     methods: {
