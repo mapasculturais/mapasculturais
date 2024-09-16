@@ -397,6 +397,18 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->avaliableEvaluationFields = $value;
         }
     }
+
+    function setContinuousFlow($value) {
+        if ($value !== null) {
+            try {
+                $this->continuousFlow = new \DateTime($value);
+            } catch (\Exception $e) {
+                $this->continuousFlow = null;
+            }
+        } else {
+            $this->continuousFlow = null;
+        }
+    }
     
     function getEvaluationCommittee($return_relation = true){
         $app = App::i();
