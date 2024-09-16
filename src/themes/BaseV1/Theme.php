@@ -2151,7 +2151,8 @@ class Theme extends MapasCulturais\Theme {
             'fieldsDisabled' => i::__('Atenção, você tentou marcar campos que estão debilitados por algum tipo de condicional ou vinculado a alguma categoria, verifique se todos foram que deseja marcar foram marcados corretamente'),
             'providingAccount' => i::__('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?'),
             'disableColumns' => i::__('Não é permitido desabilitar todas as colunas da tabela'),
-            'columnDisabling' => i::__('Não é permitido desabilitar a coluna')
+            'columnDisabling' => i::__('Não é permitido desabilitar a coluna'),
+            'fileTooBig' => i::__('O tamanho do arquivo excede o limite estabelecido')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
