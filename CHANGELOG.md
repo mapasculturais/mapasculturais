@@ -46,6 +46,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige atualização de status da entidade após a publicação
 
 ### Melhorias não funcionais
+- Atualiza PHP para versão 8.3
+- Atualiza bibliotecas PHP
 - Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
 - Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
 - Quando a oportunidade é multifases e ocorre uma alteração na propriedade, faz com que essa mudança também se reflita nas fases subsequentes
