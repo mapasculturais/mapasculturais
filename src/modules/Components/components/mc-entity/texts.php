@@ -9,6 +9,7 @@ return [
     'criando' => i::__('Criando'),
     'salvando' => i::__('Salvando a entidade'),
     'publicando' => i::__('Publicando a entidade'),
+    'duplicando' => i::__('Duplicando a entidade'),
     'arquivando' => i::__('Arquivando a entidade'),
     'excluindo' => i::__('Excluindo a entidade'),
     'excluindo definitivamente' => i::__('Excluindo a entidade definitivamente'),

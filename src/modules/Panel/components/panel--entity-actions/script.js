@@ -45,6 +45,12 @@ app.component('panel--entity-actions', {
             const promise = entity.archive();
             this.$emit('archived', {entity, modal, promise});
         },
+
+        duplicateEntity(modal) {
+            const entity = this.entity;
+            const promise = entity.duplicate();
+            this.$emit('duplicate', {entity, modal, promise});
+        },
         
         deleteEntity(modal) {
             const entity = this.entity;
