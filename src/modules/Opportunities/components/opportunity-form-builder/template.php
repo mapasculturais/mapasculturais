@@ -23,7 +23,7 @@ $this->import('
     </div>
     <opportunity-form-import classes="col-12" :entity="entity"></opportunity-form-import>
     <div class="form-builder__cards col-12 grid-12">
-        <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
+        <!-- <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
             <mc-card>
                 <template #default>
                     <div class="input-group grid-12">
@@ -40,7 +40,7 @@ $this->import('
                     </div>
                 </template>
             </mc-card>
-        </div>
+        </div> -->
 
         <div class="col-6 sm:col-12 grid-12" v-if="entity.isFirstPhase">
             <mc-card class="col-12">

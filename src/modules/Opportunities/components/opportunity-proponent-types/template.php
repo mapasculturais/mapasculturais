@@ -6,9 +6,6 @@
 
 use MapasCulturais\i;
 
-// $this->import('
-    
-// ');
 ?>
 
 <div class="opportunity-proponent-types">
@@ -26,11 +23,21 @@ use MapasCulturais\i;
                 {{ description.options[optionValue] }}
 
                 <div class="opportunity-proponent-types__field field__collective" v-if="showColetivoBinding && optionValue === 'Coletivo'">
-                    <input type="checkbox" @change="toggleAgentRelation($event)"> <?= i::__("Habilitar a vinculação de agente coletivo")?>
+                    <input 
+                        type="checkbox" 
+                        :checked="proponentAgentRelation['Coletivo']" 
+                        @change="toggleAgentRelation($event, 'Coletivo')"
+                    > 
+                    <?= i::__("Habilitar a vinculação de agente coletivo")?>
                 </div>
 
                 <div class="opportunity-proponent-types__field field__legal" v-if="showJuridicaBinding && optionValue === 'Pessoa Jurídica'">
-                    <input type="checkbox" @change="toggleAgentRelation($event)"> <?= i::__("Habilitar a vinculação de agente coletivo")?>
+                    <input 
+                        type="checkbox" 
+                        :checked="proponentAgentRelation['Pessoa Jurídica']" 
+                        @change="toggleAgentRelation($event, 'Pessoa Jurídica')"
+                    > 
+                    <?= i::__("Habilitar a vinculação de agente coletivo")?>
                 </div>
             </label>
         </div>

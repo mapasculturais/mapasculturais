@@ -597,6 +597,11 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Publicar o nome dos avaliadores nos pareceres'),
             'type' => 'json',
         ]);
-           
+        
+        $this->registerOpportunityMetadata('proponentAgentRelation', [
+            'label' => i::__('Vinculação de Agente coletivo para tipos de proponente'),
+            'type' => 'json', 
+            'description' => i::__('Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou Pessoa Jurídica'),
+        ]);
     }
 }
