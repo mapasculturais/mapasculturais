@@ -27,7 +27,7 @@ return array(
             'label' => \MapasCulturais\i::__('Escolaridade'),
             'type' => 'select',
             'options' => array(
-               '' => MapasCulturais\i::__('Não Informar'),
+               '' => MapasCulturais\i::__('Não informado'),
                 MapasCulturais\i::__('Fundamental Incompleto'),
                 MapasCulturais\i::__('Fundamental Completo'),
                 MapasCulturais\i::__('Médio Incompleto'),
@@ -44,11 +44,12 @@ return array(
             'label' => 'Pessoa com deficiência',
             'type' => 'multiselect',
             'options' => [
-                '' => MapasCulturais\i::__('Não sou'),
-                MapasCulturais\i::__('Visual'),
-                MapasCulturais\i::__('Mental'),
-                MapasCulturais\i::__('Física'),
+                MapasCulturais\i::__('Não sou'),
                 MapasCulturais\i::__('Auditiva'),
+                MapasCulturais\i::__('Física'),
+                MapasCulturais\i::__('Intelectual'),
+                MapasCulturais\i::__('Mental'),
+                MapasCulturais\i::__('Visual'),
             ],
             'available_for_opportunities' => true
         ),
@@ -58,7 +59,8 @@ return array(
             'label' => \MapasCulturais\i::__('Comunidades tradicionais'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não pertenço'),
+                '' => \MapasCulturais\i::__('Não informado'),
+                MapasCulturais\i::__('Não pertenço'),
                 MapasCulturais\i::__('Comunidade extrativista'),
                 MapasCulturais\i::__('Comunidade ribeirinha'),
                 MapasCulturais\i::__('Comunidade rural'),
@@ -160,7 +162,7 @@ return array(
             'label' => \MapasCulturais\i::__('Raça/cor'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
+                '' => \MapasCulturais\i::__('Não informado'),
                 'Branca' => \MapasCulturais\i::__('Branca'),
                 'Preta' => \MapasCulturais\i::__('Preta'),
                 'Amarela' => \MapasCulturais\i::__('Amarela'),
@@ -223,7 +225,7 @@ return array(
             'label' => \MapasCulturais\i::__('Gênero'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
+                '' => \MapasCulturais\i::__('Não Informado'),
                 'Mulher Cis' => \MapasCulturais\i::__('Mulher Cis'),
                 'Homem Cis' => \MapasCulturais\i::__('Homem Cis'),
                 'Mulher Trans/travesti' => \MapasCulturais\i::__('Mulher Trans/travesti'),
@@ -240,7 +242,7 @@ return array(
             'label' => \MapasCulturais\i::__('Orientação Sexual'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
+                '' => \MapasCulturais\i::__('Não Informado'),
                 'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
                 'Lésbica' => \MapasCulturais\i::__('Lésbica'),
                 'Gay' => \MapasCulturais\i::__('Gay'),
@@ -255,7 +257,7 @@ return array(
             'label' => \MapasCulturais\i::__('Agente Itinerante'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
+                '' => \MapasCulturais\i::__('Não Informado'),
                 'Sim' => \MapasCulturais\i::__('Sim'),
                 'Não' => \MapasCulturais\i::__('Não'),
             ),
