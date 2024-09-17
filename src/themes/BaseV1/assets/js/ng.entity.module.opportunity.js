@@ -342,6 +342,9 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
     fieldTypes.forEach(function(e){
         fieldTypesBySlug[e.slug] = e;
+        if (e.slug === 'agent-collective-field') {
+            e.disabled = $scope.data.entity.object.useAgentRelationColetivo === 'dontUse';
+        }
     });
 
     fieldTypes.unshift({
