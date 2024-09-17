@@ -494,12 +494,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
             if($phase_id && str_starts_with(strtolower(trim($order)), '@quota')){
-
-                if(is_null($quota_data)) {
-                    $quota_data = (object) [];
-                } else {
-                    return;
-                }
+                $quota_data = (object) [];                
 
                 $quota_data->objectId = spl_object_id($this);
                 $quota_data->params = $params;

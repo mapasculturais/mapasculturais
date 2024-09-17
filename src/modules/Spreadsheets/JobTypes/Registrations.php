@@ -87,9 +87,7 @@ class Registrations extends SpreadsheetJob
         $opportunity_controller = $app->controller('opportunity');
         
         $query_params = $job->query;
-        /*if($job->owner_properties) {
-            $query_params['@select'] .= ",owner.{{$job->owner_properties}}";
-        }*/
+
         $query_params['@limit'] = $this->limit;
         $query_params['@page'] = $this->page;
         
