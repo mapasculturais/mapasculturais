@@ -16,51 +16,50 @@ app.component('opportunity-proponent-types', {
     data() {
         let description = this.entity.$PROPERTIES.registrationProponentTypes || {};
         let value = this.entity.registrationProponentTypes || [];
-        console.log(value);
-        console.log(description);
 
         return {
             description,
             value,
             proponentTypesToAgentsMap: $MAPAS.config.opportunityProponentTypes,
             useAgentRelationColetivo: this.entity.useAgentRelationColetivo || 'dontUse',
-            showColetivoBinding: false,
-            showJuridicaBinding: false,
+            proponentAgentRelation: this.entity.proponentAgentRelation || {
+                "Coletivo": false,
+                "Pessoa Jurídica": false
+            },
         };
+    },
+
+    computed: {
+        showColetivoBinding() {
+            return this.value.includes('Coletivo') && this.proponentTypesToAgentsMap['Coletivo'] === 'coletivo';
+        },
+
+        showJuridicaBinding() {
+            return this.value.includes('Pessoa Jurídica') && this.proponentTypesToAgentsMap['Pessoa Jurídica'] === 'coletivo';
+        }
     },
 
     methods: {
         modifyCheckbox(event) {
-            if (!this.value) {
-                this.value = [];
-            } else if (typeof this.value !== 'object') {
-                this.value = this.value.split(";");
-            }
+            const optionValue = event.target.value;
+            const index = this.value.indexOf(optionValue);
 
-            let index = this.value.indexOf(event.target.value);
-            if (index === -1) {
-                this.value.push(event.target.value);
-            } else {
-                this.value.splice(index, 1);
-            }
+            index === -1 ? this.value.push(optionValue) : this.value.splice(index, 1);
 
-            // Atualiza para "dontUse" se qualquer checkbox é marcado ou desmarcado
-            this.entity.useAgentRelationColetivo = 'dontUse';
-
-            // Controle de exibição
-            this.showColetivoBinding = this.value.includes('Coletivo') && this.proponentTypesToAgentsMap['Coletivo'] === 'coletivo';
-            this.showJuridicaBinding = this.value.includes('Pessoa Jurídica') && this.proponentTypesToAgentsMap['Pessoa Jurídica'] === 'coletivo';
-
+            this.updateProponentAgentRelation();
             this.entity.save();
         },
 
-        toggleAgentRelation(event) {
-            if (event.target.checked) {
-                this.entity.useAgentRelationColetivo = 'required';  // Muda para "required" ao marcar o checkbox adicional
-            } else {
-                this.entity.useAgentRelationColetivo = 'dontUse';  // Volta para "dontUse" ao desmarcar
-            }
+        toggleAgentRelation(event, type) {
+            this.proponentAgentRelation[type] = event.target.checked;
+            this.updateProponentAgentRelation();
             this.entity.save();
         },
+
+        updateProponentAgentRelation() {
+            const anyAgentRelationChecked = Object.values(this.proponentAgentRelation).includes(true);
+            this.entity.useAgentRelationColetivo = anyAgentRelationChecked ? 'required' : 'dontUse';
+            this.entity.proponentAgentRelation = this.proponentAgentRelation;
+        }
     }
 });
