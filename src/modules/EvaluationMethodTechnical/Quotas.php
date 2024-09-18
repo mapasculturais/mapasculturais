@@ -158,7 +158,7 @@ class Quotas {
             $geo_config = (object) $geo_config;
             $distribution = (object) $geo_config->distribution;
             
-            $this->geoDivision = $geo_config->geoDivision;
+            $this->geoDivision = $geo_config->geoDivision ?? '';
             $this->geoDivisionFields = (object) $geo_config->fields;
             $this->isGeoQuotaActive = (bool) $this->geoDivision;
 
