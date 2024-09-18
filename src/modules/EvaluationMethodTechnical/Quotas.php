@@ -281,22 +281,10 @@ class Quotas {
      * @return array 
      * @throws InvalidArgumentException 
      */
-    function getRegistrationsForQuotaSorting(array $params = null): array {
+    function getRegistrationsForQuotaSorting(): array {
         $app = App::i();
                 
         $use_cache = $app->config['app.useQuotasCache'];
-        
-        if($params) {
-            unset(
-                $params['@select'], 
-                $params['@order'], 
-                $params['@limit'], 
-                $params['@page'],
-                $params['opportunity'],
-            );
-        } else {
-            $params = [];
-        }
         
         $cache_key = false;//"{$this->phase}:quota-registrations:" . md5(serialize($params));
         
@@ -307,8 +295,7 @@ class Quotas {
         $result = $app->controller('opportunity')->apiFindRegistrations($this->phase, [
             '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score,sentTimestamp', ...$this->fields]),
             '@order' => 'score DESC',
-            '@quotaQuery' => true,
-            ...$params
+            '@quotaQuery' => true
         ]);
 
         $registrations = array_map(function ($reg) {
@@ -452,7 +439,7 @@ class Quotas {
      * @throws NotSupported 
      * @throws InvalidArgumentException 
      */
-    public function getRegistrationsOrderByScoreConsideringQuotas($params = null): array {
+    public function getRegistrationsOrderByScoreConsideringQuotas(): array {
         $app = App::i();
 
         // HÁ 3 SITUAÇÕES PARA A DISTRIBUIÇÃO DE VAGAS
@@ -461,7 +448,7 @@ class Quotas {
         // 3. somente faixas ativas
 
         // obtendo as inscrições ordenadas pela pontuação considerando critérios de desempate
-        $registrations = $this->getRegistrationsForQuotaSorting($params);
+        $registrations = $this->getRegistrationsForQuotaSorting();
         $registrations = $this->tiebreaker($registrations);
 
         // AGRUPANDO AS INSCRIÇÕES

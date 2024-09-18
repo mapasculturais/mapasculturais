@@ -406,14 +406,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $opportunity->registerRegistrationMetadata();
 
                 $ids = array_map(function($reg) { return $reg->id; }, $quota_order);
-                if($limit = (int) ($params['@limit'] ?? 0)) {
-                    $page = $params['@page'] ?? 1;
-                    $offset = ($page - 1) * $limit;
-                    $ids = array_slice($ids, $offset, $limit);
-                    unset($params['@page'], $params['@limit']);
-                }
-
-                $params['id'] = API::IN($ids);
 
                 $quota_data->order = $quota_order;
                 $quota_data->ids = $ids;
@@ -434,12 +426,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 }
                 $result = $_new_result;
                 $quota_data->result = $result;
-            }
-        });
-
-        $app->hook('ApiQuery(registration).countResult', function(&$result) use(&$quota_data) {
-            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
-                $result = count($quota_data->order);
             }
         });
 
