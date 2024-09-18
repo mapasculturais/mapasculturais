@@ -57,6 +57,22 @@ $this->import('
 							</span>
 						</template>
 					</select-entity>
+					<select-entity v-if="selectAgentRelationColetivo" type="agent" openside="down-right" :query="{'type': 'EQ(2)'}" select="name,files.avatar,endereco,location,type" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
+						<template #button="{ toggle }">
+							<span v-if="!agentCollective" class="fakeInput" @click="toggle()">
+								<div class="fakeInput__img">
+									<mc-icon name="image"></mc-icon>
+								</div>
+								<?= i::_e('Agente Coletivo') ?>
+							</span>
+
+							<span v-if="agentCollective" class="fakeInput" @click="toggle()">
+								<mc-icon name="selected"></mc-icon>
+								<mc-avatar :entity="agentCollective" size="xsmall"></mc-avatar>
+									{{agentCollective.name}}
+							</span>
+						</template>	
+					</select-entity>
 				</div>
 
 				<div v-if="categories.length > 0" class="col-6 sm:col-12 field">
