@@ -290,7 +290,7 @@ class Quotas {
         }
 
         $result = $app->controller('opportunity')->apiFindRegistrations($this->phase, [
-            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score', ...$this->fields]),
+            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score,sentTimestamp', ...$this->fields]),
             '@order' => 'score DESC',
             '@quotaQuery' => true,
             ...$params
