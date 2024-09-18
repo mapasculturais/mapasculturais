@@ -57,7 +57,7 @@ $this->import('
                     <div class="field col-6">
                         <label>
                             <?php i::_e('Total de vagas:') ?>
-                            <input type="number" v-model="entity.vacancies">
+                            <input type="number" v-model="vacancies">
                         </label>
                     </div>
                     <div class="field col-6">
