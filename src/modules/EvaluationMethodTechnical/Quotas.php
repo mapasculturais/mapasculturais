@@ -211,6 +211,21 @@ class Quotas {
     }
 
     /**
+     * Retorna a lista de campos necessários para a distribuição geográfica
+     * @return array 
+     */
+    protected function getGeoQuotaFields(): array {
+        $fields = [];
+        foreach($this->geoDivisionFields as $field) {
+            if($field != 'geo') {
+                $fields[] = $field;
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
      * Retorna os campos utilizados nas cotas
      * 
      * @return array 
@@ -253,7 +268,7 @@ class Quotas {
      * @return array 
      */
     protected function getFields(): array {
-        $fields = array_unique([...$this->quotaFields, ...$this->tiebreakerFields]);
+        $fields = array_unique([...$this->quotaFields, ...$this->tiebreakerFields, ...$this->geoQuotaFields]);
 
         return $fields;
     }
@@ -317,28 +332,37 @@ class Quotas {
     function getRegistrationRegion($registration): string {
         $app = App::i();
 
-        $opportunity_proponent_types = $this->firstPhase->registrationProponentTypes;
-        $proponent_types2agents_map = $app->config['registration.proponentTypesToAgentsMap'];
-        
-        $proponent_type = $registration->proponentType;
+        $registration_proponent_type = $registration->proponentType ?: 'default';
 
-        if(!$opportunity_proponent_types) {
-            $agent_data = $registration->agentsData['owner'];
+        $field = $this->geoDivisionFields->$registration_proponent_type;
+
+        if($field == 'geo') {
+            $opportunity_proponent_types = $this->firstPhase->registrationProponentTypes;
+            $proponent_types2agents_map = $app->config['registration.proponentTypesToAgentsMap'];
+            
+            $proponent_type = $registration->proponentType;
+
+            if(!$opportunity_proponent_types) {
+                $agent_data = $registration->agentsData['owner'];
+            } else {
+                $agent_key = $proponent_types2agents_map[$proponent_type] ?? null;
+                $agent_data = $registration->agentsData[$agent_key] ?? null;
+            }
+
+            // ISSO NÃO DEVERIA SER POSSÍVEL
+            if(!$agent_data) {
+                $agent_data = $registration->agentsData['owner'];
+            }
+
+            $meta = $this->geoDivision;
+            $region =  $agent_data[$meta] ?? '';
         } else {
-            $agent_key = $proponent_types2agents_map[$proponent_type] ?? null;
-            $agent_data = $registration->agentsData[$agent_key] ?? null;
+            $region = $registration->$field;
         }
-
-        // ISSO NÃO DEVERIA SER POSSÍVEL
-        if(!$agent_data) {
-            $agent_data = $registration->agentsData['owner'];
-        }
-
-        $meta = $this->geoDivision;
-        $region =  $agent_data[$meta] ?? '';
 
         $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
         $this->registrationFields[$registration->id]['region'] = $region;
+
 
         if(in_array($region, $this->geoLocations)) {
             return $region;
