@@ -587,11 +587,15 @@ class Quotas {
     private function saveRegistrationTiebreaker($registration, $tiebreaker, $value = null) {
         $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
         $this->registrationFields[$registration->id]['tiebreaker'] = $this->registrationFields[$registration->id]['tiebreaker'] ?? [];
-    
+        
         if ($tiebreaker->criterionType == 'criterion') {
             $key = $this->getCriterionName($tiebreaker->preferences);
         } else if ($tiebreaker->criterionType == 'sectionCriteria') {
             $key = $this->getSectionCriterionName($tiebreaker->preferences);
+    
+        } else if ($tiebreaker->criterionType == 'submissionDate') {
+            $key = $tiebreaker->criterionType;
+            $value = $registration->sentTimestamp;
     
         } else {
             $key = $tiebreaker->selected->title;
@@ -626,8 +630,13 @@ class Quotas {
                 $must_fetch_evaluation_data = true;
                 break;
             }
+            
+            if($tiebreaker->criterionType == 'submissionDate') {
+                $must_fetch_evaluation_data = true;
+                break;
+            }
         }
-
+        
         if($must_fetch_evaluation_data) {
             $evaluation_data = $this->fetchEvaluationData($registrations);
         }
@@ -639,6 +648,29 @@ class Quotas {
             }
 
             foreach($tiebreaker_configuration as $tiebreaker) {
+                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'submissionDate') {
+                    $registration1Has = property_exists($registration1, 'sentTimestamp') ? $registration1->sentTimestamp : null;
+                    $registration2Has = property_exists($registration2, 'sentTimestamp') ? $registration2->sentTimestamp : null;
+                
+                    $this->saveRegistrationTiebreaker($registration1, $tiebreaker);
+                    $this->saveRegistrationTiebreaker($registration2, $tiebreaker);
+                
+                    if ($registration1Has !== null && $registration2Has !== null) {
+                        $result = $registration1Has <=> $registration2Has;
+                        if ($tiebreaker->preferences == 'smallest') {
+                            if ($result !== 0) {
+                                return $result;
+                            }
+                        }
+                
+                        if ($tiebreaker->preferences == 'largest') {
+                            if ($result !== 0) {
+                                return -$result;
+                            }
+                        }
+                    }
+                }
+                
                 if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'criterion') {
                     $registration1Has = $this->tiebreakerCriterion($tiebreaker->preferences, $registration1->id, $evaluation_data);
                     $registration2Has = $this->tiebreakerCriterion($tiebreaker->preferences, $registration2->id, $evaluation_data);
