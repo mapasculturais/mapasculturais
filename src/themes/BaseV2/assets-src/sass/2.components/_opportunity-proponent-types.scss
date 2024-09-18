@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: column;
     gap: size(10);
+    margin-bottom: size(16);
 
     &__fields {
         display: flex;
@@ -21,7 +22,15 @@
             height: size(18);
         }
 
-        .field__collective, .field__legal {
+        .field__collective {
+            margin-left: size(62);
+
+            @media (max-width: 659px) {
+                margin-left: size(10);
+            }
+        }
+        
+        .field__legal {
             margin-left: size(10)
         }
     }
