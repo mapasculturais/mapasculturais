@@ -571,6 +571,70 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        // Adiciona os selos de acordo com os proponent
+        $app->hook("entity(Registration).status(approved)", function() use($app){
+            $opportunity = $this->opportunity; 
+
+            if ($opportunity && $opportunity->publishedRegistrations) {
+               $seals = $opportunity->proponentSeals;
+               $proponent_type = $this->proponentType;
+               $owner = $this->owner;
+                
+                if($proponent_type){
+                    $proponent_seals = $seals->{$proponent_type};
+
+                    foreach($proponent_seals as $proponent_seal){
+                        $seal = $app->repo('Seal')->find($proponent_seal);
+                        $relations = $owner->getSealRelations();
+                
+                        $has_new_seal = false;
+                        foreach($relations as $relation){
+                            if($relation->seal->id == $seal->id){
+                                $has_new_seal = true;
+                                break;
+                            }
+                        }
+                
+                        if(!$has_new_seal){
+                            $owner->createSealRelation($seal);
+                        }
+                    };
+                }
+            }
+           
+        });
+
+        $app->hook("entity(Registration).status(<<draft|waitlist|notapproved|invalid|sent|>>)", function() use($app){
+            $opportunity = $this->opportunity; 
+
+            if ($opportunity && $opportunity->publishedRegistrations) {
+                $seals = $opportunity->proponentSeals;
+                $proponent_type = $this->proponentType;
+                $owner = $this->owner;
+            
+                if ($proponent_type) {
+                    $proponent_seals = $seals->{$proponent_type};
+                    $relations = $owner->getSealRelations();
+            
+                    foreach ($proponent_seals as $proponent_seal) {
+                        $seal = $app->repo('Seal')->find($proponent_seal);
+            
+                        $has_seal = false;
+                        foreach ($relations as $relation) {
+                            if ($relation->seal->id == $seal->id) {
+                                $has_seal = true;
+                                break;
+                            }
+                        }
+            
+                        if ($has_seal) {
+                            $owner->removeSealRelation($seal);
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     function register(){
