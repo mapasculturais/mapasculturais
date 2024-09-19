@@ -18,15 +18,16 @@ app.component('mc-summary-agent-info', {
     },
     methods: {
         canSee(item) {
+            let can = false;
             if(this.entity.currentUserPermissions['@control']){
-                return true
+                can = true
             }
 
-            if (this.avaliableEvaluationFields[item]) {
-                return true;
+            if (can && !this.avaliableEvaluationFields[item]) {
+                can = true;
             }
             
-            return false;
+            return can;
         },
         getAvatarRelatedEntity(type) {
             var avatar = null;
