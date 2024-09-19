@@ -10,6 +10,7 @@
         font-size: size(14);
     }
     &__header {
+        cursor: pointer;
         padding: 18px 16px;
         background: var(--mc-white);
         justify-content: center;
