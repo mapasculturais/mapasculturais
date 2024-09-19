@@ -1,8 +1,8 @@
 # Por que o Mapas Culturais solicita o seu CPF?
 
-- Acesso
-- Cadastro
-- Dados pessoais
+- acesso
+- cadastro
+- dados pessoais
 - CPF
 
 O CPF é o seu documento de identidade exclusivo no Brasil e é fundamental para garantir a segurança e a transparência em todas as ações realizadas no *Mapas Culturais*. Ao solicitar o CPF, estamos assegurando que:

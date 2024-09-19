@@ -1,8 +1,8 @@
 # Sou representante de outra pessoa,como ajudá-la?
 
-- Cadastro
-- Agente
-- Titular
+- cadastro
+- agente
+- titular
 
 **Não é permitida a criação de cadastro para outra pessoa sem que possua a permissão e presença da mesma de acordo com a Lei Geral de Proteção de Dados. 
 Com a permissão e presença da pessoa detendora dos dados do cadastro é permitido somente o auxílio no preenchimento das informações. 

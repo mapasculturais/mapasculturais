@@ -1,8 +1,8 @@
 # Sou menor de 18 anos, posso participar de um edital?
 
-- Regulamento
-- Edital
-- Maioridade
+- regulamento
+- edital
+- maioridade
 
 **Menores de 18 anos não podem participar de Editais no Mapa Cultural. 
 Somente adultos maiores de 18 anos podem se inscrever nos Editais. 

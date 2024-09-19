@@ -1,9 +1,9 @@
 # Como saber se haverá novos editais ? 
 
-- Oportunidades
-- Edital
-- Acompanhamento
-- Inscrição
+- oportunidades
+- edital
+- acompanhamento
+- inscrição
 
 **Quer saber quando sai o próximo edital?** Fique de olho nos sites oficiais dos órgãos responsáveis e no Diário Oficial. 
 

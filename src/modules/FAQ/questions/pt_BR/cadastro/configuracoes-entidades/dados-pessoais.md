@@ -1,8 +1,8 @@
 # O que são Dados Pessoais?
 
-- Acesso
-- Cadastro
-- Dados pessoais
+- acesso
+- cadastro
+- dados pessoais
 
 **São todos os dados que te individualizam e te diferenciam de outras pessoas.**
 

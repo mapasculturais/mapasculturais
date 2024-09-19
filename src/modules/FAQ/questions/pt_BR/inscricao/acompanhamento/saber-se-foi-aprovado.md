@@ -3,7 +3,7 @@
 - oportunidade
 - edital
 - inscrição
-- Aprovado
+- aprovado
 
 **Ansioso para saber se deu tudo certo?** A lista dos selecionados será divulgada no site da Secretaria de Cultura e/ou no Diário Oficial após o encerramento do edital.
 

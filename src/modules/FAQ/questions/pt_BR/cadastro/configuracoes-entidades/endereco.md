@@ -1,9 +1,9 @@
 # Como preencher os campos de endereço?
 
-- Acesso
-- Cadastro
-- Localização
-- Endereço
+- acesso
+- cadastro
+- localização
+- endereço
 
 Para preencher o formulário de endereço corretamente, siga estas etapas:
 

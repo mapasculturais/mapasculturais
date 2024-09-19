@@ -2,7 +2,7 @@
 
 - cadastro
 - CNPJ
-- Coletivo
+- coletivo
 - MEI
 
 Para inserir o **MEI**, dentro do **Perfil** do **Agente Cultural** basta preencher o campo **MEI** e clicar em **Salvar**.
