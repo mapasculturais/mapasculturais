@@ -16,6 +16,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Possibilidade de limitar o número de avaliadores de uma comissão qua cada inscrição receberá
   - Comissão de voto de minerva, que recebe inscrições que tenham divergência entre diferentes comissões de avaliação
 - Etapas em formulários de inscrição
+- Cria novos hooks na tela de visualiação do formulario pelo avaliador
 
 ### Melhorias
 - Redesenho do formulário de inscrição
