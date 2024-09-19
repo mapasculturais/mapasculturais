@@ -43,7 +43,7 @@ $this->import('
                                 <mc-link :entity="phase.opportunity" route="sendEvaluations" class="button button--primary-outline" :param="phase.opportunity.id"><?= i::__("Enviar avaliações") ?></mc-link>
                             </div>
                             <div v-if="user == 'all'">
-                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,user,result,status,evaluationData', '@order': 'id DESC'}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
+                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,user,result,status,evaluationData', '@order': order}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
                             </div>
                         </div>
                     </div>
