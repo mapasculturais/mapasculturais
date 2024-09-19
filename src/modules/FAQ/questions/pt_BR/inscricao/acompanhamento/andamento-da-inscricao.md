@@ -4,7 +4,7 @@
 - edital
 - inscrição
 
-Acesse o edital e clique em "Acompanhar inscrição". Por lá, você pode:
+Acesse o edital e clique em **Acompanhar inscrição**. Por lá, você pode:
 
 * **Verificar os detalhes da sua inscrição:** Tudo o que você preencheu estará lá para conferir.
 * **Acompanhar as próximas etapas:** Se tiver mais fases, você saberá o que fazer.
