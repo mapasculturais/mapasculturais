@@ -98,7 +98,7 @@ $this->breadcrumb = [
                 <main>
                     <mc-card>
                         <template #title>
-                            <h3 class="bold"><?php i::_e("Dados Pessoais"); ?></h3>
+                            <h3 class="bold"><?php i::_e("Dados Pessoais"); ?> <?php $this->info('cadastro -> configuracoes-entidades -> dados-pessoais') ?></h3>
                             <p><?php i::_e("Não se preocupe, esses dados não serão exibidos publicamente."); ?></p>
                         </template>
                         <template #content>
@@ -120,7 +120,7 @@ $this->breadcrumb = [
                     </mc-card>
                     <mc-card>
                         <template #title>
-                            <h3 class="bold"><?php i::_e("Dados pessoais sensíveis"); ?></h3>
+                            <h3 class="bold"><?php i::_e("Dados pessoais sensíveis"); ?> <?php $this->info('cadastro -> configuracoes-entidades -> dados-pessoais-sensiveis') ?></h3>
                             <p class="data-subtitle"><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                         </template>
                         <template #content>
