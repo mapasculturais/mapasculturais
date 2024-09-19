@@ -1,9 +1,9 @@
 # Localização pública
 
-- Acesso
-- Cadastro
-- Localização
-- Localização pública
+- acesso
+- cadastro
+- localização
+- localização pública
 
 **Marque o campo** para tornar o endereço público ou **deixe desmarcado** para manter o endereço privado.
 

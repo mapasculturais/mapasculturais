@@ -1,9 +1,9 @@
 # O que são Dados Pessoais Sensíveis?
 
-- Acesso
-- Cadastro
-- Dados pessoais
-- Dados sensíveis
+- acesso
+- cadastro
+- dados pessoais
+- dados sensíveis
 
 **Dados pessoais sensíveis são informações que, se vazadas, podem causar danos significativos à pessoa envolvida.** 
 

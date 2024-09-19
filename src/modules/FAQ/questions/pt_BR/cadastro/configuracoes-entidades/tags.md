@@ -1,8 +1,8 @@
 # O que são tags?
 
-- Acesso
-- Cadastro
-- Tags
+- acesso
+- cadastro
+- tags
 
 Tags são como **etiquetas digitais** que usamos para categorizar e organizar as entidades. 
 

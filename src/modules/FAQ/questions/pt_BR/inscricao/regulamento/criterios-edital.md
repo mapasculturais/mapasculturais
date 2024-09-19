@@ -1,8 +1,8 @@
 # Quais os critérios para participar de um edital?
 
-- Critérios
-- Edital
-- Regulamento
+- critérios
+- edital
+- regulamento
 
 
 Para participar de um **Edital** no **Mapa Cultural** é necessário ter um **Cadastro** que possua o **Agente Cultural publicado**. 
