@@ -4,5 +4,11 @@
 - cadastro
 - senha
 
-Para recuperação de acesso clique em **Esqueci minha senha** na tela de **login**. Informe um e-mail ao qual tenha acesso e clique em Alterar senha. 
-Será necessário aguardar um prazo de até 10min (dez minutos) para que o retorno com instruções de acesso senha encaminhado para o e-mail informado.
+**Esqueceu sua senha?**
+
+Siga esses passos para recuperar sua senha:
+* Acesse a tela de login.
+* Clique em "Esqueceu minha senha".
+* Digite o e-mail cadastrado na sua conta.
+* Clique em "Alterar senha".
+* Verifique sua caixa de entrada (incluindo a caixa de spam) para encontrar o e-mail com as instruções. O processo pode levar até 10 (dez) minutos.
