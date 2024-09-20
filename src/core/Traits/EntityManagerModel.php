@@ -139,18 +139,37 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->name = $name;
         $this->entityOpportunityModel->status = Entity::STATUS_DRAFT;
         $this->entityOpportunityModel->owner = $app->user->profile;
+
         $app->em->persist($this->entityOpportunityModel);
         $app->em->flush();
-
-        
 
         // necessário adicionar as categorias, proponetes e ranges após salvar devido a trigger public.fn_propagate_opportunity_insert
         $this->entityOpportunityModel->registrationCategories = $this->entityOpportunity->registrationCategories;
         $this->entityOpportunityModel->registrationProponentTypes = $this->entityOpportunity->registrationProponentTypes;
         $this->entityOpportunityModel->registrationRanges = $this->entityOpportunity->registrationRanges;
+        
+        $this->changeObjectType($this->entityOpportunityModel->id);
+        
         $this->entityOpportunityModel->save(true);
 
         return $this->entityOpportunityModel;
+    }
+
+    private function changeObjectType($id)
+    {
+        $app = App::i();
+        $postData = $this->postData;
+
+        if (isset($postData['objectType']) && isset($postData['ownerEntity'])) {
+            $ownerEntity = $app->repo($postData['objectType'])->find($postData['ownerEntity']);
+            $app->em->beginTransaction();            
+            $app->em->getConnection()->update('opportunity', [
+                    'object_type' => $ownerEntity->getClassName(), 
+                    'object_id' => $ownerEntity->id
+                ], ['id' => $id]);
+
+            $app->em->commit();
+        }
     }
 
     private function generateEvaluationMethods() : void
@@ -177,6 +196,8 @@ trait EntityManagerModel {
     private function generatePhases() : void
     {
         $app = App::i();
+        $postData = $this->postData;
+
         $phases = $app->repo('Opportunity')->findBy([
             'parent' => $this->entityOpportunity
         ]);
@@ -186,6 +207,8 @@ trait EntityManagerModel {
                 $newPhase = clone $phase;
                 $newPhase->setParent($this->entityOpportunityModel);
                 $newPhase->owner = $app->user->profile;
+
+                $this->changeObjectType($newPhase->id);
 
                 foreach ($phase->getMetadata() as $metadataKey => $metadataValue) {
                     if (!is_null($metadataValue) && $metadataValue != '') {
@@ -228,6 +251,8 @@ trait EntityManagerModel {
                 if ($phase->getMetadata('isLastPhase')) {
                     $phase->setPublishTimestamp($publishDate);
                     $phase->save(true);
+
+                    $this->changeObjectType($phase->id);
                 }
             }
         }   
