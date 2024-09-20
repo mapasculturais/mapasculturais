@@ -1,8 +1,8 @@
 # O que é o Mapas Culturais?
 
-- software
+- software livre
 - cultura
-- mapa
+- colaboração
 - mapeamento
 
 É um software livre para mapeamento colaborativo e gestão da cultura que contribui para qualificar a gestão pública.
