@@ -5,6 +5,6 @@
 - acompanhamento
 - inscrição
 
-**Quer saber quando sai o próximo edital?** Fique de olho nos sites oficiais dos órgãos responsáveis e no Diário Oficial. 
+Fique de olho nos sites oficiais dos órgãos responsáveis e no Diário Oficial. 
 
 > A data de publicação também costuma aparecer no Mapa Cultural.
