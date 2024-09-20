@@ -667,4 +667,24 @@ class Module extends \MapasCulturais\Module{
             'type' => 'json',
         ]);
     }
+
+    public function applySeal(Entity $agent, array $sealIds){
+        $app = App::i();
+        foreach($sealIds as $sealId) {
+            $seal = $app->repo('Seal')->find($sealId);
+            $relations = $agent->getSealRelations();
+    
+            $has_new_seal = false;
+            foreach($relations as $relation){
+                if($relation->seal->id == $seal->id){
+                    $has_new_seal = true;
+                    break;
+                }
+            }
+            if(!$has_new_seal){
+                $agent = $agent->refreshed();
+                $agent->createSealRelation($seal);
+            }
+        }
+    }
 }
