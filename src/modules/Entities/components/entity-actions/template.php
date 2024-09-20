@@ -61,11 +61,7 @@ $this->import('
                 </mc-confirm-button>
                 <div v-if="entity.currentUserPermissions?.modify && entity.status != -2 && entity.__objectType == 'opportunity' && entity.isModel != 1">
                     <opportunity-create-model :entity="entity" classes="col-12"></opportunity-create-model>
-                </div>
-                <div v-if="entity.currentUserPermissions?.modify && entity.status != -2 && entity.__objectType == 'opportunity' && entity.isModel == 1">
-                    <opportunity-create-based-model :entity="entity" classes="col-12"></opportunity-create-based-model>
-                </div>
- 
+                </div> 
                 <?php $this->applyTemplateHook('entity-actions--primary', 'end') ?>
             </div>
             <?php $this->applyTemplateHook('entity-actions--leftGroupBtn', 'after'); ?>
