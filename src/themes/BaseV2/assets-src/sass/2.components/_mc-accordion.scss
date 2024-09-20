@@ -19,6 +19,7 @@
         grid-template-columns: 1fr size(12);
         max-width: size(870);
         border-radius: size(4);
+        gap: size(10);
     }
     
     &__content {
