@@ -11,6 +11,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\Entity;
 
 class Module extends \MapasCulturais\Module{
 
@@ -24,6 +25,8 @@ class Module extends \MapasCulturais\Module{
 
         /** @var App $app */
         $app = App::i();
+
+        $self = $this;
 
         // Registro de Jobs
         $app->registerJobType(new Jobs\StartEvaluationPhase(Jobs\StartEvaluationPhase::SLUG));
