@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Faz com que o componente registration-actions analise se existe o campo também no descriptios para lançar os erros
 - Corrige para que a alteração de propriedade de entidades funcione e seja salva corretamente
 - Corrige verificações de exibição dos resumos de agentes, projetos e espaços para o avaliador
+- Implementa db-update para corrigir erro causado por valores invalidos na tabela request
 
 ## [7.4.16] - 2024-09-04
 ### Correções
