@@ -88,6 +88,8 @@ return [
 
             'perguntas-frequentes' => ['faq', 'index'],
 
+            'file/arquivo-privado' => ['file', 'privateFile'],
+
         ],
         'controllers' => [
             'painel'         => 'panel',
