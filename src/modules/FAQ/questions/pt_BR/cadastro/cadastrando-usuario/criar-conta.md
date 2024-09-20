@@ -1,25 +1,24 @@
-# Como faço meu cadastro no Mapa Cultural?
+# Como faço meu cadastro no Mapas Culturais?
 
 - cadastro
 - usuário
+- novo usuário
 
-**Comece sua jornada no Mapas Culturais!**
+Ao efetuar o seu cadastro no *Mapas Culturais*, será criado um Perfil do seu Agente que o identificará dentro do sistema.
 
-Para criar seu cadastro, siga estes passos simples:
+&nbsp;
 
-* Acesse o site e, na barra superior, clique em **Entrar**;
-* Clique no botão **Fazer Cadastro**;
-* Preencha o formulário com seus dados pessoais e crie uma senha forte;
-    * a senha deve conter:
-        * **6 caracteres**
-        * **uma letra maiúscula**
-        * **uma letra minúscula**
-        * **um caracter especial (! @ # $ % & * < > ?)**
-        * **um número**
-* Aceite os termos para garantir uma experiência segura e transparente;
-* Informe seu nome de exibição, conte um pouco sobre você e suas áreas de atuação;
+#### **Como criar um novo cadastro:**
+
+* Clique em **Entrar**, na barra superior;
+* Na tela de login, clique no botão **Fazer cadastro**;
+* Preencha todos os dados solicitados;
+* Aceite os **Termos de uso**, **Politicas de privacidade** e **Autorização de uso de imagem**;
+* Informe os dados do seu Perfil, como **Nome**, **Mini Bio** e suas **Áreas de atuação**;
 * Clique em **Criar cadastro**;
 
-Pronto! Agora você faz parte da nossa comunidade! 
+&nbsp;
 
-> Para que outros possam te encontrar e conhecer seu trabalho, não se esqueça de publicar seu perfil como Agente Cultural.
+Pronto! Agora você faz parte da nossa comunidade e está preparado para iniciar a sua jornada no *Mapas Culturais*!
+
+> **Lembre-se:** Para que outros possam te encontrar e conhecer seu trabalho, não se esqueça de clicar no botão **Publicar** na barra inferior.

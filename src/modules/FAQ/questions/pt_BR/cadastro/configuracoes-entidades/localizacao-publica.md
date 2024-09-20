@@ -1,9 +1,13 @@
-# Localização pública
+# O que é a Localização pública?
 
 - acesso
 - cadastro
 - localização
 - localização pública
+
+É o campo que define se a sua localização será exibida no *Mapas Culturais* de forma pública para todos os usuários.
+
+&nbsp;
 
 **Marque o campo** para tornar o endereço público ou **deixe desmarcado** para manter o endereço privado.
 
