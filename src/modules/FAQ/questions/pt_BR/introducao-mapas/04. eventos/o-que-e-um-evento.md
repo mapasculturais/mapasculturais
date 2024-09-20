@@ -4,7 +4,9 @@
 
 Um evento no Mapa Cultural é uma ferramenta poderosa para divulgar suas atividades e alcançar um público mais amplo.
 
-Ao criar um evento no Mapa Cultural, você pode:
+&nbsp;
+
+#### **Ao criar um evento no Mapa Cultural, você pode:**
 
 * **Divulgar:** Compartilhar informações detalhadas sobre seu evento, como data, horário, local, público-alvo e atividades.
 * **Promover:** Atrair um público interessado nas suas atividades culturais, aumentando a visibilidade do seu trabalho.
