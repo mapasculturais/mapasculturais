@@ -9,6 +9,8 @@ use MapasCulturais\i;
 $this->import('
     mc-confirm-button
     mc-loading
+    opportunity-create-model
+    opportunity-create-based-model
 ');
 ?>
 <div v-if="!empty" class="entity-actions">
@@ -51,12 +53,19 @@ $this->import('
                         </button>
                     </template>
                     <template #message="message">
-                        <h4><b><?php i::_e('Duplicar oportunidade'); ?></b></h4>
+                        <h4><b><?php i::_e('Duplicar modelo'); ?></b></h4>
                         <br>
                         <p><?php i::_e('Todas as configurações atuais da oportunidade, incluindo o vínculo<br> com a entidade associada e os campos de formulário criados, serão<br> duplicadas.') ?></p>
                         <p><?php i::_e('Deseja continuar?') ?></p>
                     </template>
-                </mc-confirm-button> 
+                </mc-confirm-button>
+                <div v-if="entity.currentUserPermissions?.modify && entity.status != -2 && entity.__objectType == 'opportunity' && entity.isModel != 1">
+                    <opportunity-create-model :entity="entity" classes="col-12"></opportunity-create-model>
+                </div>
+                <div v-if="entity.currentUserPermissions?.modify && entity.status != -2 && entity.__objectType == 'opportunity' && entity.isModel == 1">
+                    <opportunity-create-based-model :entity="entity" classes="col-12"></opportunity-create-based-model>
+                </div>
+ 
                 <?php $this->applyTemplateHook('entity-actions--primary', 'end') ?>
             </div>
             <?php $this->applyTemplateHook('entity-actions--leftGroupBtn', 'after'); ?>

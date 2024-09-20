@@ -33,6 +33,7 @@ class Opportunity extends EntityController {
         Traits\ControllerAPI,
         Traits\ControllerAPINested,
         Traits\EntityOpportunityDuplicator,
+        Traits\EntityManagerModel,
         Traits\ControllerEntityActions {
             Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
         }
