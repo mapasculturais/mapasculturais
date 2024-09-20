@@ -18,8 +18,6 @@ app.component('opportunity-create-based-model', {
             name: ''
         }
 
-        // console.log(this.entitydefault);
-
         return {
             fields: [],
             entity: null,
@@ -36,7 +34,6 @@ app.component('opportunity-create-based-model', {
         modalTitle() {
             if (!this.entity?.id) {
                 return __('criarOportunidade', 'opportunity-create-based-model');
-                console.log(this.entity.id);
             }
             if(this.entity.status==0){
                 return __('oportunidadeCriada', 'opportunity-create-based-model');
