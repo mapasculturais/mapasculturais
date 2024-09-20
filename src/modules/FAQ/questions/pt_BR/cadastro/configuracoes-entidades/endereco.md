@@ -5,7 +5,7 @@
 - localização
 - endereço
 
-Para preencher o formulário de endereço corretamente, siga estas etapas:
+#### **Para preencher o formulário de endereço corretamente, siga estas etapas:**
 
 * **CEP:** Digite o Código de Endereçamento Postal completo, sem hífen. O CEP é fundamental para localizar o seu endereço com precisão.
 * **Logradouro:** Informe o nome da rua, avenida, praça ou outro tipo de via onde se localiza o seu endereço.

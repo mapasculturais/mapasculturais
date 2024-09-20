@@ -4,9 +4,11 @@
 - cadastro
 - dados pessoais
 
-**São todos os dados que te individualizam e te diferenciam de outras pessoas.**
+Dados pessoais são todos os dados que te individualizam e te diferenciam de outras pessoas no *Mapas Culturais*.
 
-É importante lembrar que:
+&nbsp;
+
+#### **É importante lembrar que:**
 
 * **Seus dados são seus:** Você tem o direito de saber quais dados são coletados sobre você e como eles são utilizados.
 * **Existem leis que protegem seus dados:** A LGPD estabelece regras para a coleta, armazenamento e tratamento de dados pessoais.

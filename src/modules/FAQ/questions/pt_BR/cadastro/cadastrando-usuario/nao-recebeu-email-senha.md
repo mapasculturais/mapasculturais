@@ -6,5 +6,8 @@
 - cadastro
 - usuário
 
-Caso não receba o **e-mail de recuperação de acesso**, ou receba a mensagem de **CPF** ou **email duplicado, entre em contato com o suporte via e-mail ou chat. **
-A pessoa que atende o suporte fará uma verificação de cadastro e poderá solicitar documentos para que seja realizada a recuperação de acesso.
+Caso não tenha recebido o **e-mail de recuperação de acesso**, ou caso receba a mensagem de que o **CPF** ou **E-mail** é duplicado, entre em contato com o **Suporte**.
+
+&nbsp;
+
+O atendente do suporte irá verificar seu cadastro e poderá solicitar documentos afim de confirmar sua identidade para realizar a recuperação do seu acesso.

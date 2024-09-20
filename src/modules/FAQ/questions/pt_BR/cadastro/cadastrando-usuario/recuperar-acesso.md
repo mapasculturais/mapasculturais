@@ -1,14 +1,19 @@
-# Como recuperar meu acesso?
+# Esqueci minha senha, como recuperar meu acesso?
 
 - acesso
 - cadastro
 - senha
+- recuperar senha
 
-**Esqueceu sua senha?**
+#### **Para recuperar o acesso:**
 
-Siga esses passos para recuperar sua senha:
-* Acesse a tela de login.
-* Clique em "Esqueceu minha senha".
-* Digite o e-mail cadastrado na sua conta.
-* Clique em "Alterar senha".
-* Verifique sua caixa de entrada (incluindo a caixa de spam) para encontrar o e-mail com as instruções. O processo pode levar até 10 (dez) minutos.
+* Acesse a tela de login, no botão **Entrar** na barra superior;
+* Clique em **Esqueci minha senha**;
+* Digite o e-mail cadastrado em sua conta;
+* Clique no botão **Alterar senha**;
+
+Um email será enviado com as instruções para gerar uma nova senha.
+
+> **Lembre-se:** Verifique sua caixa de entrada, incluindo a caixa de spam, para encontrar o email.
+
+>Esse processo pode levar até 10 (dez) minutos.

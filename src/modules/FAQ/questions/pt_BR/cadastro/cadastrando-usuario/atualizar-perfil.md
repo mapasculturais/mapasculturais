@@ -1,14 +1,20 @@
-# Como faço para atualizar e/ou publicar as informações do meu perfil?
+# Como faço para atualizar as informações do meu perfil?
 
 - cadastro
 - usuário
 - atualização
 - perfil
 
-Para fazer edições em seu **Perfil** faça **login** com seu **e-mail** (ou **CPF**) e **senha**. 
-Ocorrerá o direcionamento para o **Painel de Controle** e clique em **Acessar meu perfil**, depois, clique em **Editar Agente.**
-Após inserir ou editar sua informações clique em **Salvar** e **Concluir edição e sair**. 
+O **perfil** do seu agente é a sua identidade digital no *Mapas Culturais*. 
 
 &nbsp;
 
-Caso seja o **primeiro login** e deseja **Publicar o Agente Cultural**, ocorrerá o direcionamento para o **Perfil** do **Agente Cultural** em seu **modo de edição** e, basta clicar em **Publicar.** 
+#### **Como editar meu perfil:**
+
+* Faça login no *Mapas Culturais*;
+* No painel de controle, clique em **Acessar meu perfil**;
+* Na barra inferior, clique em **Editar agente**;
+* Faça suas modificações;
+* Na barra inferior, clique em **Salvar** para atualizar os dados do seu perfil;
+
+> **Lembre-se:** No seu perfil contém informações que o identificam dentro do sistema, lembre-se de preencher de forma completa e precisa.
