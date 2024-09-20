@@ -108,6 +108,23 @@ $this->breadcrumb = $breadcrumb;
                                 </div>
                             </div>
                         </div>
+                        <div class="card collective" v-if="entity.agentRelations.coletivo?.length > 0">
+                            <div class="card__content" v-for="agentCollective in entity.agentRelations.coletivo">
+                                <div class="collective">
+                                    <mc-avatar :entity="agentCollective.agent" size="small"></mc-avatar>
+                                    <div class="collective__content">
+                                        <div class="collective__content--title">
+                                            <h3 class="card__title"> 
+                                                <?= i::__('Agente coletivo') ?> 
+                                            </h3>
+                                            <div class="collective__name">
+                                                {{agentCollective.agent.name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div v-if="entity.opportunity.enableQuotasQuestion" class="card owner">                            
                             <h3 class="card__title"> 
@@ -125,7 +142,7 @@ $this->breadcrumb = $breadcrumb;
                     </div>
                 </section>
 
-                <section class="section">
+                <section class="section" v-if="!entity.opportunity.proponentAgentRelation[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation[entity.proponentType])">
                     <registration-form :registration="entity"></registration-form>
                 </section>
             </main>
