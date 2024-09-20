@@ -2092,7 +2092,7 @@ $$
 
             $conn->executeQuery("
                 UPDATE request 
-                SET metadata = ':metadata'
+                SET metadata = :metadata
                 WHERE id = $id", ['metadata'=>$metadata]);
         }
     },
