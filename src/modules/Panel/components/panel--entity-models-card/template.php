@@ -61,16 +61,7 @@ $this->import('
                     <mc-icon name="agent" class="icon-model"></mc-icon>
                     <strong><?=i::__('Tipo de agente: ')?></strong> {{ model.tipoAgente }}
                     <br><br>
-                    <?php if($app->user->is('admin')): ?>
-                        <div v-if="entity.currentUserPermissions?.modify">
-                            <label class="switch" >
-                                <input type="checkbox" v-model="isModelPublic" />
-                                <span class="slider round"></span>
-                            </label>
-                            <span class="switch-text"><?= i::__("Modelo público") ?></span>
-                        </div>
-                        <br><br>
-                    <?php endif; ?>
+                    
                 </span>
             </div>
         </div>
