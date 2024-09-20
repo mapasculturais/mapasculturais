@@ -18,6 +18,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige para que a alteração de propriedade de entidades funcione e seja salva corretamente
 - Corrige verificações de exibição dos resumos de agentes, projetos e espaços para o avaliador
 - Implementa db-update para corrigir erro causado por valores invalidos na tabela request
+- Corrige db-update que migra valores das colunas do tipo array para do tipo json
 
 ## [7.4.16] - 2024-09-04
 ### Correções
