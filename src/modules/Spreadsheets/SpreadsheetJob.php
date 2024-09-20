@@ -184,7 +184,7 @@ abstract class SpreadsheetJob extends JobType
         $app->createAndSendMailMessage([
             'from' => $app->config['mailer.from'],
             'to' => $user->email,
-            'subject' => sprintf(i::__($message['title'], $entity_class)),
+            'subject' => sprintf("[{$app->siteName}] " . i::__($message['title'], $entity_class)),
             'body' => $message['body'],
         ]);
     }
