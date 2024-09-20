@@ -1,11 +1,9 @@
-# Quais os critérios para participar de um edital?
+# Quais os critérios para participar de uma Oportunidade?
 
 - critérios
-- edital
+- oportunidade
 - regulamento
 
+Para participar de uma Oportunidade no Mapas Culturais, é necessário ter um **Cadastro** com um **Agente Cultural** publicado;
 
-Para participar de um **Edital** no **Mapa Cultural** é necessário ter um **Cadastro** que possua o **Agente Cultural publicado**. 
-Todo **Edital** publicado na plataforma deve possuir um **Regulamento**, acesse-o para se informar sobre os requisitos necessários para inscrição.
-
-**Não esqueça de realizar o login para se inscrever.**
+> Toda Oportunidade publicada na plataforma possui um **Regulamento**, acesse-o para obter mais informações sobre os requisitos necessários para realizar a inscrição

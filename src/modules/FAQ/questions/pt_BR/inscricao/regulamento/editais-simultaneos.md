@@ -1,8 +1,10 @@
-# Consigo participar de outros editais simultaneamente?
+# Consigo participar de outras Oportunidades simultaneamente?
 
-- editais
+- oportunidade
+- oportunidades
 - simultâneos
 - regulamento
-- oportunidade
 
-Para obter essa informação é necessário verificar os **Regulamentos** dos **Editais** aos quais pretende se inscrever.
+Tecnicamente, é possivel participar de mais de uma Oportunidade simultaneamente. Contudo, algumas Oportunidades podem não permitir isso.
+
+Verifique os **Regulamentos** das Oportunindades nas quais pretende se inscrever para obter informações acerca das regras e limitações de cada Oportunidade.
