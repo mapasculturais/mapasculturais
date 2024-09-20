@@ -13,7 +13,7 @@ use MapasCulturais\i;
     <h6><?= i::__("Selecione um ou mais tipos de proponente que poderá participar do edital")?></h6>
     <div>
         <div class="opportunity-proponent-types__fields">
-            <label class="opportunity-proponent-types__field" v-for="optionValue in description.optionsOrder" :key="optionValue">
+            <div class="opportunity-proponent-types__field" v-for="optionValue in description.optionsOrder" :key="optionValue">
                 <input 
                     :checked="value?.includes(optionValue)" 
                     type="checkbox" 
@@ -39,7 +39,7 @@ use MapasCulturais\i;
                     > 
                     <?= i::__("Habilitar a vinculação de agente coletivo")?>
                 </div>
-            </label>
+            </div>
         </div>
     </div>
 </div>
