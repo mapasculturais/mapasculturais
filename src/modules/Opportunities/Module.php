@@ -572,36 +572,35 @@ class Module extends \MapasCulturais\Module{
         });
 
         // Adiciona os selos de acordo com os proponent
-        $app->hook("entity(Registration).status(approved)", function() use($app){
+        $app->hook("entity(Registration).status(approved)", function() use($app, $self){
+            /** @var \MapasCulturais\Entities\Registration $this */
+
             $opportunity = $this->opportunity; 
 
             if ($opportunity && $opportunity->publishedRegistrations) {
                $seals = $opportunity->proponentSeals;
                $proponent_type = $this->proponentType;
                $owner = $this->owner;
-                
-                if($proponent_type){
-                    $proponent_seals = $seals->{$proponent_type};
-
-                    foreach($proponent_seals as $proponent_seal){
-                        $seal = $app->repo('Seal')->find($proponent_seal);
-                        $relations = $owner->getSealRelations();
-                
-                        $has_new_seal = false;
-                        foreach($relations as $relation){
-                            if($relation->seal->id == $seal->id){
-                                $has_new_seal = true;
-                                break;
+               $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+               
+               if($proponent_type){
+                   
+                   if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
+                       $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+                       if (isset($seals->$proponent_type)) {
+                            $proponent_seals = $seals->{$proponent_type};
+                            if($agent_type == "owner"){
+                               $self->applySeal($owner,$proponent_seals);
+                            }
+                        
+                            if($agent_type == "coletivo"){
+                                $agents = $this->getAgentRelations();
+                                $self->applySeal($agents[0]->agent, $proponent_seals);
                             }
                         }
-                
-                        if(!$has_new_seal){
-                            $owner->createSealRelation($seal);
-                        }
-                    };
+                    }
                 }
             }
-           
         });
 
         $app->hook("entity(Registration).status(<<draft|waitlist|notapproved|invalid|sent|>>)", function() use($app){
