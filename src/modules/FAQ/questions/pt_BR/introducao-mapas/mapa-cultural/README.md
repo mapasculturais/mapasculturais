@@ -1,3 +1,3 @@
-# Mapa Cultural
+# Mapas Culturais
 
-Aqui você encontra respostas sobre o Mapa Cultural
+Aqui você encontra respostas sobre a plataforma Mapas Culturais
