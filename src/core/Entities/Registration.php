@@ -1136,14 +1136,33 @@ class Registration extends \MapasCulturais\Entity
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
         
         // validate agents
+        $proponent_type_to_group_map = $app->config['registration.proponentTypesToAgentsMap'];
+        $group_to_proponent_type_map = [];
+        foreach($proponent_type_to_group_map as $proponent_type => $group){
+            $group_to_proponent_type_map[$group] = $group_to_proponent_type_map[$group] ?? []; 
+            $group_to_proponent_type_map[$group][] = $proponent_type;
+        }
+        
         foreach($definitionsWithAgents as $def){
+            $group_name = $def->agentRelationGroupName;
             $errors = [];
 
             // @TODO: validar o tipo do agente
 
             if($def->use === 'required'){
                 if(!$def->agent){
-                    $errors[] = sprintf(i::__('O agente "%s" é obrigatório.'), $def->label);
+                    if ($def->agentRelationGroupName == 'owner') {
+                        $errors[] = i::__('O agente responsável é obrigatório.');
+                    } else {
+                        $group_proponent_types = $group_to_proponent_type_map[$group_name] ?? [];
+                        if (in_array($this->proponentType, $group_proponent_types)) {
+                            $proponent_type = $this->proponentType;
+                            $proponent_agent_relation = $this->opportunity->proponentAgentRelation;
+                            if ($proponent_agent_relation->$proponent_type ?? false) {
+                                $errors[] = sprintf(i::__('O agente "%s" é obrigatório.'), $def->label);
+                            }
+                        }    
+                    }
                 }
             }
 
