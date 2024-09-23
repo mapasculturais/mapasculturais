@@ -35,6 +35,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa nova tabela de listagem de avaliações
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 - Exibe na tabela de inscrições colunas exibindo em quais cotas o proponente foi incluído, os critérios de desempate que foram utilizados e a região do proponente
+- Implementa novo componente de configuraçãod e campos visiveis para o avaliador
 
 #### Refatoração das políticas afirmativas
 - Os percentuais configurados para as cotas agora são garantidos dentro das regiões e faixas/linhas de inscrição
