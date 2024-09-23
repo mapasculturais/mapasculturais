@@ -158,7 +158,7 @@ class Quotas {
             $geo_config = (object) $geo_config;
             $distribution = (object) $geo_config->distribution;
             
-            $this->geoDivision = $geo_config->geoDivision;
+            $this->geoDivision = $geo_config->geoDivision ?? '';
             $this->geoDivisionFields = (object) $geo_config->fields;
             $this->isGeoQuotaActive = (bool) $this->geoDivision;
 
@@ -211,6 +211,21 @@ class Quotas {
     }
 
     /**
+     * Retorna a lista de campos necessários para a distribuição geográfica
+     * @return array 
+     */
+    protected function getGeoQuotaFields(): array {
+        $fields = [];
+        foreach($this->geoDivisionFields as $field) {
+            if($field != 'geo') {
+                $fields[] = $field;
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
      * Retorna os campos utilizados nas cotas
      * 
      * @return array 
@@ -253,7 +268,7 @@ class Quotas {
      * @return array 
      */
     protected function getFields(): array {
-        $fields = array_unique([...$this->quotaFields, ...$this->tiebreakerFields]);
+        $fields = array_unique([...$this->quotaFields, ...$this->tiebreakerFields, ...$this->geoQuotaFields]);
 
         return $fields;
     }
@@ -266,22 +281,10 @@ class Quotas {
      * @return array 
      * @throws InvalidArgumentException 
      */
-    function getRegistrationsForQuotaSorting(array $params = null): array {
+    function getRegistrationsForQuotaSorting(): array {
         $app = App::i();
                 
         $use_cache = $app->config['app.useQuotasCache'];
-        
-        if($params) {
-            unset(
-                $params['@select'], 
-                $params['@order'], 
-                $params['@limit'], 
-                $params['@page'],
-                $params['opportunity'],
-            );
-        } else {
-            $params = [];
-        }
         
         $cache_key = false;//"{$this->phase}:quota-registrations:" . md5(serialize($params));
         
@@ -290,10 +293,9 @@ class Quotas {
         }
 
         $result = $app->controller('opportunity')->apiFindRegistrations($this->phase, [
-            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score', ...$this->fields]),
+            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score,sentTimestamp', ...$this->fields]),
             '@order' => 'score DESC',
-            '@quotaQuery' => true,
-            ...$params
+            '@quotaQuery' => true
         ]);
 
         $registrations = array_map(function ($reg) {
@@ -317,28 +319,37 @@ class Quotas {
     function getRegistrationRegion($registration): string {
         $app = App::i();
 
-        $opportunity_proponent_types = $this->firstPhase->registrationProponentTypes;
-        $proponent_types2agents_map = $app->config['registration.proponentTypesToAgentsMap'];
-        
-        $proponent_type = $registration->proponentType;
+        $registration_proponent_type = $registration->proponentType ?: 'default';
 
-        if(!$opportunity_proponent_types) {
-            $agent_data = $registration->agentsData['owner'];
+        $field = $this->geoDivisionFields->$registration_proponent_type;
+
+        if($field == 'geo') {
+            $opportunity_proponent_types = $this->firstPhase->registrationProponentTypes;
+            $proponent_types2agents_map = $app->config['registration.proponentTypesToAgentsMap'];
+            
+            $proponent_type = $registration->proponentType;
+
+            if(!$opportunity_proponent_types) {
+                $agent_data = $registration->agentsData['owner'];
+            } else {
+                $agent_key = $proponent_types2agents_map[$proponent_type] ?? null;
+                $agent_data = $registration->agentsData[$agent_key] ?? null;
+            }
+
+            // ISSO NÃO DEVERIA SER POSSÍVEL
+            if(!$agent_data) {
+                $agent_data = $registration->agentsData['owner'];
+            }
+
+            $meta = $this->geoDivision;
+            $region =  $agent_data[$meta] ?? '';
         } else {
-            $agent_key = $proponent_types2agents_map[$proponent_type] ?? null;
-            $agent_data = $registration->agentsData[$agent_key] ?? null;
+            $region = $registration->$field;
         }
-
-        // ISSO NÃO DEVERIA SER POSSÍVEL
-        if(!$agent_data) {
-            $agent_data = $registration->agentsData['owner'];
-        }
-
-        $meta = $this->geoDivision;
-        $region =  $agent_data[$meta] ?? '';
 
         $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
         $this->registrationFields[$registration->id]['region'] = $region;
+
 
         if(in_array($region, $this->geoLocations)) {
             return $region;
@@ -428,7 +439,7 @@ class Quotas {
      * @throws NotSupported 
      * @throws InvalidArgumentException 
      */
-    public function getRegistrationsOrderByScoreConsideringQuotas($params = null): array {
+    public function getRegistrationsOrderByScoreConsideringQuotas(): array {
         $app = App::i();
 
         // HÁ 3 SITUAÇÕES PARA A DISTRIBUIÇÃO DE VAGAS
@@ -437,7 +448,7 @@ class Quotas {
         // 3. somente faixas ativas
 
         // obtendo as inscrições ordenadas pela pontuação considerando critérios de desempate
-        $registrations = $this->getRegistrationsForQuotaSorting($params);
+        $registrations = $this->getRegistrationsForQuotaSorting();
         $registrations = $this->tiebreaker($registrations);
 
         // AGRUPANDO AS INSCRIÇÕES
@@ -587,11 +598,15 @@ class Quotas {
     private function saveRegistrationTiebreaker($registration, $tiebreaker, $value = null) {
         $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
         $this->registrationFields[$registration->id]['tiebreaker'] = $this->registrationFields[$registration->id]['tiebreaker'] ?? [];
-    
+        
         if ($tiebreaker->criterionType == 'criterion') {
             $key = $this->getCriterionName($tiebreaker->preferences);
         } else if ($tiebreaker->criterionType == 'sectionCriteria') {
             $key = $this->getSectionCriterionName($tiebreaker->preferences);
+    
+        } else if ($tiebreaker->criterionType == 'submissionDate') {
+            $key = $tiebreaker->criterionType;
+            $value = $registration->sentTimestamp;
     
         } else {
             $key = $tiebreaker->selected->title;
@@ -626,8 +641,13 @@ class Quotas {
                 $must_fetch_evaluation_data = true;
                 break;
             }
+            
+            if($tiebreaker->criterionType == 'submissionDate') {
+                $must_fetch_evaluation_data = true;
+                break;
+            }
         }
-
+        
         if($must_fetch_evaluation_data) {
             $evaluation_data = $this->fetchEvaluationData($registrations);
         }
@@ -639,6 +659,29 @@ class Quotas {
             }
 
             foreach($tiebreaker_configuration as $tiebreaker) {
+                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'submissionDate') {
+                    $registration1Has = property_exists($registration1, 'sentTimestamp') ? $registration1->sentTimestamp : null;
+                    $registration2Has = property_exists($registration2, 'sentTimestamp') ? $registration2->sentTimestamp : null;
+                
+                    $this->saveRegistrationTiebreaker($registration1, $tiebreaker);
+                    $this->saveRegistrationTiebreaker($registration2, $tiebreaker);
+                
+                    if ($registration1Has !== null && $registration2Has !== null) {
+                        $result = $registration1Has <=> $registration2Has;
+                        if ($tiebreaker->preferences == 'smallest') {
+                            if ($result !== 0) {
+                                return $result;
+                            }
+                        }
+                
+                        if ($tiebreaker->preferences == 'largest') {
+                            if ($result !== 0) {
+                                return -$result;
+                            }
+                        }
+                    }
+                }
+                
                 if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'criterion') {
                     $registration1Has = $this->tiebreakerCriterion($tiebreaker->preferences, $registration1->id, $evaluation_data);
                     $registration2Has = $this->tiebreakerCriterion($tiebreaker->preferences, $registration2->id, $evaluation_data);
