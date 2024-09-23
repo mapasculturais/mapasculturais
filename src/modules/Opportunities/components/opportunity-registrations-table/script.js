@@ -48,7 +48,7 @@ app.component('opportunity-registrations-table', {
             readonly: true,
             type: "object",
             length: 255,
-            label: text("Critérios de desempate utilizados"),
+            label: text("Critérios de desempate"),
             isPK: false
         };
 
