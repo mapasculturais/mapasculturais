@@ -6,17 +6,18 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [7.4.17]
-### Melhorias não funcionais
-- Ativada a criação de *setters* via *hook* na entidade de registration.
-- Implementados novos *componentHooks* e *templateHooks*
-
 ### Correções
-- Corrigido a aplicação de *hook* no método `sendValidationErrors`.
-- Ajustado o componente `registration-actions` para verificar se o campo também existe no `descriptions` antes de lançar erros.
-- Corrige para que as alterações de propriedade das entidades sejam salvas corretamente.
-- Corrige a exibição dos resumos de agentes, projetos e espaços para avaliador.
-- Implementado *db-update* para corrigir erro causado por valores inválidos na tabela `request`.
+- Corrigida a criação de eventos semanais e mensais.
+- Corrigido o uso do *hook* no método `sendValidationErrors`.
+- Corrigida a exibição dos nomes dos campos durante a validação de erros no formulário de inscrição.
+- Corrigido para que as alterações de propriedade das entidades funcionem e sejam salvas corretamente.
+- Corrigidas as verificações de exibição dos resumos de agentes, projetos e espaços para o avaliador.
 - Corrigido *db-update* que migra valores das colunas do tipo *array* para o tipo *json*.
+
+### Melhorias não funcionais
+- Implementados novos *templateHooks* e *componentHooks*.
+- Ativada a criação de *setters* via *hook* na entidade de registro.
+- Implementado *db-update* para corrigir erro causado por valores inválidos na tabela `request`.
 
 ## [7.4.16] - 2024-09-04
 ### Correções
