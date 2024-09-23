@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 
 /**
  * EventOccurrenceRecurrence
@@ -48,7 +49,7 @@ class EventOccurrenceRecurrence extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\EventOccurrence
      *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EventOccurrence", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EventOccurrence")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="event_occurrence_id", referencedColumnName="id", onDelete="CASCADE")
      * })
