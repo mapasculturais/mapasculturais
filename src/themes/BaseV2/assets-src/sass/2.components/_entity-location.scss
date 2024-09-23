@@ -13,8 +13,11 @@
     }
 
     &__title {
-        font-weight: 600;
+        align-items: center;
+        display: flex;
         font-size: size(18);
+        font-weight: 600;
+        gap: size(8);
         line-height: size(25);
     }
 
