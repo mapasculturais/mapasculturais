@@ -36,16 +36,20 @@ app.component('opportunity-basic-info' , {
             if (!newVal) {
                 this.entity.hasEndDate = false;
                 this.entity.continuousFlow = null;
+                this.entity.publishedRegistrations = false;
+
                 this.lastPhase.name = "Publicação final do resultado";
             } else {
                 const myDate = new McDate(new Date(`2111-01-01 00:00`));
                 
                 this.entity.continuousFlow = myDate;
                 this.entity.registrationTo = myDate;
+                this.entity.publishedRegistrations = true;
                 
                 this.lastPhase.name = "Resultado";
             }
 
+            this.lastPhase.disableMessages();
             this.lastPhase.save();
             this.entity.save();
         },
