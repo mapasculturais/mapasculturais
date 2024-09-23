@@ -7,18 +7,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.4.17]
 ### Melhorias não funcionais
-- Ativa criação de setter's via hook na entidate registration
-- Implementa novos componentHooks no componente registration-form
-- Cria novos hooks no carregamento do embedtools do formulário de visualização de inscrições
-- Cria novos hooks na tela de visualiação do formulario pelo avaliador
+- Ativada a criação de *setters* via *hook* na entidade de registration.
+- Implementados novos *componentHooks* e *templateHooks*
 
 ### Correções
-- Corrige aplicação de hook no método sendValidationErrors
-- Faz com que o componente registration-actions analise se existe o campo também no descriptios para lançar os erros
-- Corrige para que a alteração de propriedade de entidades funcione e seja salva corretamente
-- Corrige verificações de exibição dos resumos de agentes, projetos e espaços para o avaliador
-- Implementa db-update para corrigir erro causado por valores invalidos na tabela request
-- Corrige db-update que migra valores das colunas do tipo array para do tipo json
+- Corrigido a aplicação de *hook* no método `sendValidationErrors`.
+- Ajustado o componente `registration-actions` para verificar se o campo também existe no `descriptions` antes de lançar erros.
+- Corrige para que as alterações de propriedade das entidades sejam salvas corretamente.
+- Corrige a exibição dos resumos de agentes, projetos e espaços para avaliador.
+- Implementado *db-update* para corrigir erro causado por valores inválidos na tabela `request`.
+- Corrigido *db-update* que migra valores das colunas do tipo *array* para o tipo *json*.
 
 ## [7.4.16] - 2024-09-04
 ### Correções
