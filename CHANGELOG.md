@@ -7,51 +7,49 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5.0-RC]
 
 ### Novas funcionalidades
-- **Bloqueio de edição de entidades**: não permite que dois usuários diferentes editem a mesma entidade simultaneamente.
-- **Customizador do tema BaseV2 para subsites**: possibilita a configuração de cores, imagens, textos, posição do mapa entre outras.
+- **Bloqueio de edição de entidades**: impede que dois usuários diferentes editem a mesma entidade simultaneamente.
+- **Customizador do tema BaseV2 para subsites**: permite a configuração de cores, imagens, textos, posição do mapa, entre outros.
 - **Nova exportação de planilhas**
-  - Possibilita que o usuário escolha o formato do arquivo exportado entre `.csv`, `.xlsx` e `.ods`
-  - Processamento em background enviando o link para donwload do arquivo por email quando a planilha estiver pronta.
-- **Edição de inscrições enviadas**: possibilita ao gestor que configure um ou mais campos, de uma determinada inscrição e por um tempo definido, permitindo que o proponente possa modificá-los, fazendo com que não seja necessário peermitir a edição de toda a inscriçào, como rascunho.
-- **Visualização das entidades em tabelas na página de busca**: para admins do sistema, com botão para exportar planilha com as entidades filtradas.
+  - Permite que o usuário escolha o formato do arquivo exportado entre `.csv`, `.xlsx` e `.ods`.
+  - Processamento em segundo plano, enviando o link para download do arquivo por e-mail quando a planilha estiver pronta.
+- **Edição de inscrições enviadas**: possibilita ao gestor configurar um ou mais campos de uma determinada inscrição, por um tempo definido, permitindo que o proponente os modifique sem precisar reabrir a inscrição completa como rascunho.
+- **Visualização de entidades em tabelas na página de busca**: para administradores do sistema, com botão para exportar planilhas com as entidades filtradas.
 - Nova opção para o gestor solicitar o avatar do agente responsável no formulário de inscrição.
-- Implementa modo de visualização das entidades em tabelas para admins do sistema
-- Implementa bloqueio de edição de entidades, evitando que duas pessoas diferentes editem a mesma entidade simultaneamente
-- Implementa possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição
-- Implementa nova tela para configuração dos agentes de suporte
-- Implementa a data de envio das avaliações
-- O endpoint opportunity/findRegistrations, quando ordenado por `@quota` agora retorna as cotas aplicadas, os critérios de desempate aplicados e a região das inscrições.
+- Implementado modo de visualização de entidades em tabelas para administradores do sistema.
+- Implementada a possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição.
+- Implementada nova tela para configuração dos agentes de suporte.
+- Implementada a exibição da data de envio das avaliações.
+- O endpoint `opportunity/findRegistrations`, quando ordenado por `@quota`, agora retorna as cotas aplicadas, os critérios de desempate e a região das inscrições.
 
 ### Melhorias
-- Salva revisão dos campos dos formulários das oportunidades, tornando possível auditoria das modificações nos formulários
-- Refatoração dos campos datepicker e detetimepicker para melhorar a usabilidade
-- Faz dos campos CPF e CNPJ somente leitura
-- Redesign da tabela de avaliações
-- Refatoraçào na configuração de cotas, para que seja possível escolher os campos que representam as cotas por tipo de proponente, evitando conflitos
-- Refatoração na configuração de distribuição de vagas por território, para que seja possível definir quais campos representam a região para cada tipo de proponente.
-- Refatoração no cálculo das cotas, para que sejam respeitadas dentro de cada faixa/linha e região.
-- Implementa slot no entity-table para permitir substituição do filtro por palavra-chave
-- Implementa método detectDateFormat() no Utils para detectar o formato de uma data
-- Implementa nova tabela de listagem de avaliações
-- Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
-- Exibe na tabela de inscrições colunas exibindo em quais cotas o proponente foi incluído, os critérios de desempate que foram utilizados e a região do proponente
-- Implementa novo componente de configuraçãod e campos visiveis para o avaliador
+- Salva a revisão dos campos dos formulários de oportunidades, tornando possível a auditoria das modificações.
+- Refatoração dos campos *datepicker* e *datetimepicker* para melhorar a usabilidade.
+- Tornados os campos CPF e CNPJ somente leitura.
+- Redesign da tabela de avaliações.
+- Refatoração na configuração de cotas, permitindo escolher os campos que representam as cotas por tipo de proponente, evitando conflitos.
+- Refatoração na configuração de distribuição de vagas por território, permitindo definir quais campos representam a região para cada tipo de proponente.
+- Refatoração no cálculo das cotas, garantindo seu respeito dentro de cada faixa/linha e região.
+- Implementado *slot* no `entity-table` para permitir a substituição do filtro por palavra-chave.
+- Implementado o método `detectDateFormat()` no *Utils* para detectar o formato de uma data.
+- Implementada nova tabela de listagem de avaliações.
+- Exibidas, na tabela de inscrições, colunas mostrando em quais cotas o proponente foi incluído, os critérios de desempate aplicados e a região do proponente.
+- Implementado novo componente de configuração de campos visíveis para o avaliador.
 
 #### Refatoração das políticas afirmativas
-- Os percentuais configurados para as cotas agora são garantidos dentro das regiões e faixas/linhas de inscrição
-- A configuração dos campos que representam os valores que serão utilizados para identificar os cotistas e a região do proponente agora deve ser feita para cada tipo de proponente configurado.
+- Os percentuais configurados para as cotas agora são garantidos dentro das regiões e faixas/linhas de inscrição.
+- A configuração dos campos que representam os valores utilizados para identificar os cotistas e a região do proponente deve ser feita para cada tipo de proponente configurado.
 
 ### Correções
-- Impede a exibição da coluna "Agente Responsável" no componente "opportunity-evaluation-table" quando a configuração de campos visíveis não permite o resumo dos agentes.
-- Corrige API.js para que o rawProcessor funcione corretamente
-- Corrige atualização de status da entidade após a publicação
+- Impedida a exibição da coluna "Agente Responsável" no componente `opportunity-evaluation-table` quando a configuração de campos visíveis não permite o resumo dos agentes.
+- Corrigida a `API.js` para que o `rawProcessor` funcione corretamente.
+- Corrigida a atualização de status da entidade após a publicação.
 
 ### Melhorias não funcionais
-- Atualiza PHP para versão 8.3
-- Atualiza bibliotecas PHP
-- Possibilidade de configurar metadados `readonly` que após serem definido o valor uma vez, um usuário que comum não pode alterar.
-- Exibe a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
-- Quando a oportunidade é multifases e ocorre uma alteração na propriedade, faz com que essa mudança também se reflita nas fases subsequentes
+- Atualizado o PHP para a versão 8.3.
+- Atualizadas bibliotecas PHP.
+- Possibilidade de configurar metadados como `readonly`, que após definidos, não podem ser alterados por usuários comuns.
+- Exibida a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
+- Quando a oportunidade é multifases e ocorre uma alteração na propriedade, essa mudança agora reflete nas fases subsequentes.
 
 ## [7.4.17] - 2024-09-23
 ### Correções
