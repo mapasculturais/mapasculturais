@@ -1956,66 +1956,6 @@ $$
         }
     },
 
-
-    "migra valores das colunas do tipo array para do tipo json" => function() use ($conn) {
-        $fields = $conn->fetchAll("SELECT id, config, field_options, categories from registration_field_configuration");
-        $count = count($fields);
-
-        $json_validate = function (string $string): bool {
-            json_decode($string);
-            return json_last_error() === JSON_ERROR_NONE;
-        };
-        
-        $check_serialize = function($value) use ($json_validate) {
-            if((is_string($value) && $json_validate($value)) || !$value) {
-                return $value;
-            }
-
-            return json_encode(unserialize($value));
-        };
-
-        foreach($fields as $i => $field) {
-            echo "migrando registration_field_configuration ({$i} / $count)\n";
-            $field['config'] = $check_serialize($field['config']);
-            $field['field_options'] = $check_serialize($field['field_options']);
-            $field['categories'] = $check_serialize($field['categories']);
-
-            $conn->executeQuery("
-                UPDATE registration_field_configuration 
-                SET 
-                    config = :config, 
-                    field_options = :field_options, 
-                    categories = :categories
-                WHERE id = :id", $field);
-        }
-
-        $files = $conn->fetchAll("SELECT id, categories from registration_file_configuration");
-        $count = count($files);
-        foreach($files as $i => $file) {
-            echo "migrando registration_file_configuration ({$i} / $count)\n";
-            $file['categories'] = $check_serialize($file['categories']);
-
-            $conn->executeQuery("
-                UPDATE registration_file_configuration 
-                SET categories = :categories
-                WHERE id = :id", $file);
-        }
-
-        $requests = $conn->fetchAll("SELECT id, metadata from request");
-        $count = count($requests);
-        foreach($requests as $i => $request) {
-            echo "migrando request ({$i} / $count)\n";
-            $id = $request['id'];
-            $metadata = $check_serialize($request['metadata']);
-
-            $conn->executeQuery("
-                UPDATE request 
-                SET metadata = ':metadata'
-                WHERE id = $id", ['metadata'=>$metadata]);
-        }
-    },
-
-
     'Ajusta as colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades para setar um array vazio quando as mesmas estiverem null' => function() use ($conn, $app){
         __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types::VARCHAR = '\"\"'");
         __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges::VARCHAR = '\"\"'");
@@ -2156,6 +2096,63 @@ $$
         __exec("UPDATE project SET update_timestamp = create_timestamp WHERE update_timestamp IS null");
         __exec("UPDATE opportunity SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
         __exec("UPDATE EVENT SET update_timestamp = create_timestamp WHERE update_timestamp IS NULL");
+    },
+    "migra valores das colunas do tipo array para do tipo json" => function() use ($conn) {
+        $fields = $conn->fetchAll("SELECT id, config, field_options, categories from registration_field_configuration");
+        $count = count($fields);
+
+        $json_validate = function (string $string): bool {
+            json_decode($string);
+            return json_last_error() === JSON_ERROR_NONE;
+        };
+        
+        $check_serialize = function($value) use ($json_validate) {
+            if((is_string($value) && $json_validate($value)) || !$value) {
+                return $value;
+            }
+
+            return json_encode(unserialize($value));
+        };
+
+        foreach($fields as $i => $field) {
+            echo "migrando registration_field_configuration ({$i} / $count)\n";
+            $field['config'] = $check_serialize($field['config']);
+            $field['field_options'] = $check_serialize($field['field_options']);
+            $field['categories'] = $check_serialize($field['categories']);
+
+            $conn->executeQuery("
+                UPDATE registration_field_configuration 
+                SET 
+                    config = :config, 
+                    field_options = :field_options, 
+                    categories = :categories
+                WHERE id = :id", $field);
+        }
+
+        $files = $conn->fetchAll("SELECT id, categories from registration_file_configuration");
+        $count = count($files);
+        foreach($files as $i => $file) {
+            echo "migrando registration_file_configuration ({$i} / $count)\n";
+            $file['categories'] = $check_serialize($file['categories']);
+
+            $conn->executeQuery("
+                UPDATE registration_file_configuration 
+                SET categories = :categories
+                WHERE id = :id", $file);
+        }
+
+        $requests = $conn->fetchAll("SELECT id, metadata from request");
+        $count = count($requests);
+        foreach($requests as $i => $request) {
+            echo "migrando request ({$i} / $count)\n";
+            $id = $request['id'];
+            $metadata = $check_serialize($request['metadata']);
+
+            $conn->executeQuery("
+                UPDATE request 
+                SET metadata = :metadata
+                WHERE id = $id", ['metadata'=>$metadata]);
+        }
     },
 
     'corrige permissão de avaliadores que tem avaliação mas não possui permissão de avaliar pela regra configurada' => function() use($conn) {
@@ -2349,4 +2346,7 @@ $$
         __try('CREATE INDEX file_parent_object_type_idx ON file (parent_id, object_type)');
     },
 
+    'deleta requests com valores dos da coluna metadata inválidos' => function() use($conn) {
+        __exec("delete from request where metadata = ':metadata'");
+    }
 ] + $updates ;   
