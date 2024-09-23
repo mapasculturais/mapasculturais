@@ -36,6 +36,13 @@ app.component('opportunity-phases-config', {
             evaluationTypes: $DESCRIPTIONS.evaluationmethodconfiguration.type.options
         }
     },
+
+    computed: {
+        firstPhase() {
+            return this.phases[0];
+        }
+    },
+    
     methods: {
         addInPhases (phase) {
             this.phases.splice(this.phases.length - 1, 0, phase);
