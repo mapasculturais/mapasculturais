@@ -14,7 +14,10 @@ $this->import('
 ?>
 <div class="col-12">
     <div class="grid-12 opportunity-phase-publish-date-config">
-        <h4 class="bold col-12">  <?= i::__("Publicação de Resultados") ?></h4>
+        
+        <entity-field v-if="phase.isLastPhase" :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
+        <h4 v-if="!phase.isLastPhase" class="bold col-12">  <?= i::__("Publicação de Resultados") ?></h4>
+
         <div v-if="phase.publishedRegistrations" class="published">
             <div class="col-4">
                 <mc-confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
