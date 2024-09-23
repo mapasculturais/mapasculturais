@@ -49,6 +49,7 @@ app.component('opportunity-create-data-collect-phase' , {
             if(this.isContinuousFlow) {
                 this.phase.registrationTo = this.previousPhase.registrationTo;
                 this.phase.registrationFrom = this.previousPhase.registrationFrom;
+                this.phase.publishedRegistrations = this.opportunity?.hasEndDate ? false : true;
             }
         },
         destroyEntity() {
