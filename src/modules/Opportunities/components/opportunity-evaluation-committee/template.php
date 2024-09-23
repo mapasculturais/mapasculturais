@@ -50,7 +50,7 @@ $this->import('
                 </div>
 
                 <div class="opportunity-evaluation-committee__card-header-actions">
-                    <mc-confirm-button v-if="infoReviewer.metadata.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
+                    <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
                         <template #button="{open}">
                             <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
                                 <?php i::_e('Reabrir avaliações') ?>
@@ -85,7 +85,7 @@ $this->import('
                 </div>
             </div>
            
-            <div v-if="showSummary(infoReviewer.metadata.summary)" class="opportunity-evaluation-committee__summary">
+            <div v-if="showSummary(infoReviewer.metadata?.summary)" class="opportunity-evaluation-committee__summary">
                 <span class="opportunity-evaluation-committee__summary__pending">
                     <mc-icon name="clock"></mc-icon> <?= i::_e('Avaliações pendentes') ?>: {{infoReviewer.metadata.summary.pending}}
                 </span>
