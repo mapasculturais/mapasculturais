@@ -1,0 +1,98 @@
+@use '../0.settings/mixins' as *;
+
+.fields-visible-evaluators {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: size(16);
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__search-wrapper {
+        display: flex;
+        align-items: center;
+        gap: size(14);
+
+    } 
+
+    .field {
+        input {
+            max-width: size(370);
+            min-width: size(20); 
+        }
+ 
+        label {
+            gap: size(20);
+        }
+
+        &--horizontal{
+            label {
+                height: size(46);
+            }
+        }
+
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: size(32);
+        width: 100%;
+    }
+
+    &__filter {
+        align-items: center;
+        display: flex;
+        gap: size(9);
+        text-wrap: nowrap;
+    }
+
+    &__field {
+        margin: 0;
+        padding: size(9) size(20);
+        background: #E8E8E8;
+        border-radius: size(4);
+        display: flex;
+        align-items: flex-start;
+        gap: size(10);
+
+        &__select-all {
+            padding: size(8) size(70);
+            flex-direction: row;
+            gap: size(20);
+        }
+
+        &__title {
+            display: flex;
+            flex-direction: column;
+            gap: size(8);
+        }
+
+        .iconify {
+            max-width: 100%;
+            width: size(30);
+            min-width: size(30);
+        }
+    }
+
+    &__fields {
+      overflow: auto;
+    }
+
+    &__button {
+        width: size(358);
+        color: var(--mc-black);
+    }
+   
+    .modal {
+        &__content {
+            display: flex;
+            flex-direction: column;
+            gap: size(20);
+        }
+    }
+}
