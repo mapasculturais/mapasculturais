@@ -6,19 +6,20 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [7.4.17]
-### Melhorias não funcionais
-- Ativa criação de setter's via hook na entidate registration
-- Implementa novos componentHooks no componente registration-form
-- Cria novos hooks no carregamento do embedtools do formulário de visualização de inscrições
-- Cria novos hooks na tela de visualiação do formulario pelo avaliador
-
 ### Correções
+- Corrige criação de eventos semanais e mensais
 - Corrige aplicação de hook no método sendValidationErrors
 - Faz com que o componente registration-actions analise se existe o campo também no descriptios para lançar os erros
 - Corrige para que a alteração de propriedade de entidades funcione e seja salva corretamente
 - Corrige verificações de exibição dos resumos de agentes, projetos e espaços para o avaliador
 - Implementa db-update para corrigir erro causado por valores invalidos na tabela request
 - Corrige db-update que migra valores das colunas do tipo array para do tipo json
+
+### Melhorias não funcionais
+- Ativa criação de setter's via hook na entidate registration
+- Implementa novos componentHooks no componente registration-form
+- Cria novos hooks no carregamento do embedtools do formulário de visualização de inscrições
+- Cria novos hooks na tela de visualiação do formulario pelo avaliador
 
 ## [7.4.16] - 2024-09-04
 ### Correções
