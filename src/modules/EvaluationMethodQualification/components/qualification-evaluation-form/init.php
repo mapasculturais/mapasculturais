@@ -9,9 +9,10 @@ use MapasCulturais\i;
 
 $entity = $this->controller->requestedEntity;
 
-$sections = $entity->opportunity->evaluationMethodConfiguration->sections;
+$sections = $entity->opportunity->evaluationMethodConfiguration->sections ?: [];
 $criteria = $entity->opportunity->evaluationMethodConfiguration->criteria;
 $data = [];
+
 if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
     $user = $app->repo("User")->find($this->controller->data['user']);
 }else{
