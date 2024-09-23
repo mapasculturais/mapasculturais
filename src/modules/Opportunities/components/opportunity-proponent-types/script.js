@@ -44,7 +44,15 @@ app.component('opportunity-proponent-types', {
             const optionValue = event.target.value;
             const index = this.value.indexOf(optionValue);
 
-            index === -1 ? this.value.push(optionValue) : this.value.splice(index, 1);
+            if (index === -1) {
+                this.value.push(optionValue);
+            } else {
+                this.value.splice(index, 1);
+    
+                if (optionValue === 'Coletivo' || optionValue === 'Pessoa Jurídica') {
+                    this.proponentAgentRelation[optionValue] = false;
+                }
+            }
 
             this.updateProponentAgentRelation();
             this.entity.save();
