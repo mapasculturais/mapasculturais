@@ -405,18 +405,54 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
 
-                $ids = array_map(function($reg) { return $reg->id; }, $quota_order);
                 if($limit = (int) ($params['@limit'] ?? 0)) {
+                    $ids_params = $params;
+                    unset(
+                        $ids_params['@limit'], 
+                        $ids_params['@order'], 
+                        $ids_params['@page'],
+                        $ids_params['oppotunity'],
+                    );
+                    $ids_params['@select'] = 'id';
+
+                    /** @var ControllersOpportunity $opportunity_controller */
+                    $opportunity_controller = $app->controller('opportunity');
+                    $result = $opportunity_controller->apiFindRegistrations($opportunity, $ids_params);
+                    $_ids = [];
+                    foreach($result->registrations as $reg) {
+                        $_ids[$reg['id']] = $reg['id'];
+                    }
+
+                    $ids = [];
+                    foreach($quota_order as $reg) {
+                        if(isset($_ids[$reg->id])) {
+                            $ids[] = $reg->id;
+                        }
+                    }
+
+                    $quota_data->foundIds = $ids;
+
                     $page = $params['@page'] ?? 1;
                     $offset = ($page - 1) * $limit;
                     $ids = array_slice($ids, $offset, $limit);
-                    unset($params['@page'], $params['@limit']);
+                    // eval(\psy\sh());
+                    
+                } else {
+                    $ids = array_map(fn($reg) => $reg->id, $quota_order);
+                    $quota_data->foundIds = $ids;
                 }
 
                 $params['id'] = API::IN($ids);
+                    
 
                 $quota_data->order = $quota_order;
                 $quota_data->ids = $ids;
+
+                unset(
+                    $params['@page'],
+                    $params['@limit']
+                );
+                
             }
         });
 
@@ -439,14 +475,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $app->hook('ApiQuery(registration).countResult', function(&$result) use(&$quota_data) {
             if(($quota_data->objectId ?? false) == spl_object_id($this)) {
-                $result = count($quota_data->order);
+                $result = count($quota_data->foundIds);
             }
         });
+            
 
         $app->hook('API.find(registration).result', function() use($quota_data) {
             /** @var Controller $this */
             if(($quota_data->objectId ?? false) == spl_object_id($this)) {
-                $this->apiAddHeaderMetadata($quota_data->params, $quota_data->result, count($quota_data->order));
+                $this->apiAddHeaderMetadata($quota_data->params, $quota_data->result, count($quota_data->foundIds));
             }
         });
 

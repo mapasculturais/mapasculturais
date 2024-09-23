@@ -6,6 +6,13 @@ use MapasCulturais\App;
 use MapasCulturais\Definitions;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Entities\Job;
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Event;
+use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\i;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -174,9 +181,13 @@ abstract class SpreadsheetJob extends JobType
         $app = App::i();
         
         $template = 'export_spreadsheet';
+        $dict_entity = $this->dictEntity($entity_class);
+        $message_body = i::__("Sua planilha de {$dict_entity} foi gerada e está pronta para ser baixada. Acesse o link abaixo para obter o arquivo:");
+
         $data = [
             'userName' => $user->profile->name,
-            'pathFile' => $file->url
+            'pathFile' => $file->url,
+            'messageBody' => $message_body
         ];
 
         $message = $app->renderMailerTemplate($template, $data);
@@ -184,7 +195,7 @@ abstract class SpreadsheetJob extends JobType
         $app->createAndSendMailMessage([
             'from' => $app->config['mailer.from'],
             'to' => $user->email,
-            'subject' => sprintf(i::__($message['title'], $entity_class)),
+            'subject' => sprintf("[{$app->siteName}] " . i::__($message['title'], $entity_class)),
             'body' => $message['body'],
         ]);
     }
@@ -313,6 +324,28 @@ abstract class SpreadsheetJob extends JobType
         } else {
             return [];
         }
+    }
+
+    /**
+     *  Retorna o texto relacionado a entidade
+     * @param string $entity 
+     * @return string 
+     */
+    public function dictEntity(string $entity): string
+    {
+        $class = $entity;
+
+        $entities = [
+            Agent::class => i::__("Agente"),
+            Opportunity::class => i::__("Oportunidade"),
+            Project::class => i::__("Projeto"),
+            Space::class => i::__("Espaço"),
+            Event::class => i::__("Evento"),
+            Registration::class => i::__("Inscrição"),
+            RegistrationEvaluation::class => i::__("Avaliações de inscrições")
+        ];
+
+        return $entities[$class];
     }
 
     /**
