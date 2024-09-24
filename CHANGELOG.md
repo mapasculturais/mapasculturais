@@ -4,7 +4,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [7.5.0] - 2024-09-23
+## [7.5.0] - 2024-09-24
 
 ### Novas funcionalidades
 - **Bloqueio de edição de entidades**: impede que dois usuários diferentes editem a mesma entidade simultaneamente.
@@ -22,6 +22,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - O endpoint `opportunity/findRegistrations`, quando ordenado por `@quota`, agora retorna as cotas aplicadas, os critérios de desempate e a região das inscrições.
 
 ### Melhorias
+- Novas perguntas no FAQ e botões de ajuda na interface
 - Salva a revisão dos campos dos formulários de oportunidades, tornando possível a auditoria das modificações.
 - Refatoração dos campos *datepicker* e *datetimepicker* para melhorar a usabilidade.
 - Tornados os campos CPF e CNPJ somente leitura.
