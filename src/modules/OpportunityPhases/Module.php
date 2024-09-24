@@ -349,27 +349,37 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
+            if($this->isLastPhase) {
+                return;
+            }
+
             $this->enableCacheGetterResult('nextPhase');
 
             $class = Opportunity::class;
+            $last_phase = $this->lastPhase;
+
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM $class o 
                 WHERE 
                     o.parent = :parent AND 
-                    (
-                        o.registrationFrom > (SELECT this1.registrationFrom FROM $class this1 WHERE this1.id = :this) OR 
-                        (o.registrationFrom IS NULL AND o.publishTimestamp > (SELECT this2.registrationFrom FROM $class this2 WHERE this2.id = :this))
-                    )
-                ORDER BY o.registrationFrom ASC");
+                    o.id <> :this AND 
+                    o.id <> :lastPhase
+                ORDER BY o.id ASC");
 
             $query->setMaxResults(1);
             $query->setParameters([
                 "parent" => $first_phase,
                 "this" => $this,
+                "lastPhase" => $last_phase
             ]);
 
-            $value = $query->getOneOrNullResult();
+            if($result = $query->getOneOrNullResult()) {
+                $value = $result;
+            } else {
+                $value = $last_phase;
+            }
+            
         });
 
         $app->hook('entity(Opportunity).get(nextPhases)', function(&$value) use ($app) {
@@ -383,23 +393,33 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
+            if($this->isLasPhase) {
+                $value = [];
+                return;
+            }
+
             $this->enableCacheGetterResult('nextPhases');
 
             $class = Opportunity::class;
+            $last_phase = $this->lastPhase;
+
             $query = $app->em->createQuery("
                 SELECT o 
                 FROM $class o 
                 WHERE 
                     o.parent = :parent AND 
-                    o.registrationFrom > (SELECT this.registrationFrom FROM $class this WHERE this.id = :this) 
-                ORDER BY o.registrationFrom ASC");
+                    o.id > :this AND 
+                    o.id <> :lastPhase
+                ORDER BY o.id ASC");
 
             $query->setParameters([
                 "parent" => $first_phase,
                 "this" => $this,
+                "lastPhase" => $last_phase
             ]);
 
             $value = $query->getResult();
+            $value[] = $last_phase;
         });
 
         /**
