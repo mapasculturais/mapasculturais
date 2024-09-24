@@ -7,8 +7,8 @@ use MapasCulturais\i; ?>
         {{field.title}}
         <div ng-if="requiredField(field)" class="field-required"><span class="description"><?php i::_e('obrigatório') ?></span><span class="icon-required">*</span></div>
     </span>
-
-    <div ng-if="::field.description" class="attachment-description">{{::fieldfield.description}}</div>
+    
+    <div ng-if="::field.description" class="attachment-description">{{::field.description}}</div>
     <div><?php $this->part('registration-field-types/fields/brPhone') ?></div>
 
 </div>

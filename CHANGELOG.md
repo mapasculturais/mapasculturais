@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.4.18] - 2024-09-24
 ### Correções
 - Corrige sincronização das inscrições entre fases
+- Corrige exibição da descrição no campo 'Telefone do Brasil'
 
 ## [7.4.17] - 2024-09-23
 ### Correções
