@@ -17,6 +17,7 @@ $this->import('
     <?php $this->applyTemplateHook('entity-location','begin'); ?>
     <div v-if="!hideLabel" class="entity-location__title col-12">
         <label v-if="verifiedAdress()"><?= i::__('Endereço')?></label>
+        <?php $this->info('cadastro -> configuracoes-entidades -> endereco') ?>
     </div>
     <div class="col-12" v-if="editable">
         <div class="grid-12">
@@ -80,8 +81,12 @@ $this->import('
     </div>
 
     <div class="col-12" v-if="editable && hasPublicLocation">
-        <div class="col-6 sm:col-12 public-location field">
-            <entity-field  @change="address()" type="checkbox" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::esc_attr_e('Localização pública')?>"></entity-field>
+        <div class="col-6 sm:col-12 public-location">
+            <entity-field  @change="address()" type="checkbox" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::esc_attr_e('Localização pública')?>">
+                <template #info>
+                    <?php $this->info('cadastro -> configuracoes-entidades -> localizacao-publica') ?>
+                </template>
+            </entity-field>
             <label class="public-location__label col-12"><?php i::_e('Marque o campo acima para tornar o endereço público ou deixe desmarcado para manter o endereço privado.')?></label>
         </div>
     </div>
