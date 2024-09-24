@@ -1,5 +1,9 @@
 @use '../0.settings/mixins'as *;
 
+.mc-popover {
+    width: max-content;
+}
+
 .popover {
     &__content {
         position: relative;
