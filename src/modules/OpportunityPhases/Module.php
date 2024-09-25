@@ -363,7 +363,7 @@ class Module extends \MapasCulturais\Module{
                 FROM $class o 
                 WHERE 
                     o.parent = :parent AND 
-                    o.id <> :this AND 
+                    o.id > :this AND 
                     o.id <> :lastPhase
                 ORDER BY o.id ASC");
 
