@@ -1,0 +1,7 @@
+@use '../0.settings/mixins' as *;
+
+.mc-datepicker {
+    input {
+        padding: size(14) size(14) size(14) size(40);
+    }
+}
