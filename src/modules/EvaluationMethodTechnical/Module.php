@@ -1211,4 +1211,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         return '';
     }
+
+    public function hasEvaluationCommittee(): bool {
+        return false;
+    }
 }
