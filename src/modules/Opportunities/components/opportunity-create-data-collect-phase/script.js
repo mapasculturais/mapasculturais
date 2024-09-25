@@ -47,8 +47,8 @@ app.component('opportunity-create-data-collect-phase' , {
             this.phase.parent = this.opportunity;
 
             if(this.isContinuousFlow) {
-                this.phase.registrationTo = this.previousPhase.registrationTo;
-                this.phase.registrationFrom = this.previousPhase.registrationFrom;
+                this.phase.registrationTo = this.opportunity?.hasEndDate ? this.lastPhase.publishTimestamp : this.opportunity.registrationTo;
+                this.phase.registrationFrom = this.opportunity.registrationFrom;
                 this.phase.publishedRegistrations = this.opportunity?.hasEndDate ? false : true;
             }
         },
