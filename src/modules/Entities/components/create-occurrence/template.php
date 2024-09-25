@@ -31,7 +31,7 @@ $this->import('
                     <?= i::_e('ou') ?>
 
                     <!-- create space -->
-                    <create-space #default="{modal}">
+                    <create-space #default="{modal}" @create="selectSpace">
                         <button @click="modal.open()" editable class="button button--icon button--primary-outline"> 
                             <mc-icon name="add"></mc-icon> <?= i::_e('Crie um novo espaço') ?> 
                         </button>
