@@ -40,6 +40,13 @@ app.component('opportunity-phases-config', {
     computed: {
         firstPhase() {
             return this.phases[0];
+        },
+
+        lastPhase() {
+            const lastPhase = this.phases[this.phases.length - 1];
+            if (lastPhase.isLastPhase) {
+                return lastPhase;
+            }
         }
     },
     
