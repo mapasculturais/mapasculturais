@@ -63,6 +63,7 @@ app.component('opportunity-basic-info' , {
             } else {
                 this.entity.continuousFlow = null;
                 this.entity.registrationTo = null;
+                this.entity.publishedRegistrations = false;
             }
         },
     }
