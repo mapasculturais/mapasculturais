@@ -235,17 +235,7 @@ $this->import('
                     <div class="grid-12">
                         <div class="col-12">
                             <div class="create-occurrence__section--field">
-                                <span class="label"><?= i::_e('Descrição legível de data e horário') ?></span>
-                                <div class="auto-description">
-                                    <span class="theDescription">{{updateDescription}}</span>
-                                    <button class="button button--icon button--sm" @click="copyDescription"> <mc-icon name="copy"></mc-icon> copiar </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="create-occurrence__section--field">
-                                <span class="label"><small><?= i::_e('Você pode usar a descrição gerada pelo sistema OU criar uma descrição customizada prenchendo o campo abaixo') ?></small></span>
-                                <input v-model="description" type="text" name="description" placeholder="<?= i::_e('Preencha aqui o resumo customizado') ?>"/>
+                                <input v-model="description" type="text" name="description" placeholder="<?= i::_e('Preencha aqui o resumo customizado') ?>" />
                                 <small class="field__error" v-if="this.newOccurrence.__validationErrors['description']">        
                                     {{this.newOccurrence.__validationErrors['description'].join('; ')}}
                                 </small>  
