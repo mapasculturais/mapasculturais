@@ -52,6 +52,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Exibida a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
 - Quando a oportunidade é multifases e ocorre uma alteração na propriedade, essa mudança agora reflete nas fases subsequentes.
 
+## [7.4.19] - 2024-09-25
+### Correções
+- Corrige getter nextPhase para evitar que entre em loop infinito
+
 ## [7.4.18] - 2024-09-24
 ### Correções
 - Corrige sincronização das inscrições entre fases
