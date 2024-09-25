@@ -471,6 +471,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     function usesEvaluationCommittee(){
         return true;
     }
+    
+    public function hasEvaluationCommittee(): bool {
+        return true;
+    }
 
     public function jsonSerialize(): array {
         return [];
