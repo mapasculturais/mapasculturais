@@ -27,10 +27,26 @@ $this->import('
         </div>
         <div class="opportunity-data-collection__limits col-12" v-if="phase.isFirstPhase">
                 <div class="opportunity-data-collection__fields">
-                    <entity-field :entity="phase" prop="vacancies" :autosave="3000" class="field__limits"></entity-field>
-                    <entity-field :entity="phase" prop="totalResource" :autosave="3000" class="field__limits"></entity-field>
-                    <entity-field :entity="phase" prop="registrationLimit" :autosave="3000" class="field__limits"></entity-field>
-                    <entity-field :entity="phase" prop="registrationLimitPerOwner" :autosave="3000" class="field__limits"></entity-field>
+                    <entity-field :entity="phase" prop="vacancies" :min="0" :autosave="3000" class="field__limits">
+                        <template #info>
+                            <?php $this->info('editais-oportunidades -> configuracoes -> total-vagas') ?>
+                        </template>
+                    </entity-field>
+                    <entity-field :entity="phase" prop="totalResource" :min="0" :autosave="3000" class="field__limits">
+                        <template #info>
+                            <?php $this->info('editais-oportunidades -> configuracoes -> valor-total') ?>
+                        </template>
+                    </entity-field>
+                    <entity-field :entity="phase" prop="registrationLimit" :min="0" :autosave="3000" class="field__limits">
+                        <template #info>
+                            <?php $this->info('editais-oportunidades -> configuracoes -> limite-inscricoes') ?>
+                        </template>
+                    </entity-field>
+                    <entity-field :entity="phase" prop="registrationLimitPerOwner" :min="0" :autosave="3000" class="field__limits">
+                        <template #info>
+                            <?php $this->info('editais-oportunidades -> configuracoes -> limite-inscritos-por-agente') ?>
+                        </template>
+                    </entity-field>
                 </div>
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>
         </div>
@@ -40,7 +56,9 @@ $this->import('
         </div>
 
         <div class="opportunity-data-collection__preponent col-12" v-if="phase.isFirstPhase">
-            <h4 class="bold"><?= i::__("Tipos do proponente")?></h4>
+            <h4 class="bold"><?= i::__("Tipos do proponente")?>
+                <?php $this->info('editais-oportunidades -> configuracoes -> tipos-proponentes') ?>
+            </h4>
             <h6><?= i::__("Selecione um ou mais tipos de proponente que poderá participar do edital")?></h6>
             <div>
                 <entity-field class="field__preponent"  :entity="phase" prop="registrationProponentTypes" :autosave="3000" hide-label></entity-field>
