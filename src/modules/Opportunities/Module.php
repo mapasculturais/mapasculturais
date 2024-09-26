@@ -618,8 +618,15 @@ class Module extends \MapasCulturais\Module{
         
                 if ($proponent_type) {
                     $proponent_seals = $seals->{$proponent_type};
-                    $relations = $owner->getSealRelations();
-            
+                    $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+                    $agent_type = $proponent_typesTo_agents_Map[$proponent_type] ?? null;
+        
+                   
+                    if ($agent_type == "owner") {
+                        $relations = $owner->getSealRelations();
+                        $self->removeSeals($app, $relations, $proponent_seals);
+                    }
+
                     foreach ($proponent_seals as $proponent_seal) {
                         $seal = $app->repo('Seal')->find($proponent_seal);
             
@@ -672,7 +679,7 @@ class Module extends \MapasCulturais\Module{
         ]);
     }
 
-    public function applySeal(Entity $agent, array $sealIds){
+    public function applySeal(Agent $agent, array $sealIds){
         $app = App::i();
         foreach($sealIds as $sealId) {
             $seal = $app->repo('Seal')->find($sealId);
@@ -686,8 +693,20 @@ class Module extends \MapasCulturais\Module{
                 }
             }
             if(!$has_new_seal){
-                $agent = $agent->refreshed();
                 $agent->createSealRelation($seal);
+            }
+        }
+    }
+
+    function removeSeals($app, $relations, $proponent_seals) {
+        foreach ($proponent_seals as $proponent_seal) {
+            $seal = $app->repo('Seal')->find($proponent_seal);
+    
+            foreach ($relations as $relation) {
+                if ($relation->seal->id == $seal->id) {
+                    $relation->owner->removeSealRelation($seal);
+                    break;
+                }
             }
         }
     }
