@@ -3,6 +3,7 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App,
     MapasCulturais\Entities\Seal;
+use MapasCulturais\Entities\Agent;
 use MapasCulturais\Exceptions\PermissionDenied;
 
 /**
