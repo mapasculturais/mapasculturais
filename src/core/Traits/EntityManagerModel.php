@@ -20,6 +20,7 @@ trait EntityManagerModel {
         $this->generatePhases();
         $this->generateMetadata();
         $this->generateRegistrationFieldsAndFiles();
+        $this->generateSealsRelations();
 
         $this->entityOpportunityModel->save(true);
         
@@ -69,6 +70,13 @@ trait EntityManagerModel {
                 $phases = $opp->phases;
 
                 $lastPhase = array_pop($phases);
+
+                $modelIsOfficial = false;
+                foreach ($opp->getSealRelations() as $sealRelation) {
+                    if ( in_array($sealRelation->seal->id, $app->config['app.verifiedSealsIds'])) {
+                        $modelIsOfficial = true;
+                    }
+                }
                 
                 $days = !is_null($opp->registrationFrom) && !is_null($lastPhase->publishTimestamp) ? $lastPhase->publishTimestamp->diff($opp->registrationFrom)->days . " Dia(s)" : 'N/A';
                 $tipoAgente = $opp->registrationProponentTypes ? implode(', ', $opp->registrationProponentTypes) : 'N/A';
@@ -77,7 +85,8 @@ trait EntityManagerModel {
                     'numeroFases' => count($opp->phases),
                     'descricao' => $opp->shortDescription,
                     'tempoEstimado' => $days,
-                    'tipoAgente'   =>  $tipoAgente  
+                    'tipoAgente'   =>  $tipoAgente,
+                    'modelIsOfficial' => $modelIsOfficial
                 ];
             }
         }
@@ -286,6 +295,12 @@ trait EntityManagerModel {
             $fileConfiguration->setOwnerId($this->entityOpportunityModel->id);
             $fileConfiguration->save(true);
         }
+    }
 
+    private function generateSealsRelations() : void
+    {
+        foreach ($this->entityOpportunity->getSealRelations() as $sealRelation) {
+            $this->entityOpportunityModel->createSealRelation($sealRelation->seal, true, true);
+        }
     }
 }

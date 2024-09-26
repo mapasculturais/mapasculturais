@@ -531,6 +531,21 @@
 				}
 			}
 		}
+
+		.tag-official {
+			background-color: #FFB700;
+			color: #1E1E1E;
+		}
+
+		.tag-public {
+			background-color: #FFB700;
+			color: #1E1E1E;
+		}
+
+		.tag-private {
+			background-color: #fff;
+			color: #767676;
+		}
 	}
 
 	&__main {
@@ -768,3 +783,4 @@ input:checked + .slider:before {
 	margin-left: 8px;
 	font-weight: 600;
 }
+
