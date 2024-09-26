@@ -56,20 +56,20 @@ $this->import('
                             <div class="content__ticket">
                                 <mc-icon name="date"></mc-icon>
                                 <span class="ticket">
-                                    {{occurrence.description}}
+                                    {{occurrence.rule.description}}
                                 </span>
                             </div>
                             <div class="content__price">
                                 <div class="content__price--value">
                                     <mc-icon name="ticket"></mc-icon>
                                     <span class="value">
-                                        {{formatPrice(occurrence.price)}}
+                                        {{formatPrice(occurrence.rule.price)}}
                                     </span>
                                 </div>
                                 <div v-if="occurrence.priceInfo" class="content__price--info">
                                     <mc-icon name="info"></mc-icon>
                                     <span class="info">
-                                        {{occurrence.priceInfo}}
+                                        {{occurrence.rule.priceInfo}}
                                     </span>
                                 </div>
                             </div>
