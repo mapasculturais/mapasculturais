@@ -252,7 +252,10 @@ app.component('create-occurrence', {
             this.startsAt = null;
             this.endsAt = null;
             this.duration = 0;
-            this.dateRange = null;
+            this.dateRange = {
+                start: null,
+                end: null,
+            };
             this.days = {};
             this.until = null;
             this.description = null;
