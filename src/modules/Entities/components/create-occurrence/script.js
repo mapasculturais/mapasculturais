@@ -14,8 +14,10 @@ app.component('create-occurrence', {
         }
 
         const text = Utils.getTexts('create-occurrence');
+        const messages = useMessages();
         return {
-            text
+            text,
+            messages
         }
 
     },
@@ -234,6 +236,15 @@ app.component('create-occurrence', {
             this.newOccurrence['price'] = this.free ? __('Gratuito', 'create-occurrence') : this.price;
             this.newOccurrence['priceInfo'] = this.priceInfo ?? '';
             
+            const validationErrors = this.newOccurrence.__validationErrors;
+            const hasErrors = Object.values(validationErrors).some(errorsArray => errorsArray.length > 0);
+        
+            if (hasErrors) {
+                console.error("Erros de validação encontrados: ", validationErrors);
+                this.messages.error(this.text("corrija os erros"));
+                return; 
+            }
+
             this.newOccurrence.save().then(() => {
                 modal.close();
                 this.$emit('create', this.newOccurrence);
