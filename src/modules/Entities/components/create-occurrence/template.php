@@ -95,13 +95,13 @@ $this->import('
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==2}]">
                 <span class="create-occurrence__section--title"> <?= i::_e('Quando o evento ocorrerá?') ?> </span>
 
-                <div :class="['create_occurrence__datePicker', {'grid-12': frequency=='once'}]">
+                <div :class="['create_occurrence__datepicker', {'grid-12': frequency=='once'}]">
                     <div v-if="frequency=='once'" class="col-6 sm:col-12">
                         <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Data inicial:') ?></span>   
 
                             <mc-datepicker 
-                                v-model:modelDate="dateRange.start"
+                                v-model:modelValue="dateRange.start"
                                 fieldType="date"
                                 locale="locale">
                             </mc-datepicker>
@@ -118,10 +118,10 @@ $this->import('
                                 <span class="label"><?= i::_e('Data inicial:') ?></span> 
 
                                 <mc-datepicker 
-                                    v-model:modelDate="dateRange.start"
+                                    v-model:modelValue="dateRange.start"
                                     fieldType="date"
                                     locale="locale"
-                                    @update:modelDate="validateDateRange(dateRange.start, dateRange.end)"
+                                    @update:modelValue="validateDateRange(dateRange.start, dateRange.end)"
                                     >    
                                 </mc-datepicker>
 
@@ -135,10 +135,10 @@ $this->import('
                                 <span class="label"><?= i::_e('Data final:') ?></span>
 
                                 <mc-datepicker 
-                                    v-model:modelDate="dateRange.end"
+                                    v-model:modelValue="dateRange.end"
                                     fieldType="date"
                                     locale="locale"
-                                    @update:modelDate="validateDateRange(dateRange.start, dateRange.end)"
+                                    @update:modelValue="validateDateRange(dateRange.start, dateRange.end)"
                                     >
                                 </mc-datepicker>
 
@@ -161,10 +161,10 @@ $this->import('
                             <span class="label"><?= i::_e('Horário inicial:') ?></span>
 
                             <mc-datepicker 
-                                v-model:modelTime="startsAt"
+                                v-model:modelValue="startsAt"
                                 fieldType="time"
                                 locale="locale"
-                                @update:modelTime="validateTimeRange(startsAt, endsAt)"
+                                @update:modelValue="validateTimeRange(startsAt, endsAt)"
                                 >
                             </mc-datepicker>
 
@@ -179,10 +179,10 @@ $this->import('
                             <span class="label"><?= i::_e('Horário final:') ?></span>
 
                             <mc-datepicker 
-                                v-model:modelTime="endsAt"
+                                v-model:modelValue="endsAt"
                                 fieldType="time"
                                 locale="locale"
-                                @update:modelTime="validateTimeRange(startsAt, endsAt)"
+                                @update:modelValue="validateTimeRange(startsAt, endsAt)"
                                 >
                             </mc-datepicker>
 
