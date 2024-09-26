@@ -7,8 +7,8 @@
 
 ?>
 
-<div class="mc-datepicker">
-    <div class="input-container-date" v-if="isDateType">
+<div class="mc-datepicker" :class="{ 'mc-datepicker__datetime': fieldType === 'datetime'}">
+    <div class="mc-datepicker__date" v-if="isDateType">
         <input
             v-model="dateInput"
             class="date-input"
@@ -36,7 +36,7 @@
         </datepicker>
     </div>
 
-    <div class="input-container-time" v-if="isTimeType">
+    <div class="mc-datepicker__time" v-if="isTimeType">
         <input
             v-model="timeInput"
             class="time-input"
