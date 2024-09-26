@@ -5,7 +5,7 @@
 
 Projetos podem ser criados à partir do seu cadastro de agente individual.
 
-&nbsp;
+
 
 #### **Para criar um novo projeto, siga estes passos:**
 
