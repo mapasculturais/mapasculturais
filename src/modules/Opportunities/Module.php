@@ -636,11 +636,39 @@ class Module extends \MapasCulturais\Module{
                             $self->removeSeals($app, $relations, $proponent_seals);
                         }
                     }
+                }
+            }
+        });
+
+        //Adicionar selos conforme a publicação de resultado
+        $app->hook("entity(Opportunity).publishRegistrations:after", function() use($app, $self){
+            //* @var \MapasCulturais\Entities\Opportunity $this /
+        
+            if($this->proponentSeals){
+                $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+                $registrations = $app->repo('Registration')->findBy(['opportunity' => $this]);
             
-                        if ($has_seal) {
-                            $owner->removeSealRelation($seal);
+                foreach($registrations as $registration){
+            
+                    if($registration->status == Registration::STATUS_APPROVED){
+                    $proponent_type = $registration->proponentType;
+            
+                        if($proponent_type){
+                            $proponent_seals = $this->proponentSeals->{$proponent_type};
+                            $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+            
+                            if($agent_type == "owner"){
+                                $owner = $registration->owner;
+                                $self->applySeal($owner,$proponent_seals);
+                            }
+            
+                            if($agent_type == "coletivo"){
+                                if($agents = $registration->getAgentRelations()){
+                                    $self->applySeal($agents[0]->agent, $proponent_seals,$agent_type);
+                                }
+                            }
                         }
-                    }
+                    }   
                 }
             }
         });

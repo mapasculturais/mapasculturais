@@ -104,7 +104,7 @@ trait EntitySealRelation {
         return $result;
     }
 
-    function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true){
+    function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true, Agent $agent = null){
         $app = App::i();
         
         $seal->checkPermission('@control');
@@ -113,7 +113,7 @@ trait EntitySealRelation {
         $relation = new $relation_class;
         $relation->seal = $seal;
         $relation->owner = $this;
-        $relation->agent = $app->user->profile;
+        $relation->agent = $agent ?: $app->user->profile->refreshed();
 
         if($save){
             $relation->save($flush);
