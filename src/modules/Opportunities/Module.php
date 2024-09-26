@@ -673,6 +673,41 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook("entity(Opportunity).unpublishRegistrations:after", function() use($app, $self) {
+            /** @var \MapasCulturais\Entities\Opportunity $this */
+            if ($this->proponentSeals) {
+        
+                $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+                $registrations = $app->repo('Registration')->findBy(['opportunity' => $this]);
+        
+                foreach ($registrations as $registration) {
+                    if ($registration->status == \MapasCulturais\Entities\Registration::STATUS_APPROVED) {
+                        $proponent_type = $registration->proponentType;
+        
+                        if ($proponent_type) {
+                            $proponent_seals = $this->proponentSeals->{$proponent_type};
+                            $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+        
+                            if ($agent_type == "owner") {
+                                $owner = $registration->owner;
+                                $relations = $owner->getSealRelations();
+                                $self->removeSeals($app, $relations, $proponent_seals);
+                            }
+        
+                            if ($agent_type == "coletivo") {
+                                $agent_relations = $registration->getAgentRelations();
+        
+                                foreach ($agent_relations as $agent_relation) {
+                                    $agent = $agent_relation->agent;
+                                    $relations = $agent->getSealRelations();
+                                    $self->removeSeals($app, $relations, $proponent_seals);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     function register(){
