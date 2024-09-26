@@ -87,7 +87,7 @@ $this->import('
                             </a>
                         </create-occurrence> -->
 
-                        <mc-confirm-button @confirm="occurrence.delete(true)">
+                        <mc-confirm-button @confirm="deleteOccurrence(occurrence)">
                             <template #button="modal">
                                 <a class="occurrence__actions--delete" @click="modal.open();">
                                     <mc-icon name="trash"></mc-icon><?= i::_e('Excluir') ?>

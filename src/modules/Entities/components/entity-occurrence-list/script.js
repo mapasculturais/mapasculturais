@@ -54,6 +54,21 @@ app.component('entity-occurrence-list', {
             const lists = useEntitiesLists();
             const occurrences = lists.fetch('occurrenceList', 'default');
             occurrences.push(occurrence);
+        },
+
+        async deleteOccurrence(occurrence) {
+            try {
+                await occurrence.delete(true);
+                const lists = useEntitiesLists();
+                const occurrences = lists.fetch('occurrenceList', 'default');
+                const index = occurrences.findIndex((item) => item.id === occurrence.id);
+                
+                if (index !== -1) {
+                    occurrences.splice(index, 1); 
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
     },
 });
