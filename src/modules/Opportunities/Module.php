@@ -627,16 +627,15 @@ class Module extends \MapasCulturais\Module{
                         $self->removeSeals($app, $relations, $proponent_seals);
                     }
 
-                    foreach ($proponent_seals as $proponent_seal) {
-                        $seal = $app->repo('Seal')->find($proponent_seal);
-            
-                        $has_seal = false;
-                        foreach ($relations as $relation) {
-                            if ($relation->seal->id == $seal->id) {
-                                $has_seal = true;
-                                break;
-                            }
+                    if ($agent_type == "coletivo") {
+                        $agent_relations = $this->getAgentRelations();
+        
+                        foreach ($agent_relations as $agent_relation) {
+                            $agent = $agent_relation->agent;
+                            $relations = $agent->getSealRelations();
+                            $self->removeSeals($app, $relations, $proponent_seals);
                         }
+                    }
             
                         if ($has_seal) {
                             $owner->removeSealRelation($seal);
