@@ -11,7 +11,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
-use MapasCulturais\Entity;
+use MapasCulturais\Entities\Agent;
 
 class Module extends \MapasCulturais\Module{
 
