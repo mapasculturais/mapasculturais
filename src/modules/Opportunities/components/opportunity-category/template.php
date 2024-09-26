@@ -16,7 +16,10 @@ $this->import('
 ?>
 <div class="opportunity-category">
     <div class="opportunity-category__header">
-        <h4 class="bold"><?= i::__("Categorias do edital") ?></h4>
+        <h4 class="bold">
+            <?= i::__("Categorias do edital") ?>
+            <?php $this->info('editais-oportunidades -> configuracoes -> categorias-edital') ?>
+        </h4>
     </div>
 
     <div class="opportunity-category__content grid-12">
