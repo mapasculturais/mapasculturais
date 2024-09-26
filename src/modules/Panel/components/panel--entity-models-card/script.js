@@ -30,9 +30,21 @@ app.component('panel--entity-models-card', {
 
         let isModelPublic = this.entity.isModelPublic == 1 ? true : false;
 
+
+        const MODEL_OFFICIAL = 'MODELO OFICIAL';
+        const MODEL_PRIVATE = 'MODELO PRIVADO';
+        const MODEL_PUBLIC = 'MODELO PÚBLICO';
+
+        const typeModels = {
+            MODEL_OFFICIAL,
+            MODEL_PRIVATE,
+            MODEL_PUBLIC
+        };
+
         return {
             isModelPublic,
-            models: []
+            models: [],
+            typeModels
         }
     },
 
@@ -73,6 +85,20 @@ app.component('panel--entity-models-card', {
             }
 
             return showModel;
+        },
+        getTypeModel() {
+
+            let model_ = this.models.filter((model) => {
+                return this.entity.id == model.id;
+            });
+
+            if (model_[0] != 'undefined') {
+                if (model_[0]?.modelIsOfficial) {
+                    return this.typeModels.MODEL_OFFICIAL;
+                }
+            }          
+
+            return this.entity.isModelPublic == 0 ? this.typeModels.MODEL_PRIVATE : this.typeModels.MODEL_PUBLIC;
         },
     }
 })

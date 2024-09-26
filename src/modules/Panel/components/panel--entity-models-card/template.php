@@ -38,7 +38,15 @@ $this->import('
         <div class="right">
             <div class="panel-entity-models-card__header-actions">
                 <slot name="header-actions" :entity="entity">
-                    {{ entity.isModelPublic == 0 ? 'MEU MODELO' : 'MODELO PÚBLICO' }}
+                    <li v-if="getTypeModel == typeModels.MODEL_OFFICIAL" class="tag-official mc-tag-list__tag">    
+                        {{ typeModels.MODEL_OFFICIAL }}
+                    </li>
+                    <li v-if="getTypeModel == typeModels.MODEL_PUBLIC" class="tag-public mc-tag-list__tag">    
+                        {{ typeModels.MODEL_PUBLIC }}
+                    </li>
+                    <li v-if="getTypeModel == typeModels.MODEL_PRIVATE" class="tag-private mc-tag-list__tag">    
+                        {{ typeModels.MODEL_PRIVATE }}
+                    </li>
                 </slot>
             </div>
         </div>
