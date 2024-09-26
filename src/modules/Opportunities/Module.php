@@ -606,14 +606,16 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook("entity(Registration).status(<<draft|waitlist|notapproved|invalid|sent|>>)", function() use($app){
-            $opportunity = $this->opportunity; 
+        $app->hook("entity(Registration).status(<<draft|waitlist|notapproved|invalid|sent|>>)", function() use($app, $self){
+            //* @var \MapasCulturais\Entities\Opportunity $this /
+            
+            $opportunity = $this->opportunity;
 
             if ($opportunity && $opportunity->publishedRegistrations) {
                 $seals = $opportunity->proponentSeals;
                 $proponent_type = $this->proponentType;
                 $owner = $this->owner;
-            
+        
                 if ($proponent_type) {
                     $proponent_seals = $seals->{$proponent_type};
                     $relations = $owner->getSealRelations();
