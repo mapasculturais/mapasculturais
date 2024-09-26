@@ -6,7 +6,7 @@
 
 O Agente Cultural é o seu perfil profissional no *Mapas Culturais*. É como um currículo digital para quem trabalha com cultura.
 
-&nbsp;
+
 
 #### **Ao criar um Agente Cultural, você:**
 
