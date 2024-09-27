@@ -5,6 +5,10 @@ app.component('opportunity-evaluation-committee', {
         entity: {
             type: Entity,
             required: true
+        },
+        group: {
+            type: String,
+            default: 'group-admin'
         }
     },
 
@@ -67,7 +71,7 @@ app.component('opportunity-evaluation-committee', {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});
             this.agentData = {
-                group: 'group-admin',
+                group: this.group,
                 agentId: agent._id,
                 has_control: true
             }; 
@@ -89,7 +93,7 @@ app.component('opportunity-evaluation-committee', {
             let url = api.createApiUrl('evaluationCommittee', args);
             
             api.GET(url).then(res => res.json()).then(data => {
-                this.infosReviewers = data;
+                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group);
                 this.showReviewers = !!this.infosReviewers;
                 this.ReviewerSelect = false;
                 this.loadFetchs();
@@ -100,7 +104,7 @@ app.component('opportunity-evaluation-committee', {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'removeAgentRelation', {id: this.entity.id});
             this.agentData = {
-                group: 'group-admin',
+                group: this.group,
                 agentId: agent.id,
             }; 
 
