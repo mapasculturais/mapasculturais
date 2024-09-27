@@ -606,6 +606,23 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Publicar o nome dos avaliadores nos pareceres'),
             'type' => 'json',
         ]);
-           
+        
+        $this->registerEvauationMethodConfigurationMetadata('enableCommissions', [
+            'label' => i::__('Habilitar comissão de avaliação'),
+            'type' => 'boolean',
+            'default' => false
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('enableVotingCommission', [
+            'label' => i::__('Habilitar voto de minerva'),
+            'type' => 'boolean',
+            'default' => false
+        ]);
+        
+        $this->registerEvauationMethodConfigurationMetadata('submissionEvaluatorCount', [
+            'label' => i::__('Quantidade de avaliadores por inscrição'),
+            'type' => 'json',
+            'default' => false
+        ]);
     }
 }
