@@ -8,9 +8,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5.1]
 ### Correções
 - Corrige tipo exibição do tipo de avaliação na listagem de avaliações disponíveis para o avaliador
+- Corrige erros no processo da avaliação documental
 
 ## [7.5.0] - 2024-09-25
-
 ### Novas funcionalidades
 - **Bloqueio de edição de entidades**: impede que dois usuários diferentes editem a mesma entidade simultaneamente.
 - **Customizador do tema BaseV2 para subsites**: permite a configuração de cores, imagens, textos, posição do mapa, entre outros.
