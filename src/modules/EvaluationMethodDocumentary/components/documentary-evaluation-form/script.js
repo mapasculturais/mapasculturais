@@ -31,7 +31,7 @@ app.component('documentary-evaluation-form', {
             userId: null,
             userName: '',
             isEditable: this.editable,
-            evaluationData: {},
+            evaluationData: $MAPAS.config.documentaryEvaluationForm.evaluationData?.evaluationData || {},
             newStatus: null
         };
     },
