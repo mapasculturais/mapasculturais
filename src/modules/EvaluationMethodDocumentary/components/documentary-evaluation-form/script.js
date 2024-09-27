@@ -124,6 +124,18 @@ app.component('documentary-evaluation-form', {
 
             return {};
         },
+
+        canEvaluate() {
+            if(!this.entity.currentUserPermissions['evaluate']) {
+                return false;
+            }
+    
+            if(!this.status >= 1) {
+                return false;
+            }
+    
+            return true;
+        }
     },
 
     mounted() {
@@ -131,6 +143,6 @@ app.component('documentary-evaluation-form', {
         window.addEventListener('documentaryData', this.getDocumentaryData);
         window.addEventListener('responseEvaluation', this.processResponse);
 
-        this.isEditable = this.status > 0 ? false : this.editable;
-    }
+        this.isEditable = this.canEvaluate();
+    },
 });
