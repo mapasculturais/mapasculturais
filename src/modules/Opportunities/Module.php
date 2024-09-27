@@ -520,6 +520,15 @@ class Module extends \MapasCulturais\Module{
             ];
         });
 
+        $app->hook('entity(EvaluationMethodConfiguration).propertiesMetadata', function(&$result) {
+            $result['useCommitteeGroups'] = [
+                'isMetadata' => false,
+                'isEntityRelation' => false,
+                'isReadonly' => true,
+                'label' => i::__('Indica se pode utilizar grupos de comissão de avaliação')
+            ];
+        });
+
        // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento de inserir, atualizar ou remover.
         $app->hook("entity(RegistrationEvaluation).<<insert|update|remove>>:after", function() use ($app) {
             $opportunity = $this->registration->opportunity;
