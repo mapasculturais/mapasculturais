@@ -1212,7 +1212,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return '';
     }
 
-    public function hasEvaluationCommittee(): bool {
+    public function useCommitteeGroups(): bool {
         return false;
     }
 }

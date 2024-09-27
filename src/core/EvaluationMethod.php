@@ -472,7 +472,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return true;
     }
     
-    public function hasEvaluationCommittee(): bool {
+    public function useCommitteeGroups(): bool {
         return true;
     }
 
