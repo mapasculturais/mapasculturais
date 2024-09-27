@@ -467,7 +467,7 @@ class Module extends \MapasCulturais\Module{
                         $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,files");
                         
                         if($emc){
-                            $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo");
+                            $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups");
                         }
                         
                         $result[] = $item;

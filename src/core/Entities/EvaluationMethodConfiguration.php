@@ -17,13 +17,14 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
- * @property-read string summaryCacheKey Chave do cache do resumo das avaliações
+ * @property-read bool $useCommitteeGroups
+ * @property-read string $summaryCacheKey Chave do cache do resumo das avaliações
  * @property int $opportunity ownerId
- * @property-read \MapasCulturais\Entities\Opportunity owner
- * @property-read boolean publishedRegistration
- * @property-read DateTime publishTimestamp
- * @property-read array summary
- * @property-read boolean evaluationOpen
+ * @property-read \MapasCulturais\Entities\Opportunity $owner
+ * @property-read boolean $publishedRegistration
+ * @property-read DateTime $publishTimestamp
+ * @property-read array $summary
+ * @property-read boolean $evaluationOpen
  * 
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
@@ -207,7 +208,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $result = parent::jsonSerialize();
         $result['type'] = $this->type;
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl,summary');
-
+        $result['useCommitteeGroups'] = $this->useCommitteeGroups;
         /**
          * @todo Arranjar um modo de colocar isso no módulo de avaliação técnica
          */
@@ -235,6 +236,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     public function getEvaluationMethod() {
         $definition = $this->getDefinition();
         return $definition->evaluationMethod;
+    }
+
+    public function getUseCommitteeGroups() {
+        return $this->evaluationMethod->useCommitteeGroups();
     }
 
     public function getUserRelation($user = null){
