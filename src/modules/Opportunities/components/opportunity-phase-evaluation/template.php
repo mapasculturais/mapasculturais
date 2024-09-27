@@ -43,7 +43,7 @@ $userId = $app->user->id;
                 </div>
             </div>
             <div class="btn">
-                <mc-link route="opportunity/userEvaluations" :params="{id: item.opportunity.id, user:<?=$userId ?>}" class="button button--primary evaluation-button"> <?= i::__('Avaliar') ?><mc-icon name="arrow-right-ios"></mc-icon></mc-link>
+                <mc-link route="opportunity/userEvaluations" :params="{id: item.opportunity.id, user:<?=$userId ?>}" class="button button--primary evaluation-button"> <?= i::__('Conferir avaliações') ?><mc-icon name="arrow-right-ios"></mc-icon></mc-link>
             </div>
         </div>
     </div>
