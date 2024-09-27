@@ -19,15 +19,15 @@ $this->import('evaluation-actions');
         <input type="hidden" v-model="formData.data[fieldId].label" @change="setEvaluationData(fieldId)" />
         <div class="documentary-evaluation-form__fields field">
             <label>
-                <input type="radio" value="" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId)" :disabled="!isEditable"/>
+                <input type="radio" value="" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId, 'empty')" :disabled="!isEditable"/>
                 <?= i::__('Não avaliar') ?>
             </label>
             <label>
-                <input type="radio" value="valid" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId)" :disabled="!isEditable"/>
+                <input type="radio" value="valid" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId, 'valid')" :disabled="!isEditable"/>
                 <?= i::__('Válida') ?>
             </label>
             <label>
-                <input type="radio" value="invalid" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId)" :disabled="!isEditable"/>
+                <input type="radio" value="invalid" v-model="formData.data[fieldId].evaluation" @change="setEvaluationData(fieldId, 'invalid')" :disabled="!isEditable"/>
                 <?= i::__('Inválida') ?>
             </label>
         </div>

@@ -47,7 +47,7 @@ app.component('documentary-evaluation-form', {
             this.fieldType = data.detail.fieldType;
             this.fieldName = this.fieldType === 'file' ? data.detail.fieldName.replace('field_', 'rfc_') : data.detail.fieldName;
             this.enableForm = data.detail.type === 'evaluationForm.openForm';
-            this.fieldId = data.detail.fieldId;
+            this.fieldId = parseInt(data.detail.fieldId);
             
             if (this.enableForm) {
                 this.getEvaluationData();
@@ -99,11 +99,20 @@ app.component('documentary-evaluation-form', {
 
         processResponse(data) {
             this.newStatus = data.detail.response.status;
-            this.isEditable = this.newStatus > 0 ? false : true;
+            this.isEditable = this.newStatus >= 1 ? false : true;
         },
 
-        setEvaluationData(fieldId) {
+        setEvaluationData(fieldId, status = null) {
             this.evaluationData[fieldId] = this.formData.data[fieldId];
+
+            if(status) {
+                let className = `evaluation-${status}`;
+
+                window.parent.postMessage({
+                    type: 'evaluationRegistration.setClass',
+                    className: className,
+                });
+            }
         },
 
         getEvaluationData() {
