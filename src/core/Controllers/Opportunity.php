@@ -348,6 +348,7 @@ class Opportunity extends EntityController {
                 $r->owner = $e->owner->id;
                 $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar');
                 $r->agentUserId = $e->agent->userId;
+                $r->group = $e->group;
                 return $r;
             }, $relations);
         } else {
