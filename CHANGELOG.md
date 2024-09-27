@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.20] - 2024-09-27
+### Correções
+- Corrige o erro que impede a distribuição de avaliação com base no número final da inscrição
+
 ## [7.4.19] - 2024-09-25
 ### Correções
 - Corrige getter nextPhase para evitar que entre em loop infinito
