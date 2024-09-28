@@ -130,7 +130,8 @@ app.component('documentary-evaluation-form', {
                 return false;
             }
     
-            if(!this.status >= 1) {
+            console.log(this.status)
+            if(this.status >= 1) {
                 return false;
             }
     
