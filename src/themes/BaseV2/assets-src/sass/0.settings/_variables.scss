@@ -20,7 +20,7 @@ $primary-500: #117C83 !default;
 $primary-300: lighten($primary-500, $lightness-300) !default;
 $primary-700: darken($primary-500, $lightness-700) !default;
 
-$secondary-500: #9eca80 !default;
+$secondary-500: #D14526 !default;
 $secondary-300: lighten($secondary-500, $lightness-300) !default;
 $secondary-700: darken($secondary-500, $lightness-700) !default;
 
@@ -29,25 +29,30 @@ $seals-500: #1E1E1E !default;
 $seals-300: lighten($seals-500, $lightness-300) !default;
 $seals-700: darken($seals-500, $lightness-700) !default;
 
-$agents-500: #9c4d16 !default;
+$agents-500: #EF7B45 !default;
 $agents-300: lighten($agents-500, $lightness-300) !default;
 $agents-700: darken($agents-500, $lightness-700) !default;
 
-$events-500: #e62f76 !default;
+$events-500: #9C4EC7 !default;
 $events-300: lighten($events-500, $lightness-300) !default;
 $events-700: darken($events-500, $lightness-700) !default;
 
-$opportunities-500: #f08418 !default;
+$opportunities-500: #D14526 !default;
 $opportunities-300: lighten($opportunities-500, $lightness-300) !default;
 $opportunities-700: darken($opportunities-500, $lightness-700) !default;
 
-$projects-500:  #3666ae!default;
+$projects-500:  #117C83!default;
 $projects-300: lighten($projects-500, $lightness-300) !default;
 $projects-700: darken($projects-500, $lightness-700) !default;
 
-$spaces-500: #4cac33 !default;
+$spaces-500: #538D0A !default;
 $spaces-300: lighten($spaces-500, $lightness-300) !default;
 $spaces-700: darken($spaces-500, $lightness-700) !default;
+
+// FAQ
+$faq-500: #ffcf8f !default;
+$faq-300: lighten($faq-500, $lightness-300) !default;
+$faq-700: darken($faq-500, $lightness-700) !default;
 
 // Feedback colors
 $danger-500: #EF1010 !default;
@@ -69,7 +74,7 @@ $helper-700: darken($helper-500, $lightness-700) !default;
 // Home 
 $home-opportunities: $secondary-500 !default;
 $home-entities: $gray-100 !default;
-$home-feature: $secondary-500 !default;
+$home-feature: $secondary-300 !default;
 $home-register: $primary-500 !default;
 $home-map: $white !default;
 $home-developers: $gray-100 !default;
@@ -185,6 +190,9 @@ $shadow-lv-1-up: 0px -4px 8px rgba(0, 0, 0, 0.16);
     --mc-spaces-300: #{$spaces-300};
     --mc-spaces-500: #{$spaces-500};
     --mc-spaces-700: #{$spaces-700};
+    --mc-faq-300: #{$faq-300};
+    --mc-faq-500: #{$faq-500};
+    --mc-faq-700: #{$faq-700};
     --mc-success-300: #{$success-300};
     --mc-success-500: #{$success-500};
     --mc-success-700: #{$success-700};
