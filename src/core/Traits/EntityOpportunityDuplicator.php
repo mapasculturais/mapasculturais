@@ -204,10 +204,10 @@ trait EntityOpportunityDuplicator {
         foreach ($files as $file) {
             if (is_null($file['parent_id'])) {
                 $parentId = null;
-            } else if (isset($futureParentId) && !is_null($file['parent_id'])) {
+            } else if (isset($futureParentId)) {
                 $parentId = $futureParentId;
             } else {
-                throw new Exception('File parent_id is null or not exists');
+                throw new Exception('File parent_id unexpect');
             }
 
             $sql = 'INSERT INTO file (md5, mime_type, name, object_type, object_id, create_timestamp, grp, description, parent_id, path) VALUES (:md5, :mime_type, :name, :object_type, :object_id, :create_timestamp, :grp, :description, :parent_id, :path)';
