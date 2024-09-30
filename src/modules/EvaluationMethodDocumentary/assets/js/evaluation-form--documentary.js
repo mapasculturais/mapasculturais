@@ -216,6 +216,10 @@ $(function(){
         $field.addClass(className);
     }
 
+    function clearStyles(className) {
+        const $field = $('li.js-field.field-shadow, li.registration-list-item.field-shadow')
+        $field.removeClass('field-shadow');
+    }
 
     window.addEventListener("message", function(event) {
         
@@ -232,6 +236,10 @@ $(function(){
 
             case 'evaluationRegistration.setClass':
                 setClass(event.data.className);
+            break;
+        
+            case 'evaluationRegistration.clearStyles':
+                clearStyles();
             break;
         }
     });
