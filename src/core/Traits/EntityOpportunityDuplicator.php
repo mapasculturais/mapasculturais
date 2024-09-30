@@ -201,10 +201,12 @@ trait EntityOpportunityDuplicator {
         $conn = $app->em->getConnection();
         $files = $conn->fetchAll("SELECT * FROM file WHERE object_id = {$this->entityOpportunity->id} ORDER BY id ASC");
         foreach ($files as $file) {
-            $parentId = $file['parent_id'];
-            if (isset($futureParentId) && !is_null($file['parent_id'])) {
+            if (is_null($file['parent_id'])) {
+                $parentId = null;
+            } else if (isset($futureParentId) && !is_null($file['parent_id'])) {
                 $parentId = $futureParentId;
             }
+
             $sql = 'INSERT INTO file (md5, mime_type, name, object_type, object_id, create_timestamp, grp, description, parent_id, path) VALUES (:md5, :mime_type, :name, :object_type, :object_id, :create_timestamp, :grp, :description, :parent_id, :path)';
             $stmt = $conn->prepare($sql);
             $stmt->bindValue('md5', $file['md5']);
