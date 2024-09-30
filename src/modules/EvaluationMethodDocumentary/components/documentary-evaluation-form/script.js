@@ -111,6 +111,7 @@ app.component('documentary-evaluation-form', {
                 window.parent.postMessage({
                     type: 'evaluationRegistration.setClass',
                     className: className,
+                    fieldId: fieldId
                 });
             }
         },
