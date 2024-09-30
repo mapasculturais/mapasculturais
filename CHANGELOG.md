@@ -15,7 +15,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Edição de inscrições enviadas**: possibilita ao gestor configurar um ou mais campos de uma determinada inscrição, por um tempo definido, permitindo que o proponente os modifique sem precisar reabrir a inscrição completa como rascunho.
 - **Visualização de entidades em tabelas na página de busca**: para administradores do sistema, com botão para exportar planilhas com as entidades filtradas.
 - Nova opção para o gestor solicitar o avatar do agente responsável no formulário de inscrição.
-- Implementado modo de visualização de entidades em tabelas para administradores do sistema.
 - Implementada a possibilidade de exigir que o proponente defina uma imagem de avatar no momento da inscrição.
 - Implementada nova tela para configuração dos agentes de suporte.
 - Implementada a exibição da data de envio das avaliações.
