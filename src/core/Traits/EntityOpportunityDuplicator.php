@@ -3,6 +3,7 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
 use MapasCulturais\Entity;
+use Exception;
 
 trait EntityOpportunityDuplicator {
 
@@ -205,6 +206,8 @@ trait EntityOpportunityDuplicator {
                 $parentId = null;
             } else if (isset($futureParentId) && !is_null($file['parent_id'])) {
                 $parentId = $futureParentId;
+            } else {
+                throw new Exception('File parent_id is null or not exists');
             }
 
             $sql = 'INSERT INTO file (md5, mime_type, name, object_type, object_id, create_timestamp, grp, description, parent_id, path) VALUES (:md5, :mime_type, :name, :object_type, :object_id, :create_timestamp, :grp, :description, :parent_id, :path)';
