@@ -14,10 +14,8 @@ app.component('create-occurrence', {
         }
 
         const text = Utils.getTexts('create-occurrence');
-        const messages = useMessages();
         return {
             text,
-            messages
         }
 
     },
@@ -188,7 +186,6 @@ app.component('create-occurrence', {
             this.newOccurrence.spaceId = this.space ? this.space.id : '';
             this.newOccurrence.space = this.space;
             
-
             if (this.frequency) {
                 this.newOccurrence['frequency'] = this.frequency;
 
@@ -235,16 +232,7 @@ app.component('create-occurrence', {
             this.newOccurrence['description'] = this.description ?? '';
             this.newOccurrence['price'] = this.free ? __('Gratuito', 'create-occurrence') : this.price;
             this.newOccurrence['priceInfo'] = this.priceInfo ?? '';
-            
-            const validationErrors = this.newOccurrence.__validationErrors;
-            const hasErrors = Object.values(validationErrors).some(errorsArray => errorsArray.length > 0);
-        
-            if (hasErrors) {
-                console.error("Erros de validação encontrados: ", validationErrors);
-                this.messages.error(this.text("corrija os erros"));
-                return; 
-            }
-
+           
             this.newOccurrence.save().then(() => {
                 modal.close();
                 this.$emit('create', this.newOccurrence);
@@ -290,24 +278,6 @@ app.component('create-occurrence', {
         onChange(event, onInput) {
             if (event instanceof InputEvent) {
                 setTimeout(() => onInput(event), 50);
-            }
-        },
-
-        validateDateRange(start, end) {
-            if (start && end && start > end) {
-                this.newOccurrence.__validationErrors['startsOn'] = ['Data final deve ser maior que a data inicial'];
-            } else {
-                this.newOccurrence.__validationErrors['startsOn'] = [];
-            }
-        },
-
-        validateTimeRange(startsAt, endsAt) {
-            if (startsAt && endsAt) {
-                if (startsAt.hours > endsAt.hours || (startsAt.hours == endsAt.hours && startsAt.minutes >= endsAt.minutes)) {
-                    this.newOccurrence.__validationErrors['startsAt'] = ['Horário final deve ser maior que o horário inicial'];
-                } else {
-                    this.newOccurrence.__validationErrors['startsAt'] = [];
-                }
             }
         },
     },

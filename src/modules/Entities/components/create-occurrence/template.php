@@ -120,13 +120,12 @@ $this->import('
                                 <mc-datepicker 
                                     v-model:modelValue="dateRange.start"
                                     fieldType="date"
-                                    locale="locale"
-                                    @update:modelValue="validateDateRange(dateRange.start, dateRange.end)"
+                                    locale="locale"                                    
                                     >    
                                 </mc-datepicker>
 
-                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsOn']">        
-                                    {{this.newOccurrence.__validationErrors['startsOn'].join('; ')}}
+                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['until']">        
+                                    {{this.newOccurrence.__validationErrors['until'].join('; ')}}
                                 </small>
                             </div>
                         </div>
@@ -138,7 +137,6 @@ $this->import('
                                     v-model:modelValue="dateRange.end"
                                     fieldType="date"
                                     locale="locale"
-                                    @update:modelValue="validateDateRange(dateRange.start, dateRange.end)"
                                     >
                                 </mc-datepicker>
 
@@ -159,12 +157,11 @@ $this->import('
                     <div class="col-6 sm:col-12">                        
                         <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Horário inicial:') ?></span>
-
+                            
                             <mc-datepicker 
                                 v-model:modelValue="startsAt"
                                 fieldType="time"
-                                locale="locale"
-                                @update:modelValue="validateTimeRange(startsAt, endsAt)"
+                                locale="locale"                               
                                 >
                             </mc-datepicker>
 
@@ -177,12 +174,11 @@ $this->import('
                     <div class="col-6 sm:col-12">
                         <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Horário final:') ?></span>
-
+                            
                             <mc-datepicker 
                                 v-model:modelValue="endsAt"
                                 fieldType="time"
                                 locale="locale"
-                                @update:modelValue="validateTimeRange(startsAt, endsAt)"
                                 >
                             </mc-datepicker>
 
