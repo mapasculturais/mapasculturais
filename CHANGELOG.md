@@ -10,6 +10,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige tipo exibição do tipo de avaliação na listagem de avaliações disponíveis para o avaliador
 - Corrige erros no processo da avaliação documental
 
+## [7.4.21] - 2024-10-01
+### Melhorias
+- Implementei o método getHumanReadable no Entity.js para facilitar a exibição de valores de metadados que possuem listas predefinidas, transformando-os em formatos mais legíveis para o usuário
+
+## [7.4.20] - 2024-09-27
+### Correções
+- Corrige o erro que impede a distribuição de avaliação com base no número final da inscrição
+
 ## [7.5.0] - 2024-09-25
 ### Novas funcionalidades
 - **Bloqueio de edição de entidades**: impede que dois usuários diferentes editem a mesma entidade simultaneamente.
@@ -56,10 +64,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Possibilidade de configurar metadados como `readonly`, que após definidos, não podem ser alterados por usuários comuns.
 - Exibida a coluna "Nome do Avaliador" na tabela de listagem de avaliações.
 - Quando a oportunidade é multifases e ocorre uma alteração na propriedade, essa mudança agora reflete nas fases subsequentes.
-
-## [7.4.20] - 2024-09-27
-### Correções
-- Corrige o erro que impede a distribuição de avaliação com base no número final da inscrição
 
 ## [7.4.19] - 2024-09-25
 ### Correções

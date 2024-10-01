@@ -765,4 +765,14 @@ class Entity {
             return this.doCatch(error);
         }
     }
+
+    getHumanReadable(prop) {
+        const propDefinitions = this.$PROPERTIES[prop];
+
+        if(!propDefinitions?.options) {
+            return this[prop]
+        }else {
+            return propDefinitions.options[this[prop]];
+        }
+    }
 }
