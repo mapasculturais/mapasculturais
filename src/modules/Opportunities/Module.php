@@ -167,7 +167,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Opportunity).validations', function(&$validations) {
             /** @var Opportunity $this */
-            if (!$this->isNew() && !$this->isLastPhase) {
+            if (!$this->isNew() && !$this->isLastPhase && (!$this->isContinuousFlow || ($this->isContinuousFlow && $this->hasEndDate))) {
                 $validations['registrationFrom']['required'] = i::__('A data inicial das inscrições é obrigatória');
                 $validations['registrationTo']['required'] = i::__('A data final das inscrições é obrigatória');
                 $validations['shortDescription']['required'] = i::__('A descrição curtá é obrigatória');

@@ -736,8 +736,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     function validateRegistrationDates() {
         if($this->registrationFrom && $this->registrationTo){
-            return $this->registrationFrom <= $this->registrationTo;
-
+            $shouldValidateRegistrationTo = (!$this->isContinuousFlow) || ($this->isContinuousFlow && $this->hasEndDate);
+            if ($shouldValidateRegistrationTo) {
+                return $this->registrationFrom <= $this->registrationTo;
+            } else {
+                return true;
+            }
         }elseif($this->registrationFrom || $this->registrationTo){
             return false;
 
