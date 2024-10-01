@@ -94,7 +94,7 @@ app.component('opportunity-evaluation-committee', {
             
             api.GET(url).then(res => res.json()).then(data => {
                 this.infosReviewers = data.filter(reviewer => reviewer.group === this.group);
-                this.showReviewers = !!this.infosReviewers;
+                this.showReviewers = Object.keys(this.infosReviewers).length > 0;
                 this.ReviewerSelect = false;
                 this.loadFetchs();
             });
