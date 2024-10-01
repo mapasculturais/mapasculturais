@@ -90,14 +90,6 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $app->applyHookBoundTo($this,"{$this->hookPrefix}.enable:after");
     }
 
-    protected function canUserCreate($user) {        
-        $app = App::i();
-
-        if ($user->canUser('@control') || ($user->canUser('modify') && $user->id == $app->view->controller->postData['agentId'])) {
-            return true;
-        }
-    } 
-
     protected function canUserRemove($user): bool
     {
         return $this->owner->canUser('manageEvaluationCommittee', $user);
