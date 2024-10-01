@@ -5,9 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.4.22] - 2024-10-01
+## [7.4.22]
 ### Correções
 - Corrige erro na criação de anexos
+
+### Melhorias
+- Implementa novos hooks na single e edit do agente
 
 ## [7.4.21] - 2024-10-01
 ### Melhorias
