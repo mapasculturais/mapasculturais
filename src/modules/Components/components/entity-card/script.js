@@ -63,7 +63,11 @@ app.component('entity-card', {
         },
         openSubscriptions() {
             if (this.entity.__objectType == "opportunity") {
+                
                 if (this.entity.registrationFrom && this.entity.registrationTo) {
+                    if (this.entity.isContinuousFlow && !this.entity.hasEndDate) {
+                        return false;
+                    }
                     return this.entity.registrationFrom.isPast() && this.entity.registrationTo.isFuture();
                 } else {
                     return false;

@@ -13,5 +13,6 @@ return [
     'resultado publicado' => i::__('Os resultados da oportunidade já foram publicados'),
     'limite de inscrições' => i::__('O limite de inscrições nessa oportunidade foi atingido.'),
     'limite de inscrições por usuário' => i::__('O limite de inscrições por usuário nessa oportunidade foi atingido.'),
+    'fluxo contínuo' => i::__('Inscrições abertas'),
 
 ];
