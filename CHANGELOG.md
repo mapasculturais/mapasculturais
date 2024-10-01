@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Implementa novos hooks na single e edit do agente
+- Refina as permissões dos gestores e administradores das oportunidades
 
 ## [7.4.21] - 2024-10-01
 ### Melhorias
