@@ -1215,4 +1215,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
     public function useCommitteeGroups(): bool {
         return false;
     }
+
+    public function evaluateSelfApplication(): bool {
+        return false;
+    }
 }

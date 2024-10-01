@@ -527,6 +527,12 @@ class Module extends \MapasCulturais\Module{
                 'isReadonly' => true,
                 'label' => i::__('Indica se pode utilizar grupos de comissão de avaliação')
             ];
+            $result['evaluateSelfApplication'] = [
+                'isMetadata' => false,
+                'isEntityRelation' => false,
+                'isReadonly' => true,
+                'label' => i::__('Indica se pode ser utilizada a auto aplicação de resultados')
+            ];
         });
 
        // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento de inserir, atualizar ou remover.

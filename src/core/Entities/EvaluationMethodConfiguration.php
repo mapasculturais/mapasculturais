@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
  * @property-read bool $useCommitteeGroups
+ * @property-read bool $evaluateSelfApplication
  * @property-read string $summaryCacheKey Chave do cache do resumo das avaliações
  * @property int $opportunity ownerId
  * @property-read \MapasCulturais\Entities\Opportunity $owner
@@ -209,6 +210,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $result['type'] = $this->type;
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl,summary');
         $result['useCommitteeGroups'] = $this->useCommitteeGroups;
+        $result['evaluateSelfApplication'] = $this->evaluateSelfApplication;
         /**
          * @todo Arranjar um modo de colocar isso no módulo de avaliação técnica
          */
@@ -240,6 +242,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
     public function getUseCommitteeGroups() {
         return $this->evaluationMethod->useCommitteeGroups();
+    }
+    
+    public function getEvaluateSelfApplication() {
+        return $this->evaluationMethod->evaluateSelfApplication();
     }
 
     public function getUserRelation($user = null){
