@@ -40,7 +40,7 @@ $this->import('
                     <div v-if="item.registrationTo" class="date__content">{{item.registrationTo.date('2-digit year')}} {{item.registrationTo.time('numeric')}}</div>
                     <div v-if="item.evaluationTo" class="date__content">{{item.evaluationTo.date('2-digit year')}} {{item.evaluationTo.time('numeric')}}</div>
                 </div>
-                <div v-if="showPublishTimestamp(item)" class="date">
+                <div v-if="showPublishTimestamp(item) && (!firstPhase?.isContinuousFlow || (firstPhase?.isContinuousFlow && firstPhase?.hasEndDate))" class="date">
                     <div class="date__title"> <?= i::__('Data publicação') ?> </div>
                     <div class="date__content">{{publishTimestamp(item)?.date('2-digit year')}}</div>
                 </div>
