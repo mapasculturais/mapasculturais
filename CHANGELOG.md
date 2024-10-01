@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige tipo exibição do tipo de avaliação na listagem de avaliações disponíveis para o avaliador
 - Corrige erros no processo da avaliação documental
+- Ajusta a entity-field para interpretar corretamente campos do tipo 'readonly'
 
 ## [7.4.21] - 2024-10-01
 ### Melhorias
