@@ -431,6 +431,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         return true;
     }
+    
+    protected function canUserCreateAgentRelationWithControl($user){
+        return $this->opportunity->canUser('@control', $user);
+    }
+
+    function canUserRemoveAgentRelationWithControl($user){
+        return $this->opportunity->canUser('@control', $user);
+    }
 
     protected function canUser_control($user) {
         
