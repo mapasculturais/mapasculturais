@@ -476,6 +476,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return true;
     }
 
+    public function evaluateSelfApplication(): bool {
+        return true;
+    }
+
     public function jsonSerialize(): array {
         return [];
     }
