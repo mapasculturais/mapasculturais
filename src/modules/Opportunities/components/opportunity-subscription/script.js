@@ -87,6 +87,9 @@ app.component('opportunity-subscription' , {
                     case 'will open':
                         description = this.text('inscrições irão abrir');
                         break;
+                    case 'continuousFlow':
+                        description = this.text('fluxo contínuo');
+                        break;
                 }
             }
 
@@ -171,7 +174,9 @@ app.component('opportunity-subscription' , {
             if (dateStart?._date > _actualDate) {
                 return 'will open';
             } else {
-                if (dateEnd?._date > _actualDate) {
+                if (dateEnd?._date && this.entity.isContinuousFlow && !this.entity.hasEndDate) {
+                    return 'continuousFlow';
+                } else if (dateEnd?._date > _actualDate) {
                     return 'open';
                 } else {
                     return 'closed';
