@@ -7,6 +7,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.4.22] - 2024-10-01
 ### Correções
+- Corrige erro ao definir comissão de avaliação pelo gestores de oportunidades 
 - Corrige erro na criação de anexos
 
 ### Melhorias
