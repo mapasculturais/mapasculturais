@@ -89,9 +89,10 @@ app.component('opportunity-committee-groups', {
             delete this.groups[group]
             this.checkGroupCount();
 
-            delete this.entity.submissionEvaluatorCount[group];
+            delete this.localSubmissionEvaluatorCount[group];
             this.entity.removeAgentRelationGroup(group);
-            this.entity.enableMessages();
+
+            this.autoSave();
         },
 
         renameGroup(oldName, newName, popover) {
