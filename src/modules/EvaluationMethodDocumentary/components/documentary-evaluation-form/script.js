@@ -47,7 +47,7 @@ app.component('documentary-evaluation-form', {
             this.fieldType = data.detail.fieldType;
             this.fieldName = this.fieldType === 'file' ? data.detail.fieldName.replace('field_', 'rfc_') : data.detail.fieldName;
             this.enableForm = data.detail.type === 'evaluationForm.openForm';
-            this.fieldId = parseInt(data.detail.fieldId);
+            this.fieldId = data.detail.fieldId;
             
             if (this.enableForm) {
                 this.getEvaluationData();
@@ -131,7 +131,6 @@ app.component('documentary-evaluation-form', {
                 return false;
             }
     
-            console.log(this.status)
             if(this.status >= 1) {
                 return false;
             }
