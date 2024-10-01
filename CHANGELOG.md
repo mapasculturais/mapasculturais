@@ -15,7 +15,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.4.21] - 2024-10-01
 ### Melhorias
-- Implementei o método getHumanReadable no Entity.js para facilitar a exibição de valores de metadados que possuem listas predefinidas, transformando-os em formatos mais legíveis para o usuário
+- Implementa o método getHumanReadable no Entity.js para facilitar a exibição de valores de metadados que possuem listas predefinidas, transformando-os em formatos mais legíveis para o usuário
 
 ## [7.4.20] - 2024-09-27
 ### Correções
