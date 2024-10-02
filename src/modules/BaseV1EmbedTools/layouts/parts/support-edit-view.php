@@ -17,10 +17,10 @@
         <ul class="attachment-list" ng-controller="RegistrationFieldsController">
             <?php $this->applyTemplateHook('registration-field-list', 'begin') ?>
             <li ng-repeat="field in data.fields" ng-if="showField(field)" id="field_{{::field.id}}" data-field-id="{{::field.id}}" ng-class="{'js-field attachment-list-item registration-view-mode': (field.fieldType != 'section'), 'section': (field.fieldType == 'section')}">
-                <div ng-if="canUserEdit(field)">
+                <div ng-if="canSupportUserEdit(field)">
                     <?php $this->part('singles/registration-field-edit') ?>
                 </div>
-                <div ng-if="!canUserEdit(field)">
+                <div ng-if="!canSupportUserEdit(field)">
                     <?php $this->part('singles/registration-field-view') ?>
                 </div>
             </li>
