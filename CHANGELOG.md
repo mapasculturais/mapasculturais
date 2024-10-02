@@ -7,14 +7,22 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.5.1]
 ### Correções
-- Corrige tipo exibição do tipo de avaliação na listagem de avaliações disponíveis para o avaliador
+- Corrige exibição do tipo de avaliação na listagem de avaliações disponíveis para o avaliador
 - Corrige erros no processo da avaliação documental
 - Ajusta a entity-field para interpretar corretamente campos do tipo 'readonly'
 - Corrigir erro que impedia a listagem de campos para um agente de suporte
 
+## [7.4.22] - 2024-10-01
+### Correções
+- Corrige erro ao definir comissão de avaliação pelo gestores de oportunidades 
+- Corrige erro na criação de anexos
+
+### Melhorias
+- Implementa novos hooks na single e edit do agente
+
 ## [7.4.21] - 2024-10-01
 ### Melhorias
-- Implementei o método getHumanReadable no Entity.js para facilitar a exibição de valores de metadados que possuem listas predefinidas, transformando-os em formatos mais legíveis para o usuário
+- Implementa o método getHumanReadable no Entity.js para facilitar a exibição de valores de metadados que possuem listas predefinidas, transformando-os em formatos mais legíveis para o usuário
 
 ## [7.4.20] - 2024-09-27
 ### Correções
