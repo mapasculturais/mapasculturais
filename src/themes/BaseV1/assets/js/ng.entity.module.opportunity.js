@@ -1802,6 +1802,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }
         }
 
+        if(MapasCulturais.isUserSupport) {
+            let fieldName = "";
+            if(field.fieldType == "file") {
+                fieldName = field.groupName
+            }else {
+                fieldName = field.fieldName
+            }
+    
+            if (fieldName in MapasCulturais.userAllowedFields) {
+                result = true;
+            } 
+        }
+
         return result;
     };
 
