@@ -1463,6 +1463,14 @@ class Module extends \MapasCulturais\Module{
                 }
             });
 
+            $app->hook('entity(Opportunity).insert:after', function() use ($app) {
+                /** @var Opportunity $this */
+                if($this->parent && $this->firstPhase->isContinuousFlow) {
+                    $this->isContinuousFlow = true;
+                    $this->save(true);
+                }
+            });
+
             $app->hook('entity(Registration).insert:after', function() use($app){
                 /** @var Registration $this */
                 $app->disableAccessControl();
