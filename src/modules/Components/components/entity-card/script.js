@@ -66,7 +66,7 @@ app.component('entity-card', {
                 
                 if (this.entity.registrationFrom && this.entity.registrationTo) {
                     if (this.entity.isContinuousFlow && !this.entity.hasEndDate) {
-                        return false;
+                        return true;
                     }
                     return this.entity.registrationFrom.isPast() && this.entity.registrationTo.isFuture();
                 } else {
@@ -75,6 +75,20 @@ app.component('entity-card', {
             }
             return false;
         },
+
+        showEndDateText() {
+            if (this.entity.__objectType == "opportunity") {
+                if (this.entity.registrationFrom && this.entity.registrationTo) {
+                    if (this.entity.isContinuousFlow && !this.entity.hasEndDate) {
+                        return false;
+                    }
+                    return this.entity.registrationTo.isFuture();
+                }
+                return false;
+            }
+            return false;
+        },
+
         useLabels() {
             return this.openSubscriptions || this.hasSlot('labels')
         }
