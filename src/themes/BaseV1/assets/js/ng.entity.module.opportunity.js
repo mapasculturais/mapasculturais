@@ -679,6 +679,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.success(labels['attachmentCreated']);
                 }
             });
+            
+            $scope.data.newFileConfiguration.conditional = false;
+            $scope.data.newFileConfiguration.conditionalField = "";
+            $scope.data.newFileConfiguration.conditionalValue = "";
         };
 
         $scope.removeFileConfiguration = function (id, $index) {

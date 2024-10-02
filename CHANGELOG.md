@@ -8,16 +8,45 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implemente configuração que possibilita tornar obrigatória a inserção de uma imagem de avatar pelo agente ao enviar a inscrição.
 
-## [7.4.17]
-### Melhorias não funcionais
-- Ativa criação de setter's via hook na entidate registration
-- Implementa novos componentHooks no componente registration-form
-- Cria novos hooks no carregamento do embedtools do formulário de visualização de inscrições
-
+## [7.4.22] - 2024-10-01
 ### Correções
-- Corrige aplicação de hook no método sendValidationErrors
-- Faz com que o componente registration-actions analise se existe o campo também no descriptios para lançar os erros
-- Corrige para que a alteração de propriedade de entidades funcione e seja salva corretamente
+- Corrige erro ao definir comissão de avaliação pelo gestores de oportunidades 
+- Corrige erro na criação de anexos
+
+### Melhorias
+- Implementa novos hooks na single e edit do agente
+- Refina as permissões dos gestores e administradores das oportunidades
+
+## [7.4.21] - 2024-10-01
+### Melhorias
+- Implementa o método getHumanReadable no Entity.js para facilitar a exibição de valores de metadados que possuem listas predefinidas, transformando-os em formatos mais legíveis para o usuário
+
+## [7.4.20] - 2024-09-27
+### Correções
+- Corrige o erro que impede a distribuição de avaliação com base no número final da inscrição
+
+## [7.4.19] - 2024-09-25
+### Correções
+- Corrige getter nextPhase para evitar que entre em loop infinito
+
+## [7.4.18] - 2024-09-24
+### Correções
+- Corrige sincronização das inscrições entre fases
+- Corrige exibição da descrição no campo 'Telefone do Brasil'
+
+## [7.4.17] - 2024-09-23
+### Correções
+- Corrigida a criação de eventos semanais e mensais.
+- Corrigido o uso do *hook* no método `sendValidationErrors`.
+- Corrigida a exibição dos nomes dos campos durante a validação de erros no formulário de inscrição.
+- Corrigido para que as alterações de propriedade das entidades funcionem e sejam salvas corretamente.
+- Corrigidas as verificações de exibição dos resumos de agentes, projetos e espaços para o avaliador.
+- Corrigido *db-update* que migra valores das colunas do tipo *array* para o tipo *json*.
+
+### Melhorias não funcionais
+- Implementados novos *templateHooks* e *componentHooks*.
+- Ativada a criação de *setters* via *hook* na entidade de registro.
+- Implementado *db-update* para corrigir erro causado por valores inválidos na tabela `request`.
 
 ## [7.4.16] - 2024-09-04
 ### Correções
