@@ -17,6 +17,9 @@ app.component('entity-admins', {
     },
 
     computed: {
+        isEditable() {
+            return this.entity.currentUserPermissions.createAgentRelationWithControl && this.editable;
+        },
         query() {
             const ids = this.group.map((item) => item.agent.id).join(',');
 

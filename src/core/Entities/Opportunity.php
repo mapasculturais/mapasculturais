@@ -82,6 +82,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityLock,
         Traits\EntityArchive{
             Traits\EntityNested::setParent as nestedSetParent;
+            Traits\EntityAgentRelation::canUserCreateAgentRelationWithControl as __canUserCreateAgentRelationWithControl;
+            Traits\EntityAgentRelation::canUserRemoveAgentRelationWithControl as __canUserRemoveAgentRelationWithControl;
         }
         
     protected $__enableMagicGetterHook = true;
@@ -1565,6 +1567,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
             return $this->evaluationMethodConfiguration->canUser('@control', $user);
         } else {
             return false;
+        }
+    }
+
+    protected function canUserCreateAgentRelationWithControl($user){
+        if ($this->ownerEntity->canUser('@control', $user)) {
+            return true;
+        } else {
+            return $this->__canUserCreateAgentRelationWithControl($user);
+        }
+    }
+
+    function canUserRemoveAgentRelationWithControl($user){
+        if ($this->ownerEntity->canUser('@control', $user)) {
+            return true;
+        } else {
+            return $this->__canUserRemoveAgentRelationWithControl($user);
         }
     }
 
