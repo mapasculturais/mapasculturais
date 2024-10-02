@@ -207,7 +207,7 @@ trait EntityOpportunityDuplicator {
             } else if (isset($futureParentId)) {
                 $parentId = $futureParentId;
             } else {
-                throw new Exception('File parent_id unexpect');
+                throw new Exception('File parent_id unexpected');
             }
 
             $sql = 'INSERT INTO file (md5, mime_type, name, object_type, object_id, create_timestamp, grp, description, parent_id, path) VALUES (:md5, :mime_type, :name, :object_type, :object_id, :create_timestamp, :grp, :description, :parent_id, :path)';
