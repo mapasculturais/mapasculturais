@@ -14,7 +14,7 @@ $this->import('
 ');
 ?>
 <?php $this->applyTemplateHook('entity-related-agents', 'before'); ?>
-<div :class="classes" class="entity-related-agents" v-if="editable || group.length > 0">
+<div :class="classes" class="entity-related-agents" v-if="isEditable || group.length > 0">
     <?php $this->applyTemplateHook('entity-related-agents', 'begin'); ?>
     <h4 class="bold" v-if="group"><?php i::_e("Administrado por") ?> 
         <?php if($this->isEditable()): ?>
@@ -32,7 +32,7 @@ $this->import('
                     </template>
                 </mc-relation-card>
                 <!-- remover agente -->
-                <div v-if="editable" class="agent__delete">
+                <div v-if="isEditable" class="agent__delete">
                     <mc-confirm-button @confirm="removeAgent(relation.agent)">
                         <template #button="modal">
                             <mc-icon @click="modal.open()" name="delete"></mc-icon>
@@ -47,7 +47,7 @@ $this->import('
             </div>
         </div>
         <div class="entity-related-agents__group--actions">
-            <select-entity v-if="editable" type="agent" permissions="" select="id,name,files.avatar,terms,type" @select="addAgent($event)" :query="query" openside="down-right">
+            <select-entity v-if="isEditable" type="agent" permissions="" select="id,name,files.avatar,terms,type" @select="addAgent($event)" :query="query" openside="down-right">
                 <template #button="{ toggle }">
                     <button class="button button--rounded button--sm button--icon button--primary" @click="toggle()">
                         <?php i::_e('Adicionar administrador') ?>

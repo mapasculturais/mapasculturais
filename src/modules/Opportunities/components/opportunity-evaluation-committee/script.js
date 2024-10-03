@@ -149,8 +149,9 @@ app.component('opportunity-evaluation-committee', {
         sendDefinition(field, userId, event = null, type) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
+            
             const fetchFieldMap = {
-                fetch: "fetch",
+                fetch: 'fetch',
                 categories: 'fetchCategories',
                 ranges: 'fetchRanges',
                 proponentTypes: 'fetchProponentTypes'
@@ -158,39 +159,32 @@ app.component('opportunity-evaluation-committee', {
               
             let fetchField = fetchFieldMap[type];
 
-            if (type != "distribution") {
-                if (event && event === this.text('sem avaliações') && this.entity[fetchField][userId].length > 1) {
-                    this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item === this.text('sem avaliações'));
-                } else if (event && event !== this.text('sem avaliações') && this.entity[fetchField][userId].includes(this.text('sem avaliações'))) {
-                    this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item !== this.text('sem avaliações'));
-                }
+            if (event && event === 'sem avaliações' && this.entity[fetchField][userId].length > 1) {
+                this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item === 'sem avaliações');
+            } else if (event && event !== 'sem avaliações' && this.entity[fetchField][userId].includes('sem avaliações')) {
+                this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item !== 'sem avaliações');
             }
-
-            let testData = {
-                fetch: this.entity.fetch,
+    
+            let args = {
                 [fetchField]: this.entity[fetchField]
             };
-
-            clearTimeout(this.sendTimeOut);
-            this.sendTimeOut = setTimeout(() => {
-                api.POST(url, testData).then(res => res.json()).then(data => {
-                    const successMessages = {
-                        addDistribution: 'addDistribution',
-                        addCategory: 'addCategory',
-                        addRange: 'addRange',
-                        addProponentType: 'addProponentType',
-                        removeCategory: 'removeCategory',
-                        removeRange: 'removeRange',
-                        removeProponentType: 'removeProponentType'
-                    };
-
-                    if (successMessages[field]) {
-                        this.messages.success(this.text(successMessages[field]));
-                    }
-                    this.loadReviewers();
-                });
-            }, 800);
-
+    
+            api.POST(url, args).then(res => res.json()).then(data => {
+                const successMessages = {
+                    addDistribution: 'addDistribution',
+                    addCategory: 'addCategory',
+                    addRange: 'addRange',
+                    addProponentType: 'addProponentType',
+                    removeCategory: 'removeCategory',
+                    removeRange: 'removeRange',
+                    removeProponentType: 'removeProponentType'
+                };
+        
+                if (successMessages[field]) {
+                    this.messages.success(this.text(successMessages[field]));
+                }
+                this.loadReviewers();
+            });
         },
 
         loadFetchs() {

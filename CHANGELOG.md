@@ -4,8 +4,31 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [7.5.0] - 2024-09-25
 
+## [7.5.1]
+### Correções
+- Corrige exibição do tipo de avaliação na listagem de avaliações disponíveis para o avaliador
+- Corrige erros no processo da avaliação documental
+- Ajusta a entity-field para interpretar corretamente campos do tipo 'readonly'
+- Corrigir erro que impedia a listagem de campos para um agente de suporte
+
+## [7.4.22] - 2024-10-01
+### Correções
+- Corrige erro ao definir comissão de avaliação pelo gestores de oportunidades 
+- Corrige erro na criação de anexos
+
+### Melhorias
+- Implementa novos hooks na single e edit do agente
+
+## [7.4.21] - 2024-10-01
+### Melhorias
+- Implementa o método getHumanReadable no Entity.js para facilitar a exibição de valores de metadados que possuem listas predefinidas, transformando-os em formatos mais legíveis para o usuário
+
+## [7.4.20] - 2024-09-27
+### Correções
+- Corrige o erro que impede a distribuição de avaliação com base no número final da inscrição
+
+## [7.5.0] - 2024-09-25
 ### Novas funcionalidades
 - **Bloqueio de edição de entidades**: impede que dois usuários diferentes editem a mesma entidade simultaneamente.
 - **Customizador do tema BaseV2 para subsites**: permite a configuração de cores, imagens, textos, posição do mapa, entre outros.

@@ -679,6 +679,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.success(labels['attachmentCreated']);
                 }
             });
+            
+            $scope.data.newFileConfiguration.conditional = false;
+            $scope.data.newFileConfiguration.conditionalField = "";
+            $scope.data.newFileConfiguration.conditionalValue = "";
         };
 
         $scope.removeFileConfiguration = function (id, $index) {
@@ -1800,6 +1804,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             } else if(result && !$scope.isAvaliableEvaluationFields(field)){
                 result = false;
             }
+        }
+
+        if(MapasCulturais.isUserSupport) {
+            let fieldName = "";
+            if(field.fieldType == "file") {
+                fieldName = field.groupName
+            }else {
+                fieldName = field.fieldName
+            }
+    
+            if (fieldName in MapasCulturais.userAllowedFields) {
+                result = true;
+            } 
         }
 
         return result;

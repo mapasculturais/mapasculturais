@@ -63,10 +63,6 @@ $this->import('
 
             <aside>
                 <support-actions :registration="entity"></support-actions>
-                <!-- <div class="actions">
-                    <button class="button button--primary button--md"> <?= i::__('Salvar alterações') ?> </button>
-                    <button class="button button--primary-outline button--md"> <?= i::__('Sair') ?> </button>
-                </div> -->
             </aside>
         </mc-container>
     </div>
