@@ -39,11 +39,10 @@ app.component('opportunity-basic-info' , {
                 this.entity.publishedRegistrations = false;
 
                 this.lastPhase.name = "Publicação final do resultado";
-            } else {
+            } else if (this.entity.registrationFrom) {
                 const myDate = new McDate(new Date(`2111-01-01 00:00`));
                 
                 this.entity.continuousFlow = myDate.sql('full');
-                this.entity.registrationTo = myDate.sql('full');
                 this.entity.publishedRegistrations = true;
                 
                 this.lastPhase.name = "Resultado";
