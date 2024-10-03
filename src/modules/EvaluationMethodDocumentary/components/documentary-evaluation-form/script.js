@@ -31,7 +31,7 @@ app.component('documentary-evaluation-form', {
             userId: null,
             userName: '',
             isEditable: this.editable,
-            evaluationData: {},
+            evaluationData: $MAPAS.config.documentaryEvaluationForm.evaluationData?.evaluationData || {},
             newStatus: null
         };
     },
@@ -99,11 +99,21 @@ app.component('documentary-evaluation-form', {
 
         processResponse(data) {
             this.newStatus = data.detail.response.status;
-            this.isEditable = this.newStatus > 0 ? false : true;
+            this.isEditable = this.newStatus >= 1 ? false : true;
         },
 
-        setEvaluationData(fieldId) {
+        setEvaluationData(fieldId, status = null) {
             this.evaluationData[fieldId] = this.formData.data[fieldId];
+
+            if(status) {
+                let className = `evaluation-${status}`;
+
+                window.parent.postMessage({
+                    type: 'evaluationRegistration.setClass',
+                    className: className,
+                    fieldId: fieldId
+                });
+            }
         },
 
         getEvaluationData() {
@@ -115,6 +125,18 @@ app.component('documentary-evaluation-form', {
 
             return {};
         },
+
+        canEvaluate() {
+            if(!this.entity.currentUserPermissions['evaluate']) {
+                return false;
+            }
+    
+            if(this.status >= 1) {
+                return false;
+            }
+    
+            return true;
+        }
     },
 
     mounted() {
@@ -122,6 +144,6 @@ app.component('documentary-evaluation-form', {
         window.addEventListener('documentaryData', this.getDocumentaryData);
         window.addEventListener('responseEvaluation', this.processResponse);
 
-        this.isEditable = this.status > 0 ? false : this.editable;
-    }
+        this.isEditable = this.canEvaluate();
+    },
 });
