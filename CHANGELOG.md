@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.23] - 2024-10-03
+### Correções
+- Corrige erro que deixa gestor da oportunidade sem permissão de modificar uma inscrição enviada
+
 ## [7.4.22] - 2024-10-01
 ### Correções
 - Corrige erro ao definir comissão de avaliação pelo gestores de oportunidades 

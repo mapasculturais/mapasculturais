@@ -1450,6 +1450,11 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserModify($user){
+
+        if($this->opportunity->canUser('@control')) {
+            return true;
+        }
+
         if($this->status !== self::STATUS_DRAFT){
             return false;
         }else{
