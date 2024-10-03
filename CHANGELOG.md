@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.5.1]
+## [7.5.1] - 2024-10-03
 ### Correções
 - Corrige exibição do tipo de avaliação na listagem de avaliações disponíveis para o avaliador
 - Corrige erros no processo da avaliação documental
