@@ -28,7 +28,7 @@ class Module extends \MapasCulturais\EvaluationMethod
     {
     }
 
-    protected function _getConsolidatedResult(Entities\Registration $registration)
+    protected function _getConsolidatedResult(Entities\Registration $registration, array $evaluations)
     {
         $app = App::i();
         $status = [
@@ -42,8 +42,6 @@ class Module extends \MapasCulturais\EvaluationMethod
         foreach ($committee as $item) {
             $users[] = $item->agent->user->id;
         }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
         $result = i::__("Habilitado");
         foreach ($evaluations as $eval){

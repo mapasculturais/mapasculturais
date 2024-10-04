@@ -2,6 +2,7 @@
 namespace MapasCulturais;
 
 use DateTime;
+use MapasCulturais\Entities\RegistrationEvaluation;
 use \MapasCulturais\i;
 
 abstract class EvaluationMethod extends Module implements \JsonSerializable{
@@ -14,7 +15,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract function getDescription();
     
 
-    abstract protected function _getConsolidatedResult(Entities\Registration $registration);
+    abstract protected function _getConsolidatedResult(Entities\Registration $registration, array $evaluations);
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
 
     abstract function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): ?array;
@@ -160,9 +161,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
 
     function getConsolidatedResult(Entities\Registration $registration){
+        $app = App::i();
+        
         $registration->checkPermission('viewConsolidatedResult');
+        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration, 'status' => RegistrationEvaluation::STATUS_SENT]);
 
-        return $this->_getConsolidatedResult($registration);
+        return $this->_getConsolidatedResult($registration, $evaluations);
     }
 
     function getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
