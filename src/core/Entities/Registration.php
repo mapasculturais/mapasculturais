@@ -717,11 +717,6 @@ class Registration extends \MapasCulturais\Entity
         $exceptions = $this->getValuersExceptionsList();
         return $exceptions->exclude;
     }
-    
-
-    // function setStatus($status){
-    //     // do nothing
-    // }
 
     function _setStatusTo($status, $flush = true){
         if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
