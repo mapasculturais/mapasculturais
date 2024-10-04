@@ -834,6 +834,12 @@ class Module extends \MapasCulturais\Module{
             'type' => 'boolean',
             'default' => false,
         ]);
+        
+        $this->registerOpportunityMetadata('proponentAgentRelation', [
+            'label' => i::__('Vinculação de Agente coletivo para tipos de proponente'),
+            'type' => 'json', 
+            'description' => i::__('Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou Pessoa Jurídica'),
+        ]);
     }
 
     public function applySeal(Agent $agent, array $sealIds){

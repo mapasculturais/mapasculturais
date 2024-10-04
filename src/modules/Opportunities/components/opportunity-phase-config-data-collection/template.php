@@ -13,6 +13,7 @@ $this->import('
     opportunity-enable-claim
     opportunity-category
     opportunity-ranges-config
+    opportunity-proponent-types
 ');
 ?>
     <div class="opportunity-data-collection grid-12">
@@ -55,15 +56,10 @@ $this->import('
             <opportunity-category v-if="phase.isFirstPhase" :entity="phase"></opportunity-category>
         </div>
 
-        <div class="opportunity-data-collection__preponent col-12" v-if="phase.isFirstPhase">
-            <h4 class="bold"><?= i::__("Tipos do proponente")?>
-                <?php $this->info('editais-oportunidades -> configuracoes -> tipos-proponentes') ?>
-            </h4>
-            <h6><?= i::__("Selecione um ou mais tipos de proponente que poderá participar do edital")?></h6>
-            <div>
-                <entity-field class="field__preponent"  :entity="phase" prop="registrationProponentTypes" :autosave="3000" hide-label></entity-field>
-            </div>
+        <div class="col-12" v-if="phase.isFirstPhase">
+            <opportunity-proponent-types :entity="phase"></opportunity-proponent-types>
         </div>
+
         <?php $this->applyTemplateHook('opportunity-data-collection-config','after')?>
 
         <div class="col-12" v-if="phase.isFirstPhase">

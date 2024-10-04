@@ -25,6 +25,7 @@ app.component('opportunity-subscription' , {
 
     data () {
         let agent = null;
+        let agentCollective = null;
         let phases = null;
 
         if ($MAPAS.config.opportunitySubscription.agents.length == 1) {
@@ -37,6 +38,7 @@ app.component('opportunity-subscription' , {
 
         return {
             agent,
+            agentCollective,
             category: null,
             registrationRange: null,
             registrationProponentType: null,
@@ -148,12 +150,22 @@ app.component('opportunity-subscription' , {
             const phase = this.phases.find(item => item.isLastPhase);
             return phase;
         },
+
+        selectAgentRelationColetivo() {
+           return (this.registrationProponentType == 'Coletivo' && this.entity.proponentAgentRelation['Coletivo'] == true) 
+                || (this.registrationProponentType == 'Pessoa Jurídica' && this.entity.proponentAgentRelation['Pessoa Jurídica'] == true);
+        },
     },
 
     methods: {
         selectAgent(agent) {
-            this.agent = agent;
+            if (agent.type?.name && agent.type.name == "Coletivo") {
+                this.agentCollective = agent;
+            } else {
+                this.agent = agent;
+            }
         },
+
         removeAgent() {
             this.agent = null;
         },
@@ -183,26 +195,34 @@ app.component('opportunity-subscription' , {
                 }
             }     
         },
+
         async subscribe() {
             const messages = useMessages();
 
             if (!this.agent) {
                 messages.error(this.text('selecione agente'));
-                return;
+                return false;
+            } else if (this.registrationProponentType == 'Coletivo' && this.entity.proponentAgentRelation['Coletivo'] == true && !this.agentCollective) {
+                messages.error(this.text('selecione agente coletivo'));
+                return false;
+            } else if (this.registrationProponentType == 'Pessoa Jurídica' && this.entity.proponentAgentRelation['Pessoa Jurídica'] == true && !this.agentCollective) {
+                messages.error(this.text('selecione agente coletivo'));
+                return false;
             } else if (this.categories?.length && !this.category) {
                 messages.error(this.text('selecione categoria'));
-                return;
+                return false;
             } else if (this.registrationRanges?.length && !this.registrationRange) {
                 messages.error(this.text('selecione faixa'));
-                return;
+                return false;
             } else if (this.registrationProponentTypes?.length && !this.registrationProponentType) {
                 messages.error(this.text('selecione tipo do proponente'));
-                return;
+                return false;
             }
             this.processing = true;
 
             const registration = new Entity('registration');
             registration.opportunity = this.entity;
+            
             registration.owner = this.agent;
             if (this.category) {
                 registration.category = this.category;
@@ -217,6 +237,10 @@ app.component('opportunity-subscription' , {
             registration.disableMessages();
             try {
                 await registration.save().then(res => {
+                    if (this.agentCollective) {
+                        registration.addRelatedAgent('coletivo', this.agentCollective);
+                        registration.save();
+                    }
                     window.location.href = registration.editUrl;
                 });    
             } catch (error) {
