@@ -79,6 +79,10 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </div>
 
         <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
+        
+        <template v-if="phase.evaluateSelfApplication">
+            <entity-field :entity="phase" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Auto aplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
+        </template>
 
         <div class="config-phase__line col-12"></div>
 
