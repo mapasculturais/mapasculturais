@@ -12,14 +12,21 @@ app.component('opportunity-committee-groups', {
         return {
            editable: true,
            newGroupName: '',
-           groups: {},
+           groups: this.entity.relatedAgents || {},
            editGroupName: false,
            newName: '',
            localSubmissionEvaluatorCount: {},
            tabSelected: '',
            hasGroupsFlag: false,
-           hasTwoOrMoreGroups: false,
-           minervaGroup: 'Grupo de Voto Final'
+           minervaGroup: 'Comissão de voto final'
+        }
+    },
+
+    computed: {
+        hasTwoOrMoreGroups() {
+            const filteredGroups = Object.keys(this.groups).filter(group => group !== this.minervaGroup);
+            const groupCount = filteredGroups.length;
+            return groupCount >= 2 && !this.groups[this.minervaGroup];
         }
     },
 
@@ -31,17 +38,12 @@ app.component('opportunity-committee-groups', {
     methods: {
         initializeGroups() {
             let groups = {};
-            for (let relation of this.entity.agentRelations) {
-                let groupName = relation.newGroupName ?? relation.group;
-                
+            for (let groupName of Object.keys(this.groups)) {
                 if (groupName !== "group-admin" && groupName !== '@support') {
-                    groups[groupName] = relation;
+                    groups[groupName] = this.groups[groupName];
                 }
             }
-        
             this.groups = groups;
-            this.hasGroupsFlag = Object.keys(this.groups).length > 0;
-            this.checkGroupCount();
         },
 
         initiliazeSubmissionEvaluatorCount() {
@@ -55,7 +57,7 @@ app.component('opportunity-committee-groups', {
                 }
 
                 if (!this.entity.submissionEvaluatorCount[groupName] && !this.localSubmissionEvaluatorCount[groupName]) {
-                    this.localSubmissionEvaluatorCount[groupName] = 1;
+                    this.localSubmissionEvaluatorCount[groupName] = null;
                 } 
             });
 
@@ -73,22 +75,20 @@ app.component('opportunity-committee-groups', {
             if (!this.entity.relatedAgents[group]) {
                 this.entity.relatedAgents[group] = [];
             }
+
             if (!this.entity.agentRelations[group]) {
                 this.entity.agentRelations[group] = [];
             }
-            this.groups = { ...this.groups, [group]: this.entity.agentRelations[group] };
-            this.localSubmissionEvaluatorCount[group] = 1;
-            this.checkGroupCount();
 
-            if(disableMinervaGroup) {
-                this.hasTwoOrMoreGroups = false;
-            }
+            this.groups = { ...this.groups, [group]: this.entity.agentRelations[group] };
+
+            this.localSubmissionEvaluatorCount[group] = null;
+
+            this.reorderGroups();
         },
 
         removeGroup(group) {
             delete this.groups[group]
-            this.checkGroupCount();
-
             delete this.localSubmissionEvaluatorCount[group];
             this.entity.removeAgentRelationGroup(group);
 
@@ -106,6 +106,20 @@ app.component('opportunity-committee-groups', {
                 }
             });
 
+            const groupsNames = Object.keys(this.groups);
+            const newGroups = {};
+            groupsNames.forEach(groupName => {
+                if (groupName == oldName) {
+                    newGroups[newName] = this.groups[groupName];
+                } else {
+                    newGroups[groupName] = this.groups[groupName];
+                }
+            });
+
+            this.group = {};
+            this.groups = newGroups;
+            this.reorderGroups();
+
             this.initializeGroups();
         },
 
@@ -119,10 +133,30 @@ app.component('opportunity-committee-groups', {
             this.hasGroupsFlag = true;
         },
 
-        checkGroupCount() {
-            const filteredGroups = Object.keys(this.groups).filter(group => group !== this.minervaGroup);
-            const groupCount = filteredGroups.length;
-            this.hasTwoOrMoreGroups = groupCount >= 1 && !this.groups[this.minervaGroup];
+        changeMultipleEvaluators(event, group) {
+            this.localSubmissionEvaluatorCount[group] = (!event.target.checked) ? null : 1;
+        },
+
+        reorderGroups() {
+            if (Object.keys(this.groups).length > 0) {
+                const groupsKeys = Object.keys(this.groups);
+                const indexMinervaVote = groupsKeys.indexOf(this.minervaGroup);
+    
+                if (indexMinervaVote != -1 && indexMinervaVote < groupsKeys.length - 1) {
+                    groupsKeys.splice(indexMinervaVote, 1);
+                    groupsKeys.push(this.minervaGroup);
+                    
+                    const newGroups = {};
+                    groupsKeys.forEach(groupKey => {
+                        newGroups[groupKey] = this.groups[groupKey];
+                    });
+                    
+                    this.groups = {};
+                    setTimeout(() => {
+                        this.groups = {...newGroups};
+                    });
+                }
+            }
         }
     },
 });
