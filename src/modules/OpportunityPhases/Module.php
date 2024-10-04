@@ -1258,9 +1258,13 @@ class Module extends \MapasCulturais\Module{
              * Validação da data final 
              */
             if ($next && $next_date_to_string) {
-                $validations['registrationTo']["\$value <= new DateTime('$next_date_to_string')"] = $next->isLastPhase ? 
-                    i::__('A data final deve ser anterior a data de publicação da última fase') :
-                    i::__('A data final deve ser anterior a data de término da próxima fase');
+                $shouldValidateRegistrationTo = (!$this->isContinuousFlow) || ($this->isContinuousFlow && $this->hasEndDate);
+                
+                if($shouldValidateRegistrationTo){
+                    $validations['registrationTo']["\$value <= new DateTime('$next_date_to_string')"] = $next->isLastPhase ? 
+                        i::__('A data final deve ser anterior a data de publicação da última fase') :
+                        i::__('A data final deve ser anterior a data de término da próxima fase');
+                }
             }
             if ($previous && $previous_date_to_string) {
                 $validations['registrationTo']["\$value >= new DateTime('$previous_date_to_string')"] = $previous->isFirstFase ?
@@ -1475,6 +1479,14 @@ class Module extends \MapasCulturais\Module{
                     $this->registrationCategories = $this->parent->registrationCategories;
                     $this->registrationProponentTypes = $this->parent->registrationProponentTypes;
                     $this->registrationRanges = $this->parent->registrationRanges;
+                    $this->save(true);
+                }
+            });
+
+            $app->hook('entity(Opportunity).insert:after', function() use ($app) {
+                /** @var Opportunity $this */
+                if($this->parent && $this->firstPhase->isContinuousFlow) {
+                    $this->isContinuousFlow = true;
                     $this->save(true);
                 }
             });

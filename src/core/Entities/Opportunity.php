@@ -307,6 +307,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
      * @ORM\Column(name="avaliable_evaluation_fields", type="json", nullable=true)
      */
     protected $avaliableEvaluationFields = [];
+
+    /**
+     * @var dateTime
+     *
+     * @ORM\Column(name="continuous_flow", type="datetime", nullable=true)
+     */
+    protected $continuousFlow;
     
     abstract function getSpecializedClassName();
 
@@ -390,6 +397,18 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->avaliableEvaluationFields = [];
         }else{
             $this->avaliableEvaluationFields = $value;
+        }
+    }
+
+    function setContinuousFlow($value) {
+        if ($value !== null) {
+            try {
+                $this->continuousFlow = new \DateTime($value);
+            } catch (\Exception $e) {
+                $this->continuousFlow = null;
+            }
+        } else {
+            $this->continuousFlow = null;
         }
     }
     
@@ -719,8 +738,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     function validateRegistrationDates() {
         if($this->registrationFrom && $this->registrationTo){
-            return $this->registrationFrom <= $this->registrationTo;
-
+            $shouldValidateRegistrationTo = (!$this->isContinuousFlow) || ($this->isContinuousFlow && $this->hasEndDate);
+            if ($shouldValidateRegistrationTo) {
+                return $this->registrationFrom <= $this->registrationTo;
+            } else {
+                return true;
+            }
         }elseif($this->registrationFrom || $this->registrationTo){
             return false;
 
