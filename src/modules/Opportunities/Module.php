@@ -597,6 +597,52 @@ class Module extends \MapasCulturais\Module{
                 $this->submissionEvaluatorCount = $evaluator_count;
             }
         });
+
+        $app->hook("entity(RegistrationEvaluation).send:after", function() use ($app) {
+            /** @var \MapasCulturais\Entities\RegistrationEvaluation $this */
+            $registration = $this->registration;
+            $opportunity = $registration->opportunity;
+            $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
+            
+            if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
+                $conn = $app->em->getConnection();
+                $evaluations = $conn->fetchAll("
+                    SELECT
+                       *
+                    FROM
+                        evaluations
+                    WHERE
+                        registration_id = {$registration->id}"
+                );
+                
+                $all_status_sent = true;
+                
+                foreach ($evaluations as $evaluation) {
+                    if ($evaluation['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
+                        $all_status_sent = false;
+                    }
+                }
+
+                if ($all_status_sent) {
+                    if($evaluation_type == 'simple') {
+                        $value = $registration->consolidatedResult;
+                    }
+
+                    if($evaluation_type == 'documentary') {
+                        $value = $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
+                    }
+                    
+                    if($evaluation_type == 'qualification') {
+                        $value = $registration->consolidatedResult == 'Habilitado' ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
+                    }
+                    
+                    $app->disableAccessControl();
+                    $registration->status = $value;
+                    $registration->save();
+                    $app->enableAccessControl();
+                }
+            }
+        });
     }
 
     function register(){
