@@ -11,6 +11,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\Entities\Agent;
 
 class Module extends \MapasCulturais\Module{
 
@@ -24,6 +25,8 @@ class Module extends \MapasCulturais\Module{
 
         /** @var App $app */
         $app = App::i();
+
+        $self = $this;
 
         // Registro de Jobs
         $app->registerJobType(new Jobs\StartEvaluationPhase(Jobs\StartEvaluationPhase::SLUG));
@@ -643,6 +646,141 @@ class Module extends \MapasCulturais\Module{
                 }
             }
         });
+        
+        // Adiciona os selos de acordo com os proponent
+        $app->hook("entity(Registration).status(approved)", function() use($app, $self){
+            /** @var \MapasCulturais\Entities\Registration $this */
+
+            $opportunity = $this->opportunity; 
+
+            if ($opportunity && $opportunity->publishedRegistrations) {
+               $seals = $opportunity->proponentSeals;
+               $proponent_type = $this->proponentType;
+               $owner = $this->owner;
+               $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+               
+               if($proponent_type){
+                   
+                   if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
+                       $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+                       if (isset($seals->$proponent_type)) {
+                            $proponent_seals = $seals->{$proponent_type};
+                            if($agent_type == "owner"){
+                               $self->applySeal($owner,$proponent_seals);
+                            }
+                        
+                            if($agent_type == "coletivo"){
+                                $agents = $this->getAgentRelations();
+                                $self->applySeal($agents[0]->agent, $proponent_seals);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        $app->hook("entity(Registration).status(<<draft|waitlist|notapproved|invalid|sent|>>)", function() use($app, $self){
+            //* @var \MapasCulturais\Entities\Opportunity $this /
+            
+            $opportunity = $this->opportunity;
+
+            if ($opportunity && $opportunity->publishedRegistrations) {
+                $seals = $opportunity->proponentSeals;
+                $proponent_type = $this->proponentType;
+                $owner = $this->owner;
+        
+                if ($proponent_type) {
+                    $proponent_seals = $seals->{$proponent_type};
+                    $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+                    $agent_type = $proponent_typesTo_agents_Map[$proponent_type] ?? null;
+        
+                   
+                    if ($agent_type == "owner") {
+                        $relations = $owner->getSealRelations();
+                        $self->removeSeals($app, $relations, $proponent_seals);
+                    }
+
+                    if ($agent_type == "coletivo") {
+                        $agent_relations = $this->getAgentRelations();
+        
+                        foreach ($agent_relations as $agent_relation) {
+                            $agent = $agent_relation->agent;
+                            $relations = $agent->getSealRelations();
+                            $self->removeSeals($app, $relations, $proponent_seals);
+                        }
+                    }
+                }
+            }
+        });
+
+        //Adicionar selos conforme a publicação de resultado
+        $app->hook("entity(Opportunity).publishRegistrations:after", function() use($app, $self){
+            //* @var \MapasCulturais\Entities\Opportunity $this /
+        
+            if($this->proponentSeals){
+                $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+                $registrations = $app->repo('Registration')->findBy(['opportunity' => $this]);
+            
+                foreach($registrations as $registration){
+            
+                    if($registration->status == Registration::STATUS_APPROVED){
+                    $proponent_type = $registration->proponentType;
+            
+                        if($proponent_type){
+                            $proponent_seals = $this->proponentSeals->{$proponent_type};
+                            $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+            
+                            if($agent_type == "owner"){
+                                $owner = $registration->owner;
+                                $self->applySeal($owner,$proponent_seals);
+                            }
+            
+                            if($agent_type == "coletivo"){
+                                if($agents = $registration->getAgentRelations()){
+                                    $self->applySeal($agents[0]->agent, $proponent_seals,$agent_type);
+                                }
+                            }
+                        }
+                    }   
+                }
+            }
+        });
+
+        $app->hook("entity(Opportunity).unpublishRegistrations:after", function() use($app, $self) {
+            /** @var \MapasCulturais\Entities\Opportunity $this */
+            if ($this->proponentSeals) {
+        
+                $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+                $registrations = $app->repo('Registration')->findBy(['opportunity' => $this]);
+        
+                foreach ($registrations as $registration) {
+                    if ($registration->status == \MapasCulturais\Entities\Registration::STATUS_APPROVED) {
+                        $proponent_type = $registration->proponentType;
+        
+                        if ($proponent_type) {
+                            $proponent_seals = $this->proponentSeals->{$proponent_type};
+                            $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+        
+                            if ($agent_type == "owner") {
+                                $owner = $registration->owner;
+                                $relations = $owner->getSealRelations();
+                                $self->removeSeals($app, $relations, $proponent_seals);
+                            }
+        
+                            if ($agent_type == "coletivo") {
+                                $agent_relations = $registration->getAgentRelations();
+        
+                                foreach ($agent_relations as $agent_relation) {
+                                    $agent = $agent_relation->agent;
+                                    $relations = $agent->getSealRelations();
+                                    $self->removeSeals($app, $relations, $proponent_seals);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     function register(){
@@ -680,5 +818,41 @@ class Module extends \MapasCulturais\Module{
             'type' => 'boolean',
             'default' => false
         ]);
+        $this->registerOpportunityMetadata('proponentSeals', [
+            'label' => i::__('Selos de certificação'),
+            'type' => 'json',
+        ]);
+    }
+
+    public function applySeal(Agent $agent, array $sealIds){
+        $app = App::i();
+        foreach($sealIds as $sealId) {
+            $seal = $app->repo('Seal')->find($sealId);
+            $relations = $agent->getSealRelations();
+    
+            $has_new_seal = false;
+            foreach($relations as $relation){
+                if($relation->seal->id == $seal->id){
+                    $has_new_seal = true;
+                    break;
+                }
+            }
+            if(!$has_new_seal){
+                $agent->createSealRelation($seal);
+            }
+        }
+    }
+
+    function removeSeals($app, $relations, $proponent_seals) {
+        foreach ($proponent_seals as $proponent_seal) {
+            $seal = $app->repo('Seal')->find($proponent_seal);
+    
+            foreach ($relations as $relation) {
+                if ($relation->seal->id == $seal->id) {
+                    $relation->owner->removeSealRelation($seal);
+                    break;
+                }
+            }
+        }
     }
 }
