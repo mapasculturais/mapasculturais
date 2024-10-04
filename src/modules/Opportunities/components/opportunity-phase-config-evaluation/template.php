@@ -12,6 +12,7 @@ $this->import('
     fields-visible-evaluators
     mc-confirm-button
     mc-modal
+    opportunity-committee-groups
     opportunity-evaluation-committee
     opportunity-phase-publish-date-config
     tiebreaker-criteria-configuration
@@ -53,7 +54,9 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             </div>
 
             <div class="evaluation-step__section-content">
-                <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
+                <opportunity-committee-groups v-if="phase.useCommitteeGroups" :entity="phase"></opportunity-committee-groups>
+
+                <opportunity-evaluation-committee v-else :entity="phase"></opportunity-evaluation-committee>
                 <!--<v1-embed-tool v-if="phase.type.id === 'qualification'" route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>-->
             </div>
         </section>
@@ -79,6 +82,10 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </div>
 
         <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
+        
+        <template v-if="phase.evaluateSelfApplication">
+            <entity-field :entity="phase" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Auto aplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
+        </template>
 
         <div class="config-phase__line col-12"></div>
 

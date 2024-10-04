@@ -307,10 +307,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $consolidated_results;
     }
 
-    public function _getConsolidatedResult(Entities\Registration $registration) {
+    public function _getConsolidatedResult(Entities\Registration $registration, array $evaluations) {
         $app = App::i();
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
 
         if(is_array($evaluations) && count($evaluations) === 0){
             return 0;

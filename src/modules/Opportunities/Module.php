@@ -520,6 +520,21 @@ class Module extends \MapasCulturais\Module{
             ];
         });
 
+        $app->hook('entity(EvaluationMethodConfiguration).propertiesMetadata', function(&$result) {
+            $result['useCommitteeGroups'] = [
+                'isMetadata' => false,
+                'isEntityRelation' => false,
+                'isReadonly' => true,
+                'label' => i::__('Indica se pode utilizar grupos de comissão de avaliação')
+            ];
+            $result['evaluateSelfApplication'] = [
+                'isMetadata' => false,
+                'isEntityRelation' => false,
+                'isReadonly' => true,
+                'label' => i::__('Indica se pode ser utilizada a auto aplicação de resultados')
+            ];
+        });
+
        // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento de inserir, atualizar ou remover.
         $app->hook("entity(RegistrationEvaluation).<<insert|update|remove>>:after", function() use ($app) {
             $opportunity = $this->registration->opportunity;
@@ -571,6 +586,63 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook("entity(EvaluationMethodConfiguration).renameAgentRelationGroup:before", function($old_name, $new_name, $relations) {
+            /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
+            
+            if($this->submissionEvaluatorCount->{$old_name}) {
+                $evaluator_count = $this->submissionEvaluatorCount;
+                $evaluator_count->{$new_name} = $evaluator_count->{$old_name};
+                unset($evaluator_count->{$old_name});
+
+                $this->submissionEvaluatorCount = $evaluator_count;
+            }
+        });
+
+        $app->hook("entity(RegistrationEvaluation).send:after", function() use ($app) {
+            /** @var \MapasCulturais\Entities\RegistrationEvaluation $this */
+            $registration = $this->registration;
+            $opportunity = $registration->opportunity;
+            $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
+            
+            if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
+                $conn = $app->em->getConnection();
+                $evaluations = $conn->fetchAll("
+                    SELECT
+                       *
+                    FROM
+                        evaluations
+                    WHERE
+                        registration_id = {$registration->id}"
+                );
+                
+                $all_status_sent = true;
+                
+                foreach ($evaluations as $evaluation) {
+                    if ($evaluation['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
+                        $all_status_sent = false;
+                    }
+                }
+
+                if ($all_status_sent) {
+                    if($evaluation_type == 'simple') {
+                        $value = $registration->consolidatedResult;
+                    }
+
+                    if($evaluation_type == 'documentary') {
+                        $value = $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
+                    }
+                    
+                    if($evaluation_type == 'qualification') {
+                        $value = $registration->consolidatedResult == 'Habilitado' ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
+                    }
+                    
+                    $app->disableAccessControl();
+                    $registration->status = $value;
+                    $registration->save();
+                    $app->enableAccessControl();
+                }
+            }
+        });
     }
 
     function register(){
@@ -597,6 +669,16 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Publicar o nome dos avaliadores nos pareceres'),
             'type' => 'json',
         ]);
-           
+        
+        $this->registerEvauationMethodConfigurationMetadata('submissionEvaluatorCount', [
+            'label' => i::__('Quantidade de avaliadores por inscrição'),
+            'type' => 'json',
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('autoApplicationAllowed', [
+            'label' => i::__('Auto aplicação de resultados'),
+            'type' => 'boolean',
+            'default' => false
+        ]);
     }
 }
