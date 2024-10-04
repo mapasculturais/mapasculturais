@@ -1,0 +1,37 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-proponent-types {
+    display: flex;
+    flex-direction: column;
+    gap: size(10);
+    margin-bottom: size(16);
+
+    &__fields {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__field {
+        display: flex;
+        gap: size(8);
+        align-items: center;
+
+        input {
+            width: size(18);
+            height: size(18);
+        }
+
+        .field__collective {
+            margin-left: size(61.7);
+
+            @media (max-width: 659px) {
+                margin-left: size(10);
+            }
+        }
+        
+        .field__legal {
+            margin-left: size(10)
+        }
+    }
+}

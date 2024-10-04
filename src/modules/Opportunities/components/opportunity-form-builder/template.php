@@ -23,41 +23,6 @@ $this->import('
     </div>
     <opportunity-form-import classes="col-12" :entity="entity"></opportunity-form-import>
     <div class="form-builder__cards col-12 grid-12">
-        <div class="col-6 sm:col-12" v-if="entity.isFirstPhase">
-            <mc-card>
-                <template #default>
-                    <div class="input-group grid-12">
-                        <div v-if="entity.isFirstPhase" class="col-12">
-                            <h4 class="input-group__title"><?= i::__("Habilitar campo para vínculo de agente coletivo") ?></h4>
-                            <h6 class="input-group__subtitle"><?= i::__("Permite que o inscrito vincule um Agente Coletivo com a sua inscrição.") ?></h6>
-                            <div class="input-group__inputs">
-                                <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="dontUse" /> <?= i::_e('Desabilitado') ?> </label>
-                                <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="required" /> <?= i::_e('Obrigatório') ?> </label>
-                                <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="optional" /> <?= i::_e('Opcional') ?> </label>
-                            </div>
-                        </div>
-
-                    </div>
-                </template>
-            </mc-card>
-        </div>
-
-        <div class="col-6 sm:col-12 grid-12" v-if="entity.isFirstPhase">
-            <mc-card class="col-12">
-                <template #default>
-                    <div v-if="entity.isFirstPhase" class="col-12">
-                        <h4 class="input-group__title"><?= i::__("Habilitar campo de instituição responsável") ?></h4>
-                        <h6 class="input-group__subtitle"><?= i::__("Permite a vinculação de instituições (agentes coletivos com CNPJ) no momento da inscrição.") ?></h6>
-                        <div class="input-group__inputs">
-                            <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="dontUse" /> <?= i::_e('Desabilitado') ?> </label>
-                            <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
-                            <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
-                        </div>
-                    </div>
-                </template>
-            </mc-card>
-        </div>
-
         <div class="col-6 sm:col-12 grid-12" v-if="entity.isFirstPhase">
             <mc-card class="col-12">
                 <template #default>
