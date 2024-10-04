@@ -49,7 +49,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <section class="col-12 evaluation-step__section">
             <div class="evaluation-step__section-header">
                 <div class="evaluation-step__section-label">
-                    <h3><?= i::__('Comissão de avaliação') ?></h3>
+                    <h3><?= i::__('Comissões de avaliação') ?></h3>
                 </div>
             </div>
 
