@@ -628,5 +628,11 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Quantidade de avaliadores por inscrição'),
             'type' => 'json',
         ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('autoApplicationAllowed', [
+            'label' => i::__('Auto aplicação de resultados'),
+            'type' => 'boolean',
+            'default' => false
+        ]);
     }
 }
