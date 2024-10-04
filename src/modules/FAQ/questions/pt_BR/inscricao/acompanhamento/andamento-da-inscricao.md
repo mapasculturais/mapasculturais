@@ -6,7 +6,7 @@
 
 Você pode acompanhar o andamento de sua inscriçao acessando a Oportunidade que voce se inscreveu e clicando em **Acompanhar inscrição**.
 
-&nbsp;
+
 
 #### **Por lá, você pode:**
 

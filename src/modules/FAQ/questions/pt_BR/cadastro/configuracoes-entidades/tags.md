@@ -6,7 +6,7 @@
 
 Tags são como **etiquetas digitais** que usamos para categorizar e organizar as entidades. 
 
-&nbsp;
+
 
 #### **As tags servem para:**
 

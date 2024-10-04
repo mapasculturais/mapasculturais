@@ -54,6 +54,10 @@ app.component('entity-field', {
             fieldType = 'textarea';
         }
 
+        if (!description.min) {
+            description.min = 0;
+        }
+
         return {
             __timeout: null,
             description: description,
