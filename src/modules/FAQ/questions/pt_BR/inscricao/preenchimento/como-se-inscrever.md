@@ -6,7 +6,7 @@
 
 Para participar de uma Oportunidade é bem simples e rápido! 
 
-&nbsp;
+
 
 #### **Siga os passos:**
 
