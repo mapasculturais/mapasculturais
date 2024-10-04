@@ -26,4 +26,5 @@ return [
 
     /* validações */
     'Gratuito' => 'Gratuito',
+    'corrija os erros' => 'Por favor, corrija os erros indicados antes de criar a ocorrência.',
 ];
