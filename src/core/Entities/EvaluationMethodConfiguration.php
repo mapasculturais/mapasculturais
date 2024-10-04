@@ -409,12 +409,12 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             return false;
         }
 
-        $valuers = $this->getRelatedAgents('group-admin', true);
+        $valuers = $this->getAgentRelations();
         
         $is_valuer = false;
         
         foreach ($valuers as $agent_relation) {
-            if ($agent_relation->status != 1) {
+            if ($agent_relation->status != EvaluationMethodConfigurationAgentRelation::STATUS_ENABLED) {
                 continue;
             }
 
