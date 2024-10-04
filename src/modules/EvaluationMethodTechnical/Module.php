@@ -900,7 +900,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $errors;
     }
 
-    public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
+    public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration, array $evaluations) {
         $app = App::i();
         $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
             \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
@@ -911,8 +911,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
         foreach ($committee as $item) {
             $users[] = $item->agent->user->id;
         }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
         $result = 0;
         foreach ($evaluations as $eval){
@@ -1210,5 +1208,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
 
         return '';
+    }
+
+    public function useCommitteeGroups(): bool {
+        return false;
+    }
+
+    public function evaluateSelfApplication(): bool {
+        return false;
     }
 }

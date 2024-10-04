@@ -163,7 +163,7 @@ $this->import('
             <template #button="{ toggle }">
                 <button class="button button--icon button--primary" @click="toggle()">
                     <mc-icon name="add"></mc-icon>
-                    <?php i::_e('Adicionador pessoa avaliadora') ?>
+                    <?php i::_e('Adicionar pessoa avaliadora') ?>
                 </button>
             </template>
         </select-entity>

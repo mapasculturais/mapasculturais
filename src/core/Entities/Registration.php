@@ -1562,12 +1562,12 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        $valuers = $evaluation_method_configuration->getRelatedAgents('group-admin', true);
+        $valuers = $evaluation_method_configuration->getAgentRelations();
         
         $is_valuer = false;
         
         foreach ($valuers as $agent_relation) {
-            if ($agent_relation->status != 1) {
+            if ($agent_relation->status != EvaluationMethodConfigurationAgentRelation::STATUS_ENABLED) {
                 continue;
             }
 
