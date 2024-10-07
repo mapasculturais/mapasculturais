@@ -12,15 +12,6 @@
         }
     }
 
-    &__title {
-        align-items: center;
-        display: flex;
-        font-size: $font-size-sm;
-        font-weight: 600;
-        gap: size(8);
-        line-height: size(25);
-    }
-
     .leaflet-container {
         z-index: 0;
     }
