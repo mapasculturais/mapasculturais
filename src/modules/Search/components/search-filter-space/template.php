@@ -22,7 +22,7 @@ $this->import('
             <label> <?php i::_e('Status do espaço') ?> </label>
             <label> <input v-model="pseudoQuery['acessibilidade']" true-value="Sim" :false-value="undefined" type="checkbox"> <?php i::_e('Possui acessibilidade') ?> </label>
             <label class="verified"> <input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Espaços oficiais') ?> </label>
-        </div>  
+        </div>
         <div class="field">
             <label> <?php i::_e('Tipos de espaços') ?></label>
 
@@ -31,7 +31,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)"  @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="space__background space__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" item-class="space__background space__color"></mc-tag-list>
         </div>
         <div class="field">
             <label> <?php i::_e('Área de atuação') ?> </label>
@@ -40,7 +40,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)"  @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="space__background space__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['term:area']" item-class="space__background space__color"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-space', 'end') ?>
     </form>

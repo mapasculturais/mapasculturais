@@ -8,9 +8,9 @@ use MapasCulturais\i;
 
 $this->import('
     mc-icon
-    mc-multiselect 
+    mc-multiselect
     mc-tag-list
-    search-filter 
+    search-filter
 ');
 ?>
 <search-filter :position="position" :pseudo-query="pseudoQuery">
@@ -22,14 +22,14 @@ $this->import('
         <div class="field">
             <label> <?php i::_e('Eventos acontecendo') ?></label>
             <div class="datepicker">
-                <datepicker 
+                <datepicker
                     teleport
-                    :locale="locale" 
+                    :locale="locale"
                     :weekStart="0"
-                    v-model="date" 
-                    :enableTimePicker='false' 
+                    v-model="date"
+                    :enableTimePicker='false'
                     :format="dateFormat"
-                    :presetRanges="presetRanges" 
+                    :presetRanges="presetRanges"
                     :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
                     range multiCalendars multiCalendarsSolo autoApply utc></datepicker>
                 <div class="filter-btn">
@@ -49,7 +49,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" classes="event__background event__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" item-class="event__background event__color"></mc-tag-list>
         </div>
         <div class="field">
             <label> <?php i::_e('Linguagens') ?></label>
@@ -58,7 +58,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione as linguagens') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" classes="event__background event__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" item-class="event__background event__color"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-event', 'end') ?>
     </form>

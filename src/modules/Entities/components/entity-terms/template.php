@@ -8,8 +8,8 @@ use MapasCulturais\i;
 
 $this->import('
     mc-multiselect
-    mc-popover 
-    mc-tag-list 
+    mc-popover
+    mc-tag-list
     mc-title
 ');
 ?>
@@ -18,7 +18,7 @@ $this->import('
         <mc-title tag="h4" :short-length="0" size="medium" class="bold">{{title ?? taxonomy}}</mc-title>
         <span v-if="required && !hideRequired" class="entity-terms__required">*<?=i::__('obrigatório');?></span>
     </div>
- 
+
     <mc-popover v-if="allowInsert && editable" openside="down-right"  @open="loadTerms()" :title="popoverTitle">
         <template #button="popover">
             <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary" v-if="editable">
@@ -51,8 +51,8 @@ $this->import('
             <mc-icon name="add"></mc-icon>
         </button>
     </mc-multiselect>
-    <small class="field__error" v-if="hasErrors">        
+    <small class="field__error" v-if="hasErrors">
         {{errors.join('; ')}}
     </small>
-    <mc-tag-list :editable="editable" :classes="entity.__objectType+'__background'" :tags="entity.terms[this.taxonomy]"></mc-tag-list>
+    <mc-tag-list :editable="editable" :item-class="entity.__objectType+'__background'" :tags="entity.terms[this.taxonomy]"></mc-tag-list>
 </div>

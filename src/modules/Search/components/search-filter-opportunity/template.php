@@ -8,10 +8,10 @@ use MapasCulturais\i;
 
 $this->import('
     entity-terms
-    mc-icon 
-    mc-multiselect 
+    mc-icon
+    mc-multiselect
     mc-tag-list
-    search-filter 
+    search-filter
 ');
 ?>
 <search-filter :position="position" :pseudo-query="pseudoQuery">
@@ -34,7 +34,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="opportunity__background opportunity__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" item-class="opportunity__background opportunity__color"></mc-tag-list>
 
         </div>
         <div class="field">
@@ -44,7 +44,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="agent__background agent__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['term:area']" item-class="agent__background agent__color"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-opportunity', 'end') ?>
     </form>

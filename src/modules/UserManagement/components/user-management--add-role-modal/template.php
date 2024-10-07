@@ -8,11 +8,11 @@ use MapasCulturais\i;
 
 $this->import('
     mc-loading
-    mc-entities 
-    mc-modal 
+    mc-entities
+    mc-modal
 ');
 ?>
-<mc-modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?>" @open="createInstance()"> 
+<mc-modal title="<?php i::esc_attr_e('Adicionar função ao usuário') ?>" @open="createInstance()">
     <template #default>
         <div class="field">
             <label><?= i::__('Função') ?></label>
@@ -25,7 +25,7 @@ $this->import('
                 <mc-entities #default="{entities}" type="system-role" select="id,status,name,slug,permissions" v-if="instance">
                     <option v-for="role in entities" v-bind:value="role.slug">{{role.name}}</option>
                 </mc-entities>
-            </select>            
+            </select>
             <template v-if="subsites?.length > 0" >
                 <label><?= i::__('Subsite') ?></label>
                 <select v-model="instance.subsiteId">
@@ -34,7 +34,7 @@ $this->import('
             </template>
         </div>
     </template>
-    
+
     <template #actions="modal">
         <button class="button button--primary" @click="create(modal)"><?php i::_e('Confirmar')?></button>
         <button class="button button--text button--text-del " @click="modal.close()"><?php i::_e('Cancelar')?></button>
@@ -42,10 +42,10 @@ $this->import('
 
     <template #button="modal">
         <a @click="modal.open()" style="cursor: pointer;">
-            <li class="primary__background mc-tag-list__tag mc-tag-list__tag--editable">    
+            <li class="primary__background mc-tag mc-tag--editable">
                 <?=i::__('Adicionar função')?>
                 <mc-icon @click="modal.open()" name="add" is-link></mc-icon>
             </li>
         </a>
-    </template>   
+    </template>
 </mc-modal>

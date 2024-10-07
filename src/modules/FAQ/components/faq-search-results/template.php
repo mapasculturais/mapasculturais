@@ -7,7 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
-    mc-accordion    
+    mc-accordion
     mc-tag-list
     mc-title
 ');
@@ -33,7 +33,7 @@ $this->import('
                     <template #content>
                         <div class="far-accordion__list">
                             <div v-html="question.answer" class="faq-accordion__response"></div>
-                            <mc-tag-list :tags="question.tags" classes="faq-accordion__tags"></mc-tag-list>
+                            <mc-tag-list :tags="question.tags" item-class="faq-accordion__tags"></mc-tag-list>
                         </div>
                     </template>
                 </mc-accordion>

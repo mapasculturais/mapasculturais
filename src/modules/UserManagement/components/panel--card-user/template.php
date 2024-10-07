@@ -9,7 +9,7 @@ use MapasCulturais\i;
 $this->import('
     mc-confirm-button
     mc-link
-    panel--entity-card 
+    panel--entity-card
     user-management--add-role-modal
 ');
 ?>
@@ -42,12 +42,12 @@ $this->import('
         <slot :entity="entity">
             <div class="mc-tag-list">
                 <h4><?=i::__('Funções do usuário:')?></h4>
-                <ul class="mc-tag-list__tagList">
-                    <li v-for="role in roles" class="primary__border--solid primary__color mc-tag-list__tag mc-tag-list__tag--editable">
+                <ul class="mc-tag-list__list">
+                    <li v-for="role in roles" class="primary__border--solid primary__color mc-tag mc-tag--editable">
                         <strong v-if="role.subsite">{{`<?= i::esc_attr__('${role.name} em ${role.subsite.name}') ?>`}}</strong>
                         <strong v-else>{{role.name}}</strong>
 
-                        <mc-confirm-button v-if="global.auth.is('superAdmin')" 
+                        <mc-confirm-button v-if="global.auth.is('superAdmin')"
                             :message="`<?= i::esc_attr__('Deseja remover a função "${role.name}" do usuário "${username}"?') ?>`"
                             @confirm="deleteRole(role)">
                             <template #button="modal">

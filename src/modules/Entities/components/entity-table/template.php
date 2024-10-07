@@ -20,7 +20,7 @@ $this->import('
 ');
 ?>
 <div class="entity-table">
-    
+
     <mc-entities :select="select" :raw-processor="rawProcessor" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" @fetch="resize()" watch-query>
 
         <template #header="{entities, filters}">
@@ -48,15 +48,15 @@ $this->import('
                             <div class="entity-table__search-field">
                                 <slot name="searchKeyword" :query="query">
                                     <textarea ref="search" v-model="this.query['@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
-                                    
+
                                     <button @click="keyword(entities)" class="entity-table__search-button">
                                         <mc-icon name="search"></mc-icon>
                                     </button>
                                 </slot>
                             </div>
-                            
+
                             <slot name="filters" :entities="entities" :filters="filters">
-                            </slot>                            
+                            </slot>
                         </div>
                     </template>
 
@@ -67,7 +67,7 @@ $this->import('
                                 <div class="grid-12">
                                     <div v-for="(filter, slug) in advancedFilters" class="field col-3">
                                         <label>{{filter.label}}</label>
-    
+
                                         <div class="field__group custom-scrollbar">
                                             <label v-for="option in filter.options" :key="option" class="field__checkbox">
                                                 <input type="checkbox" :checked="advancedFilterChecked(slug, optionValue(option))" @change="toggleAdvancedFilter(slug, optionValue(option))"> {{optionLabel(option)}}
@@ -83,8 +83,8 @@ $this->import('
 
                 <div class="entity-table__tags">
                     <div class="mc-tag-list">
-                        <ul class="mc-tag-list__tagList">
-                            <li v-for="filter in appliedFilters" class="mc-tag-list__tag mc-tag-list__tag--editable opportunity__background opportunity__color">
+                        <ul class="mc-tag-list__list">
+                            <li v-for="filter in appliedFilters" class="mc-tag mc-tag--editable opportunity__background opportunity__color">
                                 <span>{{ filter.label }}</span>
                                 <mc-icon name="delete" @click="removeFilter(filter, entities)" is-link></mc-icon>
                             </li>
@@ -99,7 +99,7 @@ $this->import('
                 <span v-if="entities.length === entities.metadata.count">
                     <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
                 </span>
-                <span v-else>    
+                <span v-else>
                     <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
                 </span>
                 <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
@@ -109,7 +109,7 @@ $this->import('
                 <span v-if="entities.length === entities.metadata.count">
                     <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
                 </span>
-                <span v-else>    
+                <span v-else>
                     <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
                 </span>
             </div>
@@ -130,7 +130,7 @@ $this->import('
                                 </label>
 
                                 <label v-for="column in columns" class="field__checkbox">
-                                    <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                    <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}}
                                 </label>
                             </div>
 
@@ -147,7 +147,7 @@ $this->import('
                 </div>
             </div>
 
-            <!-- <-- DIV PARA A TABELA COMPLETA + O SCROLL --> 
+            <!-- <-- DIV PARA A TABELA COMPLETA + O SCROLL -->
             <div>
                 <div class="entity-table__table-content-wrapper" @scroll="scroll($event)" ref="contentWrapper">
                     <table class="entity-table__table" :style="{marginTop: (-headerHeight + 20) + 'px'}" ref="contentTable">
@@ -172,7 +172,7 @@ $this->import('
                             </tr>
                         </tbody>
                     </table>
-                </div>          
+                </div>
                 <div class="entity-table__table-scroll" ref="scrollWrapper" @scroll="scroll($event)">
                     <div :style="{width}">&nbsp;</div>
                 </div>

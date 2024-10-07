@@ -7,9 +7,9 @@
 use MapasCulturais\i;
 
 $this->import('
-    mc-multiselect 
-    mc-tag-list 
-    search-filter 
+    mc-multiselect
+    mc-tag-list
+    search-filter
 ');
 ?>
 <search-filter :position="position" :pseudo-query="pseudoQuery">
@@ -21,7 +21,7 @@ $this->import('
         <div class="field">
             <label> <?php i::_e('Status do agente') ?> </label>
             <label class="verified"><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Agentes oficiais') ?> </label>
-        </div>  
+        </div>
         <div class="field">
             <label> <?php i::_e('Tipo') ?></label>
             <select v-model="pseudoQuery['type']">
@@ -37,7 +37,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="agent__background agent__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['term:area']" item-class="agent__background agent__color"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-agent', 'end') ?>
     </form>

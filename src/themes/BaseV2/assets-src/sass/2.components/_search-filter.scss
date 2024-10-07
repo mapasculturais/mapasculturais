@@ -75,11 +75,11 @@
 
         form,
         .form {
-            .mc-tag-list__tagList {
+            .mc-tag-list__list {
                 max-height: size(90);
                 overflow: auto;
             }
-            
+
             &__label {
                 color: var(--mc-primary-500);
                 display: inline-block;
@@ -236,7 +236,7 @@
                     border-radius: var(--mc-border-radius-xs);
                     padding: size(16);
 
-                    
+
                 }
 
 

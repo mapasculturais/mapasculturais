@@ -9,8 +9,8 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-    mc-icon 
-    mc-popover 
+    mc-icon
+    mc-popover
     mc-tag-list
 ');
 ?>
@@ -26,5 +26,5 @@ $this->import('
         </button>
     </div>
 
-    <mc-tag-list v-if="entity.registrationCategories.length" classes="opportunity__background" @click="autoSave()" :tags="entity.registrationCategories" editable></mc-tag-list>
+    <mc-tag-list v-if="entity.registrationCategories.length" item-class="opportunity__background" @click="autoSave()" :tags="entity.registrationCategories" editable></mc-tag-list>
 </div>

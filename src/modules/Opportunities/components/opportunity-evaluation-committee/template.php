@@ -16,7 +16,7 @@ $this->import('
     select-entity
 ');
 ?>
-<div class="opportunity-evaluation-committee">        
+<div class="opportunity-evaluation-committee">
     <div class="opportunity-evaluation-committee__header">
         <p><?php i::_e('Defina os agentes que serão avaliadores desta fase.') ?></p>
     </div>
@@ -34,18 +34,18 @@ $this->import('
                         <button class="button button--delete button--icon button--sm col-3" @click="open()">
                             <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
                         </button>
-                    </template> 
+                    </template>
                     <template #message="message">
                         <p>
                             <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?>
                         </p>
-                    </template> 
+                    </template>
                 </mc-confirm-button>
             </div>
             <div v-else class="opportunity-evaluation-committee__card-header">
                 <div class="opportunity-evaluation-committee__card-header-info">
                     <mc-avatar :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
-                    
+
                     <span class="bold">#{{infoReviewer.agent.id}} - {{infoReviewer.agent.name}}</span>
                 </div>
 
@@ -55,21 +55,21 @@ $this->import('
                             <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
                                 <?php i::_e('Reabrir avaliações') ?>
                             </button>
-                        </template>         
+                        </template>
                         <template #message="message">
                             <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
-                        </template> 
+                        </template>
                     </mc-confirm-button>
                     <button class="button button--disable button--icon button--sm" @click="disableOrEnableReviewer(infoReviewer)">
                         <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
                     </button>
-    
+
                     <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Cancelar') ?>" yes="<?= i::esc_attr__('Excluir') ?>">
                         <template #button="{open}">
                             <button class="button button--delete button--icon button--sm" @click="open()">
                                 <mc-icon name="trash"></mc-icon> <?= i::__('Excluir') ?>
                             </button>
-                        </template> 
+                        </template>
                         <template #message="message">
                             <p>
                                 <?= i::__('Você tem certeza que deseja excluir <strong>{{infoReviewer.agent.name}}</strong> da função de avaliador(a)?') ?>
@@ -80,11 +80,11 @@ $this->import('
                                     <strong><?= i::__('ATENÇÃO') ?>: </strong> <?= i::__('TODAS as avaliações realizadas por <strong>{{infoReviewer.agent.name}}</strong> serão <strong>excluídas permanentemente</strong>.') ?>
                                 </mc-alert>
                             </p>
-                        </template> 
+                        </template>
                     </mc-confirm-button>
                 </div>
             </div>
-           
+
             <div v-if="showSummary(infoReviewer.metadata?.summary)" class="opportunity-evaluation-committee__summary">
                 <span class="opportunity-evaluation-committee__summary__pending">
                     <mc-icon name="clock"></mc-icon> <?= i::_e('Avaliações pendentes') ?>: {{infoReviewer.metadata.summary.pending}}
@@ -123,7 +123,7 @@ $this->import('
                                         <mc-icon name="add"></mc-icon>
                                     </button>
                                 </mc-multiselect>
-                                <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeCategory', infoReviewer.agentUserId, $event, 'categories')" editable></mc-tag-list>
+                                <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" item-class="opportunity__background" @remove="sendDefinition('removeCategory', infoReviewer.agentUserId, $event, 'categories')" editable></mc-tag-list>
                             </div>
                         </div>
 
@@ -136,7 +136,7 @@ $this->import('
                                         <mc-icon name="add"></mc-icon>
                                     </button>
                                 </mc-multiselect>
-                                <mc-tag-list :tags="entity.fetchRanges[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeRange', infoReviewer.agentUserId, $event, 'ranges')" editable></mc-tag-list>
+                                <mc-tag-list :tags="entity.fetchRanges[infoReviewer.agentUserId]" item-class="opportunity__background" @remove="sendDefinition('removeRange', infoReviewer.agentUserId, $event, 'ranges')" editable></mc-tag-list>
                             </div>
                         </div>
 
@@ -149,7 +149,7 @@ $this->import('
                                         <mc-icon name="add"></mc-icon>
                                     </button>
                                 </mc-multiselect>
-                                <mc-tag-list :tags="entity.fetchProponentTypes[infoReviewer.agentUserId]" classes="opportunity__background" @remove="sendDefinition('removeProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')" editable></mc-tag-list>
+                                <mc-tag-list :tags="entity.fetchProponentTypes[infoReviewer.agentUserId]" item-class="opportunity__background" @remove="sendDefinition('removeProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')" editable></mc-tag-list>
                             </div>
                         </div>
                     </div>
