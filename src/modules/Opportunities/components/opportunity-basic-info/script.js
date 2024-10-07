@@ -37,6 +37,7 @@ app.component('opportunity-basic-info' , {
                 this.entity.hasEndDate = false;
                 this.entity.continuousFlow = null;
                 this.entity.publishedRegistrations = false;
+                this.entity.registrationTo = null;
 
                 this.lastPhase.name = "Publicação final do resultado";
             } else if (this.entity.registrationFrom) {
