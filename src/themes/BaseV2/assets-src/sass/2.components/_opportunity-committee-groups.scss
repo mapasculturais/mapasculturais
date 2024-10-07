@@ -1,0 +1,34 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-committee-groups {
+    display: grid;
+
+
+    &__group {
+        border-radius: var(--mc-border-radius-xs);
+        border: size(1) solid;
+        display: grid;
+        margin-top: size(16);
+    }
+
+    &__edit-group {
+        display: flex;
+    }
+
+    &__evaluators,
+    &__multiple-evaluators {
+        display: grid;
+    }
+
+    &__edit-group,
+    &__evaluators,
+    &__multiple-evaluators {
+        border-bottom: size(1) solid;
+        gap: size(16);
+        padding: size(16);
+    }
+
+    &__evaluators {
+        border-bottom: none;
+    }
+}
