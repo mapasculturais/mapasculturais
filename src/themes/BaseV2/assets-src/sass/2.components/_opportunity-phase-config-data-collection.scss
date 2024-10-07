@@ -19,7 +19,7 @@
                 font-size: size(14);
                 font-family: Open Sans;
                 font-style: normal;
-                font-weight: semibold;
+                font-weight: var(--mc-font-semibold);
                 line-height: normal;
                 margin: 0;
                 color: var(--mc-gray-500)
@@ -87,7 +87,7 @@
         flex-direction: column;
         gap: size(8);
         margin-bottom: size(16);
-        
+
         .field {
             position: relative;
 
@@ -95,12 +95,12 @@
                 position: absolute ;
                 content: '';
                 grid-column: 1 / span 12;
-                height: 10px; 
+                height: 10px;
                 width: 100%;
                 background-color: var(--mc-gray-100);
                 top: size(45);
                 left: 0;
-            }     
+            }
 
             &__limits {
                 & input {

@@ -103,7 +103,7 @@
         font-size: size(16);
         padding: size(64) size(16) size(80) size(16);
         @media (max-width: size(750)) {
-            align-items: left;
+            align-items: start;
 
         }
     }
@@ -202,8 +202,7 @@
         select {
             font-size: var(--mc-font-size-xxs);
 
-            &:active,
-            &:checked {
+            &:active {
                 background-color: transparent;
                 color: var(--mc-low-300);
             }

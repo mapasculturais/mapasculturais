@@ -32,7 +32,7 @@
             gap: size(15);
             background-color: var(--mc-white);
             justify-content: space-between;
-           
+
             .label {
                 font-family: 'Open Sans';
                 font-style: normal;
@@ -91,7 +91,7 @@
                             font-style: normal;
                             font-weight: 700;
                             font-size: size(14);
-                            line-height: sie(19);
+                            line-height: size(19);
                         }
 
                         svg {
@@ -149,15 +149,15 @@
                 li.no-records {
                     padding: 15px;
                 }
-                
+
                 li.evaluation-list__card:last-child {
                     margin-bottom: size(16);
                 }
-                
+
                 li.evaluation-list__card {
                     background-color: var(--mc-white);
                     padding: size(16);
-                   
+
                     .evaluation-list__content {
                         border: 1px solid var(--mc-gray-100);
                         border-radius: var(--mc-border-radius-xs);
@@ -180,7 +180,7 @@
                             border-top: solid #BFE88B 4px;
                         }
                     }
-                
+
                     .link {
                         text-decoration: none;
                         color: unset;
@@ -267,7 +267,7 @@
                                 gap: size(8);
                                 max-width: size(100);
                                 padding-left: 0;
-                                
+
                                 label {
                                     color: var(--mc-low-700);
                                     font-family: 'Open Sans';
@@ -279,7 +279,7 @@
                                     text-transform: capitalize;
                                 }
                                 &-state {
-                                   
+
                                 }
                             }
                         }
@@ -288,7 +288,7 @@
                 li.evaluation-list__card--modify {
                     background-color: var(--mc-primary-300);
                 }
-                
+
             }
 
             .opportunity-evaluations-list__button {

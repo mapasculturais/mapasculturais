@@ -6,7 +6,7 @@
     gap: size(16);
 
     &__title {
-        font-size: size(--mc-font-size-md);
+        font-size: var(--mc-font-size-md);
     }
 
     &__selection {
@@ -34,7 +34,7 @@
             font-size: size(12);
         }
     }
- 
+
     &__header {
         display: grid;
         grid-template-columns: size(56) 1fr;
@@ -42,7 +42,7 @@
         gap: size(4);
         border-radius: var(--mc-border-radius-xs);
         padding: size(9) size(13) size(9) size(9);
-       
+
     }
 
     &__info {

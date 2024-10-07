@@ -32,17 +32,14 @@
                 margin-bottom: size(8);
             }
 
-            
+
             &__error {
                 align-items: baseline;
                 display: grid;
                 gap: size(8);
                 grid-template-columns: size(16) 1fr;
                 margin-bottom: size(8);
-                
-                &:nth-child(0) {
-                    background-color: gray;
-                }
+
                 &:nth-child(1) {
                     margin-top: size(8);
                     background: green;
@@ -86,7 +83,7 @@
                 font-size: size(16);
             }
         }
-        
+
         &__send, &__finalcontinue {
             display: block;
             text-align: center;
@@ -129,13 +126,13 @@
             margin: 0;
             padding: size(16) 0 size(24) 0;
             max-width: size(732);
-    
+
             .finish-send-evaluation__text {
             display: flex;
             flex-direction: column;
-    
+
             }
-    
+
         }
     }
 }
