@@ -5,7 +5,7 @@
         align-items: center;
         background: var(--mc-white-500);
         border-radius: var(--mc-border-radius-xs);
-        border: size(1) solid var(--mc-gray-300);
+        border: $border-hairline var(--mc-gray-300);
         display: flex;
         gap: size(16);
         justify-content: space-between;

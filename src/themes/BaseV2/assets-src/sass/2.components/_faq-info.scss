@@ -17,7 +17,7 @@
         font-weight: 700;
         color: var(--mc-primary-500);
         padding: size(15) 0;
-        border-bottom: size(1) solid var(--mc-gray-500);
+        border-bottom: $border-hairline var(--mc-gray-500);
         text-align: center;
     }
 

@@ -35,7 +35,7 @@
             width: 100%;
 
             &__card {
-                border: size(1) solid var(--mc-gray-300);
+                border: $border-hairline var(--mc-gray-300);
                 border-radius: var(--mc-border-radius-xs);
                 padding: size(24) size(20);
 

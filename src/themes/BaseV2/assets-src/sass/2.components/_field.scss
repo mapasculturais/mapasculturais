@@ -71,8 +71,8 @@
         
         &::-webkit-scrollbar-thumb {
             background-color: var(--mc-gray-500);
-            border-radius: size(5);
-            border: size(2) solid var(--mc-gray-100);
+            border-radius: $border-radius-xs;
+            border: $border-solid var(--mc-gray-100);
         }
     }
 
@@ -151,7 +151,7 @@
 
     input, textarea, select {
         border-radius: var(--mc-border-radius-xs);
-        border: size(1) solid var(--mc-gray-500);
+        border: $border-hairline var(--mc-gray-500);
         font-family: Open Sans;
         font-size: var(--mc-font-size-xxs);
         line-height: normal;
@@ -218,7 +218,7 @@
     &.error {
         input, textarea, select {
             background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(20);
-            border: size(2) solid #FF0000;
+            border: $border-solid #FF0000;
         }
 
         .dp__input_wrap {
