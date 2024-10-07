@@ -41,8 +41,8 @@
             box-sizing: border-box;
             height: size(16);
             width: size(16);
-            border: size(3) solid var(--mc-black);
-            border-radius: size(2);
+            border: $border-solid (--mc-black);
+            border-radius: $border-radius-xxs;
         }
     }
 

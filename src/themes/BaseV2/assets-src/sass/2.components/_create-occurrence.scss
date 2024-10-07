@@ -187,8 +187,8 @@
             input {
                 background: #FFFFFF;
                 border: var(--mc-border-hairline) var(--mc-gray-300);
-                border-radius: size(4);
                 font-size: $font-size-xxxs;
+                border-radius: $border-radius-xs;
                 padding: size(14);
                 font-weight: 600;
                 

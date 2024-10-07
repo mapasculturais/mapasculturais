@@ -12,7 +12,7 @@
     }
 
     &__header {
-        border: size(1) solid var(--mc-gray-300);
+        border: $border-hairline solid var(--mc-gray-300);
         border-radius: var(--mc-border-radius-xs);
         padding: size(13) size(23);
         display: grid;
@@ -26,7 +26,7 @@
 
     // Estilização do card
     &__card {
-        border: size(1) solid var(--mc-gray-300);
+        border: $border-hairline solid var(--mc-gray-300);
         border-radius: var(--mc-border-radius-xs);
     }
 

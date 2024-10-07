@@ -16,7 +16,7 @@
     margin-top: size(8);
 
     &::-webkit-scrollbar-track {
-        border-radius: size(10);
+        border-radius: $border-radius-xs;
         background-color: var(--mc-high-500);
     }
 
@@ -27,7 +27,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-        border-radius: size(10);
+        border-radius: $border-radius-xs;
         background-color: var(--mc-high-500);
     }
 
@@ -75,7 +75,7 @@
 
     &.border-cell {
         .vue3-easy-data-table__header th {
-            border-right: size(1) solid var(--mc-high-500);
+            border-right: $border-hairline var(--mc-high-500);
         }
 
         .vue3-easy-data-table__header th:last-of-type {
@@ -83,7 +83,7 @@
         }
 
         .vue3-easy-data-table__body td {
-            border-right: size(1) solid var(--mc-high-500);
+            border-right: $border-hairline var(--mc-high-500);
         }
 
         .vue3-easy-data-table__body td:last-of-type {
@@ -123,7 +123,7 @@ vue3-easy-data-table__body {
     background-color: var(--mc-high-500);
     color: var(--mc-low-300);
     border: none;
-    border-bottom: size(1) solid var(--mc-high-500);
+    border-bottom: $border-hairline var(--mc-high-500);
 
     padding: 0 size(10);
 
@@ -235,7 +235,7 @@ vue3-easy-data-table__body {
     font-weight: 600;
     line-height: normal;
     color: var(--mc-low-700);
-    border-bottom: size(1) solid var(--mc-gray-300);
+    border-bottom: $border-hairline var(--mc-gray-300);
 
     &.shadow {
         &::after {
@@ -266,7 +266,7 @@ vue3-easy-data-table__body {
     &:first-child {
 
         td {
-            border-bottom: px solid var(--mc-high-500);
+            border-bottom: $border-hairline var(--mc-high-500);
         }
     }
 }
@@ -275,7 +275,7 @@ vue3-easy-data-table__body {
     padding: 0 size(10);
     background-color: var(--mc-high-500);
     border: none;
-    border-bottom: px solid var(--mc-high-500);
+    border-bottom: $border-hairline var(--mc-high-500);
     font-weight: 700;
     font-size: $font-size-xxs;
     font-family: 'Open Sans';
@@ -336,8 +336,8 @@ vue3-easy-data-table__body {
 .vue3-easy-data-table__footer {
     background-color: var(--mc-high-500);
     color: var(--mc-low-700);
-    border-top: size(1) solid var(--mc-high-500);
     font-size: $font-size-xxxs;
+    border-top: $border-hairline var(--mc-high-500);
     height: size(36);
     padding: 0 size(5);
 
@@ -408,7 +408,8 @@ vue3-easy-data-table__body {
 
     .rows-input__wrapper {
         height: size(20);
-        border-bottom: size(1) solid black;
+        border-bottom: 
+black;
         display: flex;
         align-items: center;
         justify-content: space-between;

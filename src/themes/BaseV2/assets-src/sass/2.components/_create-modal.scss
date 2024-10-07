@@ -39,8 +39,8 @@
                     align-items: center;
                     height: size(48);
                     background: #FFFFFF;
-                    border: size(1) solid #313131;
-                    border-radius: size(4);
+                    border: $border-hairline #313131;
+                    border-radius: $border-radius-xs;
                     justify-content: space-between;
                     padding: 0 size(10);
 
@@ -78,7 +78,7 @@
                     }
 
                     &--error {
-                        border: 1px solid var(--mc-error);
+                        border: $border-hairline var(--mc-error);
                     }
                 }
             }
@@ -187,7 +187,7 @@
             padding-bottom: 0;
 
             button {
-                border: size(2) solid #FF0000;
+                border: $border-solid #FF0000;
             }
         }
 

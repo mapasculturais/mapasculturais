@@ -16,7 +16,7 @@
   }
 
   &__card {
-    border: size(1) solid var(--mc-gray-300);
+    border: $border-hairline var(--mc-gray-300);
     border-radius: var(--mc-border-radius-xs);
     margin-bottom: 1.5625rem;
   }
@@ -38,7 +38,7 @@
     gap: size(8);
     padding: size(13) size(23);
     flex-wrap: wrap;
-    border-bottom: size(1) solid var(--mc-gray-300);
+    border-bottom: $border-hairline var(--mc-gray-300);
     .iconify {
       font-size: $font-size-md;
     }

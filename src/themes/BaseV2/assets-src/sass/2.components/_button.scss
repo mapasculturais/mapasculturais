@@ -3,7 +3,7 @@
 .button {
     align-items: center;
     appearance: none;
-    border: 2px solid transparent;
+    border: $border-solid transparent;
     border-radius: var(--mc-border-radius-sm);
     cursor: pointer;
     display: inline-flex;
@@ -118,7 +118,7 @@
 
     &--outline {
         background-color: transparent;
-        border: size(2) solid var(--mc-gray-300);
+        border: $border-solid var(--mc-gray-300);
         color: var(--mc-gray-500);
 
         &:hover {
@@ -129,7 +129,7 @@
 
     &--primary {
         background-color: var(--mc-primary-500);
-        border: size(2) solid var(--mc-primary-500);
+        border: $border-solid var(--mc-primary-500);
         color: var(--mc-white);
 
         &:hover {
@@ -139,7 +139,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-primary-500);
+            border: $border-solid solid var(--mc-primary-500);
             color: var(--mc-primary-500);
 
             &:hover {
@@ -151,7 +151,7 @@
         
         &-noborder {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-white);
+            border: $border-solid var(--mc-white);
             color: var(--mc-primary-500);
 
             &:hover {
@@ -164,7 +164,7 @@
 
     &--primarylight {
         background-color: var(--mc-primary-300);
-        border: size(2) solid var(--mc-primary-300);
+        border: $border-solid solid var(--mc-primary-300);
         color: var(--mc-white);
 
         &:hover {
@@ -175,7 +175,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-primary-300);
+            border: $border-solid var(--mc-primary-300);
             color: var(--mc-primary-300);
 
             &:hover {
@@ -188,7 +188,7 @@
 
     &--secondary {
         background-color: var(--mc-secondary-500);
-        border: size(2) solid var(--mc-secondary-500);
+        border: $border-solid  solid var(--mc-secondary-500);
         color: var(--mc-high-500);
         
         &:hover {
@@ -198,7 +198,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-secondary-500);
+            border: $border-solid var(--mc-secondary-500);
             color: var(--mc-secondary-500);
 
             &:hover {
@@ -211,7 +211,7 @@
 
     &--secondarylight {
         background-color: var(--mc-secondary-300);
-        border: size(2) solid var(--mc-secondary-300);
+        border: $border-solid var(--mc-secondary-300);
         color: var(--mc-low-500);
 
         &:hover {
@@ -222,7 +222,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-secondary-300);
+            border: $border-solid var(--mc-secondary-300);
             color: var(--mc-secondary-300);
 
             &:hover {
@@ -235,7 +235,7 @@
 
     &--highlight {
         background-color: var(--mc-highlight-500);
-        border: size(2) solid var(--mc-highlight-500);
+        border: $border-solid var(--mc-highlight-500);
         color: var(--mc-high-500);
 
         &:hover {
@@ -245,7 +245,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-highlight-500);
+            border: $border-solid var(--mc-highlight-500);
             color: var(--mc-highlight-500);
 
             &:hover {
@@ -258,7 +258,7 @@
 
     &--solid {
         background-color: var(--mc-gray-300);
-        border: size(2) solid var(--mc-gray-300);
+        border: $border-solid  solid var(--mc-gray-300);
         color: var(--mc-black);
 
         &:hover {
@@ -268,7 +268,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-gray-300);
+            border: $border-solid  solid var(--mc-gray-300);
             color: var(--mc-black);
 
             &:hover {
@@ -286,7 +286,7 @@
 
     &--text {
         background-color: var(--mc-white);
-        border: size(2) solid transparent;
+        border: $border-solid  solid transparent;
         color: var(--mc-black);
 
         &:hover {
@@ -296,7 +296,7 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: size(2) solid var(--mc-low-500);
+            border: $border-solid  solid var(--mc-low-500);
             color: var(--mc-low-500);
 
             &:hover {
