@@ -44,6 +44,7 @@ app.component('opportunity-basic-info' , {
                 const myDate = new McDate(new Date(`2111-01-01 00:00`));
                 
                 this.entity.continuousFlow = myDate.sql('full');
+                this.entity.registrationTo = myDate.sql('full');
                 this.entity.publishedRegistrations = true;
                 
                 this.lastPhase.name = "Resultado";
