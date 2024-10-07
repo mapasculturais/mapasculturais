@@ -3,6 +3,7 @@
 .mc-title {
     // size medium (utilizado no card)
     font-size: var(--mc-font-size-sm);
+    font-weight: var(--mc-font-bold);
 
     &--long {
         font-size: size(20);
