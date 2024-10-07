@@ -5,7 +5,7 @@
     margin: 0 auto;
     position: relative;
     width: 100%;
-    
+
     @media (max-width: size(500)){
         &__title {
             text-align: center;
@@ -86,7 +86,7 @@
                 .site {
                     display: flex;
                     flex-direction: column;
-                    margin-top: size(--mc-font-size-xs);
+                    margin-top: var(--mc-font-size-xs);
 
                     .iconify {
                         margin-right: size(7);
@@ -187,9 +187,9 @@
                         font-size: 14px;
                         line-height: 19px;
                     }
-                    
+
                 }
-                
+
                 dl {
                     display: inline-block;
                     margin: size(8) size(40) size(16) 0;
