@@ -1,14 +1,9 @@
 app.component('entity-header', {
     template: $TEMPLATES['entity-header'],
-    setup() { 
-        // os textos estão localizados no arquivo texts.php deste componente 
+    setup() {
+        // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('entity-header')
         return { text }
-    },
-    data() {
-        return {
-            titleEdit: ''
-        }
     },
     props: {
         editable: {
@@ -20,26 +15,22 @@ app.component('entity-header', {
             required: true
         }
     },
-    created() {
-        switch(this.entity.__objectType) {
-            case 'agent': 
-                this.titleEdit = (this.entity.type?.id == 1) ?  __('title agent-1', 'entity-header') : __('title agent-2', 'entity-header');
-                break;
-            case 'project':
-                this.titleEdit = __('title project', 'entity-header');
-                break;
-            case 'space':
-                this.titleEdit = __('title space', 'entity-header');
-                break;
-            case 'opportunity':
-                this.titleEdit = __('title opportunity', 'entity-header');
-                break;
-            case 'event':
-                this.titleEdit = __('title event', 'entity-header');
-                break;
-            case 'seal':
-                this.titleEdit = __('title seal', 'entity-header');
-                break;
+    computed: {
+        titleEdit () {
+            switch(this.entity.__objectType) {
+                case 'agent':
+                    return (this.entity.type?.id == 1) ?  __('title agent-1', 'entity-header') : __('title agent-2', 'entity-header');
+                case 'project':
+                    return __('title project', 'entity-header');
+                case 'space':
+                    return __('title space', 'entity-header');
+                case 'opportunity':
+                    return __('title opportunity', 'entity-header');
+                case 'event':
+                    return __('title event', 'entity-header');
+                case 'seal':
+                    return __('title seal', 'entity-header');
+            }
         }
     },
     methods: {
