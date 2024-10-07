@@ -54,7 +54,7 @@
     }
 
     &__description {
-        font-size: size(12);
+        font-size: $font-size-xxxs;
         margin: 0 0 size(10);
     }
 
@@ -134,7 +134,7 @@
 
             &.agent {
                 .icon {
-                    font-size: 14px;
+                    font-size: $font-size-xxs;
                 }   
                 
                 &:hover{

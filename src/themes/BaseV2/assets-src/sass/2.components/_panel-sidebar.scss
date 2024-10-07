@@ -74,7 +74,7 @@
         background-color: var(--mc-gray-300);
         color: var(--mc-gray-700);
         font-family: var(--mc-font-body);
-        font-size: size(18);
+        font-size: $font-size-sm;
         font-weight: bold;
         width: 100%;
 
@@ -95,7 +95,7 @@
 
     h3 {
         color: var(--mc-gray-700);
-        font-size: size(12);
+        font-size: $font-size-xxxs;
         margin: 0;
         padding: size(16);
         text-transform: uppercase;
@@ -131,7 +131,7 @@
         display: flex;
         transition: all 0.2s ease-in-out;
         padding: size(8) size(16);
-        font-size: 14px;
+        font-size: $font-size-xxs;
         font-weight: 600;
         font-family: 'Open Sans';
         text-decoration: none;

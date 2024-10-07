@@ -43,7 +43,7 @@
             font-family: var(--mc-font-body);
             font-style: normal;
             font-weight: 700;
-            font-size: size(12);
+            font-size: $font-size-xxxs;
             line-height: size(16);
         }
     }
@@ -65,7 +65,7 @@
                 font-weight: 600;
 
                 svg {
-                    font-size: size(14);
+                    font-size: $font-size-xxs;
                 }
             }
 
@@ -78,7 +78,7 @@
             font-family: var(--mc-font-body);
             font-style: normal;
             font-weight: 400;
-            font-size: size(16);
+            font-size: $font-size-xs;
             line-height: size(22);
             color: var(--mc-black);
             margin: size(11) 0 size(16);

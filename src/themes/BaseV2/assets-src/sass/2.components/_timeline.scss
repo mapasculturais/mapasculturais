@@ -48,13 +48,13 @@
             margin-top: size(4);
 
             &--title {
-                font-size: size(12);
+                font-size: $font-size-xxxs;
                 font-weight: 700;
                 line-height: size(16);
             }
 
             &--description {
-                font-size: size(12);
+                font-size: $font-size-xxxs;
                 font-weight: 600;
                 line-height: size(16);
             }
@@ -88,12 +88,12 @@
                 margin-top: size(10);
     
                 &--title {
-                    font-size: size(18);
+                    font-size: $font-size-sm;
                     line-height: size(24);
                 }
     
                 &--description {
-                    font-size: size(16);
+                    font-size: $font-size-xs;
                     line-height: size(22);
                 }
             }
@@ -120,24 +120,24 @@
     
                     &__content {
                         &--title {
-                            font-size: size(18);
+                            font-size: $font-size-sm;
                             line-height: size(24);
                         }
     
                         &--description {
-                            font-size: size(16);
+                            font-size: $font-size-xs;
                             line-height: size(21);
                         }
                     }
                     @media (max-width: size(400)) {
                         &__title {
 
-                            font-size: size(16);
+                            font-size: $font-size-xs;
                             line-height: size(21);
                         }
                         &__title {
 
-                            font-size: size(14);
+                            font-size: $font-size-xxs;
                             line-height: size(19);
                         }
 

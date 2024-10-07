@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .iconify {
-    font-size: size(16);
+    font-size: $font-size-xs;
 
     &--link {
         cursor: pointer;

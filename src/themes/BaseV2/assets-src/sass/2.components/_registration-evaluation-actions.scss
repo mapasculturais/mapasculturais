@@ -19,14 +19,14 @@
 
             &__title {
                 color: var(--mc-error);
-                font-size: size(16);
+                font-size: $font-size-xs;
                 font-weight: 700;
                 line-height: size(22);
                 text-align: center;
             }
 
             &__subtitle {
-                font-size: size(16);
+                font-size: $font-size-xs;
                 font-weight: 600;
                 line-height: size(22);
                 margin-bottom: size(8);
@@ -54,7 +54,7 @@
                 }
 
                 &--text {
-                    font-size: size(14);
+                    font-size: $font-size-xxs;
                     line-height: size(19);
                     text-decoration-line: underline;
 
@@ -80,7 +80,7 @@
 
             svg {
                 float: left;
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
         }
 
@@ -97,12 +97,12 @@
             }
             .arrow-icon {
                 float: right;
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
 
             .send-icon {
                 float: left;
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
         }
 
@@ -119,7 +119,7 @@
 
             svg {
                 float: left;
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
         }
         .modal-content {

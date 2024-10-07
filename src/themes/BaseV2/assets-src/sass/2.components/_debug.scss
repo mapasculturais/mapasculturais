@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .mc-debug {
-    font-size: 11px;
+    font-size: $font-size-xxxs;
     font-family: monospace;
     color:white;
     padding:3px;

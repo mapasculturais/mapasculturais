@@ -19,7 +19,7 @@
 
     &__errors-title {
         color: var(--mc-error);
-        font-size: size(16);
+        font-size: $font-size-xs;
         font-weight: 700;
         line-height: size(22);
         text-align: center;
@@ -28,7 +28,7 @@
     &__errors-subtitle {
         display: flex;
         flex-direction: column;
-        font-size: size(16);
+        font-size: $font-size-xs;
         font-weight: 600;
         line-height: size(22);
         margin-bottom: size(8);
@@ -50,7 +50,7 @@
         color: var(--mc-primary-500);
         cursor: pointer;
         display: flex;
-        font-size: size(14);
+        font-size: $font-size-xxs;
         gap: size(8);
         width: fit-content;
     }
@@ -71,7 +71,7 @@
         }
 
         p {
-            font-size: size(14);
+            font-size: $font-size-xxs;
             grid-column-end: 3;
             line-height: size(19);
             margin: 0;

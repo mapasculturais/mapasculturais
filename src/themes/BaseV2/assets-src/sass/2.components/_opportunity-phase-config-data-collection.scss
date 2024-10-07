@@ -16,7 +16,7 @@
     &__field {
         .field {
             &__title {
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 font-family: Open Sans;
                 font-style: normal;
                 font-weight: var(--mc-font-semibold);
@@ -111,7 +111,7 @@
 
                 > .field__title {
                     font-weight: 700;
-                    font-size: size(16);
+                    font-size: $font-size-xs;
                 }
             }
         }

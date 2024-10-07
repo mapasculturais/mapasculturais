@@ -21,7 +21,7 @@
 
   &__title {
     font-weight: 700;
-    font-size: size(16);
+    font-size: $font-size-xs;
     line-height: size(22);
     margin: size(8) 0;
   }
@@ -35,19 +35,19 @@
 
     h3 {
       font-weight: 700;
-      font-size: size(18);
+      font-size: $font-size-sm;
       line-height: size(25);
     }
 
     h4 {
       font-weight: 700;
-      font-size: size(16);
+      font-size: $font-size-xs;
       line-height: size(22);
     }
 
     h5 {
       font-weight: 700;
-      font-size: size(14);
+      font-size: $font-size-xxs;
       line-height: size(19);
     }
   }

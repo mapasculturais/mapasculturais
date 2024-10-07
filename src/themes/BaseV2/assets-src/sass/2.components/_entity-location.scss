@@ -7,7 +7,7 @@
             font-family: 'Open Sans';
             font-style: normal;
             font-weight: 600;
-            font-size: size(14);
+            font-size: $font-size-xxs;
             line-height: size(19);
         }
     }
@@ -15,7 +15,7 @@
     &__title {
         align-items: center;
         display: flex;
-        font-size: size(18);
+        font-size: $font-size-sm;
         font-weight: 600;
         gap: size(8);
         line-height: size(25);

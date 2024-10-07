@@ -19,7 +19,7 @@
 
             .seal-label {
                 font-weight: 700;
-                font-size: 14px;
+                font-size: $font-size-xxs;
                 line-height: 19px;
             }
 
@@ -115,7 +115,7 @@
 
             &-title {
                 font-weight: 700;
-                font-size: 18px;
+                font-size: $font-size-sm;
                 line-height: 25px;
             }
         }
@@ -136,14 +136,14 @@
     &__history {
         &--title {
             font-weight: 700;
-            font-size: 12px;
+            font-size: $font-size-xxxs;
             line-height: 16px;
             color: #000000;
         }
 
         &--link {
             font-weight: 700;
-            font-size: 16px;
+            font-size: $font-size-xs;
             line-height: 20px;
             color: #0074C1;
             text-decoration: none;
@@ -154,7 +154,7 @@
         &--label {
             color: #1E1E1E;
             font-weight: 700;
-            font-size: 24px;
+            font-size: $font-size-md;
             line-height: 28px
         }
 

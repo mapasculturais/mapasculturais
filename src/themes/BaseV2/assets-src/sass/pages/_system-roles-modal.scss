@@ -10,7 +10,7 @@
             font-family: 'Open Sans';
             font-style: normal;
             font-weight: 700;
-            font-size: size(24);
+            font-size: $font-size-md;
             line-height: size(28);
             margin-left: size(16);
         }
@@ -35,7 +35,7 @@
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 600;
-        font-size: size(14);
+        font-size: $font-size-xxs;
         line-height: size(19);
     }
 
@@ -60,7 +60,7 @@
         position: relative;
         left: size(-34);
         top: size(2);
-        font-size: size(16);
+        font-size: $font-size-xs;
 
     }
 
@@ -68,7 +68,7 @@
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 700;
-        font-size: size(16);
+        font-size: $font-size-xs;
         line-height: size(22);
         margin-bottom: size(12);
 
@@ -99,7 +99,7 @@
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 700;
-        font-size: size(14);
+        font-size: $font-size-xxs;
         line-height: size(19);
 
         padding-bottom: size(8);
@@ -111,7 +111,7 @@
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 400;
-        font-size: size(12);
+        font-size: $font-size-xxxs;
         line-height: size(16);
         margin-right: size(13);
         display: flex;

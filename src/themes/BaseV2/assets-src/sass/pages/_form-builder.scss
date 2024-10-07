@@ -47,7 +47,7 @@
                 display: flex;
                 gap: size(8);
                 font-weight: 400;
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 line-height: size(19);
 
                 input[type="radio"] {

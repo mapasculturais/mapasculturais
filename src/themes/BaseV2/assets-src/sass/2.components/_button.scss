@@ -7,7 +7,7 @@
     border-radius: var(--mc-border-radius-sm);
     cursor: pointer;
     display: inline-flex;
-    font-size: size(16);
+    font-size: $font-size-xs;
     font-weight: 600;
     font-family: 'Open Sans';
     justify-content: center;
@@ -55,7 +55,7 @@
         gap: size(12);
 
         .iconify {
-            font-size: size(16);
+            font-size: $font-size-xs;
             min-width: size(16);
         }
     }
@@ -69,44 +69,44 @@
     // tamanhos
 
     &--xbg {
-        font-size: size(24);
+        font-size: $font-size-md;
         font-weight: 700;
         line-height: size(28);
         padding: size(20) size(32);
 
         .iconify {
-            font-size: size(18);
+            font-size: $font-size-sm;
         }
     }
 
     &--bg {
-        font-size: size(18);
+        font-size: $font-size-sm;
         font-weight: 700;
         line-height: size(25);
         padding: size(17.5) size(32);
 
         .iconify {
-            font-size: size(18);
+            font-size: $font-size-sm;
         }
     }
 
     &--md {
-        font-size: size(18);
+        font-size: $font-size-sm;
         font-weight: 600;
         padding: size(12) size(24);
 
         .iconify {
-            font-size: size(18);
+            font-size: $font-size-sm;
         }
     }
 
     &--sm {
-        font-size: size(14);
+        font-size: $font-size-xxs;
         padding: size(5) size(15);
         gap: size(9);
 
         .iconify {
-            font-size: size(14);
+            font-size: $font-size-xxs;
         }
     }
 

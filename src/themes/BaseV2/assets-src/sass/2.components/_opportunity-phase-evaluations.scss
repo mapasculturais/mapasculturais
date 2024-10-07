@@ -18,7 +18,7 @@
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 700;
-        font-size: size(18);
+        font-size: $font-size-sm;
         line-height: size(25);
         padding-bottom: size(7);
 
@@ -57,7 +57,7 @@
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 700;
-                    font-size: size(24);
+                    font-size: $font-size-md;
                     line-height: size(28);
                     padding: size(16) 0 size(8) size(24);
 
@@ -83,13 +83,13 @@
                                 font-family: 'Open Sans';
                                 font-style: normal;
                                 font-weight: 400;
-                                font-size: 14px;
+                                font-size: $font-size-xxs;
                                 line-height: 19px;
                             }
 
                             .item {
                                 font-weight: 600;
-                                font-size: size(14);
+                                font-size: $font-size-xxs;
                             }
                         }
                     }
@@ -102,13 +102,13 @@
                             font-family: "Open Sans";
                             font-style: normal;
                             font-weight: 400;
-                            font-size: 14px;
+                            font-size: $font-size-xxs;
                             line-height: 19px;
                         }
 
                         &__content {
                             font-weight: 600;
-                            font-size: 14px;
+                            font-size: $font-size-xxs;
 
                         }
                     }
@@ -144,7 +144,7 @@
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 400;
-        font-size: size(16);
+        font-size: $font-size-xs;
         line-height: size(22);
     }
 }

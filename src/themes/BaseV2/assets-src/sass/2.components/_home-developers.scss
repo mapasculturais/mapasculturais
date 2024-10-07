@@ -12,17 +12,17 @@
         max-width: size(1170);
 
         .dev-icon {
-            font-size: size(32);
+            font-size: $font-size-lg;
         }
 
         &--title {
             font-weight: 700;
-            font-size: size(32);
+            font-size: $font-size-lg;
             line-height: size(44);
             margin-top: size(4);
 
             @media (max-width: size(800)) {
-                font-size: size(24);
+                font-size: $font-size-md;
                 line-height: size(28);
                 margin-top: size(11);
             }
@@ -30,26 +30,26 @@
         &--description {
             margin: size(24) 0;
             font-weight: 400;
-            font-size: size(18);
+            font-size: $font-size-sm;
             line-height: size(25);
             text-align: center;
 
             @media (max-width: size(800)) {
-                font-size: size(16);
+                font-size: $font-size-xs;
                 line-height: size(22);
             }
         }
 
         &--link {
             .iconify {
-                font-size: size(18);
+                font-size: $font-size-sm;
             }
 
             .link {
                 align-items: center;
                 color: var(--mc-low-500);
                 display: flex;
-                font-size: size(18);
+                font-size: $font-size-sm;
                 font-weight: 600;
                 gap: size(8);
                 line-height: size(25);

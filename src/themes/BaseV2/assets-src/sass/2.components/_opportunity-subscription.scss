@@ -25,7 +25,7 @@
     /* generic title */
     .title {
         color: var(--mc-black);
-        font-size: size(24);
+        font-size: $font-size-md;
         font-weight: 700;
         line-height: size(33);
         margin: size(16) 0;
@@ -39,7 +39,7 @@
 
             &__description {
                 color: var(--mc-black);
-                font-size: size(18);
+                font-size: $font-size-sm;
                 font-weight: 600;
                 line-height: size(25);
                 margin: 0;
@@ -63,7 +63,7 @@
         .loggedOut {
             &__description {
                 color: var(--mc-black);
-                font-size: size(16);
+                font-size: $font-size-xs;
                 font-weight: 400;
                 line-height: size(22);
                 margin: size(16) 0;
@@ -79,7 +79,7 @@
                     border-radius: var(--mc-border-radius-xs);
                     cursor: default;
                     display: flex;
-                    font-size: size(16);
+                    font-size: $font-size-xs;
                     padding: size(5) size(14);
                     width: 100%;
                     align-items: center;

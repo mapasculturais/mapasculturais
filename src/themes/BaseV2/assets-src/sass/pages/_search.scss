@@ -74,12 +74,12 @@
 
                 &-label {
                     line-height: size(65);
-                    font-size: size(48);
+                    font-size: $font-size-xl;
                     font-weight: 700;
 
                     @media (max-width: size(500)) {
                         line-height: size(33);
-                        font-size: size(24);
+                        font-size: $font-size-md;
                         font-weight: 700;
                     }
                 }
@@ -101,12 +101,12 @@
         // label - before - tabs
         &--before {
             line-height: size(22);
-            font-size: size(16);
+            font-size: $font-size-xs;
             font-weight: 600;
 
             @media (max-width: size(500)) {
                 line-height: size(20);
-                font-size: size(14);
+                font-size: $font-size-xxs;
             }
         }
 
@@ -162,7 +162,7 @@
             }
 
             .tabs-component__button {
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 font-weight: 700;
                 line-height: size(19);
 
@@ -220,7 +220,7 @@
                         select {
                             border-radius: var(--mc-border-radius-sm);
                             border: var(--mc-border-solid) var(--mc-primary-500);
-                            font-size: size(14);
+                            font-size: $font-size-xxs;
                             font-weight: 800;
                             line-height: size(19);
                             padding: size(9) size(32) size(8) size(12);
@@ -231,7 +231,7 @@
                         background-color: var(--mc-white);
                         border-radius: var(--mc-border-radius-sm);
                         font-weight: 700;
-                        font-size: size(14);
+                        font-size: $font-size-xxs;
                         line-height: size(18);
                         padding: size(11) size(16);
                     }
@@ -252,7 +252,7 @@
 
                             .iconify {
                                 color: var(--mc-gray-300);
-                                font-size: size(24);
+                                font-size: $font-size-md;
                                 margin-top: size(2);
                             }
 
@@ -297,7 +297,7 @@
                     }
                     .user-info__attr {
                         font-weight: 600;
-                        font-size: size(14);
+                        font-size: $font-size-xxs;
 
                         .upper {
                             text-transform: uppercase;
@@ -347,7 +347,7 @@
                                 }
 
                                 label {
-                                    font-size: 18px;
+                                    font-size: $font-size-sm;
                                     font-weight: 600;
                                 }
                             }
@@ -428,7 +428,7 @@
                     &--close {
                         float: right;
                         font-weight: 600;
-                        font-size: size(16);
+                        font-size: $font-size-xs;
                         line-height: size(22);
                         color: var(--mc-low-700);
 
@@ -455,7 +455,7 @@
 
                         &-label {
                             font-weight: 600;
-                            font-size: size(14);
+                            font-size: $font-size-xxs;
                             line-height: size(19);
                         }
                     }
@@ -468,7 +468,7 @@
 
                         &-title {
                             font-weight: 600;
-                            font-size: size(16);
+                            font-size: $font-size-xs;
                             line-height: size(22);
                         }
 
@@ -496,7 +496,7 @@
                                 color: var(--mc-low-500);
                                 margin: size(16) 0;
                                 font-weight: 700;
-                                font-size: size(18);
+                                font-size: $font-size-sm;
                                 line-height: size(25);
                             }
 

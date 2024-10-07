@@ -16,19 +16,19 @@
 
             .title {
                 font-weight: 700;
-                font-size: size(32);
+                font-size: $font-size-lg;
                 line-height: size(44);
                 
                 @media (max-width: size(800)) {
                     font-weight: 700;
-                    font-size: size(24);
+                    font-size: $font-size-md;
                     line-height: size(28);
                 }
             }
 
             .description {
                 font-weight: 400;
-                font-size: size(18);
+                font-size: $font-size-sm;
                 line-height: size(25);
 
                 p {
@@ -37,7 +37,7 @@
 
                 @media (max-width: size(800)) {
                     font-weight: 400;
-                    font-size: size(16);
+                    font-size: $font-size-xs;
                     line-height: size(22);
                 }
             }
@@ -110,7 +110,7 @@
                         &-title {
                             color: var(--mc-high-300);
                             font-weight: 700;
-                            font-size: size(24);
+                            font-size: $font-size-md;
                             line-height: size(28);
                         }
                     }

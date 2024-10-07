@@ -10,7 +10,7 @@
     &__header {
         .title {
             color: var(--mc-black);
-            font-size: size(24);
+            font-size: $font-size-md;
             font-weight: 700;
             line-height: size(33);
             margin: 0 0 size(8);
@@ -18,7 +18,7 @@
 
         .description {
             color: var(--mc-black);
-            font-size: size(16);
+            font-size: $font-size-xs;
             font-weight: 400;
             line-height: size(22);
         }

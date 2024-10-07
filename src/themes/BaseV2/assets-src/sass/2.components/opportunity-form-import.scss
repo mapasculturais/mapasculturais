@@ -10,7 +10,7 @@
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 14px;
+                    font-size: $font-size-xxs;
                     line-height: 19px;
                 }
 
@@ -19,7 +19,7 @@
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 400;
-                    font-size: 12px;
+                    font-size: $font-size-xxxs;
                     line-height: 16px;
                 }
             }
@@ -43,7 +43,7 @@
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 600;
-        font-size: size(18);
+        font-size: $font-size-sm;
         line-height: size(25);
 
         &__import {

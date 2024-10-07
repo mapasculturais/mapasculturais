@@ -40,7 +40,7 @@
 
         .name {
             color: var(--mc-primary-500);
-            font-size: size(14);
+            font-size: $font-size-xxs;
             font-weight: 600;
             line-height: size(19);
         }
@@ -64,7 +64,7 @@
             &.delete {
                 .iconify {
                     color: var(--mc-danger-500);
-                    font-size: size(18);
+                    font-size: $font-size-sm;
                 }
             }
         }
@@ -75,7 +75,7 @@
         align-items: center;
         gap: size(6);
         font-weight: 600;
-        font-size: size(12);
+        font-size: $font-size-xxxs;
         line-height: size(16);
 
         .iconify {

@@ -13,7 +13,7 @@
 
             &-title {
                 font-weight: 700;
-                font-size: 18px;
+                font-size: $font-size-sm;
                 line-height: 25px;
                 margin-bottom: 24px;
 
@@ -23,7 +23,7 @@
                         .boxterm__list-subterm{
                            label{
                                font-weight: 600;
-                               font-size: 14px;
+                               font-size: $font-size-xxs;
                                line-height: 19px;
                            }
                         }
@@ -41,7 +41,7 @@
 
                                 &-title {
                                     font-weight: 700;
-                                    font-size: 16px;
+                                    font-size: $font-size-xs;
                                     line-height: 22px;
                                     font-style: normal;
                                 }
@@ -50,7 +50,7 @@
                                     font-family: 'Open Sans';
                                     font-style: normal;
                                     font-weight: 600;
-                                    font-size: 14px;
+                                    font-size: $font-size-xxs;
                                     line-height: 19px;
                                 }
                             }

@@ -40,7 +40,7 @@
     flex-wrap: wrap;
     border-bottom: size(1) solid var(--mc-gray-300);
     .iconify {
-      font-size: size(24);
+      font-size: $font-size-md;
     }
     h4 {
       width: 100%;

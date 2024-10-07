@@ -22,16 +22,16 @@
     }
 
     &__message {
-        font-size: size(12);
+        font-size: $font-size-xxxs;
     }
 
     &__link {
-        font-size: size(14);
+        font-size: $font-size-xxs;
         display: flex;
         justify-content: space-evenly;
 
         @media (max-width:size(400)) {
-            font-size: size(12);
+            font-size: $font-size-xxxs;
         }
     }
 
@@ -53,7 +53,7 @@
     }
 
     &__name {
-        font-size: 14px;
+        font-size: $font-size-xxs;
         font-weight: 400;
     }
 
@@ -80,7 +80,7 @@
         cursor: pointer;
         color: var(--mc-primary-500);
         font-weight: 700;
-        font-size: size(12);
+        font-size: $font-size-xxxs;
         line-height: size(16);
         text-align: center;
 

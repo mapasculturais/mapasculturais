@@ -7,7 +7,7 @@
     
     &--label {
         font-weight: 700;
-        font-size: size(18);
+        font-size: $font-size-sm;
         line-height: size(25);
     }
 
@@ -42,7 +42,7 @@
             background-color: var(--mc-gray-100);
             display: flex;
             font-weight: 700;
-            font-size: 24px;
+            font-size: $font-size-md;
             height: size(64);
             line-height: 28px;
             padding: size(13) size(23);

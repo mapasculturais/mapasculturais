@@ -25,14 +25,14 @@
                 &__title {
                     display: flex;
                     font-weight: 700;
-                    font-size: size(32);
+                    font-size: $font-size-lg;
                     line-height: size(44);
                     max-width: size(400);
                 }
         
                 &__description {
                     font-weight: 400;
-                    font-size: size(18);
+                    font-size: $font-size-sm;
                     line-height: size(25);
                     margin: size(24) 0;
                 }
@@ -78,7 +78,7 @@
                 .content {
                     max-width: 100%;
                     &__description {
-                        font-size: size(16);
+                        font-size: $font-size-xs;
                         line-height: size(22);
                         margin: size(8) 0 size(19);
                     }

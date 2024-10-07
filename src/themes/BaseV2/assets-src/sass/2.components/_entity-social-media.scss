@@ -22,12 +22,12 @@
                 font-family: var(--mc-font-body);
                 font-style: normal;
                 font-weight: 600;
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 text-decoration: none;
             }
 
             .iconify {
-                font-size: size(24);
+                font-size: $font-size-md;
                 margin: 0 auto;
             }
         }

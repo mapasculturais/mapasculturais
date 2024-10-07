@@ -9,7 +9,7 @@
 
     &__title {
         font-weight: 700;
-        font-size: size(12);
+        font-size: $font-size-xxxs;
         line-height: size(16);
         display: flex;
         align-items: center;
@@ -29,7 +29,7 @@
 
         &-item {
             word-wrap: break-word;
-            font-size: size(14);
+            font-size: $font-size-xxs;
             &-img {
                 border-radius: 50%;
                 display: flex;

@@ -44,7 +44,7 @@ $iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg' +#{$iconC
             border: var(--mc-border-hairline) var(--mc-gray-500);
             border-radius: var(--mc-border-radius-pill);
             display: flex;
-            font-size: size(14);
+            font-size: $font-size-xxs;
             font-weight: 400;
             height: size(40);
             line-height: size(19);

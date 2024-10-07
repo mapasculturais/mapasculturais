@@ -43,7 +43,7 @@
 				}
 
 				.iconify {
-					font-size: size(24);
+					font-size: $font-size-md;
 					color: var(--mc-gray-700);
 				}
 			}
@@ -128,7 +128,7 @@
 				align-items: center;
 				border-radius: var(--mc-border-radius-pill);
 				display: table;
-				font-size: size(12);
+				font-size: $font-size-xxxs;
 				font-weight: 700;
 				line-height: size(16);
 				min-width: size(137);
@@ -139,7 +139,7 @@
 
 				.iconify {
 					float: left;
-					font-size: size(16);
+					font-size: $font-size-xs;
 					line-height: size(16);
 				}
 			}
@@ -147,7 +147,7 @@
 			.openSubscriptions {
 				color: var(--mc-low-700);
 				display: flex;
-				font-size: size(14);
+				font-size: $font-size-xxs;
 				font-weight: 700;
 				gap: size(6);
 				line-height: size(19);
@@ -168,7 +168,7 @@
 			text-align: center;
 			color: var(--mc-high-500);
 			font-weight: 700;
-			font-size: size(12);
+			font-size: $font-size-xxxs;
 			line-height: size(22);
 			text-transform: capitalize;
 
@@ -189,27 +189,27 @@
 
 		&-shortDescription {
 			word-break:break-word;
-			font-size: size(14);
+			font-size: $font-size-xxs;
 		}
 
 		&--occurrence {
 			&-data {
 				font-weight: 700;
-				font-size: size(14);
+				font-size: $font-size-xxs;
 				line-height: size(19);
 				display: flex;
 				align-items: center;
 				gap: size(10);
 
 				.iconify {
-					font-size: size(18);
+					font-size: $font-size-sm;
 				}
 			}
 
 
 			&-space {
 				font-weight: 700;
-				font-size: size(14);
+				font-size: $font-size-xxs;
 				line-height: size(19);
 				display: flex;
 				align-items: center;
@@ -220,7 +220,7 @@
 					display: flex;
 					gap: size(10);
 					text-decoration: none;
-					font-size: size(18);
+					font-size: $font-size-sm;
 				}
 
 				.space-adress {
@@ -252,7 +252,7 @@
 					&__class {
 
 						font-weight: 500;
-						font-size: size(14);
+						font-size: $font-size-xxs;
 						line-height: size(16);
 						text-transform: uppercase;
 						color: var(--mc-low-700);
@@ -260,7 +260,7 @@
 
 					&__value {
 						font-weight: 700;
-						font-size: size(14);
+						font-size: $font-size-xxs;
 						line-height: size(16);
 					}
 
@@ -275,7 +275,7 @@
 
 		&--description {
 			font-weight: 400;
-			font-size: size(12);
+			font-size: $font-size-xxxs;
 			line-height: size(16);
 			color: var(--mc-low-700);
 			word-break: break-word;
@@ -285,7 +285,7 @@
 				color: var(--mc-low-500);
 				line-height: size(22);
 				font-weight: 600;
-				font-size: size(14);
+				font-size: $font-size-xxs;
 			}
 		}
 
@@ -302,7 +302,7 @@
 				.tag__title,
 				.linguagem__title {
 					font-weight: 500;
-					font-size: size(12);
+					font-size: $font-size-xxxs;
 					line-height: size(16);
 					display: flex;
 					align-items: center;
@@ -313,7 +313,7 @@
 
 			.terms {
 				font-weight: 700;
-				font-size: size(12);
+				font-size: $font-size-xxxs;
 				line-height: size(16);
 				margin: size(4) 0 size(8);
 				text-align: left;
@@ -341,7 +341,7 @@
 				&__title {
 					align-items: center;
 					display: flex;
-					font-size: size(12);
+					font-size: $font-size-xxxs;
 					line-height: size(16);
 					text-transform: uppercase;
 					width: 100%;
@@ -352,7 +352,7 @@
 					background: var(--mc-high-300);
 					border-radius: var(--mc-border-radius-xs);
 					display: flex;
-					font-size: size(12);
+					font-size: $font-size-xxxs;
 					font-weight: 400;
 					height: size(32);
 					justify-content: center;
@@ -442,7 +442,7 @@
 			border-radius: 50%;
 
 			svg {
-				font-size: size(32);
+				font-size: $font-size-lg;
 			}
 
 			img {
@@ -455,7 +455,7 @@
 				width: size(32);
 
 				svg {
-					font-size: size(16);
+					font-size: $font-size-xs;
 				}
 			}
 		}
@@ -470,7 +470,7 @@
 			&-title {
 				display: inline-block;
 				font-weight: 700;
-				font-size: size(24);
+				font-size: $font-size-md;
 				line-height: size(28);
 				text-align: left;
 				word-break: break-word;
@@ -485,7 +485,7 @@
 
 			&-subtitle {
 				font-weight: 500;
-				font-size: size(14);
+				font-size: $font-size-xxs;
 				line-height: size(19);
 				margin: 0;
 				text-transform: uppercase;
@@ -520,7 +520,7 @@
 			}
 
 			span {
-				font-size: size(12);
+				font-size: $font-size-xxxs;
 				font-weight: bold;
 
 				@include mobile {
@@ -537,7 +537,7 @@
 		min-height: size(57);
 
 		dl {
-			font-size: size(14);
+			font-size: $font-size-xxs;
 			margin: 0 size(40) size(16) 0;
 			text-transform: uppercase;
 		}
@@ -595,7 +595,7 @@
 				border: none;
 				background-color: white;
 				font-weight: 700;
-				font-size: 14px;
+				font-size: $font-size-xxs;
 				line-height: 19px;
 			}
 		}

@@ -11,14 +11,14 @@
         flex-direction: column;
 
         &--title {
-            font-size: size(24);
+            font-size: $font-size-md;
             font-weight: 700;
             line-height: size(28);
         }
 
         &--description {
             font-weight: 400;
-            font-size: size(18);
+            font-size: $font-size-sm;
             line-height: size(25);
             margin: size(18) 0 size(26);
         }
@@ -60,11 +60,11 @@
                         }
 
                         .title {
-                            font-size: size(18);
+                            font-size: $font-size-sm;
                             line-height: size(25);
 
                             @media (max-width: size(500)) {
-                                font-size: size(14);
+                                font-size: $font-size-xxs;
                                 line-height: size(19);
                             }
                         }
@@ -93,12 +93,12 @@
                     p {
                         margin: 0;
                         font-weight: 500;
-                        font-size: size(14);
+                        font-size: $font-size-xxs;
                         line-height: size(19);
                         color: var(--mc-low-700);
 
                         @media (max-width: size(500)) {
-                            font-size: size(12);
+                            font-size: $font-size-xxxs;
                             line-height: size(16);
                         }
                     }
@@ -128,11 +128,11 @@
                         .value,
                         .info {
                             font-weight: 600;
-                            font-size: size(14);
+                            font-size: $font-size-xxs;
                             line-height: size(20);
 
                             @media (max-width: size(500)) {
-                                font-size: size(12);
+                                font-size: $font-size-xxxs;
                                 line-height: size(18);
                             }
                         }

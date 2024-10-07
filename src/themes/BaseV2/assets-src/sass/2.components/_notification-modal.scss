@@ -33,7 +33,7 @@
 				background-color: var(--mc-danger-500);
 				color: var(--mc-high-500);
 				font-weight: normal;
-				font-size: 12px;
+				font-size: $font-size-xxxs;
 				top: size(-7);
 				left: size(12);
 			}
@@ -48,7 +48,7 @@
 
 		.label {
 			font-weight: 600;
-			font-size: 14px;
+			font-size: $font-size-xxs;
 			line-height: size(16);
 		}
 
@@ -75,7 +75,7 @@
 				background-color: var(--mc-danger-500);
 				color: var(--mc-high-500);
 				font-weight: normal;
-				font-size: 12px;
+				font-size: $font-size-xxxs;
 				top: size(-8);
 				left: size(8);
 			}
@@ -106,7 +106,7 @@
     }
 
 	&__header {
-		font-size: size(12);
+		font-size: $font-size-xxxs;
 		font-weight: 600;
 		line-height: size(16);
 		padding: size(16) size(24) size(9);

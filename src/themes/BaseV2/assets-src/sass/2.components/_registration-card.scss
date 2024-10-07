@@ -59,7 +59,7 @@
                 justify-content: space-between;
         
                 .title {
-                    font-size: size(18);
+                    font-size: $font-size-sm;
                     font-weight: 600;
                     line-height: size(25);
                     text-transform: uppercase;
@@ -70,7 +70,7 @@
         
                     strong {
                         text-transform: none;
-                        font-size: size(24);
+                        font-size: $font-size-md;
                         line-height: size(28);
                     }
                 }
@@ -92,7 +92,7 @@
 
                     .title {
                         color: var(--mc-low-500);                
-                        font-size: size(16);
+                        font-size: $font-size-xs;
                         font-weight: 600;
                         line-height: size(22);
                         margin: 0;
@@ -101,7 +101,7 @@
         
                     .data {
                         color: var(--mc-low-500);  
-                        font-size: size(16);
+                        font-size: $font-size-xs;
                         font-weight: 700;
                         line-height: size(22);
                         margin: 0;
@@ -113,12 +113,12 @@
 
                     .registerData {
                         .title {               
-                            font-size: size(14);
+                            font-size: $font-size-xxs;
                             line-height: size(19);
                         }
             
                         .data {
-                            font-size: size(14);
+                            font-size: $font-size-xxs;
                             line-height: size(19);
                         }
                     }
@@ -137,7 +137,7 @@
         .left {
             .status {
                 font-weight: 800;
-                font-size: size(12);
+                font-size: $font-size-xxxs;
                 line-height: size(16);
                 background-color: var(--mc-low-700);
                 padding: size(8) size(32);
@@ -196,11 +196,11 @@
             }
 
             .header .title strong {
-                font-size: size(24);
+                font-size: $font-size-md;
                 line-height: size(28);  
 
                 @media (max-width: size(500)) {
-                    font-size: size(18);
+                    font-size: $font-size-sm;
                     line-height: size(25);
                 }                    
             }

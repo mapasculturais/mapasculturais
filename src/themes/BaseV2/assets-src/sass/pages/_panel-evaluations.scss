@@ -49,7 +49,7 @@
             .input {
                 border-radius: var(--mc-border-radius-pill);
                 border: var(--mc-border-hairline) var(--mc-gray-500);
-                font-size: size(16);
+                font-size: $font-size-xs;
                 font-weight: 400;
                 line-height: size(19);                    
                 margin: 0;

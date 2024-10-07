@@ -32,7 +32,7 @@
 
         &--title {
             label.title {
-                font-size: size(32);
+                font-size: $font-size-lg;
                 font-weight: 700;
                 line-height: size(44);
             }
@@ -59,7 +59,7 @@
                 }
 
                 .name {
-                    font-size: size(24);
+                    font-size: $font-size-md;
                     font-weight: 600;
                     line-height: size(33);
                 }
@@ -73,14 +73,14 @@
                     }
 
                     .name {
-                        font-size: size(16);
+                        font-size: $font-size-xs;
                         line-height: size(22);
                     }
                 }
 
                 &-button {
                     .button {
-                        font-size: size(14);
+                        font-size: $font-size-xxs;
                         line-height: size(19);
 
                         .iconify {

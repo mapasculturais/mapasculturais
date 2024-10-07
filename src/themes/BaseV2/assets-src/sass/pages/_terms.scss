@@ -69,7 +69,7 @@
             .title {
                 &__title {
                     font-weight: 700;
-                    font-size: size(32);
+                    font-size: $font-size-lg;
                     line-height: size(44);
                 }
             }

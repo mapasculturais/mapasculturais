@@ -21,7 +21,7 @@
 
             svg {
                 float: left;
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
         }
         
@@ -38,12 +38,12 @@
             }
             .arrow-icon {
                 float: right;
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
 
             .send-icon {
                 float: left;
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
         }
 
@@ -60,7 +60,7 @@
 
             svg {
                 float: left;
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
         }
     }

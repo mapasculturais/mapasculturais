@@ -36,7 +36,7 @@
         grid-template-columns: 21px 1fr;
 
         .text {
-            font-size: size(16);
+            font-size: $font-size-xs;
             font-weight: 400;
             line-height: size(22);
             margin: 0;
@@ -51,7 +51,7 @@
         background: none;
         border: none;
         cursor: pointer;
-        font-size: size(14);
+        font-size: $font-size-xxs;
         font-weight: 700;
         line-height: size(19);
         margin-left: auto;

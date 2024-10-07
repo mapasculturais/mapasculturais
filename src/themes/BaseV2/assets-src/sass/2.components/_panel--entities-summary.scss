@@ -44,7 +44,7 @@
 
             &-label {
                 font-weight: 600;
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 line-height: size(22);
             }
         }
@@ -58,13 +58,13 @@
 
             &-num {
                 font-weight: 700;
-                font-size: size(32);
+                font-size: $font-size-lg;
                 line-height: size(35);
             }
 
             &-label {
                 font-weight: 600;
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 line-height: size(19);
             }
         }

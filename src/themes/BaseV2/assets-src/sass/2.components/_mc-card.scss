@@ -17,13 +17,13 @@
 
         label {
             font-weight: 700;
-            font-size: size(24);
+            font-size: $font-size-md;
             line-height: size(28);
         }
 
         p {
             margin: size(8) 0 0;
-            font-size: size(14);
+            font-size: $font-size-xxs;
             line-height: size(19);
         }
     }

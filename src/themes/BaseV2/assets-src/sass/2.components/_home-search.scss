@@ -22,7 +22,7 @@
             border: size(1) solid var(--mc-gray-100);
             border-radius: size(68) 0 0 size(68);
             border-right: 0;
-            font-size: size(16);
+            font-size: $font-size-xs;
             line-height: size(18);
             max-width: size(385);
             padding: size(14) 0 size(14) size(20);
@@ -46,7 +46,7 @@
             margin-left: size(-1);
 
             .iconify {
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
 
             &:focus-visible {
@@ -57,11 +57,11 @@
 
     .button.filter {
         .iconify {
-            font-size: size(24);
+            font-size: $font-size-md;
         }
 
         @media (max-width: size(800)) {
-            font-size: size(14);
+            font-size: $font-size-xxs;
             padding: size(5) size(15);
             gap: size(9);
         }

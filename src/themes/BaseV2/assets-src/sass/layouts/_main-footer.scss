@@ -128,7 +128,7 @@
 
                 li {
                     font-weight: 400;
-                    font-size: size(16);
+                    font-size: $font-size-xs;
                     line-height: size(22);
                     padding-bottom: size(16);
 
@@ -143,7 +143,7 @@
 
                 li:first-child {
                     font-weight: 700;
-                    font-size: size(24);
+                    font-size: $font-size-md;
                     line-height: size(28);
                     font-weight: 600;
                     padding-bottom: size(24);    
@@ -166,7 +166,7 @@
             color: var(--mc-high-500);
             display: flex;
             font-weight: 400;
-            font-size: size(14);
+            font-size: $font-size-xxs;
             flex-wrap: wrap;
             justify-content: space-between;
             line-height: size(19);

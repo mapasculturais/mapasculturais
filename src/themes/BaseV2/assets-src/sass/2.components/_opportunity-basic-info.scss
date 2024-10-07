@@ -12,7 +12,7 @@
 
   &__label {
     font-weight: 600;
-    font-size: size(14);
+    font-size: $font-size-xxs;
     line-height: size(19);
     color: var(--mc-low-500);
     margin-top: size(10);
@@ -21,7 +21,7 @@
 
   &__hint {
     font-weight: 700;
-    font-size: size(12);
+    font-size: $font-size-xxxs;
     line-height: size(16);
     color: var(--mc-error);
   }

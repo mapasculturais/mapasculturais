@@ -99,13 +99,13 @@ $text-transform-lowercase: lowercase;
 $text-transform-none: none;
 $text-transform-uppercase: uppercase;
 
-$font-size-xl: 3rem;
-$font-size-lg: 2rem;
-$font-size-md: 1.5rem;
-$font-size-sm: 1.125rem;
-$font-size-xs: 1rem;
-$font-size-xxs: 0.875rem;
-$font-size-xxxs: 0.75rem;
+$font-size-xl: 3rem;      // 48px
+$font-size-lg: 2rem;      // 32px
+$font-size-md: 1.5rem;    // 24px
+$font-size-sm: 1.125rem;  // 18px
+$font-size-xs: 1rem;      // 16px
+$font-size-xxs: 0.875rem; // 14px
+$font-size-xxxs: 0.75rem; // 12px
 
 // Borders radius
 $border-radius-xs: 4px !default;

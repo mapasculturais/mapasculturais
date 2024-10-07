@@ -63,7 +63,7 @@
 
             &--title {
                 font-weight: 700;
-                font-size: size(18);
+                font-size: $font-size-sm;
                 line-height: size(25);
                 word-break: break-word;
             }
@@ -76,7 +76,7 @@
 
                 .info {
                     margin: size(8) 0;
-                    font-size: size(12);
+                    font-size: $font-size-xxxs;
                     font-weight: 400;
                     line-height: size(16);
                     text-transform: uppercase;
@@ -94,7 +94,7 @@
 
             &--link {
                 font-weight: 700;
-                font-size: size(16);
+                font-size: $font-size-xs;
                 line-height: size(22);
                 text-decoration: none;
                 outline: none;

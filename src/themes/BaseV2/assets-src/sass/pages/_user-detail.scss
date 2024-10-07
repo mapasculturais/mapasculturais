@@ -86,7 +86,7 @@
 
     &__user {
         display: flex;
-        font-size: size(24);
+        font-size: $font-size-md;
         font-weight: 700;
         justify-content: space-between;
         line-height: size(33);
@@ -111,7 +111,7 @@
         a {
             color: var(--mc-low-500);
             color: var(--mc-primary-500);
-            font-size: size(14);
+            font-size: $font-size-xxs;
             text-decoration: none;
         }
     }
@@ -142,7 +142,7 @@
                 gap: size(8);
 
                 .seal-label {
-                    font-size: size(14);
+                    font-size: $font-size-xxs;
                     font-weight: 700;
                     line-height: size(19);
                 }

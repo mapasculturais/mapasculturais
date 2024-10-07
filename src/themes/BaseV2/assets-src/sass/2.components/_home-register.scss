@@ -43,10 +43,10 @@
 
         &--title {
             font-weight: 700;
-            font-size: size(32);
+            font-size: $font-size-lg;
             line-height: size(44);
             @media (max-width:size(800)) {
-                font-size: size(24);
+                font-size: $font-size-md;
                 line-height: size(28);
             }
         }
@@ -54,10 +54,10 @@
         &--description{
             margin: size(16) 0 size(25);
             font-weight: 400;
-            font-size: size(18);
+            font-size: $font-size-sm;
             line-height: size(25);
             @media (max-width:size(800)) {
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 line-height: size(19);
             }
         }
@@ -65,7 +65,7 @@
         &--button {
             background-color: var(--mc-high-500);
             border-radius: var(--mc-border-radius-sm);
-            font-size: size(24);
+            font-size: $font-size-md;
             line-height: size(28);
             color: var(--mc-secondary-500);
             display: flex;

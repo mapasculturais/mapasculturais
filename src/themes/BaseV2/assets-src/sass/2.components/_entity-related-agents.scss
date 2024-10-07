@@ -32,7 +32,7 @@
             color: var(--mc-black);
             display: flex;
             font-family: var(--mc-font-heading);
-            font-size: size(16);
+            font-size: $font-size-xs;
             font-style: normal;
             font-weight: 700;
             gap: size(14);
@@ -106,7 +106,7 @@
                     width: size(18);
 
                     .iconify {
-                        font-size: size(14);
+                        font-size: $font-size-xxs;
                     }
                 }
 
@@ -140,7 +140,7 @@
             font-family: 'Open Sans';
             font-style: normal;
             font-weight: 600;
-            font-size: size(14);
+            font-size: $font-size-xxs;
             line-height: size(19);
         }
 
@@ -151,7 +151,7 @@
             }
 
             input::placeholder {
-                font-size: size(16);
+                font-size: $font-size-xs;
                 padding-left: size(3);
             }
         }
@@ -160,7 +160,7 @@
         &--title {
             color: var(--mc-black);
             font-family: var(--mc-font-heading);
-            font-size: size(14);
+            font-size: $font-size-xxs;
             font-style: normal;
             font-weight: 600;
             line-height: size(19);

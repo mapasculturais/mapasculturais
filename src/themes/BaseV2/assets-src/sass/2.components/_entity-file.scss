@@ -42,7 +42,7 @@
     }
 
     &__title {
-        font-size: size(18);
+        font-size: $font-size-sm;
         font-weight: 700;
         line-height: size(25);
         margin-bottom: size(8);
@@ -67,7 +67,7 @@
                 color: var(--mc-black);
                 display: grid;
                 font-family: var(--mc-font-body);
-                font-size: size(18);
+                font-size: $font-size-sm;
                 font-style: normal;
                 font-weight: 700;
                 gap: size(10);
@@ -79,7 +79,7 @@
                 word-break: break-word;
 
                 .iconify {
-                    font-size: size(18);
+                    font-size: $font-size-sm;
                 }
             }
 
@@ -90,7 +90,7 @@
 
                 .iconify {
                     cursor: pointer;
-                    font-size: size(14);
+                    font-size: $font-size-xxs;
                 }
             }
         }

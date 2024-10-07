@@ -114,7 +114,7 @@ vue3-easy-data-table__body {
 }
 
 .vue3-easy-data-table__header tr {
-    font-size: size(12);
+    font-size: $font-size-xxxs;
     border: none;
     height: size(36);
 }
@@ -230,7 +230,7 @@ vue3-easy-data-table__body {
 .vue3-easy-data-table__header th,
 .vue3-easy-data-table__body td {
     font-family: Open Sans;
-    font-size: size(14);
+    font-size: $font-size-xxs;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
@@ -255,7 +255,7 @@ vue3-easy-data-table__body {
 .vue3-easy-data-table__body tr {
     height: size(36);
     color: var(--mc-low-700);
-    font-size: size(12);
+    font-size: $font-size-xxxs;
     
     &:last-child {
         td {
@@ -277,14 +277,14 @@ vue3-easy-data-table__body {
     border: none;
     border-bottom: px solid var(--mc-high-500);
     font-weight: 700;
-    font-size: size(14);
+    font-size: $font-size-xxs;
     font-family: 'Open Sans';
     color: var(--mc-low-700);
     padding: size(16);
     &:first-child {
         color: var(--mc-opportunities-500);
         font-weight: 600;
-        font-size: size(14);
+        font-size: $font-size-xxs;
         font-family: 'Open Sans';
     }
 
@@ -337,7 +337,7 @@ vue3-easy-data-table__body {
     background-color: var(--mc-high-500);
     color: var(--mc-low-700);
     border-top: size(1) solid var(--mc-high-500);
-    font-size: size(12);
+    font-size: $font-size-xxxs;
     height: size(36);
     padding: 0 size(5);
 
@@ -359,7 +359,7 @@ vue3-easy-data-table__body {
 
 .vue3-easy-data-table__message {
     color: var(--mc-low-700);
-    font-size: size(12);
+    font-size: $font-size-xxxs;
     padding: size(20);
 
     text-align: center;

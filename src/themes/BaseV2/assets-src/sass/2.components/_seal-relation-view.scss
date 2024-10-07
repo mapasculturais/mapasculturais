@@ -53,14 +53,14 @@
 			margin: 80px auto 60px auto;
 			h3 {
 				font-weight: 700;
-				font-size: 24px;
+				font-size: $font-size-md;
 				line-height: 28px;
 				text-align: center;
 				color: #000000;
 			}
 			p {
 				font-weight: 400;
-				font-size: 16px;
+				font-size: $font-size-xs;
 				line-height: 22px;
 				text-align: center;
 			}

@@ -20,7 +20,7 @@ body.galleryOpen {
 
     &__title {
         font-weight: 700;
-        font-size: size(18);
+        font-size: $font-size-sm;
         line-height: size(25);
         margin-bottom: size(8);
     }
@@ -54,7 +54,7 @@ body.galleryOpen {
             &-label {
                 cursor: pointer;
                 font-weight: 500;
-                font-size: size(16);
+                font-size: $font-size-xs;
                 line-height: size(22);
                 margin: size(8) 0 0;
                 word-break: break-word;

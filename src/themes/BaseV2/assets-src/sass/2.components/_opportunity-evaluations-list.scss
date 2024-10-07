@@ -36,7 +36,7 @@
             .label {
                 font-family: 'Open Sans';
                 font-style: normal;
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 font-weight: 700;
                 line-height: size(19);
                 color: var(--mc-primary-500);
@@ -44,7 +44,7 @@
 
             .icon {
                 .iconify {
-                    font-size: size(14);
+                    font-size: $font-size-xxs;
                     color: var(--mc-primary-500);
                 }
             }
@@ -90,12 +90,12 @@
                             font-family: 'Open Sans';
                             font-style: normal;
                             font-weight: 700;
-                            font-size: size(14);
+                            font-size: $font-size-xxs;
                             line-height: size(19);
                         }
 
                         svg {
-                            font-size: size(16);
+                            font-size: $font-size-xs;
                             color: var(--mc-white);
                             width: size(16);
                             height: size(16);
@@ -131,7 +131,7 @@
                         font-family: 'Open Sans';
                         font-style: normal;
                         font-weight: 600;
-                        font-size: 16px;
+                        font-size: $font-size-xs;
                         line-height: 22px;
                     }
                 }
@@ -220,7 +220,7 @@
                                         font-family: 'Open Sans';
                                         font-style: normal;
                                         font-weight: 600;
-                                        font-size: 12px;
+                                        font-size: $font-size-xxxs;
                                         line-height: 16px;
                                         text-transform: uppercase;
                                         color: var(--mc-low-700)
@@ -230,7 +230,7 @@
                                         font-family: 'Open Sans';
                                         font-style: normal;
                                         font-weight: 700;
-                                        font-size: size(14);
+                                        font-size: $font-size-xxs;
                                         line-height: size(19);
 
                                     }
@@ -254,7 +254,7 @@
                                 font-family: 'Open Sans';
                                 font-style: normal;
                                 font-weight: 600;
-                                font-size: 12px;
+                                font-size: $font-size-xxxs;
                                 line-height: 16px;
                                 color: var(--mc-low-700);
                                 text-transform: uppercase;
@@ -273,7 +273,7 @@
                                     font-family: 'Open Sans';
                                     font-style: normal;
                                     font-weight: 700;
-                                    font-size: size(12);
+                                    font-size: $font-size-xxxs;
                                     line-height: size(16);
                                     text-align: center;
                                     text-transform: capitalize;

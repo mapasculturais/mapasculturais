@@ -17,7 +17,7 @@
 
     &__results {
         @media (max-width:size(500)) {
-            font-size: size(16);
+            font-size: $font-size-xs;
         }
     }
 
@@ -57,7 +57,7 @@
         color: var(--mc-gray-700);
 
         @media (max-width:size(500)) {
-            font-size: size(14);
+            font-size: $font-size-xxs;
         }
     }
 
@@ -76,7 +76,7 @@
     }
 
     &__context {
-        font-size: size(14);
+        font-size: $font-size-xxs;
     }
 
     &__contexts:first-child {
@@ -98,7 +98,7 @@
     }
 
     &__subtitle {
-        font-size: size(14);
+        font-size: $font-size-xxs;
     }
 
     &__tags {

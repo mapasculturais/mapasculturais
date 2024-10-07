@@ -10,7 +10,7 @@
         .modal{ 
             &__title {
                 font-weight: 700;
-                font-size: size(18);
+                font-size: $font-size-sm;
                 line-height: size(25);
             }
             &__header {
@@ -87,7 +87,7 @@
 
         &--title {
             font-weight: 700;
-            font-size: size(16);
+            font-size: $font-size-xs;
             line-height: size(22);
         }
 
@@ -95,7 +95,7 @@
             display: flex;
             align-items: center;
             gap: size(25);
-            font-size: size(18);
+            font-size: $font-size-sm;
             line-height: size(25);
             flex-wrap: wrap;
 
@@ -116,7 +116,7 @@
                     &--title {
                         align-items: center;
                         display: flex;
-                        font-size: size(18);
+                        font-size: $font-size-sm;
                         font-weight: 800;
                         line-height: size(25);
                         gap: size(6);
@@ -131,7 +131,7 @@
 
                     &--address {
                         color: var(--mc-gray-700);
-                        font-size: size(14);
+                        font-size: $font-size-xxs;
                         font-weight: 600;
                         line-height: size(19);
                         margin-left: size(16);
@@ -151,7 +151,7 @@
 
             &-field {
                 font-weight: 600;
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 line-height: size(19);
                 display: flex;
                 align-items: center;
@@ -167,7 +167,7 @@
 
             .label {
                 font-weight: 600;
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 line-height: size(19);
                 width: 100%;
             }
@@ -179,7 +179,7 @@
             gap: size(8);
 
             span.label {
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 line-height: size(19);
                 font-weight: 600;
             }
@@ -188,7 +188,7 @@
                 background: #FFFFFF;
                 border: var(--mc-border-hairline) var(--mc-gray-300);
                 border-radius: size(4);
-                font-size: size(12);
+                font-size: $font-size-xxxs;
                 padding: size(14);
                 font-weight: 600;
                 
@@ -220,7 +220,7 @@
             .auto-description {
                 background-color: var(--mc-gray-100);
                 font-weight: 600;
-                font-size: size(12);
+                font-size: $font-size-xxxs;
                 line-height: size(16);
                 padding: size(8);
                 display: flex;

@@ -3,7 +3,7 @@
 .panel--pending-evaluations {
 
     &__title {
-        font-size: size(24);
+        font-size: $font-size-md;
         font-weight: 700;
         line-height: size(28);
         margin-bottom: size(16);
@@ -12,7 +12,7 @@
     @media (max-width:size(400)) {
         &__title {
             font-weight: 700;
-            font-size: 18px;
+            font-size: $font-size-sm;
             line-height: 25px;
         }
     }
@@ -149,7 +149,7 @@
 
                         &--info {
                             &-title {
-                                font-size: size(16);
+                                font-size: $font-size-xs;
                                 line-height: size(22);
                             }
 
@@ -168,7 +168,7 @@
 
                     &__main {
                         font-weight: 400;
-                        font-size: size(12);
+                        font-size: $font-size-xxxs;
                         line-height: size(16);
                         text-align: left;
                         padding: 0;
@@ -182,14 +182,14 @@
                                         font-family: 'Open Sans';
                                         font-style: normal;
                                         font-weight: 400;
-                                        font-size: 14px;
+                                        font-size: $font-size-xxs;
                                         line-height: 19px;
                                     }
                                 }
 
                                 .entity-strong {
                                     font-weight: 700;
-                                    font-size: 14px;
+                                    font-size: $font-size-xxs;
                                 }
                             }
 
@@ -197,7 +197,7 @@
                                 max-width: size(310);
                                 font-family: 'Open Sans';
                                 font-style: normal;
-                                font-size: size(14);
+                                font-size: $font-size-xxs;
                                 line-height: size(19);
 
                                 &--label {
@@ -257,14 +257,14 @@
                     min-width: size(137);
                     padding: size(6) size(19);
                     display: block;
-                    font-size: size(12);
+                    font-size: $font-size-xxxs;
                     text-align: center;
                     line-height: size(18);
                     white-space: nowrap;
 
                     .iconify {
                         float: left;
-                        font-size: size(16);
+                        font-size: $font-size-xs;
                         margin-right: size(8);
                     }
 
@@ -294,7 +294,7 @@
 
                             svg {
 
-                                font-size: size(14);
+                                font-size: $font-size-xxs;
                             }
                         }
                     }

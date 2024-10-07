@@ -30,7 +30,7 @@
 @include mobile {
     .registration-info {
         &__title {
-            font-size: size(18);
+            font-size: $font-size-sm;
             line-height: size(28);
         }
 
@@ -41,12 +41,12 @@
 
         &__data {
             &__title {
-                font-size: size(12);
+                font-size: $font-size-xxxs;
                 line-height: size(16);
             }
 
             &__info {
-                font-size: size(14);
+                font-size: $font-size-xxs;
                 line-height: size(22);
             }
         }

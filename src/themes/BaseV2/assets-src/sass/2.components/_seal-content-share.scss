@@ -5,7 +5,7 @@
 	&__socialnetwork {
 		&--title {
 			font-weight: 600;
-			font-size: size(14);
+			font-size: $font-size-xxs;
 			line-height: size(19);
 			color: #1E1E1E;
 		}
@@ -33,7 +33,7 @@
 	&__share {
 		&--label {
 			font-weight: 600;
-			font-size: size(14);
+			font-size: $font-size-xxs;
 			line-height: size(19);
 			color: #000000;
 		}
@@ -46,14 +46,14 @@
 			padding: size(8);
 			span {
 				font-weight: 600;
-				font-size: size(12);
+				font-size: $font-size-xxxs;
 				line-height: size(16);
 				color: #1E1E1E;
 			}
 		}
 		&--button {
 			font-weight: 600;
-			font-size: size(16);
+			font-size: $font-size-xs;
 			color: #0074C1;
 			float: right;
 			display: inline-block;

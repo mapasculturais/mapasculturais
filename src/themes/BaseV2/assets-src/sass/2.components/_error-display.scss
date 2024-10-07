@@ -39,7 +39,7 @@ body.base-v2.controller-site.action-error {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 12px;
+                    font-size: $font-size-xxxs;
                     line-height: 16px;
                     text-align: center;
                 }
@@ -71,7 +71,7 @@ body.base-v2.controller-site.action-error {
                             font-family: 'Open Sans';
                             font-style: normal;
                             font-weight: 700;
-                            font-size: size(24);
+                            font-size: $font-size-md;
                             line-height: size(28);
 
                         }
@@ -89,7 +89,7 @@ body.base-v2.controller-site.action-error {
                                 font-family: 'Open Sans';
                                 font-style: normal;
                                 font-weight: 700;
-                                font-size: 16px;
+                                font-size: $font-size-xs;
                                 line-height: 25px;
                                 /* identical to box height */
 
@@ -119,7 +119,7 @@ body.base-v2.controller-site.action-error {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: size(18);
+                    font-size: $font-size-sm;
 
                     @media (max-width: size(600)) {
 
@@ -140,7 +140,7 @@ body.base-v2.controller-site.action-error {
                         font-family: 'Open Sans';
                         font-style: normal;
                         font-weight: 700;
-                        font-size: size(32);
+                        font-size: $font-size-lg;
                         line-height: size(54);
                         text-align: center;
                     }
@@ -170,7 +170,7 @@ body.base-v2.controller-site.action-error {
                         font-family: "Open Sans";
                         font-style: normal;
                         font-weight: 700;
-                        font-size: 32px;
+                        font-size: $font-size-lg;
                         line-height: 3.375rem;
                     }
                 }

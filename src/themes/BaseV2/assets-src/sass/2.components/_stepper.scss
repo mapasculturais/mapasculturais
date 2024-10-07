@@ -47,7 +47,7 @@
             border-radius: 50%;
             color: var(--mc-gray-300);
             display: flex;
-            font-size: size(24);
+            font-size: $font-size-md;
             font-weight: 700;
             height: size(40);
             justify-content: center;
@@ -61,7 +61,7 @@
 
         .label {
             font-weight: 400;
-            font-size: size(14);
+            font-size: $font-size-xxs;
             line-height: size(19);
             text-align: center;
             transition: opacity 300ms;
@@ -121,7 +121,7 @@
                 width: size(24);
 
                 @include mobile {
-                    font-size: size(18);
+                    font-size: $font-size-sm;
                     height: size(16);
                     line-height: size(25);
                     width: size(16);

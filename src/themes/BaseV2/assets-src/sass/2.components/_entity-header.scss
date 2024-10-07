@@ -105,11 +105,11 @@
                 .title {
                     font-style: normal;
                     font-weight: 700;
-                    font-size: size(48);
+                    font-size: $font-size-xl;
                     line-height: size(65);
                     margin-top: size(10);
                     @include mobile {
-                        font-size: size(24);
+                        font-size: $font-size-md;
                         line-height: size(33);
                         text-align: center;
                         margin: 0;
@@ -137,7 +137,7 @@
                     }
 
                     @media (max-width : size(900)) {
-                        font-size: size(14);
+                        font-size: $font-size-xxs;
                         line-height: size(16);
                     }
                     &--event {
@@ -159,7 +159,7 @@
                     color: #3E3E3E;
 
                     .iconify {
-                        font-size: size(18);
+                        font-size: $font-size-sm;
                     }
                 }
 
@@ -179,12 +179,12 @@
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 14px;
+                    font-size: $font-size-xxs;
                     line-height: 19px;
 
                     &--id {
                         font-weight: 600;
-                        font-size: 14px;
+                        font-size: $font-size-xxs;
                         line-height: 19px;
                     }
 
@@ -208,17 +208,17 @@
                     margin: 0;
 
                     @include mobile {
-                        font-size: size(12) !important;
+                        font-size: $font-size-xxxs !important;
                         line-height: size(16) !important;
                     }
                 }
 
                 dt {
                     color: var(--mc-gray-700);
-                    font-size: size(12);
+                    font-size: $font-size-xxxs;
                     font-style: normal;
                     font-weight: normal;
-                    font-size: size(14);
+                    font-size: $font-size-xxs;
 
                     line-height: size(16);
                     text-transform: uppercase;
@@ -229,11 +229,11 @@
                 }
 
                 dd {
-                    font-size: size(16);
+                    font-size: $font-size-xs;
                     font-weight: bold;
                     line-height: size(21);
                     margin-left: size(5);
-                    font-size: size(14);
+                    font-size: $font-size-xxs;
                     text-align: left;
 
                     &.type {
@@ -350,7 +350,7 @@
 
                     h2 {
                         font-weight: 700;
-                        font-size: size(18);
+                        font-size: $font-size-sm;
                         line-height: size(25);
                     }
                 }
@@ -369,13 +369,13 @@
                         width: size(32);
 
                         .iconify {
-                            font-size: size(18);
+                            font-size: $font-size-sm;
                         }
                     }
 
                     h2 {
                         font-weight: 700;
-                        font-size: 18px;
+                        font-size: $font-size-sm;
                         line-height: 25px;
                     }
                 }

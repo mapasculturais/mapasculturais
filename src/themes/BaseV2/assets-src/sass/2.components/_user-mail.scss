@@ -10,7 +10,7 @@
         &-label {
 
             font-weight: 700;
-            font-size: 18px;
+            font-size: $font-size-sm;
             line-height: 25px;
             margin-bottom: 16px;
         }
@@ -18,7 +18,7 @@
         &-email {
             font-style: normal;
             font-weight: 700;
-            font-size: 14px;
+            font-size: $font-size-xxs;
             line-height: 19px;
             gap: 9px;
             padding-right: 18px;
@@ -35,7 +35,7 @@
             &-label {
                 margin-left: size(8px);
                 font-weight: 700;
-                font-size: 14px;
+                font-size: $font-size-xxs;
                 line-height: 19px;
                 color: var(--mc-helper-500);
             }

@@ -30,7 +30,7 @@
             width: size(32);
 
             svg {
-                font-size: size(16);
+                font-size: $font-size-xs;
             }
 
             img {
@@ -49,7 +49,7 @@
                 gap: size(4);
 
                 .title {
-                    font-size: 16px;
+                    font-size: $font-size-xs;
                     line-height: 22px;
                     margin: 0;
                     word-break: break-word;
@@ -65,7 +65,7 @@
                 }
 
                 .subtitle {
-                    font-size: 14px;
+                    font-size: $font-size-xxs;
                     line-height: 19px;
                     margin: 0;
                 }

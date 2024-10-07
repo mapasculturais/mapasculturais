@@ -24,7 +24,7 @@
         .registration__collective-link, .registration__institution-link ,  .registration__space-link {
             text-decoration: none;
             color: var(--mc-low-700);
-            font-size: size(16);
+            font-size: $font-size-xs;
         }
         &__content {
             margin: 0 auto;
@@ -118,7 +118,7 @@
 
                                     &__name {
                                         color: var(--mc-gray-700);
-                                        font-size: size(18);
+                                        font-size: $font-size-sm;
                                         font-weight: 700;
                                         line-height: size(25);
                                     }
@@ -133,7 +133,7 @@
                                     .category {
                                         display: flex;
                                         flex-direction: column;
-                                        font-size: size(14);
+                                        font-size: $font-size-xxs;
                                         gap: size(4);
                                         justify-content: center;
                                         line-height: size(19);
@@ -143,7 +143,7 @@
                                         }
 
                                         &__info {
-                                            font-size: size(18);
+                                            font-size: $font-size-sm;
                                             font-weight: 700;
                                         }
                                     }
@@ -167,13 +167,13 @@
                             .left {
                                 .project {
                                     &__label {
-                                        font-size: size(14);
+                                        font-size: $font-size-xxs;
                                         font-weight: 400;
                                         line-height: size(19);
                                     }
 
                                     &__name {
-                                        font-size: size(18);
+                                        font-size: $font-size-sm;
                                         font-weight: 700;
                                         line-height: size(24);
                                     }
@@ -191,7 +191,7 @@
 
                                 .sentDate {
                                     color: var(--mc-low-700);
-                                    font-size: size(18);
+                                    font-size: $font-size-sm;
                                     font-weight: 600;
                                     line-height: size(25);
                                 }
@@ -202,7 +202,7 @@
                             background-color: var(--mc-low-700);
                             border-radius: var(--mc-border-radius-pill);
                             color: var(--mc-high-500);
-                            font-size: size(12);
+                            font-size: $font-size-xxxs;
                             font-weight: 700;
                             line-height: size(16);
                             padding: size(8) size(30);
@@ -215,7 +215,7 @@
                         gap: size(16);
 
                         .info {
-                            font-size: size(18);
+                            font-size: $font-size-sm;
                             line-height: size(25);
                             word-break: break-word;
                         }
@@ -246,14 +246,14 @@
 
                             .iconify {
                                 color: var(--mc-high-500);
-                                font-size: size(18);
+                                font-size: $font-size-sm;
                             }
                            
                         }
 
                         .name {
                             color: var(--mc-low-500);
-                            font-size: size(16);
+                            font-size: $font-size-xs;
                             font-weight: 700;
                             line-height: size(22);
                         }
@@ -284,7 +284,7 @@
                                             }
 
                                             &__info {
-                                                font-size: size(14);
+                                                font-size: $font-size-xxs;
                                                 font-weight: 700;
                                             }
                                         }
@@ -310,7 +310,7 @@
                                         }
 
                                         &__name {
-                                            font-size: size(14);
+                                            font-size: $font-size-xxs;
                                             line-height: size(20);
                                         }
                                     }
@@ -324,7 +324,7 @@
                                     }
 
                                     .sentDate {
-                                        font-size: size(14);
+                                        font-size: $font-size-xxs;
                                         line-height: size(19);
                                     }
                                 }
@@ -338,7 +338,7 @@
         &.edit {
             .registration {
                 &__title {
-                    font-size: size(48);
+                    font-size: $font-size-xl;
                     font-weight: 700;
                     line-height: size(65);
                     margin: size(26) auto;
@@ -369,7 +369,7 @@
 
                         @include mobile {
                             .step .label {
-                                font-size: size(12);
+                                font-size: $font-size-xxxs;
                             }
                         }
 
@@ -385,7 +385,7 @@
                     .section {
                         width: 100%;
                         &__title {
-                            font-size: size(32);
+                            font-size: $font-size-lg;
                             font-weight: 700;
                             line-height: size(44);
                             margin-bottom: size(24);
@@ -416,7 +416,7 @@
                                 &__title {
                                     align-items: center;
                                     display: flex;
-                                    font-size: size(18);
+                                    font-size: $font-size-sm;
                                     font-weight: 700;
                                     gap: size(10);
                                     line-height: size(25);
@@ -428,14 +428,14 @@
 
                                     .obrigatory {
                                         color: var(--mc-error);
-                                        font-size: size(12);
+                                        font-size: $font-size-xxxs;
                                         font-weight: 700;
                                         line-height: size(16);
                                     }
                                 }
 
                                 &__subtitle {
-                                    font-size: size(12);
+                                    font-size: $font-size-xxxs;
                                     font-weight: 400;
                                     line-height: size(16);
                                 }
@@ -476,7 +476,7 @@
                                         }
 
                                         &__name {
-                                            font-size: size(14);
+                                            font-size: $font-size-xxs;
                                             font-weight: 700;
                                             line-height: size(19);
                                         }
@@ -488,10 +488,10 @@
                                     padding: size(8) size(16);
                                     h4 {
                                         color: var(--mc-gray-500);
-                                        font-size: size(14);
+                                        font-size: $font-size-xxs;
                                     }
                                     h5 {
-                                        font-size: size(18);
+                                        font-size: $font-size-sm;
                                     }
                                 }
 
@@ -499,7 +499,7 @@
 
                             .errors {
                                 color: var(--mc-error);
-                                font-size: size(14);
+                                font-size: $font-size-xxs;
                                 font-weight: 600;
                                 margin-top: size(10);
                                 width: 100%;
@@ -512,14 +512,14 @@
             @include mobile {
                 .registration {
                     &__title {
-                        font-size: size(24);
+                        font-size: $font-size-md;
                         line-height: size(33);
                     }
 
                     &__content {
                         .section {
                             &__title {
-                                font-size: size(24);
+                                font-size: $font-size-md;
                                 line-height: size(28);
                             }
     
@@ -529,7 +529,7 @@
                                 .card {
                                     &.owner {
                                         .card__title {
-                                            font-size: size(12);
+                                            font-size: $font-size-xxxs;
                                             line-height: size(16);
                                         }
                                     }
