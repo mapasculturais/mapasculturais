@@ -36,7 +36,7 @@
         .button {
             align-items: center;
             background: white;
-            border: size(1) solid var(--mc-gray-100);
+            border: $border-hairline var(--mc-gray-100);
             border-radius: 0 size(68) size(68) 0;
             border-left: 0;
             cursor: pointer;

@@ -23,7 +23,7 @@
 
     &__card {
         border-radius: var(--mc-border-radius-xs);
-        border: size(1) solid var(--mc-low-300);
+        border: $border-hairline var(--mc-low-300);
         display: flex;
         flex-direction: column;
     }

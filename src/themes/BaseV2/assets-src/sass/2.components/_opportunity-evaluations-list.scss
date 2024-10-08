@@ -15,7 +15,7 @@
         display: flex;
         flex-direction: column;
         box-shadow: 2px 3px 4px -1px rgb(0 0 0 / 16%);
-        border-radius: 0px 4px 4px 0px;
+        border-radius: 0px $border-radius-xs $border-radius-xs 0px;
         max-height: size(800);
         transition: width .5s;
 
@@ -23,7 +23,7 @@
             display: none;
         }
         .act-button {
-            border: 1px solid var(--mc-gray-100);
+            border: $border-hairline var(--mc-gray-100);
             padding: size(13) size(18);
             width: 100%;
             display: flex;
@@ -54,10 +54,10 @@
             width: size(311);
 
             .find {
-                border-top: 1px solid var(--mc-gray-100);
+                border-top: $border-hairline var(--mc-gray-100);
                 padding: size(21) size(16);
                 background-color: var(--mc-white);
-                border-bottom: 1px solid var(--mc-gray-100);
+                border-bottom: $border-hairline var(--mc-gray-100);
 
                 .content {
                     display: flex;
@@ -68,7 +68,7 @@
                         position: relative;
                         border-radius: size(69);
                         height: size(40);
-                        border: size(1) solid $gray-700;
+                        border: $border-hairline $gray-700;
                         background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat calc(100% - size(10)) center/size(20);
                         width: 100%;
                         padding: size(12) size(30) size(12) size(20);
@@ -81,8 +81,8 @@
                         align-items: center;
                         width: size(100);
                         height: size(36);
-                        border-radius: size(4);
-                        border: size(2) solid var(--mc-primary-500);
+                        border-radius: $border-radius-xs;
+                        border: $border-solid var(--mc-primary-500);
                         color: var(--mc-white);
                         gap: size(12);
 
@@ -118,12 +118,12 @@
                     &--pending {
                         background: #FFFFFF;
                         box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
-                        border-radius: 0px 4px 4px 0px;
+                        border-radius: 0px $border-radius-xs $border-radius-xs 0px;
 
                         input[type="checkbox"] {
                             background: var(--mc-white);
                             box-shadow: 0px 4px 4px -3px rgba(0, 0, 0, 0.16);
-                            border-radius: 0px 4px 4px 0px;
+                            border-radius: 0px $border-radius-xs $border-radius-xs 0px;
                         }
                     }
 
@@ -159,7 +159,7 @@
                     padding: size(16);
 
                     .evaluation-list__content {
-                        border: 1px solid var(--mc-gray-100);
+                        border: $border-hairline var(--mc-gray-100);
                         border-radius: var(--mc-border-radius-xs);
                         padding: size(16);
                         background-color: var(--mc-white);

@@ -2,15 +2,15 @@
 
 .opportunity-data-collection {
     &__section {
-        border-top: size(2) solid var(--mc-gray-100);
-        border-bottom: size(2) solid var(--mc-gray-100);
+        border-top: $border-solid var(--mc-gray-100);
+        border-bottom: $border-solid var(--mc-gray-100);
         padding: size(16) 0 size(40);
         gap: size(40) size(20);
     }
 
     &__horizontal-line {
         max-width: size(1038);
-        border-bottom: 1px solid var(--mc-gray-100);
+        border-bottom: $border-hairline var(--mc-gray-100);
     }
 
     &__field {

@@ -14,8 +14,8 @@
     }
 
     &__selected {
-        border-radius: 4px;
-        border: 0.5px solid var(--mc-gray-100);
+        border-radius: $border-radius-xs;
+        border: $border-hairline var(--mc-gray-100);
         max-width: size(296);
         padding: size(16);
 
@@ -109,7 +109,7 @@
     &__option {
         color: black;
         border-radius: 4px;
-        border: 1px solid var(--mc-gray-700);
+        border: $border-hairline var(--mc-gray-700);
         max-width: size(265);
         width: 100%;
         padding: size(12) size(7);
