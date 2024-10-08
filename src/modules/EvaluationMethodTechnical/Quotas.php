@@ -53,6 +53,7 @@ use Symfony\Component\Cache\Exception\InvalidArgumentException;
  * @property array $geoLocations = []
  * @property array $selectedByGeo = []
  * @property array $registrationsByGroup = []
+ * @property array $registrationsByRange = []
  * @property array $registrationsByQuotaGroup = []
  * @property bool $considerQuotasInGeneralList = false
  * @property array $registrationFields = []
@@ -96,6 +97,9 @@ class Quotas {
     // o grupo é a concatenação da regra da região com faixa
     protected array $registrationsByGroup = [];
 
+    // para a contagem de vagas por faixa
+    protected array $registrationsByRange = [];
+
     // o grupo é a concatenação da regra da região com faixa e tipo de cota
     protected array $registrationsByQuotaGroup = [];
 
@@ -107,6 +111,8 @@ class Quotas {
      * @var array
      */
     protected array $registrationFields = [];
+
+    protected static array $instances = [];
         
     function __construct(int $phase_id) {
         $app = App::i();
@@ -208,6 +214,27 @@ class Quotas {
                 }
             }
         }
+
+        if($this->rangesConfig) {
+            foreach($this->rangeNames as $range) {
+                $this->registrationsByRange[$range] = [];
+            }
+        }
+    }
+
+
+    /** 
+     * Retorna a instância da classe
+     * 
+     * @param int $phase_id 
+     * @return Quotas 
+     */
+    public static function instance(int $phase_id): Quotas {
+        if(!isset(self::$instances[$phase_id])) {
+            self::$instances[$phase_id] = new Quotas($phase_id);
+        }
+
+        return self::$instances[$phase_id];
     }
 
     /**
@@ -294,8 +321,7 @@ class Quotas {
 
         $result = $app->controller('opportunity')->apiFindRegistrations($this->phase, [
             '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score,sentTimestamp', ...$this->fields]),
-            '@order' => 'score DESC',
-            '@quotaQuery' => true
+            '@order' => 'score DESC'
         ]);
 
         $registrations = array_map(function ($reg) {
@@ -370,8 +396,7 @@ class Quotas {
         if($this->considerQuotasInGeneralList) {
             $registrations = array_slice($this->registrationsByGroup[$group], 0, $group_vacancies);
         } else {
-            $position = $group_vacancies - $group_quota_vacancies;
-            $registrations = array_slice($this->registrationsByGroup[$group], $position, $group_quota_vacancies);
+            $registrations = array_slice($this->registrationsByGroup[$group], -$group_quota_vacancies);
         }
 
         foreach($registrations as $registration) {
@@ -380,7 +405,6 @@ class Quotas {
                 $quota_vacancies--;
             }
         }
-
         return max(0,$quota_vacancies);
     }
 
@@ -413,11 +437,18 @@ class Quotas {
                 for($i = 0; $i < $avaliable_quota_vacancies; $i++) {
                     // pega a última posição do array para ser a primeira a ser retirada
                     $registration = array_pop($avaliable_quota_registrations);
-                    
-                    // procura o não cotista com a menor nota e substitui pelo cotista
+                    if(!$registration) {
+                        continue;
+                    }
+
+                    // procura o não cotista com a menor nota e substitui pelo cotista dentro da mesma faixa
                     foreach($result as $j => $reg) {
-                        
+                        if($registration->range != $reg->range) {
+                            continue;
+                        }
+
                         if($reg && !$this->getRegistrationQuotas($reg)) {
+                            $registration->appliedForQuota = true;
                             $result[$j] = $registration;
                             break;
                         }
@@ -477,7 +508,7 @@ class Quotas {
                     $group = "{$region}:{$range}:";
                     $group_vacancies = $this->rangesConfig[$range]->vacancies * $this->geoQuotaConfig[$region]->percent;
 
-                    $result[$group] = $this->generateGroupQuotaResults($group, $group_vacancies);
+                    $result[$group] = $this->generateGroupQuotaResults($group, intval($group_vacancies));
                 }
             }
         } 
@@ -488,7 +519,7 @@ class Quotas {
                 $group = "{$region}::";
                 $group_vacancies = $this->geoQuotaConfig[$region]->vacancies;
 
-                $result[$group] = $this->generateGroupQuotaResults($group, $group_vacancies);
+                $result[$group] = $this->generateGroupQuotaResults($group, intval($group_vacancies));
             }
         }
          
@@ -498,10 +529,10 @@ class Quotas {
                 $group = ":{$range}:";
                 $group_vacancies = $this->rangesConfig[$range]->vacancies;
 
-                $result[$group] = $this->generateGroupQuotaResults($group, $group_vacancies);
+                $result[$group] = $this->generateGroupQuotaResults($group, intval($group_vacancies));
             }
         }
-
+        
         // gera uma lista única com as inscrições selecionadas
         $selected_registrations = [];
         foreach($result as $regs) {
@@ -510,7 +541,7 @@ class Quotas {
 
         // filtra somente resultados válidos
         $selected_registrations = array_filter($selected_registrations);
-
+        
         // completa a lista de inscrições selecionadas
         $other_registrations = array_udiff($registrations, $selected_registrations, fn($reg1, $reg2) => $reg1->id <=> $reg2->id);
         if(count($selected_registrations) < $this->vacancies) {
@@ -566,7 +597,7 @@ class Quotas {
         
         $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
         $this->registrationFields[$registration->id]['quotas'] = $quotas;
-
+        $this->registrationFields[$registration->id]['appliedForQuota'] = $registration->appliedForQuota;
         return $result;
     }
 
