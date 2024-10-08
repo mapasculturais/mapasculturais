@@ -30,7 +30,7 @@
         &--input {
             padding: size(10) size(20);
             border-radius: size(20) 0 0 size(20);
-            border: size(1) solid var(--mc-gray-100);
+            border: border-hairline var(--mc-gray-100);
             border-right: 0;    
             width: 100%;
 
@@ -42,7 +42,7 @@
         &--button {
             align-items: center;
             background: white;
-            border: size(1) solid var(--mc-gray-100);
+            border: border-hairline var(--mc-gray-100);
             border-radius: 0 size(20) size(20) 0;
             border-left: 0;
             cursor: pointer;
@@ -69,7 +69,7 @@
 
         &--item {
             align-items: center;
-            border: size(1) solid;
+            border: border-hairline;
             border-radius: var(--mc-border-radius-xs);
             color: inherit;
             cursor: pointer;
@@ -98,7 +98,7 @@
 
             &.project {
                 &:hover{
-                    border: 1px solid var(--mc-projects-500);
+                    border: border-hairline var(--mc-projects-500);
                     .icon {
                         background-color: var(--mc-projects-500);
                     }
@@ -110,7 +110,7 @@
 
             &.space {
                 &:hover{
-                    border: 1px solid var(--mc-spaces-500);
+                    border: border-hairline var(--mc-spaces-500);
                     .icon {
                         background-color: var(--mc-spaces-500);
                     }
@@ -122,7 +122,7 @@
 
             &.event {
                 &:hover{
-                    border: 1px solid var(--mc-events-500);
+                    border: border-hairline var(--mc-events-500);
                     .icon {
                         background-color: var(--mc-events-500);
                     }
@@ -138,7 +138,7 @@
                 }   
                 
                 &:hover{
-                    border: 1px solid var(--mc-agents-500);
+                    border: border-hairline var(--mc-agents-500);
                     .icon {
                         background-color: var(--mc-agents-500);
                     }
@@ -150,7 +150,7 @@
 
             &.opportunity {
                 &:hover{
-                    border: 1px solid var(--mc-opportunities-500);
+                    border: border-hairline var(--mc-opportunities-500);
                     .icon {
                         background-color: var(--mc-opportunities-500);
                     }
@@ -172,7 +172,7 @@
 
         &--button {
             align-items: center;
-            border: 1px solid var(--mc-primary-500);
+            border: border-hairline var(--mc-primary-500);
             border-radius: var(--mc-border-radius-xs);
             color: var(--mc-primary-500);
             display: flex;

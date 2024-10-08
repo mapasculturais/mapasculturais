@@ -67,7 +67,7 @@
             &.clear-filter:hover,
             &.clear-filter:active {
                 color: var(--mc-primary-500);
-                border-radius: 4px;
+                border-radius: $border-radius-xs;
                 max-width: 100%;
                 cursor: pointer;
             }
@@ -129,7 +129,7 @@
                             font-size: $font-size-xxs;
                             line-height: size(19);
                             padding: size(9) size(25) size(9) size(15);
-                            border: size(2) solid var(--mc-primary-500);
+                            border: $border-solid var(--mc-primary-500);
                             background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
                             background-color: var(--mc-white);
                             background-size: 20px;

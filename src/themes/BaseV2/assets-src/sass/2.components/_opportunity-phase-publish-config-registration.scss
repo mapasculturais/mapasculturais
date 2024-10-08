@@ -32,7 +32,7 @@
     }
 
     .notPublished {
-        border-bottom: border-hairline var(--mc-gray-100);
+        border-bottom: $border-hairline var(--mc-gray-100);
         padding-bottom: size(32);
 
     }
@@ -48,7 +48,7 @@
     }
  
     &__line {
-        border-top: border-hairline var(--mc-gray-100);
+        border-top: $border-hairline var(--mc-gray-100);
         padding-bottom: size(16);
         min-height: size(16);
         width: 100%;

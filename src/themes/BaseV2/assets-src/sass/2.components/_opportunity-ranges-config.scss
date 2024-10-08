@@ -20,7 +20,7 @@
             calc(20% - size(16))
             size(100);
         gap: size(20) size(20);
-        border-top: border-hairline var(--mc-gray-300);
+        border-top: $border-hairline var(--mc-gray-300);
         align-items: center;
         justify-items: center;
         padding-top: size(8);
