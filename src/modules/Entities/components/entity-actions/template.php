@@ -44,6 +44,19 @@ $this->import('
                         <?php i::_e('Você está certo que deseja excluir?') ?>
                     </template>
                 </mc-confirm-button>
+                <mc-confirm-button v-if="entity.currentUserPermissions?.modify && entity.status != -2 && entity.__objectType == 'opportunity' && entity.isModel != 1" @confirm="entity.duplicate()" no="Cancelar" yes="Continuar">
+                    <template #button="modal">
+                        <button @click="modal.open()" class="button button--icon button--sm">
+                            <?php i::_e("Duplicar oportunidade") ?>
+                        </button>
+                    </template>
+                    <template #message="message">
+                        <h4><b><?php i::_e('Duplicar oportunidade'); ?></b></h4>
+                        <br>
+                        <p><?php i::_e('Todas as configurações atuais da oportunidade, incluindo o vínculo<br> com a entidade associada e os campos de formulário criados, serão<br> duplicadas.') ?></p>
+                        <p><?php i::_e('Deseja continuar?') ?></p>
+                    </template>
+                </mc-confirm-button> 
                 <?php $this->applyTemplateHook('entity-actions--primary', 'end') ?>
             </div>
             <?php $this->applyTemplateHook('entity-actions--leftGroupBtn', 'after'); ?>
