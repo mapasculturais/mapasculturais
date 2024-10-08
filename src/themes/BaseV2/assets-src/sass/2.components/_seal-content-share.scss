@@ -14,7 +14,7 @@
 			flex-direction: row;
 			.icon {
 				border: 0.5px solid #666666;
-				border-radius: size(4);
+				border-radius: $border-radius-xs;
 				padding: size(8);
 				margin-right: size(24);
 				display: flex;
@@ -42,7 +42,7 @@
 		}
 		&--field {
 			background: #E8E8E8;
-			border-radius: size(4);
+			border-radius: $border-radius-xs;
 			padding: size(8);
 			span {
 				font-weight: 600;

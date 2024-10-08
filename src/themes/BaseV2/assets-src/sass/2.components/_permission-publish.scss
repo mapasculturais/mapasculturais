@@ -45,8 +45,8 @@
                 input[type="radio"] {
                     width: size(20);
                     height: size(20);
-                    border: size(2) solid var(--mc-black);
-                    border-radius: size(12);
+                    border: $border-solid var(--mc-black);
+                    border-radius: $border-radius-xs*3;
              
                 }
             }

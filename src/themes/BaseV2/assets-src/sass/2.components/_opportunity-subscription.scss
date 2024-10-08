@@ -75,7 +75,7 @@
                 row-gap: size(24);
 
                 .fakeInput {
-                    border: border-hairline var(--mc-gray-500);
+                    border: $border-hairline var(--mc-gray-500);
                     border-radius: var(--mc-border-radius-xs);
                     cursor: default;
                     display: flex;

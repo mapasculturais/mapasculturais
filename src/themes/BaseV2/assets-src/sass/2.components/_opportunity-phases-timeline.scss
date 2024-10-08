@@ -4,7 +4,7 @@
     &__box {
        max-width: size(256); 
        border-radius: $border-radius-xs;
-       border: border-hairline var(--mc-gray-300);
+       border: $border-hairline var(--mc-gray-300);
        padding: size(8) 0 size(8) size(8);
     }
     &__status {
