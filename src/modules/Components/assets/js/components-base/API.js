@@ -240,6 +240,12 @@ class API {
         }
     }
 
+    async duplicateEntity(entity) {
+        if (entity[this.$PK]) {
+            return this.POST(entity.getUrl('duplicate'));   
+        }
+    }
+
     async unpublishEntity(entity) {
         if (entity[this.$PK]) {
             return this.POST(entity.getUrl('unpublish'));
