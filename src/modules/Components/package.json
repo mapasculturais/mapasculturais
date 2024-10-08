@@ -8,7 +8,7 @@
         "@mapas/scripts": "workspace:*"
     },
     "dependencies": {
-        "@iconify/vue": "^3.2.1",
+        "@iconify/vue": "^4.1.2",
         "@types/leaflet": "^1.9.12",
         "@vue-leaflet/vue-leaflet": "^0.6.1",
         "@vueform/slider": "^2.1.10",
@@ -18,9 +18,9 @@
         "leaflet": "1.7.1",
         "leaflet.markercluster": "^1.5.3",
         "maska": "^2.1.11",
-        "pinia": "^2.1.7",
-        "vue": "^3.4.27",
-        "vue-advanced-cropper": "^2.8.8",
+        "pinia": "^2.2.4",
+        "vue": "^3.5.11",
+        "vue-advanced-cropper": "^2.8.9",
         "vue-currency-input": "^3.1.0",
         "vue-final-modal": "^3.4.11",
         "vue-recaptcha": "^2.0.3",
