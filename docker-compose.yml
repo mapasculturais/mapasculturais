@@ -22,12 +22,7 @@ services:
       - ./config:/var/www/config
       - ./public:/var/www/html
       - ./scripts:/var/www/scripts
-      - ./src:/var/www/src
       - ./var:/var/www/var
-
-#     - ./docker/development/router.php:/var/www/router.php
-
-#     - ./config.d:/var/www/config/config.d
 
       - ./docker-data/assets:/var/www/html/assets
       - ./docker-data/public-files:/var/www/html/files
