@@ -11,10 +11,10 @@
         max-width: size(270);
         width: 100%;
         &.button {
-            border-radius: 8px;
+            border-radius: $border-radius-xs*2;
             background-color: var(--mc-white);
             color: var(--mc-primary-500);
-            border: size(2) solid var(--mc-primary-500);
+            border: $border-solid var(--mc-primary-500);
         }
         &:hover {
            background-color: var(--mc-primary-500);

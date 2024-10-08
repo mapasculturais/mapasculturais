@@ -186,7 +186,7 @@
 
                 input,
                 select {
-                    border: border-hairline var(--mc-gray-500);
+                    border: $border-hairline var(--mc-gray-500);
                     border-radius: var(--mc-border-radius-xs);
                     padding: size(10) size(16);
                     background-color: var(--mc-high-500);

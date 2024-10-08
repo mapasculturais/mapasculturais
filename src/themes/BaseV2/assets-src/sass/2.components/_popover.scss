@@ -13,7 +13,7 @@
             }
 
             .input {
-                border: border-hairline var(--mc-gray-100);
+                border: $border-hairline var(--mc-gray-100);
                 border-radius: var(--mc-border-radius-xs);
                 color: var(--mc-low);
                 font-size: $font-size-xs;

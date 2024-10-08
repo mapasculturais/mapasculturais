@@ -53,8 +53,8 @@
                 input[type="radio"] {
                     width: size(16);
                     height: size(16);
-                    border: size(2) var(--mc-black);
-                    border-radius: size(12);
+                    border: $border-solid var(--mc-black);
+                    border-radius: $border-radius-xs*3;
                     margin: 0;
                 }
             }
