@@ -23,47 +23,9 @@ app.component('opportunity-registrations-table', {
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
+        const messages = useMessages();
         const text = Utils.getTexts('opportunity-registrations-table');
-
-
-        /* adiciona a definição de quotas, tiebreaker e region, 
-           que são retornados pela api mas nào são metadados, 
-           possibilitando a utilização na tabela */
-
-        $DESCRIPTIONS.registration['quotas'] = {
-            isMetadata: false,
-            isEntityRelation: false,
-            required: false,
-            readonly: true,
-            type: "array",
-            length: 255,
-            label: text("Cotas aplicadas"),
-            isPK: false
-        };
-
-        $DESCRIPTIONS.registration['tiebreaker'] = {
-            isMetadata: false,
-            isEntityRelation: false,
-            required: false,
-            readonly: true,
-            type: "object",
-            length: 255,
-            label: text("Critérios de desempate"),
-            isPK: false
-        };
-
-        $DESCRIPTIONS.registration['region'] = {
-            isMetadata: false,
-            isEntityRelation: false,
-            required: false,
-            readonly: true,
-            type: "string",
-            length: 255,
-            label: text("Região"),
-            isPK: false
-        };
-
-        return { text }
+        return { messages, text }
     },
     data() {
         const $DESC = $DESCRIPTIONS.registration;
@@ -306,8 +268,15 @@ app.component('opportunity-registrations-table', {
         },
 
         setStatus(selected, entity) {
-            entity.status = selected.value;
-            entity.save();
+            const api = new API();
+            const url = Utils.createUrl('registration', 'setStatusTo', {id: entity.id});
+            api.POST(url, {status: selected.value}).then(res => res.json()).then(response => {
+                if(response.error) {
+                    this.messages.error(this.text(response.data))
+                } else {
+                    this.messages.success(this.text('status alterado com sucesso'))
+                }
+            });
         },
 
         clearFilters(entities) {
