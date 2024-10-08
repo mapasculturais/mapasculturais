@@ -3,6 +3,8 @@
 return [
     'plugins' => [
          'MultipleLocalAuth',
-         'AdminLoginAsUser'
+         'AdminLoginAsUser',
+         'RecreatePCacheOnLogin',
+         'SpamDetector'
     ]
 ];
