@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.25] - 2024-10-08
+### Melhorias
+- Implementa novos hooks no painel de controle
+
 ## [7.4.24] - 2024-10-07
 ### Correções
 - Deleta pasta do plugin MultipleLocalAuth 
