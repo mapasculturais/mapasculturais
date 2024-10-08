@@ -19,7 +19,7 @@
         width: 100%;
 
         .input {
-            border: size(1) solid var(--mc-gray-100);
+            border: $border-hairline var(--mc-gray-100);
             border-radius: size(68) 0 0 size(68);
             border-right: 0;
             font-size: $font-size-xs;
