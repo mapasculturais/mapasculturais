@@ -13,7 +13,7 @@ $this->import('
 <div class="col-12 agent-data">
     <template v-if="verifyFields()">
         <div class="agent-data__title">
-            <h4 class="title bold"><?php i::_e("Dados Pessoais") ?>
+            <h4 class="mc-title"><?php i::_e("Dados Pessoais") ?>
                 <?php if($this->isEditable()): ?>
                     <?php $this->info('cadastro -> configuracoes-entidades -> dados-pessoais') ?>
                 <?php endif; ?>

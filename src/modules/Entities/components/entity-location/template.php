@@ -15,7 +15,7 @@ $this->import('
 <?php $this->applyTemplateHook('entity-location','before'); ?>
 <div :class="classes" class="entity-location grid-12">
     <?php $this->applyTemplateHook('entity-location','begin'); ?>
-    <div v-if="!hideLabel" class="entity-location__title col-12">
+    <div v-if="!hideLabel" class="mc-title entity-location__title col-12">
         <label v-if="verifiedAdress()"><?= i::__('Endereço')?></label>
         <?php if($this->isEditable()): ?>
             <?php $this->info('cadastro -> configuracoes-entidades -> endereco') ?>
@@ -36,9 +36,9 @@ $this->import('
         <div class="grid-12" v-if="!entity.En_Pais || entity.En_Pais == statesAndCitiesCountryCode">
             <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado" label="<?php i::_e('Estado')?>"></entity-field>
             <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio" label="<?php i::_e('Município')?>"></entity-field>
-        </div>            
+        </div>
     </div>
- 
+
     <div class="col-12" v-if="editable && statesAndCitiesEnable">
         <div class="grid-12" v-if="!entity.En_Pais || entity.En_Pais == statesAndCitiesCountryCode">
             <div class="field col-6">

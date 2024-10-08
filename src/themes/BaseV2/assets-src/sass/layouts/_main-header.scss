@@ -10,10 +10,10 @@
             .label {
                 color: var(--mc-primary-500);
             }
-        } 
+        }
     }
 
-    &-projects {
+    &-projects, &-single.controller-project {
         .mc-header-menu--item.project {
             .icon {
                 background-color: var(--mc-projects-500);
@@ -23,8 +23,8 @@
             }
         }
     }
-    
-    &-spaces {
+
+    &-spaces, , &-single.controller-space {
         .mc-header-menu--item.space {
             .icon {
                 background-color: var(--mc-spaces-500);
@@ -34,8 +34,8 @@
             }
         }
     }
-    
-    &-events {
+
+    &-events, &-single.controller-event {
         .mc-header-menu--item.event {
             .icon {
                 background-color: var(--mc-events-500);
@@ -45,8 +45,8 @@
             }
         }
     }
-    
-    &-agents {
+
+    &-agents, &-single.controller-agent {
         .mc-header-menu--item.agent {
             .icon {
                 background-color: var(--mc-agents-500);
@@ -55,9 +55,9 @@
                 color: var(--mc-agents-500);
             }
         }
-    }   
-    
-    &-opportunities {
+    }
+
+    &-opportunities, &-single.controller-opportunity {
         .mc-header-menu--item.opportunity {
             .icon {
                 background-color: var(--mc-opportunities-500);
@@ -76,7 +76,7 @@
     z-index: 100;
     position: relative;
 
-    &__content {        
+    &__content {
         align-items: center;
         display: flex;
         gap: size(30);
@@ -126,7 +126,7 @@
     @media (max-width:size(400)){
        &__content{
         height: size(53);
-       } 
+       }
     }
 
     &__buttons {
