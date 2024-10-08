@@ -145,7 +145,7 @@ app.component("fields-visible-evaluators", {
         },
 
         toggleSelect(fieldName) {
-            if(Array.isArray(this.entity.opportunity.avaliableEvaluationFields)) {
+            if(Array.isArray(this.entity.opportunity.avaliableEvaluationFields) && this.entity.opportunity.avaliableEvaluationFields.length == 0) {
                 this.entity.opportunity.avaliableEvaluationFields = {};
             }
 
