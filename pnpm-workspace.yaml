@@ -1,0 +1,5 @@
+packages:
+  - 'src/modules/*'
+  - 'src/plugins/*'
+  - 'src/themes/*'
+  - 'src/node_scripts'

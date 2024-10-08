@@ -4,7 +4,8 @@
     "scripts": {
         "dev": "pnpm run --parallel --recursive dev",
         "build": "pnpm run --parallel --recursive build",
-        "watch": "pnpm run --parallel --recursive watch"
+        "watch": "pnpm run --parallel --recursive watch",
+        "postinstall": "sass src/themes/BaseV1/assets/css/sass/main.scss:src/themes/BaseV1/assets/css/main.css"
     },
     "devDependencies": {
         "fast-glob": "^3.3.2",
