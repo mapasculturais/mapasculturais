@@ -1,0 +1,1 @@
+docker build . -f ./.nixpacks/Dockerfile -t 3df5c547-87c5-4bf6-8791-409a25d3e390 --build-arg NIXPACKS_METADATA=php --build-arg NIXPACKS_PHP_FALLBACK_PATH=/app/public/index.php --build-arg NIXPACKS_PHP_ROOT_DIR=/app/public --build-arg PORT=80 --build-arg POST_MAX_SIZE=128M --build-arg UPLOAD_MAX_FILESIZE=128M

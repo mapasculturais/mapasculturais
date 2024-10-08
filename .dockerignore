@@ -1,2 +1,4 @@
 dev
 var/*/*
+node_modules
+vendor

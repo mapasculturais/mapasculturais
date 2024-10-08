@@ -59,6 +59,12 @@ services:
       - doctrine-files:/app/var/DoctrineProxies/
     ports:
       - 80
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+    #   interval: 30s       # Intervalo entre as verificações de saúde
+    #   timeout: 10s        # Tempo limite para cada verificação
+    #   retries: 3          # Número de tentativas antes de marcar como falha
+    #   start_period: 5s    # Período de inicialização antes de começar as verificações
 
   database:
     image: kartoza/postgis:14
@@ -70,7 +76,7 @@ services:
       DATADIR: ${DATADIR}
     volumes:
       - db_data:/opt/postgres/data
-      # - ./dev/db:/docker-entrypoint-initdb.d
+      - ./dev/db:/docker-entrypoint-initdb.d
     ports:
       - 5432
     healthcheck:
