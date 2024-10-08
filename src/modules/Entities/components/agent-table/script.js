@@ -40,7 +40,6 @@ app.component('agent-table', {
             '@order': 'createTimestamp DESC',
             '@limit': 20,
             '@page': 1,
-            ... this.extraQuery,
         }
 
         if (this.agentType) {
@@ -75,6 +74,10 @@ app.component('agent-table', {
     },
 
     computed: {
+        mergedQuery() {
+            return {...this.query, ...this.extraQuery};
+        },
+
         headers () {
             let itens = [
                 { text: __('id', 'agent-table'), value: "id", sticky: true, width: '80px'},
