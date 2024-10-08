@@ -34,7 +34,7 @@
     &__info {
         .content {
             background: var(--mc-gray-100);
-            border-radius: size(4);
+            border-radius: $border-radius-xs;
             padding: size(1);
 
             &__description {
@@ -75,7 +75,7 @@
                 row-gap: size(24);
 
                 .fakeInput {
-                    border: size(1) solid var(--mc-gray-500);
+                    border: border-hairline var(--mc-gray-500);
                     border-radius: var(--mc-border-radius-xs);
                     cursor: default;
                     display: flex;

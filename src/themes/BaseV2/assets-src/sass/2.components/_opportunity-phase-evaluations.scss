@@ -40,7 +40,7 @@
             padding-bottom: size(24);
         }
         &-evaluation {
-            border-radius: size(4);
+            border-radius: $border-radius-xs;
             background-color: var(--mc-high-300);
             padding: 16px;
 
@@ -64,8 +64,8 @@
                 }
 
                 &--items {
-                    border: 1px solid var(--mc-gray-100);
-                    border-radius: 4px;
+                    border: $border-hairline var(--mc-gray-100);
+                    border-radius: $border-radius-xs;
                     display: flex;
                     flex-direction: column;
                     max-width: size(1122);
@@ -122,7 +122,7 @@
 
             .evaluation-button {
                 // width: size(272);
-                border-radius: size(8);
+                border-radius: $border-radius-xs*2;
                 display: flex;
                 flex-direction: row;
                 height: size(48);

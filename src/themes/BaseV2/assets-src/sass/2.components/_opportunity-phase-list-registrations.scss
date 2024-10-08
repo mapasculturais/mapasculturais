@@ -5,9 +5,9 @@
 
 
     &__box {
-        border: 1px solid var(--mc-gray-300);
+        border: $border-hairline var(--mc-gray-300);
         padding: size(16);
-        border-radius: size(8);
+        border-radius: $border-radius-xs*2;
         margin-bottom: size(16);
     }
 
