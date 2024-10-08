@@ -2,10 +2,11 @@ app.component('agent-table', {
     template: $TEMPLATES['agent-table'],
     emits: ['clear-filters', 'remove-filter'],
 
-    setup() {
+    setup(props, { slots }) {
+        const hasSlot = name => !!slots[name];
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('agent-table')
-        return { text }
+        const text = Utils.getTexts('__template__')
+        return { text, hasSlot }
     },
 
     props: {
