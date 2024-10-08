@@ -102,10 +102,9 @@
             height: size(32);
             justify-content: center;
             width: size(32);
-
         }
 
-        .label {                    
+        .label {
             color: var(--mc-black);
             font-family: var(--mc-font-body);
             font-size: $font-size-xxs;
@@ -165,8 +164,8 @@
         &.agent {
             .icon {
                 font-size: $font-size-xxs;
-            }   
-            
+            }
+
             &:hover{
                 .icon {
                     background-color: var(--mc-agents-500);
@@ -187,7 +186,7 @@
                 }
             }
         }
-        
+
     }
 
     &.mobile {
@@ -215,22 +214,22 @@
 
             li {
                 border-bottom: var(--mc-border-hairline) #BBBBBB;
-    
+
                 &:last-child {
                     border-bottom: none;
                 }
-    
+
                 .mc-header-menu--item {
                     display: flex;
                     flex-direction: row;
                     gap: 24px;
                     justify-content: flex-start;
                     padding: size(12) 0;
-    
+
                     .label {
                         margin: 0;
                     }
-    
+
                     &.painel {
                         .icon {
                             background: none;
@@ -265,7 +264,7 @@
             @media (max-width:size(400)){
                 height: size(53);
             }
-            
+
             &__btn {
                 align-items: center;
                 background: none;
@@ -278,7 +277,7 @@
 
                 cursor: pointer;
                 display: flex;
-                
+
                 .iconify {
                     height: size(24);
                     margin: size(3);
