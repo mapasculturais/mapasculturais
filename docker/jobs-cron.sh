@@ -14,7 +14,7 @@ while [ true ]; do
     NUM_CHILDREN=`echo $children | wc -w`
     
     if [ $NUM_PROCESSES -ge $NUM_CHILDREN ]; then
-        /var/www/scripts/execute-job.sh &
+        /app/scripts/execute-job.sh &
     fi
     
     if [ -z "$JOBS_INTERVAL" ]; then 

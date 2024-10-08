@@ -14,7 +14,7 @@ while [ true ]; do
     NUM_CHILDREN=`echo $children | wc -w`
     
     if [ $NUM_PROCESSES -ge $NUM_CHILDREN ]; then
-        /var/www/scripts/recreate-pending-pcache.sh &
+        /app/scripts/recreate-pending-pcache.sh &
     fi
     
     if [ -z "$PENDING_PCACHE_RECREATION_INTERVAL" ]; then 
