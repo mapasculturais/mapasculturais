@@ -24,7 +24,7 @@
         }
     }
 
-    &-spaces, , &-single.controller-space {
+    &-spaces, &-single.controller-space {
         .mc-header-menu--item.space {
             .icon {
                 background-color: var(--mc-spaces-500);
