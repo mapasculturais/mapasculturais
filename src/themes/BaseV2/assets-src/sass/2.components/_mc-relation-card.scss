@@ -5,7 +5,7 @@
     .popover__content {
         padding: 0;
     }
-    
+
     .modal__header {
         display: none;
     }
@@ -24,7 +24,7 @@
 
     .relation-card {
         padding: size(15) size(16) size(19);
-        
+
         .mc-card__content {
             flex-direction: column;
             gap: size(18);
@@ -87,6 +87,7 @@
                 line-height: size(19);
 
                 .actualType {
+                    color: var(--mc-500);
                     text-transform: uppercase;
                 }
             }

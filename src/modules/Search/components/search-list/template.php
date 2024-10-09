@@ -42,7 +42,7 @@ $this->import('
                             </select>
                         </div>
                         <div class="foundResults">
-                            {{entities.metadata.count}} {{entityType}} <?= i::__('encontrados') ?> 
+                            {{entities.metadata.count}} {{entityType}} <?= i::__('encontrados') ?>
                         </div>
                     </div>
                 </div>
@@ -66,10 +66,10 @@ $this->import('
                             </select>
                         </div>
                         <div v-if="entityType=='Oportunidades'" class="foundResults">
-                            {{entities.metadata.count}} {{entityType}} <?= i::__('encontradas') ?> 
+                            {{entities.metadata.count}} {{entityType}} <?= i::__('encontradas') ?>
                         </div>
                         <div v-if="entityType!='Oportunidades'" class="foundResults">
-                            {{entities.metadata.count}} {{entityType}} <?= i::__('encontrados') ?> 
+                            {{entities.metadata.count}} {{entityType}} <?= i::__('encontrados') ?>
                         </div>
                     </div>
 
@@ -77,7 +77,7 @@ $this->import('
                         <template #avatar>
                             <mc-avatar :entity="entity" size="medium"></mc-avatar>
                         </template>
-                        <template #type> <span>{{typeText}} <span :class="['upper', entity.__objectType+'__color']">{{entity.type?.name}}</span></span></template>
+                        <template #type> <span>{{typeText}} <span class="user-info__type" :class="'is-' + entity.__objectType">{{entity.type?.name}}</span></span></template>
                     </entity-card>
                 </div>
             </div>

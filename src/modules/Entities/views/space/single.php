@@ -41,14 +41,14 @@ $this->breadcrumb = [
             <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
                 <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                     <dd><strong>{{entity.id}}</strong></dd>
-            </dl> 
+            </dl>
             <dl v-if="entity.type">
                 <dt><?= i::__('Tipo') ?></dt>
-                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+                <dd class="type" :class="'is-' + entity.__objectType"> {{entity.type.name}} </dd>
             </dl>
             <dl v-if="entity.parent">
                 <dt><?= i::__('Espaço integrante de') ?></dt>
-                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.parent.name}} </dd>
+                <dd class="type" :class="'is-' + entity.__objectType"> {{entity.parent.name}} </dd>
             </dl>
         </template>
     </entity-header>
@@ -67,10 +67,10 @@ $this->breadcrumb = [
                                 <h2><?php i::_e('Descrição Detalhada');?></h2>
                                 <p class="description" v-html="entity.longDescription"></p>
                             </div>
-                            <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Arquivos para download'); ?>"></entity-files-list>                            
+                            <entity-files-list v-if="entity.files.downloads!= null" :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Arquivos para download'); ?>"></entity-files-list>
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
-                            <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>                            
-                            <entity-gallery :entity="entity" classes="col-12"></entity-gallery>                            
+                            <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
+                            <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
                             <div v-if="entity.children && entity.children.length >0" class="col-12">
                                 <h4><?php i::_e('Propriedades do Espaço');?></h4>
                                 <entity-list v-if="entity.children?.length>0" title="<?php i::esc_attr_e('Subespaços');?>" type="space" :ids="entity.children"></entity-list>
@@ -86,7 +86,7 @@ $this->breadcrumb = [
                             <entity-related-agents :entity="entity" classes="col-12" title="<?= i::_e('Agentes Relacionados'); ?>"></entity-related-agents>
                             <entity-admins :entity="entity" classes="col-12"></entity-admins>
                             <entity-terms :entity="entity" hide-required classes="col-12" taxonomy="tag" title="Tags"></entity-terms>
-                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></mc-share-links>                            
+                            <mc-share-links classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?= i::_e('Veja este link:'); ?>"></mc-share-links>
                         </div>
                     </aside>
                     <aside>

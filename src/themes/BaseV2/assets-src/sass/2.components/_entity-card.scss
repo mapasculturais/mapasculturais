@@ -55,6 +55,7 @@
 				gap: size(8);
 				margin: size(4) 0;
 				text-align: left;
+				width: 100%;
 
 				&.with-labels {
 					max-width: size(700);
@@ -63,8 +64,6 @@
 				&.without-labels {
 					max-width: size(700);
 				}
-
-				width: 100%;
 
 				&__name {
 					align-items: center;
@@ -86,6 +85,10 @@
 					.lb-agent-type {
 						color: var(--mc-agents-500);
 					}
+				}
+
+				&__type {
+					color: var(--mc-500);
 				}
 			}
 

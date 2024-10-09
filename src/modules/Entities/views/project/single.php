@@ -129,7 +129,7 @@ if($children_id ){
                                     <template #type>
                                         <span>
                                             <?= i::__('TIPO: ') ?>
-                                            <span :class="['upper', entity.__objectType+'__color']">{{entity.type.name}}</span>
+                                            <span class="user-info__type" :class="'is-' + entity.__objectType">{{entity.type.name}}</span>
                                         </span>
                                     </template>
                                 </entity-card>

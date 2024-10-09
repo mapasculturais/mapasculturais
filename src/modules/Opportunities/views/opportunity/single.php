@@ -57,10 +57,10 @@ $this->breadcrumb = [
         <dl v-if="global.showIds[entity.__objectType]" class="metadata__id" v-if="entity.id">
             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
             <dd><strong>{{entity.id}}</strong></dd>
-        </dl> 
+        </dl>
         <dl v-if="entity.type">
             <dt><?= i::__('Tipo')?></dt>
-            <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+            <dd class="type" :class="'is-' + entity.__objectType"> {{entity.type.name}} </dd>
         </dl>
         <dl v-if="entity.ownerEntity" class="single-opportunity__owner">
             <dt><?= i::__('Vinculado com ') ?><opportunity-owner-type :entity="entity"></opportunity-owner-type></dt>
@@ -104,7 +104,7 @@ $this->breadcrumb = [
                         <entity-admins :entity="entity" classes="col-12"></entity-admins>
                         <entity-owner classes="col-12" title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
                         <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
-                    </div>  
+                    </div>
                 </aside>
             </mc-container>
 
@@ -120,7 +120,7 @@ $this->breadcrumb = [
        <opportunity-evaluations-tab :entity="entity"></opportunity-evaluations-tab>
 
         <?php $this->part('opportunity-tab-results', ['entity' => $entity]); ?>
-        
+
         <?php $this->part('opportunity-tab-support', ['entity' => $entity]); ?>
         <?php $this->applyTemplateHook("tabs", "end")?>
     </mc-tabs>
