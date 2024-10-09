@@ -59,36 +59,36 @@ trait EntityManagerModel {
         
         $opportunities = $app->em->createQuery("
             SELECT 
-                op.id
+                o.id
             FROM
-                MapasCulturais\Entities\Opportunity op
+                MapasCulturais\Entities\OpportunityMeta om
+                JOIN MapasCulturais\Entities\Opportunity o WITH om.owner=o
+            WHERE om.key = 'isModel' AND om.value = '1'
         ");
 
         foreach ($opportunities->getResult() as $opportunity) {
             $opp = $app->repo('Opportunity')->find($opportunity['id']);
-            if ($opp->isModel) {
-                $phases = $opp->phases;
+            $phases = $opp->phases;
 
-                $lastPhase = array_pop($phases);
+            $lastPhase = array_pop($phases);
 
-                $modelIsOfficial = false;
-                foreach ($opp->getSealRelations() as $sealRelation) {
-                    if ( in_array($sealRelation->seal->id, $app->config['app.verifiedSealsIds'])) {
-                        $modelIsOfficial = true;
-                    }
+            $modelIsOfficial = false;
+            foreach ($opp->getSealRelations() as $sealRelation) {
+                if ( in_array($sealRelation->seal->id, $app->config['app.verifiedSealsIds'])) {
+                    $modelIsOfficial = true;
                 }
-                
-                $days = !is_null($opp->registrationFrom) && !is_null($lastPhase->publishTimestamp) ? $lastPhase->publishTimestamp->diff($opp->registrationFrom)->days . " Dia(s)" : 'N/A';
-                $tipoAgente = $opp->registrationProponentTypes ? implode(', ', $opp->registrationProponentTypes) : 'N/A';
-                $dataModels[] = [
-                    'id' => $opp->id,
-                    'numeroFases' => count($opp->phases),
-                    'descricao' => $opp->shortDescription,
-                    'tempoEstimado' => $days,
-                    'tipoAgente'   =>  $tipoAgente,
-                    'modelIsOfficial' => $modelIsOfficial
-                ];
             }
+            
+            $days = !is_null($opp->registrationFrom) && !is_null($lastPhase->publishTimestamp) ? $lastPhase->publishTimestamp->diff($opp->registrationFrom)->days . " Dia(s)" : 'N/A';
+            $tipoAgente = $opp->registrationProponentTypes ? implode(', ', $opp->registrationProponentTypes) : 'N/A';
+            $dataModels[] = [
+                'id' => $opp->id,
+                'numeroFases' => count($opp->phases),
+                'descricao' => $opp->shortDescription,
+                'tempoEstimado' => $days,
+                'tipoAgente'   =>  $tipoAgente,
+                'modelIsOfficial' => $modelIsOfficial
+            ];
         }
         
         $this->json($dataModels);
