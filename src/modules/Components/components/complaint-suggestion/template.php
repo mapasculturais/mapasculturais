@@ -122,7 +122,9 @@ $this->import("
             </div>
 
             <template #actions="modal">
-                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
+                <!-- Componente responsável por renderizar o captcha [Google | Turnstile] -->
+                <mc-captcha @captcha-verified="verifyCaptcha" @captcha-expired="expiredCaptcha"></mc-captcha>
+
                 <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Mensagem') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('Cancelar') ?></button>
             </template>
