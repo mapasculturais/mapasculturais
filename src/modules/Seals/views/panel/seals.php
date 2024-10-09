@@ -2,8 +2,8 @@
 use MapasCulturais\i;
 
 $this->import('
-    create-seal 
-    panel--entity-tabs 
+    create-seal
+    panel--entity-tabs
     panel--entity-card
 ');
 ?>
@@ -12,7 +12,7 @@ $this->import('
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon primary__background"> <mc-icon name="seal"></mc-icon></div>
+                <div class="title__icon is-seal"> <mc-icon name="seal"></mc-icon></div>
                 <h1 class="title__title"> <?= i::_e('Meus selos') ?> </h1>
             </div>
         </div>
@@ -28,6 +28,6 @@ $this->import('
             </create-seal>
         </div>
     </header>
-    
+
     <panel--entity-tabs type="seal"></panel--entity-tabs>
 </div>

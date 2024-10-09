@@ -123,7 +123,7 @@ $this->import('
                                         <mc-icon name="add"></mc-icon>
                                     </button>
                                 </mc-multiselect>
-                                <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" item-class="opportunity__background" @remove="sendDefinition('removeCategory', infoReviewer.agentUserId, $event, 'categories')" editable></mc-tag-list>
+                                <mc-tag-list :tags="entity.fetchCategories[infoReviewer.agentUserId]" item-class="is-opportunity" @remove="sendDefinition('removeCategory', infoReviewer.agentUserId, $event, 'categories')" editable></mc-tag-list>
                             </div>
                         </div>
 
@@ -136,7 +136,7 @@ $this->import('
                                         <mc-icon name="add"></mc-icon>
                                     </button>
                                 </mc-multiselect>
-                                <mc-tag-list :tags="entity.fetchRanges[infoReviewer.agentUserId]" item-class="opportunity__background" @remove="sendDefinition('removeRange', infoReviewer.agentUserId, $event, 'ranges')" editable></mc-tag-list>
+                                <mc-tag-list :tags="entity.fetchRanges[infoReviewer.agentUserId]" item-class="is-opportunity" @remove="sendDefinition('removeRange', infoReviewer.agentUserId, $event, 'ranges')" editable></mc-tag-list>
                             </div>
                         </div>
 
@@ -149,7 +149,7 @@ $this->import('
                                         <mc-icon name="add"></mc-icon>
                                     </button>
                                 </mc-multiselect>
-                                <mc-tag-list :tags="entity.fetchProponentTypes[infoReviewer.agentUserId]" item-class="opportunity__background" @remove="sendDefinition('removeProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')" editable></mc-tag-list>
+                                <mc-tag-list :tags="entity.fetchProponentTypes[infoReviewer.agentUserId]" item-class="is-opportunity" @remove="sendDefinition('removeProponentType', infoReviewer.agentUserId, $event, 'proponentTypes')" editable></mc-tag-list>
                             </div>
                         </div>
                     </div>

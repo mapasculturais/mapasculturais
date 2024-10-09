@@ -15,10 +15,10 @@ $this->import('
     <header class="search__header">
         <div class="search__header--content">
             <div class="search__header--content-left">
-                <div :class="['search__header--content-left-icon', entityType+'__background']">
+                <div class="search__header--content-left-icon" :class="'is-' + entityType">
                     <mc-icon :name="entityType"></mc-icon>
                 </div>
-                
+
                 <mc-title tag="h1" class="bold"> {{pageTitle}} </mc-title>
             </div>
 
@@ -27,6 +27,6 @@ $this->import('
             </div>
         </div>
     </header>
-    
+
     <slot :pseudo-query="pseudoQuery" :changeTab="changeTab"></slot>
 </div>

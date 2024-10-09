@@ -8,10 +8,10 @@
 use MapasCulturais\i;
 
 $this->import('
-    mc-entities 
+    mc-entities
     mc-icon
     mc-link
-    panel--card-user 
+    panel--card-user
     panel--entity-tabs
     fake-user-create
 ');
@@ -23,7 +23,7 @@ $profile = $app->user->profile;
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon default"> <mc-icon name="arrow-up"></mc-icon> </div>
+                <div class="title__icon"> <mc-icon name="arrow-up"></mc-icon> </div>
                 <h1 class="title__title"> <?= i::__('Autenticação Fake') ?> </h1>
             </div>
         </div>

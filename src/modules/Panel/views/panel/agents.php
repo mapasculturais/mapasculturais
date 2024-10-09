@@ -3,11 +3,11 @@
 use MapasCulturais\i;
 
 $this->import('
-    create-agent 
+    create-agent
     mc-icon
-    panel--entity-actions 
-    panel--entity-card 
-    panel--entity-tabs 
+    panel--entity-actions
+    panel--entity-card
+    panel--entity-tabs
 ');
 ?>
 
@@ -15,7 +15,7 @@ $this->import('
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon agent__background"> <mc-icon name="agent"></mc-icon> </div>
+                <div class="title__icon is-agent"> <mc-icon name="agent"></mc-icon> </div>
                 <h1 class="title__title"> <?= i::_e('Meus agentes') ?> </h1>
             </div>
         </div>

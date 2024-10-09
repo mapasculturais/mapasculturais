@@ -42,7 +42,7 @@ $this->import('
 
     <template #button="modal">
         <a @click="modal.open()" style="cursor: pointer;">
-            <li class="primary__background mc-tag mc-tag--editable">
+            <li class="mc-tag mc-tag--editable is-primary">
                 <?=i::__('Adicionar função')?>
                 <mc-icon @click="modal.open()" name="add" is-link></mc-icon>
             </li>

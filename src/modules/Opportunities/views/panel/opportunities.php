@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 $this->import('
     create-opportunity
-    mc-icon 
+    mc-icon
     panel--entity-card
     panel--entity-tabs
 ');
@@ -12,7 +12,7 @@ $this->import('
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon opportunity__background">
+                <div class="title__icon is-opportunity">
                     <mc-icon name="opportunity"></mc-icon>
                 </div>
                 <h1 class="title__title"> <?= i::_e('Minhas oportunidades') ?> </h1>

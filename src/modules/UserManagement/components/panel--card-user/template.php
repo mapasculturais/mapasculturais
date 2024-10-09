@@ -43,7 +43,7 @@ $this->import('
             <div class="mc-tag-list">
                 <h4><?=i::__('Funções do usuário:')?></h4>
                 <ul class="mc-tag-list__list">
-                    <li v-for="role in roles" class="primary__border--solid primary__color mc-tag mc-tag--editable">
+                    <li v-for="role in roles" class="mc-tag mc-tag--editable is-primary">
                         <strong v-if="role.subsite">{{`<?= i::esc_attr__('${role.name} em ${role.subsite.name}') ?>`}}</strong>
                         <strong v-else>{{role.name}}</strong>
 

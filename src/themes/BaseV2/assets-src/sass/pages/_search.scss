@@ -50,7 +50,9 @@
 
                 &-icon {
                     align-items: center;
+                    background-color: var(--mc-500);
                     border-radius: 50%;
+                    color: var(--mc-text);
                     display: flex;
                     height: size(48);
                     justify-content: center;
@@ -213,7 +215,7 @@
                     display: flex;
                     gap: size(20) size(24);
                     margin-bottom: size(10);
-            
+
                     .field {
                         width: auto;
 
@@ -235,7 +237,7 @@
                         line-height: size(18);
                         padding: size(11) size(16);
                     }
-                    
+
                     .buttons {
                         display: flex;
                         gap: size(8);
@@ -275,7 +277,7 @@
                         }
                     }
                 }
-                
+
                 &__filter {
                     display: flex;
                     grid-row-start: 1;

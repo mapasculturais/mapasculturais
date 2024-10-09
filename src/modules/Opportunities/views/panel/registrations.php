@@ -11,7 +11,7 @@ $this->import('
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon opportunity__background">
+                <div class="title__icon is-opportunity">
                     <mc-icon name="opportunity"></mc-icon>
                 </div>
                 <h1 class="title__title"> <?= i::_e('Minhas inscrições') ?> </h1>
@@ -21,7 +21,7 @@ $this->import('
             <?= i::_e('Nesta seção você pode adicionar e gerenciar suas inscrições') ?>
         </p>
         <div class="panel-page__header-actions">
-            
+
         </div>
     </header>
 

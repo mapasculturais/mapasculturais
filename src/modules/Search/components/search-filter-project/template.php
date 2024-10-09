@@ -27,7 +27,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" item-class="project__background project__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" item-class="is-project"></mc-tag-list>
         </div>
         <a class="clear-filter" @click="clearFilters()"><?php i::_e('Limpar todos os filtros') ?></a>
         <?php $this->applyTemplateHook('search-filter-project', 'end') ?>

@@ -1,11 +1,11 @@
 <?php
-use MapasCulturais\i; 
+use MapasCulturais\i;
 
 $this->import('
-    mc-entities 
+    mc-entities
     mc-icon
     mc-link
-    panel--card-user 
+    panel--card-user
     panel--entity-tabs
 ');
 
@@ -16,7 +16,7 @@ $profile = $app->user->profile;
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon default"> <mc-icon name="user-config"></mc-icon> </div>
+                <div class="title__icon"> <mc-icon name="user-config"></mc-icon> </div>
                 <h1 class="title__title"> <?= i::__('Gestão de usuários') ?> </h1>
             </div>
         </div>
@@ -24,14 +24,14 @@ $profile = $app->user->profile;
             <?= i::__('Gestão dos usuários do sistema') ?>
         </p>
     </header>
-    
+
     <panel--entity-tabs type="user" user="" select="id,email,status,currentUserPermissions,profile.{id,name,type},roles.{id,name,subsite.{id,name}}">
         <template #filters-additional="{query, entities}">
             <mc-entities type="system-role" select="name,slug">
                 <template #default="roles">
                     <label> <?= i::__("Filtrar por função:") ?>
-                        <select 
-                            v-model="query['@roles']" 
+                        <select
+                            v-model="query['@roles']"
                             @change="query['@roles'] || delete query['@roles'];"
                             class="entity-tabs__search-select primary__border--solid">
                             <option :value="undefined"><?= i::__('Exibir todas') ?></option>
@@ -45,8 +45,8 @@ $profile = $app->user->profile;
                 </template>
                 <template #empty>
                     <label> <?= i::__("Filtrar por função:") ?>
-                        <select 
-                            v-model="query['@roles']" 
+                        <select
+                            v-model="query['@roles']"
                             @change="query['@roles'] || delete query['@roles'];"
                             class="entity-tabs__search-select primary__border--solid">
                             <option :value="undefined"><?= i::__('Exibir todas') ?></option>
@@ -60,7 +60,7 @@ $profile = $app->user->profile;
             </mc-entities>
         </template>
         <template #default="{entity,moveEntity}">
-            <panel--card-user :entity="entity"></panel--card-user>    
+            <panel--card-user :entity="entity"></panel--card-user>
         </template>
     </panel--entity-tabs>
 </div>

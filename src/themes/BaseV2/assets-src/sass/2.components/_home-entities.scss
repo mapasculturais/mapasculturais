@@ -3,12 +3,12 @@
 .home-entities {
     background-color: var(--mc-home-entities);
     padding: size(60) size(16);
-    
+
     &__content {
         min-height:size(156);
         max-width: size(1170);
         margin:0 auto;
-        
+
         &--header {
             display: flex;
             flex-direction: column;
@@ -18,7 +18,7 @@
                 font-weight: 700;
                 font-size: $font-size-lg;
                 line-height: size(44);
-                
+
                 @media (max-width: size(800)) {
                     font-weight: 700;
                     font-size: $font-size-md;
@@ -60,13 +60,13 @@
                 border-radius: var(--mc-border-radius-xs);
                 display: flex;
                 overflow: hidden;
-                
+
                 &__left {
                     flex-basis: 55%;
                     width: size(648);
                     overflow: hidden;
                     position: relative;
-                    
+
                     &--content {
                         align-items: center;
                         background-color: rgba(0,0,0,.3);
@@ -94,6 +94,7 @@
                         }
 
                         &-icon {
+                            background-color: var(--mc-500);
                             width:size(64);
                             height: size(64);
                             border-radius: 50%;
@@ -137,12 +138,15 @@
                     padding: size(24) size(32) size(13);
                     width: size(23);
                     justify-content: space-between;
-                
+
+                    & > a {
+                        color: var(--mc-500);
+                    }
 
                     p {
                         font-weight: 400;
-                        font-size:size(16);
-                        line-height:size(22);
+                        font-size: size(16);
+                        line-height: size(22);
                         margin: 0;
                     }
 

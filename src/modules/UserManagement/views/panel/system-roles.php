@@ -15,7 +15,7 @@ $this->import('
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon default"> <mc-icon name="role"></mc-icon> </div>
+                <div class="title__icon"> <mc-icon name="role"></mc-icon> </div>
                 <h1 class="title__title"> <?= i::_e('Funções de usuários') ?> </h1>
             </div>
         </div>
@@ -26,11 +26,11 @@ $this->import('
             <system-roles--modal list="system-role:publish"></system-roles--modal>
         </div>
     </header>
-    
+
     <panel--entity-tabs type="system-role" user="" select="id,status,name,slug,permissions" #default="{entity,moveEntity}">
-        <system-roles--card 
+        <system-roles--card
             :entity="entity"
-            @deleted="moveEntity    (entity)" 
+            @deleted="moveEntity    (entity)"
             @published="moveEntity(entity)">
         </system-roles--card>
     </panel--entity-tabs>

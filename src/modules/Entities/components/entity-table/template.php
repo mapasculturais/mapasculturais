@@ -84,7 +84,7 @@ $this->import('
                 <div class="entity-table__tags">
                     <div class="mc-tag-list">
                         <ul class="mc-tag-list__list">
-                            <li v-for="filter in appliedFilters" class="mc-tag mc-tag--editable opportunity__background opportunity__color">
+                            <li v-for="filter in appliedFilters" class="mc-tag mc-tag--editable is-opportunity">
                                 <span>{{ filter.label }}</span>
                                 <mc-icon name="delete" @click="removeFilter(filter, entities)" is-link></mc-icon>
                             </li>

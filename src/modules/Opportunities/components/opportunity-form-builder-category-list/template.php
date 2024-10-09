@@ -9,15 +9,15 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
-        mc-icon
-        mc-popover
+    mc-icon
+    mc-popover
     mc-tag-list
 ');
 ?>
 <div class="opportunity-category-list">
     <h5 class="semibold"><?= i::__("Categorias") ?></h5>
 
-    <mc-tag-list v-if="entity.registrationCategories.length" item-class="primary__background" :tags="entity.registrationCategories" editable></mc-tag-list>
+    <mc-tag-list v-if="entity.registrationCategories.length" item-class="is-primary" :tags="entity.registrationCategories" editable></mc-tag-list>
 
     <div class="opportunity-category-list__add-category">
         <div class="field">

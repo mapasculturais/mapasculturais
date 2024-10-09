@@ -9,7 +9,7 @@ $this->import('panel--entity-tabs panel--entity-card mc-icon create-project');
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon project__background"> <mc-icon name="project"></mc-icon> </div>
+                <div class="title__icon is-project"> <mc-icon name="project"></mc-icon> </div>
                 <h1 class="title__title"> <?= i::_e('Meus projetos') ?> </h1>
             </div>
         </div>

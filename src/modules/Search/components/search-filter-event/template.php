@@ -49,7 +49,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" item-class="event__background event__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" item-class="is-event"></mc-tag-list>
         </div>
         <div class="field">
             <label> <?php i::_e('Linguagens') ?></label>
@@ -58,7 +58,7 @@ $this->import('
                     <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione as linguagens') ?>">
                 </template>
             </mc-multiselect>
-            <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" item-class="event__background event__color"></mc-tag-list>
+            <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" item-class="is-event"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-event', 'end') ?>
     </form>

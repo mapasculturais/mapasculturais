@@ -24,7 +24,7 @@ $this->import('
         </div>
 
         <div v-else-if="propertyType == 'multiselect'" :class="{'entity-data__data' : !propertyData}">
-            <mc-tag-list item-class="space__background" :tags="propertyData"></mc-tag-list>
+            <mc-tag-list item-class="is-space" :tags="propertyData"></mc-tag-list>
         </div>
 
         <div v-else-if="propertyType == 'radio' || propertyType == 'select'" class="entity-data__data">

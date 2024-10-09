@@ -36,7 +36,6 @@
     }
 
     &__main {
-
         padding: 0;
 
         @include mobile {
@@ -91,30 +90,19 @@
 
                     &__icon {
                         align-items: center;
+                        background-color: var(--mc-500, var(--mc-low-500));
                         border-radius: var(--mc-border-radius-pill);
                         display: flex;
                         height: size(40);
                         justify-content: center;
                         width: size(40);
 
-                        &.app__background {
-                            background-color: var(--mc-low-500);
-                        }
-
                         .iconify {
                             width: size(22);
                             height: size(22);
-                            color: var(--mc-high-500);
+                            color: var(--mc-text, var(--mc-high-500));
                         }
-
-
-                        &.default {
-                            background-color: var(--mc-low-500);
-                        }
-
                     }
-
-
 
                     &__title {
                         font-size: $font-size-lg;
@@ -129,28 +117,13 @@
                     .title {
 
                         &__icon {
-                            align-items: center;
-                            border-radius: var(--mc-border-radius-pill);
-                            display: flex;
                             height: size(32);
-                            justify-content: center;
                             width: size(32);
-
-                            &.app__background {
-                                background-color: var(--mc-low-500);
-                            }
 
                             .iconify {
                                 width: size(16);
                                 height: size(16);
-                                color: var(--mc-high-500);
                             }
-
-
-                            &.default {
-                                background-color: var(--mc-low-500);
-                            }
-
                         }
 
                         &__title {
@@ -247,12 +220,6 @@
                 display: flex;
                 flex-direction: row-reverse;
             }
-
-
-            &-before {}
-
-            &-after {}
-
         }
 
         .tabs-component {

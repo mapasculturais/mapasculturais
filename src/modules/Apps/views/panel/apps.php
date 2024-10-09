@@ -4,9 +4,9 @@ use MapasCulturais\i;
 
 $this->import('
     app-card-content
-    mc-icon 
+    mc-icon
     panel--entity-card
-    panel--entity-tabs 
+    panel--entity-tabs
     create-app
 ');
 ?>
@@ -15,7 +15,7 @@ $this->import('
     <header class="panel-page__header">
         <div class="panel-page__header-title">
             <div class="title">
-                <div class="title__icon app__background">
+                <div class="title__icon is-app">
                     <mc-icon name="app"></mc-icon>
                 </div>
                 <h1 class="title__title"> <?= i::_e('Meus aplicativos') ?> </h1>

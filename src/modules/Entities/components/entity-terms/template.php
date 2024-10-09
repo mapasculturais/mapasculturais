@@ -54,5 +54,5 @@ $this->import('
     <small class="field__error" v-if="hasErrors">
         {{errors.join('; ')}}
     </small>
-    <mc-tag-list :editable="editable" :item-class="entity.__objectType+'__background'" :tags="entity.terms[this.taxonomy]"></mc-tag-list>
+    <mc-tag-list :editable="editable" :item-class="'is-' + entity.__objectType" :tags="entity.terms[this.taxonomy]"></mc-tag-list>
 </div>
