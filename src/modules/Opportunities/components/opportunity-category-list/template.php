@@ -26,5 +26,5 @@ $this->import('
         </button>
     </div>
 
-    <mc-tag-list v-if="entity.registrationCategories.length" item-class="opportunity__background" @click="autoSave()" :tags="entity.registrationCategories" editable></mc-tag-list>
+    <mc-tag-list v-if="entity.registrationCategories.length" item-class="is-opportunity" @click="autoSave()" :tags="entity.registrationCategories" editable></mc-tag-list>
 </div>

@@ -319,7 +319,9 @@
 
                 .icon {
                     align-items: center;
+                    background-color: var(--mc-500);
                     border-radius: 50%;
+                    color: var(--mc-text);
                     display: flex;
                     height: size(72);
                     justify-content: center;

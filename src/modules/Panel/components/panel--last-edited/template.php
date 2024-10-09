@@ -27,8 +27,8 @@ $this->import('
                             </a>
                         </template>
                         <template #header-actions="{entity}">
-                            <div :class="[entity.__objectType+'__background', 'card-actions--tag']">
-                                <mc-icon :name="entity.__objectType"></mc-icon>    
+                            <div class="card-actions--tag" :class="'is-' + entity.__objectType">
+                                <mc-icon :name="entity.__objectType"></mc-icon>
                                 <span v-if="entity.__objectType=='agent'"> <?= i::_e('Agente') ?> </span>
                                 <span v-if="entity.__objectType=='space'"> <?= i::_e('Espaço') ?> </span>
                                 <span v-if="entity.__objectType=='event'"> <?= i::_e('Evento') ?> </span>
@@ -53,7 +53,7 @@ $this->import('
                             &nbsp;
                         </template>
                     </panel--entity-card>
-                </slide>    
+                </slide>
                 <template #addons>
                     <div class="actions">
                         <navigation />

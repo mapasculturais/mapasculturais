@@ -12,7 +12,7 @@
 		align-items: center;
 		gap: size(24);
 	}
-	
+
 	&__header {
 		align-items: stretch;
 		display: flex;
@@ -92,7 +92,7 @@
 		}
 
 		&.with-labels & {
-			
+
 			&.user-slot {
 				.entity-card__slot {
 					position: absolute;
@@ -126,6 +126,7 @@
 
 			.entityType {
 				align-items: center;
+				background-color: var(--mc-500);
 				border-radius: var(--mc-border-radius-pill);
 				display: table;
 				font-size: $font-size-xxxs;
@@ -143,7 +144,7 @@
 					line-height: size(16);
 				}
 			}
-			
+
 			.openSubscriptions {
 				color: var(--mc-low-700);
 				display: flex;
@@ -358,7 +359,7 @@
 					justify-content: center;
 					line-height: size(16);
 					width: size(32);
-					
+
 					.sealImage {
 						max-width: 100%;
 						border-radius: size(8);
@@ -565,7 +566,7 @@
 	}
 
 	/* &__footer {
-		
+
 	} */
 
 	&__footer-actions {

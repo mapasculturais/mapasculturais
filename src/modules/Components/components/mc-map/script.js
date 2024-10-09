@@ -19,7 +19,7 @@ app.component('mc-map', {
 
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name]
-        // os textos estão localizados no arquivo texts.php deste componente 
+        // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('mc-map');
         return { hasSlot, text };
     },
@@ -33,22 +33,22 @@ app.component('mc-map', {
                 const count = cluster.getChildCount();
                 let className = '';
                 if (entities.agent && entities.space && entities.event) {
-                    className = 'agent_space_event__background mc-map-marker mc-map-cluster'
+                    className = 'has-agent-space-event';
                 } else if (entities.agent && entities.space) {
-                    className = 'agent_space__background mc-map-marker mc-map-cluster'
+                    className = 'has-agent-space';
                 } else if (entities.agent && entities.event) {
-                    className = 'agent_event__background mc-map-marker mc-map-cluster'
+                    className = 'has-agent-event';
                 } else if (entities.space && entities.event) {
-                    className = 'space_event__background mc-map-marker mc-map-cluster'
+                    className = 'has-space-event';
                 } else if (entities.agent) {
-                    className = 'agent__background mc-map-marker mc-map-cluster'
+                    className = 'has-agent';
                 } else if (entities.space) {
-                    className = 'space__background mc-map-marker mc-map-cluster'
+                    className = 'has-space';
                 } else if (entities.event) {
-                    className = 'event__background mc-map-marker mc-map-cluster'
+                    className = 'has-event';
                 }
 
-                return L.divIcon({className: '', html: `<div class="${className}">${count}</div>`});
+                return L.divIcon({className: '', html: `<div class="mc-map-marker mc-map-cluster ${className}">${count}</div>`});
             }
         });
 
@@ -58,7 +58,7 @@ app.component('mc-map', {
     created() {
         if (!this.center.length && this.center.lat !== 0 && this.center.lng !== 0) {
             this.defaultZoom = 16;
-        }        
+        }
     },
     mounted() {
         window.addEventListener('mc-map-filter-open', this.closePopups);
@@ -70,7 +70,7 @@ app.component('mc-map', {
     beforeUpdate() {
         this.populateMarkerClusterGroup();
     },
-    
+
     props: {
         center: {
             type: Object,
@@ -115,16 +115,16 @@ app.component('mc-map', {
             const leaflet = Vue.toRaw(this.$refs.map.leafletObject);
             const options = { title: entity.name, clickable: true, draggable: false };
             const marker = L.marker(entity.location, options);
-            
+
             marker.entity = entity;
 
             if(this.hasSlot('popup')) {
                 marker.on('click', () => {
                     const api = new API(entity.__objectType || entity['@entityType']);
                     const entityPromise = api.findOne(entity.id);
-    
+
                     $this.$emit('openPopup', {marker, leaflet, entityPromise, entity});
-                    
+
 
                     entityPromise.then((entity) => {
                         $this.popupEntity = entity;
@@ -136,7 +136,7 @@ app.component('mc-map', {
                                 .on('remove', () => {
                                     $this.$emit('closePopup', {marker, leaflet, entity});
                                 });
-    
+
                         });
                     });
                 });
@@ -164,7 +164,7 @@ app.component('mc-map', {
                 const entityType = entity['@icon'] || entity.__objectType || entity['@entityType'];
                 result[entityType]++
             }
-            
+
             return result;
         },
 

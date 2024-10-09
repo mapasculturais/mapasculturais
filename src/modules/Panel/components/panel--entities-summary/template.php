@@ -15,12 +15,12 @@ $this->import('
     mc-link
 ');
 ?>
-<div class="panel--entities-summary">                    
+<div class="panel--entities-summary">
     <!-- agentes -->
     <div v-if="global.enabledEntities.agents" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/agents" class="card-summary">
             <div class="panel--entities-summary__card--header">
-                <div class="panel--entities-summary__card--header-icon agent__background agent__color"> <mc-icon name="agent-1"></mc-icon> </div>
+                <div class="panel--entities-summary__card--header-icon is-agent"> <mc-icon name="agent-1"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Agentes') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
@@ -39,7 +39,7 @@ $this->import('
     <div v-if="global.enabledEntities.opportunities" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/opportunities" class="card-summary">
             <div class="panel--entities-summary__card--header">
-                <div class="panel--entities-summary__card--header-icon opportunity__background opportunity__color"> <mc-icon name="opportunity"></mc-icon> </div>
+                <div class="panel--entities-summary__card--header-icon is-opportunity"> <mc-icon name="opportunity"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Oportunidades') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
@@ -58,7 +58,7 @@ $this->import('
     <div v-if="global.enabledEntities.events" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/events" class="card-summary">
             <div class="panel--entities-summary__card--header">
-                <div class="panel--entities-summary__card--header-icon event__background event__color"> <mc-icon name="event"></mc-icon> </div>
+                <div class="panel--entities-summary__card--header-icon is-event"> <mc-icon name="event"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Eventos') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
@@ -77,7 +77,7 @@ $this->import('
     <div v-if="global.enabledEntities.spaces" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/spaces" class="card-summary">
             <div class="panel--entities-summary__card--header">
-                <div class="panel--entities-summary__card--header-icon space__background space__color"> <mc-icon name="space"></mc-icon> </div>
+                <div class="panel--entities-summary__card--header-icon is-space"> <mc-icon name="space"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Espaços') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">
@@ -96,7 +96,7 @@ $this->import('
     <div v-if="global.enabledEntities.projects" class="panel--entities-summary__card">
         <mc-link id="summary" route="panel/projects" class="card-summary">
             <div class="panel--entities-summary__card--header">
-                <div class="panel--entities-summary__card--header-icon project__background project__color"> <mc-icon name="project"></mc-icon> </div>
+                <div class="panel--entities-summary__card--header-icon is-project"> <mc-icon name="project"></mc-icon> </div>
                 <div class="panel--entities-summary__card--header-label"> <?= i::_e('Projetos') ?> </div>
             </div>
             <div class="panel--entities-summary__card--counter">

@@ -52,12 +52,11 @@ $this->import('
         </div>
     </div>
 
-    <div :class="['mc-map-card__footer', entity.__objectType+'__color']" @click="toggle=!toggle">
-        <a :href="entity.singleUrl" :class="['mc-map-card__footer--link', entity.__objectType+'__color']">
+    <div class="mc-map-card__footer" :class="'is-' + entity.__objectType" @click="toggle=!toggle">
+        <a class="mc-map-card__footer--link" :class="'is-' + entity.__objectType" :href="entity.singleUrl">
             <mc-icon name="access" ></mc-icon>
             <?php i::_e('Acessar') ?>
         </a>
-        
     </div>
 
 </div>

@@ -253,7 +253,9 @@
             .card {
                 &-actions {
                     &--tag {
+                        background-color: var(--mc-500);
                         border-radius: var(--mc-border-radius-pill);
+                        color: var(--mc-text);
                         min-width: size(137);
                         padding: size(6) size(19);
                         display: block;

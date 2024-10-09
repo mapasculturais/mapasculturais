@@ -65,7 +65,7 @@ $this->import('
                         <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
                             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                             <dd><strong>{{entity.id}}</strong></dd>
-                        </dl> 
+                        </dl>
                         <dl v-if="entity.type">
                             <dt><?= i::__('Tipo')?></dt>
                             <dd :class="[entity.__objectType+'__color', 'type']">{{entity.type.name}} </dd>
@@ -113,7 +113,7 @@ $this->import('
     <div class="entity-header__edit">
         <div class="entity-header__edit--content">
             <div class="title">
-                <div :class="['icon', entity.__objectType+'__background']">
+                <div class="icon" :class="'is-' + entity.__objectType">
                     <mc-icon :entity="entity"></mc-icon>
                 </div>
                 <h2 v-if="this.entity.__objectType!='opportunity'">{{titleEdit}}</h2>

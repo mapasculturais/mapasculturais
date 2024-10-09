@@ -29,6 +29,8 @@
             align-items: center;
 
             &-icon {
+                background-color: var(--mc-500);
+                color: var(--mc-text);
                 width: size(28);
                 height: size(28);
                 display: flex;

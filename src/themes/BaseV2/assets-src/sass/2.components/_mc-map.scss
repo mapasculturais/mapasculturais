@@ -49,8 +49,10 @@
 
     &-marker {
         align-items: center;
+        background-color: var(--mc-500);
         border: var(--mc-border-hairline) var(--mc-gray-300);
         border-radius: var(--mc-border-radius-pill);
+        color: var(--mc-text);
         display: flex;
         height: size(30);
         justify-content: center;
@@ -89,7 +91,7 @@
     &-cluster {
         background-color: white;
 
-        &.agent_space_event__background {
+        &.has-agent-space-event {
             &::before {
                 background-image: conic-gradient(
                     var(--mc-agents-500) 0deg,
@@ -104,7 +106,7 @@
             }
         }
 
-        &.agent_space__background {
+        &.has-agent-space {
             &::before {
                 background-image: conic-gradient(
                     var(--mc-agents-500) 0deg,
@@ -117,7 +119,7 @@
             }
         }
 
-        &.agent_event__background {
+        &.has-agent-event {
             &::before {
                 background-image: conic-gradient(
                     var(--mc-agents-500) 0deg,
@@ -130,7 +132,7 @@
             }
         }
 
-        &.space_event__background {
+        &.has-space-event {
             &::before {
                 background-image: conic-gradient(
                     var(--mc-spaces-500) 0deg,
@@ -143,18 +145,18 @@
             }
         }
 
-        &.agent__background {
+        &.has-agent {
             &::before, &::after {
                 background: var(--mc-agents-500);
             }
         }
-        &.space__background {
+        &.has-space {
             color: var(--mc-low-500);
             &::before, &::after {
                 background: var(--mc-spaces-500);
             }
         }
-        &.event__background {
+        &.has-event {
             color: var(--mc-low-500);
             &::before, &::after {
                 background: var(--mc-events-500);

@@ -7,7 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
-	entity-card 
+	entity-card
     mc-loading
     mc-tab
 	mc-tabs
@@ -35,7 +35,7 @@ $this->import('
                                     <mc-title tag="h2" :shortLength="80">{{entity.name}}</mc-title>
                                 </template>
                                 <template #labels>
-                                    <div :class="['entityType',  entity.__objectType+'__background']">
+                                    <div class="entityType" :class="'is-' + entity.__objectType">
                                         <mc-icon :entity="entity"></mc-icon>
                                         {{text(entity.__objectType)}}
                                     </div>
@@ -58,7 +58,7 @@ $this->import('
                                     <mc-title tag="h2" :shortLength="80">{{entity.name}}</mc-title>
                                 </template>
                                 <template #labels>
-                                    <div :class="['entityType',  entity.__objectType+'__background']">
+                                    <div class="entityType is-agent">
                                         <mc-icon :entity="entity"></mc-icon>
                                         <?= i::__('Agente') ?>
                                     </div>
@@ -81,7 +81,7 @@ $this->import('
                                     <mc-title tag="h2" :shortLength="80">{{entity.name}}</mc-title>
                                 </template>
                                 <template #labels>
-                                    <div :class="['entityType',  entity.__objectType+'__background']">
+                                    <div class="entityType is-space">
                                         <mc-icon :entity="entity"></mc-icon>
                                         <?= i::__('Espaço') ?>
                                     </div>
@@ -104,7 +104,7 @@ $this->import('
                                     <mc-title tag="h2" :shortLength="80">{{entity.name}}</mc-title>
                                 </template>
                                 <template #labels>
-                                    <div :class="['entityType',  entity.__objectType+'__background']">
+                                    <div class="entityType is-project">
                                         <mc-icon :entity="entity"></mc-icon>
                                         <?= i::__('Projeto') ?>
                                     </div>
