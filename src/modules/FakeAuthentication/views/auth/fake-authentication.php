@@ -37,7 +37,7 @@ $profile = $app->user->profile;
             <mc-entities type="system-role" select="name,slug">
                 <template #default="roles">
                     <label> <?= i::__("Filtrar por função:") ?>
-                        <select v-model="query['@roles']" @change="query['@roles'] || delete query['@roles'];" class="entity-tabs__search-select primary__border--solid">
+                        <select v-model="query['@roles']" @change="query['@roles'] || delete query['@roles'];" class="entity-tabs__search-select has-border--solid is-primary">
                             <option :value="undefined"><?= i::__('Exibir todas') ?></option>
                             <option value="saasSuperAdmin"><?= i::__('Super Administrador da Rede') ?></option>
                             <option value="saasAdmin"><?= i::__('Administrador da Rede') ?></option>
@@ -49,7 +49,7 @@ $profile = $app->user->profile;
                 </template>
                 <template #empty>
                     <label> <?= i::__("Filtrar por função:") ?>
-                        <select v-model="query['@roles']" @change="query['@roles'] || delete query['@roles'];" class="entity-tabs__search-select primary__border--solid">
+                        <select v-model="query['@roles']" @change="query['@roles'] || delete query['@roles'];" class="entity-tabs__search-select has-border--solid is-primary">
                             <option :value="undefined"><?= i::__('Exibir todas') ?></option>
                             <option value="saasSuperAdmin"><?= i::__('Super Administrador da Rede') ?></option>
                             <option value="saasAdmin"><?= i::__('Administrador da Rede') ?></option>

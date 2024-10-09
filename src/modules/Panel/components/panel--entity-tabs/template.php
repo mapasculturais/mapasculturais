@@ -48,10 +48,10 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
     <?php $this->applyComponentHook($status, 'before') ?>
     <mc-tab v-if="showTab('<?=$status?>')" cache key="<?$status?>" label="<?=$label?>" slug="<?=$status?>">
         <?php $this->applyComponentHook($status, 'begin') ?>
-        <mc-entities :name="type + ':<?=$status?>'" :type="type" 
+        <mc-entities :name="type + ':<?=$status?>'" :type="type"
             :select="select"
-            :query="queries['<?=$status?>']" 
-            :limit="50" 
+            :query="queries['<?=$status?>']"
+            :limit="50"
             :order="queries['<?=$status?>']['@order']"
             watch-query>
             <template #header="{entities}">
@@ -61,12 +61,12 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                             aria-label="<?=i::__('Palavras-chave')?>"
                             placeholder="<?=i::__('Buscar por palavras-chave')?>"
                             v-model="queries['<?=$status?>']['@keyword']">
-                        
+
                         <slot name="filters-additional" :entities="entities" :query="queries['<?=$status?>']"></slot>
                         <label> <?= i::__ ("Ordernar por:") ?>
-                            <select class="entity-tabs__search-select primary__border--solid" v-model="queries['<?=$status?>']['@order']">
+                            <select class="entity-tabs__search-select has-border--solid is-primary" v-model="queries['<?=$status?>']['@order']">
                                 <?php foreach($sort_options as $value => $label): ?>
-                                    <option value="<?= htmlentities($value) ?>"><?= htmlentities($label) ?></option>    
+                                    <option value="<?= htmlentities($value) ?>"><?= htmlentities($label) ?></option>
                                 <?php endforeach ?>
                             </select>
                         </label>
@@ -83,10 +83,10 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                             <slot name="entity-actions-left" :entity="entity"></slot>
                         </template>
                     </registration-card>
-                    <panel--entity-card  v-if="entity.__objectType!='registration'" :key="entity.id" :entity="entity" 
-                        @undeleted="moveEntity(entity, $event)" 
-                        @deleted="moveEntity(entity, $event)" 
-                        @archived="moveEntity(entity, $event)" 
+                    <panel--entity-card  v-if="entity.__objectType!='registration'" :key="entity.id" :entity="entity"
+                        @undeleted="moveEntity(entity, $event)"
+                        @deleted="moveEntity(entity, $event)"
+                        @archived="moveEntity(entity, $event)"
                         @published="moveEntity(entity, $event)"
                         :on-delete-remove-from-lists="false"
                         >

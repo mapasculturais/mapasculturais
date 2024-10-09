@@ -72,7 +72,7 @@ $this->import('
                 <template #button="modal">
                     <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
-                            <mc-icon name="trash" class="secondary__color"></mc-icon> 
+                            <mc-icon name="trash" class="has-color is-secondary"></mc-icon>
                         </div>
                         <h5>{{ text('excluir_fase_coleta_dados') }}</h5>
                     </button>

@@ -22,7 +22,7 @@ $this->import('
                     <div class="col-12 grid-12 opportunity-list__card">
                         <div class="col-12 opportunity-list__cardheader">
                             <mc-avatar :entity="opp" size="xsmall"></mc-avatar>
-                            <p class="opportunity-list__name opportunity__color bold">
+                            <p class="opportunity-list__name">
                                 <mc-link :entity="opp" class="opportunity-list__link has-color is-primary bold">
                                     {{opp.name}}
                                 </mc-link>

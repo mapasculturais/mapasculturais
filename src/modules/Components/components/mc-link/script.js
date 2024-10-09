@@ -1,15 +1,15 @@
 app.component('mc-link', {
     template: $TEMPLATES['mc-link'],
 
-    setup() { 
-        // os textos estão localizados no arquivo texts.php deste componente 
+    setup() {
+        // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('mc-link')
         return { text }
     },
 
     props: {
         id: String,
-        
+
         entity: {
             type: Entity,
             required: false
@@ -81,7 +81,7 @@ app.component('mc-link', {
             let classes = this.class;
 
             if (this.entity) {
-                classes += ` ${this.entity.__objectType}__color` ;
+                classes += ` has-color is-${this.entity.__objectType}` ;
             }
 
             return classes;

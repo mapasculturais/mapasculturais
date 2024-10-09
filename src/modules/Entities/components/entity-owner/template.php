@@ -33,7 +33,7 @@ $this->import('
         </mc-alert>
         <select-entity v-if="!hasRequest" :query="query" type="agent" @select="changeOwner($event)" permissions="" openside="up-right">
             <template #button="{ toggle }">
-                <a class="entity-owner__edit--btn" :class="this.entity.__objectType + '__color'" @click="toggle()">
+                <a class="entity-owner__edit--btn" :class="'is-' + this.entity.__objectType" @click="toggle()">
                     <mc-icon name="exchange"></mc-icon>
                     <h4><?php i::_e('Alterar Propriedade') ?></h4>
                 </a>

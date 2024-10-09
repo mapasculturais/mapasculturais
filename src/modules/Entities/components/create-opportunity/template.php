@@ -89,17 +89,17 @@ $this->import('
 
             <div v-if="entity.ownerEntity" class="create-modal__fields--selected">
                 <label class="create-modal__fields--selected-label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>
-                <div class="entity-selected">
-                    <div class="entity-selected__entity" :class="entityColorBorder">
+                <div class="entity-selected" :class="entityClass">
+                    <div class="entity-selected__entity has-border">
                         <mc-avatar :entity="entity.ownerEntity" size="xsmall"></mc-avatar>
-                        <span class="name" :class="entityColorClass"><?php i::_e('{{entity.ownerEntity.name}}') ?></span>
+                        <span class="name has-color"><?php i::_e('{{entity.ownerEntity.name}}') ?></span>
                     </div>
                     <div class="entity-selected__info">
                         <select-entity :type="entityTypeSelected" @select="setEntity($event)" openside="right-down">
                             <template #button="{ toggle }">
-                                <a class="entity-selected__info--btn" :class="entityColorClass" @click="toggle()">
-                                    <mc-icon :class="entityColorClass" name="exchange"></mc-icon>
-                                    <h4 :class="entityColorClass"><?php i::_e('Alterar') ?> {{entityType}}</h4>
+                                <a class="entity-selected__info--btn has-color" @click="toggle()">
+                                    <mc-icon class="has-color" name="exchange"></mc-icon>
+                                    <h4 class="has-color"><?php i::_e('Alterar') ?> {{entityType}}</h4>
                                 </a>
                             </template>
                         </select-entity>

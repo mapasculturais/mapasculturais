@@ -18,7 +18,6 @@
         border: $border-hairline var(--mc-gray-100);
         max-width: size(296);
         padding: size(16);
-
     }
 
     &__message {
@@ -36,6 +35,9 @@
     }
 
     &__header {
+        border: var(--mc-border-hairline);
+        border-color: var(--mc-500);
+        color: var(--mc-500);
         display: grid;
         grid-template-columns: size(56) 1fr;
         align-items: center;

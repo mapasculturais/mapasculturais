@@ -22,14 +22,14 @@ $this->import('
 
 $evaluation_methods = $app->getRegisteredEvaluationMethods();
 ?>
-<mc-card> 
+<mc-card>
     <div class="evaluation-step grid-12">
 
         <section class="col-12 evaluation-step__section">
             <div class="evaluation-step__section-content">
                 <div class="grid-12">
                     <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
-                    <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>    
+                    <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>
                     <entity-field :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
                 </div>
             </div>
@@ -91,7 +91,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                 <template #button="modal">
                     <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
-                            <mc-icon name="trash" class="secondary__color"></mc-icon>
+                            <mc-icon name="trash" class="has-color is-secondary"></mc-icon>
                         </div>
                         <h5><?= i::__("Excluir fase de avaliação") ?></h5>
                     </button>

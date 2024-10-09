@@ -28,7 +28,7 @@ $this->import('
                             <mc-icon name="search"></mc-icon>
                         </button>
                     </div>
-                    <select class="order primary__border--solid" v-model="query['@order']" @change="entities.refresh();">
+                    <select class="order has-border--solid is-primary" v-model="query['@order']" @change="entities.refresh();">
                         <option value="owner.name ASC"><?= i::__('ordem alfabética') ?></option>
                         <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                         <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
@@ -37,8 +37,8 @@ $this->import('
                 </form>
             </template>
             <template #default="{entities}">
-                <div class="panel-evaluations__cards">                   
-                    <?php $this->applyComponentHook('tabs-openEvaluations-cards', 'begin'); ?>      
+                <div class="panel-evaluations__cards">
+                    <?php $this->applyComponentHook('tabs-openEvaluations-cards', 'begin'); ?>
 
                     <evaluation-card v-for="evaluation in entities" :entity="evaluation" buttonLabel="<?= i::esc_attr__('Avaliar') ?>"></evaluation-card>
 

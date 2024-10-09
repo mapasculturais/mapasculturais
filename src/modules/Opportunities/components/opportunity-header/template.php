@@ -28,7 +28,7 @@ $this->import('
                     </div>
                     <div class="data">
                         <div class="data__title"> <?= i::__('Tipo')?>: </div>
-                        <div class="data__info opportunity__color"> {{firstPhase.type?.name}} </div>
+                        <div class="data__info data__type"> {{firstPhase.type?.name}} </div>
                     </div>
                     <div v-if="firstPhase.ownerEntity?.name" class="data">
                         <div class="data__title"> {{type}}: </div>
@@ -43,7 +43,7 @@ $this->import('
         <div class="right">
             <slot name="button"></slot>
         </div>
-        
+
     </div>
     <div class="">
         <slot name="footer"></slot>

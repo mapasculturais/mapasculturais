@@ -3,7 +3,7 @@ app.component('create-opportunity', {
     emits: ['create'],
 
     setup() {
-        // os textos estão localizados no arquivo texts.php deste componente 
+        // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('create-opportunity')
         return { text }
     },
@@ -27,7 +27,7 @@ app.component('create-opportunity', {
         areaClasses() {
             return this.areaErrors ? 'field error' : 'field';
         },
-        
+
         modalTitle() {
             if (!this.entity?.id) {
                 return __('criarOportunidade', 'create-opportunity');
@@ -52,29 +52,16 @@ app.component('create-opportunity', {
             }
         },
 
-        entityColorClass() {
+        entityClass() {
             switch(this.entity.ownerEntity.__objectType) {
                 case 'project':
-                    return 'project__color';
+                    return 'is-project';
                 case 'event':
-                    return 'event__color';
+                    return 'is-event';
                 case 'space':
-                    return 'space__color';
+                    return 'is-space';
                 case 'agent':
-                    return 'agent__color--dark';
-            }
-        },
-
-        entityColorBorder() {
-            switch(this.entity.ownerEntity.__objectType) {
-                case 'project':
-                    return 'project__border';
-                case 'event':
-                    return 'event__border';
-                case 'space':
-                    return 'space__border';
-                case 'agent':
-                    return 'agent__border--dark';
+                    return 'is-agent';
             }
         },
     },
@@ -82,7 +69,7 @@ app.component('create-opportunity', {
     methods: {
         handleSubmit(event) {
             event.preventDefault();
-        },    
+        },
 
         createEntity() {
             this.entity = new Entity('opportunity');

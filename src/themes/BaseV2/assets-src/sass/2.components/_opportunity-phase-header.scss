@@ -6,6 +6,14 @@
     margin-bottom: size(16);
     background-color: var(--mc-white);
 
+    h3, h4 {
+        color: var(--mc-opportunities-500);
+    }
+
+    h4 {
+        font-weight: var(--mc-font-bold);
+    }
+
     &__label {
         color: var(--mc-gray-500);
     }

@@ -43,6 +43,8 @@
     }
 
     &__list {
+        color: var(--mc-opportunities-500);
+        font-weight: var(--mc-font-bold);
         list-style: none;
         display: contents;
     }

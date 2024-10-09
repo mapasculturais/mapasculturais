@@ -6,7 +6,7 @@
     h4 {
         margin: 0;
     }
-    
+
     &__owner {
         display: grid;
         grid-template-columns: size(56) 1fr;
@@ -14,8 +14,8 @@
         align-items: center;
         gap: size(8);
         &--img {
-            
-            margin: size(13) size(14) size(13) 0; 
+
+            margin: size(13) size(14) size(13) 0;
         }
 
         &--name {
@@ -30,6 +30,7 @@
     &__edit {
         &--btn {
             align-items: center;
+            color: var(--mc-500);
             cursor: pointer;
             display: flex;
             gap: size(8);

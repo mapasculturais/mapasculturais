@@ -132,6 +132,10 @@
                                 text-decoration: none;
                             }
                         }
+
+                        &__type {
+                            color: var(--mc-opportunities-500);
+                        }
                     }
                 }
 

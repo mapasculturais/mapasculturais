@@ -11,12 +11,12 @@ $this->import('
     mc-entities
     mc-popover
     create-project
-    create-event 
+    create-event
     create-space
     create-agent
 ');
 ?>
-    <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" :classes="[classes, 'select-entity__popover']" @close="clearField" @confirm="clearField"> 
+    <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, 'has-color', 'is-' + type]" :classes="[classes, 'select-entity__popover']" @close="clearField" @confirm="clearField">
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"></slot>
         </template>

@@ -26,7 +26,7 @@ $this->import('
                                 <mc-icon name="search"></mc-icon>
                             </button>
                         </div>
-                        <select class="order primary__border--solid" v-model="query['@order']" @change="entities.refresh();">
+                        <select class="order has-border--solid is-primary" v-model="query['@order']" @change="entities.refresh();">
                             <option value="owner.name ASC"><?= i::__('ordem alfabética') ?></option>
                             <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>
@@ -42,7 +42,7 @@ $this->import('
         </mc-entities>
     </mc-tab>
     <mc-tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
-        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,range,proponentType,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,range,proponentType,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -52,7 +52,7 @@ $this->import('
                                 <mc-icon name="search"></mc-icon>
                             </button>
                         </div>
-                        <select class="order primary__border--solid" v-model="query['@order']" @change="entities.refresh();">
+                        <select class="order has-border--solid is-primary" v-model="query['@order']" @change="entities.refresh();">
                             <option value="owner.name ASC"><?= i::__('ordem alfabética') ?></option>
                             <option value="createTimestamp DESC"><?= i::__('mais recentes primeiro') ?></option>
                             <option value="createTimestamp ASC"><?= i::__('mais antigas primeiro') ?></option>

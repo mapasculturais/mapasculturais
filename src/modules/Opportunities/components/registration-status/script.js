@@ -36,7 +36,7 @@ app.component('registration-status', {
                     return 'has-color is-danger';
 				case 3 :
 				case 8 :
-                    return 'warning__color';
+                    return 'has-color is-warning';
 
                 case null:
                 default:

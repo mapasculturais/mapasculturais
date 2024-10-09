@@ -21,7 +21,7 @@ $this->import('
     <entity-terms :entity="entity" :editable="true" title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
     <label class="link-opportunity__title bold"><?php i::_e('Entidade Vinculada') ?><br></label>
     <div class="link-opportunity__ownerEntity">
-        <div class="link-opportunity__header" :class="[entity.ownerEntity.__objectType+'__border', entity.ownerEntity.__objectType+'__color']">
+        <div class="link-opportunity__header" :class="'is-' + entity.ownerEntity.__objectType">
             <mc-avatar :entity="entity.ownerEntity" size="xsmall"></mc-avatar>
             {{entity.ownerEntity.name}}
         </div>
@@ -33,9 +33,9 @@ $this->import('
 
                 </template>
                 <template #button="{ toggle }">
-                    <a class="link-opportunity__change" @click="toggle()">
-                        <mc-icon :class="entity.ownerEntity.__objectType+'__color'" name="exchange"></mc-icon>
-                        <h4 :class="entity.ownerEntity.__objectType+'__color'"><?php i::_e('Alterar') ?> {{entityType}}</h4>
+                    <a class="link-opportunity__change" :class="'is-' + entity.ownerEntity.__objectType" @click="toggle()">
+                        <mc-icon class="has-color" name="exchange"></mc-icon>
+                        <h4 class="has-color'"><?php i::_e('Alterar') ?> {{entityType}}</h4>
                     </a>
                 </template>
             </select-entity>
