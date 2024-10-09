@@ -93,13 +93,13 @@ app.component('opportunity-create-based-model', {
 
             if (error = this.validade(objt)) {
                 let mess = "";
-                mess = this.text('Todos os campos são obrigatorio');
+                mess = this.text('Todos os campos são obrigatórios.');
                 this.messages.error(mess);
                 return;
             }
 
             await api.POST(`/opportunity/generateopportunity/${objt.entityId}`, objt).then(response => response.json().then(dataReturn => {
-                this.messages.success(this.text('Aguarde, estamos gerando a oportunidade baseada no modelo.'), 6000);
+                this.messages.success(this.text('Aguarde. Estamos gerando a oportunidade baseada no modelo.'), 6000);
 
                 this.sendSuccess = true;
 

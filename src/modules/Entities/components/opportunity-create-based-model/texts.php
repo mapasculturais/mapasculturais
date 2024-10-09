@@ -3,9 +3,9 @@
 use MapasCulturais\i;
 
 return [
-    'Todos os campos são obrigatorio' => i::__('Todos os campos são obrigatorio'),
+    'Todos os campos são obrigatórios.' => i::__('Todos os campos são obrigatórios.'),
     'Oportunidade gerada com sucesso, você será redirecionado...' => i::__('Oportunidade gerada com sucesso, você será redirecionado...'),
-    'Aguarde, estamos gerando a oportunidade baseada no modelo.' => i::__('Aguarde, estamos gerando a oportunidade baseada no modelo.'),
+    'Aguarde. Estamos gerando a oportunidade baseada no modelo.' => i::__('Aguarde. Estamos gerando a oportunidade baseada no modelo.'),
     'agente' => i::__('agente'),
     'espaço' => i::__('espaço'),
     'evento' => i::__('evento'),
