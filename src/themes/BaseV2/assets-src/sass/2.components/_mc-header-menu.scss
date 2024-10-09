@@ -95,7 +95,7 @@
 
         .icon {
             align-items: center;
-            background-color: var(--mc-low-500);
+            background-color: var(--mc-menu-item-color, var(--mc-low-500));
             border-radius: 50%;
             color: var(--mc-white);
             display: flex;
@@ -105,7 +105,7 @@
         }
 
         .label {
-            color: var(--mc-black);
+            color: var(--mc-menu-item-color, var(--mc-black));
             font-family: var(--mc-font-body);
             font-size: $font-size-xxs;
             font-style: normal;
@@ -116,77 +116,9 @@
             text-align: center;
         }
 
-
-        &.home {
-            &:hover{
-                .icon {
-                    background-color: var(--mc-primary-500);
-                }
-                .label {
-                    color: var(--mc-primary-500);
-                }
-            }
+        &:hover {
+            --mc-menu-item-color: var(--mc-500);
         }
-
-        &.project {
-            &:hover{
-                .icon {
-                    background-color: var(--mc-projects-500);
-                }
-                .label {
-                    color: var(--mc-projects-500);
-                }
-            }
-        }
-
-        &.space {
-            &:hover{
-                .icon {
-                    background-color: var(--mc-spaces-500);
-                }
-                .label {
-                    color: var(--mc-spaces-500);
-                }
-            }
-        }
-
-        &.event {
-            &:hover{
-                .icon {
-                    background-color: var(--mc-events-500);
-                }
-                .label {
-                    color: var(--mc-events-500);
-                }
-            }
-        }
-
-        &.agent {
-            .icon {
-                font-size: $font-size-xxs;
-            }
-
-            &:hover{
-                .icon {
-                    background-color: var(--mc-agents-500);
-                }
-                .label {
-                    color: var(--mc-agents-500);
-                }
-            }
-        }
-
-        &.opportunity {
-            &:hover{
-                .icon {
-                    background-color: var(--mc-opportunities-500);
-                }
-                .label {
-                    color: var(--mc-opportunities-500);
-                }
-            }
-        }
-
     }
 
     &.mobile {

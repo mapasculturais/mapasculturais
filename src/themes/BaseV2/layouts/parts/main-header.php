@@ -34,7 +34,7 @@ $this->import('
                 <?php $this->applyTemplateHook('mc-header-menu-home', 'before') ?>
                 <li>
                     <?php $this->applyTemplateHook('mc-header-menu-home', 'begin') ?>
-                    <a href="<?= $app->createUrl('site', 'index') ?>" class="mc-header-menu--item home">
+                    <a href="<?= $app->createUrl('site', 'index') ?>" class="mc-header-menu--item is-primary">
                         <span class="icon"> <mc-icon name="home"></mc-icon> </span>
                         <p class="label"> <?php i::_e('Home') ?> </p>
                     </a>
@@ -45,7 +45,7 @@ $this->import('
                 <?php $this->applyTemplateHook('mc-header-menu-opportunity', 'before') ?>
                 <li v-if="global.enabledEntities.opportunities">
                     <?php $this->applyTemplateHook('mc-header-menu-opportunity', 'begin') ?>
-                    <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="mc-header-menu--item opportunity">
+                    <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="mc-header-menu--item is-opportunity">
                         <span class="icon"> <mc-icon name="opportunity"></mc-icon> </span>
                         <p class="label"> <?php i::_e('Oportunidades') ?> </p>
                     </a>
@@ -56,7 +56,7 @@ $this->import('
                 <?php $this->applyTemplateHook('mc-header-menu-agent', 'before') ?>
                 <li v-if="global.enabledEntities.agents">
                     <?php $this->applyTemplateHook('mc-header-menu-agent', 'begin') ?>
-                    <a href="<?= $app->createUrl('search', 'agents') ?>" class="mc-header-menu--item agent">
+                    <a href="<?= $app->createUrl('search', 'agents') ?>" class="mc-header-menu--item is-agent">
                         <span class="icon"> <mc-icon name="agent-2"> </span>
                         <p class="label"> <?php i::_e('Agentes') ?> </p>
                     </a>
@@ -67,7 +67,7 @@ $this->import('
                 <?php $this->applyTemplateHook('mc-header-menu-events', 'before') ?>
                 <li v-if="global.enabledEntities.events">
                     <?php $this->applyTemplateHook('mc-header-menu-events', 'begin') ?>
-                    <a href="<?= $app->createUrl('search', 'events') ?>" class="mc-header-menu--item event">
+                    <a href="<?= $app->createUrl('search', 'events') ?>" class="mc-header-menu--item is-event">
                         <span class="icon"> <mc-icon name="event"> </span>
                         <p class="label"> <?php i::_e('Eventos') ?> </p>
                     </a>
@@ -78,7 +78,7 @@ $this->import('
                 <?php $this->applyTemplateHook('mc-header-menu-spaces', 'before') ?>
                 <li v-if="global.enabledEntities.spaces">
                     <?php $this->applyTemplateHook('mc-header-menu-spaces', 'begin') ?>
-                    <a href="<?= $app->createUrl('search', 'spaces') ?>" class="mc-header-menu--item space">
+                    <a href="<?= $app->createUrl('search', 'spaces') ?>" class="mc-header-menu--item is-space">
                         <span class="icon"> <mc-icon name="space"> </span>
                         <p class="label"> <?php i::_e('Espaços') ?> </p>
                     </a>
@@ -89,7 +89,7 @@ $this->import('
                 <?php $this->applyTemplateHook('mc-header-menu-projects', 'before') ?>
                 <li v-if="global.enabledEntities.projects">
                     <?php $this->applyTemplateHook('mc-header-menu-projects', 'begin') ?>
-                    <a href="<?= $app->createUrl('search', 'projects') ?>" class="mc-header-menu--item project">
+                    <a href="<?= $app->createUrl('search', 'projects') ?>" class="mc-header-menu--item is-project">
                         <span class="icon"> <mc-icon name="project"> </span>
                         <p class="label"> <?php i::_e('Projetos') ?> </p>
                     </a>
