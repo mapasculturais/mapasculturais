@@ -151,7 +151,7 @@ foreach($registrations as $i => $r) {
     }
 
     $outRow = array_values(array_filter([
-        $r->number,
+        "=HIPERLINK(\"" . $app->createUrl('registration', 'view', [$r->id]) . "\"; \"" . $r->number . "\")",
         showIfField($entity->projectName, $r->projectName),
         $result_string ?: '""',
         returnStatus($r) ?: '""',
