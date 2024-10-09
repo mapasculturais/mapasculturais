@@ -23,7 +23,7 @@ app.component('complaint-suggestion', {
     data() {
         let isAuth = $MAPAS.complaintSuggestionConfig.isAuth;
         let typeMessage = "";
-        let sitekey = $MAPAS.complaintSuggestionConfig.recaptcha.sitekey;
+        let hasCaptcha = false;
         let definitions = $MAPAS.notification_type;
         let recaptchaResponse = '';
         let formData = {
@@ -40,7 +40,7 @@ app.component('complaint-suggestion', {
             suggestion: definitions.suggestion_type.config.options,
         }
 
-        return { definitions, options, typeMessage, sitekey, recaptchaResponse, formData, isAuth }
+        return { definitions, options, typeMessage, hasCaptcha, recaptchaResponse, formData, isAuth }
     },
 
     methods: {
@@ -52,7 +52,8 @@ app.component('complaint-suggestion', {
             let objt = this.formData;
             objt.entityId = this.entity.id;
             
-            if(this.sitekey){
+            // A flag será usada para identificar se o componente filho implementa o Captcha
+            if (this.hasCaptcha) {
                 objt['g-recaptcha-response'] = this.recaptchaResponse;
             }
 
@@ -80,13 +81,14 @@ app.component('complaint-suggestion', {
             this.recaptchaResponse = response;
         },
         expiredCaptcha() {
+            this.hasCaptcha = true;
             this.recaptchaResponse = '';
         },
         validade(objt) {
             let result = null;
             let ignore = ["copy", "anonimous", "only_owner"];
 
-            if(!this.sitekey){
+            if(!this.hasCaptcha){
                 ignore.push("g-recaptcha-response");
             }
 

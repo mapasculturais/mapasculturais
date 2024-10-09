@@ -22,8 +22,8 @@ app.component('mc-captcha', {
         const config = $MAPAS.mcCaptchaConfig;
 
         return {
-            provider: config.captcha.provider,
-            key: config.captcha.key,
+            provider: config?.captcha?.provider,
+            key: config?.captcha.key,
             recaptchaResponse: ''
         }
     },
