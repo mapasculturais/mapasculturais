@@ -6,7 +6,7 @@ app.component('mc-title', {
         tag: {
             type: String,
             default: 'h2',
-            validator: (value) => ['h1', 'h2', 'h3', 'h4'].includes(value)
+            validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(value)
         },
 
         size: {
@@ -27,7 +27,7 @@ app.component('mc-title', {
     },
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
-        // os textos estão localizados no arquivo texts.php deste componente 
+        // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('mc-title')
         return { text, hasSlot }
     },
@@ -37,11 +37,11 @@ app.component('mc-title', {
     },
 
     mounted() {
-       
+
         const length = this.$refs.title.textContent.trim().length;
         if(length > this.longLength) {
             this.classes.push('mc-title--long');
-            
+
         } else if (length < this.shortLength) {
             this.classes.push('mc-title--short');
         }
