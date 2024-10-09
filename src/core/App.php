@@ -3782,4 +3782,93 @@ class App {
         $this->enableAccessControl();
     }
 
+
+    /** 
+     * ============ MÉTODOS DE VERIFICAÇÃO DO CAPTCHA ============ 
+     */
+    function verifyRecaptcha2(string $token = '')
+    {
+        // If we don't receive the token, there is no reason to advance to the verification
+        if (empty($token)) {
+            return false;
+        }
+
+        // If the captcha configuration does not exist, it means that captcha has not been implemented
+        if (!isset($this->config['captcha']) && !isset($this->config['app.recaptcha.key'])) {
+            return true;
+        }
+
+        // If the new captcha configuration does not exist, but the old one does, we will use the old one
+        if (!isset($this->config['captcha']) && isset($this->config['app.recaptcha.key'])) {
+            $this->config['captcha'] = [
+                'provider' => 'google',
+                'providers' => [
+                    'google' => [
+                        'secret' => $this->config['app.recaptcha.secret'],
+                        'verify' => 'https://www.google.com/recaptcha/api/siteverify'
+                    ]
+                ]
+            ];
+        }
+
+        // Is necessary to check because the provider can be defined in the new configuration
+        if (!isset($this->config['captcha']['provider'])) {
+            $this->config['captcha']['provider'] = 'google';
+        }
+
+        // In this point we are sure that the provider was defined
+        $provider = $this->config['captcha']['provider'];
+
+        // If there are no providers available, it means that there was an error in the configuration
+        // Because if it is the new configuration, the provider is mandatory
+        // If it is the old one, the provider is defined by default
+        if (!isset($this->config['captcha']['providers']) || empty($this->config['captcha']['providers'])) {
+            throw new \Exception('No captcha providers defined');
+        }
+
+        // Is necessary to validate if the defined provider exists, because it may have been defined incorrectly in the new configuration
+        if (!in_array($provider, array_keys($this->config['captcha']['providers']))) {
+            return false;
+        }
+
+        // Using the defined provider
+        $selectedProvider = $this->config['captcha']['providers'][$provider];
+
+        // If the provider does not have the token validation address, do not advance
+        if (empty($selectedProvider['verify'])) {
+            throw new \Exception('No verify url defined for the selected provider');
+        }
+
+        // If the provider does not have the secret, do not advance or throw an exception?
+        if (empty($selectedProvider['secret'])) {
+            throw new \Exception('No secret defined for the selected provider');
+        }
+
+        // ############################# Start the verification process #############################
+        // Prepare the request
+        $options = [
+            "http" => [
+                "header" => "Content-type: application/x-www-form-urlencoded\r\n",
+                "method" => "POST",
+                "content" => http_build_query([
+                    'secret' => $selectedProvider['secret'],
+                    'response' => $token
+                ])
+            ]
+        ];
+
+        // Create the context
+        $context = stream_context_create($options);
+     
+        // Send the request
+        $result = file_get_contents($selectedProvider['verify'], false, $context);
+
+        if ($result === false) {
+            return false;
+        }
+     
+        $result = json_decode($result);
+
+        return $result->success;
+    }
 }
