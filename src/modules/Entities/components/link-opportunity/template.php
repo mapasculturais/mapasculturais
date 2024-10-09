@@ -11,7 +11,7 @@ $this->import('
     entity-terms
     mc-link
     mc-avatar
-    mc-popover 
+    mc-popover
     select-entity
     mc-icon
 ');
@@ -40,12 +40,12 @@ $this->import('
                 </template>
             </select-entity>
 
-            <a v-if="selected" class="link-opportunity__exchange helper__color" @click="setSelected()">
-                <mc-icon class="primary__color" name="exchange"></mc-icon>
-                <h4 class="primary__color"><?php i::_e('Alterar entidade') ?></h4>
+            <a v-if="selected" class="link-opportunity__exchange is-primary" @click="setSelected()">
+                <mc-icon class="has-color" name="exchange"></mc-icon>
+                <h4 class="has-color"><?php i::_e('Alterar entidade') ?></h4>
             </a>
         </div>
-        
+
         <template v-if="!selected">
             <div class="link-opportunity__selected">
                 <label class="link-opportunity__link semibold"><?php i::_e('Vincule a oportunidade a uma entidade:') ?><a @click="toggleSelected()"><mc-icon name="closed" class=""></mc-icon></a></label>

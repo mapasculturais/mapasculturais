@@ -60,7 +60,7 @@ $this->import('
                         </label>
                     </div>
                 </div>
-                    
+
                     <div class="field__column" v-if="getFieldType(quota) === 'checkbox' || getFieldType(quota) === 'boolean'">
                         <label>
 
@@ -88,7 +88,7 @@ $this->import('
                 <mc-confirm-button @confirm="removeConfig(index)">
                     <template #button="{open}">
                         <button class="field__trash button button--md button--text-danger button-icon" @click="open()">
-                            <mc-icon class="danger__color" name="trash" ></mc-icon>
+                            <mc-icon class="has-color is-danger" name="trash" ></mc-icon>
                         </button>
                     </template>
                     <template #message="message">

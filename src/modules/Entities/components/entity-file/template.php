@@ -19,14 +19,14 @@ $this->import('
         {{title}}
         <span v-if="required" class="required">*<?php i::_e('obrigatório') ?></span>
     </label>
-    
+
     <div v-if="file && hasSlot('label') && !downloadOnly" class="entity-file__label semibold">
         <slot name="label"></slot>
     </div>
     <div v-if="file" class="entity-file__file">
 
         <slot name="view">
-            <a v-if="!downloadOnly" class="entity-file__link primary__color bold" :download="file.name" :href="file.url">
+            <a v-if="!downloadOnly" class="entity-file__link has-color is-primary bold" :download="file.name" :href="file.url">
                 <span v-if="file.name">{{file.name}}</span>
                 <span v-else> <? i::_e('Sem descrição') ?> </span>
             </a>
@@ -56,9 +56,9 @@ $this->import('
                     <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile" :file="newFile">
                         <div class="col-12 field">
                             <label><?php i::_e('Anexe um arquivo') ?></label>
-                            
+
                             <div class="field__upload">
-                                <div v-if="newFile.name" class="entity-file__fileName primary__color bold"> {{newFile.name}} </div>
+                                <div v-if="newFile.name" class="entity-file__fileName has-color is-primary bold"> {{newFile.name}} </div>
 
                                 <label for="newFile" class="field__buttonUpload button button--icon button--primary-outline">
                                     <mc-icon name="upload"></mc-icon> <?= i::__('Anexar') ?>

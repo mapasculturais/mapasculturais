@@ -77,7 +77,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                 <section class="col-12 section">
                     <div class="col-12">
                         </div>
-                        
+
                         <div class="section__content">
                             <div class="card owner">
                             <?php $this->applyTemplateHook("registration-evaluation-view", 'before', ['entity' => $entity]) ?>
@@ -91,9 +91,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
             <aside class="col-3">
                 <div class="registration__right-sidebar">
                     <div class="registration__actions">
-                        <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
+                        <h4 class="regular has-color is-primary"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
                         <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-                        
+
                         <?php $this->part("{$entity->opportunity->evaluationMethod->slug}/evaluation-form"); ?>
                     </div>
                 </div>

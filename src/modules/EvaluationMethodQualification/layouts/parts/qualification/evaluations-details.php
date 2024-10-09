@@ -22,11 +22,11 @@ $this->import('
         <div>
             <p>
                 <label><?= i::__('Resultado: ') ?></label>
-                <strong v-if="registration.consolidatedResult === 'Habilitado'" class="success__color">
-                    <mc-icon name="circle" class="success__color"></mc-icon>{{registration.score}}
+                <strong v-if="registration.consolidatedResult === 'Habilitado'" class="has-color is-success">
+                    <mc-icon name="circle" class="has-color"></mc-icon>{{registration.score}}
                 </strong>
-                <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="danger__color">
-                    <mc-icon name="circle" class="danger__color"></mc-icon>{{registration.consolidatedResult}}
+                <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="has-color is-danger">
+                    <mc-icon name="circle" class="has-color"></mc-icon>{{registration.consolidatedResult}}
                 </strong>
             </p>
         </div>
@@ -46,11 +46,11 @@ $this->import('
             <p>
                 <label><?= i::__('Resultado: ') ?></label>
 
-                <strong v-if="registration.consolidatedResult === 'Habilitado'" class="success__color">
-                    <mc-icon name="circle" class="success__color"></mc-icon>{{registration.consolidatedResult}}
+                <strong v-if="registration.consolidatedResult === 'Habilitado'" class="has-color is-success">
+                    <mc-icon name="circle" class="has-color is-success"></mc-icon>{{registration.consolidatedResult}}
                 </strong>
-                <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="danger__color">
-                    <mc-icon name="circle" class="danger__color"></mc-icon>{{registration.consolidatedResult}}
+                <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="has-color is-danger">
+                    <mc-icon name="circle" class="has-color is-danger"></mc-icon>{{registration.consolidatedResult}}
                 </strong>
             </p>
 

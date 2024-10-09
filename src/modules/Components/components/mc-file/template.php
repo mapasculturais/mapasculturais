@@ -17,7 +17,7 @@ use MapasCulturais\i;
         <span class="button button--primary-outline button--icon">
             <?= i::__('Escolher arquivo') ?> <mc-icon name="attachment"></mc-icon>
         </span>
-        <h5 :class="['semibold', {'primary__color' : newFile}]"> {{fileName}} </h5>
+        <h5 class="semibold" :class="{'has-color is-primary' : newFile}"> {{fileName}} </h5>
         <input :id="uniqueId" type="file" name="newFile" class="mc-file__input" @change="setFile($event)" rel="newFile">
     </label>
 

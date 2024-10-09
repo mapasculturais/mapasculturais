@@ -30,7 +30,7 @@ $this->import('
                             <mc-confirm-button @confirm="delSection(section.id)">
                                 <template #button="{open}">
                                     <button class="button button-icon button--text-danger" @click="open()">
-                                        <mc-icon class="danger__color" name="trash"></mc-icon>
+                                        <mc-icon class="has-color is-danger" name="trash"></mc-icon>
                                         <label class="semibold field__title"><?php i::_e("Excluir") ?></label>
                                     </button>
                                 </template>
@@ -60,7 +60,7 @@ $this->import('
                             <mc-confirm-button @confirm="delCriteria(criteria.id)">
                                 <template #button="{open}">
                                     <button class="button button--md button--text-danger button-icon" @click="open()">
-                                        <mc-icon class="danger__color" name="trash"></mc-icon>
+                                        <mc-icon class="has-color is-danger" name="trash"></mc-icon>
                                     </button>
                                 </template>
                                 <template #message="message">

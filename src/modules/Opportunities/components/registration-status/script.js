@@ -12,10 +12,10 @@ app.component('registration-status', {
             required: true
         }
     },
-    
+
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
-        // os textos estão localizados no arquivo texts.php deste componente 
+        // os textos estão localizados no arquivo texts.php deste componente
         const text = Utils.getTexts('registration-status');
         return { text, hasSlot }
     },
@@ -28,14 +28,14 @@ app.component('registration-status', {
 		verifyState(registration) {
             switch (registration.status) {
                 case 10:
-                    return 'success__color';
-                    
-                case 2 : 
-                case 0 : 
+                    return 'has-color is-success';
 
-                    return 'danger__color';
-				case 3 : 
-				case 8 : 
+                case 2 :
+                case 0 :
+
+                    return 'has-color is-danger';
+				case 3 :
+				case 8 :
                     return 'warning__color';
 
                 case null:

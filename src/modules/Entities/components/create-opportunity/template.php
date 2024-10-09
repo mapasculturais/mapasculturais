@@ -7,10 +7,10 @@
 use MapasCulturais\i;
 
 $this->import('
-    entity-field 
+    entity-field
     entity-terms
     mc-link
-    mc-modal 
+    mc-modal
     select-entity
 ');
 ?>
@@ -104,9 +104,9 @@ $this->import('
                             </template>
                         </select-entity>
 
-                        <a class="entity-selected__info--btn helper__color" @click="resetEntity()">
-                            <mc-icon class="helper__color" name="exchange"></mc-icon>
-                            <h4 class="helper__color"><?php i::_e('Alterar entidade') ?></h4>
+                        <a class="entity-selected__info--btn has-color is-helper" @click="resetEntity()">
+                            <mc-icon class="has-color" name="exchange"></mc-icon>
+                            <h4 class="has-color"><?php i::_e('Alterar entidade') ?></h4>
                         </a>
                     </div>
                 </div>

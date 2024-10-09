@@ -63,7 +63,7 @@ $this->import('
             <mc-confirm-button @confirm="removeConfig(index)">
                 <template #button="{open}">
                     <button class="button button--sm button--text-danger button--icon affirmative-policies--quota-configuration__quota-delete" @click="open()">
-                        <mc-icon class="danger__color" name="trash"></mc-icon>
+                        <mc-icon class="has-color is-danger" name="trash"></mc-icon>
                         <?= i::__('Excluir') ?>
                     </button>
                 </template>
@@ -75,7 +75,7 @@ $this->import('
         </div>
 
         <div class="affirmative-policies--quota-configuration__card-content">
-            
+
             <div v-for="proponentType in proponentTypes" :key="proponentType" class="affirmative-policies--quota-configuration__quota-field">
                 <div class="affirmative-policies--quota-configuration__field">
                     <div class="field">

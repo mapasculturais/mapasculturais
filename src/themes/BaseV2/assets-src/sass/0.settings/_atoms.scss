@@ -118,13 +118,17 @@
     --mc-text: var(--mc-high-500);
 }
 
-.home {
-    &__color {
-        color: var(--mc-primary-500);
+.has-background {
+    background-color: var(--mc-500);
+}
 
-        &--dark {
-            color: var(--mc-primary-700);
-        }
+.has-color {
+    color: var(--mc-500);
+}
+
+.has-border {
+    border-color: var(--mc-500);
+}
 
         &--light {
             color: var(--mc-primary-300);

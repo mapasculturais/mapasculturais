@@ -31,7 +31,7 @@ $this->import('
                             <mc-confirm-button @confirm="delSection(section.id)">
                                 <template #button="{open}">
                                     <button class="button button--delete button--icon" @click="open()">
-                                        <mc-icon class="danger__color" name="trash"></mc-icon>
+                                        <mc-icon class="has-color is-danger" name="trash"></mc-icon>
                                         <label class="semibold field__title"><?php i::_e("Excluir") ?></label>
                                     </button>
                                 </template>
@@ -61,17 +61,17 @@ $this->import('
                                         <?php i::_e("Descrição do critério") ?>
                                         <textarea v-model="criteria.description" @blur="save()"></textarea>
                                     </label>
-        
+
                                     <label class="qualification-evaluation-config__modal-content__label col-12">
                                         <?php i::_e("Opções ou motivos de inabilitação") ?>
                                         <textarea :value="optionsToString(criteria.options)" @blur="event => updateOptionsArray(criteria, event.target.value)" placeholder="<?= i::esc_attr__('As opções Habilitado e inabilitado já são definidas automaticamente pelo sistema') ?>"></textarea>
                                     </label>
-        
+
                                     <label class="col-12">
                                         <input type="checkbox" v-model="criteria.notApplyOption" @change="notApplyChange(criteria)" />
                                         <?= i::__('Habilitar a opção Não se aplica?') ?>
                                     </label>
-        
+
                                     <small class="field col-12">
                                         <label><?= i::__('Observações') ?></label>
                                         <ul>
@@ -85,7 +85,7 @@ $this->import('
                                 <mc-confirm-button @confirm="delCriteria(criteria.id)">
                                     <template #button="{open}">
                                         <button class="button button--md button--text-danger button-icon" @click="open()">
-                                            <mc-icon class="danger__color" name="trash"></mc-icon>
+                                            <mc-icon class="has-color is-danger" name="trash"></mc-icon>
                                         </button>
                                     </template>
                                     <template #message="message">

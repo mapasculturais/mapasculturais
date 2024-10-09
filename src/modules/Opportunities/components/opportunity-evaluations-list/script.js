@@ -64,7 +64,7 @@ app.component('opportunity-evaluations-list', {
     methods: {
         colorByStatus(evaluation) {
             let result = 'pending';
-            
+
             let eval = evaluation ? evaluation.status : null
             switch (eval) {
                 case null:
@@ -159,7 +159,7 @@ app.component('opportunity-evaluations-list', {
                     index = data.type === "nextEvaluation" ? i + 1 : i - 1;
                 }
             });
-            
+
             if (index >= 0 && index < this.evaluations.length) {
                 var url = this.evaluations[index].url.href;
                 window.location.href = url +`user:${this.userEvaluatorId}`;
@@ -195,14 +195,14 @@ app.component('opportunity-evaluations-list', {
             switch (evaluation.resultString) {
                 case 'Selecionado' :
                 case 'Válida' :
-                    return 'success__color';
-                    
-                case 'Inválida' : 
-                case 'Não selecionado' : 
+                    return 'has-color is-success';
 
-                    return 'danger__color';
+                case 'Inválida' :
+                case 'Não selecionado' :
+
+                    return 'has-color is-danger';
                 case 'Suplente' :
-                    return 'warning__color';
+                    return 'has-color is-warning';
 
                 case null:
                 default:

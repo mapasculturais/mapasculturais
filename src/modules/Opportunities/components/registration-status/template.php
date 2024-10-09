@@ -27,17 +27,17 @@ $this->import('
     <div>
         <div v-if="phase.type == 'qualification'"><?= i::__('Resultado:') ?> <strong>{{registration.consolidatedResult}}</strong></div>
         <div v-if="phase.type == 'technical'"><?= i::__('Pontuação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong></div>
-        <div v-if="phase.type == 'documentary'"> 
+        <div v-if="phase.type == 'documentary'">
             <strong v-if="registration.consolidatedResult == '1'">
-                <mc-icon name="circle" class="success__color"></mc-icon>
+                <mc-icon name="circle" class="has-color is-success"></mc-icon>
                 <?= i::__('Válido') ?>
             </strong>
             <strong v-if="registration.consolidatedResult == '-1'">
-                <mc-icon name="circle" class="danger__color"></mc-icon>
+                <mc-icon name="circle" class="has-color is-danger"></mc-icon>
                 <?= i::__('Inválido') ?>
             </strong>
         </div>
-    
+
         <registration-results v-if="phase.publishEvaluationDetails" :registration="registration" :phase="phase"></registration-results>
     </div>
 </div>

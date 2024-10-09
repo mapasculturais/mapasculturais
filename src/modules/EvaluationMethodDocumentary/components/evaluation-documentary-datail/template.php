@@ -21,8 +21,8 @@ use MapasCulturais\i;
                 <label>
                     <?= i::__('Resultado final: ') ?>
                 </label>
-                <strong :class="stausColor(detail.evaluationResult)">
-                    <mc-icon name="circle" :class="stausColor(detail.evaluationResult)"></mc-icon>
+                <strong class="has-color" :class="statusColor(detail.evaluationResult)">
+                    <mc-icon name="circle" class="has-color"></mc-icon>
                     {{statusString(detail.evaluationResult)}}
                 </strong>
             </p>
@@ -34,8 +34,8 @@ use MapasCulturais\i;
             <div class="registration-results__opinion registration-results__opinion--document">
                 <div class="registration-results__opinion-text">
                     <p>
-                        <mc-icon name="circle" :class="stausColor(item.evaluation)"></mc-icon>
-                        <strong :class="stausColor(item.evaluation)"> {{statusString(item.evaluation)}} </strong>
+                        <mc-icon name="circle" class="has-color" :class="statusColor(item.evaluation)"></mc-icon>
+                        <strong class="has-color"> {{statusString(item.evaluation)}} </strong>
                     </p>
                     <p>
                         <strong> {{item.label}} </strong>

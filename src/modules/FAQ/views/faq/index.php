@@ -18,7 +18,7 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
         <div class="faq__frequent bold">
             <?php foreach ($faq as $section) : ?>
 
-                <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__card bold  primary__color">
+                <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__card bold  has-color is-primary">
                     <div class="faq__card--frequent">
                         <div class="faq__headerbtn">
                             <mc-icon name="help-outline" class="faq__helper"></mc-icon>
@@ -36,7 +36,7 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
         <p class="semibold faq__msgtitle"><?php i::_e('Confira todas as dúvidas mais frequentes agrupadas em categorias disponíveis para que você possa consultar.') ?></p>
         <div class="faq__links">
             <?php foreach ($faq as $section) : ?>
-                <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__card bold primary__color">
+                <a href="<?= $this->controller->createUrl('index', [$section->slug]) ?>" class="faq__card bold has-color is-primary">
                     <?= $section->title ?> <mc-icon name="arrow-right-ios"></mc-icon>
                 </a>
             <?php endforeach; ?>
@@ -50,5 +50,5 @@ $message = $app->config['module.FAQ']['support-message'] ?? '';
     <div v-if="global.faqSearch" class="faq__main faq__main--results">
         <faq-search-results index ></faq-search-results>
     </div>
-    
+
 </main>

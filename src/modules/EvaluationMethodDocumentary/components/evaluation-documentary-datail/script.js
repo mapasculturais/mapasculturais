@@ -21,18 +21,18 @@ app.component('evaluation-documentary-datail', {
     computed: {},
 
     methods: {
-        stausColor(data) {
+        statusColor(data) {
             switch (data) {
                 case "1" :
                 case 'valid' :
-                    return 'success__color';
-                    
-                case "-1" : 
-                case 'invalid' : 
+                    return 'is-success';
 
-                    return 'danger__color';
+                case "-1" :
+                case 'invalid' :
+
+                    return 'is-danger';
                 default:
-                    return 'danger__color';
+                    return 'is-danger';
             }
         },
         statusString(data) {
@@ -40,9 +40,9 @@ app.component('evaluation-documentary-datail', {
                 case "1" :
                 case 'valid' :
                     return this.text('valido');
-                    
-                case "-1" : 
-                case 'invalid' : 
+
+                case "-1" :
+                case 'invalid' :
 
                     return this.text('invalido');
                 default:

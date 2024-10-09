@@ -99,7 +99,7 @@ $this->import('
                 </slot>
             </div>
             <div v-if="entity.site" class="site">
-                <a :href="entity.site" target="_blank"><mc-icon :class="entity.__objectType+'__color'" name="link"></mc-icon>{{entity.site}}</a>
+                <a :href="entity.site" target="_blank"><mc-icon :class="'is-' + entity.__objectType" name="link"></mc-icon>{{entity.site}}</a>
             </div>
         </div>
     </div>
