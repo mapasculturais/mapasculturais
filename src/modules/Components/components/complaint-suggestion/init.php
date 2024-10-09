@@ -19,9 +19,6 @@ $config = [
     'isAuth' => $isAUth,
     'senderName' => $isAUth ? $app->user->profile->name : "",
     'senderEmail' => $isAUth ? $ownerEmail : "",
-    'recaptcha' => [
-        'sitekey' =>  $app->_config['app.recaptcha.key'],
-    ]
 ];
 
 $this->jsObject['complaintSuggestionConfig'] = $config;
