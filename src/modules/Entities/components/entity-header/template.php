@@ -68,7 +68,7 @@ $this->import('
                         </dl>
                         <dl v-if="entity.type">
                             <dt><?= i::__('Tipo')?></dt>
-                            <dd :class="[entity.__objectType+'__color', 'type']">{{entity.type.name}} </dd>
+                            <dd class="type" :class="'is-' + entity.__objectType">{{entity.type.name}} </dd>
                         </dl>
                     </slot>
                 </div>

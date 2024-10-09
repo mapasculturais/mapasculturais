@@ -8,7 +8,7 @@ $this->import('
     complaint-suggestion
     entity-actions
     entity-admins
-    entity-card 
+    entity-card
     entity-files-list
     entity-gallery
     entity-gallery-video
@@ -54,10 +54,10 @@ if($children_id ){
             <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
                 <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                 <dd><strong>{{entity.id}}</strong></dd>
-            </dl> 
+            </dl>
             <dl v-if="entity.type">
                 <dt><?= i::__('Tipo') ?></dt>
-                <dd :class="[entity.__objectType+'__color', 'type']"> {{entity.type.name}} </dd>
+                <dd class="type" :class="'is-' + entity.__objectType"> {{entity.type.name}} </dd>
             </dl>
             <dl v-if="entity.parent">
                 <dt><?= i::__('Projeto integrante de') ?></dt>
@@ -78,7 +78,7 @@ if($children_id ){
                                 <div v-if="entity.telefonePublico" class="additional-info__item">
                                     <p class="additional-info__item__title"><?php i::_e("telefone:"); ?></p>
                                     <p class="additional-info__item__content">{{entity.telefonePublico}}</p>
-                                </div>  
+                                </div>
 
                                 <div v-if="entity.emailPublico" class="additional-info__item">
                                     <p class="additional-info__item__title"><?php i::_e("email:"); ?></p>
@@ -126,14 +126,14 @@ if($children_id ){
                                     <template #avatar>
                                         <mc-avatar :entity="entity" size="medium"></mc-avatar>
                                     </template>
-                                    <template #type> 
-                                        <span> 
-                                            <?= i::__('TIPO: ') ?> 
+                                    <template #type>
+                                        <span>
+                                            <?= i::__('TIPO: ') ?>
                                             <span :class="['upper', entity.__objectType+'__color']">{{entity.type.name}}</span>
                                         </span>
                                     </template>
                                 </entity-card>
-                            </template>                                
+                            </template>
                         </mc-entities>
 
                         <div v-if="!entity.children" class="single-project__not-found">

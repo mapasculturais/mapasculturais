@@ -20,27 +20,31 @@
         max-width: size(870);
         border-radius: size(4);
         gap: size(10);
+
+        .iconify {
+            color: var(--mc-primary-500);
+        }
     }
-    
+
     &__content {
         padding: size(16);
         background: var(--mc-white);
         border-top: 1px solid var(--mc-gray-100);
         max-width: size(870);
-        
+
     }
     // &__context {
     //     font-size: $font-size-xxs;
     //     border-radius: 0 0 8px 8px;
     // }
-    
+
     // &__contexts:first-child {
     //     padding: 0 size(16) size(8) 0;
     // }
-    
+
     // &__contexts {
     //     max-width: size(870);
     //     padding: size(24) size(16) size(8) 0;
-    
+
     // }
 }

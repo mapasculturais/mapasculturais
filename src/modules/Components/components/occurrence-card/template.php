@@ -8,7 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-avatar
-    mc-icon 
+    mc-icon
     mc-link
     mc-title
 ');
@@ -38,10 +38,10 @@ $this->import('
             <mc-icon name="event"></mc-icon> {{occurrence.starts.date('long')}} <?= i::_e('às') ?> {{occurrence.starts.time()}}
         </div>
         <div v-if="!hideSpace" class="entity-card__content--occurrence-space">
-            <div class="link"><mc-icon class="link space__color" name="pin"></mc-icon></div>
+            <div class="link"><mc-icon class="link" name="pin"></mc-icon></div>
             <div class="space-adress">
                 <mc-link :entity="space">
-                    <span class="space-adress__name space__color">{{space.name}}</span>
+                    <span class="space-adress__name">{{space.name}}</span>
                 </mc-link>
                 <span class="space-adress__adress" v-if="space.endereco">- {{space.endereco}}</span>
 
@@ -64,13 +64,13 @@ $this->import('
                 <label class="tag__title">
                     <?php i::_e('Tags:') ?> ({{event.terms.tag.length}}):
                 </label>
-                <p :class="['terms', 'event__color']"> {{tags}} </p>
+                <p class="terms is-event"> {{tags}} </p>
             </div>
             <div v-if="linguagens" class="entity-card__content--terms-linguagem">
                 <label class="linguagem__title">
                     <?php i::_e('linguagens:') ?> ({{event.terms.linguagem.length}}):
                 </label>
-                <p :class="['terms', 'event__color']"> {{linguagens}} </p>
+                <p class="terms is-event"> {{linguagens}} </p>
             </div>
         </div>
     </div>

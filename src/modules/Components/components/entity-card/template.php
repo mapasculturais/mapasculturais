@@ -8,7 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
 	mc-avatar
-	mc-icon 
+	mc-icon
 	mc-title
 ');
 ?>
@@ -50,7 +50,7 @@ $this->import('
 		<template v-if="entity.__objectType=='opportunity'">
 			<!-- inscrições abertas -->
 			<div v-if="openSubscriptions" class="entity-card__registration">
-				<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
+				<p :class="{'small' : $media('max-width: 500px')}">
 					<?= i::__('As inscrições encerrarão no dia') ?> {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às') ?> {{entity.registrationTo?.time()}}
 				</p>
 			</div>
@@ -58,24 +58,18 @@ $this->import('
 			<!-- inscrições futuras -->
 			<div v-if="entity.registrationFrom?.isFuture()" class="entity-card__registration">
 				<div class="entity-card__period">
-					<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]" v-if="entity.registrationFrom && entity.registrationTo">
+					<p :class="{'small' : $media('max-width: 500px')}" v-if="entity.registrationFrom && entity.registrationTo">
 						<?= i::__('Inscrições de') ?> {{entity.registrationFrom.date('2-digit year')}} <?= i::__('até') ?> {{entity.registrationTo.date('2-digit year')}} <?= i::__('às') ?> {{entity.registrationTo.time()}}
 					</p>
 				</div>
 			</div>
 			<!-- inscrições passadas -->
 			<div v-if="entity.registrationTo?.isPast()" class="entity-card__registration">
-				<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
+				<p :class="{'small' : $media('max-width: 500px')}">
 					<?= i::__('As inscrições encerraram no dia') ?> {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às') ?> {{entity.registrationTo?.time()}}
 				</p>
 			</div>
 		</template>
-
-
-
-
-
-
 
 		<div v-if="entity.shortDescription" class="entity-card__content-shortDescription">
 			<small v-if="sliceDescription">{{slice(entity.shortDescription, 300)}}</small>
@@ -97,21 +91,21 @@ $this->import('
 				<label v-if="entity.__objectType === 'agent' || entity.__objectType === 'space'" class="area__title">
 					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
 				</label>
-				<p :class="['terms', entity.__objectType+'__color']"> {{areas}} </p>
+				<p class="terms" :class="'is-' + entity.__objectType"> {{areas}} </p>
 			</div>
 
 			<div v-if="tags" class="entity-card__content--terms-tag">
 				<label class="tag__title">
 					<?php i::_e('Tags:') ?> ({{entity.terms.tag.length}}):
 				</label>
-				<p :class="['terms', entity.__objectType+'__color']"> {{tags}} </p>
+				<p class="terms" :class="'is-' + entity.__objectType"> {{tags}} </p>
 			</div>
 
 			<div v-if="linguagens" class="entity-card__content--terms-linguagem">
 				<label class="linguagem__title">
 					<?php i::_e('linguagens:') ?> ({{entity.terms.linguagem.length}}):
 				</label>
-				<p :class="['terms', entity.__objectType+'__color']"> {{linguagens}} </p>
+				<p class="terms" :class="'is-' + entity.__objectType"> {{linguagens}} </p>
 			</div>
 		</div>
 	</div>

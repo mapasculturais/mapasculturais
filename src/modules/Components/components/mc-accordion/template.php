@@ -17,7 +17,7 @@ $this->import('
         <mc-title tag="h3" class="bold mc-accordion__title">
             <slot name="title"></slot>
         </mc-title>
-        <mc-icon :name="active ? 'arrowPoint-up' : 'arrowPoint-down'" class="primary__color"></mc-icon>
+        <mc-icon :name="active ? 'arrowPoint-up' : 'arrowPoint-down'"></mc-icon>
     </header>
     <div v-if="active" class="mc-accordion__content">
         <slot name="content"></slot>

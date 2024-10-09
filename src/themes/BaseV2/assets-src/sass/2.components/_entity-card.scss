@@ -216,6 +216,10 @@
 				align-items: center;
 				gap: size(11);
 
+				.iconify {
+					color: var(--mc-spaces-500);
+				}
+
 				.link {
 					align-items: center;
 					display: flex;
@@ -235,6 +239,10 @@
 						@media (max-width:size(600)) {
 							word-break: break-word;
 						}
+					}
+
+					&__name {
+						color: var(--mc-spaces-500);
 					}
 				}
 
@@ -313,12 +321,21 @@
 			}
 
 			.terms {
+				color: var(--mc-500);
 				font-weight: 700;
 				font-size: $font-size-xxxs;
 				line-height: size(16);
 				margin: size(4) 0 size(8);
 				text-align: left;
 			}
+		}
+	}
+
+	&__registration {
+
+		p {
+			color: var(--mc-opportunities-500);
+			font-weight: var(--mc-font-bold);
 		}
 	}
 

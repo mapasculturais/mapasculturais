@@ -10,8 +10,8 @@ $this->import('
     mc-header-menu
     mc-header-menu-user
     mc-icon
-    mc-messages 
-    theme-logo 
+    mc-messages
+    theme-logo
 ');
 ?>
 <?php $this->applyTemplateHook('main-header', 'before') ?>
@@ -30,7 +30,7 @@ $this->import('
             <!-- Menu principal -->
             <template #default>
                 <?php $this->applyTemplateHook('mc-header-menu', 'begin') ?>
-                
+
                 <?php $this->applyTemplateHook('mc-header-menu-home', 'before') ?>
                 <li>
                     <?php $this->applyTemplateHook('mc-header-menu-home', 'begin') ?>
@@ -46,7 +46,7 @@ $this->import('
                 <li v-if="global.enabledEntities.opportunities">
                     <?php $this->applyTemplateHook('mc-header-menu-opportunity', 'begin') ?>
                     <a href="<?= $app->createUrl('search', 'opportunities') ?>" class="mc-header-menu--item opportunity">
-                        <span class="icon opportunity__hover--bg"> <mc-icon name="opportunity"></mc-icon> </span>
+                        <span class="icon"> <mc-icon name="opportunity"></mc-icon> </span>
                         <p class="label"> <?php i::_e('Oportunidades') ?> </p>
                     </a>
                     <?php $this->applyTemplateHook('mc-header-menu-opportunity', 'end') ?>
@@ -96,7 +96,7 @@ $this->import('
                     <?php $this->applyTemplateHook('mc-header-menu-projects', 'end') ?>
                 </li>
                 <?php $this->applyTemplateHook('mc-header-menu-projects', 'after') ?>
-                
+
                 <?php $this->applyTemplateHook('mc-header-menu', 'end') ?>
             </template>
 
