@@ -194,7 +194,7 @@ vue3-easy-data-table__body {
 
 .vue3-easy-data-table__body  {
         .row {
-            
+
             &--waitlist {
                 & > td {
                     background-color: var(--mc-warning-500);
@@ -205,7 +205,7 @@ vue3-easy-data-table__body {
                     background-color: var(--mc-success-300);
                 }
             }
-            
+
             &--invalid {
                 & > td {
                     background-color:var(--mc-danger-300)
@@ -216,13 +216,13 @@ vue3-easy-data-table__body {
                     background-color:var(--mc-agents-500)
                 }
             }
-            
+
             &--notapproved {
                 & > td {
                     background-color: var(--mc-white);
                 }
             }
-            
+
         }
 }
 
@@ -256,7 +256,7 @@ vue3-easy-data-table__body {
     height: size(36);
     color: var(--mc-low-700);
     font-size: $font-size-xxxs;
-    
+
     &:last-child {
         td {
             border-bottom: none;
@@ -408,7 +408,7 @@ vue3-easy-data-table__body {
 
     .rows-input__wrapper {
         height: size(20);
-        border-bottom: 
+        border-bottom:
 black;
         display: flex;
         align-items: center;
@@ -447,7 +447,7 @@ black;
         text-align: left;
         list-style-type: none;
         box-shadow: 0 5px 5px -3px rgb(0 0 0 / 20%),
-        0 8px 10pxsize(1) rgb(0 0 0 / 14%),
+        0 8px 10px 1px rgb(0 0 0 / 14%),
         0 3px 14px 2px rgb(0 0 0 / 12%);
         z-index: auto;
 
