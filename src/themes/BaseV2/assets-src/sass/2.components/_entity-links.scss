@@ -8,7 +8,7 @@
 
     &__title {
         margin: 0;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         font-size: $font-size-sm;
         line-height: size(25);
         margin-bottom: size(8);
@@ -35,7 +35,7 @@
             .link {
                 font-family: var(--mc-font-body);
                 font-style: normal;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-sm;
                 line-height: size(25);
                 margin: 0;

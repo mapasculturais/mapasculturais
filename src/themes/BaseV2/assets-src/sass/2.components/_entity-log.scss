@@ -3,13 +3,13 @@
 .entity-log {
   &__history {
     &--title {
-      font-weight: 700;
+      font-weight: $font-weight-bold;
       font-size: $font-size-xxxs;
       line-height: 16px;
       color: #000000;
     }
     &--link {
-      font-weight: 700;
+      font-weight: $font-weight-bold;
       font-size: $font-size-xs;
       line-height: 20px;
       color: #0074C1;

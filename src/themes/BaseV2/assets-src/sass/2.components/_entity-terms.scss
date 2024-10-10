@@ -14,7 +14,7 @@
 
     &__required {
         font-size: var(--mc-font-size-xxxs);
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         line-height: normal;
         color: var(--mc-error);
     }

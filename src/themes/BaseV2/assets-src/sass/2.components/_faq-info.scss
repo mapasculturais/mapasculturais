@@ -14,7 +14,7 @@
     }
 
     &__title {
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         color: var(--mc-primary-500);
         padding: size(15) 0;
         border-bottom: $border-hairline var(--mc-gray-500);

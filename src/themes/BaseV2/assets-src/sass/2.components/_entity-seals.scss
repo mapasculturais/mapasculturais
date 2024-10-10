@@ -18,7 +18,7 @@
             align-items: center;
 
             .seal-label {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-xxs;
                 line-height: 19px;
             }
@@ -129,14 +129,14 @@
 
     &__history {
         &--title {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-xxxs;
             line-height: 16px;
             color: #000000;
         }
 
         &--link {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-xs;
             line-height: 20px;
             color: #0074C1;
@@ -147,7 +147,7 @@
     &__valid {
         &--label {
             color: #1E1E1E;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-md;
             line-height: 28px
         }

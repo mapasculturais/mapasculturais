@@ -42,7 +42,7 @@
             color: var(--mc-black);
             font-family: var(--mc-font-body);
             font-style: normal;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-xxxs;
             line-height: size(16);
         }
@@ -63,7 +63,7 @@
             padding-bottom: size(16);
             .add-button {
                 font-family: "Open Sans";
-                font-weight: 600;
+                font-weight:$font-weight-semibold;
 
                 svg {
                     font-size: $font-size-xxs;
@@ -78,7 +78,7 @@
         &-title {
             font-family: var(--mc-font-body);
             font-style: normal;
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             font-size: $font-size-xs;
             line-height: size(22);
             color: var(--mc-black);

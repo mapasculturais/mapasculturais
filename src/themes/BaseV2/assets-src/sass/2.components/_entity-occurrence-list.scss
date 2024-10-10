@@ -12,12 +12,12 @@
 
         &--title {
             font-size: $font-size-md;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             line-height: size(28);
         }
 
         &--description {
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             font-size: $font-size-sm;
             line-height: size(25);
             margin: size(18) 0 size(26);
@@ -127,7 +127,7 @@
                         .ticket,
                         .value,
                         .info {
-                            font-weight: 600;
+                            font-weight: $font-weight-semibold;
                             font-size: $font-size-xxs;
                             line-height: size(20);
 

@@ -38,7 +38,7 @@ body.base-v2.controller-site.action-error {
                 .text {
                     font-family: 'Open Sans';
                     font-style: normal;
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     font-size: $font-size-xxxs;
                     line-height: 16px;
                     text-align: center;
@@ -70,7 +70,7 @@ body.base-v2.controller-site.action-error {
                             padding: size(19) size(33);
                             font-family: 'Open Sans';
                             font-style: normal;
-                            font-weight: 700;
+                            font-weight: $font-weight-bold;
                             font-size: $font-size-md;
                             line-height: size(28);
 
@@ -88,7 +88,7 @@ body.base-v2.controller-site.action-error {
                             label {
                                 font-family: 'Open Sans';
                                 font-style: normal;
-                                font-weight: 700;
+                                font-weight: $font-weight-bold;
                                 font-size: $font-size-xs;
                                 line-height: 25px;
                                 /* identical to box height */
@@ -118,7 +118,7 @@ body.base-v2.controller-site.action-error {
                 &__content {
                     font-family: 'Open Sans';
                     font-style: normal;
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     font-size: $font-size-sm;
 
                     @media (max-width: size(600)) {
@@ -130,7 +130,7 @@ body.base-v2.controller-site.action-error {
                 .left__warning {
                     font-family: 'Open Sans';
                     font-style: normal;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: 72px;
                     line-height: 98px;
                     align-items: center;
@@ -139,7 +139,7 @@ body.base-v2.controller-site.action-error {
                         padding-top: size(24);
                         font-family: 'Open Sans';
                         font-style: normal;
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-lg;
                         line-height: size(54);
                         text-align: center;
@@ -150,7 +150,7 @@ body.base-v2.controller-site.action-error {
                     padding-top: size(24);
                     font-family: 'Open Sans';
                     font-style: normal;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: size(40);
                     line-height: size(54);
 
@@ -162,14 +162,14 @@ body.base-v2.controller-site.action-error {
                 &__message {
                     font-size: size(64);
                     line-height: size(50);
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-family: "Open Sans";
                     font-style: normal;
 
                     @media (max-width: size(600)) {
                         font-family: "Open Sans";
                         font-style: normal;
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-lg;
                         line-height: 3.375rem;
                     }

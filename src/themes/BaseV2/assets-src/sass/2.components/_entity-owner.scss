@@ -22,7 +22,7 @@
             color: var(--mc-black);
             font-family: var(--mc-font-body);
             font-style: normal;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-xxxs;
             line-height: size(16);
         }
@@ -44,7 +44,7 @@
         &-title {
             font-family: var(--mc-font-body);
             font-style: normal;
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             font-size: $font-size-xs;
             line-height: size(22);
             color: var(--mc-black);

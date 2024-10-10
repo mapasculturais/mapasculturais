@@ -34,7 +34,7 @@
             font-family: var(--mc-font-heading);
             font-size: $font-size-xs;
             font-style: normal;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             gap: size(14);
             line-height: size(22);
 
@@ -139,7 +139,7 @@
             margin-bottom: size(8);
             font-family: 'Open Sans';
             font-style: normal;
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
             font-size: $font-size-xxs;
             line-height: size(19);
         }
@@ -162,7 +162,7 @@
             font-family: var(--mc-font-heading);
             font-size: $font-size-xxs;
             font-style: normal;
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
             line-height: size(19);
             margin-bottom: size(8);
         }
