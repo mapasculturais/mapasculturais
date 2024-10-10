@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
 
+### Melhorias
+- Implementa registro de histórico de revisões para os projetos
+
 ## [7.5.2] - 2024-10-10
 ### Correções
 - Corrige erro que deixa gestor da oportunidade sem permissão de modificar uma inscrição enviada
