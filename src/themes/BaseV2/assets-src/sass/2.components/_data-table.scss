@@ -232,7 +232,7 @@ vue3-easy-data-table__body {
     font-family: Open Sans;
     font-size: $font-size-xxs;
     font-style: normal;
-    font-weight: 600;
+    font-weight: $font-weight-semibold;
     line-height: normal;
     color: var(--mc-low-700);
     border-bottom: $border-hairline var(--mc-gray-300);
@@ -276,14 +276,14 @@ vue3-easy-data-table__body {
     background-color: var(--mc-high-500);
     border: none;
     border-bottom: $border-hairline var(--mc-high-500);
-    font-weight: 700;
+    font-weight: $font-weight-bold;
     font-size: $font-size-xxs;
     font-family: 'Open Sans';
     color: var(--mc-low-700);
     padding: size(16);
     &:first-child {
         color: var(--mc-opportunities-500);
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
         font-size: $font-size-xxs;
         font-family: 'Open Sans';
     }
