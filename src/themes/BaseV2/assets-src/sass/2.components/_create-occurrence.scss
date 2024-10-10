@@ -9,7 +9,7 @@
 
         .modal{ 
             &__title {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-sm;
                 line-height: size(25);
             }
@@ -86,7 +86,7 @@
         gap: size(16);
 
         &--title {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-xs;
             line-height: size(22);
         }
@@ -132,7 +132,7 @@
                     &--address {
                         color: var(--mc-gray-700);
                         font-size: $font-size-xxs;
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         line-height: size(19);
                         margin-left: size(16);
                         p {
@@ -150,7 +150,7 @@
             flex-wrap: wrap;
 
             &-field {
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-xxs;
                 line-height: size(19);
                 display: flex;
@@ -166,7 +166,7 @@
             }
 
             .label {
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-xxs;
                 line-height: size(19);
                 width: 100%;
@@ -181,7 +181,7 @@
             span.label {
                 font-size: $font-size-xxs;
                 line-height: size(19);
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
             }
             
             input {
@@ -190,14 +190,14 @@
                 font-size: $font-size-xxxs;
                 border-radius: $border-radius-xs;
                 padding: size(14);
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 
                 &[type='date'],
                 &[type='time'] {
                     padding: size(12);
                     display: flex;
                     flex-direction: row-reverse;
-                    font-weight: 400;
+                    font-weight: $font-weight-regular;
                     gap: size(11);
                     line-height: size(20);
                     text-transform: uppercase;
@@ -219,7 +219,7 @@
 
             .auto-description {
                 background-color: var(--mc-gray-100);
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-xxxs;
                 line-height: size(16);
                 padding: size(8);

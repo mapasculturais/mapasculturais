@@ -8,7 +8,7 @@
     cursor: pointer;
     display: inline-flex;
     font-size: $font-size-xs;
-    font-weight: 600;
+    font-weight: $font-weight-semibold;
     font-family: 'Open Sans';
     justify-content: center;
     line-height: size(18);
@@ -70,7 +70,7 @@
 
     &--xbg {
         font-size: $font-size-md;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         line-height: size(28);
         padding: size(20) size(32);
 
@@ -81,7 +81,7 @@
 
     &--bg {
         font-size: $font-size-sm;
-        font-weight: 700;
+        font-weight:  $font-weight-bold;
         line-height: size(25);
         padding: size(17.5) size(32);
 
@@ -92,7 +92,7 @@
 
     &--md {
         font-size: $font-size-sm;
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
         padding: size(12) size(24);
 
         .iconify {
