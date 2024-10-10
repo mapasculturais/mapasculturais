@@ -26,7 +26,7 @@
     .title {
         color: var(--mc-black);
         font-size: $font-size-md;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         line-height: size(33);
         margin: size(16) 0;
     }
@@ -40,13 +40,13 @@
             &__description {
                 color: var(--mc-black);
                 font-size: $font-size-sm;
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 line-height: size(25);
                 margin: 0;
                 padding: size(32) size(47);
 
                 span {
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                 }
 
                 @media (max-width:size(400)) {
@@ -64,7 +64,7 @@
             &__description {
                 color: var(--mc-black);
                 font-size: $font-size-xs;
-                font-weight: 400;
+                font-weight: $font-weight-regular;
                 line-height: size(22);
                 margin: size(16) 0;
             }

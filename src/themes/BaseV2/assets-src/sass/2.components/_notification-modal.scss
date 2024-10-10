@@ -47,7 +47,7 @@
 		gap: size(7);
 
 		.label {
-			font-weight: 600;
+			font-weight: $font-weight-semibold;
 			font-size: $font-size-xxs;
 			line-height: size(16);
 		}
@@ -107,13 +107,13 @@
 
 	&__header {
 		font-size: $font-size-xxxs;
-		font-weight: 600;
+		font-weight: $font-weight-semibold;
 		line-height: size(16);
 		padding: size(16) size(24) size(9);
 
 		.count {
 			color: var(--mc-low-500);
-			font-weight: 700;
+			font-weight: $font-weight-bold;
 			text-decoration: none;
 
 			&-counter {
@@ -139,7 +139,7 @@
 			a {
 				color: var(--mc-low-500);
 				display: block;
-				font-weight: bold;
+				font-weight: $font-weight-bold;
 				padding: size(11) size(16) size(16);
 				text-decoration: none;
 				text-transform: none;

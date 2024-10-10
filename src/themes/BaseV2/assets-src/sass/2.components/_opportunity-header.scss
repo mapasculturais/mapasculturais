@@ -76,7 +76,7 @@
 
                 &__title {
                     font-size: $font-size-lg;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     line-height: size(44);
 
                     a {
@@ -85,7 +85,7 @@
                     }
 
                     @media (max-width:size(500)) {
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-sm;
                         line-height: size(25);
                     }
@@ -112,7 +112,7 @@
                         &__title {
 
                             font-style: normal;
-                            font-weight: 600;
+                            font-weight: $font-weight-semibold;
                             color: #3E3E3E;
                             font-size: $font-size-xxs;
                             line-height: size(19);
@@ -123,7 +123,7 @@
                         &__info {
 
                             text-transform: uppercase;
-                            font-weight: 700;
+                            font-weight: $font-weight-bold;
                             align-items: center;
                             font-size: $font-size-xxs;
 
@@ -144,7 +144,7 @@
                         flex-direction: column;
                         font-family: 'Open Sans';
                         font-style: normal;
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         font-size: $font-size-xxs;
                         line-height: 19px;
                         text-transform: uppercase;

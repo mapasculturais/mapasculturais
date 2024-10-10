@@ -17,7 +17,7 @@
     &__title {
         font-family: 'Open Sans';
         font-style: normal;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         font-size: $font-size-sm;
         line-height: size(25);
         padding-bottom: size(7);
@@ -56,7 +56,7 @@
                 &--title {
                     font-family: 'Open Sans';
                     font-style: normal;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: $font-size-md;
                     line-height: size(28);
                     padding: size(16) 0 size(8) size(24);
@@ -82,13 +82,13 @@
                                 text-transform: uppercase;
                                 font-family: 'Open Sans';
                                 font-style: normal;
-                                font-weight: 400;
+                                font-weight: $font-weight-regular;
                                 font-size: $font-size-xxs;
                                 line-height: 19px;
                             }
 
                             .item {
-                                font-weight: 600;
+                                font-weight: $font-weight-semibold;
                                 font-size: $font-size-xxs;
                             }
                         }
@@ -101,13 +101,13 @@
                             text-transform: uppercase;
                             font-family: "Open Sans";
                             font-style: normal;
-                            font-weight: 400;
+                            font-weight: $font-weight-regular;
                             font-size: $font-size-xxs;
                             line-height: 19px;
                         }
 
                         &__content {
-                            font-weight: 600;
+                            font-weight: $font-weight-semibold;
                             font-size: $font-size-xxs;
 
                         }
@@ -143,7 +143,7 @@
     .out-evalution {
         font-family: 'Open Sans';
         font-style: normal;
-        font-weight: 400;
+        font-weight: $font-weight-regular;
         font-size: $font-size-xs;
         line-height: size(22);
     }

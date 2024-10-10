@@ -21,7 +21,7 @@
         &--button {
             color: var(--mc-white);
             font-size: $font-size-md;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             line-height: 28px;
             text-align: center;
         }

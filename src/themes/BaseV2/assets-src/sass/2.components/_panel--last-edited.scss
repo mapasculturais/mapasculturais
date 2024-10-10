@@ -23,14 +23,14 @@
             }
 
             font-size: $font-size-xs;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             line-height: size(28);
             margin-bottom: size(16);
         }
 
         @media (max-width:size(400)) {
             &-title {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-sm;
                 line-height: 25px;
             }
@@ -205,7 +205,7 @@
                         }
 
                         &__main {
-                            font-weight: 400;
+                            font-weight: $font-weight-regular;
                             font-size: $font-size-xxxs;
                             line-height: size(16);
                             text-align: left;

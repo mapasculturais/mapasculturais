@@ -37,7 +37,7 @@
                 font-family: 'Open Sans';
                 font-style: normal;
                 font-size: $font-size-xxs;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 line-height: size(19);
                 color: var(--mc-primary-500);
             }
@@ -89,7 +89,7 @@
                         label {
                             font-family: 'Open Sans';
                             font-style: normal;
-                            font-weight: 700;
+                            font-weight: $font-weight-bold;
                             font-size: $font-size-xxs;
                             line-height: size(19);
                         }
@@ -130,7 +130,7 @@
                     &--label {
                         font-family: 'Open Sans';
                         font-style: normal;
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         font-size: $font-size-xs;
                         line-height: 22px;
                     }
@@ -200,7 +200,7 @@
                                 &__name {
                                     font-family: 'Open Sans';
                                     font-style: normal;
-                                    font-weight: 700;
+                                    font-weight: $font-weight-bold;
                                     font-size: size(22);
                                     line-height: size(19);
                                     color: $opportunities-500;
@@ -219,7 +219,7 @@
                                     .subscribe {
                                         font-family: 'Open Sans';
                                         font-style: normal;
-                                        font-weight: 600;
+                                        font-weight: $font-weight-semibold;
                                         font-size: $font-size-xxxs;
                                         line-height: 16px;
                                         text-transform: uppercase;
@@ -229,7 +229,7 @@
                                     .value {
                                         font-family: 'Open Sans';
                                         font-style: normal;
-                                        font-weight: 700;
+                                        font-weight: $font-weight-bold;
                                         font-size: $font-size-xxs;
                                         line-height: size(19);
 
@@ -253,7 +253,7 @@
                             &label {
                                 font-family: 'Open Sans';
                                 font-style: normal;
-                                font-weight: 600;
+                                font-weight: $font-weight-semibold;
                                 font-size: $font-size-xxxs;
                                 line-height: 16px;
                                 color: var(--mc-low-700);
@@ -272,7 +272,7 @@
                                     color: var(--mc-low-700);
                                     font-family: 'Open Sans';
                                     font-style: normal;
-                                    font-weight: 700;
+                                    font-weight: $font-weight-bold;
                                     font-size: $font-size-xxxs;
                                     line-height: size(16);
                                     text-align: center;

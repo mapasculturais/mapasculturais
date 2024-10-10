@@ -45,7 +45,7 @@
             }
 
             &-label {
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-xxs;
                 line-height: size(22);
             }
@@ -59,13 +59,13 @@
             padding: size(16) 0 size(19);
 
             &-num {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-lg;
                 line-height: size(35);
             }
 
             &-label {
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-xxs;
                 line-height: size(19);
             }

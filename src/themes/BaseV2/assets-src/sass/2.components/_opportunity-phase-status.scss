@@ -19,7 +19,7 @@
         &__message {
             font-family: 'Open Sans';
             font-style: normal;
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
             font-size: $font-size-xxs;
             line-height: size(19);
         }
