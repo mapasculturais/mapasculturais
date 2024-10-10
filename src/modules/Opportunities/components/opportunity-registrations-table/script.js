@@ -22,9 +22,15 @@ app.component('opportunity-registrations-table', {
         statusNotEditable: Boolean,
     },
     setup() {
-        /* adiciona a definição de quotas, tiebreaker e region, 
-           que são retornados pela api mas nào são metadados, 
-           possibilitando a utilização na tabela */
+        // os textos estão localizados no arquivo texts.php deste componente
+        const messages = useMessages();
+        const text = Utils.getTexts('opportunity-registrations-table');
+
+        /* 
+            adiciona a definição de quotas, tiebreaker e region, 
+            que são retornados pela api mas nào são metadados, 
+            possibilitando a utilização na tabela 
+        */
 
         $DESCRIPTIONS.registration['quotas'] = {
             isMetadata: false,
@@ -59,9 +65,6 @@ app.component('opportunity-registrations-table', {
             isPK: false
         };
 
-        // os textos estão localizados no arquivo texts.php deste componente
-        const messages = useMessages();
-        const text = Utils.getTexts('opportunity-registrations-table');        
         return { messages, text }
     },
     data() {
