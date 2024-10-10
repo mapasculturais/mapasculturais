@@ -393,6 +393,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $order = $params['@order'] ?? '';
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
+            if(!$phase_id) {
+                return;
+            }
             $opportunity = $app->repo('Opportunity')->find($phase_id);
             $evaluation_method = $opportunity->evaluationMethodConfiguration;
             $quota = $evaluation_method && $evaluation_method->type->id == 'technical' ? 
