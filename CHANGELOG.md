@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.3]
+### Correções
+- Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
+
 ## [7.5.2] - 2024-10-10
 ### Correções
 - Corrige erro que deixa gestor da oportunidade sem permissão de modificar uma inscrição enviada
