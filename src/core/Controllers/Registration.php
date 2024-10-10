@@ -436,7 +436,7 @@ class Registration extends EntityController {
             }
         }
         
-        $registration->$method_name($status);
+        $registration->$method_name();
 
         $app->applyHookBoundTo($this, 'registration.setStatusTo:after', [$registration]);
 
