@@ -10,7 +10,7 @@
             font-size: size(30);
             padding: size(16) size(16) 0 0;
             color: var(--mc-low-500);
-            font-weight: 400;
+            font-weight: $font-weight-regular;
 
         }
     }
@@ -62,7 +62,7 @@
             }
 
             &--title {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-sm;
                 line-height: size(25);
                 word-break: break-word;
@@ -77,7 +77,7 @@
                 .info {
                     margin: size(8) 0;
                     font-size: $font-size-xxxs;
-                    font-weight: 400;
+                    font-weight: $font-weight-regular;
                     line-height: size(16);
                     text-transform: uppercase;
                     strong {
@@ -95,7 +95,7 @@
 
             &--link {
                 color: var(--mc-500);
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-xs;
                 line-height: size(22);
                 text-decoration: none;

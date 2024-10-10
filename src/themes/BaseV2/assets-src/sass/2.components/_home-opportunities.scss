@@ -26,7 +26,7 @@
 
 			label {
 				font-size: $font-size-lg;
-				font-weight: 700;
+				font-weight: $font-weight-bold;
 				line-height: size(44);
 
 				@media (max-width: size(500)) {
@@ -41,7 +41,7 @@
 
 		&.description {
 			font-size: $font-size-xs;
-			font-weight: 400;
+			font-weight: $font-weight-semibold;
 			line-height: size(22);
 			margin: 0;
 			max-width: calc(100% - 130px);

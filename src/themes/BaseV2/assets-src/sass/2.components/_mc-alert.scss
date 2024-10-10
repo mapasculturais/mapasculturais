@@ -37,7 +37,7 @@
 
         .text {
             font-size: $font-size-xs;
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             line-height: size(22);
             margin: 0;
         }
@@ -52,7 +52,7 @@
         border: none;
         cursor: pointer;
         font-size: $font-size-xxs;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         line-height: size(19);
         margin-left: auto;
     }

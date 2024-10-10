@@ -38,7 +38,7 @@
 
             &:nth-last-child(2) {
                 display: flex;
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
             }
 
             &::before {
@@ -64,7 +64,7 @@
     }
 
     li:last-child {
-        font-weight: bold;
+        font-weight: $font-weight-bold;
 
         &::after {
             content: none;

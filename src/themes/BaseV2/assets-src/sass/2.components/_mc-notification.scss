@@ -7,7 +7,7 @@
   border-radius: size(8);
   padding: 0 size(22);
   font-size: $font-size-xxs;
-  font-weight: 600;
+  font-weight: $font-weight-semibold;
   line-height: size(19);
 
   &-error {

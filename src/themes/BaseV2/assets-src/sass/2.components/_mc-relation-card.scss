@@ -69,7 +69,7 @@
             .name {
                 color: var(--mc-black);
                 font-size: $font-size-sm;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 line-height: size(25);
                 text-decoration: none;
                 width: max-content;
@@ -82,7 +82,7 @@
             gap: size(8);
 
             .type {
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-xxs;
                 line-height: size(19);
 
@@ -99,14 +99,14 @@
 
                 &__label {
                     color: var(--mc-gray-700);
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     font-size: $font-size-xxxs;
                     line-height: size(16);
                     text-transform: uppercase;
                 }
 
                 &__tagsList {
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: $font-size-xxxs;
                     line-height: size(16);
                 }
@@ -117,7 +117,7 @@
             display: flex;
             align-items: center;
             gap: size(6);
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
             font-size: $font-size-xxxs;
             line-height: size(16);
 

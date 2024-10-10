@@ -57,7 +57,7 @@
                     a {
                         color: var(--mc-low-500);
                         display: contents;
-                        font-weight: bold;
+                        font-weight: $font-weight-bold;
                         margin: 0;
                         padding: 0;
                         text-decoration: none;

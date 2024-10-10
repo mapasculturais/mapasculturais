@@ -29,7 +29,7 @@
             }
     
             &__name {
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-xxs;
                 line-height: size(14);
                 white-space: nowrap;

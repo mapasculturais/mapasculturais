@@ -67,7 +67,7 @@ ol.mc-stepper-vertical>li {
         &__field &__label {
             font-size: $font-size-sm;
             font-family: 'Open Sans';
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
         }
 
         &__header {
@@ -77,13 +77,13 @@ ol.mc-stepper-vertical>li {
             gap: size(8);
 
             .title {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-md;
                 line-height: size(28);
             }
 
             .subtitle {
-                font-weight: 400;
+                font-weight: $font-weight-regular;
                 font-size: $font-size-xs;
                 line-height: size(22);
             }
@@ -110,7 +110,7 @@ ol.mc-stepper-vertical>li {
     &-phase {
         &__title {
             &--title {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-md;
                 line-height: size(28);
 
@@ -122,7 +122,7 @@ ol.mc-stepper-vertical>li {
                 align-items: center;
                 gap: size(10);
                 display: flex;
-                font-weight: 400;
+                font-weight: $font-weight-regular;
                 font-size: $font-size-xs;
                 line-height: size(22);
 
@@ -166,7 +166,7 @@ ol.mc-stepper-vertical>li::before {
     position: absolute;
     left: 0;
     top: 0;
-    font-weight: bold;
+    font-weight: $font-weight-bold;
     color: var(--mc-secondary-500);
     width: size(56);
     height: size(56);
@@ -234,7 +234,7 @@ ol.mc-stepper-vertical>li.active::before {
 
     .evaluation-config {
         label {
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
             font-size: $font-size-sm;
             line-height: size(25);
             margin-bottom: size(4);
@@ -250,7 +250,7 @@ ol.mc-stepper-vertical>li.active::before {
 
     .evaluation-text {
         h3 {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-md;
             line-height: 28px;
         }
@@ -264,13 +264,13 @@ ol.mc-stepper-vertical>li.active::before {
         gap: size(8);
 
         &__title {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-md;
             line-height: 28px;
         }
 
         &__text {
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             font-size: $font-size-xs;
             line-height: 22px;
         }
@@ -296,7 +296,7 @@ ol.mc-stepper-vertical>li.active::before {
 
     .evaluation-box {
         &__title {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-lg;
             line-height: size(44);
             padding-bottom: size(8);
@@ -304,7 +304,7 @@ ol.mc-stepper-vertical>li.active::before {
 
         &__content {
             color: var(--mc-gray-700);
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             font-size: $font-size-xs;
             line-height: size(22);
 
@@ -419,7 +419,7 @@ ol.mc-stepper-vertical>li.active::before {
 
                 &__title {
                     font-size: $font-size-md;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     line-height: size(28);
                 }
 
@@ -427,7 +427,7 @@ ol.mc-stepper-vertical>li.active::before {
                     .title {
                         color: var(--mc-gray-700);
                         font-size: $font-size-xxs;
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         line-height: size(19);
                         text-transform: uppercase;
                     }
@@ -435,7 +435,7 @@ ol.mc-stepper-vertical>li.active::before {
                     .type {
                         color: var(--mc-low-500);
                         font-size: $font-size-xxs;
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         line-height: size(19);
                     }
                 }
@@ -453,7 +453,7 @@ ol.mc-stepper-vertical>li.active::before {
                     &__title {
                         color: var(--mc-gray-700);
                         font-size: $font-size-xxs;
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         line-height: size(19);
                         text-transform: uppercase;
                     }
@@ -463,7 +463,7 @@ ol.mc-stepper-vertical>li.active::before {
                         color: var(--mc-low-500);
                         display: flex;
                         font-size: $font-size-xxs;
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         line-height: size(19);
                     }
                 }
@@ -475,7 +475,7 @@ ol.mc-stepper-vertical>li.active::before {
             display: flex;
             flex-wrap: nowrap;
             font-size: $font-size-xxs;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             gap: size(20) size(47);
             line-height: size(19);
 
@@ -504,7 +504,7 @@ ol.mc-stepper-vertical>li.active::before {
             }
 
             &__period {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-md;
                 line-height: 28px;
 
@@ -519,14 +519,14 @@ ol.mc-stepper-vertical>li.active::before {
                 margin-bottom: 4px;
 
                 &--name {
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     font-size: $font-size-xxs;
                     line-height: 19px;
 
                 }
 
                 &--label {
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: $font-size-xxs;
                     line-height: 19px;
 
@@ -534,7 +534,7 @@ ol.mc-stepper-vertical>li.active::before {
 
                 &--item {
 
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: $font-size-xxs;
                     line-height: 19px;
 
@@ -560,7 +560,7 @@ ol.mc-stepper-vertical>li.active::before {
             min-width: size(82);
 
             label {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-xxs;
                 line-height: 19px;
 

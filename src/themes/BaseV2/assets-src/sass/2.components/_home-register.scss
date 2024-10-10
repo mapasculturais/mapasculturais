@@ -42,7 +42,7 @@
         z-index: 2;
 
         &--title {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-lg;
             line-height: size(44);
             @media (max-width:size(800)) {
@@ -53,7 +53,7 @@
 
         &--description{
             margin: size(16) 0 size(25);
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             font-size: $font-size-sm;
             line-height: size(25);
             @media (max-width:size(800)) {
