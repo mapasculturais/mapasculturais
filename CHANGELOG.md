@@ -17,6 +17,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro que deixa gestor da oportunidade sem permissão de modificar uma inscrição enviada
 - Corrige distribuição de cotas dentro das faixas de modo a garantir o número de vagas dentro de cada faixa
 - Corrige filtros das tabelas das entidades das páginas de busca
+## [7.4.25] - 2024-10-08
+### Melhorias
+- Implementa novos hooks no painel de controle
 
 ## [7.4.24] - 2024-10-07
 ### Correções
