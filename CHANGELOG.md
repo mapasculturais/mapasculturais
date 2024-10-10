@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5.3]
 ### Correções
 - Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
+- Corrige erro na seleção dos campos visíveis para o avaliador
 
 ### Melhorias
 - Implementa registro de histórico de revisões para os projetos
