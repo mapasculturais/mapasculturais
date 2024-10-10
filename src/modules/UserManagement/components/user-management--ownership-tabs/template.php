@@ -16,8 +16,8 @@ $this->import('
 ');
 ?>
 <panel--entity-tabs tabs="publish,draft,trash,archived" :type='type' :user="user.id" :select="newSelect">
-    <template v-if="global.auth.is('saasSuperAdmin')" #entity-actions-left="{entity}">
-        <div v-if="entity.status >= 0">
+    <template  #entity-actions-left="{entity}">
+        <div v-if="global.auth.is('admin') && entity.status >= 0">
             <mc-confirm-button @confirm="entity.delete()">
                 <template #button="modal">
                     <button @click="modal.open()" class="button button--text delete button--icon button--sm panel__entity-actions--trash">
@@ -30,7 +30,8 @@ $this->import('
                 </template>
             </mc-confirm-button>
         </div>
-        <div>
+
+        <div v-if="global.auth.is('saasSuperAdmin')">
             <mc-loading :condition="entity.recreatingPCache"><?= i::__('processando...') ?></mc-loading>
             <button v-if="!entity.recreatingPCache" class="button button-secondary button--sm" @click="recreatePCache(entity)">
                 <mc-icon name="settings"></mc-icon>
