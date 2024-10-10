@@ -63,13 +63,13 @@ ol.mc-stepper-vertical>li {
 .evaluation {
     &-section {
         margin-bottom: size(20);
-        
+
         &__field &__label {
             font-size: $font-size-sm;
             font-family: 'Open Sans';
             font-weight: 600;
         }
-        
+
         &__header {
             margin-bottom: size(24);
             display: flex;
@@ -223,15 +223,13 @@ ol.mc-stepper-vertical>li.active::before {
     }
 
     &__btn {
+        margin-bottom: size(20);
 
         &--secondary {
             max-width: 368px;
             width: 100%;
             height: size(78);
         }
-
-        margin-bottom: size(20);
-
     }
 
     .evaluation-config {
@@ -338,7 +336,7 @@ ol.mc-stepper-vertical>li.active::before {
 
     &-delete {
         justify-self: center;
-        
+
         &__trash {
             .icon {
                 svg {

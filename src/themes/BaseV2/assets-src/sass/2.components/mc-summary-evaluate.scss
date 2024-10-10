@@ -8,7 +8,7 @@
     gap: size(29);
     margin: 0 auto;
     padding-bottom: size(24);
- 
+
     @media (max-width:size(1195)) {
         gap: size(16);
         padding-left: size(16);
@@ -30,6 +30,12 @@
     .sent,
     .started .completed,
     .pending {
+        padding: size(12);
+        width: 270px;
+        border-radius: 4px;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 48px 1fr;
 
         &.sent {
             background-color: #BFE88B;
@@ -46,16 +52,6 @@
         &.completed {
             background-color: #99D6FF;
         }
-
-        padding: size(12);
-
-        width: 270px;
-        border-radius: 4px;
-        max-width: 100%;
-        display: grid;
-        grid-template-columns: 48px 1fr;
-
-   
 
         // padding: size(12) size(16);
         &--icon {

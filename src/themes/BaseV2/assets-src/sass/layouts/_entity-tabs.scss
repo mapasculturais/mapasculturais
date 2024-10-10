@@ -1,13 +1,10 @@
 @use '../0.settings/mixins' as *;
-$iconColor: var(--mc-primary-500);
-$iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg' +#{$iconColor};
 
 .entity-tabs {
     .panel__row {
         max-width: 100%;
     }
 
-    
     .tabs-component__button {
 
         &.archived {
@@ -80,6 +77,6 @@ $iconUrl: 'https://api.iconify.design/ic/baseline-arrow-drop-down.svg' +#{$iconC
             padding: size(10) size(26) size(10) size(16);
             border-radius: var(--mc-border-radius-sm);
         }
-        
+
     }
 }

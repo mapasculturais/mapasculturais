@@ -12,7 +12,7 @@
         "postcss": "^8.4.47",
         "resolve-url-loader": "^5.0.0",
         "sass": "^1.79.4",
-        "sass-loader": "^12.6.0",
+        "sass-loader": "^16.0.2",
         "webpack": "^5.95.0"
     }
 }
