@@ -10,15 +10,21 @@ app.component('opportunity-committee-groups', {
 
     data() {
         return {
-           editable: true,
-           newGroupName: '',
-           groups: this.entity.relatedAgents || {},
-           editGroupName: false,
-           newName: '',
-           localSubmissionEvaluatorCount: {},
-           tabSelected: '',
-           hasGroupsFlag: false,
-           minervaGroup: 'Comissão de voto final'
+            editable: true,
+            newGroupName: '',
+            groups: this.entity.relatedAgents || {},
+            editGroupName: false,
+            newName: '',
+            localSubmissionEvaluatorCount: {},
+            tabSelected: '',
+            hasGroupsFlag: false,
+            minervaGroup: 'Comissão de voto final',
+            globalExcludeFields: [],
+            individualExcludeFields: [],
+            selectedFields: {
+                global: '',
+                individual: ''
+            }
         }
     },
 
@@ -36,6 +42,16 @@ app.component('opportunity-committee-groups', {
     },
     
     methods: {
+        updateExcludedFields(group, selectedField) {
+            this.selectedFields[group] = selectedField;
+      
+            if (group === 'global') {
+              this.individualExcludeFields = [selectedField];
+            } else if (group === 'individual') {
+              this.globalExcludeFields = [selectedField];
+            }
+        },
+
         initializeGroups() {
             let groups = {};
             for (let groupName of Object.keys(this.groups)) {
