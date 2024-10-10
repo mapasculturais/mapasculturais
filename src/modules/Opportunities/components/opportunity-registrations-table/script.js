@@ -39,6 +39,17 @@ app.component('opportunity-registrations-table', {
             readonly: true,
             type: "array",
             length: 255,
+            label: text("Elegível para as cotas"),
+            isPK: false
+        };
+
+        $DESCRIPTIONS.registration['usingQuota'] = {
+            isMetadata: false,
+            isEntityRelation: false,
+            required: false,
+            readonly: true,
+            type: "array",
+            length: 255,
             label: text("Cotas aplicadas"),
             isPK: false
         };
@@ -258,13 +269,18 @@ app.component('opportunity-registrations-table', {
         
                     if(quotaConfiguration.rules?.length > 0) {
                         itens.splice(5,0,{
-                            text: __('Cotas aplicadas', 'opportunity-registrations-table'),
+                            text: __('Elegível para cotas', 'opportunity-registrations-table'),
                             value: 'quotas',
+                        });
+
+                        itens.splice(6,0,{
+                            text: __('Cotas aplicadas', 'opportunity-registrations-table'),
+                            value: 'usingQuota',
                         });
                     }
         
                     if(geoQuotaConfiguration?.geoDivision) {
-                        itens.splice(6,0,{
+                        itens.splice(7,0,{
                             text: __('Região', 'opportunity-registrations-table'),
                             value: 'region',
                         });
