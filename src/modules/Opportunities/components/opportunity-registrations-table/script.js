@@ -25,6 +25,57 @@ app.component('opportunity-registrations-table', {
         // os textos estão localizados no arquivo texts.php deste componente
         const messages = useMessages();
         const text = Utils.getTexts('opportunity-registrations-table');
+
+        /* 
+            adiciona a definição de quotas, tiebreaker e region, 
+            que são retornados pela api mas nào são metadados, 
+            possibilitando a utilização na tabela 
+        */
+
+        $DESCRIPTIONS.registration['quotas'] = {
+            isMetadata: false,
+            isEntityRelation: false,
+            required: false,
+            readonly: true,
+            type: "array",
+            length: 255,
+            label: text("Elegível para as cotas"),
+            isPK: false
+        };
+
+        $DESCRIPTIONS.registration['usingQuota'] = {
+            isMetadata: false,
+            isEntityRelation: false,
+            required: false,
+            readonly: true,
+            type: "array",
+            length: 255,
+            label: text("Cotas aplicadas"),
+            isPK: false
+        };
+
+        $DESCRIPTIONS.registration['tiebreaker'] = {
+            isMetadata: false,
+            isEntityRelation: false,
+            required: false,
+            readonly: true,
+            type: "object",
+            length: 255,
+            label: text("Critérios de desempate"),
+            isPK: false
+        };
+
+        $DESCRIPTIONS.registration['region'] = {
+            isMetadata: false,
+            isEntityRelation: false,
+            required: false,
+            readonly: true,
+            type: "string",
+            length: 255,
+            label: text("Região"),
+            isPK: false
+        };
+
         return { messages, text }
     },
     data() {
@@ -218,13 +269,18 @@ app.component('opportunity-registrations-table', {
         
                     if(quotaConfiguration.rules?.length > 0) {
                         itens.splice(5,0,{
-                            text: __('Cotas aplicadas', 'opportunity-registrations-table'),
+                            text: __('Elegível para cotas', 'opportunity-registrations-table'),
                             value: 'quotas',
+                        });
+
+                        itens.splice(6,0,{
+                            text: __('Cotas aplicadas', 'opportunity-registrations-table'),
+                            value: 'usingQuota',
                         });
                     }
         
                     if(geoQuotaConfiguration?.geoDivision) {
-                        itens.splice(6,0,{
+                        itens.splice(7,0,{
                             text: __('Região', 'opportunity-registrations-table'),
                             value: 'region',
                         });

@@ -123,8 +123,14 @@ $entity = $this->controller->requestedEntity;
                     </template>
                 </template>
 
+                <template #usingQuota="{entity}"> 
+                    <div style="white-space: pre-line;">
+                        {{entity.usingQuota}}
+                    </div>
+                </template>
+
                 <template #quotas="{entity}"> 
-                    <div v-if="entity.quotas.length > 0" v-for="quota in entity.quotas">
+                    <div v-if="entity.quotas?.length > 0" v-for="quota in entity.quotas">
                         {{quota}}
                     </div>
                     <span v-else>&nbsp;</span>

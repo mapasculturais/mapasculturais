@@ -2,10 +2,11 @@ app.component('agent-table', {
     template: $TEMPLATES['agent-table'],
     emits: ['clear-filters', 'remove-filter'],
 
-    setup() {
+    setup(props, { slots }) {
+        const hasSlot = name => !!slots[name];
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('agent-table')
-        return { text }
+        const text = Utils.getTexts('__template__')
+        return { text, hasSlot }
     },
 
     props: {
@@ -40,7 +41,6 @@ app.component('agent-table', {
             '@order': 'createTimestamp DESC',
             '@limit': 20,
             '@page': 1,
-            ... this.extraQuery,
         }
 
         if (this.agentType) {
@@ -75,6 +75,10 @@ app.component('agent-table', {
     },
 
     computed: {
+        mergedQuery() {
+            return {...this.query, ...this.extraQuery};
+        },
+
         headers () {
             let itens = [
                 { text: __('id', 'agent-table'), value: "id", sticky: true, width: '80px'},
