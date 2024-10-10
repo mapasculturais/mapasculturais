@@ -23,7 +23,7 @@ $this->import('
     
     <mc-tabs>
         <template #after-tablist>
-            <button v-if="hasTwoOrMoreGroups" class="button button--icon button--primary button--sm" @click="addGroup(minervaGroup, true);">
+            <button v-if="hasTwoOrMoreGroups && entity.useCommitteeGroups" class="button button--icon button--primary button--sm" @click="addGroup(minervaGroup, true);">
                 <mc-icon name="add"></mc-icon>
                 <?php i::_e('Voto de minerva') ?>
             </button>
@@ -32,7 +32,7 @@ $this->import('
                 <template #button="popover">
                     <button @click="popover.toggle()" class="button button--primary-outline button--sm button--icon">
                         <mc-icon name="add"></mc-icon>
-                        <?php i::_e("Comissão") ?>
+                        <?php i::_e("Adicionar comissão") ?>
                     </button>
                 </template>
 
@@ -54,7 +54,7 @@ $this->import('
             <div class="opportunity-committee-groups__group">
 
                 <div class="opportunity-committee-groups__edit-group">
-                    <mc-popover openside="down-right">
+                    <!-- <mc-popover openside="down-right">
                         <template #button="popover">
                             <slot name="button">
                                 <a class="button button--icon button--primary" @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> <?= i::__('Editar') ?> {{groupName}} </a>
@@ -72,13 +72,17 @@ $this->import('
                                 </div>
                             </form>
                         </template>
-                    </mc-popover>
-        
+                    </mc-popover> -->
+                    <div class="opportunity-committee-groups__edit-group--title field">
+                        <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
+                        <input id="newGroupName" v-model="relations.newGroupName" class="input" type="text" @input="updateGroupName(groupName, relations.newGroupName)" @blur="saveGroupName(groupName)" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
+                    </div>
+                    
                     <mc-confirm-button @confirm="removeGroup(groupName)">
                         <template #button="modal">
                             <a class="button button--icon button--delete" @click="modal.open()">
                                 <mc-icon name="trash"></mc-icon>
-                                <?= i::__('Excluir') ?> {{groupName}}
+                                <?= i::__('Excluir comissão') ?> 
                             </a>
                         </template>
                         <template #message="message">
