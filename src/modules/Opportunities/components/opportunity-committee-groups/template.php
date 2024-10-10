@@ -19,8 +19,10 @@ $this->import('
 ?>
 
 <div class="opportunity-committee-groups">
-    
-    
+    <div class="opportunity-committee-groups__description">
+       <p><?php i::_e('Defina os agentes que farão parte das comissões de avaliação desta fase.') ?></p>
+    </div>
+
     <mc-tabs>
         <template #after-tablist>
             <button v-if="hasTwoOrMoreGroups && entity.useCommitteeGroups" class="button button--icon button--primary button--sm" @click="addGroup(minervaGroup, true);">
@@ -53,42 +55,23 @@ $this->import('
         <mc-tab v-for="(relations, groupName) in groups" :key="groupName" :label="groupName" :slug="groupName">
             <div class="opportunity-committee-groups__group">
 
-                <div class="opportunity-committee-groups__edit-group">
-                    <!-- <mc-popover openside="down-right">
-                        <template #button="popover">
-                            <slot name="button">
-                                <a class="button button--icon button--primary" @click="popover.toggle()"> <mc-icon name="edit"></mc-icon> <?= i::__('Editar') ?> {{groupName}} </a>
-                            </slot>
-                        </template>
-                        <template #default="{popover, close}">
-                            <form @submit="renameGroup(groupName, relations.newGroupName, popover); $event.preventDefault(); close()" class="entity-related-agents__addNew--newGroup">
-                                <div class="grid-12">
-                                    <div class="related-popover col-12">
-                                        <input v-model="relations.newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o novo nome do grupo') ?>" />
-                                    </div>
-        
-                                    <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
-                                    <button class="col-6 button button--primary" type="submit" @click="close"> <?php i::_e("Confirmar") ?> </button>
-                                </div>
-                            </form>
-                        </template>
-                    </mc-popover> -->
-                    <div class="opportunity-committee-groups__edit-group--title field">
-                        <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
+                <div class="opportunity-committee-groups__edit-group field">
+                    <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
+
+                    <div class="opportunity-committee-groups__edit-group--field">
                         <input id="newGroupName" v-model="relations.newGroupName" class="input" type="text" @input="updateGroupName(groupName, relations.newGroupName)" @blur="saveGroupName(groupName)" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
-                    </div>
-                    
-                    <mc-confirm-button @confirm="removeGroup(groupName)">
-                        <template #button="modal">
-                            <a class="button button--icon button--delete" @click="modal.open()">
-                                <mc-icon name="trash"></mc-icon>
-                                <?= i::__('Excluir comissão') ?> 
-                            </a>
-                        </template>
-                        <template #message="message">
-                            <?php i::_e('Remover comissão de avaliadores?') ?>
-                        </template>
-                    </mc-confirm-button>
+                        <mc-confirm-button @confirm="removeGroup(groupName)">
+                            <template #button="modal">
+                                <a class="button button--delete button--icon button--sm" @click="modal.open()">
+                                    <mc-icon name="trash"></mc-icon>
+                                    <?= i::__('Excluir comissão') ?> 
+                                </a>
+                            </template>
+                            <template #message="message">
+                                <?php i::_e('Remover comissão de avaliadores?') ?>
+                            </template>
+                        </mc-confirm-button>
+                    </div> 
                 </div>
 
                 <div class="opportunity-committee-groups__multiple-evaluators">

@@ -38,6 +38,11 @@ app.component('opportunity-committee-groups', {
     methods: {
         initializeGroups() {
             let groups = {};
+
+            if (!groups['Comissão de avaliação'] && Object.keys(this.groups).length === 0) {
+                groups['Comissão de avaliação'] = [];
+            }
+            
             for (let groupName of Object.keys(this.groups)) {
                 if (groupName !== "group-admin" && groupName !== '@support') {
                     groups[groupName] = this.groups[groupName];
@@ -95,9 +100,33 @@ app.component('opportunity-committee-groups', {
             this.autoSave();
         },
 
-        renameGroup(oldName, newName, popover) {
+        updateGroupName(oldGroupName, newGroupName) {
+            if (newGroupName && newGroupName !== oldGroupName) {
+                this.groups[oldGroupName].newGroupName = newGroupName;
+            }
+        },
+
+        saveGroupName(oldGroupName) {
+            const newGroupName = this.groups[oldGroupName].newGroupName;
+            if (newGroupName && newGroupName !== oldGroupName) {
+                this.renameGroup(oldGroupName, newGroupName);
+            }
+        },
+
+        renameGroup(oldName, newName) {
             this.entity.renameAgentRelationGroup(oldName, newName).then(() => {
-                if (popover) popover.close();
+                const groupNames = Object.keys(this.groups);
+                const newGroups = {};
+                groupNames.forEach(groupName => {
+                    if (groupName == oldName) {
+                        newGroups[newName] = { ...this.groups[groupName], newGroupName: newName };
+                    } else {
+                        newGroups[groupName] = this.groups[groupName];
+                    }
+                });
+
+                this.groups = newGroups;
+                this.reorderGroups();
             });
 
             this.entity.agentRelations.map((relation) => {
@@ -105,22 +134,6 @@ app.component('opportunity-committee-groups', {
                     relation.group = newName;
                 }
             });
-
-            const groupsNames = Object.keys(this.groups);
-            const newGroups = {};
-            groupsNames.forEach(groupName => {
-                if (groupName == oldName) {
-                    newGroups[newName] = this.groups[groupName];
-                } else {
-                    newGroups[groupName] = this.groups[groupName];
-                }
-            });
-
-            this.group = {};
-            this.groups = newGroups;
-            this.reorderGroups();
-
-            this.initializeGroups();
         },
 
         autoSave() {
