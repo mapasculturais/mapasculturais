@@ -5,6 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.2] - 2024-10-10
+### Correções
+- Corrige erro que deixa gestor da oportunidade sem permissão de modificar uma inscrição enviada
+- Corrige distribuição de cotas dentro das faixas de modo a garantir o número de vagas dentro de cada faixa
+- Corrige filtros das tabelas das entidades das páginas de busca
+
 ## [7.4.24] - 2024-10-07
 ### Correções
 - Deleta pasta do plugin MultipleLocalAuth 
