@@ -7,7 +7,7 @@
         "watch": "pnpm run --parallel --recursive watch",
         "postinstall": "sass src/themes/BaseV1/assets/css/sass/main.scss:src/themes/BaseV1/assets/css/main.css"
     },
-    "packageManager": "pnpm@^9",
+    "packageManager": "pnpm@9.12.3",
     "devDependencies": {
         "fast-glob": "^3.3.2",
         "laravel-mix": "^6.0.49",

@@ -1,82 +1,156 @@
-version: '2'
+x-defaults: &defaults
+  environment: &environment
+    PORT: ${PORT}
+    APP_MODE: ${APP_MODE}
+    APP_ENV: ${APP_ENV}
+    XDEBUG_MODE: ${XDEBUG_MODE}
+    DB_HOST: ${DB_HOST}
+    PWA_UPSTREAM: ${PWA_UPSTREAM}
+    SERVER_NAME: ${SERVER_NAME}
+    TRUSTED_PROXIES: ${TRUSTED_PROXIES}
+    TRUSTED_HOSTS: ${TRUSTED_HOSTS}
+    DATABASE_URL: ${DATABASE_URL}
+    BUILD_ASSETS: ${BUILD_ASSETS}
+    PENDING_PCACHE_RECREATION_INTERVAL: ${PENDING_PCACHE_RECREATION_INTERVAL}
+    JOBS_INTERVAL: ${JOBS_INTERVAL}
+    # REDIS_CACHE: ${REDIS_CACHE}
+    MAILER_TRANSPORT: ${MAILER_TRANSPORT}
+    MAILER_FROM: ${MAILER_FROM}
+    NUM_PROCESSES: ${NUM_PROCESSES}
+    MC_UPDATES_PROCESSES: ${MC_UPDATES_PROCESSES}
+    GOOGLE_RECAPTCHA_SITEKEY: ${GOOGLE_RECAPTCHA_SITEKEY}
+    GOOGLE_RECAPTCHA_SECRET: ${GOOGLE_RECAPTCHA_SECRET}
+    SESSIONS_SAVE_PATH: ${SESSIONS_SAVE_PATH}
+    # APP_RUNTIME: ${APP_RUNTIME}
+    NIXPACKS_PHP_ROOT_DIR: ${NIXPACKS_PHP_ROOT_DIR}
+    NIXPACKS_PHP_FALLBACK_PATH: ${NIXPACKS_PHP_FALLBACK_PATH}
+    ACTIVE_THEME: 'MapasCulturais\Themes\BaseV2'
+
+    SITE_NAME: ${SITE_NAME}
+    SITE_DESCRIPTION: ${SITE_DESCRIPTION}
+    LOGO_TITLE: ${LOGO_TITLE}
+    LOGO_SUBTITLE: ${LOGO_SUBTITLE}
+    LOGO_IMAGE: ${LOGO_IMAGE}
+    AUTH_EMAIL_IMAGE: ${AUTH_EMAIL_IMAGE}
+    AUTH_LOGIN_ON_REGISTER: ${AUTH_LOGIN_ON_REGISTER}
+    STATUS_CREATE_AGENT: ${STATUS_CREATE_AGENT}
+    AUTH_LOGIN_BY_CPF: ${AUTH_LOGIN_BY_CPF}
+
 services:
-  mapas:
-    env_file:
-      - .env
+  backend:
+    <<: *defaults
+    image: ghcr.io/redemapas/mapas
     build:
-      context: ./
-      dockerfile: docker/Dockerfile
-    volumes:
-      - ./.env:/.env
-      - ./docker/production/php.ini:/usr/local/etc/php/php.ini
-      - ./docker/production/www.conf:/usr/local/etc/php-fpm.d/www.conf
-
-      # scripts principais
-      - ./docker/entrypoint.sh:/entrypoint.sh
-      - ./docker/jobs-cron.sh:/jobs-cron.sh
-      - ./docker/recreate-pending-pcache-cron.sh:/recreate-pending-pcache-cron.sh
-
-      - ./composer.json:/var/www/composer.json
-      - ./composer.lock:/var/www/composer.lock
-
-      - ./config:/var/www/config
-      - ./public:/var/www/html
-      - ./scripts:/var/www/scripts
-      - ./var:/var/www/var
-
-      - ./docker-data/assets:/var/www/html/assets
-      - ./docker-data/public-files:/var/www/html/files
-      - ./docker-data/private-files:/var/www/var/private-files
-
-    links:
-      - redis
-      - sessions
-
-    environment:
-      - BUILD_ASSETS=1
-
-      - REDIS_CACHE=redis
-      - SESSIONS_SAVE_PATH=tcp://sessions:6379
-
+      context: .
+      dockerfile: .nixpacks/Dockerfile
+    restart: "${DOCKER_RESTART_POLICY:-always}"
     depends_on:
+      - database
       - redis
-      - sessions
+      - mailhog
+    environment:
+      <<: *environment
+    volumes:
+      - var-files:/app/var/
+      - assets-files:/app/public/assets
+      - user-public-files:/app/public/files/
+      - sessions-files:/app/var/sessions/
+      - doctrine-files:/app/var/DoctrineProxies/
+    ports:
+      - 80
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+    #   interval: 30s       # Intervalo entre as verificações de saúde
+    #   timeout: 10s        # Tempo limite para cada verificação
+    #   retries: 3          # Número de tentativas antes de marcar como falha
+    #   start_period: 5s    # Período de inicialização antes de começar as verificações
 
-    stdin_open: true
-    tty: true
+  database:
+    image: kartoza/postgis:14
+    restart: "${DOCKER_RESTART_POLICY:-always}"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      DATADIR: ${DATADIR}
+    volumes:
+      - db_data:/opt/postgres/data
+      - ./dev/db:/data
+    ports:
+      - 5432
+    healthcheck:
+      test: "PGPASSWORD=${POSTGRES_PASSWORD} pg_isready -h 127.0.0.1 -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+
+  # crontab:
+  #   image: rancher/container-crontab:v0.5.0
+  #   restart: '${DOCKER_RESTART_POLICY:-always}'
+  #   volumes:
+  #     - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   redis:
     image: redis:6
-    command: --maxmemory 1024Mb --maxmemory-policy allkeys-lru
-    restart: unless-stopped
-
-  sessions:
-    image: redis:6
-    restart: unless-stopped
-    command: --maxmemory 512Mb --maxmemory-policy allkeys-lru
+    restart: "${DOCKER_RESTART_POLICY:-always}"
+    command: --maxmemory 128Mb --maxmemory-policy allkeys-lru
     volumes:
-      - ./docker-data/sessions:/data
-
-  nginx:
-    image: nginx:latest
-    restart: unless-stopped
-    volumes:
-      - /dev/null:/var/www/html/index.php
-
-      - ./docker-data/public-files:/var/www/html/files
-      - ./docker-data/assets:/var/www/html/assets
-
-##### versão sem ssl
-      - ./docker/production/nginx.conf:/etc/nginx/conf.d/default.conf
-
-##### versão com ssl
-#     - ./docker/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
-#     - ./docker-data/certs/conf:/etc/letsencrypt
-#     - ./docker-data/certs/www:/var/www/certbot
+      - redis:/data
     ports:
-     - "80:80"
-    depends_on:
-      - mapas
-    links:
-      - mapas
+      - 6379
 
+  mailhog:
+    image: mailhog/mailhog
+    restart: '${DOCKER_RESTART_POLICY:-always}'
+    ports:
+      - 8025
+
+  recreate-pending-pcache:
+    <<: *defaults
+    image: ghcr.io/redemapas/mapas
+    # build:
+    #   context: .
+    #   dockerfile: .nixpacks/Dockerfile
+    restart: "${DOCKER_RESTART_POLICY:-always}"
+    depends_on:
+      - database
+    environment:
+      <<: *environment
+    volumes:
+      - var-files:/app/var/
+      - assets-files:/app/public/assets
+      - user-public-files:/app/public/files/
+      - sessions-files:/app/var/sessions/
+      - doctrine-files:/app/var/DoctrineProxies/
+    command: ./docker/recreate-pending-pcache-cron.sh
+    # labels:
+    #   - "cron.schedule=*/5 * * * * *"
+
+  execute-job:
+    <<: *defaults
+    image: ghcr.io/redemapas/mapas
+    # build:
+    #   context: .
+    #   dockerfile: .nixpacks/Dockerfile
+    restart: "${DOCKER_RESTART_POLICY:-always}"
+    depends_on:
+      - database
+    environment:
+      <<: *environment
+    volumes:
+      - var-files:/app/var/
+      - assets-files:/app/public/assets
+      - user-public-files:/app/public/files/
+      - sessions-files:/app/var/sessions/
+      - doctrine-files:/app/var/DoctrineProxies/
+    command: ./docker/jobs-cron.sh
+    # labels:
+    #   - "cron.schedule=*/5 * * * * *"
+
+volumes:
+  var-files:
+  db_data:
+  sessions:
+  redis:
+  pgadmin:
+  user-public-files:
+  assets-files:
+  sessions-files:
+  doctrine-files:

@@ -1,0 +1,75 @@
+services:
+  backend:
+    image: ghcr.io/redemapas/mapas
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    restart: no
+    depends_on:
+      - database
+    environment:
+      CACHE_ASSETS_URL: 'true'
+      XDEBUG_MODE: coverage
+      LOG_LEVEL: 'DEBUG'
+      LOG_HANDLERS: 'file:DEBUG'
+      LOG_REQUESTDATA: true
+      LOG_APIDQL: true
+      LOG_COMPONENTS: true
+      LOG_JOBS: true
+      LOG_PCACHE: true
+      LOG_PCACHE_USERS: true
+    ports:
+      - 4242:80
+    volumes:
+      - ./:/app
+      - var-files:/app/var/
+      - assets-files:/app/public/assets
+      - user-public-files:/app/public/files/
+      - sessions-files:/app/var/sessions/
+      - doctrine-files:/app/var/DoctrineProxies/
+    command: php -S 0.0.0.0:80 -q -t /app/public /app/router.php
+
+  recreate-pending-pcache:
+    image: ghcr.io/redemapas/mapas
+    restart: no
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    volumes:
+      - ./:/app
+
+  execute-job:
+    image: ghcr.io/redemapas/mapas
+    restart: no
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    volumes:
+    - ./:/app
+
+  frontend:
+    image: ghcr.io/redemapas/mapas-frontend
+    restart: no
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    # volumes:
+      # - .:/app            # Mapeia sua pasta local para a pasta dentro do container
+      # - /usr/src/app/node_modules # Evita sobrepor os módulos node_modules do container
+    command: /bin/sh -c "pnpm run watch"
+    environment:
+      - NODE_ENV=development      # Variável de ambiente para o Node.js
+
+  # tmui-postgres:
+  #   image: achristmascarl/rainfrog:latest
+ 
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+  #     PGADMIN_CONFIG_SERVER_MODE: 'False'
+  #   volumes:
+  #     - pgadmin:/var/lib/pgadmin
+  #   ports:
+  #     - 80
