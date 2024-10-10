@@ -98,14 +98,14 @@
                         align-items: center;
                         display: flex;
                         text-decoration: none;
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         color: var(--mc-low-500);
                     }
                 }
 
                 .title {
                     font-style: normal;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: $font-size-xl;
                     line-height: size(65);
                     margin-top: size(10);
@@ -179,12 +179,12 @@
                 &__id {
                     font-family: 'Open Sans';
                     font-style: normal;
-                    font-weight: 600;
+                   font-weight: $font-weight-semibold;
                     font-size: $font-size-xxs;
                     line-height: 19px;
 
                     &--id {
-                        font-weight: 600;
+                       font-weight: $font-weight-semibold;
                         font-size: $font-size-xxs;
                         line-height: 19px;
                     }
@@ -353,7 +353,7 @@
                     }
 
                     h2 {
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-sm;
                         line-height: size(25);
                     }
@@ -378,7 +378,7 @@
                     }
 
                     h2 {
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-sm;
                         line-height: 25px;
                     }
