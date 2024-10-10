@@ -44,7 +44,7 @@
 
     &--right-icon {
         padding-inline: size(32);
-        
+
         .iconify {
             position: absolute;
             right: size(8);
@@ -61,7 +61,7 @@
     }
 
     // larguras
-    
+
     &--large {
         width: 100%;
     }
@@ -139,16 +139,16 @@
 
         &-outline {
             background-color: var(--mc-white);
-            border: $border-solid solid var(--mc-primary-500);
+            border: $border-solid var(--mc-primary-500);
             color: var(--mc-primary-500);
 
             &:hover {
                 border-color: var(--mc-primary-700);
-                background-color: var(--mc-primary-700);   
-                color: var(--mc-white);       
+                background-color: var(--mc-primary-700);
+                color: var(--mc-white);
             }
         }
-        
+
         &-noborder {
             background-color: var(--mc-white);
             border: $border-solid var(--mc-white);
@@ -156,15 +156,15 @@
 
             &:hover {
                 border-color: var(--mc-primary-700);
-                background-color: var(--mc-primary-700);   
-                color: var(--mc-white);       
+                background-color: var(--mc-primary-700);
+                color: var(--mc-white);
             }
         }
     }
 
     &--primarylight {
         background-color: var(--mc-primary-300);
-        border: $border-solid solid var(--mc-primary-300);
+        border: $border-solid var(--mc-primary-300);
         color: var(--mc-white);
 
         &:hover {
@@ -190,7 +190,7 @@
         background-color: var(--mc-secondary-500);
         border: $border-solid  solid var(--mc-secondary-500);
         color: var(--mc-high-500);
-        
+
         &:hover {
             border-color: var(--mc-secondary-700);
             background-color: var(--mc-secondary-700);

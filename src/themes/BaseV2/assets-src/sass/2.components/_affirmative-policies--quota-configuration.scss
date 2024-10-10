@@ -12,7 +12,7 @@
     }
 
     &__header {
-        border: $border-hairline solid var(--mc-gray-300);
+        border: $border-hairline var(--mc-gray-300);
         border-radius: var(--mc-border-radius-xs);
         padding: size(13) size(23);
         display: grid;
@@ -26,7 +26,7 @@
 
     // Estilização do card
     &__card {
-        border: $border-hairline solid var(--mc-gray-300);
+        border: $border-hairline var(--mc-gray-300);
         border-radius: var(--mc-border-radius-xs);
     }
 
@@ -35,12 +35,12 @@
         border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
         display: grid;
         gap: size(9);
-        grid-template-columns: 
-            calc(60% - size(45)) 
-            calc(20% - size(46)) 
+        grid-template-columns:
+            calc(60% - size(45))
+            calc(20% - size(46))
             calc(20% - size(46))
             size(110);
-            
+
         padding: size(13) size(23);
     }
 
@@ -64,7 +64,7 @@
     // Estilização interna
     &__quota-field {
         border-top: var(--mc-border-hairline) var(--mc-gray-300);
-        
+
         padding-top: size(20);
 
         &:first-child {

@@ -9,7 +9,7 @@
 
     &__card {
         border-radius: var(--mc-border-radius-xs);
-        border: $border-hairline solid var(--mc-gray-300);
+        border: $border-hairline var(--mc-gray-300);
     }
 
     &__header {
@@ -55,15 +55,15 @@
         & > tbody > tr {
             & > th,
             & > td {
-                border-bottom: $border-hairline solid var(--mc-gray-300);
-                
+                border-bottom: $border-hairline var(--mc-gray-300);
+
                 &:first-child {
                     padding: 0 size(24);
                     width: 60%;
                     @media (max-width: size(800)) {
                         width: 50%;
                     }
-                }   
+                }
             }
         }
 
@@ -76,7 +76,7 @@
             height: size(61);
 
             &:last-child {
-                & > th, 
+                & > th,
                 & > td {
                     border-bottom: none;
                 }
@@ -92,7 +92,7 @@
 
     &__input {
         border-radius: var(--mc-border-radius-xs);
-        border: $border-hairline solid var(--mc-gray-500);
+        border: $border-hairline var(--mc-gray-500);
         font-family: Open Sans;
         font-size: var(--mc-font-size-xxs);
         line-height: normal;
