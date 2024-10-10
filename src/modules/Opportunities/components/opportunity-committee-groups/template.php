@@ -15,6 +15,7 @@ $this->import('
     mc-tab
     mc-tabs
     opportunity-evaluation-committee
+    opportunity-registration-filter-configuration
 ');
 ?>
 
@@ -91,6 +92,24 @@ $this->import('
                     <div class="field">
                         <div class="field__group">
                             <label class="field__checkbox">
+                                <input type="checkbox" v-model="entity.enableRegistrationFilterConfig"/>
+                                <?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>
+                            </label>
+                        </div>
+                    </div>
+
+                    <opportunity-registration-filter-configuration 
+                        v-if="entity?.enableRegistrationFilterConfig" 
+                        :entity="entity" 
+                        :group-name="groupName"
+                        :excludeFields="globalExcludeFields"
+                        @updateExcludeFields="updateExcludedFields('global', $event)"
+                    >
+                    </opportunity-registration-filter-configuration>
+
+                    <div class="field">
+                        <div class="field__group">
+                            <label class="field__checkbox">
                                 <input type="checkbox" :checked="localSubmissionEvaluatorCount[groupName] > 0" @click="changeMultipleEvaluators($event, groupName)" />
                                 <?= i::__('Permitir múltiplos avaliadores por inscrição') ?>
                             </label>
@@ -104,7 +123,7 @@ $this->import('
                 </div>
                 
                 <div class="opportunity-committee-groups__evaluators">
-                    <opportunity-evaluation-committee :entity="entity" :group="groupName"></opportunity-evaluation-committee>
+                    <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
                 </div>
             </div>
         </mc-tab>
