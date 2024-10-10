@@ -9,7 +9,8 @@ app.component('opportunity-evaluation-committee', {
         group: {
             type: String,
             default: 'group-admin'
-        }
+        },
+        excludeFields: Array
     },
 
     setup() {
