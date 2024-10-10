@@ -542,8 +542,6 @@ ol.mc-stepper-vertical>li.active::before {
 
             }
 
-            &__label {}
-
             &__name {
                 @media (max-width:size(600)) {
                     font-size: 20px;
