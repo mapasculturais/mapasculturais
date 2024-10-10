@@ -13,7 +13,7 @@
     }
 
     &__title {
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         font-size: $font-size-sm;
         line-height: size(25);
         margin-bottom: size(8);
@@ -40,7 +40,7 @@
                 font-family: var(--mc-font-body);
                 font-size: $font-size-sm;
                 font-style: normal;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 gap: size(10);
                 grid-template-columns: size(18) 1fr;
                 justify-items: center;

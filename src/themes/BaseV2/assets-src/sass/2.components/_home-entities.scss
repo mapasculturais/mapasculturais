@@ -15,19 +15,19 @@
             gap: size(8);
 
             .title {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-lg;
                 line-height: size(44);
 
                 @media (max-width: size(800)) {
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: $font-size-md;
                     line-height: size(28);
                 }
             }
 
             .description {
-                font-weight: 400;
+                font-weight: $font-weight-regular;
                 font-size: $font-size-sm;
                 line-height: size(25);
 
@@ -36,7 +36,7 @@
                 }
 
                 @media (max-width: size(800)) {
-                    font-weight: 400;
+                    font-weight: $font-weight-regular;
                     font-size: $font-size-xs;
                     line-height: size(22);
                 }
@@ -110,7 +110,7 @@
 
                         &-title {
                             color: var(--mc-high-300);
-                            font-weight: 700;
+                            font-weight: $font-weight-bold;
                             font-size: $font-size-md;
                             line-height: size(28);
                         }
@@ -144,7 +144,7 @@
                     }
 
                     p {
-                        font-weight: 400;
+                        font-weight: $font-weight-regular;
                         font-size: size(16);
                         line-height: size(22);
                         margin: 0;

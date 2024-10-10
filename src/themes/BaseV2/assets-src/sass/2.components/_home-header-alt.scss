@@ -24,14 +24,14 @@
     
                 &__title {
                     display: flex;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: $font-size-lg;
                     line-height: size(44);
                     max-width: size(400);
                 }
         
                 &__description {
-                    font-weight: 400;
+                    font-weight: $font-weight-regular;
                     font-size: $font-size-sm;
                     line-height: size(25);
                     margin: size(24) 0;

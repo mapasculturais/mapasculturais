@@ -19,7 +19,7 @@
 
         .title {
             font-size: $font-size-lg;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             line-height: size(44);  
 
             @media (max-width:size(800)) {
@@ -30,7 +30,7 @@
 
         .description {
             font-size: $font-size-sm;
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             line-height: size(25);
 
             @media (max-width:size(800)) {

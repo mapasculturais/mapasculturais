@@ -44,14 +44,14 @@
 
     &__title {
         display: flex;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         font-size: var(--mc-font-size-lg);
         line-height: normal;
         max-width: size(460);
     }
 
     &__description {
-        font-weight: 400;
+        font-weight: $font-weight-regular;
         font-size: var(--mc-font-size-sm);
         line-height: normal;
         margin: 0;
