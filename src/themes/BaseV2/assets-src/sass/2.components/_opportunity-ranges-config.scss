@@ -25,7 +25,7 @@
         justify-items: center;
         padding-top: size(8);
         width: 100%;
-        
+
         .field {
             &__input {
                 border: 0.0625rem solid var(--mc-gray-500);
@@ -51,7 +51,7 @@
     }
 
     &__button {
-        border-top: border-hairline var(--mc-gray-300);
+        border-top: $border-hairline var(--mc-gray-300);
 
         &__add {
             margin-top: size(8);

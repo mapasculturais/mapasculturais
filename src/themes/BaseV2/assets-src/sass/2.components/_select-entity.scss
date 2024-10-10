@@ -12,7 +12,7 @@
         gap: size(16);
         padding-top: size(16);
     }
-    
+
     &__popover {
         max-width: size(350);
 
@@ -30,8 +30,8 @@
         &--input {
             padding: size(10) size(20);
             border-radius: size(20) 0 0 size(20);
-            border: border-hairline var(--mc-gray-100);
-            border-right: 0;    
+            border: $border-hairline var(--mc-gray-100);
+            border-right: 0;
             width: 100%;
 
             &:focus-visible {
@@ -42,7 +42,7 @@
         &--button {
             align-items: center;
             background: white;
-            border: border-hairline var(--mc-gray-100);
+            border: $border-hairline var(--mc-gray-100);
             border-radius: 0 size(20) size(20) 0;
             border-left: 0;
             cursor: pointer;
@@ -69,7 +69,7 @@
 
         &--item {
             align-items: center;
-            border: border-hairline;
+            border: $border-hairline;
             border-radius: var(--mc-border-radius-xs);
             color: inherit;
             cursor: pointer;
@@ -94,69 +94,24 @@
                 img {
                     width: 100%;
                 }
-            }     
-
-            &.project {
-                &:hover{
-                    border: border-hairline var(--mc-projects-500);
-                    .icon {
-                        background-color: var(--mc-projects-500);
-                    }
-                    .label {
-                        color: var(--mc-projects-500);
-                    }
-                }
             }
 
-            &.space {
-                &:hover{
-                    border: border-hairline var(--mc-spaces-500);
-                    .icon {
-                        background-color: var(--mc-spaces-500);
-                    }
-                    .label {
-                        color: var(--mc-spaces-500);
-                    }
-                }
-            }
+            &:hover {
+                border: $border-hairline var(--mc-500);
 
-            &.event {
-                &:hover{
-                    border: border-hairline var(--mc-events-500);
-                    .icon {
-                        background-color: var(--mc-events-500);
-                    }
-                    .label {
-                        color: var(--mc-events-500);
-                    }
+                .icon {
+                    background-color: var(--mc-500);
+                }
+
+                .label {
+                    background-color: var(--mc-500);
                 }
             }
 
             &.agent {
+
                 .icon {
                     font-size: $font-size-xxs;
-                }   
-                
-                &:hover{
-                    border: border-hairline var(--mc-agents-500);
-                    .icon {
-                        background-color: var(--mc-agents-500);
-                    }
-                    .label {
-                        color: var(--mc-agents-500);
-                    }
-                }
-            }
-
-            &.opportunity {
-                &:hover{
-                    border: border-hairline var(--mc-opportunities-500);
-                    .icon {
-                        background-color: var(--mc-opportunities-500);
-                    }
-                    .label {
-                        color: var(--mc-opportunities-500);
-                    }
                 }
             }
         }
@@ -172,7 +127,7 @@
 
         &--button {
             align-items: center;
-            border: border-hairline var(--mc-primary-500);
+            border: $border-hairline var(--mc-primary-500);
             border-radius: var(--mc-border-radius-xs);
             color: var(--mc-primary-500);
             display: flex;
@@ -180,7 +135,7 @@
             justify-content: center;
             padding: 13px;
             text-decoration: none;
-            
+
             &:hover {
                 background-color: var(--mc-primary-500);
                 color: white;

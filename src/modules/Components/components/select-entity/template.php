@@ -38,7 +38,7 @@ $this->import('
                             <p v-if="entities.length > 0" class="select-entity__description"> {{itensText}} </p>
                         </slot>
                         <ul class="select-entity__results">
-                            <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
+                            <li v-for="entity in entities" class="select-entity__results--item" :class="'is-' + type" @click="selectEntity(entity, close)">
                                 <span class="icon">
                                     <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
                                 </span>
