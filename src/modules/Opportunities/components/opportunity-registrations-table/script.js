@@ -26,7 +26,7 @@ app.component('opportunity-registrations-table', {
            que são retornados pela api mas nào são metadados, 
            possibilitando a utilização na tabela */
 
-           $DESCRIPTIONS.registration['quotas'] = {
+        $DESCRIPTIONS.registration['quotas'] = {
             isMetadata: false,
             isEntityRelation: false,
             required: false,
