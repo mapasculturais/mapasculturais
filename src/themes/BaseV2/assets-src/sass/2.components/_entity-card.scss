@@ -542,7 +542,7 @@
 
 			span {
 				font-size: $font-size-xxxs;
-				font-weight: bold;
+				font-weight: $font-weight-bold;
 
 				@include mobile {
 					@include sr-only;
@@ -575,7 +575,7 @@
 
 		dd {
 			display: inline;
-			font-weight: bold;
+			font-weight: $font-weight-bold;
 			margin: 0;
 			padding: 0;
 		}

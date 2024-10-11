@@ -48,7 +48,7 @@
             color: var(--mc-gray-300);
             display: flex;
             font-size: $font-size-md;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             height: size(40);
             justify-content: center;
             line-height: size(28);
@@ -60,7 +60,7 @@
         }
 
         .label {
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             font-size: $font-size-xxs;
             line-height: size(19);
             text-align: center;
@@ -69,7 +69,7 @@
 
             &.active {
                 color: var(--mc-secondary-500);
-                font-weight: 700;
+                font-weight: $font-weight-bold;
             }
 
             &.show {
@@ -90,7 +90,7 @@
         &.passedby {
             .label {
                 color: var(--mc-secondary-500);
-                font-weight: 700;
+                font-weight: $font-weight-bold;
             }
 
             .count {

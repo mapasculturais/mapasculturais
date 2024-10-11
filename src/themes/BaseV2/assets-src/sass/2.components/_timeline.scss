@@ -49,13 +49,13 @@
 
             &--title {
                 font-size: $font-size-xxxs;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 line-height: size(16);
             }
 
             &--description {
                 font-size: $font-size-xxxs;
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
                 line-height: size(16);
             }
         }

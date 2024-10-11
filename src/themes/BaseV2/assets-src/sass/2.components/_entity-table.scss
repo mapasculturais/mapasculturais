@@ -218,7 +218,7 @@
         vertical-align: top;
         display: inline-block;
         padding: 10px;
-        font-weight: bold;
+        font-weight: $font-weight-bold;
         text-align: center;
         border-right: var(--mc-border-hairline) var(--mc-gray-300);
     }

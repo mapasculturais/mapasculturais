@@ -37,11 +37,6 @@
             display: flex;
             gap: size(16);
         }
-
-        &--right {
-
-        }
-
     }
 
     &__alert {
@@ -100,7 +95,7 @@
 
         &.is-active {
             color: var(--mc-primary-500);
-            font-weight: bold;
+            font-weight: $font-weight-bold;
 
             &::after {
                 background-color: var(--mc-primary-500);

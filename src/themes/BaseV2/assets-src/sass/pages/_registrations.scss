@@ -119,7 +119,7 @@
                                     &__name {
                                         color: var(--mc-gray-700);
                                         font-size: $font-size-sm;
-                                        font-weight: 700;
+                                        font-weight: $font-weight-bold;
                                         line-height: size(25);
                                     }
                                 }
@@ -139,12 +139,12 @@
                                         line-height: size(19);
 
                                         &__label {
-                                            font-weight: 400;
+                                            font-weight: $font-weight-regular;
                                         }
 
                                         &__info {
                                             font-size: $font-size-sm;
-                                            font-weight: 700;
+                                            font-weight: $font-weight-bold;
                                         }
                                     }
 
@@ -168,13 +168,13 @@
                                 .project {
                                     &__label {
                                         font-size: $font-size-xxs;
-                                        font-weight: 400;
+                                        font-weight: $font-weight-regular;
                                         line-height: size(19);
                                     }
 
                                     &__name {
                                         font-size: $font-size-sm;
-                                        font-weight: 700;
+                                        font-weight: $font-weight-bold;
                                         line-height: size(24);
                                     }
                                 }
@@ -203,7 +203,7 @@
                             border-radius: var(--mc-border-radius-pill);
                             color: var(--mc-high-500);
                             font-size: $font-size-xxxs;
-                            font-weight: 700;
+                            font-weight: $font-weight-bold;
                             line-height: size(16);
                             padding: size(8) size(30);
                         }
@@ -254,7 +254,7 @@
                         .name {
                             color: var(--mc-low-500);
                             font-size: $font-size-xs;
-                            font-weight: 700;
+                            font-weight: $font-weight-bold;
                             line-height: size(22);
                         }
                     }
@@ -285,7 +285,7 @@
 
                                             &__info {
                                                 font-size: $font-size-xxs;
-                                                font-weight: 700;
+                                                font-weight: $font-weight-bold;
                                             }
                                         }
                                     }
@@ -339,7 +339,7 @@
             .registration {
                 &__title {
                     font-size: $font-size-xl;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     line-height: size(65);
                     margin: size(26) auto;
                     max-width: size(1170);
@@ -386,7 +386,7 @@
                         width: 100%;
                         &__title {
                             font-size: $font-size-lg;
-                            font-weight: 700;
+                            font-weight: $font-weight-bold;
                             line-height: size(44);
                             margin-bottom: size(24);
                         }
@@ -417,7 +417,7 @@
                                     align-items: center;
                                     display: flex;
                                     font-size: $font-size-sm;
-                                    font-weight: 700;
+                                    font-weight: $font-weight-bold;
                                     gap: size(10);
                                     line-height: size(25);
                                     margin-bottom: size(4);
@@ -429,7 +429,7 @@
                                     .obrigatory {
                                         color: var(--mc-error);
                                         font-size: $font-size-xxxs;
-                                        font-weight: 700;
+                                        font-weight: $font-weight-bold;
                                         line-height: size(16);
                                     }
                                 }
@@ -477,7 +477,7 @@
 
                                         &__name {
                                             font-size: $font-size-xxs;
-                                            font-weight: 700;
+                                            font-weight: $font-weight-bold;
                                             line-height: size(19);
                                         }
                                     }

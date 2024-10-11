@@ -9,7 +9,7 @@
                 &__title {
                     font-family: 'Open Sans';
                     font-style: normal;
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     font-size: $font-size-xxs;
                     line-height: 19px;
                 }
@@ -18,15 +18,13 @@
                     margin: 0;
                     font-family: 'Open Sans';
                     font-style: normal;
-                    font-weight: 400;
+                    font-weight: $font-weight-regular;
                     font-size: $font-size-xxxs;
                     line-height: 16px;
                 }
             }
 
             .btn {
-                &__cancel {}
-
                 &__confirm {
                     max-width: size(140);
                 }
@@ -42,7 +40,7 @@
         max-height: size(48);
         font-family: 'Open Sans';
         font-style: normal;
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
         font-size: $font-size-sm;
         line-height: size(25);
 

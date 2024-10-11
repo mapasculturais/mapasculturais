@@ -62,7 +62,7 @@
             color: var(--mc-white);
             display: flex;
             font-size: $font-size-xxs;
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
             gap: size(28);
             line-height: size(20);
             padding: size(14) size(64);

@@ -70,13 +70,13 @@
             h4 {
                 font-family: "Open Sans";
                 font-size: $font-size-xs;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
 
             }
             span {
             font-family: "Open Sans";
             font-size: $font-size-xs;
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             }
         }
     }

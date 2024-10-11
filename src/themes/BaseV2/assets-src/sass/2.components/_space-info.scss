@@ -6,7 +6,7 @@
     gap: 32px;
     
     &--label {
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         font-size: $font-size-sm;
         line-height: size(25);
     }
@@ -25,7 +25,7 @@
         &--telefone,
         &--email {
             span {
-                font-weight: 600;
+                font-weight: $font-weight-semibold;
             }
         }
     }
@@ -41,7 +41,7 @@
             align-items: center;
             background-color: var(--mc-gray-100);
             display: flex;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-md;
             height: size(64);
             line-height: 28px;

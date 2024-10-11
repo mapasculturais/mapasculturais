@@ -131,7 +131,7 @@
             background: url(https://api.iconify.design/ic/baseline-search.svg) no-repeat right 12px center / 18px;
             border: $border-hairline #BBBBBB;
             border-radius: size(68);
-            font-weight: 400;
+            font-weight: $font-weight-regular;
             font-size: $font-size-xs;
             line-height: size(19);
             color: #666666;

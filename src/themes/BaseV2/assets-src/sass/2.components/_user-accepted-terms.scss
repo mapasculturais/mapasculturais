@@ -12,7 +12,7 @@
             padding: 16px 16px 24px 16px;
 
             &-title {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-sm;
                 line-height: 25px;
                 margin-bottom: 24px;
@@ -22,7 +22,7 @@
                     @media (max-width: size(500)){
                         .boxterm__list-subterm{
                            label{
-                               font-weight: 600;
+                               font-weight: $font-weight-semibold;
                                font-size: $font-size-xxs;
                                line-height: 19px;
                            }
@@ -40,7 +40,7 @@
                                 gap: 4px;
 
                                 &-title {
-                                    font-weight: 700;
+                                    font-weight: $font-weight-bold;
                                     font-size: $font-size-xs;
                                     line-height: 22px;
                                     font-style: normal;
@@ -49,7 +49,7 @@
                                 &-content {
                                     font-family: 'Open Sans';
                                     font-style: normal;
-                                    font-weight: 600;
+                                    font-weight: $font-weight-semibold;
                                     font-size: $font-size-xxs;
                                     line-height: 19px;
                                 }

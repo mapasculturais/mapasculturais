@@ -22,7 +22,7 @@
             padding-bottom: size(32);
 
             &__title {
-                font-weight: 700;
+                font-weight: $font-weight-bold;
             }
 
             &__item {
