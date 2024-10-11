@@ -393,19 +393,28 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $order = $params['@order'] ?? '';
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
-            if($phase_id && str_starts_with(strtolower(trim($order)), '@quota')){
+            if(!$phase_id) {
+                return;
+            }
+            $opportunity = $app->repo('Opportunity')->find($phase_id);
+            $evaluation_method = $opportunity->evaluationMethodConfiguration;
+            $quota = $evaluation_method && $evaluation_method->type->id == 'technical' ? 
+                Quotas::instance($phase_id) : null;
+            
+            if($phase_id && $quota && is_null($quota_data)) {
                 $quota_data = (object) [];                
 
                 $quota_data->objectId = spl_object_id($this);
                 $quota_data->params = $params;
-                $quota_data->quota = new Quotas($phase_id);
+                $quota_data->quota = $quota;
+                $quota_data->orderByQuota = $order == '@quota';
 
-                unset($params['@order']);
                 $quota_order = $quota_data->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
-
-                if($limit = (int) ($params['@limit'] ?? 0)) {
+                
+                if($quota_data->orderByQuota && $limit = (int) ($params['@limit'] ?? 0)) {
+                    unset($params['@order']);
                     $ids_params = $params;
                     unset(
                         $ids_params['@limit'], 
@@ -442,33 +451,39 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     $quota_data->foundIds = $ids;
                 }
 
-                $params['id'] = API::IN($ids);
-                    
+                if($quota_data->orderByQuota){
+                    $params['id'] = API::IN($ids);
+                    unset(
+                        $params['@page'],
+                        $params['@limit']
+                    );
+                }
 
                 $quota_data->order = $quota_order;
                 $quota_data->ids = $ids;
 
-                unset(
-                    $params['@page'],
-                    $params['@limit']
-                );
-                
             }
         });
 
         $app->hook('ApiQuery(registration).findResult', function(&$result) use(&$quota_data) {
             /** @var ApiQuery $this */
             if(($quota_data->objectId ?? false) == spl_object_id($this)) {
+                $app = App::i();
                 $_new_result = [];
                 $quota_fields = $quota_data->quota->registrationFields;
                 foreach($quota_data->ids as $id) {
-                    foreach($result as $registration) {
+                    foreach($result as &$registration) {
                         if($registration['id'] == $id) {
-                            $_new_result[] = array_merge($registration, $quota_fields[$id] ?? []);
+                            $registration = array_merge($registration, $quota_fields[$id] ?? []);
+                            $_new_result[] = $registration;
                         }
                     }
                 }
-                $result = $_new_result;
+
+                if($quota_data->orderByQuota) {
+                    $result = $_new_result;
+                }
+
                 $quota_data->result = $result;
             }
         });
