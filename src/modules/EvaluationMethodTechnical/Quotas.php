@@ -104,7 +104,7 @@ class Quotas {
         $this->firstPhase = $this->phase->firstPhase;
         $this->evaluationConfig = $this->phase->evaluationMethodConfiguration;
 
-        $this->vacancies = $this->firstPhase->vacancies;
+        $this->vacancies = $this->firstPhase->vacancies ?: 0;
         $this->cutoffScore = $this->evaluationConfig->cutoffScore ?: 0;
 
         $this->considerQuotasInGeneralList = $this->firstPhase->considerQuotasInGeneralList;
@@ -123,7 +123,7 @@ class Quotas {
 
             $this->quotaConfig[$quota_type_slug] = (object) [
                 'vacancies' => $rule->vacancies,
-                'percent' => $rule->vacancies / $this->vacancies,
+                'percent' => $this->vacancies ? $rule->vacancies / $this->vacancies : 0,
             ];
         }
 
@@ -136,7 +136,7 @@ class Quotas {
 
             $this->rangesConfig[$range_name] = (object) [
                 'vacancies' => $range_vacancies, 
-                'percent' => $range_vacancies / $this->vacancies
+                'percent' => $this->vacancies ? $range_vacancies / $this->vacancies : 0
             ];
 
             $this->rangeNames[] = $range_name;
@@ -156,7 +156,7 @@ class Quotas {
                 if($num) {
                     $this->geoQuotaConfig[$region] = (object) [
                         'vacancies' => $num,
-                        'percent' => $num / $this->vacancies
+                        'percent' => $this->vacancies ? $num / $this->vacancies : 0
                     ];
                     $this->geoLocations[] = $region;
                     $total_geo_vacancies += $num;
@@ -165,7 +165,7 @@ class Quotas {
             $this->geoLocations[] = 'OTHERS';
             $this->geoQuotaConfig['OTHERS'] = (object) [
                 'vacancies' => $this->vacancies - $total_geo_vacancies,
-                'percent' => ($this->vacancies - $total_geo_vacancies) / $this->vacancies
+                'percent' => $this->vacancies ? ($this->vacancies - $total_geo_vacancies) / $this->vacancies : 0
             ];
         }
     }
