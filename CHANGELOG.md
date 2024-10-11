@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
 - Corrige erro na seleção dos campos visíveis para o avaliador
+- Corrige erros devido a falta das configurações de cotas
 
 ### Melhorias
 - Implementa registro de histórico de revisões para os projetos
