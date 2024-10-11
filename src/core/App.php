@@ -1782,7 +1782,6 @@ class App {
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
         if ($job = $this->repo('Job')->find($id)) {
-            $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
             if ($replace) {
                 $job->delete(true);
             } else {

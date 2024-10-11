@@ -5,6 +5,26 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.3]
+### Correções
+- Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
+- Corrige erro na seleção dos campos visíveis para o avaliador
+- Corrige erros devido a falta das configurações de cotas
+
+### Melhorias
+- Implementa registro de histórico de revisões para os projetos
+- Ajusta permissão de deleção de agentes para permitir que admnistradores possam deletar agentes de perfil
+- Faz com que o botão de excluir entidades no card da gestão de usuários seja exibido para qualquer usuário do grupo admin
+
+## [7.5.2] - 2024-10-10
+### Correções
+- Corrige erro que deixa gestor da oportunidade sem permissão de modificar uma inscrição enviada
+- Corrige distribuição de cotas dentro das faixas de modo a garantir o número de vagas dentro de cada faixa
+- Corrige filtros das tabelas das entidades das páginas de busca
+## [7.4.25] - 2024-10-08
+### Melhorias
+- Implementa novos hooks no painel de controle
+
 ## [7.4.24] - 2024-10-07
 ### Correções
 - Deleta pasta do plugin MultipleLocalAuth 
