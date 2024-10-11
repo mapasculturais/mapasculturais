@@ -181,7 +181,6 @@ $today = new DateTime();
                             <span class="info" v-if="!entity.projectName">
                                 <?= i::__('Nome do projeto não informado') ?>
                             </div>
-                        </div>
                     </template>
                 </mc-card>
 
@@ -256,7 +255,7 @@ $today = new DateTime();
 
                 <?php $phase = $entity;
                 while($phase): $opportunity = $phase->opportunity;?>
-                    <?php if($opportunity->isDataCollection && $today >= $opportunity->registrationFrom):?>
+                    <?php if($opportunity->isDataCollection && $phase->canUser('view')):?>
                         <?php if($opportunity->isFirstPhase):?>
                             <h2><?= i::__('Inscrição') ?></h2>
                         <?php else: ?>
