@@ -32,7 +32,8 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
         Traits\EntityLock,
-        Traits\EntityOpportunities;
+        Traits\EntityOpportunities,
+        Traits\EntityRevision;
         
     protected $__enableMagicGetterHook = true;
 
