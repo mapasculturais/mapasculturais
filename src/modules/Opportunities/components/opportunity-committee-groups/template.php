@@ -100,10 +100,11 @@ $this->import('
 
                     <opportunity-registration-filter-configuration 
                         v-if="entity?.enableRegistrationFilterConfig" 
-                        :entity="entity" 
-                        :group-name="groupName"
+                        :entity="entity"
+                        v-model:default-value="entity.registrationFilterConfig[groupName]"
                         :excludeFields="globalExcludeFields"
                         @updateExcludeFields="updateExcludedFields('global', $event)"
+                        is-global
                     >
                     </opportunity-registration-filter-configuration>
 

@@ -44,11 +44,11 @@ app.component('opportunity-committee-groups', {
     methods: {
         updateExcludedFields(group, selectedField) {
             this.selectedFields[group] = selectedField;
-      
+
             if (group === 'global') {
-              this.individualExcludeFields = [selectedField];
+                this.individualExcludeFields = this.selectedFields.global;
             } else if (group === 'individual') {
-              this.globalExcludeFields = [selectedField];
+                this.globalExcludeFields = this.selectedFields.individual;
             }
         },
 
@@ -99,6 +99,14 @@ app.component('opportunity-committee-groups', {
             this.groups = { ...this.groups, [group]: this.entity.agentRelations[group] };
 
             this.localSubmissionEvaluatorCount[group] = null;
+
+            if(!this.entity?.registrationFilterConfig) {
+                this.entity.registrationFilterConfig = {}
+            }
+
+            if(!this.entity?.registrationFilterConfig[group]) {
+                this.entity.registrationFilterConfig[group] = {}
+            }
 
             this.reorderGroups();
         },
