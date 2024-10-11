@@ -141,6 +141,17 @@ app.component('opportunity-registration-filter-configuration', {
             const [displayKey, value] = tag.split(': ');
             const key = this.dictTypes(displayKey, true);
 
+            if(this.isGlobal) {
+                this.removeGlobal(key, value);
+            } else {
+                this.removeIndividual(key, value);
+            }
+
+            this.loadExcludeFields();
+            this.save();
+        },
+
+        removeGlobal(key, value) {
             if (this.defaultValue && this.defaultValue[key]) {
                 const configArray = this.defaultValue[key];
 
@@ -148,8 +159,62 @@ app.component('opportunity-registration-filter-configuration', {
                 if (index !== -1) {
                     configArray.splice(index, 1);
                 }
+            }
+        },
 
-                this.save();
+        removeIndividual(key, value) {
+            const agentId = this.infoReviewer?.agent?.id;
+        
+            if (!agentId) {
+                return;
+            }
+        
+            if (this.defaultValue && this.defaultValue[agentId] && this.defaultValue[agentId][key]) {
+                const configArray = this.defaultValue[agentId][key];
+                const index = configArray.indexOf(value);
+                
+                if (index !== -1) {
+                    configArray.splice(index, 1);
+                }
+        
+                if (configArray.length === 0) {
+                    delete this.defaultValue[agentId][key];
+                }
+        
+                this.$emit('update:defaultValue', this.defaultValue);
+                return;
+            }
+        
+            const agentData = this.getAgentData();
+        
+            if (agentData && agentData[key]) {
+                const configArray = agentData[key];
+        
+                const index = configArray.indexOf(value);
+                
+                if (index !== -1) {
+                    configArray.splice(index, 1);
+                }
+        
+                if (configArray.length === 0) {
+                    delete agentData[key];
+                }
+        
+                this.updateAgentData(agentId, key, agentData[key]);
+            }
+        },
+        
+        updateAgentData(agentId, key, value) {
+            if (!this.entity.fetchCategories[agentId]) {
+                this.entity.fetchCategories[agentId] = [];
+            }
+        
+            if (key === 'category') {
+                this.entity.fetchCategories[agentId] = value || [];
+            } else if (key === 'proponentType') {
+                this.entity.fetchProponentTypes[agentId] = value || [];
+            } else if (key === 'range') {
+                this.entity.fetchRanges[agentId] = value || [];
             }
         },
 
