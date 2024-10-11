@@ -123,7 +123,7 @@ $today = new DateTime();
 
         <mc-tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
             <div class="registration__content">
-                <mc-card>
+                <mc-card v-if="entity.agentsData.owner">
                     <template #content>
                         <div class="registered-info">
                             <span class="info"> 
