@@ -39,7 +39,7 @@ app.component('panel--registration-tabs', {
                     break;
                 case 'notSent':
                     this.query['status'] = 'EQ(0)';
-                    this.query['@permissions'] = 'view';
+                    this.query['@permissions'] = 'modify';
                     break;
             }
         },
