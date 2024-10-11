@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.26] - 2024-10-11
+### Melhorias
+- Permite que o dono da inscrição visualize as suas inscrições em rascunho mesmo que o período naoe steja aberto
+- Corrige busca de agentes de inscrição no painel Minhas Inscrições
+- Evita que seja exibido o resumo dos agentes caso a inscrição ainda nao esteja enviada
+- Permite que na tela de acompanhamento da inscrição tenha acesso ao formulario qualquer pessoa que tenha permissão de visualização
+
 ## [7.4.25] - 2024-10-08
 ### Melhorias
 - Implementa novos hooks no painel de controle
