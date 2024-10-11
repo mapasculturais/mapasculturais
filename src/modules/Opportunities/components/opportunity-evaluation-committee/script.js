@@ -60,7 +60,8 @@ app.component('opportunity-evaluation-committee', {
             registrationProponentTypes: [
                 ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
-            sendTimeOut: null
+            sendTimeOut: null,
+            fetchConfigs: {}
         }
     },
     

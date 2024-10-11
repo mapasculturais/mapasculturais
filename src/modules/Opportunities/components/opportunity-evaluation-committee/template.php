@@ -104,9 +104,10 @@ $this->import('
             <div class="opportunity-evaluation-committee__card-content">
                 <opportunity-registration-filter-configuration
                     :entity="entity"
-                    groupName="individual"
+                    v-model:default-value="fetchConfigs[infoReviewer.agent.id]"
                     :excludeFields="excludeFields"
                     @updateExcludeFields="$emit('updateExcludeFields', $event)"
+                    :info-reviewer="infoReviewer"
                 />
 
                 <div v-if="infoReviewer.default" class="opportunity-evaluation-committee__change-distributions">
