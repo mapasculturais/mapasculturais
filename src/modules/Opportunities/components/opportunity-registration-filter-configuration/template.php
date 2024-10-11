@@ -64,5 +64,5 @@ $this->import('
         </template>
     </mc-popover>
 
-    <mc-tag-list :tags="tagsList" @remove="removeTag" editable></mc-tag-list>
+    <mc-tag-list :tags="fillTagsList" @remove="removeTag" editable></mc-tag-list>
 </div>

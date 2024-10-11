@@ -1,6 +1,6 @@
 app.component('opportunity-registration-filter-configuration', {
     template: $TEMPLATES['opportunity-registration-filter-configuration'],
-    emits: ['updateExcludeFields'],
+    emits: ['updateExcludeFields', 'update:defaultValue'],
 
     props: {
         entity: {
@@ -8,15 +8,31 @@ app.component('opportunity-registration-filter-configuration', {
             required: true
         },
 
-        groupName: {
-            type: String,
-            required: true
-        },
-
         excludeFields: {
             type: Array,
             required: false,
             default: () => []
+        },
+
+        defaultValue: {
+            type: [Array, Object],
+            default: null,
+        },
+
+        isGlobal: {
+            type: Boolean,
+            default: false
+        },
+
+        infoReviewer: {
+            type: Object,
+            required: false
+        }
+    },
+
+    watch: {
+        defaultValue(newValue, oldValue) {
+            this.$emit('update:defaultValue', newValue);
         }
     },
 
@@ -27,7 +43,9 @@ app.component('opportunity-registration-filter-configuration', {
             registrationRanges: $MAPAS.opportunityPhases[0].registrationRanges?.map(range => range.label) ?? [],
             selectedField: '',
             selectedConfigs: [],
-            tagsList: []
+            tagsList: [],
+            configs: {},
+            localExcludeFields: []
         }
     },
 
@@ -38,32 +56,63 @@ app.component('opportunity-registration-filter-configuration', {
                 proponentTypes: this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType')),
                 ranges: this.registrationRanges.filter(range => !this.excludeFields.includes('range'))
             };
+        },
+
+        fillTagsList() {
+            let groupData = this.defaultValue || {};
+            this.tagsList = [];
+
+            if (!this.isGlobal) {
+                groupData = this.getAgentData() || {};
+            }
+
+            Object.entries(groupData).forEach(([key, values]) => {
+                if (Array.isArray(values)) {
+                    values.forEach(value => {
+                        const tag = `${this.dictTypes(key)}: ${value}`;
+                        if (!this.tagsList.includes(tag)) {
+                            this.tagsList.push(tag);
+                        }
+                    });
+                }
+            });
+
+            return this.tagsList;
         }
     },
 
     methods: {
+        loadExcludeFields() {
+            this.localExcludeFields = [];
+
+            const tags = this.fillTagsList || [];
+            
+            tags.forEach(tag => {
+                const [displayKey] = tag.split(': ');
+                const key = this.dictTypes(displayKey, true);
+            
+               this.localExcludeFields.push(key);
+            });
+            
+            this.$emit('updateExcludeFields', this.localExcludeFields);
+        },
+
         isFieldExcluded(field) {
             return this.excludeFields.includes(field);
         },
-        
+
         addConfig() {
-            if (!this.entity.registrationFilterConfig) {
-                this.entity.registrationFilterConfig = {};
-            }
-        
-            if (!this.entity.registrationFilterConfig[this.groupName]) {
-                this.entity.registrationFilterConfig[this.groupName] = {};
-            }
-        
-            if (!this.entity.registrationFilterConfig[this.groupName][this.selectedField]) {
-                this.entity.registrationFilterConfig[this.groupName][this.selectedField] = [];
-            }
-        
-            this.entity.registrationFilterConfig[this.groupName][this.selectedField] = [...this.selectedConfigs];
+            this.configs = this.defaultValue ?? {};
 
-            this.$emit('updateExcludeFields', this.selectedField);
+            if (!this.isGlobal) {
+                this.evaluatorConfig();
+            } else {
+                this.globalConfig();
+            }
 
-            this.fillTagsList();
+            this.$emit('update:defaultValue', this.configs);
+            this.loadExcludeFields();
+
             this.save();
         },
 
@@ -83,47 +132,126 @@ app.component('opportunity-registration-filter-configuration', {
                 const reversedDictionary = Object.fromEntries(Object.entries(typeDictionary).map(([key, value]) => [value, key]));
                 return reversedDictionary[type] || type;
             }
-        
-        
+
+
             return typeDictionary[type] || type;
-        },
-
-        fillTagsList() {
-            if (!this.entity?.registrationFilterConfig || !this.entity.registrationFilterConfig[this.groupName]) {
-                return;
-            }
-
-            let groupData = this.entity?.registrationFilterConfig[this.groupName] || {};
-            this.tagsList = [];
-            
-            Object.entries(groupData).forEach(([key, values]) => {
-                if (Array.isArray(values)) {
-                    values.forEach(value => {
-                        this.tagsList.push(`${this.dictTypes(key)}: ${value}`);
-                    });
-                }
-            });
         },
 
         removeTag(tag) {
             const [displayKey, value] = tag.split(': ');
             const key = this.dictTypes(displayKey, true);
-        
-            if (this.entity.registrationFilterConfig[this.groupName] && this.entity.registrationFilterConfig[this.groupName][key]) {
-                const configArray = this.entity.registrationFilterConfig[this.groupName][key];
-        
+
+            if (this.defaultValue && this.defaultValue[key]) {
+                const configArray = this.defaultValue[key];
+
                 const index = configArray.indexOf(value);
                 if (index !== -1) {
                     configArray.splice(index, 1);
                 }
-        
-                this.fillTagsList();
+
                 this.save();
             }
+        },
+
+        globalConfig() {
+            if (!this.configs[this.selectedField]) {
+                this.configs[this.selectedField] = [];
+            }
+
+            this.selectedConfigs.forEach(config => {
+                if (!this.configs[this.selectedField].includes(config)) {
+                    this.configs[this.selectedField].push(config);
+                }
+            });
+        },
+
+        evaluatorConfig() {
+            const agentId = this.infoReviewer.agent.id;
+
+            if (!this.configs[agentId]) {
+                this.configs[agentId] = {};
+            }
+
+            if (!this.configs[agentId][this.selectedField]) {
+                this.configs[agentId][this.selectedField] = []; 
+            }
+
+            this.configs[agentId][this.selectedField] = [...this.selectedConfigs];
+
+            this.selectedConfigs.forEach(config => {
+                if (!this.configs[agentId][this.selectedField].includes(config)) {
+                    this.configs[agentId][this.selectedField].push(config);
+                }
+            });
+
+            Object.entries(this.configs).forEach(([agentId, values]) => {
+                Object.entries(values).forEach(([key, configs]) => {
+                    if (Array.isArray(configs)) {
+                        if (key === 'proponentType') {
+                            if (!this.entity.fetchProponentTypes[agentId]) {
+                                this.entity.fetchProponentTypes[agentId] = [];
+                            }
+
+                            configs.forEach(config => {
+                                if (!this.entity.fetchProponentTypes[agentId].includes(config)) {
+                                    this.entity.fetchProponentTypes[agentId].push(config);
+                                }
+                            });
+
+                        } else if (key === 'category') {
+                            if (!this.entity.fetchCategories[agentId]) {
+                                this.entity.fetchCategories[agentId] = [];
+                            }
+
+                            configs.forEach(config => {
+                                if (!this.entity.fetchCategories[agentId].includes(config)) {
+                                    this.entity.fetchCategories[agentId].push(config);
+                                }
+                            });
+
+                        } else if (key === 'range') {
+                            if (!this.entity.fetchRanges[agentId]) {
+                                this.entity.fetchRanges[agentId] = [];
+                            }
+
+                            configs.forEach(config => {
+                                if (!this.entity.fetchRanges[agentId].includes(config)) {
+                                    this.entity.fetchRanges[agentId].push(config);
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+        },
+
+        getAgentData() {
+            const agentId = this.infoReviewer?.agent?.id;
+
+            if (!agentId) {
+                return null;
+            }
+
+            let agentData = {};
+
+            if (this.entity.fetchCategories && this.entity.fetchCategories[agentId]) {
+                agentData['category'] = this.entity.fetchCategories[agentId];
+            }
+
+            if (this.entity.fetchProponentTypes && this.entity.fetchProponentTypes[agentId]) {
+                agentData['proponentType'] = this.entity.fetchProponentTypes[agentId];
+            }
+
+            if (this.entity.fetchRanges && this.entity.fetchRanges[agentId]) {
+                agentData['range'] = this.entity.fetchRanges[agentId];
+            }
+
+            return agentData;
         }
     },
 
     mounted() {
-        this.fillTagsList();
+        this.loadExcludeFields();
     }
 }); 
