@@ -33,7 +33,7 @@
         &--title {
             label.title {
                 font-size: $font-size-lg;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 line-height: size(44);
             }
         }
@@ -60,7 +60,7 @@
 
                 .name {
                     font-size: $font-size-md;
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     line-height: size(33);
                 }
             }

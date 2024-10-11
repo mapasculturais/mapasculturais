@@ -19,7 +19,7 @@
                 border: var(--mc-border-hairline) var(--mc-gray-500);
                 border-radius: var(--mc-border-radius-pill) 0 0 var(--mc-border-radius-pill);
                 border-right: none;
-                font-weight: 400;
+                font-weight: $font-weight-semibold;
                 font-size: $font-size-xs;
                 line-height: size(19);
                 margin: 0;
@@ -61,7 +61,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-weight: bold;
+            font-weight: $font-weight-bold;
             font-size: $font-size-xs;
 
             &.clear-filter:hover,
@@ -83,7 +83,7 @@
             &__label {
                 color: var(--mc-primary-500);
                 display: inline-block;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 font-size: $font-size-sm;
                 line-height: size(25);
                 margin-bottom: size(15);
@@ -178,7 +178,7 @@
                         display: flex;
                         align-items: center;
                         gap: 8px;
-                        font-weight: bold;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-xs;
 
                     }
@@ -213,7 +213,7 @@
                         display: flex;
                         align-items: center;
                         gap: 8px;
-                        font-weight: bold;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-xs;
 
                     }
@@ -254,7 +254,7 @@
 
             &--form {
                 &-input {
-                    font-weight: 400;
+                    font-weight: $font-weight-regular;
                     font-size: $font-size-xs;
                     line-height: size(19);
                     min-width: unset;

@@ -60,7 +60,7 @@
         
                 .title {
                     font-size: $font-size-sm;
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     line-height: size(25);
                     text-transform: uppercase;
                     display: flex;
@@ -93,7 +93,7 @@
                     .title {
                         color: var(--mc-low-500);                
                         font-size: $font-size-xs;
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         line-height: size(22);
                         margin: 0;
                         text-transform: uppercase;
@@ -102,7 +102,7 @@
                     .data {
                         color: var(--mc-low-500);  
                         font-size: $font-size-xs;
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         line-height: size(22);
                         margin: 0;
                     }

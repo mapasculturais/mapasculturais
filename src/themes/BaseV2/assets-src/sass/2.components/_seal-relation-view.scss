@@ -18,7 +18,7 @@
 		align-items: center;
 		a {
 			text-decoration: none;
-			font-weight: bold;
+			font-weight: $font-weight-bold;
 			color: #0A66C2;
 			text-transform: none;
 		}
@@ -52,14 +52,14 @@
 			width: 80%;
 			margin: 80px auto 60px auto;
 			h3 {
-				font-weight: 700;
+				font-weight: $font-weight-bold;
 				font-size: $font-size-md;
 				line-height: 28px;
 				text-align: center;
 				color: #000000;
 			}
 			p {
-				font-weight: 400;
+				font-weight: $font-weight-semibold;
 				font-size: $font-size-xs;
 				line-height: 22px;
 				text-align: center;

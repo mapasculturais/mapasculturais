@@ -106,7 +106,7 @@
 
                     &__title {
                         font-size: $font-size-lg;
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         line-height: size(44);
                     }
                 }
@@ -136,7 +136,7 @@
 
             &-subtitle {
                 font-size: $font-size-xs;
-                font-weight: 400;
+                font-weight: $font-weight-regular;
                 line-height: size(22);
                 margin: size(14) 0 size(24);
             }
@@ -176,7 +176,7 @@
                 }
 
                 select {
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     font-size: $font-size-xxs;
                     line-height: size(18);
                     appearance: none;
@@ -188,7 +188,7 @@
                 }
 
                 label {
-                    font-weight: 600;
+                    font-weight: $font-weight-semibold;
                     font-size: $font-size-xxs;
                     line-height: size(19);
                 }

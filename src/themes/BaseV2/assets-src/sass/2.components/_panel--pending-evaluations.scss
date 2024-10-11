@@ -4,14 +4,14 @@
 
     &__title {
         font-size: $font-size-md;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         line-height: size(28);
         margin-bottom: size(16);
     }
 
     @media (max-width:size(400)) {
         &__title {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-sm;
             line-height: 25px;
         }
@@ -19,7 +19,7 @@
 
     &__phase-name {
         color: var(--mc-opportunities-700);
-        font-weight: bold;
+        font-weight: $font-weight-bold;
     }
 
     &__content {
@@ -168,7 +168,7 @@
                     }
 
                     &__main {
-                        font-weight: 400;
+                        font-weight: $font-weight-regular;
                         font-size: $font-size-xxxs;
                         line-height: size(16);
                         text-align: left;
@@ -182,7 +182,7 @@
                                     label {
                                         font-family: 'Open Sans';
                                         font-style: normal;
-                                        font-weight: 400;
+                                        font-weight: $font-weight-regular;
                                         font-size: $font-size-xxs;
                                         line-height: 19px;
                                     }
@@ -190,7 +190,7 @@
 
                                 .entity-strong {
                                     color: var(--mc-opportunities-500);
-                                    font-weight: 700;
+                                    font-weight: $font-weight-bold;
                                     font-size: $font-size-xxs;
                                 }
                             }
@@ -204,12 +204,12 @@
 
                                 &--label {
 
-                                    font-weight: 400;
+                                    font-weight: $font-weight-regular;
                                 }
 
                                 &--strong {
                                     a {
-                                        font-weight: 700;
+                                        font-weight: $font-weight-bold;
                                         text-decoration: none;
                                     }
                                 }

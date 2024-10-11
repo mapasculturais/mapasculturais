@@ -75,7 +75,7 @@
         color: var(--mc-gray-700);
         font-family: var(--mc-font-body);
         font-size: $font-size-sm;
-        font-weight: bold;
+        font-weight: $font-weight-bold;
         width: 100%;
 
         .iconify {
@@ -132,7 +132,7 @@
         transition: all 0.2s ease-in-out;
         padding: size(8) size(16);
         font-size: $font-size-xxs;
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
         font-family: 'Open Sans';
         text-decoration: none;
 
