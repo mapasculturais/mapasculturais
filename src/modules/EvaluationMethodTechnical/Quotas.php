@@ -210,7 +210,9 @@ class Quotas {
 
         foreach($this->quotaRules as $rule) {
             foreach($rule->fields as $field) {
-                $fields[] = $field->fieldName;
+                if($field && $field->fieldName) {
+                    $fields[] = $field->fieldName;
+                }
             }
         }
 
@@ -300,35 +302,37 @@ class Quotas {
 
         $registration_proponent_type = $registration->proponentType ?: 'default';
 
-        $field = $this->geoDivisionFields->$registration_proponent_type;
+        $field = isset($this->geoDivisionFields->$registration_proponent_type) ? $this->geoDivisionFields->$registration_proponent_type : null;
 
-        if($field == 'geo') {
-            $opportunity_proponent_types = $this->firstPhase->registrationProponentTypes;
-            $proponent_types2agents_map = $app->config['registration.proponentTypesToAgentsMap'];
-            
-            $proponent_type = $registration->proponentType;
-
-            if(!$opportunity_proponent_types) {
-                $agent_data = $registration->agentsData['owner'];
+        $region = "";
+        if($field) {
+            if($field == 'geo') {
+                $opportunity_proponent_types = $this->firstPhase->registrationProponentTypes;
+                $proponent_types2agents_map = $app->config['registration.proponentTypesToAgentsMap'];
+                
+                $proponent_type = $registration->proponentType;
+    
+                if(!$opportunity_proponent_types) {
+                    $agent_data = $registration->agentsData['owner'];
+                } else {
+                    $agent_key = $proponent_types2agents_map[$proponent_type] ?? null;
+                    $agent_data = $registration->agentsData[$agent_key] ?? null;
+                }
+    
+                // ISSO NÃO DEVERIA SER POSSÍVEL
+                if(!$agent_data) {
+                    $agent_data = $registration->agentsData['owner'];
+                }
+    
+                $meta = $this->geoDivision;
+                $region =  $agent_data[$meta] ?? '';
             } else {
-                $agent_key = $proponent_types2agents_map[$proponent_type] ?? null;
-                $agent_data = $registration->agentsData[$agent_key] ?? null;
+                $region = $registration->$field;
             }
-
-            // ISSO NÃO DEVERIA SER POSSÍVEL
-            if(!$agent_data) {
-                $agent_data = $registration->agentsData['owner'];
-            }
-
-            $meta = $this->geoDivision;
-            $region =  $agent_data[$meta] ?? '';
-        } else {
-            $region = $registration->$field;
+    
+            $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
+            $this->registrationFields[$registration->id]['region'] = $region;
         }
-
-        $this->registrationFields[$registration->id] = $this->registrationFields[$registration->id] ?? [];
-        $this->registrationFields[$registration->id]['region'] = $region;
-
 
         if(in_array($region, $this->geoLocations)) {
             return $region;
@@ -607,8 +611,8 @@ class Quotas {
             $proponent_type = $registration->proponentType ?? 'default';
 
             foreach($this->quotaRules as $rule) {
-                $field_name = $rule->fields->$proponent_type->fieldName;
-                if(in_array($registration->$field_name, $rule->fields->$proponent_type->eligibleValues)) {
+                $field_name = in_array($proponent_type, $rule->fields) ? $rule->fields->$proponent_type->fieldName :  null;
+                if($field_name && in_array($registration->$field_name, $rule->fields->$proponent_type->eligibleValues)) {
                     $result[] = $this->getQuotaTypeSlugByRule($rule);
                     $quotas[] = $rule->title;
                 }
@@ -699,6 +703,7 @@ class Quotas {
             }
         }
         
+        $evaluation_data = [];
         if($must_fetch_evaluation_data) {
             $evaluation_data = $this->fetchEvaluationData($registrations);
         }

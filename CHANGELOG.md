@@ -5,6 +5,16 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [7.5.3] - 2024-10-11
+### Correções
+- Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
+- Corrige erro na seleção dos campos visíveis para o avaliador
+
+### Melhorias
+- Implementa registro de histórico de revisões para os projetos
+- Ajusta permissão de deleção de agentes para permitir que admnistradores possam deletar agentes de perfil
+- Faz com que o botão de excluir entidades no card da gestão de usuários seja exibido para qualquer usuário do grupo admin
+
 ## [7.4.26] - 2024-10-11
 ### Melhorias
 - Permite que o dono da inscrição visualize as suas inscrições em rascunho mesmo que o período naoe steja aberto
@@ -14,7 +24,6 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.5.2] - 2024-10-10
 ### Correções
-- Corrige erro que deixa gestor da oportunidade sem permissão de modificar uma inscrição enviada
 - Corrige distribuição de cotas dentro das faixas de modo a garantir o número de vagas dentro de cada faixa
 - Corrige filtros das tabelas das entidades das páginas de busca
 
