@@ -79,14 +79,14 @@ $this->import('
                     <div class="field">
                         <div class="field__group">
                             <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.enableRegistrationFilterConfig"/>
+                                <input type="checkbox" :checked="Object.keys(entity?.registrationFilterConfig[groupName]).length > 0" @click="enableRegisterFilterConf($event, groupName)"/>
                                 <?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>
                             </label>
                         </div>
                     </div>
 
                     <opportunity-registration-filter-configuration 
-                        v-if="entity?.enableRegistrationFilterConfig" 
+                        v-if="entity?.registrationFilterConfig[groupName]" 
                         :entity="entity"
                         v-model:default-value="entity.registrationFilterConfig[groupName]"
                         :excludeFields="globalExcludeFields"
