@@ -19,7 +19,7 @@ trait EntityManagerModel {
         $this->generateEvaluationMethods();
         $this->generatePhases();
         $this->generateMetadata();
-        $this->generateRegistrationFieldsAndFiles();
+        $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
         $this->generateSealsRelations();
 
         $this->entityOpportunityModel->save(true);
@@ -43,7 +43,7 @@ trait EntityManagerModel {
         $this->generateEvaluationMethods();
         $this->generatePhases();
         $this->generateMetadata(0, 0);
-        $this->generateRegistrationFieldsAndFiles();
+        $this->generateRegistrationFieldsAndFiles($this->entityOpportunity, $this->entityOpportunityModel);
 
         $this->entityOpportunityModel->save(true);
        
@@ -224,6 +224,8 @@ trait EntityManagerModel {
                     }
                 }
 
+                $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
+
                 $newPhase->save(true);
 
                 $this->changeObjectType($newPhase->id);
@@ -282,17 +284,17 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->saveTerms();
     }
 
-    private function generateRegistrationFieldsAndFiles() : void
+    private function generateRegistrationFieldsAndFiles($opportunityCurrent, $opportunityNew) : void
     {
-        foreach ($this->entityOpportunity->getRegistrationFieldConfigurations() as $registrationFieldConfiguration) {
+        foreach ($opportunityCurrent->getRegistrationFieldConfigurations() as $registrationFieldConfiguration) {
             $fieldConfiguration = clone $registrationFieldConfiguration;
-            $fieldConfiguration->setOwnerId($this->entityOpportunityModel->id);
+            $fieldConfiguration->setOwnerId($opportunityNew->id);
             $fieldConfiguration->save(true);
         }
 
-        foreach ($this->entityOpportunity->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
+        foreach ($opportunityCurrent->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
             $fileConfiguration = clone $registrationFileConfiguration;
-            $fileConfiguration->setOwnerId($this->entityOpportunityModel->id);
+            $fileConfiguration->setOwnerId($opportunityNew->id);
             $fileConfiguration->save(true);
         }
     }
