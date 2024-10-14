@@ -180,11 +180,14 @@ app.component('opportunity-registration-filter-configuration', {
                     configArray.splice(index, 1);
                 }
         
+                let newDefaultValue = configArray
+
                 if (configArray.length === 0) {
                     delete this.defaultValue[agentId][key];
+                    newDefaultValue = this.defaultValue;
                 }
         
-                this.$emit('update:defaultValue', this.defaultValue);
+                this.$emit('update:defaultValue', newDefaultValue);
                 return;
             }
         
@@ -219,7 +222,11 @@ app.component('opportunity-registration-filter-configuration', {
             } else if (key === 'range') {
                 this.entity.fetchRanges[agentId] = value || [];
             } else {
-                this.entity.fetchSelectionFields[agentId] = value || [];
+                this.entity.fetchSelectionFields[agentId][key] = value || {};
+
+                if (Object.keys(this.entity.fetchSelectionFields[agentId][key]).length === 0) {
+                    delete this.entity.fetchSelectionFields[agentId][key];
+                }
             }
         },
 
