@@ -208,6 +208,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $config_fetchCategories = is_array($config->fetchCategories) ? $config->fetchCategories : (array) $config->fetchCategories;
             $config_ranges = is_array($config->fetchRanges) ? $config->fetchRanges : (array) $config->fetchRanges;
             $config_proponent_types = is_array($config->fetchProponentTypes) ? $config->fetchProponentTypes : (array) $config->fetchProponentTypes;
+            $config_selection_fields = is_array($config->fetchSelectionFields) ? $config->fetchSelectionFields : (array) $config->fetchSelectionFields;
 
             if(is_array($config_fetch)){
                 foreach($config_fetch as $id => $val){
@@ -218,6 +219,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             if(is_array($config_fetchCategories)){
                 foreach($config_fetchCategories as $id => $val){
                     $fetch_categories [(int)$id] = $val;
+                }
+            }
+
+            $fetch_selection_fields = [];
+            if(is_array($config_selection_fields)) {
+                foreach($config_selection_fields as $id => $fields) {
+                    foreach($fields as $field => $val) {
+                        $fetch_selection_fields [(int)$id][$field] = $val;
+                    }
                 }
             }
 
@@ -322,6 +332,37 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         if(!$found) {
                             $can = false;
                         }
+                    }
+                }
+            }
+            
+            if(isset($fetch_selection_fields[$user->id])){
+                $uselection_fields = $fetch_selection_fields[$user->id];
+                if($uselection_fields){
+                    if($uselection_fields){
+                        $found_selection_fields = false;
+                        
+                        /** @var Opportunity $opportunity */
+                        $opportunity = $registration->opportunity;
+                        $opportunity->registerRegistrationMetadata();
+                        $fields = $opportunity->registrationFieldConfigurations;
+
+                        $field_name = [];
+                        foreach($fields as $field) {
+                            $field_name[$field->title] = $field->fieldName;
+                        }
+
+                        foreach($uselection_fields as $key => $values){
+                            foreach($values as $val) {
+                                $val = trim($val);
+                                
+                                if(strtolower((string)$registration->metadata[$field_name[$key]]) === strtolower($val)){
+                                    $found_selection_fields = true;
+                                }
+                            }
+                        }
+
+                        $can = $found_selection_fields ? true : false;
                     }
                 }
             }
