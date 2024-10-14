@@ -9,7 +9,7 @@
         &__title {
             font-family: 'Open Sans';
             font-style: normal;
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-md;
             line-height: size(28);
             margin-left: size(16);
@@ -34,7 +34,7 @@
     .field label {
         font-family: 'Open Sans';
         font-style: normal;
-        font-weight: 600;
+        font-weight: $font-weight-semibold;
         font-size: $font-size-xxs;
         line-height: size(19);
     }
@@ -67,7 +67,7 @@
     &__select {
         font-family: 'Open Sans';
         font-style: normal;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         font-size: $font-size-xs;
         line-height: size(22);
         margin-bottom: size(12);
@@ -98,7 +98,7 @@
     &__title {
         font-family: 'Open Sans';
         font-style: normal;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         font-size: $font-size-xxs;
         line-height: size(19);
 
@@ -110,7 +110,7 @@
     &__label {
         font-family: 'Open Sans';
         font-style: normal;
-        font-weight: 400;
+        font-weight: $font-weight-regular;
         font-size: $font-size-xxxs;
         line-height: size(16);
         margin-right: size(13);

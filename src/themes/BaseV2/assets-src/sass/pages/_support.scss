@@ -3,7 +3,7 @@
 .controller-support {
     &.action-list {
         .title {
-            font-weight: 700;
+            font-weight: $font-weight-bold;
             font-size: $font-size-lg;
             line-height: size(44);
         }
@@ -20,7 +20,7 @@
                 padding: 0 size(16);
 
                 .title {
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     font-size: $font-size-lg;
                     line-height: size(44);
                 }
@@ -57,7 +57,7 @@
                     }
 
                     &__name {
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-sm;
                         line-height: size(25);
                     }
@@ -66,7 +66,7 @@
                 .support-info {
                     &__title {
                         font-size: $font-size-md;
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         line-height: size(28);
                         margin: 0 0 size(13);
                     }
@@ -88,14 +88,14 @@
 
                             &__title {
                                 font-size: $font-size-xxs;
-                                font-weight: 600;
+                                font-weight: $font-weight-semibold;
                                 line-height: size(19);
                             }
 
                             &__info {
                                 color: var(--mc-opportunities-500);
                                 font-size: $font-size-sm;
-                                font-weight: 700;
+                                font-weight: $font-weight-bold;
                                 line-height: size(25);
                             }
                         }
@@ -113,13 +113,13 @@
                             .data {
                                 &__title {
                                     font-size: $font-size-xxxs;
-                                    font-weight: 600;
+                                    font-weight: $font-weight-semibold;
                                     line-height: size(16);
                                 }
 
                                 &__info {
                                     font-size: $font-size-xxs;
-                                    font-weight: 700;
+                                    font-weight: $font-weight-bold;
                                     line-height: size(22);
                                 }
                             }

@@ -87,7 +87,7 @@
     &__user {
         display: flex;
         font-size: $font-size-md;
-        font-weight: 700;
+        font-weight: $font-weight-bold;
         justify-content: space-between;
         line-height: size(33);
         width: 100%;
@@ -143,7 +143,7 @@
 
                 .seal-label {
                     font-size: $font-size-xxs;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
                     line-height: size(19);
                 }
             }

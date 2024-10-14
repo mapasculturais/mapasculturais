@@ -77,12 +77,12 @@
                 &-label {
                     line-height: size(65);
                     font-size: $font-size-xl;
-                    font-weight: 700;
+                    font-weight: $font-weight-bold;
 
                     @media (max-width: size(500)) {
                         line-height: size(33);
                         font-size: $font-size-md;
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                     }
                 }
             }
@@ -104,7 +104,7 @@
         &--before {
             line-height: size(22);
             font-size: $font-size-xs;
-            font-weight: 600;
+            font-weight: $font-weight-semibold;
 
             @media (max-width: size(500)) {
                 line-height: size(20);
@@ -165,7 +165,7 @@
 
             .tabs-component__button {
                 font-size: $font-size-xxs;
-                font-weight: 700;
+                font-weight: $font-weight-bold;
                 line-height: size(19);
 
                 a {
@@ -232,7 +232,7 @@
                     .foundResults {
                         background-color: var(--mc-white);
                         border-radius: var(--mc-border-radius-sm);
-                        font-weight: 700;
+                        font-weight: $font-weight-bold;
                         font-size: $font-size-xxs;
                         line-height: size(18);
                         padding: size(11) size(16);
@@ -299,7 +299,7 @@
                     }
 
                     .user-info__attr {
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         font-size: $font-size-xxs;
 
                         .upper {
@@ -351,7 +351,7 @@
 
                                 label {
                                     font-size: $font-size-sm;
-                                    font-weight: 600;
+                                    font-weight: $font-weight-semibold;
                                 }
                             }
                         }
@@ -430,7 +430,7 @@
 
                     &--close {
                         float: right;
-                        font-weight: 600;
+                        font-weight: $font-weight-semibold;
                         font-size: $font-size-xs;
                         line-height: size(22);
                         color: var(--mc-low-700);
@@ -457,7 +457,7 @@
                         }
 
                         &-label {
-                            font-weight: 600;
+                            font-weight: $font-weight-semibold;
                             font-size: $font-size-xxs;
                             line-height: size(19);
                         }
@@ -470,7 +470,7 @@
                         border-radius: var(--mc-border-radius-xs);
 
                         &-title {
-                            font-weight: 600;
+                            font-weight: $font-weight-semibold;
                             font-size: $font-size-xs;
                             line-height: size(22);
                         }
@@ -498,7 +498,7 @@
                                 text-decoration: none;
                                 color: var(--mc-low-500);
                                 margin: size(16) 0;
-                                font-weight: 700;
+                                font-weight: $font-weight-bold;
                                 font-size: $font-size-sm;
                                 line-height: size(25);
                             }

@@ -192,7 +192,7 @@
                                 .sentDate {
                                     color: var(--mc-low-700);
                                     font-size: $font-size-sm;
-                                    font-weight: 600;
+                                    font-weight: $font-weight-semibold;
                                     line-height: size(25);
                                 }
                             }
@@ -280,7 +280,7 @@
                                             gap: 0;
 
                                             &__label {
-                                                font-weight: 600;
+                                                font-weight: $font-weight-semibold;
                                             }
 
                                             &__info {
@@ -436,7 +436,7 @@
 
                                 &__subtitle {
                                     font-size: $font-size-xxxs;
-                                    font-weight: 400;
+                                    font-weight: $font-weight-regular;
                                     line-height: size(16);
                                 }
 
@@ -500,7 +500,7 @@
                             .errors {
                                 color: var(--mc-error);
                                 font-size: $font-size-xxs;
-                                font-weight: 600;
+                                font-weight: $font-weight-semibold;
                                 margin-top: size(10);
                                 width: 100%;
                             }
