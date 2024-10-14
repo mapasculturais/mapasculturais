@@ -681,13 +681,6 @@ class Module extends \MapasCulturais\Module{
             'default' => false
         ]);
         
-        // TODO: RETIRAR ESSE METADATA
-        $this->registerEvauationMethodConfigurationMetadata('enableRegistrationFilterConfig', [
-            'label' => i::__('Habilitar configuração filtro de inscrição para avaliadores/comissão'),
-            'type' => 'boolean',
-            'default' => false
-        ]);
-        
         $this->registerEvauationMethodConfigurationMetadata('registrationFilterConfig', [
             'label' => i::__('Configuração filtro de inscrição para avaliadores/comissão'),
             'type' => 'json',
