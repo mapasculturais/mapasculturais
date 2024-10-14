@@ -12,11 +12,6 @@ app.component('opportunity-evaluation-committee', {
         }
     },
 
-    setup() {
-        const text = Utils.getTexts('opportunity-evaluations-list');
-        return { text }
-    },
-
     computed: {
         query() {
             return {
@@ -93,7 +88,10 @@ app.component('opportunity-evaluation-committee', {
             let url = api.createApiUrl('evaluationCommittee', args);
             
             api.GET(url).then(res => res.json()).then(data => {
-                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group);
+                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group).map(reviewer => ({
+                    ...reviewer,
+                    isContentVisible: false,
+                }));
                 this.showReviewers = Object.keys(this.infosReviewers).length > 0;
                 this.ReviewerSelect = false;
                 this.loadFetchs();
@@ -240,6 +238,19 @@ app.component('opportunity-evaluation-committee', {
 
                 });
             }
+        },
+
+        toggleContent(reviewerId) {
+            const reviewer = this.infosReviewers.find(r => r.id === reviewerId);
+            if (reviewer) {
+                reviewer.isContentVisible = !reviewer.isContentVisible;
+            }
+        },
+
+        expandAllToggles() {
+            this.infosReviewers.forEach(reviewer => {
+                reviewer.isContentVisible = true;
+            });
         },
     },
 });
