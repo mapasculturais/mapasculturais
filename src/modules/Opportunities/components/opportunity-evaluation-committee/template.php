@@ -14,6 +14,7 @@ $this->import('
     mc-multiselect
     mc-tag-list
     select-entity
+    opportunity-registration-filter-configuration
 ');
 ?>
 <div class="opportunity-evaluation-committee">        
@@ -76,6 +77,13 @@ $this->import('
             </div>
 
             <div class="opportunity-evaluation-committee__card-content" v-if="infoReviewer.isContentVisible">
+                <opportunity-registration-filter-configuration
+                        :entity="entity"
+                        v-model:default-value="fetchConfigs[infoReviewer.agent.id]"
+                        :excludeFields="excludeFields"
+                        @updateExcludeFields="$emit('updateExcludeFields', $event)"
+                        :info-reviewer="infoReviewer"
+                    />
                 <div class="opportunity-evaluation-committee__card-distribution">
                     <div v-if="infoReviewer.default" class="opportunity-evaluation-committee__change-distributions">
                         <mc-alert type="warning"><?= i::__('Essa pessoa irá avaliar todas as inscrições')?></mc-alert>
