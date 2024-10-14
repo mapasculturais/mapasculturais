@@ -692,5 +692,10 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Configuração filtro de inscrição para avaliadores/comissão'),
             'type' => 'json',
         ]);
+        
+        $this->registerEvauationMethodConfigurationMetadata('fetchSelectionFields', [
+            'label' => i::__('Configuração de campos de seleção'),
+            'type' => 'json',
+        ]);
     }
 }
