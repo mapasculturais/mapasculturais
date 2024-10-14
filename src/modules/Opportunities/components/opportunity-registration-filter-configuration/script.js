@@ -41,6 +41,10 @@ app.component('opportunity-registration-filter-configuration', {
             registrationCategories: $MAPAS.opportunityPhases[0].registrationCategories ?? [],
             registrationProponentTypes: $MAPAS.opportunityPhases[0].registrationProponentTypes ?? [],
             registrationRanges: $MAPAS.opportunityPhases[0].registrationRanges?.map(range => range.label) ?? [],
+            registrationSelectionFields: $MAPAS.config.fetchSelectFields?.reduce((acc, fields) => {
+                acc[fields.title] = fields.fieldOptions;
+                return acc;
+            }, {}) ?? {},
             selectedField: '',
             selectedConfigs: [],
             tagsList: [],
@@ -104,15 +108,14 @@ app.component('opportunity-registration-filter-configuration', {
         addConfig() {
             this.configs = this.defaultValue ?? {};
 
-            if (!this.isGlobal) {
-                this.evaluatorConfig();
-            } else {
+            if (this.isGlobal) {
                 this.globalConfig();
+            } else {
+                this.evaluatorConfig();
             }
 
             this.$emit('update:defaultValue', this.configs);
             this.loadExcludeFields();
-
             this.save();
         },
 
@@ -125,7 +128,7 @@ app.component('opportunity-registration-filter-configuration', {
                 'category': 'Categoria',
                 'proponentType': 'Tipos do proponente',
                 'range': 'Faixa/Linha',
-                'distribution': 'Distribuição'
+                'distribution': 'Distribuição',
             };
 
             if (reverse) {
@@ -215,6 +218,8 @@ app.component('opportunity-registration-filter-configuration', {
                 this.entity.fetchProponentTypes[agentId] = value || [];
             } else if (key === 'range') {
                 this.entity.fetchRanges[agentId] = value || [];
+            } else {
+                this.entity.fetchSelectionFields[agentId] = value || [];
             }
         },
 
@@ -232,6 +237,7 @@ app.component('opportunity-registration-filter-configuration', {
 
         evaluatorConfig() {
             const agentId = this.infoReviewer.agent.id;
+            const options = ['category', 'range', 'proponentType'];
 
             if (!this.configs[agentId]) {
                 this.configs[agentId] = {};
@@ -284,11 +290,28 @@ app.component('opportunity-registration-filter-configuration', {
                                     this.entity.fetchRanges[agentId].push(config);
                                 }
                             });
+                        } else if (!options.includes(this.selectedField)) {
+                            if(!this.entity.fetchSelectionFields) {
+                                this.entity.fetchSelectionFields = {};
+                            }
+
+                            if (!this.entity.fetchSelectionFields[agentId]) {
+                                this.entity.fetchSelectionFields[agentId] = {};
+                            }
+                            
+                            if (!this.entity.fetchSelectionFields[agentId][this.selectedField]) {
+                                this.entity.fetchSelectionFields[agentId][this.selectedField] = [];
+                            }
+                            
+                            configs.forEach(config => {
+                                if (!this.entity.fetchSelectionFields[agentId][this.selectedField].includes(config)) {
+                                    this.entity.fetchSelectionFields[agentId][this.selectedField].push(config);
+                                }
+                            });
                         }
                     }
                 });
             });
-
         },
 
         getAgentData() {
@@ -310,6 +333,12 @@ app.component('opportunity-registration-filter-configuration', {
 
             if (this.entity.fetchRanges && this.entity.fetchRanges[agentId]) {
                 agentData['range'] = this.entity.fetchRanges[agentId];
+            } 
+            
+            if (this.entity.fetchSelectionFields && this.entity.fetchSelectionFields[agentId]) {
+                for (const field in this.entity.fetchSelectionFields[agentId]) {
+                    agentData[field] = this.entity.fetchSelectionFields[agentId][field];
+                }
             }
 
             return agentData;
