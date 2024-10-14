@@ -194,6 +194,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
 
         $config = $registration->getEvaluationMethodConfiguration();
+
+        if (
+            empty($config->fetch->{$user->id}) 
+            && empty($config->fetchCategories->{$user->id}) 
+            && empty($config->fetchRanges->{$user->id})
+            && empty($config->fetchProponentTypes->{$user->id})
+        ) {
+            return false;
+        };
         
         $can = $config->canUser('@control', $user);
         
