@@ -10,15 +10,21 @@ app.component('opportunity-committee-groups', {
 
     data() {
         return {
-           editable: true,
-           newGroupName: '',
-           groups: this.entity.relatedAgents || {},
-           editGroupName: false,
-           newName: '',
-           localSubmissionEvaluatorCount: {},
-           tabSelected: '',
-           hasGroupsFlag: false,
-           minervaGroup: 'Comissão de voto final'
+            editable: true,
+            newGroupName: '',
+            groups: this.entity.relatedAgents || {},
+            editGroupName: false,
+            newName: '',
+            localSubmissionEvaluatorCount: {},
+            tabSelected: '',
+            hasGroupsFlag: false,
+            minervaGroup: 'Comissão de voto final',
+            globalExcludeFields: [],
+            individualExcludeFields: [],
+            selectedFields: {
+                global: '',
+                individual: ''
+            }
         }
     },
 
@@ -36,6 +42,16 @@ app.component('opportunity-committee-groups', {
     },
     
     methods: {
+        updateExcludedFields(group, selectedField) {
+            this.selectedFields[group] = selectedField;
+
+            if (group === 'global') {
+                this.individualExcludeFields = this.selectedFields.global;
+            } else if (group === 'individual') {
+                this.globalExcludeFields = this.selectedFields.individual;
+            }
+        },
+
         initializeGroups() {
             let groups = {};
 
@@ -88,6 +104,14 @@ app.component('opportunity-committee-groups', {
             this.groups = { ...this.groups, [group]: this.entity.agentRelations[group] };
 
             this.localSubmissionEvaluatorCount[group] = null;
+
+            if(!this.entity?.registrationFilterConfig) {
+                this.entity.registrationFilterConfig = {}
+            }
+
+            if(!this.entity?.registrationFilterConfig[group]) {
+                this.entity.registrationFilterConfig[group] = {}
+            }
 
             this.reorderGroups();
         },
