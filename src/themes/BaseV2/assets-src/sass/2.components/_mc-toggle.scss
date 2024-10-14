@@ -1,0 +1,62 @@
+@use '../0.settings/mixins' as *;
+
+.mc-toggle {
+    align-items: center;
+    display: grid;
+    font-family: var(--mc-font-headings);
+    font-size: size(14);
+    font-style: normal;
+    font-weight: 600;
+    gap: size(8);
+    grid-template-columns: size(32) 1fr;
+    line-height: size(19);
+
+    &__switch {
+        position: relative;
+        display: inline-block;
+        width: size(34);
+        height: size(20);
+
+        input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+
+            &:checked {
+                + .mc-toggle__slider {
+                    background-color: var(--mc-opportunities-500);
+                }
+
+                + .mc-toggle__slider:before {
+                    transform: translateX(size(14));
+                }
+            }
+        }
+    }
+
+    &__slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--mc-gray-300);
+        transition: 0.4s;
+        border-radius: size(34);
+        width: size(32);
+        height: size(20);
+
+        &::before {
+            position: absolute;
+            content: "";
+            height: size(12);
+            width: size(12);
+            left: size(4);
+            bottom: size(4);
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+    }
+}
