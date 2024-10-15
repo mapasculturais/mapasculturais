@@ -222,23 +222,23 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             if (is_array($global_filter_configs) && isset($global_filter_configs[$user_group])) {
                 $committee_config = $global_filter_configs[$user_group];
-                $agent_id = $user->profile->id;
+                $user_id = $user->id;
                 
                 if (isset($committee_config->category)) {
-                    $config_fetchCategories = [$agent_id => (array) $committee_config->category];
+                    $config_fetchCategories = [$user_id => (array) $committee_config->category];
                 }
                 
                 if (isset($committee_config->ranges)) {
-                    $config_ranges = [$agent_id => (array) $committee_config->ranges];
+                    $config_ranges = [$user_id => (array) $committee_config->ranges];
                 }
                 
                 if (isset($committee_config->proponentType)) {
-                    $config_proponent_types = [$agent_id => (array) $committee_config->proponentType];
+                    $config_proponent_types = [$user_id => (array) $committee_config->proponentType];
                 }
 
                 foreach ($committee_config as $key => $value) {
-                    if (!in_array($key, ['category', 'range', 'proponentType'])) {
-                        $config_selection_fields[$agent_id][$key] = (array) $value;
+                    if (!in_array($key, ['category', 'range', 'proponentType', 'distribution'])) {
+                        $config_selection_fields[$user_id][$key] = (array) $value;
                     }
                 }
             }
