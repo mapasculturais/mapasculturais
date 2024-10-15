@@ -194,6 +194,10 @@ app.component('opportunity-committee-groups', {
                     });
                 }
             }
+        },
+
+        enableRegisterFilterConf(event, group) {
+            this.entity.registrationFilterConfig[group] = (!event.target.checked) ? null : {};
         }
     },
 });
