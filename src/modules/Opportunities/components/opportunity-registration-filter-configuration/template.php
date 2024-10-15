@@ -13,12 +13,12 @@ $this->import('
 ');
 ?>
 
-<div>
+<div class="opportunity-registration-filter-configuration">
     <mc-popover openside="down-right">
         <template #button="popover">
-            <button @click="popover.toggle()" class="button button--primary-outline button--sm button--icon">
-                <mc-icon name="add"></mc-icon>
+            <button @click="popover.toggle()" class="button button--rounded button--sm button--icon button--primary">
                 <?php i::_e("Adicionar") ?>
+                <mc-icon name="add"></mc-icon>
             </button>
         </template>
 
@@ -78,5 +78,5 @@ $this->import('
         </template>
     </mc-popover>
 
-    <mc-tag-list :tags="fillTagsList" @remove="removeTag" editable></mc-tag-list>
+    <mc-tag-list classes="opportunity__background" :tags="fillTagsList" @remove="removeTag" editable></mc-tag-list>
 </div>
