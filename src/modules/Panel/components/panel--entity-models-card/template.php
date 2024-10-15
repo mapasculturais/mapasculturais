@@ -15,7 +15,7 @@ $this->import('
 
 ');
 ?>
-<article class="panel__row panel-entity-models-card col-6" v-if="showModel">
+<article class="panel__row panel-entity-models-card" v-if="showModel">
     <header class="panel-entity-models-card__header">
         <div class="left">
             <slot name="picture" :entity="entity">
