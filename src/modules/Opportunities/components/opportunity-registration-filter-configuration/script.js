@@ -47,6 +47,7 @@ app.component('opportunity-registration-filter-configuration', {
             }, {}) ?? {},
             selectedField: '',
             selectedConfigs: [],
+            selectedDistribution: '',
             tagsList: [],
             configs: {},
             localExcludeFields: []
@@ -78,10 +79,15 @@ app.component('opportunity-registration-filter-configuration', {
                             this.tagsList.push(tag);
                         }
                     });
+                } else {
+                    const tag = `${this.dictTypes(key)}: ${values}`;
+                    if (!this.tagsList.includes(tag)) {
+                        this.tagsList.push(tag);
+                    }
                 }
             });
 
-            return this.tagsList;
+            return this.tagsList.sort();
         }
     },
 
@@ -166,7 +172,7 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         removeIndividual(key, value) {
-            const agentId = this.infoReviewer?.agent?.id;
+            const agentId = this.infoReviewer.agentUserId;
         
             if (!agentId) {
                 return;
@@ -221,6 +227,8 @@ app.component('opportunity-registration-filter-configuration', {
                 this.entity.fetchProponentTypes[agentId] = value || [];
             } else if (key === 'range') {
                 this.entity.fetchRanges[agentId] = value || [];
+            } else if (key === 'distribution') {
+                this.entity.fetch[agentId] = value || '';
             } else {
                 this.entity.fetchSelectionFields[agentId][key] = value || {};
 
@@ -243,24 +251,30 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         evaluatorConfig() {
-            const agentId = this.infoReviewer.agent.id;
-            const options = ['category', 'range', 'proponentType'];
+            const agentId = this.infoReviewer.agentUserId;
+            const options = ['category', 'range', 'proponentType', 'distribution'];
 
             if (!this.configs[agentId]) {
                 this.configs[agentId] = {};
             }
 
             if (!this.configs[agentId][this.selectedField]) {
-                this.configs[agentId][this.selectedField] = []; 
+                this.configs[agentId][this.selectedField] = this.selectedField == 'distribution' ? '' : []; 
             }
 
-            this.configs[agentId][this.selectedField] = [...this.selectedConfigs];
+            this.configs[agentId][this.selectedField] = this.selectedField == 'distribution' ? this.selectedDistribution : [...this.selectedConfigs];
 
-            this.selectedConfigs.forEach(config => {
-                if (!this.configs[agentId][this.selectedField].includes(config)) {
-                    this.configs[agentId][this.selectedField].push(config);
+            if (Array.isArray(this.selectedConfigs)) {
+                this.selectedConfigs.forEach(config => {
+                    if (!this.configs[agentId][this.selectedField].includes(config)) {
+                        this.configs[agentId][this.selectedField].push(config);
+                    }
+                });
+            } else {
+                if (this.selectedConfigs && !this.configs[agentId][this.selectedField]) {
+                    this.configs[agentId][this.selectedField] = this.selectedConfigs;
                 }
-            });
+            }
 
             Object.entries(this.configs).forEach(([agentId, values]) => {
                 Object.entries(values).forEach(([key, configs]) => {
@@ -316,13 +330,21 @@ app.component('opportunity-registration-filter-configuration', {
                                 }
                             });
                         }
+                    } else {
+                        if(key == 'distribution') {
+                            if (!this.entity.fetch[agentId]) {
+                                this.entity.fetch[agentId] = '';
+                            }
+
+                            this.entity.fetch[agentId] = configs;
+                        }
                     }
                 });
             });
         },
 
         getAgentData() {
-            const agentId = this.infoReviewer?.agent?.id;
+            const agentId = this.infoReviewer?.agentUserId;
 
             if (!agentId) {
                 return null;
@@ -340,6 +362,11 @@ app.component('opportunity-registration-filter-configuration', {
 
             if (this.entity.fetchRanges && this.entity.fetchRanges[agentId]) {
                 agentData['range'] = this.entity.fetchRanges[agentId];
+            } 
+            
+            if (this.entity.fetch && this.entity.fetch[agentId]) {
+               
+                agentData['distribution'] = this.entity.fetch[agentId];
             } 
             
             if (this.entity.fetchSelectionFields && this.entity.fetchSelectionFields[agentId]) {

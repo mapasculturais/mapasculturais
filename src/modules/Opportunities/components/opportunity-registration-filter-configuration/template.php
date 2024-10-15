@@ -30,6 +30,7 @@ $this->import('
                             <option v-if="registrationCategories.length > 0" value="category" :disabled="isFieldExcluded('category')"><?php i::_e("Categoria") ?></option>
                             <option v-if="registrationProponentTypes.length > 0" value="proponentType" :disabled="isFieldExcluded('proponentType')"><?php i::_e("Tipos do proponente") ?></option>
                             <option v-if="registrationRanges.length > 0" value="range" :disabled="isFieldExcluded('range')"><?php i::_e("Faixa/Linha") ?></option>
+                            <option value="distribution" :disabled="isGlobal"><?php i::_e("Distribuição") ?></option>
                             <option v-if="Object.keys(registrationSelectionFields).length > 0" v-for="(options, title) in registrationSelectionFields" :key="title" :value="title" :disabled="isFieldExcluded(title)">{{ title }}</option>
                         </select>
                     </div>
@@ -56,6 +57,10 @@ $this->import('
                                 {{ range }}
                             </option>
                         </select>
+                    </div>
+
+                    <div v-if="selectedField == 'distribution'" class="related-input col-6">
+                        <input type="text" placeholder="00-99" maxlength="5" v-model="selectedDistribution"/>
                     </div>
                     
                     <div v-if="registrationSelectionFields[selectedField] && registrationSelectionFields[selectedField].length > 0" class="related-input col-6">
