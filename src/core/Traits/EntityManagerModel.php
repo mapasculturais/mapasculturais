@@ -282,10 +282,21 @@ trait EntityManagerModel {
 
     private function generateMetadata($isModel = 1, $isModelPublic = 0) : void
     {
-        foreach ($this->entityOpportunity->getMetadata() as $metadataKey => $metadataValue) {
-            if (!is_null($metadataValue) && $metadataValue != '') {
-                $this->entityOpportunityModel->setMetadata($metadataKey, $metadataValue);
-            }
+        $app = App::i();
+        $em = $app->em;
+        $conn = $em->getConnection();
+
+        $sql = "
+            SELECT 
+                om.*
+            FROM
+                opportunity_meta om
+            WHERE om.object_id = {$this->entityOpportunity->id}
+        ";
+        $stmt = $conn->query($sql);
+
+        while (($row = $stmt->fetchAssociative()) !== false) {
+            $this->entityOpportunityModel->setMetadata($row['key'], $row['value']);
         }
 
         $this->entityOpportunityModel->setMetadata('isModel', $isModel);
