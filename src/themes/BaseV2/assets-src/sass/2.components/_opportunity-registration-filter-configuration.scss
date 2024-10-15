@@ -1,0 +1,6 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-registration-filter-configuration {
+    display: flex;
+    gap: size(4);
+}
