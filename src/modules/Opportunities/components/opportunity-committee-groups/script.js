@@ -94,7 +94,6 @@ app.component('opportunity-committee-groups', {
 
             this.entity.submissionEvaluatorCount = this.localSubmissionEvaluatorCount;
 
-            this.entity.disableMessages();
             this.entity.save();
         },
 
@@ -179,7 +178,6 @@ app.component('opportunity-committee-groups', {
         autoSave() {
             this.entity.submissionEvaluatorCount = this.localSubmissionEvaluatorCount;
             this.entity.save();
-            this.entity.enableMessages();
         },
 
         changeGroupFlag() {
