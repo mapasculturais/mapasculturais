@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [7.5.4] - 2024-10-11
+### Correções
+- Impede que o javascript das tabelas quebre quando um objeto não é retornado pela API
+- Evita que o ranqueamento das cotas quebre quando o número de vadas do edital não está definido
+
 ### [7.5.3] - 2024-10-11
 ### Correções
 - Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
