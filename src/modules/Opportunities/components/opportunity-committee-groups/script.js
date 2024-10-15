@@ -72,6 +72,11 @@ app.component('opportunity-committee-groups', {
                 this.entity.submissionEvaluatorCount = {};
             }
             
+            // Se não existir configuração de filtro para avaliadores, cria objeto vazio 
+            if(!this.entity?.registrationFilterConfig) {
+                this.entity.registrationFilterConfig = {};
+            }
+            
             Object.keys(this.groups || {}).forEach(groupName => {
                 if(this.entity.submissionEvaluatorCount[groupName] && !this.localSubmissionEvaluatorCount[groupName]) {
                     this.localSubmissionEvaluatorCount[groupName] = this.entity.submissionEvaluatorCount[groupName];
@@ -79,6 +84,11 @@ app.component('opportunity-committee-groups', {
 
                 if (!this.entity.submissionEvaluatorCount[groupName] && !this.localSubmissionEvaluatorCount[groupName]) {
                     this.localSubmissionEvaluatorCount[groupName] = null;
+                }
+
+                // Se não existir grupo de configuração de filtro para avaliadores, cria objeto vazio 
+                if (!this.entity.registrationFilterConfig[groupName]) {
+                    this.entity.registrationFilterConfig[groupName] = {};
                 } 
             });
 
@@ -170,8 +180,8 @@ app.component('opportunity-committee-groups', {
             this.hasGroupsFlag = true;
         },
 
-        changeMultipleEvaluators(event, group) {
-            this.localSubmissionEvaluatorCount[group] = (!event.target.checked) ? null : 1;
+        changeMultipleEvaluators(value, group) {
+            this.localSubmissionEvaluatorCount[group] = value ? 1 : null;
         },
 
         reorderGroups() {
@@ -196,8 +206,8 @@ app.component('opportunity-committee-groups', {
             }
         },
 
-        enableRegisterFilterConf(event, group) {
-            this.entity.registrationFilterConfig[group] = (!event.target.checked) ? null : {};
+        enableRegisterFilterConf(value, group) {
+            this.entity.registrationFilterConfig[group] = value ? {} : null;
         }
     },
 });

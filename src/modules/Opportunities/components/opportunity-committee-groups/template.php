@@ -14,6 +14,7 @@ $this->import('
     mc-popover
     mc-tab
     mc-tabs
+    mc-toggle
     opportunity-evaluation-committee
     opportunity-registration-filter-configuration
 ');
@@ -55,7 +56,6 @@ $this->import('
 
         <mc-tab v-for="(relations, groupName) in groups" :key="groupName" :label="groupName" :slug="groupName">
             <div class="opportunity-committee-groups__group">
-
                 <div class="opportunity-committee-groups__edit-group field">
                     <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
 
@@ -77,37 +77,34 @@ $this->import('
 
                 <div class="opportunity-committee-groups__multiple-evaluators">
                     <div class="field">
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" :checked="Object.keys(entity?.registrationFilterConfig[groupName]).length > 0" @click="enableRegisterFilterConf($event, groupName)"/>
-                                <?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>
-                            </label>
-                        </div>
+                        <mc-toggle
+                            :modelValue="Object.keys(entity?.registrationFilterConfig[groupName]).length > 0" 
+                            @update:modelValue="enableRegisterFilterConf($event, groupName)"
+                            label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
+                        />
+                        <opportunity-registration-filter-configuration 
+                            v-if="entity?.registrationFilterConfig[groupName]" 
+                            :entity="entity"
+                            v-model:default-value="entity.registrationFilterConfig[groupName]"
+                            :excludeFields="globalExcludeFields"
+                            @updateExcludeFields="updateExcludedFields('global', $event)"
+                            is-global
+                        >
+                        </opportunity-registration-filter-configuration>
                     </div>
 
-                    <opportunity-registration-filter-configuration 
-                        v-if="entity?.registrationFilterConfig[groupName]" 
-                        :entity="entity"
-                        v-model:default-value="entity.registrationFilterConfig[groupName]"
-                        :excludeFields="globalExcludeFields"
-                        @updateExcludeFields="updateExcludedFields('global', $event)"
-                        is-global
-                    >
-                    </opportunity-registration-filter-configuration>
 
                     <div class="field">
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" :checked="localSubmissionEvaluatorCount[groupName] > 0" @click="changeMultipleEvaluators($event, groupName)" />
-                                <?= i::__('Permitir múltiplos avaliadores por inscrição') ?>
-                            </label>
+                        <mc-toggle
+                            :modelValue="localSubmissionEvaluatorCount[groupName] > 0" 
+                            @update:modelValue="changeMultipleEvaluators($event, groupName)"
+                            label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
+                        />
+                        <div v-if="localSubmissionEvaluatorCount[groupName]" class="field">
+                            <input v-model="localSubmissionEvaluatorCount[groupName]" type="number" @change="autoSave()"/>
                         </div>
                     </div>
     
-                    <div v-if="localSubmissionEvaluatorCount[groupName]" class="field">
-                        <label> <?php i::_e("Quantidade de avaliadores por inscrição:") ?> </label>
-                        <input v-model="localSubmissionEvaluatorCount[groupName]" type="number" @change="autoSave()"/>
-                    </div>
                 </div>
                 
                 <div class="opportunity-committee-groups__evaluators">
