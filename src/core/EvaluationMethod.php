@@ -209,6 +209,39 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $config_ranges = is_array($config->fetchRanges) ? $config->fetchRanges : (array) $config->fetchRanges;
             $config_proponent_types = is_array($config->fetchProponentTypes) ? $config->fetchProponentTypes : (array) $config->fetchProponentTypes;
             $config_selection_fields = is_array($config->fetchSelectionFields) ? $config->fetchSelectionFields : (array) $config->fetchSelectionFields;
+            $global_filter_configs = isset($config->registrationFilterConfig) && is_array($config->registrationFilterConfig) ? $config->registrationFilterConfig : (array) $config->registrationFilterConfig;
+            
+            $relations = $registration->opportunity->evaluationMethodConfiguration->agentRelations;
+
+            $user_group = '';
+            foreach($relations as $relation) {
+                if($relation->agent->id == $user->profile->id) {
+                    $user_group = $relation->group;
+                }
+            }
+
+            if (is_array($global_filter_configs) && isset($global_filter_configs[$user_group])) {
+                $committee_config = $global_filter_configs[$user_group];
+                $agent_id = $user->profile->id;
+                
+                if (isset($committee_config->category)) {
+                    $config_fetchCategories = [$agent_id => (array) $committee_config->category];
+                }
+                
+                if (isset($committee_config->ranges)) {
+                    $config_ranges = [$agent_id => (array) $committee_config->ranges];
+                }
+                
+                if (isset($committee_config->proponentType)) {
+                    $config_proponent_types = [$agent_id => (array) $committee_config->proponentType];
+                }
+
+                foreach ($committee_config as $key => $value) {
+                    if (!in_array($key, ['category', 'range', 'proponentType'])) {
+                        $config_selection_fields[$agent_id][$key] = (array) $value;
+                    }
+                }
+            }
 
             if(is_array($config_fetch)){
                 foreach($config_fetch as $id => $val){
