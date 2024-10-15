@@ -243,7 +243,7 @@ app.component('opportunity-registrations-table', {
         headers () {
             let itens = [
                 { text: __('inscrição', 'opportunity-registrations-table'), value: "number", sticky: true, width: '160px' },
-                { text: __('agente', 'opportunity-registrations-table'), value: "owner.name", slug: "agent"},
+                { text: __('agente', 'opportunity-registrations-table'), value: "owner?.name", slug: "agent"},
                 ...this.avaliableFields.map((item) => { return {text: item.title, value: item.fieldName} }),
                 { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
                 { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
