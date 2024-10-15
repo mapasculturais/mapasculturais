@@ -235,6 +235,7 @@ trait EntityManagerModel {
 
                 $now = new \DateTime('now');
                 $newPhase->createTimestamp = $now;
+                $newPhase->subsite = $phase->subsite;
 
                 $newPhase->save(true);
 
@@ -260,6 +261,7 @@ trait EntityManagerModel {
 
             if ($phase->getMetadata('isLastPhase')) {
                 $publishDate = $phase->publishTimestamp;
+                $subsite = $phase->subsite;
             }
         }
 
@@ -271,6 +273,7 @@ trait EntityManagerModel {
             foreach ($phases as $phase) {
                 if ($phase->getMetadata('isLastPhase')) {
                     $phase->setPublishTimestamp($publishDate);
+                    $phase->subsite = $subsite;
                     $phase->save(true);
 
                     $this->changeObjectType($phase->id);
