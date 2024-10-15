@@ -46,4 +46,15 @@
     &__evaluators {
         border-bottom: none;
     }
+
+    &__multiple-evaluators {
+        grid-template-columns: 64% 1fr;
+        justify-content: space-between;
+
+        input {
+            max-width: 100%;
+            width: size(96);
+            height: size(40);
+        }
+    }
 }
