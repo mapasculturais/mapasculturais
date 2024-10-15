@@ -250,8 +250,10 @@ app.component('opportunity-evaluation-committee', {
         },
 
         expandAllToggles() {
+            const allExpanded = this.infosReviewers.every(reviewer => reviewer.isContentVisible);
+
             this.infosReviewers.forEach(reviewer => {
-                reviewer.isContentVisible = true;
+                reviewer.isContentVisible = !allExpanded;
             });
         },
     },
