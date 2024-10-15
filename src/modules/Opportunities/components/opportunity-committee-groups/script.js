@@ -56,7 +56,7 @@ app.component('opportunity-committee-groups', {
             let groups = {};
 
             if (!groups['Comissão de avaliação'] && Object.keys(this.groups).length === 0) {
-                groups['Comissão de avaliação'] = [];
+                groups['Comissão de avaliação'] = {};
             }
             
             for (let groupName of Object.keys(this.groups)) {
@@ -135,25 +135,26 @@ app.component('opportunity-committee-groups', {
         },
 
         updateGroupName(oldGroupName, newGroupName) {
-            if (newGroupName && newGroupName !== oldGroupName) {
-                this.groups[oldGroupName].newGroupName = newGroupName;
+            if (!this.groups[oldGroupName]) {
+                this.groups[oldGroupName] = {};
             }
+            this.groups[oldGroupName].newGroupName = newGroupName;
         },
 
         saveGroupName(oldGroupName) {
-            const newGroupName = this.groups[oldGroupName].newGroupName;
+            const newGroupName = this.groups[oldGroupName]?.newGroupName;
             if (newGroupName && newGroupName !== oldGroupName) {
                 this.renameGroup(oldGroupName, newGroupName);
             }
         },
 
-        renameGroup(oldName, newName) {
-            this.entity.renameAgentRelationGroup(oldName, newName).then(() => {
+        renameGroup(oldGroupName, newGroupName) {
+            this.entity.renameAgentRelationGroup(oldGroupName, newGroupName).then(() => {
                 const groupNames = Object.keys(this.groups);
                 const newGroups = {};
                 groupNames.forEach(groupName => {
-                    if (groupName == oldName) {
-                        newGroups[newName] = { ...this.groups[groupName], newGroupName: newName };
+                    if (groupName == oldGroupName) {
+                        newGroups[newGroupName] = { ...this.groups[groupName], newGroupName: newGroupName };
                     } else {
                         newGroups[groupName] = this.groups[groupName];
                     }
@@ -161,11 +162,16 @@ app.component('opportunity-committee-groups', {
 
                 this.groups = newGroups;
                 this.reorderGroups();
+
+                if (this.entity.registrationFilterConfig[oldGroupName]) {
+                    this.entity.registrationFilterConfig[newGroupName] = this.entity.registrationFilterConfig[oldGroupName];
+                    delete this.entity.registrationFilterConfig[oldGroupName]; 
+                }
             });
 
-            this.entity.agentRelations.map((relation) => {
-                if(relation.group == oldName) {
-                    relation.group = newName;
+            this.entity.agentRelations.forEach((relation) => {
+                if(relation.group == oldGroupName) {
+                    relation.group = newGroupName;
                 }
             });
         },
