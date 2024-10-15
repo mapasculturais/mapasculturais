@@ -123,6 +123,10 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->name = $name;
         $this->entityOpportunityModel->status = -1;
         $this->entityOpportunityModel->shortDescription = $description;
+
+        $now = new \DateTime('now');
+        $this->entityOpportunityModel->createTimestamp = $now;
+
         $app->em->persist($this->entityOpportunityModel);
         $app->em->flush();
 
@@ -148,6 +152,9 @@ trait EntityManagerModel {
         $this->entityOpportunityModel->name = $name;
         $this->entityOpportunityModel->status = Entity::STATUS_DRAFT;
         $this->entityOpportunityModel->owner = $app->user->profile;
+
+        $now = new \DateTime('now');
+        $this->entityOpportunityModel->createTimestamp = $now;
 
         $app->em->persist($this->entityOpportunityModel);
         $app->em->flush();
