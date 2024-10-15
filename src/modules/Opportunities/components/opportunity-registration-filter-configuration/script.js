@@ -264,16 +264,12 @@ app.component('opportunity-registration-filter-configuration', {
 
             this.configs[agentId][this.selectedField] = this.selectedField == 'distribution' ? this.selectedDistribution : [...this.selectedConfigs];
 
-            if (Array.isArray(this.selectedConfigs)) {
+            if (this.selectedField !== 'distribution') {
                 this.selectedConfigs.forEach(config => {
                     if (!this.configs[agentId][this.selectedField].includes(config)) {
                         this.configs[agentId][this.selectedField].push(config);
                     }
                 });
-            } else {
-                if (this.selectedConfigs && !this.configs[agentId][this.selectedField]) {
-                    this.configs[agentId][this.selectedField] = this.selectedConfigs;
-                }
             }
 
             Object.entries(this.configs).forEach(([agentId, values]) => {
