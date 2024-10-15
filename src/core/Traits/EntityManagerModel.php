@@ -233,6 +233,9 @@ trait EntityManagerModel {
 
                 $this->generateRegistrationFieldsAndFiles($phase, $newPhase);
 
+                $now = new \DateTime('now');
+                $newPhase->createTimestamp = $now;
+
                 $newPhase->save(true);
 
                 $this->changeObjectType($newPhase->id);
