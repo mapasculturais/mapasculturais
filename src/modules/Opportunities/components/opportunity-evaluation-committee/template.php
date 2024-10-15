@@ -141,7 +141,6 @@ $this->import('
                 </div>
 
                 <div class="opportunity-evaluation-committee__card-footer"> 
-                <!-- v-if="infoReviewer.status !== -5" -->
                     <mc-confirm-button v-if="infoReviewer.metadata?.summary.sent > 0" @confirm="reopenEvaluations(infoReviewer.agentUserId)">
                         <template #button="{open}">
                             <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
@@ -205,7 +204,6 @@ $this->import('
     </div>
 
     <div class="opportunity-evaluation-committee__footer" v-if="infosReviewers.length > 0">
-    <!-- {{console.log(infosReviewers)}} -->
         <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right" permissions="">
             <template #button="{ toggle }">
                 <button class="button button--icon button--primary button--md" @click="toggle()">
