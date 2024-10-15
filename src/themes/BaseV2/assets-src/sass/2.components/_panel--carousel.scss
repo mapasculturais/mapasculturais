@@ -2,12 +2,6 @@
 
 .carousel {
     &--panel & {
-        &__viewport {
-            @media (max-width:size(500px)) {
-                .carousel__track {}
-            }
-        }
-
         &__slide {
             align-items: flex-start;
             display: flex;

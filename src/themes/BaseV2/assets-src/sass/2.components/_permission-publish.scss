@@ -1,8 +1,6 @@
 @use '../0.settings/mixins' as *;
 
 .permission-publish {
-    &__title {}
-
     &__label {
         font-family: 'Open Sans';
         font-style: normal;

@@ -288,10 +288,6 @@ ol.mc-stepper-vertical>li.active::before {
         display: flex;
         flex-direction: column;
         gap: size(8);
-
-        &__title {}
-
-        &__text {}
     }
 
     .evaluation-box {
@@ -561,10 +557,7 @@ ol.mc-stepper-vertical>li.active::before {
                 font-weight: $font-weight-bold;
                 font-size: $font-size-xxs;
                 line-height: 19px;
-
             }
-
-            .iconify {}
         }
     }
 }

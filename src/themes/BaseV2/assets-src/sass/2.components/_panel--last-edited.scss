@@ -38,12 +38,6 @@
 
         &-cards {
             .carousel {
-                &__viewport {
-                    @media (max-width:size(500px)) {
-                        .carousel__track {}
-                    }
-                }
-
                 @media (max-width: size(400)) {
                     .actions {
                         margin-right: size(18);

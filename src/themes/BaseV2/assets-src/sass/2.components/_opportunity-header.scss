@@ -177,8 +177,6 @@
                 &__title {
                     font-size: $font-size-sm;
                     line-height: size(25);
-
-                    @media (max-width: size(500)) {}
                 }
 
                 &__info {
