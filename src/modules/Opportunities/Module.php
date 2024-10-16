@@ -596,6 +596,14 @@ class Module extends \MapasCulturais\Module{
 
                 $this->submissionEvaluatorCount = $evaluator_count;
             }
+            
+            if($this->registrationFilterConfig->{$old_name}) {
+                $registration_filter_config = $this->registrationFilterConfig;   
+                $registration_filter_config->{$new_name} = $registration_filter_config->{$old_name};
+                unset($registration_filter_config->{$old_name});
+
+                $this->registrationFilterConfig = $registration_filter_config;
+            }
         });
 
         $app->hook("entity(RegistrationEvaluation).send:after", function() use ($app) {
@@ -700,7 +708,7 @@ class Module extends \MapasCulturais\Module{
                 return json_decode((string) $val);
             }
         ]);
-        
+
         $this->registerEvauationMethodConfigurationMetadata('fetchCategories', [
             'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por categoria'),
             'serialize' => function ($val) {
