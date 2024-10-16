@@ -3,4 +3,14 @@
 .opportunity-registration-filter-configuration {
     display: flex;
     gap: size(4);
+
+    &__add-filter {
+        height: size(33);
+    }
+
+    &__related-input {
+        select {
+            background: none;
+        }
+    }
 }
