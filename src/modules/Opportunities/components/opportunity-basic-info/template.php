@@ -29,7 +29,7 @@ $this->import('
 ');
 ?>
 <div class="opportunity-basic-info__container">
-<entity-status :entity="entity"></entity-status>
+    <entity-status v-if="!entity.isModel" :entity="entity"></entity-status>
 
     <mc-card>
         <template #title>
