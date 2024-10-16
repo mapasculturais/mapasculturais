@@ -177,8 +177,23 @@ app.component('opportunity-registration-filter-configuration', {
             if (!agentId) {
                 return;
             }
+
+            if (key === 'distribution') {
+                if (this.defaultValue && this.defaultValue[agentId] && this.defaultValue[agentId][key] === value) {
+                    delete this.defaultValue[agentId][key];
+                    this.$emit('update:defaultValue', this.defaultValue);
+                }
         
-            if (this.defaultValue && this.defaultValue[agentId] && this.defaultValue[agentId][key]) {
+                const agentData = this.getAgentData();
+                if (agentData && agentData[key] === value) {
+                    delete agentData[key];
+                    this.updateAgentData(agentId, key, null);
+                }
+        
+                return;
+            }
+        
+            if (this.defaultValue && this.defaultValue[agentId] && Array.isArray(this.defaultValue[agentId][key])) {
                 const configArray = this.defaultValue[agentId][key];
                 const index = configArray.indexOf(value);
                 
