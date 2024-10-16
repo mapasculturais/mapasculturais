@@ -690,5 +690,45 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Configuração de campos de seleção'),
             'type' => 'json',
         ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('fetch', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
+        ]);
+        
+        $this->registerEvauationMethodConfigurationMetadata('fetchCategories', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por categoria'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('fetchRanges', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por faixa'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('fetchProponentTypes', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por tipo de proponente'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
+        ]);
     }
 }

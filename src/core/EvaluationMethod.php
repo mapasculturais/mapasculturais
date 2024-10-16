@@ -490,45 +490,6 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         });
         
         if($this->fetchRegistrations()){
-            $this->registerEvaluationMethodConfigurationMetadata('fetch', [
-                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
-                'serialize' => function ($val) {
-                    return json_encode($val);
-                },
-                'unserialize' => function($val) {
-                    return json_decode((string) $val);
-                }
-            ]);
-            $this->registerEvaluationMethodConfigurationMetadata('fetchCategories', [
-                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por categoria'),
-                'serialize' => function ($val) {
-                    return json_encode($val);
-                },
-                'unserialize' => function($val) {
-                    return json_decode((string) $val);
-                }
-            ]);
-
-            $this->registerEvaluationMethodConfigurationMetadata('fetchRanges', [
-                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por faixa'),
-                'serialize' => function ($val) {
-                    return json_encode($val);
-                },
-                'unserialize' => function($val) {
-                    return json_decode((string) $val);
-                }
-            ]);
-
-            $this->registerEvaluationMethodConfigurationMetadata('fetchProponentTypes', [
-                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por tipo de proponente'),
-                'serialize' => function ($val) {
-                    return json_encode($val);
-                },
-                'unserialize' => function($val) {
-                    return json_decode((string) $val);
-                }
-            ]);
-
             $this->registerEvaluationMethodConfigurationMetadata('infos', [
                 'label' => i::__('Textos informativos para os avaliadores'),
                 'type' => 'json',
