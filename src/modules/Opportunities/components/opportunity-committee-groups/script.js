@@ -85,11 +85,6 @@ app.component('opportunity-committee-groups', {
                 if (!this.entity.submissionEvaluatorCount[groupName] && !this.localSubmissionEvaluatorCount[groupName]) {
                     this.localSubmissionEvaluatorCount[groupName] = null;
                 }
-
-                // Se não existir grupo de configuração de filtro para avaliadores, cria objeto vazio 
-                if (!this.entity.registrationFilterConfig[groupName]) {
-                    this.entity.registrationFilterConfig[groupName] = {};
-                } 
             });
 
             this.entity.submissionEvaluatorCount = this.localSubmissionEvaluatorCount;
@@ -211,7 +206,15 @@ app.component('opportunity-committee-groups', {
         },
 
         enableRegisterFilterConf(value, group) {
-            this.entity.registrationFilterConfig[group] = value ? {} : null;
+            if (value) {
+                if (!this.entity.registrationFilterConfig[group]) {
+                    this.entity.registrationFilterConfig[group] = {};
+                } 
+            } else {
+                delete this.entity.registrationFilterConfig[group];
+            }
+
+            this.autoSave();
         }
     },
 });
