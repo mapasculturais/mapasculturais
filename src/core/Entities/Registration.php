@@ -1394,13 +1394,8 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
      
-        if($this->canUser('@control', $user)){          
-            if((new \DateTime()) >= $this->opportunity->registrationFrom ){
-              return true;
-            }
-            
-            return false;
-            
+        if($this->canUser('@control', $user)){                      
+            return true;
         }
 
         if($this->opportunity->canUser('@control', $user)){

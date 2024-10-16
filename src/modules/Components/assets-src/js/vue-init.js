@@ -9,6 +9,7 @@ import * as Leaflet from 'leaflet';
 import { MarkerClusterGroup } from 'leaflet.markercluster';
 import Datepicker from '@vuepic/vue-datepicker';
 import * as CurrencyInput from 'vue-currency-input';
+import { VueDraggable } from 'vue-draggable-plus';
 import * as Dates from 'date-fns';
 import * as FloatingVue from 'floating-vue'
 import MediaQuery from './media-query'
@@ -30,6 +31,7 @@ app.component('Cropper', VueAdvancedCropper)
 app.component('Datepicker', Datepicker);
 app.component('Slider', Slider);
 app.component('EasyDataTable', Vue3EasyDataTable);
+app.component('Draggable', VueDraggable);
 app.directive('maska', vMaska);
 app.use(MediaQuery)
 

@@ -494,7 +494,7 @@ class Agent extends \MapasCulturais\Entity
     protected function canUserRemove($user){
 
         if($this->isUserProfile){
-            if($this->user->isDeleting){
+            if($this->user->isDeleting || $user->is('admin')){
                 return true;
             } else {
                 return false;

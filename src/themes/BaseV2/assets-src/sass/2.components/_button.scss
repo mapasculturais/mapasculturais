@@ -33,20 +33,24 @@
         color: var(--mc-white);
     }
 
-    &--left-icon {
-        padding: 0 size(32);
+    &--left-icon, &--right-icon {
+        padding-inline: size(32);
 
         .iconify {
             position: absolute;
+        }
+    }
+
+    &--left-icon {
+
+        .iconify {
             left: size(8);
         }
     }
 
     &--right-icon {
-        padding-inline: size(32);
 
         .iconify {
-            position: absolute;
             right: size(8);
         }
     }
