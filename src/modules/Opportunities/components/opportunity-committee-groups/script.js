@@ -123,6 +123,7 @@ app.component('opportunity-committee-groups', {
         removeGroup(group) {
             delete this.groups[group]
             delete this.localSubmissionEvaluatorCount[group];
+            delete this.registrationFilterConfig[group];
             this.entity.removeAgentRelationGroup(group);
 
             this.autoSave();
