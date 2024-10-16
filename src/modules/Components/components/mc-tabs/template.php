@@ -9,13 +9,14 @@ use MapasCulturais\i;
 $this->import('
     mc-icon
     mc-tab
+    mc-tabs-header
 ');
 ?>
-<div class="tabs-component" :class="classes">
+<div class="tabs-component">
     <div class="tabs-component__header">
         <div class="tabs-component__header--left">
             <slot name="before-tablist"></slot>
-            <ul class="tabs-component__buttons" role="tablist">
+            <mc-tabs-header class="tabs-component__buttons" role="tablist" :list="draggable" :tabs="tabs" @sort="reorderTabs">
                 <li v-for="tab in tabs" :key="tab.slug"
                     class="tabs-component__button"
                     :class="[tab.slug, tab.class, tab.disabled && 'tabs-component__button--disabled', isActive(tab) && 'tabs-component__button--active']"
@@ -31,10 +32,9 @@ $this->import('
                             <span>{{ tab.label }}</span>
                             <mc-icon v-if="tab.icon && iconPosition=='right'" :name="tab.icon"></mc-icon>
                         </slot>
-                        
                     </a>
                 </li>
-            </ul>
+            </mc-tabs-header>
         </div>
 
         <div class="tabs-component__header--right">
