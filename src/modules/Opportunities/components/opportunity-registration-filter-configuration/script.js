@@ -50,7 +50,8 @@ app.component('opportunity-registration-filter-configuration', {
             selectedDistribution: '',
             tagsList: [],
             configs: {},
-            localExcludeFields: []
+            localExcludeFields: [],
+            isSelected: false,
         }
     },
 
@@ -92,6 +93,10 @@ app.component('opportunity-registration-filter-configuration', {
     },
 
     methods: {
+        handleSelection() {
+            this.isSelected = !!this.selectedField; 
+        },
+
         loadExcludeFields() {
             this.localExcludeFields = [];
 

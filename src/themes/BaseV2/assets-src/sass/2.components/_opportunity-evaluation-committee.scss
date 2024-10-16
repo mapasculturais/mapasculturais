@@ -101,6 +101,11 @@
         width: 100%;
     }
 
+    &__card-filter {
+        padding: size(16) size(16) size(16) size(72);
+        border-bottom: size(1) solid var(--mc-gray-300);
+    }
+
     &__summary {
         display: flex;
         margin: 0 size(8);
@@ -138,43 +143,6 @@
         &--completed {
             background-color: #99D6FF;
         }
-    }
-
-    &__card-distribution {
-        border-bottom: size(1) solid var(--mc-gray-300);
-        padding: size(17) size(17) size(19) size(72);
-
-    }
-
-    &__change-distributions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: size(16);
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    &__distributions {
-        display: flex;
-        gap: size(24);
-    }
-
-    &__distribution {
-        max-width: size(120);
-    }
-
-    &__all-settings {
-        display: flex;
-        flex-direction: column;
-        gap: size(10);
-    }
-
-    &__settings {
-        align-items: center;
-        display: flex;
-        flex-wrap: wrap;
-        gap: size(10);
-        min-height: size(49);
     }
 
     &__card-footer {

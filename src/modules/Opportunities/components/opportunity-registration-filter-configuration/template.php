@@ -16,8 +16,9 @@ $this->import('
 <div class="opportunity-registration-filter-configuration">
     <mc-modal title="<?= i::__('Configuração de filtros de inscrição para avaliadores/comissão') ?>">
         <div class="grid-12">
-            <div class="related-input col-6">
-                <select v-model="selectedField">
+            <div :class="isSelected ? 'col-6 field' : 'col-12 field'">
+                <select v-model="selectedField" @change="handleSelection">
+                    <option value="" disabled selected>Selecione um filtro</option>
                     <option v-if="registrationCategories.length > 0" value="category" :disabled="isFieldExcluded('category')"><?php i::_e("Categoria") ?></option>
                     <option v-if="registrationProponentTypes.length > 0" value="proponentType" :disabled="isFieldExcluded('proponentType')"><?php i::_e("Tipos do proponente") ?></option>
                     <option v-if="registrationRanges.length > 0" value="range" :disabled="isFieldExcluded('range')"><?php i::_e("Faixa/Linha") ?></option>
@@ -26,36 +27,36 @@ $this->import('
                 </select>
             </div>
 
-            <div v-if="selectedField == 'category'" class="related-input col-6">
-                <select v-model="selectedConfigs" multiple>
+            <div v-if="selectedField == 'category'" class="opportunity-registration-filter-configuration__related-input col-6 field">
+                <select class="scrollbar" v-model="selectedConfigs" multiple>
                     <option v-for="category in filteredFields.categories" :key="category" :value="category">
                         {{ category }}
                     </option>
                 </select>
             </div>
 
-            <div v-if="selectedField == 'proponentType'" class="related-input col-6">
-                <select v-model="selectedConfigs" multiple>
+            <div v-if="selectedField == 'proponentType'" class="opportunity-registration-filter-configuration__related-input col-6 field">
+                <select class="scrollbar" v-model="selectedConfigs" multiple>
                     <option v-for="proponentType in filteredFields.proponentTypes" :key="proponentType" :value="proponentType">
                         {{ proponentType }}
                     </option>
                 </select>
             </div>
 
-            <div v-if="selectedField == 'range'" class="related-input col-6">
-                <select v-model="selectedConfigs" multiple>
+            <div v-if="selectedField == 'range'" class="opportunity-registration-filter-configuration__related-input col-6 field">
+                <select class="scrollbar" v-model="selectedConfigs" multiple>
                     <option v-for="range in filteredFields.ranges" :key="range" :value="range">
                         {{ range }}
                     </option>
                 </select>
             </div>
 
-            <div v-if="selectedField == 'distribution'" class="related-input col-6">
+            <div v-if="selectedField == 'distribution'" class="opportunity-registration-filter-configuration__related-input col-6 field">
                 <input type="text" placeholder="00-99" maxlength="5" v-model="selectedDistribution" />
             </div>
 
-            <div v-if="registrationSelectionFields[selectedField] && registrationSelectionFields[selectedField].length > 0" class="related-input col-6">
-                <select v-model="selectedConfigs" multiple>
+            <div v-if="registrationSelectionFields[selectedField] && registrationSelectionFields[selectedField].length > 0" class="opportunity-registration-filter-configuration__related-input col-6 field">
+                <select class="scrollbar" v-model="selectedConfigs" multiple>
                     <option v-for="option in registrationSelectionFields[selectedField]" :key="option" :value="option">
                         {{ option }}
                     </option>
