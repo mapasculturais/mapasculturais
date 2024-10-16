@@ -78,7 +78,7 @@ $this->import('
                 <div class="opportunity-committee-groups__multiple-evaluators">
                     <div class="field">
                         <mc-toggle
-                            :modelValue="Object.keys(entity?.registrationFilterConfig[groupName]).length > 0" 
+                            :modelValue="entity?.registrationFilterConfig[groupName] && Object.keys(entity.registrationFilterConfig[groupName]).length > 0" 
                             @update:modelValue="enableRegisterFilterConf($event, groupName)"
                             label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
                         />
