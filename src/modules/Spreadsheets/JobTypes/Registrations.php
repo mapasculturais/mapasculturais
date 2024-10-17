@@ -208,6 +208,8 @@ class Registrations extends SpreadsheetJob
                 if(isset($entity['status']) && !is_null($entity['status'])) {
                     $entity['status'] = $this->getStatusName($entity['status']);
                 }
+
+                $entity = $this->replaceArraysWithNull($entity);
             }
         }
         
@@ -282,4 +284,25 @@ class Registrations extends SpreadsheetJob
         }
     }
 
+    /**
+     * Função recursiva para substituir arrays por string vazia ou null.
+     *
+     * Esta função percorre todos os campos de um array ou objeto e substitui qualquer array
+     * encontrado por uma string vazia ou null, conforme a necessidade. Se encontrar objetos,
+     * a função é chamada recursivamente para verificar suas propriedades.
+     *
+     * @param array|object $data Os dados a serem verificados e potencialmente modificados.
+     * @return array|object Retorna os dados com arrays substituídos por string vazia ou null.
+    */
+    private function replaceArraysWithNull($data) {
+        foreach ($data as $key => &$value) {
+            if (is_array($value)) {
+                $value = '';
+            } elseif (is_object($value)) {
+                $value = $this->replaceArraysWithNull((array) $value);
+            }
+        }
+        
+        return $data;
+    }
 }
