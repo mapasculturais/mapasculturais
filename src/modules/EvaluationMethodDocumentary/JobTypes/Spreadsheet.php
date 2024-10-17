@@ -104,12 +104,12 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
     }
 
     protected function _getFilename(Job $job) : string {
-        $entity_class_name = $job->entityClassName;
-        $label = $entity_class_name::getEntityTypeLabel(true);
+        $opportunity = i::__('oportunidade');
+        $opportunity_id = $job->owner->id;
         $extension = $job->extension;
         $date = date('Y-m-d H:i:s');
-
-        $result = "{$label}-{$date}.{$extension}";
+        
+        $result = "{$opportunity}-{$opportunity_id}--avaliacoes-{$date}.{$extension}";
 
         return $result;
     }
