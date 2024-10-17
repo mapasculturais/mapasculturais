@@ -6,17 +6,27 @@ app.component('panel--entity-tabs', {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
     },
-
-    created() {
-    },
-
     data() {
-        let query = {
+        let query = {};
+
+        if (this.type == 'opportunity') {
+            query.isModel = 'OR(NULL(), EQ(0))';
+        }
+
+        query = {
+            ...query,
             '@order': 'updateTimestamp DESC',
             '@permissions': 'view'
         };
+
+        let queryGetModel = {
+            '@order': 'updateTimestamp DESC',
+            '@permissions': 'view'
+        };
+
         if (this.user) {
             query.user = `EQ(${this.user})`
+            // queryGetModel.user = `EQ(${this.user})`
         }
 
         return {
@@ -25,17 +35,13 @@ app.component('panel--entity-tabs', {
                 publish: { status: 'GTE(1)', ...query },
                 draft: { status: 'EQ(0)', ...query },
                 granted: { ...query, '@permissions': '@control', status: 'GTE(0)', user: '!EQ(@me)' },
+                mymodels: { status: 'EQ(-1)', isModel: 'EQ(1)', ...queryGetModel },
                 trash: { status: 'EQ(-10)', ...query },
                 archived: { status: 'EQ(-2)', ...query },
             },
             showPrivateKey: false,
-
         }
     },
-    computed: {
-        
-    },
-
     props: {
         type: String,
         user: {
@@ -44,17 +50,15 @@ app.component('panel--entity-tabs', {
         },
         select: {
             type: String,
-            default: 'id,status,name,type,createTimestamp,terms,files.avatar,currentUserPermissions'
+            default: 'id,status,name,type,createTimestamp,terms,files.avatar,currentUserPermissions,isModel,isModelPublic,owner'
         },
         tabs: {
             type: String,
-            default: "publish,draft,granted,trash,archived"
+            default: "publish,draft,granted,mymodels,trash,archived"
         },
 
     },
-
     methods: {
-        
         showTab(status) {
             const tabs = this.tabs.split(',');
 
@@ -63,6 +67,8 @@ app.component('panel--entity-tabs', {
             }
 
             if (status == 'publish') {
+                return true;
+            } else if (status == 'mymodels' && this.type == 'opportunity') {
                 return true;
             } else if (typeof this.description?.status == 'undefined') {
                 return false;
