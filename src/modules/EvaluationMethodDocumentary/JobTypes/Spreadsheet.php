@@ -80,7 +80,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
             foreach($evaluation_data as $key => $value) {
                 $result_evaluation_data['evaluation-' . $key] = $value['evaluation'];
                 $result_evaluation_data['obs-' . $key] = $value['obs'];
-                $result_evaluation_data['obs-item-' . $key] = $value['obs_items'];
+                $result_evaluation_data['obs-item-' . $key] = $value['obsItems'];
             }
 
             $registration_data = $evaluation['registration'];
