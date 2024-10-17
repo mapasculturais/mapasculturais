@@ -116,13 +116,13 @@
                             color: #3E3E3E;
                             font-size: $font-size-xxs;
                             line-height: size(19);
-                            text-transform: uppercase;
+                            text-transform: $text-transform-uppercase;
 
                         }
 
                         &__info {
 
-                            text-transform: uppercase;
+                            text-transform: $text-transform-uppercase;
                             font-weight: $font-weight-bold;
                             align-items: center;
                             font-size: $font-size-xxs;
@@ -147,7 +147,7 @@
                         font-weight: $font-weight-semibold;
                         font-size: $font-size-xxs;
                         line-height: 19px;
-                        text-transform: uppercase;
+                        text-transform: $text-transform-uppercase;
 
                         a {
                             font-size: $font-size-xxs;
@@ -182,7 +182,7 @@
                 &__info {
                     flex-direction: column;
                     gap: size(8) size(20);
-                    text-transform: uppercase;
+                    text-transform: $text-transform-uppercase;
 
                     .data {
                         font-size: size(10);

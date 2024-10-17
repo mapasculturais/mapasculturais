@@ -85,7 +85,7 @@
                         text-align: left;
 
                         label {
-                            text-transform: uppercase;
+                            text-transform: $text-transform-uppercase;
                         }
 
                         &.date {

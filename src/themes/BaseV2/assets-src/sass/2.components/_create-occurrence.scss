@@ -200,7 +200,7 @@
                     font-weight: $font-weight-regular;
                     gap: size(11);
                     line-height: size(20);
-                    text-transform: uppercase;
+                    text-transform: $text-transform-uppercase;
                     
                     &::-webkit-calendar-picker-indicator {
                         -webkit-appearance: none;

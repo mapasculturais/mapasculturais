@@ -222,7 +222,7 @@
                                         font-weight: $font-weight-semibold;
                                         font-size: $font-size-xxxs;
                                         line-height: 16px;
-                                        text-transform: uppercase;
+                                        text-transform: $text-transform-uppercase;
                                         color: var(--mc-low-700)
                                     }
 
@@ -257,7 +257,7 @@
                                 font-size: $font-size-xxxs;
                                 line-height: 16px;
                                 color: var(--mc-low-700);
-                                text-transform: uppercase;
+                                text-transform: $text-transform-uppercase;
                             }
 
                             button {
@@ -276,10 +276,7 @@
                                     font-size: $font-size-xxxs;
                                     line-height: size(16);
                                     text-align: center;
-                                    text-transform: capitalize;
-                                }
-                                &-state {
-
+                                    text-transform: $text-transform-capitalize;
                                 }
                             }
                         }

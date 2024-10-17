@@ -79,7 +79,7 @@
                     font-size: $font-size-xxxs;
                     font-weight: $font-weight-regular;
                     line-height: size(16);
-                    text-transform: uppercase;
+                    text-transform: $text-transform-uppercase;
                     strong {
                         text-transform: none;
                     }

@@ -74,7 +74,7 @@
     a {
         color: inherit;
         text-decoration: none;
-        text-transform: uppercase;
+        text-transform: $text-transform-uppercase;
         font-size: $font-size-xxs;
         white-space: nowrap;
         max-width: size(400);

@@ -222,7 +222,7 @@
                     font-size: $font-size-xxs;
 
                     line-height: size(16);
-                    text-transform: uppercase;
+                    text-transform: $text-transform-uppercase;
 
                     &::after {
                         content: ':';
@@ -239,7 +239,7 @@
 
                     &.type {
                         color: var(--mc-500);
-                        text-transform: uppercase;
+                        text-transform: $text-transform-uppercase;
                     }
                 }
 

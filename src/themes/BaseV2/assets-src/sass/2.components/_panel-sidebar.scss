@@ -98,7 +98,7 @@
         font-size: $font-size-xxxs;
         margin: 0;
         padding: size(16);
-        text-transform: uppercase;
+        text-transform: $text-transform-uppercase;
     }
 
     nav {

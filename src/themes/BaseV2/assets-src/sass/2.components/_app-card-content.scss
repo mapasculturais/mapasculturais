@@ -37,10 +37,9 @@
             display: block;
             word-break: break-word;
             font-weight: $font-weight-semibold;
-            text-transform: none;
+            text-transform: $text-transform-none;
             font-size: $font-size-xxs;
             line-height: 19px;
-            text-transform: none;
         }
     }
 

@@ -142,7 +142,7 @@
 				font-weight: $font-weight-bold;
 				padding: size(11) size(16) size(16);
 				text-decoration: none;
-				text-transform: none;
+				text-transform: $text-transform-none;
 			}
 		}
 	}

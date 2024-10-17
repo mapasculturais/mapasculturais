@@ -137,7 +137,7 @@
 				line-height: size(16);
 				min-width: size(137);
 				padding: size(8) size(16);
-				text-transform: capitalize;
+				text-transform: $text-transform-capitalize;
 				text-align: center;
 				vertical-align: middle;
 
@@ -174,7 +174,7 @@
 			font-weight: $font-weight-bold;
 			font-size: $font-size-xxxs;
 			line-height: size(22);
-			text-transform: capitalize;
+			text-transform: $text-transform-capitalize;
 
 			.iconify {
 				font-size: size(22);
@@ -266,7 +266,7 @@
 						font-weight: 500;
 						font-size: $font-size-xxs;
 						line-height: size(16);
-						text-transform: uppercase;
+						text-transform: $text-transform-uppercase;
 						color: var(--mc-low-700);
 					}
 
@@ -318,7 +318,7 @@
 					line-height: size(16);
 					display: flex;
 					align-items: center;
-					text-transform: uppercase;
+					text-transform: $text-transform-uppercase;
 					color: var(--mc-low-700);
 				}
 			}
@@ -364,7 +364,7 @@
 					display: flex;
 					font-size: $font-size-xxxs;
 					line-height: size(16);
-					text-transform: uppercase;
+					text-transform: $text-transform-uppercase;
 					width: 100%;
 				}
 
@@ -509,7 +509,7 @@
 				font-size: $font-size-xxs;
 				line-height: size(19);
 				margin: 0;
-				text-transform: uppercase;
+				text-transform: $text-transform-uppercase;
 			}
 		}
 	}
@@ -560,7 +560,7 @@
 		dl {
 			font-size: $font-size-xxs;
 			margin: 0 size(40) size(16) 0;
-			text-transform: uppercase;
+			text-transform: $text-transform-uppercase;
 		}
 
 		dt {

@@ -425,7 +425,7 @@ ol.mc-stepper-vertical>li.active::before {
                         font-size: $font-size-xxs;
                         font-weight: $font-weight-semibold;
                         line-height: size(19);
-                        text-transform: uppercase;
+                        text-transform: $text-transform-uppercase;
                     }
 
                     .type {
@@ -451,7 +451,7 @@ ol.mc-stepper-vertical>li.active::before {
                         font-size: $font-size-xxs;
                         font-weight: $font-weight-semibold;
                         line-height: size(19);
-                        text-transform: uppercase;
+                        text-transform: $text-transform-uppercase;
                     }
 
                     &__content {

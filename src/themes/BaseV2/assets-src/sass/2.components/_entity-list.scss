@@ -14,7 +14,7 @@
         display: flex;
         align-items: center;
         letter-spacing: 0.07em;
-        text-transform: uppercase;
+        text-transform: $text-transform-uppercase;
     }
 
     &__list {
