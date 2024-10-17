@@ -62,21 +62,17 @@
                     font-size: $font-size-sm;
                     font-weight: $font-weight-semibold;
                     line-height: size(25);
-                    text-transform: uppercase;
+                    text-transform: $text-transform-uppercase;
                     display: flex;
                     gap: size(4);
                     align-items: center;
                     flex-wrap: wrap;
         
                     strong {
-                        text-transform: none;
+                        text-transform: $text-transform-none;
                         font-size: $font-size-md;
                         line-height: size(28);
                     }
-                }
-        
-                .actions {
-        
                 }
             }
     
@@ -96,7 +92,7 @@
                         font-weight: $font-weight-semibold;
                         line-height: size(22);
                         margin: 0;
-                        text-transform: uppercase;
+                        text-transform: $text-transform-uppercase;
                     }
         
                     .data {

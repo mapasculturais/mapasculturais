@@ -303,7 +303,7 @@
                         font-size: $font-size-xxs;
 
                         .upper {
-                            text-transform: uppercase;
+                            text-transform: $text-transform-uppercase;
                         }
 
                         .event__color {
@@ -345,9 +345,6 @@
                                 position: relative;
                                 text-align: right;
                                 font-size: 700;
-
-                                h2 {
-                                }
 
                                 label {
                                     font-size: $font-size-sm;

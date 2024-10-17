@@ -29,7 +29,7 @@
                 position: relative;
 
                 li {
-                    text-transform: capitalize;
+                    text-transform: $text-transform-capitalize;
                     @media (max-width: size(800)) {
                         display: flex;
                         &::before {

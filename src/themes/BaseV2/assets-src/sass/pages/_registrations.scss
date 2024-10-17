@@ -150,7 +150,7 @@
 
                                     .reg {
                                         &__label {
-                                            text-transform: uppercase;
+                                            text-transform: $text-transform-uppercase;
                                         }
                                     }
                                 }

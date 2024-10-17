@@ -61,7 +61,7 @@
                     font-weight: normal;
                     font-size: $font-size-xxs;
                     line-height: size(16);
-                    text-transform: uppercase
+                    text-transform: $text-transform-uppercase;
                 }
 
                 &__entityInfo {
@@ -69,7 +69,7 @@
                     font-weight: $font-weight-bold;
                     line-height: size(16);
                     margin-left: size(5);
-                    font-size: 0.875rem;
+                    font-size: $font-size-xxs;
                 }
 
                 &__content {
