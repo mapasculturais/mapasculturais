@@ -44,6 +44,20 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'sentTimestamp') {
+                $header['sentDate'] = i::__('Data de envio');
+                $header['sentTime'] = i::__('Hora de envio');
+
+                continue;
+            }
+            
+            if($property == 'createTimestamp') {
+                $header['createDate'] = i::__('Data de criação');
+                $header['createTime'] = i::__('Hora de criação');
+
+                continue;
+            }
+
             $header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
         }
 
@@ -76,6 +90,8 @@ class Registrations extends SpreadsheetJob
         unset($header['id']);
         unset($header[' id']);
         unset($header['agentsData']);
+        unset($header['sentTimestamp']);
+        unset($header['createTimestamp']);
 
         return $header;
     }
@@ -176,12 +192,18 @@ class Registrations extends SpreadsheetJob
                 }
                 
                 if(isset($entity['sentTimestamp']) && !is_null($entity['sentTimestamp'])) {
-                    $entity['sentTimestamp'] = $entity['sentTimestamp']->format('d-m-Y H:i:s');
+                    $entity['sentDate'] = $entity['sentTimestamp']->format('d-m-Y');
+                    $entity['sentTime'] = $entity['sentTimestamp']->format('H:i:s');
                 }
 
+                unset($entity['sentTimestamp']);
+
                 if(isset($entity['createTimestamp']) && !is_null($entity['createTimestamp'])) {
-                    $entity['createTimestamp'] = $entity['createTimestamp']->format('d-m-Y H:i:s');
+                    $entity['createDate'] = $entity['createTimestamp']->format('d-m-Y');
+                    $entity['createTime'] = $entity['createTimestamp']->format('H:i:s');
                 }
+
+                unset($entity['createTimestamp']);
 
                 if(isset($entity['status']) && !is_null($entity['status'])) {
                     $entity['status'] = $this->getStatusName($entity['status']);
