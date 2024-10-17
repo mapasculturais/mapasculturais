@@ -180,6 +180,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $this->metadata = ['summary' => $data];
 
         $app->disableAccessControl();
+        $this->owner->__skipQueuingPCacheRecreation = true;
         $this->save($flush);
         $app->enableAccessControl();
     }
