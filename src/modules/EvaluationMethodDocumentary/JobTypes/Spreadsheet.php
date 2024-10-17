@@ -78,7 +78,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
 
             $result_evaluation_data = [];
             foreach($evaluation_data as $key => $value) {
-                $result_evaluation_data['evaluation-' . $key] = $value['evaluation'];
+                $result_evaluation_data['evaluation-' . $key] = $this->translateResult($value['evaluation']);
                 $result_evaluation_data['obs-' . $key] = $value['obs'];
                 $result_evaluation_data['obs-item-' . $key] = $value['obsItems'];
             }
@@ -136,5 +136,24 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
         $field = $app->getRegisteredMetadataByMetakey($field_name, Registration::class);
 
         return $field->label;
+    }
+
+    /**
+     * Traduz o resultado da avaliação para uma string localizada.
+     *
+     * @param string|null $result O resultado da avaliação, que pode ser 'valid', 'invalid' ou null.
+     * @return string A string traduzida ou uma string vazia se o resultado for null.
+    */
+    function translateResult($result): string {
+        if(is_null($result)) {
+            return '';
+        }
+        
+        $values = [
+            'valid' => i::__('Válido'),
+            'invalid' => i::__('Inválido')
+        ];
+    
+        return $values[$result] ?? $result;
     }
 }
