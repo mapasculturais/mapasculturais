@@ -1,5 +1,5 @@
 <?php
-namespace Oportunities\Entities;
+namespace Opportunities\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,11 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RegistrationStep extends \MapasCulturais\Entity 
 {   
-
     /**
      * @var integer
      *
-     * @ORM\Column(name="step_id", type="integer")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      */
     protected $id;
@@ -28,7 +27,7 @@ class RegistrationStep extends \MapasCulturais\Entity
     /**
      * @var string
      * 
-     * @ORM\Column(name="step_name", type="string")
+     * @ORM\Column(name="name", type="string")
      */
     protected $name;
 
