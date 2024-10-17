@@ -70,7 +70,7 @@ $this->import('
         </template>
 
         <template #button="modal">
-            <button type="button" @click="modal.open();" class="button button--rounded button--sm button--icon button--primary">
+            <button type="button" @click="modal.open();" class="opportunity-registration-filter-configuration__add-filter button button--rounded button--sm button--icon button--primary">
                 <?= i::__('Adicionar') ?>
                 <mc-icon name="add"></mc-icon>
             </button>
