@@ -37,6 +37,16 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     protected $owner;
 
     /**
+     * @var \Opportunities\Entities\RegistrationStep
+     *
+     * @ORM\ManyToOne(targetEntity="Opportunities\Entities\RegistrationStep")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="registration_step_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $step;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)

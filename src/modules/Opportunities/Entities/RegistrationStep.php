@@ -3,6 +3,17 @@ namespace Oportunities\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * RegistrationStep
+ * 
+ * @property RegistrationFileConfiguration[] $registrationFileConfigurations
+ * @property RegistrationFieldConfiguration[] $registrationFieldConfigurations
+ * 
+ * @ORM\Table(name="registration_step")
+ * @ORM\Entity
+ * @ORM\entity(repositoryClass="MapasCulturais\Repository")
+ * @ORM\HasLifecycleCallbacks
+ */
 class RegistrationStep extends \MapasCulturais\Entity 
 {   
 
