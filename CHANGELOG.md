@@ -10,6 +10,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - Adiciona cache na compilação do css do customizador de temas dos subsites
  - Evita o reprocessamento do cache do avaliador toda vez que ele termina uma avaliação
  - Correções e reformatações na planilha de avaliações
+ - Corrige ordenação dos campos no componente de seleção de campos visíveis para os avaliadores
+ - Corrige salvamento da seleção de anexos visíveis para os avaliadores
 
 ### [7.5.4] - 2024-10-11
 ### Correções
