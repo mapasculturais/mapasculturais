@@ -9,12 +9,8 @@ app.component('opportunity-evaluation-committee', {
         group: {
             type: String,
             default: 'group-admin'
-        }
-    },
-
-    setup() {
-        const text = Utils.getTexts('opportunity-evaluations-list');
-        return { text }
+        },
+        excludeFields: Array
     },
 
     computed: {
@@ -59,7 +55,8 @@ app.component('opportunity-evaluation-committee', {
             registrationProponentTypes: [
                 ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
-            sendTimeOut: null
+            sendTimeOut: null,
+            fetchConfigs: {}
         }
     },
     
@@ -93,7 +90,10 @@ app.component('opportunity-evaluation-committee', {
             let url = api.createApiUrl('evaluationCommittee', args);
             
             api.GET(url).then(res => res.json()).then(data => {
-                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group);
+                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group).map(reviewer => ({
+                    ...reviewer,
+                    isContentVisible: false,
+                }));
                 this.showReviewers = Object.keys(this.infosReviewers).length > 0;
                 this.ReviewerSelect = false;
                 this.loadFetchs();
@@ -234,6 +234,21 @@ app.component('opportunity-evaluation-committee', {
 
                 });
             }
+        },
+
+        toggleContent(reviewerId) {
+            const reviewer = this.infosReviewers.find(r => r.id === reviewerId);
+            if (reviewer) {
+                reviewer.isContentVisible = !reviewer.isContentVisible;
+            }
+        },
+
+        expandAllToggles() {
+            const allExpanded = this.infosReviewers.every(reviewer => reviewer.isContentVisible);
+
+            this.infosReviewers.forEach(reviewer => {
+                reviewer.isContentVisible = !allExpanded;
+            });
         },
     },
 });

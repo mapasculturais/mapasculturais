@@ -3,6 +3,9 @@
 .opportunity-committee-groups {
     display: grid;
 
+    &__description {
+        margin-bottom: size(15);
+    }
 
     &__group {
         border-radius: var(--mc-border-radius-xs);
@@ -12,7 +15,20 @@
     }
 
     &__edit-group {
-        display: flex;
+        border-bottom: size(1) solid;
+        padding: size(16);
+
+        &--field {
+            display: flex;
+            gap: size(16);
+            justify-content: space-between;
+            align-items: center;
+
+            input {
+                max-width: 100%;
+                width: 80%;
+            }
+        }
     }
 
     &__evaluators,
@@ -20,7 +36,6 @@
         display: grid;
     }
 
-    &__edit-group,
     &__evaluators,
     &__multiple-evaluators {
         border-bottom: size(1) solid;
@@ -30,5 +45,16 @@
 
     &__evaluators {
         border-bottom: none;
+    }
+
+    &__multiple-evaluators {
+        grid-template-columns: 64% 1fr;
+        justify-content: space-between;
+
+        input {
+            max-width: 100%;
+            width: size(96);
+            height: size(40);
+        }
     }
 }
