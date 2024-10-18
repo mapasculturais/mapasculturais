@@ -22,6 +22,9 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
     {
         $entity = $this->getEntityAndCheckPermission('@control');
 
+        $app = App::i();
+        $app->view->jsObject['step_id'] = intval($this->data['step_id']);
+
         $this->render("form-builder", ['entity' => $entity]);
     }
 
@@ -76,7 +79,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
     public function GET_reportmanager()
     {
         $app = App::i();
-        
+
         $entity = $this->getEntityAndCheckPermission('@control');
 
         $app->hook('mapas.printJsObject:before', function () use($app) {
@@ -136,7 +139,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $app = App::i();
 
         $opportunity = $this->requestedEntity;
-        
+
         $user_id = $this->data['user'] ?? null;
 
         if ($user_id == 'all'){
@@ -172,13 +175,13 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
             "objectId" => $entity->opportunity->id,
             "group" => "@support"
         ]);
-        
+
         $this->render("support--edit-view",[
             'entity' => $entity,
             "userAllowedFields" => ($relation->metadata["registrationPermissions"] ?? [])
         ]);
     }
-   
+
     public Function GET_registrationformpreview(){
         $app = App::i();
 
@@ -192,7 +195,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $registration->id = -1;
         $registration->preview = true;
         $registration->opportunity = $opportunity;
-        
+
         $this->_requestedEntity = $registration;
 
         $this->render("registration-form-preview",['entity' => $registration, 'preview' => true]);
@@ -214,7 +217,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $this->render("registration-editable-field", ['entity' => $entity]);
     }
 
-    function getEntityAndCheckPermission($permission) 
+    function getEntityAndCheckPermission($permission)
     {
         $app = App::i();
 
@@ -238,7 +241,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
             $entity->checkPermission('viewEvaluations');
             return $entity;
         }
-        
+
         $entity->checkPermission($permission);
         return $entity;
     }
