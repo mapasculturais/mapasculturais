@@ -29,6 +29,14 @@ app.component('opportunity-form-builder' , {
         this.entity.useSpaceRelationIntituicao = this.entity.useSpaceRelationIntituicao ?? 'dontUse';
     },
 
+    mounted () {
+        window.addEventListener('message', this.onMessage);
+    },
+
+    beforeUnmount () {
+        window.removeEventListener('message', this.onMessage);
+    },
+
     computed: {
         stepsWithSlugs: {
             get () {
@@ -40,11 +48,32 @@ app.component('opportunity-form-builder' , {
         }
     },
 
+    watch: {
+        steps () {
+            this.syncStepsCount();
+        },
+    },
+
     methods: {
         addStep (modal) {
-            this.steps = [ ...this.steps, { ...this.newStep } ];
+            this.steps = [...this.steps, { ...this.newStep }];
             this.newStep = { id: this.newStep.id + 1, name: '' };
             modal.close();
+        },
+        onMessage ({ data }) {
+            if (data.type === 'formbuilder:started') {
+                this.syncStepsCount();
+            } else if (data.type === 'formbuilder:removeStep') {
+                const stepId = data.payload.step_id;
+                this.steps = this.steps.filter((step) => step.id !== stepId);
+            }
+        },
+        syncStepsCount () {
+            const message = { type: 'formbuilder:countSteps', payload: { count: this.steps.length } };
+
+            this.$el.querySelectorAll('iframe').forEach((iframe) => {
+                iframe.contentWindow.postMessage(message);
+            });
         },
     },
 });
