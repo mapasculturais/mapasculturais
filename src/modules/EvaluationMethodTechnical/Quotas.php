@@ -110,7 +110,7 @@ class Quotas {
         $this->considerQuotasInGeneralList = $this->firstPhase->considerQuotasInGeneralList;
 
         // proecessa a configuração de cotas
-        $this->quotaRules = $this->evaluationConfig->quotaConfiguration->rules ?: [];
+        $this->quotaRules = $this->evaluationConfig->quotaConfiguration ? ($this->evaluationConfig->quotaConfiguration->rules ?: []) : [];
         $this->tiebreakerConfig = array_values((array) $this->evaluationConfig->tiebreakerCriteriaConfiguration ?: []);
         
         $this->quotaVacancies = 0;
@@ -148,7 +148,7 @@ class Quotas {
             $distribution = (object) $geo_config->distribution;
             
             $this->geoDivision = $geo_config->geoDivision ?? '';
-            $this->geoDivisionFields = (object) $geo_config->fields;
+            $this->geoDivisionFields = (object) ($geo_config->fields ?? []);
             $this->isGeoQuotaActive = (bool) $this->geoDivision;
 
             $total_geo_vacancies = 0;
