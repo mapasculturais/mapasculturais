@@ -10,8 +10,8 @@ use MapasCulturais\ApiOutputs\Dump;
 
 $entity = $this->controller->requestedEntity;
 
-$sections = $entity->opportunity->evaluationMethodConfiguration->sections;
-$criteria = $entity->opportunity->evaluationMethodConfiguration->criteria;
+$sections = $entity->opportunity->evaluationMethodConfiguration->sections ?? [];
+$criteria = $entity->opportunity->evaluationMethodConfiguration->criteria ?? [];
 $enabledViability = $entity->opportunity->evaluationMethodConfiguration->enableViability;
 
 if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
