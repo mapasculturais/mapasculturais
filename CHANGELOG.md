@@ -14,6 +14,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa registro de histórico de revisões para os projetos
 - Ajusta permissão de deleção de agentes para permitir que admnistradores possam deletar agentes de perfil
 - Faz com que o botão de excluir entidades no card da gestão de usuários seja exibido para qualquer usuário do grupo admin
+- Altera distribuição de inscrições de novos avaliadores - por padrão, novos avaliadores não recebem inscrições para avaliar
 
 ## [7.4.26] - 2024-10-11
 ### Melhorias
