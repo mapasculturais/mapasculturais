@@ -599,6 +599,14 @@ class Module extends \MapasCulturais\Module{
 
                 $this->submissionEvaluatorCount = $evaluator_count;
             }
+            
+            if($this->registrationFilterConfig->{$old_name}) {
+                $registration_filter_config = $this->registrationFilterConfig;   
+                $registration_filter_config->{$new_name} = $registration_filter_config->{$old_name};
+                unset($registration_filter_config->{$old_name});
+
+                $this->registrationFilterConfig = $registration_filter_config;
+            }
         });
 
         $app->hook("entity(RegistrationEvaluation).send:after", function() use ($app) {
@@ -839,6 +847,61 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Vinculação de Agente coletivo para tipos de proponente'),
             'type' => 'json', 
             'description' => i::__('Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou Pessoa Jurídica'),
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('registrationFilterConfig', [
+            'label' => i::__('Configuração filtro de inscrição para avaliadores/comissão'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
+        ]);
+        
+        $this->registerEvauationMethodConfigurationMetadata('fetchSelectionFields', [
+            'label' => i::__('Configuração de campos de seleção'),
+            'type' => 'json',
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('fetch', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('fetchCategories', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por categoria'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('fetchRanges', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por faixa'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('fetchProponentTypes', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por tipo de proponente'),
+            'serialize' => function ($val) {
+                return json_encode($val);
+            },
+            'unserialize' => function($val) {
+                return json_decode((string) $val);
+            }
         ]);
     }
 

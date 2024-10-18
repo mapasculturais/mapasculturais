@@ -13,7 +13,6 @@ $this->import('
     mc-confirm-button
     mc-modal
     opportunity-committee-groups
-    opportunity-evaluation-committee
     opportunity-phase-publish-date-config
     tiebreaker-criteria-configuration
     v1-embed-tool
@@ -54,10 +53,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             </div>
 
             <div class="evaluation-step__section-content">
-                <opportunity-committee-groups v-if="phase.useCommitteeGroups" :entity="phase"></opportunity-committee-groups>
-
-                <opportunity-evaluation-committee v-else :entity="phase"></opportunity-evaluation-committee>
-                <!--<v1-embed-tool v-if="phase.type.id === 'qualification'" route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>-->
+                <opportunity-committee-groups :entity="phase"></opportunity-committee-groups>
             </div>
         </section>
 

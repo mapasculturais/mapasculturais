@@ -208,6 +208,40 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $config_fetchCategories = is_array($config->fetchCategories) ? $config->fetchCategories : (array) $config->fetchCategories;
             $config_ranges = is_array($config->fetchRanges) ? $config->fetchRanges : (array) $config->fetchRanges;
             $config_proponent_types = is_array($config->fetchProponentTypes) ? $config->fetchProponentTypes : (array) $config->fetchProponentTypes;
+            $config_selection_fields = is_array($config->fetchSelectionFields) ? $config->fetchSelectionFields : (array) $config->fetchSelectionFields;
+            $global_filter_configs = isset($config->registrationFilterConfig) && is_array($config->registrationFilterConfig) ? $config->registrationFilterConfig : (array) $config->registrationFilterConfig;
+            
+            $relations = $registration->opportunity->evaluationMethodConfiguration->agentRelations;
+
+            $user_group = '';
+            foreach($relations as $relation) {
+                if($relation->agent->id == $user->profile->id) {
+                    $user_group = $relation->group;
+                }
+            }
+
+            if (is_array($global_filter_configs) && isset($global_filter_configs[$user_group])) {
+                $committee_config = $global_filter_configs[$user_group];
+                $user_id = $user->id;
+                
+                if (isset($committee_config->category)) {
+                    $config_fetchCategories = [$user_id => (array) $committee_config->category];
+                }
+                
+                if (isset($committee_config->ranges)) {
+                    $config_ranges = [$user_id => (array) $committee_config->ranges];
+                }
+                
+                if (isset($committee_config->proponentType)) {
+                    $config_proponent_types = [$user_id => (array) $committee_config->proponentType];
+                }
+
+                foreach ($committee_config as $key => $value) {
+                    if (!in_array($key, ['category', 'range', 'proponentType', 'distribution'])) {
+                        $config_selection_fields[$user_id][$key] = (array) $value;
+                    }
+                }
+            }
 
             if(is_array($config_fetch)){
                 foreach($config_fetch as $id => $val){
@@ -218,6 +252,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             if(is_array($config_fetchCategories)){
                 foreach($config_fetchCategories as $id => $val){
                     $fetch_categories [(int)$id] = $val;
+                }
+            }
+
+            $fetch_selection_fields = [];
+            if(is_array($config_selection_fields)) {
+                foreach($config_selection_fields as $id => $fields) {
+                    foreach($fields as $field => $val) {
+                        $fetch_selection_fields [(int)$id][$field] = $val;
+                    }
                 }
             }
 
@@ -325,6 +368,37 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     }
                 }
             }
+            
+            if(isset($fetch_selection_fields[$user->id])){
+                $uselection_fields = $fetch_selection_fields[$user->id];
+                if($uselection_fields){
+                    if($uselection_fields){
+                        $found_selection_fields = false;
+                        
+                        /** @var Opportunity $opportunity */
+                        $opportunity = $registration->opportunity;
+                        $opportunity->registerRegistrationMetadata();
+                        $fields = $opportunity->registrationFieldConfigurations;
+
+                        $field_name = [];
+                        foreach($fields as $field) {
+                            $field_name[$field->title] = $field->fieldName;
+                        }
+
+                        foreach($uselection_fields as $key => $values){
+                            foreach($values as $val) {
+                                $val = trim($val);
+                                
+                                if(strtolower((string)$registration->metadata[$field_name[$key]]) === strtolower($val)){
+                                    $found_selection_fields = true;
+                                }
+                            }
+                        }
+
+                        $can = $found_selection_fields ? true : false;
+                    }
+                }
+            }
         }
 
         if(!$skip_exceptions) {
@@ -416,45 +490,6 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         });
         
         if($this->fetchRegistrations()){
-            $this->registerEvaluationMethodConfigurationMetadata('fetch', [
-                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
-                'serialize' => function ($val) {
-                    return json_encode($val);
-                },
-                'unserialize' => function($val) {
-                    return json_decode((string) $val);
-                }
-            ]);
-            $this->registerEvaluationMethodConfigurationMetadata('fetchCategories', [
-                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por categoria'),
-                'serialize' => function ($val) {
-                    return json_encode($val);
-                },
-                'unserialize' => function($val) {
-                    return json_decode((string) $val);
-                }
-            ]);
-
-            $this->registerEvaluationMethodConfigurationMetadata('fetchRanges', [
-                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por faixa'),
-                'serialize' => function ($val) {
-                    return json_encode($val);
-                },
-                'unserialize' => function($val) {
-                    return json_decode((string) $val);
-                }
-            ]);
-
-            $this->registerEvaluationMethodConfigurationMetadata('fetchProponentTypes', [
-                'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por tipo de proponente'),
-                'serialize' => function ($val) {
-                    return json_encode($val);
-                },
-                'unserialize' => function($val) {
-                    return json_decode((string) $val);
-                }
-            ]);
-
             $this->registerEvaluationMethodConfigurationMetadata('infos', [
                 'label' => i::__('Textos informativos para os avaliadores'),
                 'type' => 'json',
