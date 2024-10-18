@@ -29,9 +29,13 @@ app.component('mc-captcha', {
     },
 
     mounted() {
-        //
-    },
+        if (this.provider === 'cloudflare') {
+            window.turnstile.ready(() => this.onloadTurnstileCallback());
 
+            window.verifyCaptcha = this.verifyCaptcha;
+            window.expiredCaptcha = this.expiredCaptcha;
+        };
+    },
     computed: {
         // 
     },
@@ -44,5 +48,18 @@ app.component('mc-captcha', {
         expiredCaptcha() {
             this.$emit('captcha-expired');
         },
+
+        onloadTurnstileCallback() {
+            const self = this;
+            turnstile.render("#container-cloudflare-turnstile", {
+                sitekey: self.key,
+                callback: function (token) {
+                    self.verifyCaptcha(token);
+                },
+                "expired-callback": function () {
+                    self.expiredCaptcha();
+                }
+            });
+        }
     }
 });

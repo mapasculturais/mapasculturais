@@ -23,6 +23,9 @@ if (!isset($app->_config['captcha']['providers'])) {
 $provider = $app->_config['captcha']['provider'];
 $captcha = $app->_config['captcha']['providers'][$provider];
 
+// Importando a biblioteca do captcha
+$app->view->enqueueScript('components', 'captcha', $captcha['url']);
+
 $key = $captcha['key'];
 $secret = $captcha['secret'];
 

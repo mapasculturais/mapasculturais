@@ -88,7 +88,6 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
         $config = $this->_config;
 
-        $app->view->enqueueScript('app', 'recaptcha', 'https://www.google.com/recaptcha/api.js');
 
         $plugin = $this;
 

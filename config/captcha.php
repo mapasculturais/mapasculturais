@@ -10,13 +10,20 @@ return [
      * - Esse padrão de configuração permite a implementação de outros provedores de captcha, como por exemplo o Cloudflare Turnstile
      */
     'captcha' => [
-        'provider' => 'google',
+        'provider' => 'cloudflare',
+        // 'provider' => 'google',
         'providers' => [
             'google' => [
-                'url' => 'https://www.google.com/recaptcha/api.js',
+                'url' => 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit',
                 'verify' => 'https://www.google.com/recaptcha/api/siteverify',
                 'key' => env('GOOGLE_RECAPTCHA_SITEKEY', null),
                 'secret' => env('GOOGLE_RECAPTCHA_SECRET', null)
+            ],
+            'cloudflare' => [
+                'url' => 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
+                'verify' => 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+                'key' => env('TURNSTILE_RECAPTCHA_SITEKEY', null),
+                'secret' => env('TURNSTILE_RECAPTCHA_SECRET', null)
             ]
         ]
     ]
