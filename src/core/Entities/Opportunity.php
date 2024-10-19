@@ -514,9 +514,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     
     function getExtraEntitiesToRecreatePermissionCache(){
         $entities = $this->getAllRegistrations();
-        if($this->parent){
-            $entities[] = $this->parent;
-        }
+        
         return $entities;
     }
 
@@ -1031,15 +1029,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).sendUserEvaluations:before", [$user]);
 
+        /** @var RegistrationEvaluation[] $evaluations */
         $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser($this, $user);
 
         $app->disableAccessControl();
         
         foreach($evaluations as $evaluation){
-            if($evaluation->status == 1) {
-                $evaluation->status = RegistrationEvaluation::STATUS_SENT;
-                $evaluation->sentTimestamp = new \DateTime;
-                $evaluation->save(true);
+
+            if($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) {
+                $evaluation->send(true);
             }
         }
 

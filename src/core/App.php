@@ -1955,28 +1955,67 @@ class App {
      * Persiste a fila de entidades para reprocessamento de cache de permissão
      */
     public function persistPCachePendingQueue() {
-        $created = false;
+        $conn = $this->em->getConnection();
+
         foreach($this->_permissionCachePendingQueue as $config) {
             $entity = $config[0];
             $user = $config[1];
-            if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
-                    'objectId' => $entity->id, 
-                    'objectType' => $entity->getClassName(),
-                    'status' => 0,
-                    'user' => $user
-                ])) {
-                $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
-                $pendingCache->objectId = $entity->id;
-                $pendingCache->objectType = $entity->getClassName();
-                $pendingCache->user = $user;
-                $pendingCache->save(true);
-                $this->log->debug("pcache pending: $entity");
-                $created = true;
-            }
-        }
+            
+            if (is_int($entity->id)){
+                
+                // verifica se já há uma entrada na tabela para a entidade que não está sendo processada ainda
+                $exists = $conn->fetchOne("
+                    SELECT id 
+                    FROM permission_cache_pending 
+                    WHERE 
+                        object_type = :object_type AND 
+                        object_id = :object_id AND 
+                        usr_id = :usr_id AND
+                        status = 0",
+                    [
+                        'object_type' => $entity->getClassName(),
+                        'object_id' => $entity->id,
+                        'usr_id' => $user ? $user->id : null
+                    ]
+                );
 
-        if ($created) {
-            $this->em->flush();
+                // se existir, não precisa adicionar novamente
+                if($exists) {
+                    continue;
+                }
+
+                // adiciona a entrada no banco
+                $conn->executeQuery("
+                    INSERT INTO permission_cache_pending 
+                        (id, object_type, object_id, usr_id) 
+                    VALUES 
+                        (nextval('agent_id_seq'::regclass), :object_type, :object_id, :usr_id)",
+
+                    [
+                        'object_type' => $entity->getClassName(),
+                        'object_id' => $entity->id,
+                        'usr_id' => $user ? $user->id : null
+                    ]
+                );
+
+
+                // se foi adicionado a fila o processamento para todos os usuários, 
+                // não precisa processar a fila para cada usuário individualmente
+                if(!$user) {
+                    $conn->executeQuery("
+                        DELETE FROM 
+                            permission_cache_pending 
+                        WHERE 
+                            object_type = :object_type AND 
+                            object_id = :object_id AND 
+                            usr_id IS NOT NULL AND
+                            status = 0", 
+                            [
+                                'object_type' => $entity->getClassName(),
+                                'object_id' => $entity->id
+                            ]);
+                }
+            }
         }
 
         $this->_permissionCachePendingQueue = [];
@@ -2019,47 +2058,108 @@ class App {
      * @throws GlobalException 
      */
     public function recreatePermissionsCache(){
+        /** @var Connection $conn */
         $conn = $this->em->getConnection();
 
-        $id = $conn->fetchOne('
-            SELECT id 
-            FROM permission_cache_pending
-            WHERE 
-                status = 0 AND 
-                CONCAT (object_type, object_id, usr_id) NOT IN (
-                    SELECT CONCAT(object_type, object_id, usr_id) 
-                    FROM permission_cache_pending WHERE 
-                    status > 0
-                )');
+        $max_entities = $this->config['pcache.maxEntitiesPerProcess'] ?: 1;
 
-        if(!$id) { 
-            return;
-        }
-        $item = $this->repo('PermissionCachePending')->find($id);
-        if ($item) {
-            $start_time = microtime(true);
+        for($i = 0; $i < $max_entities; $i++) {
+            $queue_summary = $conn->fetchAll("
+                SELECT COUNT(*) AS num, object_type, status 
+                FROM permission_cache_pending 
+                WHERE status in (0,1)
+                GROUP BY object_type, status 
+                ORDER BY num DESC, status DESC");
 
-            $this->disableAccessControl();
-            $item->status = 1;
-            $item->save(true);
-            $this->enableAccessControl();
+            $running = [];
+            $not_running = [];
 
-            try {
-                $entity = $this->repo($item->objectType)->find($item->objectId);
-                if ($entity) {
-                    $entity->recreatePermissionCache($item->user ? [$item->user] : null);
+            foreach($queue_summary as $line) {
+                $line = (object) $line;
+                if($line->status == 1) {
+                    $running[$line->object_type] = $line->num;
+                } else {
+                    $not_running[$line->object_type] = $line->num;
                 }
-                $item = $this->repo('PermissionCachePending')->find($item->id);
-                $this->em->remove($item);
-                $this->em->flush();
-            } catch (\Exception $e ){
-                $this->disableAccessControl();
-                $item = $this->repo('PermissionCachePending')->find($item->id);
-                $item->status = 2; // ERROR
-                $item->save(true);
-                $this->enableAccessControl();
+            }
 
-                if(php_sapi_name()==="cli"){
+            $eligible_classes = [];
+            foreach($not_running as $class => $count) {
+                if(!isset($running[$class])) {
+                    $eligible_classes[] = $class;
+                }
+            }
+
+            if($eligible_classes) {
+                $eligible_classes = implode("','", $eligible_classes);
+                $eligible_classes = "AND object_type IN ('$eligible_classes')";
+            } else {
+                $eligible_classes = '';
+            }
+
+            $cache_pending = $conn->fetchAssoc("
+                SELECT *
+                FROM permission_cache_pending
+                WHERE 
+                    status = 0 $eligible_classes AND 
+                    CONCAT (object_type, object_id, usr_id) NOT IN (
+                        SELECT CONCAT(object_type, object_id, usr_id) 
+                        FROM permission_cache_pending WHERE 
+                        status > 0 
+                    ) ORDER BY id ASC");
+
+            if(!$cache_pending) { 
+                return;
+            }
+
+            $caches_pending = $conn->fetchAll('
+                SELECT id, usr_id 
+                FROM permission_cache_pending 
+                WHERE 
+                    object_type = :object_type AND
+                    object_id = :object_id AND 
+                    status = 0
+                    ',
+                [
+                    'object_type' => $cache_pending['object_type'],
+                    'object_id' => $cache_pending['object_id']
+                ]);
+            
+            if(!$caches_pending) {
+                continue;
+            }
+
+            $cache_pending_ids = array_map(fn($item) => $item['id'], $caches_pending);
+            $cache_pending_ids = implode(',',$cache_pending_ids);
+
+            $conn->executeQuery("
+                UPDATE permission_cache_pending 
+                SET status=1 
+                WHERE id in($cache_pending_ids)");
+
+            $start_time = microtime(true);
+            try {
+                $entity = $this->repo($cache_pending['object_type'])->find($cache_pending['object_id']);
+                if ($entity) {
+                    $user_ids = array_map(fn($item) => $item['usr_id'], $caches_pending);
+
+                    if(in_array(null,$user_ids)) {
+                        $user_ids = null;
+                    }
+                    $entity->recreatePermissionCache($user_ids);
+                }
+
+                $conn->executeQuery("
+                    DELETE FROM permission_cache_pending 
+                    WHERE id in($cache_pending_ids)");
+                
+            } catch (\Exception $e ){
+                $conn->executeQuery("
+                    UPDATE permission_cache_pending 
+                    SET status=2 
+                    WHERE id in($cache_pending_ids)");
+
+                if($this->config['app.log.pcache'] && php_sapi_name()==="cli"){
                     echo "\n\t - ERROR - {$e->getMessage()}";
                 }
                 throw $e;
@@ -2069,7 +2169,7 @@ class App {
                 $end_time = microtime(true);
                 $total_time = number_format($end_time - $start_time, 1);
 
-                $this->log->info("PCACHE RECREATED FOR $item IN {$total_time} seconds\n--------\n");
+                $this->log->info("PCACHE RECREATED FOR {$cache_pending['object_type']}:{$cache_pending['object_id']} IN {$total_time} seconds\n--------\n");
             }
             $this->_permissionCachePendingQueue = [];
         }

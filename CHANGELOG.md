@@ -15,6 +15,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - Correções no formulário de avaliação técnica
  - Corrige caixa com resumo da fase de avaliação para avaliação técnica que ainda não teve avaliações
 
+### Melhorias
+ - Melhora o enfileiramento e reprocessamento de caches de permissão (pcache), diminuindo o tempo de processamento
+
 ### [7.5.4] - 2024-10-11
 ### Correções
 - Impede que o javascript das tabelas quebre quando um objeto não é retornado pela API
