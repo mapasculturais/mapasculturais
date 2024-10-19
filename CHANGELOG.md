@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - Corrige ordenação dos campos no componente de seleção de campos visíveis para os avaliadores
  - Corrige salvamento da seleção de anexos visíveis para os avaliadores
  - Correções no formulário de avaliação técnica
+ - Corrige caixa com resumo da fase de avaliação para avaliação técnica que ainda não teve avaliações
 
 ### [7.5.4] - 2024-10-11
 ### Correções
