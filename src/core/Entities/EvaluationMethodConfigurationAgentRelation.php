@@ -57,7 +57,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         }
         $app->enableAccessControl();
 
-        $this->owner->opportunity->enqueueToPCacheRecreation();
+        $this->owner->opportunity->enqueueToPCacheRecreation([$this->agent->user]);
         parent::delete($flush);
     }
     
