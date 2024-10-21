@@ -15,11 +15,13 @@
         }
     }
     
-    &__shortdescription {
+    &__length {
         text-align: right;
-    }
-    &__longdescription {
-        white-space: pre-line;
+        margin-right: 15px;
+        margin-top:-30px;
+        font-size: $font-size-xxs;
+        font-style: italic;
+        color: $low-300;
     }
 
     &__error {
