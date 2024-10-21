@@ -5,7 +5,7 @@ use function MapasCulturais\__exec;
 use function MapasCulturais\__try;
 
 return [
-    'Criação das tabelas da entidade RegistrationSteps' => function () {
+    'Cria a tabela da entidade RegistrationStep' => function () {
         $app = App::i();
         $em = $app->em;
 
@@ -19,6 +19,7 @@ return [
             __exec("CREATE TABLE registration_step (
                     id INT NOT NULL DEFAULT nextval('registration_step_seq'),
                     name VARCHAR DEFAULT NULL,
+                    opportunity_id INT NOT NULL,
                     create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
                     update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
                     PRIMARY KEY(id)
@@ -26,7 +27,8 @@ return [
             );
 
             __exec("CREATE INDEX IF NOT EXISTS IDX_registration_step__step_id ON registration_step (id);");
-
+            __try("ALTER TABLE registration_step ADD CONSTRAINT FK_registration_step__opportunity FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IF NOT EXISTS IDX_registration_step__opportunity_id ON registration_step (opportunity_id);");
         }
 
         if (!__column_exists('registration_field_configuration', "step_id")) {
@@ -40,5 +42,7 @@ return [
             __try("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_registration_file_configuration__registration_step FOREIGN KEY (step_id) REFERENCES registration_step (id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;");
             __exec("CREATE INDEX IF NOT EXISTS IDX_registration_file_configuration__step_id ON registration_file_configuration (step_id);");
         }
+
+        return false;
     },
 ];

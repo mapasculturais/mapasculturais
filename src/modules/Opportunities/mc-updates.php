@@ -14,7 +14,7 @@ return [
             if (!empty($fields) || !empty($files)) {
                 $datetime = new DateTime();  
                 $datetime = $datetime->format('Y-m-d H:i:s');          
-                $conn->executeQuery("INSERT INTO registration_step (name, create_timestamp, update_timestamp) VALUES ('', '{$datetime}', '{$datetime}');");
+                $conn->executeQuery("INSERT INTO registration_step (name, opportunity_id, create_timestamp, update_timestamp) VALUES ('', {$opportunity->id}, '{$datetime}', '{$datetime}');");
                 $stepId = $conn->lastInsertId();
 
                 if (!empty($fields)) {
@@ -30,5 +30,6 @@ return [
                 }
             }
         });
+        return false;
     }
 ];
