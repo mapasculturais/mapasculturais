@@ -27,6 +27,16 @@ class RegistrationStep extends \MapasCulturais\Entity
     protected $id;
 
     /**
+     * @var \Opportunities\Entities\Opportunity
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $opportunity;
+
+    /**
      * @var string
      * 
      * @ORM\Column(name="name", type="string")
