@@ -42,7 +42,5 @@ return [
             __try("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_registration_file_configuration__registration_step FOREIGN KEY (step_id) REFERENCES registration_step (id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;");
             __exec("CREATE INDEX IF NOT EXISTS IDX_registration_file_configuration__step_id ON registration_file_configuration (step_id);");
         }
-
-        return false;
     },
 ];
