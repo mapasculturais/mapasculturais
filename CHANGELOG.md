@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### [7.5.6]
 ### Correções
  - Corrige visibilidade do botão de enviar avaliações na página de avaliações
+ - Corrige exibição da planilha de inscrições, inserindo a coluna 'Nome do projeto'
 
 ### [7.5.5]
 ### Correções
