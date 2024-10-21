@@ -68,13 +68,13 @@
             flex-direction: column;
             max-width: 100%;
             h4 {
-                font-family: "Open Sans";
+                font-family: $font-headings;
                 font-size: $font-size-xs;
                 font-weight: $font-weight-bold;
 
             }
             span {
-            font-family: "Open Sans";
+            font-family: $font-body;
             font-size: $font-size-xs;
             font-weight: $font-weight-regular;
             }

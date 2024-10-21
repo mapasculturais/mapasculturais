@@ -7,7 +7,7 @@
 
     .modal {
         &__title {
-            font-family: 'Open Sans';
+            font-family: $font-body;
             font-style: normal;
             font-weight: $font-weight-bold;
             font-size: $font-size-md;
@@ -32,7 +32,7 @@
     }
 
     .field label {
-        font-family: 'Open Sans';
+        font-family: $font-body;
         font-style: normal;
         font-weight: $font-weight-semibold;
         font-size: $font-size-xxs;
@@ -65,7 +65,7 @@
     }
 
     &__select {
-        font-family: 'Open Sans';
+        font-family: $font-body;
         font-style: normal;
         font-weight: $font-weight-bold;
         font-size: $font-size-xs;
@@ -96,7 +96,7 @@
     }
 
     &__title {
-        font-family: 'Open Sans';
+        font-family: $font-body;
         font-style: normal;
         font-weight: $font-weight-bold;
         font-size: $font-size-xxs;
@@ -108,7 +108,7 @@
 
 
     &__label {
-        font-family: 'Open Sans';
+        font-family: $font-body;
         font-style: normal;
         font-weight: $font-weight-regular;
         font-size: $font-size-xxxs;

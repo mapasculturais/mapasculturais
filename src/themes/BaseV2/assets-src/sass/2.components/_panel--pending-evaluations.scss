@@ -180,7 +180,7 @@
 
                                 .entity-label {
                                     label {
-                                        font-family: 'Open Sans';
+                                        font-family: $font-body;
                                         font-style: normal;
                                         font-weight: $font-weight-regular;
                                         font-size: $font-size-xxs;
@@ -196,11 +196,11 @@
                             }
 
                             &__content {
-                                max-width: size(310);
-                                font-family: 'Open Sans';
-                                font-style: normal;
+                                font-family: $font-body;
                                 font-size: $font-size-xxs;
+                                font-style: normal;
                                 line-height: size(19);
+                                max-width: size(310);
 
                                 &--label {
 

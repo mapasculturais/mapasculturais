@@ -133,7 +133,7 @@
         padding: size(8) size(16);
         font-size: $font-size-xxs;
         font-weight: $font-weight-semibold;
-        font-family: 'Open Sans';
+        font-family: $font-body;
         text-decoration: none;
 
         &:focus,

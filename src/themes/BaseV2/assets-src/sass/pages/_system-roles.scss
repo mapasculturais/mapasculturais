@@ -98,7 +98,7 @@
                 }
 
                 &__list {
-                    font-family: 'Open Sans';
+                    font-family: $font-body;
                     font-weight: $font-weight-bold;
                     font-size: $font-size-xxxs;
                     line-height: size(16.34);
@@ -106,7 +106,7 @@
                 }
 
                 &__users {
-                    font-family: 'Open Sans';
+                    font-family: $font-body;
                     font-style: normal;
                     font-weight: $font-weight-bold;
                     font-size: $font-size-xxs;
@@ -131,7 +131,7 @@
                 padding: size(9) size(19);
 
                 span {
-                    font-family: 'Open Sans';
+                    font-family: $font-body;
                     font-style: normal;
                     font-weight: $font-weight-bold;
                     font-size: $font-size-xxs;
@@ -154,7 +154,7 @@
                     align-items: center;
 
                     span {
-                        font-family: 'Open Sans';
+                        font-family: $font-body;
                         font-style: normal;
                         font-weight: $font-weight-semibold;
                         font-size: $font-size-sm;
@@ -169,7 +169,7 @@
                         gap: calc(36%);
                         align-items: center;
                         justify-content: flex-start;
-                        font-family: 'Open Sans';
+                        font-family: $font-body;
                         font-style: normal;
                         font-weight: $font-weight-semibold;
                         font-size: $font-size-sm;
