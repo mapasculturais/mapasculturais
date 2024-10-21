@@ -1,0 +1,16 @@
+@use '../0.settings/mixins'as *;
+
+.registration-form {
+    &__section {
+        margin-bottom: 1rem;
+        >.mc-card__title {
+            font-size: $font-size-md;
+            font-weight: $font-weight-bold;
+        }
+
+        .field {
+            margin-top: 2rem;
+        }
+    }
+
+}

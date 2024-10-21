@@ -32,10 +32,6 @@ $this->import('
 
         <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder" :disabled="readonly" :readonly="readonly">
         
-        <textarea v-if="is('textarea') && !prop=='shortDescription'" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly" :readonly="readonly"></textarea>
-        
-        <textarea v-if="is('textarea') && prop=='longDescription'" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" class="field__longdescription" :disabled="readonly" :readonly="readonly"></textarea>
-        
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly" :readonly="readonly">
         
         <input v-if="is('email') || is('url')" :value="value" :id="propId" :name="prop" :type="fieldType" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder" :disabled="readonly" :readonly="readonly">
@@ -44,12 +40,7 @@ $this->import('
         
         <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change($event, true)"></entity-field-datepicker>
         
-        <div  v-if="is('textarea') && prop=='shortDescription'" class="field__shortdescription">
-            <textarea :id="propId" :value="value" :name="prop" @input="change($event)" @blur="change($event,true)" :maxlength="400" :disabled="readonly" :readonly="readonly"></textarea>
-                <p>
-                {{ value ? value?.length : '0' }}/400
-                </p>
-        </div>
+        <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxlength="maxLength" @input="change($event)" @blur="change($event,true)" :disabled="readonly" :readonly="readonly"></textarea>
 
         <select v-if="is('select')" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || readonly">
             <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>
@@ -96,6 +87,8 @@ $this->import('
                 </div>
             </div>
         </template>
+
+        <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
     </slot>
 
     <small class="field__description" v-if="!hideDescription && (fieldDescription || description.description)"> {{ fieldDescription || description.description}} </small>

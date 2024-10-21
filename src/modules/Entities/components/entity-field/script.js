@@ -112,6 +112,12 @@ app.component('entity-field', {
             type: [ Number, String, Date ],
             default: 0 || null
         },
+
+        maxLength: {
+            type: Number,
+            default: null
+        },
+
         fieldDescription: {
             type: String,
             default: null
@@ -138,11 +144,14 @@ app.component('entity-field', {
         );
     },
 
+    mounted() {
+        if(this.is('textarea')) {
+            this.$refs.textarea.style.height = "auto";
+            this.$refs.textarea.style.height = (this.$refs.textarea.scrollHeight +10) + "px";
+        }
+    },
+
     computed: {
-      
-        charRemaining() {
-            return 400 - this.value.length;
-        },
         hasErrors() {
             let errors = this.entity.__validationErrors[this.prop] || [];
             if(errors.length > 0){
@@ -156,7 +165,7 @@ app.component('entity-field', {
         },
         value() {
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
-        }
+        },
     },
     
     methods: {
@@ -221,6 +230,12 @@ app.component('entity-field', {
                 }
 
             }, now ? 0 : this.debounce);
+
+
+            if(this.is('textarea')) {
+                event.target.style.height = "auto";
+                event.target.style.height = (event.target.scrollHeight + 20) + "px";
+            }
         },
 
         is(type) {
