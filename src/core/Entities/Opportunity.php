@@ -1404,9 +1404,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 continue;
             }
 
+            if(in_array($field->fieldType, ['agent-owner-field', 'agent-collective-field'])) {
+                $agent_properties_metadata = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
+                $agent_field_name = $field->config['entityField'] ?? null;
+                $agent_field = $agent_properties_metadata[$agent_field_name] ?? null;
+                $field_type = $agent_field['field_type'] ?? $agent_field['type'] ?? 'text';
+
+            } else if ($field->fieldType == 'checkboxes') {
+                $field_type = 'checklist';
+
+            } else {
+                $field_type = $field->fieldType;
+            }
+
             $cfg = [
                 'label' => $field->title,
-                'type' => $field->fieldType === 'checkboxes' ? 'checklist' : $field->fieldType ,
+                'type' => $field_type,
                 'private' => true,
                 'registrationFieldConfiguration' => $field
             ];
@@ -1440,7 +1453,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
             }
 
             $app->applyHookBoundTo($this, "controller(opportunity).registerFieldType({$field->fieldType})", [$field, &$cfg]);
-
 
             $metadata = new MetadataDefinition ($field->fieldName, $cfg);
 
