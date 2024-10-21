@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [7.5.6]
+### Correções
+ - Corrige visibilidade do botão de enviar avaliações na página de avaliações
+
 ### [7.5.5]
 ### Correções
  - Adiciona cache na compilação do css do customizador de temas dos subsites
