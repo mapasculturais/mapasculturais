@@ -5,12 +5,12 @@ use function MapasCulturais\__exec;
 use function MapasCulturais\__try;
 
 return [
-    'Criação das tabelas da entidade RegistrationStepss' => function () {
+    'Criação das tabelas da entidade RegistrationSteps' => function () {
         $app = App::i();
         $em = $app->em;
 
         $conn = $em->getConnection();
-        
+
         if (!__table_exists('registration_step')) {
             if (!__sequence_exists('registration_step_seq')) {
                 $conn->executeQuery("CREATE SEQUENCE registration_step_seq START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;");
