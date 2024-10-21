@@ -4,10 +4,10 @@
     .public-location {
         &__label {
 
-            font-family: 'Open Sans';
+            font-family: $font-body;
+            font-size: $font-size-xxs;
             font-style: normal;
             font-weight: $font-weight-semibold;
-            font-size: $font-size-xxs;
             line-height: size(19);
         }
     }

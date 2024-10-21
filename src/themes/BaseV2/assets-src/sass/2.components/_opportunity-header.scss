@@ -105,7 +105,7 @@
                         font-size: $font-size-xxs;
                         gap: size(5);
                         line-height: size(19);
-                        font-family: 'Open Sans';
+                        font-family: $font-body;
                         font-size: $font-size-xxs;
                         align-items: baseline;
 
@@ -142,7 +142,7 @@
                 @media (max-width: size(400)) {
                     &__info {
                         flex-direction: column;
-                        font-family: 'Open Sans';
+                        font-family: $font-body;
                         font-style: normal;
                         font-weight: $font-weight-semibold;
                         font-size: $font-size-xxs;

@@ -93,7 +93,7 @@
     &__input {
         border-radius: var(--mc-border-radius-xs);
         border: $border-hairline var(--mc-gray-500);
-        font-family: Open Sans;
+        font-family: $font-body;
         font-size: var(--mc-font-size-xxs);
         line-height: normal;
         max-width: size(92);

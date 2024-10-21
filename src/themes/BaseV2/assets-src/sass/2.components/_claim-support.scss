@@ -20,13 +20,13 @@
     width: 100%;
 
     &__title {
-      font-family: 'Open Sans';
+      display: contents;
+      font-family: $font-headings;
       font-style: normal;
-      font-weight: $font-weight-bold;
       font-size: $font-size-md;
+      font-weight: $font-weight-bold;
       line-height: size(28);
       margin-left: size(16);
-      display: contents;
     }
 
     &__content {

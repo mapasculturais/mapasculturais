@@ -34,7 +34,7 @@
             justify-content: space-between;
 
             .label {
-                font-family: 'Open Sans';
+                font-family: $font-body;
                 font-style: normal;
                 font-size: $font-size-xxs;
                 font-weight: $font-weight-bold;
@@ -87,7 +87,7 @@
                         gap: size(12);
 
                         label {
-                            font-family: 'Open Sans';
+                            font-family: $font-body;
                             font-style: normal;
                             font-weight: $font-weight-bold;
                             font-size: $font-size-xxs;
@@ -128,7 +128,7 @@
                     }
 
                     &--label {
-                        font-family: 'Open Sans';
+                        font-family: $font-body;
                         font-style: normal;
                         font-weight: $font-weight-semibold;
                         font-size: $font-size-xs;
@@ -198,7 +198,7 @@
                                 }
 
                                 &__name {
-                                    font-family: 'Open Sans';
+                                    font-family: $font-body;
                                     font-style: normal;
                                     font-weight: $font-weight-bold;
                                     font-size: size(22);
@@ -217,7 +217,7 @@
                                     flex-direction: column;
 
                                     .subscribe {
-                                        font-family: 'Open Sans';
+                                        font-family: $font-body;
                                         font-style: normal;
                                         font-weight: $font-weight-semibold;
                                         font-size: $font-size-xxxs;
@@ -227,7 +227,7 @@
                                     }
 
                                     .value {
-                                        font-family: 'Open Sans';
+                                        font-family: $font-body;
                                         font-style: normal;
                                         font-weight: $font-weight-bold;
                                         font-size: $font-size-xxs;
@@ -251,7 +251,7 @@
                             }
                             .state,
                             &label {
-                                font-family: 'Open Sans';
+                                font-family: $font-body;
                                 font-style: normal;
                                 font-weight: $font-weight-semibold;
                                 font-size: $font-size-xxxs;
@@ -270,7 +270,7 @@
 
                                 label {
                                     color: var(--mc-low-700);
-                                    font-family: 'Open Sans';
+                                    font-family: $font-body;
                                     font-style: normal;
                                     font-weight: $font-weight-bold;
                                     font-size: $font-size-xxxs;

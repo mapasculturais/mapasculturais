@@ -17,7 +17,7 @@
         .field {
             &__title {
                 font-size: $font-size-xxs;
-                font-family: Open Sans;
+                font-family: $font-body;
                 font-style: normal;
                 font-weight: var(--mc-font-semibold);
                 line-height: normal;

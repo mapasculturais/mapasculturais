@@ -229,13 +229,13 @@ vue3-easy-data-table__body {
 // fixed-columns feature related
 .vue3-easy-data-table__header th,
 .vue3-easy-data-table__body td {
-    font-family: Open Sans;
+    border-bottom: $border-hairline var(--mc-gray-300);
+    color: var(--mc-low-700);
+    $font-body: $font-headings;
     font-size: $font-size-xxs;
     font-style: normal;
     font-weight: $font-weight-semibold;
     line-height: normal;
-    color: var(--mc-low-700);
-    border-bottom: $border-hairline var(--mc-gray-300);
 
     &.shadow {
         &::after {
@@ -272,20 +272,20 @@ vue3-easy-data-table__body {
 }
 
 .vue3-easy-data-table__body td {
-    padding: 0 size(10);
     background-color: var(--mc-high-500);
     border: none;
     border-bottom: $border-hairline var(--mc-high-500);
-    font-weight: $font-weight-bold;
-    font-size: $font-size-xxs;
-    font-family: 'Open Sans';
     color: var(--mc-low-700);
+    font-family: $font-body;
+    font-size: $font-size-xxs;
+    font-weight: $font-weight-bold;
+    padding: 0 size(10);
     padding: size(16);
     &:first-child {
         color: var(--mc-opportunities-500);
-        font-weight: $font-weight-semibold;
+        font-family: $font-body;
         font-size: $font-size-xxs;
-        font-family: 'Open Sans';
+        font-weight: $font-weight-semibold;
     }
 
     &.direction-left {

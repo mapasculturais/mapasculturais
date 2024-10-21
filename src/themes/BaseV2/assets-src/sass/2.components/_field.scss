@@ -23,13 +23,13 @@
     }
 
     &__error {
-        font-family: Open Sans;
+        color: var(--mc-error);
+        font-family: $font-body;
         font-size: $font-size-xxxs;
         font-weight: $font-weight-semibold;
         line-height: size(16);
         letter-spacing: 0em;
         text-align: left;
-        color: var(--mc-error);
     }
 
     &__upload {
@@ -105,13 +105,13 @@
     }
 
     .required {
-        font-family: Open Sans;
+        color: var(--mc-error);
+        font-family: $font-body;
         font-size: $font-size-xxxs;
         font-weight: $font-weight-bold;
         line-height: size(16);
         letter-spacing: 0em;
         text-align: left;
-        color: var(--mc-error);
     }
 
     &.disabled {
@@ -152,7 +152,7 @@
     input, textarea, select {
         border-radius: var(--mc-border-radius-xs);
         border: $border-hairline var(--mc-gray-500);
-        font-family: Open Sans;
+        font-family: $font-body;
         font-size: var(--mc-font-size-xxs);
         line-height: normal;
         padding: size(14);

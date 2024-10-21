@@ -68,7 +68,7 @@
     &__search-input {
         border-radius: size(40);
         border: var(--mc-border-hairline) var(--mc-gray-500);
-        font-family: 'Open Sans';
+        font-family: $font-body;
         font-size: var(--mc-font-size-xs);
         min-height: size(49);
         overflow: hidden;

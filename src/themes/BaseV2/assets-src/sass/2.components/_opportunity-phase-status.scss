@@ -17,7 +17,7 @@
         justify-content: center;
 
         &__message {
-            font-family: 'Open Sans';
+            font-family: $font-body;
             font-style: normal;
             font-weight: $font-weight-semibold;
             font-size: $font-size-xxs;

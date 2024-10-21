@@ -656,11 +656,11 @@
 		}
 
 		.button {
-			font-family: "Open Sans";
+			font-family: $font-body;
 
 			&.archive {
 				color: var(--mc-low-500);
-				font-family: "Open Sans";
+				font-family: $font-body;
 
 				.iconify {
 					color: var(--mc-warning);

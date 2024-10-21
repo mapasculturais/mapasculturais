@@ -156,12 +156,12 @@
 
                 .related {
                     &-title {
+                        color: var(--mc-black);
                         font-family: var(--mc-font-body);
                         font-style: normal;
                         font-weight: $font-weight-regular;
                         font-size: $font-size-xs;
                         line-height: size(22);
-                        color: var(--mc-black);
                         margin: size(11) 0 size(16);
                     }
                 }
