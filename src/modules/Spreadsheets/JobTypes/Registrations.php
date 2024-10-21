@@ -29,7 +29,7 @@ class Registrations extends SpreadsheetJob
         /*if($job->owner_properties) {
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
-        $query['@select'] .= ',owner.{name}';
+        $query['@select'] .= ',projectName,owner.{name}';
         $properties = explode(',', $query['@select']);
         
         foreach($properties as $property) {
@@ -55,6 +55,11 @@ class Registrations extends SpreadsheetJob
                 $header['createDate'] = i::__('Data de criação');
                 $header['createTime'] = i::__('Hora de criação');
 
+                continue;
+            }
+
+            if($property == 'projectName') {
+                $header[$property] = i::__('Nome do projeto');
                 continue;
             }
 
@@ -106,6 +111,7 @@ class Registrations extends SpreadsheetJob
 
         $query_params['@limit'] = $this->limit;
         $query_params['@page'] = $this->page;
+        $query_params['@select'] .= ',projectName';
         
         $all_phases_fields = [];
 
