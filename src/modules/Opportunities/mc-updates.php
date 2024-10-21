@@ -30,6 +30,5 @@ return [
                 }
             }
         });
-        return false;
     }
 ];
