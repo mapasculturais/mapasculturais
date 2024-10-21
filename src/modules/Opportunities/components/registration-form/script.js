@@ -50,7 +50,75 @@ app.component('registration-form', {
     },
 
     computed: {
-       
+        fields() {
+            const registration = this.registration;
+
+            let fields = [...$MAPAS.config.registrationForm.fields, ...$MAPAS.config.registrationForm.files];
+
+            fields = fields.sort((a,b) => a.displayOrder - b.displayOrder);
+
+            const result = [];
+
+            for(let field of fields) {
+                if(field.categories?.length && !field.categories.includes(registration.category)) {
+                    continue;
+                }
+
+                if(field.registrationRanges?.length && !field.registrationRanges.includes(registration.range)) {
+                    continue;
+                }
+
+                if(field.registrationProponentTypes?.length && !field.registrationProponentTypes.includes(registration.proponentType)) {
+                    continue;
+                }
+
+                if(field.conditional) {
+                    const fieldName = field.conditionalField;
+                    const fieldValue = field.conditionalValue;
+
+                    if(fieldName) {
+                        if(registration[fieldName] != fieldValue) {
+                            continue
+                        }
+                    }
+                }
+
+                result.push(field);
+            }
+
+            return result;
+        },
+
+        sections() {
+            const sectionSkel = {
+                id: '',
+                title: '',
+                description: '',
+            }
+            const sections = [];
+
+            let currentSection = {...sectionSkel, fields:[]};
+            for(let field of this.fields) {
+                if(field.fieldType == 'section') {
+                    currentSection = {...sectionSkel, fields:[]};
+                    sections.push(currentSection);
+
+                    currentSection.id = field.fieldName;
+                    currentSection.title = field.title;
+                    currentSection.description = field.description;
+                    continue;
+                }
+
+                // se o primeiro campo do formulário não é uma seção será "vazia"
+                if(sections.length === 0) {
+                    sections.push(currentSection);
+                }
+
+                currentSection.fields.push(field);
+            }
+
+            return sections;
+        }
     },
     
     
