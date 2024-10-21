@@ -1,29 +1,44 @@
 <?php
+namespace MapasCulturais;
 
 use function MapasCulturais\__exec;
 use function MapasCulturais\__try;
 
 return [
-    'Criação das tabelas da entidade RegistrationStep' => function () {
+    'Criação das tabelas da entidade RegistrationStepss' => function () {
+        $app = App::i();
+        $em = $app->em;
+
+        $conn = $em->getConnection();
         
-        __exec("CREATE TABLE IF NOT EXISTS registration_step (
-                    id INT NOT NULL, 
-                    name INT DEFAULT NULL, 
-                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
-                    update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, 
-                    PRIMARY KEY(id));
-        ");
+        if (!__table_exists('registration_step')) {
+            if (!__sequence_exists('registration_step_seq')) {
+                $conn->executeQuery("CREATE SEQUENCE registration_step_seq START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;");
+            }
 
-        __exec("ALTER TABLE registration_field_configuration ADD COLUMN step_id INT NULL;");
-        __exec("ALTER TABLE registration_file_configuration ADD COLUMN step_id INT NULL;");
+            __exec("CREATE TABLE registration_step (
+                    id INT NOT NULL DEFAULT nextval('registration_step_seq'),
+                    name VARCHAR DEFAULT NULL,
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    PRIMARY KEY(id)
+                );"
+            );
 
-        __try("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_registration_field_configuration__registration_step FOREIGN KEY (step_id) REFERENCES registration_step (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_registration_file_configuration__registration_step FOREIGN KEY (step_id) REFERENCES registration_step (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IF NOT EXISTS IDX_registration_step__step_id ON registration_step (id);");
 
-        __exec("CREATE INDEX IDX_registration_step__step_id ON registration_step (id);");
-        __exec("CREATE INDEX IDX_registration_field_configuration__step_id ON registration_field_configuration (step_id);");
-        __exec("CREATE INDEX IDX_registration_file_configuration__step_id ON registration_file_configuration (step_id);");
+        }
 
-        return true;
+        if (!__column_exists('registration_field_configuration', "step_id")) {
+            __exec("ALTER TABLE registration_field_configuration ADD COLUMN step_id INT NULL;");
+            __try("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_registration_field_configuration__registration_step FOREIGN KEY (step_id) REFERENCES registration_step (id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IF NOT EXISTS IDX_registration_field_configuration__step_id ON registration_field_configuration (step_id);");
+        }
+
+        if (!__column_exists('registration_file_configuration', "step_id")) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN step_id INT NULL;");
+            __try("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_registration_file_configuration__registration_step FOREIGN KEY (step_id) REFERENCES registration_step (id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IF NOT EXISTS IDX_registration_file_configuration__step_id ON registration_file_configuration (step_id);");
+        }
     },
 ];
