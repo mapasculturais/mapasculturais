@@ -46,7 +46,13 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook('app.register:after', function () use($app) {
+
             if ($subsite = $app->subsite) {
+                $cache_id = $subsite->getSassCacheId();
+
+                if($app->mscache->contains($cache_id)) {
+                    return;
+                }
                 
                 Module::$originalColors = $app->config['logo.colors'];
 
@@ -149,6 +155,8 @@ class Module extends \MapasCulturais\Module
                         }
                     }
                 }
+
+                $app->mscache->save($cache_id, 1);
             }
         });
 

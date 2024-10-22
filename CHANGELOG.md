@@ -5,10 +5,29 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [7.5.5]
+### Correções
+ - Adiciona cache na compilação do css do customizador de temas dos subsites
+ - Evita o reprocessamento do cache do avaliador toda vez que ele termina uma avaliação
+ - Correções e reformatações na planilha de avaliações
+ - Corrige ordenação dos campos no componente de seleção de campos visíveis para os avaliadores
+ - Corrige salvamento da seleção de anexos visíveis para os avaliadores
+ - Correções no formulário de avaliação técnica
+ - Corrige caixa com resumo da fase de avaliação para avaliação técnica que ainda não teve avaliações
+
+### Melhorias
+ - Melhora o enfileiramento e reprocessamento de caches de permissão (pcache), diminuindo o tempo de processamento
+
+### [7.5.4] - 2024-10-11
+### Correções
+- Impede que o javascript das tabelas quebre quando um objeto não é retornado pela API
+- Evita que o ranqueamento das cotas quebre quando o número de vadas do edital não está definido
+
 ### [7.5.3] - 2024-10-11
 ### Correções
 - Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
 - Corrige erro na seleção dos campos visíveis para o avaliador
+- Cirrige erro no ranqueamento de cotas caso não exista percentual de vagas definido
 
 ### Melhorias
 - Implementa registro de histórico de revisões para os projetos
