@@ -10,6 +10,9 @@ $this->import('
     entity-field-datepicker
     mc-alert
     mc-currency-input
+    mc-icon
+    mc-multiselect
+    mc-tag-list
 ')
 ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]">
@@ -52,9 +55,21 @@ $this->import('
             </label>
         </template>
         
-        <template v-if="is('multiselect')">
+        <template v-if="is('multiselect') || is('checkboxes') || is('checklist')">
            <div class="field__group">
-               <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
+                <template v-if="description.optionsOrder.length > 10">
+                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover}" :max-options="maxOptions" hide-button>
+                        <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle(); $event.preventDefault()" >
+                            <?php i::_e("Selecionar") ?>
+                            <mc-icon name="add"></mc-icon>
+                        </button>    
+                    </mc-multiselect>
+
+                    <mc-tag-list :tags="selectedOptions[prop]" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
+                </template>
+
+                
+                <label v-else class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
                    <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || readonly"> {{description.options[optionValue]}} 
                 </label>
             </div>
