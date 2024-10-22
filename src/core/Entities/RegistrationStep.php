@@ -1,21 +1,21 @@
 <?php
-namespace Opportunities\Entities;
+namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * RegistrationStep
- * 
+ *
  * @property RegistrationFileConfiguration[] $registrationFileConfigurations
  * @property RegistrationFieldConfiguration[] $registrationFieldConfigurations
- * 
+ *
  * @ORM\Table(name="registration_step")
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
-class RegistrationStep extends \MapasCulturais\Entity 
-{   
+class RegistrationStep extends \MapasCulturais\Entity
+{
     /**
      * @var integer
      *
@@ -27,7 +27,7 @@ class RegistrationStep extends \MapasCulturais\Entity
     protected $id;
 
     /**
-     * @var \Opportunities\Entities\Opportunity
+     * @var \MapasCulturais\Entities\Opportunity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
@@ -38,7 +38,7 @@ class RegistrationStep extends \MapasCulturais\Entity
 
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="name", type="string")
      */
     protected $name;
@@ -57,8 +57,22 @@ class RegistrationStep extends \MapasCulturais\Entity
      */
     protected $updateTimestamp;
 
-    private function __construct() 
-    { 
+    static function getControllerId() {
+        return 'registrationstep';
     }
 
+    function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+        ];
+    }
+
+    function setOpportunity(int|Opportunity $opportunity) {
+        if(is_int($opportunity)) {
+            $app = \MapasCulturais\App::i();
+            $opportunity = $app->repo('Opportunity')->find($opportunity);
+        }
+        $this->opportunity = $opportunity;
+    }
 }
