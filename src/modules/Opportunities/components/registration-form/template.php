@@ -31,7 +31,7 @@
                         :autosave="60000"
                         :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"></entity-field>
 
-                    <entity-file v-if="field.groupName" :entity="registration" :groupName="field.groupName" :title="field.title" editable></entity-file>
+                    <entity-file v-if="field.groupName" :entity="registration" :groupName="field.groupName" titleModal="<?php i::_e('Adicionar anexo') ?>" :title="field.title" editable></entity-file>
                 </template>
             </template>
         </mc-card>
