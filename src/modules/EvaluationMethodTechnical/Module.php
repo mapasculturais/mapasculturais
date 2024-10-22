@@ -55,17 +55,16 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $result = [];
 
         $non_numeric = [];
-        if($max_value){
-            for($i=0;$i<5;$i++){
-                $min = $i * $max_value / 5;
-                $max = ($i+1) * $max_value / 5;
-                foreach($data as $val => $sum) {
-                    if(!is_numeric($val)) {
-                        $non_numeric[$val] = $non_numeric[$val] ?? 0;
-                        $non_numeric[$val] += $sum;
-
-                    } else if($val >= $min && $val < $max) {
-
+        foreach($data as $val => $sum) {
+            if(!is_numeric($val)) {
+                $non_numeric[$val] = $non_numeric[$val] ?? 0;
+                $non_numeric[$val] += $sum;
+            
+            } else if($max_value) {
+                for($i=0;$i<5;$i++){
+                    $min = $i * $max_value / 5;
+                    $max = ($i+1) * $max_value / 5;
+                    if($val >= $min && $val < $max) {
                         $min = number_format($i * $max_value / 5,       1, ',', '.');
                         $max = number_format(($i+1) * $max_value / 5,   1, ',', '.');
 
@@ -78,7 +77,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
 
         $result += $non_numeric;
-        
         return $result;
     }
 
