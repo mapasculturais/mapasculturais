@@ -24,10 +24,10 @@ $this->import('
                     </span>
                 </div>
 
-                <div v-if="maxOptions && maxOptions > 0" class="mc-multiselect__count">
-                    <?php i::_e('Você selecionou') ?>
+                <div v-if="maxOptions && maxOptions > 0" class="mc-multiselect__count field">
+                    <label><?php i::_e('Você selecionou') ?>
                     {{ model.length }}/{{ maxOptions }}
-                    <?php i::_e('opções') ?>
+                    <?php i::_e('opções') ?></label>
                 </div>
 
                 <ul v-if="items.length > 0 || Object.keys(items).length > 0" class="mc-multiselect__options">
