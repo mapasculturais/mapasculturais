@@ -2,14 +2,14 @@
 
 .registration-form {
     &__section {
-        margin-bottom: 1rem;
+        margin-bottom: size(16);
         >.mc-card__title {
             font-size: $font-size-md;
             font-weight: $font-weight-bold;
         }
 
-        .field {
-            margin-top: 2rem;
+        .field:not(.modal-content .field) {
+            margin-top: size(32);
         }
     }
 
