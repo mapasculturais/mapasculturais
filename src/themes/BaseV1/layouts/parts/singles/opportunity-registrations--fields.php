@@ -16,6 +16,9 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 <div id="registration-attachments" class="registration-fieldset project-edit-mode">
 
     <div class="project-edit-mode--header">
+        <h4><?php i::_e("Nome") ?></h4>
+        <input type="text" ng-model="data.step.name">
+
         <h4><?php i::_e("Campos"); ?></h4>
 
         <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("Configure aqui os campos do formulário de inscrição."); ?></p>
