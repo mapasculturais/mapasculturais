@@ -23,6 +23,13 @@ $this->import('
                         <mc-icon name="close"></mc-icon>
                     </span>
                 </div>
+
+                <div v-if="maxOptions && maxOptions > 0" class="mc-multiselect__count">
+                    <?php i::_e('Você selecionou') ?>
+                    {{ model.length }}/{{ maxOptions }}
+                    <?php i::_e('opções') ?>
+                </div>
+
                 <ul v-if="items.length > 0 || Object.keys(items).length > 0" class="mc-multiselect__options">
                     <li v-for="item in filteredItems">
                         <label class="mc-multiselect__option">
