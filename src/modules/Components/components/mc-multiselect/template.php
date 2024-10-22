@@ -33,7 +33,7 @@ $this->import('
                 <ul v-if="items.length > 0 || Object.keys(items).length > 0" class="mc-multiselect__options">
                     <li v-for="item in filteredItems">
                         <label class="mc-multiselect__option">
-                            <input type="checkbox" :checked="model.indexOf(item.value) >= 0" @change="toggleItem(item.value)" class="input">
+                            <input type="checkbox" :checked="model.indexOf(item.value) >= 0" @change="toggleItem(item.value)" class="input" :disabled="!canSelectMore && model.indexOf(item.value) === -1">
                             <span class="text" v-html="highlightedItem(item.label)"></span>
                         </label>
                     </li>
