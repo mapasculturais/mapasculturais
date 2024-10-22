@@ -60,7 +60,8 @@ app.component('entity-field', {
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType,
             currencyValue: this.entity[this.prop],
-            readonly: false
+            readonly: false,
+            selectedOptions: [],
         }
     },
 
@@ -147,6 +148,16 @@ app.component('entity-field', {
             "entitySave",
             this.isReadonly
         );
+
+        if((this.is('multiselect') || this.is('checkboxes') || this.is('checklist')) && this.description.optionsOrder.length > 10) {
+            if (!this.entity[this.prop]) {
+                this.entity[this.prop] = [];
+            } else if (typeof this.entity[this.prop] !== 'object') {
+                this.entity[this.prop] = this.entity[this.prop].split(';');
+            }
+            
+            this.selectedOptions[this.prop] = [...this.entity[this.prop]];
+        }
     },
 
     mounted() {
@@ -208,21 +219,22 @@ app.component('entity-field', {
                 } else if(this.is('checkbox')) {
                     this.entity[this.prop] = event.target.checked;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
-                } else if (this.is('multiselect')) {
+                } else if (this.is('multiselect') || this.is('checkboxes') || this.is('checklist')) {
                     if (this.entity[this.prop] === '' || !this.entity[this.prop]) {
                         this.entity[this.prop] = []
                     } else if (typeof this.entity[this.prop] !== 'object') {
                         this.entity[this.prop] = this.entity[this.prop].split(";");
                     }
 
-                    let index = this.entity[this.prop].indexOf(event.target.value);
+                    let value = event.target ? event.target.value : event; 
+                    let index = this.entity[this.prop].indexOf(value);
                     if (index >= 0) {
                         this.entity[this.prop].splice(index, 1);
                     } else {
-                        this.entity[this.prop].push(event.target.value)
+                        this.entity[this.prop].push(value)
                     }
 
-                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: value});
                 } else {
                     this.entity[this.prop] = event.target.value;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
