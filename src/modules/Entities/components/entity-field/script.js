@@ -133,6 +133,11 @@ app.component('entity-field', {
             type: String,
             default: null,
         },
+
+        maxOptions: {
+            type: Number,
+            default: 0
+        }
     },
 
     created() {
