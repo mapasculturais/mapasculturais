@@ -23,7 +23,8 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
         $entity = $this->getEntityAndCheckPermission('@control');
 
         $app = App::i();
-        $app->view->jsObject['step_id'] = intval($this->data['step_id']);
+        $step_id = intval($this->data['step_id']);
+        $app->view->jsObject['step'] = $app->repo("registrationStep")->find($step_id);
 
         $this->render("form-builder", ['entity' => $entity]);
     }
