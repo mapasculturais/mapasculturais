@@ -512,6 +512,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.data.filterFieldConfigurationByCategory = null;
         $scope.showFieldConfiguration = function (field) {
+            if(field.fieldType == 'checkboxes') {
+                field.config.maxOptions = field.config.maxOptions ? Number(field.config.maxOptions) : 0;
+            }
+
             if(field.categories.length === 0) {
                 return true;
             }
@@ -549,10 +553,12 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
-
                 if (response.error) {
                     validationErrors(response);
                 } else {
+                    if(response.fieldType == 'checkboxes') {
+                        response.config.maxOptions = Number(response.config.maxOptions);
+                    }
                     $scope.data.fields.push(response);
                     sortFields();
                     EditBox.close('editbox-registration-fields');
