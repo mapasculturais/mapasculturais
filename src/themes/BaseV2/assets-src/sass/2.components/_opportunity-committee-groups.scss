@@ -57,4 +57,9 @@
             height: size(40);
         }
     }
+
+    .tabs-component {
+        max-width: size(1020);
+        min-width: 40%;
+    }
 }
