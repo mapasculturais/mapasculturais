@@ -39,9 +39,9 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $owner;
 
     /**
-     * @var \Opportunities\Entities\RegistrationStep
+     * @var \MapasCulturais\Entities\RegistrationStep
      *
-     * @ORM\ManyToOne(targetEntity="Opportunities\Entities\RegistrationStep")
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\RegistrationStep")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="step_id", referencedColumnName="id", onDelete="CASCADE")
      * })
@@ -75,14 +75,14 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="categories", type="json", nullable=true)
      */
     protected $categories = [];
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="display_order", type="smallint", nullable=false)
      */
     protected $displayOrder = 255;
-    
+
     /**
      * @var boolean
      *
@@ -129,10 +129,10 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     static function getValidations() {
         $app = App::i();
         $validations = [
-            'owner' => [ 
+            'owner' => [
                 'required' => \MapasCulturais\i::__("A oportunidade é obrigatória.")
             ],
-            'title' => [ 
+            'title' => [
                 'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
             ]
         ];
@@ -150,7 +150,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     public function setOwnerId($id){
         $this->owner = App::i()->repo('Opportunity')->find($id);
     }
-    
+
     public function setCategories($value) {
         if(!$value){
             $value = [];
@@ -197,7 +197,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         ];
 
         $app = App::i();
-        
+
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
 
         return $result;

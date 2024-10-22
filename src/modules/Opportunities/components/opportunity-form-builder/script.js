@@ -13,13 +13,8 @@ app.component('opportunity-form-builder' , {
     },
     data () {
       return {
-          newStep: {
-            id: 2,
-            name: '',
-          },
-          steps: [
-            { id: 1, name: 'Cadastro' },
-          ],
+          newStep: { id: 'new', name: '' },
+          steps: this.entity.registrationSteps,
       }
     },
 
@@ -55,9 +50,14 @@ app.component('opportunity-form-builder' , {
     },
 
     methods: {
-        addStep (modal) {
-            this.steps = [...this.steps, { ...this.newStep }];
-            this.newStep = { id: this.newStep.id + 1, name: '' };
+        async addStep (modal) {
+            const step = new Entity('registrationstep');
+            step.name = this.newStep.name;
+            step.opportunity = this.entity;
+            await step.save();
+
+            this.steps.push(step);
+            this.newStep.name = '';
             modal.close();
         },
         onMessage ({ data }) {
