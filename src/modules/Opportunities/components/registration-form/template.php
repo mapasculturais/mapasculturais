@@ -28,7 +28,8 @@
                         :prop="field.fieldName" 
                         :field-description="field.description" 
                         :max-length="field.maxSize" 
-                        :autosave="60000"></entity-field>
+                        :autosave="60000"
+                        :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"></entity-field>
 
                     <entity-file v-if="field.groupName" :entity="registration" :groupName="field.groupName" :title="field.title" editable></entity-file>
                 </template>
