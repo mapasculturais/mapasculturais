@@ -1410,6 +1410,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $agent_field = $agent_properties_metadata[$agent_field_name] ?? null;
                 $field_type = $agent_field['field_type'] ?? $agent_field['type'] ?? 'text';
 
+                if(str_starts_with($field->config['entityField'], '@terms')) {
+                    $field_type = 'multiselect';
+                }
+
             } else if ($field->fieldType == 'checkboxes') {
                 $field_type = 'checklist';
 
