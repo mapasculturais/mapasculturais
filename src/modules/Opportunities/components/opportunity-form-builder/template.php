@@ -130,7 +130,6 @@ $this->import('
     </div>
 
     <div class="col-12">
-        {{ steps }}
         <mc-tabs v-model:draggable="stepsWithSlugs">
             <template #default>
                 <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="step.name ?? `<?php i::_e('Etapa') ?> ${index + 1}`" :key="step.id" :slug="slug">

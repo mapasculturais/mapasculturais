@@ -52,6 +52,7 @@ app.component('opportunity-form-builder' , {
     methods: {
         async addStep (modal) {
             const step = new Entity('registrationstep');
+            step.displayOrder = this.steps.length;
             step.name = this.newStep.name;
             step.opportunity = this.entity;
             await step.save();
