@@ -55,7 +55,7 @@ $this->import('
             </label>
         </template>
         
-        <template v-if="is('multiselect') || is('checkboxes') || is('checklist')">
+        <template v-if="is('multiselect') || is('checklist')">
            <div class="field__group">
                 <template v-if="description.optionsOrder.length > 10">
                     <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover}" :max-options="maxOptions" hide-button>

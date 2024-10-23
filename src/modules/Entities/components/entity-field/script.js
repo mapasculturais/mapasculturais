@@ -149,7 +149,7 @@ app.component('entity-field', {
             this.isReadonly
         );
 
-        if((this.is('multiselect') || this.is('checkboxes') || this.is('checklist')) && this.description.optionsOrder.length > 10) {
+        if((this.is('multiselect') || this.is('checklist')) && this.description.optionsOrder.length > 10) {
             if (!this.entity[this.prop]) {
                 this.entity[this.prop] = [];
             } else if (typeof this.entity[this.prop] !== 'object') {
@@ -219,7 +219,7 @@ app.component('entity-field', {
                 } else if(this.is('checkbox')) {
                     this.entity[this.prop] = event.target.checked;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
-                } else if (this.is('multiselect') || this.is('checkboxes') || this.is('checklist')) {
+                } else if (this.is('multiselect') || this.is('checklist')) {
                     if (this.entity[this.prop] === '' || !this.entity[this.prop]) {
                         this.entity[this.prop] = []
                     } else if (typeof this.entity[this.prop] !== 'object') {
