@@ -1414,6 +1414,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     $field_type = 'multiselect';
                 }
 
+                if($field->config['entityField'] == '@location') {
+                    $field_type = 'location';
+                }
+
             } else if ($field->fieldType == 'checkboxes') {
                 $field_type = 'checklist';
 
