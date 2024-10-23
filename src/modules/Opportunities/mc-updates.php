@@ -10,11 +10,11 @@ return [
             $conn = $app->em->getConnection();
             $fields = $conn->fetchAll("SELECT id FROM registration_field_configuration WHERE opportunity_id = {$opportunity->id}");
             $files = $conn->fetchAll("SELECT id FROM registration_file_configuration WHERE opportunity_id = {$opportunity->id}");
-            
+
             if (!empty($fields) || !empty($files)) {
-                $datetime = new DateTime();  
-                $datetime = $datetime->format('Y-m-d H:i:s');          
-                $conn->executeQuery("INSERT INTO registration_step (name, opportunity_id, create_timestamp, update_timestamp) VALUES ('', {$opportunity->id}, '{$datetime}', '{$datetime}');");
+                $datetime = new DateTime();
+                $datetime = $datetime->format('Y-m-d H:i:s');
+                $conn->executeQuery("INSERT INTO registration_step (name, display_order, opportunity_id, create_timestamp, update_timestamp) VALUES ('', 0, {$opportunity->id}, '{$datetime}', '{$datetime}');");
                 $stepId = $conn->lastInsertId();
 
                 if (!empty($fields)) {
