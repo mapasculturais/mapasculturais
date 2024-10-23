@@ -27,6 +27,20 @@ class RegistrationStep extends \MapasCulturais\Entity
     protected $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string")
+     */
+    protected $name;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="display_order", type="integer")
+     */
+    protected $displayOrder;
+
+    /**
      * @var \MapasCulturais\Entities\Opportunity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
@@ -35,13 +49,6 @@ class RegistrationStep extends \MapasCulturais\Entity
      * })
      */
     protected $opportunity;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string")
-     */
-    protected $name;
 
     /**
      * @var \DateTime

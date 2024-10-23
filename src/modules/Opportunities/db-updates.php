@@ -19,6 +19,7 @@ return [
             __exec("CREATE TABLE registration_step (
                     id INT NOT NULL DEFAULT nextval('registration_step_seq'),
                     name VARCHAR DEFAULT NULL,
+                    display_order INT NOT NULL DEFAULT 0,
                     opportunity_id INT NOT NULL,
                     create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
                     update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
