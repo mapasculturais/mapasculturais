@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field-datepicker
+    entity-field-location
     mc-alert
     mc-currency-input
     mc-icon
@@ -101,6 +102,10 @@ $this->import('
                     <input :value="value" :id="propId" :name="prop" type="color" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || readonly"/>
                 </div>
             </div>
+        </template>
+
+        <template v-if="is('location')">
+            <entity-field-location :entity="entity" :field-name="prop"></entity-field-location>
         </template>
 
         <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>

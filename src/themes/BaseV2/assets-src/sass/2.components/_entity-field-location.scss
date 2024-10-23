@@ -1,0 +1,17 @@
+.entity-field-location{
+    .grid-12{
+        .col-12, .col-4{
+            margin-top: 0 !important;
+        }
+
+        .field{
+            #cep{
+                max-width: 10rem;
+            }
+
+            #complemento{
+                max-width: 18.25rem;
+            }
+        }
+    }
+}
