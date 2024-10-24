@@ -52,7 +52,7 @@ $this->import('
                 </div>
             </div>
         </div>
-        <div v-if="showEvaluateSummary()" class="col-6 opportunity-phase-list-evaluation_action--center">
+        <div class="col-6 opportunity-phase-list-evaluation_action--center">
            <div class="col-6 opportunity-phase-list-evaluation_action__box">
                 <div class="opportunity-phase-list-evaluation__status col-6">
                         <h4 class="bold"><?php i::_e("Resumo das avaliações") ?></h4>

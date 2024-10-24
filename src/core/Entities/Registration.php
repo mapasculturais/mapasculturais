@@ -1657,6 +1657,14 @@ class Registration extends \MapasCulturais\Entity
 
         return $can || $canUserEvaluate;
     }
+    
+    function getExtraEntitiesToRecreatePermissionCache(): array {
+        if ($previous_phase = $this->previousPhase) {
+            return [$previous_phase];
+        } else {
+            return [];
+        }
+    }
 
     function getExtraPermissionCacheUsers(){
         $opportunity = $this->opportunity;

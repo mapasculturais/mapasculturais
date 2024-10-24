@@ -61,7 +61,7 @@ app.component('evaluation-actions', {
         
         requestEvaluation(action, data = {}, args = {}, controller = 'registration') {
             return new Promise((resolve, reject) => {
-                if (!this.validateErrors()) {
+                if (action == 'reopenEvaluation' || !this.validateErrors()) {
                     const api = new API(controller);
                     let url = api.createUrl(action, args);
                     let result = api.POST(url, data);

@@ -77,6 +77,8 @@ app.component("fields-visible-evaluators", {
                 fields.push(item);
             }
 
+            fields = fields.sort((a,b) => a.displayOrder - b.displayOrder)
+
             return fields;
         },
         getFields() {
