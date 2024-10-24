@@ -75,6 +75,12 @@ app.component('opportunity-form-builder' , {
         onMessage ({ data }) {
             if (data.type === 'formbuilder:started') {
                 this.syncStepsCount();
+            } else if (data.type === 'formbuilder:updateStep') {
+                for (const step of this.steps) {
+                    if (step._id === data.payload.id) {
+                        Object.assign(step, data.payload);
+                    }
+                }
             } else if (data.type === 'formbuilder:removeStep') {
                 const stepId = data.payload.step_id;
                 this.steps = this.steps.filter((step) => step.id !== stepId);
