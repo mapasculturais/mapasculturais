@@ -20,14 +20,14 @@ app.component('qualification-evaluation-config', {
         return {
             editingSections: [],
             autoSaveTimeOut:  null,
-            optionsText: ''
+            optionsText: '',
         }
     },
 
     computed: {
         fieldsDict() {
             return $MAPAS.config.qualificationAssessmentSection.fieldsDict;
-        }
+        },
     },
 
     methods: {
@@ -45,7 +45,7 @@ app.component('qualification-evaluation-config', {
         
                 this.entity.sections.push({
                     id: sectionId,
-                    name: ''
+                    name: '',
                 });
                 
                 this.editingSections[sectionId] = true;
@@ -186,6 +186,64 @@ app.component('qualification-evaluation-config', {
         notApplyChange(criteria) {
             criteria.notApplyOption = criteria.notApplyOption ? 'true' : 'false';
             this.save();
-        }
+        },
+
+        updateSelections(section, selectionType, selection, checked) {
+            if (checked) {
+                if (selectionType === 'categories') {
+
+                    if (!section.categories) {
+                        section.categories = [];
+                    }
+                    section.categories.push(selection);
+                }
+
+                if (selectionType === 'proponentTypes') {
+
+                    if (!section.proponentTypes) {
+                        section.proponentTypes = [];
+                    }
+
+                    section.proponentTypes.push(selection);
+                }
+
+                if (selectionType === 'ranges') {
+
+                    if (!section.ranges) {
+                        section.ranges = [];
+                    }
+
+                    section.ranges.push({
+                        label: selection.label,
+                        limit: selection.limit,
+                        value: selection.value
+                    });
+                }
+            } else {
+                if (selectionType === 'categories') { 
+                    section.categories = section.categories.filter(item => item !== selection);
+                    
+                }
+                if (selectionType === 'proponentTypes') {
+                    section.proponentTypes = section.proponentTypes.filter(item => item !== selection);
+                    
+                }
+                if (selectionType === 'ranges') {
+                    section.ranges = section.ranges.filter(item => item.label !== selection.label);
+                }
+            }
+
+            this.save();
+        },
+
+        isChecked(section, selectionType, selection) {
+            if (selectionType === 'categories' || selectionType === 'proponentTypes') {
+                return section[selectionType]?.includes(selection);
+            }
+            if (selectionType === 'ranges') {
+                return section.ranges?.some(range => range.label === selection.label);
+            }
+        },
+
     },
 });
