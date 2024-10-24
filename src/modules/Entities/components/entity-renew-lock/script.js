@@ -41,7 +41,7 @@ app.component('entity-renew-lock', {
 
         async unlock(modal) {
             const messages = useMessages();
-          
+
             try{
                 await this.entity.POST('unlock', {
                   data: { token: this.token }, callback: data => { }
@@ -69,10 +69,12 @@ app.component('entity-renew-lock', {
             this.setCookie();
 
             setInterval(() => {
-                this.renewLock();
-            }, 
+                if (this.token) {
+                    this.renewLock();
+                }
+            },
             $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
         }
     }
-    
+
 });
