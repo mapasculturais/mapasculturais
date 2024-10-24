@@ -76,6 +76,9 @@ app.component('mc-tab', {
             if (index > -1) {
                 tabsProvider.tabs.splice(index, 1);
             }
+            if (tabsProvider.activeTab.slug === props.slug) {
+                tabsProvider.activeTab = tabsProvider.tabs[0];
+            }
         });
 
         return {
