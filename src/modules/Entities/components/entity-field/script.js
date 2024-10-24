@@ -235,6 +235,10 @@ app.component('entity-field', {
                     }
 
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: value});
+                } else if(this.is('links')) { 
+                    this.entity[this.prop] = event; 
+
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
                 } else {
                     this.entity[this.prop] = event.target.value;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
