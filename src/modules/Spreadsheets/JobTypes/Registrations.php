@@ -67,10 +67,12 @@ class Registrations extends SpreadsheetJob
         }
 
         do {
+            $opportunity->registerRegistrationMetadata();
+
             $fields = $opportunity->getRegistrationFieldConfigurations();
             
             foreach($fields as $field) {
-                $entity_type_field = $this->is_entity_type_field($field->fieldName, $job->owner);
+                $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                 if($entity_type_field['status']) {
                      
@@ -105,6 +107,7 @@ class Registrations extends SpreadsheetJob
         $app = App::i();
         
         $opportunity = $job->owner;
+        
         $opportunity_controller = $app->controller('opportunity');
         
         $query_params = $job->query;
@@ -122,14 +125,15 @@ class Registrations extends SpreadsheetJob
             foreach($fields as $field) {
                 $query_params['@select'] .= ",{$field->fieldName}";
             }
+
         } while($opportunity = $opportunity->previousPhase);
 
         $result = $opportunity_controller->apiFindRegistrations($job->owner, $query_params);
         
         if (isset($result->registrations) && is_array($result->registrations)) {
-            foreach($result->registrations as &$entity) {
+            foreach($result->registrations as &$entity) {                
                 foreach($all_phases_fields as $field) {
-                    $entity_type_field = $this->is_entity_type_field($field->fieldName, $job->owner);
+                    $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                     if($entity_type_field['status']) {
                         if($entity_type_field['ft'] == '@location') {
@@ -248,14 +252,9 @@ class Registrations extends SpreadsheetJob
         return "registrationsSpreadsheet:{$md5}";
     }
 
-    function is_entity_type_field($field_name, $opportunity) {
+    function is_entity_type_field($field_name) {
         $app = App::i();
         $result = ['status' => false];
-
-        if($opportunity) {
-            /** @var Opportunity $opportunity */
-            $opportunity->registerRegistrationMetadata();
-        }
         
         $def = $app->getRegisteredMetadataByMetakey($field_name, Registration::class);
         if ($def && $def->config['type'] == 'agent-owner-field') {
