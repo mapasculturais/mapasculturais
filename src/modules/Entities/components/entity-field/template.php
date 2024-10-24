@@ -12,9 +12,7 @@ $this->import('
     entity-field-location
     mc-alert
     mc-currency-input
-    mc-icon
-    mc-multiselect
-    mc-tag-list
+    entity-field-bank-info
 ')
 ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]">
@@ -111,6 +109,10 @@ $this->import('
 
         <template v-if="is('location')">
             <entity-field-location :entity="entity" :field-name="prop"></entity-field-location>
+        </template>
+        
+        <template v-if="is('bankFields')">  
+            <entity-field-bank-info @change="change($event, true)"  :field-name="prop" :entity="entity"></entity-field-bank-info>
         </template>
 
         <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
