@@ -87,9 +87,9 @@ app.component('opportunity-registrations-table', {
         const isTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.isTechnicalEvaluationPhase;
         
         let visible = this.visibleColumns.join(',');
-        let order = 'score DESC';
+        let order = 'status DESC,consolidatedResult DESC';
         let consolidatedResultOrder = 'consolidatedResult';
-        
+
         if(this.phase.registrationCategories?.length > 0) {
             avaliableFields.push({
                 title: $DESC.category.label,
@@ -136,24 +136,24 @@ app.component('opportunity-registrations-table', {
         }
 
         const sortOptions = [
-            { value: 'sentTimestamp ASC', label: 'enviadas a mais tempo primeiro' },
-            { value: 'sentTimestamp DESC', label: 'enviadas a menos tempo primeiro' },
+            { value: 'sentTimestamp ASC', label: this.text('enviadas a mais tempo primeiro') },
+            { value: 'sentTimestamp DESC', label: this.text('enviadas a menos tempo primeiro') },
         ];
 
         if(this.phase.isLastPhase) {
             order = `status DESC,score DESC`;
-            sortOptions.splice(0, 0, {value: 'score DESC', label: 'pontuação final'});
-            sortOptions.splice(0, 0, { value: `status ASC,score ASC`, label: 'por status ascendente' });
-            sortOptions.splice(0, 0, { value: `status DESC,score DESC`, label: 'por status descendente' });
+            sortOptions.splice(0, 0, {value: 'score DESC,status DESC', label: this.text('pontuação final')});
+            sortOptions.splice(0, 0, { value: `status ASC,score ASC`, label: this.text('status ascendente' )});
+            sortOptions.splice(0, 0, { value: `status DESC,score DESC`, label: this.text('status descendente' )});
 
         } else { 
-            sortOptions.splice(0, 0, { value: `${consolidatedResultOrder} DESC`, label: 'resultado das avaliações' });
-            sortOptions.splice(0, 0, { value: `status ASC,${consolidatedResultOrder} ASC`, label: 'por status ascendente' });
-            sortOptions.splice(0, 0, { value: `status DESC,${consolidatedResultOrder} DESC`, label: 'por status descendente' });
+            sortOptions.splice(0, 0, { value: `${consolidatedResultOrder} DESC`, label: this.text('resultado das avaliações' )});
+            sortOptions.splice(0, 0, { value: `status ASC,${consolidatedResultOrder} ASC`, label: this.text('status ascendente' )});
+            sortOptions.splice(0, 0, { value: `status DESC,${consolidatedResultOrder} DESC`, label: this.text('status descendente' )});
 
             if(hadTechnicalEvaluationPhase) {
-                order = 'score DESC';
-                sortOptions.splice(0, 0, {value: 'score DESC', label: 'pontuação final'});
+                order = 'score DESC,status DESC';
+                sortOptions.splice(0, 0, {value: 'score DESC', label: this.text('pontuação final')});
             }
             
             if(isAffirmativePoliciesActive) {
@@ -164,11 +164,13 @@ app.component('opportunity-registrations-table', {
                 });
 
                 visible += ',eligible';
-                order = '@quota';
-                sortOptions.splice(0, 0, {value: '@quota', label: 'classificação final'});
+                if(isTechnicalEvaluationPhase) {
+                    order = '@quota';
+                    sortOptions.splice(0, 0, {value: '@quota', label: this.text('classificação final')});
+                }
             }
         }
-
+        
         return {
             sortOptions,
             filters: {},
