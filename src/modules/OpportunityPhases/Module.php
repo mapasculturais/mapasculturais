@@ -249,7 +249,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->view->enqueueStyle('app', 'plugin-opportunity-phases', 'css/opportunity-phases.css');
 
-        /** 
+        /**
          * Getters das oportuniddes
          */
 
@@ -278,7 +278,7 @@ class Module extends \MapasCulturais\Module{
             }
 
             $this->enableCacheGetterResult('previousPhase');
-            
+
             $last_phase = $this->isLastPhase ? $this : $this->lastPhase;
 
             $complement = "";
@@ -287,10 +287,10 @@ class Module extends \MapasCulturais\Module{
             }
 
             $query = $app->em->createQuery("
-                SELECT o 
-                FROM MapasCulturais\Entities\Opportunity o 
-                WHERE 
-                    o.id <> :last AND 
+                SELECT o
+                FROM MapasCulturais\Entities\Opportunity o
+                WHERE
+                    o.id <> :last AND
                     {$complement}
                     (
                         o.id = :parent OR
@@ -323,11 +323,11 @@ class Module extends \MapasCulturais\Module{
 
             $class = Opportunity::class;
             $query = $app->em->createQuery("
-                SELECT o 
-                FROM $class o 
-                WHERE 
+                SELECT o
+                FROM $class o
+                WHERE
                     o.id = :parent OR
-                    (o.parent = :parent AND o.registrationFrom < (SELECT this.registrationFrom FROM $class this WHERE this.id = :this))  
+                    (o.parent = :parent AND o.registrationFrom < (SELECT this.registrationFrom FROM $class this WHERE this.id = :this))
                 ORDER BY o.registrationFrom ASC");
 
             $query->setParameters([
@@ -359,11 +359,11 @@ class Module extends \MapasCulturais\Module{
             $last_phase = $this->lastPhase;
 
             $query = $app->em->createQuery("
-                SELECT o 
-                FROM $class o 
-                WHERE 
-                    o.parent = :parent AND 
-                    o.id > :this AND 
+                SELECT o
+                FROM $class o
+                WHERE
+                    o.parent = :parent AND
+                    o.id > :this AND
                     o.id <> :lastPhase
                 ORDER BY o.id ASC");
 
@@ -379,7 +379,7 @@ class Module extends \MapasCulturais\Module{
             } else {
                 $value = $last_phase;
             }
-            
+
         });
 
         $app->hook('entity(Opportunity).get(nextPhases)', function(&$value) use ($app) {
@@ -404,11 +404,11 @@ class Module extends \MapasCulturais\Module{
             $last_phase = $this->lastPhase;
 
             $query = $app->em->createQuery("
-                SELECT o 
-                FROM $class o 
-                WHERE 
-                    o.parent = :parent AND 
-                    o.id > :this AND 
+                SELECT o
+                FROM $class o
+                WHERE
+                    o.parent = :parent AND
+                    o.id > :this AND
                     o.id <> :lastPhase
                 ORDER BY o.id ASC");
 
@@ -438,9 +438,9 @@ class Module extends \MapasCulturais\Module{
             $values = [$first_phase];
             $class = Opportunity::class;
             $query = $app->em->createQuery("
-                SELECT o 
-                FROM $class o 
-                WHERE o.parent = :parent 
+                SELECT o
+                FROM $class o
+                WHERE o.parent = :parent
                 ORDER BY o.registrationFrom ASC, o.id ASC");
 
             $query->setParameters([
@@ -474,7 +474,7 @@ class Module extends \MapasCulturais\Module{
             $app->disableAccessControl();
 
             $firstPhase = $this->firstPhase;
-    
+
 
             if($opportunity_phases = $firstPhase->allPhases){
                 foreach($opportunity_phases as $key => $opportunity){
@@ -485,11 +485,13 @@ class Module extends \MapasCulturais\Module{
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
                         $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,files");
-                        
+
+                        $item->registrationSteps = $opportunity->registrationSteps;
+
                         if($emc){
                             $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups,evaluateSelfApplication");
                         }
-                        
+
                         $result[] = $item;
                     }
 
@@ -506,7 +508,7 @@ class Module extends \MapasCulturais\Module{
                 }
             }
             $app->enableAccessControl();
-            
+
             $value = $result;
         });
 
@@ -523,9 +525,9 @@ class Module extends \MapasCulturais\Module{
             }
 
             $value = $v;
-            
+
         });
-    
+
         $app->hook('entity(Opportunity).get(lastCreatedPhase)', function(&$value) {
             /** @var Opportunity $this */
 
@@ -556,19 +558,19 @@ class Module extends \MapasCulturais\Module{
              $class = Opportunity::class;
 
              $query = $app->em->createQuery("
-                 SELECT o 
-                 FROM $class o 
+                 SELECT o
+                 FROM $class o
                  JOIN o.__metadata m WITH m.key = 'isLastPhase' AND m.value = '1'
                  WHERE o.parent = :parent"
                 );
- 
+
              $query->setMaxResults(1);
              $query->setParameters([
                  "parent" => $first_phase,
              ]);
- 
+
              $value = $query->getOneOrNullResult();
-             
+
              return;
         });
 
@@ -586,7 +588,7 @@ class Module extends \MapasCulturais\Module{
             /** @var EvaluationMethodConfiguration $this */
 
             $this->enableCacheGetterResult('previousPhase');
-            
+
             $previous_phase = $this->opportunity;
             if ($previous_phase->isDataCollection) {
                 $value = $previous_phase;
@@ -603,7 +605,7 @@ class Module extends \MapasCulturais\Module{
 
          $app->hook('entity(EvaluationMethodConfiguration).get(nextPhase)', function(&$value) use($app) {
             /** @var EvaluationMethodConfiguration $this */
-            
+
             $this->enableCacheGetterResult('nextPhase');
 
             $phase = $this->opportunity;
@@ -622,7 +624,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).get(previousPhase)', function(&$value) use($registration_repository) {
             /** @var Registration $this */
-            
+
             $this->enableCacheGetterResult('previousPhase');
 
             if($this->previousPhaseRegistrationId) {
@@ -636,7 +638,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).get(nextPhase)', function(&$value) use($registration_repository) {
             /** @var Registration $this */
-            
+
             $this->enableCacheGetterResult('nextPhase');
 
             if ($this->nextPhaseRegistrationId) {
@@ -650,18 +652,18 @@ class Module extends \MapasCulturais\Module{
 
         /** @var \MapasCulturais\Connection $conn */
         $conn = $app->em->getConnection();
-        
+
         $app->hook('entity(Registration).get(<<projectName|field_*>>)', function(&$value, $field_name) use($conn, $app) {
             /** @var Registration $this */
 
             if(!$this->canUser('viewPrivateData')) {
                 return;
             }
-            
+
             if(!isset($value) || empty($value) || $value == ""){
                 $app->disableAccessControl();
                 $reg = $conn->fetchAssociative("SELECT object_id, value FROM registration_meta WHERE key = '{$field_name}' AND object_id in (SELECT id FROM registration WHERE number = '{$this->number}')");
-                
+
                 if($reg && $this->id != $reg['object_id']){
                     $value = $reg['value'];
                     if($def = $this->getRegisteredMetadata($field_name)){
@@ -683,7 +685,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
             /** @var Registration $this */
-            
+
             $this->enableCacheGetterResult('firstPhase');
 
             $opportunity = $this->opportunity;
@@ -694,7 +696,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {
             /** @var Registration $this */
-            
+
             $this->enableCacheGetterResult('firstPhase');
 
             $opportunity = $this->opportunity;
@@ -730,7 +732,7 @@ class Module extends \MapasCulturais\Module{
             $opportunity = $this->requestedEntity;
 
             $opportunity->enqueueRegistrationSync();
-            
+
            $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
                 'opportunity' => $opportunity,
                 'evaluationMethodConfiguration' => $opportunity->evaluationMethodConfiguration?: null
@@ -777,8 +779,8 @@ class Module extends \MapasCulturais\Module{
          * Demais hooks
          */
 
-        /** 
-         * Serialização das oportunidades para incluir o nome da fase 
+        /**
+         * Serialização das oportunidades para incluir o nome da fase
          * por exemplo:
          * - Período de inscrição (quando não há uma fase de avaliação seguinte)
          * - Período de inscrição / Avaliação documental
@@ -799,7 +801,7 @@ class Module extends \MapasCulturais\Module{
                 if($current_phase->evaluationMethodConfiguration) {
                     $num++;
                 }
-    
+
                 if($current_phase->equals($this)) {
                     break;
                 }
@@ -818,7 +820,7 @@ class Module extends \MapasCulturais\Module{
             } else {
                 $name = "{$num}. {$this->name}";
             }
-            
+
             $data['phaseName'] = $name;
         });
 
@@ -854,7 +856,7 @@ class Module extends \MapasCulturais\Module{
             if ($this->registrationFrom <= $today || $this->isLastPhase) {
 
                 $as_draft = $this->isDataCollection;
-                
+
                 $result->imported = $this->importPreviousPhaseRegistrations($as_draft, $registrations);
                 $result->deleted = $this->removeOrphanRegistrations($registrations);
             }
@@ -889,13 +891,13 @@ class Module extends \MapasCulturais\Module{
                     if($reg instanceof Registration) {
                         $numbers[] = "'{$reg->number}'";
                     } else {
-                        $numbers[] = "'" . ($reg['number'] ?? $reg) . "'";   
+                        $numbers[] = "'" . ($reg['number'] ?? $reg) . "'";
                     }
                 }
 
                 $numbers = implode(',', $numbers);
                 $where_numbers = "r1.number IN ({$numbers}) AND";
-            } 
+            }
 
             // para a última fase vão todas as inscrições que não estejam como rascunho
             $status = $this->isLastPhase ? 'r2.status > 0' : 'r2.status = 10';
@@ -959,7 +961,7 @@ class Module extends \MapasCulturais\Module{
 
             $first_phase = $this->firstPhase;
             $previous_phase = $this->previousPhase;
-            
+
             $where_numbers = '';
             if ($registrations) {
                 $numbers = [];
@@ -967,22 +969,22 @@ class Module extends \MapasCulturais\Module{
                     if($current_phase_registration instanceof Registration) {
                         $numbers[] = "'{$current_phase_registration->number}'";
                     } else {
-                        $numbers[] = "'" . ($current_phase_registration['number'] ?? $current_phase_registration) . "'";   
+                        $numbers[] = "'" . ($current_phase_registration['number'] ?? $current_phase_registration) . "'";
                     }
                 }
 
                 $numbers = implode(',', $numbers);
                 $where_numbers = "r1.number IN ({$numbers}) AND";
-            }  
+            }
 
 
             $app->disableAccessControl();
-    
+
             $new_registrations = [];
             $count = 0;
 
             $repo = $app->repo('Registration');
-            
+
             if ($this->isLastPhase) {
                 $dql = "
                     SELECT
@@ -993,11 +995,11 @@ class Module extends \MapasCulturais\Module{
                         {$where_numbers}
                         r1.status > 0 AND
                         r1.opportunity = :previous_opportunity
-                    
+
                     ORDER BY r1.id ASC";
 
                 $query = $app->em->createQuery($dql);
-    
+
                 $query->setParameters([
                     'previous_opportunity' => $first_phase,
                 ]);
@@ -1047,7 +1049,7 @@ class Module extends \MapasCulturais\Module{
                         Registration::STATUS_WAITLIST => [i::__('Suplente'), i::__('Suplente em "{PHASE_NAME}"')],
                         Registration::STATUS_INVALID => [i::__('Inválida'), i::__('Inválida em "{PHASE_NAME}"')],
                     ];
-    
+
                     $opp_phase = $registration->opportunity;
                     $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
                     $label = $labels[$registration->status][1];
@@ -1097,7 +1099,7 @@ class Module extends \MapasCulturais\Module{
 
                 $query = $app->em->createQuery($dql);
                 $query->setMaxResults(1);
-    
+
                 $query->setParameters([
                     'previous_opportunity' => $previous_phase,
                     'target_opportunity' => $this
@@ -1135,13 +1137,13 @@ class Module extends \MapasCulturais\Module{
                 }
             }
 
-            
+
             $app->enqueueEntityToPCacheRecreation($this);
             $app->enableAccessControl();
 
             return $new_registrations;
         });
-        
+
 
         $app->hook('entity(Registration).status(<<*>>),entity(Registration).remove:after', function() {
             /** @var Registration $this */
@@ -1240,11 +1242,11 @@ class Module extends \MapasCulturais\Module{
 
             }
 
-            /** 
-             * Validação da data inicial 
+            /**
+             * Validação da data inicial
              */
             if ($next && $next_date_from_string) {
-                $validations['registrationFrom']["\$value <= new DateTime('$next_date_from_string')"] = $next->isLastPhase ? 
+                $validations['registrationFrom']["\$value <= new DateTime('$next_date_from_string')"] = $next->isLastPhase ?
                     i::__('A data inicial deve ser anterior a data de publicação da última fase') :
                     i::__('A data inicial deve ser anterior a data de início da próxima fase');
             }
@@ -1254,8 +1256,8 @@ class Module extends \MapasCulturais\Module{
                     i::__('A data inicial deve ser posterior a data de início da fase anterior');
             }
 
-            /** 
-             * Validação da data final 
+            /**
+             * Validação da data final
              */
             if ($next && $next_date_to_string) {
                 $shouldValidateRegistrationTo = (!$this->isContinuousFlow) || ($this->isContinuousFlow && $this->hasEndDate);
@@ -1272,11 +1274,11 @@ class Module extends \MapasCulturais\Module{
                     i::__('A data final deve ser posterior a data de término da fase anterior');
             }
 
-            /** 
-             * Validação da data de publicação dos resultados 
+            /**
+             * Validação da data de publicação dos resultados
              */
             if ($this->publishTimestamp) {
-                
+
                 if ($this->isLastPhase && $previous_date_to_string) {
                     $validations['publishTimestamp']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data de publicação final do resultado deve ser posterior a data de término da fase anterior');
                 } else if($date_to_string = $this->registrationTo ? $this->registrationTo->format('Y-m-d H:i:s') : null ) {
@@ -1295,19 +1297,19 @@ class Module extends \MapasCulturais\Module{
             if($previous_phase = $this->previousPhase){
                 $previous_date_from = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationFrom : $previous_phase->evaluationFrom;
                 $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
-                
+
                 if($this->evaluationFrom < $previous_date_from) {
                     $validations['evaluationFrom']["\$value >= new DateTime('$previous_date_from_string')"] = i::__('A data inicial deve ser maior ou igual a data de inicio da fase anterior');
                 }
-                
+
                 $previous_date_to = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationTo : $previous_phase->evaluationTo;
                 $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
-                
+
                 if($this->evaluationTo < $previous_date_to) {
                     $validations['evaluationTo']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data final deve ser maior ou igual a data de término da fase anterior');
                 }
             }
-            
+
             if (!$this->id) {
                 $next_phase = $this->opportunity->lastPhase;
                 $error_message = i::__('A data final deve ser menor que a data de final de publicação dos resultados');
@@ -1341,16 +1343,16 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        /** 
+        /**
          * Corrige a propriedade opportunity da fase de avaliação antes da criação.
          * A fase de avaliação é sempre criada para a última fase (opportunity) da oportunidade,
          * e no caso desta já possuir uma fase de avaliação, uma nova fase (opportunity) sem coleta de dados
          * é criada para "abrigar" a fase de avaliaçao.
-         */ 
+         */
         $app->hook('entity(EvaluationMethodConfiguration).insert:before', function () {
             $phase = null;
             $phases = $this->opportunity->allPhases;
-            
+
             // procura a última fase (opportunity) sem método de avaliação/
             // que não seja a fase de publicação de resultado.
             for($i = count($phases) -1; $i >=0; $i--) {
@@ -1363,7 +1365,7 @@ class Module extends \MapasCulturais\Module{
 
             if(!$phase) {
                 // se entrou aqui é pq todas as fases tem método de avaliação,
-                // então precisamos criar uma nova fase (opportunity) para abrigar 
+                // então precisamos criar uma nova fase (opportunity) para abrigar
                 // a nova fase de avaliação
                 $class = get_class($this->opportunity);
 
@@ -1406,7 +1408,7 @@ class Module extends \MapasCulturais\Module{
                 'isReadonly' => true,
             ];
         });
-        
+
         /** Adiciona o summary ao propertiesMetadata  */
         $app->hook('entity(<<Opportunity|EvaluationMethodConfiguration>>).propertiesMetadata', function (&$result) {
             $result['summary'] = [
@@ -1458,7 +1460,7 @@ class Module extends \MapasCulturais\Module{
                 /** @var EvaluationMethodConfiguration $this */
                 $app->em->clear();
                 $opportunity = $app->repo('Opportunity')->find($this->opportunity->id);
-                
+
                 if (!$opportunity->isDataCollection) {
                     $opportunity->destroy(true);
                 }
@@ -1494,7 +1496,7 @@ class Module extends \MapasCulturais\Module{
             $app->hook('entity(Registration).insert:after', function() use($app){
                 /** @var Registration $this */
                 $app->disableAccessControl();
-                
+
                 if ($this->previousPhase) {
                     $this->range = $this->previousPhase->range;
                     $this->proponentType = $this->previousPhase->proponentType;
@@ -1555,7 +1557,7 @@ class Module extends \MapasCulturais\Module{
             'type' => 'boolean',
             'default' => false
         ]);
-        
+
         $this->registerOpportunityMetadata("isDataCollection", [
             'label'=> "Define se é uma oportunidade de coleta de dados",
             'type'=>'bool',

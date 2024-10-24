@@ -13,7 +13,8 @@ app.component('opportunity-form-builder' , {
     },
     data () {
       return {
-          descriptionsOpportunity: null
+          newStep: { id: 'new', name: '' },
+          steps: this.entity.registrationSteps,
       }
     },
 
@@ -24,6 +25,56 @@ app.component('opportunity-form-builder' , {
     },
 
     mounted () {
-        this.descriptionsOpportunity = $DESCRIPTIONS.opportunity;
-    }
+        window.addEventListener('message', this.onMessage);
+    },
+
+    beforeUnmount () {
+        window.removeEventListener('message', this.onMessage);
+    },
+
+    computed: {
+        stepsWithSlugs: {
+            get () {
+                return this.steps.map((step) => ({ slug: `section-${step.id}`, step }))
+            },
+            set (value) {
+                this.steps = value.map((step) => step.step)
+            },
+        }
+    },
+
+    watch: {
+        steps () {
+            this.syncStepsCount();
+        },
+    },
+
+    methods: {
+        async addStep (modal) {
+            const step = new Entity('registrationstep');
+            step.displayOrder = this.steps.length;
+            step.name = this.newStep.name;
+            step.opportunity = this.entity;
+            await step.save();
+
+            this.steps.push(step);
+            this.newStep.name = '';
+            modal.close();
+        },
+        onMessage ({ data }) {
+            if (data.type === 'formbuilder:started') {
+                this.syncStepsCount();
+            } else if (data.type === 'formbuilder:removeStep') {
+                const stepId = data.payload.step_id;
+                this.steps = this.steps.filter((step) => step.id !== stepId);
+            }
+        },
+        syncStepsCount () {
+            const message = { type: 'formbuilder:countSteps', payload: { count: this.steps.length } };
+
+            this.$el.querySelectorAll('iframe').forEach((iframe) => {
+                iframe.contentWindow.postMessage(message);
+            });
+        },
+    },
 });

@@ -9,6 +9,9 @@ $this->layout = 'entity';
 $this->addOpportunityPhasesToJs();
 $this->import('
     entity-field
+    mc-modal
+    mc-tab
+    mc-tabs
     opportunity-form-view
     opportunity-form-export
     opportunity-form-import
@@ -92,6 +95,34 @@ $this->import('
     </div>
 
     <div class="col-12">
-        <v1-embed-tool route="formbuilder" :id="entity.id" min-height="600px"></v1-embed-tool>
+        <mc-tabs v-model:draggable="stepsWithSlugs">
+            <template #default>
+                <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="step.name ?? `<?php i::_e('Etapa') ?> ${index + 1}`" :key="step.id" :slug="slug">
+                    <v1-embed-tool route="formbuilder" :id="entity.id" :params="{ step_id: step.id }" min-height="600px"></v1-embed-tool>
+                </mc-tab>
+            </template>
+
+            <template #after-tablist>
+                <mc-modal title="<?php i::_e('Criar etapa') ?>">
+                    <template #button="modal">
+                        <button type="button" class="button button--primary button--icon" @click="modal.open()">
+                            <mc-icon name="add"></mc-icon>
+                            <?= i::__('Adicionar etapa') ?>
+                        </button>
+                    </template>
+
+                    <template #default>
+                        <div class="field">
+                            <label for="step-name"><?php i::_e('Nome') ?></label>
+                            <input id="step-name" type="text" v-model="newStep.name">
+                        </div>
+                    </template>
+
+                    <template #actions="modal">
+                        <button type="button" class="button button--primary" @click="addStep(modal)"><?php i::_e('Criar') ?></button>
+                    </template>
+                </mc-modal>
+            </template>
+        </mc-tabs>
     </div>
 </div>
