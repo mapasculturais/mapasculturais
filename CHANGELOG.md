@@ -5,13 +5,20 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### [7.5.6]
+### [7.5.6] - 2024-10-23
 ### Correções
  - Corrige visibilidade do botão de enviar avaliações na página de avaliações
  - Corrige exibição da planilha de inscrições, inserindo a coluna 'Nome do projeto'
  - Corrige botão de reabrir avaliação quando há erros de validação na avaliação
+ - Corrige mensagem de erro do componente de upload de arquivo
+ - Remove o botão de baixar rascunhos da tabela de inscrições
+ - Correção no campo de ordenação da tabela de inscrições 
+ - Evita que as consultas na API fiquem sem ordenação quando é utilizada uma propriedade com valores vazios ou iguais
 
-### [7.5.5]
+### Melhorias
+ - Melhora a performance da geração da planilha de inscrições
+
+### [7.5.5] - 2024-10-21
 ### Correções
  - Adiciona cache na compilação do css do customizador de temas dos subsites
  - Evita o reprocessamento do cache do avaliador toda vez que ele termina uma avaliação
