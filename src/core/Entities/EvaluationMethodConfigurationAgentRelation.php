@@ -57,7 +57,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         }
         $app->enableAccessControl();
 
-        $this->owner->opportunity->enqueueToPCacheRecreation();
+        $this->owner->opportunity->enqueueToPCacheRecreation([$this->agent->user]);
         parent::delete($flush);
     }
     
@@ -180,6 +180,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $this->metadata = ['summary' => $data];
 
         $app->disableAccessControl();
+        $this->owner->__skipQueuingPCacheRecreation = true;
         $this->save($flush);
         $app->enableAccessControl();
     }
