@@ -219,6 +219,29 @@ app.component('entity-field', {
                 } else if(this.is('checkbox')) {
                     this.entity[this.prop] = event.target.checked;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
+                } else if (this.is("bankFields")) {
+                    let fieldEmpty = false;
+
+                    if(this.description.required){
+                        Object.keys(event).forEach(field => {
+                            if(!event[field]){
+                                fieldEmpty = true;
+                            }
+                        });
+                    }
+
+                    if(!fieldEmpty){
+                        this.entity.__validationErrors = {};
+                        this.entity[this.prop] = event;
+
+                        this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
+                    }else {
+                        this.entity.__validationErrors = {
+                            ...this.entity.__validationErrors,
+                            [this.prop]:  ['Os dados bancarios são obrigatorios'],
+                        }
+                    }
+                    
                 } else if (this.is('multiselect') || this.is('checklist')) {
                     if (this.entity[this.prop] === '' || !this.entity[this.prop]) {
                         this.entity[this.prop] = []
