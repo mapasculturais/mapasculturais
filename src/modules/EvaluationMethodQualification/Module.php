@@ -70,7 +70,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $approved = [i::__('Habilitado'), i::__('Não se aplica')];
         $result = i::__("Habilitado");
         $cfg = $evaluation->getEvaluationMethodConfiguration();
-        foreach($cfg->criteria as $cri){
+        foreach(($cfg->criteria ?? []) as $cri){
             $key = $cri->id;
             if(!isset($evaluation->evaluationData->$key)){
                 return null;

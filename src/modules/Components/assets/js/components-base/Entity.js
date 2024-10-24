@@ -578,7 +578,7 @@ class Entity {
                 return file;
             });
         } catch (error) {
-            this.doCatch(error);
+            return this.doCatch(error);
         }
     }
 

@@ -274,10 +274,7 @@ trait EntityPermissionCache {
             $entities = $self->getExtraEntitiesToRecreatePermissionCache();
             $total = count($entities);
             foreach($entities as $i => $entity){
-                if($entity->id == 1041) {
-                    $app->log->debug(__LINE__ . " >> $this $entity");
-                }
-                if($enqueue_extra_entities) {
+                if($enqueue_extra_entities && $entity->className != $this->className) {
                     $entity->enqueueToPCacheRecreation($users ?: []);
                 } else {
                     $i++;

@@ -29,7 +29,7 @@ class Registrations extends SpreadsheetJob
         /*if($job->owner_properties) {
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
-        $query['@select'] .= ',owner.{name}';
+        $query['@select'] .= ',projectName,owner.{name}';
         $properties = explode(',', $query['@select']);
         
         foreach($properties as $property) {
@@ -58,14 +58,21 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'projectName') {
+                $header[$property] = i::__('Nome do projeto');
+                continue;
+            }
+
             $header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
         }
 
         do {
+            $opportunity->registerRegistrationMetadata();
+
             $fields = $opportunity->getRegistrationFieldConfigurations();
             
             foreach($fields as $field) {
-                $entity_type_field = $this->is_entity_type_field($field->fieldName, $job->owner);
+                $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                 if($entity_type_field['status']) {
                      
@@ -100,12 +107,14 @@ class Registrations extends SpreadsheetJob
         $app = App::i();
         
         $opportunity = $job->owner;
+        
         $opportunity_controller = $app->controller('opportunity');
         
         $query_params = $job->query;
 
         $query_params['@limit'] = $this->limit;
         $query_params['@page'] = $this->page;
+        $query_params['@select'] .= ',projectName';
         
         $all_phases_fields = [];
 
@@ -116,14 +125,15 @@ class Registrations extends SpreadsheetJob
             foreach($fields as $field) {
                 $query_params['@select'] .= ",{$field->fieldName}";
             }
+
         } while($opportunity = $opportunity->previousPhase);
 
         $result = $opportunity_controller->apiFindRegistrations($job->owner, $query_params);
         
         if (isset($result->registrations) && is_array($result->registrations)) {
-            foreach($result->registrations as &$entity) {
+            foreach($result->registrations as &$entity) {                
                 foreach($all_phases_fields as $field) {
-                    $entity_type_field = $this->is_entity_type_field($field->fieldName, $job->owner);
+                    $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                     if($entity_type_field['status']) {
                         if($entity_type_field['ft'] == '@location') {
@@ -242,14 +252,9 @@ class Registrations extends SpreadsheetJob
         return "registrationsSpreadsheet:{$md5}";
     }
 
-    function is_entity_type_field($field_name, $opportunity) {
+    function is_entity_type_field($field_name) {
         $app = App::i();
         $result = ['status' => false];
-
-        if($opportunity) {
-            /** @var Opportunity $opportunity */
-            $opportunity->registerRegistrationMetadata();
-        }
         
         $def = $app->getRegisteredMetadataByMetakey($field_name, Registration::class);
         if ($def && $def->config['type'] == 'agent-owner-field') {

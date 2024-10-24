@@ -25,6 +25,13 @@ Emitido quando qualquer aba é clicada.
 
 Slug da aba inicializada quando a detecção pelo *hash* da URL da página falha.
 
+### `draggable`
+
+- Tipo: `Array`
+- Opcional
+
+Se presente, ativa a reordenação de abas via drag 'n' drop.
+
 ### `syncHash`
 
 - Tipo: `Boolean`

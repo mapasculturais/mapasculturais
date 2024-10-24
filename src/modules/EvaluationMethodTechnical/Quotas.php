@@ -611,7 +611,7 @@ class Quotas {
             $proponent_type = $registration->proponentType ?? 'default';
 
             foreach($this->quotaRules as $rule) {
-                $field_name = in_array($proponent_type, $rule->fields) ? $rule->fields->$proponent_type->fieldName :  null;
+                $field_name = $rule->fields->$proponent_type->fieldName ??  null;
                 if($field_name && in_array($registration->$field_name, $rule->fields->$proponent_type->eligibleValues)) {
                     $result[] = $this->getQuotaTypeSlugByRule($rule);
                     $quotas[] = $rule->title;

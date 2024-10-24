@@ -2,9 +2,9 @@ app.component('mc-tabs', {
     template: $TEMPLATES['mc-tabs'],
 
     props: {
-        class: {
-            type: [String, Array, Object],
-            default: ''
+        draggable: {
+            type: Array,
+            default: null,
         },
         defaultTab: {
             type: String,
@@ -17,10 +17,10 @@ app.component('mc-tabs', {
         iconPosition:{
             type: String,
             default: "left"
-        }
+        },
     },
 
-    emits: ['changed', 'clicked'],
+    emits: ['changed', 'clicked', 'update:draggable'],
 
     setup(props, context) {
         const hasSlot = name => !!context.slots[name];
@@ -61,6 +61,11 @@ app.component('mc-tabs', {
             state.activeTab = nextTab
         }
 
+        const reorderTabs = ({ list, tabs }) => {
+            state.tabs = tabs
+            context.emit('update:draggable', list)
+        }
+
         Vue.onMounted(() => {
             if (!state.tabs.length) {
                 return
@@ -82,14 +87,9 @@ app.component('mc-tabs', {
             ...Vue.toRefs(state),
             isActive,
             findTab,
+            reorderTabs,
             selectTab,
             hasSlot,
         }
     },
-
-    computed: {
-        classes() {
-            return this.class;
-        }
-    }
 });

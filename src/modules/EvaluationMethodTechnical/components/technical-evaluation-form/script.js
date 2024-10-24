@@ -116,7 +116,7 @@ app.component('technical-evaluation-form', {
                     let sectionName = this.sections[sectionIndex].name;
                     let value = this.formData.data[crit.id];
                     
-                    if (!value || value < 0) {
+                    if (!value && value !== 0) {
                         this.messages.error(`${this.text('on_section')} ${sectionName}, ${this.text('the_field')} ${crit.title} ${this.text('is_required')}`);
                         isValid = true;
                     }

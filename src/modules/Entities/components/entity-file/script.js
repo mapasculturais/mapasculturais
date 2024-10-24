@@ -1,6 +1,6 @@
 app.component('entity-file', {
     template: $TEMPLATES['entity-file'],
-    emits: ['uploaded'],
+    emits: ['uploaded', 'setFile'],
 
     setup(props, {slots}) {
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -68,19 +68,32 @@ app.component('entity-file', {
     methods: {
         setFile(event) {
             this.newFile = event.target.files[0];
+            this.$emit('setFile', this.newFile);
         },
 
-        upload(modal) {
+        async upload(modal) {
             let data = {
                 description: this.formData.description,
                 group: this.groupName,
             };
 
-            this.entity.upload(this.newFile, data).then((response) => {
+            this.entity.disableMessages();
+            try{
+
+                const response = await this.entity.upload(this.newFile, data);
                 this.$emit('uploaded', this);
                 this.file = response;
+                this.entity.enableMessages();
                 modal.close()
-            });
+
+            } catch(e) {
+                if(e.error) {
+                    const messages = useMessages();
+                    messages.error(e.data[this.groupName]);
+                } else {
+                    console.error(e);
+                }
+            }
 
             return true;
         },
