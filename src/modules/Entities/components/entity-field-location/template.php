@@ -59,7 +59,7 @@ $this->import('
                 <input id="country" type="text" v-model="entity[fieldName].En_Pais" @change="entity.save()" />
             </div>
 
-            <div class="field">
+            <div class="field col-6">
                 <label for="field__title">
                     <?= i::__('Estado') ?>
                 </label>
