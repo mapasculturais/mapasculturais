@@ -42,6 +42,44 @@ $this->import('
                         </div>
                     </div>
                 </div>
+
+                <div class="qualification-evaluation-config__section-filters">
+                    <div v-if="entity.opportunity.registrationCategories.length > 1" class="field">
+                        <label><?php i::_e("Selecione em quais categorias esta seção será utilizada:") ?></label>
+                        <div class="qualification-evaluation-config__filters-input" v-for="category in entity.opportunity.registrationCategories" :key="category">
+                            <input 
+                                type="checkbox" 
+                                :value="category" 
+                                :checked="isChecked(section, 'categories', category)"
+                                @change="updateSelections(section, 'categories', category, $event.target.checked)" /> 
+                            {{category}}
+                        </div>
+                    </div>
+
+                    <div v-if="entity.opportunity.registrationProponentTypes.length > 1" class="field">
+                        <label><?php i::_e("Selecione em quais tipos de proponente esta seção será utilizada:") ?></label>
+                        <div class="qualification-evaluation-config__filters-input" v-for="proponentType in entity.opportunity.registrationProponentTypes" :key="proponentType">
+                            <input 
+                                type="checkbox" 
+                                :value="proponentType" 
+                                :checked="isChecked(section, 'proponentTypes', proponentType)"
+                                @change="updateSelections(section, 'proponentTypes', proponentType, $event.target.checked)" /> 
+                            {{proponentType}}
+                        </div>
+                    </div>
+
+                    <div v-if="entity.opportunity.registrationRanges.length > 1" class="field">
+                        <label><?php i::_e("Selecione em quais faixa/linhas esta seção será utilizada:") ?></label>
+                        <div class="qualification-evaluation-config__filters-input" v-for="range in entity.opportunity.registrationRanges" :key="range">
+                            <input
+                                type="checkbox"
+                                :value="range"
+                                :checked="isChecked(section, 'ranges', range)"
+                                @change="updateSelections(section, 'ranges', range, $event.target.checked)" />
+                            {{range.label}}
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="qualification-evaluation-config__criterions" v-if="entity.criteria && entity.criteria.length > 0">
@@ -71,7 +109,7 @@ $this->import('
                                         <input type="checkbox" v-model="criteria.notApplyOption" @change="notApplyChange(criteria)" />
                                         <?= i::__('Habilitar a opção Não se aplica?') ?>
                                     </label>
-        
+
                                     <small class="field col-12">
                                         <label><?= i::__('Observações') ?></label>
                                         <ul>
@@ -92,6 +130,44 @@ $this->import('
                                         <?= i::__('Deseja deletar o critério?') ?>
                                     </template>
                                 </mc-confirm-button>
+                            </div>
+                        </div>  
+                    </div>
+
+                    <div class="qualification-evaluation-config__criteria-filters">
+                        <div v-if="section.categories.length > 1" class="field">
+                            <label><?php i::_e("Selecione em quais categorias este critério será utilizado:") ?></label>
+                            <div class="qualification-evaluation-config__filters-input" v-for="category in section.categories" :key="category">
+                                <input 
+                                    type="checkbox" 
+                                    :value="category"  
+                                    :checked="isChecked(criteria, 'categories', category)"
+                                    @change="updateSelections(criteria, 'categories', category, $event.target.checked)" /> 
+                                {{category}}
+                            </div>
+                        </div>
+
+                        <div v-if="section.proponentTypes.length > 1" class="field">
+                            <label><?php i::_e("Selecione em quais tipos de proponente esta seção será utilizada:") ?></label>
+                            <div class="qualification-evaluation-config__filters-input" v-for="proponentType in section.proponentTypes" :key="proponentType">
+                                <input 
+                                    type="checkbox" 
+                                    :value="proponentType" 
+                                    :checked="isChecked(criteria, 'proponentTypes', proponentType)"
+                                    @change="updateSelections(criteria, 'proponentTypes', proponentType, $event.target.checked)" /> 
+                                {{proponentType}}
+                            </div>
+                        </div>
+
+                        <div v-if="section.ranges.length > 1" class="field">
+                            <label><?php i::_e("Selecione em quais faixa/linhas esta seção será utilizada:") ?></label>
+                            <div class="qualification-evaluation-config__filters-input" v-for="range in section.ranges" :key="range">
+                                <input
+                                    type="checkbox"
+                                    :value="range"
+                                    :checked="isChecked(criteria, 'ranges', range)"
+                                    @change="updateSelections(criteria, 'ranges', range, $event.target.checked)" />
+                                {{range.label}}
                             </div>
                         </div>
                     </div>

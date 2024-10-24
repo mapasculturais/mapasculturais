@@ -8,6 +8,9 @@
 
     &__header {
         padding: size(24) size(23);
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
     }
 
     .title {
@@ -31,6 +34,21 @@
         }
     }
 
+    &__section-filters, &__criteria-filters {
+        display: flex;
+        gap: size(32);
+    }
+
+    &__criteria-filters {
+        padding: size(12) size(20);
+    }
+
+    &__filters-input {
+        display: flex;
+        gap: size(12);
+        align-items: center;
+    }
+
     &__criterions {
         .criterions__title {
             padding: size(18) size(23);
@@ -38,7 +56,7 @@
 
         .criterion {
             border-top: var(--mc-border-hairline) var(--mc-gray-300);
-            padding: size(16) size(20);
+            padding: size(12) size(20);
             display: grid;
             gap: size(32);
             grid-template-columns: calc(65% - size(36)) calc(35% - size(20));
