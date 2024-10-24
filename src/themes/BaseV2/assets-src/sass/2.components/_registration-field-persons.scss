@@ -1,15 +1,16 @@
 @use '../0.settings/mixins' as *;
 
 .registration-field-persons {
+    margin-top: size(8);
 
     &__person {
-        border-bottom: 1px solid var(--mc-gray-300);
-        margin-bottom: 15px;
+        border-bottom: size(1) solid var(--mc-gray-300);
+        margin-bottom: size(15);
     }
 
     &__person-fields {
         gap: size(8);
-        padding: 10px;
+        padding: size(10);
 
         & .field {
             margin-top: 0 !important;
