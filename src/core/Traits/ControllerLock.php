@@ -28,6 +28,9 @@ trait ControllerLock {
 
     function POST_renewLock() {
         $token = $this->data['token'];
+        if(!$token) {
+            $this->errorJson(i::__('O token é obrigatório'));
+        }
         /** @var \MapasCulturais\Traits\EntityLock $entity */
         $entity = $this->requestedEntity;
         $renew_lock = $entity->renewLock($token);
