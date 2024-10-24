@@ -11,6 +11,7 @@ $this->import('
     entity-admins
     entity-cover
     entity-field
+    entity-file
     entity-files-list
     entity-gallery
     entity-gallery-video
@@ -24,8 +25,7 @@ $this->import('
     entity-terms
     entity-terms
     link-opportunity
-    mc-container
-    opportunity-rules    
+    mc-container   
 ');
 ?>
 <div class="opportunity-basic-info__container">
@@ -68,7 +68,7 @@ $this->import('
                         <entity-field :entity="entity" prop="name" classes="header-opp__field--name col-12"></entity-field>
                         <entity-field :entity="entity" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type" classes="header-opp__field--name col-12"></entity-field>
                     </div>
-                    <entity-field :entity="entity" classes="header-opp__field--name col-12" prop="shortDescription"></entity-field>
+                    <entity-field :entity="entity" classes="header-opp__field--name col-12" prop="shortDescription" :max-length="400"></entity-field>
                     <entity-field :entity="entity" classes="header-opp__field--name col-12" prop="longDescription"></entity-field>
                     <entity-files-list :entity="entity" classes="content-fileList col-12" group="downloads" title="<?php i::esc_attr_e('Adicionar arquivos'); ?>" editable></entity-files-list>
                     <entity-links :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar links'); ?>" editable></entity-links>
@@ -82,7 +82,7 @@ $this->import('
         <mc-card>
             <div class="grid-12">
                 <link-opportunity :entity="entity" editable class="col-12"></link-opportunity>
-                <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></opportunity-rules>
+                <entity-file :entity="entity" titleModal="<?php i::_e('Adicionar regulamento') ?>" groupName="rules" classes="col-12" title="<?php i::esc_attr_e('Adicionar regulamento'); ?>" editable></entity-file>
                 <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                 <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados'); ?>" editable></entity-related-agents>
                 <entity-social-media :entity="entity" classes="col-12" editable></entity-social-media>

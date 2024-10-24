@@ -8,8 +8,12 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field-datepicker
+    entity-field-location
     mc-alert
     mc-currency-input
+    mc-icon
+    mc-multiselect
+    mc-tag-list
 ')
 ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]">
@@ -32,10 +36,6 @@ $this->import('
 
         <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder" :disabled="readonly" :readonly="readonly">
         
-        <textarea v-if="is('textarea') && !prop=='shortDescription'" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly" :readonly="readonly"></textarea>
-        
-        <textarea v-if="is('textarea') && prop=='longDescription'" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" class="field__longdescription" :disabled="readonly" :readonly="readonly"></textarea>
-        
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly" :readonly="readonly">
         
         <input v-if="is('email') || is('url')" :value="value" :id="propId" :name="prop" :type="fieldType" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder" :disabled="readonly" :readonly="readonly">
@@ -44,12 +44,7 @@ $this->import('
         
         <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change($event, true)"></entity-field-datepicker>
         
-        <div  v-if="is('textarea') && prop=='shortDescription'" class="field__shortdescription">
-            <textarea :id="propId" :value="value" :name="prop" @input="change($event)" @blur="change($event,true)" :maxlength="400" :disabled="readonly" :readonly="readonly"></textarea>
-                <p>
-                {{ value ? value?.length : '0' }}/400
-                </p>
-        </div>
+        <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxlength="maxLength" @input="change($event)" @blur="change($event,true)" :disabled="readonly" :readonly="readonly"></textarea>
 
         <select v-if="is('select')" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || readonly">
             <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>
@@ -61,9 +56,21 @@ $this->import('
             </label>
         </template>
         
-        <template v-if="is('multiselect')">
+        <template v-if="is('multiselect') || is('checklist')">
            <div class="field__group">
-               <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
+                <template v-if="description.optionsOrder.length > 10">
+                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover}" :max-options="maxOptions" hide-button>
+                        <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle(); $event.preventDefault()" >
+                            <?php i::_e("Selecionar") ?>
+                            <mc-icon name="add"></mc-icon>
+                        </button>    
+                    </mc-multiselect>
+
+                    <mc-tag-list :tags="selectedOptions[prop]" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
+                </template>
+
+                
+                <label v-else class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
                    <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || readonly"> {{description.options[optionValue]}} 
                 </label>
             </div>
@@ -96,6 +103,12 @@ $this->import('
                 </div>
             </div>
         </template>
+
+        <template v-if="is('location')">
+            <entity-field-location :entity="entity" :field-name="prop"></entity-field-location>
+        </template>
+
+        <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
     </slot>
 
     <small class="field__description" v-if="!hideDescription && (fieldDescription || description.description)"> {{ fieldDescription || description.description}} </small>

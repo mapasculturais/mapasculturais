@@ -35,7 +35,7 @@ $this->import('
                     <seal-form-valid-period :entity="entity"></seal-form-valid-period>
                 </div>
             </div>
-            <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+            <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
         </div>
     </template>
 </mc-card>

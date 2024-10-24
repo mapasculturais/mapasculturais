@@ -64,7 +64,8 @@ app.component('entity-field', {
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType,
             currencyValue: this.entity[this.prop],
-            readonly: false
+            readonly: false,
+            selectedOptions: [],
         }
     },
 
@@ -116,6 +117,12 @@ app.component('entity-field', {
             type: [ Number, String, Date ],
             default: 0 || null
         },
+
+        maxLength: {
+            type: Number,
+            default: null
+        },
+
         fieldDescription: {
             type: String,
             default: null
@@ -131,6 +138,11 @@ app.component('entity-field', {
             type: String,
             default: null,
         },
+
+        maxOptions: {
+            type: Number,
+            default: 0
+        }
     },
 
     created() {
@@ -140,13 +152,26 @@ app.component('entity-field', {
             "entitySave",
             this.isReadonly
         );
+
+        if((this.is('multiselect') || this.is('checklist')) && this.description.optionsOrder.length > 10) {
+            if (!this.entity[this.prop]) {
+                this.entity[this.prop] = [];
+            } else if (typeof this.entity[this.prop] !== 'object') {
+                this.entity[this.prop] = this.entity[this.prop].split(';');
+            }
+            
+            this.selectedOptions[this.prop] = [...this.entity[this.prop]];
+        }
+    },
+
+    mounted() {
+        if(this.is('textarea')) {
+            this.$refs.textarea.style.height = "auto";
+            this.$refs.textarea.style.height = (this.$refs.textarea.scrollHeight +10) + "px";
+        }
     },
 
     computed: {
-      
-        charRemaining() {
-            return 400 - this.value.length;
-        },
         hasErrors() {
             let errors = this.entity.__validationErrors[this.prop] || [];
             if(errors.length > 0){
@@ -160,7 +185,7 @@ app.component('entity-field', {
         },
         value() {
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
-        }
+        },
     },
     
     methods: {
@@ -198,21 +223,22 @@ app.component('entity-field', {
                 } else if(this.is('checkbox')) {
                     this.entity[this.prop] = event.target.checked;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.checked});
-                } else if (this.is('multiselect')) {
+                } else if (this.is('multiselect') || this.is('checklist')) {
                     if (this.entity[this.prop] === '' || !this.entity[this.prop]) {
                         this.entity[this.prop] = []
                     } else if (typeof this.entity[this.prop] !== 'object') {
                         this.entity[this.prop] = this.entity[this.prop].split(";");
                     }
 
-                    let index = this.entity[this.prop].indexOf(event.target.value);
+                    let value = event.target ? event.target.value : event; 
+                    let index = this.entity[this.prop].indexOf(value);
                     if (index >= 0) {
                         this.entity[this.prop].splice(index, 1);
                     } else {
-                        this.entity[this.prop].push(event.target.value)
+                        this.entity[this.prop].push(value)
                     }
 
-                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: value});
                 } else {
                     this.entity[this.prop] = event.target.value;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});
@@ -225,6 +251,12 @@ app.component('entity-field', {
                 }
 
             }, now ? 0 : this.debounce);
+
+
+            if(this.is('textarea')) {
+                event.target.style.height = "auto";
+                event.target.style.height = (event.target.scrollHeight + 20) + "px";
+            }
         },
 
         is(type) {
