@@ -12,10 +12,12 @@ app.component('opportunity-form-builder' , {
         return { text }
     },
     data () {
-      return {
-          newStep: { id: 'new', name: '' },
-          steps: this.entity.registrationSteps,
-      }
+        const steps = this.entity.registrationSteps.sort((a, b) => a.displayOrder - b.displayOrder);
+
+        return {
+            newStep: { id: 'new', name: '' },
+            steps,
+        }
     },
 
     created() {
@@ -35,12 +37,10 @@ app.component('opportunity-form-builder' , {
     computed: {
         stepsWithSlugs: {
             get () {
-                return this.steps
-                    .map((step) => ({ slug: `section-${step.id}`, step }))
-                    .sort((a, b) => a.step.displayOrder - b.step.displayOrder)
+                return this.steps.map((step) => ({ slug: `section-${step.id}`, step }));
             },
             set (value) {
-                this.steps = value.map((step) => step.step)
+                this.steps = value.map((step) => step.step);
             },
         }
     },
@@ -48,6 +48,15 @@ app.component('opportunity-form-builder' , {
     watch: {
         steps () {
             this.syncStepsCount();
+
+            this.steps.forEach(async (step, index) => {
+                if (index !== step.displayOrder) {
+                    const entity = new Entity('registrationstep');
+                    entity.populate(step);
+                    entity.displayOrder = index;
+                    await entity.save();
+                }
+            });
         },
     },
 
