@@ -499,6 +499,15 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             });
         }
 
+        $scope.countWords = function(text) {
+            if (Array.isArray(text)) {
+                text = text.join('\n');
+            }
+            
+            if (!text) return 0;
+            return text.trim().split(/\s+/).length;
+        };
+
 
         sortFields();
 
@@ -515,6 +524,16 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         $scope.data.filterFieldConfigurationByCategory = null;
         $scope.showFieldConfiguration = function (field) {
+            if(field.fieldType == "agent-owner-field") {
+                if(field.config.entityField == '@terms:area') {
+                    field.config.maxOptions = field.config.maxOptions ? Number(field.config.maxOptions) : 0;
+                }
+            }
+
+            if(field.fieldType == 'checkboxes') {
+                field.config.maxOptions = field.config.maxOptions ? Number(field.config.maxOptions) : 0;
+            }
+
             if(field.categories.length === 0) {
                 return true;
             }
@@ -552,10 +571,19 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             fieldService.create($scope.data.newFieldConfiguration).then(function(response){
                 $scope.data.fieldSpinner = false;
-
                 if (response.error) {
                     validationErrors(response);
                 } else {
+                    if(response.fieldType == 'checkboxes') {
+                        response.config.maxOptions = response.config.maxOptions ? Number(response.config.maxOptions) : 0;
+                    }
+
+                    if(response.fieldType == "agent-owner-field") {
+                        if(response.config.entityField == '@terms:area') {
+                            response.config.maxOptions = response.config.maxOptions ? Number(response.config.maxOptions) : 0;
+                        }
+                    }
+
                     $scope.data.fields.push(response);
                     sortFields();
                     EditBox.close('editbox-registration-fields');

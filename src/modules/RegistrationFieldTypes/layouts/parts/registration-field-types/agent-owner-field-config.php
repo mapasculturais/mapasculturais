@@ -68,6 +68,11 @@ foreach ($agent_fields as $field) {
             <div ng-if='field.config.entityField === "<?=$field_name?>"'>
                 <?php i::_e("Informe os termos que estarão disponíveis para seleção.") ?>
                 <textarea ng-model="field.fieldOptions" ng-init='field.fieldOptions = field.fieldOptions || data.taxonomies.area.terms.join("\n")' placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>"></textarea>
+                <div ng-if="countWords(field.fieldOptions) >= 10">
+                    <label><?php i::_e('Limite de Opções') ?><input type="number" ng-model="field.config.maxOptions"></label><br>
+                    <small class="registration-help"><?php i::_e('Digite o limite de opções. Deixe em branco ou coloque 0 para selecionar ilimitadas.'); ?></small>
+                </div>
+                
             </div>
         <?php endforeach?>
     </div>
@@ -75,10 +80,16 @@ foreach ($agent_fields as $field) {
         <div ng-if='field.config.entityField === "<?=$field_name?>"'>
             <?php i::_e("Informe os termos que estarão disponíveis para seleção.") ?>
             <textarea ng-model="field.fieldOptions" ng-init="field.fieldOptions = field.fieldOptions || '<?=htmlentities($options)?>'" placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>"></textarea>
+            <div ng-if="countWords(field.fieldOptions) >= 10">
+                <label><?php i::_e('Limite de Opções') ?><input type="number" ng-model="field.config.maxOptions"></label><br>
+                <small class="registration-help"><?php i::_e('Digite o limite de opções. Deixe em branco ou coloque 0 para selecionar ilimitadas.'); ?></small>
+            </div>
         </div>
     <?php endforeach?>
     <div ng-if="field.config.entityField == '@links'">
         <label><input type="checkbox" ng-model="field.config.title" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Pedir de título') ?></label><br>
     </div>
+
+    
     <?php $this->applyTemplateHook('registrationFieldTypes--agent-owner-field-config','after', ['agent_fields' => $agent_fields]); ?>
 </div>

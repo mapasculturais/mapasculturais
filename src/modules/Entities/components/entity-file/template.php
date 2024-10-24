@@ -27,6 +27,7 @@ $this->import('
 
         <slot name="view">
             <a v-if="!downloadOnly" class="entity-file__link primary__color bold" :download="file.name" :href="file.url">
+                <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
                 <span v-if="file.name">{{file.name}}</span>
                 <span v-else> <? i::_e('Sem descrição') ?> </span>
             </a>
@@ -40,7 +41,7 @@ $this->import('
 
         <mc-confirm-button v-if="editable && !required" @confirm="deleteFile(file)">
             <template #button="modal">
-                <mc-icon @click="modal.open()" name="trash"></mc-icon>
+                <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
             </template>
 
             <template #message="message">
@@ -56,10 +57,7 @@ $this->import('
                     <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile" :file="newFile">
                         <div class="col-12 field">
                             <label><?php i::_e('Anexe um arquivo') ?></label>
-                            
                             <div class="field__upload">
-                                <div v-if="newFile.name" class="entity-file__fileName primary__color bold"> {{newFile.name}} </div>
-
                                 <label for="newFile" class="field__buttonUpload button button--icon button--primary-outline">
                                     <mc-icon name="upload"></mc-icon> <?= i::__('Anexar') ?>
                                     <input id="newFile" type="file" @change="setFile($event)" ref="file">
@@ -70,7 +68,7 @@ $this->import('
 
                         <div v-if="!disableName" class="col-12 field">
                             <label><?php i::_e('Título do arquivo') ?></label>
-                            <input v-model="newFile.name" type="text" />
+                            <input v-model="newFile.name" type="text" :disabled="groupName == 'rules'"/>
                         </div>
 
                         <div v-if="enableDescription" class="col-12 field">
