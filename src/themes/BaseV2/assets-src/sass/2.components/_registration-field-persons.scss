@@ -1,0 +1,22 @@
+@use '../0.settings/mixins' as *;
+
+.registration-field-persons {
+
+    &__person {
+        border-bottom: 1px solid var(--mc-gray-300);
+        margin-bottom: 15px;
+    }
+
+    &__person-fields {
+        gap: size(8);
+        padding: 10px;
+
+        & .field {
+            margin-top: 0 !important;
+        }
+    }
+
+    &__person-action {
+        text-align: end;
+    }
+}
