@@ -148,7 +148,7 @@ $this->import('
                         </div>
 
                         <div v-if="section.proponentTypes.length > 1" class="field">
-                            <label><?php i::_e("Selecione em quais tipos de proponente esta seção será utilizada:") ?></label>
+                            <label><?php i::_e("Selecione em quais tipos de proponente este critério será utilizado:") ?></label>
                             <div class="qualification-evaluation-config__filters-input" v-for="proponentType in section.proponentTypes" :key="proponentType">
                                 <input 
                                     type="checkbox" 
@@ -160,7 +160,7 @@ $this->import('
                         </div>
 
                         <div v-if="section.ranges.length > 1" class="field">
-                            <label><?php i::_e("Selecione em quais faixa/linhas esta seção será utilizada:") ?></label>
+                            <label><?php i::_e("Selecione em quais faixa/linhas este critério será utilizado:") ?></label>
                             <div class="qualification-evaluation-config__filters-input" v-for="range in section.ranges" :key="range">
                                 <input
                                     type="checkbox"
