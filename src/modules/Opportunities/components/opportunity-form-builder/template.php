@@ -132,7 +132,7 @@ $this->import('
     <div class="col-12">
         <mc-tabs v-model:draggable="stepsWithSlugs">
             <template #default>
-                <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="step.name ?? `<?php i::_e('Etapa') ?> ${index + 1}`" :key="step.id" :slug="slug">
+                <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="step.name || `<?php i::_e('Etapa') ?> ${index + 1}`" :key="step.id" :slug="slug">
                     <v1-embed-tool route="formbuilder" :id="entity.id" :params="{ step_id: step.id }" min-height="600px"></v1-embed-tool>
                 </mc-tab>
             </template>

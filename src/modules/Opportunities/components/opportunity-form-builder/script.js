@@ -35,7 +35,9 @@ app.component('opportunity-form-builder' , {
     computed: {
         stepsWithSlugs: {
             get () {
-                return this.steps.map((step) => ({ slug: `section-${step.id}`, step }))
+                return this.steps
+                    .map((step) => ({ slug: `section-${step.id}`, step }))
+                    .sort((a, b) => a.step.displayOrder - b.step.displayOrder)
             },
             set (value) {
                 this.steps = value.map((step) => step.step)
