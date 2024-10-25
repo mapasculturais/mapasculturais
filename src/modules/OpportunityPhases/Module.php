@@ -486,7 +486,11 @@ class Module extends \MapasCulturais\Module{
 
                         $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,files");
 
-                        $item->registrationSteps = $opportunity->registrationSteps;
+                        $item->registrationSteps = [];
+                        foreach ($opportunity->registrationSteps as $step) {
+                            $simplifiedStep = $step->simplify("id,name,displayOrder");
+                            $item->registrationSteps[] = $simplifiedStep;
+                        }
 
                         if($emc){
                             $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups,evaluateSelfApplication");

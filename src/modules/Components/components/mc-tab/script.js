@@ -57,6 +57,11 @@ app.component('mc-tab', {
             }
         )
 
+        Vue.watch(() => props.label, () => {
+            const tab = tabsProvider.tabs.find((tab) => tab.hash == hash);
+            tab.label = props.label;
+        })
+
         Vue.onBeforeMount(() => {
             tabsProvider.tabs.push({
                 disabled: props.disabled,

@@ -68,13 +68,6 @@ class RegistrationStep extends \MapasCulturais\Entity
         return 'registrationstep';
     }
 
-    public function jsonSerialize(): array {
-        $result = parent::jsonSerialize();
-        $result['id'] = $this->id;
-        $result['name'] = $this->name;
-        return $result;
-    }
-
     function setOpportunity(int|Opportunity $opportunity) {
         if(is_int($opportunity)) {
             $app = \MapasCulturais\App::i();

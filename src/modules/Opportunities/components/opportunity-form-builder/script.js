@@ -12,10 +12,12 @@ app.component('opportunity-form-builder' , {
         return { text }
     },
     data () {
-      return {
-          newStep: { id: 'new', name: '' },
-          steps: this.entity.registrationSteps,
-      }
+        const steps = this.entity.registrationSteps.sort((a, b) => a.displayOrder - b.displayOrder);
+
+        return {
+            newStep: { id: 'new', name: '' },
+            steps,
+        }
     },
 
     created() {
@@ -35,10 +37,10 @@ app.component('opportunity-form-builder' , {
     computed: {
         stepsWithSlugs: {
             get () {
-                return this.steps.map((step) => ({ slug: `section-${step.id}`, step }))
+                return this.steps.map((step) => ({ slug: `section-${step.id}`, step }));
             },
             set (value) {
-                this.steps = value.map((step) => step.step)
+                this.steps = value.map((step) => step.step);
             },
         }
     },
@@ -46,6 +48,15 @@ app.component('opportunity-form-builder' , {
     watch: {
         steps () {
             this.syncStepsCount();
+
+            this.steps.forEach(async (step, index) => {
+                if (index !== step.displayOrder) {
+                    const entity = new Entity('registrationstep');
+                    entity.populate(step);
+                    entity.displayOrder = index;
+                    await entity.save();
+                }
+            });
         },
     },
 
@@ -64,6 +75,12 @@ app.component('opportunity-form-builder' , {
         onMessage ({ data }) {
             if (data.type === 'formbuilder:started') {
                 this.syncStepsCount();
+            } else if (data.type === 'formbuilder:updateStep') {
+                for (const step of this.steps) {
+                    if (step._id === data.payload.id) {
+                        Object.assign(step, data.payload);
+                    }
+                }
             } else if (data.type === 'formbuilder:removeStep') {
                 const stepId = data.payload.step_id;
                 this.steps = this.steps.filter((step) => step.id !== stepId);
