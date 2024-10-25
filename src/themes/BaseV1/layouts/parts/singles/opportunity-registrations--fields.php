@@ -17,7 +17,12 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
     <div class="project-edit-mode--header">
         <h4><?php i::_e("Nome") ?></h4>
-        <input type="text" ng-model="data.step.name">
+        <input type="text" ng-model="stepName" style="margin-block: 10px;">
+        <button class="btn btn-primary" type="button" ng-click="updateStepName()">
+            <?php i::_e('Salvar') ?>
+        </button>
+
+        <hr>
 
         <h4><?php i::_e("Campos"); ?></h4>
 
