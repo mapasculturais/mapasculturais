@@ -135,7 +135,7 @@ $this->import('
                     </div>
 
                     <div class="qualification-evaluation-config__criteria-filters">
-                        <div v-if="section.categories.length > 1" class="field">
+                        <div v-if="section.categories && criteria.sid === section.id && section.categories.length > 1" class="field">
                             <label><?php i::_e("Selecione em quais categorias este critério será utilizado:") ?></label>
                             <div class="qualification-evaluation-config__filters-input" v-for="category in section.categories" :key="category">
                                 <input 
@@ -147,7 +147,7 @@ $this->import('
                             </div>
                         </div>
 
-                        <div v-if="section.proponentTypes.length > 1" class="field">
+                        <div v-if="section.proponentTypes && criteria.sid === section.id && section.proponentTypes.length > 1" class="field">
                             <label><?php i::_e("Selecione em quais tipos de proponente este critério será utilizado:") ?></label>
                             <div class="qualification-evaluation-config__filters-input" v-for="proponentType in section.proponentTypes" :key="proponentType">
                                 <input 
@@ -159,7 +159,7 @@ $this->import('
                             </div>
                         </div>
 
-                        <div v-if="section.ranges.length > 1" class="field">
+                        <div v-if="section.ranges && criteria.sid === section.id && section.ranges.length > 1" class="field">
                             <label><?php i::_e("Selecione em quais faixa/linhas este critério será utilizado:") ?></label>
                             <div class="qualification-evaluation-config__filters-input" v-for="range in section.ranges" :key="range">
                                 <input
