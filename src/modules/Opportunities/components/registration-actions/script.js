@@ -122,11 +122,16 @@ app.component('registration-actions', {
         async validate() {
             const messages = useMessages();
             try {
-                await this.save();
-                const success = await this.registration.POST('validateEntity', {});
-                if (success) {
-                    this.isValidated = true;
-                    messages.success(this.text('Validado'));
+                if(Object.keys(this.registration.__validationErrors).length > 0){
+                    messages.error(this.text('Corrija os erros indicados'));
+                }else{
+                    await this.save();
+                    const success = await this.registration.POST('validateEntity', {});
+
+                    if (success) {
+                        this.isValidated = true;
+                        messages.success(this.text('Validado'));
+                    }
                 }
             } catch (error) {
                 console.error(error);

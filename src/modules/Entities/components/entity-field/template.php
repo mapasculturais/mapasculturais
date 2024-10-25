@@ -8,12 +8,11 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field-datepicker
+    entity-field-links
     entity-field-location
     mc-alert
     mc-currency-input
-    mc-icon
-    mc-multiselect
-    mc-tag-list
+    entity-field-bank-info
 ')
 ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]">
@@ -54,6 +53,10 @@ $this->import('
             <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
                 <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || readonly"> {{description.options[optionValue]}} 
             </label>
+        </template>
+
+        <template v-if="is('links')">
+            <entity-field-links :entity="entity" :prop="prop" :show-title="description && Boolean(description.registrationFieldConfiguration?.config?.title)" @change="change($event, true)"></entity-field-links>
         </template>
         
         <template v-if="is('multiselect') || is('checklist')">
@@ -106,6 +109,10 @@ $this->import('
 
         <template v-if="is('location')">
             <entity-field-location :entity="entity" :field-name="prop"></entity-field-location>
+        </template>
+        
+        <template v-if="is('bankFields')">  
+            <entity-field-bank-info @change="change($event, true)"  :field-name="prop" :entity="entity"></entity-field-bank-info>
         </template>
 
         <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
