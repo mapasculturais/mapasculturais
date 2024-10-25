@@ -1441,8 +1441,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     $field_type = 'multiselect';
                 }
 
-                if($field->config['entityField'] == '@location') {
-                    $field_type = 'location';
+                if($field->config['entityField'] == '@bankFields'){
+                    $field_type = 'bankFields';
                 }
 
             } else if ($field->fieldType == 'checkboxes') {

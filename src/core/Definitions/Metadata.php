@@ -204,6 +204,9 @@ class Metadata extends \MapasCulturais\Definition{
             'location' => function($value) {
                 return json_encode($value);
             },
+            'bankFields' => function($value){
+                return json_encode($value);
+            }
         ];
 
         $app = App::i();
@@ -236,6 +239,9 @@ class Metadata extends \MapasCulturais\Definition{
                 return is_null($value) ? null : json_decode($value);
             },
             'json' => function($value) {
+                return is_null($value) ? null : json_decode($value);
+            },
+            'bankFields' => function($value) {
                 return is_null($value) ? null : json_decode($value);
             },
             'DateTime' => function($value) {

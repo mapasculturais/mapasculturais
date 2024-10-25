@@ -97,7 +97,6 @@ return array(
 
                 return Utils::formatCnpjCpf($value);
             },
-            'available_for_opportunities' => true,
             'readonly' => true
         ),
 
