@@ -9,6 +9,7 @@ $this->layout = 'entity';
 $this->addOpportunityPhasesToJs();
 $this->import('
     entity-field
+    mc-confirm-button
     mc-modal
     mc-tab
     mc-tabs
@@ -98,6 +99,23 @@ $this->import('
         <mc-tabs v-model:draggable="stepsWithSlugs">
             <template #default>
                 <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="step.name || `<?php i::_e('Etapa') ?> ${index + 1}`" :key="step.id" :slug="slug">
+                    <div class="form-builder__step-config">
+                        <entity-field :entity="step" prop="name" :autosave="1000" hide-required></entity-field>
+
+                        <mc-confirm-button v-if="steps.length > 1" @confirm="deleteStep(step)">
+                            <template #button="modal">
+                                <button @click="modal.open()" class="button button--text-danger button--icon">
+                                    <?php i::_e('Excluir etapa') ?>
+                                    <mc-icon name="trash"></mc-icon>
+                                </button>
+                            </template>
+
+                            <template #message="message">
+                                <?php i::_e('Deseja remover esta etapa?') ?>
+                            </template>
+                        </mc-confirm-button>
+                    </div>
+
                     <v1-embed-tool route="formbuilder" :id="entity.id" :params="{ step_id: step.id }" min-height="600px"></v1-embed-tool>
                 </mc-tab>
             </template>
