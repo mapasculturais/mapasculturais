@@ -38,7 +38,7 @@ class RegistrationStep extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="display_order", type="integer")
      */
-    protected $displayOrder;
+    protected $displayOrder = 0;
 
     /**
      * @var \MapasCulturais\Entities\Opportunity
