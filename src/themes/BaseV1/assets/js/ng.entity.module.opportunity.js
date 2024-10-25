@@ -839,7 +839,12 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             $window.parent.postMessage({ type: 'formbuilder:started' });
 
             $scope.removeStep = () => {
-                $window.parent.postMessage({ type: 'formbuilder:removeStep', payload: { step_id: MapasCulturais.step.id } });
+                const stepId = MapasCulturais.step.id;
+                RegistrationStepService.delete(stepId).then(({ error }) => {
+                    if (!error) {
+                        $window.parent.postMessage({ type: 'formbuilder:removeStep', payload: { step_id: stepId} });
+                    }
+                });
             }
         }
     }]);
