@@ -24,7 +24,10 @@ foreach ($sections as $section) {
         'id' => $section->id,
         'name' => $section->name,
         'criteria' => [],
-        'status' => i::__('Não avaliada')
+        'status' => i::__('Não avaliada'),
+        'categories' => $section->categories ?? [],
+        'proponentTypes' => $section->proponentTypes ?? [],
+        'ranges' => $section->ranges ?? [],
     ];
     
     foreach ($criteria as $crit) {
@@ -39,7 +42,10 @@ foreach ($sections as $section) {
                 'description' => $crit->description ?? '',
                 'options' => $crit->options ?? [],
                 'notApplyOption' => $crit->notApplyOption,
-                'status' => $critStatus
+                'status' => $critStatus,
+                'categories' => $crit->categories ?? [],
+                'proponentTypes' => $crit->proponentTypes ?? [],
+                'ranges' => $crit->ranges ?? [],
             ];
             
             if ($critStatus === 'avaliada') {

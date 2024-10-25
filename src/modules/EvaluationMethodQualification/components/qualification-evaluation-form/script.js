@@ -83,6 +83,15 @@ app.component('qualification-evaluation-form', {
             }
             this.consolidated();
         },
+
+        showSectionAndCriterion(type) {
+            return (
+                type.ranges.some(range => range.label === this.entity.range) ||
+                type.categories.includes(this.entity.category) || 
+                type.proponentTypes.includes(this.entity.proponentType)        
+            );
+        },
+
         consolidated (){
             let totalSections = this.sections.length;
             let sectionsEvaluated = Object.values(this.formData.sectionStatus).length;
@@ -151,6 +160,6 @@ app.component('qualification-evaluation-form', {
             return {
                 uid: this.userId,
             };
-        }
+        },
     },
 });
