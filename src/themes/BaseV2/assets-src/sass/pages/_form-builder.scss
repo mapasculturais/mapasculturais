@@ -1,7 +1,7 @@
 @use '../0.settings/mixins'as *;
 
 .form-builder {
-    background-color: var(--mc-gray-100);     
+    background-color: var(--mc-gray-100);
 
     &__cards .mc-card {
         height: 100%;
@@ -68,6 +68,16 @@
             &__title {
                 font-weight: 600;
             }
+        }
+    }
+
+    &__step-config {
+        align-items: flex-end;
+        display: flex;
+        margin: size(8) size(8) size(32);
+
+        .button--text-danger {
+            flex: none;
         }
     }
 }

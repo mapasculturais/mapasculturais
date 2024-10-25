@@ -26,14 +26,6 @@ app.component('opportunity-form-builder' , {
         this.entity.useSpaceRelationIntituicao = this.entity.useSpaceRelationIntituicao ?? 'dontUse';
     },
 
-    mounted () {
-        window.addEventListener('message', this.onMessage);
-    },
-
-    beforeUnmount () {
-        window.removeEventListener('message', this.onMessage);
-    },
-
     computed: {
         stepsWithSlugs: {
             get () {
@@ -47,8 +39,6 @@ app.component('opportunity-form-builder' , {
 
     watch: {
         steps () {
-            this.syncStepsCount();
-
             this.steps.forEach(async (step, index) => {
                 if (index !== step.displayOrder) {
                     const entity = new Entity('registrationstep');
@@ -68,30 +58,14 @@ app.component('opportunity-form-builder' , {
             step.opportunity = this.entity;
             await step.save();
 
+            step.$LISTS.push(this.steps);
             this.steps.push(step);
+
             this.newStep.name = '';
             modal.close();
         },
-        onMessage ({ data }) {
-            if (data.type === 'formbuilder:started') {
-                this.syncStepsCount();
-            } else if (data.type === 'formbuilder:updateStep') {
-                for (const step of this.steps) {
-                    if (step._id === data.payload.id) {
-                        Object.assign(step, data.payload);
-                    }
-                }
-            } else if (data.type === 'formbuilder:removeStep') {
-                const stepId = data.payload.step_id;
-                this.steps = this.steps.filter((step) => step.id !== stepId);
-            }
-        },
-        syncStepsCount () {
-            const message = { type: 'formbuilder:countSteps', payload: { count: this.steps.length } };
-
-            this.$el.querySelectorAll('iframe').forEach((iframe) => {
-                iframe.contentWindow.postMessage(message);
-            });
+        deleteStep (step) {
+            step.delete(true);
         },
     },
 });

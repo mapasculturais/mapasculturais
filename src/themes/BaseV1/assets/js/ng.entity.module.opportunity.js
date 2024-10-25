@@ -268,34 +268,6 @@ module.factory('RegistrationConfigurationService', ['$rootScope', '$q', '$http',
     };
 }]);
 
-module.factory('RegistrationStepService', ['$q', '$http', 'UrlService', function($q, $http, UrlService) {
-    const url = new UrlService('registrationstep');
-
-    return {
-        getUrl (action, id) {
-            return url.create(action, id);
-        },
-        edit (data) {
-            const deferred = $q.defer();
-            $http.post(url.create('single', data.id), data)
-            .success((response) => {
-                deferred.resolve(response);
-            }).error((response) => {
-                deferred.resolve(response);
-            });
-            return deferred.promise;
-        },
-        delete (id) {
-            const deferred = $q.defer();
-            $http.get(url.create('delete', id))
-            .success((response) => {
-                deferred.resolve(response);
-            });
-            return deferred.promise;
-        }
-    }
-}]);
-
 module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$http', '$log', 'UrlService', function($rootScope, $q, $http, $log, UrlService) {
     var url = new UrlService('evaluationMethodConfiguration');
     return {
@@ -348,7 +320,7 @@ module.factory('EvaluationMethodConfigurationService', ['$rootScope', '$q', '$ht
     };
 }]);
 
-module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$window', '$interval', 'UrlService', 'RegistrationConfigurationService', 'RegistrationStepService', 'EditBox', '$http', function ($scope, $rootScope, $window, $interval, UrlService, RegistrationConfigurationService, RegistrationStepService, EditBox, $http) {
+module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope', '$window', '$interval', 'UrlService', 'RegistrationConfigurationService', 'EditBox', '$http', function ($scope, $rootScope, $window, $interval, UrlService, RegistrationConfigurationService, EditBox, $http) {
     var fileService = RegistrationConfigurationService('registrationfileconfiguration');
     var fieldService = RegistrationConfigurationService('registrationfieldconfiguration');
 
@@ -531,7 +503,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             if (Array.isArray(text)) {
                 text = text.join('\n');
             }
-            
+
             if (!text) return 0;
             return text.trim().split(/\s+/).length;
         };
@@ -857,27 +829,6 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                 }, 700);
             });
         };
-
-        $scope.countSteps = 1;
-
-        if (MapasCulturais.step) {
-            $window.addEventListener('message', ({ data }) => {
-                if (data.type === 'formbuilder:countSteps') {
-                    $scope.countSteps = data.payload.count;
-                    $scope.$apply();
-                }
-            });
-            $window.parent.postMessage({ type: 'formbuilder:started' });
-
-            $scope.removeStep = () => {
-                const stepId = MapasCulturais.step.id;
-                RegistrationStepService.delete(stepId).then(({ error }) => {
-                    if (!error) {
-                        $window.parent.postMessage({ type: 'formbuilder:removeStep', payload: { step_id: stepId} });
-                    }
-                });
-            }
-        }
     }]);
 
 module.controller('OpportunityEventsController', ['$scope', '$rootScope', '$timeout', 'OpportunityEventsService', 'EditBox', '$http', 'UrlService', function ($scope, $rootScope, $timeout, OpportunityEventsService, EditBox, $http, UrlService) {
@@ -2302,7 +2253,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
     }]);
 
-module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScroll', '$timeout', 'RegistrationService', 'RegistrationStepService', 'EditBox', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $anchorScroll, $timeout, RegistrationService, RegistrationStepService, EditBox, $http, UrlService, OpportunityApiService, $window) {
+module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScroll', '$timeout', 'RegistrationService', 'EditBox', '$http', 'UrlService', 'OpportunityApiService', '$window', function ($scope, $rootScope, $anchorScroll, $timeout, RegistrationService, EditBox, $http, UrlService, OpportunityApiService, $window) {
     var labels = MapasCulturais.gettext.moduleOpportunity;
 
     var opportunity_main_tab = $("#opportunity-main-info");
@@ -2914,22 +2865,6 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
                     alert('erro');
                 });
             };
-
-            $scope.stepName = '';
-
-            $scope.updateStepName = function () {
-                const { id, displayOrder, opportunity } = MapasCulturais.step;
-                const data = { id, name: $scope.stepName, displayOrder, opportunity: opportunity.id };
-                RegistrationStepService.edit(data).then(({ error }) => {
-                    if (!error) {
-                        $window.parent.postMessage({ type: 'formbuilder:updateStep', payload: data });
-                    }
-                });
-            };
-
-            if (MapasCulturais.step) {
-                $scope.stepName = MapasCulturais.step.name;
-            }
         }]);
 
     module.controller('RegistrationListController', ['$scope', '$interval', 'OpportunityApiService', function($scope, $timeout, OpportunityApiService){
