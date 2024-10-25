@@ -363,7 +363,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         conditionalField : null,
         conditionalValue : null,
         registrationRanges : [],
-        proponentTypes : []
+        proponentTypes : [],
+        step: MapasCulturais.step?.id ?? null,
     };
 
     var fieldConfigurationSkeleton = {
@@ -380,6 +381,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         conditionalValue : null,
         registrationRanges : [],
         proponentTypes : [],
+        step: MapasCulturais.step?.id ?? null,
     };
 
     $scope.isBlockedFields = function(fieldID){
@@ -522,6 +524,8 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         // Fields
         $scope.fieldConfigurationBackups = [];
 
+        const step = MapasCulturais.step;
+
         $scope.data.filterFieldConfigurationByCategory = null;
         $scope.showFieldConfiguration = function (field) {
             if(field.fieldType == "agent-owner-field") {
@@ -532,6 +536,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
             if(field.fieldType == 'checkboxes') {
                 field.config.maxOptions = field.config.maxOptions ? Number(field.config.maxOptions) : 0;
+            }
+
+            if (step && field.step?.id !== step.id) {
+                return false;
             }
 
             if(field.categories.length === 0) {

@@ -169,6 +169,14 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
         $this->registrationRanges = $value;
     }
 
+    public function setStep(int|RegistrationStep $step) {
+        if (is_int($step)) {
+            $app = \MapasCulturais\App::i();
+            $step = $app->repo('RegistrationStep')->find($step);
+        }
+        $this->step = $step;
+    }
+
     public function setProponentTypes($value) {
         if(!$value){
             $value = [];
@@ -194,6 +202,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'conditionalValue' => $this->conditionalValue,
             'registrationRanges' => $this->registrationRanges ?: [],
             'proponentTypes' => $this->proponentTypes ?: [],
+            'step' => $this->step ?? null,
         ];
 
         $app = App::i();
