@@ -24,6 +24,14 @@ app.component('registration-field-persons', {
         },
     },    
 
+    data() {
+        let rules = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.config || {};
+
+        return {
+            rules,
+        };
+    },
+
     watch: {
         change(event, now) {
             clearTimeout(this.__timeout);
@@ -50,6 +58,10 @@ app.component('registration-field-persons', {
         },
 
         addNewPerson() {
+            if (!this.registration[this.prop]) {
+                this.registration[this.prop] = [];
+            }
+ 
             this.registration[this.prop].push({
                 name: '',
                 cpf: '',

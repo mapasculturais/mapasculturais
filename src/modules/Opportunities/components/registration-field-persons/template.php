@@ -15,22 +15,22 @@ $this->import('
 
         <div v-for="person in this.registration[this.prop]"  class="registration-field-persons__person">
             <div class="registration-field-persons__person-fields grid-12">
-                <div class="field col-6 sm:col-12">
+                <div v-if="rules.name" class="field col-12">
                     <label><?= i::__('Nome:') ?></label>
                     <input type="text" v-model="person.name" @change="save()" />
                 </div>
     
-                <div class="field col-6 sm:col-12">
+                <div v-if="rules.cpf" class="field col-12">
                     <label><?= i::__('CPF:') ?></label>
                     <input type="text" v-maska data-maska="###.###.###-##" v-model="person.cpf" @change="save()" />
                 </div>
                 
-                <div class="field col-6 sm:col-12">
+                <div v-if="rules.function" class="field col-12">
                     <label><?= i::__('Função:') ?></label>
                     <input type="text"  v-model="person.function" @change="save()" />
                 </div>
     
-                <div class="field col-6 sm:col-12">
+                <div v-if="rules.relationship" class="field col-12">
                     <label><?= i::__('Parentesco:') ?></label>
                     <mc-select v-model:default-value="person.relationship" @change-option="save()">
                         <option value="1"><?php i::_e("Cônjuge ou Companheiro(a)") ?></option>
@@ -53,7 +53,8 @@ $this->import('
         </div>
 
         <div class="registration-field-persons__add-person">
-            <button type="button" class="button button--sm button--icon button--primary" @click="addNewPerson()"><mc-icon name="add"></mc-icon> <?= i::__('Adicionar pessoa') ?></button>
+            <button v-if="rules.buttonText" type="button" class="button button--sm button--icon button--primary" @click="addNewPerson()"><mc-icon name="add"></mc-icon> {{rules.buttonText}} </button>
+            <button v-if="!rules.buttonText" type="button" class="button button--sm button--icon button--primary" @click="addNewPerson()"><mc-icon name="add"></mc-icon> <?= i::__("Adicionar nova pessoa") ?> </button>
         </div>
     </div>
 </div>
