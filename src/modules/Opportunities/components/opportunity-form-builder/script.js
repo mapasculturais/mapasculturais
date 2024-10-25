@@ -58,14 +58,16 @@ app.component('opportunity-form-builder' , {
             step.opportunity = this.entity;
             await step.save();
 
-            step.$LISTS.push(this.steps);
             this.steps.push(step);
 
             this.newStep.name = '';
             modal.close();
         },
-        deleteStep (step) {
-            step.delete(true);
+        async deleteStep (step) {
+            await step.delete(true);
+
+            const stepId = data.payload.step_id;
+            this.steps = this.steps.filter((step) => step.id !== stepId);
         },
     },
 });
