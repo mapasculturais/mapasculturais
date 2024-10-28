@@ -86,9 +86,10 @@ app.component('qualification-evaluation-form', {
 
         showSectionAndCriterion(type) {
             return (
+                !type.ranges.length || !type.categories.length || !type.proponentTypes.length ||      
                 type.ranges.some(range => range.label === this.entity.range) ||
                 type.categories.includes(this.entity.category) || 
-                type.proponentTypes.includes(this.entity.proponentType)        
+                type.proponentTypes.includes(this.entity.proponentType)
             );
         },
 
@@ -123,6 +124,7 @@ app.component('qualification-evaluation-form', {
             this.formData.sectionStatus = updatedSectionStatus;
             this.consolidated();
         },
+
         validateErrors() {
             let isValid = false;
             this.errors = [];
@@ -151,7 +153,7 @@ app.component('qualification-evaluation-form', {
 
             return isValid;
         },
-        
+
         processResponse(data) {
             if (data.detail.response.status > 0) {
                 this.isEditable = false;
