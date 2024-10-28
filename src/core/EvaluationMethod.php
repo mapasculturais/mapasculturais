@@ -155,10 +155,6 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     function evaluationToString(Entities\RegistrationEvaluation $evaluation){
         return $this->valueToString($evaluation->result);
     }
-    
-    function fetchRegistrations(){
-        return false;
-    }
 
     function getConsolidatedResult(Entities\Registration $registration){
         $app = App::i();
@@ -208,9 +204,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             return false;
         };
         
-        $can = $config->canUser('@control', $user);
-        
-        if($can && $this->fetchRegistrations()){
+        if($can = $config->canUser('@control', $user)){
             
             $fetch = [];
             $config_fetch = is_array($config->fetch) ? $config->fetch : (array) $config->fetch;
@@ -498,14 +492,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $self->enqueueScriptsAndStyles();
         });
         
-        if($this->fetchRegistrations()){
-            $this->registerEvaluationMethodConfigurationMetadata('infos', [
-                'label' => i::__('Textos informativos para os avaliadores'),
-                'type' => 'json',
-                'default' => '{}'
-            ]);
-        }
-
+        $this->registerEvaluationMethodConfigurationMetadata('infos', [
+            'label' => i::__('Textos informativos para os avaliadores'),
+            'type' => 'json',
+            'default' => '{}'
+        ]);
     }
     
     function registerEvaluationMethodConfigurationMetadata($key, array $config){
