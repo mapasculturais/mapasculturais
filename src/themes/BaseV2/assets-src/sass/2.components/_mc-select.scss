@@ -1,6 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .mc-select {
+    margin-bottom: 0.5rem;
     outline: none;
     position: relative;
     text-align: left;

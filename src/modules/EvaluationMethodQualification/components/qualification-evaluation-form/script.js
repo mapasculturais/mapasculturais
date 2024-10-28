@@ -29,6 +29,7 @@ app.component('qualification-evaluation-form', {
                 sectionStatus: {},
                 obs: '',
                 data: {},
+                reason: {},
             },
             consolidatedResult: this.text('Habilitado'),
             isEditable: true,
@@ -74,8 +75,8 @@ app.component('qualification-evaluation-form', {
 
             if(section) {
                 const criteriaEnabled = section.criteria.every(crit => this.formData.data[crit.id] === this.text('Habilitado'));
-                const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');
-        
+                const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');                
+
                 this.formData.sectionStatus = {
                     ...this.formData.sectionStatus,
                     [sectionId]: newStatus
