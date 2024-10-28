@@ -135,7 +135,7 @@ app.component('qualification-evaluation-form', {
                         if (this.showSectionAndCriterion(crit)) {
                             let sectionName = section.name;
                             let value = this.formData.data[crit.id];
-                            if (!value || value === "") {
+                            if (value.length <= 0) {
                                 this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
                                 isValid = true;
                             }
