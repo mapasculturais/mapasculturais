@@ -128,12 +128,18 @@ app.component('qualification-evaluation-form', {
             this.errors = [];
 
             for (let sectionIndex in this.sections) {
-                for (let crit of this.sections[sectionIndex].criteria) {
-                    let sectionName = this.sections[sectionIndex].name;
-                    let value = this.formData.data[crit.id];
-                    if (!value || value === "") {
-                        this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
-                        isValid = true;
+                let section = this.sections[sectionIndex];
+
+                if (this.showSectionAndCriterion(section)) {
+                    for (let crit of section.criteria) {
+                        if (this.showSectionAndCriterion(crit)) {
+                            let sectionName = section.name;
+                            let value = this.formData.data[crit.id];
+                            if (!value || value === "") {
+                                this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
+                                isValid = true;
+                            }
+                        }
                     }
                 }
             }
@@ -145,6 +151,7 @@ app.component('qualification-evaluation-form', {
 
             return isValid;
         },
+        
         processResponse(data) {
             if (data.detail.response.status > 0) {
                 this.isEditable = false;
