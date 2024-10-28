@@ -2348,5 +2348,34 @@ $$
 
     'deleta requests com valores dos da coluna metadata inválidos' => function() use($conn) {
         __exec("delete from request where metadata = ':metadata'");
+    },
+
+    'Ajusta os resultados das avaliações de habilitação documental para array' => function() use($conn, $app) {
+        $registration_evaluations = $conn->fetchAll("SELECT * FROM registration_evaluation");
+
+        foreach ($registration_evaluations as $registration_evaluation) {
+            $registration_id = $registration_evaluation['registration_id'];
+
+            $registration = $app->repo('Registration')->find($registration_id);
+
+            if ($registration && $registration->evaluationMethodDefinition &&
+                $registration->evaluationMethodDefinition->slug === 'qualification') {
+
+                $evaluationData = $registration_evaluation['evaluation_data'] ? json_decode($registration_evaluation['evaluation_data'], true) : [];
+
+                foreach ($evaluationData as $key => $value) {
+                    if (str_starts_with($key, 'c-') && is_string($value)) {
+                        $new_value = json_encode([$value]);
+                        
+                        __exec(
+                            "UPDATE registration_evaluation 
+                             SET evaluation_data = jsonb_set(evaluation_data::jsonb, '{\"$key\"}', '$new_value'::jsonb) 
+                             WHERE id = {$registration_evaluation['id']}",
+                        );
+                    }
+                }
+            }
+        }
     }
+
 ] + $updates ;   
