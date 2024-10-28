@@ -379,9 +379,5 @@ class Module extends \MapasCulturais\EvaluationMethod {
     function _getConsolidatedDetails(Entities\Registration $registration): ?array {
         return null;
     }
-    
-    public function fetchRegistrations() {
-        return true;
-    }
 
 }

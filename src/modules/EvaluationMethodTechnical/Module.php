@@ -1209,10 +1209,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
         ];
     }
 
-    public function fetchRegistrations() {
-        return true;
-    }
-
     private function viabilityLabel($evaluation) {
         if (isset($evaluation->evaluationData->viability)) {
             $viability = $evaluation->evaluationData->viability;
