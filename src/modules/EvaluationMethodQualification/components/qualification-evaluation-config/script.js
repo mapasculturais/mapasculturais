@@ -73,6 +73,7 @@ app.component('qualification-evaluation-config', {
                     sid: sectionId,
                     name: '',
                     notApplyOption: 'false',
+                    otherReasonsOption: 'false',
                     weight: 1
                 });
 
@@ -185,6 +186,11 @@ app.component('qualification-evaluation-config', {
 
         notApplyChange(criteria) {
             criteria.notApplyOption = criteria.notApplyOption ? 'true' : 'false';
+            this.save();
+        },
+
+        otherReasonsChange(criteria) {
+            criteria.otherReasonsOption = criteria.otherReasonsOption ? 'true' : 'false';
             this.save();
         },
 
