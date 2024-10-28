@@ -46,6 +46,7 @@ foreach ($sections as $section) {
                 'categories' => $crit->categories ?? [],
                 'proponentTypes' => $crit->proponentTypes ?? [],
                 'ranges' => $crit->ranges ?? [],
+                'otherReasonsOption' => $crit->otherReasonsOption,
             ];
             
             if ($critStatus === 'avaliada') {

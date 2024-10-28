@@ -41,11 +41,15 @@ $this->import('
                             <option class="qualification-enabled" value="Habilitado"><?php i::_e('Habilitado') ?></option>
                             <option class="qualification-disabled" value="Inabilitado"><?php i::_e('Inabilitado') ?></option>
                             <option v-for="option in crit.options" :key="option" :value="option">{{ option }}</option>
+                            <option v-if="crit.otherReasonsOption == 'true'" value="Outras"><?php i::_e('Outras') ?></option>
                         </mc-select>
                         <input v-if="!isEditable" type="text" :value="formData.data[crit.id]" disabled>
+                        <textarea v-if="formData.data[crit.id] === 'Outras'" v-model="formData.data[crit.id + '_reason']" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
                     </div>
                 </div>
             </div>
+                <label><?php i::_e('Parecer') ?></label>
+                <input v-model="formData.data[section.id]" type="text">
             <label>
                 <?php i::_e('Resultado da seção:') ?> 
                 <span :class="sectionStatus(section.id) == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'">

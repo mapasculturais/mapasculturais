@@ -47,11 +47,11 @@ $this->import('
                     <div v-if="entity.opportunity.registrationCategories.length > 1" class="field">
                         <label><?php i::_e("Selecione em quais categorias esta seção será utilizada:") ?></label>
                         <div class="qualification-evaluation-config__filters-input" v-for="category in entity.opportunity.registrationCategories" :key="category">
-                            <input 
-                                type="checkbox" 
-                                :value="category" 
+                            <input
+                                type="checkbox"
+                                :value="category"
                                 :checked="isChecked(section, 'categories', category)"
-                                @change="updateSelections(section, 'categories', category, $event.target.checked)" /> 
+                                @change="updateSelections(section, 'categories', category, $event.target.checked)" />
                             {{category}}
                         </div>
                     </div>
@@ -59,11 +59,11 @@ $this->import('
                     <div v-if="entity.opportunity.registrationProponentTypes.length > 1" class="field">
                         <label><?php i::_e("Selecione em quais tipos de proponente esta seção será utilizada:") ?></label>
                         <div class="qualification-evaluation-config__filters-input" v-for="proponentType in entity.opportunity.registrationProponentTypes" :key="proponentType">
-                            <input 
-                                type="checkbox" 
-                                :value="proponentType" 
+                            <input
+                                type="checkbox"
+                                :value="proponentType"
                                 :checked="isChecked(section, 'proponentTypes', proponentType)"
-                                @change="updateSelections(section, 'proponentTypes', proponentType, $event.target.checked)" /> 
+                                @change="updateSelections(section, 'proponentTypes', proponentType, $event.target.checked)" />
                             {{proponentType}}
                         </div>
                     </div>
@@ -89,7 +89,7 @@ $this->import('
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
                     <div class="criterion" v-if="criteria.sid == section.id">
                         <div class="field">
-                            <small class="required" v-if="!criteria.name" ><i> <?= i::esc_attr__('Digite o nome critério') ?></i></small>
+                            <small class="required" v-if="!criteria.name"><i> <?= i::esc_attr__('Digite o nome critério') ?></i></small>
                             <input type="text" v-model="criteria.name" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaNameInput">
                         </div>
                         <div class="criterion__buttons">
@@ -99,15 +99,20 @@ $this->import('
                                         <?php i::_e("Descrição do critério") ?>
                                         <textarea v-model="criteria.description" @blur="save()"></textarea>
                                     </label>
-        
+
                                     <label class="qualification-evaluation-config__modal-content__label col-12">
                                         <?php i::_e("Opções ou motivos de inabilitação") ?>
                                         <textarea :value="optionsToString(criteria.options)" @blur="event => updateOptionsArray(criteria, event.target.value)" placeholder="<?= i::esc_attr__('As opções Habilitado e inabilitado já são definidas automaticamente pelo sistema') ?>"></textarea>
                                     </label>
-        
+
                                     <label class="col-12">
                                         <input type="checkbox" v-model="criteria.notApplyOption" @change="notApplyChange(criteria)" />
                                         <?= i::__('Habilitar a opção Não se aplica?') ?>
+                                    </label>
+
+                                    <label class="col-12">
+                                        <input type="checkbox" v-model="criteria.otherReasonsOption" @change="otherReasonsChange(criteria)" />
+                                        <?= i::__('Habilitar a opção Outros motivos para inabilitação?') ?>
                                     </label>
 
                                     <small class="field col-12">
@@ -131,18 +136,18 @@ $this->import('
                                     </template>
                                 </mc-confirm-button>
                             </div>
-                        </div>  
+                        </div>
                     </div>
 
                     <div class="qualification-evaluation-config__criteria-filters">
                         <div v-if="section.categories && criteria.sid === section.id && section.categories.length > 1" class="field">
                             <label><?php i::_e("Selecione em quais categorias este critério será utilizado:") ?></label>
                             <div class="qualification-evaluation-config__filters-input" v-for="category in section.categories" :key="category">
-                                <input 
-                                    type="checkbox" 
-                                    :value="category"  
+                                <input
+                                    type="checkbox"
+                                    :value="category"
                                     :checked="isChecked(criteria, 'categories', category)"
-                                    @change="updateSelections(criteria, 'categories', category, $event.target.checked)" /> 
+                                    @change="updateSelections(criteria, 'categories', category, $event.target.checked)" />
                                 {{category}}
                             </div>
                         </div>
@@ -150,11 +155,11 @@ $this->import('
                         <div v-if="section.proponentTypes && criteria.sid === section.id && section.proponentTypes.length > 1" class="field">
                             <label><?php i::_e("Selecione em quais tipos de proponente este critério será utilizado:") ?></label>
                             <div class="qualification-evaluation-config__filters-input" v-for="proponentType in section.proponentTypes" :key="proponentType">
-                                <input 
-                                    type="checkbox" 
-                                    :value="proponentType" 
+                                <input
+                                    type="checkbox"
+                                    :value="proponentType"
                                     :checked="isChecked(criteria, 'proponentTypes', proponentType)"
-                                    @change="updateSelections(criteria, 'proponentTypes', proponentType, $event.target.checked)" /> 
+                                    @change="updateSelections(criteria, 'proponentTypes', proponentType, $event.target.checked)" />
                                 {{proponentType}}
                             </div>
                         </div>
