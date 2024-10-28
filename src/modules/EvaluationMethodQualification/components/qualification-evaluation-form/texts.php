@@ -10,4 +10,6 @@ return [
     'Inabilitado'=>i::__('Inabilitado'),
     'Habilitado'=>i::__('Habilitado'),
     'O campo Parecer é obrigatório.' => i::__('O campo Parecer é obrigatório.'),
+    'Não se aplica' => i::__('Não se aplica'),
+    'Outras' => i::__('Outras'),
 ];

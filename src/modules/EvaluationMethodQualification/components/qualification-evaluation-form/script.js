@@ -36,9 +36,15 @@ app.component('qualification-evaluation-form', {
             evaluationId: null,
         };
     },
+
+    created() {
+        this.isEditable = this.status > 0 ? false : this.editable;
+
+        this.initializedCriteriaData();
+    },
+    
     mounted() {
         window.addEventListener('responseEvaluation', this.processResponse);
-        this.isEditable = this.status > 0 ? false : this.editable;
 
         if(!this.isEditable) {
             this.updateSectionStatusByFromData();
@@ -65,18 +71,13 @@ app.component('qualification-evaluation-form', {
     },
 
     methods: {
-        updateSectionStatus(sectionId, criteriaId, event) {
-            this.formData.data = {
-                ...this.formData.data,
-                [criteriaId]: event.value
-            };
-
+        updateSectionStatus(sectionId) {
             const section = this.sections.find(sec => sec.id === sectionId);
 
             if(section) {
-                const criteriaEnabled = section.criteria.every(crit => this.formData.data[crit.id] === this.text('Habilitado'));
-                const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');                
-
+                const criteriaEnabled = section.criteria.every(crit => Array.isArray(this.formData.data[crit.id]) && this.formData.data[crit.id].every(value => value === this.text('Habilitado')));
+                const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');
+        
                 this.formData.sectionStatus = {
                     ...this.formData.sectionStatus,
                     [sectionId]: newStatus
@@ -112,13 +113,9 @@ app.component('qualification-evaluation-form', {
             const updatedSectionStatus = {};
     
             this.sections.forEach(section => {
-                const criteriaEnabled = section.criteria.every(crit => {
-                    const status = this.formData.data[crit.id];
-                    return status === 'Habilitado';
-                });
+                const criteriaEnabled = section.criteria.every(crit => Array.isArray(this.formData.data[crit.id]) && this.formData.data[crit.id].every(value => value === this.text('Habilitado')));
     
                 const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');
-    
                 updatedSectionStatus[section.id] = newStatus;
             });
     
@@ -176,6 +173,47 @@ app.component('qualification-evaluation-form', {
             return {
                 uid: this.userId,
             };
+        },
+
+        initializedCriteriaData() {
+            this.sections.forEach(section => {
+                section.criteria.forEach(crit => {
+                    if(!this.formData.data[crit.id]) {
+                        this.formData.data[crit.id] = this.evaluationData[crit.id] ?? [];
+                    }
+                });
+            });
+
+            this.formData.data['obs'] = this.evaluationData['obs'] ?? '';
+        },
+        
+        combinedOptions(crit) {
+            let options = [];
+           
+            options.push(
+                {label: this.text('Habilitado'), value: 'Habilitado'},
+                {label: this.text('Inabilitado'), value: 'Inabilitado'},
+            );
+            
+            if (crit.notApplyOption === 'true') {
+                options.push(
+                    {label: this.text('Não se aplica'), value: 'Não se aplica'}
+                );
+            }
+            
+            if (crit.otherReasonsOption === 'true') {
+                options.push(
+                    {label: this.text('Outras'), value: 'Outras'}
+                );
+            }
+
+            crit.options.forEach(option => {
+                options.push(
+                    {label: option, value: option}
+                );
+            });
+
+            return options;
         },
     },
 });

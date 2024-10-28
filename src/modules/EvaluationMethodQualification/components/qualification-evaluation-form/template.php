@@ -4,8 +4,10 @@ use MapasCulturais\i;
 
 $this->import('
     evaluation-actions
-    mc-select
+    mc-icon
+    mc-multiselect
     mc-popover
+    mc-tag-list
 ')
 ?>
 <div class="qualification-evaluation-form">
@@ -36,15 +38,20 @@ $this->import('
                         </mc-popover>
                     </div>
                     <div>
-                        <mc-select v-if="isEditable" v-model="formData.data[crit.id]" @change-option="updateSectionStatus(section.id, crit.id, $event)" :disabled="!isEditable">
-                            <option v-if="crit.notApplyOption == 'true'" value="Não se aplica"><?php i::_e('Não se aplica') ?></option>
-                            <option class="qualification-enabled" value="Habilitado"><?php i::_e('Habilitado') ?></option>
-                            <option class="qualification-disabled" value="Inabilitado"><?php i::_e('Inabilitado') ?></option>
-                            <option v-for="option in crit.options" :key="option" :value="option">{{ option }}</option>
-                            <option v-if="crit.otherReasonsOption == 'true'" value="Outras"><?php i::_e('Outras') ?></option>
-                        </mc-select>
-                        <input v-if="!isEditable" type="text" :value="formData.data[crit.id]" disabled>
-                        <textarea v-if="formData.data[crit.id] === 'Outras'" v-model="formData.data[crit.id + '_reason']" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
+                        <template v-if="isEditable">
+                            <mc-multiselect :model="formData.data[crit.id]" :items="combinedOptions(crit)" #default="{popover, setFilter}" @selected="updateSectionStatus(section.id)">
+                                <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
+                                    <?php i::_e("Escolher opções") ?>
+                                    <mc-icon name="add"></mc-icon>
+                                </button>
+                            </mc-multiselect>
+
+                            <mc-tag-list :tags="formData.data[crit.id]" classes="opportunity__background" @remove="updateSectionStatus(section.id, crit.id, $event)" editable></mc-tag-list>
+                        </template>
+
+                        <mc-tag-list v-if="!isEditable" :tags="formData.data[crit.id]" classes="opportunity__background"></mc-tag-list>
+
+                        <textarea v-if="formData.data[crit.id].length > 0 && formData.data[crit.id].includes('Outras')" v-model="formData.data[crit.id + '_reason']" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
                     </div>
                 </div>
             </div>
