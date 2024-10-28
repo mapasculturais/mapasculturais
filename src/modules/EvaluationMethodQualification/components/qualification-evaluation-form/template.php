@@ -51,7 +51,7 @@ $this->import('
 
                         <mc-tag-list v-if="!isEditable" :tags="formData.data[crit.id]" classes="opportunity__background"></mc-tag-list>
 
-                        <textarea v-if="formData.data[crit.id].length > 0 && formData.data[crit.id].includes('Outras')" v-model="formData.data[crit.id + '_reason']" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
+                    <textarea v-if="formData.data[crit.id].length > 0 && formData.data[crit.id].includes('Outras')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
                     </div>
                 </div>
             </div>
