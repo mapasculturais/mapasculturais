@@ -26,9 +26,18 @@ app.component('registration-field-persons', {
 
     data() {
         let rules = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.config || {};
+        let required = $DESCRIPTIONS.registration[this.prop].required;
 
         return {
             rules,
+            required,
+            areas: $TAXONOMIES.area.terms,
+            functions: $TAXONOMIES.funcao.terms,
+            races: $DESCRIPTIONS.agent.raca.optionsOrder,
+            genders: $DESCRIPTIONS.agent.genero.optionsOrder,
+            sexualOrientations: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder,
+            deficiencies: $DESCRIPTIONS.agent.pessoaDeficiente.optionsOrder,
+            communities: $DESCRIPTIONS.agent.comunidadesTradicional.optionsOrder,
         };
     },
 
@@ -64,9 +73,21 @@ app.component('registration-field-persons', {
  
             this.registration[this.prop].push({
                 name: '',
+                fullName: '',
+                socialName: '',
                 cpf: '',
+                income: '',
                 function: '',
-                relationship: '',
+                education: '',
+                telephone: '',
+                email: '',
+                race: '',
+                gender: '',
+                sexualOrientation: '',
+                deficiencies: [],
+                comunty: '',
+                area: [],
+                funcao: [],
             }) 
         },
 
