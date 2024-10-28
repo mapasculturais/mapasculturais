@@ -12,38 +12,144 @@ $this->import('
 ?>
 <div class="registration-field-persons">
     <div class="registration-field-persons__list">
+        <label> <?= $this->text('lista-pessoas', i::__('Lista de pessoas')) ?> </label>
 
-        <div v-for="person in this.registration[this.prop]"  class="registration-field-persons__person">
+        <div v-for="(person, index) in this.registration[this.prop]" class="registration-field-persons__person">
+
             <div class="registration-field-persons__person-fields grid-12">
-                <div v-if="rules.name" class="field col-12">
-                    <label><?= i::__('Nome:') ?></label>
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('nome', i::__('Como gostaria de ser chamado?')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
                     <input type="text" v-model="person.name" @change="save()" />
                 </div>
-    
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('nome-completo', i::__('Nome completo')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-model="person.fullName" @change="save()" />
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('nome-social', i::__('Nome Social')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-model="person.socialName" @change="save()" />
+                </div>
+
                 <div v-if="rules.cpf" class="field col-12">
-                    <label><?= i::__('CPF:') ?></label>
+                    <label>
+                        <?= i::__('CPF:') ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
                     <input type="text" v-maska data-maska="###.###.###-##" v-model="person.cpf" @change="save()" />
                 </div>
-                
-                <div v-if="rules.function" class="field col-12">
-                    <label><?= i::__('Função:') ?></label>
-                    <input type="text"  v-model="person.function" @change="save()" />
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('renda', i::__('Renda individual em reais (calcular a renda média individual dos últimos três meses)')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-model="person.income" @change="save()" />
                 </div>
-    
-                <div v-if="rules.relationship" class="field col-12">
-                    <label><?= i::__('Parentesco:') ?></label>
-                    <mc-select v-model:default-value="person.relationship" @change-option="save()">
-                        <option value="1"><?php i::_e("Cônjuge ou Companheiro(a)") ?></option>
-                        <option value="2"><?php i::_e("Filho(a)") ?></option>
-                        <option value="3"><?php i::_e("Enteado(a)") ?></option>
-                        <option value="4"><?php i::_e("Neto(a) ou Bisneto(a)") ?></option>
-                        <option value="5"><?php i::_e("Pai ou Mãe") ?></option>
-                        <option value="6"><?php i::_e("Sogro(a)") ?></option>
-                        <option value="7"><?php i::_e("Irmão ou Irmã") ?></option>
-                        <option value="8"><?php i::_e("Genro ou Nora") ?></option>
-                        <option value="9"><?php i::_e("Outro parente") ?></option>
-                        <option value="10"><?php i::_e("Sem parentesco") ?></option>
-                    </mc-select>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('escolaridade', i::__('Escolaridade')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-model="person.education" @change="save()" />
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('telefone', i::__('Telefone do representante')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-maska data-maska="(##) #####-####" v-model="person.telephone" @change="save()" />
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('email', i::__('Email do representante')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-model="person.email" @change="save()" />
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('raca-cor', i::__('Raça / Cor')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <mc-select v-model:default-value="person.race" :options="races" @change-option="save()"></mc-select>
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('genero', i::__('Genero')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <mc-select v-model:default-value="person.gender" :options="genders" @change-option="save()"></mc-select>
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('orientacao-sexual', i::__('Orientação sexaul')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <mc-select v-model:default-value="person.sexualOrientation" :options="sexualOrientations" @change-option="save()"></mc-select>
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('orientacao-sexual', i::__('Pessoa com deficiência - PDC?')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <div class="field__group">
+                        <label v-for="deficiency in deficiencies" class="field__checkbox">
+                            <input type="checkbox" :checked="person.deficiencies[deficiency]" v-model="person.deficiencies[deficiency]" @checked="save()" @change="save()"/> <!-- :checked="" -->
+                            <slot>{{deficiency}}</slot>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('comunidade', i::__('Considera-se pertencente a algum outro povo ou comunidade tradicional?')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <mc-select v-model:default-value="person.community" :options="communities" @change-option="save()"></mc-select>
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('areas', i::__('Quais são as 3 principais áreas de atuação do representante no campo artístico e cultural?')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <mc-multiselect :model="person.area" title="<?php i::_e('Selecione as áreas de atuação') ?>" :items="areas" hide-filter hide-button @selected="save()" @removeed="save()">
+                        <template #default="{setFilter, popover}">
+                            <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
+                        </template>
+                    </mc-multiselect>
+                    <mc-tag-list editable :tags="person.area" classes="agent__background agent__color"></mc-tag-list>
+                </div>
+
+                <div class="field col-12">
+                    <label>
+                        <?= $this->text('funcoes', i::__('Quais as 3 principais funções/profissões do representante no campo artístico e cultural?')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <mc-multiselect :model="person.funcao" title="<?php i::_e('Selecione as áreas de atuação') ?>" :items="functions" hide-filter hide-button @selected="save()" @removeed="save()">
+                        <template #default="{setFilter, popover}">
+                            <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as funções') ?>">
+                        </template>
+                    </mc-multiselect>
+                    <mc-tag-list editable :tags="person.funcao" classes="agent__background agent__color"></mc-tag-list>
                 </div>
             </div>
 
