@@ -48,6 +48,8 @@ $this->import('
                     </div>
                 </div>
             </div>
+                <label><?php i::_e('Parecer') ?></label>
+                <input v-model="formData.data[section.id]" type="text">
             <label>
                 <?php i::_e('Resultado da seção:') ?> 
                 <span :class="sectionStatus(section.id) == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'">
