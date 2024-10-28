@@ -8,88 +8,78 @@ app.component('registration-form', {
         },
     },
     
-    setup(props, { slots }) {
+    setup (props, { slots }) {
         const hasSlot = name => !!slots[name];
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('registration-form')
         return { text, hasSlot }
     },
 
-
-
-    mounted() {
-        const registration = this.registration;
-        const self = this;
-        globalThis.addEventListener('afterFetch', ({detail}) => {
-            if(registration.singleUrl == detail.url) {
-                self.category = Vue.readonly(self.registration.category);
-                self.proponentType = Vue.readonly(self.registration.proponentType);
-                self.range = Vue.readonly(self.registration.range);
-            }
-        })
-    },
-
-    data() {
-        
-        const category = Vue.readonly(this.registration.category);
-        const proponentType = Vue.readonly(this.registration.proponentType);
-        const range = Vue.readonly(this.registration.range);
-
-        const hasCategory = this.registration.opportunity.registrationCategories?.length > 0;
-        const hasProponentType = this.registration.opportunity.registrationProponentTypes?.length > 0;
-        const hasRange = this.registration.opportunity.registrationRanges?.length > 0;
-
-        return {
-            category,
-            proponentType,
-            range,
-            hasCategory,
-            hasProponentType,
-            hasRange,
-        }
-    },
-
     computed: {
-        fields() {
+        fields () {
             const registration = this.registration;
 
-            let fields = [...$MAPAS.config.registrationForm.fields, ...$MAPAS.config.registrationForm.files];
+            const fields = [...$MAPAS.config.registrationForm.fields, ...$MAPAS.config.registrationForm.files];
 
-            fields = fields.sort((a,b) => a.displayOrder - b.displayOrder);
+            fields.sort((a,b) => a.displayOrder - b.displayOrder);
 
-            const result = [];
-
-            for(let field of fields) {
-                if(field.categories?.length && !field.categories.includes(registration.category)) {
-                    continue;
+            return fields.filter((field) => {
+                if (field.categories?.length && !field.categories.includes(registration.category)) {
+                    return false;
                 }
 
-                if(field.registrationRanges?.length && !field.registrationRanges.includes(registration.range)) {
-                    continue;
+                if (field.registrationRanges?.length && !field.registrationRanges.includes(registration.range)) {
+                    return false;
                 }
 
-                if(field.registrationProponentTypes?.length && !field.registrationProponentTypes.includes(registration.proponentType)) {
-                    continue;
+                if (field.registrationProponentTypes?.length && !field.registrationProponentTypes.includes(registration.proponentType)) {
+                    return false;
                 }
 
-                if(field.conditional) {
+                if (field.conditional) {
                     const fieldName = field.conditionalField;
                     const fieldValue = field.conditionalValue;
 
-                    if(fieldName) {
-                        if(registration[fieldName] != fieldValue) {
-                            continue
+                    if (fieldName) {
+                        if (registration[fieldName] != fieldValue) {
+                            return false;
                         }
                     }
                 }
 
-                result.push(field);
-            }
-
-            return result;
+                return true;
+            });
         },
 
-        sections() {
+        hasCategory () {
+            return Boolean(this.registration.opportunity.registrationCategories?.length)
+        },
+
+        hasProponentType () {
+            return Boolean(this.registration.opportunity.registrationProponentTypes?.length)
+        },
+
+        hasRange () {
+            return Boolean(this.registration.opportunity.registrationRanges?.length)
+        },
+
+        isValid () {
+            if (this.hasCategory && !this.registration.category) {
+                return false;
+            }
+
+            if (this.hasProponentType && !this.registration.proponentType) {
+                return false;
+            }
+
+            if (this.hasRange > 0 && !this.registration.range) {
+                return false;
+            }
+
+            return true;
+        },
+
+        sections () {
             const sectionSkel = {
                 id: '',
                 title: '',
@@ -97,10 +87,10 @@ app.component('registration-form', {
             }
             const sections = [];
 
-            let currentSection = {...sectionSkel, fields:[]};
-            for(let field of this.fields) {
-                if(field.fieldType == 'section') {
-                    currentSection = {...sectionSkel, fields:[]};
+            let currentSection = { ...sectionSkel, fields: [] };
+            for (let field of this.fields) {
+                if (field.fieldType == 'section') {
+                    currentSection = { ...sectionSkel, fields: [] };
                     sections.push(currentSection);
 
                     currentSection.id = field.fieldName;
@@ -110,7 +100,7 @@ app.component('registration-form', {
                 }
 
                 // se o primeiro campo do formulário não é uma seção será "vazia"
-                if(sections.length === 0) {
+                if (sections.length === 0) {
                     sections.push(currentSection);
                 }
 
@@ -118,27 +108,6 @@ app.component('registration-form', {
             }
 
             return sections;
-        }
-    },
-    
-    
-    methods: {
-        isValid() {
-            let valid = true;
-
-            if(this.registration.opportunity.registrationCategories?.length > 0 && !this.category) {
-                valid = false;
-            }
-
-            if(this.registration.opportunity.registrationProponentTypes?.length > 0 && !this.proponentType) {
-                valid = false;
-            }
-
-            if(this.registration.opportunity.registrationRanges?.length > 0 && !this.range) {
-                valid = false;
-            }
-
-            return valid;
         }
     },
 });
