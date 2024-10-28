@@ -176,10 +176,12 @@ app.component('qualification-evaluation-form', {
         },
 
         initializedCriteriaData() {
+            console.log(this.evaluationData);
             this.sections.forEach(section => {
                 section.criteria.forEach(crit => {
                     if(!this.formData.data[crit.id]) {
                         this.formData.data[crit.id] = this.evaluationData[crit.id] ?? [];
+                        this.formData.data[crit.id + '_reason'] = this.evaluationData[crit.id + '_reason'] ?? '';
                     }
                 });
             });
