@@ -404,6 +404,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $committee;
     }
 
+    /** 
+     * Redistribui as inscrições entre os avaliadores
+     * 
+     */
+    public function redistributeCommitteeRegistrations() {
+        $this->evaluationMethod->redistributeRegistrations($this->owner);
+    }
+
     protected function canUserEvaluateOnTime($user){
         if($user->is('guest')){
             return false;

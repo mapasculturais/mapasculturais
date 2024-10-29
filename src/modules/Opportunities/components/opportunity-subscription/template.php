@@ -23,7 +23,6 @@ $this->import('
 			<div class="content__description" v-html="infoRegistration"></div>
 		</div>
 	</div>
-
 	<div v-if="isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
