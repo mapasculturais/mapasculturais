@@ -98,7 +98,7 @@ $this->import('
     <div class="col-12">
         <mc-tabs v-model:draggable="stepsWithSlugs">
             <template #default>
-                <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="`${index + 1}. ${step.name ?? ''}`" :key="step.id" :slug="slug">
+                <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="`${index + 1}. ${step.name ?? ''}`" :key="step.id" :slug="slug" cache>
                     <div class="form-builder__step-config">
                         <entity-field :entity="step" prop="name" :autosave="1000" hide-required></entity-field>
 
