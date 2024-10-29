@@ -71,7 +71,10 @@ app.component('qualification-evaluation-form', {
     },
 
     methods: {
-        updateSectionStatus(sectionId) {
+        updateSectionStatus(sectionId, criteriaId, event) {
+            let value = event.target.value;
+            this.formData.data[criteriaId] = [value];
+            
             const section = this.sections.find(sec => sec.id === sectionId);
 
             if(section) {
@@ -84,6 +87,16 @@ app.component('qualification-evaluation-form', {
                 };
             }
             this.consolidated();
+        },
+
+        updateOption(critId, option) {
+            const selectedOptions = this.formData.data[critId] || [];
+    
+            if (selectedOptions.includes(option)) {
+                this.formData.data[critId] = selectedOptions.filter(opt => opt !== option);
+            } else {
+                this.formData.data[critId].push(option);
+            }
         },
 
         showSectionAndCriterion(type) {
@@ -188,35 +201,6 @@ app.component('qualification-evaluation-form', {
             });
 
             this.formData.data['obs'] = this.evaluationData['obs'] ?? '';
-        },
-        
-        combinedOptions(crit) {
-            let options = [];
-           
-            options.push(
-                {label: this.text('Habilitado'), value: 'Habilitado'},
-                {label: this.text('Inabilitado'), value: 'Inabilitado'},
-            );
-            
-            if (crit.notApplyOption === 'true') {
-                options.push(
-                    {label: this.text('Não se aplica'), value: 'Não se aplica'}
-                );
-            }
-            
-            if (crit.otherReasonsOption === 'true') {
-                options.push(
-                    {label: this.text('Outras'), value: 'Outras'}
-                );
-            }
-
-            crit.options.forEach(option => {
-                options.push(
-                    {label: option, value: option}
-                );
-            });
-
-            return options;
         },
     },
 });
