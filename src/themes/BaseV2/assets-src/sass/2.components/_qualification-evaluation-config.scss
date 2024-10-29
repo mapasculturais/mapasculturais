@@ -4,6 +4,7 @@
     &__card {
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-300);
+        margin-bottom: size(24);
     }
 
     &__header {
