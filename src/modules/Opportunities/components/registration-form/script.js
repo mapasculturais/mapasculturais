@@ -108,6 +108,22 @@ app.component('registration-form', {
             }
 
             return sections;
-        }
+        },
+
+        steps () {
+            const steps = this.registration.opportunity.registrationSteps ?? [];
+            
+            return steps.map((step) => {
+                const fields = this.fields.filter((field) => {
+                    return field.step?.id === step._id;
+                });
+
+                return {
+                    id: step._id,
+                    name: step.name || fields[0]?.step.name || '',
+                    fields,
+                };
+            });
+        },
     },
 });
