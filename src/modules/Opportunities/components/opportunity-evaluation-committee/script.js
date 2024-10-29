@@ -15,12 +15,23 @@ app.component('opportunity-evaluation-committee', {
 
     computed: {
         query() {
-            return {
-                '@opportunity': this.entity.id,
-                '@limit': 50,
-                '@page': 1
+            let query = {
+                '@select': 'id,name,files.avatar,user',
+                '@order': 'id ASC',
+                '@limit': '25',
+                '@page': '1'
             };
+
+            if (Object.keys(this.infosReviewers).length > 0) {
+                const reviewersId = this.infosReviewers.map((reviewer) => reviewer.agent.id).join(',');
+                query['id'] = `!IN(${reviewersId})`;
+            } else {
+                delete query['id'];
+            }
+
+            return query;
         },
+
         select() {
             return "id,owner,agent,agentUserId";
         },
@@ -114,7 +125,7 @@ app.component('opportunity-evaluation-committee', {
         },
 
         disableOrEnableReviewer(infoReviewer) {
-            let enableOrDisabled = infoReviewer.status === 8 ? 'enabled' : 'disabled';;
+            let enableOrDisabled = infoReviewer.status === 8 ? 'enabled' : 'disabled';
             const api = new API();
             let url;
             let relationData = {
