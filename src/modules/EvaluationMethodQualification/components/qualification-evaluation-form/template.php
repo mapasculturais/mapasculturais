@@ -5,9 +5,7 @@ use MapasCulturais\i;
 $this->import('
     evaluation-actions
     mc-icon
-    mc-multiselect
     mc-popover
-    mc-tag-list
 ')
 ?>
 <div class="qualification-evaluation-form">
@@ -38,20 +36,35 @@ $this->import('
                         </mc-popover>
                     </div>
                     <div>
-                        <template v-if="isEditable">
-                            <mc-multiselect :model="formData.data[crit.id]" :items="combinedOptions(crit)" #default="{popover, setFilter}" @selected="updateSectionStatus(section.id)">
-                                <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
-                                    <?php i::_e("Escolher opções") ?>
-                                    <mc-icon name="add"></mc-icon>
-                                </button>
-                            </mc-multiselect>
+                        <div class="grid-12">
+                            <label class="col-3">
+                                <input type="radio" :name="'option-' + crit.id" value="Habilitado" :checked="formData.data[crit.id]?.includes('Habilitado')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                <?php i::_e("Habilitado") ?>
+                            </label>
+                            <label class="col-3">
+                                <input type="radio" :name="'option-' + crit.id" value="Inabilitado" :checked="formData.data[crit.id]?.includes('Inabilitado')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                <?php i::_e("Inabilitado") ?>
+                            </label>
+                            <label v-if="crit.notApplyOption === 'true'" class="col-3">
+                                <input type="radio" :name="'option-' + crit.id" value="Não se aplica" :checked="formData.data[crit.id]?.includes('Não se aplica')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                <?php i::_e("Não se aplica") ?>
+                            </label>
+                            <label v-if="crit.otherReasonsOption === 'true'" class="col-3">
+                                <input type="radio" :name="'option-' + crit.id" value="Outras" :checked="formData.data[crit.id]?.includes('Outras')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                <?php i::_e("Outras") ?>
+                            </label>
 
-                            <mc-tag-list :tags="formData.data[crit.id]" classes="opportunity__background" @remove="updateSectionStatus(section.id, crit.id, $event)" editable></mc-tag-list>
-                        </template>
+                            <div v-if="formData.data[crit.id]?.includes('Inabilitado')" class="col-12 grid-12">
+                                <h4 class="col-12"><?php i::_e("Motivos para inabilitação") ?></h4>
 
-                        <mc-tag-list v-if="!isEditable" :tags="formData.data[crit.id]" classes="opportunity__background"></mc-tag-list>
+                                <label v-for="option in crit.options" :key="option" class="col">
+                                    <input type="checkbox" :value="option" :checked="formData.data[crit.id]?.includes(option)" :disabled="!isEditable" @change="updateOption(crit.id, option)" />
+                                    {{ option }}
+                                </label>
+                            </div>
+                        </div>
 
-                    <textarea v-if="formData.data[crit.id].length > 0 && formData.data[crit.id].includes('Outras')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
+                        <textarea v-if="formData.data[crit.id].length > 0 && formData.data[crit.id].includes('Outras')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
                     </div>
                 </div>
             </div>
