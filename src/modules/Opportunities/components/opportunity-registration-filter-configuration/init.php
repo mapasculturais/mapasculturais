@@ -5,7 +5,9 @@
 */
 
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\Opportunity;
 
+/** @var Opportunity $entity */
 $entity = $this->controller->requestedEntity;
 $first_phase = $entity->firstPhase;
 
@@ -38,4 +40,7 @@ foreach ($first_phase->registrationFieldConfigurations as $field) {
     }
 }
 
+$this->jsObject['config']['opportunityfetchFieldsuration'] = [
+    'selectFields' => $entity->getFields(select:true)
+];
 $this->jsObject['config']['fetchSelectFields'] = $_fields;

@@ -14,30 +14,35 @@ use MapasCulturais\i;
     <div>
         <div class="opportunity-proponent-types__fields">
             <div class="opportunity-proponent-types__field" v-for="optionValue in description.optionsOrder" :key="optionValue">
-                <input 
-                    :checked="value?.includes(optionValue)" 
-                    type="checkbox" 
-                    :value="optionValue" 
-                    @change="modifyCheckbox($event)"
-                > 
-                {{ description.options[optionValue] }}
-
-                <div class="opportunity-proponent-types__field field__collective" v-if="showColetivoBinding && optionValue === 'Coletivo'">
+                <label>
                     <input 
+                        :checked="value?.includes(optionValue)" 
                         type="checkbox" 
-                        :checked="proponentAgentRelation['Coletivo']" 
-                        @change="toggleAgentRelation($event, 'Coletivo')"
+                        :value="optionValue" 
+                        @change="modifyCheckbox($event)"
                     > 
-                    <?= i::__("Habilitar a vinculação de agente coletivo")?>
+                    {{ description.options[optionValue] }}
+                </label>
+                <div class="opportunity-proponent-types__field field__collective" v-if="showColetivoBinding && optionValue === 'Coletivo'">
+                    <label>
+                        <input 
+                            type="checkbox" 
+                            :checked="proponentAgentRelation['Coletivo']" 
+                            @change="toggleAgentRelation($event, 'Coletivo')"
+                        > 
+                        <?= i::__("Habilitar a vinculação de agente coletivo")?>
+                    </label>
                 </div>
 
                 <div class="opportunity-proponent-types__field field__legal" v-if="showJuridicaBinding && optionValue === 'Pessoa Jurídica'">
-                    <input 
-                        type="checkbox" 
-                        :checked="proponentAgentRelation['Pessoa Jurídica']" 
-                        @change="toggleAgentRelation($event, 'Pessoa Jurídica')"
-                    > 
-                    <?= i::__("Habilitar a vinculação de agente coletivo")?>
+                    <label>
+                        <input 
+                            type="checkbox" 
+                            :checked="proponentAgentRelation['Pessoa Jurídica']" 
+                            @change="toggleAgentRelation($event, 'Pessoa Jurídica')"
+                        > 
+                        <?= i::__("Habilitar a vinculação de agente coletivo")?>
+                    </label>
                 </div>
             </div>
         </div>

@@ -78,14 +78,14 @@ $this->import('
                 <div class="opportunity-committee-groups__multiple-evaluators">
                     <div class="field">
                         <mc-toggle
-                            :modelValue="entity?.registrationFilterConfig[groupName] && Object.keys(entity.registrationFilterConfig[groupName]).length > 0" 
+                            :modelValue="entity?.fetchFields[groupName] && Object.keys(entity.fetchFields[groupName]).length > 0" 
                             @update:modelValue="enableRegisterFilterConf($event, groupName)"
                             label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
                         />
                         <opportunity-registration-filter-configuration 
-                            v-if="entity?.registrationFilterConfig[groupName]" 
+                            v-if="entity?.fetchFields[groupName]" 
                             :entity="entity"
-                            v-model:default-value="entity.registrationFilterConfig[groupName]"
+                            v-model:default-value="entity.fetchFields[groupName]"
                             :excludeFields="globalExcludeFields"
                             @updateExcludeFields="updateExcludedFields('global', $event)"
                             is-global
@@ -96,12 +96,12 @@ $this->import('
 
                     <div class="field">
                         <mc-toggle
-                            :modelValue="localSubmissionEvaluatorCount[groupName] > 0" 
+                            :modelValue="localValuersPerRegistration[groupName] > 0" 
                             @update:modelValue="changeMultipleEvaluators($event, groupName)"
                             label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
                         />
-                        <div v-if="localSubmissionEvaluatorCount[groupName]" class="field">
-                            <input v-model="localSubmissionEvaluatorCount[groupName]" type="number" @change="autoSave()"/>
+                        <div v-if="localValuersPerRegistration[groupName]" class="field">
+                            <input v-model="localValuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
                         </div>
                     </div>
     

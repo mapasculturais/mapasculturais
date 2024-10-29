@@ -2355,4 +2355,15 @@ $$
         }
     },
 
+    "Renomeia a comissão de avaliação" => function () use($conn) {
+        $name = i::__('Comissão de avaliação');
+        $conn->executeQuery("
+            UPDATE agent_relation 
+            SET type = :type 
+            WHERE 
+                type = 'group-admin' AND 
+                object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'
+        ", ['type' => $name]);
+    }
+
 ] + $updates ;   

@@ -42,6 +42,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
                 "sent" => 0
             ]
         ];
+        parent::__construct();
     }
     
     
@@ -55,6 +56,9 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         foreach($evaluations as $eval){
             $eval->delete($flush);
         }
+
+        $this->owner->redistributeCommitteeRegistrations();
+
         $app->enableAccessControl();
 
         $this->owner->opportunity->enqueueToPCacheRecreation([$this->agent->user]);
@@ -84,7 +88,6 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
         $app->disableAccessControl();
         $this->status = self::STATUS_DISABLED;
-        
         $this->save($flush);
         $app->enableAccessControl();
 
@@ -189,4 +192,17 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         return $this->owner->canUser('manageEvaluationCommittee', $user);
     }
+
+
+    /** @ORM\PostPersist */
+    public function postPersist($args = null){ 
+        parent::postPersist($args); 
+        $this->owner->redistributeCommitteeRegistrations();
+    }
+
+    public function postUpdate($args = null){ 
+        parent::postUpdate($args); 
+        $this->owner->redistributeCommitteeRegistrations();
+    }
+
 }
