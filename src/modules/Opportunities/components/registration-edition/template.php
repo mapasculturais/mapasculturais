@@ -33,7 +33,7 @@ $this->import('
             
             <section class="section">
                 <h2 class="section__title" id="main-info">
-                    <?= i::__('Informações básicas') ?>
+                    {{ stepIndex + 1 }}. {{ currentStep?.name || text('Informações básicas') }}
                 </h2>
                 <registration-autosave-notification :registration="entity"></registration-autosave-notification>
 
@@ -99,7 +99,7 @@ $this->import('
         </main>
 
         <aside>
-            <registration-actions :registration="entity"></registration-actions>
+            <registration-actions :registration="entity" :steps="steps" :step-index="stepIndex" @next-step="stepIndex++" @previous-step="stepIndex--"></registration-actions>
         </aside>
     </mc-container>
 </div>
