@@ -53,7 +53,17 @@ $this->import('
         <!-- <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button> -->
     </div>
     <div class="registration-actions__secondary">
-        <button @click="save();" class="button button--large button--primary-outline">
+        <button @click="nextStep()" class="button button--large button--secondary button--icon" v-if="stepIndex < steps.length - 1">
+            <?= i::__("Próxima etapa") ?>
+            <mc-icon name="arrow-right"></mc-icon>
+        </button>
+
+        <button @click="previousStep()" class="button button--large button--secondary-outline button--icon" v-if="stepIndex > 0">
+            <mc-icon name="arrow-left"></mc-icon>
+            <?= i::__("Etapa anterior") ?>
+        </button>
+
+        <button @click="save()" class="button button--large button--primary-outline">
             <?= i::__("Salvar") ?>
         </button>
  

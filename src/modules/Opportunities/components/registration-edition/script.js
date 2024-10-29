@@ -9,7 +9,23 @@ app.component('registration-edition', {
     },
 
     setup() {
-        const text = Utils.getTexts('entity');
+        const text = Utils.getTexts('registration-edition');
         return { text }
     },
-})
+
+    data () {
+        return {
+            stepIndex: 0,
+        }
+    },
+
+    computed: {
+        currentStep () {
+            return this.steps[this.stepIndex];
+        },
+
+        steps () {
+            return this.entity.opportunity.registrationSteps ?? [];
+        },
+    },
+});

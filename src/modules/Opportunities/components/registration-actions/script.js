@@ -1,10 +1,22 @@
 app.component('registration-actions', {
     template: $TEMPLATES['registration-actions'],
 
+    emits: ['nextStep', 'previousStep'],
+
     props: {
         registration: {
             type: Entity,
             required: true
+        },
+
+        steps: {
+            type: Array,
+            required: true
+        },
+
+        stepIndex: {
+            type: Number,
+            default: 0
         },
 
         editableFields: {
@@ -49,6 +61,12 @@ app.component('registration-actions', {
             isValidated: false,
             descriptions: $DESCRIPTIONS.registration
         }
+    },
+
+    computed: {
+        step () {
+            return this.steps[this.stepIndex];
+        },
     },
     
     methods: {
@@ -98,6 +116,7 @@ app.component('registration-actions', {
             return this.text('Campo não identificado');
 
         },
+
         async send() {
             const route = this.editableFields ? 'sendEditableFields' : 'send';
             const data = {id: this.registration.id};
@@ -119,6 +138,7 @@ app.component('registration-actions', {
                 console.error(error);
             }
         },
+
         async validate() {
             const messages = useMessages();
             try {
@@ -137,6 +157,7 @@ app.component('registration-actions', {
                 console.error(error);
             }
         },
+
         async save() {
             const iframe = document.getElementById('registration-form');
             const registration = this.registration;
@@ -154,6 +175,7 @@ app.component('registration-actions', {
                 return registration.save(300, false);
             }
         },
+
         exit() {
             this.registration.save().then(() => {
                 if (window.history.length > 2) {
@@ -162,6 +184,14 @@ app.component('registration-actions', {
                     window.location.href = Utils.createUrl('panel', 'index');
                 }
             });
+        },
+
+        previousStep() {
+            this.$emit('previousStep', this.stepIndex - 1);
+        },
+
+        nextStep() {
+            this.$emit('nextStep', this.stepIndex + 1);
         },
     },
 });
