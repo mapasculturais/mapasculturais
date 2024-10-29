@@ -47,6 +47,8 @@
         display: flex;
         gap: size(12);
         align-items: center;
+        max-width: 100%;
+        width: size(130);
     }
 
     &__criterions {
