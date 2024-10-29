@@ -21,6 +21,7 @@ app.component('qualification-evaluation-config', {
             editingSections: [],
             autoSaveTimeOut:  null,
             optionsText: '',
+            options: null,
         }
     },
 
@@ -167,21 +168,28 @@ app.component('qualification-evaluation-config', {
             return hasError;
         },
 
-        titleModal(name) {
-            return this.text('criteriaConfiguration') + ' ' + name;
-        },
-        
-        updateOptionsArray(criteria, value) {
-            const optionsArray = value.split('\n').map(option => option.trim()).filter(option => option);
-            criteria.options = optionsArray;
+        updateOptions(criteria) {
+            if (!criteria.options) {
+                criteria.options = [];
+            }
+
+            criteria.options.push(this.options);
+            this.clear();
             this.save();
         },
 
-        optionsToString(options) {
-            if (Array.isArray(options)) {
-                return options.join('\n');
+        clear () {
+            this.options = null;
+        },
+
+        enabledButton() {
+            let value = this.options;
+            
+            if(value && value.trim()) {
+                return true;
             }
-            return options || '';
+
+            return false;
         },
 
         notApplyChange(criteria) {
