@@ -27,31 +27,33 @@ $this->import('
 
     <mc-tabs>
         <template #after-tablist>
-            <button v-if="hasTwoOrMoreGroups && entity.useCommitteeGroups" class="button button--icon button--primary button--sm" @click="addGroup(minervaGroup, true);">
-                <mc-icon name="add"></mc-icon>
-                <?php i::_e('Voto de minerva') ?>
-            </button>
-            
-            <mc-popover openside="down-right">
-                <template #button="popover">
-                    <button @click="popover.toggle()" class="button button--primary-outline button--sm button--icon">
-                        <mc-icon name="add"></mc-icon>
-                        <?php i::_e("Adicionar comissão") ?>
-                    </button>
-                </template>
-
-                <template #default="{close}">
-                    <form @submit="addGroup(newGroupName); $event.preventDefault(); close();">
-                        <div class="grid-12">
-                            <div class="related-input col-12">
-                                <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome da comissão') ?>" maxlength="64" />
+            <div class="opportunity-committee-groups__actions">
+                <button v-if="hasTwoOrMoreGroups && entity.useCommitteeGroups" class="button button--icon button--primary button--sm" @click="addGroup(minervaGroup, true);">
+                    <mc-icon name="add"></mc-icon>
+                    <?php i::_e('Voto de minerva') ?>
+                </button>
+                
+                <mc-popover openside="down-right">
+                    <template #button="popover">
+                        <button @click="popover.toggle()" class="button button--primary-outline button--sm button--icon">
+                            <mc-icon name="add"></mc-icon>
+                            <?php i::_e("Adicionar comissão") ?>
+                        </button>
+                    </template>
+                    
+                    <template #default="{close}">
+                        <form @submit="addGroup(newGroupName); $event.preventDefault(); close();">
+                            <div class="grid-12">
+                                <div class="related-input col-12">
+                                    <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome da comissão') ?>" maxlength="64" />
+                                </div>
+                                <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
-                            <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
-                            <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
-                        </div>
-                    </form>
-                </template>
-            </mc-popover>
+                        </form>
+                    </template>
+                </mc-popover>
+            </div>
         </template>
 
         <mc-tab v-for="(relations, groupName) in groups" :key="groupName" :label="groupName" :slug="groupName">
@@ -60,7 +62,7 @@ $this->import('
                     <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
 
                     <div class="opportunity-committee-groups__edit-group--field">
-                        <input id="newGroupName" v-model="relations.newGroupName" class="input" type="text" @input="updateGroupName(groupName, relations.newGroupName)" @blur="saveGroupName(groupName)" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
+                        <input id="newGroupName" v-model="groupName" class="input" type="text" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
                         <mc-confirm-button @confirm="removeGroup(groupName)">
                             <template #button="modal">
                                 <a class="button button--delete button--icon button--sm" @click="modal.open()">
@@ -78,6 +80,15 @@ $this->import('
                 <div class="opportunity-committee-groups__multiple-evaluators">
                     <div class="field">
                         <mc-toggle
+                            :modelValue="localValuersPerRegistration[groupName] != null" 
+                            @update:modelValue="changeMultipleEvaluators($event, groupName)"
+                            label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
+                        />
+                        <input v-if="localValuersPerRegistration[groupName] != null" v-model="localValuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
+                    </div>
+    
+                    <div class="field">
+                        <mc-toggle
                             :modelValue="entity?.fetchFields[groupName] && Object.keys(entity.fetchFields[groupName]).length > 0" 
                             @update:modelValue="enableRegisterFilterConf($event, groupName)"
                             label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
@@ -92,19 +103,6 @@ $this->import('
                         >
                         </opportunity-registration-filter-configuration>
                     </div>
-
-
-                    <div class="field">
-                        <mc-toggle
-                            :modelValue="localValuersPerRegistration[groupName] > 0" 
-                            @update:modelValue="changeMultipleEvaluators($event, groupName)"
-                            label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
-                        />
-                        <div v-if="localValuersPerRegistration[groupName]" class="field">
-                            <input v-model="localValuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
-                        </div>
-                    </div>
-    
                 </div>
                 
                 <div class="opportunity-committee-groups__evaluators">
