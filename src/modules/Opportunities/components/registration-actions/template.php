@@ -33,16 +33,17 @@ $this->import('
             </div>
         </div>
 
-        <mc-confirm-button v-if="isValidated" @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
+        <mc-confirm-button v-if="canSubmit" @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
             <template #button="modal">
-                <button @click="modal.open()" class="button button--large button--xbg button--primary">
-                    <?= i::__("Enviar") ?>
+                <button @click="modal.open()" class="button button--large button--xbg button--primary button--icon">
+                    <?= i::__("Enviar formulário") ?>
+                    <mc-icon name="send"></mc-icon>
                 </button>
             </template> 
             <template #message="message">
                 <?php i::_e('Ao enviar sua inscrição você já estará participando da oportunidade.') ?>
             </template>
-        </mc-confirm-button> 
+        </mc-confirm-button>
 
         <div class="registration-actions__validation" v-if="!isValidated">
             <mc-alert type="warning">
@@ -52,17 +53,20 @@ $this->import('
         </div>
         <!-- <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button> -->
     </div>
-    <div class="registration-actions__secondary">
-        <button @click="nextStep()" class="button button--large button--secondary button--icon" v-if="stepIndex < steps.length - 1">
+
+    <div class="registration-actions__steps">
+        <button @click="nextStep()" class="button button--bg button--large button--secondary button--icon" v-if="stepIndex < steps.length - 1">
             <?= i::__("Próxima etapa") ?>
             <mc-icon name="arrow-right"></mc-icon>
         </button>
 
-        <button @click="previousStep()" class="button button--large button--secondary-outline button--icon" v-if="stepIndex > 0">
+        <button @click="previousStep()" class="button button--md button--large button--secondary-outline button--icon" v-if="stepIndex > 0">
             <mc-icon name="arrow-left"></mc-icon>
             <?= i::__("Etapa anterior") ?>
         </button>
+    </div>
 
+    <div class="registration-actions__secondary">
         <button @click="save()" class="button button--large button--primary-outline">
             <?= i::__("Salvar") ?>
         </button>

@@ -33,7 +33,7 @@ $this->import('
             
             <section class="section">
                 <h2 class="section__title" id="main-info">
-                    {{ stepIndex + 1 }}. {{ currentStep?.name || text('Informações básicas') }}
+                    {{ stepIndex + 1 }}. {{ stepName || text('Informações básicas') }}
                 </h2>
                 <registration-autosave-notification :registration="entity"></registration-autosave-notification>
 
@@ -94,12 +94,12 @@ $this->import('
             </section>
 
             <section class="section" v-if="!entity.opportunity.proponentAgentRelation?.[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation?.[entity.proponentType])">
-                <registration-form :registration="entity"></registration-form>
+                <registration-form :registration="entity" :step="step"></registration-form>
             </section>
         </main>
 
         <aside>
-            <registration-actions :registration="entity" :steps="steps" :step-index="stepIndex" @next-step="stepIndex++" @previous-step="stepIndex--"></registration-actions>
+            <registration-actions :registration="entity" :steps="steps" :step-index="stepIndex" @previous-step="previousStep" @next-step="nextStep"></registration-actions>
         </aside>
     </mc-container>
 </div>
