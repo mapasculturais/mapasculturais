@@ -173,7 +173,6 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
 
     public function setOwnerId($id){
-//        $this->owner = $this->repo()->find('opportunity', $id);
         $this->owner = App::i()->repo('Opportunity')->find($id);
     }
 

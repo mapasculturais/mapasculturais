@@ -605,20 +605,20 @@ class Module extends \MapasCulturais\Module{
         $app->hook("entity(EvaluationMethodConfiguration).renameAgentRelationGroup:before", function($old_name, $new_name, $relations) {
             /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
 
-            if($this->submissionEvaluatorCount->{$old_name}) {
-                $evaluator_count = $this->submissionEvaluatorCount;
+            if($this->valuersPerRegistration->{$old_name}) {
+                $evaluator_count = $this->valuersPerRegistration;
                 $evaluator_count->{$new_name} = $evaluator_count->{$old_name};
                 unset($evaluator_count->{$old_name});
 
-                $this->submissionEvaluatorCount = $evaluator_count;
+                $this->valuersPerRegistration = $evaluator_count;
             }
 
-            if($this->registrationFilterConfig->{$old_name}) {
-                $registration_filter_config = $this->registrationFilterConfig;
+            if(isset($this->fetchFields->{$old_name})) {
+                $registration_filter_config = $this->fetchFields;
                 $registration_filter_config->{$new_name} = $registration_filter_config->{$old_name};
                 unset($registration_filter_config->{$old_name});
 
-                $this->registrationFilterConfig = $registration_filter_config;
+                $this->fetchFields = $registration_filter_config;
             }
         });
 
@@ -832,7 +832,7 @@ class Module extends \MapasCulturais\Module{
             'type' => 'json',
         ]);
 
-        $this->registerEvauationMethodConfigurationMetadata('submissionEvaluatorCount', [
+        $this->registerEvauationMethodConfigurationMetadata('valuersPerRegistration', [
             'label' => i::__('Quantidade de avaliadores por inscrição'),
             'type' => 'json',
         ]);
@@ -865,7 +865,7 @@ class Module extends \MapasCulturais\Module{
             'description' => i::__('Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou Pessoa Jurídica'),
         ]);
 
-        $this->registerEvauationMethodConfigurationMetadata('registrationFilterConfig', [
+        $this->registerEvauationMethodConfigurationMetadata('fetchFields', [
             'label' => i::__('Configuração filtro de inscrição para avaliadores/comissão'),
             'serialize' => function ($val) {
                 return json_encode($val);

@@ -108,7 +108,9 @@ app.component('opportunity-subscription' , {
                 return true;
             }
             
-            if (this.registrationStatus(this.dateStart, this.dateEnd) == 'open') {
+            const regStatus = this.registrationStatus(this.dateStart, this.dateEnd);
+            // continuousFlow
+            if (regStatus == 'open' || regStatus == 'continuousFlow') {
                 return true;
             } else {
                 return false;
