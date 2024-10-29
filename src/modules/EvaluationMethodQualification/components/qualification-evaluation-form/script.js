@@ -176,7 +176,6 @@ app.component('qualification-evaluation-form', {
         },
 
         initializedCriteriaData() {
-            console.log(this.evaluationData);
             this.sections.forEach(section => {
                 section.criteria.forEach(crit => {
                     if(!this.formData.data[crit.id]) {
@@ -184,6 +183,8 @@ app.component('qualification-evaluation-form', {
                         this.formData.data[crit.id + '_reason'] = this.evaluationData[crit.id + '_reason'] ?? '';
                     }
                 });
+
+                this.formData.data[section.id] = this.evaluationData[section.id] ?? '';
             });
 
             this.formData.data['obs'] = this.evaluationData['obs'] ?? '';
