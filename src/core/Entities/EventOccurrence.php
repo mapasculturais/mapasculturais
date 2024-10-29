@@ -405,6 +405,7 @@ class EventOccurrence extends \MapasCulturais\Entity
                         $rec->day = $this->getStartsOn() === null ? 0 : $this->getStartsOn()->format('j');
                         $rec->week = null;
                         $rec->month = null;
+                        $rec->save();
                     }
 
                     break;

@@ -123,7 +123,7 @@ $today = new DateTime();
 
         <mc-tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
             <div class="registration__content">
-                <mc-card>
+                <mc-card v-if="entity.agentsData.owner">
                     <template #content>
                         <div class="registered-info">
                             <span class="info"> 
@@ -181,7 +181,6 @@ $today = new DateTime();
                             <span class="info" v-if="!entity.projectName">
                                 <?= i::__('Nome do projeto não informado') ?>
                             </div>
-                        </div>
                     </template>
                 </mc-card>
 
@@ -256,7 +255,7 @@ $today = new DateTime();
 
                 <?php $phase = $entity;
                 while($phase): $opportunity = $phase->opportunity;?>
-                    <?php if($opportunity->isDataCollection && $today >= $opportunity->registrationFrom):?>
+                    <?php if($opportunity->isDataCollection && $phase->canUser('view')):?>
                         <?php if($opportunity->isFirstPhase):?>
                             <h2><?= i::__('Inscrição') ?></h2>
                         <?php else: ?>
@@ -273,7 +272,9 @@ $today = new DateTime();
                                 </div>
                             </div>
                         <?php else: ?>
+                            <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
                             <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>
+                            <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
                         <?php endif ?>
                     <?php endif ?>
                     <?php $phase = $phase->nextPhase; ?>

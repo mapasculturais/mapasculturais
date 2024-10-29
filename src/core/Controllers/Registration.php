@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\Entities;
 use MapasCulturais\Definitions;
+use MapasCulturais\Entities\Registration as EntityRegistration;
 use MapasCulturais\Entities\OpportunityMeta;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\RegistrationSpaceRelation as RegistrationSpaceRelationEntity;
@@ -402,7 +403,14 @@ class Registration extends EntityController {
 
         $status = isset($this->postData['status']) ? $this->postData['status'] : null;
 
-        $method_name = 'setStatusTo' . ucfirst($status);
+        if($registration->status === EntityRegistration::STATUS_DRAFT && $status != EntityRegistration::STATUS_SENT) {
+            $this->errorJson('First status change should be pending');
+        }
+
+        $status_dict = $registration->getStatuses();
+        $status_dict[1] = 'Sent';
+
+        $method_name = 'setStatusTo' . ucfirst($status_dict[$status]);
 
         if(!method_exists($registration, $method_name)){
             if($this->isAjax()){
@@ -411,8 +419,8 @@ class Registration extends EntityController {
                 $app->halt(200, 'Invalid status name');
             }
         }
-
-        $registration->$method_name();
+        
+        $registration->$method_name($status);
 
         $app->applyHookBoundTo($this, 'registration.setStatusTo:after', [$registration]);
 

@@ -54,6 +54,7 @@ class Registration extends \MapasCulturais\Entity
 
 
     protected $__enableMagicGetterHook = true;
+    protected $__enableMagicSetterHook = true;
 
     /**
      * @var integer
@@ -716,11 +717,6 @@ class Registration extends \MapasCulturais\Entity
         $exceptions = $this->getValuersExceptionsList();
         return $exceptions->exclude;
     }
-    
-
-    // function setStatus($status){
-    //     // do nothing
-    // }
 
     function _setStatusTo($status, $flush = true){
         if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
@@ -1219,7 +1215,7 @@ class Registration extends \MapasCulturais\Entity
             $errorsResult['projectName'] = [i::__('O nome do projeto é obrigatório.')];
         }
 
-        $app->applyHookBoundTo($this, "entity($this->getHookClassPath()).sendValidationErrors", [&$errorsResult]);
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.sendValidationErrors", [&$errorsResult]);
 
         return $errorsResult;
     }
@@ -1329,13 +1325,8 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
      
-        if($this->canUser('@control', $user)){          
-            if((new \DateTime()) >= $this->opportunity->registrationFrom ){
-              return true;
-            }
-            
-            return false;
-            
+        if($this->canUser('@control', $user)){                      
+            return true;
         }
 
         if($this->opportunity->canUser('@control', $user)){
