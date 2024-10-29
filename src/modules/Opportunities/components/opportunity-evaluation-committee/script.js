@@ -145,26 +145,27 @@ app.component('opportunity-evaluation-committee', {
         sendDefinition(field, userId, event = null, type) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
+            
             const fetchFieldMap = {
+                fetch: 'fetch',
                 categories: 'fetchCategories',
                 ranges: 'fetchRanges',
                 proponentTypes: 'fetchProponentTypes'
             };
               
             let fetchField = fetchFieldMap[type];
-            
+
             if (event && event === 'sem avaliações' && this.entity[fetchField][userId].length > 1) {
                 this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item === 'sem avaliações');
             } else if (event && event !== 'sem avaliações' && this.entity[fetchField][userId].includes('sem avaliações')) {
                 this.entity[fetchField][userId] = this.entity[fetchField][userId].filter((item) => item !== 'sem avaliações');
             }
     
-            let testData = {
-                fetch: this.entity.fetch,
+            let args = {
                 [fetchField]: this.entity[fetchField]
             };
     
-            api.POST(url, testData).then(res => res.json()).then(data => {
+            api.POST(url, args).then(res => res.json()).then(data => {
                 const successMessages = {
                     addDistribution: 'addDistribution',
                     addCategory: 'addCategory',

@@ -23,4 +23,7 @@ return [
     'agente' => i::__('Responsável pela inscrição'), 
     'anexos' => i::__('Anexos'), 
     'status' => i::__('Status'), 
+    'status alterado com sucesso' => i::__('Status alterado com sucesso'), 
+    'First status change should be pending' => i::__('A inscrição está atualmente como rascunho. Para alterar o status, por favor, defina-o como Pendente primeiro'), 
+    'Invalid status name' => i::__('Não foi possível alterar o status, fale com admnistrador'), 
 ];

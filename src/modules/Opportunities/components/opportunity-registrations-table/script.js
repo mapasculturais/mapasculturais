@@ -19,8 +19,9 @@ app.component('opportunity-registrations-table', {
     },
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
+        const messages = useMessages();
         const text = Utils.getTexts('opportunity-registrations-table');
-        return { text }
+        return { messages, text }
     },
     data() {
         const $DESC = $DESCRIPTIONS.registration;
@@ -232,8 +233,15 @@ app.component('opportunity-registrations-table', {
         },
 
         setStatus(selected, entity) {
-            entity.status = selected.value;
-            entity.save();
+            const api = new API();
+            const url = Utils.createUrl('registration', 'setStatusTo', {id: entity.id});
+            api.POST(url, {status: selected.value}).then(res => res.json()).then(response => {
+                if(response.error) {
+                    this.messages.error(this.text(response.data))
+                } else {
+                    this.messages.success(this.text('status alterado com sucesso'))
+                }
+            });
         },
 
         clearFilters(entities) {

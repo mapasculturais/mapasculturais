@@ -679,6 +679,10 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.success(labels['attachmentCreated']);
                 }
             });
+            
+            $scope.data.newFileConfiguration.conditional = false;
+            $scope.data.newFileConfiguration.conditionalField = "";
+            $scope.data.newFileConfiguration.conditionalValue = "";
         };
 
         $scope.removeFileConfiguration = function (id, $index) {
@@ -1614,19 +1618,36 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.sendFile = function(attrs){
         $('.carregando-arquivo').show();
         $('.submit-attach-opportunity').hide();
-
+    
         var $form = $('#' + attrs.id + ' form');
+        var fieldName = $form[0][0].name;
+
+        $form.ajaxSubmit({
+            success: function(response) {
+                if (response[fieldName]) {      
+                    MapasCulturais.Messages.success(labels['changesSaved']);
+                    MapasCulturais.AjaxUploader.resetProgressBar($form);
+                    if(fieldName){
+                        $scope.removeFieldErrors(fieldName);
+                    }
+                } else {
+                    MapasCulturais.Messages.error(labels['fileTooBig']);
+                    MapasCulturais.AjaxUploader.resetProgressBar($form);
+                    $('.carregando-arquivo').hide();
+                    $('.submit-attach-opportunity').show();
+                }
+            },
+            error: function(xhr, status, error) {
+                let response = xhr.responseJSON;
+                MapasCulturais.Messages.error(response.data);
+                MapasCulturais.AjaxUploader.resetProgressBar($form);
+               
+                $('.carregando-arquivo').hide();
+                $('.submit-attach-opportunity').show();
+            }
+        });
+
         $form.submit();
-        if(!$form.data('onSuccess')){
-            $form.data('onSuccess', true);
-            $form.on('ajaxForm.success', function(){
-                MapasCulturais.Messages.success(labels['changesSaved']);
-                var fieldName = $form.parents('.attachment-list-item').data('fieldName');
-                if(fieldName){
-                    $scope.removeFieldErrors(fieldName);
-                } 
-            });
-        }
     };
 
     $scope.openFileEditBox = function(id, index, event){

@@ -68,15 +68,42 @@ $this->breadcrumb = [
                 </main>
                 <aside>
                     <div class="grid-12">
+                        <?php $this->applyTemplateHook('single1-entity-info-taxonomie-area','before') ?>
                         <entity-terms :entity="entity" hide-required classes="col-12" taxonomy="area" title="<?php i::esc_attr_e('Áreas de atuação');?>"></entity-terms>
+                        <?php $this->applyTemplateHook('single1-entity-info-taxonomie-area','after') ?>
+                        
+                        <?php $this->applyTemplateHook('single1-entity-info-taxonomie-funcao','before') ?>
                         <entity-terms :entity="entity" hide-required taxonomy="funcao" classes="col-12" title="<?php i::_e('Funções'); ?>"></entity-terms>
+                        <?php $this->applyTemplateHook('single1-entity-info-taxonomie-funcao','after') ?>
+
+                        <?php $this->applyTemplateHook('single1-entity-info-social-media','before') ?>
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
+                        <?php $this->applyTemplateHook('single1-entity-info-social-media','after') ?>
+                        
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-seals','before') ?>
                         <entity-seals :entity="entity" :editable="entity.currentUserPermissions?.createSealRelation" classes="col-12" title="<?php i::esc_attr_e('Verificações');?>"></entity-seals>
-                        <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents>                            
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-seals','after') ?>
+
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents','before') ?>
+                        <entity-related-agents :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Agentes Relacionados');?>"></entity-related-agents> 
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-related-agents','after') ?>
+                        
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag','before') ?>
                         <entity-terms :entity="entity" hide-required classes="col-12" taxonomy="tag" title="<?php i::esc_attr_e('Tags') ?>"></entity-terms>
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-terms-tag','after') ?>
+                        
+                        <?php $this->applyTemplateHook('single1-entity-info-mc-share-links','before') ?>
                         <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
+                        <?php $this->applyTemplateHook('single1-entity-info-mc-share-links','after') ?>
+                        
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-admins','before') ?>
                         <entity-admins :entity="entity" classes="col-12"></entity-admins>
-                        <entity-owner classes="col-12"  title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>                        
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-admins','after') ?>
+                        
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-owner','before') ?>
+                        <entity-owner classes="col-12"  title="<?php i::esc_attr_e('Publicado por');?>" :entity="entity"></entity-owner>
+                        <?php $this->applyTemplateHook('single1-entity-info-entity-owner','after') ?>
+
                     </div>
                 </aside>
             </mc-container>

@@ -2046,7 +2046,7 @@ $$
 
             $conn->executeQuery("
                 UPDATE request 
-                SET metadata = ':metadata'
+                SET metadata = :metadata
                 WHERE id = $id", ['metadata'=>$metadata]);
         }
     },
@@ -2296,6 +2296,9 @@ $$
         __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges::VARCHAR = '\"\"'");
         __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories::VARCHAR = '\"\"'");
     },
+    'deleta requests com valores dos da coluna metadata inválidos' => function() use($conn) {
+        __exec("delete from request where metadata = ':metadata'");
+    }
 
     
 

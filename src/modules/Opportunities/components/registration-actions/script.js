@@ -40,6 +40,7 @@ app.component('registration-actions', {
     data() {
         return {
             fields: $MAPAS.registrationFields,
+            descriptions: $DESCRIPTIONS.registration
         }
     },
     
@@ -77,6 +78,10 @@ app.component('registration-actions', {
                         return regField.title;
                     }
                 }
+            }
+            
+            if(this.descriptions[field]) {
+                return this.descriptions[field].label
             }
 
             return this.text('Campo não identificado');
