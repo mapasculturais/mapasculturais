@@ -7,6 +7,11 @@
         margin-bottom: size(15);
     }
 
+    &__actions {
+        display: flex;
+        gap: size(8);
+    }
+
     &__group {
         border-radius: var(--mc-border-radius-xs);
         border: size(1) solid;
@@ -48,7 +53,7 @@
     }
 
     &__multiple-evaluators {
-        grid-template-columns: 64% 1fr;
+        gap: size(15);
         justify-content: space-between;
 
         input {
