@@ -93,7 +93,7 @@ $this->import('
                 </div>
             </section>
 
-            <section class="section" v-if="!entity.opportunity.proponentAgentRelation[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation[entity.proponentType])">
+            <section class="section" v-if="!entity.opportunity.proponentAgentRelation?.[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation?.[entity.proponentType])">
                 <registration-form :registration="entity"></registration-form>
             </section>
         </main>
