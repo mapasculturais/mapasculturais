@@ -25,7 +25,7 @@ $this->import('
        <p><?php i::_e('Defina os agentes que farão parte das comissões de avaliação desta fase.') ?></p>
     </div>
 
-    <mc-tabs>
+    <mc-tabs ref="tabs">
         <template #after-tablist>
             <div class="opportunity-committee-groups__actions">
                 <button v-if="hasTwoOrMoreGroups && entity.useCommitteeGroups" class="button button--icon button--primary button--sm" @click="addGroup(minervaGroup, true);">
@@ -55,14 +55,14 @@ $this->import('
                 </mc-popover>
             </div>
         </template>
-
-        <mc-tab v-for="(relations, groupName) in groups" :key="groupName" :label="groupName" :slug="groupName">
+        
+        <mc-tab v-for="([groupName, relations], index) in Object.entries(entity.relatedAgents)" :key="index" :label="groupName" :slug="String(index)">
             <div class="opportunity-committee-groups__group">
                 <div class="opportunity-committee-groups__edit-group field">
                     <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
 
                     <div class="opportunity-committee-groups__edit-group--field">
-                        <input id="newGroupName" v-model="groupName" class="input" type="text" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
+                        <input :disabled="groupName == '@tiebreaker'" id="newGroupName" v-model="groupName" class="input" type="text" @input="renameTab($event, index)" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
                         <mc-confirm-button @confirm="removeGroup(groupName)">
                             <template #button="modal">
                                 <a class="button button--delete button--icon button--sm" @click="modal.open()">
@@ -94,7 +94,7 @@ $this->import('
                             label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
                         />
                         <opportunity-registration-filter-configuration 
-                            v-if="entity?.fetchFields[groupName]" 
+                            v-if="entity.fetchFields[groupName]" 
                             :entity="entity"
                             v-model:default-value="entity.fetchFields[groupName]"
                             :excludeFields="globalExcludeFields"
