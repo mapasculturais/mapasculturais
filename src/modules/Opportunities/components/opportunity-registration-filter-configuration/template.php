@@ -29,19 +29,19 @@ $this->import('
 
             <div v-if="selectedField == 'category'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="category in filteredFields.categories">
-                    <input :checked="selectedConfigs[category]" type="checkbox" :value="category" v-model="selectedConfigs"> {{category}} <!-- @change="change($event)" -->
+                    <input :checked="selectedConfigs.includes(category)" type="checkbox" :value="category" v-model="selectedConfigs"> {{category}} <!-- @change="change($event)" -->
                 </label>
             </div>
 
             <div v-if="selectedField == 'proponentType'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="proponentType in filteredFields.proponentTypes">
-                    <input :checked="selectedConfigs[proponentType]" type="checkbox" :value="proponentType" v-model="selectedConfigs"> {{proponentType}} <!-- @change="change($event)" -->
+                    <input :checked="selectedConfigs.includes(proponentType)" type="checkbox" :value="proponentType" v-model="selectedConfigs"> {{proponentType}} <!-- @change="change($event)" -->
                 </label>
             </div>
 
             <div v-if="selectedField == 'range'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="range in filteredFields.ranges">
-                    <input :checked="selectedConfigs[range]" type="checkbox" :value="range" v-model="selectedConfigs"> {{range}} <!-- @change="change($event)" -->
+                    <input :checked="selectedConfigs.includes(range)" type="checkbox" :value="range" v-model="selectedConfigs"> {{range}} <!-- @change="change($event)" -->
                 </label>
             </div>
 
@@ -57,8 +57,8 @@ $this->import('
         </div>
 
         <template #actions="modal">
-            <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('Cancelar') ?></button>
-            <button class="button button--primary" @click="addConfig(); modal.close();"><?= i::__('Confirmar') ?></button>
+            <button class="button button--text button--text-del" @click="modal.close(); this.selectedField = '';"><?= i::__('Cancelar') ?></button>
+            <button class="button button--primary" @click="addConfig(modal)"><?= i::__('Confirmar') ?></button>
         </template>
 
         <template #button="modal">
