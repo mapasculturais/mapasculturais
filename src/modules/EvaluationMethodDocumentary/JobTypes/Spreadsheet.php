@@ -25,7 +25,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
         $evaluations_files_configurations = $opportunity->getRegistrationFileConfigurations();
         $evaluations_fields = array_merge($evaluations_fields_configurations, $evaluations_files_configurations);
 
-        $column_prefixes = $this->generateSpreadsheetStructure(1, 300);
+        $column_prefixes = $this->generateSpreadsheetStructure(1, 900);
         array_splice($column_prefixes, 0, $total_properties);
 
         $header = [];
