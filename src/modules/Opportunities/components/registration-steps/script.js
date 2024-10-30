@@ -16,13 +16,20 @@ app.component('registration-steps', {
     },
 
     setup() {
+        const globalState = useGlobalState();
         const text = Utils.getTexts('registration-steps')
-        return { text }
+        return { globalState, text }
     },
     
     computed: {
         sections () {
             return this.steps.map((step) => step.name || this.text('Informações básicas'));
+        },
+    },
+
+    watch: {
+        stepIndex () {
+            this.globalState.stepper = this.stepIndex;
         },
     },
 
