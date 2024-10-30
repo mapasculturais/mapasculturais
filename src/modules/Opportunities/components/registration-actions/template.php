@@ -45,7 +45,7 @@ $this->import('
             </template>
         </mc-confirm-button>
 
-        <div class="registration-actions__validation" v-if="!isValidated">
+        <div class="registration-actions__validation" v-if="canValidate && !isValidated">
             <mc-alert type="warning">
                 <span><?= i::__("Para enviar sua inscrição, você precisa <strong>validá-la</strong> primeiro. Clique no botão <strong>Validar inscrição</strong> abaixo para verificar se todas as informações estão corretas.") ?></span>
             </mc-alert>
