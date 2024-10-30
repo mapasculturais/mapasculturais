@@ -69,12 +69,18 @@ app.component('registration-actions', {
         },
 
         canValidate () {
-            const isLastStep = this.stepIndex === this.stepS.length - 1;
+            const isLastStep = this.stepIndex === this.steps.length - 1;
             return isLastStep;
         },
 
         step () {
             return this.steps[this.stepIndex];
+        },
+    },
+
+    watch: {
+        stepIndex () {
+            this.isValidated = false;
         },
     },
     
@@ -148,41 +154,34 @@ app.component('registration-actions', {
             }
         },
 
-        async validate() {
+        async validate(step = undefined) {
             const messages = useMessages();
             try {
-                if(Object.keys(this.registration.__validationErrors).length > 0){
+                if (Object.keys(this.registration.__validationErrors).length > 0) {
                     messages.error(this.text('Corrija os erros indicados'));
-                }else{
+                    return false;
+                } else {
                     await this.save();
-                    const success = await this.registration.POST('validateEntity', {});
+                    const success = await this.registration.POST('validateEntity', { step });
 
                     if (success) {
                         this.isValidated = true;
-                        messages.success(this.text('Validado'));
+
+                        if (!step) {
+                            messages.success(this.text('Validado'));
+                        }
                     }
+
+                    return success;
                 }
             } catch (error) {
                 console.error(error);
+                return false;
             }
         },
 
         async save() {
-            const iframe = document.getElementById('registration-form');
-            const registration = this.registration;
-            if (iframe) {
-                const promise = new Promise((resolve, reject) => {
-                    Promise.all([
-                        registration.save(300, false),
-                    ]).then((values) => {
-                        resolve(values[0]);
-                    });
-                });
-                return promise;
-
-            } else {
-                return registration.save(300, false);
-            }
+            return this.registration.save(300, false);
         },
 
         exit() {
@@ -196,11 +195,15 @@ app.component('registration-actions', {
         },
 
         previousStep() {
-            this.$emit('previousStep', this.stepIndex - 1);
+            if (this.validate(this.stepIndex)) {
+                this.$emit('previousStep', this.stepIndex - 1);
+            }
         },
 
         nextStep() {
-            this.$emit('nextStep', this.stepIndex + 1);
+            if (this.validate(this.stepIndex)) {
+                this.$emit('nextStep', this.stepIndex + 1);
+            }
         },
     },
 });
