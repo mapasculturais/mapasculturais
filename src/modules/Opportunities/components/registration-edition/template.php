@@ -24,7 +24,7 @@ $this->import('
 
 <div class="registration__content">
     <div class="registration__steps">
-        <registration-steps></registration-steps>
+        <registration-steps :steps="steps" :step-index="stepIndex"></registration-steps>
     </div>
 
     <mc-container>
