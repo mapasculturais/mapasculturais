@@ -919,7 +919,8 @@ class Opportunity extends EntityController {
         $rdata = [
             '@select' => 'id',
             'opportunity' => "EQ({$opportunity->id})",
-            '@permissions' => 'viewUserEvaluation'
+            '@permissions' => 'viewUserEvaluation',
+            '@order' => 'id ASC'
         ];
 
         foreach($query_data as $k => $v){
@@ -954,7 +955,7 @@ class Opportunity extends EntityController {
                 valuer_user_id IN({$users}) AND
                 registration_id IN({$registration_ids})
                 $sql_status
-            ORDER BY registration_sent_timestamp ASC
+            ORDER BY registration_sent_timestamp ASC, registration_id ASC, valuer_user_id ASC
             $sql_limit
         ";
 
@@ -1003,7 +1004,7 @@ class Opportunity extends EntityController {
                     e.valuer_user_id IN({$users}) AND
                     e.registration_id IN({$registration_ids})
                     $sql_status
-                ORDER BY e.registration_sent_timestamp ASC
+                ORDER BY e.registration_sent_timestamp ASC, e.registration_id ASC, e.valuer_user_id ASC
                 $sql_limit
             ";
         }
