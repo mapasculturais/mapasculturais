@@ -113,6 +113,7 @@
         &__input {
             flex-direction: row;
             gap: size(32);
+            justify-content: space-between;
             
             input {
                 max-width: 100%;
