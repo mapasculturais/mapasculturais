@@ -267,29 +267,19 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 }
             }
 
-            $registrations_per_valuer = ceil(count($registration_evaluations) / count($committee_user_ids));
-            $valuers_count = [];
+            $valuers = [];
 
-            
             /** Distribui as inscrições */
             foreach ($committee_users as $user) {
-                $valuers_count[$user->id] = 0;
+                $valuers[] = (object) [
+                    'count' => 0,
+                    'user' => $user
+                ];
             }
 
-            $pointer = 0;
-            $get_next_valuer = function () use ($committee_users, $pointer): User {
-                $user = $committee_users[$pointer];
-                $pointer++;
-                if($pointer >= count($committee_users)) {
-                    $pointer = 0;
-                }
-
-                return $user;
-            };
-
             foreach($result as &$reg) {
-                for($i = 0; $i < count($committee_users); $i++) {
-                    $user = $get_next_valuer();
+                foreach($valuers as &$valuer) {
+                    $user = $valuer->user;
 
                     if(count($reg->valuers) >= $valuers_per_registration || in_array($user->id, $reg->valuers)) {
                         continue;
@@ -299,9 +289,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
                     if($this->canUserEvaluateRegistration($registration, $user, skip_exceptions: true, skip_valuers_limit: true)) {
                         $reg->valuers[] = $user->id;
-                        $valuers_count[$user->id]++;
+                        $valuer->count++;
                     }
                 }
+
+                usort($valuers, fn($u1, $u2) => $u1->count <=> $u2->count);
             }
 
             foreach($result as $r) {
