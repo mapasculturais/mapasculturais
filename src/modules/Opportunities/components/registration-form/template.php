@@ -16,8 +16,6 @@
  ?>
 <div class="registration-form">
     <?php $this->applyComponentHook("begin") ?>
-    <!-- @TODO: remover comentário quando a implementação estiver pronta -->
-    <!-- <v1-embed-tool v-if="isValid()" iframe-id="registration-form" route="registrationform" :id="registration.id"></v1-embed-tool> -->
     <form v-if="isValid" >
         <mc-card v-for="section in sections" class="registration-form__section">
             <template v-if="section.title" #title>{{section.title}}</template>
