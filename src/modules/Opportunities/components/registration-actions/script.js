@@ -194,14 +194,14 @@ app.component('registration-actions', {
             });
         },
 
-        previousStep() {
-            if (this.validate(this.stepIndex)) {
+        async previousStep() {
+            if (await this.validate(this.stepIndex)) {
                 this.$emit('previousStep', this.stepIndex - 1);
             }
         },
 
-        nextStep() {
-            if (this.validate(this.stepIndex)) {
+        async nextStep() {
+            if (await this.validate(this.stepIndex)) {
                 this.$emit('nextStep', this.stepIndex + 1);
             }
         },
