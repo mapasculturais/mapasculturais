@@ -65,8 +65,12 @@ app.component('registration-actions', {
 
     computed: {
         canSubmit () {
-            const isLastStep = this.stepIndex === this.steps.length - 1;
-            return isLastStep && this.isValidated;
+            return this.canValidate && this.isValidated;
+        },
+
+        canValidate () {
+            const isLastStep = this.stepIndex === this.stepS.length - 1;
+            return isLastStep;
         },
 
         step () {
