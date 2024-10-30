@@ -5,6 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+### [7.5.7] - 2024-10-30
+## Correções
+- Corrige erro que na listagem de campo no componente de campos visiveis para os avaliadores
+- Corrige erro na exportação de planilhas de avaliação documental
+- Corrige erro de duplicidade na exportação de planilhas de avaliação técnica
+
 ### [7.5.6] - 2024-10-23
 ### Correções
  - Corrige visibilidade do botão de enviar avaliações na página de avaliações
