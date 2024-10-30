@@ -365,7 +365,7 @@
                     box-shadow: 3px 3px 3px rgba(0,0,0,.5);
 
                     .stepper {
-                        margin: 0 auto;
+                        margin-inline: auto;
 
                         @include mobile {
                             .step .label {
