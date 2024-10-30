@@ -36,6 +36,7 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\FinishDataCollectionPhase(Jobs\FinishDataCollectionPhase::SLUG));
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
+        $app->registerJobType(new Jobs\RedistributeCommitteeRegistrations(Jobs\RedistributeCommitteeRegistrations::SLUG));
 
         $app->hook('mapas.printJsObject:before', function () {
             /** @var \MapasCulturais\Theme $this */
@@ -120,6 +121,23 @@ class Module extends \MapasCulturais\Module{
                         }
                     }
                 }
+            }
+        });
+
+        /** 
+         * Enfileiramento dos JOBs de distribuição de avaliadores
+         */
+        $app->hook('entity(EvaluationMethodConfigurationAgentRelation).<<insert|update|delete>>:finish', function() use($app) {
+            $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner]);
+        });
+        
+        $app->hook('entity(EvaluationMethodConfiguration).meta(<<valuersPerRegistration|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes>>).<<insert|update|delete>>:after', function() use($app) {
+            $this->owner->mustRedistributeCommitteeRegistrations = true;
+        });
+
+        $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app) {
+            if ($this->mustRedistributeCommitteeRegistrations) {
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this]);
             }
         });
 
