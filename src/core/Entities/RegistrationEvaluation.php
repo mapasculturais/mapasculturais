@@ -125,11 +125,17 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     }
 
     function send($flush = false) {
+        $app = App::i();
         $this->registration->checkPermission('evaluate');
+
+        $app->applyHookBoundTo($this, "{$this->hookClassName}.send:before");
+        
         $this->_sending = true;
         $this->status = RegistrationEvaluation::STATUS_SENT;
         $this->sentTimestamp = new \DateTime;
         $this->save($flush);
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.send:after");
     }
     
     function getEvaluationData(){
@@ -209,7 +215,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if($this->registration->opportunity->publishedRegistrations){
+        if($this->registration->opportunity->publishedRegistrations && !$this->registration->opportunity->firstPhase->isContinuousFlow){
             return false;
         }
 

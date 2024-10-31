@@ -8,4 +8,5 @@ return [
     'Nome do projeto' => i::__('Nome do projeto'),
     'Espaço' => i::__('Espaço'),
     'Validado' => i::__('Campos validados com sucesso!'),
+    'Corrija os erros indicados' => i::__('Corrija os erros indicados'),
 ];

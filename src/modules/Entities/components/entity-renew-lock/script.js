@@ -8,6 +8,12 @@ app.component('entity-renew-lock', {
         }
     },
 
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('entity')
+        return { text }
+    },
+
     created() {
         const self = this;
         globalThis.addEventListener('afterFetch', (e) => {

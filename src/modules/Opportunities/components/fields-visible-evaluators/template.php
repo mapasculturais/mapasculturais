@@ -38,7 +38,7 @@ $this->import('
                     <div v-for="field in fieldsResult()" :class="['fields-visible-evaluators__field' , 'field', {'disabled':field.disabled}]">
                         <label>
                             <mc-icon :name="fieldType(field)"></mc-icon>
-                            <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName]" @change="toggleSelect(field.fieldName)" />
+                            <input type="checkbox" :disabled="field.disabled" v-model="avaliableEvaluationFields[field.fieldName || field.groupName]" @change="toggleSelect(field.fieldName || field.groupName)" />
                             <span v-if="field.id">#{{field.id}}</span>
                             <div class="fields-visible-evaluators__field__title">
                                 <span>{{field.title}}</span>

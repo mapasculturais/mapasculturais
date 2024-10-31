@@ -11,6 +11,7 @@ $this->import('
     mc-link
     mc-modal
     select-entity
+    mc-datepicker
 ');
 ?>
 <mc-modal title="<?= i::esc_attr__('Inserir ocorrência no evento')?>" classes="create-occurrence">
@@ -31,7 +32,7 @@ $this->import('
                     <?= i::_e('ou') ?>
 
                     <!-- create space -->
-                    <create-space #default="{modal}">
+                    <create-space #default="{modal}" @create="selectSpace">
                         <button @click="modal.open()" editable class="button button--icon button--primary-outline"> 
                             <mc-icon name="add"></mc-icon> <?= i::_e('Crie um novo espaço') ?> 
                         </button>
@@ -94,56 +95,57 @@ $this->import('
             <div :class="['col-12', 'create-occurrence__section', {'active' : step==2}]">
                 <span class="create-occurrence__section--title"> <?= i::_e('Quando o evento ocorrerá?') ?> </span>
 
-                <div class="grid-12">
+                <div :class="['create_occurrence__datepicker', {'grid-12': frequency=='once'}]">
                     <div v-if="frequency=='once'" class="col-6 sm:col-12">
                         <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Data inicial:') ?></span>   
 
-                            <datepicker 
-                                teleport
-                                :locale="locale" 
-                                format="dd/MM/yyyy"
-                                :weekStart="0"
-                                :enableTimePicker='false' 
-                                :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
-                                v-model="startsOn"
-                                text-input autoApply :teleport="true">
-                                <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
-                                    <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
-                                </template>
-                            </datepicker>
+                            <mc-datepicker 
+                                v-model:modelValue="dateRange.start"
+                                fieldType="date"
+                                locale="locale">
+                            </mc-datepicker>
                         </div>
 
                         <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsOn']">        
                             {{this.newOccurrence.__validationErrors['startsOn'].join('; ')}}
                         </small>
                     </div>
+                    
+                    <div v-if="frequency!=='once'" class="grid-12">
+                        <div class="col-6 sm:col-12">
+                            <div class="create-occurrence__section--field field">
+                                <span class="label"><?= i::_e('Data inicial:') ?></span> 
 
-                    <div v-if="frequency!=='once'" class="col-6 sm:col-12">
-                        <div class="create-occurrence__section--field field">
-                            <span class="label"><?= i::_e('Data inicial - Data final:') ?></span>            
+                                <mc-datepicker 
+                                    v-model:modelValue="dateRange.start"
+                                    fieldType="date"
+                                    locale="locale"                                    
+                                    >    
+                                </mc-datepicker>
 
-                            <datepicker 
-                                teleport
-                                :locale="locale" 
-                                format="dd/MM/yyyy"
-                                :weekStart="0"
-                                v-model="dateRange" 
-                                :enableTimePicker='false' 
-                                :dayNames="['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab']"
-                                range multiCalendars multiCalendarsSolo autoApply text-input utc :teleport="true">
-                                <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
-                                    <input type="text" data-maska="##/##/#### - ##/##/####" :value="value" maxlength="23" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
-                                </template>
-                            </datepicker>
+                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['until']">        
+                                    {{this.newOccurrence.__validationErrors['until'].join('; ')}}
+                                </small>
+                            </div>
                         </div>
+                        <div class="col-6 sm:col-12">
+                            <div class="create-occurrence__section--field field">
+                                <span class="label"><?= i::_e('Data final:') ?></span>
 
-                        <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsOn']">        
-                            {{this.newOccurrence.__validationErrors['startsOn'].join('; ')}}
-                        </small>
-                        <small class="field__error" v-if="this.newOccurrence.__validationErrors['endsOn']">        
-                            {{this.newOccurrence.__validationErrors['endsOn'].join('; ')}}
-                        </small>
+                                <mc-datepicker 
+                                    v-model:modelValue="dateRange.end"
+                                    fieldType="date"
+                                    locale="locale"
+                                    >
+                                </mc-datepicker>
+
+                                <small class="field__error" v-if="this.newOccurrence.__validationErrors['endsOn']">        
+                                    {{this.newOccurrence.__validationErrors['endsOn'].join('; ')}}
+                                </small>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>     
             </div>
@@ -155,12 +157,13 @@ $this->import('
                     <div class="col-6 sm:col-12">                        
                         <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Horário inicial:') ?></span>
-
-                            <datepicker v-model="startsAt" text-input timePicker autoApply :teleport="true">
-                                <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
-                                    <input type="text" data-maska="##:##" :value="value" maxlength="5" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
-                                </template>
-                            </datepicker>
+                            
+                            <mc-datepicker 
+                                v-model:modelValue="startsAt"
+                                fieldType="time"
+                                locale="locale"                               
+                                >
+                            </mc-datepicker>
 
                             <small class="field__error" v-if="this.newOccurrence.__validationErrors['startsAt']">        
                                 {{this.newOccurrence.__validationErrors['startsAt'].join('; ')}}
@@ -171,12 +174,13 @@ $this->import('
                     <div class="col-6 sm:col-12">
                         <div class="create-occurrence__section--field field">
                             <span class="label"><?= i::_e('Horário final:') ?></span>
-
-                            <datepicker v-model="endsAt" text-input timePicker autoApply :teleport="true">
-                                <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
-                                    <input type="text" data-maska="##:##" :value="value" maxlength="5" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
-                                </template>
-                            </datepicker>
+                            
+                            <mc-datepicker 
+                                v-model:modelValue="endsAt"
+                                fieldType="time"
+                                locale="locale"
+                                >
+                            </mc-datepicker>
 
                             <small class="field__error" v-if="this.newOccurrence.__validationErrors['endsAt']">        
                                 {{this.newOccurrence.__validationErrors['endsAt'].join('; ')}}
@@ -227,17 +231,7 @@ $this->import('
                     <div class="grid-12">
                         <div class="col-12">
                             <div class="create-occurrence__section--field">
-                                <span class="label"><?= i::_e('Descrição legível de data e horário') ?></span>
-                                <div class="auto-description">
-                                    <span class="theDescription">{{updateDescription}}</span>
-                                    <button class="button button--icon button--sm" @click="copyDescription"> <mc-icon name="copy"></mc-icon> copiar </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="create-occurrence__section--field">
-                                <span class="label"><small><?= i::_e('Você pode usar a descrição gerada pelo sistema OU criar uma descrição customizada prenchendo o campo abaixo') ?></small></span>
-                                <input v-model="description" type="text" name="description" placeholder="<?= i::_e('Preencha aqui o resumo customizado') ?>"/>
+                                <input v-model="description" type="text" name="description" placeholder="<?= i::_e('Preencha aqui o resumo customizado') ?>" />
                                 <small class="field__error" v-if="this.newOccurrence.__validationErrors['description']">        
                                     {{this.newOccurrence.__validationErrors['description'].join('; ')}}
                                 </small>  

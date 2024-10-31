@@ -9,7 +9,7 @@ São dados que revelam aspectos mais profundos da vida de uma pessoa e que exige
 
 Em caso de vazamento de dados, estes podem causar danos significativos à pessoa envolvida.
 
-&nbsp;
+
 
 #### **São dados mais íntimos e delicados, como:**
 
@@ -19,7 +19,7 @@ Em caso de vazamento de dados, estes podem causar danos significativos à pessoa
 * **Dados de saúde:** Informações sobre condições médicas, tratamentos, etc.
 * **Orientação sexual:** Preferência sexual.
 
-&nbsp;
+
 
 #### **Por que tais dados são considerados sensíveis?**
 

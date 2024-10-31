@@ -42,6 +42,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
                 "sent" => 0
             ]
         ];
+        parent::__construct();
     }
     
     
@@ -57,7 +58,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         }
         $app->enableAccessControl();
 
-        $this->owner->opportunity->enqueueToPCacheRecreation();
+        $this->owner->opportunity->enqueueToPCacheRecreation([$this->agent->user]);
         parent::delete($flush);
     }
     
@@ -84,7 +85,6 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
         $app->disableAccessControl();
         $this->status = self::STATUS_DISABLED;
-        
         $this->save($flush);
         $app->enableAccessControl();
 
@@ -160,28 +160,40 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
                 WHERE opportunity_id = {$entity->opportunity->id} AND e.evaluation_status IS NULL AND valuer_user_id = {$user->id}
             ";
             $data['pending'] = $conn->fetchScalar($query);
+        } else {
+            $data['pending'] = $data['pending'] ?? 0;
         }
 
         // Atualiza as avaliações iniciadas
         if ($started) {
             $data['started'] = $buildQuery(0);
+        } else {
+            $data['started'] = $data['started'] ?? 0;
         }
 
         // Atualiza as avaliações concluídas
         if ($completed) {
             $data['completed'] = $buildQuery(1);
+        } else {
+            $data['completed'] = $data['completed'] ?? 0;
         }
 
         // Atualiza as avaliações enviadas
         if ($sent) {
             $data['sent'] = $buildQuery(2);
+        } else {
+            $data['sent'] = $data['sent'] ?? 0;
         }
 
-        $this->metadata = ['summary' => $data];
+        if(is_object($this->metadata)) {
+            $metadata = $this->metadata;
+        } else {
+            $metadata = (object) [];
+        }
 
-        $app->disableAccessControl();
-        $this->save($flush);
-        $app->enableAccessControl();
+        $metadata->summary = $data;
+
+        $conn->update('agent_relation', ['metadata' => json_encode($metadata)], ['id' => $this->id]);
     }
 
     protected function canUserRemove($user): bool

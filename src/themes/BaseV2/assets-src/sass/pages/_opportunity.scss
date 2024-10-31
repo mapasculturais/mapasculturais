@@ -37,7 +37,8 @@
     }
 
     &.action-edit {
-        .tabs-component {
+
+        & > #main-app > .main-app > .tabs-component > .tabs-component {
             &__header {
                 margin: size(-40) auto size(40);
 

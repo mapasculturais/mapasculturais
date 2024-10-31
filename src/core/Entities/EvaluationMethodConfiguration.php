@@ -17,13 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
- * @property-read string summaryCacheKey Chave do cache do resumo das avaliações
+ * @property-read bool $useCommitteeGroups
+ * @property-read bool $evaluateSelfApplication
+ * @property-read string $summaryCacheKey Chave do cache do resumo das avaliações
  * @property int $opportunity ownerId
- * @property-read \MapasCulturais\Entities\Opportunity owner
- * @property-read boolean publishedRegistration
- * @property-read DateTime publishTimestamp
- * @property-read array summary
- * @property-read boolean evaluationOpen
+ * @property-read \MapasCulturais\Entities\Opportunity $owner
+ * @property-read boolean $publishedRegistration
+ * @property-read DateTime $publishTimestamp
+ * @property-read array $summary
+ * @property-read boolean $evaluationOpen
  * 
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
@@ -207,7 +209,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $result = parent::jsonSerialize();
         $result['type'] = $this->type;
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl,summary');
-
+        $result['useCommitteeGroups'] = $this->useCommitteeGroups;
+        $result['evaluateSelfApplication'] = $this->evaluateSelfApplication;
         /**
          * @todo Arranjar um modo de colocar isso no módulo de avaliação técnica
          */
@@ -235,6 +238,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     public function getEvaluationMethod() {
         $definition = $this->getDefinition();
         return $definition->evaluationMethod;
+    }
+
+    public function getUseCommitteeGroups() {
+        return $this->evaluationMethod->useCommitteeGroups();
+    }
+    
+    public function getEvaluateSelfApplication() {
+        return $this->evaluationMethod->evaluateSelfApplication();
     }
 
     public function getUserRelation($user = null){
@@ -393,17 +404,25 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $committee;
     }
 
+    /** 
+     * Redistribui as inscrições entre os avaliadores
+     * 
+     */
+    public function redistributeCommitteeRegistrations() {
+        $this->evaluationMethod->redistributeRegistrations($this->owner);
+    }
+
     protected function canUserEvaluateOnTime($user){
         if($user->is('guest')){
             return false;
         }
 
-        $valuers = $this->getRelatedAgents('group-admin', true);
+        $valuers = $this->getAgentRelations();
         
         $is_valuer = false;
         
         foreach ($valuers as $agent_relation) {
-            if ($agent_relation->status != 1) {
+            if ($agent_relation->status != EvaluationMethodConfigurationAgentRelation::STATUS_ENABLED) {
                 continue;
             }
 

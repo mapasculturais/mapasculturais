@@ -66,6 +66,13 @@
         }
     }
 
+    &__count {
+        padding: size(5) size(10);
+        label {
+            justify-content: center;
+        }
+    }
+
     &__popper {
         .popover__content {
             background-color: var(--mc-white);

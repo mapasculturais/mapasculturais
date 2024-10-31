@@ -27,7 +27,7 @@ $entity = $this->controller->requestedEntity;
     <div v-if="!hideTitle" class="col-12">
         <h2 class="opportunity-status" v-if="phase.publishedRegistrations"><?= i::__("Os resultados já foram publicados") ?></h2>
         <h2 class="opportunity-status" v-if="!phase.publishedRegistrations && isPast()"><?= i::__("A fase já está encerrada") ?></h2>
-        <h2 class="opportunity-status" v-if="isHappening()"><?= i::__("A fase está em andamento") ?></h2>
+        <h2 class="opportunity-status" v-if="isHappening() && (!phase.isContinuousFlow || (phase.isContinuousFlow && phase.hasEndDate))"><?= i::__("A fase está em andamento") ?></h2>
         <h2 class="opportunity-status" v-if="isFuture()"><?= i::__("A fase ainda não iniciou") ?></h2>
     </div>
     <template v-if="!isFuture()">
@@ -52,7 +52,6 @@ $entity = $this->controller->requestedEntity;
                         <h4 class="bold"><?= i::__('Ações:') ?></h4>
                         <div class="opportunity-registration-table__actions-buttons">
                         <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'begin', ['entity' => $entity]); ?>
-                            <mc-link :entity="phase" route="reportDrafts" class="button button--primarylight button--icon"><?= i::__("Baixar rascunhos") ?> <mc-icon name="download"></mc-icon></mc-link>
                             <mc-export-spreadsheet :owner="phase" endpoint="registrations" :params="{entityType: 'registration', '@select': select, '@order': order, query}" group="registrations-spreadsheets"></mc-export-spreadsheet>
                         <?php $this->applyTemplateHook('registration-list-actions-entity-table', 'end', ['entity' => $entity]); ?>
                         </div>
