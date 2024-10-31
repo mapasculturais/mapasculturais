@@ -18,76 +18,88 @@
         position: relative;
         width: 100%;
 
-        &:first-child {
-            &::before {
-                content: unset;
-            }
-
-            .count {
-                background-color: var(--mc-secondary-500);
-            }
-        }
-
         &::before {
             background: var(--mc-gray-300);
             content: '';
             height: size(2);
             position: absolute;
-            right: 50%;
             transition: 
                 background-color 300ms linear,
                 color 300ms;
-            top: size(12);
+            top: size(7);
             width: 100%;
+        }
+
+        &:first-child {
+            align-items: flex-start;
+        }
+
+        &:last-child {
+            align-items: flex-end;
         }
 
         .count {
             align-items: center;
-            background-color: var(--mc-gray-300);
+            background-color: var(--mc-white);
+            border: 2px solid var(--mc-gray-300);
             border-radius: 50%;
             color: var(--mc-gray-300);
             display: flex;
-            font-size: size(24);
-            font-weight: 700;
-            height: size(24);
+            height: size(16);
             justify-content: center;
+            outline: 2px solid var(--mc-white);
             transition: 
                 background-color 300ms linear,
                 color 300ms;
-            width: size(24);
+            width: size(16);
             z-index: 1;
         }
 
         .label {
-            font-weight: 400;
+            color: var(--mc-gray-500);
+            font-weight: 700;
             font-size: size(14);
             line-height: size(19);
+            padding: size(4);
             text-align: center;
             transition: opacity 300ms;
+        }
 
-            &.active {
-                color: var(--mc-secondary-500);
-                font-weight: 700;
+        &.passedby {
+
+            .count {
+                background-color: var(--mc-secondary-500);
+                border-color: transparent;
+            }
+
+            &::before {
+                background: var(--mc-secondary-500);
             }
         }
 
         &.active {
             cursor: default;
-        }
-        
-        &.passedby {
-            .label {
-                color: var(--mc-secondary-500);
-                font-weight: 700;
-            }
 
-            .count {
-                background-color: var(--mc-secondary-500);
-                color: var(--mc-high-500);
+            .label {
+                color: var(--mc-black);
             }
 
             &::before {
-                background-color: var(--mc-secondary-500);
+                background: linear-gradient(to right, var(--mc-secondary-500), var(--mc-secondary-500) 50%, var(--mc-gray-300) 50%);
+            }
+
+            &:first-child {
+
+                &::before {
+                    background: var(--mc-gray-300);
+                }
+            }
+
+            &:last-child {
+
+                &::before {
+                    background: var(--mc-secondary-500);
+                }
             }
         }
     }

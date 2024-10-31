@@ -366,6 +366,7 @@
 
                     .stepper {
                         margin-inline: auto;
+                        padding-inline: size(16);
 
                         @include mobile {
                             .step .label {
