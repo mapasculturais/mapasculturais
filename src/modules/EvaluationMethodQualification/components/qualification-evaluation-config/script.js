@@ -22,6 +22,8 @@ app.component('qualification-evaluation-config', {
             autoSaveTimeOut:  null,
             optionsText: '',
             options: null,
+            showFilters: false,
+            excludeDistributionField: true,
         }
     },
 
@@ -172,7 +174,6 @@ app.component('qualification-evaluation-config', {
             if (!criteria.options) {
                 criteria.options = [];
             }
-
             criteria.options.push(this.options);
             this.clear();
             this.save();
@@ -201,62 +202,53 @@ app.component('qualification-evaluation-config', {
             criteria.otherReasonsOption = criteria.otherReasonsOption ? 'true' : 'false';
             this.save();
         },
-
-        updateSelections(section, selectionType, selection, checked) {
-            if (checked) {
-                if (selectionType === 'categories') {
-
-                    if (!section.categories) {
-                        section.categories = [];
-                    }
-                    section.categories.push(selection);
-                }
-
-                if (selectionType === 'proponentTypes') {
-
-                    if (!section.proponentTypes) {
-                        section.proponentTypes = [];
-                    }
-
-                    section.proponentTypes.push(selection);
-                }
-
-                if (selectionType === 'ranges') {
-
-                    if (!section.ranges) {
-                        section.ranges = [];
-                    }
-
-                    section.ranges.push({
-                        label: selection.label,
-                        limit: selection.limit,
-                        value: selection.value
-                    });
+        
+        enableFilterConfigSection(value, section) {
+            if (value) {
+                this.showFilters = true;
+                if (!section.showFilters) {
+                    section.showFilters = true;
                 }
             } else {
-                if (selectionType === 'categories') { 
-                    section.categories = section.categories.filter(item => item !== selection);
-                    
-                }
-                if (selectionType === 'proponentTypes') {
-                    section.proponentTypes = section.proponentTypes.filter(item => item !== selection);
-                    
-                }
-                if (selectionType === 'ranges') {
-                    section.ranges = section.ranges.filter(item => item.label !== selection.label);
+                this.showFilters = false;
+                if (section.showFilters) {
+                    section.showFilters = false;
+
+                    if (section.categories) section.categories = [];
+                    if (section.ranges) section.ranges = [];
+                    if (section.proponentTypes) section.proponentTypes = [];
+        
+                    this.entity.criteria.forEach(criteria => {
+                        if (criteria.sid === section.id) { 
+                            criteria.showFilters = false;
+                            if (criteria.categories) criteria.categories = [];
+                            if (criteria.ranges) criteria.ranges = [];
+                            if (criteria.proponentTypes) criteria.proponentTypes = [];
+                        }
+                    });
                 }
             }
 
             this.save();
-        },
+        }, 
 
-        isChecked(section, selectionType, selection) {
-            if (selectionType === 'categories' || selectionType === 'proponentTypes') {
-                return section[selectionType]?.includes(selection);
+        enableFilterConfigCriteria(value, criteria) {
+            if (value) {
+                this.showFilters = true;
+                if (!criteria.showFilters) {
+                    criteria.showFilters = true;
+                }
+            } else {
+                this.showFilters = false;
+                if (criteria.showFilters) {
+                    criteria.showFilters = false;
+                    if (criteria.categories) criteria.categories = [];
+                    if (criteria.ranges) criteria.ranges = [];
+                    if (criteria.proponentTypes) criteria.proponentTypes = [];
+                }
             }
-            if (selectionType === 'ranges') {
-                return section.ranges?.some(range => range.label === selection.label);
-            }
+
+            this.save();
         },
 
     },
