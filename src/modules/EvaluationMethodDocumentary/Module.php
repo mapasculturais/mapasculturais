@@ -343,7 +343,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return 1;
     }
 
-    public function valueToString($value) {
+    protected function _valueToString($value) {
 
         if($value == 1){
             return i::__('Válida');

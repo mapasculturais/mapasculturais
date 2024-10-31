@@ -13,6 +13,8 @@ use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\RegistrationStep;
 use MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
+use MapasCulturais\Entities\EvaluationMethodConfigurationMeta;
 
 class Module extends \MapasCulturais\Module{
 
@@ -128,17 +130,25 @@ class Module extends \MapasCulturais\Module{
          * Enfileiramento dos JOBs de distribuição de avaliadores
          */
         $app->hook('entity(EvaluationMethodConfigurationAgentRelation).<<insert|update|delete>>:finish', function() use($app) {
+            /** @var EvaluationMethodConfigurationAgentRelation $this */
             $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner]);
         });
         
         $app->hook('entity(EvaluationMethodConfiguration).meta(<<valuersPerRegistration|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes>>).<<insert|update|delete>>:after', function() use($app) {
+            /** @var EvaluationMethodConfigurationMeta $this */
             $this->owner->mustRedistributeCommitteeRegistrations = true;
         });
 
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app) {
+            /** @var EvaluationMethodConfiguration $this */
             if ($this->mustRedistributeCommitteeRegistrations) {
                 $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this]);
             }
+        });
+
+        $app->hook('entity(RegistrationEvaluation).send:after', function() use($app) {
+            /** @var Registration $this */
+            $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration]);
         });
 
         // atualiza o cache dos resumos das fase de avaliação
