@@ -33,7 +33,7 @@ $this->import('
             
             <section class="section">
                 <h2 class="section__title" id="main-info">
-                    {{ stepIndex + 1 }}. {{ stepName || text('Informações básicas') }}
+                    {{ stepIndex + 1 }}. {{ step.name || text('Informações básicas') }}
                 </h2>
                 <registration-autosave-notification :registration="entity"></registration-autosave-notification>
 

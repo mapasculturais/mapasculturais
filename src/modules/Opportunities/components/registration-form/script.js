@@ -120,9 +120,5 @@ app.component('registration-form', {
                 return field.step?.id === this.step._id;
             });
         },
-
-        stepName () {
-            return this.step.name || this.stepFields[0]?.step.name || '';
-        },
     },
 });

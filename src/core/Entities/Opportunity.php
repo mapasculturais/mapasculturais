@@ -39,7 +39,7 @@ use MapasCulturais\Utils;
  *
  *
  * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
- * @property RegistrationStep $registrationSteps
+ * @property RegistrationStep[] $registrationSteps
  * @property RegistrationFileConfiguration[] $registrationFileConfigurations
  * @property RegistrationFieldConfiguration[] $registrationFieldConfigurations
  * @property \MapasCulturais\Entity $ownerEntity
@@ -344,7 +344,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     public function getRegistrationFileConfigurations() {
         $app = App::i();
 
-        $result = App::i()->repo('RegistrationFileConfiguration')->findBy(['owner' => $this]);
+        $result = $app->repo('RegistrationFileConfiguration')->findBy(['owner' => $this]);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationFileConfigurations", [&$result]);
 
@@ -358,7 +358,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     public function getRegistrationFieldConfigurations() {
         $app = App::i();
 
-        $result = App::i()->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
+        $result = $app->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationFieldConfigurations", [&$result]);
 
