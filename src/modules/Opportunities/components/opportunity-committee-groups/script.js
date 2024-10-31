@@ -12,15 +12,15 @@ app.component('opportunity-committee-groups', {
         return {
             editable: true,
             newGroupName: '',
-            groups: this.entity.relatedAgents || {},
             editGroupName: false,
             newName: '',
             localValuersPerRegistration: {},
             tabSelected: '',
             hasGroupsFlag: false,
-            minervaGroup: 'Comissão de voto final',
+            minervaGroup: '@tiebreaker',
             globalExcludeFields: [],
             individualExcludeFields: [],
+            relatedAgentsIndex: Object.keys(this.entity.relatedAgents),
             selectedFields: {
                 global: '',
                 individual: ''
@@ -30,9 +30,9 @@ app.component('opportunity-committee-groups', {
 
     computed: {
         hasTwoOrMoreGroups() {
-            const filteredGroups = Object.keys(this.groups).filter(group => group !== this.minervaGroup);
+            const filteredGroups = Object.keys(this.entity.relatedAgents).filter(group => group !== this.minervaGroup);
             const groupCount = filteredGroups.length;
-            return groupCount >= 2 && !this.groups[this.minervaGroup];
+            return groupCount >= 2 && !this.entity.relatedAgents[this.minervaGroup];
         }
     },
 
@@ -55,16 +55,16 @@ app.component('opportunity-committee-groups', {
         initializeGroups() {
             let groups = {};
 
-            if (!groups['Comissão de avaliação'] && Object.keys(this.groups).length === 0) {
+            if (!groups['Comissão de avaliação'] && Object.keys(this.entity.relatedAgents).length === 0) {
                 groups['Comissão de avaliação'] = {};
             }
             
-            for (let groupName of Object.keys(this.groups)) {
+            for (let groupName of Object.keys(this.entity.relatedAgents)) {
                 if (groupName !== "group-admin" && groupName !== '@support') {
-                    groups[groupName] = this.groups[groupName];
+                    groups[groupName] = this.entity.relatedAgents[groupName];
                 }
             }
-            this.groups = groups;
+            this.entity.relatedAgents = groups;
         },
 
         initiliazeValuersPerRegistration() {
@@ -77,7 +77,7 @@ app.component('opportunity-committee-groups', {
                 this.entity.fetchFields = {};
             }
             
-            Object.keys(this.groups || {}).forEach(groupName => {
+            Object.keys(this.entity.relatedAgents || {}).forEach(groupName => {
                 if(this.entity.valuersPerRegistration[groupName] && !this.localValuersPerRegistration[groupName]) {
                     this.localValuersPerRegistration[groupName] = this.entity.valuersPerRegistration[groupName];
                 }
@@ -105,7 +105,7 @@ app.component('opportunity-committee-groups', {
                 this.entity.agentRelations[group] = [];
             }
 
-            this.groups = { ...this.groups, [group]: this.entity.agentRelations[group] };
+            this.entity.relatedAgents = { ...this.entity.relatedAgents, [group]: this.entity.agentRelations[group] };
 
             this.localValuersPerRegistration[group] = null;
 
@@ -121,7 +121,7 @@ app.component('opportunity-committee-groups', {
         },
 
         removeGroup(group) {
-            delete this.groups[group]
+            delete this.entity.relatedAgents[group]
             delete this.localValuersPerRegistration[group];
             delete this.entity.fetchFields[group];
             this.entity.removeAgentRelationGroup(group);
@@ -130,14 +130,14 @@ app.component('opportunity-committee-groups', {
         },
 
         updateGroupName(oldGroupName, newGroupName) {
-            if (!this.groups[oldGroupName]) {
-                this.groups[oldGroupName] = {};
+            if (!this.entity.relatedAgents[oldGroupName]) {
+                this.entity.relatedAgents[oldGroupName] = {};
             }
-            this.groups[oldGroupName].newGroupName = newGroupName;
+            this.entity.relatedAgents[oldGroupName].newGroupName = newGroupName;
         },
 
         saveGroupName(oldGroupName) {
-            const newGroupName = this.groups[oldGroupName]?.newGroupName;
+            const newGroupName = this.entity.relatedAgents[oldGroupName]?.newGroupName;
             if (newGroupName && newGroupName !== oldGroupName) {
                 this.renameGroup(oldGroupName, newGroupName);
             }
@@ -145,17 +145,17 @@ app.component('opportunity-committee-groups', {
 
         renameGroup(oldGroupName, newGroupName) {
             this.entity.renameAgentRelationGroup(oldGroupName, newGroupName).then(() => {
-                const groupNames = Object.keys(this.groups);
+                const groupNames = Object.keys(this.entity.relatedAgents);
                 const newGroups = {};
                 groupNames.forEach(groupName => {
                     if (groupName == oldGroupName) {
-                        newGroups[newGroupName] = { ...this.groups[groupName], newGroupName: newGroupName };
+                        newGroups[newGroupName] = { ...this.entity.relatedAgents[groupName], newGroupName: newGroupName };
                     } else {
-                        newGroups[groupName] = this.groups[groupName];
+                        newGroups[groupName] = this.entity.relatedAgents[groupName];
                     }
                 });
 
-                this.groups = newGroups;
+                this.entity.relatedAgents = newGroups;
                 this.reorderGroups();
 
                 if (this.entity.fetchFields[oldGroupName]) {
@@ -185,8 +185,8 @@ app.component('opportunity-committee-groups', {
         },
 
         reorderGroups() {
-            if (Object.keys(this.groups).length > 0) {
-                const groupsKeys = Object.keys(this.groups);
+            if (Object.keys(this.entity.relatedAgents).length > 0) {
+                const groupsKeys = Object.keys(this.entity.relatedAgents);
                 const indexMinervaVote = groupsKeys.indexOf(this.minervaGroup);
     
                 if (indexMinervaVote != -1 && indexMinervaVote < groupsKeys.length - 1) {
@@ -195,12 +195,12 @@ app.component('opportunity-committee-groups', {
                     
                     const newGroups = {};
                     groupsKeys.forEach(groupKey => {
-                        newGroups[groupKey] = this.groups[groupKey];
+                        newGroups[groupKey] = this.entity.relatedAgents[groupKey];
                     });
                     
-                    this.groups = {};
+                    this.entity.relatedAgents = {};
                     setTimeout(() => {
-                        this.groups = {...newGroups};
+                        this.entity.relatedAgents = {...newGroups};
                     });
                 }
             }
@@ -216,6 +216,10 @@ app.component('opportunity-committee-groups', {
             }
 
             this.autoSave();
-        }
+        },
+
+        renameTab(event, index) {
+            this.$refs.tabs.tabs[index].label = event.target.value;
+        },
     },
 });
