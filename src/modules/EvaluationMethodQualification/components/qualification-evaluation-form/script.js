@@ -102,7 +102,7 @@ app.component('qualification-evaluation-form', {
         showSectionAndCriterion(type) {
             return (
                 !type.ranges.length || !type.categories.length || !type.proponentTypes.length ||      
-                type.ranges.some(range => range.label === this.entity.range) ||
+                type.ranges.some(range => range === this.entity.range) ||
                 type.categories.includes(this.entity.category) || 
                 type.proponentTypes.includes(this.entity.proponentType)
             );
