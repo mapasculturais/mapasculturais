@@ -27,7 +27,27 @@ app.component('opportunity-registration-filter-configuration', {
         infoReviewer: {
             type: Object,
             required: false
-        }
+        },
+
+        useDistributionField: {
+            type: Boolean,
+            default: false
+        },
+
+        isSection: {
+            type: Boolean,
+            default: false
+        },
+
+        isCriterion: {
+            type: Boolean,
+            default: false
+        },
+
+        titleModal: {
+            type: String,
+            default: ''
+        },
     },
 
     watch: {
@@ -57,22 +77,34 @@ app.component('opportunity-registration-filter-configuration', {
 
     computed: {
         filteredFields() {
-            return {
-                categories: this.registrationCategories.filter(cat => !this.excludeFields.includes('category')),
-                proponentTypes: this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType')),
-                ranges: this.registrationRanges.filter(range => !this.excludeFields.includes('range'))
-            };
+            if (this.isCriterion) {
+                const section = this.entity.sections.find(section => section.id === this.defaultValue.sid);
+                return {
+                    categories: section.categories,
+                    proponentTypes: section.proponentTypes,
+                    ranges: section.ranges
+                }
+            } else {
+                return {
+                    categories: this.registrationCategories.filter(cat => !this.excludeFields.includes('category')),
+                    proponentTypes: this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType')),
+                    ranges: this.registrationRanges.filter(range => !this.excludeFields.includes('range'))
+                };
+            }
         },
 
         fillTagsList() {
             let groupData = this.defaultValue || {};
             this.tagsList = [];
 
-            if (!this.isGlobal) {
+            if (!this.isGlobal && !this.isSection && !this.isCriterion) {
                 groupData = this.getAgentData() || {};
             }
 
             Object.entries(groupData).forEach(([key, values]) => {
+                if ((this.isSection && this.excludeFields.includes(key)) || (this.isCriterion && this.excludeFields.includes(key))) {
+                    return;
+                }
                 if (Array.isArray(values)) {
                     values.forEach(value => {
                         const tag = `${this.dictTypes(key)}: ${value}`;
@@ -121,6 +153,10 @@ app.component('opportunity-registration-filter-configuration', {
 
             if (this.isGlobal) {
                 this.globalConfig();
+            } else if(this.isSection) {
+                this.sectionConfig();
+            } else if (this.isCriterion) {
+                this.criteriaConfig();
             } else {
                 this.evaluatorConfig();
             }
@@ -139,8 +175,11 @@ app.component('opportunity-registration-filter-configuration', {
         dictTypes(type, reverse = false) {
             const typeDictionary = {
                 'category': 'Categoria',
+                'categories': 'Categorias',
                 'proponentType': 'Tipos do proponente',
+                'proponentTypes': 'Tipos de proponente',
                 'range': 'Faixa/Linha',
+                'ranges': 'Faixas/Linhas',
                 'distribution': 'Distribuição',
             };
 
@@ -159,6 +198,10 @@ app.component('opportunity-registration-filter-configuration', {
 
             if(this.isGlobal) {
                 this.removeGlobal(key, value);
+            } else if (this.isSection) {
+                this.removeSectionConfig(key, value);
+            } else if (this.isCriterion) {
+                this.removeCriteriaConfig(key, value);
             } else {
                 this.removeIndividual(key, value);
             }
@@ -403,7 +446,110 @@ app.component('opportunity-registration-filter-configuration', {
             }
 
             return agentData;
-        }
+        },
+
+        sectionConfig() {
+            let field = '';
+            if (this.selectedField == 'category') {
+                field = 'categories';
+            } else if (this.selectedField == 'proponentType') {
+                field = 'proponentTypes';
+            } else if (this.selectedField == 'range') {
+                field = 'ranges';
+            }
+    
+            if (!this.configs[field]) {
+                this.configs[field] = [];
+            }
+
+            this.selectedConfigs.forEach(config => {
+                if (!this.configs[field].includes(config)) {
+                    this.configs[field].push(config);
+                }
+            });
+
+            this.selectedConfigs = [];
+        },
+
+        removeSectionConfig(key, value) {
+            const section = this.entity.sections.find(section => section.id === this.defaultValue.id);
+            const criterias = this.entity.criteria.filter(crit => crit.sid === section.id);  
+            if (section[key]) {
+                section[key] = section[key].filter(config => config != value);
+            }
+            if (criterias.find(crit => crit[key])) {
+                criterias.forEach(crit => {
+                    crit[key] = crit[key].filter(config => config != value);
+                });
+            }
+        },
+
+        criteriaConfig() {
+            let field = '';
+            if (this.selectedField == 'category') {
+                field = 'categories'
+            }
+
+            if (this.selectedField == 'proponentType') {
+                field = 'proponentTypes'
+            }
+
+            if (this.selectedField == 'range') {
+                field = 'ranges'
+            }
+    
+            if (!this.configs[field]) {
+                this.configs[field] = [];
+            }
+            
+            this.selectedConfigs.forEach(config => {
+                if (!this.configs[field].includes(config)) {
+                    this.configs[field].push(config);
+                }
+            });
+
+            this.selectedConfigs = [];
+        },
+
+        removeCriteriaConfig(key, value) {
+            const criteria = this.entity.criteria.find(crit => crit.id === this.defaultValue.id);
+            if (criteria[key]) {
+                criteria[key] = criteria[key].filter(config => config != value);
+            }
+        },
+
+        showField(type) {
+            if (this.isSection) {
+                switch (type) {
+                    case 'category':
+                        return this.registrationCategories.length > 1;
+                    case 'proponentType':
+                        return this.registrationProponentTypes.length > 1;
+                    case 'range':
+                        return this.registrationRanges.length > 1;
+                }
+            } else if (this.isCriterion) {
+                const criteria = this.entity.criteria.find(crit => crit.id === this.defaultValue.id);
+                const section = this.entity.sections.find(section => section.id === criteria.sid);
+                switch (type) {
+                    case 'category':
+                        return section.categories?.length > 1;
+                    case 'proponentType':
+                        return section.proponentTypes?.length > 1;
+                    case 'range':
+                        return section.ranges?.length > 1;
+                }
+            } else {
+                switch (type) {
+                    case 'category':
+                        return this.registrationCategories.length > 0;
+                    case 'proponentType':
+                        return this.registrationProponentTypes.length > 0;
+                    case 'range':
+                        return this.registrationRanges.length > 0;
+                }
+            }
+        },
     },
 
     mounted() {

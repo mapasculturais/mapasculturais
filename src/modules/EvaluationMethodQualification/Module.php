@@ -85,7 +85,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         return $result;
     }
 
-    public function valueToString($value)
+    protected function _valueToString($value)
     {
         if(is_null($value)){
             return i::__('');
@@ -181,15 +181,20 @@ class Module extends \MapasCulturais\EvaluationMethod
               
         foreach($evaluation_method_configuration->criteria as $key => $c){
             if(isset($data[$c->id])){
-                $val = $data[$c->id];
-                $options = ['Habilitado', 'Inabilitado', 'Não se aplica'];
+                $values = $data[$c->id];
+                $options = ['Habilitado', 'Inabilitado', 'Não se aplica', 'Outras'];
                 if($c->options) {
                     $options = array_merge($c->options, $options);
                 }
-                if(!in_array($val, $options)){
-                    $errors[] = i::__("O valor do critério {$c->name} é inválido");
-                    break;
-                } 
+
+                if(is_array($values)) {
+                    foreach($values as $val) {
+                        if(!in_array($val, $options)){
+                            $errors[] = i::__("O valor do critério {$c->name} é inválido");
+                            break;
+                        } 
+                    }
+                }
             }
         }
 

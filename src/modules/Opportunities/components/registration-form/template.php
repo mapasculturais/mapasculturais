@@ -16,15 +16,15 @@
  ?>
 <div class="registration-form">
     <?php $this->applyComponentHook("begin") ?>
-    <!-- @TODO: remover comentário quando a implementação estiver pronta -->
-    <!-- <v1-embed-tool v-if="isValid()" iframe-id="registration-form" route="registrationform" :id="registration.id"></v1-embed-tool> -->
     <form v-if="isValid" >
         <mc-card v-for="section in sections" class="registration-form__section">
             <template v-if="section.title" #title>{{section.title}}</template>
             <template #content>
                 <p>{{section.description}}</p>
                 <template v-for="field in section.fields" :key="field.fieldName || field.groupName">
-                    <entity-field v-if="field.fieldName && field.fieldType !== 'persons'" 
+                    <registration-field-persons v-if="field.fieldType == 'persons'" :registration="registration" :prop="field.fieldName"></registration-field-persons>
+
+                    <entity-field v-else-if="field.fieldName" 
                         :entity="registration" 
                         :prop="field.fieldName" 
                         :field-description="field.description" 
@@ -32,13 +32,10 @@
                         :autosave="60000"
                         :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"></entity-field>
 
-                    <entity-file v-if="field.groupName && field.fieldType !== 'persons'" :entity="registration" :groupName="field.groupName" titleModal="<?php i::_e('Adicionar anexo') ?>" :title="field.title" editable></entity-file>
-
-                    <registration-field-persons v-if="field.fieldType == 'persons'" :registration="registration" :prop="field.fieldName"></registration-field-persons>
+                    <entity-file v-else-if="field.groupName" :entity="registration" :groupName="field.groupName" titleModal="<?php i::_e('Adicionar anexo') ?>" :title="field.title" editable></entity-file>
                 </template>
             </template>
         </mc-card>
-
     </form>
 
     <div v-else>

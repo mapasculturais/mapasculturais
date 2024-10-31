@@ -84,6 +84,7 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $query = [];
         $query['@limit'] = $this->limit;
         $query['@page'] = $this->page;
+        $query['@order'] = $job->query['@order'] ?? 'id ASC';
         $opportunity_controller = $app->controller('opportunity');
         $opportunity_controller->data = $opportunity_controller->postData;
         $evaluations = $opportunity_controller->apiFindEvaluations($opportunity->id, $query);

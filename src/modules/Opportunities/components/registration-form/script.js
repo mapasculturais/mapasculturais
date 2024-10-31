@@ -6,6 +6,11 @@ app.component('registration-form', {
             type: Entity,
             required: true
         },
+
+        step: {
+            type: Entity,
+            required: true
+        },
     },
     
     setup (props, { slots }) {
@@ -88,7 +93,7 @@ app.component('registration-form', {
             const sections = [];
 
             let currentSection = { ...sectionSkel, fields: [] };
-            for (let field of this.fields) {
+            for (let field of this.stepFields) {
                 if (field.fieldType == 'section') {
                     currentSection = { ...sectionSkel, fields: [] };
                     sections.push(currentSection);
@@ -108,6 +113,16 @@ app.component('registration-form', {
             }
 
             return sections;
-        }
+        },
+
+        stepFields () {
+            return this.fields.filter((field) => {
+                return field.step?.id === this.step._id;
+            });
+        },
+
+        stepName () {
+            return this.step.name || this.stepFields[0]?.step.name || '';
+        },
     },
 });

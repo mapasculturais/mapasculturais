@@ -1,10 +1,22 @@
 app.component('registration-actions', {
     template: $TEMPLATES['registration-actions'],
 
+    emits: ['nextStep', 'previousStep'],
+
     props: {
         registration: {
             type: Entity,
             required: true
+        },
+
+        steps: {
+            type: Array,
+            required: true
+        },
+
+        stepIndex: {
+            type: Number,
+            default: 0
         },
 
         editableFields: {
@@ -49,6 +61,27 @@ app.component('registration-actions', {
             isValidated: false,
             descriptions: $DESCRIPTIONS.registration
         }
+    },
+
+    computed: {
+        canSubmit () {
+            return this.canValidate && this.isValidated;
+        },
+
+        canValidate () {
+            const isLastStep = this.stepIndex === this.steps.length - 1;
+            return isLastStep;
+        },
+
+        step () {
+            return this.steps[this.stepIndex];
+        },
+    },
+
+    watch: {
+        stepIndex () {
+            this.isValidated = false;
+        },
     },
     
     methods: {
@@ -98,6 +131,7 @@ app.component('registration-actions', {
             return this.text('Campo não identificado');
 
         },
+
         async send() {
             const route = this.editableFields ? 'sendEditableFields' : 'send';
             const data = {id: this.registration.id};
@@ -119,41 +153,37 @@ app.component('registration-actions', {
                 console.error(error);
             }
         },
-        async validate() {
+
+        async validate(step = undefined) {
             const messages = useMessages();
             try {
-                if(Object.keys(this.registration.__validationErrors).length > 0){
+                if (Object.keys(this.registration.__validationErrors).length > 0) {
                     messages.error(this.text('Corrija os erros indicados'));
-                }else{
+                    return false;
+                } else {
                     await this.save();
-                    const success = await this.registration.POST('validateEntity', {});
+                    const success = await this.registration.POST('validateEntity', { data: { step } });
 
                     if (success) {
                         this.isValidated = true;
-                        messages.success(this.text('Validado'));
+
+                        if (!step) {
+                            messages.success(this.text('Validado'));
+                        }
                     }
+
+                    return success;
                 }
             } catch (error) {
                 console.error(error);
+                return false;
             }
         },
-        async save() {
-            const iframe = document.getElementById('registration-form');
-            const registration = this.registration;
-            if (iframe) {
-                const promise = new Promise((resolve, reject) => {
-                    Promise.all([
-                        registration.save(300, false),
-                    ]).then((values) => {
-                        resolve(values[0]);
-                    });
-                });
-                return promise;
 
-            } else {
-                return registration.save(300, false);
-            }
+        async save() {
+            return this.registration.save(300, false);
         },
+
         exit() {
             this.registration.save().then(() => {
                 if (window.history.length > 2) {
@@ -162,6 +192,18 @@ app.component('registration-actions', {
                     window.location.href = Utils.createUrl('panel', 'index');
                 }
             });
+        },
+
+        async previousStep() {
+            if (await this.validate(this.step._id)) {
+                this.$emit('previousStep', this.stepIndex - 1);
+            }
+        },
+
+        async nextStep() {
+            if (await this.validate(this.step._id)) {
+                this.$emit('nextStep', this.stepIndex + 1);
+            }
         },
     },
 });

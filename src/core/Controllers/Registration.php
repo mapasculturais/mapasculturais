@@ -613,6 +613,34 @@ class Registration extends EntityController {
     
     }
 
+    /**
+     * Filter errors, returning only those matching the current step
+     */
+    private function stepErrors(array $errors, int $step_id, EntityRegistration $entity) {
+        $fields = $entity->opportunity->getRegistrationFieldConfigurations();
+        $files = $entity->opportunity->getRegistrationFileConfigurations();
+
+        foreach ($errors as $field_name => $message) {
+            if (str_starts_with($field_name, 'field_')) {
+                foreach ($fields as $field) {
+                    if ($field->getFieldName() === $field_name && $field->step->id !== $step_id) {
+                        unset($errors, $field_name);
+                    }
+                }
+            }
+
+            if (str_starts_with($field_name, 'rfc_')) {
+                foreach ($files as $file) {
+                    if ($file->getFileGroupName() === $field_name && $file->step->id !== $step_id) {
+                        unset($errors, $field_name);
+                    } 
+                }
+            }
+        }
+
+        return $errors;
+    }
+
     function POST_validateEntity() {
         $entity = $this->requestedEntity;
 
@@ -627,6 +655,10 @@ class Registration extends EntityController {
         }
         
         if ($errors = $entity->getValidationErrors()) {
+            if ($step_id = $this->data['step'] ?? null) {
+                $errors = $this->stepErrors($errors, $step_id, $entity);
+            }
+
             $this->errorJson($errors);
         } else {
             $this->json(true);

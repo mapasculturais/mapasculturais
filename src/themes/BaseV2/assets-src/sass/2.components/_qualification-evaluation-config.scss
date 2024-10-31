@@ -4,44 +4,63 @@
     &__card {
         border-radius: var(--mc-border-radius-xs);
         border: var(--mc-border-hairline) var(--mc-gray-300);
+        margin-bottom: size(24);
     }
 
     &__header {
         padding: size(24) size(23);
-    }
-
-    .title {
-        display: grid;
-        grid-template-columns: 1fr size(256);
-        gap: size(16);
-
-        @media (max-width: 884px) {
-            grid-template-columns: 1fr;
-        }
-
-        &__buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
+   
+        .title {
+            display: grid;
+            grid-template-columns: 1fr size(115);
+            gap: size(32);
+    
             @media (max-width: 884px) {
-                flex-direction: column;
-                gap: size(32);
+                grid-template-columns: 1fr;
+            }
+    
+            &__buttons {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+    
+                @media (max-width: 884px) {
+                    flex-direction: column;
+                    gap: size(32);
+                }
             }
         }
     }
 
+
+    &__section-filters, &__criteria-filters {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__filters-input {
+        display: flex;
+        gap: size(8);
+        align-items: center;
+    }
+
     &__criterions {
         .criterions__title {
-            padding: size(18) size(23);
+            padding: 0 size(23);
+            label {
+                font-size: var(--mc-font-size-sm);
+                font-weight: var(--mc-font-semibold);
+            }
         }
 
         .criterion {
-            border-top: var(--mc-border-hairline) var(--mc-gray-300);
-            padding: size(16) size(20);
             display: grid;
             gap: size(32);
-            grid-template-columns: calc(65% - size(36)) calc(35% - size(20));
+            grid-template-columns: 1fr size(93);
 
             @media (max-width: 884px) {
                 grid-template-columns: 1fr;
@@ -65,16 +84,44 @@
 
     }
 
-    &__modal-content {
+    &__criterion {
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        margin: size(24); 
+        padding: size(20);
+        display: flex;
+        flex-direction: column;
         gap: size(24);
+    }
 
-        &__label {
-            flex-direction: column;
+    &__config-criterion {
+        gap: size(24);
+        
+        &__config {
+            gap: size(24);
+            label {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
-
-        textarea {
-            min-height: size(139);
+        
+        &__checkboxes {
+            label {
+                flex-direction: row;
+                align-items: center;
+            }
         }
+        
+        &__input {
+            flex-direction: row;
+            gap: size(32);
+            justify-content: space-between;
+            
+            input {
+                max-width: 100%;
+                width: 75%;
+            }
+        }
+        
     }
 
     &__add-criterion {
