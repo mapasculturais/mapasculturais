@@ -14,15 +14,15 @@ $this->import('
 ?>
 
 <div class="opportunity-registration-filter-configuration">
-    <mc-modal title="<?= i::__('Configuração de filtros de inscrição para avaliadores/comissão') ?>">
+    <mc-modal :title="titleModal || '<?= i::__('Configuração de filtros de inscrição para avaliadores/comissão') ?>'">
         <div class="grid-12">
             <div class="col-12 field">
                 <select v-model="selectedField" @change="handleSelection">
                     <option value="" disabled selected>Selecione um filtro</option>
-                    <option v-if="registrationCategories.length > 0" value="category" :disabled="isFieldExcluded('category')"><?php i::_e("Categoria") ?></option>
-                    <option v-if="registrationProponentTypes.length > 0" value="proponentType" :disabled="isFieldExcluded('proponentType')"><?php i::_e("Tipos do proponente") ?></option>
-                    <option v-if="registrationRanges.length > 0" value="range" :disabled="isFieldExcluded('range')"><?php i::_e("Faixa/Linha") ?></option>
-                    <option value="distribution" :disabled="isGlobal"><?php i::_e("Distribuição") ?></option>
+                    <option v-if="showField('category')" value="category" :disabled="isFieldExcluded('category')"><?php i::_e("Categoria") ?></option>
+                    <option v-if="showField('proponentType')" value="proponentType" :disabled="isFieldExcluded('proponentType')"><?php i::_e("Tipos do proponente") ?></option>
+                    <option v-if="showField('range')" value="range" :disabled="isFieldExcluded('range')"><?php i::_e("Faixa/Linha") ?></option>
+                    <option v-if="useDistributionField" value="distribution" :disabled="isGlobal"><?php i::_e("Distribuição") ?></option>
                     <option v-if="Object.keys(registrationSelectionFields).length > 0" v-for="(options, title) in registrationSelectionFields" :key="title" :value="title" :disabled="isFieldExcluded(title)">{{ title }}</option>
                 </select>
             </div>

@@ -53,7 +53,11 @@ app.component('mc-multiselect', {
         let dataItems = {};        
         if (Array.isArray(this.items)) {
             for (let item of this.items) {
-                dataItems[item] = item;
+                if(typeof item == 'object') {
+                    dataItems[item.value] = item
+                } else {
+                    dataItems[item] = item;
+                }
             }
         } else {
             dataItems = Object.assign({}, this.items);
@@ -65,7 +69,7 @@ app.component('mc-multiselect', {
         filteredItems() {
             const result = [];
             for (let value in this.dataItems) {
-                const label = this.dataItems[value];
+                let label = typeof this.dataItems[value] == 'object' ? this.dataItems[value].label : this.dataItems[value];
                 const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
