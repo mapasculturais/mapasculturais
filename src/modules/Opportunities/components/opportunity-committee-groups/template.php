@@ -99,6 +99,7 @@ $this->import('
                             v-model:default-value="entity.fetchFields[groupName]"
                             :excludeFields="globalExcludeFields"
                             @updateExcludeFields="updateExcludedFields('global', $event)"
+                            useDistributionField
                             is-global
                         >
                         </opportunity-registration-filter-configuration>
