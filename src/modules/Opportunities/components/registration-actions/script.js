@@ -162,7 +162,7 @@ app.component('registration-actions', {
                     return false;
                 } else {
                     await this.save();
-                    const success = await this.registration.POST('validateEntity', { step });
+                    const success = await this.registration.POST('validateEntity', { data: { step } });
 
                     if (success) {
                         this.isValidated = true;
@@ -195,13 +195,13 @@ app.component('registration-actions', {
         },
 
         async previousStep() {
-            if (await this.validate(this.stepIndex)) {
+            if (await this.validate(this.step._id)) {
                 this.$emit('previousStep', this.stepIndex - 1);
             }
         },
 
         async nextStep() {
-            if (await this.validate(this.stepIndex)) {
+            if (await this.validate(this.step._id)) {
                 this.$emit('nextStep', this.stepIndex + 1);
             }
         },
