@@ -10,8 +10,8 @@ $this->import('
 ?>
 <div class="qualification-evaluation-form">
     <p class="semibold"><?php i::_e('Critérios de Avaliação') ?></p>
-    <div class="qualification-evaluation-form__section field" v-for="section in sections" :key="section.id">
-        <div v-if="showSectionAndCriterion(section)" class="field">
+    <div v-for="section in sections" :key="section.id">
+        <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
             <h3>{{ section.name }}</h3>
             <div class="qualification-evaluation-form__criterion" v-for="crit in section.criteria" :key="crit.id">
                 <div v-if="showSectionAndCriterion(crit)" class="field">
@@ -35,26 +35,26 @@ $this->import('
                             </template>
                         </mc-popover>
                     </div>
-                    <div>
-                        <div class="grid-12">
-                            <label class="col-3">
+                    <div class="field">
+                        <div class="qualification-evaluation-form__criterion-options field">
+                            <label class="qualification-evaluation-form__criterion-options-label">
                                 <input type="radio" :name="'option-' + crit.id" value="Habilitado" :checked="formData.data[crit.id]?.includes('Habilitado')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
                                 <?php i::_e("Habilitado") ?>
                             </label>
-                            <label class="col-3">
+                            <label class="qualification-evaluation-form__criterion-options-label">
                                 <input type="radio" :name="'option-' + crit.id" value="Inabilitado" :checked="formData.data[crit.id]?.includes('Inabilitado')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
                                 <?php i::_e("Inabilitado") ?>
                             </label>
-                            <label v-if="crit.notApplyOption === 'true'" class="col-3">
+                            <label v-if="crit.notApplyOption === 'true'" class="qualification-evaluation-form__criterion-options-label">
                                 <input type="radio" :name="'option-' + crit.id" value="Não se aplica" :checked="formData.data[crit.id]?.includes('Não se aplica')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
                                 <?php i::_e("Não se aplica") ?>
                             </label>
-                            <label v-if="crit.otherReasonsOption === 'true'" class="col-3">
+                            <label v-if="crit.otherReasonsOption === 'true'" class="qualification-evaluation-form__criterion-options-label">
                                 <input type="radio" :name="'option-' + crit.id" value="Outras" :checked="formData.data[crit.id]?.includes('Outras')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
                                 <?php i::_e("Outras") ?>
                             </label>
 
-                            <div v-if="formData.data[crit.id]?.includes('Inabilitado')" class="col-12 grid-12">
+                            <div v-if="formData.data[crit.id]?.includes('Inabilitado')" class="qualification-evaluation-form__criterion-options-reasons field">
                                 <h4 class="col-12"><?php i::_e("Motivos para inabilitação") ?></h4>
 
                                 <label v-for="option in crit.options" :key="option" class="col">
