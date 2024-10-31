@@ -153,9 +153,13 @@ app.component('opportunity-subscription' , {
             return phase;
         },
 
+        proponentAgentRelation() {
+            return this.entity.proponentAgentRelation ?? {};
+        },
+
         selectAgentRelationColetivo() {
-           return (this.registrationProponentType == 'Coletivo' && this.entity.proponentAgentRelation['Coletivo'] == true) 
-                || (this.registrationProponentType == 'Pessoa Jurídica' && this.entity.proponentAgentRelation['Pessoa Jurídica'] == true);
+            return (this.registrationProponentType == 'Coletivo' && this.proponentAgentRelation['Coletivo'] == true) 
+                || (this.registrationProponentType == 'Pessoa Jurídica' && this.proponentAgentRelation['Pessoa Jurídica'] == true);
         },
     },
 
@@ -204,10 +208,10 @@ app.component('opportunity-subscription' , {
             if (!this.agent) {
                 messages.error(this.text('selecione agente'));
                 return false;
-            } else if (this.registrationProponentType == 'Coletivo' && this.entity.proponentAgentRelation['Coletivo'] == true && !this.agentCollective) {
+            } else if (this.registrationProponentType == 'Coletivo' && this.proponentAgentRelation['Coletivo'] == true && !this.agentCollective) {
                 messages.error(this.text('selecione agente coletivo'));
                 return false;
-            } else if (this.registrationProponentType == 'Pessoa Jurídica' && this.entity.proponentAgentRelation['Pessoa Jurídica'] == true && !this.agentCollective) {
+            } else if (this.registrationProponentType == 'Pessoa Jurídica' && this.proponentAgentRelation['Pessoa Jurídica'] == true && !this.agentCollective) {
                 messages.error(this.text('selecione agente coletivo'));
                 return false;
             } else if (this.categories?.length && !this.category) {
