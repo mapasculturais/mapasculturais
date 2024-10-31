@@ -116,7 +116,7 @@ app.component('opportunity-registration-filter-configuration', {
             return this.excludeFields.includes(field);
         },
 
-        addConfig() {
+        addConfig(modal) {
             this.configs = this.defaultValue ?? {};
 
             if (this.isGlobal) {
@@ -125,13 +125,15 @@ app.component('opportunity-registration-filter-configuration', {
                 this.evaluatorConfig();
             }
 
+            this.selectedField = '';
             this.$emit('update:defaultValue', this.configs);
             this.loadExcludeFields();
             this.save();
+            modal.close();
         },
 
         async save() {
-            await this.entity.save();
+            this.entity.save();
         },
 
         dictTypes(type, reverse = false) {
@@ -167,18 +169,20 @@ app.component('opportunity-registration-filter-configuration', {
 
         removeGlobal(key, value) {
             if (this.defaultValue && this.defaultValue[key]) {
+                this.selectedConfigs = this.selectedConfigs.filter(config => config != value);
+                
                 const configArray = this.defaultValue[key];
-
                 const index = configArray.indexOf(value);
                 if (index !== -1) {
-                    configArray.splice(index, 1);
-                }
+                    this.defaultValue[key].splice(index, 1);
+                }                
             }
         },
 
         removeIndividual(key, value) {
             const agentId = this.infoReviewer.agentUserId;
-        
+            this.selectedConfigs = this.selectedConfigs.filter(config => config != value);
+
             if (!agentId) {
                 return;
             }
@@ -263,11 +267,16 @@ app.component('opportunity-registration-filter-configuration', {
                 this.configs[this.selectedField] = [];
             }
 
-            this.selectedConfigs.forEach(config => {
+            let newConfig = [];
+            this.selectedConfigs.forEach(config => {;
                 if (!this.configs[this.selectedField].includes(config)) {
-                    this.configs[this.selectedField].push(config);
+                    newConfig.push(config);
+                } else {
+                    newConfig = newConfig.remove(config);
                 }
             });
+            this.configs[this.selectedField] = newConfig;                
+            
         },
 
         evaluatorConfig() {

@@ -16,7 +16,7 @@ $this->import('
 <div class="opportunity-registration-filter-configuration">
     <mc-modal title="<?= i::__('Configuração de filtros de inscrição para avaliadores/comissão') ?>">
         <div class="grid-12">
-            <div :class="isSelected ? 'col-6 field' : 'col-12 field'">
+            <div class="col-12 field">
                 <select v-model="selectedField" @change="handleSelection">
                     <option value="" disabled selected>Selecione um filtro</option>
                     <option v-if="registrationCategories.length > 0" value="category" :disabled="isFieldExcluded('category')"><?php i::_e("Categoria") ?></option>
@@ -27,51 +27,43 @@ $this->import('
                 </select>
             </div>
 
-            <div v-if="selectedField == 'category'" class="opportunity-registration-filter-configuration__related-input col-6 field">
-                <select class="scrollbar" v-model="selectedConfigs" multiple>
-                    <option v-for="category in filteredFields.categories" :key="category" :value="category">
-                        {{ category }}
-                    </option>
-                </select>
+            <div v-if="selectedField == 'category'" class="opportunity-registration-filter-configuration__related-input col-12 field">
+                <label class="input__label input__checkboxLabel input__multiselect" v-for="category in filteredFields.categories">
+                    <input :checked="selectedConfigs.includes(category)" type="checkbox" :value="category" v-model="selectedConfigs"> {{category}} <!-- @change="change($event)" -->
+                </label>
             </div>
 
-            <div v-if="selectedField == 'proponentType'" class="opportunity-registration-filter-configuration__related-input col-6 field">
-                <select class="scrollbar" v-model="selectedConfigs" multiple>
-                    <option v-for="proponentType in filteredFields.proponentTypes" :key="proponentType" :value="proponentType">
-                        {{ proponentType }}
-                    </option>
-                </select>
+            <div v-if="selectedField == 'proponentType'" class="opportunity-registration-filter-configuration__related-input col-12 field">
+                <label class="input__label input__checkboxLabel input__multiselect" v-for="proponentType in filteredFields.proponentTypes">
+                    <input :checked="selectedConfigs.includes(proponentType)" type="checkbox" :value="proponentType" v-model="selectedConfigs"> {{proponentType}} <!-- @change="change($event)" -->
+                </label>
             </div>
 
-            <div v-if="selectedField == 'range'" class="opportunity-registration-filter-configuration__related-input col-6 field">
-                <select class="scrollbar" v-model="selectedConfigs" multiple>
-                    <option v-for="range in filteredFields.ranges" :key="range" :value="range">
-                        {{ range }}
-                    </option>
-                </select>
+            <div v-if="selectedField == 'range'" class="opportunity-registration-filter-configuration__related-input col-12 field">
+                <label class="input__label input__checkboxLabel input__multiselect" v-for="range in filteredFields.ranges">
+                    <input :checked="selectedConfigs.includes(range)" type="checkbox" :value="range" v-model="selectedConfigs"> {{range}} <!-- @change="change($event)" -->
+                </label>
             </div>
 
-            <div v-if="selectedField == 'distribution'" class="opportunity-registration-filter-configuration__related-input col-6 field">
+            <div v-if="selectedField == 'distribution'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <input type="text" placeholder="00-99" maxlength="5" v-model="selectedDistribution" />
             </div>
 
-            <div v-if="registrationSelectionFields[selectedField] && registrationSelectionFields[selectedField].length > 0" class="opportunity-registration-filter-configuration__related-input col-6 field">
-                <select class="scrollbar" v-model="selectedConfigs" multiple>
-                    <option v-for="option in registrationSelectionFields[selectedField]" :key="option" :value="option">
-                        {{ option }}
-                    </option>
-                </select>
+            <div v-if="registrationSelectionFields[selectedField] && registrationSelectionFields[selectedField].length > 0" class="opportunity-registration-filter-configuration__related-input col-12 field">
+                <label class="input__label input__checkboxLabel input__multiselect" v-for="option in registrationSelectionFields[selectedField]">
+                    <input :checked="selectedConfigs[option]" type="option" :value="option" v-model="selectedConfigs"> {{range}} <!-- @change="change($event)" -->
+                </label>
             </div>
         </div>
 
         <template #actions="modal">
-            <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('Cancelar') ?></button>
-            <button class="button button--primary" @click="addConfig(); modal.close();"><?= i::__('Confirmar') ?></button>
+            <button class="button button--text button--text-del" @click="modal.close(); this.selectedField = '';"><?= i::__('Cancelar') ?></button>
+            <button class="button button--primary" @click="addConfig(modal)"><?= i::__('Confirmar') ?></button>
         </template>
 
         <template #button="modal">
             <button type="button" @click="modal.open();" class="opportunity-registration-filter-configuration__add-filter button button--rounded button--sm button--icon button--primary">
-                <?= i::__('Adicionar') ?>
+                <?= i::__('Adicionar filtro') ?>
                 <mc-icon name="add"></mc-icon>
             </button>
         </template>
