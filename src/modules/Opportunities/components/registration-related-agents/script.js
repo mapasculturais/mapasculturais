@@ -38,7 +38,7 @@ app.component('registration-related-agents', {
 
         showCardForRelation() {
             const proponentType = this.registration.proponentType;
-            const proponentAgentRelation = this.opportunity.proponentAgentRelation;
+            const proponentAgentRelation = this.opportunity.proponentAgentRelation ?? {};
             const relatedAgents = this.registration.relatedAgents;
             
             return (
