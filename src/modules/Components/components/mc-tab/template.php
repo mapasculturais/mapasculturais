@@ -5,5 +5,5 @@
  */
 ?>
 <section v-if="isActive || cached" v-show="isActive" :aria-hidden="!isActive" class="tab-component" :class="slug" role="tabpanel">
-    <slot></slot>
+    <slot :slug="slug"></slot>
 </section>

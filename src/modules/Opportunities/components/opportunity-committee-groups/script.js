@@ -161,6 +161,9 @@ app.component('opportunity-committee-groups', {
                     this.entity.fetchFields[newGroupName] = this.entity.fetchFields[oldGroupName];
                     delete this.entity.fetchFields[oldGroupName]; 
                 }
+    
+                const tabs = this.$refs.tabs;
+                tabs.selectTab(newGroupName);
             });
 
             this.entity.agentRelations.forEach((relation) => {
@@ -222,6 +225,11 @@ app.component('opportunity-committee-groups', {
                 return tab.slug == slug;
             })
             tab.label = event.target.value;
+
+            this.renameTimeout = setTimeout(() => {
+                console.log(event, slug, tab);                
+                this.renameGroup(slug, event.target.value);
+            }, 2000)
         },
     },
 });
