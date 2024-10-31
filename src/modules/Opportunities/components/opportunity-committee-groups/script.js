@@ -20,7 +20,6 @@ app.component('opportunity-committee-groups', {
             minervaGroup: '@tiebreaker',
             globalExcludeFields: [],
             individualExcludeFields: [],
-            relatedAgentsIndex: Object.keys(this.entity.relatedAgents),
             selectedFields: {
                 global: '',
                 individual: ''
@@ -218,8 +217,11 @@ app.component('opportunity-committee-groups', {
             this.autoSave();
         },
 
-        renameTab(event, index) {
-            this.$refs.tabs.tabs[index].label = event.target.value;
+        renameTab(event, slug) {
+            const tab = this.$refs.tabs.tabs.find(tab => {
+                return tab.slug == slug;
+            })
+            tab.label = event.target.value;
         },
     },
 });

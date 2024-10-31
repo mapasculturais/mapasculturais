@@ -55,60 +55,62 @@ $this->import('
                 </mc-popover>
             </div>
         </template>
-        
-        <mc-tab v-for="([groupName, relations], index) in Object.entries(entity.relatedAgents)" :key="index" :label="groupName" :slug="String(index)">
-            <div class="opportunity-committee-groups__group">
-                <div class="opportunity-committee-groups__edit-group field">
-                    <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
 
-                    <div class="opportunity-committee-groups__edit-group--field">
-                        <input :disabled="groupName == '@tiebreaker'" id="newGroupName" v-model="groupName" class="input" type="text" @input="renameTab($event, index)" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
-                        <mc-confirm-button @confirm="removeGroup(groupName)">
-                            <template #button="modal">
-                                <a class="button button--delete button--icon button--sm" @click="modal.open()">
-                                    <mc-icon name="trash"></mc-icon>
-                                    <?= i::__('Excluir comissão') ?> 
-                                </a>
-                            </template>
-                            <template #message="message">
-                                <?php i::_e('Remover comissão de avaliadores?') ?>
-                            </template>
-                        </mc-confirm-button>
-                    </div> 
-                </div>
-
-                <div class="opportunity-committee-groups__multiple-evaluators">
-                    <div class="field">
-                        <mc-toggle
-                            :modelValue="localValuersPerRegistration[groupName] != null" 
-                            @update:modelValue="changeMultipleEvaluators($event, groupName)"
-                            label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
-                        />
-                        <input v-if="localValuersPerRegistration[groupName] != null" v-model="localValuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
+        <mc-tab v-for="(relations, groupName) in entity.relatedAgents" :key="groupName" :label="groupName != '@tiebreaker' ? groupName : '<?= $this->text('voto de minerva', i::esc_attr__('voto de minerva')) ?>'" :slug="groupName">
+            <template #default="{slug}">
+                <div class="opportunity-committee-groups__group">
+                    <div class="opportunity-committee-groups__edit-group field">
+                        <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
+    
+                        <div class="opportunity-committee-groups__edit-group--field">
+                            <input id="newGroupName" v-model="groupName" class="input" type="text" @input="renameTab($event, slug);" :disabled="groupName == '@tiebreaker'" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
+                            <mc-confirm-button @confirm="removeGroup(groupName)">
+                                <template #button="modal">
+                                    <a class="button button--delete button--icon button--sm" @click="modal.open()">
+                                        <mc-icon name="trash"></mc-icon>
+                                        <?= i::__('Excluir comissão') ?> 
+                                    </a>
+                                </template>
+                                <template #message="message">
+                                    <?php i::_e('Remover comissão de avaliadores?') ?>
+                                </template>
+                            </mc-confirm-button>
+                        </div> 
                     </div>
     
-                    <div class="field">
-                        <mc-toggle
-                            :modelValue="entity?.fetchFields[groupName] && Object.keys(entity.fetchFields[groupName]).length > 0" 
-                            @update:modelValue="enableRegisterFilterConf($event, groupName)"
-                            label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
-                        />
-                        <opportunity-registration-filter-configuration 
-                            v-if="entity.fetchFields[groupName]" 
-                            :entity="entity"
-                            v-model:default-value="entity.fetchFields[groupName]"
-                            :excludeFields="globalExcludeFields"
-                            @updateExcludeFields="updateExcludedFields('global', $event)"
-                            is-global
-                        >
-                        </opportunity-registration-filter-configuration>
+                    <div class="opportunity-committee-groups__multiple-evaluators">
+                        <div class="field">
+                            <mc-toggle
+                                :modelValue="localValuersPerRegistration[groupName] != null" 
+                                @update:modelValue="changeMultipleEvaluators($event, groupName)"
+                                label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
+                            />
+                            <input v-if="localValuersPerRegistration[groupName] != null" v-model="localValuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
+                        </div>
+        
+                        <div class="field">
+                            <mc-toggle
+                                :modelValue="entity?.fetchFields[groupName] && Object.keys(entity.fetchFields[groupName]).length > 0" 
+                                @update:modelValue="enableRegisterFilterConf($event, groupName)"
+                                label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
+                            />
+                            <opportunity-registration-filter-configuration 
+                                v-if="entity.fetchFields[groupName]" 
+                                :entity="entity"
+                                v-model:default-value="entity.fetchFields[groupName]"
+                                :excludeFields="globalExcludeFields"
+                                @updateExcludeFields="updateExcludedFields('global', $event)"
+                                is-global
+                            >
+                            </opportunity-registration-filter-configuration>
+                        </div>
+                    </div>
+                    
+                    <div class="opportunity-committee-groups__evaluators">
+                        <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
                     </div>
                 </div>
-                
-                <div class="opportunity-committee-groups__evaluators">
-                    <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
-                </div>
-            </div>
+            </template>
         </mc-tab>
     </mc-tabs>
 </div>

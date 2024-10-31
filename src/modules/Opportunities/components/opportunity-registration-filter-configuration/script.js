@@ -272,11 +272,13 @@ app.component('opportunity-registration-filter-configuration', {
                 if (!this.configs[this.selectedField].includes(config)) {
                     newConfig.push(config);
                 } else {
-                    newConfig = newConfig.remove(config);
+                    if (newConfig.includes(config)) {
+                        newConfig = newConfig.remove(config);
+                    }
                 }
             });
-            this.configs[this.selectedField] = newConfig;                
-            
+
+            this.configs[this.selectedField] = newConfig;             
         },
 
         evaluatorConfig() {
