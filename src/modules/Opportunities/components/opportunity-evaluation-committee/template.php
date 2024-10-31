@@ -84,6 +84,7 @@ $this->import('
                     @updateExcludeFields="$emit('updateExcludeFields', $event)"
                     :info-reviewer="infoReviewer"
                     class="opportunity-evaluation-committee__card-filter"
+                    useDistributionField
                 />
 
                 <div class="opportunity-evaluation-committee__card-footer"> 
