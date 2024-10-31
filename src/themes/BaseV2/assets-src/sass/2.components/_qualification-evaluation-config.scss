@@ -38,7 +38,8 @@
 
     &__section-filters, &__criteria-filters {
         display: flex;
-        gap: size(32);
+        flex-direction: column;
+        gap: size(16);
     }
 
     &__filters-input {

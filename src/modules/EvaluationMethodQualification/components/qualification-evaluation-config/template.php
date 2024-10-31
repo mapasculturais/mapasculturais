@@ -12,6 +12,8 @@ $this->import('
     mc-icon
     mc-modal
     mc-tag-list
+    mc-toggle
+    opportunity-registration-filter-configuration
 ');
 ?>
 
@@ -39,47 +41,20 @@ $this->import('
                 </div>
 
                 <div class="qualification-evaluation-config__section-filters">
-                    <div v-if="entity.opportunity.registrationCategories.length > 1" class="field">
-                        <label><?php i::_e("Selecione em quais categorias esta seção será utilizada:") ?></label>
-                        <div v-for="category in entity.opportunity.registrationCategories" :key="category">
-                            <label class="qualification-evaluation-config__filters-input">
-                                <input
-                                    type="checkbox"
-                                    :value="category"
-                                    :checked="isChecked(section, 'categories', category)"
-                                    @change="updateSelections(section, 'categories', category, $event.target.checked)" />
-                                {{category}}
-                            </label>
-                        </div>
-                    </div>
-
-                    <div v-if="entity.opportunity.registrationProponentTypes.length > 1" class="field">
-                        <label><?php i::_e("Selecione em quais tipos de proponente esta seção será utilizada:") ?></label>
-                        <div v-for="proponentType in entity.opportunity.registrationProponentTypes" :key="proponentType">
-                            <label class="qualification-evaluation-config__filters-input">
-                                <input
-                                    type="checkbox"
-                                    :value="proponentType"
-                                    :checked="isChecked(section, 'proponentTypes', proponentType)"
-                                    @change="updateSelections(section, 'proponentTypes', proponentType, $event.target.checked)" />
-                                {{proponentType}}
-                            </label>
-                        </div>
-                    </div>
-
-                    <div v-if="entity.opportunity.registrationRanges.length > 1" class="field">
-                        <label><?php i::_e("Selecione em quais faixa/linhas esta seção será utilizada:") ?></label>
-                        <div v-for="range in entity.opportunity.registrationRanges" :key="range">
-                            <label class="qualification-evaluation-config__filters-input">
-                                <input
-                                    type="checkbox"
-                                    :value="range"
-                                    :checked="isChecked(section, 'ranges', range)"
-                                    @change="updateSelections(section, 'ranges', range, $event.target.checked)" />
-                                {{range.label}}
-                            </label>
-                        </div>
-                    </div>
+                    <mc-toggle 
+                        :modelValue="section.showFilters"
+                        @update:modelValue="enableFilterConfigSection($event, section)"
+                        label="<?= i::__('Configurar filtro') ?>"
+                        >
+                    </mc-toggle>
+                    <opportunity-registration-filter-configuration
+                        v-if="section.showFilters"
+                        :entity="entity"
+                        v-model:default-value="section"
+                        :excludeFields="['id', 'name', 'showFilters']"
+                        titleModal="<?= i::__('Configuração de filtros da seção') ?>"
+                        is-section
+                        ></opportunity-registration-filter-configuration>
                 </div>
             </div>
 
@@ -143,47 +118,20 @@ $this->import('
                         </div>
     
                         <div class="qualification-evaluation-config__criteria-filters">
-                            <div v-if="section.categories && criteria.sid === section.id && section.categories.length > 1" class="field">
-                                <label><?php i::_e("Selecione em quais categorias este critério será utilizado:") ?></label>
-                                <div v-for="category in section.categories" :key="category">
-                                    <label class="qualification-evaluation-config__filters-input">
-                                        <input
-                                            type="checkbox"
-                                            :value="category"
-                                            :checked="isChecked(criteria, 'categories', category)"
-                                            @change="updateSelections(criteria, 'categories', category, $event.target.checked)" />
-                                        {{category}}
-                                    </label>
-                                </div>
-                            </div>
-    
-                            <div v-if="section.proponentTypes && criteria.sid === section.id && section.proponentTypes.length > 1" class="field">
-                                <label><?php i::_e("Selecione em quais tipos de proponente este critério será utilizado:") ?></label>
-                                <div v-for="proponentType in section.proponentTypes" :key="proponentType">
-                                    <label class="qualification-evaluation-config__filters-input">
-                                        <input
-                                            type="checkbox"
-                                            :value="proponentType"
-                                            :checked="isChecked(criteria, 'proponentTypes', proponentType)"
-                                            @change="updateSelections(criteria, 'proponentTypes', proponentType, $event.target.checked)" />
-                                        {{proponentType}}
-                                    </label>
-                                </div>
-                            </div>
-    
-                            <div v-if="section.ranges && criteria.sid === section.id && section.ranges.length > 1" class="field">
-                                <label><?php i::_e("Selecione em quais faixa/linhas este critério será utilizado:") ?></label>
-                                <div v-for="range in section.ranges" :key="range">
-                                    <label class="qualification-evaluation-config__filters-input">
-                                        <input
-                                            type="checkbox"
-                                            :value="range"
-                                            :checked="isChecked(criteria, 'ranges', range)"
-                                            @change="updateSelections(criteria, 'ranges', range, $event.target.checked)" />
-                                        {{range.label}}
-                                    </label>
-                                </div>
-                            </div>
+                            <mc-toggle 
+                                :modelValue="criteria.showFilters"
+                                @update:modelValue="enableFilterConfigCriteria($event, criteria)"
+                                label="<?= i::__('Configurar filtro') ?>"
+                                >
+                            </mc-toggle>
+                            <opportunity-registration-filter-configuration
+                                v-if="criteria.showFilters"
+                                :entity="entity"
+                                v-model:default-value="criteria"
+                                :excludeFields="['id', 'name', 'showFilters', 'options', 'notApplyOption', 'otherReasonsOption', 'sid', 'weight', 'description']"
+                                titleModal="<?= i::__('Configuração de filtros do critério') ?>"
+                                is-criterion
+                            ></opportunity-registration-filter-configuration>   
                         </div>
                     </div>
                 </div>
