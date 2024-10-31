@@ -32,7 +32,7 @@ app.component('mc-tabs', {
         Vue.provide('tabsProvider', state)
 
         const isActive = (tab) => {
-            return tab.slug === state.activeTab.slug
+            return tab.slug === state.activeTab?.slug
         }
 
         const findTab = (slug) => {
@@ -47,7 +47,7 @@ app.component('mc-tabs', {
                 return
             }
 
-            if (state.activeTab.slug === nextTab.slug) {
+            if (state.activeTab?.slug === nextTab.slug) {
                 context.emit('clicked', { tab: nextTab })
                 return
             }
