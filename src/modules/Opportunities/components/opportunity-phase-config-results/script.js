@@ -18,6 +18,9 @@ app.component('opportunity-phase-config-results' , {
     },
 
     computed: {
+        firstPhase() {
+            return this.phases[0];
+        }
     },
 
     methods: {

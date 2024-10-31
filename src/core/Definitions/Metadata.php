@@ -200,6 +200,12 @@ class Metadata extends \MapasCulturais\Definition{
             },
             'multiselect' => function($value){
                 return json_encode($value);
+            },
+            'location' => function($value) {
+                return json_encode($value);
+            },
+            'bankFields' => function($value){
+                return json_encode($value);
             }
         ];
 
@@ -229,7 +235,13 @@ class Metadata extends \MapasCulturais\Definition{
             'number' => function($value) {
                 return is_null($value) ? null : (float) $value;
             },
+            'location' => function($value) {
+                return is_null($value) ? null : json_decode($value);
+            },
             'json' => function($value) {
+                return is_null($value) ? null : json_decode($value);
+            },
+            'bankFields' => function($value) {
                 return is_null($value) ? null : json_decode($value);
             },
             'DateTime' => function($value) {

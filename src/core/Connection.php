@@ -15,7 +15,7 @@ class Connection extends \Doctrine\DBAL\Connection {
         return $column[0] ?? null;
     }
 
-    function fetchAssoc (string $query, array $params = [], $types = []): array {
-        return $this->fetchAssociative($query, $params, $types);
+    function fetchAssoc (string $query, array $params = [], $types = []): ?array {
+        return $this->fetchAssociative($query, $params, $types) ?: null;
     }
 }

@@ -70,7 +70,7 @@ app.component('technical-evaluation-form', {
             for (let sectionKey in this.sections) {
                 const section = this.sections[sectionKey];
                 if (section.criteria && Array.isArray(section.criteria)) {
-                    total += section.criteria.reduce((acc, criterion) => acc + (criterion.max || 0), 0);
+                    total += section.criteria.reduce((acc, criterion) => parseFloat(acc) + parseFloat((criterion.max || 0)), 0);
                 }
             }
             return total;
@@ -115,8 +115,8 @@ app.component('technical-evaluation-form', {
                 for (let crit of this.sections[sectionIndex].criteria) {
                     let sectionName = this.sections[sectionIndex].name;
                     let value = this.formData.data[crit.id];
-                    console.log(value)
-                    if (value === null || value === "" || value < 0) {
+                    
+                    if (!value && value !== 0) {
                         this.messages.error(`${this.text('on_section')} ${sectionName}, ${this.text('the_field')} ${crit.title} ${this.text('is_required')}`);
                         isValid = true;
                     }

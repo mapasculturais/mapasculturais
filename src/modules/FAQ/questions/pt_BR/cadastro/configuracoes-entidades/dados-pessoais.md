@@ -6,7 +6,7 @@
 
 Dados pessoais são todos os dados que te individualizam e te diferenciam de outras pessoas no *Mapas Culturais*.
 
-&nbsp;
+
 
 #### **É importante lembrar que:**
 

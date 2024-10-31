@@ -10,10 +10,10 @@ return [
     Registration::STATUS_WAITLIST => i::__('Suplente'),
     Registration::STATUS_APPROVED => i::__('Selecionada'),
 
-    'por status descendente' => i::__('por status descendente'),
-    'por status ascendente' => i::__('por status ascendente'),
-    'por resultado das avaliações' => i::__('por resultado das avaliações'),
-    'por resultado das avaliações CONSIDERANDO COTAS' => i::__('por resultado das avaliações CONSIDERANDO COTAS'),
+    'classificação final' => i::__('classificação final'),
+    'status descendente' => i::__('status descendente'),
+    'status ascendente' => i::__('status ascendente'),
+    'resultado das avaliações' => i::__('resultado das avaliações'),
     'mais antigas primeiro' => i::__('mais antigas primeiro'),
     'mais recentes primeiro' => i::__('mais recentes primeiro'),
     'enviadas a mais tempo primeiro' => i::__('enviadas a mais tempo primeiro'),
@@ -33,4 +33,6 @@ return [
     'status alterado com sucesso' => i::__('Status alterado com sucesso'), 
     'First status change should be pending' => i::__('A inscrição está atualmente como rascunho. Para alterar o status, por favor, defina-o como Pendente primeiro'), 
     'Invalid status name' => i::__('Não foi possível alterar o status, fale com admnistrador'), 
+    'pontuação final' => i::__('pontuação final'),
+    'aguardando desempate' => i::__('Aguardando desempate'),
 ];

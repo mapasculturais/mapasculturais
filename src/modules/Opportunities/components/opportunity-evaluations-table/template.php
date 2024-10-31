@@ -39,11 +39,18 @@ $this->import('
                         <h4 class="bold"><?= i::__('Ações:') ?></h4>
                         
                         <div class="opportunity-evaluations-table__actions">
-                            <div v-if="canSee('sendUserEvaluations') && user == global.auth.user.id">
-                                <mc-link :entity="phase.opportunity" route="sendEvaluations" class="button button--primary-outline" :param="phase.opportunity.id"><?= i::__("Enviar avaliações") ?></mc-link>
+                            <div>
+                                <mc-link 
+                                    :entity="phase.opportunity" 
+                                    route="sendEvaluations" 
+                                    :class="{
+                                                'button button--primary-outline': canSee('sendUserEvaluations') && user == global.auth.user.id,
+                                                'button disabled button--primary-outline': !(canSee('sendUserEvaluations') && user == global.auth.user.id)
+                                            }"
+                                    :param="phase.opportunity.id"><?= i::__("Enviar avaliações") ?></mc-link>
                             </div>
                             <div v-if="user == 'all'">
-                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,user,result,status,evaluationData', '@order': order}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
+                                <mc-export-spreadsheet :owner="phase.opportunity" endpoint="evaluations" :params="{entityType: 'registrationEvaluation', '@select': 'projectName,category,owner.{name},number,score,proponentType,range,eligible,user,result,status,evaluationData', query}" group="evaluations-spreadsheets"></mc-export-spreadsheet>
                             </div>
                         </div>
                     </div>

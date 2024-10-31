@@ -40,6 +40,8 @@
 @import '2.components/entity-data';
 @import '2.components/entity-file';
 @import '2.components/entity-field-datepicker';
+@import '2.components/entity-field-links';
+@import '2.components/entity-field-location';
 @import '2.components/entity-header';
 @import '2.components/entity-links';
 @import '2.components/entity-list';
@@ -91,6 +93,7 @@
 @import '2.components/mc-card';
 @import '2.components/mc-collapse';
 @import '2.components/mc-confirm-button';
+@import '2.components/mc-datepicker';
 @import '2.components/mc-export-spreadsheet';
 @import '2.components/mc-file';
 @import '2.components/mc-header-menu-user';
@@ -109,6 +112,7 @@
 @import '2.components/mc-summary-agent-info';
 @import '2.components/mc-summary-agent';
 @import '2.components/mc-tag-list';
+@import '2.components/mc-toggle';
 @import '2.components/messages';
 @import '2.components/navbar';
 @import '2.components/info-message';
@@ -118,6 +122,7 @@
 @import '2.components/opportunity-basic-info';
 @import '2.components/opportunity-category-list';
 @import '2.components/opportunity-category';
+@import '2.components/opportunity-committee-groups';
 @import '2.components/opportunity-evaluation-committee';
 @import '2.components/opportunity-evaluations-list';
 @import '2.components/opportunity-evaluations-table';
@@ -134,8 +139,10 @@
 @import '2.components/opportunity-phase-publish-date-config';
 @import '2.components/opportunity-phase-status';
 @import '2.components/opportunity-phases-timeline';
+@import '2.components/opportunity-proponent-types';
 @import '2.components/opportunity-ranges-config';
 @import '2.components/opportunity-registrations';
+@import '2.components/opportunity-registration-filter-configuration';
 @import '2.components/opportunity-rules';
 @import '2.components/opportunity-subscription-list';
 @import '2.components/opportunity-subscription';
@@ -162,6 +169,8 @@
 @import '2.components/registration-editable-fields';
 @import '2.components/registration-evaluation-actions';
 @import '2.components/registration-evaluation-info';
+@import '2.components/registration-field-persons';
+@import '2.components/registration-form';
 @import '2.components/registration-info';
 @import '2.components/registration-print';
 @import '2.components/registration-related-entity';
@@ -170,6 +179,7 @@
 @import '2.components/opportunity-header';
 @import '2.components/opportunity-registration-table';
 @import '2.components/occurrence-card';
+@import '2.components/seals-certifier';
 @import '2.components/seal-content-share';
 @import '2.components/seal-locked-field';
 @import '2.components/seal-relation-view';

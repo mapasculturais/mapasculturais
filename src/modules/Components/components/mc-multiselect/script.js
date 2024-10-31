@@ -42,6 +42,11 @@ app.component('mc-multiselect', {
             type: Boolean,
             default: false
         },
+
+        maxOptions: {
+            type: Number,
+            default: 0,
+        },
     },
 
     data() {
@@ -83,6 +88,10 @@ app.component('mc-multiselect', {
                 }
             });
         },
+
+        canSelectMore() {
+            return this.maxOptions === null || this.maxOptions === 0 || this.model.length < this.maxOptions;
+        }
     },
 
     methods: {
@@ -110,7 +119,7 @@ app.component('mc-multiselect', {
         toggleItem(key) {
             if (this.model.indexOf(key) >= 0) {
                 this.remove(key);
-            } else {
+            } else if(this.canSelectMore) {
                 this.model.push(key);
                 this.$emit('selected', key);
 

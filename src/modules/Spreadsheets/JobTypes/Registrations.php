@@ -29,7 +29,7 @@ class Registrations extends SpreadsheetJob
         /*if($job->owner_properties) {
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
-        $query['@select'] .= ',owner.{name}';
+        $query['@select'] .= ',projectName,owner.{name}';
         $properties = explode(',', $query['@select']);
         
         foreach($properties as $property) {
@@ -44,14 +44,35 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'sentTimestamp') {
+                $header['sentDate'] = i::__('Data de envio');
+                $header['sentTime'] = i::__('Hora de envio');
+
+                continue;
+            }
+            
+            if($property == 'createTimestamp') {
+                $header['createDate'] = i::__('Data de criação');
+                $header['createTime'] = i::__('Hora de criação');
+
+                continue;
+            }
+
+            if($property == 'projectName') {
+                $header[$property] = i::__('Nome do projeto');
+                continue;
+            }
+
             $header[$property] = $entity_class_name::getPropertyLabel($property) ?: $property;
         }
 
         do {
+            $opportunity->registerRegistrationMetadata();
+
             $fields = $opportunity->getRegistrationFieldConfigurations();
             
             foreach($fields as $field) {
-                $entity_type_field = $this->is_entity_type_field($field->fieldName, $job->owner);
+                $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                 if($entity_type_field['status']) {
                      
@@ -76,6 +97,8 @@ class Registrations extends SpreadsheetJob
         unset($header['id']);
         unset($header[' id']);
         unset($header['agentsData']);
+        unset($header['sentTimestamp']);
+        unset($header['createTimestamp']);
 
         return $header;
     }
@@ -84,12 +107,14 @@ class Registrations extends SpreadsheetJob
         $app = App::i();
         
         $opportunity = $job->owner;
+        
         $opportunity_controller = $app->controller('opportunity');
         
         $query_params = $job->query;
 
         $query_params['@limit'] = $this->limit;
         $query_params['@page'] = $this->page;
+        $query_params['@select'] .= ',projectName';
         
         $all_phases_fields = [];
 
@@ -100,14 +125,15 @@ class Registrations extends SpreadsheetJob
             foreach($fields as $field) {
                 $query_params['@select'] .= ",{$field->fieldName}";
             }
+
         } while($opportunity = $opportunity->previousPhase);
 
         $result = $opportunity_controller->apiFindRegistrations($job->owner, $query_params);
         
         if (isset($result->registrations) && is_array($result->registrations)) {
-            foreach($result->registrations as &$entity) {
+            foreach($result->registrations as &$entity) {                
                 foreach($all_phases_fields as $field) {
-                    $entity_type_field = $this->is_entity_type_field($field->fieldName, $job->owner);
+                    $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                     if($entity_type_field['status']) {
                         if($entity_type_field['ft'] == '@location') {
@@ -176,16 +202,24 @@ class Registrations extends SpreadsheetJob
                 }
                 
                 if(isset($entity['sentTimestamp']) && !is_null($entity['sentTimestamp'])) {
-                    $entity['sentTimestamp'] = $entity['sentTimestamp']->format('d-m-Y H:i:s');
+                    $entity['sentDate'] = $entity['sentTimestamp']->format('d-m-Y');
+                    $entity['sentTime'] = $entity['sentTimestamp']->format('H:i:s');
                 }
 
+                unset($entity['sentTimestamp']);
+
                 if(isset($entity['createTimestamp']) && !is_null($entity['createTimestamp'])) {
-                    $entity['createTimestamp'] = $entity['createTimestamp']->format('d-m-Y H:i:s');
+                    $entity['createDate'] = $entity['createTimestamp']->format('d-m-Y');
+                    $entity['createTime'] = $entity['createTimestamp']->format('H:i:s');
                 }
+
+                unset($entity['createTimestamp']);
 
                 if(isset($entity['status']) && !is_null($entity['status'])) {
                     $entity['status'] = $this->getStatusName($entity['status']);
                 }
+
+                $entity = $this->replaceArraysWithNull($entity);
             }
         }
         
@@ -196,12 +230,12 @@ class Registrations extends SpreadsheetJob
     }
 
     protected function _getFilename(Job $job) : string {
-        $entity_class_name = $job->entityClassName;
-        $label = $entity_class_name::getEntityTypeLabel(true);
+        $opportunity = i::__('oportunidade');
+        $opportunity_id = $job->owner->id;
         $extension = $job->extension;
         $date = date('Y-m-d H:i:s');
-
-        $result = "{$label}-{$date}.{$extension}";
+        
+        $result = "{$opportunity}-{$opportunity_id}--inscricoes-{$date}.{$extension}";
 
         return $result;
     }
@@ -218,14 +252,9 @@ class Registrations extends SpreadsheetJob
         return "registrationsSpreadsheet:{$md5}";
     }
 
-    function is_entity_type_field($field_name, $opportunity) {
+    function is_entity_type_field($field_name) {
         $app = App::i();
         $result = ['status' => false];
-
-        if($opportunity) {
-            /** @var Opportunity $opportunity */
-            $opportunity->registerRegistrationMetadata();
-        }
         
         $def = $app->getRegisteredMetadataByMetakey($field_name, Registration::class);
         if ($def && $def->config['type'] == 'agent-owner-field') {
@@ -260,4 +289,25 @@ class Registrations extends SpreadsheetJob
         }
     }
 
+    /**
+     * Função recursiva para substituir arrays por string vazia ou null.
+     *
+     * Esta função percorre todos os campos de um array ou objeto e substitui qualquer array
+     * encontrado por uma string vazia ou null, conforme a necessidade. Se encontrar objetos,
+     * a função é chamada recursivamente para verificar suas propriedades.
+     *
+     * @param array|object $data Os dados a serem verificados e potencialmente modificados.
+     * @return array|object Retorna os dados com arrays substituídos por string vazia ou null.
+    */
+    private function replaceArraysWithNull($data) {
+        foreach ($data as $key => &$value) {
+            if (is_array($value)) {
+                $value = '';
+            } elseif (is_object($value)) {
+                $value = $this->replaceArraysWithNull((array) $value);
+            }
+        }
+        
+        return $data;
+    }
 }

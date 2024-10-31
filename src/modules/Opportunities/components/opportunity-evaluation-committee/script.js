@@ -5,22 +5,33 @@ app.component('opportunity-evaluation-committee', {
         entity: {
             type: Entity,
             required: true
-        }
-    },
-
-    setup() {
-        const text = Utils.getTexts('opportunity-evaluations-list');
-        return { text }
+        },
+        group: {
+            type: String,
+            default: 'group-admin'
+        },
+        excludeFields: Array
     },
 
     computed: {
         query() {
-            return {
-                '@opportunity': this.entity.id,
-                '@limit': 50,
-                '@page': 1
+            let query = {
+                '@select': 'id,name,files.avatar,user',
+                '@order': 'id ASC',
+                '@limit': '25',
+                '@page': '1'
             };
+
+            if (Object.keys(this.infosReviewers).length > 0) {
+                const reviewersId = this.infosReviewers.map((reviewer) => reviewer.agent.id).join(',');
+                query['id'] = `!IN(${reviewersId})`;
+            } else {
+                delete query['id'];
+            }
+
+            return query;
         },
+
         select() {
             return "id,owner,agent,agentUserId";
         },
@@ -55,7 +66,8 @@ app.component('opportunity-evaluation-committee', {
             registrationProponentTypes: [
                 ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
-            sendTimeOut: null
+            sendTimeOut: null,
+            fetchConfigs: {}
         }
     },
     
@@ -67,7 +79,7 @@ app.component('opportunity-evaluation-committee', {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});
             this.agentData = {
-                group: 'group-admin',
+                group: this.group,
                 agentId: agent._id,
                 has_control: true
             }; 
@@ -89,8 +101,11 @@ app.component('opportunity-evaluation-committee', {
             let url = api.createApiUrl('evaluationCommittee', args);
             
             api.GET(url).then(res => res.json()).then(data => {
-                this.infosReviewers = data;
-                this.showReviewers = !!this.infosReviewers;
+                this.infosReviewers = data.filter(reviewer => reviewer.group === this.group).map(reviewer => ({
+                    ...reviewer,
+                    isContentVisible: false,
+                }));
+                this.showReviewers = Object.keys(this.infosReviewers).length > 0;
                 this.ReviewerSelect = false;
                 this.loadFetchs();
             });
@@ -100,7 +115,7 @@ app.component('opportunity-evaluation-committee', {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'removeAgentRelation', {id: this.entity.id});
             this.agentData = {
-                group: 'group-admin',
+                group: this.group,
                 agentId: agent.id,
             }; 
 
@@ -110,7 +125,7 @@ app.component('opportunity-evaluation-committee', {
         },
 
         disableOrEnableReviewer(infoReviewer) {
-            let enableOrDisabled = infoReviewer.status === 8 ? 'enabled' : 'disabled';;
+            let enableOrDisabled = infoReviewer.status === 8 ? 'enabled' : 'disabled';
             const api = new API();
             let url;
             let relationData = {
@@ -230,6 +245,21 @@ app.component('opportunity-evaluation-committee', {
 
                 });
             }
+        },
+
+        toggleContent(reviewerId) {
+            const reviewer = this.infosReviewers.find(r => r.id === reviewerId);
+            if (reviewer) {
+                reviewer.isContentVisible = !reviewer.isContentVisible;
+            }
+        },
+
+        expandAllToggles() {
+            const allExpanded = this.infosReviewers.every(reviewer => reviewer.isContentVisible);
+
+            this.infosReviewers.forEach(reviewer => {
+                reviewer.isContentVisible = !allExpanded;
+            });
         },
     },
 });

@@ -6,7 +6,7 @@
 
 O campo **Mini Bio** é sua apresentação na plataforma. Ele serve para você se apresentar de forma concisa e destacar os principais aspectos da sua trajetória profissional **em até 400 caracteres.**
 
-&nbsp;
+
 
 #### **O que você pode incluir:**
 
