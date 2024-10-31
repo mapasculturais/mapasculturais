@@ -1120,7 +1120,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $total;
     }
 
-    public function valueToString($value) {
+    protected function _valueToString($value) {
         if(is_null($value)){
             return i::__('Avaliação incompleta');
         } else {

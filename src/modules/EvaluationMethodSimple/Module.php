@@ -311,7 +311,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
     }
 
-    public function valueToString($value) {
+    protected function _valueToString($value) {
         switch ($value) {
             case '2':
                 return i::__('Inválida');
