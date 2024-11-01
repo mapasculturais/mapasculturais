@@ -10,11 +10,11 @@ $this->import('
     mc-select
 ');
 ?>
-<div class="registration-field-persons">
+<div class="registration-field-persons" :data-field="prop">
     <div class="registration-field-persons__list">
         <label> <?= $this->text('lista-pessoas', i::__('Lista de pessoas')) ?> </label>
 
-        <div v-for="(person, index) in this.registration[this.prop]" class="registration-field-persons__person">
+        <div v-for="(person, index) in registration[prop]" class="registration-field-persons__person">
 
             <div class="registration-field-persons__person-fields grid-12">
                 <div class="field col-12">

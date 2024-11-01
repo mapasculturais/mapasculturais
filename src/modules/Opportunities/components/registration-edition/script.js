@@ -29,14 +29,4 @@ app.component('registration-edition', {
             return this.steps[this.stepIndex];
         },
     },
-
-    methods: {
-        nextStep () {
-            this.stepIndex++;
-        },
-
-        previousStep () {
-            this.stepIndex--;
-        },
-    }
 });

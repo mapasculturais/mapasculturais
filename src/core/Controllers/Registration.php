@@ -657,12 +657,13 @@ class Registration extends EntityController {
         foreach ($this->postData as $field => $value) {
             $entity->$field = $value;
         }
-        
-        if ($errors = $entity->getValidationErrors()) {
-            if ($step_id = $this->data['step'] ?? null) {
-                $errors = $this->stepErrors($errors, $step_id, $entity);
-            }
 
+        $errors = $entity->getValidationErrors();
+        if ($step_id = $this->data['step'] ?? null) {
+            $errors = $this->stepErrors($errors, $step_id, $entity);
+        }
+        
+        if (!empty($errors)) {
             $this->errorJson($errors);
         } else {
             $this->json(true);

@@ -1,7 +1,7 @@
 app.component('registration-actions', {
     template: $TEMPLATES['registration-actions'],
 
-    emits: ['nextStep', 'previousStep'],
+    emits: ['update:stepIndex'],
 
     props: {
         registration: {
@@ -55,30 +55,45 @@ app.component('registration-actions', {
     },
 
     data() {
+        const validationErrors = {};
+        for (const step of this.steps) {
+            validationErrors[step._id] = {};
+        }
+
         return {
             fields: $MAPAS.registrationFields,
             hideErrors: false,
             isValidated: false,
-            descriptions: $DESCRIPTIONS.registration
+            validationErrors,
+            descriptions: $DESCRIPTIONS.registration,
         }
     },
 
     computed: {
-        canSubmit () {
+        canSubmit() {
             return this.isLastStep && this.isValidated;
         },
 
-        isLastStep () {
-            return this.stepIndex === this.step.length - 1;
+        hasErrors() {
+            for (const stepErrors of Object.values(this.validationErrors)) {
+                if (Object.keys(stepErrors).length > 0) {
+                    return true;
+                }
+            }
+            return false;
         },
 
-        step () {
+        isLastStep() {
+            return this.stepIndex === this.steps.length - 1;
+        },
+
+        step() {
             return this.steps[this.stepIndex];
         },
     },
 
     watch: {
-        stepIndex () {
+        stepIndex() {
             this.isValidated = false;
         },
     },
@@ -153,30 +168,69 @@ app.component('registration-actions', {
             }
         },
 
-        async validate(step = undefined) {
+        async validate() {
             const messages = useMessages();
+
             try {
-                if (Object.keys(this.registration.__validationErrors).length > 0) {
-                    messages.error(this.text('Corrija os erros indicados'));
-                    return false;
-                } else {
-                    await this.save();
-                    const success = await this.registration.POST('validateEntity', { data: { step } });
+                await this.save();
+                const success = await this.registration.POST('validateEntity', {});
 
-                    if (success) {
-                        this.isValidated = true;
-
-                        if (!step) {
-                            messages.success(this.text('Validado'));
-                        }
-                    }
-
-                    return success;
+                if (success) {
+                    this.isValidated = true;
+                    messages.success(this.text('Validado'));
                 }
+
+                return success;
             } catch (error) {
-                console.error(error);
+                const validationErrors = this.groupValidationErrors(this.registration.__validationErrors);
+                Object.assign(this.validationErrors, validationErrors);              
                 return false;
             }
+        },
+
+        async validateStep(stepId) {
+            try {
+                await this.save();
+                const success = await this.registration.POST('validateEntity', { data: { step: stepId } });
+
+                if (success) {
+                    this.isValidated = true;
+                    this.validationErrors[stepId] = {};
+                }
+
+                return success;
+            } catch (error) {
+                if (error?.data) {
+                    this.validationErrors[stepId] = error.data;
+                }
+            }
+        },
+
+        groupValidationErrors(errors) {
+            const validationErrors = {};
+            for (const step of this.steps) {
+                validationErrors[step._id] = {};
+            }
+
+            for (const [fieldName, fieldError] of Object.entries(errors)) {
+                if (fieldName.startsWith('field_')) {
+                    for (field of this.fields) {
+                        if (field.fieldName === fieldName) {
+                            validationErrors[field.step.id][fieldName] = fieldError;
+                        }
+                    }
+                }
+                if (fieldName.startsWith('file_')) {
+                    const groupName = fieldName.replace('file_', 'rfc_');
+                    for (const field of this.fields) {
+                        if (field.groupName === groupName) {
+                            validationErrors[field.step.id][fieldName] = fieldError;
+                        }
+                    }
+                }
+            }
+
+            return validationErrors;
         },
 
         async save() {
@@ -193,20 +247,33 @@ app.component('registration-actions', {
             });
         },
 
-        async validateStep () {
-            await this.validate(this.step._id);
+        goToField(stepId, fieldName) {
+            this.goToStep(Number(stepId));
+            this.$nextTick(() => {
+                document.querySelector(`[data-field="${fieldName}"]`)?.scrollIntoView({ behavior: 'smooth' });
+            });
+        },
+
+        goToStep(stepId) {
+            const stepIndex = this.steps.findIndex((step) => step._id == stepId);
+            if (stepIndex >= 0) {
+                this.$emit('update:stepIndex', stepIndex);
+            }
+        },
+
+        stepName(stepId) {
+            const stepIndex = this.steps.findIndex((step) => step._id == stepId);
+            return `${stepIndex + 1}. ${this.steps[stepIndex].name}`;
         },
 
         async previousStep() {
-            if (await this.validate(this.step._id)) {
-                this.$emit('previousStep', this.stepIndex - 1);
-            }
+            await this.validateStep(this.step._id);
+            this.$emit('update:stepIndex', this.stepIndex - 1);
         },
 
         async nextStep() {
-            if (await this.validate(this.step._id)) {
-                this.$emit('nextStep', this.stepIndex + 1);
-            }
+            await this.validateStep(this.step._id);
+            this.$emit('update:stepIndex', this.stepIndex + 1);
         },
     },
 });
