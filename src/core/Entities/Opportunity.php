@@ -1127,8 +1127,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
-                $newFile->proponentTypes = $field->proponentTypes;
-                $newField->registrationRanges = $field->registrationRanges;
+                $newFile->proponentTypes = $file->proponentTypes;
+                $newFile->registrationRanges = $file->registrationRanges;
 
                 $app->em->persist($newFile);
 
