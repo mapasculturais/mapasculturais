@@ -622,17 +622,21 @@ class Registration extends EntityController {
 
         foreach ($errors as $field_name => $message) {
             if (str_starts_with($field_name, 'field_')) {
+                $field_id = intval(substr($field_name, 6));
+                
                 foreach ($fields as $field) {
-                    if ($field->getFieldName() === $field_name && $field->step->id !== $step_id) {
-                        unset($errors, $field_name);
+                    if ($field->id === $field_id && $field->step->id !== $step_id) {
+                        unset($errors[$field_name]);
                     }
                 }
             }
 
-            if (str_starts_with($field_name, 'rfc_')) {
+            if (str_starts_with($field_name, 'file_')) {
+                $field_id = intval(substr($field_name, 5));
+
                 foreach ($files as $file) {
-                    if ($file->getFileGroupName() === $field_name && $file->step->id !== $step_id) {
-                        unset($errors, $field_name);
+                    if ($file->id === $field_id && $file->step->id !== $step_id) {
+                        unset($errors[$field_name]);
                     } 
                 }
             }

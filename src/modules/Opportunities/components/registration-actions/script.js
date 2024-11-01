@@ -65,12 +65,11 @@ app.component('registration-actions', {
 
     computed: {
         canSubmit () {
-            return this.canValidate && this.isValidated;
+            return this.isLastStep && this.isValidated;
         },
 
-        canValidate () {
-            const isLastStep = this.stepIndex === this.steps.length - 1;
-            return isLastStep;
+        isLastStep () {
+            return this.stepIndex === this.step.length - 1;
         },
 
         step () {
@@ -192,6 +191,10 @@ app.component('registration-actions', {
                     window.location.href = Utils.createUrl('panel', 'index');
                 }
             });
+        },
+
+        async validateStep () {
+            await this.validate(this.step._id);
         },
 
         async previousStep() {

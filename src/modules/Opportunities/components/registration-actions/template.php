@@ -45,11 +45,12 @@ $this->import('
             </template>
         </mc-confirm-button>
 
-        <div class="registration-actions__validation" v-if="canValidate && !isValidated">
+        <div class="registration-actions__validation" v-if="!isValidated">
             <mc-alert type="warning">
                 <span><?= i::__("Para enviar sua inscrição, você precisa <strong>validá-la</strong> primeiro. Clique no botão <strong>Validar inscrição</strong> abaixo para verificar se todas as informações estão corretas.") ?></span>
             </mc-alert>
-            <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
+            <button class="button button--large button--primary-outline" @click="validate()" v-if="isLastStep"><?= i::__('Validar inscrição') ?></button>
+            <button class="button button--large button--primary-outline" @click="validateStep()" v-else><?= i::__('Validar etapa') ?></button>
         </div>
         <!-- <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button> -->
     </div>
