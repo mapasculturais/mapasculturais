@@ -1090,6 +1090,23 @@ abstract class Opportunity extends \MapasCulturais\Entity
         if (!is_null($importSource)) {
             $new_fields_by_old_field_name = [];
 
+            // Pega o primeiro step da oportunidade
+            $first_step = $app->repo('RegistrationStep')->findOneBy(['opportunity' => $this]);
+
+            // Verifica se já existe algum campo configurado nesta oportunidade
+            $fields = $this->registrationFieldConfigurations;
+            $files = $this->registrationFileConfigurations;
+            $has_field = false;
+
+            if($fields || $files) {
+                $has_field = true;
+            }
+
+            // Caso não tenha nenhum campo configurado e já exista um step que estará vazio, exclui o step
+            if(!$has_field && $first_step) {
+                $first_step->delete(true);
+            }
+
             // Fields
             foreach($importSource->fields as &$field) {
 
@@ -1098,6 +1115,17 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     if (isset($field->config['require']) && $field->config['require']) {
                         $field->config['require'] = (array) $field->config['require'];
                     }
+                }
+
+                $step = $app->repo('RegistrationStep')->findOneBy(['opportunity' => $this, 'name' => $field->step->name]);
+                if(!$step) {
+                    $newStep = new RegistrationStep;
+                    $newStep->name = $field->step->name;
+                    $newStep->displayOrder = $field->step->displayOrder;
+                    $newStep->opportunity = $this;
+                    $newStep->save();
+
+                    $step = $newStep;
                 }
 
                 $newField = new RegistrationFieldConfiguration;
@@ -1115,6 +1143,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newField->conditionalValue = $field->conditionalValue;
                 $newField->proponentTypes = $field->proponentTypes;
                 $newField->registrationRanges = $field->registrationRanges;
+                $newField->step = $step->id;
 
                 $field->newField = $newField;
 
@@ -1148,6 +1177,18 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
                 $newFile = new RegistrationFileConfiguration;
 
+                $step = $app->repo('RegistrationStep')->findOneBy(['opportunity' => $this, 'name' => $file->step->name]);
+
+                if(!$step) {
+                    $newStep = new RegistrationStep;
+                    $newStep->name = $file->step->name;
+                    $newStep->displayOrder = $file->step->displayOrder;
+                    $newStep->opportunity = $this;
+                    $newStep->save();
+
+                    $step = $newStep;
+                }
+
                 $newFile->owner = $this;
                 $newFile->title = $file->title;
                 $newFile->description = $file->description;
@@ -1158,6 +1199,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->conditionalValue = $file->conditionalValue;
                 $newFile->proponentTypes = $field->proponentTypes;
                 $newField->registrationRanges = $field->registrationRanges;
+                $newFile->step = $step->id;
 
                 $app->em->persist($newFile);
 
