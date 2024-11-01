@@ -10,8 +10,7 @@ Componente de ações em uma inscrição
 
 ## Eventos
 
-- **previousStep** - Disparado quando o usuário solicita a etapa anterior
-- **nextStep** - Disparado quando o usuário solicita a próxima etapa
+- **update:stepIndex** - Disparado quando o usuário solicita a mudança de etapa
 
 ### Importando componente
 

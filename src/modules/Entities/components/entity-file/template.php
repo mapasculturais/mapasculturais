@@ -13,7 +13,7 @@ $this->import('
     mc-icon
 ');
 ?>
-<div :class="classes" v-if="file || editable" class="entity-file">
+<div :class="classes" v-if="file || editable" class="entity-file" :data-field="groupName.replace('rfc_', 'file_')">
 
     <label v-if="title" class="entity-file__title">
         {{title}}
