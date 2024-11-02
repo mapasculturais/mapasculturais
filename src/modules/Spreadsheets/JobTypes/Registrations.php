@@ -1,6 +1,7 @@
 <?php
 namespace Spreadsheets\JobTypes;
 
+use EvaluationMethodTechnical\Module;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
@@ -103,7 +104,10 @@ class Registrations extends SpreadsheetJob
         return $header;
     }
     
-    protected function _getBatch(Job $job) : array {
+    protected function _getBatch(Job $job) : array {    
+        // limpa os dados do cálculo das cotas
+        Module::$quotaData = null;
+
         $app = App::i();
         
         $opportunity = $job->owner;
