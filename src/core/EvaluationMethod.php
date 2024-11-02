@@ -301,7 +301,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $committee = $this->getCommitteeGroups($opportunity->evaluationMethodConfiguration);
 
         // coloca o comitê de desempate no final do array
-        if(isset($committee)) {
+        if(isset($committee['@tiebreaker'])) {
             $tiebreaker_committee = $committee['@tiebreaker'];
             unset($committee['@tiebreaker']);
             $committee['@tiebreaker'] = $tiebreaker_committee;
