@@ -1962,22 +1962,28 @@ class App {
             $user = $config[1];
             
             if (is_int($entity->id)){
-                
+                $params = [
+                    'object_type' => $entity->getClassName(),
+                    'object_id' => $entity->id
+                ];
+
+                if($user) {
+                    $where = 'usr_id = :usr_id AND';
+                    $params['usr_id'] = $user->id;
+                } else {
+                    $where = 'usr_id IS NULL AND';
+                }
                 // verifica se já há uma entrada na tabela para a entidade que não está sendo processada ainda
-                $exists = $conn->fetchOne("
+                $sql = "
                     SELECT id 
                     FROM permission_cache_pending 
                     WHERE 
                         object_type = :object_type AND 
                         object_id = :object_id AND 
-                        usr_id = :usr_id AND
-                        status = 0",
-                    [
-                        'object_type' => $entity->getClassName(),
-                        'object_id' => $entity->id,
-                        'usr_id' => $user ? $user->id : null
-                    ]
-                );
+                        {$where}
+                        status = 0";
+
+                $exists = $conn->fetchOne($sql, $params);
 
                 // se existir, não precisa adicionar novamente
                 if($exists) {
