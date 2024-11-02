@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.8] - 2024-11-01
+### Correções
+- Retorno dos metadados da consulta do endpoind findRegistrations para consultas em fases de avaliaçào técnica
+- Corrige duplicidade na exportação de inscrições de fases de avaliação técnica
+
 ## [7.5.7] - 2024-10-30
 ### Correções
 - Corrige erro que na listagem de campo no componente de campos visiveis para os avaliadores
