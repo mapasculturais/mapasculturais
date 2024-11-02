@@ -5,6 +5,16 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.9] - 2024-11-02
+### Correções
+- Corrige exibição de campos visíveis para os avaliadores no formulario de avaliação
+- Garante que as faixas/linhas não sejam cadastradas com espaços
+- Corrige erro na importação de formularios que embaralhava anexos condicionados aos tipos de proponentes
+- Corrige erro ao marcar uma notificação como lida
+
+### Melhorias não funcionais
+- Implementa db-update que limpa entradas duplicadas na tabela pcache e cria novos indices
+
 ## [7.5.8] - 2024-11-01
 ### Correções
 - Retorno dos metadados da consulta do endpoind findRegistrations para consultas em fases de avaliaçào técnica
