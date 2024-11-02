@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Retorno dos metadados da consulta do endpoind findRegistrations para consultas em fases de avaliaçào técnica
 - Corrige duplicidade na exportação de inscrições de fases de avaliação técnica
+- Evita enfileiramento duplicado da mesma entidade para o reprocessamento do pcache
 
 ## [7.5.7] - 2024-10-30
 ### Correções
