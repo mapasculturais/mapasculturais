@@ -13,7 +13,7 @@
         "opauth/logincidadao" : "*",
         "opauth/authentik" : "*",
         "pomo/pomo": "^1.5",
-        "psy/psysh": "^0.11.12",
+        "psy/psysh": "*",
         "respect/validation": "^2.2",
         "sinergi/browser-detector": "^6.1",
         "slim/psr7": "^1.6",
