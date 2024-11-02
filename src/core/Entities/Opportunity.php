@@ -818,10 +818,17 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function setRegistrationRanges(array $registration_ranges){
         $app = App::i();
         
+        $registration_ranges = array_map(function($range) {
+            if (isset($range['label'])) {
+                $range['label'] = trim($range['label']);
+            }
+            return $range;
+        }, $registration_ranges);
+
         $new_registration_ranges = $registration_ranges;
 
         $current_range_labels = array_map(fn ($range) => $range['label'], $this->registrationRanges);
-        $new_range_labels = array_map(fn ($range) => $range['label'], $registration_ranges);
+        $new_range_labels = array_map(fn ($range) => $range['label'], $new_registration_ranges);
 
         $removed_ranges = array_diff($current_range_labels, $new_range_labels);
 
@@ -1127,8 +1134,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
-                $newFile->proponentTypes = $field->proponentTypes;
-                $newField->registrationRanges = $field->registrationRanges;
+                $newFile->proponentTypes = $file->proponentTypes;
+                $newFile->registrationRanges = $file->registrationRanges;
 
                 $app->em->persist($newFile);
 
