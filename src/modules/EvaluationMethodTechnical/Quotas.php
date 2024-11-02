@@ -2,6 +2,7 @@
 namespace EvaluationMethodTechnical;
 
 use Doctrine\ORM\Exception\NotSupported;
+use MapasCulturais\API;
 use MapasCulturais\App;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
@@ -271,7 +272,8 @@ class Quotas {
 
         $result = $app->controller('opportunity')->apiFindRegistrations($this->phase, [
             '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score,sentTimestamp', ...$this->fields]),
-            '@order' => 'score DESC'
+            '@order' => 'score DESC, id DESC',
+            'status' => API::GTE(0)
         ]);
 
         $registrations = array_map(function ($reg) {

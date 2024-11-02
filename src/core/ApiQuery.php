@@ -14,6 +14,7 @@ use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
     use Traits\MagicGetter,
+        Traits\MagicSetter,
         Traits\MagicCallers;
     
     /**
@@ -867,7 +868,9 @@ class ApiQuery {
         }
 
         if ($order) {
-            $dql .= "\n\nORDER BY {$order}";
+            $dql .= "\n\nORDER BY {$order}, e.id ASC";
+        } else {
+            $dql .= "\n\nORDER BY e.id ASC";
         }
 
         return $dql;

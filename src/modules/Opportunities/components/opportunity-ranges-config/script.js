@@ -45,6 +45,7 @@ app.component('opportunity-ranges-config', {
             this.autoSave();
         },
         autoSaveRange(item) {
+            item.label = item.label.trim();
             if(item.label.length > 0) {
                 this.autoSave();
             } 
