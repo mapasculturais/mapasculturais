@@ -46,11 +46,15 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <?php endforeach; ?>
 
         <section class="col-12 evaluation-step__section">
+            <?php $this->applyComponentHook("evaluation-step-header", 'before') ?>
             <div class="evaluation-step__section-header">
+                <?php $this->applyComponentHook("evaluation-step-header", 'begin') ?>
                 <div class="evaluation-step__section-label">
                     <h3><?= i::__('Comissões de avaliação') ?></h3>
                 </div>
+                <?php $this->applyComponentHook("evaluation-step-header", 'end') ?>
             </div>
+            <?php $this->applyComponentHook("evaluation-step-header", 'after') ?>
 
             <div class="evaluation-step__section-content">
                 <opportunity-committee-groups :entity="phase"></opportunity-committee-groups>
