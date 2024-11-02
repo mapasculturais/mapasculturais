@@ -11,9 +11,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Garante que as faixas/linhas não sejam cadastradas com espaços
 - Corrige erro na importação de formularios que embaralhava anexos condicionados aos tipos de proponentes
 - Corrige erro ao marcar uma notificação como lida
+- Corrige processamento de cache para agentes administradores de edital
 
 ### Melhorias não funcionais
 - Implementa db-update que limpa entradas duplicadas na tabela pcache e cria novos indices
+- Implmenta novos hooks na tela de configuração de fases
 
 ## [7.5.8] - 2024-11-01
 ### Correções
