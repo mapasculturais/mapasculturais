@@ -485,6 +485,10 @@ class Opportunity extends EntityController {
                 });
             }
 
+            if(!isset($current_phase_query_params['@order'])){
+                $current_phase_query_params['@order'] = 'id ASC';
+            }
+
             $current_phase_query = new ApiQuery(Registration::class, $current_phase_query_params);
             if(isset($previous_phase_query) && !$phase->isLastPhase) {
                 $current_phase_query->addFilterByApiQuery($previous_phase_query, 'number', 'number');
@@ -522,10 +526,18 @@ class Opportunity extends EntityController {
 
         $opportunity = $this->_getOpportunity();
         
-        $result = $this->apiFindRegistrations($opportunity, $this->data);
+        $query_data = $this->data;
 
-        $this->apiAddHeaderMetadata($this->data, $result->registrations, $result->count);
+        if(!isset($query_data['status'])){
+            $query_data['status'] = API::GT(0);
+        }
+
+        $result = $this->apiFindRegistrations($opportunity, $query_data);
+        
+        $this->apiAddHeaderMetadata($query_data, $result->registrations, $result->count);
         $this->apiResponse($result->registrations);
+
+        $app->applyHookBoundTo($this, "API.{$this->action}({$this->id}).result" , [$query_data,  &$result]);
     }
 
     protected function _getOpportunityCommittee($opportunity_id) {

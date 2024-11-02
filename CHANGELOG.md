@@ -5,13 +5,29 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### [7.5.7] - 2024-10-30
-## Correções
+## [7.5.9] - 2024-11-02
+### Correções
+- Corrige exibição de campos visíveis para os avaliadores no formulario de avaliação
+- Garante que as faixas/linhas não sejam cadastradas com espaços
+- Corrige erro na importação de formularios que embaralhava anexos condicionados aos tipos de proponentes
+- Corrige erro ao marcar uma notificação como lida
+
+### Melhorias não funcionais
+- Implementa db-update que limpa entradas duplicadas na tabela pcache e cria novos indices
+
+## [7.5.8] - 2024-11-01
+### Correções
+- Retorno dos metadados da consulta do endpoind findRegistrations para consultas em fases de avaliaçào técnica
+- Corrige duplicidade na exportação de inscrições de fases de avaliação técnica
+- Evita enfileiramento duplicado da mesma entidade para o reprocessamento do pcache
+
+## [7.5.7] - 2024-10-30
+### Correções
 - Corrige erro que na listagem de campo no componente de campos visiveis para os avaliadores
 - Corrige erro na exportação de planilhas de avaliação documental
 - Corrige erro de duplicidade na exportação de planilhas de avaliação técnica
 
-### [7.5.6] - 2024-10-23
+## [7.5.6] - 2024-10-23
 ### Correções
  - Corrige visibilidade do botão de enviar avaliações na página de avaliações
  - Corrige exibição da planilha de inscrições, inserindo a coluna 'Nome do projeto'
@@ -24,7 +40,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
  - Melhora a performance da geração da planilha de inscrições
 
-### [7.5.5] - 2024-10-21
+## [7.5.5] - 2024-10-21
 ### Correções
  - Adiciona cache na compilação do css do customizador de temas dos subsites
  - Evita o reprocessamento do cache do avaliador toda vez que ele termina uma avaliação
@@ -37,12 +53,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
  - Melhora o enfileiramento e reprocessamento de caches de permissão (pcache), diminuindo o tempo de processamento
 
-### [7.5.4] - 2024-10-11
+## [7.5.4] - 2024-10-11
 ### Correções
 - Impede que o javascript das tabelas quebre quando um objeto não é retornado pela API
 - Evita que o ranqueamento das cotas quebre quando o número de vadas do edital não está definido
 
-### [7.5.3] - 2024-10-11
+## [7.5.3] - 2024-10-11
 ### Correções
 - Corrige erro na listagem de avaliações por ainda nao ter avaliações feitas
 - Corrige erro na seleção dos campos visíveis para o avaliador
