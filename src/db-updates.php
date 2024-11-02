@@ -2364,6 +2364,23 @@ $$
                 type = 'group-admin' AND 
                 object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'
         ", ['type' => $name]);
+    },
+    
+    'Limpa entradas duplicadas na tabela pcache e cria novos indices' => function() use($conn) {
+        __exec("DELETE 
+                FROM 
+                    pcache T1
+                USING 
+                    pcache T2 
+                WHERE 
+                    T1.id < T2.id AND
+                    T1.object_type = T2.object_type AND
+                    T1.object_id = T2.object_id AND
+                    T1.action = T2.action AND
+                    T1.user_id = T2.user_id
+        ");
+
+        __exec("CREATE UNIQUE INDEX unique_object_action ON pcache (object_type, object_id, action, user_id)");
     }
 
 ] + $updates ;   

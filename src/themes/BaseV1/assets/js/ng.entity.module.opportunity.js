@@ -1861,7 +1861,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     };
 
     $scope.isAvaliableEvaluationFields = function(field){
-        if($scope.data.avaliableEvaluationFields && $scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+        if($scope.data.avaliableEvaluationFields && $scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)] === "true"){
             return true;
         }
 
