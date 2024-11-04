@@ -55,16 +55,11 @@ app.component('registration-actions', {
     },
 
     data() {
-        const validationErrors = {};
-        for (const step of this.steps) {
-            validationErrors[step._id] = {};
-        }
-
         return {
             fields: $MAPAS.registrationFields,
             hideErrors: false,
             isValidated: false,
-            validationErrors,
+            validationErrors: this.getEmptyValidationState(),
             descriptions: $DESCRIPTIONS.registration,
         }
     },
@@ -177,13 +172,16 @@ app.component('registration-actions', {
 
                 if (success) {
                     this.isValidated = true;
+                    this.validationErrors = this.getEmptyValidationState();
                     messages.success(this.text('Validado'));
                 }
 
                 return success;
             } catch (error) {
-                const validationErrors = this.groupValidationErrors(this.registration.__validationErrors);
-                Object.assign(this.validationErrors, validationErrors);              
+                if (error?.data) {
+                    const validationErrors = this.groupValidationErrors(error.data);
+                    Object.assign(this.validationErrors, validationErrors);
+                }
                 return false;
             }
         },
@@ -203,14 +201,20 @@ app.component('registration-actions', {
                 if (error?.data) {
                     this.validationErrors[stepId] = error.data;
                 }
+                return false;
             }
         },
 
-        groupValidationErrors(errors) {
+        getEmptyValidationState() {
             const validationErrors = {};
             for (const step of this.steps) {
                 validationErrors[step._id] = {};
             }
+            return validationErrors;
+        },
+
+        groupValidationErrors(errors) {
+            const validationErrors = this.getEmptyValidationState();
 
             for (const [fieldName, fieldError] of Object.entries(errors)) {
                 if (fieldName.startsWith('field_')) {
