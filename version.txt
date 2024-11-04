@@ -1,1 +1,1 @@
-7.4.26-minc1
+develop-minc
