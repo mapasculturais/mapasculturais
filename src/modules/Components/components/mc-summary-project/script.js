@@ -22,15 +22,16 @@ app.component('mc-summary-project', {
 
     methods: {
         canSee(item) {
-            if (this.entity.currentUserPermissions['@control'] || this.entity.currentUserPermissions['view']) {
-                return true
+            let can = false;
+            if(this.entity.currentUserPermissions['@control'] || this.entity.currentUserPermissions['view']){
+                can = true
             }
 
-            if (this.avaliableEvaluationFields[item]) {
-                return true;
+            if (can &&!this.avaliableEvaluationFields[item]) {
+                can = false;
             }
-
-            return false;
+            
+            return can;
         },
 
     },

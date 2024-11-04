@@ -50,4 +50,10 @@
             margin: size(11) 0 size(16);
         }
     }
+
+    .alert {
+        &.entity-owner-pending {
+            padding: 0.5rem;
+        }
+    }
 }
