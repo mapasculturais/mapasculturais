@@ -60,7 +60,13 @@ app.component("fields-visible-evaluators", {
                 this.searchFielter = null;
             }
         },
-
+        compareFields(a, b) {
+            if (a.step?.displayOrder === b.step?.displayOrder) {
+                return Math.sign(a.displayOrder - b.displayOrder);
+            } else {
+                return Math.sign(a.step.displayOrder - b.step.displayOrder);
+            }
+        },
         fieldSkeleton() {
             let _fields = [];
             if($MAPAS?.config?.fieldsVisibleEvaluators[this.entity.opportunity.id].length > 0){
@@ -76,7 +82,7 @@ app.component("fields-visible-evaluators", {
                 fields.push(item);
             }
 
-            fields = fields.sort((a,b) => a.displayOrder - b.displayOrder)
+            fields = fields.sort(this.compareFields);
 
             return fields;
         },
