@@ -78,7 +78,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                         
                         <div class="section__content">
                             <div class="card owner">
+                            <?php $this->applyTemplateHook("registration-evaluation-view", 'before', ['entity' => $entity]) ?>
                             <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
+                            <?php $this->applyTemplateHook("registration-evaluation-view", 'after', ['entity' => $entity]) ?>
                         </div>
                     </div>
                 </section>

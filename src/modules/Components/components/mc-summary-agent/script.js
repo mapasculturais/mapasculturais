@@ -20,15 +20,16 @@ app.component('mc-summary-agent', {
     },
     methods: {
         canSee(item) {
+            let can = false;
             if(this.entity.currentUserPermissions['@control'] || this.entity.currentUserPermissions['view']){
-                return true
+                can = true
             }
 
-            if (this.avaliableEvaluationFields[item]) {
-                return true;
+            if (can &&!this.avaliableEvaluationFields[item]) {
+                can = false;
             }
             
-            return false;
+            return can;
         },
     },
 });

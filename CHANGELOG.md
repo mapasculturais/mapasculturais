@@ -5,6 +5,64 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.26] - 2024-10-11
+### Melhorias
+- Permite que o dono da inscrição visualize as suas inscrições em rascunho mesmo que o período naoe steja aberto
+- Corrige busca de agentes de inscrição no painel Minhas Inscrições
+- Evita que seja exibido o resumo dos agentes caso a inscrição ainda nao esteja enviada
+- Permite que na tela de acompanhamento da inscrição tenha acesso ao formulario qualquer pessoa que tenha permissão de visualização
+
+## [7.4.25] - 2024-10-08
+### Melhorias
+- Implementa novos hooks no painel de controle
+
+## [7.4.24] - 2024-10-07
+### Correções
+- Deleta pasta do plugin MultipleLocalAuth 
+
+## [7.4.23] - 2024-10-04
+### Correções
+- Corrige erro que deixa gestor da oportunidade sem permissão de modificar uma inscrição enviada
+
+## [7.4.22] - 2024-10-01
+### Correções
+- Corrige erro ao definir comissão de avaliação pelo gestores de oportunidades 
+- Corrige erro na criação de anexos
+
+### Melhorias
+- Implementa novos hooks na single e edit do agente
+- Refina as permissões dos gestores e administradores das oportunidades
+
+## [7.4.21] - 2024-10-01
+### Melhorias
+- Implementa o método getHumanReadable no Entity.js para facilitar a exibição de valores de metadados que possuem listas predefinidas, transformando-os em formatos mais legíveis para o usuário
+
+## [7.4.20] - 2024-09-27
+### Correções
+- Corrige o erro que impede a distribuição de avaliação com base no número final da inscrição
+
+## [7.4.19] - 2024-09-25
+### Correções
+- Corrige getter nextPhase para evitar que entre em loop infinito
+
+## [7.4.18] - 2024-09-24
+### Correções
+- Corrige sincronização das inscrições entre fases
+- Corrige exibição da descrição no campo 'Telefone do Brasil'
+
+## [7.4.17] - 2024-09-23
+### Correções
+- Corrigida a criação de eventos semanais e mensais.
+- Corrigido o uso do *hook* no método `sendValidationErrors`.
+- Corrigida a exibição dos nomes dos campos durante a validação de erros no formulário de inscrição.
+- Corrigido para que as alterações de propriedade das entidades funcionem e sejam salvas corretamente.
+- Corrigidas as verificações de exibição dos resumos de agentes, projetos e espaços para o avaliador.
+- Corrigido *db-update* que migra valores das colunas do tipo *array* para o tipo *json*.
+
+### Melhorias não funcionais
+- Implementados novos *templateHooks* e *componentHooks*.
+- Ativada a criação de *setters* via *hook* na entidade de registro.
+- Implementado *db-update* para corrigir erro causado por valores inválidos na tabela `request`.
 
 ## [7.4.16] - 2024-09-04
 ### Correções
