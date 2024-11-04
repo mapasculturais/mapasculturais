@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .registration-field-persons {
-    margin-top: size(8);
+    margin-top: size(32);
 
     &__list {
         display: grid;
