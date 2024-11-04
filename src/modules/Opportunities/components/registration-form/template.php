@@ -22,17 +22,27 @@
             <template #content>
                 <p>{{section.description}}</p>
                 <template v-for="field in section.fields" :key="field.fieldName || field.groupName">
-                    <registration-field-persons v-if="field.fieldType == 'persons'" :registration="registration" :prop="field.fieldName"></registration-field-persons>
-
+                    <registration-field-persons v-if="field.fieldType == 'persons'" 
+                        :registration="registration"
+                        :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
+                        :prop="field.fieldName"></registration-field-persons>
+                        
                     <entity-field v-else-if="field.fieldName" 
                         :entity="registration" 
                         :prop="field.fieldName" 
+                        :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
                         :field-description="field.description" 
                         :max-length="field.maxSize" 
                         :autosave="60000"
                         :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"></entity-field>
 
-                    <entity-file v-else-if="field.groupName" :entity="registration" :groupName="field.groupName" titleModal="<?php i::_e('Adicionar anexo') ?>" :title="field.title" editable></entity-file>
+                    <entity-file v-else-if="field.groupName" 
+                        :entity="registration" 
+                        :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
+                        :groupName="field.groupName" 
+                        titleModal="<?php i::_e('Adicionar anexo') ?>" 
+                        :title="field.title" 
+                        editable></entity-file>
                 </template>
             </template>
         </mc-card>

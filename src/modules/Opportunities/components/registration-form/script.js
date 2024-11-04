@@ -20,6 +20,14 @@ app.component('registration-form', {
         return { text, hasSlot }
     },
 
+    data() {
+        const editableFields = this.registration.editableFields;
+
+        return {
+            editableFields,
+        }
+    },
+
     computed: {
         fields () {
             const registration = this.registration;
