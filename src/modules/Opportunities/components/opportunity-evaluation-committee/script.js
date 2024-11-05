@@ -112,6 +112,30 @@ app.component('opportunity-evaluation-committee', {
                     isContentVisible: false,
                 }));
 
+                const pendingReviews = this.infosReviewers.filter((reviewer) => reviewer.status === -5);
+                pendingReviews.sort((a, b) => {
+                    if (a.agent.name < b.agent.name) {
+                        return -1;
+                    } else if (a.agent.name > b.agent.name) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+
+                const acceptedReviews = this.infosReviewers.filter((reviewer) => reviewer.status !== -5);
+                acceptedReviews.sort((a, b) => {
+                    if (a.agent.name < b.agent.name) {
+                        return -1;
+                    } else if (a.agent.name > b.agent.name) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+
+                this.infosReviewers = [...pendingReviews, ...acceptedReviews];
+
                 this.reviewersId = this.infosReviewers.map((reviewer) => reviewer.agent.id);
 
                 this.infosReviewers = this.infosReviewers.filter (reviewer => {
