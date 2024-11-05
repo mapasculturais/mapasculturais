@@ -10,7 +10,7 @@ $this->import('
     mc-popover
 ');
 ?>
-<div class="mc-multiselect">
+<div :class="['mc-multiselect', {'mc-multiselect--disabled' : disabled}]">
     <mc-popover :title="title" classes="mc-multiselect__popper">
         <template #button="popover">
             <slot :popover="popover" :setFilter="setFilter"></slot>
