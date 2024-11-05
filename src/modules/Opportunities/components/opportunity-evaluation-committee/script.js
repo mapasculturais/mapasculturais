@@ -23,7 +23,8 @@ app.component('opportunity-evaluation-committee', {
                 '@select': 'id,name,files.avatar,user',
                 '@order': 'id ASC',
                 '@limit': '25',
-                '@page': '1'
+                '@page': '1',
+                'type': 'EQ(1)',
             };
 
             if (this.reviewersId.length > 0) {

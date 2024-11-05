@@ -19,7 +19,7 @@ $this->import('
 ?>
 <div class="opportunity-evaluation-committee">        
     <div class="opportunity-evaluation-committee__header">
-        <select-entity type="agent" :select="queryString" :query="query" @select="selectAgent($event)" openside="down-right" permissions="">
+        <select-entity v-if="!showDisabled" type="agent" :select="queryString" :query="query" @select="selectAgent($event)" openside="down-right" permissions="">
             <template #button="{ toggle }">
                 <button class="button button--icon button--primary button--md" @click="toggle()">
                     <mc-icon name="add"></mc-icon>
@@ -150,7 +150,7 @@ $this->import('
         </div>   
     </div>
 
-    <div class="opportunity-evaluation-committee__footer" v-if="infosReviewers.length > 0">
+    <div class="opportunity-evaluation-committee__footer" v-if="infosReviewers.length > 0 && !showDisabled">
         <select-entity type="agent" :select="queryString" :query="query" @select="selectAgent($event)" openside="down-right" permissions="">
             <template #button="{ toggle }">
                 <button class="button button--icon button--primary button--md" @click="toggle()">
