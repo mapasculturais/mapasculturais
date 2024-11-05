@@ -22,6 +22,8 @@ foreach ($fields_list as $field) {
             "conditional" => $field->conditional,
             "conditionalField" => $field->conditionalField,
             "required" => $field->required,
+            "displayOrder" => $field->displayOrder,
+            "step" => $field->step ?? null,
         ];
     }
 }
