@@ -242,6 +242,9 @@ class Job extends \MapasCulturais\Entity{
         return $success;
     }
 
+    protected function canUserRemove($user){
+        return true;
+    }
     
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
