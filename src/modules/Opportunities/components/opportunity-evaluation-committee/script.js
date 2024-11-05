@@ -26,9 +26,9 @@ app.component('opportunity-evaluation-committee', {
                 '@page': '1'
             };
 
-            if (Object.keys(this.infosReviewers).length > 0) {
-                const reviewersId = this.infosReviewers.map((reviewer) => reviewer.agent.id).join(',');
-                query['id'] = `!IN(${reviewersId})`;
+            if (this.reviewersId.length > 0) {
+                const ids = this.reviewersId.join(',');
+                query['id'] = `!IN(${ids})`;
             } else {
                 delete query['id'];
             }
@@ -71,7 +71,8 @@ app.component('opportunity-evaluation-committee', {
                 ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
             sendTimeOut: null,
-            fetchConfigs: {}
+            fetchConfigs: {},
+            reviewersId: [],
         }
     },
     
@@ -109,6 +110,9 @@ app.component('opportunity-evaluation-committee', {
                     ...reviewer,
                     isContentVisible: false,
                 }));
+
+                this.reviewersId = this.infosReviewers.map((reviewer) => reviewer.agent.id);
+
                 this.infosReviewers = this.infosReviewers.filter (reviewer => {
                     if (this.showDisabled) {
                         return reviewer.status === 8;
