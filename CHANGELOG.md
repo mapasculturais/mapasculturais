@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.28] - 2024-11-05
+### Correções
+- Adiciona os usuários com controle da oportunidade na lista de usuários que devem ter o cache processado para uma inscrição
+
 ## [7.4.27] - 2024-11-04
 ### Correções
 - Corrige erro que impede os calculos das notas dos critérios de avaliação técnica
