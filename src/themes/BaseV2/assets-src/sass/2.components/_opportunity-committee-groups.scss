@@ -55,7 +55,8 @@
             display: grid;
             gap: size(15);
 
-            &__header {
+            &__header,
+            &__panels {
                 width: 100%;
             }
         }
