@@ -1124,16 +1124,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     }
                 }
 
-                $step = $app->repo('RegistrationStep')->findOneBy(['opportunity' => $this, 'name' => $field->step->name]);
-                if(!$step) {
-                    $newStep = new RegistrationStep;
-                    $newStep->name = $field->step->name;
-                    $newStep->displayOrder = $field->step->displayOrder;
-                    $newStep->opportunity = $this;
-                    $newStep->save();
-
-                    $step = $newStep;
-                }
+                $step = $this->getOrCreateStep($field->step->name ?? null, $field->step->displayOrder ?? null);
 
                 $newField = new RegistrationFieldConfiguration;
                 $newField->owner = $this;
@@ -1184,17 +1175,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
                 $newFile = new RegistrationFileConfiguration;
 
-                $step = $app->repo('RegistrationStep')->findOneBy(['opportunity' => $this, 'name' => $file->step->name]);
-
-                if(!$step) {
-                    $newStep = new RegistrationStep;
-                    $newStep->name = $file->step->name;
-                    $newStep->displayOrder = $file->step->displayOrder;
-                    $newStep->opportunity = $this;
-                    $newStep->save();
-
-                    $step = $newStep;
-                }
+                $step = $this->getOrCreateStep($file->step->name ?? null, $file->step->displayOrder ?? null);
 
                 $newFile->owner = $this;
                 $newFile->title = $file->title;
@@ -1281,6 +1262,40 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).importFields:after", [&$importSource, &$created_fields, &$created_files]);
 
         }
+    }
+
+    /**
+     * Obtém ou cria uma etapa de registro associada a uma oportunidade.
+     *
+     * Esta função verifica se uma etapa de registro com o nome especificado já existe
+     * para a oportunidade atual. Se a etapa não existir, uma nova etapa é criada com
+     * o nome e a ordem de exibição fornecidos. Caso o nome da etapa não seja informado,
+     * um valor padrão "Etapa importada" é utilizado. Se a ordem de exibição não for informada,
+     * a etapa é criada com a ordem padrão de valor 0.
+     *
+     * @param string|null $step_name       O nome da etapa de registro. Padrão: 'Etapa importada'.
+     * @param int|null    $display_order   A ordem de exibição da etapa. Padrão: 0.
+     *
+     * @return RegistrationStep           Retorna a etapa de registro existente ou a nova etapa criada.
+    */
+    function getOrCreateStep($step_name = null, $display_order = null): RegistrationStep {
+        $app = App::i();
+        
+        $step_name = $step_name ?? i::__('Etapa importada');
+        
+        $step = $app->repo('RegistrationStep')->findOneBy(['opportunity' => $this, 'name' => $step_name]);
+        
+        if (!$step) {
+            $newStep = new RegistrationStep;
+            $newStep->name = $step_name;
+            $newStep->displayOrder = $display_order ?? 0;
+            $newStep->opportunity = $this;
+            $newStep->save();
+    
+            $step = $newStep;
+        }
+        
+        return $step;
     }
 
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
