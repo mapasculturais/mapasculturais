@@ -24,7 +24,7 @@
         if (a.step?.displayOrder === b.step?.displayOrder) {
             return Math.sign(a.displayOrder - b.displayOrder);
         } else {
-            return Math.sign(a.step.displayOrder - b.step.displayOrder);
+            return Math.sign(a.step?.displayOrder - b.step?.displayOrder);
         }
     }
 

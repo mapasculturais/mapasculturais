@@ -10,6 +10,10 @@ app.component('opportunity-evaluation-committee', {
             type: String,
             default: 'group-admin'
         },
+        showDisabled: {
+            type: Boolean,
+            default: false,
+        },
         excludeFields: Array
     },
 
@@ -105,6 +109,13 @@ app.component('opportunity-evaluation-committee', {
                     ...reviewer,
                     isContentVisible: false,
                 }));
+                this.infosReviewers = this.infosReviewers.filter (reviewer => {
+                    if (this.showDisabled) {
+                        return reviewer.status === 8;
+                    } else {
+                        return reviewer.status !== 8;
+                    }
+                })
                 this.showReviewers = Object.keys(this.infosReviewers).length > 0;
                 this.ReviewerSelect = false;
                 this.loadFetchs();
