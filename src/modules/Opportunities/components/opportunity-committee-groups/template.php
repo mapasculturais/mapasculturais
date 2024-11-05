@@ -107,7 +107,15 @@ $this->import('
                 </div>
                 
                 <div class="opportunity-committee-groups__evaluators">
-                    <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
+                    <mc-tabs>
+                        <mc-tab label="<?php i::esc_attr_e("Habilitados")?>" slug="habilitados">
+                            <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
+                        </mc-tab>
+
+                        <mc-tab label="<?php i::esc_attr_e("Desabilitados")?>" slug="desabilitados">
+                            <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" show-disabled @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
+                        </mc-tab>
+                    </mc-tabs>
                 </div>
             </div>
         </mc-tab>
