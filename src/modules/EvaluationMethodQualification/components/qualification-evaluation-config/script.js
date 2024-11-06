@@ -23,6 +23,7 @@ app.component('qualification-evaluation-config', {
             optionsText: '',
             options: null,
             showFilters: false,
+            maxNonEliminatory: false,
             excludeDistributionField: true,
         }
     },
@@ -207,6 +208,22 @@ app.component('qualification-evaluation-config', {
         nonEliminatoryChange(criteria) {
             criteria.nonEliminatory = criteria.nonEliminatory ? 'true' : 'false';
             this.save();
+        }, 
+
+        enableMaxNonEliminatory(value, section) {
+            if (value) {
+                this.maxNonEliminatory = true;
+                if (!section.maxNonEliminatory) {
+                    section.maxNonEliminatory = true;
+                }
+            } else {
+                this.maxNonEliminatory = false;
+                if (section.maxNonEliminatory) {
+                    section.maxNonEliminatory = false;
+                    section.numberMaxNonEliminatory = 0; 
+                    this.save();
+                }
+            }
         }, 
         
         enableFilterConfigSection(value, section) {
