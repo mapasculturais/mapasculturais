@@ -41,13 +41,13 @@ $this->import('
                         </button>
                     </template>
                     
-                    <template #default="{close}">
-                        <form @submit="addGroup(newGroupName); $event.preventDefault(); close();">
+                    <template #default="popover">
+                        <form @submit="groupCreation($event, popover)">
                             <div class="grid-12">
                                 <div class="related-input col-12">
                                     <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome da comissão') ?>" maxlength="64" />
                                 </div>
-                                <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" @click="cancelGroupCreation(popover)"> <?php i::_e("Cancelar") ?> </button>
                                 <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
