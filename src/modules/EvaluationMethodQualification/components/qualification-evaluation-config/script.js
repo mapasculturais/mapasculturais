@@ -221,9 +221,9 @@ app.component('qualification-evaluation-config', {
                 if (section.maxNonEliminatory) {
                     section.maxNonEliminatory = false;
                     section.numberMaxNonEliminatory = 0; 
-                    this.save();
                 }
             }
+            this.save();
         }, 
         
         enableFilterConfigSection(value, section) {
