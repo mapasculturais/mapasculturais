@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -9,17 +10,23 @@ use MapasCulturais\i;
 $this->import('
     mc-icon
     mc-select
+    mc-alert
 ');
 ?>
 
 <div class="geo-quota">
+    <mc-alert v-if="vacancies <= 0" type="warning" class="entity-owner-pending">
+        <div>
+            <?= i::__('O número de vagas do edital não foi configurado. Para definir a distribuição de vagas por território, é necessário primeiro estabelecer esse valor.') ?>
+        </div>
+    </mc-alert>
+
     <div v-if="!isActive" class="geo-quota__active">
-        <button v-if="!isActive" class="button button--primary button--icon" @click="open()">
+        <button v-if="!isActive" class="button button--primary button--icon" @click="open()" :class="{'disabled' : vacancies <= 0}">
             <mc-icon name="add"></mc-icon>
             <?= i::__('Configurar distribuição de vagas por território') ?>
         </button>
 
-        <!-- <mc-icon name="info-full"></mc-icon> -->
     </div>
 
     <div v-if="isActive" class="geo-quota__card">
@@ -113,12 +120,12 @@ $this->import('
                         <th>{{option}}</th>
                         <td>
                             <div class="geo-quota__input-area">
-                                <input class="geo-quota__input" :value="getPercentage(option)" type="number" @change="setPercentage(option, $event)" /> %
+                                <input class="geo-quota__input" :value="getPercentage(option)" type="number" @change="setPercentage(option, $event); sumGeoQuota(option)" /> %
                             </div>
                         </td>
                         <td>
                             <div class="geo-quota__input-area">
-                                <input class="geo-quota__input" v-model="geoQuota.distribution[option]" type="number" />
+                                <input class="geo-quota__input" v-model="geoQuota.distribution[option]" type="number" @input="sumGeoQuota(option)"/>
                             </div>
                         </td>
                     </tr>
