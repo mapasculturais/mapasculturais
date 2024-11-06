@@ -50,6 +50,10 @@ app.component('simple-evaluation-form', {
         currentEvaluation() {
             return $MAPAS.config.simpleEvaluationForm.currentEvaluation;
         },
+        
+        permetions() {
+            return this.entity.requestedEntity.currentUserPermissions.evaluateOnTime;
+        }
     },
 
     methods: {

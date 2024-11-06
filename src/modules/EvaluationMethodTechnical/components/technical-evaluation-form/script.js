@@ -74,6 +74,9 @@ app.component('technical-evaluation-form', {
                 }
             }
             return total;
+        },
+        permetions() {
+            return this.entity.currentUserPermissions.evaluateOnTime;
         }
     },
 

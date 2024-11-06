@@ -34,13 +34,13 @@ $this->import('
                 </mc-popover>
             </div>
             <div>
-                <mc-select v-if="isEditable" v-model="formData.data[crit.id]" @change-option="updateSectionStatus(section.id, crit.id, $event)" :disabled="!isEditable">
+                <mc-select v-if="isEditable && permetions" v-model="formData.data[crit.id]" @change-option="updateSectionStatus(section.id, crit.id, $event)" :disabled="!isEditable">
                     <option v-if="crit.notApplyOption == 'true'" value="Não se aplica"><?php i::_e('Não se aplica') ?></option>
                     <option class="qualification-enabled" value="Habilitado"><?php i::_e('Habilitado') ?></option>
                     <option class="qualification-disabled" value="Inabilitado"><?php i::_e('Inabilitado') ?></option>
                     <option v-for="option in crit.options" :key="option" :value="option">{{ option }}</option>
                 </mc-select>
-                <input v-if="!isEditable" type="text" :value="formData.data[crit.id]" disabled>
+                <input v-if="!isEditable || !permetions" type="text" :value="formData.data[crit.id]" disabled>
             </div>
         </div>
         <label>
@@ -52,7 +52,8 @@ $this->import('
     </div>
     <div class="qualification-evaluation-form__observation field">
         <p><?php i::_e('Observações') ?></p>
-        <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
+        <textarea v-if="isEditable && permetions" v-model="formData.data.obs" :disabled="!isEditable"></textarea>
+        <textarea v-if="!permetions || !isEditable" v-model="formData.data.obs" disabled></textarea>
         <label>
             <?php i::_e('Status da avaliação:') ?> 
             <span :class="consolidatedResult == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'">

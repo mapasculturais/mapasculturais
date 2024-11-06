@@ -61,6 +61,9 @@ app.component('qualification-evaluation-form', {
         currentEvaluation() {
             return $MAPAS.config.qualificationEvaluationForm.currentEvaluation;
         },
+        permetions() {
+            return this.entity.currentUserPermissions.evaluateOnTime;
+        }
     },
 
     methods: {
