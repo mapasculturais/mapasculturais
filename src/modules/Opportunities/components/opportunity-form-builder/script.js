@@ -12,7 +12,7 @@ app.component('opportunity-form-builder' , {
         return { text }
     },
     data () {
-        const steps = this.entity.registrationSteps.sort((a, b) => a.displayOrder - b.displayOrder);
+        const steps = this.entity.registrationSteps?.sort((a, b) => a.displayOrder - b.displayOrder) || [];
 
         return {
             newStep: { id: 'new', name: '' },
