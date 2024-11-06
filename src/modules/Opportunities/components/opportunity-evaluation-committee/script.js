@@ -81,6 +81,25 @@ app.component('opportunity-evaluation-committee', {
         showSummary(summary) {
             return summary ? Object.values(summary).some(value => value > 0) : false;
         },
+
+        hasEvaluationConfiguration(agentId) {
+            const propertiesToCheck = [
+                'fetchCategories',
+                'fetchProponentTypes',
+                'fetchRanges',
+                'fetch',
+                'fetchSelectionFields'
+            ];
+        
+            for (const property of propertiesToCheck) {
+                if (this.entity[property] && this.entity[property][agentId] && Object.keys(this.entity[property][agentId]).length > 0) {
+                    return true;
+                }
+            }
+        
+            return false;
+        },
+        
         selectAgent(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});

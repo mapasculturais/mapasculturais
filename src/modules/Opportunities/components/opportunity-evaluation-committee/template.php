@@ -45,8 +45,8 @@ $this->import('
                 <div class="opportunity-evaluation-committee__card-header-content">
                     <div class="opportunity-evaluation-committee__card-entity">
                         <div class="opportunity-evaluation-committee__card-header-info">
-                            <mc-avatar v-if="infoReviewer.status !== -5" :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
-                            <mc-avatar v-if="infoReviewer.status == -5" :entity="infoReviewer.agent" type="warning" size="xsmall" square></mc-avatar>
+                            <mc-avatar v-if="infoReviewer.status !== -5 && hasEvaluationConfiguration(infoReviewer?.agentUserId)" :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
+                            <mc-avatar v-if="infoReviewer.status == -5 || !hasEvaluationConfiguration(infoReviewer?.agentUserId)" :entity="infoReviewer.agent" type="warning" size="xsmall" square></mc-avatar>
                             <div class="opportunity-evaluation-committee__card-header-info-name">
                                 <span class="bold">{{infoReviewer.agent.name}}</span>
                                 <small class="semibold">ID: #{{infoReviewer.agent.id}}</small>
@@ -54,7 +54,7 @@ $this->import('
                         </div>
                     </div>
                     <div class="opportunity-evaluation-committee__card-status">
-                        <div class="opportunity-evaluation-committee__card-status-wrapper field">
+                        <div v-if="hasEvaluationConfiguration(infoReviewer?.agentUserId)" class="opportunity-evaluation-committee__card-status-wrapper field">
                             <label class="status-label"><?= i::_e('Status das avaliações:') ?></label>
                             <div class="opportunity-evaluation-committee__summary">
                                 <span class="opportunity-evaluation-committee__summary--pending semibold">
@@ -71,6 +71,10 @@ $this->import('
                                 </span>
                             </div>
                         </div>
+
+                        <mc-alert v-else type="warning">
+                            <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?>
+                        </mc-alert>
                     </div>
                 </div>
 
