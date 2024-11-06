@@ -80,21 +80,21 @@ $this->import('
                 <div class="opportunity-committee-groups__multiple-evaluators">
                     <div class="field">
                         <mc-toggle
-                            :modelValue="localValuersPerRegistration[groupName] != null" 
-                            @update:modelValue="changeMultipleEvaluators($event, groupName)"
+                            :modelValue="entity.valuersPerRegistration[groupName] !== undefined" 
+                            @update:modelValue="enableValuersPerRegistration($event, groupName)"
                             label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
                         />
-                        <input v-if="localValuersPerRegistration[groupName] != null" v-model="localValuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
+                        <input v-if="entity.valuersPerRegistration[groupName] !== undefined" v-model="entity.valuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
                     </div>
     
                     <div class="field">
                         <mc-toggle
-                            :modelValue="entity?.fetchFields[groupName] && Object.keys(entity.fetchFields[groupName]).length > 0" 
+                            :modelValue="entity.fetchFields[groupName] !== undefined" 
                             @update:modelValue="enableRegisterFilterConf($event, groupName)"
                             label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
                         />
                         <opportunity-registration-filter-configuration 
-                            v-if="entity.fetchFields[groupName]" 
+                            v-if="entity.fetchFields[groupName] !== undefined" 
                             :entity="entity"
                             v-model:default-value="entity.fetchFields[groupName]"
                             :excludeFields="globalExcludeFields"
