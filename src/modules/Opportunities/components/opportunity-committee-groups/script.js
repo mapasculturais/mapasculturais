@@ -211,5 +211,10 @@ app.component('opportunity-committee-groups', {
         renameTab(event, index) {
             this.$refs.tabs.tabs[index].label = event.target.value;
         },
+
+        enableExternalReviews(value) {
+            this.entity.showExternalReviews = value ? true : false;
+            this.autoSave();
+        }
     },
 });
