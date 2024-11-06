@@ -77,6 +77,7 @@ app.component('qualification-evaluation-config', {
                     name: '',
                     notApplyOption: 'false',
                     otherReasonsOption: 'false',
+                    nonEliminatory: 'false',
                     weight: 1
                 });
 
@@ -202,6 +203,11 @@ app.component('qualification-evaluation-config', {
             criteria.otherReasonsOption = criteria.otherReasonsOption ? 'true' : 'false';
             this.save();
         },
+
+        nonEliminatoryChange(criteria) {
+            criteria.nonEliminatory = criteria.nonEliminatory ? 'true' : 'false';
+            this.save();
+        }, 
         
         enableFilterConfigSection(value, section) {
             if (value) {

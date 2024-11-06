@@ -114,6 +114,11 @@ $this->import('
                                     <input type="checkbox" v-model="criteria.otherReasonsOption" @change="otherReasonsChange(criteria)" />
                                     <?= i::__('Habilitar a opção Outros motivos para inabilitação?') ?>
                                 </label>
+
+                                <label class="col-12">
+                                    <input type="checkbox" v-model="criteria.nonEliminatory" @change="nonEliminatoryChange(criteria)" />
+                                    <?= i::__('Não eliminatório') ?>
+                                </label>
                             </div>
                         </div>
     
@@ -128,7 +133,7 @@ $this->import('
                                 v-if="criteria.showFilters"
                                 :entity="entity"
                                 v-model:default-value="criteria"
-                                :excludeFields="['id', 'name', 'showFilters', 'options', 'notApplyOption', 'otherReasonsOption', 'sid', 'weight', 'description']"
+                                :excludeFields="['id', 'name', 'showFilters', 'options', 'notApplyOption', 'otherReasonsOption', 'sid', 'weight', 'description', 'nonEliminatory']"
                                 titleModal="<?= i::__('Configuração de filtros do critério') ?>"
                                 is-criterion
                             ></opportunity-registration-filter-configuration>   
