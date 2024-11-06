@@ -29,19 +29,19 @@ $this->import('
 
             <div v-if="selectedField == 'category'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="category in filteredFields.categories">
-                    <input :checked="selectedConfigs.includes(category)" type="checkbox" :value="category" v-model="selectedConfigs"> {{category}} <!-- @change="change($event)" -->
+                    <input :checked="selectedConfigs.includes(category)" type="checkbox" :value="category" v-model="selectedConfigs"> {{category}}
                 </label>
             </div>
 
             <div v-if="selectedField == 'proponentType'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="proponentType in filteredFields.proponentTypes">
-                    <input :checked="selectedConfigs.includes(proponentType)" type="checkbox" :value="proponentType" v-model="selectedConfigs"> {{proponentType}} <!-- @change="change($event)" -->
+                    <input :checked="selectedConfigs.includes(proponentType)" type="checkbox" :value="proponentType" v-model="selectedConfigs"> {{proponentType}}
                 </label>
             </div>
 
             <div v-if="selectedField == 'range'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="range in filteredFields.ranges">
-                    <input :checked="selectedConfigs.includes(range)" type="checkbox" :value="range" v-model="selectedConfigs"> {{range}} <!-- @change="change($event)" -->
+                    <input :checked="selectedConfigs.includes(range)" type="checkbox" :value="range" v-model="selectedConfigs"> {{range}}
                 </label>
             </div>
 
@@ -51,7 +51,7 @@ $this->import('
 
             <div v-if="registrationSelectionFields[selectedField] && registrationSelectionFields[selectedField].length > 0" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <label class="input__label input__checkboxLabel input__multiselect" v-for="option in registrationSelectionFields[selectedField]">
-                    <input :checked="selectedConfigs[option]" type="option" :value="option" v-model="selectedConfigs"> {{range}} <!-- @change="change($event)" -->
+                    <input :checked="selectedConfigs.includes[option]" type="checkbox" :value="option" v-model="selectedConfigs"> {{option}}
                 </label>
             </div>
         </div>
