@@ -16,14 +16,14 @@ $this->import('
 <div class="evaluation-actions" v-if="evaluationRegistrationList">
     <div class="grid-12">
         <div class="col-12" v-if="showActions('finishEvaluation')">
-            <button class="button button--icon button--primary button--large evaluation-actions__buttons__final" @click="finishEvaluation()">
+            <button v-if="permetions" class="button button--icon button--primary button--large evaluation-actions__buttons__final" @click="finishEvaluation()">
                 <mc-icon name="check"></mc-icon>
                 <?= i::__('Concluir avaliação') ?>
             </button>
         </div>
 
         <div class="col-12" v-if="showActions('finishEvaluation')">
-            <mc-modal button-label="Finalizar e Avançar" title="<?= i::__('Avaliação feita!') ?>">
+            <mc-modal v-if="permetions" button-label="Finalizar e Avançar" title="<?= i::__('Avaliação feita!') ?>">
                 <template #default>
                     <div class="finish-send-evaluation__text">
                         <span class="finish-send-evaluation__span"><?= i::__('Agora é necessário enviar essa avaliação para a pessoa gestora. Você pode enviar uma por uma ou todas de uma só vez.') ?></span>
@@ -36,7 +36,7 @@ $this->import('
                 </template>
         
                 <template #button="modal">
-                    <button class="button button--icon button--primary button--icon button--large evaluation-actions__buttons__finalcontinue" @click="modal.open()">
+                    <button v-if="permetions" class="button button--icon button--primary button--icon button--large evaluation-actions__buttons__finalcontinue" @click="modal.open()">
                         <mc-icon name="send" class="send-icon"></mc-icon>
                         <span v-if="lastRegistration?.registrationid != entity.id"><?= i::__('Enviar avaliação') ?></span>
                         <span v-if="lastRegistration?.registrationid == entity.id"><?= i::__('Finalizar e enviar') ?></span>
@@ -57,7 +57,7 @@ $this->import('
         </div>
         
         <div class="col-12" v-if="showActions('save')">
-            <button class="button button--icon button--primary button--large evaluation-actions__buttons__saveafter" @click="saveEvaluation()">
+            <button v-if="permetions" class="button button--icon button--primary button--large evaluation-actions__buttons__saveafter" @click="saveEvaluation()">
                 <mc-icon name="clock"></mc-icon>
                 <?php i::_e('Salvar e continuar depois') ?>
             </button>

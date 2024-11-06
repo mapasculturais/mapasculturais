@@ -46,6 +46,10 @@ app.component('evaluation-actions', {
             const globalState = useGlobalState();
             return globalState.lastRegistration;
         },
+        
+        permetions() {
+            return this.entity.currentUserPermissions.evaluateOnTime;
+        }
     },
 
     methods: {
