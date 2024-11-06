@@ -14,7 +14,6 @@ app.component('opportunity-committee-groups', {
             newGroupName: '',
             editGroupName: false,
             newName: '',
-            localValuersPerRegistration: {},
             tabSelected: '',
             hasGroupsFlag: false,
             minervaGroup: '@tiebreaker',
@@ -38,7 +37,7 @@ app.component('opportunity-committee-groups', {
 
     mounted() {
         this.initializeGroups();
-        this.initiliazeValuersPerRegistration();
+        this.initiliazeProperties();
     },
     
     methods: {
@@ -67,29 +66,14 @@ app.component('opportunity-committee-groups', {
             this.entity.relatedAgents = groups;
         },
 
-        initiliazeValuersPerRegistration() {
-            if(!this.entity?.valuersPerRegistration) {
-                this.entity.valuersPerRegistration = {};
-            }
-            
-            // Se não existir configuração de filtro para avaliadores, cria objeto vazio 
-            if(!this.entity?.fetchFields) {
-                this.entity.fetchFields = {};
-            }
-            
-            Object.keys(this.entity.relatedAgents || {}).forEach(groupName => {
-                if(this.entity.valuersPerRegistration[groupName] && !this.localValuersPerRegistration[groupName]) {
-                    this.localValuersPerRegistration[groupName] = this.entity.valuersPerRegistration[groupName];
+        initiliazeProperties() {
+            const props = ['fetchFields', 'valuersPerRegistration'];
+
+            for (let group of props) {
+                if (!this.entity[group] || this.entity[group] instanceof Array) {
+                    this.entity[group] = {};
                 }
-
-                if (!this.entity.valuersPerRegistration[groupName] && !this.localValuersPerRegistration[groupName]) {
-                    this.localValuersPerRegistration[groupName] = null;
-                }
-            });
-
-            this.entity.valuersPerRegistration = this.localValuersPerRegistration;
-
-            this.entity.save();
+            }
         },
 
         hasGroups() {
@@ -107,8 +91,6 @@ app.component('opportunity-committee-groups', {
 
             this.entity.relatedAgents = { ...this.entity.relatedAgents, [group]: this.entity.agentRelations[group] };
 
-            this.localValuersPerRegistration[group] = null;
-
             if(!this.entity?.fetchFields) {
                 this.entity.fetchFields = {}
             }
@@ -122,7 +104,7 @@ app.component('opportunity-committee-groups', {
 
         removeGroup(group) {
             delete this.entity.relatedAgents[group]
-            delete this.localValuersPerRegistration[group];
+            delete this.entity.valuersPerRegistration[group];
             delete this.entity.fetchFields[group];
             this.entity.removeAgentRelationGroup(group);
 
@@ -172,16 +154,12 @@ app.component('opportunity-committee-groups', {
         },
 
         autoSave() {
-            this.entity.valuersPerRegistration = this.localValuersPerRegistration;
-            this.entity.save();
+            const entity = this.entity;
+            entity.save();
         },
 
         changeGroupFlag() {
             this.hasGroupsFlag = true;
-        },
-
-        changeMultipleEvaluators(value, group) {
-            this.localValuersPerRegistration[group] = value ? 1 : null;
         },
 
         reorderGroups() {
@@ -213,6 +191,18 @@ app.component('opportunity-committee-groups', {
                 } 
             } else {
                 delete this.entity.fetchFields[group];
+            }
+
+            this.autoSave();
+        },
+
+        enableValuersPerRegistration(value, group) {
+            if (value) {
+                if (!this.entity.valuersPerRegistration[group]) {
+                    this.entity.valuersPerRegistration[group] = 1;
+                } 
+            } else {
+                delete this.entity.valuersPerRegistration[group];
             }
 
             this.autoSave();
