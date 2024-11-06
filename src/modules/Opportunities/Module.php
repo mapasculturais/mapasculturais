@@ -889,63 +889,38 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerOpportunityMetadata('proponentAgentRelation', [
             'label' => i::__('Vinculação de Agente coletivo para tipos de proponente'),
-            'type' => 'json',
+            'type' => 'object',
             'description' => i::__('Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou Pessoa Jurídica'),
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('fetchFields', [
             'label' => i::__('Configuração filtro de inscrição para avaliadores/comissão'),
-            'serialize' => function ($val) {
-                return json_encode($val);
-            },
-            'unserialize' => function($val) {
-                return json_decode((string) $val);
-            }
+            'type' => 'object',
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('fetchSelectionFields', [
             'label' => i::__('Configuração de campos de seleção'),
-            'type' => 'json',
+            'type' => 'object',
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('fetch', [
             'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
-            'serialize' => function ($val) {
-                return json_encode($val);
-            },
-            'unserialize' => function($val) {
-                return json_decode((string) $val);
-            }
+            'type' => 'json'
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('fetchCategories', [
             'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por categoria'),
-            'serialize' => function ($val) {
-                return json_encode($val);
-            },
-            'unserialize' => function($val) {
-                return json_decode((string) $val);
-            }
+            'type' => 'object',
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('fetchRanges', [
             'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por faixa'),
-            'serialize' => function ($val) {
-                return json_encode($val);
-            },
-            'unserialize' => function($val) {
-                return json_decode((string) $val);
-            }
+            'type' => 'object',
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('fetchProponentTypes', [
             'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por tipo de proponente'),
-            'serialize' => function ($val) {
-                return json_encode($val);
-            },
-            'unserialize' => function($val) {
-                return json_decode((string) $val);
-            }
+            'type' => 'object',
         ]);
     }
 
