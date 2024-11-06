@@ -32,6 +32,12 @@ $this->import('
                 </button>
             </div>
 
+            <mc-alert v-if="totalQuota > oppFirstPhase.vacancies" type="warning" class="entity-owner-pending">
+                <div>
+                    <?= i::__('O número de vagas distribuídas por território excede o total de vagas disponíveis no edital.') ?>
+                </div>
+            </mc-alert>
+
             <div class="geo-quota__options">
                 <div class="field geo-quota__field" v-if="hasProponentType">
                     <template v-if="hasCollective">
