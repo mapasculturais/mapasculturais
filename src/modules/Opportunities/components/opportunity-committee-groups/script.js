@@ -80,6 +80,18 @@ app.component('opportunity-committee-groups', {
             return this.hasGroupsFlag;
         },
 
+        groupCreation(event, popover) {
+            event.preventDefault();
+            this.addGroup(this.newGroupName);
+            popover.close();
+            this.newGroupName = '';
+        },
+
+        cancelGroupCreation(popover) {
+            popover.close()
+            this.newGroupName = '';
+        },
+
         addGroup(group, disableMinervaGroup = false) {
             if (!this.entity.relatedAgents[group]) {
                 this.entity.relatedAgents[group] = [];
