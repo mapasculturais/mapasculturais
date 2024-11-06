@@ -435,16 +435,28 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $evaluation_config = $registration->evaluationMethodConfiguration;
         $valuers_per_registration_config = $evaluation_config->valuersPerRegistration;
 
+        $relations = $registration->opportunity->evaluationMethodConfiguration->agentRelations;
+
+        $user_group = '';
+        foreach($relations as $relation) {
+            if($relation->agent->id == $user->profile->id) {
+                $user_group = $relation->group;
+            }
+        }
+        
         if (
-            empty($evaluation_config->fetch->{$user->id}) 
-            && empty($evaluation_config->fetchCategories->{$user->id}) 
-            && empty($evaluation_config->fetchRanges->{$user->id})
-            && empty($evaluation_config->fetchProponentTypes->{$user->id})
-            && empty($evaluation_config->fetchSelectionFields->{$user->id})
-            && empty($evaluation_config->fetchFields->{$user->id})
+            empty($evaluation_config->fetch->{$user->id}) &&
+            empty($evaluation_config->fetchCategories->{$user->id}) &&
+            empty($evaluation_config->fetchRanges->{$user->id}) &&
+            empty($evaluation_config->fetchProponentTypes->{$user->id}) &&
+            empty($evaluation_config->fetchSelectionFields->{$user->id}) &&
+            (
+                empty($evaluation_config->fetchFields->{$user_group}) || 
+                empty(array_filter((array) $evaluation_config->fetchFields->{$user_group}))
+            )
         ) {
             return false;
-        };
+        }
 
         
         /**
@@ -480,34 +492,37 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $config_selection_fields = is_array($evaluation_config->fetchSelectionFields) ? $evaluation_config->fetchSelectionFields : (array) $evaluation_config->fetchSelectionFields;
             $global_filter_configs = isset($evaluation_config->fetchFields) && is_array($evaluation_config->fetchFields) ? $evaluation_config->fetchFields : (array) $evaluation_config->fetchFields;
             
-            $relations = $registration->opportunity->evaluationMethodConfiguration->agentRelations;
-
-            $user_group = '';
-            foreach($relations as $relation) {
-                if($relation->agent->id == $user->profile->id) {
-                    $user_group = $relation->group;
-                }
-            }
-
             if (is_array($global_filter_configs) && isset($global_filter_configs[$user_group])) {
                 $committee_config = $global_filter_configs[$user_group];
                 $user_id = $user->id;
                 
                 if (isset($committee_config->category)) {
-                    $config_fetchCategories = [$user_id => (array) $committee_config->category];
+                    $config_fetchCategories[$user_id] = array_merge(
+                        $config_fetchCategories[$user_id] ?? [],
+                        (array) $committee_config->category
+                    );
                 }
                 
                 if (isset($committee_config->ranges)) {
-                    $config_ranges = [$user_id => (array) $committee_config->ranges];
+                    $config_ranges[$user_id] = array_merge(
+                        $config_ranges[$user_id] ?? [],
+                        (array) $committee_config->ranges
+                    );
                 }
                 
                 if (isset($committee_config->proponentType)) {
-                    $config_proponent_types = [$user_id => (array) $committee_config->proponentType];
+                    $config_proponent_types[$user_id] = array_merge(
+                        $config_proponent_types[$user_id] ?? [],
+                        (array) $committee_config->proponentType
+                    );
                 }
 
                 foreach ($committee_config as $key => $value) {
                     if (!in_array($key, ['category', 'range', 'proponentType', 'distribution'])) {
-                        $config_selection_fields[$user_id][$key] = (array) $value;
+                        $config_selection_fields[$user_id][$key] = array_merge(
+                            $config_selection_fields[$user_id][$key] ?? [],
+                            (array) $value
+                        );
                     }
                 }
             }
