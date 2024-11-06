@@ -922,6 +922,12 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores por tipo de proponente'),
             'type' => 'object',
         ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('showExternalReviews', [
+            'label' => i::__('Permite visualização de pareceres externos'),
+            'type' => 'boolean',
+            'default' => false,
+        ]);
     }
 
     public function applySeal(Agent $agent, array $sealIds){
