@@ -463,7 +463,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             && !$has_global_filter_configs
         ) {
             return false;
-        };
+        }
 
         
         /**
