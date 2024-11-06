@@ -188,6 +188,25 @@ class Metadata extends \MapasCulturais\Definition{
                 if(is_null($value)) { return null; }
                 return json_encode($value);
             },
+            'object' => function ($value) {
+                if($value) {
+                    $value = (object) $value;
+                }
+                return json_encode($value);
+            },
+            'array' => function ($value) {
+                if($value) {
+                    $value = (array) $value;
+                }
+                return json_encode($value);
+            },
+            'entity' => function($value) {
+                if ($value instanceof \MapasCulturais\Entity) {
+                    return (string) $value;
+                } else {
+                    return null;
+                }
+            },
             'DateTime' => function ($value) {
                 if(is_null($value)) { return null; }
                 if ($value instanceof DateTime) {
@@ -219,6 +238,7 @@ class Metadata extends \MapasCulturais\Definition{
     }
 
     function getDefaultUnserializer() {
+        $app = App::i();
         $unserializers = [
             'boolean' => function($value) {
                 return is_null($value) ? null : (bool) $value;
@@ -240,6 +260,20 @@ class Metadata extends \MapasCulturais\Definition{
             },
             'json' => function($value) {
                 return is_null($value) ? null : json_decode($value);
+            },
+            'object' => function($value) {
+                return is_null($value) ? null : (object) json_decode($value);
+            },
+            'array' => function($value) {
+                return is_null($value) ? null : (array) json_decode($value);
+            },
+            'entity' => function($value) use ($app) {
+                if (preg_match('#^((\\\?[a-z]\w*)+):(\d+)$#i', $value, $matches)) {
+                    $class = $matches[1];
+                    $id = $matches[3];
+                    return $app->repo($class)->find($id);
+                }
+                return is_null($value) ? null : (array) json_decode($value);
             },
             'bankFields' => function($value) {
                 return is_null($value) ? null : json_decode($value);
