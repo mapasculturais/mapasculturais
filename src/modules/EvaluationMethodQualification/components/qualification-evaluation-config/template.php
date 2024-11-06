@@ -39,8 +39,18 @@ $this->import('
                         </div>
                     </div>
                 </div>
-
+                
+                
                 <div class="qualification-evaluation-config__section-filters">
+                    <div class="field qualification-evaluation-config__non-eliminatory">
+                        <mc-toggle
+                            :modelValue="section.maxNonEliminatory" 
+                            @update:modelValue="enableMaxNonEliminatory($event, section)"
+                            label="<?= i::__('Limitar número máximo de critérios não eliminatórios por seção') ?>"
+                        />
+                        <input v-if="section.maxNonEliminatory" v-model="section.numberMaxNonEliminatory" type="number" @change="save()"/>
+                    </div>
+                    
                     <mc-toggle 
                         :modelValue="section.showFilters"
                         @update:modelValue="enableFilterConfigSection($event, section)"
@@ -51,7 +61,7 @@ $this->import('
                         v-if="section.showFilters"
                         :entity="entity"
                         v-model:default-value="section"
-                        :excludeFields="['id', 'name', 'showFilters']"
+                        :excludeFields="['id', 'name', 'showFilters', 'maxNonEliminatory', 'numberMaxNonEliminatory']"
                         titleModal="<?= i::__('Configuração de filtros da seção') ?>"
                         is-section
                         ></opportunity-registration-filter-configuration>
