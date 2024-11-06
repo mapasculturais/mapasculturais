@@ -28,11 +28,15 @@ $this->import('
             </template>
         </select-entity>
 
-        <div class="opportunity-evaluation-committee__expand-button">
+        <div v-if="showReviewers" class="opportunity-evaluation-committee__expand-button">
             <button class="button button--primary" @click="expandAllToggles">
                 <?php i::_e('Expandir todos os avaliadores') ?>
             </button>
         </div>
+    </div>
+
+    <div v-if="!showReviewers" class="opportunity-evaluation-committee__content">
+        <?= i::__('Sem avaliadores a serem listados.') ?>
     </div>
 
     <div v-if="showReviewers" class="opportunity-evaluation-committee__content">
