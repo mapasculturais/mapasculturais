@@ -29,6 +29,10 @@ app.component('opportunity-evaluations-tab', {
             });
 
             return result;
+        },
+
+        permetions() {
+            return this.entity.currentUserPermissions.evaluateOnTime;
         }
     },
     

@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 
-<mc-tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="isEvaluator">
+<mc-tab label="<?= i::__('Avaliações') ?>" slug="evaluations" v-if="isEvaluator || !permetions">
     <div class="opportunity-container">
         <opportunity-phase-evaluation></opportunity-phase-evaluation>
     </div>
