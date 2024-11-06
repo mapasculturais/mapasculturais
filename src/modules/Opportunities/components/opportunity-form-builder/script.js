@@ -29,6 +29,7 @@ app.component('opportunity-form-builder' , {
     computed: {
         stepsWithSlugs: {
             get () {
+                console.log(this.steps);
                 return this.steps.map((step) => ({ slug: `section-${step.id}`, step }));
             },
             set (value) {
@@ -62,12 +63,23 @@ app.component('opportunity-form-builder' , {
 
             this.newStep.name = '';
             modal.close();
+
+            this.$nextTick(() => {
+                const tabsComp = this.$refs.tabs;
+                tabsComp.activeTab = tabsComp.tabs[this.steps.length - 1];
+            });
         },
         async deleteStep (step) {
+            const stepId = step.id;
+            console.log(stepId, this.steps);
             await step.delete(true);
 
-            const stepId = data.payload.step_id;
-            this.steps = this.steps.filter((step) => step.id !== stepId);
+            this.steps = this.steps.filter((step) => step.id && step.id !== stepId);
+
+            this.$nextTick(() => {
+                const tabsComp = this.$refs.tabs;
+                tabsComp.activeTab = tabsComp.tabs[0];
+            });
         },
     },
 });
