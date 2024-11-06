@@ -31,6 +31,7 @@ app.component('affirmative-policies--geo-quota-configuration', {
         let autosaveTime = 3000;
 
         return {
+            totalQuota: 0,
             fields: {},
             isActive,
             geoQuota,
@@ -70,6 +71,14 @@ app.component('affirmative-policies--geo-quota-configuration', {
         getPercentage(option) {
             const val = this.geoQuota.distribution[option];
             return this.vacancies ? val / this.vacancies * 100 : 0;
+        },
+
+        sumGeoQuota(option) {
+            this.totalQuota = 0;
+            Object.values(this.geoQuota.distribution).forEach((item) => {
+                this.totalQuota += item;
+            });
+            console.log(this.totalQuota)
         },
 
         setPercentage(option, $event) {

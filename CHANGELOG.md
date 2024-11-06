@@ -4,6 +4,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [unreleased]
+### Melhorias
+- Implementa aviso para sinalizar quando o total de vagas distribuídas por território exceder o total de vagas do edital
+- Implementa aviso para sinalizar quando o total de vagas para cotistas exceder o total de vagas do edital
+- aviso para sinalizar quando o total de vagas do edital não estiver preenchido e bloquear a opção de inserir configurações de cotas e distribuição por território
 
 ## [7.5.9] - 2024-11-02
 ### Correções
