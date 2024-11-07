@@ -31,7 +31,7 @@ app.component('qualification-evaluation-form', {
                 data: {},
                 reason: {},
             },
-            consolidatedResult: this.text('Habilitado'),
+            consolidatedResult: this.text('Atende'),
             isEditable: true,
             evaluationId: null,
         };
@@ -77,15 +77,56 @@ app.component('qualification-evaluation-form', {
             
             const section = this.sections.find(sec => sec.id === sectionId);
 
-            if(section) {
-                const criteriaEnabled = section.criteria.every(crit => Array.isArray(this.formData.data[crit.id]) && this.formData.data[crit.id].every(value => value === this.text('Habilitado')));
-                const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');
-        
-                this.formData.sectionStatus = {
-                    ...this.formData.sectionStatus,
-                    [sectionId]: newStatus
-                };
+            if (!section) return;
+
+            let nonEliminatoryCount = 0;
+            let eliminatoryCrit = false;
+
+            section.criteria.forEach(crit => {
+                const critValue = this.formData.data[crit.id];
+                if (!Array.isArray(critValue)) return;
+
+                if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
+                    eliminatoryCrit = true;
+                } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
+                    nonEliminatoryCount++;
+                }
+            });
+
+            let newStatus;
+            if (eliminatoryCrit || nonEliminatoryCount > section.numberMaxNonEliminatory) {
+                newStatus = this.text('Não atende');
+            } else {
+                newStatus = this.text('Atende');
             }
+
+            this.formData.sectionStatus = {
+                ...this.formData.sectionStatus,
+                [sectionId]: newStatus
+            };
+
+            this.consolidated();
+        },
+
+        toggleOthersOption(criteriaId, event) {
+            const isChecked = event.target.checked;
+    
+            if (!this.formData.data[criteriaId]) {
+                this.formData.data[criteriaId] = [];
+            }
+    
+            if (isChecked) {
+                if (!this.formData.data[criteriaId].includes('others')) {
+                    this.formData.data[criteriaId].push('others');
+                }
+            } else {
+                const index = this.formData.data[criteriaId].indexOf('others');
+                if (index > -1) {
+                    this.formData.data[criteriaId].splice(index, 1);
+                }
+                this.formData.data[`${criteriaId}_reason`] = ''; 
+            }
+
             this.consolidated();
         },
 
@@ -113,22 +154,22 @@ app.component('qualification-evaluation-form', {
             let sectionsEvaluated = Object.values(this.formData.sectionStatus).length;
             
             if(sectionsEvaluated > 0 && sectionsEvaluated < totalSections){
-                this.consolidatedResult = this.text('Inabilitado');
+                this.consolidatedResult = this.text('Não atende');
                 return;
             }
 
-            this.consolidatedResult = Object.values(this.formData.sectionStatus).includes(this.text('Inabilitado')) ? this.text('Inabilitado') :this.text('Habilitado');
+            this.consolidatedResult = Object.values(this.formData.sectionStatus).includes(this.text('Não atende')) ? this.text('Não atende') :this.text('Atende');
         },
         sectionStatus(sectionId){
-            return this.formData.sectionStatus[sectionId] ?? this.text('Inabilitado');
+            return this.formData.sectionStatus[sectionId] ?? this.text('Não atende');
         },
         updateSectionStatusByFromData() {
             const updatedSectionStatus = {};
     
             this.sections.forEach(section => {
-                const criteriaEnabled = section.criteria.every(crit => Array.isArray(this.formData.data[crit.id]) && this.formData.data[crit.id].every(value => value === this.text('Habilitado')));
+                const criteriaEnabled = section.criteria.every(crit => Array.isArray(this.formData.data[crit.id]) && this.formData.data[crit.id].every(value => value === this.text('Atende')));
     
-                const newStatus = criteriaEnabled ? this.text('Habilitado') : this.text('Inabilitado');
+                const newStatus = criteriaEnabled ? this.text('Atende') : this.text('Não atende');
                 updatedSectionStatus[section.id] = newStatus;
             });
     
