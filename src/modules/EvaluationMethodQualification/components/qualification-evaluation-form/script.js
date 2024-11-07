@@ -68,6 +68,18 @@ app.component('qualification-evaluation-form', {
         currentEvaluation() {
             return $MAPAS.config.qualificationEvaluationForm.currentEvaluation;
         },
+        needsTiebreaker() {
+            return $MAPAS.config.qualificationEvaluationForm.needsTieBreaker;
+        },
+        isMinervaGroup() {
+            return $MAPAS.config.qualificationEvaluationForm.isMinervaGroup;
+        },
+        enableExternalReviews() {
+            return $MAPAS.config.qualificationEvaluationForm.showExternalReviews;
+        },
+        evaluationName() {
+            return $MAPAS.config.qualificationEvaluationForm.evaluationMethodName;
+        }
     },
 
     methods: {
