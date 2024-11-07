@@ -44,33 +44,34 @@ $this->import('
                         <div class="field">
                             <div class="qualification-evaluation-form__criterion-options field">
                                 <label class="qualification-evaluation-form__criterion-options-label">
-                                    <input type="radio" :name="'option-' + crit.id" value="Atende" :checked="formData.data[crit.id]?.includes('Atende')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                    <input type="radio" :name="'option-' + crit.id" value="valid" :checked="formData.data[crit.id]?.includes('valid')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
                                     <?php i::_e("Atende") ?>
                                 </label>
                                 <label class="qualification-evaluation-form__criterion-options-label">
-                                    <input type="radio" :name="'option-' + crit.id" value="Não atende" :checked="formData.data[crit.id]?.includes('Não atende')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                    <input type="radio" :name="'option-' + crit.id" value="invalid" :checked="formData.data[crit.id]?.includes('invalid')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
                                     <?php i::_e("Não atende") ?>
                                 </label>
                                 <label v-if="crit.notApplyOption === 'true'" class="qualification-evaluation-form__criterion-options-label">
-                                    <input type="radio" :name="'option-' + crit.id" value="Não se aplica" :checked="formData.data[crit.id]?.includes('Não se aplica')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                    <input type="radio" :name="'option-' + crit.id" value="not-applicable" :checked="formData.data[crit.id]?.includes('not-applicable')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
                                     <?php i::_e("Não se aplica") ?>
                                 </label>
-                                <label v-if="crit.otherReasonsOption === 'true'" class="qualification-evaluation-form__criterion-options-label">
-                                    <input type="radio" :name="'option-' + crit.id" value="Outras" :checked="formData.data[crit.id]?.includes('Outras')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
-                                    <?php i::_e("Outras") ?>
-                                </label>
 
-                                <div v-if="formData.data[crit.id]?.includes('Não atende')" class="qualification-evaluation-form__criterion-options-reasons field">
-                                    <h4 class="col-12"><?php i::_e("Motivos para inabilitação") ?></h4>
+                                <div v-if="formData.data[crit.id]?.includes('invalid')" class="qualification-evaluation-form__criterion-options-reasons field">
+                                    <h4 class="col-12"><?php i::_e("Motivos de não atendimento") ?></h4>
 
                                     <label v-for="option in crit.options" :key="option" class="col">
                                         <input type="checkbox" :value="option" :checked="formData.data[crit.id]?.includes(option)" :disabled="!isEditable" @change="updateOption(crit.id, option)" />
                                         {{ option }}
                                     </label>
+
+                                    <label v-if="crit.otherReasonsOption === 'true'" class="qualification-evaluation-form__criterion-options-label">
+                                        <input type="checkbox" :name="'option-' + crit.id" value="others" :checked="formData.data[crit.id]?.includes('others')" :disabled="!isEditable" @change="toggleOthersOption(crit.id, $event)" />
+                                    <?php i::_e("Outras") ?>
+                                    </label>
+                                    <textarea v-if="formData.data[crit.id]?.includes('others')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
                                 </div>
                             </div>
 
-                            <textarea v-if="formData.data[crit.id].length > 0 && formData.data[crit.id].includes('Outras')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
                         </div>
                     </div>
                 </div>
