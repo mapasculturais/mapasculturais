@@ -74,6 +74,7 @@ app.component('opportunity-evaluation-committee', {
             sendTimeOut: null,
             fetchConfigs: {},
             reviewersId: [],
+            fetchFields: this.entity.fetchFields
         }
     },
     
@@ -95,6 +96,16 @@ app.component('opportunity-evaluation-committee', {
                 if (this.entity[property] && this.entity[property][agentId] && Object.keys(this.entity[property][agentId]).length > 0) {
                     return true;
                 }
+            }
+           
+            for(let item in this.fetchFields[this.group]) {
+                if(this.fetchFields[this.group][item].length > 0) {
+                    return true;
+                }
+            }
+
+            if(this.entity.valuersPerRegistration[this.group]) {
+                return true;
             }
         
             return false;

@@ -69,5 +69,5 @@ $this->import('
         </template>
     </mc-modal>
 
-    <mc-tag-list classes="opportunity__background" :tags="fillTagsList" @remove="removeTag" editable></mc-tag-list>
+    <mc-tag-list classes="opportunity__background" :tags="fillTagsList" @remove="removeTag($event)" editable></mc-tag-list>
 </div>
