@@ -33,20 +33,18 @@ if($class == Registration::class) {
     
     $data = [];
     if ($needs_tiebreaker && $is_minerva_group && $enable_external_reviews) {
-        if ($evaluation_configuration->publishEvaluationDetails){
-            $em = $evaluation_configuration->evaluationMethod;
-            $data['consolidatedDetails'] = $em->getConsolidatedDetails($entity);
-            $data['evaluationsDetails'] = [];
-    
-            $evaluations = $entity->sentEvaluations;
-    
-            foreach($evaluations as $eval) {
-                $detail = $em->getEvaluationDetails($eval);
-                if ($evaluation_configuration->publishValuerNames){
-                    $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
-                }
-                $data['evaluationsDetails'][] = $detail;
+        $em = $evaluation_configuration->evaluationMethod;
+        $data['consolidatedDetails'] = $em->getConsolidatedDetails($entity);
+        $data['evaluationsDetails'] = [];
+
+        $evaluations = $entity->sentEvaluations;
+
+        foreach($evaluations as $eval) {
+            $detail = $em->getEvaluationDetails($eval);
+            if ($evaluation_configuration->publishValuerNames){
+                $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
             }
+            $data['evaluationsDetails'][] = $detail;
         }
     }
     
