@@ -14,6 +14,9 @@ $this->import('
         <div v-for="section in sections" :key="section.id">
             <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
                 <h3>{{ section.name }}</h3>
+                <div class="field">
+                    <p><?php i::_e('Número máximo de critérios não eliminatórios: ') ?>{{ section.numberMaxNonEliminatory }}</p>
+                </div>
                 <div class="qualification-evaluation-form__criterion" v-for="crit in section.criteria" :key="crit.id">
                     <div v-if="showSectionAndCriterion(crit)" class="field">
                         <div class="qualification-evaluation-form__criterion-title">
