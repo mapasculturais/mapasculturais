@@ -23,7 +23,6 @@ $this->import('
 			<div class="content__description" v-html="infoRegistration"></div>
 		</div>
 	</div>
-
 	<div v-if="isOpen && !isPublished && !registrationLimit && !registrationLimitPerOwner" class="col-12 opportunity-subscription__subscription">
 		<p class="title"> <?= i::__("Inscreva-se") ?> </p>
 
@@ -40,7 +39,7 @@ $this->import('
 
 			<!-- Logado -->
 			<form class="logged__form grid-12" @submit.prevent>
-				<div class="col-6 sm:col-12" v-if="entitiesLength > 1">
+				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="entitiesLength > 1">
 					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(1)'}" select="name,files.avatar,endereco,location" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
 						<template #button="{ toggle }">
 							<span v-if="!agent" class="fakeInput" @click="toggle()">
@@ -56,6 +55,24 @@ $this->import('
 								{{agent.name}}
 							</span>
 						</template>
+					</select-entity>
+				</div>
+				<div class="col-6 sm:col-12 opportunity-subscription__selectAgents" v-if="selectAgentRelationColetivo">
+					<select-entity type="agent" openside="down-right" :query="{'type': 'EQ(2)'}" select="name,files.avatar,endereco,location,type" @fetch="fetch($event)" @select="selectAgent($event)" classes="opportunity-subscription__popover">
+						<template #button="{ toggle }">
+							<span v-if="!agentCollective" class="fakeInput" @click="toggle()">
+								<div class="fakeInput__img">
+									<mc-icon name="image"></mc-icon>
+								</div>
+								<?= i::_e('Agente Coletivo') ?>
+							</span>
+
+							<span v-if="agentCollective" class="fakeInput" @click="toggle()">
+								<mc-icon name="selected"></mc-icon>
+								<mc-avatar :entity="agentCollective" size="xsmall"></mc-avatar>
+									{{agentCollective.name}}
+							</span>
+						</template>	
 					</select-entity>
 				</div>
 
@@ -103,7 +120,6 @@ $this->import('
 					<?= i::__("Acessar ou criar conta") ?>
 				</button>
 			</div>
-
 		</div>
 	</div>
 </div>

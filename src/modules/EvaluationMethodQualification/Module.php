@@ -28,7 +28,7 @@ class Module extends \MapasCulturais\EvaluationMethod
     {
     }
 
-    protected function _getConsolidatedResult(Entities\Registration $registration)
+    protected function _getConsolidatedResult(Entities\Registration $registration, array $evaluations)
     {
         $app = App::i();
         $status = [
@@ -42,8 +42,6 @@ class Module extends \MapasCulturais\EvaluationMethod
         foreach ($committee as $item) {
             $users[] = $item->agent->user->id;
         }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
         $result = i::__("Habilitado");
         foreach ($evaluations as $eval){
@@ -72,7 +70,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $approved = [i::__('Habilitado'), i::__('Não se aplica')];
         $result = i::__("Habilitado");
         $cfg = $evaluation->getEvaluationMethodConfiguration();
-        foreach($cfg->criteria as $cri){
+        foreach(($cfg->criteria ?? []) as $cri){
             $key = $cri->id;
             if(!isset($evaluation->evaluationData->$key)){
                 return null;
@@ -87,7 +85,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         return $result;
     }
 
-    public function valueToString($value)
+    protected function _valueToString($value)
     {
         if(is_null($value)){
             return i::__('');
@@ -150,6 +148,8 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     protected function _register()
     {
+        $app = App::i();
+
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
             'label' => i::__('Seções'),
             'type' => 'json',
@@ -171,6 +171,8 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return $val ? json_decode($val) : $val;
             }
         ]);
+
+        $app->registerJobType(new JobTypes\Spreadsheet('qualification-spreadsheets'));
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
@@ -179,15 +181,20 @@ class Module extends \MapasCulturais\EvaluationMethod
               
         foreach($evaluation_method_configuration->criteria as $key => $c){
             if(isset($data[$c->id])){
-                $val = $data[$c->id];
-                $options = ['Habilitado', 'Inabilitado', 'Não se aplica'];
+                $values = $data[$c->id];
+                $options = ['Habilitado', 'Inabilitado', 'Não se aplica', 'Outras'];
                 if($c->options) {
                     $options = array_merge($c->options, $options);
                 }
-                if(!in_array($val, $options)){
-                    $errors[] = i::__("O valor do critério {$c->name} é inválido");
-                    break;
-                } 
+
+                if(is_array($values)) {
+                    foreach($values as $val) {
+                        if(!in_array($val, $options)){
+                            $errors[] = i::__("O valor do critério {$c->name} é inválido");
+                            break;
+                        } 
+                    }
+                }
             }
         }
 

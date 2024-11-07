@@ -32,8 +32,8 @@ if($requestedEntity instanceof MapasCulturais\Entities\EvaluationMethodConfigura
     $completed = $buildQuery("DISTINCT count(e.registration_id) as qtd", "AND e.evaluation_status = 1 AND valuer_user_id $user_filter", "fetchAssoc");
     $data['completed'] = $completed['qtd'];
     
-    $send = $buildQuery("DISTINCT count(e.registration_id) as qtd", "AND e.evaluation_status = 2 AND valuer_user_id $user_filter", "fetchAssoc");
-    $data['send'] = $send['qtd'];
+    $sent = $buildQuery("DISTINCT count(e.registration_id) as qtd", "AND e.evaluation_status = 2 AND valuer_user_id $user_filter", "fetchAssoc");
+    $data['sent'] = $sent['qtd'];
   
     $started = $conn->fetchAssoc("
         SELECT DISTINCT count(e.registration_id) as qtd 
@@ -49,5 +49,5 @@ if($requestedEntity instanceof MapasCulturais\Entities\EvaluationMethodConfigura
     $data['started'] = $started['qtd'];
     $data['isActive'] =  true;
 
-$this->jsObject['config']['summaryEvaluate'] = $data;
+$this->jsObject['config']['summaryEvaluations'] = $data;
 

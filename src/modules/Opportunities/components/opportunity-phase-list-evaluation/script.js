@@ -18,9 +18,6 @@ app.component('opportunity-phase-list-evaluation' , {
     },
 
     methods: {
-        showEvaluateSummary() {
-            return Object.values(this.entity.summary.evaluations).length > 0;
-        },
         sync(opportunity) {
             api = new API('opportunity');
             let url = api.createUrl('syncRegistrations', {id: opportunity._id});

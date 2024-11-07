@@ -17,13 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
  * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
- * @property-read string summaryCacheKey Chave do cache do resumo das avaliações
+ * @property-read bool $useCommitteeGroups
+ * @property-read bool $evaluateSelfApplication
+ * @property-read string $summaryCacheKey Chave do cache do resumo das avaliações
  * @property int $opportunity ownerId
- * @property-read \MapasCulturais\Entities\Opportunity owner
- * @property-read boolean publishedRegistration
- * @property-read DateTime publishTimestamp
- * @property-read array summary
- * @property-read boolean evaluationOpen
+ * @property-read \MapasCulturais\Entities\Opportunity $owner
+ * @property-read boolean $publishedRegistration
+ * @property-read DateTime $publishTimestamp
+ * @property-read array $summary
+ * @property-read boolean $evaluationOpen
  * 
  * @ORM\Table(name="evaluation_method_configuration")
  * @ORM\Entity
@@ -162,6 +164,18 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
     }
 
+    function setName($value) {
+        $app = App::i();
+        
+        $definition = $app->getRegisteredEntityTypeById($this, $this->_type);
+        
+        if($value) {
+            $this->name = $value;
+        } else if((!$value && !$this->name) && $definition) {
+            $this->name = $definition->name;    
+        }
+    }
+
     function setOpportunity($value) {
         if($value instanceof Opportunity) {
             $this->opportunity = $value;
@@ -195,7 +209,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $result = parent::jsonSerialize();
         $result['type'] = $this->type;
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl,summary');
-
+        $result['useCommitteeGroups'] = $this->useCommitteeGroups;
+        $result['evaluateSelfApplication'] = $this->evaluateSelfApplication;
         /**
          * @todo Arranjar um modo de colocar isso no módulo de avaliação técnica
          */
@@ -227,6 +242,14 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         } else {
             return null;
         }
+    }
+
+    public function getUseCommitteeGroups() {
+        return $this->evaluationMethod->useCommitteeGroups();
+    }
+    
+    public function getEvaluateSelfApplication() {
+        return $this->evaluationMethod->evaluateSelfApplication();
     }
 
     public function getUserRelation($user = null){
@@ -297,8 +320,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         
         $cache_key = $this->summaryCacheKey;
         if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
-            if ($app->cache->contains($cache_key)) {
-                return $app->cache->fetch($cache_key);
+            if ($app->mscache->contains($cache_key)) {
+                return $app->mscache->fetch($cache_key);
             }
         }
         $em = $this->evaluationMethod;
@@ -374,7 +397,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
 
         if($app->config['app.useOpportunitySummaryCache']) {
-            $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
+            $app->mscache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
         }
 
         return $data;
@@ -407,17 +430,25 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $committee;
     }
 
+    /** 
+     * Redistribui as inscrições entre os avaliadores
+     * 
+     */
+    public function redistributeCommitteeRegistrations() {
+        $this->evaluationMethod->redistributeRegistrations($this->owner);
+    }
+
     protected function canUserEvaluateOnTime($user){
         if($user->is('guest')){
             return false;
         }
 
-        $valuers = $this->getRelatedAgents('group-admin', true);
+        $valuers = $this->getAgentRelations();
         
         $is_valuer = false;
         
         foreach ($valuers as $agent_relation) {
-            if ($agent_relation->status != 1) {
+            if ($agent_relation->status != EvaluationMethodConfigurationAgentRelation::STATUS_ENABLED) {
                 continue;
             }
 

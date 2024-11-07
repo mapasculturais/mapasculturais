@@ -7,17 +7,31 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Controller;
+use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
+    
+    protected static Module $instance;
+    private $viability_status;
+
+    public static $quotaData = null;
+
     function __construct(array $config = []) {
+        self::$instance = $this;
         $config += ['step' => '0.1'];
         parent::__construct($config);
     }
 
-    private $viability_status;
+    /**
+     * Retorna a instância do módulo
+     * @return Module
+     */
+    public static function i(): Module {
+        return self::$instance;
+    }
 
     public function getSlug() {
         return 'technical';
@@ -43,17 +57,16 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $result = [];
 
         $non_numeric = [];
-        if($max_value){
-            for($i=0;$i<5;$i++){
-                $min = $i * $max_value / 5;
-                $max = ($i+1) * $max_value / 5;
-                foreach($data as $val => $sum) {
-                    if(!is_numeric($val)) {
-                        $non_numeric[$val] = $non_numeric[$val] ?? 0;
-                        $non_numeric[$val] += $sum;
-
-                    } else if($val >= $min && $val < $max) {
-
+        foreach($data as $val => $sum) {
+            if(!is_numeric($val)) {
+                $non_numeric[$val] = $non_numeric[$val] ?? 0;
+                $non_numeric[$val] += $sum;
+            
+            } else if($max_value) {
+                for($i=0;$i<5;$i++){
+                    $min = $i * $max_value / 5;
+                    $max = ($i+1) * $max_value / 5;
+                    if($val >= $min && $val < $max) {
                         $min = number_format($i * $max_value / 5,       1, ',', '.');
                         $max = number_format(($i+1) * $max_value / 5,   1, ',', '.');
 
@@ -66,7 +79,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
 
         $result += $non_numeric;
-        
         return $result;
     }
 
@@ -82,6 +94,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
     
     protected function _register() {
+        $app = App::i();
+        
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
             'label' => i::__('Seções'),
             'type' => 'json',
@@ -190,15 +204,19 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $this->registerEvaluationMethodConfigurationMetadata('cutoffScore', [
             'label' => i::__('Nota de corte'),
-            'type' => 'integer',
+            'type' => 'float',
         ]);
 
         $this->registerOpportunityMetadata('enableQuotasQuestion', [
-            'label' => i::__('Habilitar opção para o candidato declarar interesse nas cotas ou políticas afirmativas'),
-            'description' => i::__('Ao habilitar esta configuração, será liberada a opção para o candidato se autoidentificar para cotas ou políticas afirmativas.'),
+            'label' => "Vai concorrer às cotas",
             'type' => 'boolean',
             'private' => false,
-            'field_type' => 'checkbox'
+            'field_type' => 'radio',
+            'default' => '0',
+            'options' => (object) array(
+                '0' => \MapasCulturais\i::__('Desabilitado'),
+                '1' => \MapasCulturais\i::__('Habilitado'),
+            ),
         ]);
 
         $this->registerOpportunityMetadata('considerQuotasInGeneralList', [
@@ -208,6 +226,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
             'private' => false,
             'default' => true,
         ]);
+
+        $app->registerJobType(new JobTypes\Spreadsheet('technical-spreadsheets'));
     }
 
     function enqueueScriptsAndStyles() {
@@ -225,257 +245,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.technical';
     }
 
-    function getRegistrationRegion($registration, $geo_quota_config, Opportunity $first_phase) {
-        $app = App::i();
-
-        /** @var Opportunity $first_phase */
-        $opportunity_proponent_types = $first_phase->registrationProponentTypes;
-        $proponent_types2agents_map = $app->config['registration.proponentTypesToAgentsMap'];
-        
-        $proponent_type = $registration->proponentType;
-
-        if(!$opportunity_proponent_types) {
-            $agent_data = $registration->agentsData['owner'];
-        } else {
-            $agent_key = $proponent_types2agents_map[$proponent_type] ?? null;
-            $agent_data = $registration->agentsData[$agent_key] ?? null;
-        }
-
-        // ISSO NÃO DEVERIA SER POSSÍVEL
-        if(!$agent_data) {
-            $agent_data = $registration->agentsData['owner'];
-        }
-
-        $meta = $geo_quota_config->geoDivision;
-        $region =  $agent_data[$meta] ?? '';
-
-        if(isset($geo_quota_config->distribution->$region)) {
-            return $region;
-        } else {
-            return 'OTHERS';
-        }
-    }
-
-    function getAffirmativePoliciesFields($quota_config, $geo_quota_config) {
-        $fields = ['appliedForQuota'];
-
-        foreach($quota_config->rules as $rule) {
-            foreach($rule->fields as $field) {
-                $fields[] = $field->fieldName;
-            }
-        }
-
-        return array_values(array_unique($fields));
-    }
-
-    function getTiebreakerConfigurationFields($tiebreaker_config) {
-        $fields = [];
-
-        foreach($tiebreaker_config as $rule) {
-            if(str_starts_with($rule->criterionType, 'field_' ) ) {
-                $fields[] = $rule->criterionType;
-            } else {
-                // @TODO colocar o metadado que salvará a consolidação da avaliação técnica
-            }
-        }
-
-        return array_values(array_unique($fields));
-    }
-
-    function getRegistrationsForQuotaSorting(Opportunity $phase_opportunity, $fields, $params = null) {
-        $app = App::i();
-        if($params) {
-            unset(
-                $params['@select'], 
-                $params['@order'], 
-                $params['@limit'], 
-                $params['@page'],
-                $params['opportunity'],
-            );
-        } else {
-            $params = [];
-        }
-        
-        $cache_key = "$phase_opportunity:quota-registrations:" . md5(serialize($params));
-        
-        if(false && $app->config['app.useQuotasCache'] && $app->cache->contains($cache_key)){
-            return $app->cache->fetch($cache_key);
-        }
-
-        $result = $app->controller('opportunity')->apiFindRegistrations($phase_opportunity, [
-            '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score', ...$fields]),
-            '@order' => 'score DESC',
-            '@quotaQuery' => true,
-            ...$params
-        ]);
-
-        $registrations = array_map(function ($reg) {
-            return (object) $reg; 
-        }, $result->registrations);
-
-        if($app->config['app.useQuotasCache']){
-            $app->cache->save($cache_key, $registrations, $app->config['app.quotasCache.lifetime']);
-        }
-
-        return $registrations;
-    }
-
-    protected function generateRuleId($rule) {
-        $app = App::i();
-        return isset($rule->title) ? $app->slugify($rule->title) : md5(json_encode($rule));
-    }
-
-    public function getPhaseQuotaRegistrations(int $phase_id, $params = null) {
-        $app = App::i();
-        
-        $phase_opportunity = $app->repo('Opportunity')->find($phase_id);
-        $phase_evaluation_config = $phase_opportunity->evaluationMethodConfiguration;
-        $first_phase = $phase_opportunity->firstPhase;
-        $cutoff_score = $phase_evaluation_config->cutoffScore;
-        
-        // número total de vagas no edital
-        $vacancies = $first_phase->vacancies;
-        $exclude_ampla_concorrencia = !$first_phase->considerQuotasInGeneralList;
-
-        // configuração de faixas
-        $registration_ranges = $first_phase->registrationRanges ?: [];
-        $ranges_config = [];
-        foreach($registration_ranges as $range) {
-            $ranges_config[$range['label']] = $range['limit'];
-        }
-
-        $tiebreaker_config = $phase_evaluation_config->tiebreakerCriteriaConfiguration ?: [];
-        $quota_config = $phase_evaluation_config->quotaConfiguration ?: (object) ['rules' => (object) []];
-        $geo_quota_config = $phase_evaluation_config->geoQuotaConfiguration ?: (object) ['distribution' => (object) [], 'geoDivision' => null];
-        $geo_quota_config->distribution = (object) $geo_quota_config->distribution;
-        
-        $selected_global = [];
-        $selected_by_quotas = [];
-        $selected_by_geo = [];
-        $selected_by_ranges = [];
-
-        /** ===  INICIALIZANDO AS LISTAS === */
-        // cotas
-        $total_quota = 0;
-        foreach($quota_config->rules as $rule) {
-            $rule_id = $this->generateRuleId($rule);
-            $selected_by_quotas[$rule_id] = $selected_by_quotas[$rule_id] ?? [];
-            $total_quota += $rule->vacancies;
-        }
-        $total_ampla_concorrencia = $vacancies - $total_quota;
-
-        // distribuição geográfica
-        $total_distribution = 0;
-        foreach($geo_quota_config->distribution as $region => $num) {
-            if($num > 0){
-                $total_distribution += $num;
-                $selected_by_geo[$region] = $selected_by_geo[$region] ?? [];
-            } else {
-                unset($geo_quota_config->distribution->$region);
-            }
-        }
-
-        $geo_quota_config->distribution->OTHERS = $vacancies - $total_distribution;
-    
-        // distribuição nas faixas
-        foreach($ranges_config as $range => $num) {
-            $selected_by_ranges[$range] = $selected_by_ranges[$range] ?? [];
-        }
-
-        $fields_affirmative_policies = $this->getAffirmativePoliciesFields($quota_config, $geo_quota_config);
-        $fields_tiebreaker = $this->getTiebreakerConfigurationFields($tiebreaker_config);
-        $fields = array_unique([...$fields_affirmative_policies, ...$fields_tiebreaker]);
-        $registrations = $this->getRegistrationsForQuotaSorting($phase_opportunity, $fields, $params);
-        $registrations = $this->tiebreaker($tiebreaker_config, $registrations);
-        
-        /** === POPULANDO AS LISTAS === */
-        // primeiro preenche as cotas
-        foreach($quota_config->rules as $rule) {
-
-            $rule_id = $this->generateRuleId($rule);
-            
-            foreach($registrations as $i => &$reg) {
-                if($exclude_ampla_concorrencia && $i < $total_ampla_concorrencia) {
-                    continue;
-                }
-                if((float)$reg->score < (float) $cutoff_score) {
-                    continue;
-                }
-
-                // se a pessoa não é elegível, ela não conta nas cotas (pode ser pq falou que não quer ser cotista ou pq nenhum critério configurado bateu)
-                if(!$reg->eligible) {
-                    continue;
-                }
-
-                // para impedir que uma inscrição que se enquadre em mais de 1 critério ocupe 2 vagas
-                if(in_array($reg, $selected_global)) {
-                    continue;
-                }
-                
-                $quota_count = count($selected_by_quotas[$rule_id]);
-                
-                $region = $this->getRegistrationRegion($reg, $geo_quota_config, $first_phase);
-
-                /** @todo verificar se não excedeu o máximo de vagas em cada região ou faixa*/
-                foreach($rule->fields as $field){
-                    $field_name = $field->fieldName;
-
-                    if($quota_count < $rule->vacancies && in_array($reg->$field_name, $field->eligibleValues)) {
-                        $selected_by_quotas[$rule_id][] = &$reg;
-                        $selected_global[] = &$reg;
-
-                        $selected_by_geo[$region][] = &$reg;
-                        $selected_by_ranges[$reg->range][] = &$reg;
-                    }
-                }
-            }
-        }
-
-        foreach($registrations as &$reg) {
-            if(in_array($reg, $selected_global)) {
-                continue;
-            }
-
-            $selected = true;
-            
-            $region = $this->getRegistrationRegion($reg, $geo_quota_config, $first_phase);
-            $geo_count = count($selected_by_geo[$region] ?? []);
-            if(isset($geo_quota_config->distribution->$region) && $geo_count >= $geo_quota_config->distribution->$region) {
-                // var_dump([$region, $geo_quota_config->distribution->$region, $reg->regiao]);
-                $selected = false;
-            }
-
-            $range = $reg->range;
-            $range_count = count($selected_by_ranges[$range] ?? []);
-            if(isset($ranges_config[$range]) && $range_count >= $ranges_config[$range]) {
-                $selected = false;
-            }
-
-            if($selected) {
-                $selected_by_geo[$region][] = &$reg;
-                $selected_by_ranges[$range][] = &$reg;
-                $selected_global[] = $reg;
-            }
-        }
-        
-        $selected_global = $this->tiebreaker($tiebreaker_config, $selected_global);
-
-        $result = array_values($selected_global);
-        
-        foreach(array_values($registrations) as &$reg) {
-            if(!in_array($reg, $result)){
-                $result[] = &$reg;
-            }
-        }
-
-        return $result;
-
-    }
-
     public function _init() {
         $app = App::i();
 
         $self = $this;
+
 
         // Define o valor da coluna eligible
         $app->hook('entity(Registration).<<save|send>>:before', function() use($app){
@@ -506,8 +280,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $registration = $this;
             $em = $registration->evaluationMethodConfiguration;
             
+            $registration->isFirstPhase;
             $opportunity_first_phase = $registration->opportunity->firstPhase;
-            if($opportunity_first_phase->enableQuotasQuestion && !$registration->firstPhase->appliedForQuota) {
+            $_registration = $registration->isFirstPhase ? $this : $this->firstPhase;
+            if($opportunity_first_phase->enableQuotasQuestion && !$_registration->appliedForQuota) {
                 return false;
             }
             
@@ -608,72 +384,126 @@ class Module extends \MapasCulturais\EvaluationMethod {
            
         });
 
-
-        $quota_data = null;
-
-        $app->hook('ApiQuery(registration).params', function(&$params) use($app, $self, &$quota_data) {
+        $app->hook('ApiQuery(registration).params', function(&$params) use($app) {
             /** @var ApiQuery $this */
 
             $order = $params['@order'] ?? '';
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
-            if($phase_id && str_starts_with(strtolower(trim($order)), '@quota')){
+            if(!$phase_id) {
+                return;
+            }
+            $opportunity = $app->repo('Opportunity')->find($phase_id);
+            $evaluation_method = $opportunity->evaluationMethodConfiguration;
+            $quota = $evaluation_method && $evaluation_method->type->id == 'technical' ? 
+                Quotas::instance($phase_id) : null;
+            
+            if($phase_id && $quota && is_null(Module::$quotaData)) {
+                Module::$quotaData = (object) [];                
 
-                if(is_null($quota_data)) {
-                    $quota_data = (object) [];
-                } else {
-                    return;
-                }
+                Module::$quotaData->objectId = spl_object_id($this);
+                Module::$quotaData->params = $params;
+                Module::$quotaData->quota = $quota;
+                Module::$quotaData->orderByQuota = $order == '@quota';
 
-                $quota_data->objectId = spl_object_id($this);
-                $quota_data->params = $params;
-
-                unset($params['@order']);
-                $quota_order = $self->getPhaseQuotaRegistrations((int) $phase_id, $params);
+                $quota_order = Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
+                
+                if(Module::$quotaData->orderByQuota && $limit = (int) ($params['@limit'] ?? 0)) {
+                    unset($params['@order']);
+                    $ids_params = $params;
+                    unset(
+                        $ids_params['@limit'], 
+                        $ids_params['@order'], 
+                        $ids_params['@page'],
+                        $ids_params['oppotunity'],
+                    );
+                    $ids_params['@select'] = 'id';
 
-                $ids = array_map(function($reg) { return $reg->id; }, $quota_order);
-                if($limit = (int) ($params['@limit'] ?? 0)) {
+                    /** @var ControllersOpportunity $opportunity_controller */
+                    $opportunity_controller = $app->controller('opportunity');
+                    $result = $opportunity_controller->apiFindRegistrations($opportunity, $ids_params);
+                    $_ids = [];
+                    foreach($result->registrations as $reg) {
+                        $_ids[$reg['id']] = $reg['id'];
+                    }
+
+                    $ids = [];
+                    foreach($quota_order as $reg) {
+                        if(isset($_ids[$reg->id])) {
+                            $ids[] = $reg->id;
+                        }
+                    }
+
+                    Module::$quotaData->foundIds = $ids;
+
                     $page = $params['@page'] ?? 1;
                     $offset = ($page - 1) * $limit;
                     $ids = array_slice($ids, $offset, $limit);
-                    unset($params['@page'], $params['@limit']);
+                    // eval(\psy\sh());
+                    
+                } else {
+                    $ids = array_map(fn($reg) => $reg->id, $quota_order);
+                    Module::$quotaData->foundIds = $ids;
                 }
 
-                $params['id'] = API::IN($ids);
+                if(Module::$quotaData->orderByQuota){
+                    
+                    $params['id'] = API::IN($ids);
+                    unset(
+                        $params['@page'],
+                        $params['@limit']
+                    );
+                }
 
-                $quota_data->order = $quota_order;
-                $quota_data->ids = $ids;
+                Module::$quotaData->order = $quota_order;
+                Module::$quotaData->ids = $ids;
+
             }
         });
 
-        $app->hook('ApiQuery(registration).findResult', function(&$result) use(&$quota_data) {
+        $app->hook('ApiQuery(registration).findResult', function(&$result) {
             /** @var ApiQuery $this */
-            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
+            if((Module::$quotaData->objectId ?? false) == spl_object_id($this)) {
+                $app = App::i();
                 $_new_result = [];
-                foreach($quota_data->ids as $id) {
-                    foreach($result as $registration) {
+                $quota_fields = Module::$quotaData->quota->registrationFields;
+                foreach(Module::$quotaData->ids as $id) {
+                    foreach($result as &$registration) {
                         if($registration['id'] == $id) {
+                            $registration = array_merge($registration, $quota_fields[$id] ?? []);
                             $_new_result[] = $registration;
                         }
                     }
                 }
-                $result = $_new_result;
-                $quota_data->result = $result;
+
+                if(Module::$quotaData->orderByQuota) {
+                    $result = $_new_result;
+                }
+
+                Module::$quotaData->result = $result;
             }
         });
 
-        $app->hook('ApiQuery(registration).countResult', function(&$result) use(&$quota_data) {
-            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
-                $result = count($quota_data->order);
+        $app->hook('ApiQuery(registration).countResult', function(&$result) {
+            if((Module::$quotaData->objectId ?? false) == spl_object_id($this)) {
+                $result = count(Module::$quotaData->foundIds);
             }
         });
-
-        $app->hook('API.find(registration).result', function() use($quota_data) {
+        
+        
+        $app->hook('API.findRegistrations(opportunity).result', function() {
             /** @var Controller $this */
-            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
-                $this->apiAddHeaderMetadata($quota_data->params, $quota_data->result, count($quota_data->order));
+            $params = $this->data;
+            
+            if(Module::$quotaData && isset($params['@opportunity'])) {
+                $params['opportunity'] = API::EQ($params['@opportunity']);
+
+                $count_query = new ApiQuery(Registration::class, Module::$quotaData->params);
+                $count = $count_query->count();
+                
+                $this->apiAddHeaderMetadata(Module::$quotaData->params, Module::$quotaData->result, $count);
             }
         });
 
@@ -686,6 +516,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         });
 
         $app->hook('POST(opportunity.applyTechnicalEvaluation)', function() use($self) {
+            /** @var ControllersOpportunity $this */
             $this->requireAuthentication();
 
             set_time_limit(0);
@@ -1086,11 +917,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         }
 
-
         return $errors;
     }
 
-    public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration) {
+    public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration, array $evaluations) {
         $app = App::i();
         $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
             \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
@@ -1101,8 +931,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
         foreach ($committee as $item) {
             $users[] = $item->agent->user->id;
         }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
 
         $result = 0;
         foreach ($evaluations as $eval){
@@ -1299,7 +1127,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $total;
     }
 
-    public function valueToString($value) {
+    protected function _valueToString($value) {
         if(is_null($value)){
             return i::__('Avaliação incompleta');
         } else {
@@ -1388,10 +1216,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
         ];
     }
 
-    public function fetchRegistrations() {
-        return true;
-    }
-
     private function viabilityLabel($evaluation) {
         if (isset($evaluation->evaluationData->viability)) {
             $viability = $evaluation->evaluationData->viability;
@@ -1402,179 +1226,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return '';
     }
 
-    public static function tiebreaker($tiebreaker_configuration, $registrations) {
-        $app = App::i();
-        $self = $app->modules['EvaluationMethodTechnical']; 
-
-        usort($registrations, function($registration1, $registration2) use($tiebreaker_configuration, $self) {
-            $result = $registration2->score <=> $registration1->score;
-            if($result != 0) {
-                return $result;
-            }
-
-            foreach($tiebreaker_configuration as $tiebreaker) {
-                $selected = $tiebreaker->selected;
-                if($selected !== null && $selected->fieldType == 'select') {
-                    $registration1Has = in_array($registration1->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-                    $registration2Has = in_array($registration2->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-                    if($registration1Has != $registration2Has) {
-                        return $registration2Has <=> $registration1Has;
-                    }
-                }
-
-                if($selected !== null && in_array($selected->fieldType, ['integer', 'numeric', 'number', 'float', 'currency', 'date'])) {
-                    $registration1Has = $registration1->{$tiebreaker->criterionType};
-                    $registration2Has = $registration2->{$tiebreaker->criterionType};
-
-                    $result = $registration1Has <=> $registration2Has;
-
-                    if($tiebreaker->preferences == 'smallest') {
-                        if ($result !== 0) {
-                            return $result;
-                        }
-                    }
-
-                    if($tiebreaker->preferences == 'largest') {
-                        if ($result !== 0) {
-                            return -$result;
-                        }
-                    }
-                }
-
-                if($selected !== null && in_array($selected->fieldType, ['multiselect', 'checkboxes'])) {
-                    $registration1Has = array_intersect($registration1->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-                    $registration2Has = array_intersect($registration2->{$tiebreaker->criterionType}, $tiebreaker->preferences);
-
-                    $registration1Has = !empty($registration1Has);
-                    $registration2Has = !empty($registration2Has);
-
-                    if($registration1Has != $registration2Has) {
-                        return $registration2Has <=> $registration1Has;
-                    }
-                }
-                
-                if($selected !== null && in_array($selected->fieldType, ['boolean', 'checkbox'])) {
-                    $registration1Has = $registration1->{$tiebreaker->criterionType};
-                    $registration2Has = $registration2->{$tiebreaker->criterionType};
-
-                    $result = $registration1Has <=> $registration2Has;
-
-                    if($tiebreaker->preferences == 'marked') {
-                        if ($result !== 0) {
-                            return -$result;
-                        }
-                    }
-
-                    if($tiebreaker->preferences == 'unmarked') {
-                        if ($result !== 0) {
-                            return $result;
-                        }
-                    }
-                }
-
-                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'criterion') {
-                    $registration1Has = $self->tiebreakerCriterion($tiebreaker->preferences, $registration1->id);
-                    $registration2Has = $self->tiebreakerCriterion($tiebreaker->preferences, $registration2->id);
-
-                    if($registration1Has != $registration2Has) {
-                        return $registration2Has <=> $registration1Has;
-                    }
-                }
-
-                if(isset($tiebreaker->criterionType) && $tiebreaker->criterionType == 'sectionCriteria') {
-                    $registration1Has = $self->tiebreakerSectionCriteria($tiebreaker->preferences, $registration1->id);
-                    $registration2Has = $self->tiebreakerSectionCriteria($tiebreaker->preferences, $registration2->id);
-
-                    if($registration1Has != $registration2Has) {
-                        return $registration2Has <=> $registration1Has;
-                    }
-                }
-
-            }
-        });
-        
-        return $registrations;
+    public function useCommitteeGroups(): bool {
+        return false;
     }
 
-    public function tiebreakerCriterion($criteriaId, $registrationId) {
-        $app = App::i();
-        
-        $registration = $app->repo('Registration')->find($registrationId);
-        $criteria = $registration->evaluationMethodConfiguration->criteria;
-
-        $findCriteria = [];
-        foreach($criteria as $criterion) {
-            if($criterion->id === $criteriaId) {
-                $findCriteria[] = $criterion;
-            }
-        }
-
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
-        ];
-
-        $committee = $registration->opportunity->getEvaluationCommittee();
-
-        $users = [];
-        foreach ($committee as $item) {
-            $users[] = $item->agent->user->id;
-        }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
-
-        $result = 0;
-        foreach ($evaluations as $eval) {
-            foreach($eval->evaluationData as $key => $data) {
-                foreach($findCriteria as $cri) {
-                    if($key === $criteriaId) {
-                        $result += $data * $cri->weight;
-                    }
-                }
-            }
-        }
-
-        $num = count($evaluations);
-
-        return $num ? number_format($result / $num, 2) : null;
-    }
-
-    public function tiebreakerSectionCriteria($sectionId, $registrationId) {
-        $app = App::i();
-        
-        $registration = $app->repo('Registration')->find($registrationId);
-        $criteria = $registration->evaluationMethodConfiguration->criteria;
-
-        $findCriteria = [];
-        foreach($criteria as $criterion) {
-            if($criterion->sid === $sectionId) {
-                $findCriteria[] = $criterion;
-            }
-        }
-
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
-        ];
-
-        $committee = $registration->opportunity->getEvaluationCommittee();
-
-        $users = [];
-        foreach ($committee as $item) {
-            $users[] = $item->agent->user->id;
-        }
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
-
-        $result = 0;
-        foreach ($evaluations as $eval) {
-            foreach($eval->evaluationData as $key => $data) {
-                foreach($findCriteria as $cri) {
-                    if($key === $cri->id) {
-                        $result += $data * $cri->weight;
-                    }
-                }
-            }
-        }
-
-        return number_format($result, 2);
+    public function evaluateSelfApplication(): bool {
+        return false;
     }
 }

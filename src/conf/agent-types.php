@@ -97,7 +97,7 @@ return array(
 
                 return Utils::formatCnpjCpf($value);
             },
-            'available_for_opportunities' => true
+            'readonly' => true
         ),
 
         'cnpj' => array(
@@ -125,6 +125,7 @@ return array(
                 'v::cnpj()' => \MapasCulturais\i::__('O número de CNPJ informado é inválido.')
              ),
             'available_for_opportunities' => true,
+            'readonly' => true
         ),
         'cpf' => array(
             'private' => true,
@@ -152,6 +153,7 @@ return array(
                 'v::cpf()' => \MapasCulturais\i::__('O número de CPF informado é inválido.')
              ),
             'available_for_opportunities' => true,
+            'readonly' => true
         ),
 
         'raca' => array(

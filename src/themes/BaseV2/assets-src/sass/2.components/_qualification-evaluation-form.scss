@@ -1,0 +1,52 @@
+@use '../0.settings/mixins'as *;
+
+.qualification-evaluation-form {
+    display: flex;
+    flex-direction: column;
+    gap: size(16);
+
+    &__section {
+        gap: size(20);
+    }
+    
+    &__criterion {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
+        &-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: size(8);
+        }
+
+        &-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: size(16);
+            flex-wrap: wrap;
+            flex-direction: row;
+
+            &-reasons {
+                display: flex;
+                flex-direction: column;
+                gap: size(16);
+                flex-wrap: wrap;
+            }
+
+            &-label {
+                max-width: 100%;
+                width: size(144);
+            }
+        }
+    }
+
+    .qualification-enabled {
+        color: var(--mc-success-500);
+    }
+    
+    .qualification-disabled {
+        color: var(--mc-error);
+    }
+}

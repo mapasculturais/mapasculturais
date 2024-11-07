@@ -30,7 +30,8 @@ use MapasCulturais\Traits;
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
     use Traits\EntityMetadata,
         Traits\EntitySoftDelete,
-        Traits\EntityPermissionCache;
+        Traits\EntityPermissionCache,
+        Traits\EntityFiles;
 
     const STATUS_ENABLED = 1;
 
@@ -767,10 +768,17 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     function getHasControlSeals(){
         $this->checkPermission('modify');
+       
+        $app = App::i();
+        $seals = [];
 
-        if(!($seals = App::i()->repo('Seal')->findByAgentRelationUser($this, true)))
-            $seals = [];
-
+        $query = new ApiQuery(Seal::class, ['@permissions' => 'applySeal', '@order' => 'name ASC']);
+        $seal_ids = $query->findIds();
+        
+        if ($seal_ids) {
+            $seals = $app->repo('Seal')->findBy(['id' => $seal_ids]);
+        }
+        
         return $seals;
     }
 

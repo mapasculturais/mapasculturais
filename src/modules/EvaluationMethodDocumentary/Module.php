@@ -36,7 +36,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     protected function _register() {
-        ;
+        $app = App::i();
+        
+        $app->registerJobType(new JobTypes\Spreadsheet('documentary-spreadsheets'));
     }
 
     public function getEvaluationStatues()
@@ -305,10 +307,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $consolidated_results;
     }
 
-    public function _getConsolidatedResult(Entities\Registration $registration) {
+    public function _getConsolidatedResult(Entities\Registration $registration, array $evaluations) {
         $app = App::i();
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
 
         if(is_array($evaluations) && count($evaluations) === 0){
             return 0;
@@ -343,7 +343,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return 1;
     }
 
-    public function valueToString($value) {
+    protected function _valueToString($value) {
 
         if($value == 1){
             return i::__('Válida');
@@ -378,10 +378,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     function _getConsolidatedDetails(Entities\Registration $registration): ?array {
         return null;
-    }
-    
-    public function fetchRegistrations() {
-        return true;
     }
 
 }

@@ -1,0 +1,24 @@
+@use '../0.settings/mixins' as *;
+
+.mc-export-spreadsheet {
+    &__modal-content {
+        display: grid;
+        gap: size(20);
+    }
+
+    &__buttons {
+        display: flex;
+        gap: size(20);  
+    }
+
+    &__last-exports {
+        display: grid;
+        gap: size(8);
+    }
+
+    &__link {
+        align-items: center;
+        display: flex;
+        gap: size(15);
+    }
+}

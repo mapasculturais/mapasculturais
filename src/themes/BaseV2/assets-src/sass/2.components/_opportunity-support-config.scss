@@ -104,6 +104,26 @@
         grid-template-columns: size(32) 1fr;
         justify-items: center;
         margin-bottom: size(4);
+
+        .required {
+            color: red;
+        }
+
+        .fields-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            .registration-type {
+                display: flex;
+                gap: 10px;
+
+                .border-span {
+                    padding-right: 10px;
+                    border-right: solid 1px #b6b3b3;
+                }
+            }
+        }
     }
 
     &__field-icon {

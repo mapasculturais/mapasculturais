@@ -48,7 +48,7 @@
         list-style: none;
         overflow-y: auto;
         padding: 0;
-        width: max-content;
+        width: 100%;
         margin: 0;
         max-height: size(256);
     }
@@ -63,6 +63,13 @@
 
         &:hover {
             background-color: var(--mc-gray-300);
+        }
+    }
+
+    &__count {
+        padding: size(5) size(10);
+        label {
+            justify-content: center;
         }
     }
 
@@ -88,5 +95,13 @@
             }
 
         }
+    }
+
+    &--disabled,
+    &--disabled > input {
+        opacity: .9;
+        pointer-events: none;
+        background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+        color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
     }
 }

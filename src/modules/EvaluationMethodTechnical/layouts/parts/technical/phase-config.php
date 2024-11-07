@@ -23,12 +23,17 @@ $this->import("
     <div class="evaluation-step__section-header">
         <div class="evaluation-step__section-label">
             <h3><?= i::__('Configuração da avaliação') ?></h3>
+            <?php $this->info('editais-oportunidades -> avaliacao-tecnica -> configuracao-avaliacao') ?>
         </div>
     </div>
 
     <div class="evaluation-step__section-content">
         <technical-assessment-section :entity="phase"></technical-assessment-section>
-        <entity-field :entity="phase" prop="enableViability" :autosave="3000"></entity-field>
+        <entity-field :entity="phase" prop="enableViability" :autosave="3000">
+            <template #info>
+                <?php $this->info('editais-oportunidades -> fases -> exequibilidade') ?>
+            </template>
+        </entity-field>
         <tiebreaker-criteria-configuration :phase="phase"></tiebreaker-criteria-configuration>
     </div>
 </section>
@@ -41,7 +46,6 @@ $this->import("
     </div>
 
     <div class="col-12 evaluation-step__section-content">
-        <entity-field :entity="firstPhase" prop="enableQuotasQuestion" :autosave="3000"></entity-field>
         <affirmative-policies--quota-configuration :phase="phase"></affirmative-policies--quota-configuration>
         <affirmative-policies--geo-quota-configuration :phase="phase"></affirmative-policies--geo-quota-configuration>
         <affirmative-policy--bonus-config :entity="phase"></affirmative-policy--bonus-config>

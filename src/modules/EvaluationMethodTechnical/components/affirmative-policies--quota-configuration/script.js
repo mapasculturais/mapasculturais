@@ -13,15 +13,12 @@ app.component('affirmative-policies--quota-configuration', {
         // os textos estão localizados no arquivo texts.php deste componente 
         const messages = useMessages();
         const text = Utils.getTexts('affirmative-policies--quota-configuration')
+        
         return { text, messages }
     },
 
-    updated () {
-        this.autoSave();
-        this.autoSaveTime = 3000;
-    },
-
     mounted() {
+        
         if(this.phase.quotaConfiguration && this.phase.quotaConfiguration.rules.length > 0) {
             if(this.totalVacancies > 0) {
                 this.phase.quotaConfiguration.rules.forEach((quota, index) => {
@@ -31,10 +28,28 @@ app.component('affirmative-policies--quota-configuration', {
                 this.distributeQuotas(false, true);
             }
         }
+
+        this.fixConfiguration();
+
+        // salva as modificações
+        this.$watch(() => this.phase.quotaConfiguration, (first, second) => {
+            clearTimeout(this.autosaveTimeout);
+            this.autosaveTimeout = setTimeout(() => {
+                this.autoSave();
+            }, this.autoSaveTime);
+
+        }, { deep: true });
+
+
+        // atualiza a configuração quando houver mudanças nos proponent types
+        this.$watch(() => this.firstPhase.registrationProponentTypes, (first, second) => {
+            this.fixConfiguration();
+        }, { deep: true });
     },
 
     data() {
         const firstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
+
         return {
             autoSaveTime: 3000,
             firstPhase,
@@ -49,15 +64,34 @@ app.component('affirmative-policies--quota-configuration', {
         isActive() {
             return this.phase?.quotaConfiguration?.rules.length > 0;
         },
+
+        proponentTypes() {
+            const firstPhase = this.firstPhase;
+            const result = firstPhase.registrationProponentTypes.length ? firstPhase.registrationProponentTypes : ["default"];
+            return result;
+        }
+    },
+
+    watch: {
+        
     },
 
     methods: {
         skeleton() {
-            const rules = {
-                fieldName: '',
-                eligibleValues: []
-            }
-            return rules;
+            const fields = {};
+
+            for(let proponentType of this.proponentTypes) {
+                fields[proponentType] = {
+                    fieldName: '',
+                    eligibleValues: []
+                }
+            };
+
+            return fields;
+        },
+
+        getQuotaField(proponentType,quota) {
+            return quota.fields[proponentType] || {};
         },
 
         getField(quota) {
@@ -82,19 +116,15 @@ app.component('affirmative-policies--quota-configuration', {
                     rules: [{
                         title: '',
                         vacancies: 0,
-                        fields: [this.skeleton()]
+                        fields: this.skeleton()
                     }]
                 };
             } else {
                 this.phase.quotaConfiguration.rules.push({
                     vacancies: 0,
-                    fields: [this.skeleton()]
+                    fields: this.skeleton()
                 });
             }
-        },
-
-        addField(index) {
-            this.phase.quotaConfiguration.rules[index].fields.push(this.skeleton());
         },
 
         removeConfig(item) {
@@ -102,18 +132,6 @@ app.component('affirmative-policies--quota-configuration', {
                 return item != key;
             });
             this.distributeQuotas(true);
-        },
-
-        removeField(ruleIndex, fieldIndex) {
-            this.autoSaveTime = 200;
-            this.phase.quotaConfiguration.rules[ruleIndex].fields = this.phase.quotaConfiguration.rules[ruleIndex].fields.filter(function(value, key) {
-                return fieldIndex != key;
-            });
-            if(this.phase.quotaConfiguration.rules[ruleIndex].fields.length === 0) {
-                this.removeConfig(ruleIndex);
-            } else {
-                this.distributeQuotas(true);
-            }
         },
         
         updateTotalQuotas() {
@@ -145,13 +163,6 @@ app.component('affirmative-policies--quota-configuration', {
                 this.totalQuota = countVacancies;
 
                 this.updateQuotaPercentage();
-                if(!load) {
-                    this.autoSave();
-                }
-
-                if(removeQuota) {
-                    this.autoSave(true);                    
-                }
             }
         },
 
@@ -172,10 +183,10 @@ app.component('affirmative-policies--quota-configuration', {
                         && quotaConfiguration.title 
                         && quotaConfiguration.vacancies !== undefined
                         && quotaConfiguration.vacancies > 0
-                        && quotaConfiguration.fields.some(field => 
-                            field.eligibleValues !== undefined && field.eligibleValues.length > 0
-                            && field.fieldName !== undefined && field.fieldName
-                        );
+                        // && quotaConfiguration.fields.some(field => 
+                        //     field.eligibleValues !== undefined && field.eligibleValues.length > 0
+                        //     && field.fieldName !== undefined && field.fieldName
+                        // );
                 }
             );
             
@@ -183,5 +194,56 @@ app.component('affirmative-policies--quota-configuration', {
                 this.phase.save(this.autoSaveTime)            
             }
         },
+
+        validateFields() {
+            for (let quota of this.phase.quotaConfiguration.rules) {
+                for (let field of Object.values(quota.fields)) {
+                    // Verifica se o campo foi selecionado
+                    if (!field.fieldName) {
+                        return false;
+                    }
+                    // Verifica se pelo menos uma opção foi selecionada 
+                    if ((this.getFieldType(field) === 'select' || this.getFieldType(field) === 'multiselect' || this.getFieldType(field) === 'checkboxes' || this.getFieldType(field) === 'boolean') &&
+                        (!field.eligibleValues || field.eligibleValues.length === 0)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        },
+
+        updateField(quota, field) {
+            const fieldData = this.getField(quota);
+            if (fieldData) {
+                field.eligibleValues = fieldData.eligibleValues;
+            }
+        },
+
+        filteredOptions(proponentType) {
+            const field = this.fields.filter(field => field.proponentTypes.includes(proponentType) || field.proponentTypes.length === 0);
+            return field;
+        },
+
+        fixConfiguration() {
+            const proponentTypes = this.proponentTypes;
+            for (let quota of this.phase.quotaConfiguration?.rules || []) {
+                for(let key in quota.fields) {
+                    if(!proponentTypes.includes(key)) {
+                        delete quota.fields[key];
+                    }
+                }
+            }
+
+            for (let quota of this.phase.quotaConfiguration?.rules || []) {
+                for (let proponentType of proponentTypes) {
+                    if(!quota.fields[proponentType]) {
+                        quota.fields[proponentType] = {
+                            fieldName: '',
+                            eligibleValues: []
+                        }
+                    }
+                }
+            }
+        }
     },
 });

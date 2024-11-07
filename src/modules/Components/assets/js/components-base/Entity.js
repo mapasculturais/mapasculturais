@@ -44,6 +44,10 @@ class Entity {
                 val = this[prop];
             }
 
+            if(prop === 'status' && preserveValues && this[prop] <= 0 && obj[prop] > 0) {
+                this[prop] = obj[prop];
+            }
+
             if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
                 if (typeof val == 'string') {
                     val = new McDate(val);
@@ -358,7 +362,6 @@ class Entity {
 
         if (res.ok) { // status 20x
             data = cb(data) || data;
-            this.cleanErrors();
             result = Promise.resolve(data);
         } else {
             this.catchErrors(res, data);
@@ -428,6 +431,7 @@ class Entity {
                         for(let resolve of this.resolvers) {
                             resolve(response);
                         }
+                        this.cleanErrors();
                     }).catch((error) => {
                         for(let reject of this.rejecters) {
                             reject(error);
@@ -590,7 +594,7 @@ class Entity {
                 return file;
             });
         } catch (error) {
-            this.doCatch(error);
+            return this.doCatch(error);
         }
     }
 

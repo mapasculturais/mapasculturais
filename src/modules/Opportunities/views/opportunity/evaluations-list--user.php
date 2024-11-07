@@ -39,6 +39,6 @@ $this->import('
     <div class="opportunity-registrations__container grid-12">
         <opportunity-phase-header :phase="entity" classes="col-12"></opportunity-phase-header>
         <mc-summary-evaluate classes="col-12"></mc-summary-evaluate>
-        <opportunity-evaluations-table :phase="entity" user="<?= $valuer_user->id ?>" classes="col-12"></opportunity-evaluations-table>
+        <opportunity-evaluations-table :phase="entity" user="<?= $valuer_user->id ?>" identifier="userEvaluationsTable" classes="col-12"></opportunity-evaluations-table>
     </div>
 </div>

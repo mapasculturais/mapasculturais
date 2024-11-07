@@ -12,6 +12,7 @@
     .modal-content {
       height: unset;
       max-height: unset;
+      max-width: 500px;
 
       .modal__action {
         justify-content: flex-end;

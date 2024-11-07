@@ -18,6 +18,7 @@ app.component('evaluation-method-technical--apply', {
         const max = parseFloat($MAPAS.config.evaluationMethodTechnicalApply.max_result || "0.00");
         return {
             processing: false,
+            vacancies: this.entity.parent?.vacancies || this.entity.vacancies,
             applyData: {
                 from: [0, max],
                 setStatusTo: '',
@@ -98,7 +99,7 @@ app.component('evaluation-method-technical--apply', {
             this.applyData.waitList = this.selectionType.includes('waitList') ? true : false;
             this.applyData.invalidateRegistrations = this.selectionType.includes('invalidateRegistrations') ? true : false;
             this.applyData.considerQuotas = this.considerQuotas;
-            this.applyData.quantityVacancies = this.entity.vacancies;
+            this.applyData.quantityVacancies = this.vacancies;
             delete this.applyData.from;
             delete this.applyData.setStatusTo;
         },
@@ -135,7 +136,7 @@ app.component('evaluation-method-technical--apply', {
                 waitList: false,
                 invalidateRegistrations: false,
                 considerQuotas: true,
-                quantityVacancies: 0
+                quantityVacancies: this.vacancies
             };
             this.selectionType = [];
             this.tabSelected = 'score';

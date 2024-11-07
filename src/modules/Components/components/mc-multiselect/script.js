@@ -42,13 +42,27 @@ app.component('mc-multiselect', {
             type: Boolean,
             default: false
         },
+
+        maxOptions: {
+            type: Number,
+            default: 0,
+        },
+
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
         let dataItems = {};        
         if (Array.isArray(this.items)) {
             for (let item of this.items) {
-                dataItems[item] = item;
+                if(typeof item == 'object') {
+                    dataItems[item.value] = item
+                } else {
+                    dataItems[item] = item;
+                }
             }
         } else {
             dataItems = Object.assign({}, this.items);
@@ -60,7 +74,7 @@ app.component('mc-multiselect', {
         filteredItems() {
             const result = [];
             for (let value in this.dataItems) {
-                const label = this.dataItems[value];
+                let label = typeof this.dataItems[value] == 'object' ? this.dataItems[value].label : this.dataItems[value];
                 const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
@@ -79,6 +93,10 @@ app.component('mc-multiselect', {
                 }
             });
         },
+
+        canSelectMore() {
+            return this.maxOptions === null || this.maxOptions === 0 || this.model.length < this.maxOptions;
+        }
     },
 
     methods: {
@@ -106,7 +124,7 @@ app.component('mc-multiselect', {
         toggleItem(key) {
             if (this.model.indexOf(key) >= 0) {
                 this.remove(key);
-            } else {
+            } else if(this.canSelectMore) {
                 this.model.push(key);
                 this.$emit('selected', key);
 

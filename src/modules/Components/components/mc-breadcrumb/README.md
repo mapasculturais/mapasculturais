@@ -1,5 +1,5 @@
 # Componente `<mc-breadcrumb>`
-Componente para mostrar o caminho atual que o usuário está acessando
+O componente `mc-breadcrumb` é utilizado para exibir uma trilha de navegação (breadcrumb) no site. Ele gera uma lista de links baseados nos dados de navegação fornecidos pela aplicação.
 
 ### Importando componente
 ```PHP
@@ -9,6 +9,7 @@ $this->import('mc-breadcrumb');
 ```
 ### Exemplos de uso
 ```HTML
-<!-- utilizaçao básica -->
+
+<!-- Utilização básica -->
 <mc-breadcrumb></mc-breadcrumb>
 ```

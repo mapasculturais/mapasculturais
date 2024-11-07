@@ -105,7 +105,7 @@ app.component('notification-list', {
         async ok (notification) {
             notification.disableMessages();
             notification.delete();
-            if(request) {
+            if(notification) {
                 notification.removeFromLists();
             }
         }

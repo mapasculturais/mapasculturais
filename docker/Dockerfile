@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 RUN apt-get update
 
@@ -40,9 +40,17 @@ RUN docker-php-ext-install -j$(nproc) iconv && \
 RUN no | pecl install apcu \
     && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apcu.ini
 
-# Install imagick
-RUN autodetect | pecl install imagick \
-    && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/ext-imagick.ini
+# install imagick from git
+RUN git clone https://github.com/Imagick/imagick.git --depth 1 /tmp/imagick && \
+    cd /tmp/imagick && \
+    git fetch origin master && \
+    git switch master && \
+    cd /tmp/imagick && \
+    phpize && \
+    ./configure && \
+    make && \
+    make install && \
+    docker-php-ext-enable imagick
 
 # Install redis
 RUN no | pecl install -o -f redis \

@@ -22,6 +22,7 @@ class Registration extends EntityController {
     use Traits\ControllerUploads,
         Traits\ControllerAgentRelation,
     	Traits\ControllerSealRelation,
+        Traits\ControllerLock,
         Traits\ControllerAPI;
 
     function __construct() {
@@ -242,7 +243,7 @@ class Registration extends EntityController {
                 $evaluation->registration->checkPermission('evaluate');
                 $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
                 $evaluation->save(true);
-                $this->json($entity);
+                $this->json($evaluation);
             }
 
             return null;
@@ -268,7 +269,7 @@ class Registration extends EntityController {
            
             if($today >= $evaluationMethod->evaluationFrom && $today < $evaluationMethod->evaluationTo){
                 $evaluation->send(true);
-                $this->json($entity);
+                $this->json($evaluation);
             }
 
             return null;
@@ -391,6 +392,21 @@ class Registration extends EntityController {
         $app->redirect($this->createUrl('view', [$this->data['id']]));
     }
 
+    function GET_registrationEdit() {
+        $this->requireAuthentication();
+
+        $this->entityClassName = "MapasCulturais\\Entities\\Registration";
+        
+        $this->layout = "registration";
+
+        $entity = $this->requestedEntity;
+        $entity->checkPermission('sendEditableFields');
+        
+        $this->layout = 'edit-layout';
+
+        $this->render("registration-editable-field", ['entity' => $entity]);
+    }
+
     function POST_setStatusTo(){
         $this->requireAuthentication();
         $app = App::i();
@@ -420,7 +436,7 @@ class Registration extends EntityController {
             }
         }
         
-        $registration->$method_name($status);
+        $registration->$method_name();
 
         $app->applyHookBoundTo($this, 'registration.setStatusTo:after', [$registration]);
 
@@ -597,6 +613,38 @@ class Registration extends EntityController {
     
     }
 
+    /**
+     * Filter errors, returning only those matching the current step
+     */
+    private function stepErrors(array $errors, int $step_id, EntityRegistration $entity) {
+        $fields = $entity->opportunity->getRegistrationFieldConfigurations();
+        $files = $entity->opportunity->getRegistrationFileConfigurations();
+
+        foreach ($errors as $field_name => $message) {
+            if (str_starts_with($field_name, 'field_')) {
+                $field_id = intval(substr($field_name, 6));
+                
+                foreach ($fields as $field) {
+                    if ($field->id === $field_id && $field->step->id !== $step_id) {
+                        unset($errors[$field_name]);
+                    }
+                }
+            }
+
+            if (str_starts_with($field_name, 'file_')) {
+                $field_id = intval(substr($field_name, 5));
+
+                foreach ($files as $file) {
+                    if ($file->id === $field_id && $file->step->id !== $step_id) {
+                        unset($errors[$field_name]);
+                    } 
+                }
+            }
+        }
+
+        return $errors;
+    }
+
     function POST_validateEntity() {
         $entity = $this->requestedEntity;
 
@@ -609,8 +657,13 @@ class Registration extends EntityController {
         foreach ($this->postData as $field => $value) {
             $entity->$field = $value;
         }
+
+        $errors = $entity->getValidationErrors();
+        if ($step_id = $this->data['step'] ?? null) {
+            $errors = $this->stepErrors($errors, $step_id, $entity);
+        }
         
-        if ($errors = $entity->getValidationErrors()) {
+        if (!empty($errors)) {
             $this->errorJson($errors);
         } else {
             $this->json(true);
@@ -665,5 +718,24 @@ class Registration extends EntityController {
         $entity->checkPermission('viewUserEvaluation');
 
         $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
+    }
+
+    function POST_sendEditableFields() {
+        $this->requireAuthentication();
+        $entity = $this->requestedEntity;
+        
+        $entity->sendEditableFields();
+
+        $this->json(true);
+    
+    }
+
+    function POST_reopenEditableFields() {
+        $this->requireAuthentication();
+        $entity = $this->requestedEntity;
+        
+        $entity->reopenEditableFields();
+
+        $this->json(true);
     }
 }
