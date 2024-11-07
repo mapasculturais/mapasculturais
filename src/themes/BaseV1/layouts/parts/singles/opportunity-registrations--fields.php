@@ -132,6 +132,10 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <?php i::_e('Descrição do campo') ?><br>
                             <textarea ng-model="field.description" placeholder="<?php i::esc_attr_e("Descrição do campo"); ?>" /></textarea>
                         </label>
+                        <label ng-if="steps.length > 1">
+                            <?php i::_e('Etapa') ?><br>
+                            <select ng-model="field.step" ng-options="step as step.name for step in steps track by step.id" ng-change="changeFieldStep(field)"></select>
+                        </label>
                         <label>
                             <?php i::_e('Tipo do campo') ?><br>
                             <select ng-model="field.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes"></select>
@@ -204,6 +208,10 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-{{field.id}}" position="left" title="<?php i::esc_attr_e("Editar Anexo"); ?>" cancel-label="<?php i::esc_attr_e("Cancelar"); ?>" submit-label="<?php i::esc_attr_e("Salvar"); ?>" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
                         <input type="text" ng-model="field.title" placeholder="<?php i::esc_attr_e("Nome do anexo"); ?>" />
                         <textarea ng-model="field.description" placeholder="<?php i::esc_attr_e("Descrição do anexo"); ?>" /></textarea>
+                        <label ng-if="steps.length > 1">
+                            <?php i::_e('Etapa') ?><br>
+                            <select ng-model="field.step" ng-options="step as step.name for step in steps track by step.id" ng-change="changeFileStep(field)"></select>
+                        </label>
                         <p ng-if="data.categories.length > 1">
                             <small><?php i::_e("Selecione em quais categorias este anexo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?> </label>
