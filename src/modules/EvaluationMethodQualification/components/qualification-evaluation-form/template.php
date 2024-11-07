@@ -39,12 +39,12 @@ $this->import('
                         <div class="field">
                             <div class="qualification-evaluation-form__criterion-options field">
                                 <label class="qualification-evaluation-form__criterion-options-label">
-                                    <input type="radio" :name="'option-' + crit.id" value="Habilitado" :checked="formData.data[crit.id]?.includes('Habilitado')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
-                                    <?php i::_e("Habilitado") ?>
+                                    <input type="radio" :name="'option-' + crit.id" value="Atende" :checked="formData.data[crit.id]?.includes('Atende')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                    <?php i::_e("Atende") ?>
                                 </label>
                                 <label class="qualification-evaluation-form__criterion-options-label">
-                                    <input type="radio" :name="'option-' + crit.id" value="Inabilitado" :checked="formData.data[crit.id]?.includes('Inabilitado')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
-                                    <?php i::_e("Inabilitado") ?>
+                                    <input type="radio" :name="'option-' + crit.id" value="Não atende" :checked="formData.data[crit.id]?.includes('Não atende')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
+                                    <?php i::_e("Não atende") ?>
                                 </label>
                                 <label v-if="crit.notApplyOption === 'true'" class="qualification-evaluation-form__criterion-options-label">
                                     <input type="radio" :name="'option-' + crit.id" value="Não se aplica" :checked="formData.data[crit.id]?.includes('Não se aplica')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
@@ -55,7 +55,7 @@ $this->import('
                                     <?php i::_e("Outras") ?>
                                 </label>
 
-                                <div v-if="formData.data[crit.id]?.includes('Inabilitado')" class="qualification-evaluation-form__criterion-options-reasons field">
+                                <div v-if="formData.data[crit.id]?.includes('Não atende')" class="qualification-evaluation-form__criterion-options-reasons field">
                                     <h4 class="col-12"><?php i::_e("Motivos para inabilitação") ?></h4>
 
                                     <label v-for="option in crit.options" :key="option" class="col">
@@ -73,7 +73,7 @@ $this->import('
                     <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite o aparecer') ?>"></textarea>
                 <label>
                     <?php i::_e('Resultado da seção:') ?> 
-                    <span :class="sectionStatus(section.id) == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'">
+                    <span :class="sectionStatus(section.id) == 'Atende' ? 'qualification-enabled' : 'qualification-disabled'">
                         {{ sectionStatus(section.id) }}
                     </span>
                 </label>
@@ -84,7 +84,7 @@ $this->import('
             <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
             <label>
                 <?php i::_e('Status da avaliação:') ?> 
-                <span :class="consolidatedResult == 'Habilitado' ? 'qualification-enabled' : 'qualification-disabled'">
+                <span :class="consolidatedResult == 'Atende' ? 'qualification-enabled' : 'qualification-disabled'">
                     {{ consolidatedResult }}
                 </span>
             </label>
