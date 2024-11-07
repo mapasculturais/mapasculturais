@@ -14,12 +14,16 @@ $this->import('
             <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
                 <h3>{{ section.name }}</h3>
                 <div class="field">
-                    <p><?php i::_e('Número máximo de critérios não eliminatórios: ') ?>{{ section.numberMaxNonEliminatory }}</p>
+                    <label><?php i::_e('Número máximo de critérios não eliminatórios: ') ?>{{ section.numberMaxNonEliminatory }}</label>
                 </div>
                 <div class="qualification-evaluation-form__criterion" v-for="crit in section.criteria" :key="crit.id">
                     <div v-if="showSectionAndCriterion(crit)" class="field">
                         <div class="qualification-evaluation-form__criterion-title">
-                            <h3>{{ crit.name }}</h3>
+                            {{console.log(crit.nonEliminatory)}}
+                            <div class="qualification-evaluation-form__criterion-title-fields">
+                                <h3>{{ crit.name }}</h3>
+                                <span v-if="crit.nonEliminatory === 'false'"><?php i::_e('*') ?></span>
+                            </div>
                             <mc-popover openside="down-right">
                                 <template #button="popover">
                                     <a @click="popover.toggle()"> <mc-icon name="help"></mc-icon> </a>
@@ -71,18 +75,20 @@ $this->import('
                         </div>
                     </div>
                 </div>
+                <div class="field">
                     <label><?php i::_e('Parecer') ?></label>
                     <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite o aparecer') ?>"></textarea>
-                <label>
-                    <?php i::_e('Resultado da seção:') ?> 
-                    <span :class="sectionStatus(section.id) == 'Atende' ? 'qualification-enabled' : 'qualification-disabled'">
-                        {{ sectionStatus(section.id) }}
-                    </span>
-                </label>
+                    <label>
+                        <?php i::_e('Resultado da seção:') ?> 
+                        <span :class="sectionStatus(section.id) == 'Atende' ? 'qualification-enabled' : 'qualification-disabled'">
+                            {{ sectionStatus(section.id) }}
+                        </span>
+                    </label>
+                </div>
             </div>
         </div>
         <div class="qualification-evaluation-form__observation field">
-            <p><?php i::_e('Observações') ?></p>
+            <label><?php i::_e('Observações') ?></label>
             <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
             <label>
                 <?php i::_e('Status da avaliação:') ?> 
