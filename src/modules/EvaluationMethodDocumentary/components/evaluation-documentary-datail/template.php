@@ -8,7 +8,7 @@
 use MapasCulturais\i;
 
 ?>
-<div v-if="registration.evaluationsDetails.length" v-for="(detail, index) in registration.evaluationsDetails" class="registration-results__card">
+<div v-if="evaluationDetails" v-for="(detail, index) in evaluationDetails" class="registration-results__card">
     <div class="registration-results__card-header">
         <div class="registration-results__card-title">
             <h4 v-if="detail.valuer" class="registration-results__opinion-title bold">
@@ -42,23 +42,23 @@ use MapasCulturais\i;
                     </p>
                     <br>
                     <h5 class="registration-results__opinion-title bold"><?= i::__('Parecer') ?>:</h5>
-                    <p>
+                    <div>
                     <ul>
                         <li>
                             {{item.obs}}
                         </li>
                     </ul>
 
-                    </p>
+                    </div>
                     <br>
-                    <p v-if="item.obs_items">
+                    <template v-if="item.obs_items">
                     <h5 class="registration-results__opinion-title bold"><?= i::__('Detalhamento') ?>:</h5>
                     <ul>
                         <li>
                             {{item.obs_items}}
                         </li>
                     </ul>
-                    </p>
+                    </template>
                 </div>
             </div>
         </div>
