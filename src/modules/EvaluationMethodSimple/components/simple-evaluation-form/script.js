@@ -50,6 +50,22 @@ app.component('simple-evaluation-form', {
         currentEvaluation() {
             return $MAPAS.config.simpleEvaluationForm.currentEvaluation;
         },
+
+        needsTiebreaker() {
+            return $MAPAS.config.simpleEvaluationForm.needsTieBreaker;
+        },
+
+        isMinervaGroup() {
+            return $MAPAS.config.simpleEvaluationForm.isMinervaGroup;
+        },
+
+        enableExternalReviews() {
+            return $MAPAS.config.simpleEvaluationForm.showExternalReviews;
+        },
+
+        evaluationName() {
+            return $MAPAS.config.simpleEvaluationForm.evaluationMethodName;
+        }
     },
 
     methods: {
