@@ -19,7 +19,6 @@ $this->import('
                 <div class="qualification-evaluation-form__criterion" v-for="crit in section.criteria" :key="crit.id">
                     <div v-if="showSectionAndCriterion(crit)" class="field">
                         <div class="qualification-evaluation-form__criterion-title">
-                            {{console.log(crit.nonEliminatory)}}
                             <div class="qualification-evaluation-form__criterion-title-fields">
                                 <h3>{{ crit.name }}</h3>
                                 <span v-if="crit.nonEliminatory === 'false'"><?php i::_e('*') ?></span>
