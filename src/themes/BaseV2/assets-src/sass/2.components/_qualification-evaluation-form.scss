@@ -5,6 +5,15 @@
     flex-direction: column;
     gap: size(16);
 
+    .scrollable-container {
+        display: flex;
+        flex-direction: column;
+        gap: size(20);
+        max-height: size(500);
+        overflow-y: auto; 
+        padding-right: size(10);
+    }
+
     &__section {
         gap: size(20);
     }
@@ -19,6 +28,15 @@
             justify-content: space-between;
             align-items: center;
             gap: size(8);
+
+            &-fields {
+                display: flex;
+                gap: size(8);
+                
+                span {
+                    color: var(--mc-warning-500);
+                }
+            }
         }
 
         &-options {
