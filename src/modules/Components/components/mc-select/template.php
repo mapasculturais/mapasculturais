@@ -10,8 +10,7 @@ $this->import('
     mc-icon
 ');
 ?>
-
-<div :class="['mc-select', {'mc-select--sm' : small }]" :id="uniqueID">
+<div :class="['mc-select', {'mc-select--sm' : small }, {'mc-select--disabled' : disabled}]" :id="uniqueID">
     <VDropdown :triggers="[]" :shown="open" :autoHide="false" @apply-show="focus()" popperClass="mc-select__popper" ref="dropdown" eager-mount :positioning-disabled="$media('max-width: 500px')">
         <div ref="selected" :class="['mc-select__selected-option', {'mc-select__selected-option--open' : open }]" @click="toggleSelect();">
         </div>

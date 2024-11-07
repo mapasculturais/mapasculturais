@@ -1737,7 +1737,11 @@ class Registration extends \MapasCulturais\Entity
             $valuers = [];
         }
 
-        $users = array_merge($valuers, $opportunity->getExtraPermissionCacheUsers());
+        $users = array_merge(
+            $valuers, 
+            $opportunity->getExtraPermissionCacheUsers(), 
+            $opportunity->getUsersWithControl()
+        );
         
         if($this->nextPhaseRegistrationId){
             $next_phase_registration = App::i()->repo('Registration')->find($this->nextPhaseRegistrationId);

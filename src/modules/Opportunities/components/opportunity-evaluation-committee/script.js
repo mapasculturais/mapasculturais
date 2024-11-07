@@ -10,6 +10,10 @@ app.component('opportunity-evaluation-committee', {
             type: String,
             default: 'group-admin'
         },
+        showDisabled: {
+            type: Boolean,
+            default: false,
+        },
         excludeFields: Array
     },
 
@@ -19,12 +23,13 @@ app.component('opportunity-evaluation-committee', {
                 '@select': 'id,name,files.avatar,user',
                 '@order': 'id ASC',
                 '@limit': '25',
-                '@page': '1'
+                '@page': '1',
+                'type': 'EQ(1)',
             };
 
-            if (Object.keys(this.infosReviewers).length > 0) {
-                const reviewersId = this.infosReviewers.map((reviewer) => reviewer.agent.id).join(',');
-                query['id'] = `!IN(${reviewersId})`;
+            if (this.reviewersId.length > 0) {
+                const ids = this.reviewersId.join(',');
+                query['id'] = `!IN(${ids})`;
             } else {
                 delete query['id'];
             }
@@ -67,7 +72,9 @@ app.component('opportunity-evaluation-committee', {
                 ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
             sendTimeOut: null,
-            fetchConfigs: {}
+            fetchConfigs: {},
+            reviewersId: [],
+            fetchFields: this.entity.fetchFields
         }
     },
     
@@ -75,6 +82,35 @@ app.component('opportunity-evaluation-committee', {
         showSummary(summary) {
             return summary ? Object.values(summary).some(value => value > 0) : false;
         },
+
+        hasEvaluationConfiguration(agentId) {
+            const propertiesToCheck = [
+                'fetchCategories',
+                'fetchProponentTypes',
+                'fetchRanges',
+                'fetch',
+                'fetchSelectionFields'
+            ];
+        
+            for (const property of propertiesToCheck) {
+                if (this.entity[property] && this.entity[property][agentId] && Object.keys(this.entity[property][agentId]).length > 0) {
+                    return true;
+                }
+            }
+           
+            for(let item in this.fetchFields[this.group]) {
+                if(this.fetchFields[this.group][item].length > 0) {
+                    return true;
+                }
+            }
+
+            if(this.entity.valuersPerRegistration[this.group]) {
+                return true;
+            }
+        
+            return false;
+        },
+        
         selectAgent(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});
@@ -105,6 +141,40 @@ app.component('opportunity-evaluation-committee', {
                     ...reviewer,
                     isContentVisible: false,
                 }));
+
+                const pendingReviews = this.infosReviewers.filter((reviewer) => reviewer.status === -5);
+                pendingReviews.sort((a, b) => {
+                    if (a.agent.name < b.agent.name) {
+                        return -1;
+                    } else if (a.agent.name > b.agent.name) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+
+                const acceptedReviews = this.infosReviewers.filter((reviewer) => reviewer.status !== -5);
+                acceptedReviews.sort((a, b) => {
+                    if (a.agent.name < b.agent.name) {
+                        return -1;
+                    } else if (a.agent.name > b.agent.name) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+
+                this.infosReviewers = [...pendingReviews, ...acceptedReviews];
+
+                this.reviewersId = this.infosReviewers.map((reviewer) => reviewer.agent.id);
+
+                this.infosReviewers = this.infosReviewers.filter (reviewer => {
+                    if (this.showDisabled) {
+                        return reviewer.status === 8;
+                    } else {
+                        return reviewer.status !== 8;
+                    }
+                })
                 this.showReviewers = Object.keys(this.infosReviewers).length > 0;
                 this.ReviewerSelect = false;
                 this.loadFetchs();

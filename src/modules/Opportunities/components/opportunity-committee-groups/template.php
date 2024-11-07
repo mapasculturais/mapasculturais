@@ -41,13 +41,13 @@ $this->import('
                         </button>
                     </template>
                     
-                    <template #default="{close}">
-                        <form @submit="addGroup(newGroupName); $event.preventDefault(); close();">
+                    <template #default="popover">
+                        <form @submit="groupCreation($event, popover)">
                             <div class="grid-12">
                                 <div class="related-input col-12">
                                     <input v-model="newGroupName" class="input" type="text" name="newGroup" placeholder="<?php i::esc_attr_e('Digite o nome da comissão') ?>" maxlength="64" />
                                 </div>
-                                <button class="col-6 button button--text" type="reset" @click="close"> <?php i::_e("Cancelar") ?> </button>
+                                <button class="col-6 button button--text" type="reset" @click="cancelGroupCreation(popover)"> <?php i::_e("Cancelar") ?> </button>
                                 <button class="col-6 button button--primary" type="submit"> <?php i::_e("Confirmar") ?> </button>
                             </div>
                         </form>
@@ -56,13 +56,13 @@ $this->import('
             </div>
         </template>
         
-        <mc-tab v-for="([groupName, relations], index) in Object.entries(entity.relatedAgents)" :key="index" :label="groupName" :slug="String(index)">
+        <mc-tab v-for="([groupName, relations], index) in Object.entries(entity.relatedAgents)" :key="index" :label="groupName == '@tiebreaker' ? '<?= $this->text('tiebreaker', i::__('Voto de minerva')) ?>' : groupName" :slug="String(index)">
             <div class="opportunity-committee-groups__group">
                 <div class="opportunity-committee-groups__edit-group field">
-                    <label for="newGroupName"><?= i::__('Título da comissão') ?></label>
+                    <label v-if="groupName != '@tiebreaker'" for="newGroupName"><?= i::__('Título da comissão') ?></label>
 
                     <div class="opportunity-committee-groups__edit-group--field">
-                        <input :disabled="groupName == '@tiebreaker'" id="newGroupName" v-model="groupName" class="input" type="text" @input="renameTab($event, index)" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
+                        <input v-if="groupName != '@tiebreaker'" id="newGroupName" v-model="groupName" class="input" type="text" @input="renameTab($event, index)" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
                         <mc-confirm-button @confirm="removeGroup(groupName)">
                             <template #button="modal">
                                 <a class="button button--delete button--icon button--sm" @click="modal.open()">
@@ -80,21 +80,31 @@ $this->import('
                 <div class="opportunity-committee-groups__multiple-evaluators">
                     <div class="field">
                         <mc-toggle
-                            :modelValue="localValuersPerRegistration[groupName] != null" 
-                            @update:modelValue="changeMultipleEvaluators($event, groupName)"
+                            :modelValue="entity.valuersPerRegistration[groupName] !== undefined" 
+                            @update:modelValue="enableValuersPerRegistration($event, groupName)"
                             label="<?= i::__('Limitar número de avaliadores por inscrição') ?>"
                         />
-                        <input v-if="localValuersPerRegistration[groupName] != null" v-model="localValuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
+                        <input v-if="entity.valuersPerRegistration[groupName] !== undefined" 
+                            v-model="entity.valuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
+
+                        <mc-toggle v-if="entity.valuersPerRegistration[groupName] !== undefined" 
+                            :modelValue="entity.ignoreStartedEvaluations[groupName] !== undefined" 
+                            @update:modelValue="enableIgnoreStartedEvaluations($event, groupName)"
+                            label="<?= i::__('Desconsiderar as avaliações já feitas na distribuição') ?>"
+                        />
+
+                        <?php $this->info('editais-oportunidades -> configuracoes -> desconsiderar-avaliacoes-na-distribuicao') ?>
+                        
                     </div>
     
                     <div class="field">
                         <mc-toggle
-                            :modelValue="entity?.fetchFields[groupName] && Object.keys(entity.fetchFields[groupName]).length > 0" 
+                            :modelValue="entity.fetchFields[groupName] !== undefined" 
                             @update:modelValue="enableRegisterFilterConf($event, groupName)"
                             label="<?= i::__('Configuração filtro de inscrição para avaliadores/comissão') ?>"
                         />
                         <opportunity-registration-filter-configuration 
-                            v-if="entity.fetchFields[groupName]" 
+                            v-if="entity.fetchFields[groupName] !== undefined" 
                             :entity="entity"
                             v-model:default-value="entity.fetchFields[groupName]"
                             :excludeFields="globalExcludeFields"
@@ -107,7 +117,15 @@ $this->import('
                 </div>
                 
                 <div class="opportunity-committee-groups__evaluators">
-                    <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
+                    <mc-tabs>
+                        <mc-tab label="<?php i::esc_attr_e("Habilitados")?>" slug="habilitados">
+                            <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
+                        </mc-tab>
+
+                        <mc-tab label="<?php i::esc_attr_e("Desabilitados")?>" slug="desabilitados">
+                            <opportunity-evaluation-committee :entity="entity" :group="groupName" :excludeFields="individualExcludeFields" show-disabled @updateExcludeFields="updateExcludedFields('individual', $event)"></opportunity-evaluation-committee>
+                        </mc-tab>
+                    </mc-tabs>
                 </div>
             </div>
         </mc-tab>

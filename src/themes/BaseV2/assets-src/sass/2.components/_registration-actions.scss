@@ -40,6 +40,16 @@
         transition: max-height 0.25s ease-in;
     }
 
+    &__errors-step {
+        border-top: 1px solid var(--mc-gray-300);
+        padding-block: size(6);
+    }
+
+    &__errors-step-name {
+        font-size: size(14);
+        line-height: size(19);
+    }
+
     &__errors-list--hide {
         max-height: 0;
     }

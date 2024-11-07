@@ -75,4 +75,11 @@ class RegistrationStep extends \MapasCulturais\Entity
         }
         $this->opportunity = $opportunity;
     }
+
+    function jsonSerialize(): array
+    {
+        $data = parent::jsonSerialize();
+        $data['opportunity'] = $this->opportunity->simplify('id,name');
+        return $data;
+    }
 }

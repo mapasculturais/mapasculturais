@@ -33,7 +33,7 @@ $this->import('
             
             <section class="section">
                 <h2 class="section__title" id="main-info">
-                    {{ stepIndex + 1 }}. {{ stepName || text('Informações básicas') }}
+                    {{ stepIndex + 1 }}. {{ step.name || text('Informações básicas') }}
                 </h2>
                 <registration-autosave-notification :registration="entity"></registration-autosave-notification>
 
@@ -99,7 +99,7 @@ $this->import('
         </main>
 
         <aside>
-            <registration-actions :registration="entity" :steps="steps" :step-index="stepIndex" @previous-step="previousStep" @next-step="nextStep"></registration-actions>
+            <registration-actions :registration="entity" :steps="steps" v-model:step-index="stepIndex"></registration-actions>
         </aside>
     </mc-container>
 </div>

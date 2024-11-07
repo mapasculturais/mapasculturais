@@ -21,36 +21,12 @@ app.component('registration-edition', {
 
     computed: {
         steps () {
-            return this.entity.opportunity.registrationSteps ?? [];
+            const steps = this.entity.opportunity.registrationSteps ?? [];
+            return steps.sort((a, b) => a.displayOrder - b.displayOrder);
         },
 
         step () {
             return this.steps[this.stepIndex];
         },
-
-        stepName () {
-            if (this.step.name) {
-                return this.step.name;
-            }
-
-            const fields = [...$MAPAS.config.registrationForm.fields, ...$MAPAS.config.registrationForm.files];
-            const field = fields.find((field) => field.step?.id === this.step.id);
-
-            if (field?.step.name) {
-                return field.step.name;
-            }
-
-            return this.text('Informações básicas');
-        },
     },
-
-    methods: {
-        nextStep () {
-            this.stepIndex++;
-        },
-
-        previousStep () {
-            this.stepIndex--;
-        },
-    }
 });

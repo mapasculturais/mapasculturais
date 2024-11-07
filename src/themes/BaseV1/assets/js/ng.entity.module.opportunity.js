@@ -20,6 +20,14 @@
         }
     }
 
+    function compareFields (a, b) {
+        if (a.step?.displayOrder === b.step?.displayOrder) {
+            return Math.sign(a.displayOrder - b.displayOrder);
+        } else {
+            return Math.sign(a.step?.displayOrder - b.step?.displayOrder);
+        }
+    }
+
     function _getStatusSlug(status) {
         switch (status) {
             case 0: return 'draft'; break;
@@ -166,15 +174,7 @@
 
                 var fields = _files.concat(_fields);
 
-                fields.sort(function(a,b){
-                    if(a.displayOrder > b.displayOrder){
-                        return 1;
-                    } else if(a.displayOrder < b.displayOrder){
-                        return -1;
-                    }else {
-                        return 0;
-                    }
-                });
+                fields.sort(compareFields);
 
                 return fields;
             },
@@ -490,15 +490,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         }
 
         function sortFields(){
-            $scope.data.fields.sort(function(a,b){
-                if(a.displayOrder > b.displayOrder){
-                    return 1;
-                } else if(a.displayOrder < b.displayOrder){
-                    return -1;
-                }else {
-                    return 0;
-                }
-            });
+            $scope.data.fields.sort(compareFields);
         }
 
         $scope.countWords = function(text) {
@@ -1080,15 +1072,7 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
 
     if(MapasCulturais.evaluationFieldsList){
-        MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort((a,b) => {
-            if(a.displayOrder > b.displayOrder){
-                return 1;
-            }else if(a.displayOrder < b.displayOrder){
-                return -1;
-            }else{
-                return 0;
-            }
-        });
+        MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort(compareFields);
 
         MapasCulturais.evaluationFieldsList.forEach(function(item){
             $scope.data.fields.push(item);
@@ -1861,7 +1845,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     };
 
     $scope.isAvaliableEvaluationFields = function(field){
-        if($scope.data.avaliableEvaluationFields && $scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+        if($scope.data.avaliableEvaluationFields && $scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)] === "true"){
             return true;
         }
 
