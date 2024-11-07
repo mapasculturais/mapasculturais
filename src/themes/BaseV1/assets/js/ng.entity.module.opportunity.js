@@ -518,6 +518,24 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         const step = MapasCulturais.step;
 
+        $scope.steps = [];
+        
+        function onMessage ({ data: event }) {
+            if (event.type === 'opportunity-form:steps') {
+                $scope.steps = event.data;
+            }
+        }
+        $window.parent.postMessage({ type: 'opportunity-form:iframeLoaded' });
+        $window.addEventListener('message', onMessage);
+        // $window.removeEventListener('message', onMessage);
+
+        $scope.changeFieldStep = function (field) {
+            fieldService.edit({ ...field, step: field.step.id });
+        };
+        $scope.changeFileStep = function (file) {
+            fileService.edit({ ...file, step: file.step.id });
+        };
+
         $scope.data.filterFieldConfigurationByCategory = null;
         $scope.showFieldConfiguration = function (field) {
             if(field.fieldType == "agent-owner-field") {
