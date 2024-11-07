@@ -86,9 +86,9 @@ app.component('qualification-evaluation-form', {
                 const critValue = this.formData.data[crit.id];
                 if (!Array.isArray(critValue)) return;
 
-                if (crit.nonEliminatory === 'false' && critValue.includes('Não atende')) {
+                if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
                     eliminatoryCrit = true;
-                } else if (crit.nonEliminatory === 'true' && critValue.includes('Não atende')) {
+                } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
                     nonEliminatoryCount++;
                 }
             });
@@ -104,6 +104,28 @@ app.component('qualification-evaluation-form', {
                 ...this.formData.sectionStatus,
                 [sectionId]: newStatus
             };
+
+            this.consolidated();
+        },
+
+        toggleOthersOption(criteriaId, event) {
+            const isChecked = event.target.checked;
+    
+            if (!this.formData.data[criteriaId]) {
+                this.formData.data[criteriaId] = [];
+            }
+    
+            if (isChecked) {
+                if (!this.formData.data[criteriaId].includes('others')) {
+                    this.formData.data[criteriaId].push('others');
+                }
+            } else {
+                const index = this.formData.data[criteriaId].indexOf('others');
+                if (index > -1) {
+                    this.formData.data[criteriaId].splice(index, 1);
+                }
+                this.formData.data[`${criteriaId}_reason`] = ''; 
+            }
 
             this.consolidated();
         },
