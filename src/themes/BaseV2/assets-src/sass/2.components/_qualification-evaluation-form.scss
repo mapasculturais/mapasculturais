@@ -5,6 +5,12 @@
     flex-direction: column;
     gap: size(16);
 
+    .scrollable-container {
+        max-height: 500px; // Defina a altura que melhor se adequar à sua interface
+        overflow-y: auto; // Adiciona rolagem vertical apenas se necessário
+        padding-right: 10px; // Opção para garantir que a rolagem não sobreponha o conteúdo
+    }
+
     &__section {
         gap: size(20);
     }
