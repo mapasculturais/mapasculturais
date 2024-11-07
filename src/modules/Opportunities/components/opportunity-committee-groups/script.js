@@ -73,7 +73,7 @@ app.component('opportunity-committee-groups', {
         },
 
         initiliazeProperties() {
-            const props = ['fetchFields', 'valuersPerRegistration'];
+            const props = ['fetchFields', 'valuersPerRegistration', 'ignoreStartedEvaluations'];
 
             for (let group of props) {
                 if (!this.entity[group] || this.entity[group] instanceof Array) {
@@ -229,6 +229,18 @@ app.component('opportunity-committee-groups', {
                 } 
             } else {
                 delete this.entity.valuersPerRegistration[group];
+            }
+
+            this.autoSave();
+        },
+
+        enableIgnoreStartedEvaluations(value, group) {
+            if (value) {
+                if (!this.entity.ignoreStartedEvaluations[group]) {
+                    this.entity.ignoreStartedEvaluations[group] = true;
+                } 
+            } else {
+                delete this.entity.ignoreStartedEvaluations[group];
             }
 
             this.autoSave();

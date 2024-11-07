@@ -42,6 +42,14 @@
         gap: size(16);
     }
 
+    &__non-eliminatory {
+        input {
+            max-width: 100%;
+            width: size(96);
+            height: size(40);
+        }
+    }
+
     &__filters-input {
         display: flex;
         gap: size(8);
