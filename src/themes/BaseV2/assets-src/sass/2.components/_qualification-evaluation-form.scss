@@ -6,9 +6,9 @@
     gap: size(16);
 
     .scrollable-container {
-        max-height: 500px; // Defina a altura que melhor se adequar à sua interface
-        overflow-y: auto; // Adiciona rolagem vertical apenas se necessário
-        padding-right: 10px; // Opção para garantir que a rolagem não sobreponha o conteúdo
+        max-height: size(500);
+        overflow-y: auto; 
+        padding-right: size(10);
     }
 
     &__section {
