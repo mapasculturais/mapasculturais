@@ -9,7 +9,6 @@ $this->import('
 ')
 ?>
 <div class="qualification-evaluation-form">
-    <p class="semibold"><?php i::_e('Critérios de Avaliação') ?></p>
     <div class="scrollable-container scrollbar">
         <div v-for="section in sections" :key="section.id">
             <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
@@ -17,10 +16,10 @@ $this->import('
                 <div class="qualification-evaluation-form__criterion" v-for="crit in section.criteria" :key="crit.id">
                     <div v-if="showSectionAndCriterion(crit)" class="field">
                         <div class="qualification-evaluation-form__criterion-title">
-                            <label>{{ crit.name }}</label>
+                            <h3>{{ crit.name }}</h3>
                             <mc-popover openside="down-right">
                                 <template #button="popover">
-                                    <a @click="popover.toggle()"> <mc-icon name="info"></mc-icon> </a>
+                                    <a @click="popover.toggle()"> <mc-icon name="help"></mc-icon> </a>
                                 </template>
                                 <template #default="{popover, close}">
                                     <form @submit="$event.preventDefault()" class="entity-gallery__addNew--newGroup">
