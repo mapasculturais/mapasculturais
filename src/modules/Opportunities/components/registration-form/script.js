@@ -20,6 +20,14 @@ app.component('registration-form', {
         return { text, hasSlot }
     },
 
+    data() {
+        const editableFields = this.registration.editableFields;
+
+        return {
+            editableFields,
+        }
+    },
+
     computed: {
         fields () {
             const registration = this.registration;
@@ -119,10 +127,6 @@ app.component('registration-form', {
             return this.fields.filter((field) => {
                 return field.step?.id === this.step._id;
             });
-        },
-
-        stepName () {
-            return this.step.name || this.stepFields[0]?.step.name || '';
         },
     },
 });

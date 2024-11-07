@@ -32,6 +32,11 @@ app.component('mc-select', {
             type: Array,
             default: []
         },
+
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     watch: {

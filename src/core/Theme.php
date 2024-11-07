@@ -918,6 +918,9 @@ abstract class Theme {
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
                 }
+                if ($opportunity->registrationSteps) {
+                    $e['opportunity']->registrationSteps = $opportunity->registrationSteps->toArray();
+                }
             }
             
 

@@ -14,7 +14,7 @@ $this->import('
 ?>
 <div class="registration-actions">
     <div class="registration-actions__primary">
-        <div v-if="Object.keys(registration.__validationErrors).length > 0" class="registration-actions__errors">
+        <div v-if="hasErrors" class="registration-actions__errors">
             <span class="registration-actions__errors-title"> <?= i::__('Ops! Alguns erros foram identificados.') ?> </span>
             <span class="registration-actions__errors-subtitle"> 
                 <?= i::__('Para continuar, corrija os campos com os erros listados abaixo:') ?>
@@ -27,9 +27,14 @@ $this->import('
             </span>
 
             <div class="registration-actions__errors-list scrollbar" :class="{'registration-actions__errors-list--hide' : hideErrors}">
-                <div v-for="(error, index) in registration.__validationErrors" class="registration-actions__error">
-                    <strong>{{fieldName(index)}}:</strong> <p v-for="text in error">{{text}}</p>
-                </div>
+                <template v-for="(errors, stepId) in validationErrors" :key="stepId">
+                    <div class="registration-actions__errors-step" v-if="Object.keys(errors).length > 0">
+                        <div class="registration-actions__errors-step-name">{{stepName(stepId)}}</div>
+                        <div v-for="(error, key) in errors" class="registration-actions__error" tabindex="0" @click="goToField(stepId, key)" @keydown.enter="goToField(stepId, key)">
+                            <strong>{{fieldName(key)}}</strong> <p v-for="text in error">{{text}}</p>
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
 
@@ -45,16 +50,17 @@ $this->import('
             </template>
         </mc-confirm-button>
 
-        <div class="registration-actions__validation" v-if="canValidate && !isValidated">
+        <div class="registration-actions__validation" v-if="!isValidated">
             <mc-alert type="warning">
                 <span><?= i::__("Para enviar sua inscrição, você precisa <strong>validá-la</strong> primeiro. Clique no botão <strong>Validar inscrição</strong> abaixo para verificar se todas as informações estão corretas.") ?></span>
             </mc-alert>
-            <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
+            <button class="button button--large button--primary-outline" @click="validate()" v-if="isLastStep"><?= i::__('Validar inscrição') ?></button>
+            <button class="button button--large button--primary-outline" @click="validateStep(step._id)" v-else><?= i::__('Validar etapa') ?></button>
         </div>
         <!-- <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button> -->
     </div>
 
-    <div class="registration-actions__steps">
+    <div class="registration-actions__secondary">
         <button @click="nextStep()" class="button button--bg button--large button--secondary button--icon" v-if="stepIndex < steps.length - 1">
             <?= i::__("Próxima etapa") ?>
             <mc-icon name="arrow-right"></mc-icon>

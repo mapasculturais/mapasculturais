@@ -12,7 +12,7 @@ app.component('opportunity-form-builder' , {
         return { text }
     },
     data () {
-        const steps = this.entity.registrationSteps.sort((a, b) => a.displayOrder - b.displayOrder);
+        const steps = this.entity.registrationSteps?.sort((a, b) => a.displayOrder - b.displayOrder) || [];
 
         return {
             newStep: { id: 'new', name: '' },
@@ -62,12 +62,22 @@ app.component('opportunity-form-builder' , {
 
             this.newStep.name = '';
             modal.close();
+
+            this.$nextTick(() => {
+                const tabsComp = this.$refs.tabs;
+                tabsComp.activeTab = tabsComp.tabs[this.steps.length - 1];
+            });
         },
         async deleteStep (step) {
+            const stepId = step.id;
             await step.delete(true);
 
-            const stepId = data.payload.step_id;
-            this.steps = this.steps.filter((step) => step.id !== stepId);
+            this.steps = this.steps.filter((step) => step.id && step.id !== stepId);
+
+            this.$nextTick(() => {
+                const tabsComp = this.$refs.tabs;
+                tabsComp.activeTab = tabsComp.tabs[0];
+            });
         },
     },
 });

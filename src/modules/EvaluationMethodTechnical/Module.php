@@ -17,6 +17,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
     protected static Module $instance;
     private $viability_status;
 
+    public static $quotaData = null;
+
     function __construct(array $config = []) {
         self::$instance = $this;
         $config += ['step' => '0.1'];
@@ -382,10 +384,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
            
         });
 
-
-        $quota_data = null;
-
-        $app->hook('ApiQuery(registration).params', function(&$params) use($app, $self, &$quota_data) {
+        $app->hook('ApiQuery(registration).params', function(&$params) use($app) {
             /** @var ApiQuery $this */
 
             $order = $params['@order'] ?? '';
@@ -399,19 +398,19 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $quota = $evaluation_method && $evaluation_method->type->id == 'technical' ? 
                 Quotas::instance($phase_id) : null;
             
-            if($phase_id && $quota && is_null($quota_data)) {
-                $quota_data = (object) [];                
+            if($phase_id && $quota && is_null(Module::$quotaData)) {
+                Module::$quotaData = (object) [];                
 
-                $quota_data->objectId = spl_object_id($this);
-                $quota_data->params = $params;
-                $quota_data->quota = $quota;
-                $quota_data->orderByQuota = $order == '@quota';
+                Module::$quotaData->objectId = spl_object_id($this);
+                Module::$quotaData->params = $params;
+                Module::$quotaData->quota = $quota;
+                Module::$quotaData->orderByQuota = $order == '@quota';
 
-                $quota_order = $quota_data->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
+                $quota_order = Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
                 
-                if($quota_data->orderByQuota && $limit = (int) ($params['@limit'] ?? 0)) {
+                if(Module::$quotaData->orderByQuota && $limit = (int) ($params['@limit'] ?? 0)) {
                     unset($params['@order']);
                     $ids_params = $params;
                     unset(
@@ -437,7 +436,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         }
                     }
 
-                    $quota_data->foundIds = $ids;
+                    Module::$quotaData->foundIds = $ids;
 
                     $page = $params['@page'] ?? 1;
                     $offset = ($page - 1) * $limit;
@@ -446,10 +445,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     
                 } else {
                     $ids = array_map(fn($reg) => $reg->id, $quota_order);
-                    $quota_data->foundIds = $ids;
+                    Module::$quotaData->foundIds = $ids;
                 }
 
-                if($quota_data->orderByQuota){
+                if(Module::$quotaData->orderByQuota){
+                    
                     $params['id'] = API::IN($ids);
                     unset(
                         $params['@page'],
@@ -457,19 +457,19 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     );
                 }
 
-                $quota_data->order = $quota_order;
-                $quota_data->ids = $ids;
+                Module::$quotaData->order = $quota_order;
+                Module::$quotaData->ids = $ids;
 
             }
         });
 
-        $app->hook('ApiQuery(registration).findResult', function(&$result) use(&$quota_data) {
+        $app->hook('ApiQuery(registration).findResult', function(&$result) {
             /** @var ApiQuery $this */
-            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
+            if((Module::$quotaData->objectId ?? false) == spl_object_id($this)) {
                 $app = App::i();
                 $_new_result = [];
-                $quota_fields = $quota_data->quota->registrationFields;
-                foreach($quota_data->ids as $id) {
+                $quota_fields = Module::$quotaData->quota->registrationFields;
+                foreach(Module::$quotaData->ids as $id) {
                     foreach($result as &$registration) {
                         if($registration['id'] == $id) {
                             $registration = array_merge($registration, $quota_fields[$id] ?? []);
@@ -478,25 +478,32 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     }
                 }
 
-                if($quota_data->orderByQuota) {
+                if(Module::$quotaData->orderByQuota) {
                     $result = $_new_result;
                 }
 
-                $quota_data->result = $result;
+                Module::$quotaData->result = $result;
             }
         });
 
-        $app->hook('ApiQuery(registration).countResult', function(&$result) use(&$quota_data) {
-            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
-                $result = count($quota_data->foundIds);
+        $app->hook('ApiQuery(registration).countResult', function(&$result) {
+            if((Module::$quotaData->objectId ?? false) == spl_object_id($this)) {
+                $result = count(Module::$quotaData->foundIds);
             }
         });
-            
-
-        $app->hook('API.find(registration).result', function() use($quota_data) {
+        
+        
+        $app->hook('API.findRegistrations(opportunity).result', function() {
             /** @var Controller $this */
-            if(($quota_data->objectId ?? false) == spl_object_id($this)) {
-                $this->apiAddHeaderMetadata($quota_data->params, $quota_data->result, count($quota_data->foundIds));
+            $params = $this->data;
+            
+            if(Module::$quotaData && isset($params['@opportunity'])) {
+                $params['opportunity'] = API::EQ($params['@opportunity']);
+
+                $count_query = new ApiQuery(Registration::class, Module::$quotaData->params);
+                $count = $count_query->count();
+                
+                $this->apiAddHeaderMetadata(Module::$quotaData->params, Module::$quotaData->result, $count);
             }
         });
 

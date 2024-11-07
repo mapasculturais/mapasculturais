@@ -50,6 +50,16 @@
 
     &__evaluators {
         border-bottom: none;
+
+        & .tabs-component {
+            display: grid;
+            gap: size(15);
+
+            &__header,
+            &__panels {
+                width: 100%;
+            }
+        }
     }
 
     &__multiple-evaluators {

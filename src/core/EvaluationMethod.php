@@ -301,16 +301,19 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $committee = $this->getCommitteeGroups($opportunity->evaluationMethodConfiguration);
 
         // coloca o comitê de desempate no final do array
-        if(isset($committee)) {
+        if(isset($committee['@tiebreaker'])) {
             $tiebreaker_committee = $committee['@tiebreaker'];
             unset($committee['@tiebreaker']);
             $committee['@tiebreaker'] = $tiebreaker_committee;
         }
 
+        $must_enqueue_evaluation_config = false;
         foreach($committee as $group => $committee_users) {
             $valuers_per_registration = (int) ($evaluation_config->valuersPerRegistration->$group ?? 0);
+            $ignore_started_evaluations = $evaluation_config->ignoreStartedEvaluations->$group ?? false;
 
             if(!$valuers_per_registration) {
+                $must_enqueue_evaluation_config = true;
                 continue;
             }
 
@@ -339,7 +342,6 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     r.status > 0
 
                 GROUP BY r.id, v.id
-                HAVING count(e.id) < $valuers_per_registration
                 ORDER BY num ASC
             ");
 
@@ -348,6 +350,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
              * Processa a lista agrupando os avaliadores que já avaliaram a inscrição
              */
             $result = [];
+            $valuers_evaluated_registrations = [];
             foreach($registration_evaluations as $r) {
                 $result[$r['id']] = $result[$r['id']] ?? (object) [
                     'id' => $r['id'],
@@ -357,6 +360,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
                 if($r['user_id']) {
                     $result[$r['id']]->valuers[] = $r['user_id'];
+                    $valuers_evaluated_registrations[$r['user_id']] = $valuers_evaluated_registrations[$r['user_id']] ?? 0;
+                    $valuers_evaluated_registrations[$r['user_id']]++;
                 }
             }
 
@@ -364,8 +369,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             /** Distribui as inscrições */
             foreach ($committee_users as $user) {
+                if($ignore_started_evaluations) {
+                    $num = 0;
+                } else {
+                    $num = $valuers_evaluated_registrations[$user->id] ?? 0;
+                }
                 $valuers[] = (object) [
-                    'count' => 0,
+                    'count' => $num,
                     'user' => $user
                 ];
             }
@@ -411,10 +421,16 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $app->log->debug("$registration_id  $json");
             $conn->update('registration', ['valuers_exceptions_list' => $json], ['id' => $registration_id]);
 
-            /** @var Entities\Registration $registration */
-            $registration = $app->repo('Registration')->find($registration_id);
+            if(!$must_enqueue_evaluation_config) {
+                /** @var Entities\Registration $registration */
+                $registration = $app->repo('Registration')->find($registration_id);
 
-            $registration->enqueueToPCacheRecreation();
+                $registration->enqueueToPCacheRecreation();
+            }
+        }
+
+        if($must_enqueue_evaluation_config) {
+            $evaluation_config->enqueueToPCacheRecreation();
         }
 
         $app->persistPCachePendingQueue();
@@ -435,16 +451,36 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $evaluation_config = $registration->evaluationMethodConfiguration;
         $valuers_per_registration_config = $evaluation_config->valuersPerRegistration;
 
+            
+        $agent_relations = $app->repo('EvaluationMethodConfigurationAgentRelation')->findBy([
+            'owner' => $evaluation_config,
+            'agent' => $user->profile
+        ]);
+
+        $has_global_filter_configs = false;
+        foreach($agent_relations as $ar) {
+            $config = $evaluation_config->fetchFields->{$ar->group} ?? (object) [];
+            foreach($config as $values) {
+                if(count($values) > 0) {
+                    $has_global_filter_configs = true;
+                }
+            }
+            $config = $evaluation_config->valuersPerRegistration->{$ar->group} ?? null;
+            if(!empty((array) $config)) {
+                $has_global_filter_configs = true;
+            }
+        }
+
         if (
             empty($evaluation_config->fetch->{$user->id}) 
             && empty($evaluation_config->fetchCategories->{$user->id}) 
             && empty($evaluation_config->fetchRanges->{$user->id})
             && empty($evaluation_config->fetchProponentTypes->{$user->id})
             && empty($evaluation_config->fetchSelectionFields->{$user->id})
-            && empty($evaluation_config->fetchFields->{$user->id})
+            && !$has_global_filter_configs
         ) {
             return false;
-        };
+        }
 
         
         /**
@@ -482,33 +518,50 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             
             $relations = $registration->opportunity->evaluationMethodConfiguration->agentRelations;
 
-            $user_group = '';
-            foreach($relations as $relation) {
-                if($relation->agent->id == $user->profile->id) {
-                    $user_group = $relation->group;
-                }
-            }
+            if(is_array($global_filter_configs)) {
+                $global_config_categories = [];
+                $global_config_ranges = [];
+                $global_config_proponent_types = [];
+                $global_config_selection_fields = [];
 
-            if (is_array($global_filter_configs) && isset($global_filter_configs[$user_group])) {
-                $committee_config = $global_filter_configs[$user_group];
-                $user_id = $user->id;
-                
-                if (isset($committee_config->category)) {
-                    $config_fetchCategories = [$user_id => (array) $committee_config->category];
-                }
-                
-                if (isset($committee_config->ranges)) {
-                    $config_ranges = [$user_id => (array) $committee_config->ranges];
-                }
-                
-                if (isset($committee_config->proponentType)) {
-                    $config_proponent_types = [$user_id => (array) $committee_config->proponentType];
-                }
+                foreach($relations as $relation) {
+                    if($relation->agent->id == $user->profile->id) {
+                        $committee_config = $global_filter_configs[$relation->group] ?? (object) [];
 
-                foreach ($committee_config as $key => $value) {
-                    if (!in_array($key, ['category', 'range', 'proponentType', 'distribution'])) {
-                        $config_selection_fields[$user_id][$key] = (array) $value;
+                        if(!empty($committee_config->category)) {
+                            $global_config_categories = array_merge($global_config_categories, (array) $committee_config->category);
+                        }
+
+                        if(!empty($committee_config->range)) {
+                            $global_config_ranges = array_merge($global_config_ranges, (array) $committee_config->range);
+                        }
+
+                        if(!empty($committee_config->proponentType)) {
+                            $global_config_proponent_types = array_merge($global_config_proponent_types, (array) $committee_config->proponentType);
+                        }
+
+                        foreach ($committee_config as $key => $value) {
+                            if (!in_array($key, ['category', 'range', 'proponentType', 'distribution'])) {
+                                $global_config_selection_fields[$key] = array_merge($global_config_selection_fields[$key] ?? [], (array) $value);
+                            }
+                        }
                     }
+                }
+
+                if(!empty($global_config_categories)) {
+                    $config_fetchCategories = [$user->id => $global_config_categories];
+                }
+
+                if(!empty($global_config_ranges)) {
+                    $config_ranges = [$user->id => $global_config_ranges];
+                }
+
+                if(!empty($global_config_proponent_types)) {
+                    $config_proponent_types = [$user->id => $global_config_proponent_types];
+                }
+
+                if(!empty($global_config_selection_fields)) {
+                    $config_selection_fields = [$user->id => $global_config_selection_fields];
                 }
             }
 

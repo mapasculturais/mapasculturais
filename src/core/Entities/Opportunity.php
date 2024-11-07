@@ -39,7 +39,7 @@ use MapasCulturais\Utils;
  *
  *
  * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
- * @property RegistrationStep $registrationSteps
+ * @property RegistrationStep[] $registrationSteps
  * @property RegistrationFileConfiguration[] $registrationFileConfigurations
  * @property RegistrationFieldConfiguration[] $registrationFieldConfigurations
  * @property \MapasCulturais\Entity $ownerEntity
@@ -344,7 +344,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     public function getRegistrationFileConfigurations() {
         $app = App::i();
 
-        $result = App::i()->repo('RegistrationFileConfiguration')->findBy(['owner' => $this]);
+        $result = $app->repo('RegistrationFileConfiguration')->findBy(['owner' => $this]);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationFileConfigurations", [&$result]);
 
@@ -358,7 +358,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     public function getRegistrationFieldConfigurations() {
         $app = App::i();
 
-        $result = App::i()->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
+        $result = $app->repo('RegistrationFieldConfiguration')->findBy(['owner' => $this]);
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.registrationFieldConfigurations", [&$result]);
 
@@ -846,11 +846,18 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     function setRegistrationRanges(array $registration_ranges){
         $app = App::i();
+        
+        $registration_ranges = array_map(function($range) {
+            if (isset($range['label'])) {
+                $range['label'] = trim($range['label']);
+            }
+            return $range;
+        }, $registration_ranges);
 
         $new_registration_ranges = $registration_ranges;
 
         $current_range_labels = array_map(fn ($range) => $range['label'], $this->registrationRanges);
-        $new_range_labels = array_map(fn ($range) => $range['label'], $registration_ranges);
+        $new_range_labels = array_map(fn ($range) => $range['label'], $new_registration_ranges);
 
         $removed_ranges = array_diff($current_range_labels, $new_range_labels);
 
@@ -1090,6 +1097,23 @@ abstract class Opportunity extends \MapasCulturais\Entity
         if (!is_null($importSource)) {
             $new_fields_by_old_field_name = [];
 
+            // Pega o primeiro step da oportunidade
+            $first_step = $app->repo('RegistrationStep')->findOneBy(['opportunity' => $this]);
+
+            // Verifica se já existe algum campo configurado nesta oportunidade
+            $fields = $this->registrationFieldConfigurations;
+            $files = $this->registrationFileConfigurations;
+            $has_field = false;
+
+            if($fields || $files) {
+                $has_field = true;
+            }
+
+            // Caso não tenha nenhum campo configurado e já exista um step que estará vazio, exclui o step
+            if(!$has_field && $first_step) {
+                $first_step->delete(true);
+            }
+
             // Fields
             foreach($importSource->fields as &$field) {
 
@@ -1099,6 +1123,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                         $field->config['require'] = (array) $field->config['require'];
                     }
                 }
+
+                $step = $this->getOrCreateStep($field->step->name ?? null, $field->step->displayOrder ?? null);
 
                 $newField = new RegistrationFieldConfiguration;
                 $newField->owner = $this;
@@ -1115,6 +1141,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newField->conditionalValue = $field->conditionalValue;
                 $newField->proponentTypes = $field->proponentTypes;
                 $newField->registrationRanges = $field->registrationRanges;
+                $newField->step = $step->id;
 
                 $field->newField = $newField;
 
@@ -1148,6 +1175,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
                 $newFile = new RegistrationFileConfiguration;
 
+                $step = $this->getOrCreateStep($file->step->name ?? null, $file->step->displayOrder ?? null);
+
                 $newFile->owner = $this;
                 $newFile->title = $file->title;
                 $newFile->description = $file->description;
@@ -1158,6 +1187,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->conditionalValue = $file->conditionalValue;
                 $newFile->proponentTypes = $field->proponentTypes;
                 $newField->registrationRanges = $field->registrationRanges;
+                $newFile->step = $step->id;
+                $newFile->proponentTypes = $file->proponentTypes;
+                $newFile->registrationRanges = $file->registrationRanges;
 
                 $app->em->persist($newFile);
 
@@ -1230,6 +1262,40 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).importFields:after", [&$importSource, &$created_fields, &$created_files]);
 
         }
+    }
+
+    /**
+     * Obtém ou cria uma etapa de registro associada a uma oportunidade.
+     *
+     * Esta função verifica se uma etapa de registro com o nome especificado já existe
+     * para a oportunidade atual. Se a etapa não existir, uma nova etapa é criada com
+     * o nome e a ordem de exibição fornecidos. Caso o nome da etapa não seja informado,
+     * um valor padrão "Etapa importada" é utilizado. Se a ordem de exibição não for informada,
+     * a etapa é criada com a ordem padrão de valor 0.
+     *
+     * @param string|null $step_name       O nome da etapa de registro. Padrão: 'Etapa importada'.
+     * @param int|null    $display_order   A ordem de exibição da etapa. Padrão: 0.
+     *
+     * @return RegistrationStep           Retorna a etapa de registro existente ou a nova etapa criada.
+    */
+    function getOrCreateStep($step_name = null, $display_order = null): RegistrationStep {
+        $app = App::i();
+        
+        $step_name = $step_name ?? i::__('Etapa importada');
+        
+        $step = $app->repo('RegistrationStep')->findOneBy(['opportunity' => $this, 'name' => $step_name]);
+        
+        if (!$step) {
+            $newStep = new RegistrationStep;
+            $newStep->name = $step_name;
+            $newStep->displayOrder = $display_order ?? 0;
+            $newStep->opportunity = $this;
+            $newStep->save();
+    
+            $step = $newStep;
+        }
+        
+        return $step;
     }
 
     function useRegistrationAgentRelation(\MapasCulturais\Definitions\RegistrationAgentRelation $def){
