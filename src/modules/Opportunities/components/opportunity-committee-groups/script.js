@@ -38,6 +38,12 @@ app.component('opportunity-committee-groups', {
     mounted() {
         this.initializeGroups();
         this.initiliazeProperties();
+
+        this.$nextTick(() => {
+            if (!this.$refs.tabs.activeTab) {
+                this.$refs.tabs.activeTab = this.$refs.tabs.tabs[0];
+            }
+        });
     },
     
     methods: {
@@ -84,7 +90,15 @@ app.component('opportunity-committee-groups', {
             event.preventDefault();
             this.addGroup(this.newGroupName);
             popover.close();
-            this.newGroupName = '';
+
+            this.$nextTick(() => {
+                this.$refs.tabs.tabs.forEach(tab => {
+                    if (tab.label == this.newGroupName) {
+                        this.$refs.tabs.activeTab = tab;
+                        this.newGroupName = '';
+                    }
+                });
+            });
         },
 
         cancelGroupCreation(popover) {
