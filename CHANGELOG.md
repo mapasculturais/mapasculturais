@@ -4,16 +4,24 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [unreleased]
-### Melhorias
-- Implementa aviso para sinalizar quando o total de vagas distribuídas por território exceder o total de vagas do edital
-- Implementa aviso para sinalizar quando o total de vagas para cotistas exceder o total de vagas do edital
-- aviso para sinalizar quando o total de vagas do edital não estiver preenchido e bloquear a opção de inserir configurações de cotas e distribuição por território
 
 ## [UNRELEASED]
 ### Novas Funcionalidades
+- Editais de fluxo contínuo, podendo ter ou não uma data de término.
+- Configuração de selos certificadores para editais, sendo possível configurar quais selos serão aplicados para cada tipo de proponente em cada fase do edital.
+- Opção de autoaplicação dos resultados das avaliações quando todos os avaliadores de uma inscrição tiverem avaliado
+- Comissões de avaliação
+  - Possibilidade de criação de mútiplas comissões de avaliação
+  - Possibilidade de configurar para cada comissão os critérios de distribuição das inscrições 
+  - Possibilidade de limitar o número de avaliadores de uma comissão qua cada inscrição receberá
+  - Comissão de voto de minerva, que recebe inscrições que tenham divergência entre diferentes comissões de avaliação
+- Etapas em formulários de inscrição
 
 ### Melhorias
+- Redesenho do formulário de inscrição
+- Implementa aviso para sinalizar quando o total de vagas do edital não estiver preenchido e bloquear a opção de inserir configurações de cotas e distribuição por território
+- Implementa aviso para sinalizar quando o total de vagas distribuídas por território exceder o total de vagas do edital
+- Implementa aviso para sinalizar quando o total de vagas para cotistas exceder o total de vagas do edital
 
 ### Correções
 
