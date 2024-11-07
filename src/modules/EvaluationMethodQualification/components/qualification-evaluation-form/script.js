@@ -77,15 +77,34 @@ app.component('qualification-evaluation-form', {
             
             const section = this.sections.find(sec => sec.id === sectionId);
 
-            if(section) {
-                const criteriaEnabled = section.criteria.every(crit => Array.isArray(this.formData.data[crit.id]) && this.formData.data[crit.id].every(value => value === this.text('Atende')));
-                const newStatus = criteriaEnabled ? this.text('Atende') : this.text('Não atende');
-        
-                this.formData.sectionStatus = {
-                    ...this.formData.sectionStatus,
-                    [sectionId]: newStatus
-                };
+            if (!section) return;
+
+            let nonEliminatoryCount = 0;
+            let eliminatoryCrit = false;
+
+            section.criteria.forEach(crit => {
+                const critValue = this.formData.data[crit.id];
+                if (!Array.isArray(critValue)) return;
+
+                if (crit.nonEliminatory === 'false' && critValue.includes('Não atende')) {
+                    eliminatoryCrit = true;
+                } else if (crit.nonEliminatory === 'true' && critValue.includes('Não atende')) {
+                    nonEliminatoryCount++;
+                }
+            });
+
+            let newStatus;
+            if (eliminatoryCrit || nonEliminatoryCount > section.numberMaxNonEliminatory) {
+                newStatus = this.text('Não atende');
+            } else {
+                newStatus = this.text('Atende');
             }
+
+            this.formData.sectionStatus = {
+                ...this.formData.sectionStatus,
+                [sectionId]: newStatus
+            };
+
             this.consolidated();
         },
 
