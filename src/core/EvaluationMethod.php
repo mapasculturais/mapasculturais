@@ -310,6 +310,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $must_enqueue_evaluation_config = false;
         foreach($committee as $group => $committee_users) {
             $valuers_per_registration = (int) ($evaluation_config->valuersPerRegistration->$group ?? 0);
+            $ignore_started_evaluations = $evaluation_config->ignoreStartedEvaluations->$group ?? false;
 
             if(!$valuers_per_registration) {
                 $must_enqueue_evaluation_config = true;
@@ -349,6 +350,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
              * Processa a lista agrupando os avaliadores que já avaliaram a inscrição
              */
             $result = [];
+            $valuers_evaluated_registrations = [];
             foreach($registration_evaluations as $r) {
                 $result[$r['id']] = $result[$r['id']] ?? (object) [
                     'id' => $r['id'],
@@ -358,6 +360,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
                 if($r['user_id']) {
                     $result[$r['id']]->valuers[] = $r['user_id'];
+                    $valuers_evaluated_registrations[$r['user_id']] = $valuers_evaluated_registrations[$r['user_id']] ?? 0;
+                    $valuers_evaluated_registrations[$r['user_id']]++;
                 }
             }
 
@@ -365,8 +369,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             /** Distribui as inscrições */
             foreach ($committee_users as $user) {
+                if($ignore_started_evaluations) {
+                    $num = 0;
+                } else {
+                    $num = $valuers_evaluated_registrations[$user->id] ?? 0;
+                }
                 $valuers[] = (object) [
-                    'count' => 0,
+                    'count' => $num,
                     'user' => $user
                 ];
             }
