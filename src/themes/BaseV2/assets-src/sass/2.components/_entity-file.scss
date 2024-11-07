@@ -17,7 +17,24 @@
     }
 
     &__link {
+        align-items: center;
+        color: var(--mc-black);
+        display: grid;
+        font-family: var(--mc-font-body);
+        font-size: size(18);
+        font-style: normal;
+        font-weight: 700;
+        gap: size(10);
+        grid-template-columns: size(18) 1fr;
+        justify-items: center;
+        line-height: size(25);
+        margin: size(7) 0;
         text-decoration: none;
+        word-break: break-word;
+
+        .iconify {
+            font-size: size(18);
+        }
 
         &--download {
             align-items: center;
@@ -99,7 +116,7 @@
     &__modal {
         .modal-content {
             gap: size(16);
-            max-width: size(570);
+            max-width: size(450);
             padding: size(24);
             width: 100%;
         }
@@ -112,6 +129,20 @@
         .modal__action {
             justify-content: flex-end;
             padding: 0;
+        }
+
+        .field__buttonUpload {
+            max-width: 100%;
+            width: 100%;
+        }
+    }
+
+    &--disabled {
+        & .button {
+            opacity: .9;
+            pointer-events: none;
+            background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+            color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
         }
     }
 }

@@ -11,7 +11,7 @@ $this->import('
     select-entity
 ');
 ?>
-<mc-card v-for="relation in agentRelations">
+<mc-card v-for="relation in agentRelations" v-if="showCardForRelation">
     <template #title>
         <div class="card__title"> 
             {{relation.label}} 

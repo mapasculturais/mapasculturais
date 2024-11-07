@@ -40,7 +40,8 @@ return [
 
             'suporte/lista-de-inscricoes'  => ['support', 'list'],
             'suporte/formulario'  => ['support', 'form'],
-
+            'suporte/configuracao' => ['support', 'supportConfig'],
+            
             'baixar-rascunhos' => ['opportunity', 'reportDrafts'],
             'baixar-inscritos' => ['opportunity', 'report'],
             'baixar-avaliacoes' => ['opportunity', 'reportEvaluations'],
@@ -71,6 +72,8 @@ return [
             'minhas-avaliacoes'        => ['panel', 'evaluations'],
             'minhas-prestacoes-de-contas'        => ['panel', 'prestacoes-de-conta'],
 
+            'aparencia'               => ['theme-customizer', 'index'],
+            
             'conta-e-privacidade'        => ['panel', 'my-account'],
 
             'inscricao' => ['registration', 'edit'],
@@ -84,6 +87,8 @@ return [
             'certificado' => ['relatedSeal','single'],
 
             'perguntas-frequentes' => ['faq', 'index'],
+
+            'file/arquivo-privado' => ['file', 'privateFile'],
 
         ],
         'controllers' => [

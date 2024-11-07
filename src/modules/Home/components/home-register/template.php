@@ -8,7 +8,7 @@ use MapasCulturais\i;
 ?>
 <div class="home-register">
     <div class="home-register__background">
-        <img class="home-register__background--img" src="<?php $this->asset($app->config['module.home']['home-register']) ?>" />
+        <img class="home-register__background--img" :src="subsite?.files?.signupBanner ? subsite?.files?.signupBanner?.url : '<?php $this->asset($app->config['module.home']['home-register']) ?>'" />
         <div class="home-register__background--mask"></div>
     </div>
     <div class="home-register__content">

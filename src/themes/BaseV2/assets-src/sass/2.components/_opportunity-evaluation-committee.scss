@@ -3,81 +3,162 @@
 .opportunity-evaluation-committee {
     display: flex;
     flex-direction: column;
-    gap: size(24);    
+    gap: size(24);
+    max-width: 100%;
+    overflow: hidden;
 
-    &__header{
+    &__header {
         display: flex;
+        flex-wrap: wrap;
+        gap: size(16);
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__content {
+        display: flex;
+        flex-wrap: wrap;
         flex-direction: column;
         gap: size(8);
     }
 
-    &__add-new-evaluator {
-        display: flex;
-    }
-
-    &__card-grouping {
-        display: flex;
-        flex-direction: column;
-        gap: size(16);
-    }
-
     &__card {
-        border-radius: var(--mc-border-radius-xs);
-        border: size(1) solid var(--mc-low-300);
-        display: flex;
-        flex-direction: column;
+        border-radius: size(4);
+        background-color: var(--mc-gray-100);
+        width: 100%;
+        box-sizing: border-box;
+        border: size(1) solid var(--mc-gray-300);
+
+        .open-toggle {
+            border-bottom: 1px solid var(--mc-gray-300);
+        }
     }
 
     &__card-header {
-        align-items: center;
-        border-bottom: size(1) solid var(--mc-low-300);
         display: flex;
-        justify-content: space-between;
-        padding: size(16) size(24);
-    }
-
-    &__card-header-info {
-        align-items: center;
-        display: flex;
-        gap: size(16);
-    }
-
-    &__card-header-actions {
-        align-items: center;
-        display: flex;
-        gap: size(16);
-    }
-
-    &__card-content {
-        padding: size(24);
-    }
-
-    &__change-distributions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    &__distributions {
-        display: flex;
+        align-items: stretch;
+        justify-content: flex-start;
         gap: size(24);
+
+        &-info {
+            align-items: center;
+            display: flex;
+            gap: size(16);
+
+            @media (max-width: 1076px) {
+                margin: 0 size(8);
+            }
+
+            &-name {
+                display: flex;
+                flex-direction: column;
+                gap: size(4);
+            }
+        }
+
+        &-content {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 100%;
+            width: 100%;
+            gap: size(16);
+            padding: size(10) 0;
+
+            @media (max-width: size(800)) {
+                grid-template-columns: 1fr;
+            }
+        }
     }
 
-    &__distribution {
-        max-width: size(120);
-    }
-
-    &__settings {
-        align-items: center;
+    &__card-toggle {
+        cursor: pointer;
+        background-color: var(--mc-opportunities-500);
         display: flex;
-        flex-wrap: wrap;
-        gap: size(10);
-        min-height: size(49);
+        max-height: 100%;
+        min-width: size(48);
+        max-width: 100%;
+        color: var(--mc-white);
+        align-items: center;
+        justify-content: center;
+        border-right: size(1) solid var(--mc-gray-300);
+
+        .iconify {
+            font-size: size(24);
+        }
     }
 
-    &__all-settings {
+    &__card-status {
+        label {
+            padding-left: size(8);
+        }
+    }
+
+    &__cancel-invitation {
+        float: inline-end;
+    }
+
+    &__card-status-wrapper {
         display: flex;
         flex-direction: column;
-        gap: size(10);
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    &__card-filter {
+        padding: size(16) size(16) size(16) size(72);
+        border-bottom: size(1) solid var(--mc-gray-300);
+    }
+
+    &__summary {
+        display: flex;
+        margin: 0 size(8);
+        gap: size(8);
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        width: auto;
+
+        span {
+            display: flex;
+            gap: size(8);
+            border-radius: size(4);
+            padding: size(8);
+            align-items: center;
+            justify-content: center;
+            max-width: 100%;
+            width: size(143);
+            height: size(32);
+            font-size: var(--mc-font-size-xxs);
+            white-space: nowrap;
+        }
+
+        &--sent {
+            background-color: #BFE88B;
+        }
+
+        &--pending {
+            background-color: #FFB5B5
+        }
+
+        &--started {
+            background-color: #FFCF8F;
+        }
+
+        &--completed {
+            background-color: #99D6FF;
+        }
+    }
+
+    &__card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: size(17);
+
+        &-actions {
+            display: flex;
+            gap: size(16);
+        }
     }
 }

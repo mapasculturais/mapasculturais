@@ -11,6 +11,8 @@ Componente que cria uma modal
 - *String **buttonLabel** = ''* - Label do botao de abrir a modal
 - *String **buttonClasses** = ''* - Classes do botao de abrir a modal
 - *Boolean **closeButton** = true* - Se deve exibir o botão de fechar a modal
+- *Boolean **escToClose** = true* - Indica se a modal deve ser fechada com a tecla ESC
+- *Boolean **clickToClose** = true* - Indica se a modal deve ser fechada com o click fora da modal
 
 ## Slots
 - **default** `{open: function, close: function, loading: function}` - Conteúdo da modal aberta.

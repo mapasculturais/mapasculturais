@@ -1,6 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .mc-select {
+    margin-bottom: 0.5rem;
     outline: none;
     position: relative;
     text-align: left;
@@ -180,5 +181,12 @@
         &__option {
             padding-block: 3px;
         }
+    }
+
+    &--disabled {
+        opacity: .9;
+        pointer-events: none;
+        background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+        color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
     }
 }

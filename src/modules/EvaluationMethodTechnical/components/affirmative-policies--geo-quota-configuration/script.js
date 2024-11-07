@@ -14,6 +14,12 @@ app.component('affirmative-policies--geo-quota-configuration', {
         return { text, hasSlot }
     },
 
+    mounted() {
+        if (!this.geoQuota.fields || typeof this.geoQuota.fields !== 'object') {
+            this.geoQuota.fields = {};
+        }
+    },
+    
     updated () {
         this.save();
     },
@@ -21,16 +27,27 @@ app.component('affirmative-policies--geo-quota-configuration', {
     data() {
         let geoQuota = this.phase.geoQuotaConfiguration || { geoDivision: '', distribution: {} };
         let isActive = !!Object.keys(geoQuota.distribution).length;
-        
+        const oppFirstPhase = this.phase.opportunity.parent ?? this.phase.opportunity;
+        let autosaveTime = 3000;
+
         return {
+            totalQuota: 0,
+            fields: {},
             isActive,
             geoQuota,
+            oppFirstPhase,
+            hasProponentType: oppFirstPhase.registrationProponentTypes && oppFirstPhase.registrationProponentTypes.length > 0,
+            hasCollective: oppFirstPhase.registrationProponentTypes.includes('Coletivo'),
+            hasMEI: oppFirstPhase.registrationProponentTypes.includes('MEI'),
+            hasNaturalPerson: oppFirstPhase.registrationProponentTypes.includes('Pessoa Física'),
+            hasLegalEntity: oppFirstPhase.registrationProponentTypes.includes('Pessoa Jurídica'),
+            autosaveTime,
         }
     },
 
     computed: {
         divisions() {
-            return $MAPAS.config.geoQuotaConfiguration;
+            return $MAPAS.config.geoQuotaConfiguration.geoDivisions;
         },
 
         vacancies() {
@@ -45,7 +62,8 @@ app.component('affirmative-policies--geo-quota-configuration', {
             this.isActive = true;
         },
 
-        close() {
+        trash() {
+            this.autosaveTime = 600;
             this.save(true);
             this.isActive = false;
         },
@@ -53,6 +71,14 @@ app.component('affirmative-policies--geo-quota-configuration', {
         getPercentage(option) {
             const val = this.geoQuota.distribution[option];
             return this.vacancies ? val / this.vacancies * 100 : 0;
+        },
+
+        sumGeoQuota(option) {
+            this.totalQuota = 0;
+            Object.values(this.geoQuota.distribution).forEach((item) => {
+                this.totalQuota += item;
+            });
+            console.log(this.totalQuota)
         },
 
         setPercentage(option, $event) {
@@ -74,20 +100,44 @@ app.component('affirmative-policies--geo-quota-configuration', {
             this.geoQuota.distribution = distribution;
         },
 
-        async save(updated = false) {
-            if(updated) {
-                this.geoQuota = { geoDivision: '', distribution: {} };
+        setGeoQuotaField(option, proponentType) { 
+            this.autosaveTime = 600;
+            this.fields[proponentType] = option.value;
+            this.geoQuota.fields = this.fields;
+            this.phase.geoQuotaConfiguration = this.geoQuota;
+        },
+
+        getFields(proponentType = '') {
+            const opportunity = this.phase.opportunity;
+            const fields = $MAPAS.config.geoQuotaConfiguration.fields[opportunity.id];
+
+            const result = fields.filter((field) => {
+                if (proponentType === '') {
+                    return !field.proponentTypes || field.proponentTypes.length == 0;
+                } else {
+                    return (!field.proponentTypes || field.proponentTypes.length == 0) 
+                            || (field.proponentTypes && field.proponentTypes.includes(proponentType));
+                }
+            });
+
+            return result;
+        },
+        async save(trash = false) {
+            if(trash) {
+                this.geoQuota = { geoDivision: '', distribution: {}, fields: {} };
                 this.phase.geoQuotaConfiguration = this.geoQuota;
             }
 
             if(this.geoQuota.geoDivision !== '' 
                 && this.geoQuota
                 && this.geoQuota.distribution !== null
+                || trash
             ) {
                 this.phase.geoQuotaConfiguration = this.geoQuota;
+                await this.phase.save(this.autosaveTime);
             }
 
-            await this.phase.save(3000);
-        }
+            this.autosaveTime = 3000;
+        },
     },
 });

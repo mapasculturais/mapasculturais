@@ -34,7 +34,7 @@ return [
     
     ex: `["genero","raca"]` 
     */
-    'registration.reportOwnerProperties' => json_decode(env('REGISTRATION_REPORT_OWNER_PROPERTIES', '["genero"]')),
+    'registration.reportOwnerProperties' => json_decode(env('REGISTRATION_REPORT_OWNER_PROPERTIES', '["name","genero","raca","documento"]')),
 
     'registration.propertiesToExport' => array(
         'id',
@@ -71,13 +71,6 @@ return [
         'type' => 1
     ),
     'registration.agentRelations' => array(
-        array(
-            'required' => false,
-            'label' => \MapasCulturais\i::__('Instituição responsável'),
-            'agentRelationGroupName' => 'instituicao',
-            'description' => \MapasCulturais\i::__('Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos'),
-            'type' => 2
-        ),
         array(
             'required' => false,
             'label' => \MapasCulturais\i::__('Coletivo'),

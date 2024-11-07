@@ -4,14 +4,14 @@ namespace MapasCulturais;
 $app = App::i();
 $em = $app->em;
 
-/** @var $conn Connection */
+/** @var Connection $conn */
 $conn = $em->getConnection();
 
 
 function __table_exists($table_name) {
     $app = App::i();
     $em = $app->em;
-    /** @var $conn Connection */
+    /** @var Connection $conn */
     $conn = $em->getConnection();
 
     if($conn->fetchAll("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = '$table_name';")){
@@ -24,7 +24,7 @@ function __table_exists($table_name) {
 function __sequence_exists($sequence_name) {
     $app = App::i();
     $em = $app->em;
-    /** @var $conn Connection */
+    /** @var Connection $conn */
     $conn = $em->getConnection();
 
     if($conn->fetchAll("SELECT sequence_name FROM information_schema.sequences WHERE sequence_schema = 'public' AND sequence_name = '$sequence_name';")){
@@ -37,7 +37,7 @@ function __sequence_exists($sequence_name) {
 function __column_exists($table_name, $column_name) {
     $app = App::i();
     $em = $app->em;
-    /** @var $conn Connection */
+    /** @var Connection $conn */
     $conn = $em->getConnection();
 
     if($conn->fetchAll("SELECT column_name FROM information_schema.columns WHERE table_name='$table_name' and column_name='$column_name'")){
@@ -50,7 +50,7 @@ function __column_exists($table_name, $column_name) {
 function __exec($sql){
     $app = App::i();
     $em = $app->em;
-    /** @var $conn Connection */
+    /** @var Connection $conn */
     $conn = $em->getConnection();
 
     try{
@@ -96,6 +96,8 @@ foreach($registered_taxonomies as $def){
 
 
 return [
+    // SCHEME CHANGES =========================================
+
     'UPDATING ENUM TYPES' => function() use($conn) {
         $reg = \Acelaya\Doctrine\Type\PhpEnumType::getTypeRegistry();
         
@@ -166,6 +168,848 @@ return [
             $$ LANGUAGE plpgsql strict immutable;");
     },
 
+
+
+
+    'create table pcache' => function () use($conn) {
+        if(__table_exists('pcache')){
+            echo 'tabela pcache já foi criada';
+            return true;
+
+        }
+        $conn->executeQuery("CREATE TABLE pcache (id INT NOT NULL, user_id INT NOT NULL, action VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, object_type VARCHAR(255) NOT NULL, object_id INT DEFAULT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("CREATE INDEX IDX_3D853098A76ED395 ON pcache (user_id);");
+        $conn->executeQuery("CREATE INDEX IDX_3D853098232D562B ON pcache (object_id);");
+        $conn->executeQuery("CREATE INDEX pcache_owner_idx ON pcache (object_type, object_id);");
+        $conn->executeQuery("CREATE INDEX pcache_permission_idx ON pcache (object_type, object_id, action);");
+        $conn->executeQuery("CREATE INDEX pcache_permission_user_idx ON pcache (object_type, object_id, action, user_id);");
+        $conn->executeQuery("ALTER TABLE pcache ADD CONSTRAINT FK_3D853098A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+
+    },
+
+    'function create pcache id sequence 2' => function () use ($conn) {
+        if(__sequence_exists('pcache_id_seq')){
+            echo 'sequencia pcache_id_seq já existe';
+            return true;
+        }
+        $conn->executeQuery("CREATE SEQUENCE pcache_id_seq
+                                START WITH 1
+                                INCREMENT BY 1
+                                NO MINVALUE
+                                NO MAXVALUE
+                                CACHE 1;");
+
+        $conn->executeQuery("ALTER TABLE ONLY pcache ALTER COLUMN id SET DEFAULT nextval('pcache_id_seq'::regclass);");
+
+    },
+
+    'Add field for maximum size from registration field configuration' => function () use($conn) {
+        if(__column_exists('registration_field_configuration', 'max_size')){
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN max_size text;");
+    },
+
+    'Add notification type for compliant and suggestion messages' => function () use($conn) {
+        if(__table_exists('notification_meta')) {
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("CREATE TABLE notification_meta (id INT NOT NULL, object_id INT DEFAULT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("CREATE SEQUENCE notification_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+
+    'create entity revision tables' => function() use($conn) {
+        if(__table_exists('entity_revision')) {
+            echo "ALREADY APPLIED";
+            return true;
+        }
+
+        $conn->executeQuery("CREATE SEQUENCE entity_revision_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        $conn->executeQuery("CREATE SEQUENCE revision_data_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        $conn->executeQuery("CREATE TABLE entity_revision (id INT NOT NULL, user_id INT DEFAULT NULL, object_id INT NOT NULL, object_type VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, action VARCHAR(255) NOT NULL, message TEXT NOT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("CREATE TABLE entity_revision_revision_data (revision_id INT NOT NULL, revision_data_id INT NOT NULL, PRIMARY KEY(revision_id, revision_data_id));");
+        $conn->executeQuery("CREATE TABLE entity_revision_data (id INT NOT NULL, timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+        $conn->executeQuery("ALTER TABLE entity_revision ADD CONSTRAINT entity_revision_usr_fk FOREIGN KEY (user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT revision_data_entity_revision_fk FOREIGN KEY (revision_id) REFERENCES entity_revision (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT revision_data_revision_data_fk FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) NOT DEFERRABLE INITIALLY IMMEDIATE");
+    },
+
+    'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
+        if(__column_exists('file', 'path')){
+            return true;
+        }
+        $conn->executeQuery("CREATE INDEX file_owner_index ON file (object_type, object_id);");
+        $conn->executeQuery("CREATE INDEX file_group_index ON file (grp);");
+
+        $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
+
+    },
+
+
+    '*_meta drop all indexes again' => function () use($conn) {
+
+        foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
+            $table = "{$prefix}_meta";
+
+            // seleciona todos os indeces exceto PK
+            $indexes = $conn->fetchAll("
+                SELECT i.relname as indname
+                FROM pg_index as idx
+                        JOIN pg_class as i ON i.oid = idx.indexrelid
+                        JOIN pg_am as am ON i.relam = am.oid
+                        JOIN pg_namespace as ns ON
+                                ns.oid = i.relnamespace AND ns.nspname = ANY(current_schemas(false))
+
+                WHERE
+                        idx.indrelid::regclass::varchar = '{$table}' AND
+                        i.relname NOT IN (SELECT constraint_name FROM information_schema.table_constraints);");
+
+            foreach($indexes as $index){
+                echo "DROP INDEX {$index['indname']}\n";
+                $conn->executeQuery("DROP INDEX {$index['indname']}");
+            }
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");
+    },
+    'recreate *_meta indexes' => function() use($conn) {
+
+        __try("DELETE FROM subsite_meta WHERE object_id NOT IN (SELECT id FROM subsite)");
+        __try("DELETE FROM agent_meta WHERE object_id NOT IN (SELECT id FROM agent)");
+        __try("DELETE FROM space_meta WHERE object_id NOT IN (SELECT id FROM space)");
+        __try("DELETE FROM project_meta WHERE object_id NOT IN (SELECT id FROM project)");
+        __try("DELETE FROM event_meta WHERE object_id NOT IN (SELECT id FROM event)");
+        __try("DELETE FROM user_meta WHERE object_id NOT IN (SELECT id FROM usr)");
+        __try("DELETE FROM seal_meta WHERE object_id NOT IN (SELECT id FROM seal)");
+        __try("DELETE FROM registration_meta WHERE object_id NOT IN (SELECT id FROM registration)");
+        __try("DELETE FROM notification_meta WHERE object_id NOT IN (SELECT id FROM notification)");
+
+        __try("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE subsite_meta DROP CONSTRAINT IF EXISTS FK_780702F5232D562B;");
+        __try("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("ALTER TABLE subsite_meta ADD PRIMARY KEY (id);");
+
+        __try("CREATE INDEX subsite_meta_owner_key_idx ON subsite_meta (object_id, key);");
+        __try("CREATE INDEX subsite_meta_owner_idx ON subsite_meta (object_id);");
+
+        __try("ALTER TABLE agent_meta DROP CONSTRAINT agent_agent_meta_fk;");
+        __try("ALTER TABLE agent_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE agent_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE agent_meta DROP CONSTRAINT IF EXISTS FK_7A69AED6232D562B;");
+        __try("ALTER TABLE agent_meta ADD CONSTRAINT FK_7A69AED6232D562B FOREIGN KEY (object_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX agent_meta_owner_key_idx ON agent_meta (object_id, key);");
+        __try("CREATE INDEX agent_meta_owner_idx ON agent_meta (object_id);");
+
+        __try("ALTER TABLE user_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE user_meta DROP CONSTRAINT IF EXISTS FK_AD7358FC232D562B;");
+        __try("ALTER TABLE user_meta ADD CONSTRAINT FK_AD7358FC232D562B FOREIGN KEY (object_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("ALTER TABLE user_meta ADD PRIMARY KEY (id);");
+
+        __try("CREATE INDEX user_meta_owner_key_idx ON user_meta (object_id, key);");
+        __try("CREATE INDEX user_meta_owner_idx ON user_meta (object_id);");
+
+        __try("ALTER TABLE event_meta DROP CONSTRAINT event_project_meta_fk;");
+        __try("ALTER TABLE event_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE event_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE event_meta DROP CONSTRAINT IF EXISTS FK_C839589E232D562B;");
+        __try("ALTER TABLE event_meta ADD CONSTRAINT FK_C839589E232D562B FOREIGN KEY (object_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX event_meta_owner_key_idx ON event_meta (object_id, key);");
+        __try("CREATE INDEX event_meta_owner_idx ON event_meta (object_id);");
+
+        __try("ALTER TABLE space_meta DROP CONSTRAINT space_space_meta_fk;");
+        __try("ALTER TABLE space_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE space_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE space_meta DROP CONSTRAINT IF EXISTS FK_BC846EBF232D562B;");
+        __try("ALTER TABLE space_meta ADD CONSTRAINT FK_BC846EBF232D562B FOREIGN KEY (object_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX space_meta_owner_key_idx ON space_meta (object_id, key);");
+        __try("CREATE INDEX space_meta_owner_idx ON space_meta (object_id);");
+
+        __try("ALTER TABLE project_meta DROP CONSTRAINT project_project_meta_fk;");
+        __try("ALTER TABLE project_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE project_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE project_meta DROP CONSTRAINT IF EXISTS FK_EE63DC2D232D562B;");
+        __try("ALTER TABLE project_meta ADD CONSTRAINT FK_EE63DC2D232D562B FOREIGN KEY (object_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX project_meta_owner_key_idx ON project_meta (object_id, key);");
+        __try("CREATE INDEX project_meta_owner_idx ON project_meta (object_id);");
+
+        __try("ALTER TABLE seal_meta DROP CONSTRAINT seal_meta_fk;");
+        __try("ALTER TABLE seal_meta ALTER object_id SET NOT NULL;");
+        __try("ALTER TABLE seal_meta DROP CONSTRAINT IF EXISTS FK_A92E5E22232D562B;");
+        __try("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX seal_meta_owner_key_idx ON seal_meta (object_id, key);");
+        __try("CREATE INDEX seal_meta_owner_idx ON seal_meta (object_id);");
+
+        __try("ALTER TABLE registration ADD PRIMARY KEY(id);");
+
+        __try("ALTER TABLE registration_meta ALTER id DROP DEFAULT;");
+        __try("ALTER TABLE registration_meta ALTER key TYPE VARCHAR(255);");
+        __try("ALTER TABLE registration_meta DROP CONSTRAINT IF EXISTS FK_18CC03E9232D562B;");
+        __try("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX registration_meta_owner_key_idx ON registration_meta (object_id, key);");
+        __try("CREATE INDEX registration_meta_owner_idx ON registration_meta (object_id);");
+
+        __try("ALTER TABLE notification_meta DROP CONSTRAINT notification_meta_fk;");
+        __try("ALTER TABLE notification_meta ALTER object_id SET NOT NULL;");
+        __try("ALTER TABLE notification_meta DROP CONSTRAINT IF EXISTS FK_6FCE5F0F232D562B;");
+        __try("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __try("CREATE INDEX notification_meta_owner_key_idx ON notification_meta (object_id, key);");
+        __try("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
+
+    },
+
+    /**
+     * Migrações Projeto -> Opurtunidade
+     *
+     * - files do grupo rules
+     */
+
+    'create permission cache pending table2' => function() use ($conn) {
+
+        if(__table_exists('permission_cache_pending')){
+            echo "TABLE permission_cache_pending ALREADY EXISTS";
+            return true;
+        }
+
+        $conn->executeQuery("CREATE TABLE permission_cache_pending (
+            id INT NOT NULL, 
+            object_id INT NOT NULL, 
+            object_type VARCHAR(255) NOT NULL, 
+            
+            PRIMARY KEY(id)
+        );");
+    },
+
+
+    'create opportunity tables' => function () {
+        if(!__table_exists('opportunity')){
+            __exec("DELETE FROM registration_meta WHERE object_id IN (SELECT id FROM registration WHERE project_id NOT IN (SELECT id FROM project))");
+            __exec("DELETE FROM registration WHERE project_id NOT IN (SELECT id FROM project)");
+
+            // cria tabelas das oportunidades
+            __exec("CREATE SEQUENCE opportunity_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+            __exec("CREATE TABLE opportunity (id INT NOT NULL, parent_id INT DEFAULT NULL, agent_id INT DEFAULT NULL, type SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, registration_from TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, registration_to TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, published_registrations BOOLEAN NOT NULL, registration_categories text DEFAULT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT NOT NULL, subsite_id INT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, object_id INT NOT NULL, PRIMARY KEY(id));");
+            __exec("CREATE INDEX opportunity_owner_idx ON opportunity (agent_id);");
+            __exec("CREATE INDEX opportunity_entity_idx ON opportunity (object_type, object_id);");
+            __exec("CREATE INDEX opportunity_parent_idx ON opportunity (parent_id);");
+            __exec("CREATE TABLE opportunity_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+            __exec("CREATE INDEX opportunity_meta_owner_idx ON opportunity_meta (object_id);");
+            __exec("CREATE INDEX opportunity_meta_owner_key_idx ON opportunity_meta (object_id, key);");
+            __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D7727ACA70 FOREIGN KEY (parent_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("ALTER TABLE opportunity_meta ADD CONSTRAINT FK_2BB06D08232D562B FOREIGN KEY (object_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+
+            // cria as oportunidades existentes
+            __exec("
+                INSERT INTO opportunity (
+                    id, parent_id, agent_id, type, name, short_description, registration_categories,
+                    long_description, registration_from, registration_to, published_registrations,
+                    create_timestamp, update_timestamp, status, subsite_id, object_type, object_id
+                ) (
+                    SELECT
+                        p.id, p.parent_id, p.agent_id, p.type, p.name, p.short_description, p.registration_categories,
+                        p.long_description, p.registration_from, p.registration_to, p.published_registrations,
+                        p.create_timestamp, p.update_timestamp, p.status, p.subsite_id, 'MapasCulturais\Entities\Project', p.id
+                    FROM
+                        project p
+                    WHERE
+                        p.id IN (SELECT DISTINCT(project_id) FROM registration) OR
+                        p.id IN (SELECT DISTINCT(project_id) FROM registration_file_configuration) OR
+                        p.id IN (SELECT DISTINCT(project_id) FROM registration_field_configuration) OR
+                        p.use_registrations IS TRUE
+                );");
+
+            __exec("INSERT INTO opportunity_meta (id,object_id,key,value) SELECT id, object_id, key, value FROM project_meta WHERE object_id IN (SELECT id FROM opportunity)");
+            __exec("INSERT INTO term_relation (term_id, object_type, object_id) SELECT term_id, 'MapasCulturais\Entities\Opportunity', object_id FROM term_relation WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id IN (SELECT id FROM opportunity);");
+
+
+            // modifica a tabela de projetos retirando o que tem de referencia a registration
+            __exec("ALTER TABLE project DROP CONSTRAINT fk_2fb3d0eec79c849a;");
+            __exec("ALTER TABLE project DROP registration_categories;");
+            __exec("ALTER TABLE project DROP use_registrations;");
+            __exec("ALTER TABLE project DROP published_registrations;");
+
+            // ajusta a tabela de inscrições
+            __exec("DELETE FROM registration WHERE agent_id NOT IN (SELECT id FROM agent)");
+
+            __exec("ALTER TABLE registration DROP CONSTRAINT fk_62a8a7a7c79c849a;");
+            
+            __exec("ALTER TABLE registration RENAME COLUMN project_id TO opportunity_id;");
+            __exec("ALTER TABLE registration ALTER id SET DEFAULT pseudo_random_id_generator();");
+            __exec("ALTER TABLE registration ALTER status TYPE SMALLINT;");
+            __exec("ALTER TABLE registration ALTER status DROP DEFAULT;");
+            __exec("ALTER TABLE registration ALTER agents_data DROP DEFAULT;");
+            __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A79A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IDX_62A8A7A79A34590F ON registration (opportunity_id);");
+            __exec("CREATE INDEX IDX_62A8A7A73414710B ON registration (agent_id);");
+
+            // ajusta a tabela
+            __exec("ALTER TABLE registration_file_configuration DROP CONSTRAINT fk_209c792e166d1f9c;");
+            __exec("ALTER TABLE registration_file_configuration RENAME COLUMN project_id TO opportunity_id;");
+            __exec("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IDX_209C792E9A34590F ON registration_file_configuration (opportunity_id);");
+
+            __exec("ALTER TABLE registration_field_configuration DROP CONSTRAINT fk_60c85cb1166d1f9c;");
+            __exec("ALTER TABLE registration_field_configuration RENAME COLUMN project_id TO opportunity_id;");
+            __exec("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_60C85CB19A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IDX_60C85CB19A34590F ON registration_field_configuration (opportunity_id);");
+
+        }
+    },
+    
+    'DROP CONSTRAINT registration_project_fk");' => function() {
+        __exec("ALTER TABLE registration DROP CONSTRAINT IF EXISTS registration_project_fk ;");
+    },
+
+    'fix opportunity parent FK' => function() {
+        __exec("ALTER TABLE opportunity DROP CONSTRAINT IF EXISTS FK_8389C3D7727ACA70;");
+        __exec("UPDATE opportunity SET parent_id = null WHERE parent_id NOT IN (SELECT id FROM opportunity)");
+        __try("ALTER TABLE opportunity DROP CONSTRAINT IF EXISTS opportunity_parent_fk;");
+        __exec("ALTER TABLE opportunity ADD CONSTRAINT opportunity_parent_fk FOREIGN KEY (parent_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+
+
+
+    
+
+    
+    'create opportunity sequence' => function () use ($conn) {
+        if(__sequence_exists('opportunity_id_seq')){
+            return true;
+        }
+        $last_id = $conn->fetchColumn ('SELECT max(id) FROM opportunity;');
+        $last_id++;
+        $conn->executeQuery("CREATE SEQUENCE opportunity_id_seq
+                                START WITH $last_id
+                                INCREMENT BY 1
+                                NO MINVALUE
+                                NO MAXVALUE
+                                CACHE 1;");
+
+        $conn->executeQuery("ALTER TABLE ONLY opportunity ALTER COLUMN id SET DEFAULT nextval('opportunity_id_seq'::regclass);");
+        
+    },
+
+
+    
+    'ALTER TABLE registration ADD consolidated_result' => function () {
+        if(!__column_exists('registration', 'consolidated_result')){
+            __exec("ALTER TABLE registration ADD consolidated_result VARCHAR(255) DEFAULT NULL;");
+        }
+    },
+
+    'create evaluation methods tables' => function (){
+        if(__table_exists('evaluation_method_configuration')){
+            echo "evaluation_method_configuration table already exists";
+            return true;
+        }
+        __exec("CREATE SEQUENCE evaluationMethodConfiguration_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        __exec("CREATE TABLE evaluation_method_configuration (id INT NOT NULL, opportunity_id INT NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
+        __exec("CREATE UNIQUE INDEX UNIQ_330CB54C9A34590F ON evaluation_method_configuration (opportunity_id);");
+        __exec("CREATE TABLE evaluationMethodConfiguration_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
+        __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_idx ON evaluationMethodConfiguration_meta (object_id);");
+        __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_key_idx ON evaluationMethodConfiguration_meta (object_id, key);");
+        __exec("ALTER TABLE evaluation_method_configuration ADD CONSTRAINT FK_330CB54C9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE evaluationMethodConfiguration_meta ADD CONSTRAINT FK_D7EDF8B2232D562B FOREIGN KEY (object_id) REFERENCES evaluation_method_configuration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("CREATE SEQUENCE evaluation_method_configuration_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        __exec("ALTER SEQUENCE evaluation_method_configuration_id_seq OWNED BY evaluation_method_configuration.id;");
+        __exec("ALTER TABLE ONLY evaluation_method_configuration ALTER COLUMN id SET DEFAULT nextval('evaluation_method_configuration_id_seq'::regclass);");
+
+
+        $opportunities = $this->repo('Opportunity')->findAll();
+
+        foreach($opportunities as $opportunity){
+            __exec("INSERT INTO evaluation_method_configuration ( opportunity_id, type) VALUES ($opportunity->id, 'simple');");
+        }
+    },
+
+    'create registration_evaluation table' => function(){
+        if(__table_exists('registration_evaluation')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+
+        __exec("CREATE SEQUENCE registration_evaluation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        __exec("CREATE TABLE registration_evaluation (
+            id INT NOT NULL,
+            registration_id INT DEFAULT pseudo_random_id_generator() NOT NULL,
+            user_id INT NOT NULL,
+            result VARCHAR(255) DEFAULT NULL,
+            evaluation_data TEXT NOT NULL,
+            status SMALLINT DEFAULT NULL,
+            PRIMARY KEY(id));");
+        __exec("CREATE INDEX IDX_2E186C5C833D8F43 ON registration_evaluation (registration_id);");
+        __exec("CREATE INDEX IDX_2E186C5CA76ED395 ON registration_evaluation (user_id);");
+        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+            
+    'ALTER TABLE opportunity ALTER type DROP NOT NULL;' => function() use($conn){
+        $conn->executeUpdate('ALTER TABLE opportunity ALTER type DROP NOT NULL;');
+    },
+    
+    'ALTER TABLE registration ADD consolidated_result' => function () {
+        if(!__column_exists('registration', 'consolidated_result')){
+            __exec("ALTER TABLE registration ADD consolidated_result VARCHAR(255) DEFAULT NULL;");
+        }
+    },
+
+    'create seal relation renovation flag field' => function() use($conn) {
+        if(__column_exists('seal_relation', 'renovation_request')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN renovation_request BOOLEAN;");
+    },
+    'create seal relation validate date' => function() use($conn) {
+        if(__column_exists('seal_relation', 'validate_date')){
+            echo "ALREADY APPLIED";
+            return true;
+        }
+
+        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");
+    },
+
+
+    //Space_Relation
+    'CREATE SEQUENCE REGISTRATION SPACE RELATION registration_space_relation_id_seq' => function() use($conn){
+        $conn->executeQuery("CREATE SEQUENCE space_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+    },
+
+    'CREATE TABLE spacerelation' => function() use($conn){
+        $conn->executeQuery("CREATE TABLE space_relation (id INT NOT NULL, space_id INT DEFAULT NULL, object_id INT NOT NULL, 
+                             create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT DEFAULT NULL, 
+                             object_type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
+
+        $conn->executeQuery("CREATE INDEX IDX_1A0E9A3023575340 ON space_relation (space_id);");
+        $conn->executeQuery("CREATE INDEX IDX_1A0E9A30232D562B ON space_relation (object_id);");
+        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A3023575340 FOREIGN KEY (space_id) REFERENCES space (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A30232D562B FOREIGN KEY (object_id) REFERENCES registration (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+    },
+
+    //Adiciona coluna space_data com metadados do espaço vinculado à inscrição
+    'ALTER TABLE registration' => function() use($conn){
+        $conn->executeQuery("ALTER TABLE registration ADD space_data text DEFAULT NULL;");
+    },
+    
+    'altertable registration_file_and_files_add_order' => function () use($conn){
+        if(__column_exists('registration_file_configuration', 'order')){
+            echo "ALREADY APPLIED";
+        } else {
+            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
+        }
+        
+        if(__column_exists('registration_field_configuration', 'order')){
+            echo "ALREADY APPLIED";
+        } else {
+            $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
+        }
+
+    },
+
+
+    'ALTER TABLE file ADD private and update' => function () use ($conn) {
+        if(__column_exists('file', 'private')){
+            return true;
+        }
+
+        $conn->executeQuery("ALTER TABLE file ADD private BOOLEAN NOT NULL DEFAULT FALSE;");
+        
+        $conn->executeQuery("UPDATE file SET private = true WHERE grp LIKE 'rfc_%' OR grp = 'zipArchive'");
+        
+    },
+
+    'create permission cache sequence' => function() use ($conn) {
+
+        $conn->executeQuery("CREATE SEQUENCE permission_cache_pending_seq
+                                START WITH 1
+                                INCREMENT BY 1
+                                NO MINVALUE
+                                NO MAXVALUE
+                                CACHE 1;");
+    },
+	
+	'create evaluation methods sequence' => function (){
+        if(__sequence_exists('evaluation_method_configuration_id_seq')){
+            echo "evaluation_method_configuration_id_seq sequence already exists";
+            return true;
+        }
+        __exec("CREATE SEQUENCE evaluation_method_configuration_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+        __exec("ALTER SEQUENCE evaluation_method_configuration_id_seq OWNED BY evaluation_method_configuration.id;");
+        __exec("ALTER TABLE ONLY evaluation_method_configuration ALTER COLUMN id SET DEFAULT nextval('evaluation_method_configuration_id_seq'::regclass);");
+		
+		__exec("SELECT setval('evaluation_method_configuration_id_seq', (select max(id) from evaluation_method_configuration), true);");
+    },
+
+    'change opportunity field agent_id not null' => function() use ($conn) {
+        $conn->executeQuery(" ALTER TABLE opportunity ALTER COLUMN agent_id SET NOT NULL ");
+    },
+
+    'alter table registration add column number' => function() use($conn) {
+        if(!__column_exists('registration', 'number')){
+            $conn->executeQuery("ALTER TABLE registration ADD COLUMN number VARCHAR(24)");
+        }
+    },
+
+    'alter table registration add column valuers_exceptions_list' => function() use($conn){
+        if(!__column_exists('registration', 'valuers_exceptions_list')){
+            $conn->executeQuery("ALTER TABLE registration ADD valuers_exceptions_list TEXT NOT NULL DEFAULT '{\"include\": [], \"exclude\": []}';");
+        }
+    },
+
+    'create event attendance table' => function() use($conn) {
+        if(!__table_exists('event_attendance')){
+            $conn->executeQuery("
+                CREATE TABLE event_attendance (
+                    id INT NOT NULL, 
+                    user_id INT NOT NULL, 
+                    event_occurrence_id INT NOT NULL, 
+                    event_id INT NOT NULL, 
+                    space_id INT NOT NULL, 
+                    type VARCHAR(255) NOT NULL, 
+                    reccurrence_string TEXT DEFAULT NULL, 
+                    start_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    end_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    PRIMARY KEY(id));");
+
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BEA76ED395 ON event_attendance (user_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE140E9F00 ON event_attendance (event_occurrence_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE71F7E88B ON event_attendance (event_id);");
+            $conn->executeQuery("CREATE INDEX IDX_350DD4BE23575340 ON event_attendance (space_id);");
+            $conn->executeQuery("CREATE INDEX event_attendance_type_idx ON event_attendance (type);");
+            $conn->executeQuery("CREATE SEQUENCE event_attendance_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BEA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        }
+    },
+
+    'create procuration table' => function() use($conn) {
+        if(!__table_exists('procuration')){
+            $conn->executeQuery("
+                CREATE TABLE procuration (
+                    token VARCHAR(32) NOT NULL, 
+                    usr_id INT NOT NULL, 
+                    attorney_user_id INT NOT NULL, 
+                    action VARCHAR(255) NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
+                    valid_until_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    PRIMARY KEY(token));");
+                
+            $conn->executeQuery("CREATE INDEX procuration_usr_idx ON procuration (usr_id);");
+            $conn->executeQuery("CREATE INDEX procuration_attorney_idx ON procuration (attorney_user_id);");
+            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7FC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
+            
+        }
+    },
+
+    'alter table registration_field_configuration add column config' => function() use($conn){
+        if(!__column_exists('registration_field_configuration', 'config')){
+            __exec("
+                ALTER TABLE registration_field_configuration 
+                ADD config TEXT;
+            ");
+        }
+    },
+
+    'create object_type enum type' => function () {
+        $object_types = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\ObjectType::values()));
+
+        __exec("CREATE TYPE object_type AS ENUM($object_types)");
+    }, 
+
+    'create permission_action enum type' => function () {
+        $permission_actions = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\PermissionAction::values()));
+
+        __exec("CREATE TYPE permission_action AS ENUM($permission_actions)");
+    }, 
+
+    'alter tables to use enum types' => function() {
+        __exec("ALTER TABLE pcache ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE pcache ALTER COLUMN action TYPE permission_action USING action::permission_action");
+
+        __exec("ALTER TABLE file ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE agent_relation ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE term_relation ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE entity_revision ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+        __exec("ALTER TABLE metadata ALTER COLUMN object_type TYPE object_type USING object_type::object_type");
+
+    },
+
+    'alter table permission_cache_pending add column status' => function() use($conn) {
+        if (!__column_exists('permission_cache_pending', 'status')) {
+            $conn->executeQuery("ALTER TABLE permission_cache_pending ADD status smallint DEFAULT 0");
+        }
+    },
+
+    'ALTER TABLE metalist ALTER value TYPE TEXT' => function () {
+        __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
+    },
+
+    'Add metadata to Agent Relation' => function () use($conn) {
+        if(__column_exists('agent_relation', 'metadata')){
+            return true;
+        }
+        $conn->executeQuery("ALTER TABLE agent_relation ADD COLUMN metadata json;");
+    },
+
+    'add timestamp columns to registration_evaluation' => function () {
+        if (__column_exists('registration_evaluation', 'create_timestamp') &&
+            __column_exists('registration_evaluation', 'update_timestamp')) {
+            echo "ALREADY APPLIED";
+            return true;
+        }
+        __exec("ALTER TABLE registration_evaluation ADD create_timestamp TIMESTAMP DEFAULT NOW() NOT NULL;");
+        __exec("ALTER TABLE registration_evaluation ADD update_timestamp TIMESTAMP DEFAULT NULL;");
+        return true;
+    },
+
+    'create chat tables' => function () {
+        if (!__sequence_exists("chat_thread_id_seq")) {
+            __exec("CREATE SEQUENCE chat_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        }
+        if (!__table_exists("chat_thread")) {
+            __exec("CREATE TABLE chat_thread (
+                id INT NOT NULL,
+                object_id INT NOT NULL,
+                object_type VARCHAR(255) NOT NULL,
+                type VARCHAR(255) NOT NULL,
+                identifier VARCHAR(255) NOT NULL,
+                description TEXT DEFAULT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                last_message_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                status INT NOT NULL,
+                PRIMARY KEY(id))");
+            __exec("COMMENT ON COLUMN chat_thread.object_type IS '(DC2Type:object_type)'");
+        }
+        if (!__sequence_exists("chat_message_id_seq")) {
+            __exec("CREATE SEQUENCE chat_message_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
+        }
+        if (!__table_exists("chat_message")) {
+            __exec("CREATE TABLE chat_message (
+                id INT NOT NULL,
+                chat_thread_id INT NOT NULL,
+                parent_id INT DEFAULT NULL,
+                user_id INT NOT NULL,
+                payload TEXT NOT NULL,
+                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                PRIMARY KEY(id))");
+            __exec("CREATE INDEX IDX_FAB3FC16C47D5262 ON chat_message (chat_thread_id)");
+            __exec("CREATE INDEX IDX_FAB3FC16727ACA70 ON chat_message (parent_id)");
+            __exec("CREATE INDEX IDX_FAB3FC16A76ED395 ON chat_message (user_id)");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16C47D5262
+                FOREIGN KEY (chat_thread_id) REFERENCES chat_thread (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16727ACA70
+                FOREIGN KEY (parent_id) REFERENCES chat_message (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+            __exec("ALTER TABLE chat_message ADD
+                CONSTRAINT FK_FAB3FC16A76ED395
+                FOREIGN KEY (user_id) REFERENCES usr (id)
+                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
+        }
+    },    
+
+    'create table job' => function () use($conn) {
+        __exec("CREATE TABLE job (
+                    id VARCHAR(255) NOT NULL, 
+                    name VARCHAR(32) NOT NULL, 
+                    iterations INT NOT NULL, 
+                    iterations_count INT NOT NULL, 
+                    interval_string VARCHAR(255) NOT NULL, 
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                    next_execution_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                    last_execution_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    metadata JSON NOT NULL, 
+                    status SMALLINT NOT NULL, 
+                    PRIMARY KEY(id)
+                );");
+
+
+        __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json_array)';");
+
+        __exec("CREATE INDEX job_next_execution_timestamp_idx ON job (next_execution_timestamp);");
+        __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
+    },
+
+    'alter job.metadata comment' => function () {
+        __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json)';");
+    },
+    "Adiciona coluna avaliableEvaluationFields na tabela opportunity" => function() use ($conn){
+        if(!__column_exists('opportunity', 'avaliable_evaluation_fields')) {
+            __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
+        }
+    },
+    "Adiciona coluna publish_timestamp na tabela opportunity" => function() use ($conn){
+        if(!__column_exists('opportunity', 'publish_timestamp')) {
+            __exec("ALTER TABLE opportunity ADD publish_timestamp timestamp DEFAULT NULL;");
+        }
+    },
+    "Adiciona coluna auto_publish na tabela opportunity" => function () {
+        if(!__column_exists('opportunity', 'auto_publish')) {
+            __exec("ALTER TABLE opportunity ADD auto_publish BOOLEAN DEFAULT 'false' NOT NULL;");
+        }
+    },
+    "Adiciona coluna evaluation_from e evaluation_to na tabela evaluation_method_configuration" => function() use ($conn){
+        if(!__column_exists('evaluation_method_configuration', 'evaluation_from')) {
+            __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_from timestamp DEFAULT NULL;");
+        }
+        if(!__column_exists('evaluation_method_configuration', 'evaluation_to')) {
+            __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_to timestamp DEFAULT NULL;");
+        }
+    },
+    
+    "adiciona coluna name na tabela evaluation_method_configuration" => function () use($conn) {
+        if (!__column_exists('evaluation_method_configuration', 'name')) {
+            __exec("ALTER TABLE evaluation_method_configuration ADD name VARCHAR(255) DEFAULT NULL;");
+        }
+    },
+
+    "Renomeia colunas registrationFrom e registrationTo da tabela de projetod" => function() use ($conn){
+        if (__column_exists('project', 'registration_from') && !__column_exists('project', 'starts_on')){
+            __exec("ALTER TABLE project RENAME registration_from TO starts_on;");
+        }
+        if (__column_exists('project', 'registration_to') && !__column_exists('project', 'ends_on')){
+            __exec("ALTER TABLE project RENAME registration_to TO ends_on;");
+        }
+    },
+
+    "Adiciona novas coluna na tabela registration_field_configuration" => function() use ($conn){
+        __exec("ALTER TABLE registration_field_configuration ADD conditional  BOOLEAN;");
+        __exec("ALTER TABLE registration_field_configuration ADD conditional_field  VARCHAR(255);");
+        __exec("ALTER TABLE registration_field_configuration ADD conditional_value  VARCHAR(255);");
+    },
+    "Adiciona novas coluna na tabela registration_file_configuration" => function() use ($conn){
+        __exec("ALTER TABLE registration_file_configuration ADD conditional  BOOLEAN;");
+        __exec("ALTER TABLE registration_file_configuration ADD conditional_field  VARCHAR(255);");
+        __exec("ALTER TABLE registration_file_configuration ADD conditional_value  VARCHAR(255);");
+    },
+
+
+    'alter seal add column locked_fields' => function () {
+        if(!__column_exists('seal', 'locked_fields')) {
+            __exec("ALTER TABLE seal ADD locked_fields JSON DEFAULT '[]'");
+        }
+    },
+
+    'Adiciona a coluna description para a descrição da ocorrência' => function() {
+        if(!__column_exists('event_occurrence', 'description')) {
+            __exec("ALTER TABLE event_occurrence ADD description TEXT DEFAULT NULL;");
+        }
+    },
+    'Adiciona a coluna price para a o valor de entrada da ocorrência' => function() {
+        if(!__column_exists('event_occurrence', 'price')) {
+            __exec("ALTER TABLE event_occurrence ADD price TEXT DEFAULT NULL;");
+        }
+    },
+    'Adiciona a coluna priceInfo para a informações sobre o valor de entrada da ocorrência' => function() {
+        if(!__column_exists('event_occurrence', 'priceinfo')) {
+            __exec("ALTER TABLE event_occurrence ADD priceinfo TEXT DEFAULT NULL;");
+        }
+    },
+    
+
+    "Cria colunas proponent_type e registration na tabela registration" => function() use ($conn){
+        if(!__column_exists('registration', 'proponent_type')) {
+            __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
+        }
+
+        if(!__column_exists('registration', 'range')) {
+            __exec("ALTER TABLE registration ADD COLUMN range VARCHAR(255) NULL");
+        }
+    },
+
+    "Cria colunas registration_proponent_types e registration_ranges na tabela opportunity" => function() use ($conn){
+        if(!__column_exists('opportunity', 'registration_proponent_types')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN registration_proponent_types JSON NULL");
+        }
+
+        if(!__column_exists('opportunity', 'registration_ranges')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN registration_ranges JSON NULL");
+        }
+    },
+
+    "Cria colunas registration_ranges e proponent_types na tabela registration_field_configuration" => function() use ($conn){
+        if(!__column_exists('registration_field_configuration', 'registration_ranges')) {
+            __exec("ALTER TABLE registration_field_configuration ADD COLUMN registration_ranges JSON NULL");
+        }
+
+        if(!__column_exists('registration_field_configuration', 'proponent_types')) {
+            __exec("ALTER TABLE registration_field_configuration ADD COLUMN proponent_types JSON NULL");
+        }
+    },
+
+    "Cria colunas registration_ranges e proponent_types na tabela registration_file_configuration" => function() use ($conn){
+        if(!__column_exists('registration_file_configuration', 'registration_ranges')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN registration_ranges JSON NULL");
+        }
+
+        if(!__column_exists('registration_file_configuration', 'proponent_types')) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN proponent_types JSON NULL");
+        }
+    },
+    
+    "Cria colunas score e eligible na entidade Registration - correcao" => function() use ($conn){
+       if(!__column_exists('registration', 'score')) {
+            __exec("ALTER TABLE registration ADD COLUMN score FLOAT NULL");
+        } 
+        if(!__column_exists('registration', 'eligible')) {
+            __exec("ALTER TABLE registration ADD COLUMN eligible BOOLEAN NULL");
+        }
+    },
+
+    'Adiciona as colunas subsite_id e user_id à tabela job' => function () {
+        __exec("ALTER TABLE job ADD COLUMN subsite_id INTEGER NULL");
+        __exec("ALTER TABLE job ADD COLUMN user_id INTEGER NULL");
+    },
+    
+    'Cria coluna send_timestamp para registrar o envio das avaliações' => function() use($conn) {
+        if(!__column_exists('registration_evaluation', 'sent_timestamp')) {
+            __exec("ALTER TABLE registration_evaluation ADD sent_timestamp TIMESTAMP NULL");
+        }
+    },
+
+    'Define os valores da nova coluna sent_timestamp na tabela de avaliações' => function() use($conn) {
+        if (__column_exists('registration_evaluation', 'sent_timestamp')) {
+            __exec("
+                WITH er_data AS (
+                    SELECT er.object_id, er.create_timestamp
+                    FROM entity_revision er
+                    JOIN entity_revision_revision_data errd ON errd.revision_id = er.id
+                    JOIN entity_revision_data rd ON rd.id = errd.revision_data_id
+                    WHERE rd.key = 'status' AND rd.value = '2' AND er.object_type = 'MapasCulturais\Entities\RegistrationEvaluation'
+                    ORDER BY er.create_timestamp DESC
+                )
+                UPDATE registration_evaluation
+                SET sent_timestamp = er_data.create_timestamp
+                FROM er_data
+                WHERE registration_evaluation.id = er_data.object_id;
+            ");
+        }
+    },
+
+    "Cria colunas editableUntil editSentTimestamp e editableFields na tabela registration" => function() use ($conn){
+        if(!__column_exists('registration', 'editable_until')) {
+             __exec("ALTER TABLE registration ADD COLUMN editable_until TIMESTAMP NULL");
+        }
+        if(!__column_exists('registration', 'edit_sent_timestamp')) {
+            __exec("ALTER TABLE registration ADD COLUMN edit_sent_timestamp TIMESTAMP NULL");
+        }
+        if(!__column_exists('registration', 'editable_fields')) {
+            __exec("ALTER TABLE registration ADD COLUMN editable_fields JSON NULL");
+        }
+    },
+
     'create table system_role' => function () {
         __exec("CREATE SEQUENCE system_role_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
         __exec("CREATE TABLE system_role (
@@ -185,15 +1029,28 @@ return [
         __exec("COMMENT ON COLUMN system_role.permissions IS '(DC2Type:json)';");
     },
 
-    "Cria colunas proponent_type e registration na tabela registration" => function() use ($conn){
-        if(!__column_exists('registration', 'proponent_type')) {
-            __exec("ALTER TABLE registration ADD COLUMN proponent_type VARCHAR(255) NULL");
-        }
+    'Corrige constraint enforce_geotype_geom da tabela geo_division' => function() use($conn) {
+        __try("ALTER TABLE geo_division DROP CONSTRAINT enforce_geotype_geom");
 
-        if(!__column_exists('registration', 'range')) {
-            __exec("ALTER TABLE registration ADD COLUMN range VARCHAR(255) NULL");
-        }
+        __try(
+            "ALTER TABLE 
+                geo_division 
+            ADD CONSTRAINT 
+                enforce_geotype_geom
+            CHECK 
+                (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
+                geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
+        ");
     },
+
+    'cria funções para o cast automático de ponto para varchar' => function () { 
+        __exec("CREATE OR REPLACE FUNCTION pg_catalog.text(point) RETURNS text STRICT IMMUTABLE LANGUAGE SQL AS 'SELECT $1::VARCHAR;';");
+        __try("CREATE CAST (point AS text) WITH FUNCTION pg_catalog.text(point) AS IMPLICIT;");
+        __exec("COMMENT ON FUNCTION pg_catalog.text(point) IS 'convert point to text';");
+    },
+
+
+    /// MIGRATIONS =========================================
 
     'migrate gender' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
@@ -520,82 +1377,6 @@ return [
         $conn->executeQuery("UPDATE seal_relation SET owner_id = '$agent_id' WHERE owner_id IS NULL;");
     },
 
-    'create table pcache' => function () use($conn) {
-        if(__table_exists('pcache')){
-            echo 'tabela pcache já foi criada';
-            return true;
-
-        }
-        $conn->executeQuery("CREATE TABLE pcache (id INT NOT NULL, user_id INT NOT NULL, action VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, object_type VARCHAR(255) NOT NULL, object_id INT DEFAULT NULL, PRIMARY KEY(id));");
-        $conn->executeQuery("CREATE INDEX IDX_3D853098A76ED395 ON pcache (user_id);");
-        $conn->executeQuery("CREATE INDEX IDX_3D853098232D562B ON pcache (object_id);");
-        $conn->executeQuery("CREATE INDEX pcache_owner_idx ON pcache (object_type, object_id);");
-        $conn->executeQuery("CREATE INDEX pcache_permission_idx ON pcache (object_type, object_id, action);");
-        $conn->executeQuery("CREATE INDEX pcache_permission_user_idx ON pcache (object_type, object_id, action, user_id);");
-        $conn->executeQuery("ALTER TABLE pcache ADD CONSTRAINT FK_3D853098A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-
-    },
-
-    'function create pcache id sequence 2' => function () use ($conn) {
-        if(__sequence_exists('pcache_id_seq')){
-            echo 'sequencia pcache_id_seq já existe';
-            return true;
-        }
-        $conn->executeQuery("CREATE SEQUENCE pcache_id_seq
-                                START WITH 1
-                                INCREMENT BY 1
-                                NO MINVALUE
-                                NO MAXVALUE
-                                CACHE 1;");
-
-        $conn->executeQuery("ALTER TABLE ONLY pcache ALTER COLUMN id SET DEFAULT nextval('pcache_id_seq'::regclass);");
-
-    },
-
-    'Add field for maximum size from registration field configuration' => function () use($conn) {
-        if(__column_exists('registration_field_configuration', 'max_size')){
-            return true;
-        }
-        $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN max_size text;");
-    },
-
-    'Add notification type for compliant and suggestion messages' => function () use($conn) {
-        if(__table_exists('notification_meta')) {
-            echo "ALREADY APPLIED";
-            return true;
-        }
-        $conn->executeQuery("CREATE TABLE notification_meta (id INT NOT NULL, object_id INT DEFAULT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
-        $conn->executeQuery("CREATE SEQUENCE notification_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        $conn->executeQuery("ALTER TABLE notification_meta ADD CONSTRAINT notification_meta_fk FOREIGN KEY (object_id) REFERENCES notification (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-    },
-
-    'create entity revision tables' => function() use($conn) {
-        if(__table_exists('entity_revision')) {
-            echo "ALREADY APPLIED";
-            return true;
-        }
-
-        $conn->executeQuery("CREATE SEQUENCE entity_revision_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        $conn->executeQuery("CREATE SEQUENCE revision_data_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        $conn->executeQuery("CREATE TABLE entity_revision (id INT NOT NULL, user_id INT DEFAULT NULL, object_id INT NOT NULL, object_type VARCHAR(255) NOT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, action VARCHAR(255) NOT NULL, message TEXT NOT NULL, PRIMARY KEY(id));");
-        $conn->executeQuery("CREATE TABLE entity_revision_revision_data (revision_id INT NOT NULL, revision_data_id INT NOT NULL, PRIMARY KEY(revision_id, revision_data_id));");
-        $conn->executeQuery("CREATE TABLE entity_revision_data (id INT NOT NULL, timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
-        $conn->executeQuery("ALTER TABLE entity_revision ADD CONSTRAINT entity_revision_usr_fk FOREIGN KEY (user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT revision_data_entity_revision_fk FOREIGN KEY (revision_id) REFERENCES entity_revision (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT revision_data_revision_data_fk FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) NOT DEFERRABLE INITIALLY IMMEDIATE");
-    },
-
-    'ALTER TABLE file ADD COLUMN path' => function () use ($conn) {
-        if(__column_exists('file', 'path')){
-            return true;
-        }
-        $conn->executeQuery("CREATE INDEX file_owner_index ON file (object_type, object_id);");
-        $conn->executeQuery("CREATE INDEX file_group_index ON file (grp);");
-
-        $conn->executeQuery("ALTER TABLE file ADD path VARCHAR(1024) DEFAULT NULL;");
-
-    },
-
     'create avatar thumbs' => function() use($conn){
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Agent' AND object_id NOT IN (SELECT id FROM agent)");
         $conn->executeQuery("DELETE FROM file WHERE object_type = 'MapasCulturais\Entities\Space' AND object_id NOT IN (SELECT id FROM space)");
@@ -614,252 +1395,16 @@ return [
         $this->disableAccessControl();
     },
 
-    '*_meta drop all indexes again' => function () use($conn) {
-
-        foreach(['subsite', 'agent', 'user', 'event', 'space', 'project', 'seal', 'registration', 'notification'] as $prefix){
-            $table = "{$prefix}_meta";
-
-            // seleciona todos os indeces exceto PK
-            $indexes = $conn->fetchAll("
-                SELECT i.relname as indname
-                FROM pg_index as idx
-                        JOIN pg_class as i ON i.oid = idx.indexrelid
-                        JOIN pg_am as am ON i.relam = am.oid
-                        JOIN pg_namespace as ns ON
-                                ns.oid = i.relnamespace AND ns.nspname = ANY(current_schemas(false))
-
-                WHERE
-                        idx.indrelid::regclass::varchar = '{$table}' AND
-                        i.relname NOT IN (SELECT constraint_name FROM information_schema.table_constraints);");
-
-            foreach($indexes as $index){
-                echo "DROP INDEX {$index['indname']}\n";
-                $conn->executeQuery("DROP INDEX {$index['indname']}");
-            }
-        }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");
-    },
-    'recreate *_meta indexes' => function() use($conn) {
-
-        __try("DELETE FROM subsite_meta WHERE object_id NOT IN (SELECT id FROM subsite)");
-        __try("DELETE FROM agent_meta WHERE object_id NOT IN (SELECT id FROM agent)");
-        __try("DELETE FROM space_meta WHERE object_id NOT IN (SELECT id FROM space)");
-        __try("DELETE FROM project_meta WHERE object_id NOT IN (SELECT id FROM project)");
-        __try("DELETE FROM event_meta WHERE object_id NOT IN (SELECT id FROM event)");
-        __try("DELETE FROM user_meta WHERE object_id NOT IN (SELECT id FROM usr)");
-        __try("DELETE FROM seal_meta WHERE object_id NOT IN (SELECT id FROM seal)");
-        __try("DELETE FROM registration_meta WHERE object_id NOT IN (SELECT id FROM registration)");
-        __try("DELETE FROM notification_meta WHERE object_id NOT IN (SELECT id FROM notification)");
-
-        __try("ALTER TABLE subsite_meta ALTER key TYPE VARCHAR(255);");
-        __try("ALTER TABLE subsite_meta DROP CONSTRAINT IF EXISTS FK_780702F5232D562B;");
-        __try("ALTER TABLE subsite_meta ADD CONSTRAINT FK_780702F5232D562B FOREIGN KEY (object_id) REFERENCES subsite (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("ALTER TABLE subsite_meta ADD PRIMARY KEY (id);");
-
-        __try("CREATE INDEX subsite_meta_owner_key_idx ON subsite_meta (object_id, key);");
-        __try("CREATE INDEX subsite_meta_owner_idx ON subsite_meta (object_id);");
-
-        __try("ALTER TABLE agent_meta DROP CONSTRAINT agent_agent_meta_fk;");
-        __try("ALTER TABLE agent_meta ALTER id DROP DEFAULT;");
-        __try("ALTER TABLE agent_meta ALTER key TYPE VARCHAR(255);");
-        __try("ALTER TABLE agent_meta DROP CONSTRAINT IF EXISTS FK_7A69AED6232D562B;");
-        __try("ALTER TABLE agent_meta ADD CONSTRAINT FK_7A69AED6232D562B FOREIGN KEY (object_id) REFERENCES agent (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("CREATE INDEX agent_meta_owner_key_idx ON agent_meta (object_id, key);");
-        __try("CREATE INDEX agent_meta_owner_idx ON agent_meta (object_id);");
-
-        __try("ALTER TABLE user_meta ALTER key TYPE VARCHAR(255);");
-        __try("ALTER TABLE user_meta DROP CONSTRAINT IF EXISTS FK_AD7358FC232D562B;");
-        __try("ALTER TABLE user_meta ADD CONSTRAINT FK_AD7358FC232D562B FOREIGN KEY (object_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("ALTER TABLE user_meta ADD PRIMARY KEY (id);");
-
-        __try("CREATE INDEX user_meta_owner_key_idx ON user_meta (object_id, key);");
-        __try("CREATE INDEX user_meta_owner_idx ON user_meta (object_id);");
-
-        __try("ALTER TABLE event_meta DROP CONSTRAINT event_project_meta_fk;");
-        __try("ALTER TABLE event_meta ALTER id DROP DEFAULT;");
-        __try("ALTER TABLE event_meta ALTER key TYPE VARCHAR(255);");
-        __try("ALTER TABLE event_meta DROP CONSTRAINT IF EXISTS FK_C839589E232D562B;");
-        __try("ALTER TABLE event_meta ADD CONSTRAINT FK_C839589E232D562B FOREIGN KEY (object_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("CREATE INDEX event_meta_owner_key_idx ON event_meta (object_id, key);");
-        __try("CREATE INDEX event_meta_owner_idx ON event_meta (object_id);");
-
-        __try("ALTER TABLE space_meta DROP CONSTRAINT space_space_meta_fk;");
-        __try("ALTER TABLE space_meta ALTER id DROP DEFAULT;");
-        __try("ALTER TABLE space_meta ALTER key TYPE VARCHAR(255);");
-        __try("ALTER TABLE space_meta DROP CONSTRAINT IF EXISTS FK_BC846EBF232D562B;");
-        __try("ALTER TABLE space_meta ADD CONSTRAINT FK_BC846EBF232D562B FOREIGN KEY (object_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("CREATE INDEX space_meta_owner_key_idx ON space_meta (object_id, key);");
-        __try("CREATE INDEX space_meta_owner_idx ON space_meta (object_id);");
-
-        __try("ALTER TABLE project_meta DROP CONSTRAINT project_project_meta_fk;");
-        __try("ALTER TABLE project_meta ALTER id DROP DEFAULT;");
-        __try("ALTER TABLE project_meta ALTER key TYPE VARCHAR(255);");
-        __try("ALTER TABLE project_meta DROP CONSTRAINT IF EXISTS FK_EE63DC2D232D562B;");
-        __try("ALTER TABLE project_meta ADD CONSTRAINT FK_EE63DC2D232D562B FOREIGN KEY (object_id) REFERENCES project (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("CREATE INDEX project_meta_owner_key_idx ON project_meta (object_id, key);");
-        __try("CREATE INDEX project_meta_owner_idx ON project_meta (object_id);");
-
-        __try("ALTER TABLE seal_meta DROP CONSTRAINT seal_meta_fk;");
-        __try("ALTER TABLE seal_meta ALTER object_id SET NOT NULL;");
-        __try("ALTER TABLE seal_meta DROP CONSTRAINT IF EXISTS FK_A92E5E22232D562B;");
-        __try("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("CREATE INDEX seal_meta_owner_key_idx ON seal_meta (object_id, key);");
-        __try("CREATE INDEX seal_meta_owner_idx ON seal_meta (object_id);");
-
-        __try("ALTER TABLE registration ADD PRIMARY KEY(id);");
-
-        __try("ALTER TABLE registration_meta ALTER id DROP DEFAULT;");
-        __try("ALTER TABLE registration_meta ALTER key TYPE VARCHAR(255);");
-        __try("ALTER TABLE registration_meta DROP CONSTRAINT IF EXISTS FK_18CC03E9232D562B;");
-        __try("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("CREATE INDEX registration_meta_owner_key_idx ON registration_meta (object_id, key);");
-        __try("CREATE INDEX registration_meta_owner_idx ON registration_meta (object_id);");
-
-        __try("ALTER TABLE notification_meta DROP CONSTRAINT notification_meta_fk;");
-        __try("ALTER TABLE notification_meta ALTER object_id SET NOT NULL;");
-        __try("ALTER TABLE notification_meta DROP CONSTRAINT IF EXISTS FK_6FCE5F0F232D562B;");
-        __try("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __try("CREATE INDEX notification_meta_owner_key_idx ON notification_meta (object_id, key);");
-        __try("CREATE INDEX notification_meta_owner_idx ON notification_meta (object_id);");
-
-    },
-
-    /**
-     * Migrações Projeto -> Opurtunidade
-     *
-     * - files do grupo rules
-     */
-
-    'create permission cache pending table2' => function() use ($conn) {
-
-        if(__table_exists('permission_cache_pending')){
-            echo "TABLE permission_cache_pending ALREADY EXISTS";
-            return true;
-        }
-
-        $conn->executeQuery("CREATE TABLE permission_cache_pending (
-            id INT NOT NULL, 
-            object_id INT NOT NULL, 
-            object_type VARCHAR(255) NOT NULL, 
-            
-            PRIMARY KEY(id)
-        );");
-    },
     
     "corrigindo status da fila de criação de cache de permissão" => function() {
         __exec("UPDATE permission_cache_pending SET status = 0;");
         return false;
     },
 
-    'create opportunity tables' => function () {
-        if(!__table_exists('opportunity')){
-            __exec("DELETE FROM registration_meta WHERE object_id IN (SELECT id FROM registration WHERE project_id NOT IN (SELECT id FROM project))");
-            __exec("DELETE FROM registration WHERE project_id NOT IN (SELECT id FROM project)");
-
-            // cria tabelas das oportunidades
-            __exec("CREATE SEQUENCE opportunity_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-            __exec("CREATE TABLE opportunity (id INT NOT NULL, parent_id INT DEFAULT NULL, agent_id INT DEFAULT NULL, type SMALLINT NOT NULL, name VARCHAR(255) NOT NULL, short_description TEXT DEFAULT NULL, long_description TEXT DEFAULT NULL, registration_from TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, registration_to TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, published_registrations BOOLEAN NOT NULL, registration_categories text DEFAULT NULL, create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT NOT NULL, subsite_id INT DEFAULT NULL, object_type VARCHAR(255) NOT NULL, object_id INT NOT NULL, PRIMARY KEY(id));");
-            __exec("CREATE INDEX opportunity_owner_idx ON opportunity (agent_id);");
-            __exec("CREATE INDEX opportunity_entity_idx ON opportunity (object_type, object_id);");
-            __exec("CREATE INDEX opportunity_parent_idx ON opportunity (parent_id);");
-            __exec("CREATE TABLE opportunity_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
-            __exec("CREATE INDEX opportunity_meta_owner_idx ON opportunity_meta (object_id);");
-            __exec("CREATE INDEX opportunity_meta_owner_key_idx ON opportunity_meta (object_id, key);");
-            __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D7727ACA70 FOREIGN KEY (parent_id) REFERENCES project (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            __exec("ALTER TABLE opportunity ADD CONSTRAINT FK_8389C3D73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            __exec("ALTER TABLE opportunity_meta ADD CONSTRAINT FK_2BB06D08232D562B FOREIGN KEY (object_id) REFERENCES opportunity (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-
-            // cria as oportunidades existentes
-            __exec("
-                INSERT INTO opportunity (
-                    id, parent_id, agent_id, type, name, short_description, registration_categories,
-                    long_description, registration_from, registration_to, published_registrations,
-                    create_timestamp, update_timestamp, status, subsite_id, object_type, object_id
-                ) (
-                    SELECT
-                        p.id, p.parent_id, p.agent_id, p.type, p.name, p.short_description, p.registration_categories,
-                        p.long_description, p.registration_from, p.registration_to, p.published_registrations,
-                        p.create_timestamp, p.update_timestamp, p.status, p.subsite_id, 'MapasCulturais\Entities\Project', p.id
-                    FROM
-                        project p
-                    WHERE
-                        p.id IN (SELECT DISTINCT(project_id) FROM registration) OR
-                        p.id IN (SELECT DISTINCT(project_id) FROM registration_file_configuration) OR
-                        p.id IN (SELECT DISTINCT(project_id) FROM registration_field_configuration) OR
-                        p.use_registrations IS TRUE
-                );");
-
-            __exec("INSERT INTO opportunity_meta (id,object_id,key,value) SELECT id, object_id, key, value FROM project_meta WHERE object_id IN (SELECT id FROM opportunity)");
-            __exec("INSERT INTO term_relation (term_id, object_type, object_id) SELECT term_id, 'MapasCulturais\Entities\Opportunity', object_id FROM term_relation WHERE object_type = 'MapasCulturais\Entities\Project' AND object_id IN (SELECT id FROM opportunity);");
-
-
-            // modifica a tabela de projetos retirando o que tem de referencia a registration
-            __exec("ALTER TABLE project DROP CONSTRAINT fk_2fb3d0eec79c849a;");
-            __exec("ALTER TABLE project DROP registration_categories;");
-            __exec("ALTER TABLE project DROP use_registrations;");
-            __exec("ALTER TABLE project DROP published_registrations;");
-
-            // ajusta a tabela de inscrições
-            __exec("DELETE FROM registration WHERE agent_id NOT IN (SELECT id FROM agent)");
-
-            __exec("ALTER TABLE registration DROP CONSTRAINT fk_62a8a7a7c79c849a;");
-            
-            __exec("ALTER TABLE registration RENAME COLUMN project_id TO opportunity_id;");
-            __exec("ALTER TABLE registration ALTER id SET DEFAULT pseudo_random_id_generator();");
-            __exec("ALTER TABLE registration ALTER status TYPE SMALLINT;");
-            __exec("ALTER TABLE registration ALTER status DROP DEFAULT;");
-            __exec("ALTER TABLE registration ALTER agents_data DROP DEFAULT;");
-            __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A79A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            __exec("ALTER TABLE registration ADD CONSTRAINT FK_62A8A7A73414710B FOREIGN KEY (agent_id) REFERENCES agent (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            __exec("CREATE INDEX IDX_62A8A7A79A34590F ON registration (opportunity_id);");
-            __exec("CREATE INDEX IDX_62A8A7A73414710B ON registration (agent_id);");
-
-            // ajusta a tabela
-            __exec("ALTER TABLE registration_file_configuration DROP CONSTRAINT fk_209c792e166d1f9c;");
-            __exec("ALTER TABLE registration_file_configuration RENAME COLUMN project_id TO opportunity_id;");
-            __exec("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_209C792E9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            __exec("CREATE INDEX IDX_209C792E9A34590F ON registration_file_configuration (opportunity_id);");
-
-            __exec("ALTER TABLE registration_field_configuration DROP CONSTRAINT fk_60c85cb1166d1f9c;");
-            __exec("ALTER TABLE registration_field_configuration RENAME COLUMN project_id TO opportunity_id;");
-            __exec("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_60C85CB19A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            __exec("CREATE INDEX IDX_60C85CB19A34590F ON registration_field_configuration (opportunity_id);");
-
-        }
-    },
-    
-    'DROP CONSTRAINT registration_project_fk");' => function() {
-        __exec("ALTER TABLE registration DROP CONSTRAINT IF EXISTS registration_project_fk ;");
-    },
-
-    'fix opportunity parent FK' => function() {
-        __exec("ALTER TABLE opportunity DROP CONSTRAINT IF EXISTS FK_8389C3D7727ACA70;");
-        __exec("UPDATE opportunity SET parent_id = null WHERE parent_id NOT IN (SELECT id FROM opportunity)");
-        __try("ALTER TABLE opportunity DROP CONSTRAINT IF EXISTS opportunity_parent_fk;");
-        __exec("ALTER TABLE opportunity ADD CONSTRAINT opportunity_parent_fk FOREIGN KEY (parent_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-    },
-
     'fix opportunity type 35' => function(){
         __exec("UPDATE opportunity SET type = 45 WHERE type = 35");
     },
-            
-    'create opportunity sequence' => function () use ($conn) {
-        if(__sequence_exists('opportunity_id_seq')){
-            return true;
-        }
-        $last_id = $conn->fetchColumn ('SELECT max(id) FROM opportunity;');
-        $last_id++;
-        $conn->executeQuery("CREATE SEQUENCE opportunity_id_seq
-                                START WITH $last_id
-                                INCREMENT BY 1
-                                NO MINVALUE
-                                NO MAXVALUE
-                                CACHE 1;");
 
-        $conn->executeQuery("ALTER TABLE ONLY opportunity ALTER COLUMN id SET DEFAULT nextval('opportunity_id_seq'::regclass);");
-        
-    },
-            
     'update opportunity_meta_id sequence' => function() use ($conn){
         $last_id = $conn->fetchColumn ('SELECT max(id) FROM opportunity_meta;');
         $last_id++;
@@ -878,86 +1423,6 @@ return [
         foreach($values as $value){
             $conn->executeQuery("UPDATE opportunity SET short_description = :desc WHERE id = :id", ['id' => $value['object_id'], 'desc' => $value['value']]);
         }
-    },
-    
-    
-    
-    'ALTER TABLE registration ADD consolidated_result' => function () {
-        if(!__column_exists('registration', 'consolidated_result')){
-            __exec("ALTER TABLE registration ADD consolidated_result VARCHAR(255) DEFAULT NULL;");
-        }
-    },
-
-    'create evaluation methods tables' => function (){
-        if(__table_exists('evaluation_method_configuration')){
-            echo "evaluation_method_configuration table already exists";
-            return true;
-        }
-        __exec("CREATE SEQUENCE evaluationMethodConfiguration_meta_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        __exec("CREATE TABLE evaluation_method_configuration (id INT NOT NULL, opportunity_id INT NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
-        __exec("CREATE UNIQUE INDEX UNIQ_330CB54C9A34590F ON evaluation_method_configuration (opportunity_id);");
-        __exec("CREATE TABLE evaluationMethodConfiguration_meta (id INT NOT NULL, object_id INT NOT NULL, key VARCHAR(255) NOT NULL, value TEXT DEFAULT NULL, PRIMARY KEY(id));");
-        __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_idx ON evaluationMethodConfiguration_meta (object_id);");
-        __exec("CREATE INDEX evaluationMethodConfiguration_meta_owner_key_idx ON evaluationMethodConfiguration_meta (object_id, key);");
-        __exec("ALTER TABLE evaluation_method_configuration ADD CONSTRAINT FK_330CB54C9A34590F FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __exec("ALTER TABLE evaluationMethodConfiguration_meta ADD CONSTRAINT FK_D7EDF8B2232D562B FOREIGN KEY (object_id) REFERENCES evaluation_method_configuration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __exec("CREATE SEQUENCE evaluation_method_configuration_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        __exec("ALTER SEQUENCE evaluation_method_configuration_id_seq OWNED BY evaluation_method_configuration.id;");
-        __exec("ALTER TABLE ONLY evaluation_method_configuration ALTER COLUMN id SET DEFAULT nextval('evaluation_method_configuration_id_seq'::regclass);");
-
-
-        $opportunities = $this->repo('Opportunity')->findAll();
-
-        foreach($opportunities as $opportunity){
-            __exec("INSERT INTO evaluation_method_configuration ( opportunity_id, type) VALUES ($opportunity->id, 'simple');");
-        }
-    },
-
-    'create registration_evaluation table' => function(){
-        if(__table_exists('registration_evaluation')){
-            echo "ALREADY APPLIED";
-            return true;
-        }
-
-        __exec("CREATE SEQUENCE registration_evaluation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        __exec("CREATE TABLE registration_evaluation (
-            id INT NOT NULL,
-            registration_id INT DEFAULT pseudo_random_id_generator() NOT NULL,
-            user_id INT NOT NULL,
-            result VARCHAR(255) DEFAULT NULL,
-            evaluation_data TEXT NOT NULL,
-            status SMALLINT DEFAULT NULL,
-            PRIMARY KEY(id));");
-        __exec("CREATE INDEX IDX_2E186C5C833D8F43 ON registration_evaluation (registration_id);");
-        __exec("CREATE INDEX IDX_2E186C5CA76ED395 ON registration_evaluation (user_id);");
-        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-    },
-            
-    'ALTER TABLE opportunity ALTER type DROP NOT NULL;' => function() use($conn){
-        $conn->executeUpdate('ALTER TABLE opportunity ALTER type DROP NOT NULL;');
-    },
-    
-    'ALTER TABLE registration ADD consolidated_result' => function () {
-        if(!__column_exists('registration', 'consolidated_result')){
-            __exec("ALTER TABLE registration ADD consolidated_result VARCHAR(255) DEFAULT NULL;");
-        }
-    },
-
-    'create seal relation renovation flag field' => function() use($conn) {
-        if(__column_exists('seal_relation', 'renovation_request')){
-            echo "ALREADY APPLIED";
-            return true;
-        }
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN renovation_request BOOLEAN;");
-    },
-    'create seal relation validate date' => function() use($conn) {
-        if(__column_exists('seal_relation', 'validate_date')){
-            echo "ALREADY APPLIED";
-            return true;
-        }
-
-        $conn->executeQuery("ALTER TABLE seal_relation ADD COLUMN validate_date DATE;");
     },
         
     'update seal_relation set validate_date' => function() use ($conn) {
@@ -996,45 +1461,6 @@ return [
         __try("DROP INDEX registration_meta_value_idx;");
     },
 
-
-    //Space_Relation
-    'CREATE SEQUENCE REGISTRATION SPACE RELATION registration_space_relation_id_seq' => function() use($conn){
-        $conn->executeQuery("CREATE SEQUENCE space_relation_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-    },
-
-    'CREATE TABLE spacerelation' => function() use($conn){
-        $conn->executeQuery("CREATE TABLE space_relation (id INT NOT NULL, space_id INT DEFAULT NULL, object_id INT NOT NULL, 
-                             create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, status SMALLINT DEFAULT NULL, 
-                             object_type VARCHAR(255) NOT NULL, PRIMARY KEY(id));");
-
-        $conn->executeQuery("CREATE INDEX IDX_1A0E9A3023575340 ON space_relation (space_id);");
-        $conn->executeQuery("CREATE INDEX IDX_1A0E9A30232D562B ON space_relation (object_id);");
-        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A3023575340 FOREIGN KEY (space_id) REFERENCES space (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        $conn->executeQuery("ALTER TABLE space_relation ADD CONSTRAINT FK_1A0E9A30232D562B FOREIGN KEY (object_id) REFERENCES registration (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-    },
-
-    //Adiciona coluna space_data com metadados do espaço vinculado à inscrição
-    'ALTER TABLE registration' => function() use($conn){
-        $conn->executeQuery("ALTER TABLE registration ADD space_data text DEFAULT NULL;");
-    },
-
-    
-    
-    'altertable registration_file_and_files_add_order' => function () use($conn){
-        if(__column_exists('registration_file_configuration', 'order')){
-            echo "ALREADY APPLIED";
-        } else {
-            $conn->executeQuery("ALTER TABLE registration_file_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
-        }
-        
-        if(__column_exists('registration_field_configuration', 'order')){
-            echo "ALREADY APPLIED";
-        } else {
-            $conn->executeQuery("ALTER TABLE registration_field_configuration ADD COLUMN display_order SMALLINT DEFAULT 255;");
-        }
-
-    },
-
     'replace subsite entidades_habilitadas values' => function () use($conn) {
         $rs = $conn->fetchAll("SELECT * FROM subsite_meta WHERE key = 'entidades_habilitadas'");
         
@@ -1050,17 +1476,6 @@ return [
         $conn->executeQuery("UPDATE subsite_meta SET key = 'projects_color' where key = 'cor_projetos';");
         $conn->executeQuery("UPDATE subsite_meta SET key = 'agents_color' where key = 'cor_agentes';");
         $conn->executeQuery("UPDATE subsite_meta SET key = 'seals_color' where key = 'cor_selos';");
-    },
-
-    'ALTER TABLE file ADD private and update' => function () use ($conn) {
-        if(__column_exists('file', 'private')){
-            return true;
-        }
-
-        $conn->executeQuery("ALTER TABLE file ADD private BOOLEAN NOT NULL DEFAULT FALSE;");
-        
-        $conn->executeQuery("UPDATE file SET private = true WHERE grp LIKE 'rfc_%' OR grp = 'zipArchive'");
-        
     },
 
     'fix subsite verifiedSeals array' => function() use($app){
@@ -1110,38 +1525,6 @@ return [
         
     },
 
-    'create permission cache sequence' => function() use ($conn) {
-
-        $conn->executeQuery("CREATE SEQUENCE permission_cache_pending_seq
-                                START WITH 1
-                                INCREMENT BY 1
-                                NO MINVALUE
-                                NO MAXVALUE
-                                CACHE 1;");
-    },
-	
-	'create evaluation methods sequence' => function (){
-        if(__sequence_exists('evaluation_method_configuration_id_seq')){
-            echo "evaluation_method_configuration_id_seq sequence already exists";
-            return true;
-        }
-        __exec("CREATE SEQUENCE evaluation_method_configuration_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-        __exec("ALTER SEQUENCE evaluation_method_configuration_id_seq OWNED BY evaluation_method_configuration.id;");
-        __exec("ALTER TABLE ONLY evaluation_method_configuration ALTER COLUMN id SET DEFAULT nextval('evaluation_method_configuration_id_seq'::regclass);");
-		
-		__exec("SELECT setval('evaluation_method_configuration_id_seq', (select max(id) from evaluation_method_configuration), true);");
-    },
-
-    'change opportunity field agent_id not null' => function() use ($conn) {
-        $conn->executeQuery(" ALTER TABLE opportunity ALTER COLUMN agent_id SET NOT NULL ");
-    },
-
-    'alter table registration add column number' => function() use($conn) {
-        if(!__column_exists('registration', 'number')){
-            $conn->executeQuery("ALTER TABLE registration ADD COLUMN number VARCHAR(24)");
-        }
-    },
-
     'update registrations set number fixed'=> function () use($conn){
         echo "\nsalvando número da inscrição para oportunidades de uma só fase ou para a primeira fase das inscrições\n";
         $conn->executeQuery("UPDATE registration SET number = CONCAT('on-', id) WHERE opportunity_id IN (SELECT id FROM opportunity WHERE parent_id IS NULL)");
@@ -1173,70 +1556,6 @@ return [
 
             echo "\n - inscrição de id {$reg->id} número {$current->id}\n";
             $conn->executeQuery("UPDATE registration SET number = 'on-{$current->id}' WHERE id = $reg->id");
-        }
-    },
-
-    'alter table registration add column valuers_exceptions_list' => function() use($conn){
-        if(!__column_exists('registration', 'valuers_exceptions_list')){
-            $conn->executeQuery("ALTER TABLE registration ADD valuers_exceptions_list TEXT NOT NULL DEFAULT '{\"include\": [], \"exclude\": []}';");
-        }
-    },
-
-    'create event attendance table' => function() use($conn) {
-        if(!__table_exists('event_attendance')){
-            $conn->executeQuery("
-                CREATE TABLE event_attendance (
-                    id INT NOT NULL, 
-                    user_id INT NOT NULL, 
-                    event_occurrence_id INT NOT NULL, 
-                    event_id INT NOT NULL, 
-                    space_id INT NOT NULL, 
-                    type VARCHAR(255) NOT NULL, 
-                    reccurrence_string TEXT DEFAULT NULL, 
-                    start_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
-                    end_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
-                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
-                    PRIMARY KEY(id));");
-
-            $conn->executeQuery("CREATE INDEX IDX_350DD4BEA76ED395 ON event_attendance (user_id);");
-            $conn->executeQuery("CREATE INDEX IDX_350DD4BE140E9F00 ON event_attendance (event_occurrence_id);");
-            $conn->executeQuery("CREATE INDEX IDX_350DD4BE71F7E88B ON event_attendance (event_id);");
-            $conn->executeQuery("CREATE INDEX IDX_350DD4BE23575340 ON event_attendance (space_id);");
-            $conn->executeQuery("CREATE INDEX event_attendance_type_idx ON event_attendance (type);");
-            $conn->executeQuery("CREATE SEQUENCE event_attendance_id_seq INCREMENT BY 1 MINVALUE 1 START 1;");
-            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BEA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE71F7E88B FOREIGN KEY (event_id) REFERENCES event (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            $conn->executeQuery("ALTER TABLE event_attendance ADD CONSTRAINT FK_350DD4BE23575340 FOREIGN KEY (space_id) REFERENCES space (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        }
-    },
-
-    'create procuration table' => function() use($conn) {
-        if(!__table_exists('procuration')){
-            $conn->executeQuery("
-                CREATE TABLE procuration (
-                    token VARCHAR(32) NOT NULL, 
-                    usr_id INT NOT NULL, 
-                    attorney_user_id INT NOT NULL, 
-                    action VARCHAR(255) NOT NULL, 
-                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, 
-                    valid_until_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
-                    PRIMARY KEY(token));");
-                
-            $conn->executeQuery("CREATE INDEX procuration_usr_idx ON procuration (usr_id);");
-            $conn->executeQuery("CREATE INDEX procuration_attorney_idx ON procuration (attorney_user_id);");
-            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7FC69D3FB FOREIGN KEY (usr_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            $conn->executeQuery("ALTER TABLE procuration ADD CONSTRAINT FK_D7BAE7F3AEB2ED7 FOREIGN KEY (attorney_user_id) REFERENCES usr (id) NOT DEFERRABLE INITIALLY IMMEDIATE;");
-            
-        }
-    },
-
-    'alter table registration_field_configuration add column config' => function() use($conn){
-        if(!__column_exists('registration_field_configuration', 'config')){
-            __exec("
-                ALTER TABLE registration_field_configuration 
-                ADD config TEXT;
-            ");
         }
     },
 
@@ -1304,6 +1623,7 @@ $$
         __exec("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE request ADD CONSTRAINT FK_3B978F9FBA78F12A FOREIGN KEY (requester_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE event_occurrence_recurrence ADD CONSTRAINT FK_388ECCB140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE entity_revision ADD CONSTRAINT FK_CF97A98CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A8521DFA7C8F FOREIGN KEY (revision_id) REFERENCES entity_revision (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A852B4906F58 FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE user_app ADD CONSTRAINT FK_22781144A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
@@ -1476,113 +1796,6 @@ $$
                 has_control IS false");
     },
 
-    'ALTER TABLE metalist ALTER value TYPE TEXT' => function () {
-        __exec("ALTER TABLE metalist ALTER value TYPE TEXT;");
-    },
-
-    'Add metadata to Agent Relation' => function () use($conn) {
-        if(__column_exists('agent_relation', 'metadata')){
-            return true;
-        }
-        $conn->executeQuery("ALTER TABLE agent_relation ADD COLUMN metadata json;");
-    },
-
-    'add timestamp columns to registration_evaluation' => function () {
-        if (__column_exists('registration_evaluation', 'create_timestamp') &&
-            __column_exists('registration_evaluation', 'update_timestamp')) {
-            echo "ALREADY APPLIED";
-            return true;
-        }
-        __exec("ALTER TABLE registration_evaluation ADD create_timestamp TIMESTAMP DEFAULT NOW() NOT NULL;");
-        __exec("ALTER TABLE registration_evaluation ADD update_timestamp TIMESTAMP DEFAULT NULL;");
-        return true;
-    },
-
-    'create chat tables' => function () {
-        if (!__sequence_exists("chat_thread_id_seq")) {
-            __exec("CREATE SEQUENCE chat_thread_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
-        }
-        if (!__table_exists("chat_thread")) {
-            __exec("CREATE TABLE chat_thread (
-                id INT NOT NULL,
-                object_id INT NOT NULL,
-                object_type VARCHAR(255) NOT NULL,
-                type VARCHAR(255) NOT NULL,
-                identifier VARCHAR(255) NOT NULL,
-                description TEXT DEFAULT NULL,
-                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-                last_message_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
-                status INT NOT NULL,
-                PRIMARY KEY(id))");
-            __exec("COMMENT ON COLUMN chat_thread.object_type IS '(DC2Type:object_type)'");
-        }
-        if (!__sequence_exists("chat_message_id_seq")) {
-            __exec("CREATE SEQUENCE chat_message_id_seq INCREMENT BY 1 MINVALUE 1 START 1");
-        }
-        if (!__table_exists("chat_message")) {
-            __exec("CREATE TABLE chat_message (
-                id INT NOT NULL,
-                chat_thread_id INT NOT NULL,
-                parent_id INT DEFAULT NULL,
-                user_id INT NOT NULL,
-                payload TEXT NOT NULL,
-                create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-                PRIMARY KEY(id))");
-            __exec("CREATE INDEX IDX_FAB3FC16C47D5262 ON chat_message (chat_thread_id)");
-            __exec("CREATE INDEX IDX_FAB3FC16727ACA70 ON chat_message (parent_id)");
-            __exec("CREATE INDEX IDX_FAB3FC16A76ED395 ON chat_message (user_id)");
-            __exec("ALTER TABLE chat_message ADD
-                CONSTRAINT FK_FAB3FC16C47D5262
-                FOREIGN KEY (chat_thread_id) REFERENCES chat_thread (id)
-                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
-            __exec("ALTER TABLE chat_message ADD
-                CONSTRAINT FK_FAB3FC16727ACA70
-                FOREIGN KEY (parent_id) REFERENCES chat_message (id)
-                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
-            __exec("ALTER TABLE chat_message ADD
-                CONSTRAINT FK_FAB3FC16A76ED395
-                FOREIGN KEY (user_id) REFERENCES usr (id)
-                ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE");
-        }
-    },
-
-    'add timestamp columns to registration_evaluation' => function () {
-        if (__column_exists('registration_evaluation', 'create_timestamp') &&
-            __column_exists('registration_evaluation', 'update_timestamp')) {
-            echo "ALREADY APPLIED";
-            return true;
-        }
-        __exec("ALTER TABLE registration_evaluation ADD create_timestamp TIMESTAMP DEFAULT NOW() NOT NULL;");
-        __exec("ALTER TABLE registration_evaluation ADD update_timestamp TIMESTAMP DEFAULT NULL;");
-        return true;
-    },
-
-    'create table job' => function () use($conn) {
-        __exec("CREATE TABLE job (
-                    id VARCHAR(255) NOT NULL, 
-                    name VARCHAR(32) NOT NULL, 
-                    iterations INT NOT NULL, 
-                    iterations_count INT NOT NULL, 
-                    interval_string VARCHAR(255) NOT NULL, 
-                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-                    next_execution_timestamp TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
-                    last_execution_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
-                    metadata JSON NOT NULL, 
-                    status SMALLINT NOT NULL, 
-                    PRIMARY KEY(id)
-                );");
-
-
-        __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json_array)';");
-
-        __exec("CREATE INDEX job_next_execution_timestamp_idx ON job (next_execution_timestamp);");
-        __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
-    },
-
-    'alter job.metadata comment' => function () {
-        __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json)';");
-    },
-
     'clean existing orphans' => function () {
         __exec("CREATE OR REPLACE FUNCTION pg_temp.tempfn_clean_orphans(tbl name, ctype name, cid name)
                     RETURNS VOID
@@ -1748,35 +1961,6 @@ $$
             echo "\nRemovido hashKey registration_meta id {$meta['id']}";
         }
     },
-    "Adiciona coluna avaliableEvaluationFields na tabela opportunity" => function() use ($conn){
-        if(!__column_exists('opportunity', 'avaliable_evaluation_fields')) {
-            __exec("ALTER TABLE opportunity ADD avaliable_evaluation_fields JSON DEFAULT NULL;");
-        }
-    },
-    "Adiciona coluna publish_timestamp na tabela opportunity" => function() use ($conn){
-        if(!__column_exists('opportunity', 'publish_timestamp')) {
-            __exec("ALTER TABLE opportunity ADD publish_timestamp timestamp DEFAULT NULL;");
-        }
-    },
-    "Adiciona coluna auto_publish na tabela opportunity" => function () {
-        if(!__column_exists('opportunity', 'auto_publish')) {
-            __exec("ALTER TABLE opportunity ADD auto_publish BOOLEAN DEFAULT 'false' NOT NULL;");
-        }
-    },
-    "Adiciona coluna evaluation_from e evaluation_to na tabela evaluation_method_configuration" => function() use ($conn){
-        if(!__column_exists('evaluation_method_configuration', 'evaluation_from')) {
-            __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_from timestamp DEFAULT NULL;");
-        }
-        if(!__column_exists('evaluation_method_configuration', 'evaluation_to')) {
-            __exec("ALTER TABLE evaluation_method_configuration ADD evaluation_to timestamp DEFAULT NULL;");
-        }
-    },
-    
-    "adiciona coluna name na tabela evaluation_method_configuration" => function () use($conn) {
-        if (!__column_exists('evaluation_method_configuration', 'name')) {
-            __exec("ALTER TABLE evaluation_method_configuration ADD name VARCHAR(255) DEFAULT NULL;");
-        }
-    },
 
     "popula as colunas name, evaluation_from e evaluation_to da tabela evaluation_method_configuration" => function () use ($conn, $app){
         if (empty($app->getRegisteredEvaluationMethods())) {
@@ -1809,37 +1993,10 @@ $$
         }
     },
 
-    'cria funções para o cast automático de ponto para varchar' => function () { 
-        __exec("CREATE OR REPLACE FUNCTION pg_catalog.text(point) RETURNS text STRICT IMMUTABLE LANGUAGE SQL AS 'SELECT $1::VARCHAR;';");
-        __try("CREATE CAST (point AS text) WITH FUNCTION pg_catalog.text(point) AS IMPLICIT;");
-        __exec("COMMENT ON FUNCTION pg_catalog.text(point) IS 'convert point to text';");
-    },
-
-    "Renomeia colunas registrationFrom e registrationTo da tabela de projetod" => function() use ($conn){
-        if (__column_exists('project', 'registration_from') && !__column_exists('project', 'starts_on')){
-            __exec("ALTER TABLE project RENAME registration_from TO starts_on;");
-        }
-        if (__column_exists('project', 'registration_to') && !__column_exists('project', 'ends_on')){
-            __exec("ALTER TABLE project RENAME registration_to TO ends_on;");
-        }
-    },
-
-    "Adiciona novas coluna na tabela registration_field_configuration" => function() use ($conn){
-        __exec("ALTER TABLE registration_field_configuration ADD conditional  BOOLEAN;");
-        __exec("ALTER TABLE registration_field_configuration ADD conditional_field  VARCHAR(255);");
-        __exec("ALTER TABLE registration_field_configuration ADD conditional_value  VARCHAR(255);");
-    },
-    "Adiciona novas coluna na tabela registration_file_configuration" => function() use ($conn){
-        __exec("ALTER TABLE registration_file_configuration ADD conditional  BOOLEAN;");
-        __exec("ALTER TABLE registration_file_configuration ADD conditional_field  VARCHAR(255);");
-        __exec("ALTER TABLE registration_file_configuration ADD conditional_value  VARCHAR(255);");
-    },
-
-
-    'alter seal add column locked_fields' => function () {
-        if(!__column_exists('seal', 'locked_fields')) {
-            __exec("ALTER TABLE seal ADD locked_fields JSON DEFAULT '[]'");
-        }
+    'Ajusta as colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades para setar um array vazio quando as mesmas estiverem null' => function() use ($conn, $app){
+        __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types::VARCHAR = '\"\"'");
+        __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges::VARCHAR = '\"\"'");
+        __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories::VARCHAR = '\"\"'");
     },
 
     "Consede permissão em todos os campo para todos os avaliadores da oportunidade" => function() use ($conn, $app){
@@ -1907,22 +2064,6 @@ $$
                         FROM registration 
                         WHERE opportunity_id = {$opportunity_id}
                     );");
-        }
-    },
-
-    'Adiciona a coluna description para a descrição da ocorrência' => function() {
-        if(!__column_exists('event_occurrence', 'description')) {
-            __exec("ALTER TABLE event_occurrence ADD description TEXT DEFAULT NULL;");
-        }
-    },
-    'Adiciona a coluna price para a o valor de entrada da ocorrência' => function() {
-        if(!__column_exists('event_occurrence', 'price')) {
-            __exec("ALTER TABLE event_occurrence ADD price TEXT DEFAULT NULL;");
-        }
-    },
-    'Adiciona a coluna priceInfo para a informações sobre o valor de entrada da ocorrência' => function() {
-        if(!__column_exists('event_occurrence', 'priceinfo')) {
-            __exec("ALTER TABLE event_occurrence ADD priceinfo TEXT DEFAULT NULL;");
         }
     },
     
@@ -2088,37 +2229,7 @@ $$
                 p1.object_id = p2.object_id AND 
                 p1.action = p2.action;");
     },
-    
-    "Cria colunas registration_proponent_types e registration_ranges na tabela opportunity" => function() use ($conn){
-        if(!__column_exists('opportunity', 'registration_proponent_types')) {
-            __exec("ALTER TABLE opportunity ADD COLUMN registration_proponent_types JSON NULL");
-        }
 
-        if(!__column_exists('opportunity', 'registration_ranges')) {
-            __exec("ALTER TABLE opportunity ADD COLUMN registration_ranges JSON NULL");
-        }
-    },
-
-    "Cria colunas registration_ranges e proponent_types na tabela registration_field_configuration" => function() use ($conn){
-        if(!__column_exists('registration_field_configuration', 'registration_ranges')) {
-            __exec("ALTER TABLE registration_field_configuration ADD COLUMN registration_ranges JSON NULL");
-        }
-
-        if(!__column_exists('registration_field_configuration', 'proponent_types')) {
-            __exec("ALTER TABLE registration_field_configuration ADD COLUMN proponent_types JSON NULL");
-        }
-    },
-
-    "Cria colunas registration_ranges e proponent_types na tabela registration_file_configuration" => function() use ($conn){
-        if(!__column_exists('registration_file_configuration', 'registration_ranges')) {
-            __exec("ALTER TABLE registration_file_configuration ADD COLUMN registration_ranges JSON NULL");
-        }
-
-        if(!__column_exists('registration_file_configuration', 'proponent_types')) {
-            __exec("ALTER TABLE registration_file_configuration ADD COLUMN proponent_types JSON NULL");
-        }
-    },
-    
     'create trigger to update children opportunities' => function () {
         __exec("CREATE OR REPLACE FUNCTION fn_propagate_opportunity_update()
                     RETURNS TRIGGER
@@ -2208,14 +2319,7 @@ $$
             }
         }
     },
-    "Cria colunas score e eligible na entidade Registration - correcao" => function() use ($conn){
-       if(!__column_exists('registration', 'score')) {
-            __exec("ALTER TABLE registration ADD COLUMN score FLOAT NULL");
-        } 
-        if(!__column_exists('registration', 'eligible')) {
-            __exec("ALTER TABLE registration ADD COLUMN eligible BOOLEAN NULL");
-        }
-    },
+
     'corrige os valores da distribuição de avaliação por categorias - correção' => function() use ($conn, $app) {
         if($values = $conn->fetchAll("SELECT * FROM evaluationmethodconfiguration_meta WHERE key = 'fetchCategories'")) {
             
@@ -2278,28 +2382,42 @@ $$
         __try('CREATE INDEX file_parent_idx ON file (parent_id)');
         __try('CREATE INDEX file_parent_object_type_idx ON file (parent_id, object_type)');
     },
-    'Corrige constraint enforce_geotype_geom da tabela geo_division' => function() use($conn) {
-        __try("ALTER TABLE geo_division DROP CONSTRAINT enforce_geotype_geom");
 
-        __try(
-            "ALTER TABLE 
-                geo_division 
-            ADD CONSTRAINT 
-                enforce_geotype_geom
-            CHECK 
-                (geometrytype(geom) = 'MULTIPOLYGON'::text OR 
-                geometrytype(geom) = 'POLYGON'::text OR geom IS NULL)
-        ");
-    },
-    'Ajusta as colunas registration_proponent_types, registration_ranges e registration_categories das oportuniodades para setar um array vazio quando as mesmas estiverem null' => function() use ($conn, $app){
-        __exec("UPDATE opportunity set registration_proponent_types = '[]' WHERE registration_proponent_types IS null OR registration_proponent_types::VARCHAR = '\"\"'");
-        __exec("UPDATE opportunity set registration_ranges = '[]' WHERE registration_ranges IS null OR registration_ranges::VARCHAR = '\"\"'");
-        __exec("UPDATE opportunity set registration_categories = '[]' WHERE registration_categories IS null OR registration_categories::VARCHAR = '\"\"'");
-    },
     'deleta requests com valores dos da coluna metadata inválidos' => function() use($conn) {
         __exec("delete from request where metadata = ':metadata'");
-    }
+    },
+    "Cria coluna continuous_flow na tabela opportunity" => function() use ($conn) {
+        if (!__column_exists('opportunity', 'continuous_flow')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN continuous_flow TIMESTAMP NULL");
+        }
+    },
 
+    "Renomeia a comissão de avaliação" => function () use($conn) {
+        $name = i::__('Comissão de avaliação');
+        $conn->executeQuery("
+            UPDATE agent_relation 
+            SET type = :type 
+            WHERE 
+                type = 'group-admin' AND 
+                object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'
+        ", ['type' => $name]);
+    },
     
+    'Limpa entradas duplicadas na tabela pcache e cria novos indices' => function() use($conn) {
+        __exec("DELETE 
+                FROM 
+                    pcache T1
+                USING 
+                    pcache T2 
+                WHERE 
+                    T1.id < T2.id AND
+                    T1.object_type = T2.object_type AND
+                    T1.object_id = T2.object_id AND
+                    T1.action = T2.action AND
+                    T1.user_id = T2.user_id
+        ");
+
+        __exec("CREATE UNIQUE INDEX unique_object_action ON pcache (object_type, object_id, action, user_id)");
+    }
 
 ] + $updates ;   

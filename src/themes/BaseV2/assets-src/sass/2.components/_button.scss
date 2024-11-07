@@ -33,20 +33,24 @@
         color: var(--mc-white);
     }
 
-    &--left-icon {
-        padding: 0 size(32);
+    &--left-icon, &--right-icon {
+        padding-inline: size(32);
 
         .iconify {
             position: absolute;
+        }
+    }
+
+    &--left-icon {
+
+        .iconify {
             left: size(8);
         }
     }
 
     &--right-icon {
-        padding-inline: size(32);
-        
+
         .iconify {
-            position: absolute;
             right: size(8);
         }
     }
@@ -61,7 +65,7 @@
     }
 
     // larguras
-    
+
     &--large {
         width: 100%;
     }
@@ -144,11 +148,11 @@
 
             &:hover {
                 border-color: var(--mc-primary-700);
-                background-color: var(--mc-primary-700);   
-                color: var(--mc-white);       
+                background-color: var(--mc-primary-700);
+                color: var(--mc-white);
             }
         }
-        
+
         &-noborder {
             background-color: var(--mc-white);
             border: size(2) solid var(--mc-white);
@@ -156,8 +160,8 @@
 
             &:hover {
                 border-color: var(--mc-primary-700);
-                background-color: var(--mc-primary-700);   
-                color: var(--mc-white);       
+                background-color: var(--mc-primary-700);
+                color: var(--mc-white);
             }
         }
     }
@@ -165,7 +169,7 @@
     &--primarylight {
         background-color: var(--mc-primary-300);
         border: size(2) solid var(--mc-primary-300);
-        color: var(--mc-low-500);
+        color: var(--mc-white);
 
         &:hover {
             border-color: var(--mc-primary-700);
@@ -190,7 +194,7 @@
         background-color: var(--mc-secondary-500);
         border: size(2) solid var(--mc-secondary-500);
         color: var(--mc-high-500);
-        
+
         &:hover {
             border-color: var(--mc-secondary-700);
             background-color: var(--mc-secondary-700);
@@ -307,7 +311,7 @@
         }
 
         &-danger {
-            background-color: var(--mc-white);
+            background-color: transparent;
             color: var(--mc-black);
             .iconify {
                 color: var(--mc-error);

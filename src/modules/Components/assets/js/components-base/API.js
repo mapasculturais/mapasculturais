@@ -277,7 +277,7 @@ class API {
                 result = objs.map(rawProcessor);
 
                 if(list) {
-                    objs.forEach(element => {
+                    result.forEach(element => {
                         list.push(element);
                     });
                 }
@@ -293,9 +293,14 @@ class API {
                 });
             }
 
-            result.metadata = JSON.parse(response.headers.get('API-Metadata'));
             
-            return result;
+            if(list) {
+                list.metadata = JSON.parse(response.headers.get('API-Metadata'));
+                return list;
+            }else {
+                result.metadata = JSON.parse(response.headers.get('API-Metadata'));
+                return result;
+            }
         }));
     }
 

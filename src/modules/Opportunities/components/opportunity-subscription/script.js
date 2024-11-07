@@ -25,6 +25,7 @@ app.component('opportunity-subscription' , {
 
     data () {
         let agent = null;
+        let agentCollective = null;
         let phases = null;
 
         if ($MAPAS.config.opportunitySubscription.agents.length == 1) {
@@ -37,6 +38,7 @@ app.component('opportunity-subscription' , {
 
         return {
             agent,
+            agentCollective,
             category: null,
             registrationRange: null,
             registrationProponentType: null,
@@ -87,6 +89,9 @@ app.component('opportunity-subscription' , {
                     case 'will open':
                         description = this.text('inscrições irão abrir');
                         break;
+                    case 'continuousFlow':
+                        description = this.text('fluxo contínuo');
+                        break;
                 }
             }
 
@@ -103,7 +108,9 @@ app.component('opportunity-subscription' , {
                 return true;
             }
             
-            if (this.registrationStatus(this.dateStart, this.dateEnd) == 'open') {
+            const regStatus = this.registrationStatus(this.dateStart, this.dateEnd);
+            // continuousFlow
+            if (regStatus == 'open' || regStatus == 'continuousFlow') {
                 return true;
             } else {
                 return false;
@@ -145,12 +152,26 @@ app.component('opportunity-subscription' , {
             const phase = this.phases.find(item => item.isLastPhase);
             return phase;
         },
+
+        proponentAgentRelation() {
+            return this.entity.proponentAgentRelation ?? {};
+        },
+
+        selectAgentRelationColetivo() {
+            return (this.registrationProponentType == 'Coletivo' && this.proponentAgentRelation['Coletivo'] == true) 
+                || (this.registrationProponentType == 'Pessoa Jurídica' && this.proponentAgentRelation['Pessoa Jurídica'] == true);
+        },
     },
 
     methods: {
         selectAgent(agent) {
-            this.agent = agent;
+            if (agent.type?.name && agent.type.name == "Coletivo") {
+                this.agentCollective = agent;
+            } else {
+                this.agent = agent;
+            }
         },
+
         removeAgent() {
             this.agent = null;
         },
@@ -171,33 +192,43 @@ app.component('opportunity-subscription' , {
             if (dateStart?._date > _actualDate) {
                 return 'will open';
             } else {
-                if (dateEnd?._date > _actualDate) {
+                if (dateEnd?._date && this.entity.isContinuousFlow && !this.entity.hasEndDate) {
+                    return 'continuousFlow';
+                } else if (dateEnd?._date > _actualDate) {
                     return 'open';
                 } else {
                     return 'closed';
                 }
             }     
         },
+
         async subscribe() {
             const messages = useMessages();
 
             if (!this.agent) {
                 messages.error(this.text('selecione agente'));
-                return;
+                return false;
+            } else if (this.registrationProponentType == 'Coletivo' && this.proponentAgentRelation['Coletivo'] == true && !this.agentCollective) {
+                messages.error(this.text('selecione agente coletivo'));
+                return false;
+            } else if (this.registrationProponentType == 'Pessoa Jurídica' && this.proponentAgentRelation['Pessoa Jurídica'] == true && !this.agentCollective) {
+                messages.error(this.text('selecione agente coletivo'));
+                return false;
             } else if (this.categories?.length && !this.category) {
                 messages.error(this.text('selecione categoria'));
-                return;
+                return false;
             } else if (this.registrationRanges?.length && !this.registrationRange) {
                 messages.error(this.text('selecione faixa'));
-                return;
+                return false;
             } else if (this.registrationProponentTypes?.length && !this.registrationProponentType) {
                 messages.error(this.text('selecione tipo do proponente'));
-                return;
+                return false;
             }
             this.processing = true;
 
             const registration = new Entity('registration');
             registration.opportunity = this.entity;
+            
             registration.owner = this.agent;
             if (this.category) {
                 registration.category = this.category;
@@ -212,6 +243,10 @@ app.component('opportunity-subscription' , {
             registration.disableMessages();
             try {
                 await registration.save().then(res => {
+                    if (this.agentCollective) {
+                        registration.addRelatedAgent('coletivo', this.agentCollective);
+                        registration.save();
+                    }
                     window.location.href = registration.editUrl;
                 });    
             } catch (error) {

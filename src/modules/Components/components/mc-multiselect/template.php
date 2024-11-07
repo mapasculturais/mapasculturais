@@ -10,7 +10,7 @@ $this->import('
     mc-popover
 ');
 ?>
-<div class="mc-multiselect">
+<div :class="['mc-multiselect', {'mc-multiselect--disabled' : disabled}]">
     <mc-popover :title="title" classes="mc-multiselect__popper">
         <template #button="popover">
             <slot :popover="popover" :setFilter="setFilter"></slot>
@@ -23,10 +23,17 @@ $this->import('
                         <mc-icon name="close"></mc-icon>
                     </span>
                 </div>
+
+                <div v-if="maxOptions && maxOptions > 0" class="mc-multiselect__count field">
+                    <label><?php i::_e('Você selecionou') ?>
+                    {{ model.length }}/{{ maxOptions }}
+                    <?php i::_e('opções') ?></label>
+                </div>
+
                 <ul v-if="items.length > 0 || Object.keys(items).length > 0" class="mc-multiselect__options">
                     <li v-for="item in filteredItems">
                         <label class="mc-multiselect__option">
-                            <input type="checkbox" :checked="model.indexOf(item.value) >= 0" @change="toggleItem(item.value)" class="input">
+                            <input type="checkbox" :checked="model.indexOf(item.value) >= 0" @change="toggleItem(item.value)" class="input" :disabled="!canSelectMore && model.indexOf(item.value) === -1">
                             <span class="text" v-html="highlightedItem(item.label)"></span>
                         </label>
                     </li>

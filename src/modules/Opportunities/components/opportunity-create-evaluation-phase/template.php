@@ -19,10 +19,10 @@ $this->import('
             <div class="col-12">
                 <entity-field :entity="phase" prop="name" hideRequired :placeholder="placeholder"></entity-field>
             </div>
-            <div class="col-6">
+            <div class="col-6" v-if="!isContinuousFlow">
                 <entity-field :entity="phase" prop="evaluationFrom" hideRequired :min="minDate" :max="phase.evaluationTo?._date"></entity-field>
             </div>
-            <div class="col-6">
+            <div class="col-6" v-if="!isContinuousFlow">
                 <entity-field :entity="phase" prop="evaluationTo" hideRequired :min="phase.evaluationFrom?._date" :max="maxDate"></entity-field>
             </div>
         </div>

@@ -21,6 +21,7 @@ $this->import('
     entity-parent-edit
     entity-profile
     entity-related-agents
+    entity-renew-lock
     entity-social-media
     entity-status
     entity-terms
@@ -40,6 +41,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
+    <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
 
@@ -70,7 +72,7 @@ $this->breadcrumb = [
                                     </div>
                                     <?php $this->applyTemplateHook('entity-info','end') ?>
                                 </div>
-                                <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Link para página ou site do projeto") ?>" prop="site"></entity-field>
                             </div>
                         </div>

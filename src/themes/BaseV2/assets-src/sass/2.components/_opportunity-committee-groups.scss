@@ -1,0 +1,80 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-committee-groups {
+    display: grid;
+
+    &__description {
+        margin-bottom: size(15);
+    }
+
+    &__actions {
+        display: flex;
+        gap: size(8);
+    }
+
+    &__group {
+        border-radius: var(--mc-border-radius-xs);
+        border: size(1) solid;
+        display: grid;
+        margin-top: size(16);
+    }
+
+    &__edit-group {
+        border-bottom: size(1) solid;
+        padding: size(16);
+
+        &--field {
+            display: flex;
+            gap: size(16);
+            justify-content: space-between;
+            align-items: center;
+
+            input {
+                max-width: 100%;
+                width: 80%;
+            }
+        }
+    }
+
+    &__evaluators,
+    &__multiple-evaluators {
+        display: grid;
+    }
+
+    &__evaluators,
+    &__multiple-evaluators {
+        border-bottom: size(1) solid;
+        gap: size(16);
+        padding: size(16);
+    }
+
+    &__evaluators {
+        border-bottom: none;
+
+        & .tabs-component {
+            display: grid;
+            gap: size(15);
+
+            &__header,
+            &__panels {
+                width: 100%;
+            }
+        }
+    }
+
+    &__multiple-evaluators {
+        gap: size(15);
+        justify-content: space-between;
+
+        input {
+            max-width: 100%;
+            width: size(96);
+            height: size(40);
+        }
+    }
+
+    .tabs-component {
+        max-width: size(1020);
+        min-width: 40%;
+    }
+}

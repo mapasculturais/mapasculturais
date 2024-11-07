@@ -13,7 +13,7 @@
         "opauth/logincidadao" : "*",
         "opauth/authentik" : "*",
         "pomo/pomo": "^1.5",
-        "psy/psysh": "^0.11.12",
+        "psy/psysh": "*",
         "respect/validation": "^2.2",
         "sinergi/browser-detector": "^6.1",
         "slim/psr7": "^1.6",
@@ -27,6 +27,7 @@
         "symfony/mime": "^6.3",
         "symfony/sendgrid-mailer": "^6.3",
         "league/csv": "^9.6.2",
+        "phpoffice/phpspreadsheet": "^2.0",
         "curl/curl": "1.2.*"
     },
     "autoload": {

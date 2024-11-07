@@ -52,8 +52,12 @@ return [
             'template' => 'start_data_collection_phase.html'
         ],
         'export_spreadsheet' => [
-            'title' => i::__("Arquivo gerado"),
+            'title' => i::__("Planilha disponível"),
             'template' => 'export_spreadsheet.html'
+        ],
+        'export_spreadsheet_error' => [
+            'title' => i::__("Houve um erro com o arquivo"),
+            'template' => 'export_spreadsheet_error.html'
         ],
         'send_registration' => [
             'title' => i::__("Inscrição enviada"),

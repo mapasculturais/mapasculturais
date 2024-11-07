@@ -39,6 +39,16 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $owner;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationStep
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\RegistrationStep")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="step_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $step;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
@@ -65,14 +75,14 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="categories", type="json", nullable=true)
      */
     protected $categories = [];
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="display_order", type="smallint", nullable=false)
      */
     protected $displayOrder = 255;
-    
+
     /**
      * @var boolean
      *
@@ -119,10 +129,10 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     static function getValidations() {
         $app = App::i();
         $validations = [
-            'owner' => [ 
+            'owner' => [
                 'required' => \MapasCulturais\i::__("A oportunidade é obrigatória.")
             ],
-            'title' => [ 
+            'title' => [
                 'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
             ]
         ];
@@ -140,7 +150,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     public function setOwnerId($id){
         $this->owner = App::i()->repo('Opportunity')->find($id);
     }
-    
+
     public function setCategories($value) {
         if(!$value){
             $value = [];
@@ -157,6 +167,14 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             $value = explode("\n", $value);
         }
         $this->registrationRanges = $value;
+    }
+
+    public function setStep(int|RegistrationStep $step) {
+        if (is_int($step)) {
+            $app = \MapasCulturais\App::i();
+            $step = $app->repo('RegistrationStep')->find($step);
+        }
+        $this->step = $step;
     }
 
     public function setProponentTypes($value) {
@@ -184,10 +202,11 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'conditionalValue' => $this->conditionalValue,
             'registrationRanges' => $this->registrationRanges ?: [],
             'proponentTypes' => $this->proponentTypes ?: [],
+            'step' => $this->step ?? null,
         ];
 
         $app = App::i();
-        
+
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
 
         return $result;

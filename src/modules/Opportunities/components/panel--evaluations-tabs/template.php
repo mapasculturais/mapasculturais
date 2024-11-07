@@ -18,7 +18,7 @@ $this->import('
     <?php $this->applyComponentHook('tabs', 'begin'); ?>
     <mc-tab label="<?= i::_e('Avaliações abertas e disponíveis') ?>" slug="openEvaluations" class="panel-evaluations">
         <?php $this->applyComponentHook('tabs-openEvaluations', 'begin'); ?>
-        <mc-entities name="evaluationsList" type="opportunity" endpoint="find" :query="query" select="id,name,parent.{name,status},status,registrationFrom,registrationTo">
+        <mc-entities name="evaluationsList" type="opportunity" endpoint="find" :query="query" select="id,name,parent.{name,status},status,registrationFrom,registrationTo,isContinuousFlow,hasEndDate">
             <template #header="{entities}">
                 <form class="panel-evaluations__filter form" @submit="entities.refresh(); $event.preventDefault();">
                     <?php $this->applyComponentHook('tabs-openEvaluations-filter', 'begin'); ?>

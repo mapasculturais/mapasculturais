@@ -1,7 +1,7 @@
 @use '../0.settings/mixins'as *;
 
 .form-builder {
-    background-color: var(--mc-gray-100);     
+    background-color: var(--mc-gray-100);
 
     &__cards .mc-card {
         height: 100%;
@@ -27,8 +27,18 @@
                 flex-direction: row;
                 gap: size(24);
 
-                &.no-padding-bottom {
-                    padding-bottom: 0;
+                & .input-box {
+                    display: flex;
+                    flex-direction: row;
+                    gap: size(24);
+
+                    .field__title {
+                        display: none;
+                    }
+                }
+
+                & .input__label {
+                    font-weight: normal;
                 }
             }
 
@@ -58,6 +68,16 @@
             &__title {
                 font-weight: 600;
             }
+        }
+    }
+
+    &__step-config {
+        align-items: flex-end;
+        display: flex;
+        margin: size(8) size(8) size(32);
+
+        .button--text-danger {
+            flex: none;
         }
     }
 }

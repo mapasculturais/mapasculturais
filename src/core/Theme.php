@@ -423,6 +423,8 @@ abstract class Theme {
     public function fullRender($__template, $data = null){
         $app = App::i();
 
+        $app->applyHookBoundTo($this, 'view.render(' . $__template . ').params', [&$data, &$__template]);
+
         $__template_filename = strtolower(substr($__template, -4)) === '.php' ? $__template : $__template . '.php';
         $render_data = [];
 
@@ -915,6 +917,9 @@ abstract class Theme {
                 $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
+                }
+                if ($opportunity->registrationSteps) {
+                    $e['opportunity']->registrationSteps = $opportunity->registrationSteps->toArray();
                 }
             }
             

@@ -50,6 +50,7 @@ class PermissionAction extends DoctrineEnumType
             'requestEventRelation' => 'requestEventRelation',
             'send' => 'send',
             'sendUserEvaluations' => 'sendUserEvaluations',
+            'sendEditableFields' => 'sendEditableFields',
             'support' => 'support',
             'unpublish' => 'unpublish',
             'unarchive' => 'unarchive',
@@ -60,6 +61,9 @@ class PermissionAction extends DoctrineEnumType
             'viewPrivateFiles' => 'viewPrivateFiles',
             'viewRegistrations' => 'viewRegistrations',
             'viewUserEvaluation' => 'viewUserEvaluation',
+            'modifyReadonlyData' => 'modifyReadonlyData',
+            'sendEditableFields' => 'sendEditableFields',
+            'applySeal' => 'applySeal'
         ];
     }
 }

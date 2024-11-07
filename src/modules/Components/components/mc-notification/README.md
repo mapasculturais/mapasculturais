@@ -1,14 +1,13 @@
 # Componente `<mc-notification>`
-A ideia do componente `mc-notification` é servir de modelo para a criação de notificações baseadas nos status `success`, `error` e `info`.
+O componente `mc-notification` é utilizado para exibir notificações de diferentes tipos (`sucesso`, `erro`, `informação`) na interface do usuário. Este componente aceita um tipo e uma mensagem, e exibe um ícone e a mensagem correspondente.
 
- 
 ## Propriedades
-- *String **type*** - Tipo de notificação
-- *String **message*** - Mensagem de exibição
+- *Type **string*** - Define o tipo da notificação. Pode ser success, error ou info.
+- *Message **String*** - A mensagem a ser exibida na notificação.
 
 ## Slots
-- **default** `{default}`: adiciona mensagem no slot
-
+- **default** `{msg}`: permite a personalização do conteúdo da mensagem exibida na notificação.
+ 
 ### Importando componente
 ```PHP
 <?php 
@@ -18,9 +17,12 @@ $this->import('mc-notification');
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<mc-notification type="success" message="Sucesso nesse processamento"></mc-notification>
+<mc-notification type="success" message="Operação realizada com sucesso"></mc-notification>
 
-<mc-notification type="success">
-    Sucesso nesse processamento
+<!-- Utilizando Slots -->
+<mc-notification type="error">
+    <template #default>
+        Ocorreu um erro durante a operação.
+    </template>
 </mc-notification>
 ```

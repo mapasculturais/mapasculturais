@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .tabs-component {
-    
+
     @include mobile {
         max-width: 100vw;
     }
@@ -13,7 +13,24 @@
         justify-content: space-between;
         max-width: size(1170);
         margin: 0 auto;
+        padding: 0 0 size(3);
         overflow-x: auto;
+
+        &::-webkit-scrollbar {
+            width: size(4);
+            height: size(4);
+        }
+
+        &::-webkit-scrollbar-track {
+            background: unset;
+            width: size(8);
+            height: size(8);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #6C6C6C;
+            border-radius: var(--mc-border-radius-pill);
+        }
 
         &--left {
             align-items: baseline;
@@ -38,7 +55,7 @@
         margin: 0;
         overflow: auto;
         padding: 0;
-        transform: rotateX(180deg); // Hack to put scrollbar above content
+        rotate: x 180deg; // Hack to put scrollbar above content
         white-space: nowrap;
         width: auto;
         gap: size(22);
@@ -48,8 +65,8 @@
     &__button {
         display: inline-block;
         list-style: none;
-        transform: rotateX(180deg);
-        
+        rotate: x 180deg;
+
         a {
             align-items: center;
             color: inherit;
@@ -64,7 +81,7 @@
             a {
                 font-weight: var(--mc-font-semibold);
             }
-            
+
             &::after {
                 border-radius: var(--mc-border-radius-sm);
                 background-color: black;
@@ -73,6 +90,14 @@
                 content: '';
                 width: 100%;
             }
+        }
+
+        &.sortable-chosen, &.sortable-ghost {
+            opacity: 0.5;
+        }
+
+        &.sortable-ghost:not(.sortable-chosen) {
+            rotate: none;
         }
 
         .iconify {

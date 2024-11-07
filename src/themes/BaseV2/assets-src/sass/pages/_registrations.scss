@@ -365,7 +365,8 @@
                     box-shadow: 3px 3px 3px rgba(0,0,0,.5);
 
                     .stepper {
-                        margin: 0 auto;
+                        margin-inline: auto;
+                        padding-inline: size(16);
 
                         @include mobile {
                             .step .label {
@@ -405,7 +406,7 @@
                                 border-radius: var(--mc-border-radius-sm);
                                 padding: size(16);
 
-                                &.owner {
+                                &.owner, &.collective {
                                     padding: size(16) size(24);
 
                                     .card__content {
@@ -421,6 +422,10 @@
                                     gap: size(10);
                                     line-height: size(25);
                                     margin-bottom: size(4);
+                                }
+
+                                &__mandatory {
+                                    margin-bottom: size(12);
 
                                     .obrigatory {
                                         color: var(--mc-error);
@@ -440,10 +445,16 @@
                                     display: flex;
                                     margin-top: size(16);
 
-                                    .owner {
-                                        align-items: center;
-                                        display: flex;
-                                        gap: size(9);
+                                    .owner, .collective {
+                                        display: grid;
+                                        grid-template-columns: 1fr auto;
+                                        gap: size(8);
+
+                                        &__content {
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: space-between;
+                                        }
 
                                         &__image {
                                             align-items: center;

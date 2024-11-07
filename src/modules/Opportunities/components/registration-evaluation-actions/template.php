@@ -15,12 +15,10 @@ $this->import('
 ?>
 <div class="registration-evaluation-actions__buttons" v-if="evaluationRegistrationList">
     <div class="grid-12">
-        <div class="col-12" v-if="showActions(registration, 'save')">
-            <button class="button button--primary button--large registration-evaluation-actions__buttons__saveafter" @click="saveReload()"> <?= i::__('Salvar e continuar depois') ?> </button>
-        </div>
         <div class="col-12" v-if="showActions(registration, 'finishEvaluation')">
-            <button class="button button--primary button--large registration-evaluation-actions__buttons__final" @click="finishEvaluation(registration)">
-                <?= i::__('Finalizar avaliação') ?>
+            <button class="button button--icon button--primary button--large registration-evaluation-actions__buttons__final" @click="finishEvaluation(registration)">
+                <mc-icon name="check"></mc-icon>
+                <?= i::__('Concluir avaliação') ?>
             </button>
         </div>
         <div class="col-12" v-if="showActions(registration, 'finishEvaluation')">
@@ -33,26 +31,33 @@ $this->import('
                 </template>
 
                 <template #actions="modal">
-                    <button class="button button--text button--text-del" @click="saveNext(registration); modal.close()"><?= i::__('Enviar Depois') ?></button>
-                    <button class="button button--primary" @click="finishEvaluationNext(registration); modal.close()"><?= i::__('Enviar agora') ?></button>
+                    <button class="button button--icon button--text button--text-del registration-evaluation-actions__buttons__saveafter" @click="saveNext(registration); modal.close()"><?= i::__('Enviar Depois') ?></button>
+                    <button class="button button--icon button--primary registration-evaluation-actions__buttons__finalcontinue" @click="finishEvaluationNext(registration); modal.close()"><?= i::__('Enviar agora') ?></button>
                 </template>
                 <template #button="modal">
                     <button class="button button--primary button--icon button--large registration-evaluation-actions__buttons__finalcontinue" @click="modal.open()">
-                        <span v-if="lastRegistration?.registrationid != registration.id"><?= i::__('Finalizar e avançar') ?></span>
+                    <mc-icon name="send" class="send-icon"></mc-icon>
+                        <span v-if="lastRegistration?.registrationid != registration.id"><?= i::__('Enviar avaliação') ?></span>
                         <span v-if="lastRegistration?.registrationid == registration.id"><?= i::__('Finalizar e enviar') ?></span>
-                        <mc-icon name="arrow-right-ios"></mc-icon>
+                        <mc-icon name="arrow-right-ios" class="arrow-icon"></mc-icon>
                     </button>
                 </template>
             </mc-modal>
         </div>
+        <div class="col-12" v-if="showActions(registration, 'save')">
+            <button class="button button--primary button--large registration-evaluation-actions__buttons__saveafter" @click="saveReload()"> <mc-icon name="clock"></mc-icon><?= i::__('Salvar e continuar depois') ?> </button>
+        </div>
 
         <div class="col-12" v-if="showActions(registration, 'reopen')">
-            <button class="button button--primary button--large button--large registration-evaluation-actions__buttons__reopen" @click="reopen(registration)"> <?= i::__('Reabrir avaliação') ?> </button>
+            <button class="button button--icon button--primary button--large button--large registration-evaluation-actions__buttons__reopen" @click="reopen(registration)"> 
+                <mc-icon name="clock"></mc-icon>
+                <?= i::__('Reabrir avaliação') ?> 
+            </button>
         </div>
         <div class="col-12" v-if="showActions(registration, 'send')">
             <button class="button button--primary button--icon button--large registration-evaluation-actions__buttons__send" @click="send(registration)">
+                <mc-icon name="send" class="send-icon"></mc-icon>
                 <?= i::__('Enviar avaliação') ?>
-                <mc-icon name="send"></mc-icon>
             </button>
         </div>
 

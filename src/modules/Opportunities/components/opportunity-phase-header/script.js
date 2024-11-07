@@ -26,6 +26,9 @@ app.component('opportunity-phase-header', {
         },
         dateTo () {
             const date = this.phase.registrationTo || this.phase.evaluationTo;
+            if (date && ((this.phase.isContinuousFlow || this.phase.opportunity?.isContinuousFlow) && (!this.phase.hasEndDate || !this.phase.opportunity?.hasEndDate))) {
+                return false;
+            }
             return date?.date('2-digit year');
         },
         publishDate () {

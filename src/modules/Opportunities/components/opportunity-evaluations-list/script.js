@@ -64,7 +64,6 @@ app.component('opportunity-evaluations-list', {
     methods: {
         colorByStatus(evaluation) {
             let result = 'pending';
-
             
             let eval = evaluation ? evaluation.status : null
             switch (eval) {
@@ -74,6 +73,7 @@ app.component('opportunity-evaluations-list', {
                     result = 'pending'
                     break;
                 case '0':
+                case 0:
                     result = 'started'
                     break;
                 case 1:
@@ -131,7 +131,8 @@ app.component('opportunity-evaluations-list', {
                         agentname: item.registration.owner?.name,
                         status: item?.evaluation?.status,
                         resultString: item?.evaluation?.resultString || null,
-                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id])
+                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id]),
+                        valuer: item?.valuer
                     }
                 });
                 this.filterKeyword = false;
@@ -152,17 +153,16 @@ app.component('opportunity-evaluations-list', {
             this.goTo(data)
         },
         goTo(data) {
-
             var index = null;
             this.evaluations.forEach((obj, i) => {
                 if (obj.registrationId === data.detail.registrationId) {
                     index = data.type === "nextEvaluation" ? i + 1 : i - 1;
                 }
             });
-
+            
             if (index >= 0 && index < this.evaluations.length) {
                 var url = this.evaluations[index].url.href;
-                window.location.href = url;
+                window.location.href = url +`user:${this.userEvaluatorId}`;
             }
 
         },

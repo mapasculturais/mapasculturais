@@ -181,7 +181,10 @@ $(function(){
                 if (insideEmbedTools) {
                     window.parent.postMessage({
                         type: 'evaluationForm.openForm',
-                        element: $field.get(0).outerHTML
+                        element: $field.get(0).outerHTML,
+                        fieldName: $field.get(0).id,
+                        fieldId: $field.get(0).dataset.fieldId,
+                        fieldType: $field.get(0).dataset.fieldType
                     })
                 } else {
                     openForm($field);
@@ -213,6 +216,10 @@ $(function(){
         $field.addClass(className);
     }
 
+    function clearStyles(className) {
+        const $field = $('li.js-field.field-shadow, li.registration-list-item.field-shadow')
+        $field.removeClass('field-shadow');
+    }
 
     window.addEventListener("message", function(event) {
         
@@ -229,6 +236,10 @@ $(function(){
 
             case 'evaluationRegistration.setClass':
                 setClass(event.data.className);
+            break;
+        
+            case 'evaluationRegistration.clearStyles':
+                clearStyles();
             break;
         }
     });
