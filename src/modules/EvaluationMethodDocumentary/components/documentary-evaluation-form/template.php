@@ -10,7 +10,7 @@ use MapasCulturais\i;
 $this->import('evaluation-actions');
 ?>
 <div class="documentary-evaluation-form grid-12 field">
-    <label><?= i::__('Avaliador') ?>: {{userName}}</label>
+    <label><?= i::__('Avaliador') ?>: {{name}}</label>
 
     <div v-if="enableForm" id="evaluation-form" class="documentary-evaluation-form__content col-12">
         <div class="documentary-evaluation-form__title">

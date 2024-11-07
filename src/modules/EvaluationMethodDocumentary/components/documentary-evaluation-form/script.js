@@ -40,7 +40,9 @@ app.component('documentary-evaluation-form', {
         status() {
             return $MAPAS.config.documentaryEvaluationForm.evaluationData?.status || 0;
         },
-        
+        name() {
+            return $MAPAS.user.profile.name;
+        },
         permetions() {
             return this.entity.currentUserPermissions.evaluateOnTime;
         }
