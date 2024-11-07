@@ -24,7 +24,7 @@ $this->import('
                                 <h3>{{ crit.name }}</h3>
                                 <span v-if="crit.nonEliminatory === 'false'"><?php i::_e('*') ?></span>
                             </div>
-                            <mc-popover openside="down-right">
+                            <mc-popover openside="down-right" v-if="crit.description">
                                 <template #button="popover">
                                     <a @click="popover.toggle()"> <mc-icon name="help"></mc-icon> </a>
                                 </template>
