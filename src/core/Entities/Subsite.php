@@ -312,10 +312,13 @@ class Subsite extends \MapasCulturais\Entity
             });
         }
 
-        $app->hook("ApiQuery(<<project|opportunity>>).params", function(&$api_params) use($subsite_id, $app) {
-            $api_params['_subsiteId'] = API::EQ($subsite_id);
-        });
-
+        foreach(['project', 'opportunity', 'space', 'agent', 'event'] as $entity_type){
+            if($this->{"filter_subsite_{$entity_type}"} ?: false){
+                $app->hook("ApiQuery({$entity_type}).params", function(&$api_params) use($subsite_id, $app) {
+                    $api_params['_subsiteId'] = API::EQ($subsite_id);
+                });
+            }
+        }
 
         $app->applyHookBoundTo($this, 'subsite.applyFilters:after');
     }
