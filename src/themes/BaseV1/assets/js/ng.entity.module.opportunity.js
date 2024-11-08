@@ -1286,6 +1286,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
     $scope.data.fields = RegistrationService.getFields();
+      
+    $scope.data.fieldsByStep = $scope.data.fields.reduce((acc, field) => {
+        const stepName = field.step.name;
+        if (!acc[stepName]) {
+            acc[stepName] = [];
+        }
+        acc[stepName].push(field);
+        return acc;
+    }, {});
+
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 

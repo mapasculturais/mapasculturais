@@ -114,6 +114,15 @@ $this->import('
                         >
                         </opportunity-registration-filter-configuration>
                     </div>
+
+                    <div class="field">
+                        <mc-toggle 
+                            v-if="groupName == minervaGroup"
+                            :modelValue="entity?.showExternalReviews"
+                            @update:modelValue="enableExternalReviews"
+                            label="<?= i::__('Permitir visualização de pareceres externos') ?>"
+                        />
+                    </div>
                 </div>
                 
                 <div class="opportunity-committee-groups__evaluators">

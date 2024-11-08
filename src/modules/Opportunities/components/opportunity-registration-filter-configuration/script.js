@@ -125,7 +125,7 @@ app.component('opportunity-registration-filter-configuration', {
     },
 
     methods: {
-        handleSelection() {
+        handleSelection(event) {
             this.isSelected = !!this.selectedField; 
         },
 
@@ -311,7 +311,7 @@ app.component('opportunity-registration-filter-configuration', {
             }
 
             let newConfig = [];
-            this.selectedConfigs.forEach(config => {;
+            this.selectedConfigs.forEach(config => {
                 if (!this.configs[this.selectedField].includes(config)) {
                     newConfig.push(config);
                 } else {

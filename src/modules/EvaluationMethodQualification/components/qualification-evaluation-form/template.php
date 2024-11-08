@@ -3,10 +3,23 @@
 use MapasCulturais\i;
 
 $this->import('
+    evaluation-actions
+    evaluation-qualification-detail
     mc-icon
+    mc-modal
     mc-popover
 ')
 ?>
+<mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+    <template #default>
+        <evaluation-qualification-detail :registration="entity"></evaluation-qualification-detail>
+    </template>
+
+    <template #button="modal">
+        <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
+    </template>
+</mc-modal>
+
 <div class="qualification-evaluation-form">
     <div v-for="section in sections" :key="section.id">
         <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
