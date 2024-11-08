@@ -777,6 +777,17 @@ textarea {
 .action-registrationview .registration .registration-fieldset {
     padding: 0;
 }
+
+.action-registrationview .registration .registration-fieldset .registration-step {
+    display: grid;
+}
+
+.action-registrationview .registration .registration-fieldset .registration-step__title {
+    padding: 1rem;
+    background-color: white;
+    font-weight: bold;
+}
+
 .action-registrationview .registration .registration-fieldset ul.attachment-list li {
     background-color: #FFFFFF;
     padding: 0 27px 16px;
