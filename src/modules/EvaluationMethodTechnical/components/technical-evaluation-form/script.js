@@ -17,11 +17,19 @@ app.component('technical-evaluation-form', {
             type: Boolean,
             default: true
         },
+
+        formData: {
+            type: Object,
+            required: true
+        }
     },
 
     created() {
-        this.formData['data'] = this.evaluationData || this.skeleton();
+        this.formData.data = this.evaluationData || this.skeleton();
         this.handleCurrentEvaluationForm();
+
+        const global = useGlobalState();
+        global.validateEvaluationErrors = this.validateErrors;
     },
 
     mounted() {
@@ -32,7 +40,6 @@ app.component('technical-evaluation-form', {
         return {
             obs: '',
             viability: null,
-            formData: {},
             isEditable: true,
         };
     },
