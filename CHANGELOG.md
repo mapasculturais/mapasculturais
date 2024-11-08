@@ -19,17 +19,22 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias
 - Redesenho do formulário de inscrição
-- Implementa aviso para sinalizar quando o total de vagas do edital não estiver preenchido e bloquear a opção de inserir configurações de cotas e distribuição por território
-- Implementa aviso para sinalizar quando o total de vagas distribuídas por território exceder o total de vagas do edital
-- Implementa aviso para sinalizar quando o total de vagas para cotistas exceder o total de vagas do edital
-
-### Correções
 
 ### Melhorias não funcionais
 - Novos tipos de metadados:
   - **object** - serializa / deserializa um json fazendo um cast para (object)
   - **array** - serializa / deserializa um json fazendo um cast para (array)
   - **entity** - possibilita a vinculação de entidade em metadados
+
+
+## [7.5.10] - unreleased
+### Correções
+- Corrige exibição do bloqueio de entidade na configuração de formulário
+
+### Melhorias
+- Implementa aviso para sinalizar quando o total de vagas distribuídas por território exceder o total de vagas do edital
+- Implementa aviso para sinalizar quando o total de vagas para cotistas exceder o total de vagas do edital
+- Implementa aviso para sinalizar quando o total de vagas do edital não estiver preenchido e bloquear a opção de inserir configurações de cotas e distribuição por território
 
 ## [7.5.9] - 2024-11-02
 ### Correções
