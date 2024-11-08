@@ -126,6 +126,16 @@ app.component('opportunity-registration-filter-configuration', {
 
     methods: {
         handleSelection(event) {
+            let selected = [];
+            let prop = event.target.value;
+            let _defaultValue = this.isGlobal ? this.defaultValue : this.getAgentData() || {};
+            if(prop in _defaultValue) {
+                for(item of _defaultValue[prop]) {
+                    selected.push(item);
+                }  
+            }
+        
+            this.selectedConfigs = selected
             this.isSelected = !!this.selectedField; 
         },
 
