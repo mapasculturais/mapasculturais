@@ -9,6 +9,11 @@ app.component('documentary-evaluation-form', {
         editable: {
             type: Boolean,
             default: true
+        },
+
+        formData: { 
+            type: Object,
+            required: true
         }
     },
 
@@ -19,12 +24,24 @@ app.component('documentary-evaluation-form', {
         return { text, messages };
     },
 
+    created() {
+        this.formData.data = {}
+
+        const global = useGlobalState();
+        global.validateEvaluationErrors = this.validateErrors;
+    },
+
+    mounted() {
+        window.addEventListener('evaluationRegistrationList', this.getEvaluationList);
+        window.addEventListener('documentaryData', this.getDocumentaryData);
+        window.addEventListener('responseEvaluation', this.processResponse);
+
+        this.isEditable = this.canEvaluate();
+    },
+
     data() {
         return {
             enableForm: false,
-            formData: {
-                data: {}
-            },
             fieldName: '',
             fieldId: null,
             fieldType: null,
@@ -137,13 +154,5 @@ app.component('documentary-evaluation-form', {
     
             return true;
         }
-    },
-
-    mounted() {
-        window.addEventListener('evaluationRegistrationList', this.getEvaluationList);
-        window.addEventListener('documentaryData', this.getDocumentaryData);
-        window.addEventListener('responseEvaluation', this.processResponse);
-
-        this.isEditable = this.canEvaluate();
     },
 });

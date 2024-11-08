@@ -12,11 +12,6 @@ app.component('evaluation-actions', {
             type: Object,
             required: true
         },
-        
-        validateErrors: {
-            type: Function,
-            required: true
-        }
     },
 
     setup() {
@@ -29,7 +24,7 @@ app.component('evaluation-actions', {
     },
 
     data() {
-        return {
+        return {            
             evaluationRegistrationList: null,
             currentEvaluation: $MAPAS.config.evaluationActions?.currentEvaluation || null,
             oldEvaluation: null
@@ -61,7 +56,9 @@ app.component('evaluation-actions', {
         
         requestEvaluation(action, data = {}, args = {}, controller = 'registration') {
             return new Promise((resolve, reject) => {
-                if (action == 'reopenEvaluation' || !this.validateErrors()) {
+                const global = useGlobalState();
+                
+                if (action == 'reopenEvaluation' || !global.validateEvaluationErrors()) {
                     const api = new API(controller);
                     let url = api.createUrl(action, args);
                     let result = api.POST(url, data);

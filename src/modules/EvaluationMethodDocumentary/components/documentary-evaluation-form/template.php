@@ -44,6 +44,4 @@ $this->import('evaluation-actions');
             </label>
         </div>
     </div>
-
-    <evaluation-actions class="col-12" :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
 </div>

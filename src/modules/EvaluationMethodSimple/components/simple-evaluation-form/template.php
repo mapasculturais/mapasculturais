@@ -30,7 +30,4 @@ $this->import('
             <textarea v-if="!isEditable" disabled>{{formData.obs}}</textarea>
         </div>
     </div>
-    <div class="simple-evaluation-form__actions">
-        <evaluation-actions :formData="{data: formData}" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
-    </div>
 </div>

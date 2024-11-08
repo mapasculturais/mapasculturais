@@ -3,7 +3,6 @@
 use MapasCulturais\i;
 
 $this->import('
-    evaluation-actions
     mc-icon
     mc-popover
 ')
@@ -98,5 +97,4 @@ $this->import('
             </label>
         </div>
     </div>
-    <evaluation-actions :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
 </div>
