@@ -519,15 +519,18 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
         const step = MapasCulturais.step;
 
         $scope.steps = [];
-        
-        function onMessage ({ data: event }) {
+
+        function sendMessage(type, data = null) {
+            $window.parent.postMessage({ type, data });
+        }
+        sendMessage('opportunity-form:iframeLoaded');
+
+        function receiveMessage ({ data: event }) {
             if (event.type === 'opportunity-form:steps') {
                 $scope.steps = event.data;
             }
         }
-        $window.parent.postMessage({ type: 'opportunity-form:iframeLoaded' });
-        $window.addEventListener('message', onMessage);
-        // $window.removeEventListener('message', onMessage);
+        $window.addEventListener('message', receiveMessage);
 
         $scope.changeFieldStep = function (field) {
             fieldService.edit({ ...field, step: field.step.id });
