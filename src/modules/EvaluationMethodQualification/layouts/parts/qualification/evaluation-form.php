@@ -10,4 +10,4 @@ $this->import('
 ');
 ?>
 
-<qualification-evaluation-form :entity="entity"></qualification-evaluation-form>
+<qualification-evaluation-form :entity="entity" :form-data="formData"></qualification-evaluation-form>

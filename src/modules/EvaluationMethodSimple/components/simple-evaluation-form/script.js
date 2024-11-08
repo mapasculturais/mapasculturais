@@ -11,6 +11,11 @@ app.component('simple-evaluation-form', {
             type: Boolean,
             default: true
         },
+
+        formData: {
+            type: Object,
+            required: true
+        }
     },
 
     setup() {
@@ -26,8 +31,16 @@ app.component('simple-evaluation-form', {
     },
 
     created() {
-        this.formData = this.evaluationData || this.skeleton();
+        const formData = this.evaluationData || this.skeleton();
+
+        for(let key in formData) {
+            this.formData[key] = formData[key];
+        }
+        
         this.handleCurrentEvaluationForm();
+
+        const global = useGlobalState();
+        global.validateEvaluationErrors = this.validateErrors;
     },
 
     mounted() {

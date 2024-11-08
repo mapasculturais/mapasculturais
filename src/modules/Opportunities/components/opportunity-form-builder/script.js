@@ -48,17 +48,17 @@ app.component('opportunity-form-builder' , {
                 }
             });
 
-            this.propagateSteps();
+            this.sendStepsMessage();
         },
     },
 
     beforeMount () {
-        window.addEventListener('message', this.onMessage);
-        this.propagateSteps();
+        window.addEventListener('message', this.receiveMessage);
+        this.sendStepsMessage();
     },
 
     beforeUnmount () {
-        window.removeEventListener('message', this.onMessage);
+        window.removeEventListener('message', this.receiveMessage);
     },
 
     methods: {
@@ -90,18 +90,19 @@ app.component('opportunity-form-builder' , {
                 tabsComp.activeTab = tabsComp.tabs[0];
             });
         },
-        propagateSteps () {
+        receiveMessage ({ data: event }) {
+            if (event.type === 'opportunity-form:iframeLoaded') {
+                this.sendStepsMessage();
+            }
+        },
+        sendMessage (type, data) {
             document.querySelectorAll('iframe').forEach((iframe) => {
-                iframe.contentWindow.postMessage({
-                    type: 'opportunity-form:steps',
-                    data: this.steps.map(({ __objectType, id, name }) => ({ __objectType, id, name })),
-                });
+                iframe.contentWindow.postMessage({ type, data });
             });
         },
-        onMessage ({ data: event }) {
-            if (event.type === 'opportunity-form:iframeLoaded') {
-                this.propagateSteps();
-            }
+        sendStepsMessage () {
+            const simpleSteps = this.steps.map(({ __objectType, id, name }) => ({ __objectType, id, name }));
+            this.sendMessage('opportunity-form:steps', simpleSteps);
         },
     },
 });
