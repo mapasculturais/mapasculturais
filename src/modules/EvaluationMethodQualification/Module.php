@@ -67,19 +67,43 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation)
     {
-        $approved = [i::__('Habilitado'), i::__('Não se aplica')];
-        $result = i::__("Habilitado");
+        $approved = ['valid', 'not-applicable'];
+        $result = 'valid';
         $cfg = $evaluation->getEvaluationMethodConfiguration();
-        foreach(($cfg->criteria ?? []) as $cri){
-            $key = $cri->id;
-            if(!isset($evaluation->evaluationData->$key)){
-                return null;
-            } else {
-                if(!in_array($evaluation->evaluationData->$key, $approved)){
-                    $result = i::__("Inabilitado");
+        
+        foreach(($cfg->sections ?? []) as $section) {
+            $number_max_non_liminatory = $section->numberMaxNonEliminatory;
+            $non_eliminatory_count = 0;
+
+            foreach(($cfg->criteria ?? []) as $cri){
+                if($cri->sid != $section->id){
+                    continue;
+                }
+                $key = $cri->id;
+
+                $non_eliminatory = ($cri->nonEliminatory ?? false) == 'true';
+
+                if(!isset($evaluation->evaluationData->$key)){
+                    return null;
+                } else {
+                    if(($non_eliminatory)) {
+                        if(!in_array($evaluation->evaluationData->$key, $approved)){
+                            $non_eliminatory_count++;
+                        }
+                    } else {
+                        if(!in_array($evaluation->evaluationData->$key, $approved)){
+                            $result = 'invalid';
+                            break;
+                        }
+                    }
+                }
+
+                if($non_eliminatory_count > $number_max_non_liminatory){
+                    $result = 'invalid';
                     break;
                 }
             }
+
         }
 
         return $result;
@@ -87,10 +111,11 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     protected function _valueToString($value)
     {
+        $statuses = $this->getEvaluationStatues();
         if(is_null($value)){
-            return i::__('');
+            return '';
         } else {
-            return $value;
+            return $statuses[$value] ?? $value;
         }
     }
 
@@ -183,7 +208,8 @@ class Module extends \MapasCulturais\EvaluationMethod
             if(isset($data[$c->id])){
                 $values = $data[$c->id];
                 $options = ['Habilitado', 'Inabilitado', 'Não se aplica', 'Outras'];
-                if($c->options) {
+                
+                if($c->options ?? false) {
                     $options = array_merge($c->options, $options);
                 }
 

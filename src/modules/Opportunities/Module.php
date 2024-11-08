@@ -133,8 +133,8 @@ class Module extends \MapasCulturais\Module{
             /** @var EvaluationMethodConfigurationAgentRelation $this */
             $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner]);
         });
-        
-        $app->hook('entity(EvaluationMethodConfiguration).meta(<<valuersPerRegistration|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes>>).<<insert|update|delete>>:after', function() use($app) {
+        $_metadata_list = 'valuersPerRegistration|ignoreStartedEvaluations|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes';
+        $app->hook("entity(EvaluationMethodConfiguration).meta(<<{$_metadata_list}>>).<<insert|update|delete>>:after", function() use($app) {
             /** @var EvaluationMethodConfigurationMeta $this */
             $this->owner->mustRedistributeCommitteeRegistrations = true;
         });
@@ -142,7 +142,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app) {
             /** @var EvaluationMethodConfiguration $this */
             if ($this->mustRedistributeCommitteeRegistrations) {
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this]);
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this]);    
             }
         });
 
@@ -860,13 +860,8 @@ class Module extends \MapasCulturais\Module{
             'type' => 'json',
         ]);
 
-        $this->registerEvauationMethodConfigurationMetadata('valuersPerRegistration', [
-            'label' => i::__('Quantidade de avaliadores por inscrição'),
-            'type' => 'json',
-        ]);
-
         $this->registerEvauationMethodConfigurationMetadata('autoApplicationAllowed', [
-            'label' => i::__('Auto aplicação de resultados'),
+            'label' => i::__('Autoaplicação de resultados'),
             'type' => 'boolean',
             'default' => false
         ]);
@@ -895,6 +890,16 @@ class Module extends \MapasCulturais\Module{
 
         $this->registerEvauationMethodConfigurationMetadata('fetchFields', [
             'label' => i::__('Configuração filtro de inscrição para avaliadores/comissão'),
+            'type' => 'object',
+        ]);
+        
+        $this->registerEvauationMethodConfigurationMetadata('valuersPerRegistration', [
+            'label' => i::__('Quantidade de avaliadores por inscrição'),
+            'type' => 'object',
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('ignoreStartedEvaluations', [
+            'label' => i::__('Quantidade de avaliadores por inscrição'),
             'type' => 'object',
         ]);
 

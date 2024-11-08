@@ -95,6 +95,10 @@
         }
     }
 
+    &__cancel-invitation {
+        float: inline-end;
+    }
+
     &__card-status-wrapper {
         display: flex;
         flex-direction: column;
@@ -155,10 +159,6 @@
         &-actions {
             display: flex;
             gap: size(16);
-        }
-
-        &-button {
-            background-color: var(--mc-gray-100);
         }
     }
 }

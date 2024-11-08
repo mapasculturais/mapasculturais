@@ -28,11 +28,15 @@ $this->import('
             </template>
         </select-entity>
 
-        <div class="opportunity-evaluation-committee__expand-button">
+        <div v-if="showReviewers" class="opportunity-evaluation-committee__expand-button">
             <button class="button button--primary" @click="expandAllToggles">
                 <?php i::_e('Expandir todos os avaliadores') ?>
             </button>
         </div>
+    </div>
+
+    <div v-if="!showReviewers" class="opportunity-evaluation-committee__content">
+        <?= i::__('Sem avaliadores a serem listados.') ?>
     </div>
 
     <div v-if="showReviewers" class="opportunity-evaluation-committee__content">
@@ -54,7 +58,7 @@ $this->import('
                         </div>
                     </div>
                     <div class="opportunity-evaluation-committee__card-status">
-                        <div v-if="hasEvaluationConfiguration(infoReviewer?.agentUserId)" class="opportunity-evaluation-committee__card-status-wrapper field">
+                        <div v-if="hasEvaluationConfiguration(infoReviewer?.agentUserId) && infoReviewer.status != -5" class="opportunity-evaluation-committee__card-status-wrapper field">
                             <label class="status-label"><?= i::_e('Status das avaliações:') ?></label>
                             <div class="opportunity-evaluation-committee__summary">
                                 <span class="opportunity-evaluation-committee__summary--pending semibold">
@@ -72,9 +76,36 @@ $this->import('
                             </div>
                         </div>
 
-                        <mc-alert v-else type="warning">
-                            <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?>
+                        <mc-alert v-else type="warning" small>
+                            <p v-if="!hasEvaluationConfiguration(infoReviewer?.agentUserId)"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?> </p>
+                            <p v-if="infoReviewer.status == -5"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?> </p>
                         </mc-alert>
+
+                        <mc-confirm-button v-if="infoReviewer.status == -5" @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
+                            <template #button="{open}">
+                                <button class="opportunity-evaluation-committee__cancel-invitation button button--text-danger button--icon button--sm col-3" @click="open()">
+                                    <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
+                                </button>
+                            </template> 
+                            <template #message="message">
+                                <p> <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?> </p>
+                            </template> 
+                        </mc-confirm-button>
+
+                        <!-- <div class="opportunity-evaluation-committee__card-footer-alert">
+                            <div v-if="infoReviewer.status == -5">
+                                <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
+                                    <template #button="{open}">
+                                        <button class="button button--text-danger button--icon button--sm col-3" @click="open()">
+                                            <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
+                                        </button>
+                                    </template> 
+                                    <template #message="message">
+                                        <p> <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?> </p>
+                                    </template> 
+                                </mc-confirm-button>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -102,28 +133,6 @@ $this->import('
                             <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
                         </template> 
                     </mc-confirm-button>
-                    
-                    <div class="opportunity-evaluation-committee__card-footer-alert">
-                        <div v-if="infoReviewer.status == -5" class="grid-12">
-                            <mc-alert type="warning" class="col-9">
-                                <div class="col-9">
-                                    <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?>
-                                </div>
-                            </mc-alert>
-                            <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
-                                <template #button="{open}">
-                                    <button class="opportunity-evaluation-committee__card-footer-button button button--delete button--icon button--sm col-3" @click="open()">
-                                        <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
-                                    </button>
-                                </template> 
-                                <template #message="message">
-                                    <p>
-                                        <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?>
-                                    </p>
-                                </template> 
-                            </mc-confirm-button>
-                        </div>
-                    </div>
 
                     <div class="opportunity-evaluation-committee__card-footer-actions" v-if="infoReviewer.status !== -5">
                         <button class="opportunity-evaluation-committee__card-footer-button button button--disable button--icon button--sm" @click="disableOrEnableReviewer(infoReviewer)">
