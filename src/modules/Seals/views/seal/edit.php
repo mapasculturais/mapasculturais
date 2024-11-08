@@ -61,7 +61,7 @@ $this->breadcrumb = [
         </mc-tab>
         <mc-tab label="<?= i::__('Bloqueio de campos') ?>" slug="info_block">
             <div class="tabs__info">
-                <seal-locked-field classes="tabs-seal-edit" :entity="entity"></seal-locked-field>
+                <seal-locked-field :entity="entity"></seal-locked-field>
             </div>
         </mc-tab>
     </mc-tabs>

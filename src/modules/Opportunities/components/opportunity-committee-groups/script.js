@@ -38,6 +38,12 @@ app.component('opportunity-committee-groups', {
     mounted() {
         this.initializeGroups();
         this.initiliazeProperties();
+
+        this.$nextTick(() => {
+            if (!this.$refs.tabs.activeTab) {
+                this.$refs.tabs.activeTab = this.$refs.tabs.tabs[0];
+            }
+        });
     },
     
     methods: {
@@ -67,7 +73,7 @@ app.component('opportunity-committee-groups', {
         },
 
         initiliazeProperties() {
-            const props = ['fetchFields', 'valuersPerRegistration'];
+            const props = ['fetchFields', 'valuersPerRegistration', 'ignoreStartedEvaluations'];
 
             for (let group of props) {
                 if (!this.entity[group] || this.entity[group] instanceof Array) {
@@ -78,6 +84,26 @@ app.component('opportunity-committee-groups', {
 
         hasGroups() {
             return this.hasGroupsFlag;
+        },
+
+        groupCreation(event, popover) {
+            event.preventDefault();
+            this.addGroup(this.newGroupName);
+            popover.close();
+
+            this.$nextTick(() => {
+                this.$refs.tabs.tabs.forEach(tab => {
+                    if (tab.label == this.newGroupName) {
+                        this.$refs.tabs.activeTab = tab;
+                        this.newGroupName = '';
+                    }
+                });
+            });
+        },
+
+        cancelGroupCreation(popover) {
+            popover.close()
+            this.newGroupName = '';
         },
 
         addGroup(group, disableMinervaGroup = false) {
@@ -203,6 +229,18 @@ app.component('opportunity-committee-groups', {
                 } 
             } else {
                 delete this.entity.valuersPerRegistration[group];
+            }
+
+            this.autoSave();
+        },
+
+        enableIgnoreStartedEvaluations(value, group) {
+            if (value) {
+                if (!this.entity.ignoreStartedEvaluations[group]) {
+                    this.entity.ignoreStartedEvaluations[group] = true;
+                } 
+            } else {
+                delete this.entity.ignoreStartedEvaluations[group];
             }
 
             this.autoSave();

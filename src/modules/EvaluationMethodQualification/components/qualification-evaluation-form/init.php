@@ -46,6 +46,8 @@ foreach ($sections as $section) {
         'categories' => $section->categories ?? [],
         'proponentTypes' => $section->proponentTypes ?? [],
         'ranges' => $section->ranges ?? [],
+        'maxNonEliminatory' => $section->maxNonEliminatory ?? false,
+        'numberMaxNonEliminatory' => $section->numberMaxNonEliminatory ?? 0,
     ];
     
     foreach ($criteria as $crit) {
@@ -65,6 +67,7 @@ foreach ($sections as $section) {
                 'proponentTypes' => $crit->proponentTypes ?? [],
                 'ranges' => $crit->ranges ?? [],
                 'otherReasonsOption' => $crit->otherReasonsOption ?? [],
+                'nonEliminatory' => $crit->nonEliminatory ?? false,
             ];
             
             if ($critStatus === 'avaliada') {
