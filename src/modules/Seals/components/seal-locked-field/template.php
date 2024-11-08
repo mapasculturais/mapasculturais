@@ -10,60 +10,74 @@ $this->import('
     mc-card
 ');
 ?>
-<div :class="classes">
+<div class="seal-locked-field">
     <div class="seal-locked-field__title">
-        <h4><?php i::_e("Selecione abaixo os campos que devem ser bloqueados nos agentes e espaços que possuírem este selo") ?></h4>
+        <h3><?php i::_e("Selecione abaixo os campos que devem ser bloqueados nos agentes e espaços que possuírem este selo") ?></h3>
     </div>
 
-    <mc-card class="seal-locked-field__card">
+    <mc-card>
         <template #title>
-            <h3><?php i::_e("Agentes") ?></h3>
+            <h3><?= i::__("Agentes") ?></h3>
         </template>
         <template #content>
-            <div class="seal-locked-field__container">
-                <div class="grid-12">
-                    <div v-for="(item, index) in agents" class="sm:col-6 col-3">
-                        <input type="checkbox" v-model="item.value" /> {{ item.label }}
+
+            <div class="seal-locked-field__groups">
+                <div class="seal-locked-field__group">
+                    <div class="seal-locked-field__group-title">
+                        <h4 class="bold"><?php i::_e("Campos dos agentes") ?></h4>
+                    </div>
+                    <div class="seal-locked-field__group-inputs">
+                        <label class="input__label input__checkboxLabel input__multiselect" v-for="(item, index) in agents">
+                            <input type="checkbox" v-model="item.value" /> {{ item.label }}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="seal-locked-field__group">
+                    <div class="seal-locked-field__group-title">
+                        <h4 class="bold"><?php i::_e("Taxonomias dos agentes") ?></h4>
+                    </div>
+                    <div class="seal-locked-field__group-inputs">
+                        <label class="input__label input__checkboxLabel input__multiselect" v-for="(item, index) in taxonomiesAgents">
+                            <input type="checkbox" v-model="item.value" /> {{ item.label }}
+                        </label>
                     </div>
                 </div>
             </div>
-            <div class="seal-locked-field__container">
-                <h5><?php i::_e("Taxonomias") ?></h5>
-                <div class="grid-12">
-                    <div v-for="(item, index) in taxonomiesAgents" class="sm:col-6 col-3">
-                        <input type="checkbox" v-model="item.value" /> {{ item.label }}
-                    </div>
-                </div>
-            </div>
+
         </template>
     </mc-card>
 
-    <mc-card class="seal-locked-field__card">
+    <mc-card>
         <template #title>
             <h3><?php i::_e("Espaços") ?></h3>
         </template>
-
         <template #content>
-            <div class="seal-locked-field__container">
-                <div class="grid-12">
-                    <div class="col-12">
-                        <div class="grid-12">
-                            <div v-for="(item, index) in spaces" class="sm:col-6 col-3">
-                                <input type="checkbox"  v-model="item.value" /> {{ item.label }}
-                            </div>
-                        </div>
+
+            <div class="seal-locked-field__groups">    
+                <div class="seal-locked-field__group">
+                    <div class="seal-locked-field__group-title">
+                        <h4 class="bold"><?php i::_e("Campos dos espaços") ?></h4>
                     </div>
-                    <div class="col-12">
-                        <h5><?php i::_e("Taxonomias") ?></h5>
-                        <div class="grid-12">
-                            <div v-for="(item, index) in taxonomiesSpaces" class="sm:col-6 col-3">
-                                <input type="checkbox" v-model="item.value" /> {{ item.label }}
-                            </div>
-                        </div>
+                    <div class="seal-locked-field__group-inputs">
+                        <label class="input__label input__checkboxLabel input__multiselect" v-for="(item, index) in spaces">
+                            <input type="checkbox" v-model="item.value" /> {{ item.label }}
+                        </label>
                     </div>
                 </div>
 
+                <div class="seal-locked-field__group">
+                    <div class="seal-locked-field__group-title">
+                        <h4 class="bold"><?php i::_e("Taxonomia dos espaços") ?></h4>
+                    </div>
+                    <div class="seal-locked-field__group-inputs">
+                        <label class="input__label input__checkboxLabel input__multiselect" v-for="(item, index) in taxonomiesSpaces">
+                            <input type="checkbox" v-model="item.value" /> {{ item.label }}
+                        </label>
+                    </div>
+                </div>
             </div>
+
         </template>
     </mc-card>
 </div>
