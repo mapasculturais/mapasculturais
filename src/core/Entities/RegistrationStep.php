@@ -75,6 +75,11 @@ class RegistrationStep extends \MapasCulturais\Entity
         return 'registrationstep';
     }
 
+    function __construct() {
+        parent::__construct();
+        $this->metadata = new \stdClass();
+    }
+
     function setOpportunity(int|Opportunity $opportunity) {
         if(is_int($opportunity)) {
             $app = \MapasCulturais\App::i();
