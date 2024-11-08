@@ -1,27 +1,29 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->layout = 'registrations';
 $this->import('
+    evaluation-form
+    mc-alert
     mc-breadcrumb
     mc-container
-    opportunity-evaluations-list
-    mc-alert
     mc-summary-agent
     mc-summary-agent-info
     mc-summary-evaluate
     mc-summary-project
     mc-summary-spaces
+    opportunity-evaluations-list
     opportunity-header
     registration-evaluation-actions
+    registration-evaluation-info
     registration-info
     v1-embed-tool
-    registration-evaluation-info
 ');
-
-$opportunity = $entity->opportunity;
-$evaluation_method_config_name = $opportunity->evaluationMethodConfiguration->name;
 
 $breadcrumb = [
     ['label' => i::__('Início'), 'url' => $app->createUrl('panel', 'opportunities')],
@@ -91,15 +93,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 
             <aside class="col-3">
                 <div class="registration__right-sidebar">
-                    <div class="registration__actions">
-                        <h2 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $evaluation_method_config_name ?></strong></h2>
-                        <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-
-                        <?php $this->part("{$entity->opportunity->evaluationMethod->slug}/evaluation-form"); ?>
-                    </div>
+                    <evaluation-form :entity="entity"></evaluation-form>
                 </div>
+            </aside>
         </div>
-        </aside>
     </div>
-</div>
 </div>

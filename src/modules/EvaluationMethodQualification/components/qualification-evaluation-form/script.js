@@ -21,25 +21,31 @@ app.component('qualification-evaluation-form', {
             type: Boolean,
             default: true
         },
+
+        formData: {
+            type: Object,
+            required: true
+        }
     },
 
     data() {
         return {
-            formData: {
-                sectionStatus: {},
-                obs: '',
-                data: {},
-                reason: {},
-            },
             isEditable: true,
             evaluationId: null,
         };
     },
 
     created() {
+        this.formData.sectionStatus = {};
+        this.formData.obs = '';
+        this.formData.data = {};
+        this.formData.reason = {};
+        
         this.isEditable = this.status > 0 ? false : this.editable;
-
         this.initializedCriteriaData();
+
+        const global = useGlobalState();
+        global.validateEvaluationErrors = this.validateErrors;
     },
     
     mounted() {
