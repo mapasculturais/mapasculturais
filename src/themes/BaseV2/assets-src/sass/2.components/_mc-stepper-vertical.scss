@@ -426,6 +426,9 @@ ol.mc-stepper-vertical>li.active::before {
                 }
 
                 &__type {
+                    display: flex;
+                    gap: size(8);
+                    
                     .title {
                         color: var(--mc-gray-700);
                         font-size: size(14);
