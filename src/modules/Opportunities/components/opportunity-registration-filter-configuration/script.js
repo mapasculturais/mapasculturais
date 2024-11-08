@@ -394,7 +394,7 @@ app.component('opportunity-registration-filter-configuration', {
                                 this.entity.fetchSelectionFields = {};
                             }
 
-                            if (!this.entity.fetchSelectionFields[agentId]) {
+                            if (!this.entity.fetchSelectionFields[agentId] || Object.keys(this.entity.fetchSelectionFields[agentId]).length <= 0) {
                                 this.entity.fetchSelectionFields[agentId] = {};
                             }
                             
