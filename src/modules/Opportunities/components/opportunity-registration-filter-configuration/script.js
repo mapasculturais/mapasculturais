@@ -125,7 +125,7 @@ app.component('opportunity-registration-filter-configuration', {
     },
 
     methods: {
-        handleSelection() {
+        handleSelection(event) {
             this.isSelected = !!this.selectedField; 
         },
 
