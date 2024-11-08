@@ -12,4 +12,6 @@ return [
     'O campo Parecer é obrigatório.' => i::__('O campo Parecer é obrigatório.'),
     'Não se aplica' => i::__('Não se aplica'),
     'Outras' => i::__('Outras'),
+    'Habilitado' => i::__('Habilitado'),
+    'Inabilitado' => i::__('Inabilitado'),
 ];

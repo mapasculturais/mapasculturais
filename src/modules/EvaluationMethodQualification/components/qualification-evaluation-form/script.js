@@ -31,7 +31,6 @@ app.component('qualification-evaluation-form', {
                 data: {},
                 reason: {},
             },
-            consolidatedResult: this.text('Atende'),
             isEditable: true,
             evaluationId: null,
         };
@@ -46,9 +45,7 @@ app.component('qualification-evaluation-form', {
     mounted() {
         window.addEventListener('responseEvaluation', this.processResponse);
 
-        if(!this.isEditable) {
-            this.updateSectionStatusByFromData();
-        }
+        this.updateSectionStatusByFromData();
     },
 
     computed: {
@@ -68,6 +65,9 @@ app.component('qualification-evaluation-form', {
         currentEvaluation() {
             return $MAPAS.config.qualificationEvaluationForm.currentEvaluation;
         },
+        consolidatedResult() {
+            return this.consolidated();
+        }
     },
 
     methods: {
@@ -75,35 +75,7 @@ app.component('qualification-evaluation-form', {
             let value = event.target.value;
             this.formData.data[criteriaId] = [value];
             
-            const section = this.sections.find(sec => sec.id === sectionId);
-
-            if (!section) return;
-
-            let nonEliminatoryCount = 0;
-            let eliminatoryCrit = false;
-
-            section.criteria.forEach(crit => {
-                const critValue = this.formData.data[crit.id];
-                if (!Array.isArray(critValue)) return;
-
-                if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
-                    eliminatoryCrit = true;
-                } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
-                    nonEliminatoryCount++;
-                }
-            });
-
-            let newStatus;
-            if (eliminatoryCrit || nonEliminatoryCount > section.numberMaxNonEliminatory) {
-                newStatus = this.text('Não atende');
-            } else {
-                newStatus = this.text('Atende');
-            }
-
-            this.formData.sectionStatus = {
-                ...this.formData.sectionStatus,
-                [sectionId]: newStatus
-            };
+            this.formData.sectionStatus[sectionId] = this.sectionStatus(sectionId);
 
             this.consolidated();
         },
@@ -150,18 +122,42 @@ app.component('qualification-evaluation-form', {
         },
 
         consolidated (){
-            let totalSections = this.sections.length;
-            let sectionsEvaluated = Object.values(this.formData.sectionStatus).length;
-            
-            if(sectionsEvaluated > 0 && sectionsEvaluated < totalSections){
-                this.consolidatedResult = this.text('Não atende');
-                return;
+            let result = true;
+            for (let section of this.sections) {
+                if(this.sectionStatus(section.id) === this.text('Não atende')){
+                    result = false;
+                    break;  
+                }
             }
-
-            this.consolidatedResult = Object.values(this.formData.sectionStatus).includes(this.text('Não atende')) ? this.text('Não atende') :this.text('Atende');
+            return result ? this.text('Habilitado') : this.text('Inabilitado');
         },
         sectionStatus(sectionId){
-            return this.formData.sectionStatus[sectionId] ?? this.text('Não atende');
+            const section = this.sections.find(sec => sec.id === sectionId);
+
+            if (!section) return;
+
+            let nonEliminatoryCount = 0;
+            let eliminatoryCrit = false;
+
+            section.criteria.forEach(crit => {
+                const critValue = this.formData.data[crit.id];
+                if (!Array.isArray(critValue)) return;
+
+                if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
+                    eliminatoryCrit = true;
+                } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
+                    nonEliminatoryCount++;
+                }
+            });
+
+            let newStatus;
+            if (eliminatoryCrit || nonEliminatoryCount > section.numberMaxNonEliminatory) {
+                newStatus = this.text('Não atende');
+            } else {
+                newStatus = this.text('Atende');
+            }
+
+            return newStatus;
         },
         updateSectionStatusByFromData() {
             const updatedSectionStatus = {};
