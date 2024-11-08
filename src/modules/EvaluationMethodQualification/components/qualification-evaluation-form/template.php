@@ -91,7 +91,7 @@ $this->import('
             <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
             <label>
                 <?php i::_e('Status da avaliação:') ?> 
-                <span :class="consolidatedResult == text('Habilitado') ? 'qualification-enabled' : 'qualification-disabled'">
+                <span :class="consolidatedResult == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
                     {{ consolidatedResult }}
                 </span>
             </label>
