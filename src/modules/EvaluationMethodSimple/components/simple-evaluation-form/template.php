@@ -9,9 +9,20 @@ use MapasCulturais\i;
 
 $this->import('
     mc-select
+    mc-modal
     evaluation-actions
+    evaluation-simple-detail
 ');
 ?>
+<mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+    <template #default>
+        <evaluation-simple-detail :registration="entity"></evaluation-simple-detail>
+    </template>
+
+    <template #button="modal">
+        <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
+    </template>
+</mc-modal>
 
 <div class="simple-evaluation-form">
     <div class="simple-evaluation-form__form grid-12">
