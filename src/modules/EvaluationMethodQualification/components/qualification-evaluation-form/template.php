@@ -80,7 +80,7 @@ $this->import('
                     <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite o aparecer') ?>"></textarea>
                     <label>
                         <?php i::_e('Resultado da seção:') ?> 
-                        <span :class="sectionStatus(section.id) == 'Atende' ? 'qualification-enabled' : 'qualification-disabled'">
+                        <span :class="sectionStatus(section.id) == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
                             {{ sectionStatus(section.id) }}
                         </span>
                     </label>
@@ -92,7 +92,7 @@ $this->import('
             <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
             <label>
                 <?php i::_e('Status da avaliação:') ?> 
-                <span :class="consolidatedResult == 'Atende' ? 'qualification-enabled' : 'qualification-disabled'">
+                <span :class="consolidatedResult == text('Habilitado') ? 'qualification-enabled' : 'qualification-disabled'">
                     {{ consolidatedResult }}
                 </span>
             </label>
