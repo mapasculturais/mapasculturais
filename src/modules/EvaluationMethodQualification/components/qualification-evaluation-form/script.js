@@ -135,7 +135,7 @@ app.component('qualification-evaluation-form', {
                     break;  
                 }
             }
-            return result ? this.text('Habilitado') : this.text('Inabilitado');
+            return result ? this.text('Atende') : this.text('Não atende');
         },
         sectionStatus(sectionId){
             const section = this.sections.find(sec => sec.id === sectionId);
