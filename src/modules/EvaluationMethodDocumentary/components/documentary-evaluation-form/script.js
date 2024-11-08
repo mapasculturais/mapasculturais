@@ -56,6 +56,22 @@ app.component('documentary-evaluation-form', {
     computed: {
         status() {
             return $MAPAS.config.documentaryEvaluationForm.evaluationData?.status || 0;
+        },
+
+        needsTiebreaker() {
+            return $MAPAS.config.documentaryEvaluationForm.needsTieBreaker;
+        },
+
+        isMinervaGroup() {
+            return $MAPAS.config.documentaryEvaluationForm.isMinervaGroup;
+        },
+
+        enableExternalReviews() {
+            return $MAPAS.config.documentaryEvaluationForm.showExternalReviews;
+        },
+
+        evaluationName() {
+            return $MAPAS.config.documentaryEvaluationForm.evaluationMethodName;
         }
     },
 

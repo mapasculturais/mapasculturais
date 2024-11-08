@@ -5,26 +5,10 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
-use MapasCulturais\i;
+$this->import('
+    evaluation-simple-detail
+')
 
 ?>
-<div v-if="registration.evaluationsDetails.length" v-for="(evaluation, index) in registration.evaluationsDetails" class="registration-results__card">
-    <div class="registration-results__card-header">
-        <div class="registration-results__card-title">
-            <h4 v-if="evaluation.valuer" class="registration-results__opinion-title bold">
-                <?= i::__('Parecerista: ') ?> {{evaluation.valuer.name}}
-            </h4>
-            <h4 v-else class="registration-results__opinion-title bold">
-                <?= i::__('Parecerista: ') ?> #{{index+1}}
-            </h4>
-        </div>
-    </div>
-    <div class="registration-results__card-content">
-        <div class="registration-results__opinion registration-results__opinion--document">
-        <h5 class="registration-results__opinion-title bold"><?= i::__('Parecer') ?>:</h5>
-            <div class="registration-results__opinion-text">
-                <p>{{evaluation.obs}}</p>
-            </div>
-        </div>
-    </div>
-</div>
+
+<evaluation-simple-detail :registration="registration"></evaluation-simple-detail>
