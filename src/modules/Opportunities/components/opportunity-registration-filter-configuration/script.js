@@ -62,7 +62,9 @@ app.component('opportunity-registration-filter-configuration', {
             registrationProponentTypes: $MAPAS.opportunityPhases[0].registrationProponentTypes ?? [],
             registrationRanges: $MAPAS.opportunityPhases[0].registrationRanges?.map(range => range.label) ?? [],
             registrationSelectionFields: $MAPAS.config.fetchSelectFields?.reduce((acc, fields) => {
-                acc[fields.title] = fields.fieldOptions;
+                if (fields) {
+                    acc[fields.title] = fields.fieldOptions;
+                }
                 return acc;
             }, {}) ?? {},
             selectedField: '',
