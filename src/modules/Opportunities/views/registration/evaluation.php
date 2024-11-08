@@ -63,7 +63,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                 </opportunity-evaluations-list>
             </aside>
 
-            <main class="col-6 grid-12">
+            <main class="col-5 grid-12">
                 <?php if ($entity->opportunity->evaluationMethod->slug === "documentary") : ?>
                     <div class="col-12">
                         <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo') ?></mc-alert>
@@ -91,7 +91,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                 </section>
             </main>
 
-            <aside class="col-3">
+            <aside class="col-4">
                 <div class="registration__right-sidebar">
                     <evaluation-form :entity="entity"></evaluation-form>
                 </div>
