@@ -131,7 +131,7 @@ $this->import('
 
                     <template #default>
                         <div class="field">
-                            <label for="step-name"><?php i::_e('Nome') ?></label>
+                            <label for="step-name"><?php i::_e('Nome da etapa') ?></label>
                             <input id="step-name" type="text" v-model.trim="newStep.name">
                         </div>
                     </template>
