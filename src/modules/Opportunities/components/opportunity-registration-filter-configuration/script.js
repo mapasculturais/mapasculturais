@@ -459,7 +459,7 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         sectionConfig() {
-            let field = '';
+            let field = this.selectedField;
             if (this.selectedField == 'category') {
                 field = 'categories';
             } else if (this.selectedField == 'proponentType') {
@@ -495,7 +495,7 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         criteriaConfig() {
-            let field = '';
+            let field = this.selectedField;
             if (this.selectedField == 'category') {
                 field = 'categories'
             }
