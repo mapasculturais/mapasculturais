@@ -25,7 +25,8 @@ app.component('evaluation-form', {
 
     data() {
         return {
-            formData: {}
+            formData: {},
+            validateErrors: [],
         }
     },
 
