@@ -24,9 +24,10 @@ app.component('evaluation-form', {
     },
 
     data() {
+        const global = useGlobalState();
         return {
             formData: {},
-            validateErrors: [],
+            validateErrors: global.validateEvaluationErrors,
         }
     },
 
