@@ -46,13 +46,13 @@
         }
 
         &-options {
-            display: flex;
+            display: grid;
+            grid-template-columns: calc(26% - size(8)) calc(34% - size(8)) calc(40% - size(8));
             gap: size(16);
-            flex-direction: row;
             word-break: break-word;
 
             @media (max-width: 1110px) {
-                flex-wrap: wrap;
+                grid-template-columns: 1fr;
             }
 
             &-wrapper {
