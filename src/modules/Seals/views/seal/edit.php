@@ -50,7 +50,7 @@ $this->breadcrumb = [
                                 <div class="grid-12">
                                     <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                                     <entity-owner :entity="entity" classes="col-12" title="<?php i::_e('Publicado por')?>" editable></entity-owner>
-                                    <entity-parent-edit :entity="entity" classes="col-12" type="seal" ></entity-parent-edit>
+                                    <entity-parent-edit :entity="entity" classes="col-12" type="seal" label="<?php i::_e('Adicionar a um selo principal')?>"></entity-parent-edit>
                                     <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                                 </div>
                             </template>
