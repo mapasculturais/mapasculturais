@@ -207,7 +207,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         foreach($evaluation_method_configuration->criteria as $key => $c){
             if(isset($data[$c->id])){
                 $values = $data[$c->id];
-                $options = ['Habilitado', 'Inabilitado', 'Não se aplica', 'Outras'];
+                $options = ['valid', 'invalid', 'not-applicable', 'others'];
                 
                 if($c->options ?? false) {
                     $options = array_merge($c->options, $options);
