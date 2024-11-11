@@ -25,16 +25,14 @@ app.component('documentary-evaluation-form', {
     },
 
     created() {
-        this.formData.data = {}
-
-        const global = useGlobalState();
-        global.validateEvaluationErrors = this.validateErrors;
+        this.formData.data = {};
     },
 
     mounted() {
         window.addEventListener('evaluationRegistrationList', this.getEvaluationList);
         window.addEventListener('documentaryData', this.getDocumentaryData);
         window.addEventListener('responseEvaluation', this.processResponse);
+        window.addEventListener('processErrors', this.validateErrors);
 
         this.isEditable = this.canEvaluate();
     },
@@ -97,6 +95,7 @@ app.component('documentary-evaluation-form', {
 
         validateErrors() {
             let hasError = false;
+            const global = useGlobalState();
             
             Object.values(this.formData.data).forEach(item => {
                 if(this.newStatus && this.newStatus > 0) {
@@ -111,6 +110,8 @@ app.component('documentary-evaluation-form', {
                     }
                 }
             });
+
+            global.validateEvaluationErrors = hasError;
 
             return hasError;
         },
