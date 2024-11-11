@@ -58,7 +58,7 @@ app.component('evaluation-actions', {
             return new Promise((resolve, reject) => {
                 const global = useGlobalState();
                 
-                if (action == 'reopenEvaluation' || !global.validateEvaluationErrors()) {
+                if (action == 'reopenEvaluation' || !global.validateEvaluationErrors) {
                     const api = new API(controller);
                     let url = api.createUrl(action, args);
                     let result = api.POST(url, data);
