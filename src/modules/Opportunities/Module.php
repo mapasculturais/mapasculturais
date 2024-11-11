@@ -635,7 +635,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook("entity(EvaluationMethodConfiguration).renameAgentRelationGroup:before", function($old_name, $new_name, $relations) {
             /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
 
-            if($this->valuersPerRegistration->{$old_name}) {
+            if(isset($this->valuersPerRegistration->{$old_name})) {
                 $evaluator_count = $this->valuersPerRegistration;
                 $evaluator_count->{$new_name} = $evaluator_count->{$old_name};
                 unset($evaluator_count->{$old_name});
