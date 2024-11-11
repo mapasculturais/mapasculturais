@@ -87,7 +87,7 @@ $this->import('
             </div>
             <div class="field">
                 <label><?php i::_e('Observações/parecer') ?></label>
-                <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite o aparecer') ?>"></textarea>
+                <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite as observações/parecer') ?>"></textarea>
                 <label>
                     <?php i::_e('Resultado da seção:') ?> 
                     <span :class="sectionStatus(section.id) == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
