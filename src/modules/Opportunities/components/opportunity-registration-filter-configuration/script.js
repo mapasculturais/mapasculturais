@@ -62,7 +62,9 @@ app.component('opportunity-registration-filter-configuration', {
             registrationProponentTypes: $MAPAS.opportunityPhases[0].registrationProponentTypes ?? [],
             registrationRanges: $MAPAS.opportunityPhases[0].registrationRanges?.map(range => range.label) ?? [],
             registrationSelectionFields: $MAPAS.config.fetchSelectFields?.reduce((acc, fields) => {
-                acc[fields.title] = fields.fieldOptions;
+                if (fields) {
+                    acc[fields.title] = fields.fieldOptions;
+                }
                 return acc;
             }, {}) ?? {},
             selectedField: '',
@@ -126,6 +128,16 @@ app.component('opportunity-registration-filter-configuration', {
 
     methods: {
         handleSelection(event) {
+            let selected = [];
+            let prop = event.target.value;
+            let _defaultValue = this.isGlobal ? this.defaultValue : this.getAgentData() || {};
+            if(prop in _defaultValue) {
+                for(item of _defaultValue[prop]) {
+                    selected.push(item);
+                }  
+            }
+        
+            this.selectedConfigs = selected
             this.isSelected = !!this.selectedField; 
         },
 
@@ -384,7 +396,7 @@ app.component('opportunity-registration-filter-configuration', {
                                 this.entity.fetchSelectionFields = {};
                             }
 
-                            if (!this.entity.fetchSelectionFields[agentId]) {
+                            if (!this.entity.fetchSelectionFields[agentId] || Object.keys(this.entity.fetchSelectionFields[agentId]).length <= 0) {
                                 this.entity.fetchSelectionFields[agentId] = {};
                             }
                             
