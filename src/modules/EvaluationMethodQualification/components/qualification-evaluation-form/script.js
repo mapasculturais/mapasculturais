@@ -54,6 +54,33 @@ app.component('qualification-evaluation-form', {
         this.updateSectionStatusByFromData();
     },
 
+    updated() {
+        this.$nextTick(() => {
+            const labels = this.$refs.formRoot?.querySelectorAll('.qualification-evaluation-form__criterion-options-reasons-label');
+            
+            if (!labels || labels.length === 0) return;
+    
+            labels.forEach(label => {
+                const input = label.querySelector('input');
+                if (input) {
+                    if (input.value.length > 20) {
+                        label.setAttribute('data-long-content', 'true');
+                    } else {
+                        label.removeAttribute('data-long-content');
+                    }
+    
+                    input.addEventListener('input', () => {
+                        if (input.value.length > 20) {
+                            label.setAttribute('data-long-content', 'true');
+                        } else {
+                            label.removeAttribute('data-long-content');
+                        }
+                    });
+                }
+            });
+        });
+    },
+
     computed: {
         sections() {
             return $MAPAS.config.qualificationEvaluationForm.sections || [];
