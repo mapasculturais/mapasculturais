@@ -25,7 +25,6 @@ app.component('simple-evaluation-form', {
 
     data() {
         return {
-            formData: {},
             isEditable: true,
         };
     },
@@ -38,13 +37,12 @@ app.component('simple-evaluation-form', {
         }
         
         this.handleCurrentEvaluationForm();
-
-        const global = useGlobalState();
-        global.validateEvaluationErrors = this.validateErrors;
     },
 
     mounted() {
         window.addEventListener('responseEvaluation', this.processResponse);
+
+        window.addEventListener('processErrors', this.validateErrors);
     },
 
     computed: {
@@ -114,12 +112,16 @@ app.component('simple-evaluation-form', {
         validateErrors() {
             const messages = useMessages();
             let error = false;
+            const global = useGlobalState();
+            
             Object.keys(this.formData).forEach(key => { 
                 if (!this.formData[key] || this.formData[key] === '') {
                     messages.error(this.text('emptyField') + ' ' + this.dictFields(key) + ' ' + this.text('required'));
                     error = true;
                 }
             });
+
+            global.validateEvaluationErrors = error;
             return error;
         },
 

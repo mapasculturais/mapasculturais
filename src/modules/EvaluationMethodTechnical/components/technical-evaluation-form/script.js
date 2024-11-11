@@ -27,13 +27,12 @@ app.component('technical-evaluation-form', {
     created() {
         this.formData.data = this.evaluationData || this.skeleton();
         this.handleCurrentEvaluationForm();
-
-        const global = useGlobalState();
-        global.validateEvaluationErrors = this.validateErrors;
     },
 
     mounted() {
         window.addEventListener('responseEvaluation', this.processResponse);
+
+        window.addEventListener('processErrors', this.validateErrors);
     },
 
     data() {
@@ -117,6 +116,7 @@ app.component('technical-evaluation-form', {
 
         validateErrors() {
             let isValid = false;
+            const global = useGlobalState();
 
             for (let sectionIndex in this.sections) {
                 for (let crit of this.sections[sectionIndex].criteria) {
@@ -139,6 +139,8 @@ app.component('technical-evaluation-form', {
                 this.messages.error(this.text('technical-checkViability'));
                 isValid = true;
             }
+
+            global.validateEvaluationErrors = isValid;
             
             return isValid;
         },

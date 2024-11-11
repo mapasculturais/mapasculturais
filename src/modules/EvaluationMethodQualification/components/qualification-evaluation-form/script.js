@@ -27,6 +27,7 @@ app.component('qualification-evaluation-form', {
         return {
             isEditable: true,
             evaluationId: null,
+            errors: [],
         };
     },
 
@@ -40,13 +41,12 @@ app.component('qualification-evaluation-form', {
         
         this.isEditable = this.status > 0 ? false : this.editable;
         this.initializedCriteriaData();
-
-        const global = useGlobalState();
-        global.validateEvaluationErrors = this.validateErrors();
     },
     
     mounted() {
         window.addEventListener('responseEvaluation', this.processResponse);
+
+        window.addEventListener('processErrors', this.validateErrors);
 
         this.updateSectionStatusByFromData();
     },
@@ -218,6 +218,7 @@ app.component('qualification-evaluation-form', {
         validateErrors() {
             let isValid = false;
             this.errors = [];
+            const global = useGlobalState();
 
             for (let sectionIndex in this.sections) {
                 let section = this.sections[sectionIndex];
@@ -235,6 +236,7 @@ app.component('qualification-evaluation-form', {
                     }
                 }
 
+                
                 let parecerValue = this.formData.data[section.id];
                 if (!parecerValue || parecerValue === "") {
                     this.messages.error(this.text('O campo Parecer é obrigatório.'));
@@ -242,16 +244,20 @@ app.component('qualification-evaluation-form', {
                 }
             }
 
+
             if (!this.formData.data.obs || this.formData.data.obs === "") {
                 this.messages.error(this.text('O campo Observação é obrigatório.'));
                 isValid = true;
             }
+
+            global.validateEvaluationErrors = isValid;
 
             return isValid;
         },
 
         processResponse(data) {
             if (data.detail.response.status > 0) {
+
                 this.isEditable = false;
             } else {
                 this.isEditable = true;
