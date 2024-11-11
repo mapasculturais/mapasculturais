@@ -6,11 +6,6 @@ app.component('qualification-evaluation-form', {
         const text = Utils.getTexts('qualification-evaluation-form');
         return { text, messages };
     },
-    created() {
-        this.formData['data'] = this.evaluationData || this.skeleton();
-        this.handleCurrentEvaluationForm();
-        this.formData.uid = this.userId;
-    },
 
     props: {
         entity: {
@@ -36,6 +31,8 @@ app.component('qualification-evaluation-form', {
     },
 
     created() {
+        this.handleCurrentEvaluationForm();
+        this.formData.uid = this.userId;
         this.formData.sectionStatus = {};
         this.formData.obs = '';
         this.formData.data = {};
@@ -45,7 +42,7 @@ app.component('qualification-evaluation-form', {
         this.initializedCriteriaData();
 
         const global = useGlobalState();
-        global.validateEvaluationErrors = this.validateErrors;
+        global.validateEvaluationErrors = this.validateErrors();
     },
     
     mounted() {
