@@ -130,7 +130,8 @@ app.component('opportunity-registration-filter-configuration', {
         handleSelection(event) {
             let selected = [];
             let prop = event.target.value;
-            let _defaultValue = this.isGlobal ? this.defaultValue : this.getAgentData() || {};
+            let _defaultValue = this.loadCheckedOptions();
+
             if(prop in _defaultValue) {
                 for(item of _defaultValue[prop]) {
                     selected.push(item);
@@ -459,7 +460,7 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         sectionConfig() {
-            let field = '';
+            let field = this.selectedField;
             if (this.selectedField == 'category') {
                 field = 'categories';
             } else if (this.selectedField == 'proponentType') {
@@ -495,7 +496,7 @@ app.component('opportunity-registration-filter-configuration', {
         },
 
         criteriaConfig() {
-            let field = '';
+            let field = this.selectedField;
             if (this.selectedField == 'category') {
                 field = 'categories'
             }
@@ -560,6 +561,91 @@ app.component('opportunity-registration-filter-configuration', {
                 }
             }
         },
+
+        loadCheckedOptions() {
+            let checkedOptions = this.getAgentData() || {};
+
+            if (this.isGlobal) {
+                checkedOptions = this.defaultValue;
+            }
+
+            if (this.isSection || this.isCriterion) {
+                checkedOptions = this.getSectionOrCriteriaData();
+            }
+
+            return checkedOptions;
+        },
+
+        getSectionOrCriteriaData() {
+            let data = {};
+
+            if(this.isSection) {
+                const sections = this.entity.sections || [];
+
+                sections.forEach(section => {
+                    if (section.showFilters && section.id === this.defaultValue.id) {
+                        Object.keys(section).forEach(key => {
+                            let adjustedKey = key;
+
+                            if (key === 'proponentTypes') {
+                                adjustedKey = 'proponentType';
+                            }
+                            
+                            if (key === 'range') {
+                                adjustedKey = 'ranges';
+                            }
+                            
+                            if (key === 'categories') {
+                                adjustedKey = 'category';
+                            }
+
+                            if (adjustedKey !== 'id' && adjustedKey !== 'name' && adjustedKey !== 'showFilters') {
+                                if (!data[adjustedKey]) {
+                                    data[adjustedKey] = [];
+                                }
+                                
+                                data[adjustedKey] = section[key];
+                            }
+                        });
+                    }
+                });
+            }
+
+            if(this.isCriterion) {
+                const criterias = this.entity.criteria || [];
+
+                criterias.forEach(criteria => {
+                    if (criteria.showFilters && criteria.id === this.defaultValue.id) {
+                        Object.keys(criteria).forEach(key => {
+                            let adjustedKey = key;
+
+                            if (key === 'proponentTypes') {
+                                adjustedKey = 'proponentType';
+                            }
+                            
+                            if (key === 'range') {
+                                adjustedKey = 'ranges';
+                            }
+                            
+                            if (key === 'categories') {
+                                adjustedKey = 'category';
+                            }
+
+                            if (!this.excludeFields.includes(adjustedKey)) {
+
+                                if (!data[adjustedKey]) {
+                                    data[adjustedKey] = [];
+                                }
+
+                                data[adjustedKey] = criteria[key];
+                            }
+                        });
+                    }
+                });
+            }
+
+            return data;
+        }
     },
 
     mounted() {
