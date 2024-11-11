@@ -30,12 +30,13 @@ app.component('simple-evaluation-form', {
     },
 
     created() {
+        this.formData['data'] = {};
         const formData = this.evaluationData || this.skeleton();
 
-        for(let key in formData) {
-            this.formData[key] = formData[key];
+        for (let key in formData.data) {
+            this.formData.data[key] = formData.data[key];
         }
-        
+
         this.handleCurrentEvaluationForm();
     },
 
@@ -55,7 +56,9 @@ app.component('simple-evaluation-form', {
         },
 
         evaluationData() {
-            return $MAPAS.config.simpleEvaluationForm.currentEvaluation?.evaluationData;
+            return {
+                data: $MAPAS.config.simpleEvaluationForm.currentEvaluation?.evaluationData
+            };
         },
 
         currentEvaluation() {
@@ -81,7 +84,7 @@ app.component('simple-evaluation-form', {
 
     methods: {
         handleOptionChange(selectedOption) {
-            this.formData.status = selectedOption.value;
+            this.formData.data.status = selectedOption.value;
         },
 
         processResponse(data) {
@@ -113,9 +116,9 @@ app.component('simple-evaluation-form', {
             const messages = useMessages();
             let error = false;
             const global = useGlobalState();
-            
-            Object.keys(this.formData).forEach(key => { 
-                if (!this.formData[key] || this.formData[key] === '') {
+
+            Object.keys(this.formData.data).forEach(key => {
+                if (!this.formData.data[key] || this.formData.data[key] === '') {
                     messages.error(this.text('emptyField') + ' ' + this.dictFields(key) + ' ' + this.text('required'));
                     error = true;
                 }
@@ -138,9 +141,11 @@ app.component('simple-evaluation-form', {
 
         skeleton() {
             return {
-                uid: this.userId,
-                status: null,
-                obs: null,
+                data: {
+                    uid: this.userId,
+                    status: null,
+                    obs: null,
+                }
             };
         },
     },
