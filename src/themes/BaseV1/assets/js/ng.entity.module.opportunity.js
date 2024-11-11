@@ -1288,7 +1288,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.data.fields = RegistrationService.getFields();
       
     $scope.data.fieldsByStep = $scope.data.fields.reduce((acc, field) => {
-        const stepName = field.step.name;
+        const stepName = field.step?.name;
         if (!acc[stepName]) {
             acc[stepName] = [];
         }
