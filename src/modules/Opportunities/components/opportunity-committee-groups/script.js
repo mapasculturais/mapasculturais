@@ -129,12 +129,41 @@ app.component('opportunity-committee-groups', {
         },
 
         removeGroup(group) {
+            const agentRelations = this.entity.agentRelations;
+
+            if(agentRelations && agentRelations.length > 0) {
+                const reviewersToRemove = agentRelations.filter(relation => relation.group === group);
+                reviewersToRemove.forEach(relation => {
+                    const userId = relation.agentUserId;
+            
+                    this.delReviewerData(userId);
+                });
+            }
+
             delete this.entity.relatedAgents[group]
             delete this.entity.valuersPerRegistration[group];
             delete this.entity.fetchFields[group];
             this.entity.removeAgentRelationGroup(group);
 
             this.autoSave();
+        },
+
+        delReviewerData(userId) {
+            const properties = [
+                'fetch',
+                'fetchSelectionFields',
+                'fetchRanges',
+                'fetchProponentTypes',
+                'fetchCategories'
+            ];
+
+            properties.forEach(property => {
+                if (this.entity[property]) {
+                    if (this.entity[property][userId]) {
+                        delete this.entity[property][userId];
+                    }
+                }
+            });
         },
 
         updateGroupName(oldGroupName, newGroupName) {
