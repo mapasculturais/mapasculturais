@@ -11,7 +11,7 @@ app.component('opportunity-filter-configuration', {
 
         modelValue: {
             type: Object,
-            required: true,
+            default: () => {},
         },
 
         titleModal: {
@@ -106,9 +106,9 @@ app.component('opportunity-filter-configuration', {
 
         resetFilters(value) {
             return {
-                categories: [...(value.categories ?? [])],
-                proponentTypes: [...(value.proponentTypes ?? [])],
-                ranges: [...(value.ranges ?? [])],
+                categories: [...(value?.categories ?? [])],
+                proponentTypes: [...(value?.proponentTypes ?? [])],
+                ranges: [...(value?.ranges ?? [])],
             };
         },
 
