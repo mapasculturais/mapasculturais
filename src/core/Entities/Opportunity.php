@@ -1578,6 +1578,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
     }
 
     protected function genericPermissionVerification($user){
+        if($user->is('guest')){
+            return false;
+        }
+
         if($this->ownerEntity->canUser('@control', $user)){
             return true;
         }
