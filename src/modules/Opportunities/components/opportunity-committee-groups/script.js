@@ -124,7 +124,7 @@ app.component('opportunity-committee-groups', {
             this.reorderGroups();
         },
 
-        removeGroup(group) {
+        async removeGroup(group) {
             const agentRelations = this.entity.agentRelations;
 
             if(agentRelations && agentRelations.length > 0) {
@@ -144,7 +144,17 @@ app.component('opportunity-committee-groups', {
             delete this.entity.fetchFields[group];
             this.entity.removeAgentRelationGroup(group);
 
-            this.autoSave();
+            await this.autoSave();
+
+            this.$nextTick(() => {
+                const firstTab = this.$refs.tabs.tabs[0];
+        
+                if (firstTab) {
+                    this.$refs.tabs.activeTab = firstTab;
+                }
+
+            })
+            
         },
 
         delReviewerData(userId) {
@@ -209,7 +219,7 @@ app.component('opportunity-committee-groups', {
 
         autoSave() {
             const entity = this.entity;
-            entity.save();
+            return entity.save();
         },
 
         changeGroupFlag() {
