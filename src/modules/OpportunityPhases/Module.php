@@ -488,7 +488,7 @@ class Module extends \MapasCulturais\Module{
 
                         $item->registrationSteps = [];
                         foreach ($opportunity->registrationSteps as $step) {
-                            $simplifiedStep = $step->simplify("id,name,displayOrder");
+                            $simplifiedStep = $step->simplify("id,name,displayOrder,metadata");
                             $item->registrationSteps[] = $simplifiedStep;
                         }
 

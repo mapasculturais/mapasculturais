@@ -15,7 +15,7 @@ app.component('opportunity-form-builder' , {
         const steps = this.entity.registrationSteps?.sort((a, b) => a.displayOrder - b.displayOrder) || [];
 
         return {
-            newStep: { id: 'new', name: '' },
+            newStep: { id: 'new', name: '', metadata: {} },
             steps,
         }
     },
@@ -66,11 +66,13 @@ app.component('opportunity-form-builder' , {
             const step = new Entity('registrationstep');
             step.displayOrder = this.steps.length;
             step.name = this.newStep.name;
+            step.metadata = this.newStep.metadata;
             step.opportunity = this.entity;
             await step.save();
 
             this.steps.push(step);
 
+            this.newStep.metadata = {};
             this.newStep.name = '';
             modal.close();
 
