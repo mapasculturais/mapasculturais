@@ -124,15 +124,18 @@ app.component('opportunity-committee-groups', {
             this.reorderGroups();
         },
 
-        removeGroup(group) {
+        async removeGroup(group) {
             const agentRelations = this.entity.agentRelations;
 
             if(agentRelations && agentRelations.length > 0) {
                 const reviewersToRemove = agentRelations.filter(relation => relation.group === group);
                 reviewersToRemove.forEach(relation => {
                     const userId = relation.agentUserId;
-            
-                    this.delReviewerData(userId);
+                    let userGroups = this.entity.agentRelations.filter(relation => relation.agentUserId === userId);
+
+                    if (userGroups.length <= 1) {
+                        this.delReviewerData(userId);
+                    }
                 });
             }
 
@@ -141,7 +144,17 @@ app.component('opportunity-committee-groups', {
             delete this.entity.fetchFields[group];
             this.entity.removeAgentRelationGroup(group);
 
-            this.autoSave();
+            await this.autoSave();
+
+            this.$nextTick(() => {
+                const firstTab = this.$refs.tabs.tabs[0];
+        
+                if (firstTab) {
+                    this.$refs.tabs.activeTab = firstTab;
+                }
+
+            })
+            
         },
 
         delReviewerData(userId) {
@@ -162,51 +175,9 @@ app.component('opportunity-committee-groups', {
             });
         },
 
-        updateGroupName(oldGroupName, newGroupName) {
-            if (!this.entity.relatedAgents[oldGroupName]) {
-                this.entity.relatedAgents[oldGroupName] = {};
-            }
-            this.entity.relatedAgents[oldGroupName].newGroupName = newGroupName;
-        },
-
-        saveGroupName(oldGroupName) {
-            const newGroupName = this.entity.relatedAgents[oldGroupName]?.newGroupName;
-            if (newGroupName && newGroupName !== oldGroupName) {
-                this.renameGroup(oldGroupName, newGroupName);
-            }
-        },
-
-        renameGroup(oldGroupName, newGroupName) {
-            this.entity.renameAgentRelationGroup(oldGroupName, newGroupName).then(() => {
-                const groupNames = Object.keys(this.entity.relatedAgents);
-                const newGroups = {};
-                groupNames.forEach(groupName => {
-                    if (groupName == oldGroupName) {
-                        newGroups[newGroupName] = { ...this.entity.relatedAgents[groupName], newGroupName: newGroupName };
-                    } else {
-                        newGroups[groupName] = this.entity.relatedAgents[groupName];
-                    }
-                });
-
-                this.entity.relatedAgents = newGroups;
-                this.reorderGroups();
-
-                if (this.entity.fetchFields[oldGroupName]) {
-                    this.entity.fetchFields[newGroupName] = this.entity.fetchFields[oldGroupName];
-                    delete this.entity.fetchFields[oldGroupName]; 
-                }
-            });
-
-            this.entity.agentRelations.forEach((relation) => {
-                if(relation.group == oldGroupName) {
-                    relation.group = newGroupName;
-                }
-            });
-        },
-
         autoSave() {
             const entity = this.entity;
-            entity.save();
+            return entity.save();
         },
 
         changeGroupFlag() {
@@ -275,6 +246,15 @@ app.component('opportunity-committee-groups', {
             let newName = event.target.value;
             this.$refs.tabs.tabs[index].label = newName;
             this.entity.renameAgentRelationGroup(oldName, newName);
+            this.reorderGroups();
+
+            this.$nextTick(() => {
+                const lastTab = this.$refs.tabs.tabs[this.$refs.tabs.tabs.length - 1];
+
+                if (lastTab) {
+                    this.$refs.tabs.activeTab = lastTab;
+                }
+            });
         },
 
         enableExternalReviews(value) {
