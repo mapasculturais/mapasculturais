@@ -84,14 +84,11 @@ app.component('documentary-evaluation-form', {
 
         getEvaluationList(data) {
             let evaluationRegistrationList = data.detail.evaluationRegistrationList ?? null;
-
             if (evaluationRegistrationList) {
                 evaluationRegistrationList.forEach(item => {
-                    if (item.valuer) {
-                        if (item.valuer.id === $MAPAS.userId) {
-                            this.userId = item.valuer.id;
-                            this.userName = item.valuer.name;
-                        }
+                    if (item.valuer && item.valuer.user === $MAPAS.userId) {
+                        this.userId = item.valuer.id;
+                        this.userName = item.valuer.name;
                     }
                 });
             }
