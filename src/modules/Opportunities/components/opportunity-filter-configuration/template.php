@@ -9,6 +9,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-modal
+    mc-tag-list
 ');
 ?>
 
@@ -55,4 +56,6 @@ $this->import('
             </button>
         </template>
     </mc-modal>
+
+    <mc-tag-list classes="opportunity__background" :tags="tags" @remove="removeTag" editable></mc-tag-list>
 </div>
