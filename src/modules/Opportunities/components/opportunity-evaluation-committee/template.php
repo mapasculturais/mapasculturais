@@ -139,7 +139,7 @@ $this->import('
                             <mc-icon name="close"></mc-icon> {{buttonText(infoReviewer.status)}}
                         </button>
 
-                        <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Cancelar') ?>" yes="<?= i::esc_attr__('Excluir') ?>">
+                        <mc-confirm-button @confirm="delReviewer(infoReviewer)" no="<?= i::esc_attr__('Cancelar') ?>" yes="<?= i::esc_attr__('Excluir') ?>">
                             <template #button="{open}">
                                 <button class="opportunity-evaluation-committee__card-footer-button button button--delete button--icon button--sm" @click="open()">
                                     <mc-icon name="trash"></mc-icon> <?= i::__('Excluir') ?>
