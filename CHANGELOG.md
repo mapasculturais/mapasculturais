@@ -7,6 +7,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5.10] - unreleased
 ### Correções
 - Corrige exibição do bloqueio de entidade na configuração de formulário
+- Corrige exibição do nome do avaliador no formulário de avaliação documental
+- Corrige envio do id do usuário no formulário de avaliação documental
 
 ### Melhorias
 - Implementa aviso para sinalizar quando o total de vagas distribuídas por território exceder o total de vagas do edital
