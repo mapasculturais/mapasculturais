@@ -278,6 +278,15 @@ app.component('opportunity-committee-groups', {
             let newName = event.target.value;
             this.$refs.tabs.tabs[index].label = newName;
             this.entity.renameAgentRelationGroup(oldName, newName);
+            this.reorderGroups();
+
+            this.$nextTick(() => {
+                const lastTab = this.$refs.tabs.tabs[this.$refs.tabs.tabs.length - 1];
+
+                if (lastTab) {
+                    this.$refs.tabs.activeTab = lastTab;
+                }
+            });
         },
 
         enableExternalReviews(value) {
