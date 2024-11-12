@@ -72,9 +72,12 @@
     }
 
     &__step-config {
-        align-items: flex-end;
-        display: flex;
-        margin: size(8) size(8) size(32);
+
+        & > * {
+            align-items: flex-end;
+            display: flex;
+            margin: size(8) size(8) size(32);
+        }
 
         .button--text-danger {
             flex: none;
