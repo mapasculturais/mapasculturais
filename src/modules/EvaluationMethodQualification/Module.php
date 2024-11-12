@@ -72,7 +72,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $cfg = $evaluation->getEvaluationMethodConfiguration();
         
         foreach(($cfg->sections ?? []) as $section) {
-            $number_max_non_liminatory = $section->numberMaxNonEliminatory;
+            $number_max_non_liminatory = $section->numberMaxNonEliminatory ?? 0;
             $non_eliminatory_count = 0;
 
             foreach(($cfg->criteria ?? []) as $cri){
@@ -87,11 +87,11 @@ class Module extends \MapasCulturais\EvaluationMethod
                     return null;
                 } else {
                     if(($non_eliminatory)) {
-                        if(!in_array($evaluation->evaluationData->$key, $approved)){
+                        if(array_diff($evaluation->evaluationData->$key, $approved)){
                             $non_eliminatory_count++;
                         }
                     } else {
-                        if(!in_array($evaluation->evaluationData->$key, $approved)){
+                        if(array_diff($evaluation->evaluationData->$key, $approved)){
                             $result = 'invalid';
                             break;
                         }
@@ -207,7 +207,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         foreach($evaluation_method_configuration->criteria as $key => $c){
             if(isset($data[$c->id])){
                 $values = $data[$c->id];
-                $options = ['Habilitado', 'Inabilitado', 'Não se aplica', 'Outras'];
+                $options = ['valid', 'invalid', 'not-applicable', 'others'];
                 
                 if($c->options ?? false) {
                     $options = array_merge($c->options, $options);

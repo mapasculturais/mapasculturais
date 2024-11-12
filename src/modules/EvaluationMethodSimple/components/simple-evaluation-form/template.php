@@ -30,15 +30,15 @@ $this->import('
             <label class="field__label">
                 <?php i::_e('Selecione o status dessa inscrição') ?>
             </label>
-            <mc-select v-if="isEditable" :default-value="formData.status" @change-option="handleOptionChange" :options="statusList"></mc-select>
-            <input v-if="!isEditable" type="text" :value="statusToString(formData.status)" disabled>
+            <mc-select v-if="isEditable" :default-value="formData.data.status" @change-option="handleOptionChange" :options="statusList"></mc-select>
+            <input v-if="!isEditable" type="text" :value="statusToString(formData.data.status)" disabled>
         </div>
         <div class="simple-evaluation-form__content field col-12">
             <label class="field__label">
                 <?php i::_e('Insira suas Justificativas ou observações') ?>
             </label>
-            <textarea v-if="isEditable" v-model="formData.obs"></textarea>
-            <textarea v-if="!isEditable" disabled>{{formData.obs}}</textarea>
+            <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
+            <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
         </div>
     </div>
 </div>
