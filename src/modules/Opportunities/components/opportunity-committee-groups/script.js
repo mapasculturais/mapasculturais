@@ -121,20 +121,45 @@ app.component('opportunity-committee-groups', {
                 this.entity.fetchFields = {}
             }
 
-            if(!this.entity?.fetchFields[group]) {
-                this.entity.fetchFields[group] = {}
-            }
-
             this.reorderGroups();
         },
 
         removeGroup(group) {
+            const agentRelations = this.entity.agentRelations;
+
+            if(agentRelations && agentRelations.length > 0) {
+                const reviewersToRemove = agentRelations.filter(relation => relation.group === group);
+                reviewersToRemove.forEach(relation => {
+                    const userId = relation.agentUserId;
+            
+                    this.delReviewerData(userId);
+                });
+            }
+
             delete this.entity.relatedAgents[group]
             delete this.entity.valuersPerRegistration[group];
             delete this.entity.fetchFields[group];
             this.entity.removeAgentRelationGroup(group);
 
             this.autoSave();
+        },
+
+        delReviewerData(userId) {
+            const properties = [
+                'fetch',
+                'fetchSelectionFields',
+                'fetchRanges',
+                'fetchProponentTypes',
+                'fetchCategories'
+            ];
+
+            properties.forEach(property => {
+                if (this.entity[property]) {
+                    if (this.entity[property][userId]) {
+                        delete this.entity[property][userId];
+                    }
+                }
+            });
         },
 
         updateGroupName(oldGroupName, newGroupName) {
@@ -246,8 +271,10 @@ app.component('opportunity-committee-groups', {
             this.autoSave();
         },
 
-        renameTab(event, index) {
-            this.$refs.tabs.tabs[index].label = event.target.value;
+        renameTab(event, index, oldName) {
+            let newName = event.target.value;
+            this.$refs.tabs.tabs[index].label = newName;
+            this.entity.renameAgentRelationGroup(oldName, newName);
         },
 
         enableExternalReviews(value) {

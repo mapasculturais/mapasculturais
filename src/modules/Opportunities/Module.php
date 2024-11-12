@@ -621,11 +621,13 @@ class Module extends \MapasCulturais\Module{
         // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento que se atribui uma avaliação.
         $app->hook("entity(EvaluationMethodConfiguration).recreatePermissionCache:after", function(&$users) use ($app) {
             /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
-            foreach ($users as $user) {
-                $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->findOneBy(['agent' => $user->profile, 'owner' => $this]);
-                if ($relation) {
-                    /** @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation */
-                    $relation->updateSummary(flush: true, started: false, completed: false, sent: false);
+            if($users) {
+                foreach ($users as $user) {
+                    $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->findOneBy(['agent' => $user->profile, 'owner' => $this]);
+                    if ($relation) {
+                        /** @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation */
+                        $relation->updateSummary(flush: true, started: false, completed: false, sent: false);
+                    }
                 }
             }
         });
@@ -633,7 +635,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook("entity(EvaluationMethodConfiguration).renameAgentRelationGroup:before", function($old_name, $new_name, $relations) {
             /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
 
-            if($this->valuersPerRegistration->{$old_name}) {
+            if(isset($this->valuersPerRegistration->{$old_name})) {
                 $evaluator_count = $this->valuersPerRegistration;
                 $evaluator_count->{$new_name} = $evaluator_count->{$old_name};
                 unset($evaluator_count->{$old_name});

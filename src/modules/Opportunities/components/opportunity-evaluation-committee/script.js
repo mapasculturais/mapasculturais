@@ -181,16 +181,40 @@ app.component('opportunity-evaluation-committee', {
             });
         },
 
-        delReviewer(agent) {
+        delReviewer(infoReviewer) {
+            const agentId = infoReviewer.agent.id;
+            const userId = infoReviewer.agentUserId;
+            
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'removeAgentRelation', {id: this.entity.id});
             this.agentData = {
                 group: this.group,
-                agentId: agent.id,
+                agentId: agentId,
             }; 
 
             api.POST(url, this.agentData).then(res => res.json()).then(data => {
+                this.delReviewerData(userId);
                 this.loadReviewers();
+            });
+
+            this.entity.save();
+        },
+
+        delReviewerData(userId) {
+            const properties = [
+                'fetch',
+                'fetchSelectionFields',
+                'fetchRanges',
+                'fetchProponentTypes',
+                'fetchCategories'
+            ];
+
+            properties.forEach(property => {
+                if (this.entity[property]) {
+                    if (this.entity[property][userId]) {
+                        delete this.entity[property][userId];
+                    }
+                }
             });
         },
 
