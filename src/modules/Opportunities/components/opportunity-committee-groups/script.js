@@ -175,48 +175,6 @@ app.component('opportunity-committee-groups', {
             });
         },
 
-        updateGroupName(oldGroupName, newGroupName) {
-            if (!this.entity.relatedAgents[oldGroupName]) {
-                this.entity.relatedAgents[oldGroupName] = {};
-            }
-            this.entity.relatedAgents[oldGroupName].newGroupName = newGroupName;
-        },
-
-        saveGroupName(oldGroupName) {
-            const newGroupName = this.entity.relatedAgents[oldGroupName]?.newGroupName;
-            if (newGroupName && newGroupName !== oldGroupName) {
-                this.renameGroup(oldGroupName, newGroupName);
-            }
-        },
-
-        renameGroup(oldGroupName, newGroupName) {
-            this.entity.renameAgentRelationGroup(oldGroupName, newGroupName).then(() => {
-                const groupNames = Object.keys(this.entity.relatedAgents);
-                const newGroups = {};
-                groupNames.forEach(groupName => {
-                    if (groupName == oldGroupName) {
-                        newGroups[newGroupName] = { ...this.entity.relatedAgents[groupName], newGroupName: newGroupName };
-                    } else {
-                        newGroups[groupName] = this.entity.relatedAgents[groupName];
-                    }
-                });
-
-                this.entity.relatedAgents = newGroups;
-                this.reorderGroups();
-
-                if (this.entity.fetchFields[oldGroupName]) {
-                    this.entity.fetchFields[newGroupName] = this.entity.fetchFields[oldGroupName];
-                    delete this.entity.fetchFields[oldGroupName]; 
-                }
-            });
-
-            this.entity.agentRelations.forEach((relation) => {
-                if(relation.group == oldGroupName) {
-                    relation.group = newGroupName;
-                }
-            });
-        },
-
         autoSave() {
             const entity = this.entity;
             return entity.save();
