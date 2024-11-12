@@ -97,6 +97,9 @@ app.component('opportunity-form-builder' , {
                 this.sendStepsMessage();
             }
         },
+        saveMetadata (step) {
+            step.save();
+        },
         sendMessage (type, data) {
             document.querySelectorAll('iframe').forEach((iframe) => {
                 iframe.contentWindow.postMessage({ type, data });

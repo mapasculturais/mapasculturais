@@ -119,7 +119,7 @@ $this->import('
                         </div>
 
                         <div>
-                            <opportunity-filter-configuration v-model="step.metadata"></opportunity-filter-configuration>
+                            <opportunity-filter-configuration v-model="step.metadata" @update:modelValue="saveMetadata(step)"></opportunity-filter-configuration>
                         </div>
                     </div>
 
