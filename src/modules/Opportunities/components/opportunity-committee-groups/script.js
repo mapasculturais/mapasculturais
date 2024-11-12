@@ -131,8 +131,11 @@ app.component('opportunity-committee-groups', {
                 const reviewersToRemove = agentRelations.filter(relation => relation.group === group);
                 reviewersToRemove.forEach(relation => {
                     const userId = relation.agentUserId;
-            
-                    this.delReviewerData(userId);
+                    let userGroups = this.entity.agentRelations.filter(relation => relation.agentUserId === userId);
+
+                    if (userGroups.length <= 1) {
+                        this.delReviewerData(userId);
+                    }
                 });
             }
 
