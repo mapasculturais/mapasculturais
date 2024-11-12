@@ -20,6 +20,11 @@ app.component('opportunity-filter-configuration', {
         },
     },
 
+    setup() {
+        const text = Utils.getTexts('opportunity-filter-configuration');
+        return { text };
+    },
+
     data() {
         return {
             registrationCategories: $MAPAS.opportunityPhases[0].registrationCategories ?? [],
@@ -28,6 +33,20 @@ app.component('opportunity-filter-configuration', {
             selectedField: '',
             tempValue: this.resetFilters(this.modelValue),
         }
+    },
+
+    computed: {
+        tags () {
+            const tags = [];
+            
+            for (const type of Object.keys(this.tempValue)) {
+                for (const value of this.tempValue[type]) {
+                    tags.push(`${this.text(type)}: ${value}`);
+                }
+            }
+
+            return tags.sort();
+        },
     },
 
     watch: {
@@ -47,18 +66,42 @@ app.component('opportunity-filter-configuration', {
         },
 
         confirmChanges(modal) {
-            const nextValue = {
-                categories: this.tempValue.categories.length > 0 ? this.tempValue.categories : undefined,
-                proponentTypes: this.tempValue.proponentTypes.length > 0 ? this.tempValue.proponentTypes : undefined,
-                ranges: this.tempValue.ranges.length > 0 ? this.tempValue.ranges : undefined,
-            };
-            this.$emit('update:modelValue', nextValue);
+            this.$emit('update:modelValue', this.normalizeFilters(this.tempValue));
             this.selectedField = '';
             modal.close();
         },
 
+        dictTypes(reverse = false) {
+            const dict = {};
+
+            for (const type of ['categories', 'proponentTypes', 'ranges']) {
+                if (reverse) {
+                    dict[this.text(type)] = type;
+                } else {
+                    dict[type] = this.text(type);
+                }
+            }
+
+            return dict;
+        },
+
         isFieldExcluded(field) {
             return this.excludeFields.includes(field);
+        },
+
+        normalizeFilters(value) {
+            return {
+                categories: value.categories.length > 0 ? value.categories : undefined,
+                proponentTypes: value.proponentTypes.length > 0 ? value.proponentTypes : undefined,
+                ranges: value.ranges.length > 0 ? value.ranges : undefined,
+            };
+        },
+
+        removeTag(tag) {
+            const [displayKey, value] = tag.split(': ');
+            const type = this.dictTypes(true)[displayKey];
+            this.tempValue[type] = this.tempValue[type]?.filter((x) => x !== value);
+            this.$emit('update:modelValue', this.normalizeFilters(this.tempValue));
         },
 
         resetFilters(value) {
