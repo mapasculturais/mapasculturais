@@ -121,10 +121,6 @@ app.component('opportunity-committee-groups', {
                 this.entity.fetchFields = {}
             }
 
-            if(!this.entity?.fetchFields[group]) {
-                this.entity.fetchFields[group] = {}
-            }
-
             this.reorderGroups();
         },
 
