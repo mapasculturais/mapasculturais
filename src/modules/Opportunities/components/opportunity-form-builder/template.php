@@ -98,7 +98,7 @@ $this->import('
     <div class="col-12">
         <mc-tabs ref="tabs" v-model:draggable="stepsWithSlugs">
             <template #default>
-                <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="`${index + 1}. ${step.name ?? ''}`" :key="step.id" :slug="slug" cache>
+                <mc-tab v-for="({ step, slug }, index) of stepsWithSlugs" :label="`${index + 1}. ${step.name ?? ''}`" :key="step.id" :slug="slug" :cache="false">
                     <div class="form-builder__step-config">
                         <entity-field :entity="step" prop="name" :autosave="1000" hide-required></entity-field>
 
@@ -131,7 +131,7 @@ $this->import('
 
                     <template #default>
                         <div class="field">
-                            <label for="step-name"><?php i::_e('Nome') ?></label>
+                            <label for="step-name"><?php i::_e('Nome da etapa') ?></label>
                             <input id="step-name" type="text" v-model.trim="newStep.name">
                         </div>
                     </template>

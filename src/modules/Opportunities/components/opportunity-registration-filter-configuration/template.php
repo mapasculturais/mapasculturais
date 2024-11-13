@@ -17,8 +17,8 @@ $this->import('
     <mc-modal :title="titleModal || '<?= i::__('Configuração de filtros de inscrição para avaliadores/comissão') ?>'">
         <div class="grid-12">
             <div class="col-12 field">
-                <select v-model="selectedField" @change="handleSelection">
-                    <option value="" disabled selected>Selecione um filtro</option>
+                <select v-model="selectedField" @change="handleSelection($event)">
+                    <option value="" disabled selected><?php i::_e("Selecione um filtro") ?></option>
                     <option v-if="showField('category')" value="category" :disabled="isFieldExcluded('category')"><?php i::_e("Categoria") ?></option>
                     <option v-if="showField('proponentType')" value="proponentType" :disabled="isFieldExcluded('proponentType')"><?php i::_e("Tipos do proponente") ?></option>
                     <option v-if="showField('range')" value="range" :disabled="isFieldExcluded('range')"><?php i::_e("Faixa/Linha") ?></option>

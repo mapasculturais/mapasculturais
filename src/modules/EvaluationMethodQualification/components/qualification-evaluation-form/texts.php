@@ -7,9 +7,11 @@ return [
     'O campo' => i::__('O campo'),
     'é obrigatório' => i::__('é obrigatório'),
     'Na seção' => i::__('Na seção'),
-    'Inabilitado'=>i::__('Inabilitado'),
-    'Habilitado'=>i::__('Habilitado'),
+    'Não atende'=>i::__('Não atende'),
+    'Atende'=>i::__('Atende'),
     'O campo Parecer é obrigatório.' => i::__('O campo Parecer é obrigatório.'),
     'Não se aplica' => i::__('Não se aplica'),
     'Outras' => i::__('Outras'),
+    'Habilitado' => i::__('Habilitado'),
+    'Inabilitado' => i::__('Inabilitado'),
 ];

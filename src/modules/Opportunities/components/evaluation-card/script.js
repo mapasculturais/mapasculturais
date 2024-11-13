@@ -17,6 +17,12 @@ app.component('evaluation-card', {
         return { text, hasSlot }
     },
 
+    data:() {
+        return {
+            formData: {}
+        }
+    },
+
     computed: {
         dateFrom() {
             if (this.entity.registrationFrom instanceof McDate) {

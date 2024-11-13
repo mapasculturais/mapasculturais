@@ -103,7 +103,7 @@ $this->import('
                                 </label>
         
                                 <label class="col-12">
-                                    <?php i::_e("Opções de inabilitação") ?>
+                                    <?php i::_e("Opções de não atendimento do critério") ?>
                                     <div class="qualification-evaluation-config__config-criterion__input field">
                                         <input v-model="options" type="text" name="AddCriteriaOptions" @keyup.enter="updateOptions(criteria)" placeholder="<?= i::__("Escreva aqui as opções de inabilitação") ?>" />
                                         <button @click="updateOptions(criteria)" class="button button--primary button--icon" :class="!enabledButton() ? 'disabled' : ''">
@@ -122,7 +122,7 @@ $this->import('
         
                                 <label class="col-12">
                                     <input type="checkbox" v-model="criteria.otherReasonsOption" @change="otherReasonsChange(criteria)" />
-                                    <?= i::__('Habilitar a opção Outros motivos para inabilitação?') ?>
+                                    <?= i::__('Habilitar a opção Outros motivos para não atendimento?') ?>
                                 </label>
 
                                 <label class="col-12">

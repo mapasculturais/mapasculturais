@@ -7,8 +7,22 @@
 
 use MapasCulturais\i;
 
-$this->import('evaluation-actions');
+$this->import('
+    evaluation-actions
+    evaluation-documentary-datail
+    mc-modal
+');
 ?>
+<mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+    <template #default>
+        <evaluation-documentary-datail :registration="entity"></evaluation-documentary-datail>
+    </template>
+
+    <template #button="modal">
+        <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
+    </template>
+</mc-modal>
+
 <div class="documentary-evaluation-form grid-12 field">
     <label><?= i::__('Avaliador') ?>: {{userName}}</label>
 
@@ -44,6 +58,4 @@ $this->import('evaluation-actions');
             </label>
         </div>
     </div>
-
-    <evaluation-actions class="col-12" :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
 </div>

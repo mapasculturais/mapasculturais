@@ -19,8 +19,8 @@
 
             .seal-label {
                 font-weight: 700;
-                font-size: 14px;
-                line-height: 19px;
+                font-size: size(14);
+                line-height: size(19);
             }
 
             .seal-icon {
@@ -105,18 +105,18 @@
 
     &__card {
 
-        margin-top: 16px;
-        padding-right: 16px;
-        margin-right: 18px;
+        margin-top: size(16);
+        padding-right: size(16);
+        margin-right: size(18);
         height: 100%;
 
         &--header {
-            margin-bottom: 16px;
+            margin-bottom: size(16);
 
             &-title {
                 font-weight: 700;
-                font-size: 18px;
-                line-height: 25px;
+                font-size: size(18);
+                line-height: size(25);
             }
         }
 
@@ -126,9 +126,9 @@
             max-width: 100%;
             display: flex;
             flex-direction: column;
-            border: 1px solid var(--mc-gray-500);
+            border: size(1) solid var(--mc-gray-500);
             border-radius: var(--mc-border-radius-xs);
-            padding: 8px 16px 8px 16px;
+            padding: size(8) size(16) size(8) size(16);
 
         }
     }
@@ -136,32 +136,35 @@
     &__history {
         &--title {
             font-weight: 700;
-            font-size: 12px;
-            line-height: 16px;
+            font-size: size(12);
+            line-height: size(16);
             color: #000000;
         }
 
         &--link {
             font-weight: 700;
-            font-size: 16px;
-            line-height: 20px;
+            font-size: size(16);
+            line-height: size(20);
             color: #0074C1;
             text-decoration: none;
         }
     }
 
-    &__valid {
+    &__validity {
+        display: grid;
+        gap: size(8);
+
         &--label {
             color: #1E1E1E;
             font-weight: 700;
-            font-size: 24px;
-            line-height: 28px
+            font-size: size(24);
+            line-height: size(28)
         }
 
         &--content {
             background: #E8E8E8;
-            border-radius: 4px;
-            padding: 10px;
+            border-radius: size(4);
+            padding: size(10);
         }
     }
 }

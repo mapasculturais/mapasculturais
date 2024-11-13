@@ -91,8 +91,7 @@ app.component("fields-visible-evaluators", {
 
             _fields = Object.values(this.fields).map((item, index) => {
                 let field = { ...this.fields[index] }
-
-                field.checked = avaliableFields[item.fieldName] == "true" ? true : false;
+                field.checked = avaliableFields[item.fieldName || item.groupName] == "true" ? true : false;
 
                 if (avaliableFields["category"] && item.categories?.length > 0) {
                     field.disabled = (avaliableFields["category"] == "true" ? false : true);
@@ -126,11 +125,12 @@ app.component("fields-visible-evaluators", {
         toggleSelectAll() {
             this.fields.forEach((field) => {
                 let conditionalField = this.avaliableEvaluationFields[field.conditionalField] || this.fields.filter((conditionalField) => conditionalField.fieldName == field.conditionalField);
+                let fieldName = field.fieldName || field.groupName; 
                 
                 if (this.selectAll) {
                     if (!field.checked) {
                         field.checked = true;
-                        this.avaliableEvaluationFields[field.fieldName] = "true";
+                        this.avaliableEvaluationFields[fieldName] = "true";
 
                         if (field.conditional) {
                             field.disabled = conditionalField.checked ? true : false;
@@ -139,7 +139,7 @@ app.component("fields-visible-evaluators", {
                 } else {
                     if (field.checked) {
                         field.checked = false;
-                        this.avaliableEvaluationFields[field.fieldName] = "false";
+                        this.avaliableEvaluationFields[fieldName] = "false";
 
                         if (field.conditional) {
                             field.disabled = conditionalField.checked ? false : true;
