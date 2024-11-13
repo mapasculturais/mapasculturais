@@ -76,6 +76,11 @@
             border-radius: size(5);
             border: size(2) solid var(--mc-gray-100);
         }
+        
+        & .input__checkboxLabel {
+            display: flex;
+            gap: size(8);
+        }
     }
 
     &__color {
@@ -221,6 +226,7 @@
         input, textarea, select {
             background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(20);
             border: size(2) solid #FF0000;
+            padding-right: size(50);
         }
 
         .dp__input_wrap {
