@@ -98,6 +98,7 @@ app.component('opportunity-form-builder' , {
             }
         },
         saveMetadata (step) {
+            step.metadata = { ...step.metadata }; // Sometimes PHP serializes metadata as empty JSON array
             step.save();
         },
         sendMessage (type, data) {
