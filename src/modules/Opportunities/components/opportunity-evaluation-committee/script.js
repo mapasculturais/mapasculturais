@@ -37,7 +37,7 @@ app.component('opportunity-evaluation-committee', {
     },
 
     data() {
-        let ranges = this.entity.opportunity.registrationRanges.map((range) => range.label);
+        let ranges = this.entity.opportunity.registrationRanges?.map((range) => range.label);
 
         return {
             agentData: null,
