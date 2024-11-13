@@ -1262,6 +1262,34 @@ class Opportunity extends EntityController {
         }
 
         $entity->checkPermission('modify');
+        
+        if($entity->usesLock()) {
+            if($lock = $entity->isLocked()) {
+                $current_token = $_COOKIE['lockToken'] ?? null;
+    
+                if(!($current_token 
+                    && $current_token == $lock['token']
+                    && $app->user->id == $lock['userId'])   
+                ) {
+                    if($app->user->id !== $lock['userId']) {
+                        unset($lock['token']);
+                    } else {
+                        $app->view->jsObject['lockToken'] = $lock['token'];
+                    }
+
+                    $app->view->jsObject['entityLock'] = $lock;
+    
+                    $app->hook("controller({$this->id}).render(edit)", function(&$template) use($entity) {
+                        $template = "locked";
+                    });
+                } else {
+                    $app->view->jsObject['lockToken'] = $current_token;
+                }
+            } else {
+                $lock_token = $entity->lock();
+                $app->view->jsObject['lockToken'] = $lock_token;
+            }
+        }
 
         $this->render('form-builder', ['entity' => $entity]);
     }

@@ -11,6 +11,24 @@ $entity = $this->controller->requestedEntity;
 
 $sections = $entity->opportunity->evaluationMethodConfiguration->sections ?: [];
 $criteria = $entity->opportunity->evaluationMethodConfiguration->criteria;
+
+$opportunity = $entity->opportunity;
+$evaluation_configuration = $opportunity->evaluationMethodConfiguration;
+
+$related_agents = $evaluation_configuration->relatedAgents;
+$is_minerva_group = false;
+
+foreach($related_agents as $group => $agents) {
+    if($group == '@tiebreaker') {
+        foreach($agents as $agent) {
+            if($agent->id == $app->user->profile->id) {
+                $is_minerva_group = true;
+            }
+        }
+    }
+}
+
+$needs_tiebreaker = $entity->needsTiebreaker();
 $data = [];
 
 if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
@@ -28,6 +46,8 @@ foreach ($sections as $section) {
         'categories' => $section->categories ?? [],
         'proponentTypes' => $section->proponentTypes ?? [],
         'ranges' => $section->ranges ?? [],
+        'maxNonEliminatory' => $section->maxNonEliminatory ?? false,
+        'numberMaxNonEliminatory' => $section->numberMaxNonEliminatory ?? 0,
     ];
     
     foreach ($criteria as $crit) {
@@ -47,6 +67,7 @@ foreach ($sections as $section) {
                 'proponentTypes' => $crit->proponentTypes ?? [],
                 'ranges' => $crit->ranges ?? [],
                 'otherReasonsOption' => $crit->otherReasonsOption ?? [],
+                'nonEliminatory' => $crit->nonEliminatory ?? false,
             ];
             
             if ($critStatus === 'avaliada') {
@@ -63,4 +84,8 @@ foreach ($sections as $section) {
 $this->jsObject['config']['qualificationEvaluationForm'] = [
     'evaluationData' => $entity->getUserEvaluation($user),
     'sections' => $data,
+    'needsTieBreaker' => $needs_tiebreaker,
+    'isMinervaGroup' => $is_minerva_group,
+    'showExternalReviews' => $evaluation_configuration->showExternalReviews,
+    'evaluationMethodName' => $evaluation_configuration->name
 ];

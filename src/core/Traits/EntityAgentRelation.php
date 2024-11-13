@@ -188,6 +188,9 @@ trait EntityAgentRelation {
     }
 
     function userHasControl($user){
+        if ($user->is('guest')) {
+            return true;
+        }
         if($this->isUserAdmin($user))
             return true;
 

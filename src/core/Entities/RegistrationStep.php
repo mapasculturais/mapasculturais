@@ -51,6 +51,13 @@ class RegistrationStep extends \MapasCulturais\Entity
     protected $opportunity;
 
     /**
+     * @var object
+     *
+     * @ORM\Column(name="metadata", type="json")
+     */
+    protected $metadata;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="create_timestamp", type="datetime")
@@ -66,6 +73,11 @@ class RegistrationStep extends \MapasCulturais\Entity
 
     static function getControllerId() {
         return 'registrationstep';
+    }
+
+    function __construct() {
+        parent::__construct();
+        $this->metadata = new \stdClass();
     }
 
     function setOpportunity(int|Opportunity $opportunity) {

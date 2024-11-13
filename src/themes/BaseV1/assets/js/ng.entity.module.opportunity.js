@@ -518,6 +518,27 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
 
         const step = MapasCulturais.step;
 
+        $scope.steps = [];
+
+        function sendMessage(type, data = null) {
+            $window.parent.postMessage({ type, data });
+        }
+        sendMessage('opportunity-form:iframeLoaded');
+
+        function receiveMessage ({ data: event }) {
+            if (event.type === 'opportunity-form:steps') {
+                $scope.steps = event.data;
+            }
+        }
+        $window.addEventListener('message', receiveMessage);
+
+        $scope.changeFieldStep = function (field) {
+            fieldService.edit({ ...field, step: field.step.id });
+        };
+        $scope.changeFileStep = function (file) {
+            fileService.edit({ ...file, step: file.step.id });
+        };
+
         $scope.data.filterFieldConfigurationByCategory = null;
         $scope.showFieldConfiguration = function (field) {
             if(field.fieldType == "agent-owner-field") {
@@ -1265,6 +1286,22 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     });
 
     $scope.data.fields = RegistrationService.getFields();
+      
+    $scope.data.fieldsByStep = $scope.data.fields.reduce((acc, field) => {
+        const stepName = field.step?.name;
+        const hasValidId = field.id != null;
+
+        if (!stepName || !hasValidId) {
+            return acc;
+        }
+
+        if (!acc[stepName]) {
+            acc[stepName] = [];
+        }
+        acc[stepName].push(field);
+        return acc;
+    }, {});
+
     $scope.data.fieldsRequiredLabel = labels['requiredLabel'];
     $scope.data.fieldsOptionalLabel = labels['optionalLabel'];
 

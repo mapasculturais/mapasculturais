@@ -47,7 +47,18 @@ app.component('opportunity-form-builder' , {
                     await entity.save();
                 }
             });
+
+            this.sendStepsMessage();
         },
+    },
+
+    beforeMount () {
+        window.addEventListener('message', this.receiveMessage);
+        this.sendStepsMessage();
+    },
+
+    beforeUnmount () {
+        window.removeEventListener('message', this.receiveMessage);
     },
 
     methods: {
@@ -78,6 +89,20 @@ app.component('opportunity-form-builder' , {
                 const tabsComp = this.$refs.tabs;
                 tabsComp.activeTab = tabsComp.tabs[0];
             });
+        },
+        receiveMessage ({ data: event }) {
+            if (event.type === 'opportunity-form:iframeLoaded') {
+                this.sendStepsMessage();
+            }
+        },
+        sendMessage (type, data) {
+            document.querySelectorAll('iframe').forEach((iframe) => {
+                iframe.contentWindow.postMessage({ type, data });
+            });
+        },
+        sendStepsMessage () {
+            const simpleSteps = this.steps.map(({ __objectType, id, name }) => ({ __objectType, id, name }));
+            this.sendMessage('opportunity-form:steps', simpleSteps);
         },
     },
 });

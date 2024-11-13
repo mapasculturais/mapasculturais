@@ -17,22 +17,28 @@ app.component('technical-evaluation-form', {
             type: Boolean,
             default: true
         },
+
+        formData: {
+            type: Object,
+            required: true
+        }
     },
 
     created() {
-        this.formData['data'] = this.evaluationData || this.skeleton();
+        this.formData.data = this.evaluationData || this.skeleton();
         this.handleCurrentEvaluationForm();
     },
 
     mounted() {
         window.addEventListener('responseEvaluation', this.processResponse);
+
+        window.addEventListener('processErrors', this.validateErrors);
     },
 
     data() {
         return {
             obs: '',
             viability: null,
-            formData: {},
             isEditable: true,
         };
     },
@@ -110,6 +116,7 @@ app.component('technical-evaluation-form', {
 
         validateErrors() {
             let isValid = false;
+            const global = useGlobalState();
 
             for (let sectionIndex in this.sections) {
                 for (let crit of this.sections[sectionIndex].criteria) {
@@ -132,6 +139,8 @@ app.component('technical-evaluation-form', {
                 this.messages.error(this.text('technical-checkViability'));
                 isValid = true;
             }
+
+            global.validateEvaluationErrors = isValid;
             
             return isValid;
         },

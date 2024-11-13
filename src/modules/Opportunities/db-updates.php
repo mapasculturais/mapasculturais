@@ -44,4 +44,10 @@ return [
             __exec("CREATE INDEX IF NOT EXISTS IDX_registration_file_configuration__step_id ON registration_file_configuration (step_id);");
         }
     },
+    
+    'Adiciona coluna de metadados na tabela da entidade RegistrationStep' => function () {
+        if (!__column_exists('registration_step', 'metadata')) {
+            __try("ALTER TABLE registration_step ADD COLUMN metadata json DEFAULT '{}'::json NOT NULL");
+        }
+    },
 ];

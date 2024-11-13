@@ -9,6 +9,11 @@ app.component('documentary-evaluation-form', {
         editable: {
             type: Boolean,
             default: true
+        },
+
+        formData: { 
+            type: Object,
+            required: true
         }
     },
 
@@ -19,12 +24,22 @@ app.component('documentary-evaluation-form', {
         return { text, messages };
     },
 
+    created() {
+        this.formData.data = {};
+    },
+
+    mounted() {
+        window.addEventListener('evaluationRegistrationList', this.getEvaluationList);
+        window.addEventListener('documentaryData', this.getDocumentaryData);
+        window.addEventListener('responseEvaluation', this.processResponse);
+        window.addEventListener('processErrors', this.validateErrors);
+
+        this.isEditable = this.canEvaluate();
+    },
+
     data() {
         return {
             enableForm: false,
-            formData: {
-                data: {}
-            },
             fieldName: '',
             fieldId: null,
             fieldType: null,
@@ -39,6 +54,22 @@ app.component('documentary-evaluation-form', {
     computed: {
         status() {
             return $MAPAS.config.documentaryEvaluationForm.evaluationData?.status || 0;
+        },
+
+        needsTiebreaker() {
+            return $MAPAS.config.documentaryEvaluationForm.needsTieBreaker;
+        },
+
+        isMinervaGroup() {
+            return $MAPAS.config.documentaryEvaluationForm.isMinervaGroup;
+        },
+
+        enableExternalReviews() {
+            return $MAPAS.config.documentaryEvaluationForm.showExternalReviews;
+        },
+
+        evaluationName() {
+            return $MAPAS.config.documentaryEvaluationForm.evaluationMethodName;
         }
     },
 
@@ -64,6 +95,7 @@ app.component('documentary-evaluation-form', {
 
         validateErrors() {
             let hasError = false;
+            const global = useGlobalState();
             
             Object.values(this.formData.data).forEach(item => {
                 if(this.newStatus && this.newStatus > 0) {
@@ -79,19 +111,18 @@ app.component('documentary-evaluation-form', {
                 }
             });
 
+            global.validateEvaluationErrors = hasError;
+
             return hasError;
         },
 
         getEvaluationList(data) {
             let evaluationRegistrationList = data.detail.evaluationRegistrationList ?? null;
-
             if (evaluationRegistrationList) {
                 evaluationRegistrationList.forEach(item => {
-                    if (item.valuer) {
-                        if (item.valuer.id === $MAPAS.userId) {
-                            this.userId = item.valuer.id;
-                            this.userName = item.valuer.name;
-                        }
+                    if (item.valuer && item.valuer.user === $MAPAS.userId) {
+                        this.userId = item.valuer.user;
+                        this.userName = item.valuer.name;
                     }
                 });
             }
@@ -137,13 +168,5 @@ app.component('documentary-evaluation-form', {
     
             return true;
         }
-    },
-
-    mounted() {
-        window.addEventListener('evaluationRegistrationList', this.getEvaluationList);
-        window.addEventListener('documentaryData', this.getDocumentaryData);
-        window.addEventListener('responseEvaluation', this.processResponse);
-
-        this.isEditable = this.canEvaluate();
     },
 });
