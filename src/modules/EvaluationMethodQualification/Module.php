@@ -46,8 +46,9 @@ class Module extends \MapasCulturais\EvaluationMethod
         $result = i::__("Habilitado");
         foreach ($evaluations as $eval){
             $_result = $this->getEvaluationResult($eval);
-            if($_result == i::__("Inabilitado")){
-                $result = $_result;
+
+            if($_result == 'invalid'){
+                $result = $this->valueToString($_result);
             }
         }
 
@@ -58,8 +59,8 @@ class Module extends \MapasCulturais\EvaluationMethod
     public function getEvaluationStatues()
     {
         $status = [
-            'valid' => i::__(['Habilitado']),
-            'invalid' => i::__(['Inabilitado'])
+            'valid' => i::__('Habilitado'),
+            'invalid' => i::__('Inabilitado')
         ];
 
         return $status;
