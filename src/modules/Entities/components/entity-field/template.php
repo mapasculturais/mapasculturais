@@ -23,6 +23,9 @@ $this->import('
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
         <slot name="info"></slot>
     </label>
+
+    <small class="field__description" v-if="descriptionFirst && (!hideDescription && (fieldDescription || description.description))"> {{ fieldDescription || description.description}} </small>
+
     <slot name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
 
@@ -120,7 +123,7 @@ $this->import('
         <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
     </slot>
 
-    <small class="field__description" v-if="!hideDescription && (fieldDescription || description.description)"> {{ fieldDescription || description.description}} </small>
+    <small class="field__description" v-if="!descriptionFirst && (!hideDescription && (fieldDescription || description.description))"> {{ fieldDescription || description.description}} </small>
 
     <small class="field__error" v-if="hasErrors">
         {{errors.join('; ')}}

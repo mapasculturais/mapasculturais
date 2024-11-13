@@ -142,7 +142,12 @@ app.component('entity-field', {
         maxOptions: {
             type: Number,
             default: 0
-        }
+        },
+
+        descriptionFirst: {
+            type: Boolean,
+            default: false
+        },
     },
 
     created() {

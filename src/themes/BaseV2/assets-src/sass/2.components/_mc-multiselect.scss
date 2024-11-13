@@ -1,6 +1,8 @@
 @use '../0.settings/mixins' as *;
 
 .mc-multiselect {
+    width: fit-content;
+
     &--input {
         appearance: none;
         -webkit-appearance: none;
@@ -34,6 +36,7 @@
     &__content {
         display: flex;
         flex-direction: column;
+        max-width: size(500);
     }
 
     &__confirm-button {
@@ -51,6 +54,10 @@
         width: 100%;
         margin: 0;
         max-height: size(256);
+
+        @media (max-width: size(500)) {
+            max-height: unset;
+        }
     }
 
     &__option {
