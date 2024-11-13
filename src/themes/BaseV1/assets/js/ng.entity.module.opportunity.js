@@ -1289,6 +1289,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
       
     $scope.data.fieldsByStep = $scope.data.fields.reduce((acc, field) => {
         const stepName = field.step?.name;
+        const hasValidId = field.id != null;
+
+        if (!stepName || !hasValidId) {
+            return acc;
+        }
+
         if (!acc[stepName]) {
             acc[stepName] = [];
         }
