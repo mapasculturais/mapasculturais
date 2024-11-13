@@ -794,6 +794,9 @@ class App {
             $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->subsite);
         } else {
             $theme_class = $this->config['themes.active'] . '\Theme';
+
+            // dd($theme_class);
+
             $theme_instance = new $theme_class($this->config['themes.assetManager']);
         }
 
@@ -3786,34 +3789,11 @@ class App {
     /** 
      * ============ MÉTODOS DE VERIFICAÇÃO DO CAPTCHA ============ 
      */
-    function verifyRecaptcha2(string $token = '')
+    function verifyCaptcha(string $token = '')
     {
         // If we don't receive the token, there is no reason to advance to the verification
         if (empty($token)) {
             return false;
-        }
-
-        // If the captcha configuration does not exist, it means that captcha has not been implemented
-        if (!isset($this->config['captcha']) && !isset($this->config['app.recaptcha.key'])) {
-            return true;
-        }
-
-        // If the new captcha configuration does not exist, but the old one does, we will use the old one
-        if (!isset($this->config['captcha']) && isset($this->config['app.recaptcha.key'])) {
-            $this->config['captcha'] = [
-                'provider' => 'google',
-                'providers' => [
-                    'google' => [
-                        'secret' => $this->config['app.recaptcha.secret'],
-                        'verify' => 'https://www.google.com/recaptcha/api/siteverify'
-                    ]
-                ]
-            ];
-        }
-
-        // Is necessary to check because the provider can be defined in the new configuration
-        if (!isset($this->config['captcha']['provider'])) {
-            $this->config['captcha']['provider'] = 'google';
         }
 
         // In this point we are sure that the provider was defined
