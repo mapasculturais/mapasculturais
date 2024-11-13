@@ -200,8 +200,8 @@ app.component('opportunity-evaluation-committee', {
                     this.delReviewerData(userId);
                 }
                 this.loadReviewers();
+                this.entity.save();
             });
-            this.entity.save();
         },
 
         delReviewerData(userId) {
