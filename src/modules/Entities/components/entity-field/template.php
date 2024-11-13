@@ -27,15 +27,15 @@ $this->import('
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
 
         <!-- masked fields -->
-        <input v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
         
-        <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
 
-        <input v-if="is('brPhone')" v-maska data-maska="['(##) #####-####','(##) ####-####']" data-maska-tokens="0:[0-9]:optional" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
-        <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
-        <input v-if="is('fieldMask')" v-maska :data-maska="mask" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('brPhone')" v-maska data-maska="['(##) #####-####','(##) ####-####']" data-maska-tokens="0:[0-9]:optional" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('fieldMask')" v-maska :data-maska="mask" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
 
-        <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder" :disabled="readonly || disabled" :readonly="readonly">
         
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
         
@@ -45,7 +45,7 @@ $this->import('
         
         <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change($event, true)"></entity-field-datepicker>
         
-        <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxLength="maxLength" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled" :readonly="readonly"></textarea>
+        <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled" :readonly="readonly"></textarea>
 
         <select v-if="is('select')" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled">
             <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>
