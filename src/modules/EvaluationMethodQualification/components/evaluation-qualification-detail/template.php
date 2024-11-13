@@ -72,7 +72,7 @@ $this->import('
                     {{section.name}}:
                     <ul>
                         <li v-for="cri in section.criteria">
-                            {{cri.name}}: {{cri.result}}
+                            {{cri.name}}: {{ formatResult(cri.result) }}
                         </li>
                     </ul>
                 </li>
