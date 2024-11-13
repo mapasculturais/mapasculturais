@@ -17,8 +17,8 @@
     
     &__length {
         text-align: right;
-        margin-right: 15px;
-        margin-top:-30px;
+        margin-right: size(10);
+        margin-top: size(-28);
         font-size: $font-size-xxs;
         font-style: italic;
         color: $low-300;
@@ -224,7 +224,7 @@
 
     &.error {
         input, textarea, select {
-            background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(20);
+            background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(16);
             border: size(2) solid #FF0000;
             padding-right: size(50);
         }
