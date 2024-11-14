@@ -16,7 +16,7 @@ $this->import('
     <div class="registration-actions__primary">
         <div v-if="hasErrors" class="registration-actions__errors">
             <span class="registration-actions__errors-title"> <?= i::__('Ops! Alguns erros foram identificados.') ?> </span>
-            <span class="registration-actions__errors-subtitle"> 
+            <span class="registration-actions__errors-subtitle">
                 <?= i::__('Para continuar, corrija os campos com os erros listados abaixo:') ?>
                 <span v-if="hideErrors" class="registration-actions__errors-toggle" @click="toggleErrors()">
                     <?= i::__('Exibir erros') ?> <mc-icon name="arrowPoint-down"></mc-icon>
@@ -27,10 +27,10 @@ $this->import('
             </span>
 
             <div class="registration-actions__errors-list scrollbar" :class="{'registration-actions__errors-list--hide' : hideErrors}">
-                <template v-for="(errors, stepId) in validationErrors" :key="stepId">
+                <template v-for="(errors, stepIndex) in sortedValidationErrors" :key="stepIndex">
                     <div class="registration-actions__errors-step" v-if="Object.keys(errors).length > 0">
-                        <div class="registration-actions__errors-step-name">{{stepName(stepId)}}</div>
-                        <div v-for="(error, key) in errors" class="registration-actions__error" tabindex="0" @click="goToField(stepId, key)" @keydown.enter="goToField(stepId, key)">
+                        <div class="registration-actions__errors-step-name">{{stepName(stepIndex)}}</div>
+                        <div v-for="(error, key) in errors" class="registration-actions__error" tabindex="0" @click="goToField(stepIndex, key)" @keydown.enter="goToField(stepIndex, key)">
                             <strong>{{fieldName(key)}}</strong> <p v-for="text in error">{{text}}</p>
                         </div>
                     </div>
@@ -44,7 +44,7 @@ $this->import('
                     <?= i::__("Enviar formulário") ?>
                     <mc-icon name="send"></mc-icon>
                 </button>
-            </template> 
+            </template>
             <template #message="message">
                 <?php i::_e('Ao enviar sua inscrição você já estará participando da oportunidade.') ?>
             </template>
@@ -76,7 +76,7 @@ $this->import('
         <button @click="save()" class="button button--large button--primary-outline">
             <?= i::__("Salvar") ?>
         </button>
- 
+
         <button @click="exit()" class="button button--large button--primary-outline">
             <?= i::__("Salvar e sair") ?>
         </button>

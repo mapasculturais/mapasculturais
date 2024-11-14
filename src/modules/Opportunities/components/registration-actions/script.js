@@ -42,9 +42,9 @@ app.component('registration-actions', {
 
                     if(!autoSave) {
                         autoSave = true;
-                        
+
                         clearTimeout(self.autoSaveTimeout);
-    
+
                         self.autoSaveTimeout = setTimeout(() => {
                             self.save();
                         }, $MAPAS.config.registrationActions.autosaveDebounce);
@@ -82,6 +82,16 @@ app.component('registration-actions', {
             return this.stepIndex === this.steps.length - 1;
         },
 
+        sortedValidationErrors () {
+            const errors = {};
+            for (const [stepIndex, step] of Object.entries(this.steps)) {
+                if (this.validationErrors[step._id]) {
+                    errors[stepIndex] = this.validationErrors[step._id];
+                }
+            }
+            return errors;
+        },
+
         step() {
             return this.steps[this.stepIndex];
         },
@@ -92,7 +102,7 @@ app.component('registration-actions', {
             this.isValidated = false;
         },
     },
-    
+
     methods: {
         toggleErrors() {
             this.hideErrors = !this.hideErrors;
@@ -100,7 +110,7 @@ app.component('registration-actions', {
 
         fieldName(field) {
             if (field == 'agent_instituicao') {
-                return this.text('Instituição responsável'); 
+                return this.text('Instituição responsável');
             }
 
             if (field == 'agent_coletivo') {
@@ -132,7 +142,7 @@ app.component('registration-actions', {
                     }
                 }
             }
-            
+
             if(this.descriptions[field]) {
                 return this.descriptions[field].label
             }
@@ -147,7 +157,7 @@ app.component('registration-actions', {
             if (this.registration.category) {
                 data.category = this.registration.category;
             }
-            
+
             try {
                 this.registration.disableMessages();
                 await this.save();
@@ -251,23 +261,21 @@ app.component('registration-actions', {
             });
         },
 
-        goToField(stepId, fieldName) {
-            this.goToStep(Number(stepId));
+        goToField(stepIndex, fieldName) {
+            this.goToStep(Number(stepIndex));
             this.$nextTick(() => {
-                document.querySelector(`[data-field="${fieldName}"]`)?.scrollIntoView({ behavior: 'smooth' });
+                document.querySelector(`[data-field="${fieldName}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             });
         },
 
-        goToStep(stepId) {
-            const stepIndex = this.steps.findIndex((step) => step._id == stepId);
+        goToStep(stepIndex) {
             if (stepIndex >= 0) {
                 this.$emit('update:stepIndex', stepIndex);
             }
         },
 
-        stepName(stepId) {
-            const stepIndex = this.steps.findIndex((step) => step._id == stepId);
-            return `${stepIndex + 1}. ${this.steps[stepIndex].name}`;
+        stepName(stepIndex) {
+            return `${Number(stepIndex) + 1}. ${this.steps[stepIndex].name}`;
         },
 
         async previousStep() {
