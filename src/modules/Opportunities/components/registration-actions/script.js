@@ -279,12 +279,10 @@ app.component('registration-actions', {
         },
 
         async previousStep() {
-            await this.validateStep(this.step._id);
             this.$emit('update:stepIndex', this.stepIndex - 1);
         },
 
         async nextStep() {
-            await this.validateStep(this.step._id);
             this.$emit('update:stepIndex', this.stepIndex + 1);
         },
     },
