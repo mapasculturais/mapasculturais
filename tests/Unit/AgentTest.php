@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/bootstrap.php';
 
-class AgentTest extends MapasCulturais_TestCase{
+class AgentTest extends \MapasCulturais\Tests\TestCase{
     function testAgentProfileChange(){
         $user = $this->getUser('normal');
         $this->user = $user;

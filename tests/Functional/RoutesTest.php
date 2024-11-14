@@ -1,8 +1,6 @@
 <?php
 
-require_once __DIR__ . '/bootstrap.php';
-
-class RoutesTest extends MapasCulturais_TestCase {
+class RoutesTest extends \MapasCulturais\Tests\TestCase {
 
     function testHome(){
         $this->user = null;

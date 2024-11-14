@@ -1,8 +1,9 @@
 <?php
+namespace MapasCulturais\Tests;
 
 use MapasCulturais\Entities;
 
-class MapasCulturais_TestFactory{
+class TestFactory {
     protected $entitiesCount = [
         'Agent' => 0,
         'Space' => 0,
@@ -21,7 +22,7 @@ class MapasCulturais_TestFactory{
 
     public $autoPersist = false;
 
-    function __construct(MapasCulturais\App $app) {
+    function __construct(\MapasCulturais\App $app) {
         $this->app = $app;
     }
     
@@ -34,7 +35,7 @@ class MapasCulturais_TestFactory{
                     $result[$prop] = $this->app->user->profile;
                 }
             } elseif($prop == 'type') {
-                $_types = $this->app->getRegisteredEntityTypes("MapasCulturais\\Entities\\{$entity}");
+                $_types = $this->app->getRegisteredEntityTypes("\MapasCulturais\\Entities\\{$entity}");
                 $result[$prop] = array_shift($_types);
             } else {
                 $result[$prop] = "{$entity} {$prop} {$entity_num}";
@@ -45,8 +46,8 @@ class MapasCulturais_TestFactory{
     }
 
     function createEntity($class, $properties = []){
-        if(!class_exists($class) && class_exists('MapasCulturais\\Entities\\' . $class)){
-            $class = 'MapasCulturais\\Entities\\' . $class;
+        if(!class_exists($class) && class_exists('\MapasCulturais\\Entities\\' . $class)){
+            $class = '\MapasCulturais\\Entities\\' . $class;
         }
 
         $entity = new $class;
@@ -55,7 +56,7 @@ class MapasCulturais_TestFactory{
             $entity->$prop = $val;
         }
 
-        $count_key = str_replace('MapasCulturais\\Entities\\', '', $class);
+        $count_key = str_replace('\MapasCulturais\\Entities\\', '', $class);
 
         if(!isset($this->entitiesCount[$count_key])) $this->entitiesCount[$count_key] = 0;
         

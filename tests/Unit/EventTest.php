@@ -38,7 +38,7 @@ use MapasCulturais\Entities\Space;
 //     17  18  19  20  21  22  23
 //     24  25  26  27  28  29  30
 
-class EventTest extends MapasCulturais_TestCase{
+class EventTest extends \MapasCulturais\Tests\TestCase{
 
     function __construct($name = null, $data = [], $dataName = '') {
         parent::__construct($name, $data, $dataName);

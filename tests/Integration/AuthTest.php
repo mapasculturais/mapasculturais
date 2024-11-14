@@ -5,7 +5,7 @@ require_once __DIR__.'/bootstrap.php';
  *
  * @author rafael
  */
-class AuthTest extends MapasCulturais_TestCase{
+class AuthTest extends \MapasCulturais\Tests\TestCase{
     function testAuthentication(){
         $this->user = null;
 

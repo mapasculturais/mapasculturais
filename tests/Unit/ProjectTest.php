@@ -3,7 +3,7 @@ require_once 'bootstrap.php';
 
 use MapasCulturais\Entities\Project;
 
-class ProjectTests extends MapasCulturais_TestCase{
+class ProjectTests extends \MapasCulturais\Tests\TestCase{
     function testRegistrationIsOpen(){
         $project = new Project;
 

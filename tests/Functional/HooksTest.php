@@ -1,32 +1,30 @@
 <?php
-require_once __DIR__.'/bootstrap.php';
 
-class HooksTest extends MapasCulturais_TestCase{
+class HooksTest extends \MapasCulturais\Tests\TestCase{
     function testHookOrder(){
-        $app = $this->app;
         $result = [];
 
-        $app->hook('test hook order', function() use(&$result){
+        $this->app->hook('test hook order', function() use(&$result){
             $result[] = 4;
         }, 11);
 
-        $app->hook('test hook order', function() use(&$result){
+        $this->app->hook('test hook order', function() use(&$result){
             $result[] = 1;
         }, 10);
 
-        $app->hook('test hook order', function() use(&$result){
+        $this->app->hook('test hook order', function() use(&$result){
             $result[] = 2;
         }, 10);
 
-        $app->hook('test hook order', function() use(&$result){
+        $this->app->hook('test hook order', function() use(&$result){
             $result[] = 3;
         }, 10);
 
-        $app->hook('test hook order', function() use(&$result){
+        $this->app->hook('test hook order', function() use(&$result){
             $result[] = 0;
         }, 9);
 
-        $app->applyHook('test hook order');
+        $this->app->applyHook('test hook order');
 
         $this->assertEquals(0, $result[0]);
         $this->assertEquals(1, $result[1]);
@@ -36,7 +34,7 @@ class HooksTest extends MapasCulturais_TestCase{
     }
 
     function testHookWildcard() {
-        $app = $this->app;
+        // $this->app = $this->app;
         
         $hooks = [
             'field_<<*>>',
@@ -46,13 +44,13 @@ class HooksTest extends MapasCulturais_TestCase{
 
         $result = [];
         foreach($hooks as &$hook) {
-            $app->hook($hook, function() use($hook, &$result) {
+            $this->app->hook($hook, function() use($hook, &$result) {
                 $result[] = $hook;
             });
         }
 
-        $app->applyHook('field_10');
-        $app->applyHook('projectName');
+        $this->app->applyHook('field_10');
+        $this->app->applyHook('projectName');
 
         $expected = [
             'field_<<*>>',

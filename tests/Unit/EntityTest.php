@@ -4,7 +4,7 @@ require_once 'bootstrap.php';
 
 require 'Entity.inc.TestEntities.php';
 
-class EntityTests extends MapasCulturais_TestCase {
+class EntityTests extends \MapasCulturais\Tests\TestCase {
 
     function testValidations() {
         $entity = new TestEntity;

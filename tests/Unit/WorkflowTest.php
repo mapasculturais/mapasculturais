@@ -1,7 +1,7 @@
 <?php
 require_once 'bootstrap.php';
 
-class WorkflowTest extends MapasCulturais_TestCase{
+class WorkflowTest extends \MapasCulturais\Tests\TestCase{
 
     function testEnableAndDisableWorkflow(){
         $this->assertTrue($this->app->isWorkflowEnabled(), 'Asserting that workflow is enabled by default.');

@@ -5,7 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Traits\RegisterFunctions;
 use MapasCulturais\Entities\Agent;
 
-class MetadataTests extends MapasCulturais_TestCase {
+class MetadataTests extends \MapasCulturais\Tests\TestCase {
     use RegisterFunctions;
     function testValidations(){
         $app = App::i();

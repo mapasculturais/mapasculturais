@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
 
-class APITest extends MapasCulturais_TestCase {
+class APITest extends \MapasCulturais\Tests\TestCase {
     
     function api($entity, $_params){
         if(is_string($_params)){

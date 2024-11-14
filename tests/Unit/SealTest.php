@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/bootstrap.php';
 
-class SealTest extends MapasCulturais_TestCase{
+class SealTest extends \MapasCulturais\Tests\TestCase{
     function testCreateSealRealation(){
         $this->resetTransactions();
         $app = $this->app;

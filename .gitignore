@@ -13,3 +13,4 @@ src/themes/BaseV1/assets/css/main.css.map
 **/.env
 !/dev/.env
 .phpunit*
+*.phar

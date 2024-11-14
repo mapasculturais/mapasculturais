@@ -6,7 +6,7 @@ require_once __DIR__.'/bootstrap.php';
  * @author leandro
  */
 
-class DoctrineFunctionTest extends MapasCulturais_TestCase{
+class DoctrineFunctionTest extends \MapasCulturais\Tests\TestCase{
 
     function testStringAggregate(){
         define('DELIMITER', '; ');

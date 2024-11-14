@@ -4,7 +4,7 @@ require_once 'bootstrap.php';
 use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
 
-class TaxonomiesTests extends MapasCulturais_TestCase{
+class TaxonomiesTests extends \MapasCulturais\Tests\TestCase{
     protected function _registerTaxonomy(){
         $app = App::i();
         $taxonomies = [

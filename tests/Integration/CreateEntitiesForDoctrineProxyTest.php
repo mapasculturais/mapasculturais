@@ -12,7 +12,7 @@ use MapasCulturais\Entities\EventOccurrence;
 use MapasCulturais\Entities\EventOccurrenceRecurrence;
 
 
-class CreateEntitiesForDoctrineProxyTest extends MapasCulturais_TestCase{
+class CreateEntitiesForDoctrineProxyTest extends \MapasCulturais\Tests\TestCase{
 
     function testAll() {
 

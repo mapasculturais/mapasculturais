@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/bootstrap.php';
 
-class AgendaSingleTest extends MapasCulturais_TestCase{
+class AgendaSingleTest extends \MapasCulturais\Tests\TestCase{
     function testRoutes(){
         
         foreach([null, 'normal', 'admin', 'superAdmin'] as $role){

@@ -5,7 +5,7 @@ require_once __DIR__.'/bootstrap.php';
  *
  * @author rafael
  */
-class PermissionsTest extends MapasCulturais_TestCase{
+class PermissionsTest extends \MapasCulturais\Tests\TestCase{
 
     function getRandomEntity($_class, $where = null){
         $app = MapasCulturais\App::i();
