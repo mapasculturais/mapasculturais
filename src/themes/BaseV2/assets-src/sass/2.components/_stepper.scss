@@ -23,9 +23,7 @@
             content: '';
             height: size(2);
             position: absolute;
-            transition: 
-                background-color 300ms linear,
-                color 300ms;
+            transition: all 300ms ease-in-out;
             top: size(7);
             width: 100%;
         }
@@ -46,9 +44,7 @@
             display: block;
             height: size(16);
             outline: 2px solid var(--mc-white);
-            transition: 
-                background-color 300ms linear,
-                color 300ms;
+            transition: all 300ms ease-in-out;
             width: size(16);
             z-index: 1;
         }
@@ -88,12 +84,20 @@
 
             &:first-child {
 
+                .label {
+                    text-align: start;
+                }
+
                 &::before {
                     background: var(--mc-gray-300);
                 }
             }
 
             &:last-child {
+
+                .label {
+                    text-align: end;
+                }
 
                 &::before {
                     background: var(--mc-secondary-500);
