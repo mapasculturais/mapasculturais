@@ -1,6 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .stepper {
+    container: stepper / inline-size;
     display: flex;
     justify-content: space-between;
     margin: 0;
@@ -12,6 +13,7 @@
         align-items: center;
         cursor: pointer;
         display: flex;
+        flex: 2;
         flex-direction: column;
         justify-content: flex-start;
         min-width: size(87);
@@ -26,6 +28,16 @@
             transition: all 300ms linear;
             top: size(7);
             width: 100%;
+        }
+
+        &:first-child {
+            align-items: start;
+            flex: 1;
+        }
+
+        &:last-child {
+            align-items: end;
+            flex: 1;
         }
 
         .count {
@@ -71,10 +83,33 @@
 
             .label {
                 color: var(--mc-black);
+                width: calc(100cqi / var(--steps));
             }
 
             &::before {
                 background: linear-gradient(to right, var(--mc-secondary-500), var(--mc-secondary-500) 50%, var(--mc-gray-300) 50%);
+            }
+
+            &:first-child {
+
+                .label {
+                    text-align: start;
+                }
+
+                &::before {
+                    background: var(--mc-gray-300);
+                }
+            }
+
+            &:last-child {
+
+                .label {
+                    text-align: end;
+                }
+
+                &::before {
+                    background: var(--mc-secondary-500);
+                }
             }
         }
     }
