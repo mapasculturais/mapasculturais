@@ -1125,7 +1125,48 @@ class Opportunity extends EntityController {
         }
 
         $fields = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+
+        foreach ($fields as &$field) {
+            if ($field->conditionalField) {
+                $conditional_field_id = str_replace('field_', '', $field->conditionalField);
+    
+                $conditional_field_exists = false;
+                foreach ($fields as $f) {
+                    if (isset($f->id) && $f->id == $conditional_field_id) {
+                        $conditional_field_exists = true;
+                        break;
+                    }
+                }
+    
+                if (!$conditional_field_exists) {
+                    $field->conditionalField = null;
+                    $field->conditional = false;
+                    $field->conditionalValue = false;
+                }
+            }
+        }
+
         $files = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
+
+        foreach ($files as &$file) {
+            if ($file->conditionalField) {
+                $conditional_field_id = str_replace('field_', '', $file->conditionalField);
+    
+                $conditional_field_exists = false;
+                foreach ($files as $f) {
+                    if (isset($f->id) && $f->id == $conditional_field_id) {
+                        $conditional_field_exists = true;
+                        break;
+                    }
+                }
+    
+                if (!$conditional_field_exists) {
+                    $file->conditionalField = null;
+                    $file->conditional = false;
+                    $file->conditionalValue = false;
+                }
+            }
+        }
 
         $opportunity =  $app->repo("Opportunity")->find($this->urlData['id']);
 
