@@ -98,8 +98,15 @@ app.component('registration-actions', {
     },
 
     watch: {
-        stepIndex() {
-            this.isValidated = false;
+        async stepIndex() {
+            try {
+                this.registration.disableMessages();
+                await this.save();
+            } catch {
+                // `catch` is needed to avoid uncaught promise warnings
+            } finally {
+                this.registration.enableMessages();
+            }
         },
     },
 
