@@ -106,6 +106,7 @@ app.component('registration-actions', {
                 // `catch` is needed to avoid uncaught promise warnings
             } finally {
                 this.registration.enableMessages();
+                this.isValidated = false;
             }
         },
     },
