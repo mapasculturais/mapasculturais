@@ -400,7 +400,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         if($this->canUser('view') || $this->status === self::STATUS_APPROVED || $this->status === self::STATUS_WAITLIST){
-            $related_agents = $this->getRelatedAgents();
+            $related_agents = $this->getRelatedAgents(return_relations: true);
 
             $json['agentRelations'] = $related_agents;
 
