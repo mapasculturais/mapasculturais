@@ -402,13 +402,7 @@ class Registration extends \MapasCulturais\Entity
         if($this->canUser('view') || $this->status === self::STATUS_APPROVED || $this->status === self::STATUS_WAITLIST){
             $related_agents = $this->getRelatedAgents();
 
-            foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
-                $json['agentRelations'][] = [
-                    'label' => $def->label,
-                    'description' => $def->description,
-                    'agent' => isset($related_agents[$def->agentRelationGroupName]) ? $related_agents[$def->agentRelationGroupName][0]->simplify('id,name,singleUrl') : null
-                ];
-            }
+            $json['agentRelations'] = $related_agents;
 
             foreach($this->files as $group => $file){
                 if($file instanceof File){
