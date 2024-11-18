@@ -56,6 +56,10 @@ class Entity {
                 }
             }
 
+            if (definition.type === 'checklist' && !val) {
+                val = [];
+            }
+
             if (prop == 'location' && val) {
                 if(val?.latitude && val?.longitude) {
                     val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
