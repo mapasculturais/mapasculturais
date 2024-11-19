@@ -51,6 +51,8 @@ app.component('mc-modal', {
         close () {
             this.processing = false;
             this.modalOpen = false;
+        },
+        closed() {
             this.$emit('close', this);
         },
         loading (active) {
