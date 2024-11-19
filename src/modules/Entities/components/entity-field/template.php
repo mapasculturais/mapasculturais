@@ -72,8 +72,6 @@ $this->import('
             <entity-field-links :entity="entity" :prop="prop" :show-title="description && Boolean(description.registrationFieldConfiguration?.config?.title)" @change="change($event, true)"></entity-field-links>
         </template>
 
-        <pre>{{ selectedOptions }}</pre>
-
         <template v-if="is('multiselect') || is('checklist')">
            <div class="field__group">
                 <template v-if="isMultiSelect()">
