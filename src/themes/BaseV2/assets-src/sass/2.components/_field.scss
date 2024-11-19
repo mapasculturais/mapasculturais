@@ -17,8 +17,8 @@
     
     &__length {
         text-align: right;
-        margin-right: 15px;
-        margin-top:-30px;
+        margin-right: size(10);
+        margin-top: size(-28);
         font-size: $font-size-xxs;
         font-style: italic;
         color: $low-300;
@@ -75,6 +75,11 @@
             background-color: var(--mc-gray-500);
             border-radius: size(5);
             border: size(2) solid var(--mc-gray-100);
+        }
+        
+        & .input__checkboxLabel {
+            display: flex;
+            gap: size(8);
         }
     }
 
@@ -136,7 +141,7 @@
         font-weight: 600;
         line-height: size(19);
         gap: size(8);
-        align-items: center;
+        align-items: baseline;
     }
 
     &__checkbox {
@@ -203,7 +208,6 @@
         height: size(18);
         margin: 0;
         width: size(18);
-        margin-right: size(12);
     }
 
     select {
@@ -220,8 +224,9 @@
 
     &.error {
         input, textarea, select {
-            background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(20);
+            background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(16);
             border: size(2) solid #FF0000;
+            padding-right: size(40);
         }
 
         .dp__input_wrap {

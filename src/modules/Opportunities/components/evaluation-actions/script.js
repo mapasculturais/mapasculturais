@@ -58,7 +58,7 @@ app.component('evaluation-actions', {
             return new Promise((resolve, reject) => {
                 const global = useGlobalState();
                 
-                if (action == 'reopenEvaluation' || !global.validateEvaluationErrors()) {
+                if (action == 'reopenEvaluation' || !global.validateEvaluationErrors) {
                     const api = new API(controller);
                     let url = api.createUrl(action, args);
                     let result = api.POST(url, data);
@@ -73,6 +73,10 @@ app.component('evaluation-actions', {
             window.dispatchEvent(new CustomEvent('responseEvaluation', {detail:{response: response, type: type}}));
         },
 
+        dispatchErrors() {
+            window.dispatchEvent(new CustomEvent('processErrors', {detail:{}}));
+        },
+
         saveEvaluation(finish = false) {
             const messages = useMessages();
             let args = {id: this.entity.id};
@@ -84,6 +88,7 @@ app.component('evaluation-actions', {
             this.requestEvaluation('saveEvaluation', this.formData, args).then(res => res.json()).then(response => {
                 if (response.error) {
                     messages.error(response.data);
+                    
                 } else {
                     this.dispatchResponse('saveEvaluation', response);
 
@@ -115,11 +120,13 @@ app.component('evaluation-actions', {
         },
 
         finishEvaluation() {
+            this.dispatchErrors();
             this.saveEvaluation(true);
             this.updateSummaryEvaluations('completed');
         },
 
         finishEvaluationSend() {
+            this.dispatchErrors();
             this.sendEvaluation();
             if (this.lastRegistration?.registrationid != this.entity.id){
                 this.next();
@@ -127,6 +134,7 @@ app.component('evaluation-actions', {
         },
 
         finishEvaluationSendLater(){
+            this.dispatchErrors();
             this.saveEvaluation(true);
             if (this.lastRegistration?.registrationid != this.entity.id){
                 this.next();

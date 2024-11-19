@@ -1,6 +1,6 @@
 <div ng-if="data.fields.length > 0" id="registration-attachments" class="registration-fieldset">
     <div class="registration-step" ng-controller="RegistrationFieldsController" ng-repeat="(stepName, fields) in data.fieldsByStep">
-        <div class="registration-step__title"> {{stepName}} </div>
+        <div class="registration-step__title" ng-if="fields.filter(showField).length > 0"> {{stepName}} </div>
 
         <?php $this->applyTemplateHook('registration-field-list', 'before') ?>
         <ul class="attachment-list">

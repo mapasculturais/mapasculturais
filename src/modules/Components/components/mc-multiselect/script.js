@@ -135,9 +135,10 @@ app.component('mc-multiselect', {
             this.$emit('open', this);
         },
         
-        close() {
+        close(popover) {
             this.$emit('close', this);
             this.filter = '';
+            popover.close();
         },
 
         setFilter(text) {
