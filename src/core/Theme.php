@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
 
 /**
  * This is the default MapasCulturais View class. It extends the \Slim\View class adding a layout layer and the option to render the template partially.
@@ -993,6 +994,16 @@ abstract class Theme {
                 }
 
                 $e['profile']['currentUserPermissions'] = $permissions;
+            }
+
+            if($entity_class_name == Registration::class) {
+                $en = $this->controller->requestedEntity;
+                $meta = $en->jsonSerialize();
+                foreach($meta as $field => $value) {
+                    if (str_starts_with($field, "field_")) {
+                        $e[$field] = $value;
+                    }
+                }
             }
 
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
