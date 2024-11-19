@@ -20,18 +20,18 @@ $this->import('
     </template>
 </mc-modal>
 
-<div class="qualification-evaluation-form">
-    <div v-for="section in sections" :key="section.id">
+<div class="qualification-evaluation-form" ref="formRoot">
+    <div v-for="section in sections" :key="section.id" class="qualification-evaluation-form__section-wrapper">
         <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
             <h3>{{ section.name }}</h3>
-            <div class="field">
+            <div v-if="section?.maxNonEliminatory" class="qualification-evaluation-form__section-non-eliminatory field">
                 <label><?php i::_e('Número máximo de critérios não eliminatórios: ') ?>{{ section.numberMaxNonEliminatory }}</label>
             </div>
-            <div class="qualification-evaluation-form__criterion" v-for="crit in section.criteria" :key="crit.id">
-                <div v-if="showSectionAndCriterion(crit)" class="field">
+            <div v-for="crit in section.criteria" :key="crit.id">
+                <div v-if="showSectionAndCriterion(crit)" class="qualification-evaluation-form__criterion field">
                     <div class="qualification-evaluation-form__criterion-title">
                         <div class="qualification-evaluation-form__criterion-title-fields">
-                            <h3>{{ crit.name }}</h3>
+                            <h4>{{ crit.name }}</h4>
                             <span v-if="crit.nonEliminatory === 'false'"><?php i::_e('*') ?></span>
                         </div>
                         <mc-popover openside="down-right" v-if="crit.description">
@@ -52,7 +52,7 @@ $this->import('
                             </template>
                         </mc-popover>
                     </div>
-                    <div class="field">
+                    <div class="qualification-evaluation-form__criterion-options-wrapper field">
                         <div class="qualification-evaluation-form__criterion-options field">
                             <label class="qualification-evaluation-form__criterion-options-label">
                                 <input type="radio" :name="'option-' + crit.id" value="valid" :checked="formData.data[crit.id]?.includes('valid')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
@@ -66,29 +66,28 @@ $this->import('
                                 <input type="radio" :name="'option-' + crit.id" value="not-applicable" :checked="formData.data[crit.id]?.includes('not-applicable')" :disabled="!isEditable" @change="updateSectionStatus(section.id, crit.id, $event)" />
                                 <?php i::_e("Não se aplica") ?>
                             </label>
-
-                            <div v-if="formData.data[crit.id]?.includes('invalid')" class="qualification-evaluation-form__criterion-options-reasons field">
-                                <h4 class="col-12"><?php i::_e("Motivos de não atendimento") ?></h4>
-
-                                <label v-for="option in crit.options" :key="option" class="col">
-                                    <input type="checkbox" :value="option" :checked="formData.data[crit.id]?.includes(option)" :disabled="!isEditable" @change="updateOption(crit.id, option)" />
-                                    {{ option }}
-                                </label>
-
-                                <label v-if="crit.otherReasonsOption === 'true'" class="qualification-evaluation-form__criterion-options-label">
-                                    <input type="checkbox" :name="'option-' + crit.id" value="others" :checked="formData.data[crit.id]?.includes('others')" :disabled="!isEditable" @change="toggleOthersOption(crit.id, $event)" />
-                                <?php i::_e("Outras") ?>
-                                </label>
-                                <textarea v-if="formData.data[crit.id]?.includes('others')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
-                            </div>
                         </div>
 
+                        <div v-if="formData.data[crit.id]?.includes('invalid') && (crit.options?.length > 0 || crit.otherReasonsOption === 'true')" class="qualification-evaluation-form__criterion-options-reasons field">
+                            <h5 class="qualification-evaluation-form__criterion-options-reasons-title"><?php i::_e("Motivos de não atendimento") ?></h5>
+
+                            <label class="qualification-evaluation-form__criterion-options-reasons-label" v-for="option in crit.options" :key="option">
+                                <input type="checkbox" :value="option" :checked="formData.data[crit.id]?.includes(option)" :disabled="!isEditable" @change="updateOption(crit.id, option)" />
+                                {{ option }}
+                            </label>
+
+                            <label v-if="crit.otherReasonsOption === 'true'" class="qualification-evaluation-form__criterion-options-reasons-other">
+                                <input type="checkbox" :name="'option-' + crit.id" value="others" :checked="formData.data[crit.id]?.includes('others')" :disabled="!isEditable" @change="toggleOthersOption(crit.id, $event)" />
+                            <?php i::_e("Outros") ?>
+                            </label>
+                            <textarea v-if="formData.data[crit.id]?.includes('others')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="field">
-                <label><?php i::_e('Parecer') ?></label>
-                <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite o aparecer') ?>"></textarea>
+                <label><?php i::_e('Observações/parecer') ?></label>
+                <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite as observações/parecer') ?>"></textarea>
                 <label>
                     <?php i::_e('Resultado da seção:') ?> 
                     <span :class="sectionStatus(section.id) == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
@@ -99,7 +98,7 @@ $this->import('
         </div>
     </div>
     <div class="qualification-evaluation-form__observation field">
-        <label><?php i::_e('Observações') ?></label>
+        <label><?php i::_e('Observações/parecer final') ?></label>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
         <label>
             <?php i::_e('Status da avaliação:') ?> 

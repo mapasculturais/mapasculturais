@@ -69,7 +69,7 @@ app.component("fields-visible-evaluators", {
         },
         fieldSkeleton() {
             let _fields = [];
-            if($MAPAS?.config?.fieldsVisibleEvaluators[this.entity.opportunity.id].length > 0){
+            if($MAPAS?.config?.fieldsVisibleEvaluators[this.entity.opportunity.id]?.length > 0){
                 $MAPAS?.config?.fieldsVisibleEvaluators[this.entity.opportunity.id].forEach(item =>{
                     _fields.push(item);
                 })

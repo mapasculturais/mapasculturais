@@ -15,11 +15,11 @@ $this->import('
         <template #button="popover">
             <slot :popover="popover" :setFilter="setFilter"></slot>
         </template>
-        <template #default="{close}">
+        <template #default="popover">
             <div class="mc-multiselect__content">
                 <div v-if="!$media('max-width: 500px')" class="mc-multiselect__filter" ref="filter">
                     <input v-if="!hideFilter" class="mc-multiselect__filter-input" v-model="filter" type="text" placeholder="<?= i::esc_attr__('Filtro') ?>" />
-                    <span class="mc-multiselect__close" @click="close()">
+                    <span class="mc-multiselect__close" @click="close(popover)">
                         <mc-icon name="close"></mc-icon>
                     </span>
                 </div>
@@ -39,7 +39,7 @@ $this->import('
                     </li>
                 </ul>
                 <div v-if="!hideButton" class="mc-multiselect__confirm-button">
-                    <button class="button button--primary button--large button--sm" @click="close">
+                    <button class="button button--primary button--large button--sm" @click="close(popover)">
                         <?php i::_e('Confirmar') ?>
                     </button>
                 </div>
