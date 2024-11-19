@@ -284,6 +284,7 @@ class Agent extends \MapasCulturais\Entity
     public function __construct($user = null) {
         $this->user = $user ? $user : App::i()->user;
         $this->type = 1;
+        $this->parentId = !App::i()->user->is('guest') ? App::i()->user->profile->id : null;
 
         parent::__construct();
     }

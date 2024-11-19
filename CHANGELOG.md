@@ -26,14 +26,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - **array** - serializa / deserializa um json fazendo um cast para (array)
   - **entity** - possibilita a vinculação de entidade em metadados
 
-
-## [7.5.10] - unreleased
+## [7.5.10] - 2024-11-19
 ### Correções
 - Corrige exibição do bloqueio de entidade na configuração de formulário
 - Corrige exibição do nome do avaliador no formulário de avaliação documental
 - Corrige envio do id do usuário no formulário de avaliação documental
 - Corrige inicialização da segunda fase de avaliação criada
 - Corrige erro ao exibir o título das télas FAQ
+- Corrige definição do parent_id do agente quando o mesmo é criado com algum usuário autenticado
 
 ### Melhorias
 - Implementa aviso para sinalizar quando o total de vagas distribuídas por território exceder o total de vagas do edital
