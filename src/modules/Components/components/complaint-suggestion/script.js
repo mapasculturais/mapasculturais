@@ -67,14 +67,14 @@ app.component('complaint-suggestion', {
                 if (error == "g-recaptcha-response") {
                     mess = this.text('Recaptcha inválida');
                 } else {
-                    mess = this.text('Todos os campos são obrigatorio');
+                    mess = this.text('Todos os campos são obrigatórios');
                 }
                 this.messages.error(mess);
                 return;
             }
 
             await api.POST(url, objt).then(res => res.json()).then(data => {
-                this.messages.success(this.text('Dados enviados com suscesso'));
+                this.messages.success(this.text('Dados enviados com sucesso'));
             });
         },
         async verifyCaptcha(response) {
