@@ -1181,6 +1181,7 @@ class Opportunity extends EntityController {
             $importSource = fread($importFile,filesize($_FILES['fieldsFile']['tmp_name']));
             $importSource = json_decode($importSource);
 
+            /** @var Entities\Opportunity */
             $opportunity =  $app->repo("Opportunity")->find($opportunity_id);
 
             $opportunity->importFields($importSource);
