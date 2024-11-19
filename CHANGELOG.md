@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.11] unreleased
+### Correções
+- Implementa db_update para atualizar a coluna parent_id do agente com id do agente principal
+
 ## [7.5.10] - 2024-11-19
 ### Correções
 - Corrige exibição do bloqueio de entidade na configuração de formulário
