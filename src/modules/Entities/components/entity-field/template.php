@@ -50,9 +50,17 @@ $this->import('
         
         <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled" :readonly="readonly"></textarea>
 
-        <select v-if="is('select')" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled">
-            <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>
-        </select>
+        <template v-if="is('select')">
+            <template v-if="description.registrationFieldConfiguration?.config?.viewMode === 'radio'">
+                <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
+                    <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || disabled"> {{description.options[optionValue]}} 
+                </label>
+            </template>
+
+            <select v-else :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled">
+                <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>
+            </select>
+        </template>
 
         <template v-if="is('radio')">
             <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
@@ -64,9 +72,11 @@ $this->import('
             <entity-field-links :entity="entity" :prop="prop" :show-title="description && Boolean(description.registrationFieldConfiguration?.config?.title)" @change="change($event, true)"></entity-field-links>
         </template>
 
+        <pre>{{ selectedOptions }}</pre>
+
         <template v-if="is('multiselect') || is('checklist')">
            <div class="field__group">
-                <template v-if="description.optionsOrder?.length > 15">
+                <template v-if="isMultiSelect()">
                     <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover}" :max-options="maxOptions">
                         <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle(); $event.preventDefault()" >
                             <?php i::_e("Selecionar") ?>
@@ -76,7 +86,6 @@ $this->import('
 
                     <mc-tag-list :tags="selectedOptions[prop]" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
                 </template>
-
 
                 <label v-else class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
                    <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled" /> {{description.options[optionValue]}} 
