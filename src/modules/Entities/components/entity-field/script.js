@@ -158,7 +158,7 @@ app.component('entity-field', {
             this.isReadonly
         );
 
-        if((this.is('multiselect') || this.is('checklist')) && this.description.optionsOrder.length > 10) {
+        if (this.isMultiSelect()) {
             if (!this.entity[this.prop]) {
                 this.entity[this.prop] = [];
             } else if (typeof this.entity[this.prop] !== 'object') {
@@ -293,6 +293,17 @@ app.component('entity-field', {
 
         is(type) {
             return this.fieldType == type;
+        },
+
+        isMultiSelect() {
+            if (this.is('multiselect')) {
+                return true;
+            } else if (this.is('checklist')) {
+                const config = this.description.registrationFieldConfiguration?.config;
+                return (config?.viewMode === 'tag') || (!config?.viewMode && this.description.optionsOrder?.length > 15);
+            } else {
+                return false;
+            }
         },
 
         isReadonly() {
