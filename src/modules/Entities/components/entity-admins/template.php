@@ -16,7 +16,7 @@ $this->import('
 <?php $this->applyTemplateHook('entity-related-agents', 'before'); ?>
 <div :class="classes" class="entity-related-agents" v-if="isEditable || group.length > 0">
     <?php $this->applyTemplateHook('entity-related-agents', 'begin'); ?>
-    <h4 class="bold" v-if="group"><?php i::_e("Administrado por") ?> 
+    <h4 class="bold" v-if="group">{{title}}
         <?php if($this->isEditable()): ?>
             <?php $this->info('cadastro -> configuracoes-entidades -> administradores-entidade') ?>
         <?php endif; ?>
