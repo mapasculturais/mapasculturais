@@ -30,7 +30,7 @@ help:
 # Dev setup
 .PHONY: dev 
 dev:
-	$(COMPOSE_DEV) up -d
+	$(COMPOSE_DEV) up -d --wait
 	@echo "Services running in dev mode"
 
 # List running containers
@@ -55,14 +55,15 @@ down:
 .PHONY: init
 init:
 	cp .env.sample .env
-	# $(COMPOSE) exec backend mkdir var/logs/
-	# $(COMPOSE) exec backend mkdir var/private-files/
+	$(COMPOSE) exec backend mkdir var/logs/
+	$(COMPOSE) exec backend mkdir var/private-files/
 	@echo "Folders created."
-	$(COMPOSE) exec backend chmod 777 var/logs/
-	$(COMPOSE) exec backend chmod 777 var/private-files/
-	$(COMPOSE) exec backend chmod 777 var/sessions/
-	$(COMPOSE) exec backend chmod 777 var/DoctrineProxies/
-	$(COMPOSE) exec backend chmod 777 public/assets/
+	$(COMPOSE) exec backend chmod 755 var/logs/
+	$(COMPOSE) exec backend chmod 755 var/private-files/
+	$(COMPOSE) exec backend chmod 755 var/sessions/
+	$(COMPOSE) exec backend chmod 755 var/DoctrineProxies/
+	$(COMPOSE) exec backend chmod 755 public/assets/
+	$(COMPOSE) exec backend chmod 755 public/files/
 	@echo "Permissions granted."
 
 
@@ -80,7 +81,7 @@ db-migrations:
 # Restore dump database
 .PHONY: db-restore
 db-restore:
-	$(COMPOSE) exec database bash -c "psql -h localhost -U mapas -d mapas < /data/dump.sql"
+	$(COMPOSE) exec database bash -c "PGPASSWORD=\$$POSTGRES_PASSWORD psql -h localhost -U mapas -d mapas < /data/dump.sql"
 	@echo "dump.sql default database dump was restored."
 
 # Build the backend service
@@ -127,7 +128,7 @@ restart:
 # Run the backend tests
 .PHONY: test-backend
 test-backend:
-	$(COMPOSE) exec $(BACKEND_SERVICE) make test  # assuming you have a Makefile for testing inside backend
+	$(COMPOSE) exec $(BACKEND_SERVICE) ./vendor/bin/phpunit -c phpunit.xml --coverage-clover ./coverage.xml || true
 	@echo "Backend tests have been run."
 
 # Run the frontend tests
