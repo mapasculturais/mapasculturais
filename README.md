@@ -1,3 +1,22 @@
+# Sobre
+Mapas Culturais é uma aplicação web server, utilizando no backend linguagem PHP com Slim Framework e banco de dados Postgres. No frontend, linguagem Javascript com VueJS para componentização, propiciando um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais.
+
+## Para começar agora
+
+1. Baixe o código do projeto a partir do repositório no github
+2. Garanta que o seu ambiente de desenvolvimento possui as dependências do projeto( Docker, Docker Compose, Make)
+3. Execute o comando `make dev` para criar os containers e executar o comando `make init` e `make init_dev` para iniciar o ambiente de desenvolvimento
+4. Execute o comando `make db-restore`, informe a senha do banco de dados: mapas
+5. Execute o comando `make db-migrations` para atualizar o banco de dados com as últimas modificações
+6. Acesse o site em http://localhost:4242
+
+<details>
+<summary>
+
+## Histórico
+
+</summary>
+
 [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
 
 # Mapas Culturais
@@ -61,8 +80,6 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Guarulhos - http://grucultura.guarulhos.sp.gov.br/
 - Itapetininga - http://mapacultural.itapetininga.sp.gov.br/
 
-## Sobre a aplicação
-Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
 
 ## Projetos correlatos
 * [Mapas Cuturais Base Project](https://github.com/hacklabr/mapasculturais-app) - Repositório de projeto base para novas instalações.
@@ -71,18 +88,28 @@ Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e ba
 * [Mapas Culturais APP](https://github.com/hacklabr/mapasculturais-app)
 * [Cultural Magazine Theme](https://github.com/hacklabr/cultural)
 
-## Instalação
-A maneira mais simples e segura para instalar o Mapas Culturais é utilizando o [Mapas Culturais Base Project](https://github.com/mapasculturais/mapasculturais-base-project) como base para a criação de um repositório próprio para o seu projeto, que reunirá o tema, os plugins e as configurações da aplicação. O Mapas Culturais Base Project utiliza o Docker e o Docker Composer para rodar a aplicação, facilitando os processos de deploy e de atualizaçao.
+</details>
 
-- [Instalação utilizando o Base Project ](https://github.com/mapasculturais/mapasculturais-base-project#readme) - **RECOMENDADO**
+<details>
+<summary>
+
 ## Documentação
+
+</summary>
 
 Uma [nova documentação](https://mapasculturais.gitbook.io/bem-vindo-a-a-documentacao-do-mapas/) está sendo escrita no gitbook, organizada em três seções:
 - [Documentação para usuários](https://mapasculturais.gitbook.io/documentacao-para-usuarios/)
 - [Documentação para desenvolvedores](https://mapasculturais.gitbook.io/documentacao-para-desenvolvedores/formacao-para-desenvolvedores/)
 - [Documentação para devops](https://mapasculturais.gitbook.io/documentacao-para-devops/instalacao/)
 
+</details>
+
+<details>
+<summary>
+
 ## Documentação Legada
+
+</summary>
 
 A documentação pode ser navegada no endereço (http://docs.mapasculturais.org)
 
@@ -96,7 +123,15 @@ Toda documentação da aplicação está na pasta [documentation](documentation)
 - [Deploy diretamente no sistema operacional](https://docs.mapasculturais.org/mc_deploy/) - **NÃO RECOMENDADO**
 - [Habilitar um novo tema](documentation/docs/mc_deploy_theme.md)
 
-### [Software] Requisitos para Instalação
+</details>
+
+<details>
+<summary>
+
+## [Software] Requisitos para Instalação
+
+</summary>
+
 Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](documentation/docs/mc_deploy.md) ou [guia do desenvolvedor](documentation/docs/mc_developer_guide.md). 
 
 - [Ubuntu Server >= 18.04](http://www.ubuntu.com) ou [Debian Server >= 10](https://www.debian.org.)
@@ -117,7 +152,14 @@ Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver 
 - [Ruby](https://www.ruby-lang.org/pt)
   - [Sass gem](https://rubygems.org/gems/sass/versions/3.4.22)
 
-### [Hardware] Requisitos para instalação
+</details>
+
+<details>
+<summary>
+
+## [Hardware] Requisitos para instalação
+
+</summary>
 
 Para instalações de pequeno/medio porte nas quais o número de entidades, isto é, número de agentes, espaços, projetos e evento,giram em torno de 2000 ativos, recomenda-se o mínimo de recursos para um servidor (aplicação + base de dados):
 
@@ -144,12 +186,14 @@ Recomendado:
 
 Vale lembrar que os requisitos de hardware podem variar de acordo com a latência da rede, velocidade dos cores dos cpus, uso de proxies, entre outros fatores. Recomendamos aos sysadmin da rede em que a aplicação será instalada um monitoramento de tráfego e uso durante o período de 6 meses a 1 ano para avaliação de cenário de uso. 
 
-### Canais de comunicação
+</details>
+
+## Canais de comunicação
 
 * [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
 * Telegram: [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
 
-### Licença de uso e desenvolvimento
+## Licença de uso e desenvolvimento
 
 Mapas Culturais é um software livre licenciado com [GPLv3](http://gplv3.fsf.org). 
 
