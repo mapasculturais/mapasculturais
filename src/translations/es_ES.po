@@ -6813,8 +6813,8 @@ msgid "O valor não é um telefone válido"
 msgstr "El valor no es una teléfono válido"
 
 #: application/lib/modules/RegistrationFieldTypes/Module.php:222
-msgid "Seleção única (select)"
-msgstr "Selección única (select)"
+msgid "Seleção única"
+msgstr "Selección única"
 
 #: application/lib/modules/RegistrationFieldTypes/Module.php:229
 msgid "# Título de Seção"
@@ -6849,8 +6849,8 @@ msgid "Caixa de verificação (checkbox)"
 msgstr "Casilla de verificación (checkbox)"
 
 #: application/lib/modules/RegistrationFieldTypes/Module.php:268
-msgid "Seleção múltipla (checkboxes)"
-msgstr "Selección múltiple (checkboxes)"
+msgid "Seleção múltipla"
+msgstr "Selección múltiple"
 
 #: application/lib/modules/RegistrationFieldTypes/Module.php:288
 msgid "Campo de listagem de pessoas"
