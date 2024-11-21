@@ -7,7 +7,6 @@ $agent_fields = $app->modules['RegistrationFieldTypes']->getAgentFields();
 
 $fields_options = [];
 $fields_labels = [
-    '@bankFields' => " " . i::__('Campos de dados bancários'),
     '@location' => " " . i::__('Campos de endereço'),
     '@terms:area' => " " . i::__('Área de atuação'),
     '@links' => " " . i::__(' Links'),
@@ -68,7 +67,7 @@ foreach ($agent_fields as $field) {
             <div ng-if='field.config.entityField === "<?=$field_name?>"'>
                 <?php i::_e("Informe os termos que estarão disponíveis para seleção.") ?>
                 <textarea ng-model="field.fieldOptions" ng-init='field.fieldOptions = field.fieldOptions || data.taxonomies.area.terms.join("\n")' placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>"></textarea>
-                <div ng-if="countWords(field.fieldOptions) >= 10">
+                <div>
                     <label><?php i::_e('Limite de Opções') ?><input type="number" ng-model="field.config.maxOptions"></label><br>
                     <small class="registration-help"><?php i::_e('Digite o limite de opções. Deixe em branco ou coloque 0 para selecionar ilimitadas.'); ?></small>
                 </div>
@@ -80,7 +79,7 @@ foreach ($agent_fields as $field) {
         <div ng-if='field.config.entityField === "<?=$field_name?>"'>
             <?php i::_e("Informe os termos que estarão disponíveis para seleção.") ?>
             <textarea ng-model="field.fieldOptions" ng-init="field.fieldOptions = field.fieldOptions || '<?=htmlentities($options)?>'" placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>"></textarea>
-            <div ng-if="countWords(field.fieldOptions) >= 10">
+            <div>
                 <label><?php i::_e('Limite de Opções') ?><input type="number" ng-model="field.config.maxOptions"></label><br>
                 <small class="registration-help"><?php i::_e('Digite o limite de opções. Deixe em branco ou coloque 0 para selecionar ilimitadas.'); ?></small>
             </div>
