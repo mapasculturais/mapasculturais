@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5.11] unreleased
 ### Correções
 - Implementa db_update para atualizar a coluna parent_id do agente com id do agente principal
+- Corrige erro no calculo de vagas no módulo de cotas
 
 ## [7.5.10] - 2024-11-19
 ### Correções
