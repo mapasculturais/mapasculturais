@@ -31,6 +31,8 @@ app.component('mc-status', {
                 case 'aceito':
                 case 'disponível':
                 case 'pago':
+                case 'enviado':
+                case 'enviada':
                     classes.push('mc-status--success');
                     break;
                 
@@ -40,6 +42,8 @@ app.component('mc-status', {
                 case 'inválido':
                 case 'inválida':
                 case 'falha':
+                case 'não enviado':
+                case 'não enviada':
                     classes.push('mc-status--error');
                     break;
                 
