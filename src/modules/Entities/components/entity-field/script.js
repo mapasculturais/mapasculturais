@@ -191,6 +191,9 @@ app.component('entity-field', {
         value() {
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
         },
+        entitiesFildTypes() {
+            return ['agent-owner-field', 'agent-collective-field']
+        },
     },
     
     methods: {
@@ -296,10 +299,17 @@ app.component('entity-field', {
         },
 
         isMultiSelect() {
+            let registrationFieldConfiguration = this.description.registrationFieldConfiguration
+            
             if (this.is('multiselect')) {
-                return true;
+                if(registrationFieldConfiguration?.fieldType && this.entitiesFildTypes.includes(registrationFieldConfiguration?.fieldType)) {
+                    const config = registrationFieldConfiguration?.config;
+                    return (config?.viewMode === 'tag') || (!config?.viewMode && this.description.optionsOrder?.length > 15);
+                } else {
+                    return true;
+                }
             } else if (this.is('checklist')) {
-                const config = this.description.registrationFieldConfiguration?.config;
+                const config = registrationFieldConfiguration?.config;
                 return (config?.viewMode === 'tag') || (!config?.viewMode && this.description.optionsOrder?.length > 15);
             } else {
                 return false;

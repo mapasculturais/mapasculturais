@@ -85,6 +85,15 @@ foreach ($agent_fields as $field) {
             </div>
         </div>
     <?php endforeach?>
+    
+    <label>
+        <?php i::_e('Modo de visualização') ?><br>
+        <select ng-model="field.config.viewMode">
+            <option value="checkbox"><?php i::_e('Lista de checkboxes') ?></option>
+            <option value="tag"><?php i::_e('Lista de tags') ?></option>
+        </select>
+    </label>
+
     <div ng-if="field.config.entityField == '@links'">
         <label><input type="checkbox" ng-model="field.config.title" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Pedir de título') ?></label><br>
     </div>
