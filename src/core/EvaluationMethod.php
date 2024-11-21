@@ -458,6 +458,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         ]);
 
         $has_global_filter_configs = false;
+        $user_in_tiebreaker_group = false;
         foreach($agent_relations as $ar) {
             $config = $evaluation_config->fetchFields->{$ar->group} ?? (object) [];
             foreach($config as $values) {
@@ -469,8 +470,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             if(!empty((array) $config)) {
                 $has_global_filter_configs = true;
             }
+            
+            if($ar->group == '@tiebreaker') {
+                $user_in_tiebreaker_group = true;
+            }
         }
-
         if (
             empty($evaluation_config->fetch->{$user->id}) 
             && empty($evaluation_config->fetchCategories->{$user->id}) 
@@ -478,6 +482,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             && empty($evaluation_config->fetchProponentTypes->{$user->id})
             && empty($evaluation_config->fetchSelectionFields->{$user->id})
             && !$has_global_filter_configs
+            || $user_in_tiebreaker_group && $registration->consolidatedResult !== '@tiebreaker'
         ) {
             return false;
         }

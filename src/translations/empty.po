@@ -11724,7 +11724,7 @@ msgid "O valor não é um telefone válido"
 msgstr ""
 
 #: modules/RegistrationFieldTypes/Module.php:294
-msgid "Seleção única (select)"
+msgid "Seleção única"
 msgstr ""
 
 #: modules/RegistrationFieldTypes/Module.php:301
@@ -11760,7 +11760,7 @@ msgid "Caixa de verificação (checkbox)"
 msgstr ""
 
 #: modules/RegistrationFieldTypes/Module.php:340
-msgid "Seleção múltipla (checkboxes)"
+msgid "Seleção múltipla"
 msgstr ""
 
 #: modules/RegistrationFieldTypes/Module.php:360
