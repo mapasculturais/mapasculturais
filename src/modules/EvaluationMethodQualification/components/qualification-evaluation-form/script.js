@@ -155,12 +155,19 @@ app.component('qualification-evaluation-form', {
         },
 
         showSectionAndCriterion(type) {
-            return (
-                !type.ranges.length || !type.categories.length || !type.proponentTypes.length ||      
-                type.ranges.some(range => range === this.entity.range) ||
-                type.categories.includes(this.entity.category) || 
-                type.proponentTypes.includes(this.entity.proponentType)
-            );
+            if(type.categories.length > 0 && !type.categories.includes(this.entity.category)) {
+                return false
+            }
+
+            if(type.proponentTypes.length > 0 && !type.proponentTypes.includes(this.entity.proponentType)) {
+                return false
+            }
+
+            if(type.ranges.length > 0 && !type.ranges.includes(this.entity.range)) {
+                return false
+            }
+
+            return true;
         },
 
         consolidated (){
