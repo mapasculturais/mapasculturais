@@ -384,7 +384,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'select',
-                'name' => \MapasCulturais\i::__('Seleção única (select)'),
+                'name' => \MapasCulturais\i::__('Seleção única'),
                 'viewTemplate' => 'registration-field-types/select',
                 'configTemplate' => 'registration-field-types/select-config',
                 'requireValuesConfiguration' => true
@@ -430,7 +430,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'checkboxes',
-                'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
+                'name' => \MapasCulturais\i::__('Seleção múltipla'),
                 'viewTemplate' => 'registration-field-types/checkboxes',
                 'configTemplate' => 'registration-field-types/checkboxes-config',
                 'requireValuesConfiguration' => true,

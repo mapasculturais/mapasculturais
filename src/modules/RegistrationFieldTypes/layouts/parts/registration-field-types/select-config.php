@@ -9,8 +9,8 @@
         <label>
             <?php i::_e('Modo de visualização') ?><br>
             <select ng-model="field.config.viewMode">
-                <option value="select"><?php i::_e('Select') ?></option>
-                <option value="radio"><?php i::_e('Radio') ?></option>
+                <option value="select"><?php i::_e('Caixa de seleção') ?></option>
+                <option value="radio"><?php i::_e('Lista de botões de rádio') ?></option>
             </select>
         </label>
     </div>
