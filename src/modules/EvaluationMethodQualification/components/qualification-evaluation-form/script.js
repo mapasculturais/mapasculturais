@@ -229,20 +229,22 @@ app.component('qualification-evaluation-form', {
 
             for (let sectionIndex in this.sections) {
                 let section = this.sections[sectionIndex];
-
-                if (this.showSectionAndCriterion(section)) {
-                    for (let crit of section.criteria) {
-                        if (this.showSectionAndCriterion(crit)) {
-                            let sectionName = section.name;
-                            let value = this.formData.data[crit.id];
-                            if (value.length <= 0) {
-                                this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
-                                isValid = true;
-                            }
-                        }
-                    }
+                if (!this.showSectionAndCriterion(section)) {
+                    continue;
                 }
 
+                for (let crit of section.criteria) {
+                    if (!this.showSectionAndCriterion(crit)) {
+                        continue;
+                    }
+
+                    let sectionName = section.name;
+                    let value = this.formData.data[crit.id];
+                    if (value.length <= 0) {
+                        this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
+                        isValid = true;
+                    }
+                }
                 
                 let parecerValue = this.formData.data[section.id];
                 if (!parecerValue || parecerValue === "") {
