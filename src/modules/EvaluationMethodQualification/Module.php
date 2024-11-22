@@ -141,6 +141,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         }
         
         return [
+            'result' => $evaluation->result,
             'scores' => $sections,
             'obs' => $evaluation->evaluationData->obs
         ];
