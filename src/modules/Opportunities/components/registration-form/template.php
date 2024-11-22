@@ -18,9 +18,11 @@
     <?php $this->applyComponentHook("begin") ?>
     <form v-if="isValid" >
         <mc-card v-for="section in sections" class="registration-form__section">
-            <template v-if="section.title" #title>{{section.title}}</template>
+            <template v-if="section.title" #title>
+                {{section.title}}
+                <p v-if="section.description">{{section.description}}</p>
+            </template>
             <template #content>
-                <p>{{section.description}}</p>
                 <template v-for="field in section.fields" :key="field.fieldName || field.groupName">
                     <registration-field-persons v-if="field.fieldType == 'persons'" 
                         :registration="registration"
