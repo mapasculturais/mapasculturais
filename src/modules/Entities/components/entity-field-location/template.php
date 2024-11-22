@@ -28,35 +28,35 @@ $this->import('
                 <label for="logradouro">
                     <?= i::__('Logradouro') ?>
                 </label>
-                <input id="logradouro" type="text" v-model="entity[fieldName].En_Nome_Logradouro" @change="entity.save()" />
+                <input id="logradouro" type="text" v-model="entity[fieldName].En_Nome_Logradouro" @change="save" />
             </div>
 
             <div class="field col-4">
                 <label for="num">
                     <?= i::__('Número') ?>
                 </label>
-                <input id="num" type="number" v-model="entity[fieldName].En_Num" @change="entity.save()" />
+                <input id="num" type="number" v-model="entity[fieldName].En_Num" @change="save" />
             </div>
 
             <div class="field col-4">
                 <label for="bairro">
                     <?= i::__('Bairro') ?>
                 </label>
-                <input id="bairro" type="text" v-model="entity[fieldName].En_Bairro" @change="entity.save()" />
+                <input id="bairro" type="text" v-model="entity[fieldName].En_Bairro" @change="save" />
             </div>
 
             <div class="field col-12">
                 <label for="complemento">
                     <?= i::__('Complemento') ?>
                 </label>
-                <input id="complemento" type="text" v-model="entity[fieldName].En_Complemento" @change="entity.save()" />
+                <input id="complemento" type="text" v-model="entity[fieldName].En_Complemento" @change="save" />
             </div>
 
             <div v-if="statesAndCitiesCountryCode != 'BR'" class="field">
                 <label for="country">
                     <?= i::__('País') ?>
                 </label>
-                <input id="country" type="text" v-model="entity[fieldName].En_Pais" @change="entity.save()" />
+                <input id="country" type="text" v-model="entity[fieldName].En_Pais" @change="save" />
             </div>
 
             <div class="field col-6">
