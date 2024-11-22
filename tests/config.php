@@ -18,8 +18,8 @@ return array(
 
     'doctrine.isDev' => false,
 
-    'db.host' => 'localhost',
-    'db.port' => '32768',
+    'db.host' => 'database',
+    'db.port' => '5432',
     'db.dbname' => 'mapas',
     'db.user' => 'mapas',
     'db.password' => 'mapas',

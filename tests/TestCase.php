@@ -161,57 +161,68 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
+    private static $appInitialized = false;
+
+    protected function initializeApp(): void {
+        if (!self::$appInitialized) {
+            // Create mock repository
+            $repository = $this->getMockBuilder(Repository::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+
+            // Create mock connection
+            $connection = $this->getMockBuilder(Connection::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+
+            // Create mock mapping driver
+            $mappingDriver = $this->getMockBuilder(MappingDriver::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+
+            // Create mock configuration
+            $configuration = $this->getMockBuilder(Configuration::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+
+            // Setup configuration to return mapping driver
+            $configuration->method('getMetadataDriverImpl')
+                ->willReturn($mappingDriver);
+
+            // Create mock EntityManager
+            $em = $this->getMockBuilder(EntityManager::class)
+                ->disableOriginalConstructor()
+                ->getMock();
+
+            // Setup connection mock to return platform
+            $platform = new \Doctrine\DBAL\Platforms\PostgreSQLPlatform();
+            $connection->method('getDatabasePlatform')
+                ->willReturn($platform);
+
+            // Setup EntityManager mock to return connection, repository and configuration
+            $em->method('getConnection')
+                ->willReturn($connection);
+            $em->method('getRepository')
+                ->willReturn($repository);
+            $em->method('getConfiguration')
+                ->willReturn($configuration);
+
+            // Create app instance with proper configuration
+            $this->app = \MapasCulturais\App::i();
+            // $this->app->setEntityManager($em);
+            $config = require __DIR__ . '/config.php';
+            $this->app->init($config);
+
+            self::$appInitialized = true;
+        } else {
+            $this->app = \MapasCulturais\App::i();
+        }
+    }
+
     protected function setUp(): void {
         parent::setUp();
-
-        // Create mock repository
-        $repository = $this->getMockBuilder(Repository::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // Create mock connection
-        $connection = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // Create mock mapping driver
-        $mappingDriver = $this->getMockBuilder(MappingDriver::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // Create mock configuration
-        $configuration = $this->getMockBuilder(Configuration::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // Setup configuration to return mapping driver
-        $configuration->method('getMetadataDriverImpl')
-            ->willReturn($mappingDriver);
-
-        // Create mock EntityManager
-        $em = $this->getMockBuilder(EntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        // Setup connection mock to return platform
-        $platform = new \Doctrine\DBAL\Platforms\PostgreSQLPlatform();
-        $connection->method('getDatabasePlatform')
-            ->willReturn($platform);
-
-        // Setup EntityManager mock to return connection, repository and configuration
-        $em->method('getConnection')
-            ->willReturn($connection);
-        $em->method('getRepository')
-            ->willReturn($repository);
-        $em->method('getConfiguration')
-            ->willReturn($configuration);
-
-        // Create app instance with proper configuration
-        $this->app = \MapasCulturais\App::i();
-        // $this->app->setEntityManager($em);
-        $config = require __DIR__ . '/config.php';
-        $this->app->init($config);
-
+        
+        $this->initializeApp();
 
         $assetManager = new \MapasCulturais\AssetManagers\FileSystem(['baseUrl' => 'baseUrl']);
         $this->theme = new Theme($assetManager);

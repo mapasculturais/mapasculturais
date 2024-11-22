@@ -76,6 +76,8 @@ class FakeAuthProvider extends \MapasCulturais\AuthProvider {
  */
 class MaranhaoTest extends TestCase
 {
+    protected static $app;
+    protected $theme;
 
     protected function setUp(): void
     {
@@ -120,82 +122,6 @@ class MaranhaoTest extends TestCase
             ->willReturn($repository);
         $em->method('getConfiguration')
             ->willReturn($configuration);
-
-        // $is_production = true;
-
-        // $config = [
-        //   // App settings
-        //   'app.log.query' => false, // boolean
-        //   'app.log.hook' => false,
-        //   'app.log.assets' => false,
-        //   'app.mode' => 'production', // string: 'production' | 'development'
-        //   'app.offline' => false, // boolean
-        //   'app.verifiedSealsIds' => [], // array of integers
-        //   'app.lcode' => 'pt_BR',
-        //   'app.currency' => 'R$',
-        //   'app.useAssetsUrlCache' => true,
-        //   'app.cache' => new ArrayAdapter(),
-        //   'app.log.query' => false, // boolean
-        //   'app.mode' => 'production', // string: 'production' | 'development'
-        //   'app.offline' => false, // boolean
-        //   'app.verifiedSealsIds' => [], // array of integers
-
-        //   // Authentication
-        //   'auth.provider' => 'Fake', // string: name of auth provider class
-        //   'auth.config' => [], // array of auth provider configuration
-
-        //   // Middleware configuration
-        //   'middlewares' => [], // array of middleware class names/configurations
-
-        //   // Monolog settings
-        //   'monolog.processors' => [], // array of processor callables/class names
-        //   'monolog.handlers' => [], // array of handler configurations
-
-        //   // Plugin configurations
-        //   'plugins' => [
-        //       'ProjectName' => ['namespace' => 'PluginNamespace'] // array of plugin configurations
-        //   ],
-
-        //   // Routes configuration
-        //   'routes' => [
-        //       'default' => [
-        //           'id' => 'default',
-        //           'patterns' => [
-        //               'controller' => '/[^\/]+/',
-        //               'action' => '/[^\/]+/',
-        //               'id' => '/[^\/]+/'
-        //           ]
-        //       ]
-        //   ],
-
-        //   // Session configuration
-        //   'slim.session.save_path' => '/tmp', // string: valid directory path
-        //   'themes.active' => '\MapasCulturais\Themes\Maranhao', // string: theme name
-        //   'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem([
-        //       'publishPath' => __DIR__ . 'assets/',
-
-        //       'mergeScripts' =>  env('ASSETS_MERGE_SCRIPTS', $is_production),
-        //       'mergeStyles' => env('ASSETS_MERGE_STYLES', $is_production),
-
-        //       'process.js' => !$is_production ?
-        //               'cp {IN} {OUT}':
-        //               'terser {IN} --source-map --output {OUT} ',
-
-        //       'process.css' => !$is_production ?
-        //               'cp {IN} {OUT}':
-        //               'uglifycss {IN} > {OUT}',
-
-        //       'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
-        //   ]),
-        // ];
-        $config = require __DIR__ . '/../config.php';
-        // $config = array_merge($test_config, []);
-        // $this->config = $config;
-
-        // Create app instance
-        $this->app = \MapasCulturais\App::i();
-        // $this->app->setEntityManager($em);
-        $this->app->init($config);
 
         $assetManager = new \MapasCulturais\AssetManagers\FileSystem(['baseUrl' => 'baseUrl']);
         $this->theme = new Theme($assetManager);
