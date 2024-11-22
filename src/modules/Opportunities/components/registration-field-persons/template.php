@@ -11,12 +11,13 @@ $this->import('
 ');
 ?>
 <div class="registration-field-persons" :data-field="prop">
-    <div class="registration-field-persons__list">
-        <label> <?= $this->text('lista-pessoas', i::__('Lista de pessoas')) ?> </label>
+    <div class="registration-field-persons__list field">
+        <label> {{ title }} </label>
+        <small class="field__description"> {{ description }} </small>
 
         <div v-for="(person, index) in registration[prop]" class="registration-field-persons__person">
 
-        <label> {{index + 1}}ª <?= i::__("Pessoa") ?> </label>
+        <p class="semibold"> {{index + 1}}ª <?= i::__("Pessoa") ?> </p>
 
             <div class="registration-field-persons__person-fields grid-12">
                 <div class="field col-12">
