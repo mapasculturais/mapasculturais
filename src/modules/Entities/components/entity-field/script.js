@@ -266,7 +266,11 @@ app.component('entity-field', {
                     if (index >= 0) {
                         this.entity[this.prop].splice(index, 1);
                     } else {
-                        this.entity[this.prop].push(value)
+                        if(!this.isMultiSelect() && !this.maxOptions || this.entity[this.prop].length < this.maxOptions) {
+                            this.entity[this.prop].push(value)
+                        } else {
+                            this.entity[this.prop].push(value)
+                        }
                     }
 
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: value});
@@ -285,7 +289,7 @@ app.component('entity-field', {
                     });
                 }
 
-            }, now ? 0 : this.debounce);
+            }, this.debounce);
 
 
             if(this.is('textarea')) {
