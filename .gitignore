@@ -14,3 +14,5 @@ src/themes/BaseV1/assets/css/main.css.map
 !/dev/.env
 .phpunit*
 *.phar
+*.php-cs-fixer.cache
+*coverage.xml
