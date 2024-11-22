@@ -101,7 +101,7 @@ $this->import('
     <div class="qualification-evaluation-form__observation field">
         <label><?php i::_e('Observações/parecer final') ?></label>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
-        <label>
+        <label class="qualification-result">
             <?php i::_e('Status da avaliação:') ?> 
             <span :class="consolidatedResult == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
                 {{ consolidatedResult }}
