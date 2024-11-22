@@ -1,7 +1,7 @@
 [submodule "src/plugins/MultipleLocalAuth"]
 	path = src/plugins/MultipleLocalAuth
-	url = https://github.com/culturagovbr/plugin-MultipleLocalAuth.git
-	branch = feature/login-basev2
+	url = https://github.com/redemapas/plugin-MultipleLocalAuth.git
+	branch = main
 [submodule "src/plugins/AdminLoginAsUser"]
 	path = src/plugins/AdminLoginAsUser
 	url = https://github.com/mapasculturais/plugin-AdminLoginAsUser
