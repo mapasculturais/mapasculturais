@@ -29,4 +29,23 @@ app.component('registration-edition', {
             return this.steps[this.stepIndex];
         },
     },
+
+    watch: {
+        stepIndex() {
+            window.location.hash = `#etapa_${this.stepIndex + 1}`;
+        },
+    },
+
+    beforeMount() {
+        const hash = window.location.hash;
+        if (hash) {
+            const matches = hash.match(/^#etapa_([0-9]+)$/);
+            if (matches?.[1]) {
+                const stepIndex = parseInt(matches[1]);
+                if (stepIndex >= 1 && stepIndex <= this.steps.length) {
+                    this.stepIndex = stepIndex - 1;
+                }
+            }
+        }
+    },
 });
