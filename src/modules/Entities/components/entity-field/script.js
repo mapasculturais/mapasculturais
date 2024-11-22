@@ -289,7 +289,7 @@ app.component('entity-field', {
                     });
                 }
 
-            }, now ? 0 : this.debounce);
+            }, this.debounce);
 
 
             if(this.is('textarea')) {
