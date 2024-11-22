@@ -260,11 +260,37 @@ app.component('entity-field-location', {
                     } );
             }            
         },
+        initializeAddressFields() {
+            if (!this.entity[this.fieldName]) {
+                this.entity[this.fieldName] = [];
+            }
+
+            const requiredFields = [
+                'En_CEP',
+                'En_Estado',
+                'En_Nome_Logradouro',
+                'En_Num',
+                'En_Bairro',
+                'En_Complemento',
+                'En_Pais',
+                'En_Municipio'
+            ];
+
+            requiredFields.forEach(field => {
+                if (this.entity[this.fieldName][field] === undefined || this.entity[this.fieldName][field] === null) {
+                    this.entity[this.fieldName][field] = '';
+                }
+            });
+        }
         // citiesList(){
         //     this.cities = this.statesAndCities[this.entity[this.fieldName].En_Estado].cities;
         // },
 //         isRequired(field){
 //             return $DESCRIPTIONS[this.entity.__objectType][field].required;
 //         }
+    },
+
+    created() {
+        this.initializeAddressFields();
     }
 });
