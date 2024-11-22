@@ -45,7 +45,8 @@
                         :groupName="field.groupName" 
                         titleModal="<?php i::_e('Adicionar anexo') ?>" 
                         :title="field.title" 
-                        editable></entity-file>
+                        editable
+                        :required="field.required"></entity-file>
                 </template>
             </template>
         </mc-card>
