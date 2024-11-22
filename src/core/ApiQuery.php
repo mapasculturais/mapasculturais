@@ -2,6 +2,7 @@
 
 namespace MapasCulturais;
 
+use Apps\Entities\UserApp;
 use Doctrine\ORM\Query;
 use Exception;
 use MapasCulturais\Entities\Agent;
@@ -868,7 +869,11 @@ class ApiQuery {
         }
 
         if ($order) {
-            $dql .= "\n\nORDER BY {$order}, e.id ASC";
+            if($this->entityClassName === UserApp::class) {
+                $dql .= "\n\nORDER BY {$order}";
+            } else {
+                $dql .= "\n\nORDER BY {$order}, e.id ASC";
+            }
         } else {
             $dql .= "\n\nORDER BY e.id ASC";
         }
