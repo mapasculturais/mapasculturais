@@ -88,7 +88,6 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
         $config = $this->_config;
 
-        $app->view->enqueueScript('app', 'recaptcha', 'https://www.google.com/recaptcha/api.js');
 
         $plugin = $this;
 
@@ -137,9 +136,14 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('POST(<<agent|space|event|project|opportunity>>.sendComplaintMessage)', function() use ($plugin) {
             $app = App::i();
-            
-             //Verificando recaptcha v2
-            if (!$plugin->verifyRecaptcha2()) {
+
+            // Se não recebemos o token, não há motivo para avançar para a verificação
+            if (!isset($_POST["g-recaptcha-response"]) || empty($_POST["g-recaptcha-response"])) {
+                throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
+            }
+
+            //Verificando recaptcha v2
+            if (!$app->verifyRecaptcha2($_POST['g-recaptcha-response'])) {
                 throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
             }
 
@@ -211,9 +215,14 @@ class Module extends \MapasCulturais\Module {
         $app->hook('POST(<<agent|space|event|project|opportunity>>.sendSuggestionMessage)', function() use ($plugin) {
             $app = App::i();
 
+            // Se não recebemos o token, não há motivo para avançar para a verificação
+            if (!isset($_POST["g-recaptcha-response"]) || empty($_POST["g-recaptcha-response"])) {
+                throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
+            }
+
             //Verificando recaptcha v2
-            if (!$plugin->verifyRecaptcha2()) {
-                throw new \Exception( \MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.') );
+            if (!$app->verifyRecaptcha2($_POST['g-recaptcha-response'])) {
+                throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
             }
 
             $entity = $app->repo($this->entityClassName)->find($this->data['entityId']);
@@ -312,47 +321,6 @@ class Module extends \MapasCulturais\Module {
     }
 
     public function register() { }
-
-    public function verificarToken($token, $secretkey)
-    {
-        $url = "https://www.google.com/recaptcha/api/siteverify";
-
-        $data = [
-            "secret" => $secretkey,
-            "response" => $token,
-        ];
-
-        $options = [
-            "http" => [
-                "header" => "Content-type: application/x-www-form-urlencoded\r\n",
-                "method" => "POST",
-                "content" => http_build_query($data), 
-            ],
-        ];
-
-        $context = stream_context_create($options);
-
-        $result = file_get_contents($url, false, $context);
-
-        if ($result === false) {
-            return false;
-        }
-
-        $result = json_decode($result);
-
-        return $result->success;
-    }
-
-    public function verifyRecaptcha2() {
-        $app = App::i();
-        $config = $app->_config;
-    
-        if (!isset($app->_config['app.recaptcha.key'])) return true;
-        if (!isset($_POST["g-recaptcha-response"]) || empty($_POST["g-recaptcha-response"])) return false;
-
-        $token = $_POST["g-recaptcha-response"];
-        return $this->verificarToken($token, $app->_config['app.recaptcha.secret']);
-    }
 
     public function addConfigToJs()
     {
