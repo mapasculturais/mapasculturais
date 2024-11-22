@@ -4498,11 +4498,11 @@ msgid "Recaptcha inválida"
 msgstr ""
 
 #: modules/Components/components/complaint-suggestion/texts.php:7
-msgid "Todos os campos são obrigatorio"
+msgid "Todos os campos são obrigatórios"
 msgstr ""
 
 #: modules/Components/components/complaint-suggestion/texts.php:8
-msgid "Dados enviados com suscesso"
+msgid "Dados enviados com sucesso"
 msgstr ""
 
 #: modules/Components/components/entity-card/template.php:27
