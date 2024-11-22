@@ -1,24 +1,11 @@
 
 app.component('entity-field-location', {
     template: $TEMPLATES['entity-field-location'],
-//     emits: [],
-
-//     setup(props, { slots }) {
-//         const hasSlot = name => !!slots[name]
-//         return { hasSlot }
-//     },
-    // data(){
-    //     let cities = {};
-    //     return {cities};
-    // },
 
     computed: {
         cities(){
             return this.entity[this.fieldName].En_Estado ? this.statesAndCities[this.entity[this.fieldName].En_Estado].cities : null;
         },
-        // hasPublicLocation() {
-        //     return !!this.entity.$PROPERTIES.publicLocation;
-        // },
         statesAndCities(){
             return $MAPAS.config.statesAndCities;
         },
@@ -57,40 +44,7 @@ app.component('entity-field-location', {
         },
     },
 
-//     watch: {
-//         'entity.En_Pais'(_new, _old){
-//             if(_new != _old && this.statesAndCitiesCountryCode != 'BR') {
-//                 this.entity.En_Nome_Logradouro = "";
-//                 this.entity.En_Num             = "";
-//                 this.entity.En_Complemento     = "";
-//                 this.entity.En_Bairro          = "";
-//                 this.entity.En_Municipio       = "";
-//                 this.entity.En_Estado          = "";
-//                 this.entity.En_CEP             = "";
-//             }
-//         }
-//     },
-
     methods: {
-//         propId(prop) {
-//             let uid = Math.random().toString(36).slice(2);
-//             return`${this.entity.__objectId}--${prop}--${uid}`;
-//         },
-//         verifiedAdress() {
-//             if(this.entity.currentUserPermissions['@control']){
-//                 return true;
-//             };
-//             const fields = ['En_Nome_Logradouro', 'En_Num', 'En_Bairro', 'En_Municipio', 'En_Estado', 'En_CEP'];
-//             let result = !this.hasPublicLocation || this.entity.publicLocation;
-//             fields.forEach((element)=> {
-//                 if(this.entity[element]==null) {
-//                     result = false;
-//                     return;
-//                 }
-//             });
-               
-//             return result;
-//         },
         address() {
             this.entity.En_Pais = this.statesAndCitiesCountryCode == 'BR' ? this.statesAndCitiesCountryCode : this.entity.En_Pais;
             let rua         = this.entity[this.fieldName].En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
@@ -177,17 +131,16 @@ app.component('entity-field-location', {
                             this.entity[this.fieldName].En_Bairro = data.bairro;
                             this.entity[this.fieldName].En_Municipio = data.localidade;
                             this.entity[this.fieldName].En_Estado = data.uf;
-                            this.entity.save();
                         });    
                 } 
             } 
         },
 
-//         formatParams( params ){
-//             return "?" + Object.keys(params).map(function(key){
-//                             return key+"="+encodeURIComponent(params[key])
-//                         }).join("&");
-//         },
+        formatParams( params ){
+            return "?" + Object.keys(params).map(function(key){
+                            return key+"="+encodeURIComponent(params[key])
+                        }).join("&");
+        },
 
         geolocation() {
             let rua         = this.entity[this.fieldName].En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
@@ -240,11 +193,6 @@ app.component('entity-field-location', {
                     params.country = addressElements.country;
                     structured = true;
                 }
-                // Parece que o nominatim não se dá bem com nosso CEP
-                // if (addressElements.postalCode) {
-                //     params.postalcode = addressElements.postalCode;
-                //     structured = true;
-                // }
                 if (!structured && addressElements.fullAddress) {
                     params.q = addressElements.fullAddress;
                 }
@@ -262,7 +210,7 @@ app.component('entity-field-location', {
         },
         initializeAddressFields() {
             if (!this.entity[this.fieldName]) {
-                this.entity[this.fieldName] = [];
+                this.entity[this.fieldName] = {};
             }
 
             const requiredFields = [
@@ -281,13 +229,15 @@ app.component('entity-field-location', {
                     this.entity[this.fieldName][field] = '';
                 }
             });
+        },
+
+        citiesList(){
+            this.cities = this.statesAndCities[this.entity[this.fieldName].En_Estado].cities;
+        },
+
+        save() {
+            this.entity.save();
         }
-        // citiesList(){
-        //     this.cities = this.statesAndCities[this.entity[this.fieldName].En_Estado].cities;
-        // },
-//         isRequired(field){
-//             return $DESCRIPTIONS[this.entity.__objectType][field].required;
-//         }
     },
 
     created() {
