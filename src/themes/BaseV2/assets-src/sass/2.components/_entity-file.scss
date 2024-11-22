@@ -145,4 +145,14 @@
             color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
         }
     }
+
+    .required {
+        font-family: Open Sans;
+        font-size: size(12);
+        font-weight: 700;
+        line-height: size(16);
+        letter-spacing: 0em;
+        text-align: left;
+        color: var(--mc-error);
+    }
 }
