@@ -6,7 +6,7 @@
 ?>
 <div class="entity-field-datepicker">
     <div v-if="is('date') || is('datetime')" class="entity-field-datepicker__date">
-        <input v-model="dateInput" class="date-input" type="text" data-maska="##/##/####" @focus="isDateInputFocused = true" @blur="handleBlur('date')" v-maska >
+        <input v-model="dateInput" class="date-input" type="text" data-maska="##/##/####" @focus="isDateInputFocused = true" @input="onDateInput" @blur="handleBlur('date')" v-maska >
         <datepicker
             ref="datepickerCalendar"
             :teleport="true"
