@@ -56,17 +56,23 @@ app.component('registration-actions', {
 
     data() {
         return {
-            fields: $MAPAS.registrationFields,
+            fields: Vue.markRaw($MAPAS.registrationFields),
             hideErrors: false,
             isValidated: false,
             validationErrors: this.getEmptyValidationState(),
             descriptions: $DESCRIPTIONS.registration,
+            scrolling: false,
         }
     },
 
     computed: {
         canSubmit() {
             return this.isLastStep && this.isValidated;
+        },
+
+        fieldsMap () {
+            const entries = this.fields.map((field) => [field.fieldName, field]);
+            return Object.fromEntries(entries);
         },
 
         hasErrors() {
@@ -86,7 +92,12 @@ app.component('registration-actions', {
             const errors = {};
             for (const [stepIndex, step] of Object.entries(this.steps)) {
                 if (this.validationErrors[step._id]) {
-                    errors[stepIndex] = this.validationErrors[step._id];
+                    const stepErrors = this.validationErrors[step._id];
+                    const fieldEntries = Object.entries(stepErrors);
+                    fieldEntries.sort(([a], [b]) => {
+                        return Math.sign(this.fieldsMap[a].displayOrder - this.fieldsMap[b].displayOrder);
+                    });
+                    errors[stepIndex] = Object.fromEntries(fieldEntries);
                 }
             }
             return errors;
@@ -99,6 +110,9 @@ app.component('registration-actions', {
 
     watch: {
         async stepIndex() {
+            if (!this.scrolling) {
+                document.querySelector('.section__title')?.scrollIntoView({ behavior: 'instant', block: 'start' });
+            }
             try {
                 this.registration.disableMessages();
                 await this.save();
@@ -272,7 +286,9 @@ app.component('registration-actions', {
         goToField(stepIndex, fieldName) {
             this.goToStep(Number(stepIndex));
             this.$nextTick(() => {
-                document.querySelector(`[data-field="${fieldName}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                this.scrolling = true;
+                window.setTimeout(() => this.scrolling = false, 100);
+                document.querySelector(`[data-field="${fieldName}"]`)?.scrollIntoView({ behavior: 'instant', block: 'center' });
             });
         },
 
