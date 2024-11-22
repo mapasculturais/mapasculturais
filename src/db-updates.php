@@ -2364,5 +2364,10 @@ $$
         ");
 
         __exec("CREATE UNIQUE INDEX unique_object_action ON pcache (object_type, object_id, action, user_id)");
-    }
+    },
+
+    'Atualiza coluna parent_id do agente com id do agente principal' => function(){
+        __exec("UPDATE agent SET parent_id = (SELECT profile_id FROM usr WHERE id = agent.user_id AND profile_id <> agent.id)");
+    },
+
 ] + $updates ;   

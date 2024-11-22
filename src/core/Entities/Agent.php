@@ -416,13 +416,14 @@ class Agent extends \MapasCulturais\Entity
             $parent = $app->repo('Agent')->find($parent);
         }
 
-        if($parent->equals($this->parent)) {
+        if($this->parent && $parent->equals($this->parent)) {
             return true;
-        }
+        } 
 
-        $this->nestedSetParent($parent);
-        if($parent)
+        if($parent) {
+            $this->nestedSetParent($parent);
             $this->setUser($parent->user);
+        }
     }
 
     function getParent(){

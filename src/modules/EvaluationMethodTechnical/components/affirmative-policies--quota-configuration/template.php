@@ -22,7 +22,7 @@ $this->import('
 
 <div class="affirmative-policies--quota-configuration">
     <div v-if="!isActive" class="affirmative-policies--quota-configuration__activate">
-        <button @click="addConfig();" class="button button--primary button--icon disabled" :class="{'disabled' : firstPhase.vacancies <= 0}">
+        <button @click="addConfig();" class="button button--primary button--icon" :class="{'disabled' : firstPhase.vacancies <= 0}">
             <mc-icon name="add"></mc-icon>
             <?php i::_e("Configurar cotas") ?>
         </button>
