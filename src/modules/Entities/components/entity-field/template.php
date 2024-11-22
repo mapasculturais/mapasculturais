@@ -85,9 +85,19 @@ $this->import('
                     <mc-tag-list :tags="selectedOptions[prop]" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
                 </template>
 
-                <label v-else class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
-                   <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled" /> {{description.options[optionValue]}} 
-                </label>
+                <template v-else>
+                    <div v-if="maxOptions && maxOptions > 0">
+                        <label>
+                            <?php i::_e('Você selecionou') ?>
+                            {{ value.length || 0 }}/{{ maxOptions }}
+                            <?php i::_e('opções') ?>
+                        </label>
+                    </div>
+
+                    <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
+                       <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled || (maxOptions && value?.length >= maxOptions && !value.includes(optionValue))" /> {{description.options[optionValue]}} 
+                    </label>
+                </template>
             </div>
         </template>
 
