@@ -32,10 +32,14 @@ app.component('registration-field-persons', {
     data() {
         let rules = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.config || {};
         let required = $DESCRIPTIONS.registration[this.prop].required;
+        let title = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.title;
+        let description = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.description;
 
         return {
             rules,
             required,
+            title,
+            description,
             areas: $TAXONOMIES.area.terms,
             functions: $TAXONOMIES.funcao.terms,
             races: $DESCRIPTIONS.agent.raca.optionsOrder,
