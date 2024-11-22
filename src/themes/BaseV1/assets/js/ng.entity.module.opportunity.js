@@ -1857,7 +1857,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
         }
 
-        if(MapasCulturais.entity.canUserEvaluate){
+        if(MapasCulturais.entity.evaluateOnTime){
             if(MapasCulturais.opportunityControl) {
                 result = true;
             } else if(result && !$scope.isAvaliableEvaluationFields(field)){
@@ -1898,11 +1898,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.checkField =  function(field) {
-        if((field.length === 1 && field[0] === '') || (field.length === 1 && field[0] === 'null')) {
+        
+        if((field?.length === 1 && field[0] === '') || (field?.length === 1 && field[0] === 'null')) {
             return "Não sou";
         }
 
-        if(!field || field.length <= 0 || (field.length === 1 && !field[0])) {
+        if(!field || field?.length <= 0 || (field?.length === 1 && !field[0])) {
             return null;
         }
 

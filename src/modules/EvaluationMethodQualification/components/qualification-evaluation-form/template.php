@@ -27,7 +27,7 @@ $this->import('
             <div v-if="section?.maxNonEliminatory" class="qualification-evaluation-form__section-non-eliminatory field">
                 <label><?php i::_e('Número máximo de critérios não eliminatórios: ') ?>{{ section.numberMaxNonEliminatory }}</label>
             </div>
-            <div v-for="crit in section.criteria" :key="crit.id">
+            <template v-for="crit in section.criteria" :key="crit.id">
                 <div v-if="showSectionAndCriterion(crit)" class="qualification-evaluation-form__criterion field">
                     <div class="qualification-evaluation-form__criterion-title">
                         <div class="qualification-evaluation-form__criterion-title-fields">
@@ -84,7 +84,8 @@ $this->import('
                         </div>
                     </div>
                 </div>
-            </div>
+            </template>
+
             <div class="field">
                 <label><?php i::_e('Observações/parecer') ?></label>
                 <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite as observações/parecer') ?>"></textarea>
@@ -100,7 +101,7 @@ $this->import('
     <div class="qualification-evaluation-form__observation field">
         <label><?php i::_e('Observações/parecer final') ?></label>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
-        <label>
+        <label class="qualification-result">
             <?php i::_e('Status da avaliação:') ?> 
             <span :class="consolidatedResult == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
                 {{ consolidatedResult }}
