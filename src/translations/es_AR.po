@@ -5401,11 +5401,11 @@ msgid "Recaptcha inválida"
 msgstr "Recaptcha no válido"
 
 #: src/modules/Components/components/complaint-suggestion/texts.php:7
-msgid "Todos os campos são obrigatorio"
+msgid "Todos os campos são obrigatórios"
 msgstr "Todos los campos son obligatorios"
 
 #: src/modules/Components/components/complaint-suggestion/texts.php:8
-msgid "Dados enviados com suscesso"
+msgid "Dados enviados com sucesso"
 msgstr "Datos enviados con éxito"
 
 #: src/modules/Components/components/entity-card/template.php:27
@@ -21736,10 +21736,10 @@ msgstr "Acerca del sitio web"
 #~ msgid "Recaptcha inválida"
 #~ msgstr "Recaptcha no válido"
 
-#~ msgid "Todos os campos são obrigatorio"
+#~ msgid "Todos os campos são obrigatórios"
 #~ msgstr "Todos los campos son obligatorios"
 
-#~ msgid "Dados enviados com suscesso"
+#~ msgid "Dados enviados com sucesso"
 #~ msgstr "Datos enviados con éxito"
 
 #~ msgid "ONDE: "
