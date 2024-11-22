@@ -69,7 +69,7 @@ $this->import('
                         </div>
 
                         <div v-if="formData.data[crit.id]?.includes('invalid') && (crit.options?.length > 0 || crit.otherReasonsOption === 'true')" class="qualification-evaluation-form__criterion-options-reasons field">
-                            <h5 class="qualification-evaluation-form__criterion-options-reasons-title"><?php i::_e("Motivos de não atendimento") ?></h5>
+                            <h5 class="qualification-evaluation-form__criterion-options-reasons-title"><?php i::_e("Recomendação para atender ao critério") ?></h5>
 
                             <label class="qualification-evaluation-form__criterion-options-reasons-label" v-for="option in crit.options" :key="option">
                                 <input type="checkbox" :value="option" :checked="formData.data[crit.id]?.includes(option)" :disabled="!isEditable" @change="updateOption(crit.id, option)" />
@@ -102,8 +102,7 @@ $this->import('
         <label><?php i::_e('Observações/parecer final') ?></label>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
         <label class="qualification-result">
-            <?php i::_e('Status da avaliação:') ?> 
-            <span :class="consolidatedResult == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
+            <span :class="consolidatedResult == text('Habilitado') ? 'qualification-enabled' : 'qualification-disabled'">
                 {{ consolidatedResult }}
             </span>
         </label>
