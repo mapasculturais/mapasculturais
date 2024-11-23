@@ -17,8 +17,8 @@ $this->import('
         </template>
         <template #default="popover">
             <div class="mc-multiselect__content">
-                <div v-if="!$media('max-width: 500px')" class="mc-multiselect__filter" ref="filter">
-                    <input v-if="!hideFilter" class="mc-multiselect__filter-input" v-model="filter" type="text" placeholder="<?= i::esc_attr__('Filtro') ?>" />
+                <div v-if="!$media('max-width: 500px') && !hideFilter" class="mc-multiselect__filter" ref="filter">
+                    <input class="mc-multiselect__filter-input" v-model="filter" type="text" placeholder="<?= i::esc_attr__('Filtro') ?>" />
                     <span class="mc-multiselect__close" @click="close(popover)">
                         <mc-icon name="close"></mc-icon>
                     </span>
