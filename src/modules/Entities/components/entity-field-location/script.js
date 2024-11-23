@@ -42,6 +42,10 @@ app.component('entity-field-location', {
             type: String,
             required: true
         },
+        configs: {
+            type: Object,
+            default: () => {}
+        }
     },
 
     methods: {
@@ -221,7 +225,8 @@ app.component('entity-field-location', {
                 'En_Bairro',
                 'En_Complemento',
                 'En_Pais',
-                'En_Municipio'
+                'En_Municipio',
+                'publicLocation'
             ];
 
             requiredFields.forEach(field => {
