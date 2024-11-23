@@ -1854,7 +1854,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if(field.conditional){
-            result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+            if($scope.entity[field.conditionalField] instanceof Array){
+                result = result && $scope.entity[field.conditionalField].indexOf(field.conditionalValue) >= 0;
+            }else{
+                result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+            }
         }
 
         if(MapasCulturais.entity.evaluateOnTime){
