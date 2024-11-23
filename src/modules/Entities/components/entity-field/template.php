@@ -130,7 +130,7 @@ $this->import('
         </template>
 
         <template v-if="is('location')">
-            <entity-field-location :entity="entity" :field-name="prop"></entity-field-location>
+            <entity-field-location :entity="entity" :field-name="prop" :configs="description?.registrationFieldConfiguration?.config"></entity-field-location>
         </template>
 
         <template v-if="is('bankFields')">
