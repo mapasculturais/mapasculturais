@@ -1118,7 +1118,11 @@ class Registration extends \MapasCulturais\Entity
         if($field->conditional){
             $_fied_name = $field->conditionalField;
             $_fied_value = $field->conditionalValue;
-            return $this->$_fied_name == $_fied_value;
+            if (is_array($this->$_fied_name)) {
+                return in_array($_fied_value, $this->$_fied_name);
+            } else {
+                return $this->$_fied_name == $_fied_value;
+            }
         }
 
         return true;
@@ -1249,7 +1253,15 @@ class Registration extends \MapasCulturais\Entity
             if($rfc->conditional){
                 $_fied_name = $rfc->conditionalField;
                 $_fied_value = $rfc->conditionalValue;
-                $field_required = $this->$_fied_name == $_fied_value && $rfc->required;
+                if ($rfc->required) {
+                    if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
+                        $field_required = true;
+                    } else {
+                        $field_required = $this->$_fied_name == $_fied_value;
+                    }
+                } else {
+                    $field_required = false;
+                }
             }
 
             $errors = [];
@@ -1283,7 +1295,15 @@ class Registration extends \MapasCulturais\Entity
               
                 $_fied_name = $conf->conditionalField;
                 $_fied_value = $conf->conditionalValue;
-                $field_required = $this->$_fied_name == $_fied_value && $field->required;
+                if ($rfc->required) {
+                    if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
+                        $field_required = true;
+                    } else {
+                        $field_required = $this->$_fied_name == $_fied_value;
+                    }
+                } else {
+                    $field_required = false;
+                }
             }
 
             $errors = [];

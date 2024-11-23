@@ -54,7 +54,11 @@ app.component('registration-form', {
                     const fieldValue = field.conditionalValue;
 
                     if (fieldName) {
-                        if (registration[fieldName] != fieldValue) {
+                        if(registration[fieldName] instanceof Array) {
+                            if (!registration[fieldName].includes(fieldValue)) {
+                                return false;
+                            }
+                        } else if (registration[fieldName] != fieldValue) {
                             return false;
                         }
                     }
