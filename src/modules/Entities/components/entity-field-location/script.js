@@ -119,10 +119,13 @@ app.component('entity-field-location', {
             }
            
             this.entity[this.fieldName].endereco = address;
-            this.geolocation();
+
+            if(this.configs?.setLatLon) {
+                this.geolocation();
+            }
         },
 
-        pesquisacep(valor) {
+        pesquisacep(valor, executeAddress) {
             //Nova variável "cep" somente com dígitos.
             var cep = valor.replace(/\D/g, '');                
             if (cep != "") {
@@ -135,6 +138,10 @@ app.component('entity-field-location', {
                             this.entity[this.fieldName].En_Bairro = data.bairro;
                             this.entity[this.fieldName].En_Municipio = data.localidade;
                             this.entity[this.fieldName].En_Estado = data.uf;
+
+                            if(executeAddress) {
+                                this.address();
+                            }
                         });    
                 } 
             } 
@@ -147,13 +154,13 @@ app.component('entity-field-location', {
         },
 
         geolocation() {
-            let rua         = this.entity[this.fieldName].En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
-            let numero      = this.entity[this.fieldName].En_Num             == null ? '' : this.entity[this.fieldName].En_Num;
-            let bairro      = this.entity[this.fieldName].En_Bairro          == null ? '' : this.entity[this.fieldName].En_Bairro;
-            let cidade      = this.entity[this.fieldName].En_Municipio       == null ? '' : this.entity[this.fieldName].En_Municipio;
-            let estado      = this.entity[this.fieldName].En_Estado          == null ? '' : this.entity[this.fieldName].En_Estado;
-            let cep         = this.entity[this.fieldName].En_CEP             == null ? '' : this.entity[this.fieldName].En_CEP;
-
+            let rua         = this.entity[this.fieldName].En_Nome_Logradouro || '';
+            let numero      = this.entity[this.fieldName].En_Num             || '';
+            let bairro      = this.entity[this.fieldName].En_Bairro          || '';
+            let cidade      = this.entity[this.fieldName].En_Municipio       || '';
+            let estado      = this.entity[this.fieldName].En_Estado          || '';
+            let cep         = this.entity[this.fieldName].En_CEP             || '';
+            
             if (estado && cidade) {
                 var address = bairro ?
                     rua + " " + numero + ", " + bairro + ", " + cidade + ", " + estado :
