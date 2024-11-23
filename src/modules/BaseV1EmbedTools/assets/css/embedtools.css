@@ -787,9 +787,9 @@ textarea {
     overflow: hidden;
 }
 
-.action-registrationview .registration .registration-fieldset .registration-step > ul {
+/* .action-registrationview .registration .registration-fieldset .registration-step > ul {
     padding: 1rem;
-}
+} */
 
 .action-registrationview .registration .registration-fieldset .registration-step__title {
     padding: 1rem;
