@@ -21,7 +21,7 @@ $this->import('
                 <label for="cep">
                     <?= i::__('CEP') ?>
                 </label>
-                <input @change="pesquisacep(entity[fieldName].En_CEP);" id="cep" type="text" v-maska data-maska="#####-###" v-model="entity[fieldName].En_CEP" />
+                <input @change="pesquisacep(entity[fieldName].En_CEP, true);" id="cep" type="text" v-maska data-maska="#####-###" v-model="entity[fieldName].En_CEP" />
             </div>
 
             <div class="field col-4">
