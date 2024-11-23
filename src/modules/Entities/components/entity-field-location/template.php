@@ -79,7 +79,6 @@ $this->import('
 
             <div v-if="configs?.setPrivacy" class="field col-12">
                 <label>
-                    {{console.log(entity[fieldName])}}
                     <input type="checkbox" v-model="entity[fieldName].publicLocation" />
                     <?= i::__('Marque para deixar sua localização pública.') ?>
                 </label>
