@@ -76,6 +76,13 @@ $this->import('
                     <option v-for="city in cities" :value="city">{{city}}</option>
                 </mc-select>
             </div>
+
+            <div v-if="configs?.setPrivacy" class="field col-12">
+                <label>
+                    <input type="checkbox" v-model="entity[fieldName].publicLocation" />
+                    <?= i::__('Marque para deixar sua localização pública.') ?>
+                </label>
+            </div>
         </div>
     </div>
 </div>
