@@ -15,6 +15,7 @@ $this->import('
     mc-multiselect
     mc-tag-list
     entity-field-bank-info
+    select-municipio
 ')
 ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]" :data-field="prop">
@@ -132,6 +133,10 @@ $this->import('
 
         <template v-if="is('bankFields')">
             <entity-field-bank-info @change="change($event, true)"  :field-name="prop" :entity="entity"></entity-field-bank-info>
+        </template>
+
+        <template v-if="is('municipio')">
+            <select-municipio :entity="entity" :prop="prop" @change="change($event)"></select-municipio>
         </template>
 
         <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
