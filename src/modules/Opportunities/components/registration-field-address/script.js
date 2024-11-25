@@ -71,12 +71,28 @@ app.component('registration-field-address', {
     },
     
     methods: {
-        removeAddress(address) {
-            const addresses = this.registration[this.prop];
-            this.registration[this.prop] = addresses.filter( (_address) => { 
-                return !(_address == address);
-            });
-            this.save();
+
+        async buscarEnderecoPorCep(address) {
+            if (address.cep.length == 9) {
+                const url = `https://viacep.com.br/ws/${address.cep}/json/`;
+
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    if (data.erro) {
+                        console.error('CEP não encontrado');
+                    } else {
+                        address.logradouro = data.logradouro;
+                        address.bairro = data.bairro;
+                        address.complemento = data.complemento;
+                        address.estado = data.estado;
+                        address.cidade = data.localidade;
+                    }
+                } catch (error) {
+                    console.error('Erro ao buscar endereço:', error);
+                }
+            }
         },
 
         cities(state) {
@@ -103,6 +119,14 @@ app.component('registration-field-address', {
                 estado: '',
                 cidade: '',
             }) 
+        },
+
+        removeAddress(address) {
+            const addresses = this.registration[this.prop];
+            this.registration[this.prop] = addresses.filter((_address) => {
+                return !(_address == address);
+            });
+            this.save();
         },
 
         save() {

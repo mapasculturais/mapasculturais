@@ -26,7 +26,7 @@ $this->import('
                         <?= $this->text('cep', i::__('CEP')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
-                    <input type="text" v-model="address.cep" @change="save()" :disabled="disabled" />
+                    <input type="text" v-model="address.cep" @change="save()" @input="buscarEnderecoPorCep(address)" max-lenght="9" v-maska data-maska="#####-###" :disabled="disabled" />
                 </div>
 
                 <div class="field col-8">
