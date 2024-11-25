@@ -227,10 +227,18 @@
     }
 
     &.error {
-        input, textarea, select {
+        input, textarea, select, .mc-select__selected-option {
             background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(16);
             border: size(2) solid #FF0000;
             padding-right: size(40);
+        }
+
+        .mc-select__selected-option {
+            padding-right: size(60);
+
+            &::after {
+                right: size(45);
+            }
         }
 
         .dp__input_wrap {
