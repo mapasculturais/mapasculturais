@@ -1538,7 +1538,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $def = $field->getFieldTypeDefinition();
 
             if($def->requireValuesConfiguration){
-                $cfg['options'] = $field->fieldOptions;
+                $cfg['options'] = [];
+                foreach ($field->fieldOptions as $option) {
+                    $option_parts = explode(':', $option, 2);
+                    if (count($option_parts) == 2) {
+                        $cfg['options'][$option_parts[0]] = $option_parts[1];
+                    } else {
+                        $cfg['options'][$option] = $option;
+                    }
+                }
             }
 
             if(is_callable($def->serialize)){
