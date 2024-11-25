@@ -4,7 +4,7 @@ app.component('entity-field-location', {
 
     computed: {
         cities(){
-            return this.entity[this.fieldName].En_Estado ? this.statesAndCities[this.entity[this.fieldName].En_Estado].cities : null;
+            return this.addressData.En_Estado ? this.statesAndCities[this.addressData.En_Estado].cities : null;
         },
         statesAndCities(){
             return $MAPAS.config.statesAndCities;
@@ -33,6 +33,12 @@ app.component('entity-field-location', {
         },
     },
 
+    data() {
+        return {
+            addressData: {}
+        }
+    },
+
     props: {
         entity: {
             type: Entity,
@@ -49,15 +55,24 @@ app.component('entity-field-location', {
     },
 
     methods: {
+        populateEntity() {
+            this.initializeAddressFields('entity');
+
+            Object.keys(this.addressData).forEach(addressField => {
+                this.entity[this.fieldName][addressField] = this.addressData[addressField];
+            })
+        },
+
         address() {
+            this.initializeAddressFields('entity');
             this.entity.En_Pais = this.statesAndCitiesCountryCode == 'BR' ? this.statesAndCitiesCountryCode : this.entity.En_Pais;
-            let rua         = this.entity[this.fieldName].En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
-            let numero      = this.entity[this.fieldName].En_Num             == null ? '' : this.entity[this.fieldName].En_Num;
-            let complemento = this.entity[this.fieldName].En_Complemento     == null ? '' : this.entity[this.fieldName].En_Complemento;
-            let bairro      = this.entity[this.fieldName].En_Bairro          == null ? '' : this.entity[this.fieldName].En_Bairro;
-            let cidade      = this.entity[this.fieldName].En_Municipio       == null ? '' : this.entity[this.fieldName].En_Municipio;
-            let estado      = this.entity[this.fieldName].En_Estado          == null ? '' : this.entity[this.fieldName].En_Estado;
-            let cep         = this.entity[this.fieldName].En_CEP             == null ? '' : this.entity[this.fieldName].En_CEP;
+            let rua         = this.entity[this.fieldName]?.En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
+            let numero      = this.entity[this.fieldName]?.En_Num             == null ? '' : this.entity[this.fieldName].En_Num;
+            let complemento = this.entity[this.fieldName]?.En_Complemento     == null ? '' : this.entity[this.fieldName].En_Complemento;
+            let bairro      = this.entity[this.fieldName]?.En_Bairro          == null ? '' : this.entity[this.fieldName].En_Bairro;
+            let cidade      = this.entity[this.fieldName]?.En_Municipio       == null ? '' : this.entity[this.fieldName].En_Municipio;
+            let estado      = this.entity[this.fieldName]?.En_Estado          == null ? '' : this.entity[this.fieldName].En_Estado;
+            let cep         = this.entity[this.fieldName]?.En_CEP             == null ? '' : this.entity[this.fieldName].En_CEP;
 
             // rua, num, complemento - bairro - cidade/uf - CEP: 00000000
             var address = '';
@@ -134,10 +149,10 @@ app.component('entity-field-location', {
                     fetch('//viacep.com.br/ws/'+ cep +'/json/')
                         .then((response) => response.json())
                         .then((data) => {
-                            this.entity[this.fieldName].En_Nome_Logradouro = data.logradouro;
-                            this.entity[this.fieldName].En_Bairro = data.bairro;
-                            this.entity[this.fieldName].En_Municipio = data.localidade;
-                            this.entity[this.fieldName].En_Estado = data.uf;
+                            this.addressData.En_Nome_Logradouro = data.logradouro;
+                            this.addressData.En_Bairro = data.bairro;
+                            this.addressData.En_Municipio = data.localidade;
+                            this.addressData.En_Estado = data.uf;
 
                             if(executeAddress) {
                                 this.address();
@@ -219,9 +234,9 @@ app.component('entity-field-location', {
                     } );
             }            
         },
-        initializeAddressFields() {
-            if (!this.entity[this.fieldName]) {
-                this.entity[this.fieldName] = {};
+        initializeAddressFields(object) {
+            if (!this[object][this.fieldName]) {
+                this[object][this.fieldName] = {};
             }
 
             const requiredFields = [
@@ -237,22 +252,28 @@ app.component('entity-field-location', {
             ];
 
             requiredFields.forEach(field => {
-                if (this.entity[this.fieldName][field] === undefined || this.entity[this.fieldName][field] === null) {
-                    this.entity[this.fieldName][field] = '';
+                if (this[object][this.fieldName][field] === undefined || this[object][this.fieldName][field] === null) {
+                    this[object][this.fieldName][field] = '';
+                    if(object === 'addressData' && this.entity?.[this.fieldName]?.[field]) {
+                        this[object][field] = this.entity[this.fieldName][field];
+                    } 
                 }
             });
         },
 
         citiesList(){
-            this.cities = this.statesAndCities[this.entity[this.fieldName].En_Estado].cities;
+            this.cities = this.statesAndCities[this.addressData.En_Estado].cities;
         },
 
         save() {
-            this.entity.save();
+            if(this.addressData.En_Num) {
+                this.populateEntity();
+                this.entity.save();
+            }
         }
     },
 
     created() {
-        this.initializeAddressFields();
+        this.initializeAddressFields('addressData');
     }
 });
