@@ -148,6 +148,11 @@ app.component('entity-field', {
             type: Boolean,
             default: false
         },
+
+        preserveOrder: {
+            type: Boolean,
+            default: false
+        }
     },
 
     created() {
