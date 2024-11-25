@@ -83,6 +83,10 @@
         }
     }
 
+    .input__radioLabel {
+        font-weight: var(--mc-font-semibold);
+    }
+
     &__color {
         display: flex;
         gap: size(8);
