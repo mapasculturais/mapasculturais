@@ -43,7 +43,8 @@
                         :max-length="field.maxSize" 
                         :autosave="60000"
                         description-first
-                        :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"></entity-field>
+                        :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"
+                        :preserve-order="field.fieldType == 'checkboxes'"></entity-field>
 
                     <entity-file v-else-if="field.groupName" 
                         :entity="registration" 
