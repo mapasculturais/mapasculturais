@@ -521,6 +521,18 @@ class Module extends \MapasCulturais\Module
                 }
             ],
             [
+                'slug' => 'municipio',
+                'name' => \MapasCulturais\i::__('Seleção de município'),
+                'viewTemplate' => 'registration-field-types/municipio',
+                'configTemplate' => 'registration-field-types/municipio-config',
+                'serialize' => function($value) {
+                    return $value ? json_encode($value) : $value;
+                },
+                'unserialize' => function($value) {
+                   return $value ? json_decode($value) : $value;
+                }
+            ],
+            [
                 'slug' => 'agent-owner-field',
                 // o espaço antes da palavra Campo é para que este tipo de campo seja o primeiro da lista
                 'name' => \MapasCulturais\i::__('@ Campo do Agente Responsável'),
