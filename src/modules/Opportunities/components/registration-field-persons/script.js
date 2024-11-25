@@ -47,6 +47,8 @@ app.component('registration-field-persons', {
             sexualOrientations: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder,
             deficiencies: $DESCRIPTIONS.agent.pessoaDeficiente.optionsOrder,
             communities: $DESCRIPTIONS.agent.comunidadesTradicional.optionsOrder,
+            education: $DESCRIPTIONS.agent.escolaridade.optionsOrder,
+            income: $DESCRIPTIONS.agent.renda.optionsOrder,
         };
     },
 
