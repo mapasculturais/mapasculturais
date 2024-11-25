@@ -79,7 +79,7 @@ $this->import('
 
             <div v-if="configs?.setPrivacy" class="field col-12">
                 <label>
-                    <input type="checkbox" v-model="addressData.publicLocation" />
+                    <input type="checkbox" v-model="addressData.publicLocation" @change="save()"/>
                     <?= i::__('Marque para deixar sua localização pública.') ?>
                 </label>
             </div>
