@@ -225,6 +225,9 @@ class Metadata extends \MapasCulturais\Definition{
             },
             'bankFields' => function($value){
                 return json_encode($value);
+            },
+            'municipio' => function($value) {
+                return json_encode($value);
             }
         ];
 
@@ -256,6 +259,9 @@ class Metadata extends \MapasCulturais\Definition{
                 return is_null($value) ? null : (float) $value;
             },
             'location' => function($value) {
+                return is_null($value) ? null : json_decode($value);
+            },
+            'municipio' => function($value) {
                 return is_null($value) ? null : json_decode($value);
             },
             'json' => function($value) {

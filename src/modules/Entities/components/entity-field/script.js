@@ -278,6 +278,10 @@ app.component('entity-field', {
                     this.entity[this.prop] = event; 
 
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
+                } else if(this.is('municipio')) {
+                    this.entity[this.prop] = event; 
+
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
                 } else {
                     this.entity[this.prop] = event.target.value;
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event.target.value});

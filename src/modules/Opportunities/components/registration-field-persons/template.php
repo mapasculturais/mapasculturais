@@ -57,7 +57,7 @@ $this->import('
                         <?= $this->text('renda', i::__('Renda individual em reais (calcular a renda média individual dos últimos três meses)')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
-                    <input type="text" v-model="person.income" @change="save()" :disabled="disabled" />
+                    <mc-select v-model:default-value="person.income" :options="income" @change-option="save()" :disabled="disabled"></mc-select>
                 </div>
 
                 <div class="field col-12">
@@ -65,7 +65,7 @@ $this->import('
                         <?= $this->text('escolaridade', i::__('Escolaridade')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
-                    <input type="text" v-model="person.education" @change="save()" :disabled="disabled" />
+                    <mc-select v-model:default-value="person.education" :options="education" @change-option="save()" :disabled="disabled"></mc-select>
                 </div>
 
                 <div class="field col-12">

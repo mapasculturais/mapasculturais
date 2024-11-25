@@ -40,6 +40,25 @@ return array(
             'available_for_opportunities' => true,
         ),
 
+        'renda' => array(
+            'private' => false,
+            'label' => \MapasCulturais\i::__('Renda'),
+            'type' => 'select',
+            'options' => array(
+               '' => MapasCulturais\i::__('Não informado'),
+                MapasCulturais\i::__('1,00 a 500,00'),
+                MapasCulturais\i::__('501,00 a 1.000,00'),
+                MapasCulturais\i::__('1.001,00 a 2.000,00'),
+                MapasCulturais\i::__('2.001,00 a 3.000,00'),
+                MapasCulturais\i::__('3.001,00 a 5.000,00'),
+                MapasCulturais\i::__('5.001,00 a 10.000,00'),
+                MapasCulturais\i::__('10.001,00 a 20.000,00'),
+                MapasCulturais\i::__('20.001,00 a 100.000'),
+                MapasCulturais\i::__('100.001 ou mais'),
+            ),
+            'available_for_opportunities' => true,
+        ),
+
         'pessoaDeficiente' => array(
             'label' => 'Pessoa com deficiência',
             'type' => 'multiselect',

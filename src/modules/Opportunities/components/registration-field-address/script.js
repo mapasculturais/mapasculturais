@@ -1,5 +1,5 @@
-app.component('registration-field-persons', {
-    template: $TEMPLATES['registration-field-persons'],
+app.component('registration-field-address', {
+    template: $TEMPLATES['registration-field-address'],
     
     emits: ['update:registration', 'change', 'save'],
 
@@ -30,25 +30,20 @@ app.component('registration-field-persons', {
     },    
 
     data() {
-        let rules = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.config || {};
+        const fieldConfiguration = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration;
+
+        let rules = fieldConfiguration.config || {};
         let required = $DESCRIPTIONS.registration[this.prop].required;
-        let title = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.title;
-        let description = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.description;
+        let title = fieldConfiguration.title;
+        let description = fieldConfiguration.description;
+        const statesAndCities = $MAPAS.config.statesAndCities;
 
         return {
             rules,
             required,
             title,
             description,
-            areas: $TAXONOMIES.area.terms,
-            functions: $TAXONOMIES.funcao.terms,
-            races: $DESCRIPTIONS.agent.raca.optionsOrder,
-            genders: $DESCRIPTIONS.agent.genero.optionsOrder,
-            sexualOrientations: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder,
-            deficiencies: $DESCRIPTIONS.agent.pessoaDeficiente.optionsOrder,
-            communities: $DESCRIPTIONS.agent.comunidadesTradicional.optionsOrder,
-            education: $DESCRIPTIONS.agent.escolaridade.optionsOrder,
-            income: $DESCRIPTIONS.agent.renda.optionsOrder,
+            statesAndCities,
         };
     },
 
@@ -67,38 +62,46 @@ app.component('registration-field-persons', {
             }, now ? 0 : this.debounce);
         },
     },
+
+    computed: {
+        states() {
+            const states = Object.keys(this.statesAndCities);
+            return states.map(estado => this.statesAndCities[estado].label);
+        },
+    },
     
     methods: {
-        removePerson(person) {
-            const persons = this.registration[this.prop];
-            this.registration[this.prop] = persons.filter( (_person) => { 
-                return !(_person == person);
+        removeAddress(address) {
+            const addresses = this.registration[this.prop];
+            this.registration[this.prop] = addresses.filter( (_address) => { 
+                return !(_address == address);
             });
             this.save();
         },
 
-        addNewPerson() {
+        cities(state) {
+            for (const _state in this.statesAndCities) {
+                if (this.statesAndCities[_state].label == state) {
+                    return this.statesAndCities[_state].cities;
+                }
+            }
+
+            return false;
+        },
+
+        addNewAddress() {
             if (!this.registration[this.prop]) {
                 this.registration[this.prop] = [];
             }
  
             this.registration[this.prop].push({
-                name: '',
-                fullName: '',
-                socialName: '',
-                cpf: '',
-                income: '',
-                function: '',
-                education: '',
-                telephone: '',
-                email: '',
-                race: '',
-                gender: '',
-                sexualOrientation: '',
-                deficiencies: [],
-                comunty: '',
-                area: [],
-                funcao: [],
+                cep: '',
+                logradouro: '',
+                numero: '',
+                bairro: '',
+                complemento: '',
+                estado: '',
+                cidade: '',
             }) 
         },
 
