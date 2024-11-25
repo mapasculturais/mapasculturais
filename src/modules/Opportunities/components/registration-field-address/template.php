@@ -23,6 +23,14 @@ $this->import('
             <div class="registration-field-persons__person-fields grid-12">
                 <div class="field col-12">
                     <label>
+                        <?= $this->text('nome endereço', i::__('Nome do enderço')) ?>
+                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
+                    </label>
+                    <input type="text" v-model="address.nome" @change="save()" :disabled="disabled" />
+                </div>
+
+                <div class="field col-12">
+                    <label>
                         <?= $this->text('cep', i::__('CEP')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
@@ -61,7 +69,7 @@ $this->import('
                     <input type="text" v-model="address.complemento" @change="save()" :disabled="disabled" />
                 </div>
 
-                <div class="field col-6">
+                <div class="field col-6" :class="[{'error' : stateError}]">
                     <label>
                     <?= $this->text('estado', i::__('Estado')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
@@ -69,7 +77,7 @@ $this->import('
                     <mc-select v-model:default-value="address.estado" :options="states" @change-option="save()" :disabled="disabled"></mc-select>
                 </div>
 
-                <div v-if="cities(address.estado)" class="field col-6">
+                <div v-if="cities(address.estado)" class="field col-6" :class="[{'error' : cityError}]">
                     <label>
                     <?= $this->text('cidade', i::__('Cidade')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
@@ -79,7 +87,7 @@ $this->import('
             </div>
 
             <div class="registration-field-persons__person-action">
-                <button v-if="!disabled" type="button" class="button button--sm button--icon button--text-danger" @click="removeAddress(address)"><mc-icon name="trash"></mc-icon> <?= i::__("Remover pessoa") ?></button>
+                <button v-if="!disabled" type="button" class="button button--sm button--icon button--text-danger" @click="removeAddress(address)"><mc-icon name="trash"></mc-icon> <?= i::__("Remover endereço") ?></button>
             </div>
         </div>
 

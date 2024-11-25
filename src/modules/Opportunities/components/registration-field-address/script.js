@@ -1,6 +1,6 @@
 app.component('registration-field-address', {
     template: $TEMPLATES['registration-field-address'],
-    
+
     emits: ['update:registration', 'change', 'save'],
 
     props: {
@@ -68,10 +68,19 @@ app.component('registration-field-address', {
             const states = Object.keys(this.statesAndCities);
             return states.map(estado => this.statesAndCities[estado].label);
         },
+
+        stateError() {
+            const errors = this.registration.__validationErrors[this.prop];
+            return errors?.some(str => str.toLowerCase().includes('estado')) ?? false;
+        },
+
+        cityError() {
+            const errors = this.registration.__validationErrors[this.prop];
+            return errors?.some(str => str.toLowerCase().includes('cidade')) ?? false;
+        }
     },
     
     methods: {
-
         async buscarEnderecoPorCep(address) {
             if (address.cep.length == 9) {
                 const url = `https://viacep.com.br/ws/${address.cep}/json/`;
@@ -111,6 +120,7 @@ app.component('registration-field-address', {
             }
  
             this.registration[this.prop].push({
+                nome: '',
                 cep: '',
                 logradouro: '',
                 numero: '',
