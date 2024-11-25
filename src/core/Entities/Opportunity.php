@@ -1517,7 +1517,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     $field_type = 'bankFields';
                 }
                 
-                if($field->config['entityField'] == 'longDescription'){
+                if(in_array($field->config['entityField'], ['longDescription', 'shortDescription'])){
                     $field_type = 'textarea';
                 }
 
