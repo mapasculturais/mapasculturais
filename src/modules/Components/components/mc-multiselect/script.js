@@ -52,6 +52,11 @@ app.component('mc-multiselect', {
             type: Boolean,
             default: false,
         },
+        
+        preserveOrder: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -83,15 +88,19 @@ app.component('mc-multiselect', {
                 }
             }
 
-            return result.sort((a,b) => {
-                if (a.label > b.label) {
-                    return 1;
-                } else if (a.label < b.label) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            });
+            if(this.preserveOrder) {
+                return result;
+            } else {
+                return result.sort((a,b) => {
+                    if (a.label > b.label) {
+                        return 1;
+                    } else if (a.label < b.label) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+            }
         },
 
         canSelectMore() {
