@@ -11,6 +11,7 @@
     entity-file
     mc-card
     v1-embed-tool 
+    registration-field-address
     registration-field-persons
  ')
  ?>
@@ -24,12 +25,17 @@
             </template>
             <template #content>
                 <template v-for="field in section.fields" :key="field.fieldName || field.groupName">
+                    <registration-field-address v-if="field.fieldType == 'addresses'" 
+                        :registration="registration"
+                        :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
+                        :prop="field.fieldName"></registration-field-address>
+
                     <registration-field-persons v-if="field.fieldType == 'persons'" 
                         :registration="registration"
                         :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
                         :prop="field.fieldName"></registration-field-persons>
                         
-                    <entity-field v-else-if="field.fieldName" 
+                    <entity-field v-else-if="field.fieldName && field.fieldType != 'addresses' && field.fieldType != 'persons'" 
                         :entity="registration" 
                         :prop="field.fieldName" 
                         :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
