@@ -76,7 +76,7 @@ $this->import('
         <template v-if="is('multiselect') || is('checklist')">
            <div class="field__group">
                 <template v-if="isMultiSelect()">
-                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover,setFilter}" :max-options="maxOptions" hide-filter hide-button>
+                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" hide-filter hide-button>
                         <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :placeholder="placeholder || description?.placeholder">
                     </mc-multiselect>
 
