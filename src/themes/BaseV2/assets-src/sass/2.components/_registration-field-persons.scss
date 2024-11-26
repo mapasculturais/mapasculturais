@@ -7,7 +7,7 @@
         display: grid;
         gap: size(8);
         
-        & label {
+        & > label {
             display: flex;
             font-family: var(--mc-font-headings);
             font-size: size(14);
