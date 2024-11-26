@@ -69,6 +69,11 @@
                 font-weight: 600;
             }
         }
+
+        .tabs-component__header--right {
+            position: sticky;
+            right: 0;
+        }
     }
 
     &__step-config {
@@ -82,5 +87,9 @@
         .button--text-danger {
             flex: none;
         }
+    }
+
+    &__add-step {
+        width: max-content;
     }
 }

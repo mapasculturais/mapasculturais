@@ -77,20 +77,37 @@ app.component('opportunity-registration-filter-configuration', {
         }
     },
 
+    mounted() {
+        this.loadExcludeFields();
+    },
+
     computed: {
         filteredFields() {
             if (this.isCriterion) {
                 const section = this.entity.sections.find(section => section.id === this.defaultValue.sid);
+                
                 return {
-                    categories: section.categories,
-                    proponentTypes: section.proponentTypes,
-                    ranges: section.ranges
-                }
+                    categories: this.filterOptions(
+                        section?.categories,
+                        this.registrationCategories,
+                        'category'
+                    ),
+                    proponentTypes: this.filterOptions(
+                        section?.proponentTypes,
+                        this.registrationProponentTypes,
+                        'proponentType'
+                    ),
+                    ranges: this.filterOptions(
+                        section?.ranges,
+                        this.registrationRanges,
+                        'range'
+                    ),
+                };
             } else {
                 return {
                     categories: this.registrationCategories.filter(cat => !this.excludeFields.includes('category')),
                     proponentTypes: this.registrationProponentTypes.filter(type => !this.excludeFields.includes('proponentType')),
-                    ranges: this.registrationRanges.filter(range => !this.excludeFields.includes('range'))
+                    ranges: this.registrationRanges.filter(range => !this.excludeFields.includes('range')),
                 };
             }
         },
@@ -524,27 +541,45 @@ app.component('opportunity-registration-filter-configuration', {
             if (this.isSection) {
                 switch (type) {
                     case 'category':
-                        return this.registrationCategories.length > 1;
+                        return this.registrationCategories.length > 1; 
                     case 'proponentType':
                         return this.registrationProponentTypes.length > 1;
                     case 'range':
                         return this.registrationRanges.length > 1;
                 }
             } else if (this.isCriterion) {
-                const criteria = this.entity.criteria.find(crit => crit.id === this.defaultValue.id);
-                const section = this.entity.sections.find(section => section.id === criteria.sid);
+                const section = this.entity.sections.find(section => section.id === this.defaultValue.sid);
+
                 switch (type) {
                     case 'category':
-                        return section.categories?.length > 1;
+                        if (section.categories?.length === 1) {
+                            return false;
+                        } else if (section.categories?.length > 1) {
+                            return true;
+                        } else {
+                            return this.registrationCategories.length > 1;
+                        } 
                     case 'proponentType':
-                        return section.proponentTypes?.length > 1;
+                        if (section.proponentTypes?.length === 1) {
+                            return false;
+                        } else if (section.proponentTypes?.length > 1) {
+                            return true;
+                        } else {
+                            return this.registrationProponentTypes.length > 1;
+                        }
                     case 'range':
-                        return section.ranges?.length > 1;
+                        if (section.ranges?.length === 1) {
+                            return false;
+                        } else if (section.ranges?.length > 1) {
+                            return true;
+                        } else {
+                            return this.registrationRanges.length > 1;
+                        }
                 }
             } else {
                 switch (type) {
                     case 'category':
-                        return this.registrationCategories.length > 0;
+                        return this.registrationCategories.length > 0; 
                     case 'proponentType':
                         return this.registrationProponentTypes.length > 0;
                     case 'range':
@@ -552,6 +587,7 @@ app.component('opportunity-registration-filter-configuration', {
                 }
             }
         },
+
 
         loadCheckedOptions() {
             let checkedOptions = this.getAgentData() || {};
@@ -636,10 +672,16 @@ app.component('opportunity-registration-filter-configuration', {
             }
 
             return data;
-        }
-    },
+        },
 
-    mounted() {
-        this.loadExcludeFields();
-    }
+        filterOptions(selectedFields, allFields, excludeKey) {
+            if (!selectedFields || selectedFields.length === 0) {
+                return allFields.filter(field => !this.excludeFields.includes(excludeKey));
+            } else if (selectedFields.length === 1) {
+                return [];
+            } else {
+                return selectedFields;
+            }
+        },
+    },
 }); 

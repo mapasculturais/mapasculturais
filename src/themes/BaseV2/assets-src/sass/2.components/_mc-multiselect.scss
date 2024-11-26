@@ -1,13 +1,15 @@
 @use '../0.settings/mixins' as *;
 
 .mc-multiselect {
+    width: fit-content;
+
     &--input {
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat 96% center/contain;
+        background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat right size(16) center/contain;
         background-color: var(--mc-white);
-        background-size: size(20);
+        background-size: size(24);
     }
 
     &__filter {
@@ -15,7 +17,6 @@
         display: flex;
         gap: size(8);
         justify-content: flex-end;
-        border-bottom: var(--mc-border-hairline);
     }
 
     &__filter-input {
@@ -34,12 +35,12 @@
     &__content {
         display: flex;
         flex-direction: column;
+        max-width: size(500);
     }
 
     &__confirm-button {
         padding: size(5) size(10);
         display: flex;
-        border-top: var(--mc-border-hairline);
     }
 
     &__options {
@@ -51,6 +52,10 @@
         width: 100%;
         margin: 0;
         max-height: size(256);
+
+        @media (max-width: size(500)) {
+            max-height: unset;
+        }
     }
 
     &__option {
@@ -77,7 +82,6 @@
         .popover__content {
             background-color: var(--mc-white);
             border-radius: var(--mc-border-radius-xs);
-            border: var(--mc-border-hairline) var(--mc-gray-500);
             padding: 0;
         }
 

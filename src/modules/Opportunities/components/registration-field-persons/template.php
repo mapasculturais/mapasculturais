@@ -11,12 +11,13 @@ $this->import('
 ');
 ?>
 <div class="registration-field-persons" :data-field="prop">
-    <div class="registration-field-persons__list">
-        <label> <?= $this->text('lista-pessoas', i::__('Lista de pessoas')) ?> </label>
+    <div class="registration-field-persons__list field">
+        <label> {{ title }} </label>
+        <small class="field__description"> {{ description }} </small>
 
         <div v-for="(person, index) in registration[prop]" class="registration-field-persons__person">
 
-        <label> {{index + 1}}ª <?= i::__("Pessoa") ?> </label>
+        <p class="semibold"> {{index + 1}}ª <?= i::__("Pessoa") ?> </p>
 
             <div class="registration-field-persons__person-fields grid-12">
                 <div class="field col-12">
@@ -56,7 +57,7 @@ $this->import('
                         <?= $this->text('renda', i::__('Renda individual em reais (calcular a renda média individual dos últimos três meses)')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
-                    <input type="text" v-model="person.income" @change="save()" :disabled="disabled" />
+                    <mc-select v-model:default-value="person.income" :options="income" @change-option="save()" :disabled="disabled"></mc-select>
                 </div>
 
                 <div class="field col-12">
@@ -64,7 +65,7 @@ $this->import('
                         <?= $this->text('escolaridade', i::__('Escolaridade')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
-                    <input type="text" v-model="person.education" @change="save()" :disabled="disabled" />
+                    <mc-select v-model:default-value="person.education" :options="education" @change-option="save()" :disabled="disabled"></mc-select>
                 </div>
 
                 <div class="field col-12">
@@ -113,7 +114,7 @@ $this->import('
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <div class="field__group">
-                        <label v-for="deficiency in deficiencies" class="field__checkbox">
+                        <label v-for="deficiency in deficiencies" class="input__label input__checkboxLabel input__multiselect">
                             <input type="checkbox" :checked="person.deficiencies[deficiency]" v-model="person.deficiencies[deficiency]" @checked="save()" @change="save()" :disabled="disabled"/> <!-- :checked="" -->
                             <slot>{{deficiency}}</slot>
                         </label>

@@ -65,6 +65,11 @@
                 gap: size(16);
                 flex-wrap: wrap;
 
+                input {
+                    min-width: size(18);
+                    min-height: size(18);
+                }
+
                 &-title {
                     width: 100%;
                 }
@@ -92,6 +97,11 @@
 
     &__observation {
         padding: size(10);
+    }
+
+    .qualification-result {
+        font-size: size(30);
+        padding: size(8) 0;
     }
 
     .qualification-enabled {
