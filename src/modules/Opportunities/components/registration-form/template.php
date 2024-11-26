@@ -53,7 +53,8 @@
                         titleModal="<?php i::_e('Adicionar anexo') ?>" 
                         :title="field.title" 
                         editable
-                        :required="field.required"></entity-file>
+                        :required="field.required"
+                        :default-file="field?.template"></entity-file>
                 </template>
             </template>
         </mc-card>
