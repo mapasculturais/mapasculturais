@@ -69,7 +69,7 @@ $this->import('
                     <input type="text" v-model="address.complemento" @change="save()" :disabled="disabled" />
                 </div>
 
-                <div class="field col-6" :class="[{'error' : stateError}]">
+                <div class="field col-6" :class="[{'error' : stateError(address)}]">
                     <label>
                     <?= $this->text('estado', i::__('Estado')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
@@ -77,7 +77,7 @@ $this->import('
                     <mc-select v-model:default-value="address.estado" :options="states" @change-option="save()" :disabled="disabled"></mc-select>
                 </div>
 
-                <div v-if="cities(address.estado)" class="field col-6" :class="[{'error' : cityError}]">
+                <div v-if="cities(address.estado)" class="field col-6" :class="[{'error' : cityError(address)}]">
                     <label>
                     <?= $this->text('cidade', i::__('Cidade')) ?>
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>

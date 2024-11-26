@@ -467,22 +467,27 @@ class Module extends \MapasCulturais\Module
                     return json_encode($value);
                 },
                 'unserialize' => function($value) {
-                    $persons = json_decode($value ?: "");
+                    $addresses = json_decode($value ?: "");
 
-                    if(!is_array($persons)){
-                        $persons = [];
+                    if(!is_array($addresses)){
+                        $addresses = [];
                     }
 
-                    foreach($persons as &$person){
+                    foreach($addresses as &$person){
                         foreach($person as $key => $value){
                             if(substr($key, 0, 2) == '$$'){
                                 unset($person->$key);
                             }
                         }
                     }
-
-                    return $persons;
-                }
+                    return $addresses;
+                },
+                'validations' => [
+                    // 'v::allOf(v::attribute("cidade", v::stringType()->notEmpty()), v::attribute("estado", v::stringType()->notEmpty()))' => \MapasCulturais\i::__('O campo Estado é obrigatório.'),
+                    
+                    'v::each(v::attribute("estado", v::stringType()->notEmpty()))'  => \MapasCulturais\i::__('O campo Estado é obrigatório.'),
+                    'v::each(v::attribute("cidade", v::stringType()->notEmpty()))'  => \MapasCulturais\i::__('O campo Cidade é obrigatório.'),
+                ]
             ],
             [
                 'slug' => 'persons',
