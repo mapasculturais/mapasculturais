@@ -24,7 +24,6 @@ $this->import('
                 <div class="field col-12">
                     <label>
                         <?= $this->text('nome endereço', i::__('Nome do enderço')) ?>
-                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <input type="text" v-model="address.nome" @change="save()" :disabled="disabled" />
                 </div>
@@ -32,7 +31,6 @@ $this->import('
                 <div class="field col-12">
                     <label>
                         <?= $this->text('cep', i::__('CEP')) ?>
-                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <input type="text" v-model="address.cep" @change="save()" @input="buscarEnderecoPorCep(address)" max-lenght="9" v-maska data-maska="#####-###" :disabled="disabled" />
                 </div>
@@ -40,7 +38,6 @@ $this->import('
                 <div class="field col-8">
                     <label>
                         <?= $this->text('logradouro', i::__('Logradouro')) ?>
-                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <input type="text" v-model="address.logradouro" @change="save()" :disabled="disabled" />
                 </div>
@@ -48,7 +45,6 @@ $this->import('
                 <div class="field col-4">
                     <label>
                         <?= $this->text('numero', i::__('Número')) ?>
-                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <input type="text" v-model="address.numero" @change="save()" :disabled="disabled" />
                 </div>
@@ -56,7 +52,6 @@ $this->import('
                 <div class="field col-12">
                     <label>
                         <?= $this->text('bairro', i::__('Bairro')) ?>
-                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <input type="text" v-model="address.bairro" @change="save()" :disabled="disabled" />
                 </div>
@@ -64,7 +59,6 @@ $this->import('
                 <div class="field col-12">
                     <label>
                         <?= $this->text('complemento', i::__('complemento')) ?>
-                        <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <input type="text" v-model="address.complemento" @change="save()" :disabled="disabled" />
                 </div>
