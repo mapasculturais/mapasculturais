@@ -82,12 +82,12 @@ $this->import('
                     <?= $this->text('privacy-label', i::__('Este endereço pode ficar público na plataforma?')) ?>
                 </label>
                 <div class="field__group">
-                    <label for="publicLocation" class="input__radioLabel">
-                        <input type="radio" v-model="addressData.publicLocation" value="true" @change="save()" />
+                    <label for="publicLocationYes" class="input__radioLabel">
+                        <input type="radio" id="publicLocationYes" v-model="addressData.publicLocation" value="true" @change="save()" />
                         <?= i::__('Sim. Estou ciente de que este endereço aparecerá na plataforma no perfil do agente coletivo vinculado a esta inscrição.') ?>
                     </label>
-                    <label for="publicLocation" class="input__radioLabel">
-                        <input type="radio" v-model="addressData.publicLocation" value="false" @change="save()"/>
+                    <label for="publicLocationNo" class="input__radioLabel">
+                        <input type="radio" id="publicLocationNo" v-model="addressData.publicLocation" value="false" @change="save()"/>
                         <?= i::__('Não.') ?>
                     </label>
                 </div>
