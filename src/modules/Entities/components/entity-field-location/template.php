@@ -17,35 +17,36 @@ $this->import('
 <div class="entity-field-location">
     <div class="col-12">
         <div class="grid-12">
-            <div class="field col-12">
+
+            <div class="field col-4">
                 <label for="cep">
                     <?= i::__('CEP') ?>
                 </label>
                 <input @change="pesquisacep(addressData.En_CEP, true);" id="cep" type="text" v-maska data-maska="#####-###" v-model="addressData.En_CEP" />
             </div>
 
-            <div class="field col-4">
+            <div class="field col-8">
                 <label for="logradouro">
                     <?= i::__('Logradouro') ?>
                 </label>
                 <input id="logradouro" type="text" v-model="addressData.En_Nome_Logradouro" @change="save" />
             </div>
 
-            <div class="field col-4">
+            <div class="field col-6">
                 <label for="num">
                     <?= i::__('Número') ?>
                 </label>
                 <input id="num" type="number" v-model="addressData.En_Num" @change="save" />
             </div>
 
-            <div class="field col-4">
+            <div class="field col-6">
                 <label for="bairro">
                     <?= i::__('Bairro') ?>
                 </label>
                 <input id="bairro" type="text" v-model="addressData.En_Bairro" @change="save" />
             </div>
 
-            <div class="field col-12">
+            <div class="field col-12 sm:col-12">
                 <label for="complemento">
                     <?= i::__('Complemento') ?>
                 </label>
@@ -68,7 +69,7 @@ $this->import('
                 </mc-select>
             </div>
             
-            <div class="field col-6">
+            <div v-if="addressData.En_Estado" class="field col-6">
                 <label for="field__title">
                     <?= i::__('Cidade') ?>
                 </label>
