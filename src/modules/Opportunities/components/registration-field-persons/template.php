@@ -114,7 +114,7 @@ $this->import('
                         <span v-if="required" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
                     <div class="field__group">
-                        <label v-for="deficiency in deficiencies" class="field__checkbox">
+                        <label v-for="deficiency in deficiencies" class="input__label input__checkboxLabel input__multiselect">
                             <input type="checkbox" :checked="person.deficiencies[deficiency]" v-model="person.deficiencies[deficiency]" @checked="save()" @change="save()" :disabled="disabled"/> <!-- :checked="" -->
                             <slot>{{deficiency}}</slot>
                         </label>
