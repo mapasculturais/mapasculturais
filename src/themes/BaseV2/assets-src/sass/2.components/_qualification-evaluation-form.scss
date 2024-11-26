@@ -65,6 +65,11 @@
                 gap: size(16);
                 flex-wrap: wrap;
 
+                input {
+                    min-width: size(18);
+                    min-height: size(18);
+                }
+
                 &-title {
                     width: 100%;
                 }
