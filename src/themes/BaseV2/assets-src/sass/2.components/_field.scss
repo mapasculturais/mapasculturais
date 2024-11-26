@@ -80,10 +80,13 @@
         & .input__checkboxLabel {
             display: flex;
             gap: size(8);
+            font-size: var(--mc-font-size-xxs);
+            font-weight: var(--mc-font-semibold);
         }
     }
 
     .input__radioLabel {
+        font-size: var(--mc-font-size-xxs);
         font-weight: var(--mc-font-semibold);
     }
 
