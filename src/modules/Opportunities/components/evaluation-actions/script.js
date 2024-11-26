@@ -132,14 +132,6 @@ app.component('evaluation-actions', {
             } 
         },
 
-        finishEvaluationSendLater(){
-            this.dispatchErrors();
-            this.saveEvaluation(true);
-            if (this.lastRegistration?.registrationid != this.entity.id){
-                this.next();
-            } 
-        },
-
         reopen(){
             const messages = useMessages();
             let args = {id: this.entity.id};
