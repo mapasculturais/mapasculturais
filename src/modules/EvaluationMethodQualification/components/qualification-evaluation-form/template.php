@@ -24,10 +24,10 @@ $this->import('
     <div v-for="section in sections" :key="section.id" class="qualification-evaluation-form__section-wrapper">
         <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
             <h3>{{ section.name }}</h3>
-            <div class="qualification-evaluation-form__section-non-eliminatory field">
+            <div v-if="section?.maxNonEliminatory" class="qualification-evaluation-form__section-non-eliminatory field">
                 <label><?php i::_e('Número máximo de critérios não eliminatórios: ') ?>{{ section.numberMaxNonEliminatory }}</label>
             </div>
-            <div v-for="crit in section.criteria" :key="crit.id">
+            <template v-for="crit in section.criteria" :key="crit.id">
                 <div v-if="showSectionAndCriterion(crit)" class="qualification-evaluation-form__criterion field">
                     <div class="qualification-evaluation-form__criterion-title">
                         <div class="qualification-evaluation-form__criterion-title-fields">
@@ -69,7 +69,7 @@ $this->import('
                         </div>
 
                         <div v-if="formData.data[crit.id]?.includes('invalid') && (crit.options?.length > 0 || crit.otherReasonsOption === 'true')" class="qualification-evaluation-form__criterion-options-reasons field">
-                            <h5 class="qualification-evaluation-form__criterion-options-reasons-title"><?php i::_e("Motivos de não atendimento") ?></h5>
+                            <h5 class="qualification-evaluation-form__criterion-options-reasons-title"><?php i::_e("Recomendação para atender ao critério") ?></h5>
 
                             <label class="qualification-evaluation-form__criterion-options-reasons-label" v-for="option in crit.options" :key="option">
                                 <input type="checkbox" :value="option" :checked="formData.data[crit.id]?.includes(option)" :disabled="!isEditable" @change="updateOption(crit.id, option)" />
@@ -84,7 +84,8 @@ $this->import('
                         </div>
                     </div>
                 </div>
-            </div>
+            </template>
+
             <div class="field">
                 <label><?php i::_e('Observações/parecer') ?></label>
                 <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite as observações/parecer') ?>"></textarea>
@@ -100,9 +101,8 @@ $this->import('
     <div class="qualification-evaluation-form__observation field">
         <label><?php i::_e('Observações/parecer final') ?></label>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
-        <label>
-            <?php i::_e('Status da avaliação:') ?> 
-            <span :class="consolidatedResult == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
+        <label class="qualification-result">
+            <span :class="consolidatedResult == text('Habilitado') ? 'qualification-enabled' : 'qualification-disabled'">
                 {{ consolidatedResult }}
             </span>
         </label>

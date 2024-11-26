@@ -384,7 +384,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'select',
-                'name' => \MapasCulturais\i::__('Seleção única (select)'),
+                'name' => \MapasCulturais\i::__('Seleção única'),
                 'viewTemplate' => 'registration-field-types/select',
                 'configTemplate' => 'registration-field-types/select-config',
                 'requireValuesConfiguration' => true
@@ -430,7 +430,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'checkboxes',
-                'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
+                'name' => \MapasCulturais\i::__('Seleção múltipla'),
                 'viewTemplate' => 'registration-field-types/checkboxes',
                 'configTemplate' => 'registration-field-types/checkboxes-config',
                 'requireValuesConfiguration' => true,
@@ -447,6 +447,47 @@ class Module extends \MapasCulturais\Module
                 'unserialize' => function ($value) {
                     return json_decode($value ?: "");
                 }
+            ],
+            [
+                'slug' => 'addresses',
+                'name' => \MapasCulturais\i::__('Campo de listagem de endereços'),
+                // 'viewTemplate' => 'registration-field-types/addresses',
+                'configTemplate' => 'registration-field-types/addresses-config',
+                'serialize' => function($value) {
+                    if(is_array($value)){
+                        foreach($value as &$person){
+                            foreach($person as $key => $v){
+                                if(substr($key, 0, 2) == '$$'){
+                                    unset($person->$key);
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $addresses = json_decode($value ?: "");
+
+                    if(!is_array($addresses)){
+                        $addresses = [];
+                    }
+
+                    foreach($addresses as &$person){
+                        foreach($person as $key => $value){
+                            if(substr($key, 0, 2) == '$$'){
+                                unset($person->$key);
+                            }
+                        }
+                    }
+                    return $addresses;
+                },
+                'validations' => [
+                    // 'v::allOf(v::attribute("cidade", v::stringType()->notEmpty()), v::attribute("estado", v::stringType()->notEmpty()))' => \MapasCulturais\i::__('O campo Estado é obrigatório.'),
+                    
+                    'v::each(v::attribute("estado", v::stringType()->notEmpty()))'  => \MapasCulturais\i::__('O campo Estado é obrigatório.'),
+                    'v::each(v::attribute("cidade", v::stringType()->notEmpty()))'  => \MapasCulturais\i::__('O campo Cidade é obrigatório.'),
+                ]
             ],
             [
                 'slug' => 'persons',
@@ -518,6 +559,18 @@ class Module extends \MapasCulturais\Module
                     }
 
                     return $links;
+                }
+            ],
+            [
+                'slug' => 'municipio',
+                'name' => \MapasCulturais\i::__('Seleção de município'),
+                'viewTemplate' => 'registration-field-types/municipio',
+                'configTemplate' => 'registration-field-types/municipio-config',
+                'serialize' => function($value) {
+                    return $value ? json_encode($value) : $value;
+                },
+                'unserialize' => function($value) {
+                   return $value ? json_decode($value) : $value;
                 }
             ],
             [

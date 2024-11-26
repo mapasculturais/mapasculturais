@@ -1,24 +1,11 @@
 
 app.component('entity-field-location', {
     template: $TEMPLATES['entity-field-location'],
-//     emits: [],
-
-//     setup(props, { slots }) {
-//         const hasSlot = name => !!slots[name]
-//         return { hasSlot }
-//     },
-    // data(){
-    //     let cities = {};
-    //     return {cities};
-    // },
 
     computed: {
         cities(){
-            return this.entity[this.fieldName].En_Estado ? this.statesAndCities[this.entity[this.fieldName].En_Estado].cities : null;
+            return this.addressData.En_Estado ? this.statesAndCities[this.addressData.En_Estado].cities : null;
         },
-        // hasPublicLocation() {
-        //     return !!this.entity.$PROPERTIES.publicLocation;
-        // },
         statesAndCities(){
             return $MAPAS.config.statesAndCities;
         },
@@ -46,6 +33,12 @@ app.component('entity-field-location', {
         },
     },
 
+    data() {
+        return {
+            addressData: {}
+        }
+    },
+
     props: {
         entity: {
             type: Entity,
@@ -55,51 +48,31 @@ app.component('entity-field-location', {
             type: String,
             required: true
         },
+        configs: {
+            type: Object,
+            default: () => {}
+        }
     },
 
-//     watch: {
-//         'entity.En_Pais'(_new, _old){
-//             if(_new != _old && this.statesAndCitiesCountryCode != 'BR') {
-//                 this.entity.En_Nome_Logradouro = "";
-//                 this.entity.En_Num             = "";
-//                 this.entity.En_Complemento     = "";
-//                 this.entity.En_Bairro          = "";
-//                 this.entity.En_Municipio       = "";
-//                 this.entity.En_Estado          = "";
-//                 this.entity.En_CEP             = "";
-//             }
-//         }
-//     },
-
     methods: {
-//         propId(prop) {
-//             let uid = Math.random().toString(36).slice(2);
-//             return`${this.entity.__objectId}--${prop}--${uid}`;
-//         },
-//         verifiedAdress() {
-//             if(this.entity.currentUserPermissions['@control']){
-//                 return true;
-//             };
-//             const fields = ['En_Nome_Logradouro', 'En_Num', 'En_Bairro', 'En_Municipio', 'En_Estado', 'En_CEP'];
-//             let result = !this.hasPublicLocation || this.entity.publicLocation;
-//             fields.forEach((element)=> {
-//                 if(this.entity[element]==null) {
-//                     result = false;
-//                     return;
-//                 }
-//             });
-               
-//             return result;
-//         },
+        populateEntity() {
+            this.initializeAddressFields('entity');
+
+            Object.keys(this.addressData).forEach(addressField => {
+                this.entity[this.fieldName][addressField] = this.addressData[addressField];
+            })
+        },
+
         address() {
+            this.initializeAddressFields('entity');
             this.entity.En_Pais = this.statesAndCitiesCountryCode == 'BR' ? this.statesAndCitiesCountryCode : this.entity.En_Pais;
-            let rua         = this.entity[this.fieldName].En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
-            let numero      = this.entity[this.fieldName].En_Num             == null ? '' : this.entity[this.fieldName].En_Num;
-            let complemento = this.entity[this.fieldName].En_Complemento     == null ? '' : this.entity[this.fieldName].En_Complemento;
-            let bairro      = this.entity[this.fieldName].En_Bairro          == null ? '' : this.entity[this.fieldName].En_Bairro;
-            let cidade      = this.entity[this.fieldName].En_Municipio       == null ? '' : this.entity[this.fieldName].En_Municipio;
-            let estado      = this.entity[this.fieldName].En_Estado          == null ? '' : this.entity[this.fieldName].En_Estado;
-            let cep         = this.entity[this.fieldName].En_CEP             == null ? '' : this.entity[this.fieldName].En_CEP;
+            let rua         = this.entity[this.fieldName]?.En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
+            let numero      = this.entity[this.fieldName]?.En_Num             == null ? '' : this.entity[this.fieldName].En_Num;
+            let complemento = this.entity[this.fieldName]?.En_Complemento     == null ? '' : this.entity[this.fieldName].En_Complemento;
+            let bairro      = this.entity[this.fieldName]?.En_Bairro          == null ? '' : this.entity[this.fieldName].En_Bairro;
+            let cidade      = this.entity[this.fieldName]?.En_Municipio       == null ? '' : this.entity[this.fieldName].En_Municipio;
+            let estado      = this.entity[this.fieldName]?.En_Estado          == null ? '' : this.entity[this.fieldName].En_Estado;
+            let cep         = this.entity[this.fieldName]?.En_CEP             == null ? '' : this.entity[this.fieldName].En_CEP;
 
             // rua, num, complemento - bairro - cidade/uf - CEP: 00000000
             var address = '';
@@ -161,10 +134,13 @@ app.component('entity-field-location', {
             }
            
             this.entity[this.fieldName].endereco = address;
-            this.geolocation();
+
+            if(this.configs?.setLatLon) {
+                this.geolocation();
+            }
         },
 
-        pesquisacep(valor) {
+        pesquisacep(valor, executeAddress) {
             //Nova variável "cep" somente com dígitos.
             var cep = valor.replace(/\D/g, '');                
             if (cep != "") {
@@ -173,30 +149,33 @@ app.component('entity-field-location', {
                     fetch('//viacep.com.br/ws/'+ cep +'/json/')
                         .then((response) => response.json())
                         .then((data) => {
-                            this.entity[this.fieldName].En_Nome_Logradouro = data.logradouro;
-                            this.entity[this.fieldName].En_Bairro = data.bairro;
-                            this.entity[this.fieldName].En_Municipio = data.localidade;
-                            this.entity[this.fieldName].En_Estado = data.uf;
-                            this.entity.save();
+                            this.addressData.En_Nome_Logradouro = data.logradouro;
+                            this.addressData.En_Bairro = data.bairro;
+                            this.addressData.En_Municipio = data.localidade;
+                            this.addressData.En_Estado = data.uf;
+
+                            if(executeAddress) {
+                                this.address();
+                            }
                         });    
                 } 
             } 
         },
 
-//         formatParams( params ){
-//             return "?" + Object.keys(params).map(function(key){
-//                             return key+"="+encodeURIComponent(params[key])
-//                         }).join("&");
-//         },
+        formatParams( params ){
+            return "?" + Object.keys(params).map(function(key){
+                            return key+"="+encodeURIComponent(params[key])
+                        }).join("&");
+        },
 
         geolocation() {
-            let rua         = this.entity[this.fieldName].En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
-            let numero      = this.entity[this.fieldName].En_Num             == null ? '' : this.entity[this.fieldName].En_Num;
-            let bairro      = this.entity[this.fieldName].En_Bairro          == null ? '' : this.entity[this.fieldName].En_Bairro;
-            let cidade      = this.entity[this.fieldName].En_Municipio       == null ? '' : this.entity[this.fieldName].En_Municipio;
-            let estado      = this.entity[this.fieldName].En_Estado          == null ? '' : this.entity[this.fieldName].En_Estado;
-            let cep         = this.entity[this.fieldName].En_CEP             == null ? '' : this.entity[this.fieldName].En_CEP;
-
+            let rua         = this.entity[this.fieldName].En_Nome_Logradouro || '';
+            let numero      = this.entity[this.fieldName].En_Num             || '';
+            let bairro      = this.entity[this.fieldName].En_Bairro          || '';
+            let cidade      = this.entity[this.fieldName].En_Municipio       || '';
+            let estado      = this.entity[this.fieldName].En_Estado          || '';
+            let cep         = this.entity[this.fieldName].En_CEP             || '';
+            
             if (estado && cidade) {
                 var address = bairro ?
                     rua + " " + numero + ", " + bairro + ", " + cidade + ", " + estado :
@@ -240,11 +219,6 @@ app.component('entity-field-location', {
                     params.country = addressElements.country;
                     structured = true;
                 }
-                // Parece que o nominatim não se dá bem com nosso CEP
-                // if (addressElements.postalCode) {
-                //     params.postalcode = addressElements.postalCode;
-                //     structured = true;
-                // }
                 if (!structured && addressElements.fullAddress) {
                     params.q = addressElements.fullAddress;
                 }
@@ -260,11 +234,46 @@ app.component('entity-field-location', {
                     } );
             }            
         },
-        // citiesList(){
-        //     this.cities = this.statesAndCities[this.entity[this.fieldName].En_Estado].cities;
-        // },
-//         isRequired(field){
-//             return $DESCRIPTIONS[this.entity.__objectType][field].required;
-//         }
+        initializeAddressFields(object) {
+            if (!this[object][this.fieldName]) {
+                this[object][this.fieldName] = {};
+            }
+
+            const requiredFields = [
+                'En_CEP',
+                'En_Estado',
+                'En_Nome_Logradouro',
+                'En_Num',
+                'En_Bairro',
+                'En_Complemento',
+                'En_Pais',
+                'En_Municipio',
+                'publicLocation'
+            ];
+
+            requiredFields.forEach(field => {
+                if (this[object][this.fieldName][field] === undefined || this[object][this.fieldName][field] === null) {
+                    this[object][this.fieldName][field] = '';
+                    if(object === 'addressData' && this.entity?.[this.fieldName]?.[field]) {
+                        this[object][field] = this.entity[this.fieldName][field];
+                    } 
+                }
+            });
+        },
+
+        citiesList(){
+            this.cities = this.statesAndCities[this.addressData.En_Estado].cities;
+        },
+
+        save() {
+            if(this.addressData.En_Num) {
+                this.populateEntity();
+                this.entity.save();
+            }
+        }
+    },
+
+    created() {
+        this.initializeAddressFields('addressData');
     }
 });

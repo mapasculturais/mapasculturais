@@ -1289,6 +1289,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
       
     $scope.data.fieldsByStep = $scope.data.fields.reduce((acc, field) => {
         const stepName = field.step?.name;
+        const hasValidId = field.id != null;
+
+        if (!stepName || !hasValidId) {
+            return acc;
+        }
+
         if (!acc[stepName]) {
             acc[stepName] = [];
         }
@@ -1848,10 +1854,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if(field.conditional){
-            result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+            if($scope.entity[field.conditionalField] instanceof Array){
+                result = result && $scope.entity[field.conditionalField].indexOf(field.conditionalValue) >= 0;
+            }else{
+                result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+            }
         }
 
-        if(MapasCulturais.entity.canUserEvaluate){
+        if(MapasCulturais.entity.evaluateOnTime){
             if(MapasCulturais.opportunityControl) {
                 result = true;
             } else if(result && !$scope.isAvaliableEvaluationFields(field)){
@@ -1892,11 +1902,12 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.checkField =  function(field) {
-        if((field.length === 1 && field[0] === '') || (field.length === 1 && field[0] === 'null')) {
+        
+        if((field?.length === 1 && field[0] === '') || (field?.length === 1 && field[0] === 'null')) {
             return "Não sou";
         }
 
-        if(!field || field.length <= 0 || (field.length === 1 && !field[0])) {
+        if(!field || field?.length <= 0 || (field?.length === 1 && !field[0])) {
             return null;
         }
 

@@ -1,7 +1,7 @@
 app.component('registration-steps', {
     template: $TEMPLATES['registration-steps'],
 
-    emits: ['stepChanged'],
+    emits: ['update:stepIndex'],
 
     props: {
         steps: {
@@ -20,7 +20,7 @@ app.component('registration-steps', {
         const text = Utils.getTexts('registration-steps')
         return { globalState, text }
     },
-    
+
     computed: {
         sections () {
             return this.steps.map((step) => step.name || this.text('Informações básicas'));
@@ -35,7 +35,7 @@ app.component('registration-steps', {
 
     methods: {
         goToSection(event) {
-            this.$emit('stepChanged', event);
+            this.$emit('update:stepIndex', event);
         },
     },
 });

@@ -130,7 +130,7 @@ $this->import('
             <template #after-tablist>
                 <mc-modal title="<?php i::_e('Criar etapa') ?>">
                     <template #button="modal">
-                        <button type="button" class="button button--primary button--icon" @click="modal.open()">
+                        <button type="button" class="button button--primary button--icon form-builder__add-step" @click="modal.open()">
                             <mc-icon name="add"></mc-icon>
                             <?= i::__('Adicionar etapa') ?>
                         </button>

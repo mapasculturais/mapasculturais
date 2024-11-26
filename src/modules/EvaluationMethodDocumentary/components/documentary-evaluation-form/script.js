@@ -121,7 +121,7 @@ app.component('documentary-evaluation-form', {
             if (evaluationRegistrationList) {
                 evaluationRegistrationList.forEach(item => {
                     if (item.valuer && item.valuer.user === $MAPAS.userId) {
-                        this.userId = item.valuer.id;
+                        this.userId = item.valuer.user;
                         this.userName = item.valuer.name;
                     }
                 });

@@ -24,35 +24,35 @@ $this->import('
 
 <div class="registration__content">
     <div class="registration__steps">
-        <registration-steps :steps="steps" :step-index="stepIndex"></registration-steps>
+        <registration-steps :steps="steps" v-model:step-index="stepIndex"></registration-steps>
     </div>
 
     <mc-container>
         <main class="grid-12">
-            <registration-info :registration="entity" classes="col-12"></registration-info>                
-            
+            <registration-info :registration="entity" classes="col-12"></registration-info>
+
             <section class="section">
                 <h2 class="section__title" id="main-info">
                     {{ stepIndex + 1 }}. {{ step.name || text('Informações básicas') }}
                 </h2>
                 <registration-autosave-notification :registration="entity"></registration-autosave-notification>
 
-                <div class="section__content">                         
-                    <div class="card owner">                            
+                <div class="section__content">
+                    <div class="card owner">
                         <div class="card__content">
                             <div class="owner">
                                 <mc-avatar v-if="!entity.opportunity.requestAgentAvatar" :entity="entity.owner" size="small"></mc-avatar>
                                 <request-agent-avatar v-if="entity.opportunity.requestAgentAvatar" :entity="entity"></request-agent-avatar>
                                 <div class="owner__content">
                                     <div class="owner__content--title">
-                                        <h3 class="card__title"> 
-                                            <?= i::__('Agente responsável') ?> 
+                                        <h3 class="card__title">
+                                            <?= i::__('Agente responsável') ?>
                                         </h3>
                                         <div class="owner__name">
                                             {{entity.owner.name}}
                                         </div>
                                     </div>
-                                    <div v-if="entity.opportunity.requestAgentAvatar" class="card__mandatory"> 
+                                    <div v-if="entity.opportunity.requestAgentAvatar" class="card__mandatory">
                                         <div class="obrigatory"> <?= i::__('*obrigatório') ?> </div>
                                     </div>
                                 </div>
@@ -65,8 +65,8 @@ $this->import('
                                 <mc-avatar :entity="agentCollective.agent" size="small"></mc-avatar>
                                 <div class="collective__content">
                                     <div class="collective__content--title">
-                                        <h3 class="card__title"> 
-                                            <?= i::__('Agente coletivo') ?> 
+                                        <h3 class="card__title">
+                                            <?= i::__('Agente coletivo') ?>
                                         </h3>
                                         <div class="collective__name">
                                             {{agentCollective.agent.name}}
@@ -77,9 +77,9 @@ $this->import('
                         </div>
                     </div>
 
-                    <div v-if="entity.opportunity.enableQuotasQuestion" class="card owner">                            
-                        <h3 class="card__title"> 
-                            <?= i::__('Vai concorrer às cotas?') ?> 
+                    <div v-if="entity.opportunity.enableQuotasQuestion" class="card owner">
+                        <h3 class="card__title">
+                            <?= i::__('Vai concorrer às cotas?') ?>
                         </h3>
 
                         <div class="card__content">

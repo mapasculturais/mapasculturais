@@ -15,6 +15,7 @@ $this->import('
     mc-multiselect
     mc-tag-list
     entity-field-bank-info
+    select-municipio
 ')
 ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]" :data-field="prop">
@@ -23,19 +24,22 @@ $this->import('
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
         <slot name="info"></slot>
     </label>
+
+    <small class="field__description" v-if="descriptionFirst && (!hideDescription && (fieldDescription || description.description))"> {{ fieldDescription || description.description}} </small>
+
     <slot name="input" >
         <?php //@todo implementar registro de tipos de campos (#1895) ?>
 
         <!-- masked fields -->
-        <input v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
         
-        <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
 
-        <input v-if="is('brPhone')" v-maska data-maska="['(##) #####-####','(##) ####-####']" data-maska-tokens="0:[0-9]:optional" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
-        <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
-        <input v-if="is('fieldMask')" v-maska :data-maska="mask" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('brPhone')" v-maska data-maska="['(##) #####-####','(##) ####-####']" data-maska-tokens="0:[0-9]:optional" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('cep')" v-maska data-maska="#####-###" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('fieldMask')" v-maska :data-maska="mask" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
 
-        <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('string') || is('text')" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :placeholder="placeholder || description?.placeholder" :disabled="readonly || disabled" :readonly="readonly">
         
         <input v-if="is('integer') ||  is('number') ||  is('smallint')" :value="value" :id="propId" :name="prop" type="number" :min="min || description.min" :max="max || description.max" :step="description.step" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
         
@@ -45,11 +49,19 @@ $this->import('
         
         <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change($event, true)"></entity-field-datepicker>
         
-        <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxLength="maxLength" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled" :readonly="readonly"></textarea>
+        <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled" :readonly="readonly"></textarea>
 
-        <select v-if="is('select')" :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled">
-            <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>
-        </select>
+        <template v-if="is('select')">
+            <template v-if="description.registrationFieldConfiguration?.config?.viewMode === 'radio'">
+                <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
+                    <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || disabled"> {{description.options[optionValue]}} 
+                </label>
+            </template>
+
+            <select v-else :value="value" :id="propId" :name="prop" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled">
+                <option v-for="optionValue in description.optionsOrder" :value="optionValue">{{description.options[optionValue]}}</option>
+            </select>
+        </template>
 
         <template v-if="is('radio')">
             <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
@@ -63,21 +75,27 @@ $this->import('
 
         <template v-if="is('multiselect') || is('checklist')">
            <div class="field__group">
-                <template v-if="description.optionsOrder?.length > 10">
-                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover}" :max-options="maxOptions" hide-button>
-                        <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle(); $event.preventDefault()" >
-                            <?php i::_e("Selecionar") ?>
-                            <mc-icon name="add"></mc-icon>
-                        </button>
+                <template v-if="isMultiSelect()">
+                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" hide-filter hide-button>
+                        <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :placeholder="placeholder || description?.placeholder">
                     </mc-multiselect>
 
                     <mc-tag-list :tags="selectedOptions[prop]" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
                 </template>
 
+                <template v-else>
+                    <div v-if="maxOptions && maxOptions > 0">
+                        <label>
+                            <?php i::_e('Você selecionou') ?>
+                            {{ value.length || 0 }}/{{ maxOptions }}
+                            <?php i::_e('opções') ?>
+                        </label>
+                    </div>
 
-                <label v-else class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
-                   <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled" /> {{description.options[optionValue]}} 
-                </label>
+                    <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
+                       <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled || (maxOptions && value?.length >= maxOptions && !value.includes(optionValue))" /> {{description.options[optionValue]}} 
+                    </label>
+                </template>
             </div>
         </template>
 
@@ -110,17 +128,21 @@ $this->import('
         </template>
 
         <template v-if="is('location')">
-            <entity-field-location :entity="entity" :field-name="prop"></entity-field-location>
+            <entity-field-location :entity="entity" :field-name="prop" :configs="description?.registrationFieldConfiguration?.config"></entity-field-location>
         </template>
 
         <template v-if="is('bankFields')">
             <entity-field-bank-info @change="change($event, true)"  :field-name="prop" :entity="entity"></entity-field-bank-info>
         </template>
 
+        <template v-if="is('municipio')">
+            <select-municipio :entity="entity" :prop="prop" @change="change($event)"></select-municipio>
+        </template>
+
         <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
     </slot>
 
-    <small class="field__description" v-if="!hideDescription && (fieldDescription || description.description)"> {{ fieldDescription || description.description}} </small>
+    <small class="field__description" v-if="!descriptionFirst && (!hideDescription && (fieldDescription || description.description))"> {{ fieldDescription || description.description}} </small>
 
     <small class="field__error" v-if="hasErrors">
         {{errors.join('; ')}}

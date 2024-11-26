@@ -155,12 +155,19 @@ app.component('qualification-evaluation-form', {
         },
 
         showSectionAndCriterion(type) {
-            return (
-                !type.ranges.length || !type.categories.length || !type.proponentTypes.length ||      
-                type.ranges.some(range => range === this.entity.range) ||
-                type.categories.includes(this.entity.category) || 
-                type.proponentTypes.includes(this.entity.proponentType)
-            );
+            if(type.categories.length > 0 && !type.categories.includes(this.entity.category)) {
+                return false
+            }
+
+            if(type.proponentTypes.length > 0 && !type.proponentTypes.includes(this.entity.proponentType)) {
+                return false
+            }
+
+            if(type.ranges.length > 0 && !type.ranges.includes(this.entity.range)) {
+                return false
+            }
+
+            return true;
         },
 
         consolidated (){
@@ -171,7 +178,7 @@ app.component('qualification-evaluation-form', {
                     break;  
                 }
             }
-            return result ? this.text('Atende') : this.text('Não atende');
+            return result ? this.text('Habilitado') : this.text('Inabilitado');
         },
         sectionStatus(sectionId){
             const section = this.sections.find(sec => sec.id === sectionId);
@@ -222,20 +229,22 @@ app.component('qualification-evaluation-form', {
 
             for (let sectionIndex in this.sections) {
                 let section = this.sections[sectionIndex];
-
-                if (this.showSectionAndCriterion(section)) {
-                    for (let crit of section.criteria) {
-                        if (this.showSectionAndCriterion(crit)) {
-                            let sectionName = section.name;
-                            let value = this.formData.data[crit.id];
-                            if (value.length <= 0) {
-                                this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
-                                isValid = true;
-                            }
-                        }
-                    }
+                if (!this.showSectionAndCriterion(section)) {
+                    continue;
                 }
 
+                for (let crit of section.criteria) {
+                    if (!this.showSectionAndCriterion(crit)) {
+                        continue;
+                    }
+
+                    let sectionName = section.name;
+                    let value = this.formData.data[crit.id];
+                    if (value.length <= 0) {
+                        this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
+                        isValid = true;
+                    }
+                }
                 
                 let parecerValue = this.formData.data[section.id];
                 if (!parecerValue || parecerValue === "") {

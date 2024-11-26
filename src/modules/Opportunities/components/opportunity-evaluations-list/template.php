@@ -40,7 +40,7 @@ $this->import('
             </div>
         </div>
         <mc-loading :condition="loading"><?= i::__('carregando...') ?></mc-loading>
-        <ul v-if="!loading" class="evaluation-list">
+        <ul v-if="!loading" class="evaluation-list scrollbar">
             <li v-if="evaluations.length <= 0" class="no-records">
                 <?= i::__('Não foram encontrados registros') ?>
             </li>
