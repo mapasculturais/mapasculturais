@@ -16,7 +16,8 @@ app.component('evaluation-actions', {
 
     setup() {
         const text = Utils.getTexts('evaluation-actions')
-        return { text }
+        const globalState = useGlobalState();
+        return { text, globalState }
     },
 
     mounted() {
@@ -33,13 +34,11 @@ app.component('evaluation-actions', {
 
     computed: {
         firstRegistration() {
-            const globalState = useGlobalState();
-            return globalState.firstRegistration;
+            return this.globalState.firstRegistration;
         },
 
         lastRegistration() {
-            const globalState = useGlobalState();
-            return globalState.lastRegistration;
+            return this.globalState.lastRegistration;
         },
     },
 
@@ -56,9 +55,7 @@ app.component('evaluation-actions', {
         
         requestEvaluation(action, data = {}, args = {}, controller = 'registration') {
             return new Promise((resolve, reject) => {
-                const global = useGlobalState();
-                
-                if (action == 'reopenEvaluation' || !global.validateEvaluationErrors) {
+                if (action == 'reopenEvaluation' || !this.globalState.validateEvaluationErrors) {
                     const api = new API(controller);
                     let url = api.createUrl(action, args);
                     let result = api.POST(url, data);
@@ -119,16 +116,18 @@ app.component('evaluation-actions', {
             });
         },
 
-        finishEvaluation() {
-            this.dispatchErrors();
-            this.saveEvaluation(true);
-            this.updateSummaryEvaluations('completed');
-        },
-
         finishEvaluationSend() {
             this.dispatchErrors();
             this.sendEvaluation();
-            if (this.lastRegistration?.registrationid != this.entity.id){
+            if (this.lastRegistration?.registrationid != this.entity.id && !this.globalState.validateEvaluationErrors){
+                this.next();
+            } 
+        },
+
+        finishEvaluationSendLater(){
+            this.dispatchErrors();
+            this.saveEvaluation(true);
+            if (this.lastRegistration?.registrationid != this.entity.id && !this.globalState.validateEvaluationErrors){
                 this.next();
             } 
         },
