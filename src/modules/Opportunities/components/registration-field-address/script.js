@@ -68,16 +68,6 @@ app.component('registration-field-address', {
             const states = Object.keys(this.statesAndCities);
             return states.map(estado => this.statesAndCities[estado].label);
         },
-
-        stateError() {
-            const errors = this.registration.__validationErrors[this.prop];
-            return errors?.some(str => str.toLowerCase().includes('estado')) ?? false;
-        },
-
-        cityError() {
-            const errors = this.registration.__validationErrors[this.prop];
-            return errors?.some(str => str.toLowerCase().includes('cidade')) ?? false;
-        }
     },
     
     methods: {
@@ -112,6 +102,16 @@ app.component('registration-field-address', {
             }
 
             return false;
+        },
+
+        stateError(address) {
+            const errors = this.registration.__validationErrors[this.prop];
+            return (errors?.some(str => str.toLowerCase().includes('estado')) && address.estado == '') ?? false;
+        },
+
+        cityError(address) {
+            const errors = this.registration.__validationErrors[this.prop];
+            return (errors?.some(str => str.toLowerCase().includes('cidade')) && address.cidade == '') ?? false;
         },
 
         addNewAddress() {
