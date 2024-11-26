@@ -9,6 +9,10 @@ app.component('mc-captcha', {
         config: {
             type: String,
             required: true
+        },
+        error: {
+            type: Boolean,
+            required: false
         }
     },
 
@@ -38,6 +42,21 @@ app.component('mc-captcha', {
     },
     computed: {
         // 
+    },
+
+    watch: {
+        error(newValue, oldValue) {
+            // check if grecaptcha is not defined
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+                this.expiredCaptcha();
+            }
+
+            // check if turnstile is not defined
+            if (typeof window.turnstile !== 'undefined') {
+                window.turnstile.reset();
+            }
+        }
     },
 
     methods: {
