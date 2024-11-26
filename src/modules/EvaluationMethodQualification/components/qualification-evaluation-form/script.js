@@ -49,32 +49,15 @@ app.component('qualification-evaluation-form', {
         window.addEventListener('processErrors', this.validateErrors);
 
         this.updateSectionStatusByFromData();
+
+        this.$nextTick(() => {
+            this.applyLongContentAttribute();
+        });
     },
 
     updated() {
         this.$nextTick(() => {
-            const labels = this.$refs.formRoot?.querySelectorAll('.qualification-evaluation-form__criterion-options-reasons-label');
-            
-            if (!labels || labels.length === 0) return;
-    
-            labels.forEach(label => {
-                const input = label.querySelector('input');
-                if (input) {
-                    if (input.value.length > 20) {
-                        label.setAttribute('data-long-content', 'true');
-                    } else {
-                        label.removeAttribute('data-long-content');
-                    }
-    
-                    input.addEventListener('input', () => {
-                        if (input.value.length > 20) {
-                            label.setAttribute('data-long-content', 'true');
-                        } else {
-                            label.removeAttribute('data-long-content');
-                        }
-                    });
-                }
-            });
+            this.applyLongContentAttribute();
         });
     },
 
@@ -295,6 +278,33 @@ app.component('qualification-evaluation-form', {
             });
 
             this.formData.data['obs'] = this.evaluationData['obs'] ?? '';
+        },
+
+        applyLongContentAttribute() {
+            const labels = this.$refs.formRoot?.querySelectorAll('.qualification-evaluation-form__criterion-options-reasons-label');
+            
+            if (!labels || labels.length === 0) return;
+    
+            labels.forEach(label => {
+                const input = label.querySelector('input');
+                if (input) {
+                    if (input.value.length > 20) {
+                        label.setAttribute('data-long-content', 'true');
+                    } else {
+                        label.removeAttribute('data-long-content');
+                    }
+    
+                    if (!input.disabled) {
+                        input.addEventListener('input', () => {
+                            if (input.value.length > 20) {
+                                label.setAttribute('data-long-content', 'true');
+                            } else {
+                                label.removeAttribute('data-long-content');
+                            }
+                        });
+                    }
+                }
+            });
         },
     },
 });
