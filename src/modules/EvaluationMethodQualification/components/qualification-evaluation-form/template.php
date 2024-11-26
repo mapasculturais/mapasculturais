@@ -80,7 +80,7 @@ $this->import('
                                 <input type="checkbox" :name="'option-' + crit.id" value="others" :checked="formData.data[crit.id]?.includes('others')" :disabled="!isEditable" @change="toggleOthersOption(crit.id, $event)" />
                             <?php i::_e("Outros") ?>
                             </label>
-                            <textarea v-if="formData.data[crit.id]?.includes('others')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva os motivos para inabilitação') ?>"></textarea>
+                            <textarea v-if="formData.data[crit.id]?.includes('others')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva as recomendações para atender ao critério') ?>"></textarea>
                         </div>
                     </div>
                 </div>
