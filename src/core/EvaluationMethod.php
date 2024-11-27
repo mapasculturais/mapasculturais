@@ -186,6 +186,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
 
 
+    /**
+     * Retorna o resultado consolidado de uma inscrição
+     * 
+     * @param Entities\Registration $registration
+     * @return mixed
+     */
     function getConsolidatedResult(Entities\Registration $registration){
         $app = App::i();
         
@@ -220,6 +226,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
     }
 
+    /**
+     * Retorna os detalhes de uma avaliação
+     * 
+     * @param Entities\RegistrationEvaluation $evaluation
+     * @return array
+     */
     function getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $app = App::i();
         $result = $this->_getEvaluationDetails($evaluation);
@@ -227,6 +239,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $result;
     }
 
+    /**
+     * Retorna os detalhes consolidados de uma inscrição
+     * 
+     * @param Entities\Registration $registration
+     * @return array
+     */
     function getConsolidatedDetails(Entities\Registration $registration): array {
         $app = App::i();
         $result = $this->_getConsolidatedDetails($registration);
