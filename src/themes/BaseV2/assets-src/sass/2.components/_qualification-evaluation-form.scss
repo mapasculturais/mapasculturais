@@ -40,20 +40,18 @@
             gap: size(8);
 
             &-fields {
-                align-items: center;
-                display: flex;
-                gap: size(8);
                 width: 100%;
 
                 h4 {
+                    display: inline;
                     flex: 1;
                 }
 
-                span {
-                    color: var(--mc-warning-500);
+                span.required {
+                    padding-left: 1ch;
 
-                    &.required {
-                        color: var(--mc-danger-500);
+                    &.non-eliminatory {
+                        color: var(--mc-warning-700);
                     }
                 }
             }
@@ -111,12 +109,17 @@
 
     &__observation {
         padding: size(10);
+
+        h3 {
+            margin-bottom: size(16);
+        }
     }
 
     .qualification-result {
         display: block;
-        font-size: size(20);
-        padding: size(8) 0;
+        font-family: $font-headings;
+        font-size: size(28);
+        padding: size(32) 0;
     }
 
     .qualification-incomplete {

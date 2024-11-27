@@ -32,11 +32,11 @@ $this->import('
                     <div class="qualification-evaluation-form__criterion-title">
                         <div class="qualification-evaluation-form__criterion-title-fields">
                             <h4>{{ crit.name }}</h4>
-                            <span v-if="crit.nonEliminatory === 'false'" title="<?php i::_e('Critério eliminatório') ?>" class="required">
-                                <mc-icon name="required"></mc-icon>
+                            <span class="required" v-if="crit.nonEliminatory === 'false'">
+                                *&nbsp;<?php i::_e('Critério eliminatório') ?>
                             </span>
-                            <span v-else title="<?php i::_e('Critério não eliminatório') ?>">
-                                <mc-icon name="required"></mc-icon>
+                            <span class="required non-eliminatory" v-else>
+                                *&nbsp;<?php i::_e('Critério não eliminatório') ?>
                             </span>
                         </div>
                         <mc-popover openside="down-right" v-if="crit.description">
@@ -104,10 +104,10 @@ $this->import('
         </div>
     </div>
     <div class="qualification-evaluation-form__observation field">
+        <h3><?php i::_e('Resultado da avaliação') ?> </h3>
         <label><?php i::_e('Observações/parecer final') ?></label>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
         <label class="qualification-result">
-            <strong><?php i::_e('Resultado da avaliação:') ?> </strong>
             <span :class="consolidatedResult == text('Habilitado') ? 'qualification-enabled' : 'qualification-disabled'">
                 {{ consolidatedResult }}
             </span>
