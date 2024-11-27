@@ -163,33 +163,41 @@ app.component('qualification-evaluation-form', {
             }
             return result ? this.text('Habilitado') : this.text('Inabilitado');
         },
+        sectionClass(sectionId) {
+            const status = this.sectionStatus(sectionId);
+            if (status === this.text('Não atende')) {
+                return 'qualification-disabled';
+            } else if (status === this.text('Avaliação incompleta')) {
+                return 'qualification-incomplete';
+            } else {
+                return 'qualification-enabled';
+            }
+        },
         sectionStatus(sectionId){
             const section = this.sections.find(sec => sec.id === sectionId);
 
             if (!section) return;
 
             let nonEliminatoryCount = 0;
-            let eliminatoryCrit = false;
 
-            section.criteria.forEach(crit => {
+            for (const crit of section.criteria) {
                 const critValue = this.formData.data[crit.id];
-                if (!Array.isArray(critValue)) return;
+                if (!Array.isArray(critValue)) continue;
 
                 if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
-                    eliminatoryCrit = true;
+                    return this.text('Não atende');
+                } else if (critValue.length === 0) {
+                    return this.text('Avaliação incompleta');
                 } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
                     nonEliminatoryCount++;
                 }
-            });
-
-            let newStatus;
-            if (eliminatoryCrit || nonEliminatoryCount > section.numberMaxNonEliminatory) {
-                newStatus = this.text('Não atende');
-            } else {
-                newStatus = this.text('Atende');
             }
 
-            return newStatus;
+            if (nonEliminatoryCount > section.numberMaxNonEliminatory) {
+                return this.text('Não atende');
+            } else {
+                return this.text('Atende');
+            }
         },
         updateSectionStatusByFromData() {
             const updatedSectionStatus = {};

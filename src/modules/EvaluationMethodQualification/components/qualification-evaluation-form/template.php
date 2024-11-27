@@ -25,7 +25,7 @@ $this->import('
         <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
             <h3>{{ section.name }}</h3>
             <div v-if="section?.maxNonEliminatory" class="qualification-evaluation-form__section-non-eliminatory field">
-                <label><?php i::_e('Número máximo de critérios não eliminatórios: ') ?>{{ section.numberMaxNonEliminatory }}</label>
+                <label><?php i::_e('Número máximo de critérios não eliminatórios que o proponente pode não atender nesta seção: ') ?>{{ section.numberMaxNonEliminatory }}</label>
             </div>
             <template v-for="crit in section.criteria" :key="crit.id">
                 <div v-if="showSectionAndCriterion(crit)" class="qualification-evaluation-form__criterion field">
@@ -39,10 +39,10 @@ $this->import('
                                 <a @click="popover.toggle()"> <mc-icon name="help"></mc-icon> </a>
                             </template>
                             <template #default="{popover, close}">
-                                <form @submit="$event.preventDefault()" class="entity-gallery__addNew--newGroup">
+                                <form @submit="$event.preventDefault()" class="qualification-evaluation-form__popup">
                                     <div class="grid-12">
                                         <div class="col-12">
-                                            <a @click="close()"> <mc-icon name="close"></mc-icon> </a>
+                                            <a class="qualification-evaluation-form__close-popup" @click="close()"> <mc-icon name="close"></mc-icon> </a>
                                             <div class="field">
                                                 <p>{{ crit.description }}</p>
                                             </div>
@@ -91,7 +91,7 @@ $this->import('
                 <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite as observações/parecer') ?>"></textarea>
                 <label>
                     <?php i::_e('Resultado da seção:') ?> 
-                    <span :class="sectionStatus(section.id) == text('Atende') ? 'qualification-enabled' : 'qualification-disabled'">
+                    <span :class="sectionClass(section.id)">
                         {{ sectionStatus(section.id) }}
                     </span>
                 </label>
@@ -102,6 +102,7 @@ $this->import('
         <label><?php i::_e('Observações/parecer final') ?></label>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
         <label class="qualification-result">
+            <strong><?php i::_e('Resultado da avaliação:') ?> </strong>
             <span :class="consolidatedResult == text('Habilitado') ? 'qualification-enabled' : 'qualification-disabled'">
                 {{ consolidatedResult }}
             </span>
