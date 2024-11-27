@@ -32,7 +32,12 @@ $this->import('
                     <div class="qualification-evaluation-form__criterion-title">
                         <div class="qualification-evaluation-form__criterion-title-fields">
                             <h4>{{ crit.name }}</h4>
-                            <span v-if="crit.nonEliminatory === 'false'"><?php i::_e('*') ?></span>
+                            <span v-if="crit.nonEliminatory === 'false'" title="<?php i::_e('Critério eliminatório') ?>" class="required">
+                                <mc-icon name="required"></mc-icon>
+                            </span>
+                            <span v-else title="<?php i::_e('Critério não eliminatório') ?>">
+                                <mc-icon name="required"></mc-icon>
+                            </span>
                         </div>
                         <mc-popover openside="down-right" v-if="crit.description">
                             <template #button="popover">

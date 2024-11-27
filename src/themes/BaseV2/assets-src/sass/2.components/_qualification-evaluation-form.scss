@@ -40,11 +40,21 @@
             gap: size(8);
 
             &-fields {
+                align-items: center;
                 display: flex;
                 gap: size(8);
-                
+                width: 100%;
+
+                h4 {
+                    flex: 1;
+                }
+
                 span {
                     color: var(--mc-warning-500);
+
+                    &.required {
+                        color: var(--mc-danger-500);
+                    }
                 }
             }
         }
