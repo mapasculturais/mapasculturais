@@ -96,6 +96,10 @@ foreach ($agent_fields as $field) {
         </label>
     </div>
 
+    <div ng-if="field.config.entityField == 'longDescription' || field.config.entityField == 'shortDescription'">
+        <input type="text" ng-model="field.maxSize" placeholder="<?php \MapasCulturais\i::esc_attr_e("Quantidade máxima de caracteres");?>"/>
+    </div>
+
     <div ng-if="field.config.entityField == '@links'">
         <label><input type="checkbox" ng-model="field.config.title" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Pedir de título') ?></label><br>
     </div>
