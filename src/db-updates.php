@@ -1049,8 +1049,14 @@ return [
         __exec("COMMENT ON FUNCTION pg_catalog.text(point) IS 'convert point to text';");
     },
 
+    'cria coluna is_tiebreaker na tabela registration_evaluation' => function () {
+        if(!__column_exists('registration_evaluation', 'is_tiebreaker')) {
+            __exec("ALTER TABLE registration_evaluation ADD is_tiebreaker BOOLEAN DEFAULT FALSE");
+        }
+    },
 
-    /// MIGRATIONS =========================================
+
+    /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
