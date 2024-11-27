@@ -68,7 +68,7 @@ app.component('entity-file', {
         return {
             formData: {},
             newFile: {},
-            file: this.entity.files?.[this.groupName] || this.defaultFile || null,
+            file: this.entity.files?.[this.groupName] || null,
             maxFileSize: $MAPAS.maxUploadSizeFormatted,
             loading: false
         }
