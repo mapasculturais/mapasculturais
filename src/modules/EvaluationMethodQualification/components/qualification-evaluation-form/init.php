@@ -48,6 +48,7 @@ foreach ($sections as $section) {
         'ranges' => $section->ranges ?? [],
         'maxNonEliminatory' => $section->maxNonEliminatory ?? false,
         'numberMaxNonEliminatory' => $section->numberMaxNonEliminatory ?? 0,
+        'requiredSectionObservation' => $section->requiredSectionObservation ?? false,
     ];
     
     foreach ($criteria as $crit) {

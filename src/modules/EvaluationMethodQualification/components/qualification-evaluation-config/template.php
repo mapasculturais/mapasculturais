@@ -65,6 +65,12 @@ $this->import('
                         titleModal="<?= i::__('Configuração de filtros da seção') ?>"
                         is-section
                         ></opportunity-registration-filter-configuration>
+
+                        <mc-toggle
+                            :modelValue="section.requiredSectionObservation" 
+                            @update:modelValue="enableRequiredSectionObservation($event, section)"
+                            label="<?= i::__('Parecer da seção obrigatório') ?>"
+                        />
                 </div>
             </div>
 
