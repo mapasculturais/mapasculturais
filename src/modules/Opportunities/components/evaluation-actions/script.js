@@ -116,6 +116,12 @@ app.component('evaluation-actions', {
             });
         },
 
+        finishEvaluation() {
+            this.dispatchErrors();
+            this.saveEvaluation(true);
+            this.updateSummaryEvaluations('completed');
+        },
+
         finishEvaluationSend() {
             this.dispatchErrors();
             this.sendEvaluation();
