@@ -23,6 +23,10 @@
             padding: size(10);
         }
     }
+
+    &__popup {
+        max-width: size(500);
+    }
     
     &__criterion {
         display: flex;
@@ -100,8 +104,13 @@
     }
 
     .qualification-result {
-        font-size: size(30);
+        display: block;
+        font-size: size(20);
         padding: size(8) 0;
+    }
+
+    .qualification-incomplete {
+        color: var(--mc-gray-500);
     }
 
     .qualification-enabled {
