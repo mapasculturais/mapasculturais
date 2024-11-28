@@ -109,17 +109,13 @@
 
     &__observation {
         padding: size(10);
-
-        h3 {
-            margin-bottom: size(16);
-        }
     }
 
     .qualification-result {
         display: block;
         font-family: $font-headings;
         font-size: size(28);
-        padding: size(32) 0;
+        padding: size(16) 0;
     }
 
     .qualification-incomplete {
