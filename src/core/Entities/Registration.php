@@ -1085,6 +1085,41 @@ class Registration extends \MapasCulturais\Entity
     }
 
     /**
+     * Verifica se uma etapa deve ser exibida com base nas categorias, 
+     * faixas e tipos de proponente definidos na configuração do etapa.
+     *
+     * @param RegistrationStep $step A etapa a ser verificada.
+     * @return bool Verdadeiro se a etapa deve ser exibida, falso caso contrário.
+     */
+    function isStepVisible(RegistrationStep $step): bool {
+        $conditional = $step->metadata['conditional'] ?? null;
+
+        if (!$conditional) {
+            return true;
+        }
+
+        if (!empty($conditional['categories'])) {
+            if (!empty($this->category) && !in_array($this->category, $conditional['categories'])) {
+                return false;
+            }
+        }
+
+        if (!empty($conditional['proponentTypes'])) {
+            if (!empty($this->proponentType) && !in_array($this->proponentType, $conditional['proponentTypes'])) {
+                return false;
+            }
+        }
+        
+        if (!empty($conditional['ranges'])) {
+            if (!empty($this->range) && !in_array($this->range, $conditional['ranges'])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Verifica se um campo deve ser exibido com base nas categorias, 
      * faixas e tipos de proponente definidos na configuração do campo.
      *
@@ -1112,6 +1147,10 @@ class Registration extends \MapasCulturais\Entity
         }
 
         if ($use_proponent_types && count($field_proponent_types) > 0 && !in_array($this->proponentType, $field_proponent_types)) {
+            return false;
+        }
+
+        if (!$this->isStepVisible($field->step)) {
             return false;
         }
 
