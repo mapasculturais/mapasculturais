@@ -58,6 +58,10 @@ app.component('entity-file', {
             type: Boolean,
             default: false,
         },
+        defaultFile: {
+            type: Object,
+            required: false
+        }
     },
 
     data() {

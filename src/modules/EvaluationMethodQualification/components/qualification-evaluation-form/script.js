@@ -49,32 +49,15 @@ app.component('qualification-evaluation-form', {
         window.addEventListener('processErrors', this.validateErrors);
 
         this.updateSectionStatusByFromData();
+
+        this.$nextTick(() => {
+            this.applyLongContentAttribute();
+        });
     },
 
     updated() {
         this.$nextTick(() => {
-            const labels = this.$refs.formRoot?.querySelectorAll('.qualification-evaluation-form__criterion-options-reasons-label');
-            
-            if (!labels || labels.length === 0) return;
-    
-            labels.forEach(label => {
-                const input = label.querySelector('input');
-                if (input) {
-                    if (input.value.length > 20) {
-                        label.setAttribute('data-long-content', 'true');
-                    } else {
-                        label.removeAttribute('data-long-content');
-                    }
-    
-                    input.addEventListener('input', () => {
-                        if (input.value.length > 20) {
-                            label.setAttribute('data-long-content', 'true');
-                        } else {
-                            label.removeAttribute('data-long-content');
-                        }
-                    });
-                }
-            });
+            this.applyLongContentAttribute();
         });
     },
 
@@ -180,33 +163,41 @@ app.component('qualification-evaluation-form', {
             }
             return result ? this.text('Habilitado') : this.text('Inabilitado');
         },
+        sectionClass(sectionId) {
+            const status = this.sectionStatus(sectionId);
+            if (status === this.text('Não atende')) {
+                return 'qualification-disabled';
+            } else if (status === this.text('Avaliação incompleta')) {
+                return 'qualification-incomplete';
+            } else {
+                return 'qualification-enabled';
+            }
+        },
         sectionStatus(sectionId){
             const section = this.sections.find(sec => sec.id === sectionId);
 
             if (!section) return;
 
             let nonEliminatoryCount = 0;
-            let eliminatoryCrit = false;
 
-            section.criteria.forEach(crit => {
+            for (const crit of section.criteria) {
                 const critValue = this.formData.data[crit.id];
-                if (!Array.isArray(critValue)) return;
+                if (!Array.isArray(critValue)) continue;
 
                 if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
-                    eliminatoryCrit = true;
+                    return this.text('Não atende');
+                } else if (critValue.length === 0) {
+                    return this.text('Avaliação incompleta');
                 } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
                     nonEliminatoryCount++;
                 }
-            });
-
-            let newStatus;
-            if (eliminatoryCrit || nonEliminatoryCount > section.numberMaxNonEliminatory) {
-                newStatus = this.text('Não atende');
-            } else {
-                newStatus = this.text('Atende');
             }
 
-            return newStatus;
+            if (nonEliminatoryCount > section.numberMaxNonEliminatory) {
+                return this.text('Não atende');
+            } else {
+                return this.text('Atende');
+            }
         },
         updateSectionStatusByFromData() {
             const updatedSectionStatus = {};
@@ -246,8 +237,9 @@ app.component('qualification-evaluation-form', {
                     }
                 }
                 
+
                 let parecerValue = this.formData.data[section.id];
-                if (!parecerValue || parecerValue === "") {
+                if (section?.requiredSectionObservation && (!parecerValue || parecerValue === "")) {
                     this.messages.error(this.text('O campo Parecer é obrigatório.'));
                     isValid = true;
                 }
@@ -295,6 +287,33 @@ app.component('qualification-evaluation-form', {
             });
 
             this.formData.data['obs'] = this.evaluationData['obs'] ?? '';
+        },
+
+        applyLongContentAttribute() {
+            const labels = this.$refs.formRoot?.querySelectorAll('.qualification-evaluation-form__criterion-options-reasons-label');
+            
+            if (!labels || labels.length === 0) return;
+    
+            labels.forEach(label => {
+                const input = label.querySelector('input');
+                if (input) {
+                    if (input.value.length > 20) {
+                        label.setAttribute('data-long-content', 'true');
+                    } else {
+                        label.removeAttribute('data-long-content');
+                    }
+    
+                    if (!input.disabled) {
+                        input.addEventListener('input', () => {
+                            if (input.value.length > 20) {
+                                label.setAttribute('data-long-content', 'true');
+                            } else {
+                                label.removeAttribute('data-long-content');
+                            }
+                        });
+                    }
+                }
+            });
         },
     },
 });

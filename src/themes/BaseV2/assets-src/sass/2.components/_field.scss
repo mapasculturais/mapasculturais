@@ -211,6 +211,7 @@
 
     input[type="checkbox"],
     input[type="radio"] {
+        flex: none;
         float: left;
         height: size(18);
         margin: 0;

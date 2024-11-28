@@ -1049,8 +1049,14 @@ return [
         __exec("COMMENT ON FUNCTION pg_catalog.text(point) IS 'convert point to text';");
     },
 
+    'cria coluna is_tiebreaker na tabela registration_evaluation' => function () {
+        if(!__column_exists('registration_evaluation', 'is_tiebreaker')) {
+            __exec("ALTER TABLE registration_evaluation ADD is_tiebreaker BOOLEAN DEFAULT FALSE");
+        }
+    },
 
-    /// MIGRATIONS =========================================
+
+    /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
@@ -2385,6 +2391,10 @@ $$
 
     'Atualiza coluna parent_id do agente com id do agente principal' => function(){
         __exec("UPDATE agent SET parent_id = (SELECT profile_id FROM usr WHERE id = agent.user_id AND profile_id <> agent.id)");
+    },
+
+    'Cria indice unique para a avaliação vs avaliador' => function(){
+        __exec("CREATE UNIQUE INDEX unique_evaluation_user_id ON registration_evaluation (ragistration_id, user_id)");
     },
 
 ] + $updates ;   
