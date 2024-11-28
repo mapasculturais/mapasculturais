@@ -10,7 +10,7 @@ $this->import('
     mc-popover
 ')
 ?>
-<mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+<mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal" teleport="body">
     <template #default>
         <evaluation-qualification-detail :registration="entity"></evaluation-qualification-detail>
     </template>
