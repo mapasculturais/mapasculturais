@@ -109,6 +109,7 @@ $iconset = [
     'projects' => 'ri:file-list-2-line',
     'process' => 'fluent-mdl2:processing-pause',
     'question' => 'fe:question',
+    'required' => 'fontisto:asterisk',
     'role'  => 'ri:profile-line',
     'seal' => 'mdi:seal-variant',
     'select' => 'octicon:single-select-24',

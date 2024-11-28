@@ -167,6 +167,31 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $this->_valueToString($value);
     }
 
+    /** 
+     * Retorna a avaliação de desempate de uma inscrição
+     * 
+     * @param Entities\Registration $registration
+     * @return Entities\RegistrationEvaluation|null
+     */
+    function getTiebreakerEvaluation(Entities\Registration $registration) {
+        $app = App::i();
+
+        $tiebreaker_evaluations = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration, 'isTiebreaker' => true]);
+
+        if(empty($tiebreaker_evaluations)){
+            return null;
+        }
+
+        return $tiebreaker_evaluations;
+    }
+
+
+    /**
+     * Retorna o resultado consolidado de uma inscrição
+     * 
+     * @param Entities\Registration $registration
+     * @return mixed
+     */
     function getConsolidatedResult(Entities\Registration $registration){
         $app = App::i();
         
@@ -180,14 +205,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $committees = $registration->getCommittees();
 
         if($registration->needsTiebreaker()){
-            
-            $tiebreaker_committee_user_ids = array_map(fn($user) => $user->id, $committees['@tiebreaker']);
+            $tiebreaker_evaluation = $this->getTiebreakerEvaluation($registration);
 
-            $tiebreaker_evaluations = array_filter($evaluations, fn($e) => in_array($e->user->id, $tiebreaker_committee_user_ids));
             if (empty($tiebreaker_evaluations)) {
                 return '@tiebreaker';
             } else {
-                return $this->_getConsolidatedResult($registration, $tiebreaker_evaluations);
+                return $this->_getConsolidatedResult($registration, [$tiebreaker_evaluation]);
             }
         } else {
             $number_of_valuers = 0;
@@ -203,6 +226,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
     }
 
+    /**
+     * Retorna os detalhes de uma avaliação
+     * 
+     * @param Entities\RegistrationEvaluation $evaluation
+     * @return array
+     */
     function getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $app = App::i();
         $result = $this->_getEvaluationDetails($evaluation);
@@ -210,6 +239,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $result;
     }
 
+    /**
+     * Retorna os detalhes consolidados de uma inscrição
+     * 
+     * @param Entities\Registration $registration
+     * @return array
+     */
     function getConsolidatedDetails(Entities\Registration $registration): array {
         $app = App::i();
         $result = $this->_getConsolidatedDetails($registration);
@@ -238,6 +273,39 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $committee;
     }
 
+    /**
+     * Verifica se a fase de avaliação usa um comitê de desempate
+     * 
+     * @param Entities\EvaluationMethodConfiguration|null $evaluation_method_configuration
+     * @return bool
+     */ 
+    function evaluationPhaseUsesTiebreaker(Entities\EvaluationMethodConfiguration|null $evaluation_method_configuration) {
+        $app = App::i();
+
+        if(is_null($evaluation_method_configuration)) {
+            return false;
+        }
+
+        /** @var Connection */
+        $conn = $app->em->getConnection();
+
+        $object_type = Entities\EvaluationMethodConfiguration::class;
+
+        $uses = $conn->fetchScalar("
+            SELECT count(*) 
+            FROM agent_relation 
+            WHERE 
+                type = '@tiebreaker' AND 
+                object_type = :object_type AND
+                object_id = :id", 
+                [
+                    'object_type' => $object_type,
+                    'id' => $evaluation_method_configuration->id
+                ]);
+        
+        return (bool) $uses;
+    }
+
     /** 
      * Verifica se a inscrição precisa de um desempate
      * 
@@ -247,13 +315,16 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     function registrationNeedsTiebreaker(Registration $registration): bool {
         $app = App::i();
 
+        if(!$this->evaluationPhaseUsesTiebreaker($registration->evaluationMethodConfiguration)) {
+            return false;
+        }
+
         $registration_committee = $registration->getCommittees(true);
         
         $valuer_users = [];
         foreach($registration_committee as $users) {
             $valuer_users = array_merge($valuer_users, $users);
         }
-
 
         // não há avaliadores para a inscrição
         if(count($valuer_users) === 0) {

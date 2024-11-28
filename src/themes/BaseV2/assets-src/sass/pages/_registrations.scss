@@ -375,8 +375,12 @@
                         }
 
                         @media (max-width: size(500)) {
-                            .step .label {
-                                display: none;
+                            .step {
+                                min-width: unset;
+
+                                .label {
+                                    display: none;
+                                }
                             }
                         }
                     }

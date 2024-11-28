@@ -31,5 +31,7 @@ return [
      * 
      * Ex: 'app.geoDivisionsFilters' => [25, 26], 
      */
-    'app.geoDivisionsFilters' => json_decode(env('GEODIVISIONS_FILTERS', '[]')), 
+    'app.geoDivisionsFilters' => json_decode(env('GEODIVISIONS_FILTERS', '[]')),
+    
+    'app.geoDivisionsShowAgentRI' => false, 
 ];

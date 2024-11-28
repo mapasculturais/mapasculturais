@@ -23,6 +23,10 @@
             padding: size(10);
         }
     }
+
+    &__popup {
+        max-width: size(500);
+    }
     
     &__criterion {
         display: flex;
@@ -36,11 +40,19 @@
             gap: size(8);
 
             &-fields {
-                display: flex;
-                gap: size(8);
-                
-                span {
-                    color: var(--mc-warning-500);
+                width: 100%;
+
+                h4 {
+                    display: inline;
+                    flex: 1;
+                }
+
+                span.required {
+                    padding-left: 1ch;
+
+                    &.non-eliminatory {
+                        color: var(--mc-warning-700);
+                    }
                 }
             }
         }
@@ -100,8 +112,14 @@
     }
 
     .qualification-result {
-        font-size: size(30);
-        padding: size(8) 0;
+        display: block;
+        font-family: $font-headings;
+        font-size: size(28);
+        padding: size(16) 0;
+    }
+
+    .qualification-incomplete {
+        color: var(--mc-gray-500);
     }
 
     .qualification-enabled {
