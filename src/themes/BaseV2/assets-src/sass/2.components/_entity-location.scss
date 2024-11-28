@@ -34,4 +34,15 @@
     .mc-map {
         max-height: size(230);
     }
+
+    &__integration-region {
+        .box {
+            width: 100%;
+            min-height: size(49);
+            background: var(--mc-gray-100);
+            border-radius: size(4);
+            padding: size(16);
+            word-break: break-word;
+        }
+    }
 }

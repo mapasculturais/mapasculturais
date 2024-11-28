@@ -83,10 +83,13 @@ $this->import('
     </div>
     
     <?php if($app->config['app.geoDivisionsShowAgentRI']): ?>
-    <div v-if="editable" class="grid-12">
-        <div class="agent-data__fields--field col-12">
-            <label class="title">RI</label>
-            <div class="box"><label class="box__content">{{entity.geoRI}}</label>
+    <div v-if="editable" class="col-12">
+        <div class="entity-location__integration-region grid-12">
+            <div class="field col-6">
+                <label class="title"><?php i::_e('Região de Integração') ?></label>
+                <div class="box">
+                    <label class="box__content">{{entity.geoRI}}</label>
+                </div>
             </div>
         </div>
     </div>
