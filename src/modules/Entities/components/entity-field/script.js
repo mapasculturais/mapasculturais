@@ -293,7 +293,7 @@ app.component('entity-field', {
                 }
 
                 if (this.autosave && (now || JSON.stringify(this.entity[this.prop]) != JSON.stringify(oldValue))) {
-                    this.entity.save(now ? 0 : this.autosave).then(() => {
+                    this.entity.save(this.autosave).then(() => {
                         this.$emit('save', this.entity);
                     });
                 }
