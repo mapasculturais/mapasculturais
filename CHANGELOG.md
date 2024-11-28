@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.12] - unreleased
+### Correções
+- Corrige erro que quebrava a edição e visualização da oportunidade pela falta de vagas configuradas em uma faixa
+
 ## [7.5.11] - 2024-11-21
 ### Correções
 - Implementa db_update para atualizar a coluna parent_id do agente com id do agente principal
