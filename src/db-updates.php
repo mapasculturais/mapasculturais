@@ -2370,4 +2370,8 @@ $$
         __exec("UPDATE agent SET parent_id = (SELECT profile_id FROM usr WHERE id = agent.user_id AND profile_id <> agent.id)");
     },
 
+    'Cria indice unique para a avaliação vs avaliador' => function(){
+        __exec("CREATE UNIQUE INDEX unique_evaluation_user_id ON registration_evaluation (ragistration_id, user_id)");
+    },
+
 ] + $updates ;   
