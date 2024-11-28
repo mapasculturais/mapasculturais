@@ -9,8 +9,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro que quebrava a edição e visualização da oportunidade pela falta de vagas configuradas em uma faixa
 
-### Melhorias não funcionais
-- Implementa db-update para criação de índice na tabela de avaliações, garantindo a prevenção de avaliações duplicadas para o mesmo avaliador
+### Melhorias
+- Cria configuração que possibilita a exibição da região de integração na edição do agente
 
 ## [7.5.11] - 2024-11-21
 ### Correções
