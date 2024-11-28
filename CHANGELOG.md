@@ -5,12 +5,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.5.12] - unreleased
+## [7.5.12] - 2024-11-28
 ### Correções
 - Corrige erro que quebrava a edição e visualização da oportunidade pela falta de vagas configuradas em uma faixa
 
 ### Melhorias
 - Cria configuração que possibilita a exibição da região de integração na edição do agente
+
+### Melhorias não funcionais
+- Implementa db-update para criação de índice na tabela de avaliações, garantindo a prevenção de avaliações duplicadas para o mesmo avaliador
 
 ## [7.5.11] - 2024-11-21
 ### Correções
