@@ -26,6 +26,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - **array** - serializa / deserializa um json fazendo um cast para (array)
   - **entity** - possibilita a vinculação de entidade em metadados
   
+## [7.5.12] - 2024-11-28
+### Correções
+- Corrige erro que quebrava a edição e visualização da oportunidade pela falta de vagas configuradas em uma faixa
+
+### Melhorias
+- Cria configuração que possibilita a exibição da região de integração na edição do agente
+
+### Melhorias não funcionais
+- Implementa db-update para criação de índice na tabela de avaliações, garantindo a prevenção de avaliações duplicadas para o mesmo avaliador
+
 ## [7.5.11] - 2024-11-21
 ### Correções
 - Implementa db_update para atualizar a coluna parent_id do agente com id do agente principal
