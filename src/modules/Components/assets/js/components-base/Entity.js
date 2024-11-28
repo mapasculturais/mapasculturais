@@ -231,6 +231,10 @@ class Entity {
 
         if(onlyModifiedFields) {
             for(let key in result) {
+                if(!result[key] && !this.__originalValues[key]) {
+                    delete result[key];
+                }
+
                 if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
                     delete result[key];
                 }
