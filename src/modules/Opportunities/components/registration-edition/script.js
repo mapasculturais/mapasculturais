@@ -22,7 +22,31 @@ app.component('registration-edition', {
     computed: {
         steps () {
             const steps = this.entity.opportunity.registrationSteps ?? [];
-            return steps.sort((a, b) => a.displayOrder - b.displayOrder);
+            const { category, proponentType, range } = this.entity;
+
+            const filteredSteps = steps.filter((step) => {
+                const conditional = step.metadata?.conditional;
+                if (conditional) {
+                    if (conditional.categories) {
+                        if (category && !conditional.categories.includes(category)) {
+                            return false;
+                        }
+                    }
+                    if (conditional.proponentTypes) {
+                        if (proponentType && !conditional.proponentTypes.includes(proponentType)) {
+                            return false;
+                        }
+                    }
+                    if (conditional.ranges) {
+                        if (range && !conditional.ranges.includes(range)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            });
+
+            return filteredSteps.sort((a, b) => a.displayOrder - b.displayOrder);
         },
 
         step () {
