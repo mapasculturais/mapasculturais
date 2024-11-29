@@ -36,7 +36,7 @@ $this->import('
                         </div>
                     </div>
                     <div class="card__left--img">
-                        <img :src="subsite?.files?.opportunityBanner ? subsite?.files?.opportunityBanner?.url : '<?php $this->asset($app->config['module.home']['home-opportunities']) ?>'" />
+                        <img src="<?php $this->asset($app->config['module.home']['home-opportunities']) ?>" />
                     </div>
                 </div>
                 <div class="card__right">
