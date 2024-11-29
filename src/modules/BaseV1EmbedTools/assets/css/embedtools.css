@@ -1322,14 +1322,13 @@ textarea {
 
 /* Registration Evaluation Form View */
 .action-registrationevaluationtionformview .registration-step .registration-step__title {
-    color: #606060;
+    background-color: #606060;
+    border-radius: 4px;
+    color: white;
     font-size: 1.25rem;
     font-weight: 700;
+    margin-block: 16px;
     padding: 16px;
-}
-
-.action-registrationevaluationtionformview .registration-step:not(:first-of-type) .registration-step__title {
-    padding-top: 32px;
 }
 
 .action-registrationevaluationtionformview #registration-attachments {
