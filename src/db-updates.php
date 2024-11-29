@@ -2393,8 +2393,20 @@ $$
         __exec("UPDATE agent SET parent_id = (SELECT profile_id FROM usr WHERE id = agent.user_id AND profile_id <> agent.id)");
     },
 
-    'Cria indice unique para a avaliação vs avaliador' => function(){
-        __exec("CREATE UNIQUE INDEX unique_evaluation_user_id ON registration_evaluation (ragistration_id, user_id)");
+    'Apaga entradas duplicadas na tabela de avaliação e cria indice unique para a avaliação vs avaliador' => function(){
+
+        __exec("DELETE 
+                FROM 
+                    registration_evaluation T1
+                USING 
+                    registration_evaluation T2 
+                WHERE 
+                    T1.id < T2.id AND
+                    T1.registration_id = T2.registration_id AND
+                    T1.user_id = T2.user_id
+        ");
+
+        __exec("CREATE UNIQUE INDEX unique_evaluation_user_id ON registration_evaluation (registration_id, user_id)");
     },
 
 ] + $updates ;   
