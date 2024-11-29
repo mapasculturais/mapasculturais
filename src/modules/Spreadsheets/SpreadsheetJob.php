@@ -223,7 +223,9 @@ abstract class SpreadsheetJob extends JobType
     {
         $app = App::i();
 
-        $app->applyHookBoundTo($this, "SpreadsheetJob($this->slug).getHeader:before", [$job]);
+        $job_query = $job->query;
+        $app->applyHookBoundTo($this, "SpreadsheetJob($this->slug).getHeader:before", [$job, &$job_query]);
+        $job->query =  $job_query;
 
         $result = $this->_getHeader($job);
 
@@ -236,7 +238,9 @@ abstract class SpreadsheetJob extends JobType
     {
         $app = App::i();
 
-        $app->applyHookBoundTo($this, "SpreadsheetJob($this->slug).getBatch:before", [$job]);
+        $job_query = $job->query;
+        $app->applyHookBoundTo($this, "SpreadsheetJob($this->slug).getBatch:before", [$job, &$job_query]);
+        $job->query =  $job_query;
         
         $result = $this->_getBatch($job);
         $this->page++;
