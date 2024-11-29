@@ -1835,6 +1835,22 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (value instanceof Array) {
             return value.join(', ');
+        } else if (field.fieldType === 'bankFields') {
+            const configAccounTypes = MapasCulturais.entity.registrationFieldTypes;
+            let accountType = 'Inválido';
+            let bankType = 'Inválido';
+ 
+            // Obtendo o Tipo de Conta
+            if (configAccounTypes['account_types'][value['account_type']]) {
+                accountType = configAccounTypes['account_types'][value['account_type']];
+            }
+
+            // Obtendo o Banco
+            if (configAccounTypes['bank_types'][value['number']]) {
+                bankType = configAccounTypes['bank_types'][value['number']];
+            }
+
+            return `Tipo: ${accountType} | Banco: ${bankType} | Agência: ${value['branch']}-${value['dv_branch']} | Conta: ${value['account_number']}-${value['dv_account_number']}`;
         } else {
             return value;
         }
