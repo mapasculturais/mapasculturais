@@ -194,6 +194,25 @@ foreach($registrations as $i => $r) {
             //montando endereço caso o $_field_val == null
             $address = $street .  $address_number . $additional . $neighborhood . $cep . $city . $state;
             $result = $address;
+        } elseif (isset($_field_val['account_type'])) {
+            // dd($app->config['module.registrationFieldTypes']['account_types'], $field, $_field_val, $result);
+            $configAccountTypes = $app->config['module.registrationFieldTypes'];
+
+            // Obtendo o Tipo de Conta
+            if (in_array($_field_val['account_type'], array_keys($configAccountTypes['account_types']))) {
+                $accountType =  $configAccountTypes['account_types'][$_field_val['account_type']];
+            } else {
+                $accountType = 'Inválido';
+            }
+
+            // Obtendo o Banco
+            if (in_array($_field_val['number'], array_keys($configAccountTypes['bank_types']))) {
+                $bankType =  $configAccountTypes['bank_types'][$_field_val['number']];
+            } else {
+                $bankType = 'Inválido';
+            }
+
+            $result = "Tipo: $accountType | Banco: $bankType | Agência: {$_field_val['branch']}-{$_field_val['dv_branch']} | Conta: {$_field_val['account_number']}-{$_field_val['dv_account_number']}";
         } else {
 
             if (is_array($_field_val) && isset($_field_val[0]) && $_field_val[0] instanceof stdClass) {
