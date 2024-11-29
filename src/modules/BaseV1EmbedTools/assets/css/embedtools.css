@@ -1321,11 +1321,11 @@ textarea {
 
 
 /* Registration Evaluation Form View */
-.action-registrationevaluationtionformview .registration-step__title {
-    color: #666;
+.action-registrationevaluationtionformview .registration-step .registration-step__title {
+    color: #606060;
     font-size: 1.25rem;
     font-weight: 700;
-    padding: 16px 8px;
+    padding: 16px;
 }
 
 .action-registrationevaluationtionformview .registration-step:not(:first-of-type) .registration-step__title {
