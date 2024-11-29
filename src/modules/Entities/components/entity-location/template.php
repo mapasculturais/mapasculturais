@@ -81,16 +81,6 @@ $this->import('
             </div>
         </div>
     </div>
-    
-    <?php if($app->config['app.geoDivisionsShowAgentRI']): ?>
-    <div v-if="editable" class="grid-12">
-        <div class="agent-data__fields--field col-12">
-            <label class="title">RI</label>
-            <div class="box"><label class="box__content">{{entity.geoRI}}</label>
-            </div>
-        </div>
-    </div>
-    <?php endif ?>
 
     <div class="col-12" v-if="editable && hasPublicLocation">
         <div class="col-6 sm:col-12 public-location">
