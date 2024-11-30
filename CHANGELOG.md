@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.26-minc2] - 2024-11-29
+### Melhorias
+- Implementa compatibilidade com CAPTCHA da Cloudflare, mantendo retrocompatibilidade com CAPTCHA do Google
+- Formata os dados bancários na consulta de inscrição e na geração de listagem CSV
+### Correções
+- Corrige exibição do nome do projeto na listagem CSV para valores vazios que suprimia a coluna em questão e desalinhava as demais
+
 ## [7.4.26] - 2024-10-11
 ### Melhorias
 - Permite que o dono da inscrição visualize as suas inscrições em rascunho mesmo que o período naoe steja aberto
