@@ -222,7 +222,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if($this->registration->opportunity->publishedRegistrations && !$this->registration->opportunity->firstPhase->isContinuousFlow){
+        if(!$this->registration->opportunity->firstPhase->isContinuousFlow){
             return false;
         }
 

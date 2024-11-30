@@ -26,12 +26,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - **array** - serializa / deserializa um json fazendo um cast para (array)
   - **entity** - possibilita a vinculação de entidade em metadados
   
-## [7.5.13] - unreleased
+## [7.5.13] - 2024-11-30
 ### Correções
 - Ajusta db-update que trata a duplicidade na tabela de avaliações
 
 ### Melhorias
 - Possibilita reestruturar a query de consulta do SpreadsheetJob via hook
+- Possibilita que seja possivel reabrir as avaliações após a fase publicada
 
 ## [7.5.12] - 2024-11-28
 ### Correções
