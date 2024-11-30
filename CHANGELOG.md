@@ -5,6 +5,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.13] - 2024-11-30
+### Correções
+- Ajusta db-update que trata a duplicidade na tabela de avaliações
+
+### Melhorias
+- Possibilita reestruturar a query de consulta do SpreadsheetJob via hook
+- Possibilita que seja possivel reabrir as avaliações após a fase publicada
+
 ## [7.5.12] - 2024-11-28
 ### Correções
 - Corrige erro que quebrava a edição e visualização da oportunidade pela falta de vagas configuradas em uma faixa
