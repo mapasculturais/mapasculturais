@@ -152,7 +152,7 @@ foreach($registrations as $i => $r) {
 
     $outRow = array_values(array_filter([
         "=HIPERLINK(\"" . $app->createUrl('registration', 'view', [$r->id]) . "\"; \"" . $r->number . "\")",
-        showIfField($entity->projectName, ($r->projectName ?: '""')),
+        showIfField($entity->projectName, ($r->projectName ?: '-')),
         $result_string ?: '""',
         returnStatus($r) ?: '""',
         ((!is_null($dataHoraEnvio)) ? $dataHoraEnvio->format('d-m-Y') : '-'),
