@@ -209,9 +209,6 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if($this->registration->opportunity->publishedRegistrations){
-            return false;
-        }
 
         if($this->registration->opportunity->canUser('@control', $user)){
             return true;
