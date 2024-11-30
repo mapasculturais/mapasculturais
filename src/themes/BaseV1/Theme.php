@@ -2700,6 +2700,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['registrationFileConfigurations'] = (array) $entity->registrationFileConfigurations;
         $this->jsObject['entity']['registrationFieldConfigurations'] = (array) $entity->registrationFieldConfigurations;
         $this->jsObject['entity']['registrationStatuses'] = $registrationStatuses;
+        $this->jsObject['entity']['registrationFieldTypes'] = $app->config['module.registrationFieldTypes'];
 
         usort($this->jsObject['entity']['registrationFileConfigurations'], function($a,$b){
 
