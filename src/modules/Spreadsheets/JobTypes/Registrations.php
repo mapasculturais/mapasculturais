@@ -20,6 +20,8 @@ class Registrations extends SpreadsheetJob
     }
 
     protected function _getHeader(Job $job) : array {
+        $app = App::i();
+        
         $header = [];
 
         $entity_class_name = $job->entityClassName;
@@ -45,6 +47,10 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if(substr($property, -1) == '}'){
+                $property = substr($property, 0, -1);
+            }
+            
             if($property == 'sentTimestamp') {
                 $header['sentDate'] = i::__('Data de envio');
                 $header['sentTime'] = i::__('Hora de envio');
@@ -61,6 +67,18 @@ class Registrations extends SpreadsheetJob
 
             if($property == 'projectName') {
                 $header[$property] = i::__('Nome do projeto');
+                continue;
+            }
+
+            if($property == 'agentsData') {
+
+                if($result = $app->config['app.geoDivisionsHierarchy']){
+                    foreach ($result as $key => $values) {
+                        $field = 'geo'.ucfirst($key);
+                        $header[$field] = $values['name'];
+                    }
+                }
+
                 continue;
             }
 
@@ -198,6 +216,13 @@ class Registrations extends SpreadsheetJob
 
                 if(isset($entity['agentsData']) && is_array($entity['agentsData'])) {
                     $entity['name'] = $entity['agentsData']['owner']['name'];
+                    
+                    if($_result = $app->config['app.geoDivisionsHierarchy']){
+                        foreach ($_result as $key => $values) {
+                            $field = 'geo'.ucfirst($key);
+                            $entity[$field] = $entity['agentsData']['owner'][$field];
+                        }
+                    }
                 }
 
                 unset($entity['agentsData']);
