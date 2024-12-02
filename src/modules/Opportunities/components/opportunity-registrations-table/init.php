@@ -33,6 +33,21 @@ $data['evaluationStatusDict'] = [
 
 $phase = $this->controller->requestedEntity;
 
+$geoDivisionsHierarchy = [];
+if($result = $app->config['app.geoDivisionsHierarchy']){
+    foreach ($result as $key => $values) {
+        $field = 'geo'.ucfirst($key);
+
+        $_data = [
+            'name' => $values['name'],
+            'field' => $field,
+        ];
+
+        $geoDivisionsHierarchy[] = $_data;
+    }
+}
+
+$data['geoDivisionsHierarchy'] = $geoDivisionsHierarchy;
 $data['isAffirmativePoliciesActive'] = $phase->isAffirmativePoliciesActive();
 $data['hadTechnicalEvaluationPhase'] = $phase->hadTechnicalEvaluationPhase();
 if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type == 'technical') {
