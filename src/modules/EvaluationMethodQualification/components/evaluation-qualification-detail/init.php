@@ -24,7 +24,7 @@ if($class == Registration::class) {
     foreach($related_agents as $group => $agents) {
         if($group == '@tiebreaker') {
             foreach($agents as $agent) {
-                if($agent->id == $app->user->profile->id) {
+                if($agent->id == $app->user->profile->id && $agent->status == 1) {
                     $is_minerva_group = true;
                 }
             }
