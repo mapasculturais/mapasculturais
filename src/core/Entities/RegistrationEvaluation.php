@@ -222,10 +222,6 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if(!$this->registration->opportunity->firstPhase->isContinuousFlow){
-            return false;
-        }
-
         if($this->registration->opportunity->canUser('@control', $user)){
             return true;
         }
