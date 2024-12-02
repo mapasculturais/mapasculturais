@@ -332,7 +332,7 @@ app.component('entity-field', {
         isReadonly() {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
 
-            if(this.description.readonly) {
+            if(this.description.readonly || this.description.registrationFieldConfiguration.config?.readonly) {
                 if(userPermission || !this.value) {
                     this.readonly = false;
                 } else {

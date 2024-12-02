@@ -11,6 +11,8 @@
 
     .step {
         align-items: center;
+        background-color: transparent;
+        border: none;
         cursor: pointer;
         display: flex;
         flex: 2;
@@ -38,6 +40,10 @@
         &:last-child {
             align-items: end;
             flex: 1;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
         }
 
         .count {
