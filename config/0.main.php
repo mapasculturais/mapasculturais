@@ -19,10 +19,10 @@ return [
     'base.url' => env('BASE_URL', ''),
 
     /* Nome do site. É utilizado para a formação dos títulos das páginas. */
-    'app.siteName' => env('SITE_NAME', i::__('Mapa da Cultura')),
+    'app.siteName' => env('SITE_NAME', i::__('Mapas Culturais')),
 
     /* Breve descrição do site. É utilizado como texto de compartilhamento da página principal do site. */
-    'app.siteDescription' => env('SITE_DESCRIPTION', i::__('O Mapa da Cultura é uma plataforma livre para mapeamento cultural.')),
+    'app.siteDescription' => env('SITE_DESCRIPTION', i::__('O Mapas Culturais é uma plataforma livre para mapeamento cultural.')),
     
     /* Ids dos selos verificadores. Para utilizar múltiplos selos informe os ids separados por vírgula. */
     'app.verifiedSealsIds' => explode(',', env('VERIFIED_SEALS', '1')),
