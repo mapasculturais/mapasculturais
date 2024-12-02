@@ -305,13 +305,29 @@ app.component('opportunity-registrations-table', {
                 });
             }
 
+            if(Object.keys(this.geoDivisionsHierarchy).length > 0){
+                Object.keys(this.geoDivisionsHierarchy).forEach(item => {
+                    let result = this.geoDivisionsHierarchy[item];
+                    itens.push({ text: result.name, value: `agentsData.owner.${result.field}`})
+                })
+            }
 
             return itens;
         },
+
+        geoDivisionsHierarchy(){
+            return $MAPAS.config.opportunityRegistrationTable.geoDivisionsHierarchy;
+        },
+
         select() {
             const fields = this.avaliableFields.map((item) => item.fieldName);
-            
-            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields', ...fields].join(',');
+            let select = 'number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name},editSentTimestamp,editableUntil,editableFields';
+
+            if(Object.keys(this.geoDivisionsHierarchy).length > 0){
+                select += ',agentsData';    
+            }
+
+            return [select, ...fields].join(',');
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
