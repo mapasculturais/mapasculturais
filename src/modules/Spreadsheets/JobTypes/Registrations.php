@@ -95,11 +95,17 @@ class Registrations extends SpreadsheetJob
             }
         } while($opportunity = $opportunity->previousPhase);
 
-        unset($header['id']);
-        unset($header[' id']);
-        unset($header['agentsData']);
-        unset($header['sentTimestamp']);
-        unset($header['createTimestamp']);
+        unset(
+            $header['id'],
+            $header[' id'],
+            $header['agentsData'],
+            $header['sentTimestamp'],
+            $header['createTimestamp'],
+            $header['editSentTimestamp'],
+            $header['editableUntil'],
+            $header['editableFields'],
+            $header['files'],
+        );
 
         return $header;
     }
