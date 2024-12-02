@@ -266,19 +266,23 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links', '@terms:segmento', '@bankFields'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@bankFields'];
+        
+        $taxonomies_fields = $this->taxonomiesOpportunityFields(true);
+
+        $properties = array_merge($agent_fields, $taxonomies_fields);
         
         $definitions = Agent::getPropertiesMetadata();
         foreach ($definitions as $key => $def) {
             $def = (object) $def;
             if ($def->isMetadata && $def->available_for_opportunities) {
-                $agent_fields[] = $key;
+                $properties[] = $key;
             }
         }
         
-        $app->applyHookBoundTo($this, "registrationFieldTypes.getAgentFields", [&$agent_fields]);
+        $app->applyHookBoundTo($this, "registrationFieldTypes.getAgentFields", [&$properties]);
 
-        return $agent_fields;
+        return $properties;
     }
 
     function getSpaceFields()
@@ -746,6 +750,9 @@ class Module extends \MapasCulturais\Module
             $app = App::i();
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
+
+            $taxonomies_fields = $this->taxonomiesOpportunityFields();
+
             if ($entity_field == "@location" && is_array($value)) {
                 if(isset($value['location']) && $value['location'] instanceof GeoPoint) {
                     $value["location"] = [
@@ -770,8 +777,9 @@ class Module extends \MapasCulturais\Module
                 }
                 $entity->publicLocation = !empty($value['publicLocation']);
 
-            } else if($entity_field == '@terms:area') {
-                $entity->terms['area'] = $value;
+            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
+                $entity->terms[$taxonomies_fields[$entity_field]] = $value;
+                $entity->save(true);
             } else if($entity_field == '@links') {
                 $savedMetaList = $entity->getMetaLists();
 
@@ -843,7 +851,8 @@ class Module extends \MapasCulturais\Module
 
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
-            
+
+            $taxonomies_fields = $this->taxonomiesOpportunityFields();
 
             if($entity_field == '@location'){
 
@@ -869,9 +878,9 @@ class Module extends \MapasCulturais\Module
 
                 $value = $result;
 
-            } else if($entity_field == '@terms:area') {
-                $value = $entity->terms['area'];
-
+            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
+                $term = $taxonomies_fields[$entity_field];
+                $value = $entity->terms[$term];
             } else if($entity_field == '@type') {
                 $value = $entity->type->name;
 
@@ -902,5 +911,27 @@ class Module extends \MapasCulturais\Module
 
         return $value;
 
+    }
+    
+    /**
+     * @return array 
+     */
+    function taxonomiesOpportunityFields($slugOnly = false): array
+    {
+        $app = App::i();
+        $taxonomies_fields = [];
+        if($registered_taxonomies = $app->getRegisteredTaxonomies()) {
+            foreach($registered_taxonomies as $taxonomie) {
+                if($taxonomie->restrictedTerms && in_array('MapasCulturais\Entities\Opportunity', $taxonomie->entities)) {
+                    if($slugOnly) {
+                        $taxonomies_fields[] = "@terms:{$taxonomie->slug}";
+                    } else {
+                        $taxonomies_fields["@terms:{$taxonomie->slug}"] = $taxonomie->slug;
+                    }
+                }
+            }
+        }
+
+        return $taxonomies_fields;
     }
 }
