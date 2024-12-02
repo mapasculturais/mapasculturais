@@ -451,6 +451,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
             fieldsOptionalLabel: labels['optionalLabel'],
             categories: MapasCulturais.entity.registrationCategories,
             taxonomies: MapasCulturais.Taxonomies,
+            registered_terms: MapasCulturais.registered_terms,
             registrationRanges : MapasCulturais.entity.object.registrationRanges,
             proponentTypes : MapasCulturais.entity.object.registrationProponentTypes,
         };
