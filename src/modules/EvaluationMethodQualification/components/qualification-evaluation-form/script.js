@@ -193,7 +193,7 @@ app.component('qualification-evaluation-form', {
                 }
             }
 
-            if (nonEliminatoryCount > section.numberMaxNonEliminatory) {
+            if (nonEliminatoryCount > section.numberMaxNonEliminatory && section.numberMaxNonEliminatory > 0) {
                 return this.text('Não atende');
             } else {
                 return this.text('Atende');
