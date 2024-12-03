@@ -200,25 +200,35 @@ app.component('qualification-evaluation-form', {
 
             let nonEliminatoryCount = 0;
 
-            for (const crit of section.criteria) {
+            const allCriteriaFilled = section.criteria.filter(crit => {
                 const critValue = this.formData.data[crit.id];
-                if (!Array.isArray(critValue)) continue;
-                if (!this.showSectionAndCriterion(crit)) continue;
+                return Array.isArray(critValue) && critValue.length > 0;
+            }).length === section.criteria.length;
 
-                if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
-                    return this.text('Não atende');
-                } else if (critValue.length === 0) {
-                    return this.text('Avaliação incompleta');
-                } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
-                    nonEliminatoryCount++;
+            if(allCriteriaFilled) {
+                for (const crit of section.criteria) {
+                    const critValue = this.formData.data[crit.id];
+                    if (!Array.isArray(critValue)) continue;
+                    if (!this.showSectionAndCriterion(crit)) continue;
+    
+                    if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
+                        return this.text('Não atende');
+                    } else if (critValue.length === 0) {
+                        return this.text('Avaliação incompleta');
+                    } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
+                        nonEliminatoryCount++;
+                    }
                 }
-            }
 
-            if (nonEliminatoryCount > section.numberMaxNonEliminatory && section.numberMaxNonEliminatory > 0) {
-                return this.text('Não atende');
+                if (nonEliminatoryCount > section.numberMaxNonEliminatory && section.numberMaxNonEliminatory > 0) {
+                    return this.text('Não atende');
+                } else {
+                    return this.text('Atende');
+                }
             } else {
-                return this.text('Atende');
+                return this.text('Avaliação incompleta');
             }
+            
         },
         updateSectionStatusByFromData() {
             const updatedSectionStatus = {};
