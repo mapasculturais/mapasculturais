@@ -21,7 +21,7 @@ app.component('registration-form', {
     },
 
     data() {
-        const editableFields = this.registration.editableFields;
+        const editableFields = this.registration.editableFields ?? [];
 
         return {
             editableFields,
