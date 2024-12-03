@@ -285,10 +285,6 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         return $this->_canUser($user);
     }
 
-    public function setConfig($key, $value) {
-        $this->config[$key] = $value;
-    }
-
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:before');

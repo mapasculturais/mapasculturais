@@ -172,13 +172,15 @@ class Controller extends \MapasCulturais\Controller
             foreach ($entity->opportunity->agentRelations as $agent_relation) {
                 if ($agent_relation->group === '@support' && $agent_relation->agent->user->equals($app->user)) {
                     $support_fields = $agent_relation->metadata['registrationPermissions'];
+                    $this->jsObject['requestedEntity']['editableFields'] = [];
 
                     foreach ($support_fields as $support_field => $permission) {
-                        if ($permission === 'ro' && !empty($registration_fields[$support_field])) {
-                            $field = $registration_fields[$support_field];
-                            $field['registrationFieldConfiguration']->setConfig('readonly', true);
+                        if ($permission === 'rw') {
+                            $this->jsObject['requestedEntity']['editableFields'][] = $support_field;
                         }
                     }
+
+                    break;
                 }
             }
         });
