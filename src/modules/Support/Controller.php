@@ -167,8 +167,6 @@ class Controller extends \MapasCulturais\Controller
         $entity->opportunity->isSupportUser($app->user);
 
         $app->hook('mapas.printJsObject:before', function() use ($app, $entity) {
-            $registration_fields = $this->jsObject['EntitiesDescription']['registration'];
-
             foreach ($entity->opportunity->agentRelations as $agent_relation) {
                 if ($agent_relation->group === '@support' && $agent_relation->agent->user->equals($app->user)) {
                     $support_fields = $agent_relation->metadata['registrationPermissions'];
