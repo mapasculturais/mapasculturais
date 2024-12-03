@@ -183,6 +183,7 @@ app.component('qualification-evaluation-form', {
             for (const crit of section.criteria) {
                 const critValue = this.formData.data[crit.id];
                 if (!Array.isArray(critValue)) continue;
+                if (!this.showSectionAndCriterion(crit)) continue;
 
                 if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
                     return this.text('Não atende');
