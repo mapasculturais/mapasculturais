@@ -132,14 +132,20 @@ class Module extends \MapasCulturais\EvaluationMethod
             foreach($criteria as &$cri){
                 if(($cri->sid ?? false) == $section->id) {
                     unset($cri->sid);
-                    $result = isset($evaluation->evaluationData->{$cri->id}) ? $evaluation->evaluationData->{$cri->id} : '';
+                    $result = isset($evaluation->evaluationData->{$cri->id}) ? $evaluation->evaluationData->{$cri->id} : [];
                     
                     $cri->result = $result;
+                    if (in_array('others', $result) && isset($evaluation->evaluationData->{$cri->id . '_reason'})) {
+                        $cri->result[] = $evaluation->evaluationData->{$cri->id . '_reason'};
+                        $key = array_search('others', $cri->result);
+                        unset($cri->result[$key]);
+                        $cri->result = array_values($cri->result);
+                    }
                     $section->criteria[] = $cri;
                 }
             }
         }
-        
+
         return [
             'result' => $evaluation->result,
             'scores' => $sections,
