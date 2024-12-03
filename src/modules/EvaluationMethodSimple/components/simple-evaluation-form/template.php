@@ -14,17 +14,18 @@ $this->import('
     evaluation-simple-detail
 ');
 ?>
-<mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
-    <template #default>
-        <evaluation-simple-detail :registration="entity"></evaluation-simple-detail>
-    </template>
-
-    <template #button="modal">
-        <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
-    </template>
-</mc-modal>
 
 <div class="simple-evaluation-form">
+    <h2 v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" class="needs-tiebreaker warning__background"><?= i::_e('Inscrição aguardando desempate') ?></h2>
+    <mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+        <template #default>
+            <evaluation-simple-detail :registration="entity"></evaluation-simple-detail>
+        </template>
+    
+        <template #button="modal">
+            <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Ver pareceres dos demais avaliadores') ?></button>
+        </template>
+    </mc-modal>
     <div class="simple-evaluation-form__form grid-12">
         <div class="simple-evaluation-form__header field col-12">
             <label class="field__label">
