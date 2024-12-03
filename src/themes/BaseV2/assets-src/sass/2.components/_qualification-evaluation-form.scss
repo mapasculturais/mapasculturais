@@ -32,6 +32,9 @@
         display: flex;
         flex-direction: column;
         gap: size(16);
+        border-radius: size(6);
+        padding: size(10);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
 
         &-title {
             display: flex;
