@@ -154,14 +154,30 @@ app.component('qualification-evaluation-form', {
         },
 
         consolidated (){
-            let result = true;
-            for (let section of this.sections) {
-                if(this.sectionStatus(section.id) === this.text('Não atende')){
-                    result = false;
-                    break;  
+            let allSectionsEvaluated = true;
+            let hasNotMeetCriteria = false;
+
+            for (const section of this.sections) {
+                const sectionStatus = this.sectionStatus(section.id);
+
+                if (sectionStatus === this.text('Avaliação incompleta')) {
+                    allSectionsEvaluated = false; 
+                }
+
+                if (sectionStatus === this.text('Não atende')) {
+                    hasNotMeetCriteria = true; 
                 }
             }
-            return result ? this.text('Habilitado') : this.text('Inabilitado');
+
+            if (!allSectionsEvaluated) {
+                return this.text('Avaliação incompleta'); 
+            }
+
+            if (hasNotMeetCriteria) {
+                return this.text('Inabilitado'); 
+            }
+
+            return this.text('Habilitado'); 
         },
         sectionClass(sectionId) {
             const status = this.sectionStatus(sectionId);

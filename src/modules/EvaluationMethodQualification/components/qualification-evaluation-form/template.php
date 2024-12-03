@@ -107,7 +107,11 @@ $this->import('
     <div class="qualification-evaluation-form__observation field">
         <h3><?php i::_e('Resultado da avaliação') ?> </h3>
         <label class="qualification-result">
-            <span :class="consolidatedResult == text('Habilitado') ? 'qualification-enabled' : 'qualification-disabled'">
+            <span :class="{
+                    'qualification-incomplete': consolidatedResult === text('Avaliação incompleta'),
+                    'qualification-enabled': consolidatedResult === text('Habilitado'),
+                    'qualification-disabled': consolidatedResult === text('Inabilitado')
+                }">
                 {{ consolidatedResult }}
             </span>
         </label>
