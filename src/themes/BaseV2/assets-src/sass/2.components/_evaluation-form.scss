@@ -6,4 +6,9 @@
     display: flex;
     flex-direction: column;
     gap: size(24);
+
+    .needs-tiebreaker {
+        font-size: $font-size-md;
+        padding: 5px;
+    }
 }

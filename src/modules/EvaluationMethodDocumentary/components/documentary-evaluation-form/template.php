@@ -13,17 +13,19 @@ $this->import('
     mc-modal
 ');
 ?>
-<mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
-    <template #default>
-        <evaluation-documentary-datail :registration="entity"></evaluation-documentary-datail>
-    </template>
-
-    <template #button="modal">
-        <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
-    </template>
-</mc-modal>
 
 <div class="documentary-evaluation-form grid-12 field">
+    <h2 v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" class="needs-tiebreaker warning__background"><?= i::_e('Inscrição aguardando desempate') ?></h2>
+    <mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+        <template #default>
+            <evaluation-documentary-datail :registration="entity"></evaluation-documentary-datail>
+        </template>
+    
+        
+        <template #button="modal">
+            <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Ver pareceres dos demais avaliadores') ?></button>
+        </template>
+    </mc-modal>
     <label><?= i::__('Avaliador') ?>: {{userName}}</label>
 
     <div v-if="enableForm" id="evaluation-form" class="documentary-evaluation-form__content col-12">

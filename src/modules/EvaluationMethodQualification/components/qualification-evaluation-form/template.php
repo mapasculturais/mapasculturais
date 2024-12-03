@@ -10,17 +10,18 @@ $this->import('
     mc-popover
 ')
 ?>
-<mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal" teleport="body">
-    <template #default>
-        <evaluation-qualification-detail :registration="entity"></evaluation-qualification-detail>
-    </template>
-
-    <template #button="modal">
-        <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
-    </template>
-</mc-modal>
 
 <div class="qualification-evaluation-form" ref="formRoot">
+<h2 v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" class="needs-tiebreaker warning__background"><?= i::_e('Inscrição aguardando desempate') ?></h2>
+    <mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal" teleport="body">
+        <template #default>
+            <evaluation-qualification-detail :registration="entity"></evaluation-qualification-detail>
+        </template>
+    
+        <template #button="modal">
+            <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Ver pareceres dos demais avaliadores') ?></button>
+        </template>
+    </mc-modal>
     <div v-for="section in sections" :key="section.id" class="qualification-evaluation-form__section-wrapper">
         <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
             <h3>{{ section.name }}</h3>
