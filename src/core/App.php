@@ -1098,7 +1098,11 @@ class App {
         $max_post = $convertToKB(ini_get('post_max_size'));
         $memory_limit = $convertToKB(ini_get('memory_limit'));
 
-        $result = min($max_upload, $max_post, $memory_limit);
+        if ($memory_limit == -1) {
+            $result = min($max_upload, $max_post);
+        } else {
+            $result = min($max_upload, $max_post, $memory_limit);
+        }
 
         if(!$useSuffix)
             return $result;
