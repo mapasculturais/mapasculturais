@@ -45,7 +45,7 @@ $this->import('
             <registration-info :registration="registration" classes="col-12"></registration-info>
 
             <div class="col-12">
-                <registration-form :registration="registration" :step="registration.opportunity.registrationSteps[6]"></registration-form>
+                <registration-form :registration="registration" :step="step"></registration-form>
             </div>
         </main>
 

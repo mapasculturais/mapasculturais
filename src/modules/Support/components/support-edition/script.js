@@ -19,9 +19,10 @@ app.component('support-edition', {
             const presentSteps = new Set();
             const disabledIndexes = [];
 
-            for (const field of Object.values($MAPAS.EntitiesDescription.registration)) {
-                if (field?.registrationFieldConfiguration?.step) {
-                    presentSteps.add(field.registrationFieldConfiguration.step?.id);
+            const fields = [...$MAPAS.config.registrationForm.fields, ...$MAPAS.config.registrationForm.files];
+            for (const field of fields) {
+                if (field.step) {
+                    presentSteps.add(field.step.id);
                 }
             }
 
