@@ -261,15 +261,9 @@ app.component('qualification-evaluation-form', {
 
                 let parecerValue = this.formData.data[section.id];
                 if (section?.requiredSectionObservation && (!parecerValue || parecerValue === "")) {
-                    this.messages.error(this.text('O campo Parecer é obrigatório.'));
+                    this.messages.error(this.text('O campo Observações/parecer é obrigatório.'));
                     isValid = true;
                 }
-            }
-
-
-            if (!this.formData.data.obs || this.formData.data.obs === "") {
-                this.messages.error(this.text('O campo Observação é obrigatório.'));
-                isValid = true;
             }
 
             global.validateEvaluationErrors = isValid;
