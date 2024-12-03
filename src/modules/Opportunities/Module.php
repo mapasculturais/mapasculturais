@@ -659,6 +659,9 @@ class Module extends \MapasCulturais\Module{
             $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
 
             if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
+                if($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
+                    return;
+                }
                 $conn = $app->em->getConnection();
                 $evaluations = $conn->fetchAll("
                     SELECT
@@ -691,7 +694,7 @@ class Module extends \MapasCulturais\Module{
                     }
 
                     $app->disableAccessControl();
-                    $registration->status = $value;
+                    $registration->_setStatusTo($value);
                     $registration->save();
                     $app->enableAccessControl();
                 }
