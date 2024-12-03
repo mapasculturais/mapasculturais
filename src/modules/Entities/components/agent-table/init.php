@@ -17,6 +17,21 @@ $queryParams =  [
 ];
 $querySeals = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Seal::class, $queryParams);
 
+$geoDivisionsHierarchy = [];
+if($result = $app->config['app.geoDivisionsHierarchy']){
+    foreach ($result as $key => $values) {
+        $field = 'geo'.ucfirst($key);
+
+        $_data = [
+            'name' => $values['name'],
+            'field' => $field,
+        ];
+
+        $geoDivisionsHierarchy[] = $_data;
+    }
+}
+
 $this->jsObject['config']['agentTable'] =[
+    'geoDivisionsHierarchy' => $geoDivisionsHierarchy,
     'seals' => $querySeals->getFindResult(),
 ];

@@ -43,6 +43,14 @@ app.component('agent-table', {
             '@page': 1,
         }
 
+        let geoDivisionsHierarchy = $MAPAS.config.agentTable.geoDivisionsHierarchy;
+
+        if(Object.keys(geoDivisionsHierarchy).length > 0){
+            Object.values(geoDivisionsHierarchy).forEach(result => {
+                query['@select'] += `,${result.field}`;    
+            });
+        }
+
         if (this.agentType) {
             query['type'] = `EQ(${this.agentType})`;
         }
@@ -70,7 +78,8 @@ app.component('agent-table', {
             seals,
             getCities,
             municipio,
-            verified: undefined
+            verified: undefined,
+            geoDivisionsHierarchy,
         }
     },
 
@@ -92,6 +101,13 @@ app.component('agent-table', {
 
             if (!this.agentType) {
                 itens.push({ text: __('type', 'agent-table'), value: "type.name", slug: "type"});
+            }
+
+            if(Object.keys(this.geoDivisionsHierarchy).length > 0){
+                Object.keys(this.geoDivisionsHierarchy).forEach(item => {
+                    let result = this.geoDivisionsHierarchy[item];
+                    itens.push({ text: result.name, value: `${result.field}`})
+                })
             }
 
             return itens;
