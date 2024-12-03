@@ -5,6 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.4.26-minc3] - 2024-12-03
+### Melhorias
+- Aumenta o tamanho de arquivos para upload.
+### Correções
+- Corrige exibição do limite de tamanho dos arquivos para upload.
+
 ## [7.4.26-minc2] - 2024-11-29
 ### Melhorias
 - Implementa compatibilidade com CAPTCHA da Cloudflare, mantendo retrocompatibilidade com CAPTCHA do Google
