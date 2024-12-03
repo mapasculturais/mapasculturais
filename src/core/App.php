@@ -1811,7 +1811,11 @@ class App {
         }
 
         try{
-            $job->save(true);
+            if($this->config['app.executeJobsImmediately']) {
+                $job->execute();
+            } else {
+                $job->save(true);
+            }
         } catch (\Exception $e) {
             $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
         }
