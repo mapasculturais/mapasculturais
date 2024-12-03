@@ -204,13 +204,16 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         $committees = $registration->getCommittees();
 
+        $result = '';
+
         if($registration->needsTiebreaker()){
+            
             $tiebreaker_evaluation = $this->getTiebreakerEvaluation($registration);
 
-            if (empty($tiebreaker_evaluations)) {
-                return '@tiebreaker';
+            if (empty($tiebreaker_evaluation)) {
+                $result =  '@tiebreaker';
             } else {
-                return $this->_getConsolidatedResult($registration, [$tiebreaker_evaluation]);
+                $result =  $this->_getConsolidatedResult($registration, [$tiebreaker_evaluation]);
             }
         } else {
             $number_of_valuers = 0;
@@ -219,11 +222,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
 
             if(count($evaluations) < $number_of_valuers){
-                return 0;
+                $result =  0;
             }
             
-            return $this->_getConsolidatedResult($registration, $evaluations);
+            $result =  $this->_getConsolidatedResult($registration, $evaluations);
         }
+
+        return $result;
     }
 
     /**
@@ -334,14 +339,34 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $criteria = [
             'registration' => $registration, 
             'status' => RegistrationEvaluation::STATUS_SENT,
-            'user' => $valuer_users
+            'user' => $valuer_users,
+            'isTiebreaker' => false
         ];
-
+        
         $evaluations =  $app->repo('RegistrationEvaluation')->findBy($criteria);
 
-        // se o número de avaliações não coincide com o número de avaliadores, então ainda há avaliações pendentes
-        if(count($valuer_users) != count($evaluations)) {
-            return false;
+
+        // se o total de avaliadores por inscrição dentro de cada comissão não está preenchido, 
+        // então a inscrição AINDA NÃO precisa de desempate
+
+        foreach($registration->evaluationMethodConfiguration->valuersPerRegistration as $committee => $num) {
+            if($committee == '@tiebreaker') {
+                continue;
+            }
+
+            $users = $registration_committee[$committee] ?? [];
+
+            foreach($evaluations as $evaluation) {
+                foreach($users as $user) {
+                    if($evaluation->user->equals($user)) {
+                        $num--;
+                    }
+                }
+            }
+
+            if($num > 0) {
+                return false;
+            }
         }
 
         $results = [];
@@ -353,6 +378,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             $results[$group] = $this->_getConsolidatedResult($registration, $group_evaluations);
         }
+
 
         // se há mais que um valor no array, então há divergência
         if(count(array_unique($results)) > 1) {
@@ -379,6 +405,9 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
 
         $must_enqueue_evaluation_config = false;
+
+        $non_tiebreaker_valuers = [];
+        
         foreach($committee as $group => $committee_users) {
             $valuers_per_registration = (int) ($evaluation_config->valuersPerRegistration->$group ?? 0);
             $ignore_started_evaluations = $evaluation_config->ignoreStartedEvaluations->$group ?? false;
@@ -410,7 +439,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 
                 WHERE 
                     opportunity_id = {$opportunity->id} AND
-                    r.status > 0
+                    r.status = 1
 
                 GROUP BY r.id, v.id
                 ORDER BY num ASC
@@ -423,6 +452,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             $result = [];
             $valuers_evaluated_registrations = [];
             foreach($registration_evaluations as $r) {
+                
                 $result[$r['id']] = $result[$r['id']] ?? (object) [
                     'id' => $r['id'],
                     'valuers' => [],
@@ -430,6 +460,9 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 ];
 
                 if($r['user_id']) {
+                    if($group == '@tiebreaker' && in_array($r['user_id'], $non_tiebreaker_valuers)) {
+                        continue;
+                    }
                     $result[$r['id']]->valuers[] = $r['user_id'];
                     $valuers_evaluated_registrations[$r['user_id']] = $valuers_evaluated_registrations[$r['user_id']] ?? 0;
                     $valuers_evaluated_registrations[$r['user_id']]++;
@@ -440,11 +473,19 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             /** Distribui as inscrições */
             foreach ($committee_users as $user) {
+                if($group == '@tiebreaker' && in_array($user->id, $non_tiebreaker_valuers)) {
+                    continue;
+                }
                 if($ignore_started_evaluations) {
                     $num = 0;
                 } else {
                     $num = $valuers_evaluated_registrations[$user->id] ?? 0;
                 }
+
+                if($group != '@tiebreaker') {
+                    $non_tiebreaker_valuers[] = $user->id;
+                }
+
                 $valuers[] = (object) [
                     'count' => $num,
                     'user' => $user
@@ -491,18 +532,9 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             $app->log->debug("$registration_id  $json");
             $conn->update('registration', ['valuers_exceptions_list' => $json], ['id' => $registration_id]);
-
-            if(!$must_enqueue_evaluation_config) {
-                /** @var Entities\Registration $registration */
-                $registration = $app->repo('Registration')->find($registration_id);
-
-                $registration->enqueueToPCacheRecreation();
-            }
         }
 
-        if($must_enqueue_evaluation_config) {
-            $evaluation_config->enqueueToPCacheRecreation();
-        }
+        $evaluation_config->enqueueToPCacheRecreation();
 
         $app->persistPCachePendingQueue();
     }
@@ -795,8 +827,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
 
         if(!$skip_exceptions) {
-            $can = $can || in_array($user->id, $registration->valuersIncludeList);
-            $can = $can && !in_array($user->id, $registration->valuersExcludeList);
+            $can = $can || in_array($user->id, (array) $registration->valuersIncludeList);
+            $can = $can && !in_array($user->id, (array) $registration->valuersExcludeList);
             $app->rcache->save($cache_key, $can);
         }
         
