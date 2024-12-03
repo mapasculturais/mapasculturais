@@ -16,7 +16,7 @@ $this->import('
 ?>
 
 <div class="simple-evaluation-form">
-    <h2 v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" class="needs-tiebreaker warning__background"><?= i::_e('Inscrição aguardando desempate') ?></h2>
+    <h2 v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" class="needs-tiebreaker warning__background"><?= i::_e('Voto de minerva') ?></h2>
     <mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
         <template #default>
             <evaluation-simple-detail :registration="entity"></evaluation-simple-detail>
