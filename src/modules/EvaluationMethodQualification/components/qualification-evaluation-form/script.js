@@ -99,6 +99,10 @@ app.component('qualification-evaluation-form', {
         updateSectionStatus(sectionId, criteriaId, event) {
             let value = event.target.value;
             this.formData.data[criteriaId] = [value];
+
+            if (value === 'invalid') {
+                this.formData.data[criteriaId + '_reason'] = '';
+            }
             
             this.formData.sectionStatus[sectionId] = this.sectionStatus(sectionId);
 
