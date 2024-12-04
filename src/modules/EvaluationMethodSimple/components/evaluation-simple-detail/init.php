@@ -39,11 +39,9 @@ if($class == Registration::class) {
 
         $evaluations = $entity->sentEvaluations;
 
-        foreach($evaluations as $eval) {
+        foreach ($evaluations as $eval) {
             $detail = $em->getEvaluationDetails($eval);
-            if ($evaluation_configuration->publishValuerNames){
-                $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
-            }
+            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
             $data['evaluationsDetails'][] = $detail;
         }
     }

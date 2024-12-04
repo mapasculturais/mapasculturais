@@ -39,11 +39,14 @@
         &-title {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             gap: size(8);
 
             &-fields {
+                display: flex;
+                flex-direction: column;
+                gap: size(8);
                 width: 100%;
+                text-align: justify;
 
                 h4 {
                     display: inline;
@@ -51,7 +54,6 @@
                 }
 
                 span.required {
-                    padding-left: 1ch;
 
                     &.non-eliminatory {
                         color: var(--mc-warning-700);
