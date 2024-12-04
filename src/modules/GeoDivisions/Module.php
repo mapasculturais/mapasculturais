@@ -83,6 +83,13 @@ class Module extends \MapasCulturais\Module
     function getGeoDivisions($includeData = false)
     {
         $app = App::i();
+
+        $cahce_key = 'geo_divisions:' . ($includeData ? 'with_data' : 'without_data');
+
+        if($app->cache->contains($cahce_key)){
+            return $app->cache->fetch($cahce_key);
+        }
+
         $result = [];
 
         if($includeData){
@@ -127,6 +134,8 @@ class Module extends \MapasCulturais\Module
             }
             $result[] = $r;
         }
+
+        $app->cache->save($cahce_key, $result);
 
         return $result;
     }
