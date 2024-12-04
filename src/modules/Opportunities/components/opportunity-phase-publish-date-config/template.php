@@ -28,7 +28,7 @@ $this->import('
             </div>
         </div>
 
-        <div v-if="!phase.publishedRegistrations" class="grid-12 col-12 notPublished opportunity-phase-publish-date-config__content">
+        <div v-if="!phase.publishedRegistrations && !firstPhase?.isContinuousFlow" class="grid-12 col-12 notPublished opportunity-phase-publish-date-config__content">
             <div class="opportunity-phase-publish-date-config__left col-4">
 
                 <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="3000" :min="minDate" :max="maxDate" classes="col-4 opportunity-phase-publish-date-config__date"></entity-field>
@@ -75,8 +75,10 @@ $this->import('
                 hideRequired 
                 classes="col-4 opportunity-phase-publish-date-config__checkbox"></entity-field>
             
-            <seals-certifier :entity="phases[0]" :editable="phase.currentUserPermissions?.createSealRelation"></seals-certifier>
         </div>
+
+        <seals-certifier :entity="phases[0]" :editable="phase.currentUserPermissions?.createSealRelation"></seals-certifier>
+        
         <div class="col-12 grid-12" v-if="true">
             <div class="col-12" v-if="phase.evaluationMethodConfiguration">
                 <entity-field :entity="phase.evaluationMethodConfiguration" prop="publishEvaluationDetails" type="checkbox" :autosave="300" ></entity-field>
