@@ -249,21 +249,46 @@ app.component('qualification-evaluation-form', {
                     if (!this.showSectionAndCriterion(crit)) {
                         continue;
                     }
-
+                   
                     let sectionName = section.name;
                     let value = this.formData.data[crit.id];
                     if (value.length <= 0) {
                         this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
                         isValid = true;
                     }
+                    
+                    if (crit.nonEliminatory === 'false' && value.includes('invalid')) {
+                        let hasRecommendation = false;
+
+                        if (crit.options.length > 0) {
+                            for (let option of crit.options) {
+                                if (this.formData.data[crit.id]?.includes(option)) {
+                                    hasRecommendation = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (crit.otherReasonsOption && this.formData.data[crit.id]?.includes('others')) {
+                            const reason = this.formData.data[crit.id + '_reason'];
+                            if (reason && reason.trim() !== '') {
+                                hasRecommendation = true;
+                            }
+                        }
+
+                        if (!hasRecommendation) {
+                            this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('Para o critério')} ${crit.name}, ${this.text('é necessário preencher ou selecionar uma recomendação para atender ao critério')}`);
+                            isValid = true;
+                        }
+                    }
                 }
-                
 
                 let parecerValue = this.formData.data[section.id];
                 if (section?.requiredSectionObservation && (!parecerValue || parecerValue === "")) {
                     this.messages.error(this.text('O campo Observações/parecer é obrigatório.'));
                     isValid = true;
                 }
+
             }
 
             global.validateEvaluationErrors = isValid;
