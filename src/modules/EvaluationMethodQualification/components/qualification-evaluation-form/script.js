@@ -99,6 +99,10 @@ app.component('qualification-evaluation-form', {
         updateSectionStatus(sectionId, criteriaId, event) {
             let value = event.target.value;
             this.formData.data[criteriaId] = [value];
+
+            if (value === 'invalid') {
+                this.formData.data[criteriaId + '_reason'] = '';
+            }
             
             this.formData.sectionStatus[sectionId] = this.sectionStatus(sectionId);
 
@@ -154,14 +158,30 @@ app.component('qualification-evaluation-form', {
         },
 
         consolidated (){
-            let result = true;
-            for (let section of this.sections) {
-                if(this.sectionStatus(section.id) === this.text('Não atende')){
-                    result = false;
-                    break;  
+            let allSectionsEvaluated = true;
+            let hasNotMeetCriteria = false;
+
+            for (const section of this.sections) {
+                const sectionStatus = this.sectionStatus(section.id);
+
+                if (sectionStatus === this.text('Avaliação incompleta')) {
+                    allSectionsEvaluated = false; 
+                }
+
+                if (sectionStatus === this.text('Não atende')) {
+                    hasNotMeetCriteria = true; 
                 }
             }
-            return result ? this.text('Habilitado') : this.text('Inabilitado');
+
+            if (!allSectionsEvaluated) {
+                return this.text('Avaliação incompleta'); 
+            }
+
+            if (hasNotMeetCriteria) {
+                return this.text('Inabilitado'); 
+            }
+
+            return this.text('Habilitado'); 
         },
         sectionClass(sectionId) {
             const status = this.sectionStatus(sectionId);
@@ -180,25 +200,35 @@ app.component('qualification-evaluation-form', {
 
             let nonEliminatoryCount = 0;
 
-            for (const crit of section.criteria) {
+            const allCriteriaFilled = section.criteria.filter(crit => {
                 const critValue = this.formData.data[crit.id];
-                if (!Array.isArray(critValue)) continue;
-                if (!this.showSectionAndCriterion(crit)) continue;
+                return Array.isArray(critValue) && critValue.length > 0;
+            }).length === section.criteria.length;
 
-                if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
-                    return this.text('Não atende');
-                } else if (critValue.length === 0) {
-                    return this.text('Avaliação incompleta');
-                } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
-                    nonEliminatoryCount++;
+            if(allCriteriaFilled) {
+                for (const crit of section.criteria) {
+                    const critValue = this.formData.data[crit.id];
+                    if (!Array.isArray(critValue)) continue;
+                    if (!this.showSectionAndCriterion(crit)) continue;
+    
+                    if (crit.nonEliminatory === 'false' && critValue.includes('invalid')) {
+                        return this.text('Não atende');
+                    } else if (critValue.length === 0) {
+                        return this.text('Avaliação incompleta');
+                    } else if (crit.nonEliminatory === 'true' && critValue.includes('invalid')) {
+                        nonEliminatoryCount++;
+                    }
                 }
-            }
 
-            if (nonEliminatoryCount > section.numberMaxNonEliminatory && section.numberMaxNonEliminatory > 0) {
-                return this.text('Não atende');
+                if (nonEliminatoryCount > section.numberMaxNonEliminatory && section.numberMaxNonEliminatory > 0) {
+                    return this.text('Não atende');
+                } else {
+                    return this.text('Atende');
+                }
             } else {
-                return this.text('Atende');
+                return this.text('Avaliação incompleta');
             }
+            
         },
         updateSectionStatusByFromData() {
             const updatedSectionStatus = {};
@@ -241,15 +271,9 @@ app.component('qualification-evaluation-form', {
 
                 let parecerValue = this.formData.data[section.id];
                 if (section?.requiredSectionObservation && (!parecerValue || parecerValue === "")) {
-                    this.messages.error(this.text('O campo Parecer é obrigatório.'));
+                    this.messages.error(this.text('O campo Observações/parecer é obrigatório.'));
                     isValid = true;
                 }
-            }
-
-
-            if (!this.formData.data.obs || this.formData.data.obs === "") {
-                this.messages.error(this.text('O campo Observação é obrigatório.'));
-                isValid = true;
             }
 
             global.validateEvaluationErrors = isValid;
