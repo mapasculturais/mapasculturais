@@ -16,4 +16,6 @@ return [
     'Outras' => i::__('Outras'),
     'Habilitado' => i::__('Habilitado'),
     'Inabilitado' => i::__('Inabilitado'),
+    'Para o critério' => i::__('Para o critério'),
+    'é necessário preencher ou selecionar uma recomendação para atender ao critério' => i::__('é necessário preencher ou selecionar uma recomendação para atender ao critério'),
 ];
