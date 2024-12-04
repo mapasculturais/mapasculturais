@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [7.5.14]
+### Correções
+- Corrige erro que ocorre na propagação do sentTipestemp das inscrições entre fases
+
 ### Melhorias Não funcionais
 - Implementa configuração que permite desabilitar o envio de emails de criação e envio de inscrições
 
