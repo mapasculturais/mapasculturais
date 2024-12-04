@@ -219,7 +219,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook("entity(Registration).status(<<*>>)", function(){
-            if(!$this->opportunity->isDataCollection && $this->status > 0){
+            if($this->previousPhase && !$this->opportunity->isDataCollection && $this->status > 0){
                 $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
         });
