@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.14]
+### Melhorias Não funcionais
+- Implementa configuração que permite desabilitar o envio de emails de criação e envio de inscrições
+
 ## [7.5.13] - 2024-11-30
 ### Correções
 - Ajusta db-update que trata a duplicidade na tabela de avaliações
