@@ -117,9 +117,8 @@ app.component('qualification-evaluation-form', {
             }
     
             if (isChecked) {
-                if (!this.formData.data[criteriaId].includes('others')) {
-                    this.formData.data[criteriaId].push('others');
-                }
+                this.formData.data[criteriaId] = ['invalid', 'others'];
+                this.formData.data[`${criteriaId}_reason`] = '';
             } else {
                 const index = this.formData.data[criteriaId].indexOf('others');
                 if (index > -1) {
@@ -133,11 +132,16 @@ app.component('qualification-evaluation-form', {
 
         updateOption(critId, option) {
             const selectedOptions = this.formData.data[critId] || [];
+
+            if (this.formData.data[critId].includes('others')) {
+                const index = this.formData.data[critId].indexOf('others');
+                this.formData.data[critId].splice(index, 1);
+            }
     
-            if (selectedOptions.includes(option)) {
-                this.formData.data[critId] = selectedOptions.filter(opt => opt !== option);
+            if (!selectedOptions.includes(option)) {
+                this.formData.data[critId] = ['invalid', option];
             } else {
-                this.formData.data[critId].push(option);
+                this.formData.data[critId] = selectedOptions.filter(opt => opt !== option);
             }
         },
 
