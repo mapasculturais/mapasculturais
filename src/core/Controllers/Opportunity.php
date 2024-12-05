@@ -1186,11 +1186,20 @@ class Opportunity extends EntityController {
             'registrationLimit',
             'registrationRanges',
             'registrationProponentTypes',
+            'isContinuousFlow',
+            'continuousFlow',
+            'hasEndDate',
+            'publishTimestamp',
+            'registrationTo'
         );
 
         $metadata = [];
 
         foreach ($opportunityMeta as $key) {
+            if($key == 'publishTimestamp') {
+                $metadata[$key] = $opportunity->lastPhase->{$key};
+                continue;
+            }
             $metadata[$key] = $opportunity->{$key};
         }
 
