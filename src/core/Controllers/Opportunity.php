@@ -1153,7 +1153,7 @@ class Opportunity extends EntityController {
                 $conditional_field_id = str_replace('field_', '', $file->conditionalField);
     
                 $conditional_field_exists = false;
-                foreach ($files as $f) {
+                foreach ($fields as $f) {
                     if (isset($f->id) && $f->id == $conditional_field_id) {
                         $conditional_field_exists = true;
                         break;
