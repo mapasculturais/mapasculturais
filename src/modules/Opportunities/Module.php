@@ -694,7 +694,7 @@ class Module extends \MapasCulturais\Module{
                     }
 
                     $app->disableAccessControl();
-                    $registration->_setStatusTo($value);
+                    $registration->setStatus($value);
                     $registration->save();
                     $app->enableAccessControl();
                 }
