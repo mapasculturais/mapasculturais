@@ -15,10 +15,10 @@ $this->import('
     <div class="home-entities__content">
         <div class="home-entities__content--header">
             <label class="title">
-                <?= $this->text('title', i::__('Aqui você encontra informações de editais e oportunidades do Ministério da Cultura.')) ?>
+                <?= $this->text('title', i::__('Aqui você encontra as informações da cultura de sua região!')) ?>
             </label>
             <label class="description">
-                <?= $this->text('description', i::__('Você também pode cadastrar seus projetos, espaços e eventos, e contribuir para o mapeamento cultural brasileiro.')) ?>
+                <?= $this->text('description', i::__('Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre seus projetos, espaços e eventos.')) ?>
             </label>
         </div>
         
@@ -40,7 +40,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="card__right">
-                    <p><?= $this->text('opportunities', i::__('Aqui você pode fazer sua inscrição nos editais e oportunidades do Ministério da Cultura (Minc), bem como acompanhar as inscrições em andamento. Nesse espaço, você também pode acessar outras oportunidades da cultura; tais como, oficinas, prêmios e concursos; criar uma oportunidade e divulgá-la para outros agentes culturais.')) ?></p>
+                    <p><?= $this->text('opportunities', i::__('Faça a sua inscrição ou acesse o resultado de diversas convocatórias como editais, oficinas, prêmios e concursos. Você também pode criar o seu próprio formulário e divulgar uma oportunidade para outros agentes culturais.')) ?></p>
                     <mc-link route="search/opportunities" class="button button--icon button--sm opportunity__color">
                         <?= i::__('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
@@ -65,7 +65,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="card__right">
-                    <p><?= $this->text('eventText', i::__('Você pode pesquisar eventos culturais cadastrados na plataforma filtrando por região, área da cultura, etc. Você também pode incluir seus eventos culturais na plataforma e divulgá-los gratuitamente.')) ?></p>
+                    <p><?= $this->text('events', i::__('Você pode pesquisar eventos culturais nos campos de busca combinada. Como usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los gratuitamente. (Mais uma linha aqui pra fechar cinco linhas)')) ?></p>
                     <mc-link route="search/events" class="button button--icon button--sm event__color">
                         <?= i::__('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
@@ -90,7 +90,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="card__right">
-                    <p><?= $this->text('spaces', i::__('Aqui você pode cadastrar seus espaços culturais e colaborar com o Mapa da Cultura! Além disso, você pode pesquisar por espaços culturais cadastrados na sua região; tais como teatros, bibliotecas, centros culturais e outros.')) ?></p>
+                    <p><?= $this->text('spaces', i::__('Procure por espaços culturais incluídos na plataforma, acessando os campos de busca combinada que ajudam na precisão de sua pesquisa. Cadastre também os espaços onde desenvolve suas atividades artísticas e culturais.')) ?></p>
                     <mc-link route="search/spaces" class="button button--icon button--sm space__color">
                         <?= i::__('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
@@ -115,7 +115,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="card__right">
-                    <p><?= $this->text('agents', i::__('Neste espaço, é possível buscar e conhecer os agentes culturais cadastrados no Mapa da Cultura. Explore a diversidade de artistas, produtores, grupos, coletivos, bandas, instituições, que fazem parte da cultura! Participe e seja protagonista da cultura brasileira!')) ?></p>
+                    <p><?= $this->text('agents', i::__('Neste espaço, estão registrados artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas instituições, empresas, etc.), (...)')) ?></p>
                     <mc-link route="search/agents" class="button button--icon button--sm agent__color">
                         <?= i::__('Ver todos')?>
                         <mc-icon name="access"></mc-icon>
@@ -140,7 +140,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="card__right">
-                    <p><?= $this->text('projects', i::__('Aqui você encontra projetos culturais cadastrados pelos agentes culturais usuários da plataforma Mapa da Cultura.')) ?></p>
+                    <p><?= $this->text('projects', i::__('Aqui você encontra leis de fomento, mostras, convocatórias e editais criados, além de diversas iniciativas cadastradas pelos usuários da plataforma.')) ?></p>
                     <mc-link route="search/projects" class="button button--icon button--sm project__color">
                         <?= i::__('Ver todos')?>
                         <mc-icon name="access"></mc-icon>

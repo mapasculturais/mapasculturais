@@ -9105,7 +9105,7 @@ msgid ""
 msgstr ""
 
 #: modules/Home/components/home-map/template.php:14
-msgid "Visualize também no Mapa"
+msgid "Visualize também no mapa"
 msgstr ""
 
 #: modules/Home/components/home-map/template.php:15
@@ -9129,7 +9129,7 @@ msgid "Nenhuma oportunidade do momento foi encontrada."
 msgstr ""
 
 #: modules/Home/components/home-register/template.php:15
-msgid "Faça seu cadastro e colabore com o Mapa da Cultura!"
+msgid "Faça seu cadastro e colabore com o Mapas Culturais"
 msgstr ""
 
 #: modules/Home/components/home-register/template.php:16

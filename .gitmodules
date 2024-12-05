@@ -11,3 +11,6 @@
 [submodule "src/plugins/RecreatePCacheOnLogin"]
 	path = src/plugins/RecreatePCacheOnLogin
 	url = https://github.com/mapasculturais/plugin-RecreatePCacheOnLogin.git
+[submodule "src/themes/MapaMinC"]
+	path = src/themes/MapaMinC
+	url = https://github.com/culturagovbr/theme-MapaMinC.git
