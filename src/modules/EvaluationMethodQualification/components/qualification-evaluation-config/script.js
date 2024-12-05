@@ -225,6 +225,19 @@ app.component('qualification-evaluation-config', {
             }
             this.save();
         }, 
+
+        enableRequiredSectionObservation(value, section) {
+            if (value) {
+                if (!section.requiredSectionObservation) {
+                    section.requiredSectionObservation = true;
+                }
+            } else {
+                if (section.requiredSectionObservation) {
+                    section.requiredSectionObservation = false;
+                }
+            }
+            this.save();
+        }, 
         
         enableFilterConfigSection(value, section) {
             if (value) {

@@ -14,6 +14,10 @@ app.component('entity-admins', {
             type: [String, Array, Object],
             required: false
         },
+        title: {
+            type: String,
+            default: __('Administrado por', 'entity-admins'),
+        },
     },
 
     computed: {

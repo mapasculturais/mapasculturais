@@ -1547,6 +1547,7 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['entity']['object']->id = $current_registration->id;
             $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
             $this->jsObject['entity']['canUserEvaluate'] = $current_registration->canUser('evaluate');
+            $this->jsObject['entity']['evaluateOnTime'] = $current_registration->canUser('evaluateOnTime');
             $this->jsObject['entity']['canUserModify'] = $current_registration->canUser('modify');
             $this->jsObject['entity']['canUserSend'] = $current_registration->canUser('send');
             $this->jsObject['entity']['canUserViewUserEvaluations'] = $current_registration->canUser('viewUserEvaluations');
@@ -2768,6 +2769,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['spaceData'] = $entity->getSpaceData();
 
         $this->jsObject['entity']['canUserEvaluate'] = $entity->canUser('evaluate');
+        $this->jsObject['entity']['evaluateOnTime'] = $entity->canUser('evaluateOnTime');
         $this->jsObject['entity']['canUserModify'] = $entity->canUser('modify');
         $this->jsObject['entity']['canUserSend'] = $entity->canUser('send');
         $this->jsObject['entity']['canUserViewUserEvaluations'] = $entity->canUser('viewUserEvaluations');

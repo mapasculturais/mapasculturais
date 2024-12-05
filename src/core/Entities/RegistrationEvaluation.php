@@ -106,6 +106,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $status = self::STATUS_DRAFT;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="is_tiebreaker", type="boolean", nullable=true)
+     */
+    protected $isTiebreaker = false;
+
+    /**
      * flag que diz que a avaliação está sendo enviada
      * @var boolean
      */
@@ -215,10 +222,6 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-        if($this->registration->opportunity->publishedRegistrations && !$this->registration->opportunity->firstPhase->isContinuousFlow){
-            return false;
-        }
-
         if($this->registration->opportunity->canUser('@control', $user)){
             return true;
         }
@@ -290,7 +293,12 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     // ============================================================ //
 
     /** @ORM\PrePersist */
-    public function prePersist($args = null){ parent::prePersist($args); }
+    public function prePersist($args = null){ 
+        if($this->registration && $this->registration->needsTiebreaker()){
+            $this->isTiebreaker = true;
+        }
+        parent::prePersist($args); 
+    }
     /** @ORM\PostPersist */
     public function postPersist($args = null){
         parent::postPersist($args);

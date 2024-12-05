@@ -163,6 +163,16 @@ app.component('entity-field', {
         maxOptions: {
             type: Number,
             default: 0
+        },
+
+        descriptionFirst: {
+            type: Boolean,
+            default: false
+        },
+
+        preserveOrder: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -174,7 +184,7 @@ app.component('entity-field', {
             this.isReadonly
         );
 
-        if((this.is('multiselect') || this.is('checklist')) && this.description.optionsOrder.length > 10) {
+        if (this.isMultiSelect()) {
             if (!this.entity[this.prop]) {
                 this.entity[this.prop] = [];
             } else if (typeof this.entity[this.prop] !== 'object') {
@@ -206,6 +216,9 @@ app.component('entity-field', {
         },
         value() {
             return this.entity[this.prop]?.id ?? this.entity[this.prop];
+        },
+        entitiesFildTypes() {
+            return ['agent-owner-field', 'agent-collective-field']
         },
     },
     
@@ -279,11 +292,19 @@ app.component('entity-field', {
                     if (index >= 0) {
                         this.entity[this.prop].splice(index, 1);
                     } else {
-                        this.entity[this.prop].push(value)
+                        if(!this.isMultiSelect() && !this.maxOptions || this.entity[this.prop].length < this.maxOptions) {
+                            this.entity[this.prop].push(value)
+                        } else {
+                            this.entity[this.prop].push(value)
+                        }
                     }
 
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: value});
                 } else if(this.is('links')) { 
+                    this.entity[this.prop] = event; 
+
+                    this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
+                } else if(this.is('municipio')) {
                     this.entity[this.prop] = event; 
 
                     this.$emit('change', {entity: this.entity, prop: this.prop, oldValue: oldValue, newValue: event});
@@ -293,12 +314,12 @@ app.component('entity-field', {
                 }
 
                 if (this.autosave && (now || JSON.stringify(this.entity[this.prop]) != JSON.stringify(oldValue))) {
-                    this.entity.save(now ? 0 : this.autosave).then(() => {
+                    this.entity.save(this.autosave).then(() => {
                         this.$emit('save', this.entity);
                     });
                 }
 
-            }, now ? 0 : this.debounce);
+            }, this.debounce);
 
 
             if(this.is('textarea')) {
@@ -309,6 +330,24 @@ app.component('entity-field', {
 
         is(type) {
             return this.fieldType == type;
+        },
+
+        isMultiSelect() {
+            let registrationFieldConfiguration = this.description.registrationFieldConfiguration
+            
+            if (this.is('multiselect')) {
+                if(registrationFieldConfiguration?.fieldType && this.entitiesFildTypes.includes(registrationFieldConfiguration?.fieldType)) {
+                    const config = registrationFieldConfiguration?.config;
+                    return (config?.viewMode === 'tag') || (!config?.viewMode && this.description.optionsOrder?.length > 15);
+                } else {
+                    return true;
+                }
+            } else if (this.is('checklist')) {
+                const config = registrationFieldConfiguration?.config;
+                return (config?.viewMode === 'tag') || (!config?.viewMode && this.description.optionsOrder?.length > 15);
+            } else {
+                return false;
+            }
         },
 
         isReadonly() {

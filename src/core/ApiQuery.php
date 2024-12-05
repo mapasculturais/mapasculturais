@@ -2,6 +2,7 @@
 
 namespace MapasCulturais;
 
+use Apps\Entities\UserApp;
 use Doctrine\ORM\Query;
 use Exception;
 use MapasCulturais\Entities\Agent;
@@ -868,7 +869,11 @@ class ApiQuery {
         }
 
         if ($order) {
-            $dql .= "\n\nORDER BY {$order}, e.id ASC";
+            if($this->entityClassName === UserApp::class) {
+                $dql .= "\n\nORDER BY {$order}";
+            } else {
+                $dql .= "\n\nORDER BY {$order}, e.id ASC";
+            }
         } else {
             $dql .= "\n\nORDER BY e.id ASC";
         }
@@ -901,9 +906,8 @@ class ApiQuery {
         if(isset($this->entityRelations[$prop])){
             $identity = "IDENTITY({$alias}.{$prop})";
         } else {
-            $identity = "{$alias}.{$prop}";
+            $identity = "CAST({$alias}.{$prop} AS INTEGER)";
         }
-        
         $dql = " SELECT $identity FROM {$this->entityClassName} {$alias} {$joins} ";
         if ($where) {
             $dql .= " WHERE {$where} ";
@@ -1065,6 +1069,7 @@ class ApiQuery {
         $filters = $this->getSubqueryFilters();
         
         foreach($filters as $filter){
+            /** @var ApiQuery */
             $subquery = $filter['subquery'];
             $subquery_property = $filter['subquery_property'];
             $property = $filter['property'];

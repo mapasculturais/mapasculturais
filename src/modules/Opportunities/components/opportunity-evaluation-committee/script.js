@@ -53,7 +53,7 @@ app.component('opportunity-evaluation-committee', {
     },
 
     data() {
-        let ranges = this.entity.opportunity.registrationRanges.map((range) => range.label);
+        let ranges = this.entity.opportunity.registrationRanges?.map((range) => range.label);
 
         return {
             agentData: null,
@@ -200,8 +200,8 @@ app.component('opportunity-evaluation-committee', {
                     this.delReviewerData(userId);
                 }
                 this.loadReviewers();
+                this.entity.save();
             });
-            this.entity.save();
         },
 
         delReviewerData(userId) {

@@ -56,6 +56,10 @@ class Entity {
                 }
             }
 
+            if (definition.type === 'checklist' && !val) {
+                val = [];
+            }
+
             if (prop == 'location' && val) {
                 if(val?.latitude && val?.longitude) {
                     val = {lat: parseFloat(val?.latitude), lng: parseFloat(val?.longitude)};
@@ -227,6 +231,10 @@ class Entity {
 
         if(onlyModifiedFields) {
             for(let key in result) {
+                if(!result[key] && !this.__originalValues[key]) {
+                    delete result[key];
+                }
+
                 if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
                     delete result[key];
                 }
@@ -373,7 +381,8 @@ class Entity {
         return result;
     }
 
-    async POST(action, {callback, data}) {        
+    async POST(action, {callback, data, processingMessage}) {
+        this.__processing = processingMessage || this.text('processando');
         const res = await this.API.POST(this.getUrl(action), data);
         callback = callback || (() => {});
 

@@ -13167,8 +13167,8 @@ msgid "O valor não é um telefone válido"
 msgstr "El valor no es una teléfono válido"
 
 #: src/modules/RegistrationFieldTypes/Module.php:294
-msgid "Seleção única (select)"
-msgstr "Selección única (select)"
+msgid "Seleção única"
+msgstr "Selección única"
 
 #: src/modules/RegistrationFieldTypes/Module.php:301
 msgid "# Título de Seção"
@@ -13203,8 +13203,8 @@ msgid "Caixa de verificação (checkbox)"
 msgstr "Casilla de verificación (checkbox)"
 
 #: src/modules/RegistrationFieldTypes/Module.php:340
-msgid "Seleção múltipla (checkboxes)"
-msgstr "Selección múltiple (checkboxes)"
+msgid "Seleção múltipla"
+msgstr "Selección múltiple"
 
 #: src/modules/RegistrationFieldTypes/Module.php:360
 msgid "Campo de listagem de pessoas"
@@ -26328,8 +26328,8 @@ msgstr "Acerca del sitio web"
 #~ msgid "O valor não é um telefone válido"
 #~ msgstr "El valor no es una teléfono válido"
 
-#~ msgid "Seleção única (select)"
-#~ msgstr "Selección única (select)"
+#~ msgid "Seleção única"
+#~ msgstr "Selección única"
 
 #~ msgid "# Título de Seção"
 #~ msgstr "# Título de Sección"
@@ -26355,8 +26355,8 @@ msgstr "Acerca del sitio web"
 #~ msgid "Caixa de verificação (checkbox)"
 #~ msgstr "Casilla de verificación (checkbox)"
 
-#~ msgid "Seleção múltipla (checkboxes)"
-#~ msgstr "Selección múltiple (checkboxes)"
+#~ msgid "Seleção múltipla"
+#~ msgstr "Selección múltiple"
 
 #~ msgid "Campo de listagem de pessoas"
 #~ msgstr "Campo de listado de personas"

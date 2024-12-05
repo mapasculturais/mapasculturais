@@ -31,11 +31,17 @@ app.component('registration-field-persons', {
 
     data() {
         let rules = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.config || {};
+        let isFieldRequired = rules.requiredFields || {};
         let required = $DESCRIPTIONS.registration[this.prop].required;
+        let title = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.title;
+        let description = this.registration.$PROPERTIES[this.prop].registrationFieldConfiguration.description;
 
         return {
             rules,
             required,
+            isFieldRequired,
+            title,
+            description,
             areas: $TAXONOMIES.area.terms,
             functions: $TAXONOMIES.funcao.terms,
             races: $DESCRIPTIONS.agent.raca.optionsOrder,
@@ -43,6 +49,8 @@ app.component('registration-field-persons', {
             sexualOrientations: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder,
             deficiencies: $DESCRIPTIONS.agent.pessoaDeficiente.optionsOrder,
             communities: $DESCRIPTIONS.agent.comunidadesTradicional.optionsOrder,
+            education: $DESCRIPTIONS.agent.escolaridade.optionsOrder,
+            income: $DESCRIPTIONS.agent.renda.optionsOrder,
         };
     },
 
@@ -82,7 +90,6 @@ app.component('registration-field-persons', {
                 socialName: '',
                 cpf: '',
                 income: '',
-                function: '',
                 education: '',
                 telephone: '',
                 email: '',
@@ -94,6 +101,29 @@ app.component('registration-field-persons', {
                 area: [],
                 funcao: [],
             }) 
+        },
+
+        fieldError(person, field) {
+            const fieldNames = {
+                'name': 'Nome',
+                'fullName': 'Nome Completo',
+                'socialName': 'Nome Social',
+                'cpf': 'CPF',
+                'income': 'Renda',
+                'education': 'Escolaridade',
+                'telephone': 'Telefone do representante',
+                'email': 'Email',
+                'race': 'Raça / Cor',
+                'gender': 'Genero',
+                'sexualOrientation': 'Orientação sexaul',
+                'deficiencies': 'deficiências',
+                'comunty': 'povos ou comunidades',
+                'area': 'Áreas de atuação',
+                'funcao': 'funções/profissões',
+            };
+
+            const errors = this.registration.__validationErrors[this.prop];
+            return (errors?.some(str => str.toLowerCase().includes(fieldNames[field])) && person[field] == '') ?? false;
         },
 
         save() {

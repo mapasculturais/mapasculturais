@@ -55,6 +55,13 @@ class Taxonomy extends \MapasCulturais\Definition{
     public $restrictedTerms = [];
 
 
+    /**
+     * List of entities allowed for this taxonomy. If the list is empty, any term is allowed.
+     * @var array
+     */
+    public $entities = [];
+
+
     public $required = false;
 
     /**
@@ -78,11 +85,12 @@ class Taxonomy extends \MapasCulturais\Definition{
      * @see \MapasCulturais\App::getRegisteredTaxonomy()
      *
      */
-    public function __construct($id, $slug, $description, $restrictedTerms = false, $taxonomy_required = false) {
+    public function __construct($id, $slug, $description, $restrictedTerms = false, $taxonomy_required = false, $entities =  []) {
         $this->id = $id;
         $this->slug = $slug;
         $this->allowInsert = empty($restrictedTerms);
         $this->required = $taxonomy_required;
+        $this->entities = $entities;
         if(is_array($restrictedTerms))
             foreach($restrictedTerms as $term)
                 $this->restrictedTerms[mb_strtolower (trim($term))] = trim($term);

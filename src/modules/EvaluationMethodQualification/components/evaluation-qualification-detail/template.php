@@ -21,12 +21,16 @@ $this->import('
 
         <div>
             <p>
-                <label><?= i::__('Resultado: ') ?></label>
+                <label>
+                    <?= i::__('Resultado: ') ?>
+                </label>
                 <strong v-if="registration.consolidatedResult === 'Habilitado'" class="success__color">
                     <mc-icon name="circle" class="success__color"></mc-icon>{{registration.score}}
+                    {{registration.consolidatedResult}}
                 </strong>
                 <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="danger__color">
                     <mc-icon name="circle" class="danger__color"></mc-icon>{{registration.consolidatedResult}}
+                    {{registration.consolidatedResult}}
                 </strong>
             </p>
         </div>
@@ -39,18 +43,14 @@ $this->import('
             <h4 v-if="evaluation.valuer" class="registration-results__opinion-title bold">
                 <?= i::__('Parecerista: ') ?> {{evaluation.valuer.name}}
             </h4>
-            <h4 v-else class="registration-results__opinion-title bold">
-                <?= i::__('Parecerista: ') ?> #{{index+1}}
-            </h4>
 
             <p>
                 <label><?= i::__('Resultado: ') ?></label>
-
-                <strong v-if="registration.consolidatedResult === 'Habilitado'" class="success__color">
-                    <mc-icon name="circle" class="success__color"></mc-icon>{{registration.consolidatedResult}}
+                <strong v-if="evaluation.result === 'valid'" class="success__color">
+                    <mc-icon name="circle" class="success__color"></mc-icon><?= i::__('Habilitado') ?>
                 </strong>
-                <strong v-if="registration.consolidatedResult === 'Inabilitado'" class="danger__color">
-                    <mc-icon name="circle" class="danger__color"></mc-icon>{{registration.consolidatedResult}}
+                <strong v-if="evaluation.result === 'invalid'" class="danger__color">
+                    <mc-icon name="circle" class="danger__color"></mc-icon><?= i::__('Inabilitado') ?>
                 </strong>
             </p>
 
@@ -68,14 +68,19 @@ $this->import('
         <div class="registration-results__opinion registration-results__opinion--document">
             <h5 class="registration-results__opinion-title bold"><?= i::__('Detalhamento da avaliação') ?>:</h5>
             <ul>
-                <li v-for="section in evaluation.scores">
-                    {{section.name}}:
-                    <ul>
-                        <li v-for="cri in section.criteria">
-                            {{cri.name}}: {{ formatResult(cri.result) }}
-                        </li>
-                    </ul>
-                </li>
+                <template v-for="section in evaluation.scores">
+                    <li v-if="showSectionAndCriterion(section)">
+                        {{section.name}}:
+                        <ul>
+                            <li v-for="cri in section.criteria">
+                                {{cri.name}}:
+                                <strong v-if="cri.result[0] == 'valid'" class="success__color">{{ formatResult(cri.result) }}</strong>
+                                <strong v-if="cri.result[0] == 'invalid'" class="danger__color" style="white-space: pre-line;">{{ formatResult(cri.result) }}</strong>
+                            </li>
+                        </ul>
+                    </li>
+                </template>
+
             </ul>
 
         </div>

@@ -17,8 +17,8 @@
     
     &__length {
         text-align: right;
-        margin-right: 15px;
-        margin-top:-30px;
+        margin-right: size(10);
+        margin-top: size(-28);
         font-size: $font-size-xxs;
         font-style: italic;
         color: $low-300;
@@ -80,7 +80,14 @@
         & .input__checkboxLabel {
             display: flex;
             gap: size(8);
+            font-size: var(--mc-font-size-xxs);
+            font-weight: var(--mc-font-semibold);
         }
+    }
+
+    .input__radioLabel {
+        font-size: var(--mc-font-size-xxs);
+        font-weight: var(--mc-font-semibold);
     }
 
     &__color {
@@ -141,7 +148,7 @@
         font-weight: 600;
         line-height: size(19);
         gap: size(8);
-        align-items: center;
+        align-items: baseline;
     }
 
     &__checkbox {
@@ -169,7 +176,7 @@
             padding-left: size(35);
         }
         &.mc-multiselect--input{
-            padding-right: size(28);
+            padding: size(12.5) size(48) size(12.5) size(14);
         } 
     }
     
@@ -204,6 +211,7 @@
 
     input[type="checkbox"],
     input[type="radio"] {
+        flex: none;
         float: left;
         height: size(18);
         margin: 0;
@@ -223,10 +231,18 @@
     }
 
     &.error {
-        input, textarea, select {
-            background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(20);
+        input, textarea, select, .mc-select__selected-option {
+            background: url(https://api.iconify.design/fa6-solid/circle-exclamation.svg?color=red) no-repeat right size(16) center / size(16);
             border: size(2) solid #FF0000;
-            padding-right: size(50);
+            padding-right: size(40);
+        }
+
+        .mc-select__selected-option {
+            padding-right: size(60);
+
+            &::after {
+                right: size(45);
+            }
         }
 
         .dp__input_wrap {

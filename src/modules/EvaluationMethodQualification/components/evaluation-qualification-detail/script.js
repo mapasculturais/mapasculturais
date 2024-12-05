@@ -26,6 +26,7 @@ app.component('evaluation-qualification-detail', {
                 .map(value => {
                     if (value === "valid") return this.text('Habilitado');
                     if (value === "invalid") return this.text('Inabilitado');
+                    if (value === 'others') return undefined;
                     return value;
                 })
                 .join(", ");

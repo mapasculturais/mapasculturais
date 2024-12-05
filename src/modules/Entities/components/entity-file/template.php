@@ -11,6 +11,7 @@ $this->import('
     mc-confirm-button
     mc-modal
     mc-icon
+    mc-loading
 ');
 ?>
 <div v-if="file || editable" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName.replace('rfc_', 'file_')">
@@ -51,7 +52,9 @@ $this->import('
     </div>
 
     <mc-modal v-if="editable" :title="titleModal" classes="entity-file__modal">
-        <template #default>
+        <mc-loading :condition="loading"></mc-loading>
+
+        <template v-if="!loading" #default>
             <form @submit="upload(modal); $event.preventDefault();" class="entity-file__newFile">
                 <div class="grid-12">
                     <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile" :file="newFile">
@@ -80,8 +83,11 @@ $this->import('
             </form>
         </template>
 
-        <template #button="modal">
+        <template v-if="!loading" #button="modal">
             <slot name="button" :open="modal.open" :close="modal.close" :toggle="modal.toggle" :file="file">
+                <a v-if="defaultFile" class="entity-file__link entity-file__link--download bold" :download="defaultFile.name" :href="defaultFile.url">
+                    <mc-icon name="download"></mc-icon> <?php i::_e("Baixar modelo") ?>
+                </a>
                 <a v-if="!file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">
                     <mc-icon name="upload"></mc-icon> <?php i::_e("Enviar") ?>
                 </a>
@@ -91,7 +97,7 @@ $this->import('
             </slot>
         </template>
 
-        <template #actions="modal">
+        <template v-if="!loading" #actions="modal">
             <button class="col-6 button button--text" type="reset" @click="modal.close()"> <?php i::_e("Cancelar") ?> </button>
             <button class="col-6 button button--primary" type="submit" @click="upload(modal); $event.preventDefault();"> <?php i::_e("Enviar") ?> </button>
         </template>

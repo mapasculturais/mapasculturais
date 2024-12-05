@@ -1,6 +1,6 @@
 app.component('mc-entities', {
     template: $TEMPLATES['mc-entities'],
-    emits: ['fetch'],
+    emits: ['fetch', 'loading'],
 
     data() {
         return {
@@ -107,6 +107,9 @@ app.component('mc-entities', {
 
         getDataFromApi() {
             let query = {...this.query};
+            
+            this.$emit('loading', query);
+            
             this.populateQuery(query);
 
             const options = {list: this.entities, refresh: true};

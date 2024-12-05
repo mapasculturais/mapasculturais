@@ -5,12 +5,13 @@
         }
 
         .field{
-            #cep{
-                max-width: 10rem;
-            }
-
-            #complemento{
-                max-width: 18.25rem;
+            &__group {
+                .input__radioLabel {
+                    display: grid;
+                    font-weight: var(--mc-font-semibold);
+                    grid-template-columns: size(17) 1fr;
+                    gap: size(8);
+                }
             }
         }
     }

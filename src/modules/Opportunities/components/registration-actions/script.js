@@ -42,9 +42,9 @@ app.component('registration-actions', {
 
                     if(!autoSave) {
                         autoSave = true;
-                        
+
                         clearTimeout(self.autoSaveTimeout);
-    
+
                         self.autoSaveTimeout = setTimeout(() => {
                             self.save();
                         }, $MAPAS.config.registrationActions.autosaveDebounce);
@@ -56,17 +56,23 @@ app.component('registration-actions', {
 
     data() {
         return {
-            fields: $MAPAS.registrationFields,
+            fields: Vue.markRaw($MAPAS.registrationFields),
             hideErrors: false,
             isValidated: false,
             validationErrors: this.getEmptyValidationState(),
             descriptions: $DESCRIPTIONS.registration,
+            scrolling: false,
         }
     },
 
     computed: {
         canSubmit() {
             return this.isLastStep && this.isValidated;
+        },
+
+        fieldsMap () {
+            const entries = this.fields.map((field) => [field.fieldName, field]);
+            return Object.fromEntries(entries);
         },
 
         hasErrors() {
@@ -82,17 +88,43 @@ app.component('registration-actions', {
             return this.stepIndex === this.steps.length - 1;
         },
 
+        sortedValidationErrors () {
+            const errors = {};
+            for (const [stepIndex, step] of Object.entries(this.steps)) {
+                if (this.validationErrors[step._id]) {
+                    const stepErrors = this.validationErrors[step._id];
+                    const fieldEntries = Object.entries(stepErrors);
+                    fieldEntries.sort(([a], [b]) => {
+                        return Math.sign(this.fieldsMap[a].displayOrder - this.fieldsMap[b].displayOrder);
+                    });
+                    errors[stepIndex] = Object.fromEntries(fieldEntries);
+                }
+            }
+            return errors;
+        },
+
         step() {
             return this.steps[this.stepIndex];
         },
     },
 
     watch: {
-        stepIndex() {
-            this.isValidated = false;
+        async stepIndex() {
+            if (!this.scrolling) {
+                document.querySelector('.section__title')?.scrollIntoView({ behavior: 'instant', block: 'start' });
+            }
+            try {
+                this.registration.disableMessages();
+                await this.save();
+            } catch {
+                // `catch` is needed to avoid uncaught promise warnings
+            } finally {
+                this.registration.enableMessages();
+                this.isValidated = false;
+            }
         },
     },
-    
+
     methods: {
         toggleErrors() {
             this.hideErrors = !this.hideErrors;
@@ -100,7 +132,7 @@ app.component('registration-actions', {
 
         fieldName(field) {
             if (field == 'agent_instituicao') {
-                return this.text('Instituição responsável'); 
+                return this.text('Instituição responsável');
             }
 
             if (field == 'agent_coletivo') {
@@ -132,7 +164,7 @@ app.component('registration-actions', {
                     }
                 }
             }
-            
+
             if(this.descriptions[field]) {
                 return this.descriptions[field].label
             }
@@ -147,7 +179,7 @@ app.component('registration-actions', {
             if (this.registration.category) {
                 data.category = this.registration.category;
             }
-            
+
             try {
                 this.registration.disableMessages();
                 await this.save();
@@ -251,32 +283,30 @@ app.component('registration-actions', {
             });
         },
 
-        goToField(stepId, fieldName) {
-            this.goToStep(Number(stepId));
+        goToField(stepIndex, fieldName) {
+            this.goToStep(Number(stepIndex));
             this.$nextTick(() => {
-                document.querySelector(`[data-field="${fieldName}"]`)?.scrollIntoView({ behavior: 'smooth' });
+                this.scrolling = true;
+                window.setTimeout(() => this.scrolling = false, 100);
+                document.querySelector(`[data-field="${fieldName}"]`)?.scrollIntoView({ behavior: 'instant', block: 'center' });
             });
         },
 
-        goToStep(stepId) {
-            const stepIndex = this.steps.findIndex((step) => step._id == stepId);
+        goToStep(stepIndex) {
             if (stepIndex >= 0) {
                 this.$emit('update:stepIndex', stepIndex);
             }
         },
 
-        stepName(stepId) {
-            const stepIndex = this.steps.findIndex((step) => step._id == stepId);
-            return `${stepIndex + 1}. ${this.steps[stepIndex].name}`;
+        stepName(stepIndex) {
+            return `${Number(stepIndex) + 1}. ${this.steps[stepIndex].name}`;
         },
 
         async previousStep() {
-            await this.validateStep(this.step._id);
             this.$emit('update:stepIndex', this.stepIndex - 1);
         },
 
         async nextStep() {
-            await this.validateStep(this.step._id);
             this.$emit('update:stepIndex', this.stepIndex + 1);
         },
     },
