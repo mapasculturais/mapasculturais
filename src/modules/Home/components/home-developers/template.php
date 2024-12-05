@@ -10,7 +10,7 @@ use MapasCulturais\i;
         <span class="dev-icon"><mc-icon name="code"></mc-icon></span>
         <label class="home-developers__content--title"><?= $this->text('title',i::__('Alô desenvolvedores')) ?></label>
         <div class="home-developers__content--description">
-            <?= $this->text('description',i::__('O Mapa da Cultura é um software livre de gestão do fomento à cultura e mapeamento colaborativo. Ele foi criado de forma colaborativa pela hacklab/, órgãos públicos de cultura, organizações não governamentais, empresas e coletivos que acreditam na plataforma. Você pode contribuir para o seu desenvolvimento através do GitHub.')) ?>
+            <?= $this->text('description',i::__('O Mapas Culturais é um software livre de gestão do fomento à cultura e mapeamento colaborativo. Ele foi criado de forma colaborativa pela hacklab/, órgãos públicos de cultura, organizações não governamentais, empresas e coletivos que acreditam na plataforma. Você pode contribuir para o seu desenvolvimento através do GitHub.')) ?>
         </div>
         <div class="home-developers__content--link">
             <a class="link" href="https://github.com/culturagovbr/mapadacultura"> 

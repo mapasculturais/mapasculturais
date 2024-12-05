@@ -4,11 +4,11 @@ use MapasCulturais\i;
 return [
     'mailer.templates' => [
         'welcome' => [
-            'title' => i::__("Bem-vindo(a) ao Mapa da Cultura"),
+            'title' => i::__("Bem-vindo(a) ao Mapas Culturais"),
             'template' => 'welcome.html'
         ],
         'last_login' => [
-            'title' => i::__("Acesse o Mapa da Cultura"),
+            'title' => i::__("Acesse a Mapas Culturais"),
             'template' => 'last_login.html'
         ],
         'new' => [
@@ -16,15 +16,15 @@ return [
             'template' => 'new.html'
         ],
         'update_required' => [
-            'title' => i::__("Acesse o Mapa da Cultura"),
+            'title' => i::__("Acesse a Mapas Culturais"),
             'template' => 'update_required.html'
         ],
         'compliant' => [
-            'title' => i::__("Denúncia - Mapa da Cultura"),
+            'title' => i::__("Denúncia - Mapas Culturais"),
             'template' => 'compliant.html'
         ],
         'suggestion' => [
-            'title' => i::__("Mensagem - Mapa da Cultura"),
+            'title' => i::__("Mensagem - Mapas Culturais"),
             'template' => 'suggestion.html'
         ],
         'seal_toexpire' => [

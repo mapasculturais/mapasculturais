@@ -10344,7 +10344,7 @@ msgstr ""
 "territorios."
 
 #: src/modules/Home/components/home-map/template.php:14
-msgid "Visualize também no Mapa"
+msgid "Visualize também no mapa"
 msgstr "Visualice también en el mapa"
 
 #: src/modules/Home/components/home-map/template.php:15
@@ -10372,7 +10372,7 @@ msgid "Nenhuma oportunidade do momento foi encontrada."
 msgstr "No se encontró ninguna oportunidad del momento."
 
 #: src/modules/Home/components/home-register/template.php:15
-msgid "Faça seu cadastro e colabore com o Mapa da Cultura!"
+msgid "Faça seu cadastro e colabore com o Mapas Culturais"
 msgstr "Regístrate y colabora con Mapas Culturales"
 
 #: src/modules/Home/components/home-register/template.php:16
@@ -24469,7 +24469,7 @@ msgstr "Acerca del sitio web"
 #~ "organización de una agenda cultural y la difusión de espacios culturales "
 #~ "de los territorios."
 
-#~ msgid "Visualize também no Mapa"
+#~ msgid "Visualize também no mapa"
 #~ msgstr "Visualice también en el mapa"
 
 #~ msgid ""
@@ -24492,7 +24492,7 @@ msgstr "Acerca del sitio web"
 #~ msgid "Nenhuma oportunidade do momento foi encontrada."
 #~ msgstr "No se encontró ninguna oportunidad del momento."
 
-#~ msgid "Faça seu cadastro e colabore com o Mapa da Cultura!"
+#~ msgid "Faça seu cadastro e colabore com o Mapas Culturais"
 #~ msgstr "Regístrate y colabora con Mapas Culturales"
 
 #~ msgid ""
