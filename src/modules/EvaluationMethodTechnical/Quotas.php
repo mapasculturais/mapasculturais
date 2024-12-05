@@ -124,7 +124,7 @@ class Quotas {
 
             $this->quotaConfig[$quota_type_slug] = (object) [
                 'vacancies' => $rule->vacancies,
-                'percent' => $this->vacancies ? $rule->vacancies / $this->vacancies : 0,
+                'percent' => $this->vacancies ? (int) $rule->vacancies / $this->vacancies : 0,
             ];
         }
 
@@ -137,7 +137,7 @@ class Quotas {
 
             $this->rangesConfig[$range_name] = (object) [
                 'vacancies' => $range_vacancies, 
-                'percent' => $this->vacancies ? $range_vacancies / $this->vacancies : 0
+                'percent' => $this->vacancies ? (int) $range_vacancies / $this->vacancies : 0
             ];
 
             $this->rangeNames[] = $range_name;
@@ -451,7 +451,7 @@ class Quotas {
                     continue;
                 }
 
-                $range_vacancies = $this->rangesConfig[$range]->vacancies;
+                $range_vacancies = isset($this->rangesConfig[$range]) && isset($this->rangesConfig[$range]->vacancies) ? (int) $this->rangesConfig[$range]->vacancies : 0;
                 $range_quota_vacancies = [];
                 $range_total_quota_vacancies = 0;
                 foreach($this->quotaConfig as $quota_slug => $quota_config) {

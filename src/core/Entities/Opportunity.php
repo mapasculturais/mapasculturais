@@ -1185,8 +1185,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
-                $newFile->proponentTypes = $field->proponentTypes;
-                $newField->registrationRanges = $field->registrationRanges;
                 $newFile->step = $step->id;
                 $newFile->proponentTypes = $file->proponentTypes;
                 $newFile->registrationRanges = $file->registrationRanges;
@@ -1507,8 +1505,20 @@ abstract class Opportunity extends \MapasCulturais\Entity
                     $field_type = 'multiselect';
                 }
 
+                if($field->config['entityField'] == '@location') {
+                    $field_type = 'location';
+                }
+
+                if($field->config['entityField'] == '@links') {
+                    $field_type = 'links';
+                }
+
                 if($field->config['entityField'] == '@bankFields'){
                     $field_type = 'bankFields';
+                }
+                
+                if(in_array($field->config['entityField'], ['longDescription', 'shortDescription'])){
+                    $field_type = 'textarea';
                 }
 
             } else if ($field->fieldType == 'checkboxes') {
@@ -1528,7 +1538,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $def = $field->getFieldTypeDefinition();
 
             if($def->requireValuesConfiguration){
-                $cfg['options'] = $field->fieldOptions;
+                $cfg['options'] = [];
+                foreach ($field->fieldOptions as $option) {
+                    $option_parts = explode(':', $option, 2);
+                    if (count($option_parts) == 2) {
+                        $cfg['options'][$option_parts[0]] = $option_parts[1];
+                    } else {
+                        $cfg['options'][$option] = $option;
+                    }
+                }
             }
 
             if(is_callable($def->serialize)){

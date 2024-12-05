@@ -69,15 +69,27 @@
                 font-weight: 600;
             }
         }
+
+        .tabs-component__header--right {
+            position: sticky;
+            right: 0;
+        }
     }
 
     &__step-config {
-        align-items: flex-end;
-        display: flex;
-        margin: size(8) size(8) size(32);
+
+        & > * {
+            align-items: flex-end;
+            display: flex;
+            margin: size(8) size(8) size(32);
+        }
 
         .button--text-danger {
             flex: none;
         }
+    }
+
+    &__add-step {
+        width: max-content;
     }
 }

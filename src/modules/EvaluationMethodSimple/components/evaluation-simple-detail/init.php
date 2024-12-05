@@ -24,7 +24,7 @@ if($class == Registration::class) {
     foreach($related_agents as $group => $agents) {
         if($group == '@tiebreaker') {
             foreach($agents as $agent) {
-                if($agent->id == $app->user->profile->id) {
+                if($agent->id == $app->user->profile->id && $agent->status == 1) {
                     $is_minerva_group = true;
                 }
             }
@@ -39,11 +39,9 @@ if($class == Registration::class) {
 
         $evaluations = $entity->sentEvaluations;
 
-        foreach($evaluations as $eval) {
+        foreach ($evaluations as $eval) {
             $detail = $em->getEvaluationDetails($eval);
-            if ($evaluation_configuration->publishValuerNames){
-                $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
-            }
+            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
             $data['evaluationsDetails'][] = $detail;
         }
     }

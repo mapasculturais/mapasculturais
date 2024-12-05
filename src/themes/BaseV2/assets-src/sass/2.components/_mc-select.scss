@@ -33,14 +33,14 @@
             height: 0;
             position: absolute;
             right: size(24);
-            top: size(22);
+            top: calc(50% - size(2));
             width: 0;
         }
 
         &--open {
             &:after {
                 border-color: transparent transparent var(--mc-low-500) transparent;
-                top: size(16);
+                top: calc(50% - size(7));
             }
         }
     }

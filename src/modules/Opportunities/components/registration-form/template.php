@@ -11,6 +11,7 @@
     entity-file
     mc-card
     v1-embed-tool 
+    registration-field-address
     registration-field-persons
  ')
  ?>
@@ -18,31 +19,38 @@
     <?php $this->applyComponentHook("begin") ?>
     <form v-if="isValid" >
         <mc-card v-for="section in sections" class="registration-form__section">
-            <template v-if="section.title" #title>{{section.title}}</template>
+            <template v-if="section.title" #title>
+                {{section.title}}
+                <p v-if="section.description">{{section.description}}</p>
+            </template>
             <template #content>
-                <p>{{section.description}}</p>
                 <template v-for="field in section.fields" :key="field.fieldName || field.groupName">
+                    <registration-field-address v-if="field.fieldType == 'addresses'" 
+                        :registration="registration"
+                        :prop="field.fieldName"></registration-field-address>
+
                     <registration-field-persons v-if="field.fieldType == 'persons'" 
                         :registration="registration"
-                        :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
                         :prop="field.fieldName"></registration-field-persons>
                         
-                    <entity-field v-else-if="field.fieldName" 
+                    <entity-field v-else-if="field.fieldName && field.fieldType != 'addresses' && field.fieldType != 'persons'" 
                         :entity="registration" 
                         :prop="field.fieldName" 
-                        :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
                         :field-description="field.description" 
                         :max-length="field.maxSize" 
                         :autosave="60000"
-                        :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"></entity-field>
+                        description-first
+                        :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"
+                        :preserve-order="field.fieldType == 'checkboxes'"></entity-field>
 
                     <entity-file v-else-if="field.groupName" 
                         :entity="registration" 
-                        :disabled="editableFields ? !editableFields.includes(field.fieldName) : false"
                         :groupName="field.groupName" 
                         titleModal="<?php i::_e('Adicionar anexo') ?>" 
                         :title="field.title" 
-                        editable></entity-file>
+                        editable
+                        :required="field.required"
+                        :default-file="field?.template"></entity-file>
                 </template>
             </template>
         </mc-card>

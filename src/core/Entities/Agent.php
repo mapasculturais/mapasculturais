@@ -284,6 +284,7 @@ class Agent extends \MapasCulturais\Entity
     public function __construct($user = null) {
         $this->user = $user ? $user : App::i()->user;
         $this->type = 1;
+        $this->parentId = !App::i()->user->is('guest') ? App::i()->user->profile->id : null;
 
         parent::__construct();
     }
@@ -415,13 +416,14 @@ class Agent extends \MapasCulturais\Entity
             $parent = $app->repo('Agent')->find($parent);
         }
 
-        if($parent->equals($this->parent)) {
+        if($this->parent && $parent->equals($this->parent)) {
             return true;
-        }
+        } 
 
-        $this->nestedSetParent($parent);
-        if($parent)
+        if($parent) {
+            $this->nestedSetParent($parent);
             $this->setUser($parent->user);
+        }
     }
 
     function getParent(){

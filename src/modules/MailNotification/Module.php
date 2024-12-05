@@ -17,6 +17,8 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $config += [
+            'sendMailNotification.startRegistration' =>env('SEND_MAEL_START_REGISTRATION', true),
+            'sendMailNotification.sendRegistration' =>env('SEND_MAEL_SEND_REGISTRATION', true),
             'enabled' => true,
             'project_img_url' => "",
         ];
@@ -34,6 +36,10 @@ class Module extends \MapasCulturais\Module
         $self = $this;
 
         $app->hook("entity(Registration).send:after", function () use ($self) {
+            if(!$self->config['sendMailNotification.sendRegistration']) {
+                return;
+            }
+
             $sendMail = false;
             if($this->opportunity->isDataCollection) {
                 if($this->opportunity->isFirstPhase) {
@@ -51,6 +57,10 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook("entity(Registration).insert:finish", function () use ($self) {
+            if(!$self->config['sendMailNotification.startRegistration']) {
+                return;
+            }
+
             $sendMail = false;
             if($this->status ===  Registration::STATUS_DRAFT && $this->opportunity->isDataCollection) {
                 if($this->opportunity->isFirstPhase) {

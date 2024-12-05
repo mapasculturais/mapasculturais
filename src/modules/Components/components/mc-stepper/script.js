@@ -29,7 +29,11 @@ app.component('mc-stepper', {
         disableNavigation: {
             type: Boolean,
             default: false,
-        }
+        },
+        disabledSteps: {
+            type: Array,
+            default: () => [],
+        },
     },
 
     methods: {

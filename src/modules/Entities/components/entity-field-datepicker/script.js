@@ -169,11 +169,45 @@ app.component('entity-field-datepicker', {
             this.updateDateTime();
         },
 
+        onDateInput() {
+            if (this.modelDate && this.modelTime) {
+                let datetime = new McDate(this.modelDate)._date;
+                
+                datetime.setHours(this.modelTime.hours);
+                datetime.setMinutes(this.modelTime.minutes);
+        
+                this.change(datetime);
+                this.$emit('change', datetime);
+            }
+        },
+
         handleBlur(type) {
             if (type === 'date' && this.dateInput?.length === 10) {
-                this.inputValue('date');
+                const [day, month, year] = this.dateInput.split('/');
+                if (day && month && year) {
+                    this.modelDate = new McDate(`${year}-${month}-${day}`)._date;
+                    
+                    // Verifica se modelTime está definido, se não, define com a hora atual
+                    if (!this.modelTime) {
+                        this.modelTime = {
+                            hours: new Date().getHours(),
+                            minutes: new Date().getMinutes(),
+                            seconds: 0
+                        };
+                    }
+        
+                    this.updateDateTime();
+                }
             } else if (type === 'time' && this.timeInput?.length === 5) {
-                this.inputValue('time');
+                const [hours, minutes] = this.timeInput.split(':');
+                if (hours && minutes) {
+                    this.modelTime = {
+                        hours: parseInt(hours, 10),
+                        minutes: parseInt(minutes, 10),
+                        seconds: 0
+                    };
+                    this.updateDateTime();
+                }
             }
         },
 

@@ -34,7 +34,7 @@
 <div ng-if="field.config.entityField === '@location'">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' ">
-        {{key.split('_').pop()}}: {{item}}
+        <span>{{key.split('_').pop()}}: {{item}}</span>
     </div>
 </div>
 <div ng-if="field.config.entityField === '@links' || field.fieldType === 'links'">
