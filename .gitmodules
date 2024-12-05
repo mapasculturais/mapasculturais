@@ -5,3 +5,6 @@
 [submodule "src/plugins/AdminLoginAsUser"]
 	path = src/plugins/AdminLoginAsUser
 	url = https://github.com/mapasculturais/plugin-AdminLoginAsUser
+[submodule "src/themes/MapaMinC"]
+	path = src/themes/MapaMinC
+	url = https://github.com/culturagovbr/theme-MapaMinC.git
