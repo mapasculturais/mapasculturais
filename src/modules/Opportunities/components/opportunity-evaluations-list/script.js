@@ -117,13 +117,18 @@ app.component('opportunity-evaluations-list', {
             if (this.onlyMe) {
                 args['@onlyMe'] = true;
             }
-
+            
+            if(this.entity.opportunity.avaliableEvaluationFields?.['agentsSummary']) {
+                args['registration:@select']+= ',agentsData';
+            }
+            
             api = new API('opportunity');
             let url = api.createApiUrl('findEvaluations', args);
 
             await api.GET(url).then(response => response.json().then(objs => {
                 this.evaluations = objs.map(function(item){
                     return {
+                        agentsData: item.registration?.agentsData || [],
                         evaluationId: item.evaluation?.id,
                         registrationNumber: item.registration.number,
                         registrationId: item.registration.id,
