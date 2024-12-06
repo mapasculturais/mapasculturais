@@ -1461,6 +1461,10 @@ class Registration extends \MapasCulturais\Entity
     function _getAgentsData(){
         $exportData = [];
 
+        $app = App::i();
+
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).getAgentsData:before");
+
         $skip_fields = $this->skipFieldsEntityRelations();
         foreach($this->_getAgentsWithDefinitions() as $agent){
             $result =  $agent->jsonSerialize();
@@ -1479,6 +1483,8 @@ class Registration extends \MapasCulturais\Entity
 
             $exportData[$agent->definition->agentRelationGroupName] = $result;
         }
+
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).getAgentsData:after", [&$exportData]);
         
         return $exportData;
     }
