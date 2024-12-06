@@ -65,7 +65,8 @@ app.component('opportunity-evaluations-table', {
             ];
 
             if(this.avaliableEvaluationFields('agentsSummary')) {
-                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "owner?.name", slug: "agent"});
+                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "agentsData.owner?.name", slug: "agent"});
+                itens.splice(2, 0, { text: __('coletivo', 'opportunity-evaluations-table'), value: "agentsData.coletivo?.name", slug: "coletivo"});
             }
 
             return itens;

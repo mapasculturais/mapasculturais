@@ -4,6 +4,7 @@ use MapasCulturais\i;
 return [
     'inscrição' => i::__('Número da inscrição'),
     'agente' => i::__('Agente responsável'),
+    'coletivo' => i::__('Agente coletivo'),
     'resultado final' => i::__('Resultado final da avaliação'),
     'avaliador' => i::__('Avaliador'),
     'estado' => i::__('Estado'),
