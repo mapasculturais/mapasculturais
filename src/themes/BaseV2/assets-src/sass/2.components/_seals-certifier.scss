@@ -6,7 +6,7 @@
     gap: size(20);
     flex-wrap: wrap;
 
-    &__proponent {
+    &__proponent, &__category {
         gap: size(12);
 
         &--seals {
