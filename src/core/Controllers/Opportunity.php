@@ -612,7 +612,7 @@ class Opportunity extends EntityController {
         }
 
         $select = $query_data['registration:@select'] ?? 
-                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId';
+                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData';
 
         sort($registration_numbers);
         if($registration_numbers){
@@ -1054,6 +1054,7 @@ class Opportunity extends EntityController {
             foreach($_result as $key => $res){
                 if(!in_array("agentsSummary", array_keys($avaliableEvaluationFields))){
                     $_result[$key]['registration']['owner'] =  [];
+                    $_result[$key]['registration']['agentsData'] =  [];
                 }
             }
         }
