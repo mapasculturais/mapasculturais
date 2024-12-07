@@ -33,101 +33,127 @@ app.component('seals-certifier', {
     data() {
         return {
             proponentSeals: {},
+            categorySeals: {},
             sealsInfo: $MAPAS.config.sealsCertifier.seals,
             entityOpportunity: (this.entity.__objectType === 'opportunity') ? this.entity : (this.entity.opportunity || {}),
         }
     },
 
     mounted() {
-        this.initializeProponentSeals();
-    },
-
-    watch: {
-        proponentTypes: {
-            handler() {
-                this.syncProponentSeals();
-            },
-            deep: true
-        }
+        this.initializeSeals();
     },
 
     computed: {
-        proponentTypes() {
-            return this.entityOpportunity.registrationProponentTypes.length > 0
-                ? this.entityOpportunity.registrationProponentTypes
-                : ['default'];
+        types() {
+            return {
+                proponent: this.entityOpportunity.registrationProponentTypes?.length
+                    ? this.entityOpportunity.registrationProponentTypes
+                    : ['default'],
+                category: this.entityOpportunity.registrationCategories?.length
+                    ? this.entityOpportunity.registrationCategories
+                    : ['default'],
+            };
+        }
+    },
+
+    watch: {
+        'entityOpportunity.registrationProponentTypes': function(newProponentTypes) {
+            this.syncSeals('proponentSeals', newProponentTypes, this.proponentSeals);
         },
+
+        'entityOpportunity.registrationCategories': function(newCategories) {
+            this.syncSeals('categorySeals', newCategories, this.categorySeals);
+        }
     },
 
     methods: {
-        initializeProponentSeals() {
-            this.proponentTypes.forEach(proponentType => {
-                if (!this.entityOpportunity.proponentSeals) {
-                    this.entityOpportunity.proponentSeals = this.skeleton();
-                }
+        initializeSeals() {
+            Object.keys(this.types).forEach(group => {
+                this.types[group].forEach(type => {
+                    if (!this.entityOpportunity[`${group}Seals`]) {
+                        this.entityOpportunity[`${group}Seals`] = {};
+                    } else if (!this.entityOpportunity[`${group}Seals`]?.[type]) {
+                        this.entityOpportunity[`${group}Seals`][type] = [];
+                    }
 
-                this.proponentSeals[proponentType] = this.entityOpportunity.proponentSeals[proponentType] || [];
+                    const groupSeals = this.entityOpportunity[`${group}Seals`]?.[type] || [];
+                    if (group === 'proponent') {
+                        this.proponentSeals[type] = groupSeals;
+                    } else if (group === 'category') {
+                        this.categorySeals[type] = groupSeals;
+                    }
+                });
             });
         },
 
-        skeleton() {
-            const seals = {};
-
-            for (let proponentType of this.proponentTypes) {
-                seals[proponentType] = [];
-            }
-
-            return seals;
-        },
-
-        syncProponentSeals() {
-            const newProponentTypes = this.proponentTypes;
-            const oldProponentTypes = Object.keys(this.proponentSeals);
-
-            for (let proponentType of newProponentTypes) {
-                if (!oldProponentTypes.includes(proponentType)) {
-                    this.proponentSeals[proponentType] = [];
+        // não está sincronizando os selos selecionados de forma reativa
+        syncSeals(sealsGroup, sealsType, sealsObject) {
+            const newTypes = sealsType;
+            const oldTypes = Object.keys(sealsObject);
+            console.log('newTypes', newTypes);
+    
+            for (let type of newTypes) {
+                if (!oldTypes.includes(type)) {
+                    sealsObject[type] = [];
                 }
             }
+            
+            for (let type of oldTypes) {
+                if (!newTypes.includes(type)) {
+                    delete sealsObject[type]; 
+                    if (sealsGroup === 'categorySeals') {
+                        delete this.entityOpportunity.categorySeals[type];  
+                    }
 
-            for (let proponentType of oldProponentTypes) {
-                if (!newProponentTypes.includes(proponentType)) {
-                    delete this.proponentSeals[proponentType];
+                    if (sealsGroup === 'proponentSeals') {
+                        delete this.entityOpportunity.proponentSeals[type];  
+                    }
                 }
             }
-
-            this.entityOpportunity.proponentSeals = { ...this.proponentSeals };
+    
+            this.entityOpportunity[sealsGroup] = { ...sealsObject };
         },
 
         getSealDetails(sealId) {
             return this.sealsInfo.find(seal => seal.id === sealId) || {};
         },
 
-        modifySealList(proponentType, sealId, action) {
-            const seals = this.proponentSeals[proponentType];
-            const index = seals.indexOf(sealId);
+        modifySealList(type, sealId, action) {
+            const sealGroup = this.types.proponent.includes(type) ? 'proponentSeals' : 'categorySeals';
 
-            if (action === 'add' && index === -1) {
-                seals.push(sealId);
-            } else if (action === 'remove' && index !== -1) {
-                seals.splice(index, 1);
+            if (!this.entityOpportunity[sealGroup]) {
+                this.entityOpportunity[sealGroup] = {};
             }
+        
+            if (!this.entityOpportunity[sealGroup][type]) {
+                this.entityOpportunity[sealGroup][type] = [];
+            }
+        
+            const seals = this.entityOpportunity[sealGroup][type];
+            let index = seals.indexOf(sealId);
+        
+            if (action === 'add' && index === -1) seals.push(sealId);
+            if (action === 'remove' && index !== -1) seals.splice(index, 1);
 
-            this.entityOpportunity.proponentSeals = { ...this.proponentSeals };
             this.entityOpportunity.save();
         },
-
-        addSeal(proponentType, seal) {
-            this.modifySealList(proponentType, seal._id, 'add');
+        
+        addSeal(type, seal) {
+            this.modifySealList(type, seal._id, 'add');
         },
-
-        removeSeal(proponentType, sealId) {
-            this.modifySealList(proponentType, sealId, 'remove');
+        
+        removeSeal(type, sealId) {
+            this.modifySealList(type, sealId, 'remove');
         },
-
-        getSealQuery(proponentType) {
-            const selectedSealIds = this.proponentSeals[proponentType].join(',');
+        
+        getSealQuery(type) {
+            if (type === 'default') return [];
+            const sealGroup = this.types.proponent.includes(type) ? 'proponentSeals' : 'categorySeals';
+        
+            const selectedSeals = this[sealGroup]?.[type] || [];
+            const selectedSealIds = selectedSeals.join(',');
+        
             return selectedSealIds ? { id: `!IN(${selectedSealIds})` } : {};
-        }
+        },
     }
 });

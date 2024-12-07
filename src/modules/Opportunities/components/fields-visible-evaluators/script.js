@@ -68,7 +68,19 @@ app.component("fields-visible-evaluators", {
             }
         },
         fieldSkeleton() {
-            let _fields = [];
+            let _fields = [
+                {
+                    checked: false,
+                    fieldName: "agentsSummary",
+                    title: __("agentsSummary", "fields-visible-evaluators"),
+                },
+                {
+                    checked: false,
+                    fieldName: "spaceSummary",
+                    title: __("spaceSummary", "fields-visible-evaluators"),
+                },
+            ];
+            
             if($MAPAS?.config?.fieldsVisibleEvaluators[this.entity.opportunity.id]?.length > 0){
                 $MAPAS?.config?.fieldsVisibleEvaluators[this.entity.opportunity.id].forEach(item =>{
                     _fields.push(item);

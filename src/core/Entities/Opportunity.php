@@ -1252,6 +1252,27 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
             // Metadata
             foreach($importSource->meta as $key => $value) {
+                if($key == 'continuousFlow') {
+                    if($importSource->meta->isContinuousFlow && !$importSource->meta->hasEndDate) {
+                        $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                    }
+                    continue;
+                }
+
+                if($key == 'publishTimestamp') {
+                    if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
+                        $this->lastPhase->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                    }
+                    continue;
+                }
+                
+                if($key == 'registrationTo') {
+                    if($importSource->meta->isContinuousFlow && $importSource->meta->hasEndDate) {
+                        $this->$key = isset($value->date) ? new \DateTime($value->date) : null;
+                    }
+                    continue;
+                }
+
                 $this->$key = $value;
             }
 
