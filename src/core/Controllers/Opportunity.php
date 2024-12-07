@@ -544,17 +544,23 @@ class Opportunity extends EntityController {
     }
 
     protected function _getOpportunityCommittee($opportunity_id) {
+        $app = App::i();
+
         $opportunity = $this->_getOpportunity($opportunity_id);
 
         if (!$opportunity->evaluationMethodConfiguration) {
             return [];
         }
 
-        $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
-            '@select' => 'id,agent',
-            'owner' => "EQ({$opportunity->evaluationMethodConfiguration->id})",
-        ]);
-        $committee_relations = $committee_relation_query->find();
+        $committee_relations = [];
+        if($relations = $app->repo('EvaluationMethodConfigurationAgentRelation')->findBy(['owner' => $opportunity->evaluationMethodConfiguration->id])) {
+            foreach($relations as $relation) {
+                $committee_relations[] = [
+                    'id' => $relation->id,
+                    'agent' => $relation->agent->id,
+                ];
+            }
+        }
 
         $committee_ids = implode(
             ',',
@@ -608,7 +614,7 @@ class Opportunity extends EntityController {
         }
 
         $select = $query_data['registration:@select'] ?? 
-                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId';
+                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData';
 
         sort($registration_numbers);
         if($registration_numbers){
@@ -1050,6 +1056,7 @@ class Opportunity extends EntityController {
             foreach($_result as $key => $res){
                 if(!in_array("agentsSummary", array_keys($avaliableEvaluationFields))){
                     $_result[$key]['registration']['owner'] =  [];
+                    $_result[$key]['registration']['agentsData'] =  [];
                 }
             }
         }
@@ -1188,11 +1195,20 @@ class Opportunity extends EntityController {
             'registrationLimit',
             'registrationRanges',
             'registrationProponentTypes',
+            'isContinuousFlow',
+            'continuousFlow',
+            'hasEndDate',
+            'publishTimestamp',
+            'registrationTo'
         );
 
         $metadata = [];
 
         foreach ($opportunityMeta as $key) {
+            if($key == 'publishTimestamp') {
+                $metadata[$key] = $opportunity->lastPhase->{$key};
+                continue;
+            }
             $metadata[$key] = $opportunity->{$key};
         }
 

@@ -47,6 +47,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 <div class="main-app registration edit">
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
+        <template #button>
+            <mc-link class="button button--primary-outline" :entity="entity.opportunity" route="userEvaluations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
+        </template>
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
         </template>
