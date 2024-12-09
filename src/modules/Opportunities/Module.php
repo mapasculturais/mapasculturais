@@ -875,6 +875,11 @@ class Module extends \MapasCulturais\Module{
             'type' => 'json',
         ]);
 
+        $this->registerOpportunityMetadata('categorySeals', [
+            'label' => i::__('Selos de certificação para as categorias'),
+            'type' => 'json',
+        ]);
+
         $this->registerOpportunityMetadata('isContinuousFlow', [
             'label' => i::__('Edital de fluxo contínuo'),
             'type' => 'boolean',
