@@ -1,0 +1,74 @@
+@use '../0.settings/mixins' as *;
+
+.home-customizer {
+    display: grid;
+    gap: size(20);
+
+    &__content {
+        display: grid;
+        gap: size(30);
+    }
+
+    &__section {
+        border: var(--mc-border-hairline);
+        border-radius: var(--mc-border-radius-sm);
+        display: grid;
+        gap: size(12);
+        padding: size(10) size(25) size(25);
+    }
+    
+    &__section-legend {
+        padding: 0 size(10);
+    }
+
+    &__group {
+        align-items: center;
+        display: grid;
+        gap: size(12) size(20);
+        
+        &--hasImg {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    &__texts {
+        display: flex;
+        flex-direction: column;
+        gap: size(15);
+    }
+
+    &__image {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__image-title {
+        font-size: var(--mc-font-size-xxs);
+        font-weight: var(--mc-font-semibold);
+    }
+
+    &__uploader-content {
+        align-items: center;
+        border: size(1) dashed var(--mc-gray-500);
+        border-radius: var(--mc-border-radius-sm);
+        color: var(--mc-gray-500);
+        cursor: pointer;
+        display: flex;
+        min-height: size(96);
+        justify-content: center;
+        overflow: hidden;
+        min-width: size(416);  
+        
+        &:hover {
+            background-color: var(--mc-gray-300);
+            background-size: 105%;
+            color: var(--mc-gray-700);
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+}

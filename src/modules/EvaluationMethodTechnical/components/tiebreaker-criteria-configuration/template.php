@@ -36,6 +36,7 @@ $this->import('
                         <label>{{criterion.name}}</label>                    
                         <mc-select placeholder="Selecione um critério" :default-value="criterion.criterionType" @change-option="setCriterion($event, criterion.id)">
                             <option v-for="field in fields" :key="field.id" :value="field.fieldName">{{field.title}}</option>
+                            <option value="submissionDate"><?= i::__("Data de envio da inscrição") ?></option>
                             <option value="criterion"><?= i::__("Nota de um critério de avaliação") ?></option>
                             <option value="sectionCriteria"><?= i::__("Média de uma seção de critérios de avaliação") ?></option>
                         </mc-select>
@@ -69,6 +70,16 @@ $this->import('
                             <label>&nbsp;</label>
                             <mc-select placeholder="<?= i::esc_attr__('Selecione uma seção') ?>" v-model:default-value="criterion.preferences">
                                 <option v-for="section in sections" :key="section.id" :value="section.id"> {{section.name}} </option>
+                            </mc-select>
+                        </div>
+                    </template>
+                    
+                    <template v-if="criterion.criterionType == 'submissionDate'">
+                        <div class="field">
+                            <label>&nbsp;</label>
+                            <mc-select placeholder="<?= i::esc_attr__('Selecione a preferência') ?>" v-model:default-value="criterion.preferences">
+                                <option value="smallest"> <?= i::__('dar preferência ao mais antigo') ?> </option>
+                                <option value="largest"> <?= i::__('dar preferência ao mais recente') ?> </option>
                             </mc-select>
                         </div>
                     </template>

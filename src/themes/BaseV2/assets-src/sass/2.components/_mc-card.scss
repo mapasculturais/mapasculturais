@@ -9,6 +9,12 @@
     &__title {
         margin-bottom: size(24);
 
+        h1, h2, h3, h4, h5, h6 {
+            align-items: center;
+            display: flex;
+            gap: size(8);
+        }
+
         label {
             font-weight: 700;
             font-size: size(24);

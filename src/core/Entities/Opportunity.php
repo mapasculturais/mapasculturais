@@ -79,6 +79,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityDraft,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
+        Traits\EntityLock,
         Traits\EntityArchive{
             Traits\EntityNested::setParent as nestedSetParent;
             Traits\EntityAgentRelation::canUserCreateAgentRelationWithControl as __canUserCreateAgentRelationWithControl;
@@ -187,7 +188,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
      /**
      * @var string
      *
-     * @ORM\Column(name="registration_proponent_types", type="json", nullable=true)
+     * @ORM\Column(name="registration_proponent_types", type="json", nullable=false)
      */
     protected array $registrationProponentTypes = [];
 
@@ -513,9 +514,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     
     function getExtraEntitiesToRecreatePermissionCache(){
         $entities = $this->getAllRegistrations();
-        if($this->parent){
-            $entities[] = $this->parent;
-        }
+        
         return $entities;
     }
 
@@ -819,10 +818,17 @@ abstract class Opportunity extends \MapasCulturais\Entity
     function setRegistrationRanges(array $registration_ranges){
         $app = App::i();
         
+        $registration_ranges = array_map(function($range) {
+            if (isset($range['label'])) {
+                $range['label'] = trim($range['label']);
+            }
+            return $range;
+        }, $registration_ranges);
+
         $new_registration_ranges = $registration_ranges;
 
         $current_range_labels = array_map(fn ($range) => $range['label'], $this->registrationRanges);
-        $new_range_labels = array_map(fn ($range) => $range['label'], $registration_ranges);
+        $new_range_labels = array_map(fn ($range) => $range['label'], $new_registration_ranges);
 
         $removed_ranges = array_diff($current_range_labels, $new_range_labels);
 
@@ -1030,14 +1036,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).sendUserEvaluations:before", [$user]);
 
+        /** @var RegistrationEvaluation[] $evaluations */
         $evaluations = $app->repo('RegistrationEvaluation')->findByOpportunityAndUser($this, $user);
 
         $app->disableAccessControl();
         
         foreach($evaluations as $evaluation){
-            if($evaluation->status == 1) {
-                $evaluation->status = RegistrationEvaluation::STATUS_SENT;
-                $evaluation->save(true);
+
+            if($evaluation->status == RegistrationEvaluation::STATUS_EVALUATED) {
+                $evaluation->send(true);
             }
         }
 
@@ -1127,8 +1134,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $newFile->displayOrder = $file->displayOrder;
                 $newFile->conditional = $file->conditional;
                 $newFile->conditionalValue = $file->conditionalValue;
-                $newFile->proponentTypes = $field->proponentTypes;
-                $newField->registrationRanges = $field->registrationRanges;
+                $newFile->proponentTypes = $file->proponentTypes;
+                $newFile->registrationRanges = $file->registrationRanges;
 
                 $app->em->persist($newFile);
 
@@ -1269,8 +1276,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
         
         if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
 
-            if ($app->cache->contains($cache_key)) {
-                return $app->cache->fetch($cache_key);
+            if ($app->mscache->contains($cache_key)) {
+                return $app->mscache->fetch($cache_key);
             }
         }
 
@@ -1309,7 +1316,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
         if($app->config['app.useOpportunitySummaryCache']) {
-            $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
+            $app->mscache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
         }
 
         $app->applyHookBoundTo($this, "opportunity.summary", [&$data]);
@@ -1350,6 +1357,22 @@ abstract class Opportunity extends \MapasCulturais\Entity
         }
 
         return $data;
+    }
+
+    public function getRevisionData() {
+        $registration_fields = $this->registrationFieldConfigurations;
+        $registration_files = $this->registrationFileConfigurations;
+
+        $revision_data = [];
+        foreach($registration_fields as $field) {
+            $revision_data[$field->fieldName] = $field->jsonSerialize();
+        }
+
+        foreach($registration_files as $field) {
+            $revision_data[$field->fileGroupName] = $field->jsonSerialize();
+        }
+
+        return $revision_data;
     }
 
     function unregisterRegistrationMetadata(){

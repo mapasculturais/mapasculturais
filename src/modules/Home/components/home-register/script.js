@@ -5,6 +5,14 @@ app.component('home-register', {
         
     },
 
+    data() {
+        const subsite = $MAPAS.subsite;
+
+        return {
+            subsite
+        }
+    },
+
     methods: {
         
     },

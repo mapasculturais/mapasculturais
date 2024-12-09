@@ -21,7 +21,7 @@ $this->import('
             <input v-model="category" type="text" name="AddNewCategory" @keyup.enter="addCategory();autoSave()" placeholder="<?= i::__("Escreva aqui a categoria. Ex: Artes visuais") ?>" />
         </div>
 
-        <button @click="addCategory();autoSave()" class="button button--primary button--icon">
+        <button @click="addCategory();autoSave()" class="button button--primary button--icon" :class="!enabledButton() ? 'disabled' : ''">
             <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar categoria") ?></label>
         </button>
     </div>

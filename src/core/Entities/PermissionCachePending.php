@@ -3,6 +3,7 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 
 /**
  * Role
@@ -59,5 +60,16 @@ class PermissionCachePending extends \MapasCulturais\Entity {
 
     protected function canUserCreate($user) {
         return true;
+    }
+
+    public function save($flush = false)
+    {
+        parent::save($flush);
+
+        $app = App::i();
+
+        if($app->config['app.log.pcache']) {
+            $app->log->debug("CACHE PENDING: $this->objectType :: $this->objectId");
+        }
     }
 }

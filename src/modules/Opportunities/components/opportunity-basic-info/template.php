@@ -42,7 +42,7 @@ $this->import('
                 <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
                 <entity-field :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
 
-                <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="3000" classes="col-6">
+                <entity-field v-if="lastPhase" :entity="lastPhase" prop="publishTimestamp" :autosave="3000" classes="col-6 sm:col-12">
                     <label><?= i::__("Publicação final de resultados (data e hora)") ?></label>
                 </entity-field>
                 <?php $this->applyTemplateHook('opportunity-basic-info','afeter')?>

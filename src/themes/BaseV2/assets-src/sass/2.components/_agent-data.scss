@@ -30,7 +30,7 @@
 
     .input__label {
         display: flex;
-        align-items: flex-end;
+        gap: size(8);
         font-family: 'Open Sans';
         font-style: normal;
         font-weight: 600;

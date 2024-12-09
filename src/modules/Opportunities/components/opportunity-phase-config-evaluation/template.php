@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -8,6 +9,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-field
+    fields-visible-evaluators
     mc-confirm-button
     mc-modal
     opportunity-evaluation-committee
@@ -44,32 +46,23 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <?php endforeach; ?>
 
         <section class="col-12 evaluation-step__section">
+            <?php $this->applyComponentHook("evaluation-step-header", 'before') ?>
             <div class="evaluation-step__section-header">
+                <?php $this->applyComponentHook("evaluation-step-header", 'begin') ?>
                 <div class="evaluation-step__section-label">
                     <h3><?= i::__('Comissão de avaliação') ?></h3>
                 </div>
+                <?php $this->applyComponentHook("evaluation-step-header", 'end') ?>
             </div>
+            <?php $this->applyComponentHook("evaluation-step-header", 'after') ?>
 
             <div class="evaluation-step__section-content">
                 <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
-                <v1-embed-tool v-if="phase.type.id == 'qualification'" route="evaluationmanager" :id="phase.opportunity.id"></v1-embed-tool>
             </div>
         </section>
 
         <section class="evaluation-section col-12">
-            <div class="evaluation-section__header">
-                <span class="title"><?= i::__('Configurar campos visíveis para avaliação') ?></span>
-                <span class="subtitle"><?= i::__('Defina quais campos serão habilitados para avaliação.') ?></span>
-            </div>
-
-            <mc-modal title="<?= i::esc_attr__('Configurar campos visíveis para os avaliadores')?>" classes="modalEmbedTools">
-                <template #default="modal">
-                    <v1-embed-tool route="fieldsvisible" :id="phase.opportunity.id"></v1-embed-tool>
-                </template>
-                <template #button="modal">
-                    <button class="evaluation-fields-button button button--bg button--secondarylight" @click="modal.open"><?= i::__('Abrir campos') ?></button>
-                </template>
-            </mc-modal>
+            <fields-visible-evaluators :entity="phase"></fields-visible-evaluators>
         </section>
 
         <section class="evaluation-section col-12">
@@ -89,7 +82,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </div>
 
         <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
-    
+
         <div class="config-phase__line col-12"></div>
 
         <div class="col-12 sm:col-12">
@@ -97,11 +90,11 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </div>
 
         <div class="phase-delete col-12">
-            <mc-confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
+            <mc-confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?') ?>" @confirm="deletePhase($event, phase, index)">
                 <template #button="modal">
                     <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
-                            <mc-icon name="trash" class="secondary__color"></mc-icon> 
+                            <mc-icon name="trash" class="secondary__color"></mc-icon>
                         </div>
                         <h5><?= i::__("Excluir fase de avaliação") ?></h5>
                     </button>

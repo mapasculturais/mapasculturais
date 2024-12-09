@@ -58,8 +58,10 @@ app.component('entity-actions', {
     
     methods: {
         save() {
+            const event = new Event("entitySave");
             this.entity.save().then(() => {
-                this.exit();
+                window.dispatchEvent(event);
+                //this.exit();
             });
         },
         exit() {

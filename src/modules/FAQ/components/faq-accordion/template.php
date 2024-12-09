@@ -16,7 +16,7 @@ $this->import('
 <template v-for="section in data" class="faq-accordion">
     <template v-if="section.contexts.length > 0" v-for="context in section.contexts">
         <div class="faq-accordion__contexts">
-            <mc-title tag="h2" v-html="context.title" class="bold primary__color"></mc-title>
+            <h3 v-html="context.title" class="bold primary__color"></h3>
             <div v-html="context.description" class="faq-accordion__context semibold"></div>
         </div>
         <div class="faq-accordion__items">

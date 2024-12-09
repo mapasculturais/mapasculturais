@@ -423,6 +423,8 @@ abstract class Theme {
     public function fullRender($__template, $data = null){
         $app = App::i();
 
+        $app->applyHookBoundTo($this, 'view.render(' . $__template . ').params', [&$data, &$__template]);
+
         $__template_filename = strtolower(substr($__template, -4)) === '.php' ? $__template : $__template . '.php';
         $render_data = [];
 

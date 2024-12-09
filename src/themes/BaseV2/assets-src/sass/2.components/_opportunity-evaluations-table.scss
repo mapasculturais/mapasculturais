@@ -1,0 +1,9 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-evaluations-table {
+    &__actions {
+        align-items: center;
+        display: flex;
+        gap: size(20);
+    }
+}

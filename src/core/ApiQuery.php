@@ -2,6 +2,7 @@
 
 namespace MapasCulturais;
 
+use Apps\Entities\UserApp;
 use Doctrine\ORM\Query;
 use Exception;
 use MapasCulturais\Entities\Agent;
@@ -14,6 +15,7 @@ use MapasCulturais\Types\GeoPoint;
 
 class ApiQuery {
     use Traits\MagicGetter,
+        Traits\MagicSetter,
         Traits\MagicCallers;
     
     /**
@@ -867,7 +869,13 @@ class ApiQuery {
         }
 
         if ($order) {
-            $dql .= "\n\nORDER BY {$order}";
+            if($this->entityClassName === UserApp::class) {
+                $dql .= "\n\nORDER BY {$order}";
+            } else {
+                $dql .= "\n\nORDER BY {$order}, e.id ASC";
+            }
+        } else {
+            $dql .= "\n\nORDER BY e.id ASC";
         }
 
         return $dql;
@@ -3027,7 +3035,11 @@ class ApiQuery {
             } elseif (strtolower($key) == '@select') {
                 $this->_parseSelect($value);
             } elseif (strtolower($key) == '@order') {
-                $this->_order = $value;
+                if(in_array('createTimestamp', $this->entityProperties)) {
+                    $this->_order = $value . ',createTimestamp ASC';
+                } else {
+                    $this->_order = $value . ',id ASC';
+                }
             } elseif (strtolower($key) == '@offset') {
                 $this->_offset = $value;
             } elseif (strtolower($key) == '@page') {

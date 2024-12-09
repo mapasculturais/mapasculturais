@@ -3,6 +3,8 @@ namespace MapasCulturais\Traits;
 
 use Exception;
 use MapasCulturais\App;
+use MapasCulturais\Entities\User;
+use MapasCulturais\GuestUser;
 
 /**
  * Defines that the entity has metadata.
@@ -414,4 +416,13 @@ trait EntityMetadata{
             return '#';
         }
     }
+
+    protected function canUserModifyReadonlyData(User|GuestUser $user) : bool {
+        if($user->is('guest')) {
+            return false;
+        }
+
+        return $this->isUserAdmin($user);
+    }
+
 }

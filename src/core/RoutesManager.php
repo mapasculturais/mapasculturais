@@ -75,6 +75,7 @@ class RoutesManager{
                 $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => $e], false);
 
             } catch (Exceptions\PermissionDenied $e){
+                $app->response = $app->response->withHeader('Error-Code', $e->code);
                 $this->callAction($app->controller('site'), 'error', ['code' => 403, 'e' => $e], false);
 
             }  catch (Exceptions\WorkflowRequest $e){

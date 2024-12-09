@@ -21,7 +21,7 @@ $this->import('
 ?>
 <div class="entity-table">
     
-    <mc-entities :select="select" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" @fetch="resize()" watch-query>
+    <mc-entities :select="select" :raw-processor="rawProcessor" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" @fetch="resize()" watch-query>
 
         <template #header="{entities, filters}">
             <div v-if="!hideHeader" class="entity-table__header">
@@ -46,11 +46,13 @@ $this->import('
                     <template #header>
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
-                                <textarea ref="search" v-model="this.query['@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
-                                
-                                <button @click="keyword(entities)" class="entity-table__search-button">
-                                    <mc-icon name="search"></mc-icon>
-                                </button>
+                                <slot name="searchKeyword" :query="query">
+                                    <textarea ref="search" v-model="this.query['@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+                                    
+                                    <button @click="keyword(entities)" class="entity-table__search-button">
+                                        <mc-icon name="search"></mc-icon>
+                                    </button>
+                                </slot>
                             </div>
                             
                             <slot name="filters" :entities="entities" :filters="filters">
@@ -58,7 +60,7 @@ $this->import('
                         </div>
                     </template>
 
-                    <template #content>
+                    <template v-if="advancedFilters.length > 0 || hasSlot('advanced-filters')"  #content>
                         <div class="entity-table__advanced-filters custom-scrollbar">
                             <slot name="advanced-filters" :entities="entities" :filters="filters">
 
@@ -160,7 +162,7 @@ $this->import('
                         <tbody >
                             <tr v-for="(entity, index) in entities" :key="entity.__objectId">
                                 <td v-if="showIndex" class="entity-table__index sticky table-line">{{index+1}}</td>
-                                <template v-for="header in columns">
+                                <template v-for="header in columns" :key="header.slug">
                                     <td v-if="header.visible" :class="{sticky: header.sticky || header.stickyRight}" :style="headerStyle(header)">
                                         <slot :name="header.slug" :entity="entity" :refresh="refresh">
                                             {{getEntityData(entity, header.value)}}

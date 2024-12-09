@@ -17,7 +17,6 @@ app.component('entity-table', {
         controller: {
             type: String
         },
-        select: String,
         limit: {
             type: Number,
             default: 50
@@ -50,10 +49,6 @@ app.component('entity-table', {
             type: String,
             default: 'find'
         },
-        showIndex: {
-            type: Boolean,
-            default: false
-        },
         sortOptions: {
             type: Array,
             default: [
@@ -63,14 +58,25 @@ app.component('entity-table', {
                 { value: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
             ]
         },
+        identifier: {
+            type: String,
+            required: true,
+        },
+        filtersDictComplement: {
+            type: [Boolean, Object],
+            default: false
+        },
+        select: String,
+        showIndex: Boolean,
         hideFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
         hideHeader: Boolean,
+        rawProcessor: Function,
     },
 
     created() {
-        const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
+        const visible = localStorage[this.sessionTitle] ? localStorage[this.sessionTitle].split(",") : this.visible instanceof Array ? this.visible : this.visible.split(",");
         const required = this.required instanceof Array ? this.required : this.required.split(",");
 
         this.originalQuery = JSON.parse(JSON.stringify(this.query));
@@ -109,6 +115,15 @@ app.component('entity-table', {
     },
 
     data() {
+        const id = this.query['@opportunity'] ?? '';
+        const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
+
+        const getSeals = $MAPAS.config.entityTable.seals;
+        let seals = {}
+        for (const seal of getSeals) {
+            seals[seal.id] = seal.name;
+        }
+
         return {
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
@@ -122,12 +137,25 @@ app.component('entity-table', {
             ready: false,
             tableWidth: 'auto',
             headerHeight: 'auto',
+            opportunityTypes: $DESCRIPTIONS.opportunity.type.options,
+            projectTypes: $DESCRIPTIONS.project.type.options,
+            spaceTypes: $DESCRIPTIONS.space.type.options,
+            seals,
+            sessionTitle,
+            opportunityTypes: $DESCRIPTIONS.opportunity.type.options,
+            projectTypes: $DESCRIPTIONS.project.type.options,
+            spaceTypes: $DESCRIPTIONS.space.type.options,
+            seals,
         }
     },
 
     watch: {
         columns: {
             handler(){
+                if (this.showIndex) {
+                    localStorage.setItem(this.sessionTitle, this.visibleColumns.map((column) => column.slug));
+                }
+
                 if(this.$refs.contentTable) {
                     this.$refs.contentTable.style.width = 'auto';
                 }
@@ -152,14 +180,18 @@ app.component('entity-table', {
         advancedFilters() {
             let filters = {};
 
-            for (let visibleColumn of this.visibleColumns) {
-                const description = this.$description[visibleColumn.slug];
+            if (this.$description) {
+                for (let visibleColumn of this.visibleColumns) {
+                    const description = this.$description[visibleColumn.slug];
 
-                if (description && description.hasOwnProperty('options')) {
-                    if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0) {
-                        filters[visibleColumn.slug] = {
-                            label: description.label,
-                            options: description.options, 
+                    if (description && description.hasOwnProperty('options')) {
+                        let isDisabledPerson = description?.registrationFieldConfiguration?.config?.entityField === 'pessoaDeficiente';
+
+                        if (visibleColumn.slug !== 'status' && Object.keys(description.options).length > 0 && !isDisabledPerson) {
+                            filters[visibleColumn.slug] = {
+                                label: description.label,
+                                options: description.options, 
+                            }
                         }
                     }
                 }
@@ -177,6 +209,16 @@ app.component('entity-table', {
             delete query['@order'];
             delete query['@select'];
             delete query['@page'];
+            delete query['@permission'];
+            delete query['@permissions'];
+            delete query['action'];
+            delete query['userId'];
+            delete query['ip'];
+            delete query['sessionId'];
+           
+            if (this.type == 'agent') {
+                delete query['type']
+            }
 
             let result = [];
             for (let key of Object.keys(query)) {
@@ -198,17 +240,42 @@ app.component('entity-table', {
 
     methods: {
         getFilterLabels(prop, value) {
-            // Exemplo: 
-            //      key = status  value = EQ(1)
+            const propLabels = {
+                '@keyword': __('palavras-chave', 'entity-table'),
+                '@date': __('data', 'entity-table'),
+                '@pending': __('pendente', 'entity-table'),
+                'idoso': __('pessoa idosa', 'entity-table'),
+                'acessibilidade': __('acessibilidade', 'entity-table'),
+            };
 
-            if (prop == '@keyword' && value != '') {
-                return [{prop, value, label: __('palavras-chave', 'entity-table')}]
+            if (prop === '@verified' && value === 1) {
+                return null;
             }
-            
+        
+            if (propLabels[prop] && (value != '' || prop === '@pending')) {
+                return [{ prop, value: prop === '@pending' ? 'null' : value, label: propLabels[prop] }];
+            }
+        
+            const typeMappings = {
+                'opportunity': this.opportunityTypes,
+                'project': this.projectTypes,
+                'space': this.spaceTypes,
+                '@seals': this.seals
+            };
+        
+            if (typeMappings[prop] || (prop === 'type' && typeMappings[this.type])) {
+                let values = this.getFilterValues(value);
+                if (values) {
+                    let typeKey = prop === 'type' ? this.type : prop;
+                    let typeMap = typeMappings[typeKey];
+                    return values.map(val => ({ prop, value: val, label: typeMap[val] || val }));
+                }
+            }
+        
             let values = this.getFilterValues(value);
             if (values) {
-                if (prop == 'status') {
-                    let statusDict = {
+                if (prop == 'status' || prop == '@pending' || prop == '@filterStatus' || prop == '@evaluationId') {
+                    let _filtersDict = {
                         '0': __('rascunhos', 'entity-table'),
                         '1': __('publicadas', 'entity-table'),
                         '-10': __('lixeira', 'entity-table'),
@@ -216,7 +283,7 @@ app.component('entity-table', {
                     }
 
                     if(this.type == 'registration') {
-                        statusDict = {
+                        _filtersDict = {
                             '0': __('rascunhos', 'entity-table'),
                             '1': __('pendentes', 'entity-table'),
                             '2': __('invalidas', 'entity-table'),
@@ -227,64 +294,86 @@ app.component('entity-table', {
                     }
 
                     if(this.type == 'payment') {
-                        statusDict = {
+                        _filtersDict = {
                             '0': __('pendente', 'entity-table'),
                             '1': __('em processo', 'entity-table'),
-                            '2': __('disponivel', 'entity-table'),
-                            '3': __('falha', 'entity-table'),
-                            '8': __('exportado', 'entity-table'),
+                            '2': __('falha', 'entity-table'),
+                            '3': __('exportado', 'entity-table'),
+                            '8': __('disponivel', 'entity-table'),
                             '10': __('pago', 'entity-table'),
                         }
                     }
 
-                    return values.map((value) => { 
-                        return {prop, value, label: statusDict[value]} 
-                    });
-                }
+                    if (this.endpoint == 'findEvaluations') {
+                        _filtersDict = {
+                            'all': __('Todas', 'entity-table'),
+                            'pending': __('Avaliações pendente', 'entity-table'),
+                            '0': __('Avaliações iniciadas', 'entity-table'),
+                            '1': __('Avaliações concluídas', 'entity-table'),
+                            '2': __('Avaliações enviadas', 'entity-table'),
+                        }
+                    }
 
-                const fieldDescription = this.$description[prop];
-                if (fieldDescription.field_type == 'select') {
+                    filtersDict = _filtersDict;
+                    if(this.filtersDictComplement && this.filtersDictComplement.type == this.type || this.filtersDictComplement.type == this.endpoint) {
+                        filtersDict = {
+                            ..._filtersDict,
+                            ...this.filtersDictComplement.dict
+                        }
+                    }
+
                     return values.map((value) => { 
-                        return {prop, value, label: fieldDescription.options[value]}
-                    });
-                } else {
-                    return values.map((value) => { 
-                        return {prop, value, label: value.replace(/(\\)/g, '')}
+                        return {prop, value, label: filtersDict[value]} 
                     });
                 }
-            } else {
-                return null;
+        
+                const fieldDescription = this.$description[prop];
+                if (fieldDescription?.field_type === 'select') {
+                    return values.map(val => ({ prop, value: val, label: fieldDescription.options[val] || val }));
+                } else {
+                    return values.map(val => {
+                        const label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
+                        return { prop, value: val, label };
+                    });
+                }
             }
+        
+            return null;
         },
 
         getFilterValues(value) {
             // Exemplos: 
-            //      EQ(10), EQ(preto), IN(8, 10), IN(preto, pardo)                
-            let values = /(EQ|IN|GT|GTE|LT|LTE)\(([^\)]+,?)+\)/.exec(value); 
+            //      EQ(10), EQ(preto), IN(8, 10), IN(preto, pardo)
+            let values = /(EQ|IN|IIN|GT|GTE|LT|LTE)\((.+)\)/.exec(value); 
             let exclude = ['GT','GTE','LT','LTE'];
 
             if (values) {
                 const operator = values[1];
                 const _values = values[2];
-                
+            
                 if (exclude.includes(operator)) {
                     return null;
                 }
-                
+            
+                if (operator == '@pending') {
+                    return 'null';
+                }
+            
                 if (_values) {
-                    if(operator == 'IN') {
-                        values = _values.replace(/([^\\]),/g, '$1%break%');
+                    if (operator == 'IN' || operator == 'IIN') {
+                        let commaValues = _values.startsWith(',') ? _values.slice(1) : _values;
+                        values = commaValues.replace(/([^\\]),/g, '$1%break%');
                     } else {
                         values = _values;
                     }
-                    
+            
                     return values.split('%break%').filter(value => value.trim());
                 } else {
                     return null;
                 }
+            } else {
+                return null;
             }
-
-            return null;
         },
 
         parseSlug(header) {
@@ -379,6 +468,8 @@ app.component('entity-table', {
             if (filter.prop == '@keyword') {
                 delete this.query[filter.prop];
                 this.searchText = '';
+            } else if (filter.prop == '@pending'){ 
+                delete this.query[filter.prop];
             } else {
                 if (_values) {
                     let operator = _values[1];
@@ -444,7 +535,7 @@ app.component('entity-table', {
 
         setColumnWidth(slug) {
             const col = this.$refs['column-' + slug]?.[0] ?? this.$refs['column-' + slug] ?? null;
-            if(col) {
+            if(col && !(col instanceof Array)) {
                 const rect = col.getBoundingClientRect();
                 this.columnsLeft[slug] = this.totalWidth + 'px';
                 this.columnsWidth[slug] = rect.width + 'px';
@@ -485,7 +576,7 @@ app.component('entity-table', {
                     this.setColumnRight(column.slug);
                 }
                 
-                if(this._ready){
+                if(this._ready && this.$refs.headerTable){
                     this.ready = this._ready;
                     this.headerHeight = this.$refs.headerTable.offsetHeight + 20;
                 }

@@ -8,6 +8,7 @@ use MapasCulturais\i;
 $this->import('
     mc-link
     mc-icon
+    registration-form-timeline
     registration-status
 ');
 ?>
@@ -31,6 +32,10 @@ $this->import('
                     {{item.publishTimestamp.time()}}
                 </span>
             </div>
+            
+            <template v-if="registration && item.isFirstPhase">
+                <registration-form-timeline :entity="registration"></registration-form-timeline>
+            </template>
 
             <template v-if="registration">
                 <?php $this->applyComponentHook('registration', 'begin'); ?>

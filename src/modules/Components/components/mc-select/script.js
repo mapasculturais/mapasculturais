@@ -30,6 +30,7 @@ app.component('mc-select', {
 
         options: {
             type: Array,
+            default: []
         },
     },
 
@@ -168,7 +169,6 @@ app.component('mc-select', {
             const result = [];
             
             for(let option of this.options) {
-                // debugger;
                 if (typeof option == "string") {
                     result.push({
                         value: option,
@@ -185,7 +185,7 @@ app.component('mc-select', {
 
     methods: {
         focus() {
-            const inputs = this.$refs.filter.getElementsByTagName('input');
+            const inputs = this.$refs.selected.getElementsByTagName('input');
             if (inputs.length) {
                 setTimeout(() => {
                     if (inputs[0].getAttribute("type") == 'text') {

@@ -69,7 +69,7 @@ return array(
 
         'registrationLimitPerOwner' => array(
             'type' => 'integer',
-            'label' => \MapasCulturais\i::__('Limite de instritos por agente'),
+            'label' => \MapasCulturais\i::__('Limite de inscritos por agente'),
             // 'description' => \MapasCulturais\i::__('Defina o limite de inscritos por agente responsável pela avaliação.'),
             'validations' => array(
                 "v::intVal()" => \MapasCulturais\i::__("O número máximo de inscrições por agente responsável deve ser um número inteiro")
@@ -222,6 +222,7 @@ return array(
         'projectName' => array(
             'label' => \MapasCulturais\i::__('Nome do Projeto'),
             'type' => 'select',
+            'default' => '0',
             'options' => (object) array(
                 '0' => \MapasCulturais\i::__('Não Utilizar'),
                 '1' => \MapasCulturais\i::__('Opcional'),
@@ -245,11 +246,26 @@ return array(
             'label' => \MapasCulturais\i::__('Total de vagas'),
             // 'description' => \MapasCulturais\i::__("Quantidades de vagas que esse edital irá disponibilizar."),
         ),
+        
+        'requestAgentAvatar' => array(
+            'label' => \MapasCulturais\i::__('Solicitar avatar'),
+            'type' => 'radio',
+            'default' => '0',
+            'options' => (object) array(
+                '0' => \MapasCulturais\i::__('Desabilitado'),
+                '1' => \MapasCulturais\i::__('Habilitado'),
+            ),
+            'unserialize' => function($value) {
+               return ($value == 0 || $value == "" || $value == "0") ? false : true;
+            }
+        ),
+
         'isModel' => array(
             'type' => 'integer',
             'label' => \MapasCulturais\i::__('É modelo?'),
             'default_value' => 0
         ),
+        
         'isModelPublic' => array(
             'type' => 'integer',
             'label' => \MapasCulturais\i::__('É modelo público?'),

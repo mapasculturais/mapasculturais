@@ -18,8 +18,8 @@ $this->import('
         <div v-for="(section, index) in entity.sections" :key="index" class="technical-assessment-section__card">
             <div class="technical-assessment-section__header">
                 <div class="title">
-                    <input class="title__input" v-if="editingSections[section.id]" type="text" v-model="section.name" @keyup="change()" @blur="editSections(section.id);" placeholder="<?= i::esc_attr__('Nome sessão') ?>">
-                    <input class="title__input bold" v-if="!editingSections[section.id]" type="text" :value="section.name" @blur="editSections(section.id);" disabled placeholder="<?= i::esc_attr__('Nome sessão') ?>">
+                    <input class="title__input" v-if="editingSections[section.id]" type="text" v-model="section.name" @keyup="change()" @blur="editSections(section.id);" placeholder="<?= i::esc_attr__('Nome seção') ?>">
+                    <input class="title__input bold" v-if="!editingSections[section.id]" type="text" :value="section.name" @blur="editSections(section.id);" disabled placeholder="<?= i::esc_attr__('Nome seção') ?>">
                     <div class="title__buttons">
                         <button class="button button--text" @click="editSections(section.id)">
                             <mc-icon name="edit"></mc-icon>
@@ -35,7 +35,7 @@ $this->import('
                                     </button>
                                 </template>
                                 <template #message="message">
-                                    <?= i::__('Deseja deletar a sessão?') ?>
+                                    <?= i::__('Deseja deletar a seção?') ?>
                                 </template>
                             </mc-confirm-button>
                         </div>
@@ -52,9 +52,9 @@ $this->import('
                 <div v-for="(criteria, index) in entity.criteria" :key="index">
                     <div class="criterion" v-if="criteria.sid == section.id">
                         <div class="criterion__fields">
-                            <input type="text" v-model="criteria.title" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaTitleInput">
-                            <input type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>">
-                            <input type="number" v-model="criteria.weight" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Peso') ?>">
+                            <input type="text" v-model="criteria.title" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Nome do critério') ?>" ref="criteriaTitleInput" >
+                            <input type="number" v-model="criteria.max" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Pontuação máxima') ?>" step="0.25">
+                            <input type="number" v-model="criteria.weight" @keyup="save(1500)" placeholder="<?= i::esc_attr__('Peso') ?>" step="0.25">
                         </div>
                         <div class="field__trash">
                             <mc-confirm-button @confirm="delCriteria(criteria.id)">
@@ -91,7 +91,7 @@ $this->import('
         </div>
         <div class="field">
             <label><?php i::_e("Nota de corte:") ?>
-                <input class="field__input" type="number" v-model="entity.cutoffScore" min="0" @blur="change()" placeholder="<?= i::esc_attr__('Nota de corte') ?>">
+                <input class="field__input" type="number" v-model="entity.cutoffScore" min="0" step="0.25" @blur="change()" placeholder="<?= i::esc_attr__('Nota de corte') ?>">
             </label>
         </div>
     </div>
@@ -100,7 +100,7 @@ $this->import('
         <button @click="addSection" class="button button--primary button--icon">
             <mc-icon name="add"></mc-icon>
             <label>
-                <?php i::_e("Adicionar sessão de critérios de avaliação") ?>
+                <?php i::_e("Adicionar seção de critérios de avaliação") ?>
             </label>
         </button>
     </div>

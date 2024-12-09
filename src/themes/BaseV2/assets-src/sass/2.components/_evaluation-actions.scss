@@ -1,0 +1,67 @@
+@use '../0.settings/mixins' as *;
+
+.evaluation-actions {
+    padding-top: size(24);
+
+    .modal-content {
+        max-width: size(732);
+    }
+
+    &__buttons {
+        &__saveafter, &__reopen {
+            display: block;
+            background-color: #FFCF8F;
+            color: var(--mc-black);
+            border-color:  #FFCF8F;
+            &:hover {
+                background-color:var(--mc-white);
+                color: var(--mc-black);
+                border-color:  #FFCF8F;
+            }
+
+            svg {
+                float: left;
+                font-size: size(16);
+            }
+        }
+        
+        &__send, &__finalcontinue {
+            display: block;
+            text-align: center;
+            background-color: #BFE88B;
+            color: var(--mc-black);
+            border-color: #BFE88B;
+            &:hover {
+                background-color: var(--mc-white);
+                color: var(--mc-black);
+                border-color: #BFE88B;
+            }
+            .arrow-icon {
+                float: right;
+                font-size: size(16);
+            }
+
+            .send-icon {
+                float: left;
+                font-size: size(16);
+            }
+        }
+
+        &__final {
+            display: block;
+            background-color: #99D6FF;
+            color: var(--mc-black);
+            border-color: #99D6FF;
+            &:hover {
+                background-color: var(--mc-white);
+                color: var(--mc-black);
+                border-color: #99D6FF;
+            }
+
+            svg {
+                float: left;
+                font-size: size(16);
+            }
+        }
+    }
+}

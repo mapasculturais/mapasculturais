@@ -1,11 +1,12 @@
 # Componente `<mc-map-marker>`
+O componente `mc-map-marker` é utilizado para exibir um marcador em um mapa. Este componente permite que o marcador seja arrastável e emite eventos quando o marcador é movido.
 
 ### Eventos
-- **moved** - Disparado quando o 
+- **moved** - Emitido quando o marcador é movido. O evento carrega os detalhes da nova posição do marcador.
 
 ## Propriedades
-- *Entity **entity*** - Entidade
-- *Boolean **draggable** = false* - Indica se o pin deve ser arrastável
+- *Entity **entity*** - A entidade associada ao marcador. Esta propriedade é obrigatória.
+- *Boolean **draggable** = Define se o marcador é arrastável. O valor padrão é `false`.
 
 ## Slots
 - **default** : Popup? @todo
@@ -23,4 +24,7 @@ $this->import('mc-map-marker');
 <mc-map>
     <mc-map-marker :entity="entity"></mc-map-marker>
 </mc-map>
+
+<!-- Marcador Arrastável -->
+ <mc-map-marker :entity="entity" :draggable="true" @moved="handleMarkerMoved($event)"></mc-map-marker>
 ```

@@ -421,6 +421,10 @@
                                     gap: size(10);
                                     line-height: size(25);
                                     margin-bottom: size(4);
+                                }
+
+                                &__mandatory {
+                                    margin-bottom: size(12);
 
                                     .obrigatory {
                                         color: var(--mc-error);
@@ -441,9 +445,15 @@
                                     margin-top: size(16);
 
                                     .owner {
-                                        align-items: center;
-                                        display: flex;
-                                        gap: size(9);
+                                        display: grid;
+                                        grid-template-columns: 1fr auto;
+                                        gap: size(8);
+
+                                        &__content {
+                                            display: flex;
+                                            flex-direction: column;
+                                            justify-content: space-between;
+                                        }
 
                                         &__image {
                                             align-items: center;

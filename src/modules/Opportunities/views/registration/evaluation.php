@@ -1,5 +1,7 @@
 <?php
+
 use MapasCulturais\i;
+
 $this->layout = 'registrations';
 $this->import('
     mc-breadcrumb
@@ -34,7 +36,7 @@ $this->breadcrumb = $breadcrumb;
 
 if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
     $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
-}else{
+} else {
     $userEvaluator = $app->user;
 }
 ?>
@@ -57,20 +59,20 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                     <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
                 </opportunity-evaluations-list>
             </aside>
-            
+
             <main class="col-6 grid-12">
-                <?php if($entity->opportunity->evaluationMethod->slug === "documentary"):?>
-                   <div class="col-12">
-                       <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo')?></mc-alert>
-                   </div>
-                <?php endif;?>
+                <?php if ($entity->opportunity->evaluationMethod->slug === "documentary") : ?>
+                    <div class="col-12">
+                        <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo') ?></mc-alert>
+                    </div>
+                <?php endif; ?>
                 <mc-summary-agent :entity="entity" classes="col-12"></mc-summary-agent>
                 <registration-info :registration="entity" classes="col-12"></registration-info>
                 <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
                 <h3 class="col-12"><?= i::__('Dados informados no formulário') ?></h3>
                 <mc-summary-spaces :entity="entity" classes="col-12"></mc-summary-spaces>
                 <mc-summary-project :entity="entity" classes="col-12"></mc-summary-project>
-                
+
 
                 <section class="col-12 section">
                     <div class="col-12">
@@ -91,16 +93,12 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                     <div class="registration__actions">
                         <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
                         <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-                            <?php if ($valuer_user) : ?>
-                                <v1-embed-tool route="evaluationforms/uid:<?= $valuer_user->id ?>" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                            <?php else : ?>
-                                <v1-embed-tool route="evaluationforms" iframe-id="evaluation-form" :id="entity.id"></v1-embed-tool>
-                            <?php endif ?>
-                        </div>
-                        <registration-evaluation-actions :registration="entity"></registration-evaluation-actions>
+                        
+                        <?php $this->part("{$entity->opportunity->evaluationMethod->slug}/evaluation-form"); ?>
                     </div>
                 </div>
-            </aside>
         </div>
+        </aside>
     </div>
+</div>
 </div>

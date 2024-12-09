@@ -1,9 +1,8 @@
 # Componente `<mc-map-card>`
-Card das entidades que aparece na popup dos mapas
+O componente `mc-map-card` é utilizado para exibir informações detalhadas sobre uma entidade em formato de cartão. Ele inclui detalhes como nome, tipo, endereço, acessibilidade e áreas de atuação da entidade.
   
 ## Propriedades
-- *Entity **entity*** - Entidade
-
+- *Entity **entity*** - Entidade que será exibida no cartão. Esta propriedade é obrigatória.
 
 ### Importando componente
 ```PHP

@@ -219,8 +219,8 @@
 
     module.controller('SupportForm',['$scope', 'SupportService','$window', function($scope, SupportService, $window){        
         $scope.userAllowedFields = MapasCulturais.userAllowedFields
-        
-        $scope.canUserEdit = function(field){
+
+        $scope.canSupportUserEdit = function(field){
             if(MapasCulturais.entity.userHasControl){
                 return true;
             }

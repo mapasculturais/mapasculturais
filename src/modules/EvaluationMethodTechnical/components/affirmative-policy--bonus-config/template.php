@@ -34,7 +34,7 @@ $this->import('
                 <h5 class="field__title--semibold"><?= i::__('Percentual') ?> {{index+1}}</h5>
 
 
-                <mc-select @change-option="setFieldName($event, quota)" :default-value="quota.field" placeholder="Selecione">
+                <mc-select @change-option="setFieldName($event, quota)" :default-value="quota.field" placeholder="<?= i::esc_attr__('Selecione um campo') ?>" show-filter>
                     <option v-for="(item, index) in entity.opportunity.affirmativePoliciesEligibleFields" :value="item.id">{{ '#' + item.id + ' - ' + item.title }}</option>
                 </mc-select>
 

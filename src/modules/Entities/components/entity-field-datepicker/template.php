@@ -4,60 +4,46 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 ?>
-<div>
-    <datepicker 
-        :teleport="true"
-        v-if="is('date')" 
-        v-model="model" 
-        @update:model-value="change" 
-        :dayNames="dayNames" 
-        :format="dateFormat" 
-        :id="propId" 
-        :locale="locale" 
-        :max-date="maxDate" 
-        :min-date="minDate" 
-        :name="prop" 
-        :text-input-options="dateTextInputOptions" 
-        :weekStart="0" 
-        :enable-time-picker=false
-        text-input autoApply>
-        <template #dp-input="{ value, onBlur, onInput, onEnter, onTab, onClear }">
-            <input type="text" data-maska="##/##/####" :value="value" maxlength="10" @input="onChange($event, onInput)" @blur="onBlur" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
-        </template>
-    </datepicker>
-
-    <datepicker 
-        :teleport="true"
-        v-if="is('datetime')" 
-        v-model="model" 
-        @update:model-value="change" 
-        :dayNames="dayNames" 
-        :format="datetimeFormat" 
-        :id="propId" 
-        :locale="locale" 
-        :max-date="maxDate" 
-        :min-date="minDate" 
-        :name="prop" 
-        :text-input-options="datetimeTextInputOptions" 
-        :weekStart="0" 
-        text-input autoApply>
-        <template #dp-input="{ value, onBlur, onInput, onEnter, onTab, onClear }">
-            <input type="text" data-maska="##/##/#### ##:##" :value="value" maxlength="16" @input="onChange($event, onInput)" @blur="onBlur" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
-        </template>
-    </datepicker>
-
-    <datepicker 
-        :teleport="true"
-        v-if="is('time')" 
-        @update:model-value="change" 
-        :locale="locale"
-        :id="propId" 
-        :name="prop"
-        mode-height="120"
-        :text-input-options="timeTextInputOptions" 
-        text-input time-picker autoApply>
-        <template #dp-input="{ value, onInput, onEnter, onTab, onClear }">
-            <input type="text" data-maska="##:##" :value="value" maxlength="10" @input="onChange($event, onInput)" @keydown.enter="onEnter" @keydown.tab="onTab" v-maska >
-        </template>
-    </datepicker>
+<div class="entity-field-datepicker">
+    <div v-if="is('date') || is('datetime')" class="entity-field-datepicker__date">
+        <input v-model="dateInput" class="date-input" type="text" data-maska="##/##/####" @focus="isDateInputFocused = true" @blur="handleBlur('date')" v-maska >
+        <datepicker
+            ref="datepickerCalendar"
+            :teleport="true"
+            v-model="modelDate" 
+            @update:model-value="onDateChange" 
+            :dayNames="dayNames" 
+            :format="dateFormat" 
+            :id="propId" 
+            :locale="locale" 
+            :max-date="maxDate" 
+            :min-date="minDate" 
+            :name="prop" 
+            :weekStart="0" 
+            :enable-time-picker=false
+            autoApply>
+            <template #trigger>
+                <div class="calendar"></div>
+            </template>
+        </datepicker>
+    </div>
+        
+    <div v-if="is('time') || is('datetime')" class="entity-field-datepicker__time">
+        <input v-model="timeInput" class="time-input" type="text" data-maska="##:##" @focus="isTimeInputFocused = true" @blur="handleBlur('time')" v-maska>
+        <datepicker
+            ref="datepickerClock"
+            :teleport="true"
+            @update:model-value="onTimeChange" 
+            v-model="modelTime"
+            :format="timeFormat"
+            :locale="locale"
+            :id="propId" 
+            :name="prop"
+            mode-height="120"
+            time-picker autoApply>
+            <template #trigger>
+                <div class="clock"></div>
+            </template>
+        </datepicker>
+    </div>
 </div>

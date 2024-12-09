@@ -94,6 +94,8 @@ class Metadata extends \MapasCulturais\Definition{
 
     public bool $numericKeyValueOptions = false;
 
+    public bool $readonly = false;
+
     /**
      * Creates a new Metadata Definition.
      *
@@ -153,6 +155,8 @@ class Metadata extends \MapasCulturais\Definition{
         $this->_validations = key_exists('validations', $config) && is_array($config['validations']) ? $config['validations'] : [];
 
         $this->numericKeyValueOptions = $config['numericKeyValueOptions'] ?? false;
+
+        $this->readonly = $config['readonly'] ?? false;
 
         if (isset($config['options']) && is_array($config['options'])) {
             $new_array = [];

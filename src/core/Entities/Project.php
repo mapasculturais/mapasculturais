@@ -31,7 +31,9 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
-        Traits\EntityOpportunities;
+        Traits\EntityLock,
+        Traits\EntityOpportunities,
+        Traits\EntityRevision;
         
     protected $__enableMagicGetterHook = true;
 

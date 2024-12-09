@@ -1,0 +1,28 @@
+@use '../0.settings/mixins'as *;
+
+.qualification-evaluation-form {
+    display: flex;
+    flex-direction: column;
+    gap: size(16);
+    
+    &__criterion {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+
+        &-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: size(8);
+        }
+    }
+
+    .qualification-enabled {
+        color: var(--mc-success-500);
+    }
+    
+    .qualification-disabled {
+        color: var(--mc-error);
+    }
+}

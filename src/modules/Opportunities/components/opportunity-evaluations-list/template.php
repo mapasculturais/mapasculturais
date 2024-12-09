@@ -72,7 +72,7 @@ $this->import('
                                 <h5 class="bold" v-if="evaluation.resultString">{{evaluation.resultString}}</h5>
                                 <h5 class="bold" v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></h5>
                             </span>
-                            <mc-link route="registration/evaluation/" :params="[evaluation.registrationId]" icon="arrowPoint-right" right-icon class="button button--primary-outline"><?= i::__('Acessar') ?></mc-link>
+                            <mc-link route="registration/evaluation/" :params="{id:evaluation.registrationId,user:userEvaluatorId}" icon="arrowPoint-right" right-icon class="button button--primary-outline"><?= i::__('Acessar') ?></mc-link>
                         </div>
                     </a>
                 </div>

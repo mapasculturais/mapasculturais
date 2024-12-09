@@ -16,7 +16,7 @@ $this->import('
 <h3 class="bold faq-accordion__results"><?= i::__('Resultados da pesquisa') ?> '{{global.faqSearch}}'</h3>
 <template v-if="results" v-for="section in results" class="faq-accordion">
     <div v-if="index" class="faq-accordion__contexts">
-        <mc-title tag="h2" v-html="section.title" class="bold primary__color"></mc-title>
+        <h2 v-html="section.title" class="bold primary__color">></h2>
         <div v-html="section.description" class="faq-accordion__context semibold"></div>
     </div>
     <template v-if="section.contexts.length > 0" v-for="context in section.contexts">

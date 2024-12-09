@@ -21,6 +21,7 @@ $this->import('
     entity-parent-edit
     entity-profile
     entity-related-agents
+    entity-renew-lock
     entity-social-media
     entity-status
     entity-terms
@@ -40,6 +41,7 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
+    <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
 
