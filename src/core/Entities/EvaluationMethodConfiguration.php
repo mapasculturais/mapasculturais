@@ -162,6 +162,18 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
     }
 
+    function setName($value) {
+        $app = App::i();
+        
+        $definition = $app->getRegisteredEntityTypeById($this, $this->_type);
+        
+        if($value) {
+            $this->name = $value;
+        } else if((!$value && !$this->name) && $definition) {
+            $this->name = $definition->name;    
+        }
+    }
+
     function setOpportunity($value) {
         if($value instanceof Opportunity) {
             $this->opportunity = $value;
@@ -297,8 +309,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         
         $cache_key = $this->summaryCacheKey;
         if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
-            if ($app->cache->contains($cache_key)) {
-                return $app->cache->fetch($cache_key);
+            if ($app->mscache->contains($cache_key)) {
+                return $app->mscache->fetch($cache_key);
             }
         }
         $em = $this->evaluationMethod;
@@ -374,7 +386,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
 
         if($app->config['app.useOpportunitySummaryCache']) {
-            $app->cache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
+            $app->mscache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
         }
 
         return $data;

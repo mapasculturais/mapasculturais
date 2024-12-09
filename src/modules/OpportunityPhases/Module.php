@@ -219,7 +219,7 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook("entity(Registration).status(<<*>>)", function(){
-            if(!$this->opportunity->isDataCollection && $this->status > 0){
+            if($this->previousPhase && !$this->opportunity->isDataCollection && $this->status > 0){
                 $this->sentTimestamp = $this->previousPhase->sentTimestamp;
             }
         });
@@ -674,6 +674,11 @@ class Module extends \MapasCulturais\Module{
                 }
                 $app->enableAccessControl();
             }
+        });
+
+        $app->hook('entity(Registration).get(isFirstPhase)', function(&$value) {
+            /** @var Registration $this */
+            $value = $this->opportunity->isFirstPhase ? true : false;
         });
 
         $app->hook('entity(Registration).get(firstPhase)', function(&$value) use($registration_repository) {

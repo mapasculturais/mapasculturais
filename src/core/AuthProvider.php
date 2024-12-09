@@ -4,6 +4,11 @@ namespace MapasCulturais;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Exceptions\PermissionDenied;
 
+/**
+ * @property Entities\User|GuestUser $authenticatedUser
+ * 
+ * @package MapasCulturais
+ */
 abstract class AuthProvider {
     use Traits\MagicCallers,
         Traits\MagicGetter,
@@ -111,9 +116,18 @@ abstract class AuthProvider {
         return $redirect;
     }
 
-    protected final function _setAuthenticatedUser(Entities\User $user = null){
-        $this->_authenticatedUser = $user;
+    protected final function _setAuthenticatedUser(Entities\User|null $user = null){
+        $this->authenticatedUser = $user;
         App::i()->applyHookBoundTo($this, 'auth.login', [$user]);
+    }
+
+    /**
+     * Define o usuário autenticado.
+     *
+     * @param Entities\User|null $user O usuário autenticado, ou null se não houver usuário autenticado.
+     */
+    protected function setAuthenticatedUser(Entities\User|null $user = null){
+        $this->_authenticatedUser = $user;
     }
 
     abstract function _getAuthenticatedUser();

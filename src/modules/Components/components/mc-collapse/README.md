@@ -1,5 +1,9 @@
 # Componente `<mc-collapse>`
-Componente feito para mostrar e esconder conteúdo
+O componente `mc-collapse `permite exibir e ocultar conteúdo adicional de forma expansiva. Ele emite eventos quando o estado de expansão é alterado.
+
+### Eventos
+- **toggle**: Emitido quando o método `toggle` é chamado. O evento inclui o novo estado de expansão (`true `para expandido, `false` para contraído).
+- **close**: Emitido quando o método `close` é chamado. Não inclui dados adicionais.
 
 ## Slots
 - **header**: Parte inicial do componente (sempre exibido)

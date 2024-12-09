@@ -8,6 +8,8 @@ As cores da logo podem ser modificadas no arquivo `init.php` ou por meio das pro
 - *String **bg2*** = Cor do segundo item
 - *String **bg3*** = Cor do terceiro item
 - *String **bg4*** = Cor do quarto item
+- *String **title*** = Título do logotipo
+- *String **subtitle*** = Subtítulo opcional do logotipo
 
 ### Importando componente
 ```PHP

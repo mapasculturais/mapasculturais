@@ -11,4 +11,4 @@ $this->import('
 ');
 ?>
 
-<opportunity-registrations-table :phase="lastPhase" :visible-columns="visibleColumns" :avaliable-columns="visibleColumns" hide-filters hide-sort status-not-editable hide-actions hide-title hide-header></opportunity-registrations-table>
+<opportunity-registrations-table :phase="lastPhase" identifier="registrationsResults" :visible-columns="columns" :avaliable-columns="visibleColumns" hide-filters hide-sort status-not-editable hide-actions hide-title hide-header></opportunity-registrations-table>

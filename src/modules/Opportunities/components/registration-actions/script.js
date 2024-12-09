@@ -6,6 +6,11 @@ app.component('registration-actions', {
             type: Entity,
             required: true
         },
+
+        editableFields: {
+            type: Boolean,
+            default: false
+        }
     },
 
     setup() {
@@ -40,11 +45,17 @@ app.component('registration-actions', {
     data() {
         return {
             fields: $MAPAS.registrationFields,
+            hideErrors: false,
+            isValidated: false,
             descriptions: $DESCRIPTIONS.registration
         }
     },
     
     methods: {
+        toggleErrors() {
+            this.hideErrors = !this.hideErrors;
+        },
+
         fieldName(field) {
             if (field == 'agent_instituicao') {
                 return this.text('Instituição responsável'); 
@@ -88,6 +99,7 @@ app.component('registration-actions', {
 
         },
         async send() {
+            const route = this.editableFields ? 'sendEditableFields' : 'send';
             const data = {id: this.registration.id};
             if (this.registration.category) {
                 data.category = this.registration.category;
@@ -97,8 +109,12 @@ app.component('registration-actions', {
                 this.registration.disableMessages();
                 await this.save();
                 this.registration.enableMessages();
-                await this.registration.POST('send', {data});
-                document.location.reload();
+                await this.registration.POST(route, {data});
+                if(this.editableFields) {
+                    document.location = this.registration.singleUrl;
+                } else {
+                    document.location.reload();
+                }
             } catch(error) {
                 console.error(error);
             }
@@ -109,6 +125,7 @@ app.component('registration-actions', {
                 await this.save();
                 const success = await this.registration.POST('validateEntity', {});
                 if (success) {
+                    this.isValidated = true;
                     messages.success(this.text('Validado'));
                 }
             } catch (error) {

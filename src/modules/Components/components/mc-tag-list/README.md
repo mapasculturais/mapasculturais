@@ -1,5 +1,5 @@
 # Componente `<mc-tag-list>`
-Componente para listagem de tags de uma entidade
+O componente `mc-tag-list` exibe uma lista de tags, permitindo a remoção das mesmas quando em modo editável.
   
 ## Propriedades
 - *Boolean **editable** = false* - Habilita o modo de edição do componente;

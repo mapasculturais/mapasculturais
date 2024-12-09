@@ -14,6 +14,7 @@ $this->import('
     search-filter-space
     search-list
     search-map
+    space-table
 ');
 
 $this->breadcrumb = [
@@ -54,6 +55,9 @@ $this->breadcrumb = [
                         </template>
                     </search-map>
                 </div>
+            </mc-tab>
+            <mc-tab v-if="global.auth.is('admin')" icon="table-view" label="<?php i::esc_attr_e('Tabela') ?>" slug="tables">
+                <space-table></space-table>
             </mc-tab>
         </mc-tabs>
     </template>

@@ -20,6 +20,7 @@ $this->import('
     entity-owner
     entity-profile
     entity-related-agents
+    entity-renew-lock
     entity-social-media
     entity-terms
     entity-status
@@ -40,9 +41,10 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
+    <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
-
+    
     <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
@@ -98,7 +100,7 @@ $this->breadcrumb = [
                 <main>
                     <mc-card>
                         <template #title>
-                            <h3 class="bold"><?php i::_e("Dados Pessoais"); ?></h3>
+                            <h3 class="bold"><?php i::_e("Dados Pessoais"); ?> <?php $this->info('cadastro -> configuracoes-entidades -> dados-pessoais') ?></h3>
                             <p><?php i::_e("Não se preocupe, esses dados não serão exibidos publicamente."); ?></p>
                         </template>
                         <template #content>
@@ -120,7 +122,7 @@ $this->breadcrumb = [
                     </mc-card>
                     <mc-card>
                         <template #title>
-                            <h3 class="bold"><?php i::_e("Dados pessoais sensíveis"); ?></h3>
+                            <h3 class="bold"><?php i::_e("Dados pessoais sensíveis"); ?> <?php $this->info('cadastro -> configuracoes-entidades -> dados-pessoais-sensiveis') ?></h3>
                             <p class="data-subtitle"><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                         </template>
                         <template #content>

@@ -1043,7 +1043,6 @@ module.controller('EvaluationsFieldsConfigController', ['$scope', 'EvaluationsFi
 
     if(MapasCulturais.evaluationFieldsList){
         MapasCulturais.evaluationFieldsList = MapasCulturais.evaluationFieldsList.sort((a,b) => {
-            console.log(a,b)
             if(a.displayOrder > b.displayOrder){
                 return 1;
             }else if(a.displayOrder < b.displayOrder){
@@ -1214,6 +1213,22 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         avaliableEvaluationFields: MapasCulturais.avaliableEvaluationFields
     };
 
+    $scope.canUserEdit = function(field){
+        if(!MapasCulturais.registrationEditableFields.canUserSendEditableFields) {
+            return false;
+        }
+
+        if(MapasCulturais.registrationEditableFields.fields.includes(field.fieldType == 'file' ? field.groupName : field.fieldName)) {
+            return true;
+        }
+
+        return false;
+    }
+    
+    $scope.getFieldType = function(field) {
+        return field?.fieldName ? 'field' : 'file';
+    }
+    
     $scope.openTemplateLink = function($event, url) {
         $event.preventDefault();
         window.open(url, '_blank');
@@ -1791,11 +1806,24 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }
         }
 
+        if(MapasCulturais.isUserSupport) {
+            let fieldName = "";
+            if(field.fieldType == "file") {
+                fieldName = field.groupName
+            }else {
+                fieldName = field.fieldName
+            }
+    
+            if (fieldName in MapasCulturais.userAllowedFields) {
+                result = true;
+            } 
+        }
+
         return result;
     };
 
     $scope.isAvaliableEvaluationFields = function(field){
-        if($scope.data.avaliableEvaluationFields && $scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)]){
+        if($scope.data.avaliableEvaluationFields && $scope.data.avaliableEvaluationFields[$scope.getFieldNameString(field)] === "true"){
             return true;
         }
         
@@ -1823,7 +1851,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.printField = function(field, value){
-
+        
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         }else if (field.fieldType === "checkbox") {

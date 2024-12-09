@@ -168,4 +168,21 @@ class Controller extends \MapasCulturais\Controller
 
         $this->render('support-edit', ['entity' => $entity]);
     }
+
+    function GET_supportConfig() {
+        
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $this->entityClassName = Entities\Opportunity::class;
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            $app->pass();
+        }   
+
+        $entity->isSupportUser($app->user);
+
+        $this->render('support-config', ['entity' => $entity]);
+    }
 }

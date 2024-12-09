@@ -37,7 +37,7 @@ app.component('opportunity-evaluation-committee', {
     },
 
     data() {
-        let ranges = this.entity.opportunity.registrationRanges.map((range) => range.label);
+        let ranges = this.entity.opportunity.registrationRanges?.map((range) => range.label);
 
         return {
             agentData: null,
@@ -55,10 +55,14 @@ app.component('opportunity-evaluation-committee', {
             registrationProponentTypes: [
                 ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
+            sendTimeOut: null
         }
     },
     
     methods: {   
+        showSummary(summary) {
+            return summary ? Object.values(summary).some(value => value > 0) : false;
+        },
         selectAgent(agent) {
             const api = new API();
             let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});

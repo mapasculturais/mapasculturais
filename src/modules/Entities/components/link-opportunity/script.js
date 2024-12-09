@@ -68,7 +68,7 @@ app.component('link-opportunity', {
         },
         setEntity(Entity) {
             this.entity.ownerEntity = Entity;
-            
+            this.entity.save(200);
         },
         toggleSelected() {
             this.selected = !this.selected;

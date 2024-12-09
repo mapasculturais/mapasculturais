@@ -258,14 +258,22 @@ abstract class Controller{
         }
 
         // hook like GET(user.teste)
-        $hook = $method . "({$this->id}.{$action_name})";
-        
-        // hook like ALL(user.teste)
-        $ALL_hook =  $method !== 'API' ? "ALL({$this->id}.{$action_name})" : null;
+        if($method == 'API'){
+            $hooks = ["API({$this->id}.{$action_name})"];
+        } else {
+            $hooks = ["ALL({$this->id}.{$action_name})", "{$method}({$this->id}.{$action_name})"];
+        }
+
+        $has_hook = false;
+        foreach($hooks as $hook){
+            if($app->getHooks($hook)){
+                $has_hook = true;
+                break;
+            }
+        }
+
 
         $call_method = null;
-        $call_hook = null;
-
         // first try to call an action defined inside the controller
         if(method_exists($this, $method . '_' . $action_name)){
             $call_method = [$this, $method . '_' . $action_name];
@@ -275,29 +283,26 @@ abstract class Controller{
 
         }
         
-        if($app->getHooks($hook)){
-            $call_hook = $hook;
+        if($call_method || $has_hook){
+            foreach($hooks as $call_hook){
+                $app->applyHookBoundTo($this, $call_hook . ':before', $arguments);
+            }
 
-        }elseif($method !== 'API' && $app->getHooks($ALL_hook)){
-            $call_hook = $ALL_hook;
-
-        }
-        
-        if($call_method || $call_hook){
-            $app->applyHookBoundTo($this, $hook . ':before', $arguments);
-
-            if ($call_hook) {
-                $app->applyHookBoundTo($this, $call_hook, $arguments);
+            if ($has_hook) {
+                foreach($hooks as $call_hook){
+                    $app->applyHookBoundTo($this, $call_hook, $arguments);
+                }
             }
 
             if($call_method) {
                 $call_method();
             }
 
-            $app->applyHookBoundTo($this, $hook . ':after', $arguments);
-        // else pass to 404?
+            foreach($hooks as $call_hook){
+                $app->applyHookBoundTo($this, $call_hook . ':after', $arguments);
+            }
         }else{
-
+            // 404
             $app->pass();
         }
 

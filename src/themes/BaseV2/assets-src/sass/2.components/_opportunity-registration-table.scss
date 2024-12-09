@@ -22,6 +22,7 @@
         background-color: var(--mc-white);
         padding: size(24);
     }
+
     &__search-key {
         display: flex;
         flex-direction: row;
@@ -59,6 +60,7 @@
         align-items: center;
         padding-inline: var(--mc-font-size-xs);
     }
+
     &__search-input {
         border-radius: var(--mc-border-radius-pill) 0 0 var(--mc-border-radius-pill);
         border: 1px solid var(--mc-gray-300);
@@ -66,6 +68,7 @@
         padding: size(12) 0 size(12) size(20);
         width: 100%;
     }
+    
     &__search-fields {
         padding: size(16);
         border: 1px solid var(--mc-gray-100);
@@ -110,6 +113,38 @@
             .button {
                 min-width: 100%;
             }
+        }
+    }
+
+    &__edit {
+        color: var(--mc-gray-700);
+
+        &:hover {
+            color: var(--mc-low-500);
+        }
+    }
+
+    &__edit-open {
+        color: var(--mc-warning-500);
+
+        &:hover {
+            color: var(--mc-warning-700);
+        }
+    }
+
+    &__edit-sent {
+        color: var(--mc-success-500);
+
+        &:hover {
+            color: var(--mc-success-700);
+        }
+    }
+
+    &__edit-missed {
+        color: var(--mc-danger-500);
+
+        &:hover {
+            color: var(--mc-danger-700);
         }
     }
 }

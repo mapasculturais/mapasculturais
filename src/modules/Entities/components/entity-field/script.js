@@ -81,6 +81,7 @@ app.component('entity-field', {
             propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType,
             currencyValue: this.entity[this.prop],
+            readonly: false
         }
     },
 
@@ -149,6 +150,15 @@ app.component('entity-field', {
         },
     },
 
+    created() {
+        this.isReadonly();
+
+        window.addEventListener(
+            "entitySave",
+            this.isReadonly
+        );
+    },
+
     computed: {
       
         charRemaining() {
@@ -171,6 +181,17 @@ app.component('entity-field', {
     },
     
     methods: {
+        isRadioChecked(value, optionValue) {
+            if(value == optionValue) {
+                return true;
+            }
+
+            if(value == null && this.description?.default) {
+                return optionValue == this.description?.default;
+            }
+            
+            return false;            
+        },
         propExists(){
             return !! this.entity.$PROPERTIES[this.prop];
         },
@@ -225,6 +246,18 @@ app.component('entity-field', {
 
         is(type) {
             return this.fieldType == type;
+        },
+
+        isReadonly() {
+            const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
+
+            if(this.description.readonly) {
+                if(userPermission || !this.value) {
+                    this.readonly = false;
+                } else {
+                    this.readonly = true;
+                }
+            }
         }
     },
 });

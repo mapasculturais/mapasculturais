@@ -36,7 +36,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     protected function _register() {
-        ;
+        $app = App::i();
+        
+        $app->registerJobType(new JobTypes\Spreadsheet('documentary-spreadsheets'));
     }
 
     public function getEvaluationStatues()

@@ -28,10 +28,10 @@ $this->import('
                 <template #default>
                     <div class="input-group grid-12">
                         <div v-if="entity.isFirstPhase" class="col-12">
-                            <h4 class="input-group__title"><?= i::__("Utilizar campo para vínculo de agente coletivo") ?></h4>
+                            <h4 class="input-group__title"><?= i::__("Habilitar campo para vínculo de agente coletivo") ?></h4>
                             <h6 class="input-group__subtitle"><?= i::__("Permite que o inscrito vincule um Agente Coletivo com a sua inscrição.") ?></h6>
                             <div class="input-group__inputs">
-                                <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
+                                <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="dontUse" /> <?= i::_e('Desabilitado') ?> </label>
                                 <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="required" /> <?= i::_e('Obrigatório') ?> </label>
                                 <label class="input-group__input"> <input v-model="entity.useAgentRelationColetivo" type="radio" name="useAgentRelationColetivo" value="optional" /> <?= i::_e('Opcional') ?> </label>
                             </div>
@@ -46,10 +46,10 @@ $this->import('
             <mc-card class="col-12">
                 <template #default>
                     <div v-if="entity.isFirstPhase" class="col-12">
-                        <h4 class="input-group__title"><?= i::__("Utilizar campo de instituição responsável") ?></h4>
-                        <h6 class="input-group__subtitle"><?= i::__("Permite a vinculação de instituições (agentes coletivos com CNPJ).") ?></h6>
+                        <h4 class="input-group__title"><?= i::__("Habilitar campo de instituição responsável") ?></h4>
+                        <h6 class="input-group__subtitle"><?= i::__("Permite a vinculação de instituições (agentes coletivos com CNPJ) no momento da inscrição.") ?></h6>
                         <div class="input-group__inputs">
-                            <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
+                            <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="dontUse" /> <?= i::_e('Desabilitado') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.useAgentRelationInstituicao" type="radio" name="useAgentRelationInstituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
                         </div>
@@ -62,10 +62,10 @@ $this->import('
             <mc-card class="col-12">
                 <template #default>
                     <div class="input-group">
-                        <h4 class="input-group__title"><?= i::__("Utilizar campo para vínculo de espaço") ?></h4>
+                        <h4 class="input-group__title"><?= i::__("Habilitar campo para vínculo de espaço") ?></h4>
                         <h6 class="input-group__subtitle"><?= i::__("Permite que o proponente selecione um espaço para associar à inscrição.") ?></h6>
                         <div class="input-group__inputs no-padding-bottom">
-                            <label class="input-group__input"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="dontUse" /> <?= i::_e('Não Utilizar') ?> </label>
+                            <label class="input-group__input"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="dontUse" /> <?= i::_e('Desabilitado') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="required" /> <?= i::_e('Obrigatório') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.useSpaceRelationIntituicao" type="radio" name="useSpaceRelationIntituicao" value="optional" /> <?= i::_e('Opcional') ?> </label>
                         </div>
@@ -78,12 +78,41 @@ $this->import('
             <mc-card class="col-12">
                 <template #default>
                     <div class="input-group">
-                        <h4 class="input-group__title"><?= i::__("Utilizar campo de nome de projeto") ?></h4>
+                        <h4 class="input-group__title"><?= i::__("Habilitar campo de nome de projeto") ?></h4>
                         <h6 class="input-group__subtitle"><?= i::__("Permite que o inscrito dê nome a um projeto no momento da inscrição.") ?></h6>
                         <div class="input-group__inputs no-padding-bottom">
-                            <label class="input-group__input"> <input v-model="entity.projectName" type="radio" name="projectName" value="0" /> <?= i::_e('Não Utilizar') ?> </label>
+                            <label class="input-group__input"> <input v-model="entity.projectName" :checked="!entity.projectName || entity.projectName == '0'" type="radio" name="projectName" value="0" /> <?= i::_e('Desabilitado') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.projectName" type="radio" name="projectName" value="2" /> <?= i::_e('Obrigatório') ?> </label>
                             <label class="input-group__input"> <input v-model="entity.projectName" type="radio" name="projectName" value="1" /> <?= i::_e('Opcional') ?> </label>
+                        </div>
+                    </div>
+                </template>
+            </mc-card>
+        </div>
+
+        <div class="col-6 sm:col-12 grid-12" v-if="entity.isFirstPhase">
+
+            <mc-card class="col-12">
+                <template #default>
+                    <div class="input-group">
+                        <h4 class="input-group__title"><?= i::__("Habilitar solicitação de imagem de perfil") ?></h4>
+                        <h6 class="input-group__subtitle"><?= i::__("Solicita ao usuário que insira a imagem de perfil no formulário de inscrição") ?></h6>
+                        <div class="input-group__inputs">
+                            <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="requestAgentAvatar" :autosave="3000"></entity-field>
+                        </div>
+                    </div>
+                </template>
+            </mc-card>
+        </div>
+
+        <div class="col-6 sm:col-12 grid-12" v-if="entity.isFirstPhase">
+
+            <mc-card class="col-12">
+                <template #default>
+                    <div class="input-group">
+                        <h4 class="input-group__title"><?= i::__("Habilitar pergunta 'Vai concorrer às cotas'") ?></h4>
+                        <div class="input-group__inputs">
+                            <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="enableQuotasQuestion" :autosave="3000"></entity-field>
                         </div>
                     </div>
                 </template>

@@ -72,7 +72,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $approved = [i::__('Habilitado'), i::__('Não se aplica')];
         $result = i::__("Habilitado");
         $cfg = $evaluation->getEvaluationMethodConfiguration();
-        foreach($cfg->criteria as $cri){
+        foreach(($cfg->criteria ?? []) as $cri){
             $key = $cri->id;
             if(!isset($evaluation->evaluationData->$key)){
                 return null;
@@ -150,6 +150,8 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     protected function _register()
     {
+        $app = App::i();
+
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
             'label' => i::__('Seções'),
             'type' => 'json',
@@ -171,6 +173,8 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return $val ? json_decode($val) : $val;
             }
         ]);
+
+        $app->registerJobType(new JobTypes\Spreadsheet('qualification-spreadsheets'));
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)

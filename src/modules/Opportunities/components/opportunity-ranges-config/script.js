@@ -26,7 +26,15 @@ app.component('opportunity-ranges-config', {
                     limit: 0,
                     value: NaN
                 });
-            }else{
+
+                this.$nextTick(() => {
+                    const lastIndex = this.entity.registrationRanges.length - 1;
+                    const descriptionInput = this.$refs['description-' + lastIndex];
+                    if (descriptionInput && descriptionInput.length > 0) {
+                        descriptionInput[0].focus();
+                    }
+                });
+            } else{
                this.messages.error("Por favor, preencha todos os campos da faixa antes de adicionar uma nova faixa.");
             }
         },
@@ -37,8 +45,15 @@ app.component('opportunity-ranges-config', {
             this.autoSave();
         },
         autoSaveRange(item) {
+            item.label = item.label.trim();
             if(item.label.length > 0) {
                 this.autoSave();
+            } 
+            else { 
+                const index = this.entity.registrationRanges.indexOf(item);
+                if (index !== -1) {
+                    this.removeRange(index);
+                }
             }
         },
         autoSave() {

@@ -65,7 +65,7 @@ $this->import('
     </template>
     <template #after-li="{index, item}">
         <template v-if="index == phases.length-2">
-            <div v-if="showButtons()" class="add-phase grid-12">
+            <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo" class="add-phase grid-12">
                 <div class="add-phase__evaluation col-12">
                     <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
                 </div>
@@ -74,6 +74,10 @@ $this->import('
                     <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
                 </div>
             </div>
+            
+            <mc-alert v-if="!entity.registrationFrom && !entity.registrationTo" type="warning">
+                <p><small class="required"><?= i::__("A data e hora da 'Coleta de dados' precisa estar preenchida para adicionar novas fases.") ?></small></p>
+            </mc-alert>
                 
             <div v-if="!showButtons()" class="info-message helper">
                 <mc-icon name="exclamation"></mc-icon>

@@ -46,13 +46,15 @@
         const registrationFields = {};
 
         for (let key in MapasCulturais.registration) {
-            let val = undefined;
+            let val = null;
             if (key.indexOf('field_') === 0) {
                 if(MapasCulturais.registration[key] instanceof Date){
                     val = moment(MapasCulturais.registration[key]).format("YYYY-MM-DD");
                 }else if(MapasCulturais.registration[key] !== undefined) {
                     val = JSON.parse(JSON.stringify(MapasCulturais.registration[key]));
                 }
+            } else {
+                continue;
             }
 
             if(val !== undefined && JSON.stringify(val) !== JSON.stringify(window.lastSentRegistrationFields[key])) {
