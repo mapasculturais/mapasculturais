@@ -102,7 +102,7 @@ app.component('opportunity-appeal-phase-config' , {
                 this.entity.type = this.phase.type;
                 this.entity.save();
             
-                console.log(this.entity);
+                // console.log(this.entity);
                 this.processing = false;
                 // messages.success(this.text('success'));
             }).catch((data) => {

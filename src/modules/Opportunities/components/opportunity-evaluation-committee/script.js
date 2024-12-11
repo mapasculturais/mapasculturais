@@ -56,8 +56,6 @@ app.component('opportunity-evaluation-committee', {
         this.entity.opportunity = this.entity.opportunity ? this.entity.opportunity : this.entity.parent;
         let ranges = this.entity.opportunity.registrationRanges?.map((range) => range.label);
 
-        console.log(this.entity.opportunity);
-
         return {
             agentData: null,
             showReviewers: false,
