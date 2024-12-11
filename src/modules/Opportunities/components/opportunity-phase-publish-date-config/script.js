@@ -30,7 +30,11 @@ app.component('opportunity-phase-publish-date-config' , {
         hideDescription: {
             type: Boolean,
             default: false
-        }
+        }, 
+        useSealsCertification: {
+            type: Boolean,
+            default: false
+        },
     },
 
     computed: {

@@ -14,6 +14,7 @@ $this->import('
     mc-modal
     opportunity-committee-groups
     opportunity-phase-publish-date-config
+    opportunity-appeal-phase-config
     tiebreaker-criteria-configuration
     v1-embed-tool
 
@@ -81,7 +82,8 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
         </div>
 
-        <opportunity-phase-publish-date-config v-if="!firstPhase?.isContinuousFlow" :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-date-config v-if="!firstPhase?.isContinuousFlow" :phase="phase.opportunity" :phases="phases" hide-button hide-description useSealsCertification></opportunity-phase-publish-date-config>
+        <opportunity-appeal-phase-config :phase="phase" :phases="phases"></opportunity-appeal-phase-config>
         
         <template v-if="phase.evaluateSelfApplication">
             <entity-field :entity="phase" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
