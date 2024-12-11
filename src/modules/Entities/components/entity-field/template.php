@@ -76,11 +76,11 @@ $this->import('
         <template v-if="is('multiselect') || is('checklist')">
            <div class="field__group">
                 <template v-if="isMultiSelect()">
-                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.optionsOrder" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" hide-filter hide-button>
+                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.options" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" hide-filter hide-button>
                         <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :placeholder="placeholder || description?.placeholder">
                     </mc-multiselect>
 
-                    <mc-tag-list :tags="selectedOptions[prop]" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
+                    <mc-tag-list :tags="selectedOptions[prop]" :labels="description?.options" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
                 </template>
 
                 <template v-else>
