@@ -936,7 +936,7 @@ class App {
      * @return void 
      */
     protected function _initRouteManager() {
-        $this->_routesManager = new RoutesManager($this->config['routes'] ?? []);
+        $this->_routesManager = new RoutesManager;
     }
 
 
