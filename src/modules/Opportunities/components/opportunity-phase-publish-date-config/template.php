@@ -77,7 +77,7 @@ $this->import('
             
         </div>
 
-        <seals-certifier :entity="phases[0]" :editable="phase.currentUserPermissions?.createSealRelation"></seals-certifier>
+        <seals-certifier v-if="useSealsCertification" :entity="phases[0]" :editable="phase.currentUserPermissions?.createSealRelation"></seals-certifier>
         
         <div class="col-12 grid-12" v-if="true">
             <div class="col-12" v-if="phase.evaluationMethodConfiguration">
