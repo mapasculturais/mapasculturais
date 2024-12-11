@@ -36,7 +36,25 @@ class Module extends \MapasCulturais\Module {
         });
     }
 
-    public function register()
-    {
+    public function register() {
+        $this->registerOpportunityMetadata('appealFrom', [
+            'label' => i::__('Início'),
+            'type' => 'date',
+        ]);
+
+        $this->registerOpportunityMetadata('appealTo', [
+            'label' => i::__('Término'),
+            'type' => 'date',
+        ]);
+
+        $this->registerOpportunityMetadata('responseFrom', [
+            'label' => i::__('Início'),
+            'type' => 'date',
+        ]);
+
+        $this->registerOpportunityMetadata('responseTo', [
+            'label' => i::__('Término'),
+            'type' => 'date',
+        ]);
     }
 }
