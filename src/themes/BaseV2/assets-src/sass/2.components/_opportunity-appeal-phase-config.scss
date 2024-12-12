@@ -21,6 +21,10 @@
                 max-width: size(1047);
                 grid-template-columns: 1fr size(124);
 
+                @media (max-width: 488px) {
+                    grid-template-columns: 1fr;
+                }
+
                 &--active {
                     padding-bottom: size(16);
                 }
@@ -40,6 +44,8 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
+                flex-wrap: wrap;
+                gap: size(16);
 
                 .info__type {
                     display: flex;
@@ -48,17 +54,17 @@
 
                 .title {
                     color: var(--mc-gray-700);
-                    font-size: 0.875rem;
+                    font-size: size(14);
                     font-weight: 600;
-                    line-height: 1.1875rem;
+                    line-height: size(19);
                     text-transform: uppercase;
                 }
 
                 .type {
                     color: var(--mc-low-500);
-                    font-size: 0.875rem;
+                    font-size: size(14);
                     font-weight: 700;
-                    line-height: 1.1875rem;
+                    line-height: size(19);
                 }
             }
 
@@ -66,14 +72,18 @@
                 align-items: center;
                 color: var(--mc-primary-500);
                 display: flex;
-                gap: 0.25rem;
+                gap: size(4);
                 justify-content: flex-end;
-                min-width: 5.125rem;
+                min-width: size(82);
+
+                @media (max-width: 488px) {
+                    justify-content: center;
+                }
 
                 label {
                     font-weight: 700;
-                    font-size: 14px;
-                    line-height: 19px;
+                    font-size: size(14);
+                    line-height: size(19);
                 }
             }
         }
@@ -97,9 +107,9 @@
 
         .date__title {
             color: var(--mc-gray-700);
-            font-size: 0.875rem;
+            font-size: size(14);
             font-weight: 600;
-            line-height: 1.1875rem;
+            line-height: size(19);
             text-transform: uppercase;
         }
 
@@ -107,9 +117,9 @@
             align-items: center;
             color: var(--mc-low-500);
             display: flex;
-            font-size: 0.875rem;
+            font-size: size(14);
             font-weight: 700;
-            line-height: 1.1875rem;
+            line-height: size(19);
         }
     }
 

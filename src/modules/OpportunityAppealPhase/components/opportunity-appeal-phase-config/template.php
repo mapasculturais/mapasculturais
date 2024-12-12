@@ -42,14 +42,14 @@ $this->import('
                 </template>
             </mc-confirm-button>
         </div>  
-        <mc-accordion>
+        <mc-accordion :withText="true">
             <template #title>
                 <div class="opportunity-appeal-phase-config__title">
                     <h3 class="bold"><?= i::__('Recurso') ?></h3>
                     <div class="info__type">
                         <span class="title">
                             <?= i::__('Tipo') ?>:
-                            <span v-if="entity.parent.__objectType == 'opportunity' && entity.parent.isLastPhase" class="type"><?= i::__('Coleta de dados') ?></span>
+                            <span class="type"><?= i::__('Coleta de dados') ?></span>
                         </span>
                     </div>
                 </div>
@@ -65,9 +65,6 @@ $this->import('
                 </div>
             </template>
             <template #icon>
-                <div class="icon">
-                    <label><?= i::__('Expandir') ?></label>
-                </div>
             </template>
             <template #content>
                 <h3 class="bold"><?= i::__('Configuração de fase') ?></h3>
@@ -84,7 +81,7 @@ $this->import('
             </template>
         </mc-accordion>
 
-        <mc-accordion>
+        <mc-accordion :withText="true">
             <template #title>
                 <div class="opportunity-appeal-phase-config__title">
                     <h3 class="bold"><?= i::__('Resposta do recurso') ?></h3>
@@ -107,9 +104,6 @@ $this->import('
                 </div>
             </template>
             <template #icon>
-                <div class="icon">
-                    <label><?= i::__('Expandir') ?></label>
-                </div>
             </template>
             <template #content>
                 <h3 class="bold"><?= i::__('Configuração de fase') ?></h3>
