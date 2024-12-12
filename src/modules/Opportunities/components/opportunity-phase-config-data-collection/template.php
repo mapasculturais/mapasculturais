@@ -80,8 +80,8 @@ $this->import('
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration' && !firstPhase?.isContinuousFlow">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
             <opportunity-phase-publish-date-config  :phase="phase" :phases="phases" hide-description hide-button useSealsCertification></opportunity-phase-publish-date-config>
-            <opportunity-appeal-phase-config :phase="phase" :phases="phases"></opportunity-appeal-phase-config>
         </template>
+        <opportunity-appeal-phase-config :phase="phase" :phases="phases"></opportunity-appeal-phase-config>
 
         <div class="opportunity-data-collection__delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
             <mc-confirm-button message="<?=i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
