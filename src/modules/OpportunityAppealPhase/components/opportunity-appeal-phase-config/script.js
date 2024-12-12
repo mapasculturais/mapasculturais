@@ -19,7 +19,6 @@ app.component('opportunity-appeal-phase-config' , {
     },
 
     data() {
-        // console.log(this.phase);
         return {
             processing: false,
             phaseData: {},
@@ -93,21 +92,31 @@ app.component('opportunity-appeal-phase-config' , {
         createAppealPhase() {
             this.processing = true;
             const messages = useMessages();
-
+        
+            const target = this.phase.__objectType === 'evaluationmethodconfiguration' 
+                ? this.phase.opportunity 
+                : this.phase;
+        
             let args = {};
-            this.phase.POST('createAppealPhase', args).then((data) => {
-                this.phaseData = data;
-                this.entity = new Entity('opportunity');
-                this.entity.populate(this.phaseData);
-                this.entity.type = this.phase.type;
-                this.entity.save();
-            
-                // console.log(this.entity);
-                this.processing = false;
-                // messages.success(this.text('success'));
-            }).catch((data) => {
-                messages.error(data.error);
-            });
+        
+            target.POST('createAppealPhase', args)
+                .then((data) => {
+                    this.phaseData = data;
+        
+                    this.entity = new Entity('opportunity');
+                    this.entity.populate(this.phaseData);
+                    this.entity.type = this.phase.type;
+                    this.entity.appealPhase = true;
+                    this.entity.save();
+        
+                    this.processing = false;
+        
+                    messages.success(this.text('Fase de recurso criada com sucesso'));
+                })
+                .catch((data) => {
+                    messages.error(data.error);
+                    this.processing = false;
+                });
         },
 
         addEvaluationCommittee() {
