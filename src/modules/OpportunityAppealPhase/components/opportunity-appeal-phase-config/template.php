@@ -67,10 +67,12 @@ $this->import('
             <template #icon>
             </template>
             <template #content>
-                <h3 class="bold"><?= i::__('Configuração de fase') ?></h3>
-                <div class="opportunity-appeal-phase-config__datepicker">
-                    <entity-field :entity="entity" prop="appealFrom" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
-                    <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity" prop="appealTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                <div class="opportunity-appeal-phase-config__content-title">
+                    <h3 class="bold"><?= i::__('Configuração de fase') ?></h3>
+                    <div class="opportunity-appeal-phase-config__datepicker">
+                        <entity-field :entity="entity" prop="appealFrom" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity" prop="appealTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                    </div>
                 </div>
                 <div class="opportunity-appeal-phase-config__config-button">
                     <button class="button button--icon button--primary button--md"> 
@@ -106,12 +108,14 @@ $this->import('
             <template #icon>
             </template>
             <template #content>
-                <h3 class="bold"><?= i::__('Configuração de fase') ?></h3>
-                <div class="opportunity-appeal-phase-config__datepicker">
-                    <entity-field :entity="entity" prop="responseFrom" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
-                    <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity" prop="responseTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                <div class="opportunity-appeal-phase-config__content-title">
+                    <h3 class="bold"><?= i::__('Configuração de fase') ?></h3>
+                    <div class="opportunity-appeal-phase-config__datepicker">
+                        <entity-field :entity="entity" prop="responseFrom" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity" prop="responseTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                    </div>
                 </div>
-                <div class="opportunity-appeal-phase-config__more-response">
+                <div class="opportunity-appeal-phase-config__checkboxes">
                     <input type="checkbox" id="more-response" v-model="moreResponse">
                     <label for="more-response"><?= i::__('Possibilitar mais de uma resposta do proponente') ?></label> 
                 </div> 
@@ -123,6 +127,17 @@ $this->import('
                     <opportunity-committee-groups v-if="!showButtonEvaluationCommittee" :entity="entity"></opportunity-committee-groups>
                 </div>
                 <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-description></opportunity-phase-publish-date-config>
+                <div class="opportunity-appeal-phase-config__checkboxes-response">
+                    <div class="opportunity-appeal-phase-config__checkboxes">
+                        <input type="checkbox" id="publishForProponent" v-model="publishForProponent">
+                        <label for="publishForProponent"><?= i::__('Publicar os pareceres para o proponente') ?></label> 
+                    </div> 
+    
+                    <div class="opportunity-appeal-phase-config__checkboxes">
+                        <input type="checkbox" id="publishReviewerName" v-model="publishReviewerName">
+                        <label for="publishReviewerName"><?= i::__('Publicar o nome dos avaliadores nos pareceres') ?></label> 
+                    </div> 
+                </div>
             </template>
         </mc-accordion>
     </div>
