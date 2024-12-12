@@ -58,22 +58,30 @@ app.component('opportunity-phase-publish-date-config' , {
         },
 
         minDate () { 
-            let phase;
-            if(this.phase.isLastPhase) {
-                phase = this.previousPhase;
+            if (this.phase.appealPhase) {
+                return this.phase.responseTo?._date || null;
             } else {
-                phase = this.phase;
+                let phase;
+                if(this.phase.isLastPhase) {
+                    phase = this.previousPhase;
+                } else {
+                    phase = this.phase;
+                }
+                const result = phase.evaluationTo?._date || phase.registrationTo?._date;      
+                return result;
             }
-            const result = phase.evaluationTo?._date || phase.registrationTo?._date;      
-            return result;
         },
         maxDate () {
-            if(this.phase.isLastPhase) {
+            if (this.phase.appealPhase) {
                 return null;
-            } else if(this.nextPhase.isLastPhase) {
-                return this.nextPhase.publishTimestamp?._date;
             } else {
-                return this.nextPhase.evaluationTo?._date || this.nextPhase.registrationTo?._date;
+                if(this.phase.isLastPhase) {
+                    return null;
+                } else if(this.nextPhase.isLastPhase) {
+                    return this.nextPhase.publishTimestamp?._date;
+                } else {
+                    return this.nextPhase.evaluationTo?._date || this.nextPhase.registrationTo?._date;
+                }
             }
         },
         firstPhase() {
