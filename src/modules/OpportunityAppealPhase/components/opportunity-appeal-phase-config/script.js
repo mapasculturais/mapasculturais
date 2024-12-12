@@ -24,6 +24,8 @@ app.component('opportunity-appeal-phase-config' , {
             phaseData: {},
             entity: null,
             moreResponse: false,
+            publishReviewerName: false,
+            publishForProponent: false,
             showButtonEvaluationCommittee: true, 
             trashButton: false,  
         }

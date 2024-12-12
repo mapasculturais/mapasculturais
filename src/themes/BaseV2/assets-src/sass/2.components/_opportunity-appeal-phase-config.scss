@@ -9,10 +9,10 @@
         display: flex;
         flex-direction: column;
         gap: size(28);
-        border-radius: size(4);
 
         .mc-accordion {
             background-color: none;
+            border-radius: size(4);
             padding: size(16) size(20) size(30);
 
             &__header {
@@ -33,7 +33,7 @@
             &__content {
                 display: flex;
                 flex-direction: column;
-                gap: size(36);
+                gap: size(32);
                 padding: size(16) 0;
                 background-color: var(--mc-gray-100);
                 max-width: 100%;
@@ -65,6 +65,7 @@
                     font-size: size(14);
                     font-weight: 700;
                     line-height: size(19);
+                    text-transform: none;
                 }
             }
 
@@ -93,6 +94,12 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+    }
+
+    &__content-title {
+        display: flex;
+        flex-direction: column;
+        gap: size(36);
     }
 
     &__dates {
@@ -151,12 +158,18 @@
         text-align: end;
     }
 
-    &__more-response {
+    &__checkboxes {
         display: flex;
         gap: size(8);
 
         input {
             width: size(16);
         }
+    }
+
+    &__checkboxes-response {
+        display: flex;
+        flex-direction: column;
+        gap: size(10);
     }
 }
