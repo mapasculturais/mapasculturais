@@ -26,7 +26,7 @@ $this->import('
         <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
             <h3>{{ section.name }}</h3>
             <div v-if="section?.maxNonEliminatory" class="qualification-evaluation-form__section-non-eliminatory field">
-                <label><?php i::_e('Número máximo de critérios não eliminatórios que o proponente pode não atender nesta seção: ') ?>{{ section.numberMaxNonEliminatory }}</label>
+                <label><?php i::_e('ATENÇÃO: Para ser habilitado, o proponente pode não atender até ') ?>{{ section.numberMaxNonEliminatory }}<?= i::__(' critérios') ?></label>
             </div>
             <template v-for="crit in section.criteria" :key="crit.id">
                 <div v-if="showSectionAndCriterion(crit)" class="qualification-evaluation-form__criterion field">
