@@ -12,7 +12,7 @@ $this->import('
 ?>
 
 <div class="qualification-evaluation-form" ref="formRoot">
-<h2 v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" class="needs-tiebreaker warning__background"><?= i::_e('Voto de minerva') ?></h2>
+    <h2 v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" class="needs-tiebreaker danger__background"><?= i::_e('Voto de minerva') ?></h2>
     <mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal" teleport="body">
         <template #default>
             <evaluation-qualification-detail :registration="entity"></evaluation-qualification-detail>
