@@ -19,6 +19,14 @@ $this->import('
         </mc-title>
         <div class="mc-accordion__icon">
             <slot name="icon">
+                <div v-if="withText" class="mc-accordion__icon">
+                    <label v-if="active">
+                        <?= i::__('Diminuir') ?>
+                    </label>
+                    <label v-else>
+                        <?= i::__('Expandir') ?>
+                    </label>
+                </div>
             </slot>
             <mc-icon :name="active ? 'arrowPoint-up' : 'arrowPoint-down'" class="primary__color"></mc-icon>
         </div>
