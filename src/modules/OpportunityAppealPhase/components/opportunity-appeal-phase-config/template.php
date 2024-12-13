@@ -68,7 +68,7 @@ $this->import('
             </template>
             <template #content>
                 <div class="opportunity-appeal-phase-config__content-title">
-                    <h3 class="bold"><?= i::__('Configuração de fase') ?></h3>
+                    <h3 class="bold"><?= i::__('Configuração da fase') ?></h3>
                     <div class="opportunity-appeal-phase-config__datepicker">
                         <entity-field :entity="entity" prop="appealFrom" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
                         <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity" prop="appealTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
@@ -109,7 +109,7 @@ $this->import('
             </template>
             <template #content>
                 <div class="opportunity-appeal-phase-config__content-title">
-                    <h3 class="bold"><?= i::__('Configuração de fase') ?></h3>
+                    <h3 class="bold"><?= i::__('Configuração da fase') ?></h3>
                     <div class="opportunity-appeal-phase-config__datepicker">
                         <entity-field :entity="entity" prop="responseFrom" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
                         <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity" prop="responseTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
