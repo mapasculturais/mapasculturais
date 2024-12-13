@@ -5,12 +5,14 @@ namespace OpportunityAppealPhase;
 use MapasCulturais\App;
 use MapasCulturais\i;
 use MapasCulturais\Controllers;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Opportunity;
 
 class Module extends \MapasCulturais\Module {
     public function _init() {
         $app = App::i();
 
-        /* Endpoint de criação de fase de recurso */
+        /* Endpoint de criação de fase de recurso na oportunidade */
         $app->hook('POST(opportunity.createAppealPhase)', function() use ($app) {
             /** @var Controllers\Opportunity $this  */
 
@@ -22,21 +24,30 @@ class Module extends \MapasCulturais\Module {
 
             $appeal_phase = new $class_name();
             $appeal_phase->parent = $opportunity;
-            $appeal_phase->status = -1;
+            $appeal_phase->status = Opportunity::STATUS_APPEAL_PHASE;
             $appeal_phase->name = sprintf(i::__('Fase de recurso para %s'), $opportunity->name);
-
             $appeal_phase->ownerEntity = $opportunity->ownerEntity;
             $appeal_phase->registrationCategories = $opportunity->registrationCategories;
             $appeal_phase->registrationRanges = $opportunity->registrationRanges;
             $appeal_phase->registrationProponentTypes = $opportunity->registrationProponentTypes;
-
+            $appeal_phase->isDataCollection = true;
             $appeal_phase->save(true);
+
+            $opportunity->appealPhase = $appeal_phase;
+            $opportunity->save(true);
+            
+            $evaluation = new EvaluationMethodConfiguration();
+            $evaluation->opportunity = $appeal_phase;
+            $evaluation->type = 'simple';
+            $evaluation->save(true);
 
             $this->json($appeal_phase);
         });
     }
 
     public function register() {
+        $app = App::i();
+
         $this->registerOpportunityMetadata('appealFrom', [
             'label' => i::__('Início'),
             'type' => 'date',
@@ -55,6 +66,22 @@ class Module extends \MapasCulturais\Module {
         $this->registerOpportunityMetadata('responseTo', [
             'label' => i::__('Término'),
             'type' => 'date',
+        ]);
+
+        $this->registerOpportunityMetadata('appealPhase', [
+            'label' => i::__('Indica se é uma fase de recurso'),
+            'type'  => 'entity'
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('appealPhase', [
+            'label'        => i::__('Indica se é uma fase de recurso'),
+            'type'         => 'entity',
+            'serialize' => function($value, $evaluationMethodConfiguration) {
+                $evaluationMethodConfiguration->opportunity->appealPhase = $value;
+            },
+            'unserialize' => function($value, $evaluationMethodConfiguration) {
+                return $evaluationMethodConfiguration->opportunity->appealPhase;
+            }
         ]);
     }
 }
