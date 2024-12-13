@@ -274,12 +274,12 @@ class Metadata extends \MapasCulturais\Definition{
                 return is_null($value) ? null : (array) json_decode($value);
             },
             'entity' => function($value) use ($app) {
-                if (preg_match('#^((\\\?[a-z]\w*)+):(\d+)$#i', $value, $matches)) {
+                if (!is_null($value) && preg_match('#^((\\\?[a-z]\w*)+):(\d+)$#i', $value, $matches)) {
                     $class = $matches[1];
                     $id = $matches[3];
                     return $app->repo($class)->find($id);
                 }
-                return is_null($value) ? null : (array) json_decode($value);
+                return $value;
             },
             'bankFields' => function($value) {
                 return is_null($value) ? null : json_decode($value);

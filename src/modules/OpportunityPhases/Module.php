@@ -440,7 +440,7 @@ class Module extends \MapasCulturais\Module{
             $query = $app->em->createQuery("
                 SELECT o
                 FROM $class o
-                WHERE o.parent = :parent
+                WHERE o.parent = :parent AND o.status = -1
                 ORDER BY o.registrationFrom ASC, o.id ASC");
 
             $query->setParameters([
@@ -485,6 +485,7 @@ class Module extends \MapasCulturais\Module{
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
                         $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,files");
+                        $item->appealPhase = $opportunity->appealPhase;
 
                         $item->registrationSteps = [];
                         foreach ($opportunity->registrationSteps as $step) {
@@ -494,6 +495,7 @@ class Module extends \MapasCulturais\Module{
 
                         if($emc){
                             $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups,evaluateSelfApplication");
+                            $item->evaluationMethodConfiguration->appealPhase = $emc->appealPhase;
                         }
 
                         $result[] = $item;
@@ -507,7 +509,10 @@ class Module extends \MapasCulturais\Module{
 
                         $app->applyHook('module(OpportunityPhases).evaluationPhaseData', [&$mout_simplify]);
 
-                        $result[] = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo");
+                        $item = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo");
+                        $item->appealPhase = $emc->appealPhase;
+
+                        $result[] = $item;
                     }
                 }
             }
@@ -1365,6 +1370,10 @@ class Module extends \MapasCulturais\Module{
                     $phase = $_phase;
                     break;
                 }
+            }
+
+            if (!$phase && $this->opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
+                $phase = $this->opportunity;
             }
 
             if(!$phase) {
