@@ -101,11 +101,11 @@ app.component('seals-certifier', {
                 if (!newTypes.includes(type)) {
                     delete sealsObject[type]; 
                     if (sealsGroup === 'categorySeals') {
-                        delete this.entityOpportunity.categorySeals[type];  
+                        delete this.entityOpportunity.categorySeals?.[type];  
                     }
 
                     if (sealsGroup === 'proponentSeals') {
-                        delete this.entityOpportunity.proponentSeals[type];  
+                        delete this.entityOpportunity.proponentSeals?.[type];  
                     }
                 }
             }
