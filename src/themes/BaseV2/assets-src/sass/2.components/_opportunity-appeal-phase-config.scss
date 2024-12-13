@@ -139,6 +139,10 @@
             &__date {
                 width: 100%;
             }
+
+            &__time {
+                display: none;
+            }
         }
     }
 
@@ -161,15 +165,10 @@
     &__checkboxes {
         display: flex;
         gap: size(8);
+        flex-direction: row;
 
         input {
             width: size(16);
         }
-    }
-
-    &__checkboxes-response {
-        display: flex;
-        flex-direction: column;
-        gap: size(10);
     }
 }

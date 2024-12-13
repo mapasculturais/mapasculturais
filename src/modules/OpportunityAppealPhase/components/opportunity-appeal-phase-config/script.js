@@ -24,16 +24,13 @@ app.component('opportunity-appeal-phase-config' , {
             phaseData: {},
             entity: null,
             moreResponse: false,
-            publishReviewerName: false,
-            publishForProponent: false,
             showButtonEvaluationCommittee: true, 
             trashButton: false,  
         }
     },
 
-
-    mounted() { 
-        
+    mounted() {
+        this.initializeAppealPhase();
     },
 
     computed: {
@@ -49,7 +46,7 @@ app.component('opportunity-appeal-phase-config' , {
         },
 
         fromDateMin() {
-            return this.phase.publishTimestamp || this.firstPhase.publishTimestamp;
+            return this.phase.publishTimestamp || this.phase.registrationFrom || this.phase.evaluationMethodConfiguration?.evaluationFrom;
         },
 
         fromDateMax() {
@@ -57,32 +54,32 @@ app.component('opportunity-appeal-phase-config' , {
         },
 
         toDateMin() {
-            return this.phase.appealFrom || this.phase.publishTimestamp;
+            return this.phase.appealPhase?.registrationFrom || this.phase.appealPhase?.evaluationMethodConfiguration?.evaluationFrom;
         },
 
         toDateMax() {
             return null;
         },
 
-        appealFrom() {
+        registrationFrom() {
             return this.entity.appealFrom
                 ? this.entity.appealFrom.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },
 
-        appealTo() {
+        registrationTo() {
             return this.entity.appealTo
                 ? this.entity.appealTo.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },
 
-        responseFrom() {
+        evaluationFrom() {
             return this.entity.responseFrom 
                 ? this.entity.responseFrom.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },
 
-        responseTo() {
+        evaluationTo() {
             return this.entity.responseTo
                 ? this.entity.responseTo.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
@@ -91,7 +88,7 @@ app.component('opportunity-appeal-phase-config' , {
     },
 
     methods: {
-        createAppealPhase() {
+        async createAppealPhase() {
             this.processing = true;
             const messages = useMessages();
         
@@ -101,16 +98,15 @@ app.component('opportunity-appeal-phase-config' , {
         
             let args = {};
         
-            target.POST('createAppealPhase', args)
+            await target.POST('createAppealPhase', args)
                 .then((data) => {
                     this.phaseData = data;
         
                     this.entity = new Entity('opportunity');
                     this.entity.populate(this.phaseData);
-                    this.entity.type = this.phase.type;
-                    this.entity.appealPhase = true;
+                    this.entity.isAppealPhase = true;
                     this.entity.save();
-        
+                    
                     this.processing = false;
         
                     messages.success(this.text('Fase de recurso criada com sucesso'));
@@ -119,6 +115,10 @@ app.component('opportunity-appeal-phase-config' , {
                     messages.error(data.error);
                     this.processing = false;
                 });
+        },
+
+        initializeAppealPhase() {
+            this.entity = this.phase.appealPhase;
         },
 
         addEvaluationCommittee() {
