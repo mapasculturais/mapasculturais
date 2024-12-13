@@ -49,26 +49,6 @@ class Module extends \MapasCulturais\Module {
     public function register() {
         $app = App::i();
 
-        $this->registerOpportunityMetadata('appealFrom', [
-            'label' => i::__('Início'),
-            'type' => 'date',
-        ]);
-
-        $this->registerOpportunityMetadata('appealTo', [
-            'label' => i::__('Término'),
-            'type' => 'date',
-        ]);
-
-        $this->registerOpportunityMetadata('responseFrom', [
-            'label' => i::__('Início'),
-            'type' => 'date',
-        ]);
-
-        $this->registerOpportunityMetadata('responseTo', [
-            'label' => i::__('Término'),
-            'type' => 'date',
-        ]);
-
         $this->registerOpportunityMetadata('appealPhase', [
             'label' => i::__('Indica se é uma fase de recurso'),
             'type'  => 'entity'
