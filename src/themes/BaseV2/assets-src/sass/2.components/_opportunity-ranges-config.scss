@@ -10,6 +10,12 @@
         flex-direction: column;
         margin-bottom: size(8);
         gap: size(8);
+
+        & > h4 {
+            align-items: center;
+            display: flex;
+            gap: size(8);
+        }
     }
 
     &__content {

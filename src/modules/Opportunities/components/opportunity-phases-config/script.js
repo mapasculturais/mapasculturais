@@ -36,6 +36,20 @@ app.component('opportunity-phases-config', {
             evaluationTypes: $DESCRIPTIONS.evaluationmethodconfiguration.type.options
         }
     },
+
+    computed: {
+        firstPhase() {
+            return this.phases[0];
+        },
+
+        lastPhase() {
+            const lastPhase = this.phases[this.phases.length - 1];
+            if (lastPhase.isLastPhase) {
+                return lastPhase;
+            }
+        }
+    },
+    
     methods: {
         addInPhases (phase) {
             this.phases.splice(this.phases.length - 1, 0, phase);

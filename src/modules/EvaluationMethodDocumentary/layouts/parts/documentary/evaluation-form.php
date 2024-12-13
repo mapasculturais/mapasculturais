@@ -8,4 +8,4 @@
 $this->import('documentary-evaluation-form');
 ?>
 
-<documentary-evaluation-form :entity="entity"></documentary-evaluation-form>
+<documentary-evaluation-form :entity="entity" :form-data="formData"></documentary-evaluation-form>

@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-modal
+    mc-loading
 ');
 ?>
 <mc-modal classes="modal-confirm" :close-button="false" :title="title">
@@ -20,8 +21,10 @@ $this->import('
         </slot>
     </template>
 
-    <template #actions="modal">
+    <template v-if="!loading" #actions="modal">
         <button class="button button--text" @click="cancel(modal)">{{no || "<?php i::_e("Não") ?>"}}</button>
         <button class="button button--primary" @click="confirm(modal)">{{yes || "<?php i::_e("Sim") ?>"}}</button>
     </template>
+
+    <mc-loading :condition="!!loading">{{ loadingMessage }}</mc-loading>
 </mc-modal>

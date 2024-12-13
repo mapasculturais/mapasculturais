@@ -49,7 +49,6 @@ $method = $entity->getEvaluationMethod();
 <div class="agentes-relacionados">
     <div class="registration-fieldset">
         <h4><?php i::_e('Comissão de Avaliação'); ?></h4>
-        <?php if($method->fetchRegistrations()): ?>
             <div id='status-info' class="alert info">
                 <p>
                     <?php \MapasCulturais\i::_e("Se você quiser <strong>dividir as inscrições</strong> entre os avaliadores você pode utilizar os <strong>campos de distribuição</strong> para cada avaliador. Você pode dividir as inscrições pelo final dos números das inscrições e/ou pela categoria definida nas inscrições."); ?>
@@ -67,7 +66,6 @@ $method = $entity->getEvaluationMethod();
                 </p>
                 <div class="close"></div>
             </div>
-        <?php endif; ?>
             <div class="committee" ng-repeat="admin in data.committee">
                 <div ng-if="admin.status === -5" class="alert warning"><?php i::_e('Aguardando confirmação do avaliador')?></div>
                 <div class="committee--info ">
@@ -92,15 +90,13 @@ $method = $entity->getEvaluationMethod();
                         </div>
                     </div>
                 </div>
-                <?php if($method->fetchRegistrations()): ?>
-                    <div class="committee--fetch clear">
-                        <label class="hltip" title="<?php i::esc_attr_e('Distribuição das inscrições: use para dividir as inscrições entre os avaliadores'); ?>"> <?php i::_e('Distribuição'); ?> </label><br>
-                        <div class="inputs">
-                            <input ng-model="config['fetch'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}" placeholder="<?php i::_e('0-9') ?>"/>
-                            <input ng-model="config['fetchCategories'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}"  placeholder="<?php i::_e('Categorias separadas por ponto e vírgula') ?>"/>
-                        </div>
+                <div class="committee--fetch clear">
+                    <label class="hltip" title="<?php i::esc_attr_e('Distribuição das inscrições: use para dividir as inscrições entre os avaliadores'); ?>"> <?php i::_e('Distribuição'); ?> </label><br>
+                    <div class="inputs">
+                        <input ng-model="config['fetch'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}" placeholder="<?php i::_e('0-9') ?>"/>
+                        <input ng-model="config['fetchCategories'][admin.agentUserId]" ng-model-options="{ debounce: 1000, updateOn: 'blur'}"  placeholder="<?php i::_e('Categorias separadas por ponto e vírgula') ?>"/>
                     </div>
-                <?php endif; ?>
+                </div>
             </div>
         <p ng-if="committee.length < 1"><?php i::_e('Não há nenhum avaliador definido.'); ?></p>
         <button class="btn btn-default add" ng-click="editbox.open('add-committee-agent', $event)" ><?php i::esc_attr_e('Adicionar avaliador'); ?></button>

@@ -40,7 +40,7 @@ $this->import('
             </div>
         </div>
         <mc-loading :condition="loading"><?= i::__('carregando...') ?></mc-loading>
-        <ul v-if="!loading" class="evaluation-list">
+        <ul v-if="!loading" class="evaluation-list scrollbar">
             <li v-if="evaluations.length <= 0" class="no-records">
                 <?= i::__('Não foram encontrados registros') ?>
             </li>
@@ -50,14 +50,28 @@ $this->import('
                         <div class="card-header">
                             <span class="card-header__name">{{evaluation.registrationNumber}}</span>
                         </div>
-                        <div class="card-content">
-                            <div v-if="evaluation.agentname" class="card-content__middle">
-                                <mc-icon name='agent-1'></mc-icon>
 
-                                <span class="value">
-                                    <strong>{{evaluation.agentname}}</strong>
+                        <div class="owner-entity">
+                            <div class="owner" v-if="evaluation.agentsData?.['owner']?.name != ''">
+                                <span>
+                                    <small class="bold"><?= i::__('Agente responsável') ?></small>
+                                </span>
+                                <span>
+                                    <small>{{evaluation.agentsData?.['owner']?.name}}</small>
                                 </span>
                             </div>
+
+                            <div class="coletive" v-if="evaluation.agentsData?.['coletivo']?.name">
+                            <span>
+                                <small class="bold"><?= i::__('Agente coletivo') ?></small>
+                            </span>
+                            <span>
+                                <small>{{evaluation.agentsData?.['coletivo']?.name}}</small>
+                            </span>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
                             <div class="card-content__middle">
                                 <span class="subscribe"><?= i::__('Data da inscrição') ?></span>
                                 <span v-if="evaluation.registrationSentTimestamp" class="value">

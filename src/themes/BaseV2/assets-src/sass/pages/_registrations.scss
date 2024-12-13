@@ -19,7 +19,7 @@
         }
         &__right-sidebar {
             position: sticky;
-            top: size(40);
+            top: 0;
         }
         .registration__collective-link, .registration__institution-link ,  .registration__space-link {
             text-decoration: none;
@@ -365,7 +365,8 @@
                     box-shadow: 3px 3px 3px rgba(0,0,0,.5);
 
                     .stepper {
-                        margin: 0 auto;
+                        margin-inline: auto;
+                        padding-inline: size(16);
 
                         @include mobile {
                             .step .label {
@@ -374,8 +375,12 @@
                         }
 
                         @media (max-width: size(500)) {
-                            .step .label {
-                                display: none;
+                            .step {
+                                min-width: unset;
+
+                                .label {
+                                    display: none;
+                                }
                             }
                         }
                     }
@@ -405,7 +410,7 @@
                                 border-radius: var(--mc-border-radius-sm);
                                 padding: size(16);
 
-                                &.owner {
+                                &.owner, &.collective {
                                     padding: size(16) size(24);
 
                                     .card__content {
@@ -444,7 +449,7 @@
                                     display: flex;
                                     margin-top: size(16);
 
-                                    .owner {
+                                    .owner, .collective {
                                         display: grid;
                                         grid-template-columns: 1fr auto;
                                         gap: size(8);

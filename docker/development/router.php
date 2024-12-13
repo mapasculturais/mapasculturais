@@ -1,7 +1,7 @@
 <?php
 
 if (file_exists($_SERVER['SCRIPT_FILENAME']) && strtolower(substr($_SERVER['SCRIPT_NAME'],-4)) !== '.php') {
-    $filename = __DIR__ . '/' . $_SERVER['SCRIPT_NAME'];
+    $filename = "/var/www/html" . $_SERVER['SCRIPT_NAME'];
     if(!file_exists($filename)) {
         if ($target = getenv('REDIRECT_404_ASSETS_TO')) {
             header('Location: ' . $target . $_SERVER['SCRIPT_NAME']);

@@ -231,6 +231,22 @@ class Seal extends \MapasCulturais\Entity
             return parent::canUserRemove($user);
         }
     }
+
+    protected function canUserApplySeal($user) {
+        if ($user->is('guest')) {
+            return false;
+        }
+
+        if ($this->isUserAdmin($user)) {
+            return true;
+        }
+
+        if ($this->canUser('@control', $user)) {
+            return true;
+        }
+
+        return false;
+    }
     
     public static function getEntityTypeLabel($plural = false): string {
         if ($plural)

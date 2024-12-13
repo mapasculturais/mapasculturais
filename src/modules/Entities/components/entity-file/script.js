@@ -54,6 +54,14 @@ app.component('entity-file', {
             type: Boolean,
             default: false,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        defaultFile: {
+            type: Object,
+            required: false
+        }
     },
 
     data() {
@@ -62,6 +70,7 @@ app.component('entity-file', {
             newFile: {},
             file: this.entity.files?.[this.groupName] || null,
             maxFileSize: $MAPAS.maxUploadSizeFormatted,
+            loading: false
         }
     },
 
@@ -72,6 +81,8 @@ app.component('entity-file', {
         },
 
         async upload(modal) {
+            this.loading = true;
+
             let data = {
                 description: this.formData.description,
                 group: this.groupName,
@@ -83,10 +94,12 @@ app.component('entity-file', {
                 const response = await this.entity.upload(this.newFile, data);
                 this.$emit('uploaded', this);
                 this.file = response;
+                this.loading = false;
                 this.entity.enableMessages();
                 modal.close()
 
             } catch(e) {
+                this.loading = false;
                 if(e.error) {
                     const messages = useMessages();
                     messages.error(e.data[this.groupName]);

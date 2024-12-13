@@ -1,6 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .stepper {
+    container: stepper / inline-size;
     display: flex;
     justify-content: space-between;
     margin: 0;
@@ -10,136 +11,110 @@
 
     .step {
         align-items: center;
+        background-color: transparent;
+        border: none;
         cursor: pointer;
         display: flex;
+        flex: 2;
         flex-direction: column;
         justify-content: flex-start;
         min-width: size(87);
         position: relative;
         width: 100%;
 
-        &:first-child {
-            &::before {
-                content: unset;
-            }
-
-            .count {
-                background-color: var(--mc-secondary-500);
-            }
-        }
-
         &::before {
             background: var(--mc-gray-300);
             content: '';
             height: size(2);
             position: absolute;
-            right: 50%;
-            transition: 
-                background-color 300ms linear,
-                color 300ms;
-            top: size(20);
+            transition: all 300ms linear;
+            top: size(7);
             width: 100%;
         }
 
+        &:first-child {
+            align-items: start;
+            flex: 1;
+        }
+
+        &:last-child {
+            align-items: end;
+            flex: 1;
+        }
+
+        &:disabled {
+            cursor: not-allowed;
+        }
+
         .count {
-            align-items: center;
-            background-color: var(--mc-gray-300);
+            background-color: var(--mc-white);
+            border: 2px solid var(--mc-gray-300);
             border-radius: 50%;
             color: var(--mc-gray-300);
-            display: flex;
-            font-size: size(24);
-            font-weight: 700;
-            height: size(40);
-            justify-content: center;
-            line-height: size(28);
-            transition: 
-                background-color 300ms linear,
-                color 300ms;
-            width: size(40);
+            display: block;
+            height: size(16);
+            outline: 2px solid var(--mc-white);
+            transition: all 300ms linear;
+            width: size(16);
             z-index: 1;
         }
 
         .label {
-            font-weight: 400;
+            color: var(--mc-gray-500);
+            font-weight: 700;
             font-size: size(14);
             line-height: size(19);
+            padding: size(4);
             text-align: center;
             transition: opacity 300ms;
-            opacity: 0;
+        }
 
-            &.active {
-                color: var(--mc-secondary-500);
-                font-weight: 700;
-            }
+        &.passedby, &.active {
 
-            &.show {
-                opacity: 1;
+            .count {
+                background-color: var(--mc-secondary-500);
+                border-color: transparent;
             }
         }
 
-        &:hover {
-            .label {
-                opacity: 1;
+        &.passedby {
+
+            &::before {
+                background: var(--mc-secondary-500);
             }
         }
 
         &.active {
             cursor: default;
-        }
-        
-        &.passedby {
+
             .label {
-                color: var(--mc-secondary-500);
-                font-weight: 700;
-            }
-
-            .count {
-                background-color: var(--mc-secondary-500);
-                color: var(--mc-high-500);
+                color: var(--mc-black);
+                width: calc(100cqi / var(--steps));
             }
 
             &::before {
-                background-color: var(--mc-secondary-500);
+                background: linear-gradient(to right, var(--mc-secondary-500), var(--mc-secondary-500) 50%, var(--mc-gray-300) 50%);
             }
-        }
-    }
-    
 
-    &.small {
-        .step {
-            min-width: size(71);
+            &:first-child {
 
-            &::before {
-                @include mobile {
-                    top: size(16);
+                .label {
+                    text-align: start;
+                }
+
+                &::before {
+                    background: var(--mc-gray-300);
                 }
             }
 
-            .count {
-                height: size(24);
-                margin: size(8) 0;
-                width: size(24);
+            &:last-child {
 
-                @include mobile {
-                    font-size: size(18);
-                    height: size(16);
-                    line-height: size(25);
-                    width: size(16);
+                .label {
+                    text-align: end;
                 }
-            }
 
-            &.passedby {
-                &.active {
-                    .count {
-                        height: size(40);
-                        margin: 0;
-                        width: size(40);
-                        
-                        @include mobile {
-                            height: size(32);
-                            width: size(32);
-                        }
-                    }
+                &::before {
+                    background: var(--mc-secondary-500);
                 }
             }
         }

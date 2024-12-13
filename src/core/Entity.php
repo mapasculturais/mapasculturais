@@ -487,6 +487,10 @@ abstract class Entity implements \JsonSerializable{
     }
 
     public function isUserAdmin(UserInterface $user, $role = 'admin'){
+        if($user->is('guest')) {
+            return false;
+        }
+        
         $result = false;
         if($this->usesOriginSubsite()){
             if($user->is($role, $this->_subsiteId)){

@@ -65,6 +65,12 @@
         gap: size(10);
         margin-bottom: size(16);
 
+        & > h4 {
+            display: flex;
+            gap: size(8);
+            align-items: center;
+        }
+
         .field__preponent > .field__group {
             display: flex;
             justify-content: space-between;

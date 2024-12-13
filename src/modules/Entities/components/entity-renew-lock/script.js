@@ -8,6 +8,12 @@ app.component('entity-renew-lock', {
         }
     },
 
+    setup() { 
+        // os textos estão localizados no arquivo texts.php deste componente 
+        const text = Utils.getTexts('entity')
+        return { text }
+    },
+
     created() {
         const self = this;
         globalThis.addEventListener('afterFetch', (e) => {
@@ -41,7 +47,7 @@ app.component('entity-renew-lock', {
 
         async unlock(modal) {
             const messages = useMessages();
-          
+
             try{
                 await this.entity.POST('unlock', {
                   data: { token: this.token }, callback: data => { }
@@ -69,10 +75,12 @@ app.component('entity-renew-lock', {
             this.setCookie();
 
             setInterval(() => {
-                this.renewLock();
-            }, 
+                if (this.token) {
+                    this.renewLock();
+                }
+            },
             $MAPAS.config['entity-renew-lock']['renewInterval'] * 1000);
         }
     }
-    
+
 });

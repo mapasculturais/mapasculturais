@@ -187,11 +187,23 @@ class Module extends \MapasCulturais\Module {
                 $this->importedComponents = [];
             }
 
+            if (in_array($component, $this->importedComponents)) {
+                return;
+            }
+
             $init_file = $this->resolveFilename("components/{$component}", 'init.php');
 
             if ($init_file) {
-                $app->hook('mapas.printJsObject:before', function () use($init_file, $app) {
+                $app->hook('mapas.printJsObject:before', function () use($init_file, $app, $component) {
+                    $started_at = microtime(true);
                     include $init_file;
+                    $finished_at = microtime(true);
+                    
+                    //loga o tempo de execução
+                    $sec = $finished_at - $started_at;
+                    if($sec  > .1) {
+                        $app->log->debug("Component $component init.php executed in " . ($sec) . " seconds");
+                    }
                 });
             }
 
@@ -200,10 +212,6 @@ class Module extends \MapasCulturais\Module {
                 foreach ($components as $component) {
                     $this->import($component, $data);
                 }
-                return;
-            }
-
-            if (in_array($component, $this->importedComponents)) {
                 return;
             }
             $imported_components = $this->importedComponents;

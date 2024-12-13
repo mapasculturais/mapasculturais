@@ -57,6 +57,11 @@ app.component('mc-tab', {
             }
         )
 
+        Vue.watch(() => props.label, () => {
+            const tab = tabsProvider.tabs.find((tab) => tab.hash == hash);
+            tab.label = props.label;
+        })
+
         Vue.onBeforeMount(() => {
             tabsProvider.tabs.push({
                 disabled: props.disabled,
@@ -75,6 +80,9 @@ app.component('mc-tab', {
             const index = tabsProvider.tabs.indexOf(tab);
             if (index > -1) {
                 tabsProvider.tabs.splice(index, 1);
+            }
+            if (tabsProvider.activeTab.slug === props.slug) {
+                tabsProvider.activeTab = tabsProvider.tabs[0];
             }
         });
 

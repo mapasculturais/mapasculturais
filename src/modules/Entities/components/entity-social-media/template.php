@@ -61,7 +61,7 @@ $this->import('
     </div>
 
 
-    <mc-title v-if="editable" tag="h4" :short-length="0" size="medium" class="bold"><?= i::__("Adicionar redes sociais") ?></mc-title>
+    <mc-title v-if="editable" tag="h4" :short-length="0" size="medium" class="bold"><?= i::__("Redes Sociais") ?></mc-title>
 
     <div v-if="editable" class="entity-social-media__edit">
         <div class="entity-social-media__edit--link">

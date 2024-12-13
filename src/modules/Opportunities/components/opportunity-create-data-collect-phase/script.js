@@ -31,6 +31,9 @@ app.component('opportunity-create-data-collect-phase' , {
         },
         minDate () {
             return this.previousPhase.registrationFrom?._date || this.previousPhase.evaluationFrom?._date;
+        },
+        isContinuousFlow() {
+            return this.opportunity?.isContinuousFlow;
         }
     },
 
@@ -43,6 +46,11 @@ app.component('opportunity-create-data-collect-phase' , {
             this.phase.status = -1;
             this.phase.parent = this.opportunity;
 
+            if(this.isContinuousFlow) {
+                this.phase.registrationTo = this.opportunity?.hasEndDate ? this.lastPhase.publishTimestamp : this.opportunity.registrationTo;
+                this.phase.registrationFrom = this.opportunity.registrationFrom;
+                this.phase.publishedRegistrations = this.opportunity?.hasEndDate ? false : true;
+            }
         },
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar

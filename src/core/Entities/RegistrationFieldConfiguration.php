@@ -37,6 +37,16 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     protected $owner;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationStep
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\RegistrationStep")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="step_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $step;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
@@ -70,21 +80,21 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="required", type="boolean", nullable=false)
      */
     protected $required = false;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="field_type", type="string", length=255, nullable=false)
      */
     protected $fieldType = null;
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="display_order", type="smallint", nullable=false)
      */
     protected $displayOrder = 255;
-    
+
     /**
      * @var string
      *
@@ -105,7 +115,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="conditional", type="boolean", nullable=true)
      */
     protected $conditional;
-    
+
     /**
      * @var boolean
      *
@@ -137,13 +147,13 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     static function getValidations() {
         $app = App::i();
         $validations = [
-            'owner' => [ 
+            'owner' => [
                 'required' => \MapasCulturais\i::__("O projeto é obrigatório.")
             ],
-            'title' => [ 
+            'title' => [
                 'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
             ],
-            'fieldType' => [ 
+            'fieldType' => [
                 'required' => \MapasCulturais\i::__("O tipo de campo é obrigatório")
             ]
         ];
@@ -163,10 +173,9 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     }
 
     public function setOwnerId($id){
-//        $this->owner = $this->repo()->find('opportunity', $id);
         $this->owner = App::i()->repo('Opportunity')->find($id);
     }
-    
+
     public function setFieldOptions($value){
         if (is_string($value)){
             if(trim($value)){
@@ -177,10 +186,10 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         } else {
             $value = (array) $value;
         }
-        
+
         $this->fieldOptions = $value;
     }
-    
+
     public function setCategories($value) {
         if (!$value) {
             $value = [];
@@ -201,6 +210,14 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         $this->registrationRanges = $value;
     }
 
+    public function setStep(int|RegistrationStep $step) {
+        if (is_int($step)) {
+            $app = \MapasCulturais\App::i();
+            $step = $app->repo('RegistrationStep')->find($step);
+        }
+        $this->step = $step;
+    }
+
     public function setProponentTypes($value) {
         if(!$value){
             $value = [];
@@ -209,13 +226,13 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         }
         $this->proponentTypes = $value;
     }
-    
+
     public function getFieldName(){
         return 'field_' . $this->id;
     }
-    
+
     /**
-     * 
+     *
      * @return \MapasCulturais\Definitions\RegistrationFieldType
      */
     public function getFieldTypeDefinition(){
@@ -241,11 +258,12 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         'conditionalField' => $this->conditionalField,
         'conditionalValue' => $this->conditionalValue,
         'registrationRanges' => $this->registrationRanges ?: [],
-        'proponentTypes' => $this->proponentTypes ?: []
+        'proponentTypes' => $this->proponentTypes ?: [],
+        'step' => $this->step ?? null,
         ];
 
         $app = App::i();
-        
+
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
 
         return $result;
@@ -270,7 +288,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     /** @ORM\PrePersist */
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:before');
-        
+
         if(!$this->getFieldTypeDefinition()->requireValuesConfiguration){
             $this->fieldOptions = [];
         }
@@ -292,7 +310,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     /** @ORM\PreUpdate */
     public function _preUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:before');
-        
+
         if(!$this->getFieldTypeDefinition()->requireValuesConfiguration){
             $this->fieldOptions = [];
         }

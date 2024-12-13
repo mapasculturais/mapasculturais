@@ -12,7 +12,7 @@ Com a **permissão da pessoa**, você pode **auxiliá-la** no fluxo de recupera�
 
 A criação da nova senha deve ser feita exclusivamente pela própria pessoa! 
 
-&nbsp;
+
 
 **A senha é pessoal e intransferível**, fundamental para garantir a segurança das suas informações.
 

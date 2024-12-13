@@ -72,7 +72,7 @@ $this->breadcrumb = [
                                     </div>
                                     <?php $this->applyTemplateHook('entity-info','end') ?>
                                 </div>
-                                <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" label="<?php i::_e("Link para página ou site do projeto") ?>" prop="site"></entity-field>
                             </div>
                         </div>

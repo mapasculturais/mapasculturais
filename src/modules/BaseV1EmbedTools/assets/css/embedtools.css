@@ -776,7 +776,27 @@ textarea {
 /* Registration View */
 .action-registrationview .registration .registration-fieldset {
     padding: 0;
+    border: none;
 }
+
+.action-registrationview .registration .registration-fieldset .registration-step {
+    display: grid;
+    margin-top: 1rem;
+    border: 1px solid #BBB;
+    border-radius: .5rem;
+    overflow: hidden;
+}
+
+/* .action-registrationview .registration .registration-fieldset .registration-step > ul {
+    padding: 1rem;
+} */
+
+.action-registrationview .registration .registration-fieldset .registration-step__title {
+    padding: 1rem;
+    background-color: white;
+    font-weight: bold;
+}
+
 .action-registrationview .registration .registration-fieldset ul.attachment-list li {
     background-color: #FFFFFF;
     padding: 0 27px 16px;
@@ -1301,6 +1321,16 @@ textarea {
 
 
 /* Registration Evaluation Form View */
+.action-registrationevaluationtionformview .registration-step .registration-step__title {
+    background-color: #606060;
+    border-radius: 4px;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-block: 16px;
+    padding: 16px;
+}
+
 .action-registrationevaluationtionformview #registration-attachments {
     padding: 0;
     border: none;

@@ -136,8 +136,19 @@ app.component('opportunity-support-config', {
             }
         },
 
+        sortedFields() {
+            return this.fields.toSorted((a, b) => {
+                console.log(a.step, b.step);
+                if (a.step?.displayOrder === b.step?.displayOrder) {
+                    return Math.sign(a.displayOrder - b.displayOrder);
+                } else {
+                    return Math.sign(a.step?.displayOrder - b.step?.displayOrder);
+                }
+            });
+        },
+
         filteredFields() {
-            let fields = this.fields;
+            let fields = this.sortedFields;
             const category = this.categoryFilter; 
             const proponent = this.proponentFilter;
             const range = this.rangeFilter;

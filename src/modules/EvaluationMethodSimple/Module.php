@@ -289,10 +289,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $status;
     }
 
-    public function _getConsolidatedResult(Entities\Registration $registration) {
+    public function _getConsolidatedResult(Entities\Registration $registration, array $evaluations) {
         $app = App::i();
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
 
         $result = 10;
         foreach ($evaluations as $eval){
@@ -313,7 +311,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
     }
 
-    public function valueToString($value) {
+    protected function _valueToString($value) {
         switch ($value) {
             case '2':
                 return i::__('Inválida');
@@ -343,10 +341,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     function _getConsolidatedDetails(Entities\Registration $registration): ?array {
         return null;
-    }
-    
-    public function fetchRegistrations() {
-        return true;
     }
 
 }

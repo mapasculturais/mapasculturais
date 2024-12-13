@@ -193,10 +193,8 @@ class EvaluationMethod extends \MapasCulturais\EvaluationMethod {
         });
     }
 
-    public function _getConsolidatedResult(Entities\Registration $registration) {
+    public function _getConsolidatedResult(Entities\Registration $registration, array $evaluations) {
         $app = App::i();
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
 
         if(is_array($evaluations) && count($evaluations) === 0){
             return 0;

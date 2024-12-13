@@ -12,16 +12,12 @@ app.component('evaluation-actions', {
             type: Object,
             required: true
         },
-        
-        validateErrors: {
-            type: Function,
-            required: true
-        }
     },
 
     setup() {
         const text = Utils.getTexts('evaluation-actions')
-        return { text }
+        const globalState = useGlobalState();
+        return { text, globalState }
     },
 
     mounted() {
@@ -29,7 +25,7 @@ app.component('evaluation-actions', {
     },
 
     data() {
-        return {
+        return {            
             evaluationRegistrationList: null,
             currentEvaluation: $MAPAS.config.evaluationActions?.currentEvaluation || null,
             oldEvaluation: null
@@ -38,13 +34,11 @@ app.component('evaluation-actions', {
 
     computed: {
         firstRegistration() {
-            const globalState = useGlobalState();
-            return globalState.firstRegistration;
+            return this.globalState.firstRegistration;
         },
 
         lastRegistration() {
-            const globalState = useGlobalState();
-            return globalState.lastRegistration;
+            return this.globalState.lastRegistration;
         },
     },
 
@@ -61,7 +55,7 @@ app.component('evaluation-actions', {
         
         requestEvaluation(action, data = {}, args = {}, controller = 'registration') {
             return new Promise((resolve, reject) => {
-                if (action == 'reopenEvaluation' || !this.validateErrors()) {
+                if (action == 'reopenEvaluation' || !this.globalState.validateEvaluationErrors) {
                     const api = new API(controller);
                     let url = api.createUrl(action, args);
                     let result = api.POST(url, data);
@@ -76,6 +70,10 @@ app.component('evaluation-actions', {
             window.dispatchEvent(new CustomEvent('responseEvaluation', {detail:{response: response, type: type}}));
         },
 
+        dispatchErrors() {
+            window.dispatchEvent(new CustomEvent('processErrors', {detail:{}}));
+        },
+
         saveEvaluation(finish = false) {
             const messages = useMessages();
             let args = {id: this.entity.id};
@@ -87,6 +85,7 @@ app.component('evaluation-actions', {
             this.requestEvaluation('saveEvaluation', this.formData, args).then(res => res.json()).then(response => {
                 if (response.error) {
                     messages.error(response.data);
+                    
                 } else {
                     this.dispatchResponse('saveEvaluation', response);
 
@@ -118,20 +117,23 @@ app.component('evaluation-actions', {
         },
 
         finishEvaluation() {
+            this.dispatchErrors();
             this.saveEvaluation(true);
             this.updateSummaryEvaluations('completed');
         },
 
         finishEvaluationSend() {
+            this.dispatchErrors();
             this.sendEvaluation();
-            if (this.lastRegistration?.registrationid != this.entity.id){
+            if (this.lastRegistration?.registrationid != this.entity.id && !this.globalState.validateEvaluationErrors){
                 this.next();
             } 
         },
 
         finishEvaluationSendLater(){
+            this.dispatchErrors();
             this.saveEvaluation(true);
-            if (this.lastRegistration?.registrationid != this.entity.id){
+            if (this.lastRegistration?.registrationid != this.entity.id && !this.globalState.validateEvaluationErrors){
                 this.next();
             } 
         },

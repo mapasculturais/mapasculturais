@@ -49,14 +49,14 @@ $this->import('
 
 		<template v-if="entity.__objectType=='opportunity'">
 			<!-- inscrições abertas -->
-			<div v-if="openSubscriptions" class="entity-card__registration">
+			<div v-if="showEndDateText" class="entity-card__registration">
 				<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
 					<?= i::__('As inscrições encerrarão no dia') ?> {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às') ?> {{entity.registrationTo?.time()}}
 				</p>
 			</div>
 
 			<!-- inscrições futuras -->
-			<div v-if="entity.registrationFrom?.isFuture()" class="entity-card__registration">
+			<div v-if="entity.registrationFrom?.isFuture() && (!entity.isContinuousFlow || (entity.isContinuousFlow && entity.hasEndDate))" class="entity-card__registration">
 				<div class="entity-card__period">
 					<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]" v-if="entity.registrationFrom && entity.registrationTo">
 						<?= i::__('Inscrições de') ?> {{entity.registrationFrom.date('2-digit year')}} <?= i::__('até') ?> {{entity.registrationTo.date('2-digit year')}} <?= i::__('às') ?> {{entity.registrationTo.time()}}

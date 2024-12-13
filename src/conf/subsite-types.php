@@ -3,6 +3,9 @@
 /**
  * See https://github.com/Respect/Validation to know how to write validations
  */
+
+use MapasCulturais\i;
+
 $color_validation = "v::regex('/^#([0-9ABCDEFabcdef]{3}|[0-9ABCDEFabcdef]{6})/')";
 
 $metadata_config_estado = [
@@ -148,6 +151,28 @@ return array(
         'seals_color'         => $metadata_config_color,
         'cor_intro'           => $metadata_config_color,
         'cor_dev'             => $metadata_config_color,
+
+
+        'filter_subsite_opportunity' => [
+            'label' => i::__('Filtrar oportunidades do subsite'),
+            'type' => 'boolean'
+        ],
+        'filter_subsite_project' => [
+            'label' => i::__('Filtrar projetos do subsite'),
+            'type' => 'boolean'
+        ],
+        'filter_subsite_agent' => [
+            'label' => i::__('Filtrar agentes do subsite'),
+            'type' => 'boolean'
+        ],
+        'filter_subsite_space' => [
+            'label' => i::__('Filtrar espaços do subsite'),
+            'type' => 'boolean'
+        ],
+        'filter_subsite_event' => [
+            'label' => i::__('Filtrar eventos do subsite'),
+            'type' => 'boolean'
+        ],
 
         'filtro_space_meta_En_Estado' => $metadata_config_estado,
 

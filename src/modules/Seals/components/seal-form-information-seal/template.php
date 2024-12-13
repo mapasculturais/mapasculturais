@@ -20,22 +20,20 @@ $this->import('
 <mc-card>
     <template #title>
         <label><?= i::__("Informações de selos")?></label>
-        <p><?= i::__("Texto exemplo de texto")?></p>
+        <p><?= i::__("Os dados inseridos abaixo serão exibidos na página do selo")?></p>
     </template>
+
     <template #content>
-        <div class="grid-12 v-bottom">
+        <div class="grid-12">
             <entity-cover :entity="entity" classes="col-12"></entity-cover>
             <div class="col-3 sm:col-12">
                 <entity-profile :entity="entity"></entity-profile>
             </div>
-            <div class="col-9 sm:col-12">
-                <entity-field :entity="entity" prop="name"></entity-field>
-                <div>
-                    <h3>Validade do certificado do selo</h3>
-                    <seal-form-valid-period :entity="entity"></seal-form-valid-period>
-                </div>
+            <div class="col-9 sm:col-12 grid-12">
+                <entity-field class="col-12" :entity="entity" prop="name"></entity-field>
+                <seal-form-valid-period class="col-12" :entity="entity"></seal-form-valid-period>
             </div>
-            <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+            <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
         </div>
     </template>
 </mc-card>
@@ -45,14 +43,16 @@ $this->import('
         <label>{{ text('custom_information_title') }}</label>
         <p>{{ text('custom_information_tip') }}</p>
     </template>
+
     <template #content>
         <div class="left">
             <div class="grid-12">
                 <div class="col-12">
                     <entity-field :entity="entity" classes="col-12" prop="certificateText"></entity-field>
                 </div>
-                <div class="col-12">
-                    <h4><?= i::__("Palavras-chaves disponíveis:") ?></h4>
+
+                <div class="col-12 field">
+                    <label><?= i::__("Palavras-chaves disponíveis:") ?></label>
                     <div class="grid-2">
                         <div>
                             <span class="code">[SealName]</span>
@@ -98,6 +98,7 @@ $this->import('
         <label><?= i::__("Outras informações")?></label>
         <p><?= i::__("Os dados inseridos abaixo também são exibidos publicamente")?></p>
     </template>
+    
     <template #content>
         <div class="grid-12">
             <entity-field :entity="entity" classes="col-12" prop="longDescription"></entity-field>

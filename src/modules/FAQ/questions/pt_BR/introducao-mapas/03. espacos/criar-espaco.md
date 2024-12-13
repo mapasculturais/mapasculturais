@@ -5,7 +5,7 @@
 
 Espaços são criados à partir de seu cadastro de agente individual.
 
-&nbsp;
+
 
 #### **Para criar um novo espaço:**
 

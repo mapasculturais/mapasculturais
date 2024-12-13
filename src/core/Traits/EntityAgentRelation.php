@@ -188,6 +188,9 @@ trait EntityAgentRelation {
     }
 
     function userHasControl($user){
+        if ($user->is('guest')) {
+            return false;
+        }
         if($this->isUserAdmin($user))
             return true;
 
@@ -237,12 +240,14 @@ trait EntityAgentRelation {
         $this->checkPermission('modify');
 
         $app = App::i();
-
+        
         if($old_name === 'group-admin') {
             return false;
         }
-
+        
         $relations = $this->getRelatedAgents($old_name, true, true) ?: []; 
+        
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.renameAgentRelationGroup:before", [$old_name, &$new_name, $relations]);
 
         foreach($relations as $relation) {
             $relation->group = $new_name;
@@ -253,6 +258,8 @@ trait EntityAgentRelation {
 
             $relation->save(true);
         }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.renameAgentRelationGroup:after", [$old_name, $new_name, $relations]);
 
         return true;
     }

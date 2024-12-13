@@ -15,6 +15,7 @@ Componente para exibição e edição dos termos das taxonomias de uma entidade.
 - *Boolean **closeOnSelect** = true* - Fecha ao clicar no botão 'confirmar';
 - *Boolean **hideFilter** = false* - Esconde campo de filtragem interna;
 - *Boolean **hideButton** = false* - Esconde o botão 'confirmar';
+- *Number **maxOptions** = true* - Limita a quantidade de opções';
 
 ### Importando componente
 ```PHP

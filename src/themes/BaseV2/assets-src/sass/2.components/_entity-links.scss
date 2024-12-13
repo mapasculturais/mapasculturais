@@ -72,4 +72,53 @@
             }              
         }
     }
+
+    &__list{
+        width: 100%;
+    }
+
+    &__item{
+        align-items: flex-end;
+        display: flex;
+        gap: size(15);
+        margin-top: size(16);
+    }
+
+    &__buttons{
+        display: grid;
+        gap: size(10);
+        padding: size(3) 0;
+    }
+
+    &__button{        
+        cursor: pointer;
+        display: flex;
+        font-size: $font-size-xxxs;
+        gap: size(5);
+        padding: 0;
+        max-width: size(110);
+        width: 100%;
+        white-space: nowrap;
+
+        &--remove{
+            color: var(--mc-danger-500);
+            display: flex;
+            gap: size(5);
+            font-size: $font-size-xxxs;
+            white-space: nowrap;
+        }
+    
+        &--save{
+           color: var(--mc-success-500);    
+        }
+
+        &--saved-remove{
+            position: relative;
+            top: size(-16);
+        }
+    }
+
+    &__add-button{
+        margin-top: size(16);
+    }
 }

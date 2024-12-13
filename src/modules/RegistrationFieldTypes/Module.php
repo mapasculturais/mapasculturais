@@ -266,19 +266,23 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links', '@terms:segmento', '@bankFields'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@bankFields'];
+        
+        $taxonomies_fields = $this->taxonomiesOpportunityFields(true);
+
+        $properties = array_merge($agent_fields, $taxonomies_fields);
         
         $definitions = Agent::getPropertiesMetadata();
         foreach ($definitions as $key => $def) {
             $def = (object) $def;
             if ($def->isMetadata && $def->available_for_opportunities) {
-                $agent_fields[] = $key;
+                $properties[] = $key;
             }
         }
         
-        $app->applyHookBoundTo($this, "registrationFieldTypes.getAgentFields", [&$agent_fields]);
+        $app->applyHookBoundTo($this, "registrationFieldTypes.getAgentFields", [&$properties]);
 
-        return $agent_fields;
+        return $properties;
     }
 
     function getSpaceFields()
@@ -384,7 +388,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'select',
-                'name' => \MapasCulturais\i::__('Seleção única (select)'),
+                'name' => \MapasCulturais\i::__('Seleção única'),
                 'viewTemplate' => 'registration-field-types/select',
                 'configTemplate' => 'registration-field-types/select-config',
                 'requireValuesConfiguration' => true
@@ -430,7 +434,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'checkboxes',
-                'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
+                'name' => \MapasCulturais\i::__('Seleção múltipla'),
                 'viewTemplate' => 'registration-field-types/checkboxes',
                 'configTemplate' => 'registration-field-types/checkboxes-config',
                 'requireValuesConfiguration' => true,
@@ -447,6 +451,47 @@ class Module extends \MapasCulturais\Module
                 'unserialize' => function ($value) {
                     return json_decode($value ?: "");
                 }
+            ],
+            [
+                'slug' => 'addresses',
+                'name' => \MapasCulturais\i::__('Campo de listagem de endereços'),
+                // 'viewTemplate' => 'registration-field-types/addresses',
+                'configTemplate' => 'registration-field-types/addresses-config',
+                'serialize' => function($value) {
+                    if(is_array($value)){
+                        foreach($value as &$person){
+                            foreach($person as $key => $v){
+                                if(substr($key, 0, 2) == '$$'){
+                                    unset($person->$key);
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $addresses = json_decode($value ?: "");
+
+                    if(!is_array($addresses)){
+                        $addresses = [];
+                    }
+
+                    foreach($addresses as &$person){
+                        foreach($person as $key => $value){
+                            if(substr($key, 0, 2) == '$$'){
+                                unset($person->$key);
+                            }
+                        }
+                    }
+                    return $addresses;
+                },
+                'validations' => [
+                    // 'v::allOf(v::attribute("cidade", v::stringType()->notEmpty()), v::attribute("estado", v::stringType()->notEmpty()))' => \MapasCulturais\i::__('O campo Estado é obrigatório.'),
+                    
+                    'v::each(v::attribute("estado", v::stringType()->notEmpty()))'  => \MapasCulturais\i::__('O campo Estado é obrigatório.'),
+                    'v::each(v::attribute("cidade", v::stringType()->notEmpty()))'  => \MapasCulturais\i::__('O campo Cidade é obrigatório.'),
+                ]
             ],
             [
                 'slug' => 'persons',
@@ -518,6 +563,18 @@ class Module extends \MapasCulturais\Module
                     }
 
                     return $links;
+                }
+            ],
+            [
+                'slug' => 'municipio',
+                'name' => \MapasCulturais\i::__('Seleção de município'),
+                'viewTemplate' => 'registration-field-types/municipio',
+                'configTemplate' => 'registration-field-types/municipio-config',
+                'serialize' => function($value) {
+                    return $value ? json_encode($value) : $value;
+                },
+                'unserialize' => function($value) {
+                   return $value ? json_decode($value) : $value;
                 }
             ],
             [
@@ -693,6 +750,9 @@ class Module extends \MapasCulturais\Module
             $app = App::i();
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
+
+            $taxonomies_fields = $this->taxonomiesOpportunityFields();
+
             if ($entity_field == "@location" && is_array($value)) {
                 if(isset($value['location']) && $value['location'] instanceof GeoPoint) {
                     $value["location"] = [
@@ -717,8 +777,9 @@ class Module extends \MapasCulturais\Module
                 }
                 $entity->publicLocation = !empty($value['publicLocation']);
 
-            } else if($entity_field == '@terms:area') {
-                $entity->terms['area'] = $value;
+            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
+                $entity->terms[$taxonomies_fields[$entity_field]] = $value;
+                $entity->save(true);
             } else if($entity_field == '@links') {
                 $savedMetaList = $entity->getMetaLists();
 
@@ -790,7 +851,8 @@ class Module extends \MapasCulturais\Module
 
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
-            
+
+            $taxonomies_fields = $this->taxonomiesOpportunityFields();
 
             if($entity_field == '@location'){
 
@@ -816,9 +878,9 @@ class Module extends \MapasCulturais\Module
 
                 $value = $result;
 
-            } else if($entity_field == '@terms:area') {
-                $value = $entity->terms['area'];
-
+            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
+                $term = $taxonomies_fields[$entity_field];
+                $value = $entity->terms[$term];
             } else if($entity_field == '@type') {
                 $value = $entity->type->name;
 
@@ -849,5 +911,27 @@ class Module extends \MapasCulturais\Module
 
         return $value;
 
+    }
+    
+    /**
+     * @return array 
+     */
+    function taxonomiesOpportunityFields($slugOnly = false): array
+    {
+        $app = App::i();
+        $taxonomies_fields = [];
+        if($registered_taxonomies = $app->getRegisteredTaxonomies()) {
+            foreach($registered_taxonomies as $taxonomie) {
+                if($taxonomie->restrictedTerms && in_array('MapasCulturais\Entities\Opportunity', $taxonomie->entities)) {
+                    if($slugOnly) {
+                        $taxonomies_fields[] = "@terms:{$taxonomie->slug}";
+                    } else {
+                        $taxonomies_fields["@terms:{$taxonomie->slug}"] = $taxonomie->slug;
+                    }
+                }
+            }
+        }
+
+        return $taxonomies_fields;
     }
 }

@@ -18,7 +18,11 @@ app.component('evaluation-documentary-datail', {
         return {}
     },
 
-    computed: {},
+    computed: {
+        evaluationDetails() {
+            return this.registration.evaluationsDetails ? this.registration.evaluationsDetails : $MAPAS.config?.documentaryEvaluationDetail.data?.evaluationsDetails;
+        }
+    },
 
     methods: {
         stausColor(data) {

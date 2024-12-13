@@ -416,6 +416,10 @@ app.component('opportunity-registrations-table', {
         },
 
         consolidatedResultToString(entity) {
+            if(entity.consolidatedResult == '@tiebreaker') {
+                return this.text('aguardando desempate');
+            }
+
             if(this.phase.evaluationMethodConfiguration){
                 let type = this.phase.evaluationMethodConfiguration.type.id || this.phase.evaluationMethodConfiguration.type;
                 if(type == "technical"){

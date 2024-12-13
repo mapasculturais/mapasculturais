@@ -613,6 +613,38 @@ class Registration extends EntityController {
     
     }
 
+    /**
+     * Filter errors, returning only those matching the current step
+     */
+    private function stepErrors(array $errors, int $step_id, EntityRegistration $entity) {
+        $fields = $entity->opportunity->getRegistrationFieldConfigurations();
+        $files = $entity->opportunity->getRegistrationFileConfigurations();
+
+        foreach ($errors as $field_name => $message) {
+            if (str_starts_with($field_name, 'field_')) {
+                $field_id = intval(substr($field_name, 6));
+                
+                foreach ($fields as $field) {
+                    if ($field->id === $field_id && $field->step->id !== $step_id) {
+                        unset($errors[$field_name]);
+                    }
+                }
+            }
+
+            if (str_starts_with($field_name, 'file_')) {
+                $field_id = intval(substr($field_name, 5));
+
+                foreach ($files as $file) {
+                    if ($file->id === $field_id && $file->step->id !== $step_id) {
+                        unset($errors[$field_name]);
+                    } 
+                }
+            }
+        }
+
+        return $errors;
+    }
+
     function POST_validateEntity() {
         $entity = $this->requestedEntity;
 
@@ -625,8 +657,13 @@ class Registration extends EntityController {
         foreach ($this->postData as $field => $value) {
             $entity->$field = $value;
         }
+
+        $errors = $entity->getValidationErrors();
+        if ($step_id = $this->data['step'] ?? null) {
+            $errors = $this->stepErrors($errors, $step_id, $entity);
+        }
         
-        if ($errors = $entity->getValidationErrors()) {
+        if (!empty($errors)) {
             $this->errorJson($errors);
         } else {
             $this->json(true);

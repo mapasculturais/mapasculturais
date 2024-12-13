@@ -7,7 +7,7 @@
 
 O *Mapas Culturais* é uma plataforma digital gratuita e colaborativa que tem como objetivo mapear, conectar e promover a diversidade e gestãoo cultural. 
 
-&nbsp;
+
 
 #### **O *Mapas Culturais* permite que:**
 
@@ -15,13 +15,13 @@ O *Mapas Culturais* é uma plataforma digital gratuita e colaborativa que tem co
 * Gestores públicos tenham uma visão mais completa do cenário cultural local, facilitando o planejamento e a implementação de políticas culturais;
 * Público em geral descubra novas manifestações culturais, se conecte com a cena artística da sua região e participe de Eventos e Oportunidades;
 
-&nbsp;
+
 
 #### **Como funciona?**
 
 Ao cadastrar informações sobre Agentes, Projetos, Eventos e Espaços culturais, os usuários criam um mapa virtual que revela a riqueza e a diversidade cultural de sua região. 
 
-&nbsp; 
+ 
 
 ##### **Essa plataforma oferece diversas funcionalidades, como:**
 
@@ -30,7 +30,7 @@ Ao cadastrar informações sobre Agentes, Projetos, Eventos e Espaços culturais
 * **Divulgação de eventos:** Crie eventos e divulgue-os para um público maior.
 * **Mapas interativos:** Visualize a distribuição geográfica dos Agentes, Espaços e Eventos culturais.
 
-&nbsp; 
+ 
 
 ##### **Benefícios do Mapas Culturais:**
 

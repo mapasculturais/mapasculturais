@@ -57,6 +57,4 @@ $this->import('
             <h4><?php i::_e('Pontuação máxima: ') ?><strong>{{ totalMaxScore }}</strong></h4>
         </div>
     </div>
-
-    <evaluation-actions :formData="formData" :entity="entity" :validateErrors='validateErrors'></evaluation-actions>
 </div>

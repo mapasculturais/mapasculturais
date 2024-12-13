@@ -212,7 +212,7 @@ class Job extends \MapasCulturais\Entity{
 
         if ($success !== false){
             // para evitar que um eventual erro no job deixe a entidade detached
-            $job = $app->repo('Job')->find($this->id);
+            $job = $app->repo('Job')->find($this->id) ?: $this;
 
             $job->iterationsCount++;
             
@@ -242,6 +242,9 @@ class Job extends \MapasCulturais\Entity{
         return $success;
     }
 
+    protected function canUserRemove($user){
+        return true;
+    }
     
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

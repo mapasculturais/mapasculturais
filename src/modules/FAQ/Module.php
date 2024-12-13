@@ -49,11 +49,13 @@ class Module extends \MapasCulturais\Module
     function getSection(string $section_slug): object|null {
         $faq = $this->getFAQ($section_slug);
 
-        if(isset($faq[0])) {
-            return $faq[0];
-        } else {
-            return null;
+        foreach($faq as $section) {
+            if ($section->slug == $section_slug) {
+                return $section;
+            }
         }
+
+        return null;
     }
 
     function getContext(string $section_slug, string $context_slug): object|null {

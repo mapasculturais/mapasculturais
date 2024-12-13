@@ -939,7 +939,7 @@ class App {
      * @return void 
      */
     protected function _initRouteManager() {
-        $this->_routesManager = new RoutesManager($this->config['routes'] ?? []);
+        $this->_routesManager = new RoutesManager;
     }
 
 
@@ -1818,7 +1818,11 @@ class App {
         }
 
         try{
-            $job->save(true);
+            if($this->config['app.executeJobsImmediately']) {
+                $job->execute();
+            } else {
+                $job->save(true);
+            }
         } catch (\Exception $e) {
             $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
         }
@@ -2854,8 +2858,9 @@ class App {
             $taxonomy_required = key_exists('required', $taxonomy_definition) ? $taxonomy_definition['required'] : false;
             $taxonomy_description = key_exists('description', $taxonomy_definition) ? $taxonomy_definition['description'] : '';
             $restricted_terms = key_exists('restricted_terms', $taxonomy_definition) ? $taxonomy_definition['restricted_terms'] : false;
+            $entities = key_exists('entities', $taxonomy_definition) ? $taxonomy_definition['entities'] : [];
 
-            $definition = new Definitions\Taxonomy($taxonomy_id, $taxonomy_slug, $taxonomy_description, $restricted_terms, $taxonomy_required);
+            $definition = new Definitions\Taxonomy($taxonomy_id, $taxonomy_slug, $taxonomy_description, $restricted_terms, $taxonomy_required, $entities);
             $definition->name = $taxonomy_definition['name'] ?? '';
             $entity_classes = $taxonomy_definition['entities'];
 

@@ -140,4 +140,10 @@
             }
         }
     }
+
+    &__selectAgents {
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
 }

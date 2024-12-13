@@ -64,4 +64,13 @@
             min-height: size(113);
         }
     }
+
+    &--warning {
+        background-color: var(--mc-warning-300);
+
+        .iconify {
+            color: var(--mc-black);
+            font-size: size(21);
+        }
+    }
 }

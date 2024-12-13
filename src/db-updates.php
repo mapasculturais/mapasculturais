@@ -1049,8 +1049,14 @@ return [
         __exec("COMMENT ON FUNCTION pg_catalog.text(point) IS 'convert point to text';");
     },
 
+    'cria coluna is_tiebreaker na tabela registration_evaluation' => function () {
+        if(!__column_exists('registration_evaluation', 'is_tiebreaker')) {
+            __exec("ALTER TABLE registration_evaluation ADD is_tiebreaker BOOLEAN DEFAULT FALSE");
+        }
+    },
 
-    /// MIGRATIONS =========================================
+
+    /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
         $conn->executeQuery("UPDATE agent_meta SET value='Homem' WHERE key='genero' AND value='Masculino'");
@@ -2351,6 +2357,23 @@ $$
     'deleta requests com valores dos da coluna metadata inválidos' => function() use($conn) {
         __exec("delete from request where metadata = ':metadata'");
     },
+    "Cria coluna continuous_flow na tabela opportunity" => function() use ($conn) {
+        if (!__column_exists('opportunity', 'continuous_flow')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN continuous_flow TIMESTAMP NULL");
+        }
+    },
+
+    "Renomeia a comissão de avaliação" => function () use($conn) {
+        $name = i::__('Comissão de avaliação');
+        $conn->executeQuery("
+            UPDATE agent_relation 
+            SET type = :type 
+            WHERE 
+                type = 'group-admin' AND 
+                object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'
+        ", ['type' => $name]);
+    },
+    
     'Limpa entradas duplicadas na tabela pcache e cria novos indices' => function() use($conn) {
         __exec("DELETE 
                 FROM 
@@ -2387,5 +2410,20 @@ $$
 
         __exec("CREATE UNIQUE INDEX unique_evaluation_user_id ON registration_evaluation (registration_id, user_id)");
     },
+
+    'cria novos índices em diversas tabelas ' => function() {
+        __exec('CREATE INDEX idx_usr_profile ON usr (profile_id);');
+        __exec('CREATE INDEX id_agent_relation_agent ON agent_relation (agent_id);');
+        __exec('CREATE INDEX idx_space_agent_id ON space (agent_id);');
+        __exec('CREATE INDEX idx_event_agent_id ON event (agent_id);');
+        __exec('CREATE INDEX idx_seal_relation_agent_id ON seal_relation (agent_id);');
+        __exec('CREATE INDEX idx_seal_relation_owner_id ON seal_relation (owner_id);');
+        __exec('CREATE INDEX idx_seal_relation_object ON seal_relation (object_type, object_id);');
+        __exec('CREATE INDEX idx_project_agent_id ON project (agent_id);');
+        __exec('CREATE INDEX idx_project_type ON project (type);');
+        __exec('CREATE INDEX idx_registration_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX idx_opportunity_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
+    }    
 
 ] + $updates ;   

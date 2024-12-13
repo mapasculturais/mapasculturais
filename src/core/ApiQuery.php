@@ -906,9 +906,8 @@ class ApiQuery {
         if(isset($this->entityRelations[$prop])){
             $identity = "IDENTITY({$alias}.{$prop})";
         } else {
-            $identity = "{$alias}.{$prop}";
+            $identity = "CAST({$alias}.{$prop} AS INTEGER)";
         }
-        
         $dql = " SELECT $identity FROM {$this->entityClassName} {$alias} {$joins} ";
         if ($where) {
             $dql .= " WHERE {$where} ";
@@ -1026,17 +1025,23 @@ class ApiQuery {
         if(!$this->_subsiteId){
             if($subsite = $app->getCurrentSubsite()){
                 $subsite_query = $subsite->getApiQueryFilter($this->entityClassName);
+
+                $app->applyHookBoundTo($this, "{$this->hookPrefix}.subsiteFilters", [&$subsite_query]);
+
                 if($subsite_query){
                     $filters[] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
                 }
             }
         }
         
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.subqueryFilters", [&$filters]);
+
         return $filters;
     }
 
     protected function generateWhere() {
-        
+        $app = App::i();
+
         $where = $this->where;
         $where_dqls = implode(" $this->_op \n\t", $this->_whereDqls);
         
@@ -1064,6 +1069,7 @@ class ApiQuery {
         $filters = $this->getSubqueryFilters();
         
         foreach($filters as $filter){
+            /** @var ApiQuery */
             $subquery = $filter['subquery'];
             $subquery_property = $filter['subquery_property'];
             $property = $filter['property'];
@@ -1086,6 +1092,8 @@ class ApiQuery {
             }
         }
 
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.where", [&$where]);
+
         return $where;
     }
 
@@ -1105,14 +1113,18 @@ class ApiQuery {
             $joins .= " JOIN e.__sealRelations {$sl} WITH {$sl}.seal IN ($slv)";
         }
 
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.joins", [&$joins]);
+
         return $joins;
     }
     
     protected $_removeFromResult = [];
 
     protected function generateSelect() {
+        $app = App::i();
+
         $select = $this->select;
-        $class = $this->entityClassName;
+
         if(!in_array($this->pk, $this->_selectingProperties)){
             $this->_selectingProperties = array_merge([$this->pk], $this->_selectingProperties);
         }
@@ -1168,6 +1180,9 @@ class ApiQuery {
         foreach($this->orderCasts as $order_cast) {
             $select .= ", $order_cast";
         }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.select", [&$select]);
+
         return $select;
     }
 
@@ -1375,9 +1390,8 @@ class ApiQuery {
             $entity_id = $entity[$this->pk];
             
             if (isset($metadata[$entity_id])) {
-                if (isset($permissions[$entity_id])) {
-                    $can_view = $permissions[$entity_id];
-                }
+                
+                $can_view = $permissions[$entity_id] ?? false;
                 
                 $meta = $metadata[$entity_id];
                 foreach($meta as $k => $v){
