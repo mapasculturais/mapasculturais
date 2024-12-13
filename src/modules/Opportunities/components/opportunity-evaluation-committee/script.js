@@ -53,7 +53,7 @@ app.component('opportunity-evaluation-committee', {
     },
 
     data() {
-        let ranges = this.entity.opportunity ? this.entity.opportunity.registrationRanges?.map((range) => range.label) : this.entity.parent.registrationRanges?.map((range) => range.label);
+        let ranges = this.entity.opportunity.registrationRanges?.map((range) => range.label);
 
         return {
             agentData: null,
@@ -63,13 +63,13 @@ app.component('opportunity-evaluation-committee', {
             selectCategories: [],
             registrationCategories: [
                 'sem avaliações',
-                ... (this.entity.opportunity ? this.entity.opportunity.registrationCategories ?? [] : this.entity.parent.registrationCategories ?? [])
+                ... (this.entity.opportunity.registrationCategories ?? [])
             ],
             registrationRanges: [
                 ... (ranges ?? [])
             ],
             registrationProponentTypes: [
-                ... (this.entity.opportunity ? this.entity.opportunity.registrationProponentTypes ?? [] : this.entity.parent.registrationProponentTypes ?? [])
+                ... (this.entity.opportunity.registrationProponentTypes ?? [])
             ],
             sendTimeOut: null,
             fetchConfigs: {},
@@ -113,12 +113,7 @@ app.component('opportunity-evaluation-committee', {
         
         selectAgent(agent) {
             const api = new API();
-            const url = Utils.createUrl(
-                this.entity.appealPhase ? 'opportunity' : 'evaluationMethodConfiguration',
-                'createAgentRelation',
-                { id: this.entity.id }
-            );
-
+            let url = Utils.createUrl('evaluationMethodConfiguration', 'createAgentRelation', {id: this.entity.id});
             this.agentData = {
                 group: this.group,
                 agentId: agent._id,
@@ -133,7 +128,7 @@ app.component('opportunity-evaluation-committee', {
         
         loadReviewers() {
             let args = {
-                '@opportunity': this.entity.opportunity ? this.entity.opportunity.id : this.entity.id,
+                '@opportunity': this.entity.opportunity.id,
                 '@limit': 50,
                 '@page': 1,
             };
@@ -194,11 +189,7 @@ app.component('opportunity-evaluation-committee', {
             let userGroups = this.entity.agentRelations.filter(relation => relation.agentUserId === userId);
             
             const api = new API();
-            const url = Utils.createUrl(
-                this.entity.appealPhase ? 'opportunity' : 'evaluationMethodConfiguration',
-                'removeAgentRelation',
-                { id: this.entity.id }
-            );
+            let url = Utils.createUrl('evaluationMethodConfiguration', 'removeAgentRelation', {id: this.entity.id});
             this.agentData = {
                 group: this.group,
                 agentId: agentId,
@@ -240,17 +231,9 @@ app.component('opportunity-evaluation-committee', {
             };
 
             if(enableOrDisabled === 'disabled') {
-                url = Utils.createUrl(
-                    this.entity.appealPhase ? 'opportunity' : 'evaluationMethodConfiguration',
-                    'disableValuer',
-                    { id: this.entity.id }
-                );
+                url = Utils.createUrl('evaluationMethodConfiguration', 'disableValuer', {id: this.entity.id});
             } else {
-                url = Utils.createUrl(
-                    this.entity.appealPhase ? 'opportunity' : 'evaluationMethodConfiguration',
-                    'enableValuer',
-                    { id: this.entity.id }
-                );
+                url = Utils.createUrl('evaluationMethodConfiguration', 'enableValuer', {id: this.entity.id});
             }
 
             api.POST(url, relationData).then(res => res.json()).then(data => {
@@ -278,11 +261,7 @@ app.component('opportunity-evaluation-committee', {
 
         sendDefinition(field, userId, event = null, type) {
             const api = new API();
-            let url = Utils.createUrl(
-                this.entity.appealPhase ? 'opportunity' : 'evaluationMethodConfiguration',
-                'single',
-                { id: this.entity.id }
-            );
+            let url = Utils.createUrl('evaluationMethodConfiguration', 'single', {id: this.entity.id});
             
             const fetchFieldMap = {
                 fetch: 'fetch',
