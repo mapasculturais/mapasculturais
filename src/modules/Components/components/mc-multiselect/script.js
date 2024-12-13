@@ -131,12 +131,30 @@ app.component('mc-multiselect', {
         },
 
         toggleItem(key) {
-            if (this.model.indexOf(key) >= 0) {
-                this.remove(key);
-            } else if(this.canSelectMore) {
-                this.model.push(key);
-                this.$emit('selected', key);
+            if(key == '@NA') {
+                if (this.model.includes(key)) {
+                    this.remove(key);
+                } else {
+                    while (this.model.length > 0) {
+                        this.remove(this.model[0]);
+                    }
+                    
+                    this.model.push(key);
+                    this.$emit('selected', key);
+                }
+            } else {
+                const ndIndex = this.model.indexOf('@NA');
+                
+                if (ndIndex >= 0) {
+                    this.model.splice(ndIndex, 1);
+                }
 
+                if (this.model.indexOf(key) >= 0) {
+                    this.remove(key);
+                } else if(this.canSelectMore) {
+                    this.model.push(key);
+                    this.$emit('selected', key);
+                }
             }
         },       
 

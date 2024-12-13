@@ -27,14 +27,17 @@
                 <template v-for="field in section.fields" :key="field.fieldName || field.groupName">
                     <registration-field-address v-if="field.fieldType == 'addresses'" 
                         :registration="registration"
+                        :disabled="isDisabled(field)"
                         :prop="field.fieldName"></registration-field-address>
 
                     <registration-field-persons v-if="field.fieldType == 'persons'" 
                         :registration="registration"
+                        :disabled="isDisabled(field)"
                         :prop="field.fieldName"></registration-field-persons>
                         
                     <entity-field v-else-if="field.fieldName && field.fieldType != 'addresses' && field.fieldType != 'persons'" 
                         :entity="registration" 
+                        :disabled="isDisabled(field)"
                         :prop="field.fieldName" 
                         :field-description="field.description" 
                         :max-length="field.maxSize" 
@@ -44,7 +47,8 @@
                         :preserve-order="field.fieldType == 'checkboxes'"></entity-field>
 
                     <entity-file v-else-if="field.groupName" 
-                        :entity="registration" 
+                        :entity="registration"
+                        :disabled="isDisabled(field)"
                         :groupName="field.groupName" 
                         titleModal="<?php i::_e('Adicionar anexo') ?>" 
                         :title="field.title" 
