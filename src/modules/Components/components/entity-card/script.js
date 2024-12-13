@@ -63,7 +63,17 @@ app.component('entity-card', {
         },
         openSubscriptions() {
             if (this.entity.__objectType == "opportunity") {
+                
                 if (this.entity.registrationFrom && this.entity.registrationTo) {
+                    if (this.entity.isContinuousFlow) {
+                        if (!this.entity.hasEndDate && this.entity.registrationFrom.isFuture()) {
+                            return false; 
+                        }
+                        
+                        if (!this.entity.hasEndDate && this.entity.registrationFrom.isPast()) {
+                            return true; 
+                        }
+                    }
                     return this.entity.registrationFrom.isPast() && this.entity.registrationTo.isFuture();
                 } else {
                     return false;
@@ -71,6 +81,20 @@ app.component('entity-card', {
             }
             return false;
         },
+
+        showEndDateText() {
+            if (this.entity.__objectType == "opportunity") {
+                if (this.entity.registrationFrom && this.entity.registrationTo) {
+                    if (this.entity.isContinuousFlow && !this.entity.hasEndDate) {
+                        return false;
+                    }
+                    return this.entity.registrationFrom.isPast() && this.entity.registrationTo.isFuture();
+                }
+                return false;
+            }
+            return false;
+        },
+
         useLabels() {
             return this.openSubscriptions || this.hasSlot('labels')
         }

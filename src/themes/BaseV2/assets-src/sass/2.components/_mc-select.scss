@@ -1,6 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .mc-select {
+    margin-bottom: 0.5rem;
     outline: none;
     position: relative;
     text-align: left;
@@ -32,14 +33,14 @@
             height: 0;
             position: absolute;
             right: size(24);
-            top: size(22);
+            top: calc(50% - size(2));
             width: 0;
         }
 
         &--open {
             &:after {
                 border-color: transparent transparent var(--mc-low-500) transparent;
-                top: size(16);
+                top: calc(50% - size(7));
             }
         }
     }
@@ -180,5 +181,12 @@
         &__option {
             padding-block: 3px;
         }
+    }
+
+    &--disabled {
+        opacity: .9;
+        pointer-events: none;
+        background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
+        color: light-dark(rgb(84, 84, 84), rgb(170, 170, 170));
     }
 }

@@ -15,8 +15,8 @@
             }
 
             &__content {
-                margin: size(16) size(12) size(16) 0;
-                padding: 0 size(12) 0 size(24);
+                background-color: var(--mc-gray-100);
+                padding: size(16) size(12);
 
                 &::-webkit-scrollbar-track {
                     background-color: var(--mc-gray-100);
@@ -47,9 +47,13 @@
         display: flex;
         flex-direction: column;
         gap: size(16);
-        padding: size(13) size(16);
-        border: var(--mc-border-hairline) var(--mc-low-300);
+        padding: size(12) size(16);
+        background-color: var(--mc-white);
         border-radius: var(--mc-border-radius-xs);
+
+        + .registration-results__card {
+            margin-top: size(16);
+        }
     }
 
     &__card-header {
@@ -77,7 +81,7 @@
         display: flex;
         flex-direction: column;
         padding: size(10) size(16);
-        border: var(--mc-border-hairline) var(--mc-high-700); 
+        border: var(--mc-border-hairline) var(--mc-gray-300); 
         border-radius: var(--mc-border-radius-xs);
     }
 

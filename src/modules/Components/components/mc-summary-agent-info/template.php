@@ -46,7 +46,6 @@ $this->import('
 
         <div>
             <img v-if="getAvatarRelatedEntity('coletivo')" :src="getAvatarRelatedEntity('coletivo')" />
-            <mc-icon v-if="!getAvatarRelatedEntity('coletivo')" name="agent"></mc-icon>
             <span v-if="colective">{{colective?.name}}</span>
             <span v-if="!colective && (opportunity.useAgentRelationColetivo)"><?= i::__("Instituição não informada") ?></span>
         </div>

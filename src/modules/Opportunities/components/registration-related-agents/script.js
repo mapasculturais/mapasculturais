@@ -17,7 +17,6 @@ app.component('registration-related-agents', {
     computed: {
         agentRelations() {
             const relations = [];
-
             for (let relation of $MAPAS.config.registrationRelatedAgents) {
                 const groupName = relation.agentRelationGroupName;
                 const metadata = 'useAgentRelation' + groupName[0].toUpperCase() + groupName.slice(1);
@@ -35,7 +34,18 @@ app.component('registration-related-agents', {
             }
 
             return relations;
-        }
+        },
+
+        showCardForRelation() {
+            const proponentType = this.registration.proponentType;
+            const proponentAgentRelation = this.opportunity.proponentAgentRelation ?? {};
+            const relatedAgents = this.registration.relatedAgents;
+            
+            return (
+                (proponentType === 'Coletivo' && proponentAgentRelation['Coletivo'] && !relatedAgents['coletivo']) || 
+                (proponentType === 'Pessoa Jurídica' && proponentAgentRelation['Pessoa Jurídica'] && !relatedAgents['coletivo'])
+            );
+        },
     },
     
     methods: {

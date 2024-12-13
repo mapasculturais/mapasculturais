@@ -350,6 +350,7 @@ class Opportunity extends EntityController {
                 $r->owner = $e->owner->id;
                 $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar');
                 $r->agentUserId = $e->agent->userId;
+                $r->group = $e->group;
                 return $r;
             }, $relations);
         } else {
@@ -543,17 +544,23 @@ class Opportunity extends EntityController {
     }
 
     protected function _getOpportunityCommittee($opportunity_id) {
+        $app = App::i();
+
         $opportunity = $this->_getOpportunity($opportunity_id);
 
         if (!$opportunity->evaluationMethodConfiguration) {
             return [];
         }
 
-        $committee_relation_query = new ApiQuery('MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation', [
-            '@select' => 'id,agent',
-            'owner' => "EQ({$opportunity->evaluationMethodConfiguration->id})",
-        ]);
-        $committee_relations = $committee_relation_query->find();
+        $committee_relations = [];
+        if($relations = $app->repo('EvaluationMethodConfigurationAgentRelation')->findBy(['owner' => $opportunity->evaluationMethodConfiguration->id])) {
+            foreach($relations as $relation) {
+                $committee_relations[] = [
+                    'id' => $relation->id,
+                    'agent' => $relation->agent->id,
+                ];
+            }
+        }
 
         $committee_ids = implode(
             ',',
@@ -607,7 +614,7 @@ class Opportunity extends EntityController {
         }
 
         $select = $query_data['registration:@select'] ?? 
-                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId';
+                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData';
 
         sort($registration_numbers);
         if($registration_numbers){
@@ -663,9 +670,11 @@ class Opportunity extends EntityController {
         $valuer_by_user = $this->_getOpportunityValuerByUser($opportunity->id);
         foreach($evaluations_query->find() as $e){
             if(isset($valuer_by_user[$e['user']])){
+                $evaluation_result = $e['status'] == 0 ? i::__('Não avaliado') : $e['result'];
+
                 $e['agent'] = $valuer_by_user[$e['user']];
                 $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
-                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
+                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($evaluation_result);
                 $evaluations[$e['id']] = $e;
             }
         }
@@ -1049,6 +1058,7 @@ class Opportunity extends EntityController {
             foreach($_result as $key => $res){
                 if(!in_array("agentsSummary", array_keys($avaliableEvaluationFields))){
                     $_result[$key]['registration']['owner'] =  [];
+                    $_result[$key]['registration']['agentsData'] =  [];
                 }
             }
         }
@@ -1126,7 +1136,48 @@ class Opportunity extends EntityController {
         }
 
         $fields = $app->repo("RegistrationFieldConfiguration")->findBy(array('owner' => $this->urlData['id']));
+
+        foreach ($fields as &$field) {
+            if ($field->conditionalField) {
+                $conditional_field_id = str_replace('field_', '', $field->conditionalField);
+    
+                $conditional_field_exists = false;
+                foreach ($fields as $f) {
+                    if (isset($f->id) && $f->id == $conditional_field_id) {
+                        $conditional_field_exists = true;
+                        break;
+                    }
+                }
+    
+                if (!$conditional_field_exists) {
+                    $field->conditionalField = null;
+                    $field->conditional = false;
+                    $field->conditionalValue = false;
+                }
+            }
+        }
+
         $files = $app->repo("RegistrationFileConfiguration")->findBy(array('owner' => $this->urlData['id']));
+
+        foreach ($files as &$file) {
+            if ($file->conditionalField) {
+                $conditional_field_id = str_replace('field_', '', $file->conditionalField);
+    
+                $conditional_field_exists = false;
+                foreach ($fields as $f) {
+                    if (isset($f->id) && $f->id == $conditional_field_id) {
+                        $conditional_field_exists = true;
+                        break;
+                    }
+                }
+    
+                if (!$conditional_field_exists) {
+                    $file->conditionalField = null;
+                    $file->conditional = false;
+                    $file->conditionalValue = false;
+                }
+            }
+        }
 
         $opportunity =  $app->repo("Opportunity")->find($this->urlData['id']);
 
@@ -1146,11 +1197,20 @@ class Opportunity extends EntityController {
             'registrationLimit',
             'registrationRanges',
             'registrationProponentTypes',
+            'isContinuousFlow',
+            'continuousFlow',
+            'hasEndDate',
+            'publishTimestamp',
+            'registrationTo'
         );
 
         $metadata = [];
 
         foreach ($opportunityMeta as $key) {
+            if($key == 'publishTimestamp') {
+                $metadata[$key] = $opportunity->lastPhase->{$key};
+                continue;
+            }
             $metadata[$key] = $opportunity->{$key};
         }
 
@@ -1182,6 +1242,7 @@ class Opportunity extends EntityController {
             $importSource = fread($importFile,filesize($_FILES['fieldsFile']['tmp_name']));
             $importSource = json_decode($importSource);
 
+            /** @var Entities\Opportunity */
             $opportunity =  $app->repo("Opportunity")->find($opportunity_id);
 
             $opportunity->importFields($importSource);

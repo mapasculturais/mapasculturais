@@ -106,6 +106,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $status = self::STATUS_DRAFT;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="is_tiebreaker", type="boolean", nullable=true)
+     */
+    protected $isTiebreaker = false;
+
+    /**
      * flag que diz que a avaliação está sendo enviada
      * @var boolean
      */
@@ -125,11 +132,17 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     }
 
     function send($flush = false) {
+        $app = App::i();
         $this->registration->checkPermission('evaluate');
+
+        $app->applyHookBoundTo($this, "{$this->hookClassName}.send:before");
+        
         $this->_sending = true;
         $this->status = RegistrationEvaluation::STATUS_SENT;
         $this->sentTimestamp = new \DateTime;
         $this->save($flush);
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.send:after");
     }
     
     function getEvaluationData(){
@@ -209,7 +222,6 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return true;
         }
 
-
         if($this->registration->opportunity->canUser('@control', $user)){
             return true;
         }
@@ -281,7 +293,12 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     // ============================================================ //
 
     /** @ORM\PrePersist */
-    public function prePersist($args = null){ parent::prePersist($args); }
+    public function prePersist($args = null){ 
+        if($this->registration && $this->registration->needsTiebreaker()){
+            $this->isTiebreaker = true;
+        }
+        parent::prePersist($args); 
+    }
     /** @ORM\PostPersist */
     public function postPersist($args = null){
         parent::postPersist($args);

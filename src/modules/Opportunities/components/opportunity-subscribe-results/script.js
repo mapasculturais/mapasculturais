@@ -41,6 +41,10 @@ app.component('opportunity-subscribe-results', {
             const previousPhase = this.getPreviousPhase(phase);
             const nextPhase = this.getNextPhase(phase);
 
+            if (this.entity.isContinuousFlow && !this.entity.hasEndDate) {
+                return false;
+            }
+
             if (phase.isLastPhase) {
                 return true;
             } else if (phase.__objectType == 'opportunity' && nextPhase.__objectType != 'evaluationmethodconfiguration' && phase.publishTimestamp) {

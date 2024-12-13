@@ -12,8 +12,9 @@ $this->import('
     fields-visible-evaluators
     mc-confirm-button
     mc-modal
-    opportunity-evaluation-committee
+    opportunity-committee-groups
     opportunity-phase-publish-date-config
+    seals-certifier
     tiebreaker-criteria-configuration
     v1-embed-tool
 
@@ -30,7 +31,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                 <div class="grid-12">
                     <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
                     <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>    
-                    <entity-field :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
+                    <entity-field v-if="!firstPhase?.isContinuousFlow" :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
                 </div>
             </div>
         </section>
@@ -50,14 +51,14 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <div class="evaluation-step__section-header">
                 <?php $this->applyComponentHook("evaluation-step-header", 'begin') ?>
                 <div class="evaluation-step__section-label">
-                    <h3><?= i::__('Comissão de avaliação') ?></h3>
+                    <h3><?= i::__('Comissões de avaliação') ?></h3>
                 </div>
                 <?php $this->applyComponentHook("evaluation-step-header", 'end') ?>
             </div>
             <?php $this->applyComponentHook("evaluation-step-header", 'after') ?>
 
             <div class="evaluation-step__section-content">
-                <opportunity-evaluation-committee :entity="phase"></opportunity-evaluation-committee>
+                <opportunity-committee-groups :entity="phase"></opportunity-committee-groups>
             </div>
         </section>
 
@@ -81,7 +82,13 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
         </div>
 
-        <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-date-config v-if="!firstPhase?.isContinuousFlow" :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
+        
+        <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>
+
+        <template v-if="phase.evaluateSelfApplication">
+            <entity-field :entity="phase" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
+        </template>
 
         <div class="config-phase__line col-12"></div>
 

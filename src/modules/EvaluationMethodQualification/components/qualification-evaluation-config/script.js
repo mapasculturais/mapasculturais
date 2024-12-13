@@ -20,14 +20,18 @@ app.component('qualification-evaluation-config', {
         return {
             editingSections: [],
             autoSaveTimeOut:  null,
-            optionsText: ''
+            optionsText: '',
+            options: null,
+            showFilters: false,
+            maxNonEliminatory: false,
+            excludeDistributionField: true,
         }
     },
 
     computed: {
         fieldsDict() {
             return $MAPAS.config.qualificationAssessmentSection.fieldsDict;
-        }
+        },
     },
 
     methods: {
@@ -45,7 +49,7 @@ app.component('qualification-evaluation-config', {
         
                 this.entity.sections.push({
                     id: sectionId,
-                    name: ''
+                    name: '',
                 });
                 
                 this.editingSections[sectionId] = true;
@@ -73,6 +77,8 @@ app.component('qualification-evaluation-config', {
                     sid: sectionId,
                     name: '',
                     notApplyOption: 'false',
+                    otherReasonsOption: 'false',
+                    nonEliminatory: 'false',
                     weight: 1
                 });
 
@@ -166,26 +172,120 @@ app.component('qualification-evaluation-config', {
             return hasError;
         },
 
-        titleModal(name) {
-            return this.text('criteriaConfiguration') + ' ' + name;
-        },
-        
-        updateOptionsArray(criteria, value) {
-            const optionsArray = value.split('\n').map(option => option.trim()).filter(option => option);
-            criteria.options = optionsArray;
+        updateOptions(criteria) {
+            if (!criteria.options) {
+                criteria.options = [];
+            }
+            criteria.options.push(this.options);
+            this.clear();
             this.save();
         },
 
-        optionsToString(options) {
-            if (Array.isArray(options)) {
-                return options.join('\n');
+        clear () {
+            this.options = null;
+        },
+
+        enabledButton() {
+            let value = this.options;
+            
+            if(value && value.trim()) {
+                return true;
             }
-            return options || '';
+
+            return false;
         },
 
         notApplyChange(criteria) {
             criteria.notApplyOption = criteria.notApplyOption ? 'true' : 'false';
             this.save();
-        }
+        },
+
+        otherReasonsChange(criteria) {
+            criteria.otherReasonsOption = criteria.otherReasonsOption ? 'true' : 'false';
+            this.save();
+        },
+
+        nonEliminatoryChange(criteria) {
+            criteria.nonEliminatory = criteria.nonEliminatory ? 'true' : 'false';
+            this.save();
+        }, 
+
+        enableMaxNonEliminatory(value, section) {
+            if (value) {
+                this.maxNonEliminatory = true;
+                if (!section.maxNonEliminatory) {
+                    section.maxNonEliminatory = true;
+                }
+            } else {
+                this.maxNonEliminatory = false;
+                if (section.maxNonEliminatory) {
+                    section.maxNonEliminatory = false;
+                    section.numberMaxNonEliminatory = 0; 
+                }
+            }
+            this.save();
+        }, 
+
+        enableRequiredSectionObservation(value, section) {
+            if (value) {
+                if (!section.requiredSectionObservation) {
+                    section.requiredSectionObservation = true;
+                }
+            } else {
+                if (section.requiredSectionObservation) {
+                    section.requiredSectionObservation = false;
+                }
+            }
+            this.save();
+        }, 
+        
+        enableFilterConfigSection(value, section) {
+            if (value) {
+                this.showFilters = true;
+                if (!section.showFilters) {
+                    section.showFilters = true;
+                }
+            } else {
+                this.showFilters = false;
+                if (section.showFilters) {
+                    section.showFilters = false;
+
+                    if (section.categories) section.categories = [];
+                    if (section.ranges) section.ranges = [];
+                    if (section.proponentTypes) section.proponentTypes = [];
+        
+                    this.entity.criteria.forEach(criteria => {
+                        if (criteria.sid === section.id) { 
+                            criteria.showFilters = false;
+                            if (criteria.categories) criteria.categories = [];
+                            if (criteria.ranges) criteria.ranges = [];
+                            if (criteria.proponentTypes) criteria.proponentTypes = [];
+                        }
+                    });
+                }
+            }
+
+            this.save();
+        }, 
+
+        enableFilterConfigCriteria(value, criteria) {
+            if (value) {
+                this.showFilters = true;
+                if (!criteria.showFilters) {
+                    criteria.showFilters = true;
+                }
+            } else {
+                this.showFilters = false;
+                if (criteria.showFilters) {
+                    criteria.showFilters = false;
+                    if (criteria.categories) criteria.categories = [];
+                    if (criteria.ranges) criteria.ranges = [];
+                    if (criteria.proponentTypes) criteria.proponentTypes = [];
+                }
+            }
+
+            this.save();
+        },
+
     },
 });

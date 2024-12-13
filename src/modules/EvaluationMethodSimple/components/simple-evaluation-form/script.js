@@ -11,6 +11,11 @@ app.component('simple-evaluation-form', {
             type: Boolean,
             default: true
         },
+
+        formData: {
+            type: Object,
+            required: true
+        }
     },
 
     setup() {
@@ -20,18 +25,25 @@ app.component('simple-evaluation-form', {
 
     data() {
         return {
-            formData: {},
             isEditable: true,
         };
     },
 
     created() {
-        this.formData = this.evaluationData || this.skeleton();
+        this.formData['data'] = {};
+        const formData = this.evaluationData || this.skeleton();
+
+        for (let key in formData.data) {
+            this.formData.data[key] = formData.data[key];
+        }
+
         this.handleCurrentEvaluationForm();
     },
 
     mounted() {
         window.addEventListener('responseEvaluation', this.processResponse);
+
+        window.addEventListener('processErrors', this.validateErrors);
     },
 
     computed: {
@@ -44,17 +56,35 @@ app.component('simple-evaluation-form', {
         },
 
         evaluationData() {
-            return $MAPAS.config.simpleEvaluationForm.currentEvaluation?.evaluationData;
+            return {
+                data: $MAPAS.config.simpleEvaluationForm.currentEvaluation?.evaluationData
+            };
         },
 
         currentEvaluation() {
             return $MAPAS.config.simpleEvaluationForm.currentEvaluation;
         },
+
+        needsTiebreaker() {
+            return $MAPAS.config.simpleEvaluationForm.needsTieBreaker;
+        },
+
+        isMinervaGroup() {
+            return $MAPAS.config.simpleEvaluationForm.isMinervaGroup;
+        },
+
+        enableExternalReviews() {
+            return $MAPAS.config.simpleEvaluationForm.showExternalReviews;
+        },
+
+        evaluationName() {
+            return $MAPAS.config.simpleEvaluationForm.evaluationMethodName;
+        }
     },
 
     methods: {
         handleOptionChange(selectedOption) {
-            this.formData.status = selectedOption.value;
+            this.formData.data.status = selectedOption.value;
         },
 
         processResponse(data) {
@@ -85,12 +115,16 @@ app.component('simple-evaluation-form', {
         validateErrors() {
             const messages = useMessages();
             let error = false;
-            Object.keys(this.formData).forEach(key => { 
-                if (!this.formData[key] || this.formData[key] === '') {
+            const global = useGlobalState();
+
+            Object.keys(this.formData.data).forEach(key => {
+                if (!this.formData.data[key] || this.formData.data[key] === '') {
                     messages.error(this.text('emptyField') + ' ' + this.dictFields(key) + ' ' + this.text('required'));
                     error = true;
                 }
             });
+
+            global.validateEvaluationErrors = error;
             return error;
         },
 
@@ -107,9 +141,11 @@ app.component('simple-evaluation-form', {
 
         skeleton() {
             return {
-                uid: this.userId,
-                status: null,
-                obs: null,
+                data: {
+                    uid: this.userId,
+                    status: null,
+                    obs: null,
+                }
             };
         },
     },

@@ -4,7 +4,7 @@
     max-width: size(1824) !important;
     position: sticky;
     top: size(40);
-    z-index: 1;
+    z-index: 0;
 
     .count {
         margin: 15px;
@@ -178,6 +178,25 @@
 
                         &.sent {
                             border-top: solid #BFE88B 4px;
+                        }
+
+                        .owner-entity {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 3px;
+                            margin-bottom: 15px;
+
+                            .owner, .coletive {
+                                display: flex;
+                                flex-direction: column; 
+                                background-color: #f0ebeb;
+                                padding: 5px;
+                                border-radius: 5px;
+
+                                .bold {
+                                    font-weight: bold;  
+                                }
+                            }
                         }
                     }
                 

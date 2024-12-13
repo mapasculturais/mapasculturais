@@ -46,6 +46,10 @@ app.component('opportunity-create-evaluation-phase' , {
                 // fase anterior é uma fase de coleta de dados
                 return this.previousPhase.registrationFrom;
             }
+        },
+
+        isContinuousFlow() {
+            return this.opportunity?.isContinuousFlow;
         }
     },
 
@@ -55,6 +59,12 @@ app.component('opportunity-create-evaluation-phase' , {
             this.phase = Vue.ref(new Entity('evaluationmethodconfiguration'));
             this.phase.infos = {general: ''};
             this.phase.opportunity = this.opportunity;
+            
+            if(this.isContinuousFlow) {
+                this.phase.evaluationFrom = this.opportunity.registrationFrom;
+                this.phase.evaluationTo = this.opportunity?.hasEndDate ? this.lastPhase.publishTimestamp : this.opportunity.registrationTo;
+                this.phase.publishedRegistrations = this.opportunity?.hasEndDate ? false : true;
+            }
         },
         destroyEntity() {
             // para o conteúdo da modal não sumir antes dela fechar

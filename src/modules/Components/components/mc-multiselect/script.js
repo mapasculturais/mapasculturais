@@ -42,13 +42,32 @@ app.component('mc-multiselect', {
             type: Boolean,
             default: false
         },
+
+        maxOptions: {
+            type: Number,
+            default: 0,
+        },
+
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        
+        preserveOrder: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
         let dataItems = {};        
         if (Array.isArray(this.items)) {
             for (let item of this.items) {
-                dataItems[item] = item;
+                if(typeof item == 'object') {
+                    dataItems[item.value] = item
+                } else {
+                    dataItems[item] = item;
+                }
             }
         } else {
             dataItems = Object.assign({}, this.items);
@@ -60,7 +79,7 @@ app.component('mc-multiselect', {
         filteredItems() {
             const result = [];
             for (let value in this.dataItems) {
-                const label = this.dataItems[value];
+                let label = typeof this.dataItems[value] == 'object' ? this.dataItems[value].label : this.dataItems[value];
                 const _filter = this.filter.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 const _item = label.toLocaleUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
@@ -69,16 +88,24 @@ app.component('mc-multiselect', {
                 }
             }
 
-            return result.sort((a,b) => {
-                if (a.label > b.label) {
-                    return 1;
-                } else if (a.label < b.label) {
-                    return -1;
-                } else {
-                    return 0;
-                }
-            });
+            if(this.preserveOrder) {
+                return result;
+            } else {
+                return result.sort((a,b) => {
+                    if (a.label > b.label) {
+                        return 1;
+                    } else if (a.label < b.label) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+            }
         },
+
+        canSelectMore() {
+            return this.maxOptions === null || this.maxOptions === 0 || this.model.length < this.maxOptions;
+        }
     },
 
     methods: {
@@ -104,12 +131,30 @@ app.component('mc-multiselect', {
         },
 
         toggleItem(key) {
-            if (this.model.indexOf(key) >= 0) {
-                this.remove(key);
+            if(key == '@NA') {
+                if (this.model.includes(key)) {
+                    this.remove(key);
+                } else {
+                    while (this.model.length > 0) {
+                        this.remove(this.model[0]);
+                    }
+                    
+                    this.model.push(key);
+                    this.$emit('selected', key);
+                }
             } else {
-                this.model.push(key);
-                this.$emit('selected', key);
+                const ndIndex = this.model.indexOf('@NA');
+                
+                if (ndIndex >= 0) {
+                    this.model.splice(ndIndex, 1);
+                }
 
+                if (this.model.indexOf(key) >= 0) {
+                    this.remove(key);
+                } else if(this.canSelectMore) {
+                    this.model.push(key);
+                    this.$emit('selected', key);
+                }
             }
         },       
 
@@ -117,9 +162,10 @@ app.component('mc-multiselect', {
             this.$emit('open', this);
         },
         
-        close() {
+        close(popover) {
             this.$emit('close', this);
             this.filter = '';
+            popover.close();
         },
 
         setFilter(text) {

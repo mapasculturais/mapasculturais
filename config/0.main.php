@@ -48,6 +48,8 @@ return [
     */
     'app.mode' => env('APP_MODE', APPMODE_PRODUCTION),
 
+    'app.executeJobsImmediately' => env('APP_EXECUTE_JOBS_IMMEDIATELY', false),
+
     /* 
     Define a moeda a ser utilizada. 
     É possível definir mais de uma moeda e desta forma a moeda será escolhida com base na configuração do navegador do usuário.

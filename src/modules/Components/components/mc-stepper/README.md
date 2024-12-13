@@ -11,6 +11,7 @@ O componente `mc-stepper` é utilizado para exibir uma barra de navegação sequ
 - *OnlyActiveLabel **Boolean*** - Define se apenas a label da etapa ativa deve ser exibida.
 - *NoLabels **Boolean*** - Define se as labels das etapas devem ser ocultadas.
 - *DisableNavigation **Boolean*** - Desabilita a navegação entre as etapas.
+- *DisabledSteps* - Array com os índices de etapas desabilitadas.
 
 ### Importando componente
 ```PHP

@@ -9,7 +9,7 @@ o **MEI** serve para lhe identificar como um Microemreendedor Individual dentro 
 
 Você pode cadastrar seu CNPJ no cadastro do seu Perfil.
 
-&nbsp;
+
 
 #### **Como inserir meu MEI:**
 

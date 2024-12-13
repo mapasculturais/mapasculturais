@@ -1,0 +1,18 @@
+.entity-field-location{
+    .grid-12{
+        .col-12, .col-4, .col-6{
+            margin-top: 0 !important;
+        }
+
+        .field{
+            &__group {
+                .input__radioLabel {
+                    display: grid;
+                    font-weight: var(--mc-font-semibold);
+                    grid-template-columns: size(17) 1fr;
+                    gap: size(8);
+                }
+            }
+        }
+    }
+}

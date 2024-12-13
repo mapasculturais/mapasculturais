@@ -11,9 +11,10 @@ $this->import('
     mc-confirm-button
     mc-modal
     mc-icon
+    mc-loading
 ');
 ?>
-<div :class="classes" v-if="file || editable" class="entity-file">
+<div v-if="file || editable" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName.replace('rfc_', 'file_')">
 
     <label v-if="title" class="entity-file__title">
         {{title}}
@@ -27,6 +28,7 @@ $this->import('
 
         <slot name="view">
             <a v-if="!downloadOnly" class="entity-file__link primary__color bold" :download="file.name" :href="file.url">
+                <mc-icon name="download" :class="entity.__objectType+'__color'"></mc-icon>
                 <span v-if="file.name">{{file.name}}</span>
                 <span v-else> <? i::_e('Sem descrição') ?> </span>
             </a>
@@ -40,7 +42,7 @@ $this->import('
 
         <mc-confirm-button v-if="editable && !required" @confirm="deleteFile(file)">
             <template #button="modal">
-                <mc-icon @click="modal.open()" name="trash"></mc-icon>
+                <a @click="modal.open()"> <mc-icon name="trash"></mc-icon> </a>
             </template>
 
             <template #message="message">
@@ -50,16 +52,15 @@ $this->import('
     </div>
 
     <mc-modal v-if="editable" :title="titleModal" classes="entity-file__modal">
-        <template #default>
+        <mc-loading :condition="loading"></mc-loading>
+
+        <template v-if="!loading" #default>
             <form @submit="upload(modal); $event.preventDefault();" class="entity-file__newFile">
                 <div class="grid-12">
                     <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile" :file="newFile">
                         <div class="col-12 field">
                             <label><?php i::_e('Anexe um arquivo') ?></label>
-                            
                             <div class="field__upload">
-                                <div v-if="newFile.name" class="entity-file__fileName primary__color bold"> {{newFile.name}} </div>
-
                                 <label for="newFile" class="field__buttonUpload button button--icon button--primary-outline">
                                     <mc-icon name="upload"></mc-icon> <?= i::__('Anexar') ?>
                                     <input id="newFile" type="file" @change="setFile($event)" ref="file">
@@ -70,7 +71,7 @@ $this->import('
 
                         <div v-if="!disableName" class="col-12 field">
                             <label><?php i::_e('Título do arquivo') ?></label>
-                            <input v-model="newFile.name" type="text" />
+                            <input v-model="newFile.name" type="text" :disabled="groupName == 'rules'"/>
                         </div>
 
                         <div v-if="enableDescription" class="col-12 field">
@@ -82,8 +83,11 @@ $this->import('
             </form>
         </template>
 
-        <template #button="modal">
+        <template v-if="!loading" #button="modal">
             <slot name="button" :open="modal.open" :close="modal.close" :toggle="modal.toggle" :file="file">
+                <a v-if="defaultFile" class="entity-file__link entity-file__link--download bold" :download="defaultFile.name" :href="defaultFile.url">
+                    <mc-icon name="download"></mc-icon> <?php i::_e("Baixar modelo") ?>
+                </a>
                 <a v-if="!file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">
                     <mc-icon name="upload"></mc-icon> <?php i::_e("Enviar") ?>
                 </a>
@@ -93,7 +97,7 @@ $this->import('
             </slot>
         </template>
 
-        <template #actions="modal">
+        <template v-if="!loading" #actions="modal">
             <button class="col-6 button button--text" type="reset" @click="modal.close()"> <?php i::_e("Cancelar") ?> </button>
             <button class="col-6 button button--primary" type="submit" @click="upload(modal); $event.preventDefault();"> <?php i::_e("Enviar") ?> </button>
         </template>

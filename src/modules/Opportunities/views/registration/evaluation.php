@@ -1,26 +1,29 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
 
 use MapasCulturais\i;
 
 $this->layout = 'registrations';
 $this->import('
+    evaluation-form
+    mc-alert
     mc-breadcrumb
     mc-container
-    opportunity-evaluations-list
-    mc-alert
     mc-summary-agent
     mc-summary-agent-info
     mc-summary-evaluate
     mc-summary-project
     mc-summary-spaces
+    opportunity-evaluations-list
     opportunity-header
     registration-evaluation-actions
+    registration-evaluation-info
     registration-info
     v1-embed-tool
-    registration-evaluation-info
 ');
-
-$opportunity = $entity->opportunity;
 
 $breadcrumb = [
     ['label' => i::__('Início'), 'url' => $app->createUrl('panel', 'opportunities')],
@@ -44,6 +47,9 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 <div class="main-app registration edit">
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
+        <template #button>
+            <mc-link class="button button--primary-outline" :entity="entity.opportunity" route="userEvaluations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
+        </template>
         <template #footer>
             <mc-summary-evaluate></mc-summary-evaluate>
         </template>
@@ -60,7 +66,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                 </opportunity-evaluations-list>
             </aside>
 
-            <main class="col-6 grid-12">
+            <main class="col-5 grid-12">
                 <?php if ($entity->opportunity->evaluationMethod->slug === "documentary") : ?>
                     <div class="col-12">
                         <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo') ?></mc-alert>
@@ -88,17 +94,11 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                 </section>
             </main>
 
-            <aside class="col-3">
+            <aside class="col-4">
                 <div class="registration__right-sidebar">
-                    <div class="registration__actions">
-                        <h4 class="regular primary__color"><?= i::__("Formulário de") ?> <strong><?= $entity->opportunity->evaluationMethod->name ?></strong></h4>
-                        <registration-evaluation-info :entity="entity"></registration-evaluation-info>
-                        
-                        <?php $this->part("{$entity->opportunity->evaluationMethod->slug}/evaluation-form"); ?>
-                    </div>
+                    <evaluation-form :entity="entity"></evaluation-form>
                 </div>
+            </aside>
         </div>
-        </aside>
     </div>
-</div>
 </div>

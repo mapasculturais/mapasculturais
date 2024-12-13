@@ -4,12 +4,10 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 ?>
-<div :class="['stepper' , {'small' : small}, {'noNavigation' : disableNavigation}]" id="stepper">
-    <div v-for="(steped, n) in steps" :class="['step', {'passedby' : step>=n}, {'active' : step==n}]" :id="'step'+(n+1)" @click="!disableNavigation && goToStep(n)">
-        <div class="count">
-            <span v-if="!small"> {{n+1}} </span>
-            <span v-if="small && step==n"> {{n+1}} </span>
-        </div>
-        <span v-show="steps && !noLabels" :class="['label', {'active' : step==n}, {'show' : (onlyActiveLabel && (step==n || n==totalSteps)) || !onlyActiveLabel }]"> {{steped}} </span>
-    </div>
+<div id="stepper" class="stepper" :class="{'noNavigation' : disableNavigation}" :style="{ '--steps': steps.length }">
+    <button v-for="(stepped, n) in steps" type="button" class="step" :class="{'passedby' : step > n, 'active' : step == n}" :id="'step'+(n+1)" :title="stepped" :disabled="disabledSteps.includes(n)" @click="goToStep(n)">
+        <div class="count"></div>
+        <span v-show="!noLabels" class="label active" v-if="step == n">{{n + 1}}. {{stepped}}</span>
+        <span v-show="!noLabels" class="label" v-else>{{n + 1}}</span>
+    </button>
 </div>

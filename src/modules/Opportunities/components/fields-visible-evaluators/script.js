@@ -60,9 +60,27 @@ app.component("fields-visible-evaluators", {
                 this.searchFielter = null;
             }
         },
-
+        compareFields(a, b) {
+            if (a.step?.displayOrder === b.step?.displayOrder) {
+                return Math.sign(a.displayOrder - b.displayOrder);
+            } else {
+                return Math.sign(a.step?.displayOrder - b.step?.displayOrder);
+            }
+        },
         fieldSkeleton() {
-            let _fields = [];
+            let _fields = [
+                {
+                    checked: false,
+                    fieldName: "agentsSummary",
+                    title: __("agentsSummary", "fields-visible-evaluators"),
+                },
+                {
+                    checked: false,
+                    fieldName: "spaceSummary",
+                    title: __("spaceSummary", "fields-visible-evaluators"),
+                },
+            ];
+            
             if($MAPAS?.config?.fieldsVisibleEvaluators[this.entity.opportunity.id]?.length > 0){
                 $MAPAS?.config?.fieldsVisibleEvaluators[this.entity.opportunity.id].forEach(item =>{
                     _fields.push(item);
@@ -76,7 +94,7 @@ app.component("fields-visible-evaluators", {
                 fields.push(item);
             }
 
-            fields = fields.sort((a,b) => a.displayOrder - b.displayOrder)
+            fields = fields.sort(this.compareFields);
 
             return fields;
         },

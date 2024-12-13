@@ -23,7 +23,7 @@ $this->import('
                 <div class="evaluation-card__info"> 
                     <span v-if="entity.parent"><?= i::__('FASE') ?>: <strong> {{entity.name}} </strong></span>
                     <span v-if="!entity.parent"><?= i::__('FASE') ?>: <strong> <?= i::__('Avaliação') ?> </strong></span>
-                    <span>
+                    <span v-if="!entity.isContinuousFlow || (entity.isContinuousFlow && entity.hasEndDate)">
                         <?= i::__('PERÍODO DE AVALIAÇÃO') ?>: 
                         <strong>{{dateFrom.date('numeric year')}} <?= i::__('até') ?> {{dateTo.date('numeric year')}} <?= i::__('as') ?> {{dateTo.time('long')}} </strong>
                     </span>

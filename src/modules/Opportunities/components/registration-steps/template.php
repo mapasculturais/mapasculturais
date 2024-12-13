@@ -9,4 +9,4 @@ $this->import('
     mc-stepper
 ');
 ?>
-<mc-stepper :steps="sections" only-active-label small @step-changed="goToSection($event)"></mc-stepper>
+<mc-stepper :steps="sections" :step="stepIndex" only-active-label disable-navigation @step-changed="goToSection($event)"></mc-stepper>

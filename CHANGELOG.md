@@ -5,6 +5,27 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6]
+### Novas Funcionalidades
+- Editais de fluxo contínuo, podendo ter ou não uma data de término.
+- Configuração de selos certificadores para editais, sendo possível configurar quais selos serão aplicados para cada tipo de proponente em cada fase do edital.
+- Opção de autoaplicação dos resultados das avaliações quando todos os avaliadores de uma inscrição tiverem avaliado
+- Comissões de avaliação
+  - Possibilidade de criação de mútiplas comissões de avaliação
+  - Possibilidade de configurar para cada comissão os critérios de distribuição das inscrições 
+  - Possibilidade de limitar o número de avaliadores de uma comissão qua cada inscrição receberá
+  - Comissão de voto de minerva, que recebe inscrições que tenham divergência entre diferentes comissões de avaliação
+- Etapas em formulários de inscrição
+
+### Melhorias
+- Redesenho do formulário de inscrição
+
+### Melhorias não funcionais
+- Novos tipos de metadados:
+  - **object** - serializa / deserializa um json fazendo um cast para (object)
+  - **array** - serializa / deserializa um json fazendo um cast para (array)
+  - **entity** - possibilita a vinculação de entidade em metadados
+  
 ## [7.5.14] - 2024-12-04
 ### Correções
 - Corrige erro que ocorre na propagação do sentTipestemp das inscrições entre fases
@@ -63,7 +84,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Implementa aviso para sinalizar quando o total de vagas distribuídas por território exceder o total de vagas do edital
 - Implementa aviso para sinalizar quando o total de vagas para cotistas exceder o total de vagas do edital
-- aviso para sinalizar quando o total de vagas do edital não estiver preenchido e bloquear a opção de inserir configurações de cotas e distribuição por território
+- Implementa aviso para sinalizar quando o total de vagas do edital não estiver preenchido e bloquear a opção de inserir configurações de cotas e distribuição por território
 
 ## [7.5.9] - 2024-11-02
 ### Correções
@@ -130,6 +151,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa registro de histórico de revisões para os projetos
 - Ajusta permissão de deleção de agentes para permitir que admnistradores possam deletar agentes de perfil
 - Faz com que o botão de excluir entidades no card da gestão de usuários seja exibido para qualquer usuário do grupo admin
+- Altera distribuição de inscrições de novos avaliadores - por padrão, novos avaliadores não recebem inscrições para avaliar
 
 ## [7.4.26] - 2024-10-11
 ### Melhorias

@@ -8,7 +8,7 @@ use Exception;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Exceptions\PermissionDenied;
-use MapasCulturais\Definitions\EvaluationMethod;
+use MapasCulturais\EvaluationMethod;
 use MapasCulturais\GuestUser;
 
 /**
@@ -400,15 +400,9 @@ class Registration extends \MapasCulturais\Entity
         }
 
         if($this->canUser('view') || $this->status === self::STATUS_APPROVED || $this->status === self::STATUS_WAITLIST){
-            $related_agents = $this->getRelatedAgents();
+            $related_agents = $this->getRelatedAgents(return_relations: true);
 
-            foreach(App::i()->getRegisteredRegistrationAgentRelations() as $def){
-                $json['agentRelations'][] = [
-                    'label' => $def->label,
-                    'description' => $def->description,
-                    'agent' => isset($related_agents[$def->agentRelationGroupName]) ? $related_agents[$def->agentRelationGroupName][0]->simplify('id,name,singleUrl') : null
-                ];
-            }
+            $json['agentRelations'] = $related_agents;
 
             foreach($this->files as $group => $file){
                 if($file instanceof File){
@@ -782,6 +776,48 @@ class Registration extends \MapasCulturais\Entity
         return $exceptions->exclude;
     }
 
+    /** 
+     * Retorna os avaliadores da inscrição agrupados pelos comitês
+     * 
+     * @return User[][] 
+     */
+    function getCommittees($skip_tiebreaker = false): array {
+        $evaluation_method = $this->evaluationMethod;
+        
+        $committee = $evaluation_method->getCommitteeGroups($this->evaluationMethodConfiguration);
+
+        $valuer_users = [];
+        $registration_committee = [];
+
+        // agrupa os avaliadores por comitê
+        foreach($committee as $group => $users) {
+            if($skip_tiebreaker && $group == '@tiebreaker') {
+                continue;
+            }
+            $registration_committee[$group] = [];
+
+            foreach($users as $user) {
+                if($evaluation_method->canUserEvaluateRegistration($this, $user) || $this->getUserEvaluation($user)) {
+                    $valuer_users[] = $user;
+                    $registration_committee[$group][] = $user;
+                }
+            }
+        }
+
+        return $registration_committee;
+    } 
+
+    /** 
+     * Verifica se a inscrição precisa de um desempate
+     * 
+     * @return bool
+     */ 
+    function needsTiebreaker(): bool {
+        $evaluation_method = $this->evaluationMethod;
+        
+        return $evaluation_method ? $evaluation_method->registrationNeedsTiebreaker($this) : false;
+    }
+
     function _setStatusTo($status, $flush = true){
         if($this->status === self::STATUS_DRAFT && $status === self::STATUS_SENT){
             $this->checkPermission('send');
@@ -1049,6 +1085,41 @@ class Registration extends \MapasCulturais\Entity
     }
 
     /**
+     * Verifica se uma etapa deve ser exibida com base nas categorias, 
+     * faixas e tipos de proponente definidos na configuração do etapa.
+     *
+     * @param RegistrationStep $step A etapa a ser verificada.
+     * @return bool Verdadeiro se a etapa deve ser exibida, falso caso contrário.
+     */
+    function isStepVisible(RegistrationStep $step): bool {
+        $conditional = $step->metadata['conditional'] ?? null;
+
+        if (!$conditional) {
+            return true;
+        }
+
+        if (!empty($conditional['categories'])) {
+            if (!empty($this->category) && !in_array($this->category, $conditional['categories'])) {
+                return false;
+            }
+        }
+
+        if (!empty($conditional['proponentTypes'])) {
+            if (!empty($this->proponentType) && !in_array($this->proponentType, $conditional['proponentTypes'])) {
+                return false;
+            }
+        }
+        
+        if (!empty($conditional['ranges'])) {
+            if (!empty($this->range) && !in_array($this->range, $conditional['ranges'])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Verifica se um campo deve ser exibido com base nas categorias, 
      * faixas e tipos de proponente definidos na configuração do campo.
      *
@@ -1079,10 +1150,18 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
+        if (!$this->isStepVisible($field->step)) {
+            return false;
+        }
+
         if($field->conditional){
             $_fied_name = $field->conditionalField;
             $_fied_value = $field->conditionalValue;
-            return $this->$_fied_name == $_fied_value;
+            if (is_array($this->$_fied_name)) {
+                return in_array($_fied_value, $this->$_fied_name);
+            } else {
+                return $this->$_fied_name == $_fied_value;
+            }
         }
 
         return true;
@@ -1132,14 +1211,33 @@ class Registration extends \MapasCulturais\Entity
         $definitionsWithAgents = $this->_getDefinitionsWithAgents();
         
         // validate agents
+        $proponent_type_to_group_map = $app->config['registration.proponentTypesToAgentsMap'];
+        $group_to_proponent_type_map = [];
+        foreach($proponent_type_to_group_map as $proponent_type => $group){
+            $group_to_proponent_type_map[$group] = $group_to_proponent_type_map[$group] ?? []; 
+            $group_to_proponent_type_map[$group][] = $proponent_type;
+        }
+        
         foreach($definitionsWithAgents as $def){
+            $group_name = $def->agentRelationGroupName;
             $errors = [];
 
             // @TODO: validar o tipo do agente
 
             if($def->use === 'required'){
                 if(!$def->agent){
-                    $errors[] = sprintf(i::__('O agente "%s" é obrigatório.'), $def->label);
+                    if ($def->agentRelationGroupName == 'owner') {
+                        $errors[] = i::__('O agente responsável é obrigatório.');
+                    } else {
+                        $group_proponent_types = $group_to_proponent_type_map[$group_name] ?? [];
+                        if (in_array($this->proponentType, $group_proponent_types)) {
+                            $proponent_type = $this->proponentType;
+                            $proponent_agent_relation = $this->opportunity->proponentAgentRelation;
+                            if ($proponent_agent_relation->$proponent_type ?? false) {
+                                $errors[] = sprintf(i::__('O agente "%s" é obrigatório.'), $def->label);
+                            }
+                        }    
+                    }
                 }
             }
 
@@ -1194,7 +1292,15 @@ class Registration extends \MapasCulturais\Entity
             if($rfc->conditional){
                 $_fied_name = $rfc->conditionalField;
                 $_fied_value = $rfc->conditionalValue;
-                $field_required = $this->$_fied_name == $_fied_value && $rfc->required;
+                if ($rfc->required) {
+                    if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
+                        $field_required = true;
+                    } else {
+                        $field_required = $this->$_fied_name == $_fied_value;
+                    }
+                } else {
+                    $field_required = false;
+                }
             }
 
             $errors = [];
@@ -1228,7 +1334,15 @@ class Registration extends \MapasCulturais\Entity
               
                 $_fied_name = $conf->conditionalField;
                 $_fied_value = $conf->conditionalValue;
-                $field_required = $this->$_fied_name == $_fied_value && $field->required;
+                if ($rfc->required) {
+                    if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
+                        $field_required = true;
+                    } else {
+                        $field_required = $this->$_fied_name == $_fied_value;
+                    }
+                } else {
+                    $field_required = false;
+                }
             }
 
             $errors = [];
@@ -1347,6 +1461,10 @@ class Registration extends \MapasCulturais\Entity
     function _getAgentsData(){
         $exportData = [];
 
+        $app = App::i();
+
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).getAgentsData:before");
+
         $skip_fields = $this->skipFieldsEntityRelations();
         foreach($this->_getAgentsWithDefinitions() as $agent){
             $result =  $agent->jsonSerialize();
@@ -1365,6 +1483,8 @@ class Registration extends \MapasCulturais\Entity
 
             $exportData[$agent->definition->agentRelationGroupName] = $result;
         }
+
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).getAgentsData:after", [&$exportData]);
         
         return $exportData;
     }
@@ -1556,12 +1676,12 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        $valuers = $evaluation_method_configuration->getRelatedAgents('group-admin', true);
+        $valuers = $evaluation_method_configuration->getAgentRelations();
         
         $is_valuer = false;
         
         foreach ($valuers as $agent_relation) {
-            if ($agent_relation->status != 1) {
+            if ($agent_relation->status != EvaluationMethodConfigurationAgentRelation::STATUS_ENABLED) {
                 continue;
             }
 
@@ -1713,7 +1833,7 @@ class Registration extends \MapasCulturais\Entity
 
     /**
      * Returns the Evaluation Method Configuration
-     * @return \MapasCulturais\Definitions\EvaluationMethodConfiguration
+     * @return EvaluationMethodConfiguration
      */
     public function getEvaluationMethodConfiguration() {
         return $this->opportunity->evaluationMethodConfiguration;
