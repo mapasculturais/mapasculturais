@@ -95,6 +95,10 @@ app.component('opportunity-phase-config-evaluation' , {
         categories(){
             return this.phases[0].registrationCategories || [];
         },
+
+        seals() {
+            return $MAPAS.config?.opportunityPhaseConfigEvaluation?.seals;
+        },
     },
 
     methods: {

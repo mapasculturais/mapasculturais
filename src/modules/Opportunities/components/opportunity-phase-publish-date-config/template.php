@@ -10,7 +10,6 @@ $this->import('
     entity-field
     mc-confirm-button
     mc-link
-    seals-certifier
 ');
 ?>
 <div class="col-12">
@@ -76,8 +75,6 @@ $this->import('
                 classes="col-4 opportunity-phase-publish-date-config__checkbox"></entity-field>
             
         </div>
-
-        <seals-certifier :entity="phases[0]" :editable="phase.currentUserPermissions?.createSealRelation"></seals-certifier>
         
         <div class="col-12 grid-12" v-if="true">
             <div class="col-12" v-if="phase.evaluationMethodConfiguration">

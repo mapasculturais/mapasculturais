@@ -668,9 +668,11 @@ class Opportunity extends EntityController {
         $valuer_by_user = $this->_getOpportunityValuerByUser($opportunity->id);
         foreach($evaluations_query->find() as $e){
             if(isset($valuer_by_user[$e['user']])){
+                $evaluation_result = $e['status'] == 0 ? i::__('Não avaliado') : $e['result'];
+
                 $e['agent'] = $valuer_by_user[$e['user']];
                 $e['singleUrl'] = $app->createUrl('registration', 'view', [$e['registration'], 'uid' => $e['user']]);
-                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($e['result']);
+                $e['resultString'] = $opportunity->getEvaluationMethod()->valueToString($evaluation_result);
                 $evaluations[$e['id']] = $e;
             }
         }

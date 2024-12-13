@@ -707,11 +707,13 @@ class Module extends \MapasCulturais\Module{
 
             $opportunity = $this->opportunity;
 
-            if ($opportunity && $opportunity->publishedRegistrations) {
+            if ($opportunity && ($opportunity->publishedRegistrations || $this->opportunity->firstPhase->isContinuousFlow)) {
                $seals = $opportunity->proponentSeals;
                $proponent_type = $this->proponentType;
                $owner = $this->owner;
                $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
+               $categories_seals = $opportunity->categorySeals;
+               $category = $this->category;
 
                if($proponent_type){
 
@@ -729,19 +731,53 @@ class Module extends \MapasCulturais\Module{
                             }
                         }
                     }
+
+                    // Se a inscrição tiver "tipo de proponente" e "categoria", adicionar o selo verificador da categoria, caso possua.
+                    if($category) {
+                        if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
+                            $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
+
+                            if (isset($categories_seals->{$category})) {
+                                $category_seals = $categories_seals->{$category};
+
+                                // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
+                                if(isset($opportunity->firstPhase->useAgentRelationColetivo) && $opportunity->firstPhase->useAgentRelationColetivo == 'required') {
+                                    if($agent_type == "coletivo"){
+                                        $agents = $this->getAgentRelations();
+                                        $self->applySeal($agents[0]->agent, $category_seals);
+                                    }
+                                }
+
+                                if($agent_type == "owner"){
+                                   $self->applySeal($owner, $category_seals);
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                // Se tiver apenas "categoria" e não houver "tipo de proponente", adicionar selo verificador (caso configurado) apenas no agente individual
+                if($category && !$proponent_type) {
+                    if (isset($categories_seals->{$category})) {
+                        $category_seals = $categories_seals->{$category};
+                        $self->applySeal($owner, $category_seals);
+                    }
                 }
             }
         });
 
         $app->hook("entity(Registration).status(<<draft|waitlist|notapproved|invalid|sent|>>)", function() use($app, $self){
-            //* @var \MapasCulturais\Entities\Opportunity $this /
+            /** @var \MapasCulturais\Entities\Registration $this */
 
             $opportunity = $this->opportunity;
 
-            if ($opportunity && $opportunity->publishedRegistrations) {
+            if ($opportunity && ($opportunity->publishedRegistrations || $this->opportunity->firstPhase->isContinuousFlow)) {
                 $seals = $opportunity->proponentSeals;
                 $proponent_type = $this->proponentType;
                 $owner = $this->owner;
+                $categories_seals = $opportunity->categorySeals;
+                $category = $this->category;
 
                 if ($proponent_type) {
                     $proponent_seals = $seals->{$proponent_type};
@@ -763,15 +799,49 @@ class Module extends \MapasCulturais\Module{
                             $self->removeSeals($app, $relations, $proponent_seals);
                         }
                     }
+
+                    // Se a inscrição tiver "tipo de proponente" e "categoria", remover o selo verificador da categoria, caso possua.
+                    if($category) {
+                        if (isset($categories_seals->{$category})) {
+                            $category_seals = $categories_seals->{$category};
+
+                             // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
+                            if(isset($opportunity->firstPhase->useAgentRelationColetivo) && $opportunity->firstPhase->useAgentRelationColetivo == 'required') {
+                                if ($agent_type == "coletivo") {
+                                    $agent_relations = $this->getAgentRelations();
+    
+                                    foreach ($agent_relations as $agent_relation) {
+                                        $agent = $agent_relation->agent;
+                                        $relations = $agent->getSealRelations();
+                                        $self->removeSeals($app, $relations, $category_seals);
+                                    }
+                                }
+                            }
+
+                            if ($agent_type == "owner") {
+                                $relations = $owner->getSealRelations();
+                                $self->removeSeals($app, $relations, $category_seals);
+                            }
+                        }
+                    }
+                }
+
+                // Se tiver apenas "categoria" e não houver "tipo de proponente", remover selo verificador (caso configurado) do agente individual
+                if($category && !$proponent_type) {
+                    if (isset($categories_seals->{$category})) {
+                        $category_seals = $categories_seals->{$category};
+                        $relations = $owner->getSealRelations();
+                        $self->removeSeals($app, $relations, $category_seals);
+                    }
                 }
             }
         });
 
         //Adicionar selos conforme a publicação de resultado
         $app->hook("entity(Opportunity).publishRegistrations:after", function() use($app, $self){
-            //* @var \MapasCulturais\Entities\Opportunity $this /
+            /** @var \MapasCulturais\Entities\Opportunity $this */
 
-            if($this->proponentSeals){
+            if($this->proponentSeals || $this->categorySeals){
                 $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
                 $registrations = $app->repo('Registration')->findBy(['opportunity' => $this]);
 
@@ -779,20 +849,49 @@ class Module extends \MapasCulturais\Module{
 
                     if($registration->status == Registration::STATUS_APPROVED){
                     $proponent_type = $registration->proponentType;
+                        $category = $registration->category;
+                        $categories_seals = $this->categorySeals;
+                        $owner = $registration->owner;
 
                         if($proponent_type){
                             $proponent_seals = $this->proponentSeals->{$proponent_type};
                             $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
 
                             if($agent_type == "owner"){
-                                $owner = $registration->owner;
                                 $self->applySeal($owner,$proponent_seals);
                             }
 
                             if($agent_type == "coletivo"){
                                 if($agents = $registration->getAgentRelations()){
-                                    $self->applySeal($agents[0]->agent, $proponent_seals,$agent_type);
+                                    $self->applySeal($agents[0]->agent, $proponent_seals);
                                 }
+                            }
+
+                            if($category) {
+                                if (array_key_exists($proponent_type, $proponent_typesTo_agents_Map)) {
+                                    if (isset($categories_seals->{$category})) {
+                                        $category_seals = $categories_seals->{$category};
+        
+                                        // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
+                                        if(isset($this->firstPhase->useAgentRelationColetivo) && $this->firstPhase->useAgentRelationColetivo == 'required') {
+                                            if($agent_type == "coletivo"){
+                                                $agents = $registration->getAgentRelations();
+                                                $self->applySeal($agents[0]->agent, $category_seals);
+                                            }
+                                        }
+        
+                                        if($agent_type == "owner"){
+                                           $self->applySeal($owner, $category_seals);
+                                        }
+                                    }
+                                } 
+                            }
+                        }
+
+                        if($category && !$proponent_type) {
+                            if (isset($categories_seals->{$category})) {
+                                $category_seals = $categories_seals->{$category};
+                                $self->applySeal($owner, $category_seals);
                             }
                         }
                     }
@@ -802,7 +901,7 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook("entity(Opportunity).unpublishRegistrations:after", function() use($app, $self) {
             /** @var \MapasCulturais\Entities\Opportunity $this */
-            if ($this->proponentSeals) {
+            if ($this->proponentSeals || $this->categorySeals) {
 
                 $proponent_typesTo_agents_Map = $app->config['registration.proponentTypesToAgentsMap'];
                 $registrations = $app->repo('Registration')->findBy(['opportunity' => $this]);
@@ -810,13 +909,15 @@ class Module extends \MapasCulturais\Module{
                 foreach ($registrations as $registration) {
                     if ($registration->status == \MapasCulturais\Entities\Registration::STATUS_APPROVED) {
                         $proponent_type = $registration->proponentType;
+                        $categories_seals = $this->categorySeals;
+                        $category = $registration->category;
+                        $owner = $registration->owner;
 
                         if ($proponent_type) {
                             $proponent_seals = $this->proponentSeals->{$proponent_type};
                             $agent_type = $proponent_typesTo_agents_Map[$proponent_type];
 
                             if ($agent_type == "owner") {
-                                $owner = $registration->owner;
                                 $relations = $owner->getSealRelations();
                                 $self->removeSeals($app, $relations, $proponent_seals);
                             }
@@ -829,6 +930,39 @@ class Module extends \MapasCulturais\Module{
                                     $relations = $agent->getSealRelations();
                                     $self->removeSeals($app, $relations, $proponent_seals);
                                 }
+                            }
+
+                            if($category) {
+                                if (isset($categories_seals->{$category})) {
+                                    $category_seals = $categories_seals->{$category};
+        
+                                    // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
+                                    if(isset($this->firstPhase->useAgentRelationColetivo) && $this->firstPhase->useAgentRelationColetivo == 'required') {
+                                        if ($agent_type == "coletivo") {
+                                            $agent_relations = $this->getAgentRelations();
+            
+                                            foreach ($agent_relations as $agent_relation) {
+                                                $agent = $agent_relation->agent;
+                                                $relations = $agent->getSealRelations();
+                                                $self->removeSeals($app, $relations, $category_seals);
+                                            }
+                                        }
+                                    }
+        
+                                    if ($agent_type == "owner") {
+                                        $relations = $owner->getSealRelations();
+                                        $self->removeSeals($app, $relations, $category_seals);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Se tiver apenas "categoria" e não houver "tipo de proponente", remover selo verificador (caso configurado) do agente individual
+                        if($category && !$proponent_type) {
+                            if (isset($categories_seals->{$category})) {
+                                $category_seals = $categories_seals->{$category};
+                                $relations = $owner->getSealRelations();
+                                $self->removeSeals($app, $relations, $category_seals);
                             }
                         }
                     }
