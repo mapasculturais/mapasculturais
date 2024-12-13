@@ -29,6 +29,9 @@ app.component('registration-form', {
     },
 
     computed: {
+        disabledField() {
+            return $MAPAS.requestedEntity.disabledField
+        },
         fields () {
             const registration = this.registration;
 
@@ -132,5 +135,11 @@ app.component('registration-form', {
                 return field.step?.id === this.step._id;
             });
         },
+    },
+
+    methods: {
+        isDisabled(field) {
+            return this.editableFields.length > 0 ? !this.editableFields.includes(field.fieldName) : false;
+        }
     },
 });

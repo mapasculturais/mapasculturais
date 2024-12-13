@@ -46,6 +46,7 @@ class Module extends \MapasCulturais\Module {
             if ($doc = $format_doc($keyword)) {
                 $doc2 = trim(str_replace(['%', '.', '/', '-'], '', $keyword));
                 $where .= "\n OR doc.value = '$doc' OR doc.value = '$doc2'";
+                $where .= "\n OR unaccent(lower(agent_coletivo.name) = unaccent(lower('$keyword'))";
                 $where .= "\n OR coletivo_doc.value = '$doc' OR coletivo_doc.value = '$doc2'";
             }
         });

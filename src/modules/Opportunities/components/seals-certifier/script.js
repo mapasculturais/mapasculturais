@@ -46,10 +46,10 @@ app.component('seals-certifier', {
     computed: {
         types() {
             return {
-                proponent: this.entityOpportunity.registrationProponentTypes?.length
+                proponent: this.entityOpportunity.registrationProponentTypes?.length > 0
                     ? this.entityOpportunity.registrationProponentTypes
                     : ['default'],
-                category: this.entityOpportunity.registrationCategories?.length
+                category: this.entityOpportunity.registrationCategories?.length > 0
                     ? this.entityOpportunity.registrationCategories
                     : ['default'],
             };
@@ -57,40 +57,39 @@ app.component('seals-certifier', {
     },
 
     watch: {
-        'entityOpportunity.registrationProponentTypes': function(newProponentTypes) {
-            this.syncSeals('proponentSeals', newProponentTypes, this.proponentSeals);
-        },
+        types: {
+            handler(newTypes, oldTypes) {
+                const isInitialization = !oldTypes || Object.keys(oldTypes).length === 0;
 
-        'entityOpportunity.registrationCategories': function(newCategories) {
-            this.syncSeals('categorySeals', newCategories, this.categorySeals);
+                this.syncSeals('proponentSeals', newTypes.proponent, this.proponentSeals, isInitialization);
+                this.syncSeals('categorySeals', newTypes.category, this.categorySeals, isInitialization);
+            },
+            deep: true,
+            immediate: true
         }
     },
 
     methods: {
         initializeSeals() {
-            Object.keys(this.types).forEach(group => {
-                this.types[group].forEach(type => {
-                    if (!this.entityOpportunity[`${group}Seals`]) {
-                        this.entityOpportunity[`${group}Seals`] = {};
-                    } else if (!this.entityOpportunity[`${group}Seals`]?.[type]) {
-                        this.entityOpportunity[`${group}Seals`][type] = [];
-                    }
+            let skeletonProponent = {};
+            let skeletonCategory = {}; 
 
-                    const groupSeals = this.entityOpportunity[`${group}Seals`]?.[type] || [];
-                    if (group === 'proponent') {
-                        this.proponentSeals[type] = groupSeals;
-                    } else if (group === 'category') {
-                        this.categorySeals[type] = groupSeals;
-                    }
-                });
-            });
+            for (let type of this.types.proponent) {
+                skeletonProponent[type] = this.entityOpportunity.proponentSeals?.[type] || [];
+            }
+
+            for (let type of this.types.category) {
+                skeletonCategory[type] = this.entityOpportunity.categorySeals?.[type] || [];
+            }
+
+            this.proponentSeals = skeletonProponent;
+            this.categorySeals = skeletonCategory;
         },
 
-        // não está sincronizando os selos selecionados de forma reativa
-        syncSeals(sealsGroup, sealsType, sealsObject) {
+
+        syncSeals(sealsGroup, sealsType, sealsObject, isInitialization = false) {
             const newTypes = sealsType;
             const oldTypes = Object.keys(sealsObject);
-            console.log('newTypes', newTypes);
     
             for (let type of newTypes) {
                 if (!oldTypes.includes(type)) {
@@ -111,23 +110,32 @@ app.component('seals-certifier', {
                 }
             }
     
-            this.entityOpportunity[sealsGroup] = { ...sealsObject };
+            if (!isInitialization) {
+                this.entityOpportunity[sealsGroup] = { ...sealsObject };
+                this.entityOpportunity.save();
+            }
         },
 
         getSealDetails(sealId) {
             return this.sealsInfo.find(seal => seal.id === sealId) || {};
         },
 
-        modifySealList(type, sealId, action) {
-            const sealGroup = this.types.proponent.includes(type) ? 'proponentSeals' : 'categorySeals';
-
+        modifySealList(type, sealId, action, typeSealCertifier) {
+            let sealGroup;
+            if (typeSealCertifier === 'proponent') {
+                sealGroup = 'proponentSeals';
+            } else if (typeSealCertifier === 'category') {
+                sealGroup = 'categorySeals';
+            }
+            
             if (!this.entityOpportunity[sealGroup]) {
                 this.entityOpportunity[sealGroup] = {};
             }
-        
+            
             if (!this.entityOpportunity[sealGroup][type]) {
                 this.entityOpportunity[sealGroup][type] = [];
             }
+
         
             const seals = this.entityOpportunity[sealGroup][type];
             let index = seals.indexOf(sealId);
@@ -138,19 +146,24 @@ app.component('seals-certifier', {
             this.entityOpportunity.save();
         },
         
-        addSeal(type, seal) {
-            this.modifySealList(type, seal._id, 'add');
+        addSeal(type, seal, typeSealCertifier) {
+            this.modifySealList(type, seal._id, 'add', typeSealCertifier);
+        }, 
+        
+        removeSeal(type, sealId, typeSealCertifier) {
+            this.modifySealList(type, sealId, 'remove', typeSealCertifier);
         },
         
-        removeSeal(type, sealId) {
-            this.modifySealList(type, sealId, 'remove');
-        },
-        
-        getSealQuery(type) {
-            if (type === 'default') return [];
-            const sealGroup = this.types.proponent.includes(type) ? 'proponentSeals' : 'categorySeals';
-        
+        getSealQuery(type, typeSealCertifier) {
+            let sealGroup;
+            if (typeSealCertifier === 'proponent') {
+                sealGroup = 'proponentSeals';
+            } else {
+                sealGroup = 'categorySeals';
+            }
+
             const selectedSeals = this[sealGroup]?.[type] || [];
+
             const selectedSealIds = selectedSeals.join(',');
         
             return selectedSealIds ? { id: `!IN(${selectedSealIds})` } : {};

@@ -289,13 +289,28 @@ app.component('entity-field', {
 
                     let value = event.target ? event.target.value : event; 
                     let index = this.entity[this.prop].indexOf(value);
-                    if (index >= 0) {
-                        this.entity[this.prop].splice(index, 1);
-                    } else {
-                        if(!this.isMultiSelect() && !this.maxOptions || this.entity[this.prop].length < this.maxOptions) {
-                            this.entity[this.prop].push(value)
+
+                    if(value == "@NA") {
+                        if (index < 0) {
+                            this.entity[this.prop] = ["@NA"];
                         } else {
-                            this.entity[this.prop].push(value)
+                            this.entity[this.prop].splice(index, 1);
+                        }
+                    } else {
+                        const ndIndex = this.entity[this.prop].indexOf("@NA");
+
+                        if (ndIndex >= 0) {
+                            this.entity[this.prop].splice(ndIndex, 1);
+                        }
+
+                        if (index >= 0) {
+                            this.entity[this.prop].splice(index, 1);
+                        } else {
+                            if(!this.isMultiSelect() && !this.maxOptions || this.entity[this.prop].length < this.maxOptions) {
+                                this.entity[this.prop].push(value)
+                            } else {
+                                this.entity[this.prop].push(value)
+                            }
                         }
                     }
 
