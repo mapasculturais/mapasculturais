@@ -815,7 +815,7 @@ class Registration extends \MapasCulturais\Entity
     function needsTiebreaker(): bool {
         $evaluation_method = $this->evaluationMethod;
         
-        return $evaluation_method->registrationNeedsTiebreaker($this);
+        return $evaluation_method ? $evaluation_method->registrationNeedsTiebreaker($this) : false;
     }
 
     function _setStatusTo($status, $flush = true){
