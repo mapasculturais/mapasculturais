@@ -56,11 +56,11 @@ $this->import('
                 <div class="dates opportunity-appeal-phase-config__dates">
                     <div class="date">
                         <h6 class="date__title"> <?= i::__('Data de início') ?> </h6>
-                        <h4 class="date__content">{{ appealFrom }}</h4>
+                        <h4 class="date__content">{{ registrationFrom }}</h4>
                     </div>
                     <div v-if="(!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate)" class="date">
                         <h6 class="date__title"> <?= i::__('Data final') ?> </h6>
-                        <h4 class="date__content">{{ appealTo }}</h4>
+                        <h4 class="date__content">{{ registrationTo }}</h4>
                     </div>
                 </div>
             </template>
@@ -70,8 +70,8 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__content-title">
                     <h3 class="bold"><?= i::__('Configuração da fase') ?></h3>
                     <div class="opportunity-appeal-phase-config__datepicker">
-                        <entity-field :entity="entity" prop="appealFrom" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
-                        <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity" prop="appealTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field :entity="entity" prop="registrationFrom" field-type="date" label="<?= i::__('Início') ?>" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" label="<?= i::__('Término') ?>" :entity="entity" prop="registrationTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
                     </div>
                 </div>
                 <div class="opportunity-appeal-phase-config__config-button">
@@ -97,11 +97,11 @@ $this->import('
                 <div class="dates opportunity-appeal-phase-config__dates">
                     <div class="date">
                         <h6 class="date__title"> <?= i::__('Data de início') ?> </h6>
-                        <h4 class="date__content">{{ responseFrom }}</h4>
+                        <h4 class="date__content">{{ evaluationFrom }}</h4>
                     </div>
                     <div v-if="(!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate)" class="date">
                         <h6 class="date__title"> <?= i::__('Data final') ?> </h6>
-                        <h4 class="date__content">{{ responseTo }}</h4>
+                        <h4 class="date__content">{{ evaluationTo }}</h4>
                     </div>
                 </div>
             </template>
@@ -111,11 +111,11 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__content-title">
                     <h3 class="bold"><?= i::__('Configuração da fase') ?></h3>
                     <div class="opportunity-appeal-phase-config__datepicker">
-                        <entity-field :entity="entity" prop="responseFrom" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
-                        <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity" prop="responseTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field :entity="entity.evaluationMethodConfiguration" prop="evaluationFrom" label="<?= i::__('Início') ?>" field-type="date" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+                        <entity-field v-if="!firstPhase?.isContinuousFlow" field-type="date" :entity="entity.evaluationMethodConfiguration" prop="evaluationTo" label="<?= i::__('Término') ?>" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
                     </div>
                 </div>
-                <div class="opportunity-appeal-phase-config__checkboxes">
+                <div class="opportunity-appeal-phase-config__checkboxes field">
                     <input type="checkbox" id="more-response" v-model="moreResponse">
                     <label for="more-response"><?= i::__('Possibilitar mais de uma resposta do proponente') ?></label> 
                 </div> 
@@ -124,20 +124,9 @@ $this->import('
                         <mc-icon name="add"></mc-icon>
                         <?= i::__('Adicionar pessoa avaliadora') ?> 
                     </button>
-                    <opportunity-committee-groups v-if="!showButtonEvaluationCommittee" :entity="entity"></opportunity-committee-groups>
+                    <opportunity-committee-groups v-if="!showButtonEvaluationCommittee" :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
                 <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-description></opportunity-phase-publish-date-config>
-                <div class="opportunity-appeal-phase-config__checkboxes-response">
-                    <div class="opportunity-appeal-phase-config__checkboxes">
-                        <input type="checkbox" id="publishForProponent" v-model="publishForProponent">
-                        <label for="publishForProponent"><?= i::__('Publicar os pareceres para o proponente') ?></label> 
-                    </div> 
-    
-                    <div class="opportunity-appeal-phase-config__checkboxes">
-                        <input type="checkbox" id="publishReviewerName" v-model="publishReviewerName">
-                        <label for="publishReviewerName"><?= i::__('Publicar o nome dos avaliadores nos pareceres') ?></label> 
-                    </div> 
-                </div>
             </template>
         </mc-accordion>
     </div>
