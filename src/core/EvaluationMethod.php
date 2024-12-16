@@ -527,14 +527,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         foreach($registrations_valuers as $registration_id => $r) {
             $app->log->debug(print_r($r->valuers, true));
+            $users = array_merge($r->valuers_exceptions_list->include, $r->valuers_exceptions_list->exclude, $r->valuers);
             $r->valuers_exceptions_list->include = $r->valuers;
             $json = json_encode ($r->valuers_exceptions_list);
 
             $app->log->debug("$registration_id  $json");
             $conn->update('registration', ['valuers_exceptions_list' => $json], ['id' => $registration_id]);
+            $r = $app->repo('Registration')->find($registration_id);
+            $r->enqueueToPCacheRecreation($users);
         }
-
-        $evaluation_config->enqueueToPCacheRecreation();
 
         $app->persistPCachePendingQueue();
     }
