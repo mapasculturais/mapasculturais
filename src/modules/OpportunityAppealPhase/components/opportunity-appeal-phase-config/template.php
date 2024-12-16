@@ -26,7 +26,7 @@ $this->import('
         </button>
 
         <div v-if="processing" class="col-12">
-            <mc-loading :condition="processing"> <?= i::__('Carregando') ?></mc-loading>
+            <mc-loading :condition="processing"> <?= i::__('carregando') ?></mc-loading>
         </div>
     </div>
     <div v-if="entity" class="opportunity-appeal-phase-config__appeals">

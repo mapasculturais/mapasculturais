@@ -24,8 +24,7 @@ app.component('opportunity-appeal-phase-config' , {
             phaseData: {},
             entity: null,
             moreResponse: false,
-            showButtonEvaluationCommittee: true, 
-            trashButton: false,  
+            showButtonEvaluationCommittee: true,   
         }
     },
 
