@@ -28,7 +28,7 @@ $this->import('
             </div>
         </div>
 
-        <div v-if="(!phase.publishedRegistrations && !firstPhase?.isContinuousFlow) || phase.appealPhase" class="grid-12 col-12 notPublished opportunity-phase-publish-date-config__content">
+        <div v-if="(!phase.publishedRegistrations && !firstPhase?.isContinuousFlow)" class="grid-12 col-12 notPublished opportunity-phase-publish-date-config__content">
             <div class="opportunity-phase-publish-date-config__left" :class="{ 'col-6': phase.appealPhase, 'col-4': !phase.appealPhase }">
 
                 <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="3000" :min="minDate" :max="maxDate" classes="col-4 opportunity-phase-publish-date-config__date"></entity-field>
