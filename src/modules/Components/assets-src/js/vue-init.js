@@ -16,7 +16,7 @@ import MediaQuery from './media-query'
 import { vMaska } from 'maska'
 import { VueRecaptcha } from 'vue-recaptcha';
 import Slider from '@vueform/slider'
-import Vue3EasyDataTable from 'vue3-easy-data-table';
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 
 
 
@@ -30,8 +30,8 @@ app.component('Iconify', Icon)
 app.component('Cropper', VueAdvancedCropper)
 app.component('Datepicker', Datepicker);
 app.component('Slider', Slider);
-app.component('EasyDataTable', Vue3EasyDataTable);
 app.component('Draggable', VueDraggable);
+app.component('VueQrcode', VueQrcode);
 app.directive('maska', vMaska);
 app.use(MediaQuery)
 
@@ -49,7 +49,7 @@ globalThis.Datepicker = Datepicker
 globalThis.CurrencyInput = CurrencyInput
 globalThis.Dates = Dates;
 globalThis.VueRecaptcha = VueRecaptcha;
-// globalThis.Vue3EasyDataTable = Vue3EasyDataTable;
+globalThis.VueQrcode = VueQrcode;
 
 
 globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais

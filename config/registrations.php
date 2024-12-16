@@ -108,5 +108,8 @@ return [
         'googleplus',
         'facebook',
         'twitter'
-    )
+    ),
+
+    'registrations.distribution.dateString' => 'H:00',
+    'registrations.distribution.incrementString' => '+1 hour',
 ];

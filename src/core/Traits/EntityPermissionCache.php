@@ -90,16 +90,10 @@ trait EntityPermissionCache {
             if(method_exists($this, 'getExtraPermissionCacheUsers')){
                 $users = array_merge($users, $this->getExtraPermissionCacheUsers());
             }
-
-            if($roles = $app->repo("Role")->findAll()){
-                foreach($roles as $role){
-                    $users[] = $role->user;
-                }
-            }
             
             $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
-
         }
+
         if($delete_old && $users){
             $this->deletePermissionsCache($users);
         }
@@ -114,7 +108,7 @@ trait EntityPermissionCache {
 
         $already_created_users = [];
         $users = array_unique($users);
-
+        
         foreach($users as $i => $u) {
             if(is_numeric($u)) {
                 $users[$i] = $app->repo('User')->find($u);
@@ -150,34 +144,16 @@ trait EntityPermissionCache {
                 if ($this->canUser($permission, $user)) {
                     $allowed_permissions[] = $permission;
 
-                    $sql = "
-                        SELECT id 
-                        FROM pcache 
-                        WHERE 
-                            user_id = :user_id AND
-                            action = :action AND
-                            object_type = :object_type AND
-                            object_id = :object_id";
-
-                    $exists = $conn->fetchOne($sql, [
-                        'user_id' => $user->id,
-                        'action' => $permission,
-                        'object_type' => $class_name,
-                        'object_id' => $this->id
-                    ]);
-
-                    // se existir, não precisa adicionar novamente
-                    if($exists) {
-                        continue;
-                    }
-
-                    $conn->insert('pcache', [
-                        'user_id' => $user->id,
-                        'action' => $permission,
-                        'object_type' => $class_name,
-                        'object_id' => $this->id,
-                        'create_timestamp' => 'now()'
-                    ]);
+                    $conn->executeQuery("
+                        INSERT INTO pcache (user_id, action, object_type, object_id, create_timestamp)
+                        VALUES (:user_id, :action, :object_type, :object_id, now()) ON CONFLICT DO NOTHING", 
+                        [
+                            'user_id' => $user->id,
+                            'action' => $permission,
+                            'object_type' => $class_name,
+                            'object_id' => $this->id,
+                        ]
+                    );
                 }
             }
 
@@ -246,7 +222,7 @@ trait EntityPermissionCache {
     }
 
 
-    function recreatePermissionCache($users = null, $path = ''){
+    function recreatePermissionCache(array|null $users = null, $path = ''){
         $app = App::i();
         if($users) {
             foreach($users as $i => $u) {
@@ -274,13 +250,10 @@ trait EntityPermissionCache {
         $app->setEntityPermissionCacheAsRecreated($self);
 
         $conn = $app->em->getConnection();
-        $conn->beginTransaction();
 
         try {
             $self->createPermissionsCacheForUsers($users);
-            $conn->commit();
         } catch (\Exception $e ){
-            $conn->rollBack();
             throw $e;
         }
 

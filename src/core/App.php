@@ -1879,7 +1879,7 @@ class App {
      * @return int|false O ID do trabalho executado, ou false se nenhum trabalho estiver pronto para ser executado
      */
     public function executeJob(): int|false {
-        /** @var $conn Connection */
+        /** @var Connection */
         $conn = $this->em->getConnection();
         $now = date('Y-m-d H:i:s');
         $job_id = $conn->fetchScalar("
@@ -1906,7 +1906,9 @@ class App {
             if($this->config['app.log.jobs']) {
                 $this->log->debug("EXECUTING JOB: {$job->id} of type {$job->type}");
                 $this->log->debug("AUTHENTICATED USER: {$this->user->id}");
-                $this->log->debug("SUBSITE: {$this->subsite->url}");
+                if($this->subsite) {
+                    $this->log->debug("SUBSITE: {$this->subsite->url}");
+                }
 
             }
 
@@ -1936,6 +1938,10 @@ class App {
      * @return void 
      */
     public function enqueueEntityToPCacheRecreation(Entity $entity, User $user = null) {
+        if($this->config['app.recreateCacheImmediately']) {
+            $entity->recreatePermissionCache($user ? [$user] : null);
+            return;
+        }
         if (!$entity->__skipQueuingPCacheRecreation) {
             $entity_key = $entity->id ? "{$entity}" : "{$entity}:".spl_object_id($entity);
             if($user) {
@@ -2130,12 +2136,12 @@ class App {
             }
 
             $caches_pending = $conn->fetchAll('
-                SELECT id, usr_id 
-                FROM permission_cache_pending 
+                UPDATE permission_cache_pending SET status = 1 
                 WHERE 
                     object_type = :object_type AND
                     object_id = :object_id AND 
                     status = 0
+                RETURNING *
                     ',
                 [
                     'object_type' => $cache_pending['object_type'],
@@ -2148,11 +2154,6 @@ class App {
 
             $cache_pending_ids = array_map(fn($item) => $item['id'], $caches_pending);
             $cache_pending_ids = implode(',',$cache_pending_ids);
-
-            $conn->executeQuery("
-                UPDATE permission_cache_pending 
-                SET status=1 
-                WHERE id in($cache_pending_ids)");
 
             $start_time = microtime(true);
             try {
