@@ -31,7 +31,7 @@ $this->import('
                 </template>
 
                 <template #actions="modal">
-                    <button class="button button--icon button--text button--text-del registration-evaluation-actions__buttons__saveafter" @click="saveNext(registration); modal.close()"><?= i::__('Enviar Depois') ?></button>
+                    <button class="button button--icon button--text button--text-del registration-evaluation-actions__buttons__saveafter" @click="saveNext(registration); modal.close()"><?= i::__('Enviar depois') ?></button>
                     <button class="button button--icon button--primary registration-evaluation-actions__buttons__finalcontinue" @click="finishEvaluationNext(registration); modal.close()"><?= i::__('Enviar agora') ?></button>
                 </template>
                 <template #button="modal">

@@ -22,8 +22,12 @@ app.component('registration-steps', {
     },
 
     computed: {
-        sections () {
-            return this.steps.map((step) => step.name || this.text('Informações básicas'));
+        sections() {
+            if (this.steps.length > 1) {
+                return this.steps.map((step) => step.name || this.text('Informações básicas'));
+            } else {
+                return 0;
+            }
         },
     },
 
