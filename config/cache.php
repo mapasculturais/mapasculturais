@@ -44,7 +44,7 @@ return [
     'app.fileUrlCache.lifetime'             => env('CACHE_FILE_URL', 604800),
     'app.eventsCache.lifetime'              => env('CACHE_EVENTS', 600),
     'app.subsiteIdsCache.lifetime'          => env('CACHE_SUBSITE_ID', 120),
-    'app.permissionsCache.lifetime'         => env('CACHE_PERMISSIONS', YEAR_IN_SECONDS),
+    'app.permissionsCache.lifetime'         => env('CACHE_PERMISSIONS', 30),
     'app.registerCache.lifeTime'            => env('CACHE_REGISTER', 600),
     'app.apiCache.lifetime'                 => env('CACHE_API', 30),
     'app.quotasCache.lifetime'              => env('CACHE_QUOTAS', 300),

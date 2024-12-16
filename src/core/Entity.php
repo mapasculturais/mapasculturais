@@ -445,6 +445,10 @@ abstract class Entity implements \JsonSerializable{
         $result = false;
 
         if (!empty($user)) {
+            $cache_key = "{$this}:canUser({$user->id}):{$action}";
+            if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_key)){
+                return $app->cache->fetch($cache_key);
+            }
             $class_parts = explode('\\', $this->getClassName());
             $permission = end($class_parts);
 
@@ -465,6 +469,9 @@ abstract class Entity implements \JsonSerializable{
             $app->applyHookBoundTo($this, 'can(' . $this->getHookClassPath() . '.' . $action . ')', ['user' => $user, 'result' => &$result]);
             $app->applyHookBoundTo($this, $this->getHookPrefix() . '.canUser(' . $action . ')', ['user' => $user, 'result' => &$result]);
 
+            if($app->config['app.usePermissionsCache']){
+                $app->cache->save($cache_key, $result, $app->config['app.permissionsCache.lifetime']);
+            }
         }
 
         return $result;
