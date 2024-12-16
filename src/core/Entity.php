@@ -417,11 +417,11 @@ abstract class Entity implements \JsonSerializable{
             return true;
         } 
         
-        if ($this->usesNested() && $this->parent && $this->parent->canUser('@control')) {
+        if ($this->usesNested() && $this->parent && $this->parent->canUser('@control', $user)) {
             return true;
         } 
         
-        if (isset($this->owner) && $this->owner->canUser('@control')) {
+        if (isset($this->owner) && $this->owner->canUser('@control', $user)) {
             return true;
         }
 
