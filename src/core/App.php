@@ -1872,7 +1872,7 @@ class App {
      * @return int|false O ID do trabalho executado, ou false se nenhum trabalho estiver pronto para ser executado
      */
     public function executeJob(): int|false {
-        /** @var $conn Connection */
+        /** @var Connection */
         $conn = $this->em->getConnection();
         $now = date('Y-m-d H:i:s');
         $job_id = $conn->fetchScalar("
@@ -1899,7 +1899,9 @@ class App {
             if($this->config['app.log.jobs']) {
                 $this->log->debug("EXECUTING JOB: {$job->id} of type {$job->type}");
                 $this->log->debug("AUTHENTICATED USER: {$this->user->id}");
-                $this->log->debug("SUBSITE: {$this->subsite->url}");
+                if($this->subsite) {
+                    $this->log->debug("SUBSITE: {$this->subsite->url}");
+                }
 
             }
 
