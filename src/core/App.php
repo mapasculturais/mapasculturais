@@ -2129,12 +2129,12 @@ class App {
             }
 
             $caches_pending = $conn->fetchAll('
-                SELECT id, usr_id 
-                FROM permission_cache_pending 
+                UPDATE permission_cache_pending SET status = 1 
                 WHERE 
                     object_type = :object_type AND
                     object_id = :object_id AND 
                     status = 0
+                RETURNING *
                     ',
                 [
                     'object_type' => $cache_pending['object_type'],
@@ -2147,11 +2147,6 @@ class App {
 
             $cache_pending_ids = array_map(fn($item) => $item['id'], $caches_pending);
             $cache_pending_ids = implode(',',$cache_pending_ids);
-
-            $conn->executeQuery("
-                UPDATE permission_cache_pending 
-                SET status=1 
-                WHERE id in($cache_pending_ids)");
 
             $start_time = microtime(true);
             try {
