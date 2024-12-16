@@ -1931,6 +1931,10 @@ class App {
      * @return void 
      */
     public function enqueueEntityToPCacheRecreation(Entity $entity, User $user = null) {
+        if($this->config['app.recreateCacheImmediately']) {
+            $entity->recreatePermissionCache($user ? [$user] : null);
+            return;
+        }
         if (!$entity->__skipQueuingPCacheRecreation) {
             $entity_key = $entity->id ? "{$entity}" : "{$entity}:".spl_object_id($entity);
             if($user) {

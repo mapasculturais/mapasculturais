@@ -49,6 +49,8 @@ return [
     'app.mode' => env('APP_MODE', APPMODE_PRODUCTION),
 
     'app.executeJobsImmediately' => env('APP_EXECUTE_JOBS_IMMEDIATELY', false),
+    'app.recreateCacheImmediately' => env('APP_RECREATE_CACHE_IMMEDIATELY', false),
+    
 
     /* 
     Define a moeda a ser utilizada. 
