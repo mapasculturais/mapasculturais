@@ -105,6 +105,7 @@ app.component('opportunity-appeal-phase-config' , {
                     this.entity = new Entity('opportunity');
                     this.entity.populate(this.phaseData);
                     this.entity.isAppealPhase = true;
+                    this.phase.isAppealPhase = true;
                     this.entity.save();
                     
                     this.processing = false;
