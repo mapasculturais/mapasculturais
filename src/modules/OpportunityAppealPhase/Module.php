@@ -20,6 +20,12 @@ class Module extends \MapasCulturais\Module {
 
             $opportunity->checkPermission('@control');
 
+            $has_appeal_phase = $app->repo("Opportunity")->findOneBy(['parent' => $opportunity->id, 'status' => Opportunity::STATUS_APPEAL_PHASE]);
+
+            if ($has_appeal_phase) {
+                $this->errorJson(sprintf(i::__('Já existe uma fase de recurso para %s'), $opportunity->name), 403);
+            }
+
             $class_name = $opportunity->getSpecializedClassName();
 
             $appeal_phase = new $class_name();
