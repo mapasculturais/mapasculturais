@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "@iconify/vue": "^3.2.1",
-        "@types/leaflet": "^1.9.12",
+        "@types/leaflet": "^1.9.15",
         "@vue-leaflet/vue-leaflet": "^0.6.1",
         "@vueform/slider": "^2.1.10",
         "@vuepic/vue-datepicker": "^4.5.1",
@@ -18,14 +18,15 @@
         "leaflet": "1.7.1",
         "leaflet.markercluster": "^1.5.3",
         "maska": "^2.1.11",
-        "pinia": "^2.2.4",
-        "vue": "^3.5.12",
+        "pinia": "^2.3.0",
+        "vue": "^3.5.13",
         "vue-advanced-cropper": "^2.8.9",
         "vue-currency-input": "^3.1.0",
-        "vue-draggable-plus": "^0.5.3",
+        "vue-draggable-plus": "^0.5.6",
         "vue-final-modal": "^3.4.11",
         "vue-recaptcha": "^2.0.3",
         "vue3-carousel": "^0.1.48",
-        "vue3-easy-data-table": "^1.5.47"
+        "vue3-easy-data-table": "^1.5.47",
+        "@chenfengyuan/vue-qrcode": "^2"
     }
 }

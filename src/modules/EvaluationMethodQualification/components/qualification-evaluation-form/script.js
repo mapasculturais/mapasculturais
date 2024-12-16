@@ -257,7 +257,7 @@ app.component('qualification-evaluation-form', {
                     let sectionName = section.name;
                     let value = this.formData.data[crit.id];
                     if (value.length <= 0) {
-                        this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('O campo')} ${crit.name} ${this.text('é obrigatório')}`);
+                        this.messages.error(`${this.text('Na seção')} <b>${sectionName}</b>, ${this.text('O campo')} <b>${crit.name}</b> ${this.text('é obrigatório')}`);
                         isValid = true;
                     }
                     
@@ -281,7 +281,7 @@ app.component('qualification-evaluation-form', {
                         }
 
                         if (!hasRecommendation) {
-                            this.messages.error(`${this.text('Na seção')} ${sectionName}, ${this.text('Para o critério')} ${crit.name}, ${this.text('é necessário preencher ou selecionar uma recomendação para atender ao critério')}`);
+                            this.messages.error(`${this.text('Na seção')} <b>${sectionName}</b>, ${this.text('Para o critério')} <b> ${crit.name} </b>, ${this.text('é necessário preencher ou selecionar uma recomendação para atender ao critério')}`);
                             isValid = true;
                         }
                     }
