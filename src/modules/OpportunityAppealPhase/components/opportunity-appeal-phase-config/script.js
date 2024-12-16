@@ -62,26 +62,26 @@ app.component('opportunity-appeal-phase-config' , {
         },
 
         registrationFrom() {
-            return this.entity.appealFrom
-                ? this.entity.appealFrom.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
+            return this.entity.registrationFrom
+                ? this.entity.registrationFrom.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },
 
         registrationTo() {
-            return this.entity.appealTo
-                ? this.entity.appealTo.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
+            return this.entity.registrationTo
+                ? this.entity.registrationTo.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },
 
         evaluationFrom() {
-            return this.entity.responseFrom 
-                ? this.entity.responseFrom.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
+            return this.entity.evaluationMethodConfiguration.evaluationFrom 
+                ? this.entity.evaluationMethodConfiguration.evaluationFrom.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },
 
         evaluationTo() {
-            return this.entity.responseTo
-                ? this.entity.responseTo.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
+            return this.entity.evaluationMethodConfiguration.evaluationTo
+                ? this.entity.evaluationMethodConfiguration.evaluationTo.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },
 
