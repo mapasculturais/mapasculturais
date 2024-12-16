@@ -20,7 +20,7 @@ use MapasCulturais\Traits;
  * @property-read \MapasCulturais\Entities\Subsite[] $subsite Active Subsite
  * @property-read \MapasCulturais\Entities\Seal[] $seals Active Seals
  *
- * @property-read \MapasCulturais\Entities\Agent $profile User Profile Agent
+ * @property \MapasCulturais\Entities\Agent $profile User Profile Agent
  *
  * @ORM\Table(name="usr")
  * @ORM\Entity

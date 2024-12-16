@@ -893,7 +893,7 @@ class ApiQuery {
         return $dql;
     }
 
-    public function getSubDQL($prop = null) {
+    public function getSubDQL($prop = null, $cast = null) {
         if(is_null($prop)) {
             $prop = $this->pk;
         }
@@ -906,7 +906,22 @@ class ApiQuery {
         if(isset($this->entityRelations[$prop])){
             $identity = "IDENTITY({$alias}.{$prop})";
         } else {
-            $identity = "CAST({$alias}.{$prop} AS INTEGER)";
+            if($cast){
+                switch(strtolower($cast)) {
+                    case 'string':
+                        $cast = 'VARCHAR';
+                        break;
+                    case 'int':
+                        $cast = 'INTEGER';
+                        break;
+                    case 'bool':
+                        $cast = 'BOOLEAN';
+                        break;
+                }
+                $identity = "CAST({$alias}.{$prop} AS {$cast})";
+            } else {
+                $identity = "{$alias}.{$prop}";
+            }
         }
         $dql = " SELECT $identity FROM {$this->entityClassName} {$alias} {$joins} ";
         if ($where) {
@@ -1074,7 +1089,9 @@ class ApiQuery {
             $subquery_property = $filter['subquery_property'];
             $property = $filter['property'];
             
-            $sub_dql = $subquery->getSubDQL($subquery_property);
+            $property_type = $this->entityClassMetadata->fieldMappings[$property]['type'] ?? false;
+
+            $sub_dql = $subquery->getSubDQL($subquery_property, $property_type);
             
             $where .= " AND e.{$property} IN ({$sub_dql})";
         }
