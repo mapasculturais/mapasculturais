@@ -1292,7 +1292,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         const stepName = field.step?.name;
         const hasValidId = field.id != null;
 
-        if (!stepName || !hasValidId) {
+        if (!hasValidId) {
             return acc;
         }
 

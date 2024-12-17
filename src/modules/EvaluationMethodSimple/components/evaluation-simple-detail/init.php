@@ -16,6 +16,11 @@ if($class == Registration::class) {
     
     $opportunity = $entity->opportunity;
     $evaluation_configuration = $opportunity->evaluationMethodConfiguration;
+    
+    if(!$evaluation_configuration) {
+        return;
+    }
+    
     $enable_external_reviews = $evaluation_configuration->showExternalReviews;
     
     $related_agents = $evaluation_configuration->relatedAgents;
