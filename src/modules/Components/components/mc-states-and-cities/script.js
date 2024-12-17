@@ -31,7 +31,6 @@ app.component('mc-states-and-cities', {
     watch: {
         selectedStates: {
             handler(value) {
-                console.log(value);
                 // limpar cidades selecionadas de um estado específico caso o estado seja removido
                 this.selectedCities = this.selectedCities.filter(city => city in this.cities);
                 this.$emit('update:modelStates', value);
@@ -41,7 +40,6 @@ app.component('mc-states-and-cities', {
 
         selectedCities: {
             handler(value) {
-                console.log(value);
                 this.$emit('update:modelCities', value);
             },
             deep: true,
