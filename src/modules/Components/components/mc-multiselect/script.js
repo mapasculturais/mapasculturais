@@ -60,22 +60,28 @@ app.component('mc-multiselect', {
     },
 
     data() {
-        let dataItems = {};        
-        if (Array.isArray(this.items)) {
-            for (let item of this.items) {
-                if(typeof item == 'object') {
-                    dataItems[item.value] = item
-                } else {
-                    dataItems[item] = item;
-                }
-            }
-        } else {
-            dataItems = Object.assign({}, this.items);
-        }
-        return { dataItems, filter: '' };
+        return { filter: '' };
     },
 
     computed: {
+        dataItems() {
+            let dataItems = {};        
+
+            if (Array.isArray(this.items)) {
+                for (let item of this.items) {
+                    if(typeof item == 'object') {
+                        dataItems[item.value] = item
+                    } else {
+                        dataItems[item] = item;
+                    }
+                }
+            } else {
+                dataItems = Object.assign({}, this.items);
+            }
+
+            return dataItems;
+        },
+
         filteredItems() {
             const result = [];
             for (let value in this.dataItems) {
