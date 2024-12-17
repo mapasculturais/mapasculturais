@@ -75,10 +75,8 @@
 
         form,
         .form {
-            .mc-tag-list__tagList {
-                max-height: size(90);
-                overflow: auto;
-            }
+            max-height: size(650);
+            overflow-y: auto;
             
             &__label {
                 color: var(--mc-primary-500);
