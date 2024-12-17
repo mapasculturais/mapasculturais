@@ -8,6 +8,7 @@
         "@mapas/scripts": "workspace:*"
     },
     "dependencies": {
+        "@chenfengyuan/vue-qrcode": "^2.0.0",
         "@iconify/vue": "^3.2.1",
         "@types/leaflet": "^1.9.15",
         "@vue-leaflet/vue-leaflet": "^0.6.1",
@@ -26,7 +27,6 @@
         "vue-final-modal": "^3.4.11",
         "vue-recaptcha": "^2.0.3",
         "vue3-carousel": "^0.1.48",
-        "vue3-easy-data-table": "^1.5.47",
-        "@chenfengyuan/vue-qrcode": "^2"
+        "vue3-easy-data-table": "^1.5.47"
     }
 }
