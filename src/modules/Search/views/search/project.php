@@ -19,7 +19,7 @@ $this->breadcrumb = [
 ];
 ?>
 
-<search entity-type="project" page-title="<?php i::esc_attr_e('Projetos') ?>" :initial-pseudo-query="{type:[]}">
+<search entity-type="project" page-title="<?= htmlspecialchars($this->text('title', i::__('Projetos'))) ?>" :initial-pseudo-query="{type:[]}">
     <template v-if="global.auth.isLoggedIn" #create-button>
         <create-project #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
