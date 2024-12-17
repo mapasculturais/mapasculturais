@@ -22,7 +22,7 @@ $this->breadcrumb = [
     ['label'=> i::__('Espaços'), 'url' => $app->createUrl('spaces')],
 ];
 ?>
-<search page-title="<?php i::esc_attr_e('Espaços') ?>" entity-type="space" :initial-pseudo-query="{'term:area':[], type:[]}">    
+<search page-title="<?= htmlspecialchars($this->text('title', i::__('Espaços'))) ?>" entity-type="space" :initial-pseudo-query="{'term:area':[], type:[]}">    
     <template #create-button>
         <create-space v-if="global.auth.isLoggedIn" #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
