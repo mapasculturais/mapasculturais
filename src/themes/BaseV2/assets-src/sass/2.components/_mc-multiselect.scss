@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .mc-multiselect {
-    width: fit-content;
+    width: 100%;
 
     &--input {
         appearance: none;

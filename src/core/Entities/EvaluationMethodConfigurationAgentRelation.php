@@ -20,6 +20,7 @@ use MapasCulturais\JobTypes\ReopenEvaluations;
 class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     const STATUS_SENT = 10;
     const STATUS_DISABLED = 8;
+    const STATUS_ACTIVE = 1;
 
     /**
      * @var \MapasCulturais\Entities\EvaluationMethodConfiguration

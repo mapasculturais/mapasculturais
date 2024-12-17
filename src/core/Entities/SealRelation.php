@@ -325,7 +325,15 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
         return $mensagem;
     }
-    
+
+    /**
+     * Retorna a URL da single do selo
+     * @return string 
+     */
+    public function getSingleUrl(): string
+    {
+        return App::i()->createUrl('seal', 'sealRelation', [$this->id]);
+    }
     
     
 }
