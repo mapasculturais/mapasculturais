@@ -316,7 +316,7 @@ abstract class Theme {
             ];
 
         // VIEWS
-        }elseif(preg_match("#views/([^/]*?)\.php$#", $caller_filename, $matches)) {
+        }elseif(preg_match("#views/{$controller_id}/([^/]*?)\.php$#", $caller_filename, $matches)) {
             $match = $matches[1];
             $keys = [
                 "text:{$controller_id}.{$action}.view({$match}).{$name}",

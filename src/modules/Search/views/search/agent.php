@@ -24,7 +24,7 @@ $this->breadcrumb = [
     ['label' => i::__('Agentes'), 'url' => $app->createUrl('agents')],
 ]; 
 ?>
-<search page-title="<?php i::esc_attr_e('Agentes') ?>" entity-type="agent" :initial-pseudo-query="{'term:area':[]}">
+<search page-title="<?= htmlspecialchars($this->text('title', i::__('Agentes'))) ?>" entity-type="agent" :initial-pseudo-query="{'term:area':[]}">
     <template v-if="global.auth.isLoggedIn" #create-button>
         <create-agent #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
