@@ -21,7 +21,7 @@ $this->import('
 
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('site', 'index')],
-    ['label' => i::__('Agentes'), 'url' => $app->createUrl('agents')],
+    ['label' => $this->text('agents', i::__('Agentes')), 'url' => $app->createUrl('agents')],
 ]; 
 ?>
 <search page-title="<?= htmlspecialchars($this->text('title', i::__('Agentes'))) ?>" entity-type="agent" :initial-pseudo-query="{'term:area':[]}">
