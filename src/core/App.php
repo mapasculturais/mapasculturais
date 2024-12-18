@@ -1034,7 +1034,11 @@ class App {
      * @return string the base url
      */
     public function getBaseUrl(){
-        return $this->config['base.url'];
+        if($this->subsite){
+            return $this->subsite->subsiteUrl;
+        } else {
+            return $this->config['base.url'];
+        }
     }
 
     /**
