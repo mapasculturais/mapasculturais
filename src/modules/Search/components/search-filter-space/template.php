@@ -18,12 +18,12 @@ $this->import('
     </label>
     <form class="form" @submit="$event.preventDefault()">
         <?php $this->applyTemplateHook('search-filter-space', 'begin') ?>
-        <div class="field">
+        <div class="field search-filter__filter-space-status">
             <label> <?php i::_e('Status do espaço') ?> </label>
             <label> <input v-model="pseudoQuery['acessibilidade']" true-value="Sim" :false-value="undefined" type="checkbox"> <?php i::_e('Possui acessibilidade') ?> </label>
             <label class="verified"> <input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Espaços oficiais') ?> </label>
         </div>  
-        <div class="field">
+        <div class="field search-filter__filter-space-types">
             <label> <?php i::_e('Tipos de espaços') ?></label>
 
             <mc-multiselect :model="pseudoQuery['type']" :items="types" title="<?= i::esc_attr__('Selecione os tipos: ') ?>" hide-filter hide-button>
