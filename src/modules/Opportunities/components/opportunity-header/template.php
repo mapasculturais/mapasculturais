@@ -18,9 +18,11 @@ $this->import('
                <mc-avatar :entity="firstPhase" size="medium"></mc-avatar>
             </div>
             <div class="title">
-                <span class="title__title">
-                    <a :href="firstPhase.getUrl('single')">{{firstPhase.name}}</a>
-                </span>
+                <slot name="title-name">
+                    <span class="title__title">
+                        <a :href="firstPhase.getUrl('single')">{{firstPhase.name}}</a>
+                    </span>
+                </slot>
                 <div class="title__info">
                     <div class="data">
                         <div class="data__title"> <?= i::__('ID')?>: </div>
