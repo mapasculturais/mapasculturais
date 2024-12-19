@@ -396,8 +396,25 @@ class Module extends \MapasCulturais\Module{
             'label' => \MapasCulturais\i::__('Segmento artístico cultural da entrega'),
             'type' => 'select',
             'options' => array(
-                \MapasCulturais\i::__('seg 1'),
-                \MapasCulturais\i::__('seg 12'),
+                \MapasCulturais\i::__('Artes Visuais'),  
+                \MapasCulturais\i::__('Artesanato'),  
+                \MapasCulturais\i::__('Audiovisual e Mídias Interativas'),  
+                \MapasCulturais\i::__('Circo'),  
+                \MapasCulturais\i::__('Culturas Tradicionais e Populares'),  
+                \MapasCulturais\i::__('Culturas dos Povos Originários'),  
+                \MapasCulturais\i::__('Dança'),  
+                \MapasCulturais\i::__('Design e Serviços Criativos'),  
+                \MapasCulturais\i::__('Economia, Produção e Áreas Técnicas da Cultura'),  
+                \MapasCulturais\i::__('Festas Populares'),  
+                \MapasCulturais\i::__('Humanidades'),  
+                \MapasCulturais\i::__('Livro, Leitura e Literatura'),  
+                \MapasCulturais\i::__('Música'),  
+                \MapasCulturais\i::__('Patrimônio Cultural Imaterial'),  
+                \MapasCulturais\i::__('Patrimônio Cultural Material'),  
+                \MapasCulturais\i::__('Performance'),  
+                \MapasCulturais\i::__('Produção e Áreas Técnicas da Cultura'),  
+                \MapasCulturais\i::__('Teatro'),  
+                \MapasCulturais\i::__('Transversalidades')
             ),
         ]);
         $app->registerMetadata($segmentDelivery, Delivery::class);
@@ -406,8 +423,8 @@ class Module extends \MapasCulturais\Module{
             'label' => \MapasCulturais\i::__('Ação orçamentária'),
             'type' => 'select',
             'options' => array(
-                \MapasCulturais\i::__('a 1'),
-                \MapasCulturais\i::__('a 12'),
+                \MapasCulturais\i::__('Ação 1'),
+                \MapasCulturais\i::__('Ação 2'),
             ),
         ]);
         $app->registerMetadata($budgetAction, Delivery::class);
