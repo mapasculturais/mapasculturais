@@ -35,6 +35,7 @@ $this->enqueueScript('app-v2', 'registration-print', 'js/registration-print.js')
     <mc-summary-project :entity="entity" classes="col-12"></mc-summary-project>
 
     <section class="col-12 section">
+        <?php $this->applyTemplateHook('section', 'begin') ?>
         <div class="section__content">
             <div class="card owner">
 
@@ -53,5 +54,6 @@ $this->enqueueScript('app-v2', 'registration-print', 'js/registration-print.js')
                 
             </div>
         </div>
+        <?php $this->applyTemplateHook('section', 'end') ?>
     </section>
 </main>
