@@ -87,7 +87,7 @@ $this->import('
                     <div v-if="maxOptions && maxOptions > 0">
                         <label>
                             <?php i::_e('Você selecionou') ?>
-                            {{ value.length || 0 }}/{{ maxOptions }}
+                            {{ value?.length || 0 }}/{{ maxOptions }}
                             <?php i::_e('opções') ?>
                         </label>
                     </div>
