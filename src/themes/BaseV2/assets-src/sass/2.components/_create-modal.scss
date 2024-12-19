@@ -15,6 +15,12 @@
         }
     }
 
+    .modal__action {
+        .button--complete{
+            color: $white !important;
+        }
+    }
+
     .field {
         margin: size(16) 0;
 
