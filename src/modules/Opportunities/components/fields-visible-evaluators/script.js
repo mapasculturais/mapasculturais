@@ -112,8 +112,10 @@ app.component("fields-visible-evaluators", {
 
                 if (item.conditional) {
                     let condidionalField = this.fields.filter(_item => _item.fieldName == item.conditionalField)
-                    field.disabled = (avaliableFields[item.conditionalField] == "true" ? false : true);
-                    field.titleDisabled = `${this.text('activateField')} '#${condidionalField[0].id}'`
+                    if(condidionalField.length > 0) {
+                        field.disabled = (avaliableFields[item.conditionalField] == "true" ? false : true);
+                        field.titleDisabled = `${this.text('activateField')} '#${condidionalField[0].id}'`
+                    }
                 }
 
                 this.fields[index] = field;
