@@ -11,4 +11,7 @@ return [
     'Corrija os erros indicados' => i::__('Corrija os erros indicados'),
     'Enviando' => i::__('Enviando'),
     'Validando' => i::__('Validando'),
+    'Plano de trabalho' => i::__('Plano de trabalho'),
+    'Meta' => i::__('Meta'),
+    'Entrega' => i::__('Entrega'),
 ];
