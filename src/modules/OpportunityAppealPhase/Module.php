@@ -50,6 +50,52 @@ class Module extends \MapasCulturais\Module {
 
             $this->json($appeal_phase);
         });
+
+        /**
+         * Endpoint para criação de inscrição na fase de recurso da oportunidade.
+         *
+         * @param int $registration_id
+         */
+        $app->hook('POST(opportunity.createAppealPhaseRegistration)', function() use ($app) {
+            /** @var Controllers\Opportunity $this  */
+
+            $opportunity = $this->requestedEntity;
+            $appeal_phase = $opportunity->appealPhase;
+
+            $data = $this->data;
+
+            $registration_id = $data['registration_id'] ?? 0;
+
+            if ($registration_id) {
+                $registration = $app->repo('Registration')->findOneBy(['id' => $registration_id]);
+
+                if (!$registration) {
+                    $this->errorJson(sprintf(i::__('Não existe uma inscrição com o ID %s'), $registration_id), 403);
+                }
+
+                $opportunity = $app->repo('Opportunity')->findOneBy(['id' => $registration->opportunity->id]);
+
+                if (!$opportunity) {
+                    $this->errorJson(sprintf(i::__('Não existe uma oportunidade com o ID %s'), $registration->opportunity_id), 403);
+                }
+
+                $appeal_phase = $app->repo("Opportunity")->findOneBy(['parent' => $opportunity->id, 'status' => Opportunity::STATUS_APPEAL_PHASE]);
+                
+                if (!$appeal_phase) {
+                    $this->errorJson(sprintf(i::__('Não existe uma fase de recurso para a %s'), $opportunity->name), 403);
+                }
+
+                $registration = new \MapasCulturais\Entities\Registration();
+                $registration->opportunity = $appeal_phase;
+                $registration->category = $opportunity->category;
+                $registration->proponentType = $opportunity->proponentType;
+                $registration->range = $opportunity->range;
+                $registration->owner = $opportunity->owner;
+                $registration->save(true);
+
+                $this->json([]);
+            }
+        });
     }
 
     public function register() {
