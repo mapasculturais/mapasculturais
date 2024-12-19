@@ -1,0 +1,83 @@
+@use '../0.settings/mixins' as *;
+
+.registration-workplan {
+    &__goals {
+        padding: size(12);
+        margin-top: size(12);
+        background-color: #f7f7f7;
+        border-radius: 4px 4px 4px 4px;
+        -webkit-border-radius: 4px 4px 4px 4px;
+        -moz-border-radius: 4px 4px 4px 4px;
+        border: 1px solid #ccc;
+    }
+
+    &__header-goals {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        color: var(--mc-primary-500);
+    }
+
+    &__header-deliveries {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        color: var(--mc-primary-500);
+    }
+
+    &__goals-title {
+        color: var(--mc-primary-500);
+    }
+
+    &__goals-period {
+        margin-top: size(12);
+        p {
+            font-weight: bold;
+        }
+    }
+
+    &__goals-months {
+        display: flex; 
+        gap: size(12); 
+    }
+
+    &__delete-goal, &__delete-delivery {
+        // margin-top: size(12);
+        display:flex;
+        align-items:right;
+        justify-content: flex-end;
+        
+    }
+
+    &__goals__deliveries {
+        border-radius: 4px 4px 4px 4px;
+        -webkit-border-radius: 4px 4px 4px 4px;
+        -moz-border-radius: 4px 4px 4px 4px;
+        border: 1px solid #ccc;
+        padding: size(24);
+        margin-top: size(12);
+        background-color: #f3f3f3;
+    }
+
+    &__new-delivery {
+        margin-top: size(12);
+    }
+
+    &__new-goal {
+        margin-top: size(12);
+    }
+
+    &__save-goal {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: size(12);
+    }
+
+    .field {
+        margin-top: size(12);
+    }
+
+    .is-invalid {
+        border: 3px solid red;
+    }
+}
