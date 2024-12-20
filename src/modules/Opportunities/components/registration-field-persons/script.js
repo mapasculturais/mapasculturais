@@ -115,7 +115,7 @@ app.component('registration-field-persons', {
                 'email': 'Email',
                 'race': 'Raça / Cor',
                 'gender': 'Genero',
-                'sexualOrientation': 'Orientação sexaul',
+                'sexualOrientation': 'Orientação sexual',
                 'deficiencies': 'deficiências',
                 'comunty': 'povos ou comunidades',
                 'area': 'Áreas de atuação',
