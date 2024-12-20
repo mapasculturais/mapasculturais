@@ -48,6 +48,13 @@
             padding: size(13) size(23);
             width: 100%;
             color: var(--mc-gray-700);
+
+            @media (max-width: size(500)){
+                font-size: $font-size-xxxs;
+                height: auto;
+                padding-left: size(16);
+                padding-right: size(16);
+            }
         }
     }
 
