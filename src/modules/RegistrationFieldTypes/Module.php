@@ -160,7 +160,7 @@ class Module extends \MapasCulturais\Module
         $app->hook("entity(RegistrationMeta).update:before", function () use ($app, $module) {
             $entity = $this->owner;
             if($module->inEditableTransaction) {
-                if(!in_array($this->key, $entity->editableFields)) {
+                if($entity->editableFields && !in_array($this->key, $entity->editableFields)) {
                     $app->em->rollback();
                     throw new \Exception("Permission denied.");
                 }
