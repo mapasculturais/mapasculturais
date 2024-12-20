@@ -33,7 +33,7 @@ foreach ($agent_fields as $field) {
         $taxonomie_options[$field] = $taxonomies_fields[$field];
     }
     
-    if(in_array($definitions[$field]['type'] ?? [], ['select', 'multiselect','checkboxes'])){
+    if(in_array($definitions[$field]['type'] ?? [], ['select', 'multiselect','checkboxes', 'radio'])){
         $options_list = $definitions[$field]['options'] ?? [];
         $options = [];
         foreach($options_list as $key => $value){
