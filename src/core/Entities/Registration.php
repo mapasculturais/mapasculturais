@@ -363,6 +363,7 @@ class Registration extends \MapasCulturais\Entity
         $this->registerFieldsMetadata();
         
         $json = [
+            '@entityType' => $this->getControllerId(),
             'id' => $this->id,
             'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
             'createTimestamp' => $this->createTimestamp,

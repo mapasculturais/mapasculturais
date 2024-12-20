@@ -29,6 +29,9 @@ app.component('registration-form', {
     },
 
     computed: {
+        preview () {
+            return this.registration.id === -1;
+        },
         disabledField() {
             return $MAPAS.requestedEntity.disabledField
         },
