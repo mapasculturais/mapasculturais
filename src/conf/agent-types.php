@@ -69,13 +69,14 @@ return array(
             'label' => 'Pessoa com deficiência',
             'type' => 'multiselect',
             'options' => [
+                MapasCulturais\i::__('Nenhuma'),
                 MapasCulturais\i::__('Auditiva'),
                 MapasCulturais\i::__('Física-motora'),
                 MapasCulturais\i::__('Intelectual'),
                 MapasCulturais\i::__('Múltipla'),
                 MapasCulturais\i::__('Transtorno do Espectro Autista'),
                 MapasCulturais\i::__('Visual'),
-                MapasCulturais\i::__('Outros'),
+                MapasCulturais\i::__('Outras'),
             ],
             'available_for_opportunities' => true
         ),
