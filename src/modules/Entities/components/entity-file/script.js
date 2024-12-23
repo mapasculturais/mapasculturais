@@ -26,6 +26,9 @@ app.component('entity-file', {
             type: String,
             default: ""
         },
+        description: {
+            type: String
+        },
         uploadFormTitle: {
             type: String,
             required: false
