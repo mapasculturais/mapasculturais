@@ -49,7 +49,7 @@
                         :autosave="60000"
                         description-first
                         :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"
-                        :preserve-order="field.fieldType == 'checkboxes'"></entity-field>
+                        preserve-order></entity-field>
 
                     <entity-file v-else-if="field.groupName" 
                         :entity="registration"
@@ -57,9 +57,11 @@
                         :groupName="field.groupName" 
                         titleModal="<?php i::_e('Adicionar anexo') ?>" 
                         :title="field.title" 
+                        :description="field.description"
                         editable
                         :required="field.required"
                         :default-file="field?.template"></entity-file>
+
                 </template>
             </template>
         </mc-card>
