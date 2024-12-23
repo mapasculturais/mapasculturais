@@ -192,7 +192,7 @@ $today = new DateTime();
                         <div v-if="entity.agentRelations.hasOwnProperty('coletivo') && entity.agentRelations.coletivo[0]" class="space">
                             <mc-avatar :entity="entity.agentRelations.coletivo[0].agent" size="xsmall"></mc-avatar>
                             <div class="name">
-                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
+                                <a :href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
                             </div>
                         </div>
                         <div v-if="!entity.agentRelations.hasOwnProperty('coletivo')" class="space">

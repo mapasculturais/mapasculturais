@@ -29,35 +29,35 @@ $this->import('
                 <label for="logradouro">
                     <?= i::__('Logradouro') ?>
                 </label>
-                <input id="logradouro" type="text" v-model="addressData.En_Nome_Logradouro" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="logradouro" type="text" v-model="addressData.En_Nome_Logradouro" @change="save" />
             </div>
 
             <div class="field col-6">
                 <label for="num">
                     <?= i::__('Número') ?>
                 </label>
-                <input id="num" type="number" v-model="addressData.En_Num" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="num" type="number" v-model="addressData.En_Num" @change="save" />
             </div>
 
             <div class="field col-6">
                 <label for="bairro">
                     <?= i::__('Bairro') ?>
                 </label>
-                <input id="bairro" type="text" v-model="addressData.En_Bairro" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="bairro" type="text" v-model="addressData.En_Bairro" @change="save" />
             </div>
 
             <div class="field col-12 sm:col-12">
                 <label for="complemento">
                     <?= i::__('Complemento') ?>
                 </label>
-                <input id="complemento" type="text" v-model="addressData.En_Complemento" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="complemento" type="text" v-model="addressData.En_Complemento" @change="save" />
             </div>
 
             <div v-if="statesAndCitiesCountryCode != 'BR'" class="field">
                 <label for="country">
                     <?= i::__('País') ?>
                 </label>
-                <input id="country" type="text" v-model="addressData.En_Pais" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="country" type="text" v-model="addressData.En_Pais" @change="save" />
             </div>
 
             <div class="field col-6">
