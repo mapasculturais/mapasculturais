@@ -25,15 +25,16 @@ $this->import('
     v1-embed-tool
 ');
 
+$referer = $app->request->getReferer();
+
 $breadcrumb = [
     ['label' => i::__('Início'), 'url' => $app->createUrl('panel', 'opportunities')],
     ['label' => i::__('Painel de controle'), 'url' => $app->createUrl('panel', 'opportunities')],
-    ['label' => i::__('Minhas Avaliações'), 'url' => $app->createUrl('panel', 'opportunities')],
-    ['label' => i::__('Lista de Avaliações'), 'url' => $app->createUrl('registration', 'index')],
+    ['label' => i::__('Minhas Avaliações'), 'url' => $app->createUrl('panel', 'evaluations')],
+    ['label' => i::__('Lista de Avaliações'), 'url' => $referer],
 ];
 
 $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
-
 
 $this->breadcrumb = $breadcrumb;
 
