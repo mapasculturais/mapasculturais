@@ -763,6 +763,9 @@ class Module extends \MapasCulturais\Module
                 if (!empty($value["location"]["latitude"]) && !empty($value["location"]["longitude"])) {
                     // this order of coordinates is required by the EntityGeoLocation trait's setter
                     $entity->location = [$value["location"]["longitude"], $value["location"]["latitude"]];
+                } else if (!empty($value["location"]["lat"]) && !empty($value["location"]["lng"])) {
+                    $entity->location = [$value["location"]["lng"], $value["location"]["lat"]];
+
                 }
                 $entity->endereco = $value["endereco"] ?? "";
                 $entity->En_CEP = $value["En_CEP"] ?? "";
