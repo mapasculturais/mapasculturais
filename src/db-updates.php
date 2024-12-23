@@ -2424,6 +2424,14 @@ $$
         __exec('CREATE INDEX idx_registration_meta_key ON registration_meta (key);');
         __exec('CREATE INDEX idx_opportunity_meta_key ON registration_meta (key);');
         __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
-    }    
+    },
 
+    'define default para as colunas ids das tabelas sem default' => function() {
+        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
+        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
+        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
+        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
+        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
+    },
 ] + $updates ;   

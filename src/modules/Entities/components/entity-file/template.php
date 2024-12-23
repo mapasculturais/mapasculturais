@@ -24,6 +24,9 @@ $this->import('
     <div v-if="file && hasSlot('label') && !downloadOnly" class="entity-file__label semibold">
         <slot name="label"></slot>
     </div>
+    
+    <small v-if="description" class="field__description">{{description}}</small>
+
     <div v-if="file" class="entity-file__file">
 
         <slot name="view">

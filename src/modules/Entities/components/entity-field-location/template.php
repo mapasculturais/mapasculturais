@@ -85,11 +85,11 @@ $this->import('
                 <div class="field__group">
                     <label for="publicLocationYes" class="input__radioLabel">
                         <input type="radio" id="publicLocationYes" v-model="addressData.publicLocation" value="true" @change="save()" />
-                        <?= i::__('Sim. Estou ciente de que este endereço aparecerá na plataforma no perfil do agente coletivo vinculado a esta inscrição.') ?>
+                        <?= $this->text('privacy-label--yes', i::__('Sim. Estou ciente de que este endereço aparecerá na plataforma no perfil do agente coletivo vinculado a esta inscrição.')) ?>
                     </label>
                     <label for="publicLocationNo" class="input__radioLabel">
                         <input type="radio" id="publicLocationNo" v-model="addressData.publicLocation" value="false" @change="save()"/>
-                        <?= i::__('Não.') ?>
+                        <?= $this->text('privacy-label--no', i::__('Não.')) ?>
                     </label>
                 </div>
             </div>
