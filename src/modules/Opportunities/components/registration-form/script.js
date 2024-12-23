@@ -139,7 +139,8 @@ app.component('registration-form', {
 
     methods: {
         isDisabled(field) {
-            return this.editableFields.length > 0 ? !this.editableFields.includes(field.fieldName) : false;
+            let fieldName = field.fieldName || field.groupName;
+            return this.editableFields.length > 0 ? !this.editableFields.includes(fieldName) : false;
         }
     },
 });
