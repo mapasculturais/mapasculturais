@@ -155,9 +155,11 @@ app.component('entity-field-location', {
                             this.addressData.En_Estado = data.uf;
 
                             if(executeAddress) {
+                                this.populateEntity();
                                 this.address();
                             }
-                        });    
+                        }
+                    );    
                 } 
             } 
         },
@@ -231,7 +233,10 @@ app.component('entity-field-location', {
                         if (r[0] && r[0].lat && r[0].lon) {
                             this.entity[this.fieldName].location = {lat: r[0].lat, lng: r[0].lon};
                         }
-                    } );
+                    } 
+                );
+
+                this.populateEntity();
             }            
         },
         initializeAddressFields(object) {
