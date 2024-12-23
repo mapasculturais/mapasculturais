@@ -150,6 +150,7 @@ class API {
         url = this.parseUrl(url);
         const requestInit = {
             cache: this.options.cacheMode,
+            headers: this.getHeaders(data),
             ...init
         }
 

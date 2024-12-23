@@ -21,6 +21,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Ods;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Cell\DataType;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 /**
  * @property-read string $fileGroup
@@ -94,8 +96,8 @@ abstract class SpreadsheetJob extends JobType
                         ],
                     ]);
 
-                    $sheet->mergeCells($col);
-                    $sheet->setCellValue($col_init, $value);
+                    $data_type = is_numeric($value) ? DataType::TYPE_NUMERIC : DataType::TYPE_STRING;
+                    $sheet->setCellValueExplicit($col_init, $value, $data_type);
                     continue;
                 }
 
@@ -112,7 +114,8 @@ abstract class SpreadsheetJob extends JobType
                     ],
                 ]);
 
-                $sheet->setCellValue($col, $value);
+                $data_type = is_numeric($value) ? DataType::TYPE_NUMERIC : DataType::TYPE_STRING;
+                $sheet->setCellValueExplicit($col, $value, $data_type);
             }
         }
 
@@ -127,6 +130,11 @@ abstract class SpreadsheetJob extends JobType
                         $new_data[] = implode(', ', $data[$prop]);
                     } else {
                         $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
+                    }
+                }
+                foreach($new_data as &$value) {
+                    if($value && $value[0] === '=') {
+                        $value = "'$value";
                     }
                 }
 
