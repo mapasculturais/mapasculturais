@@ -27,7 +27,7 @@ return array(
             'label' => \MapasCulturais\i::__('Escolaridade'),
             'type' => 'select',
             'options' => array(
-               '' => MapasCulturais\i::__('Sem Educação Formal'),
+               MapasCulturais\i::__('Sem Educação Formal'),
                MapasCulturais\i::__('Ensino Fundamental Incompleto'),
                MapasCulturais\i::__('Ensino Fundamental Completo'),
                MapasCulturais\i::__('Ensino Médio Incompleto'),
