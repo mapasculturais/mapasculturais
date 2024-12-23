@@ -26,7 +26,12 @@ app.component('entity-data', {
 
     computed: {
         description() {
-            return this.entity.$PROPERTIES[this.prop];
+            const description = this.entity.$PROPERTIES[this.prop];
+
+            if(!description) {
+                console.error(`Propriedade ${this.prop} não encontrada na entidade ${this.entity.__objectType}`);
+            }
+            return description;
         },
 
         propertyLabel() {
