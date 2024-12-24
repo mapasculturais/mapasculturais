@@ -218,6 +218,7 @@ class Metadata extends \MapasCulturais\Definition{
                 }
             },
             'multiselect' => function($value){
+                $value = array_filter($value);
                 return json_encode($value);
             },
             'location' => function($value) {
@@ -292,11 +293,15 @@ class Metadata extends \MapasCulturais\Definition{
                 }
             },
             'multiselect' => function($value){
-                $result = is_null($value) ? null : json_decode($value, true);
+                $result = is_null($value) ? [] : json_decode($value, true);
 
                 if($value && !is_array($result) && ($temp_result = explode(';', $value))) {
                     $result = $temp_result;
                 }
+
+                $result = array_filter($result, function($v){
+                    return !is_null($v) && $v !== 'null';
+                });
 
                 return $result;
             }
