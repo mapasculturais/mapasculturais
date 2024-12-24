@@ -13,6 +13,11 @@ app.component('registration-steps', {
             type: Number,
             default: 0,
         },
+
+        disableNavigation: {
+            type: Boolean,
+            default: false
+        }
     },
 
     setup() {
