@@ -35,7 +35,8 @@ app.component('entity-field-location', {
 
     data() {
         return {
-            addressData: {}
+            addressData: {},
+            timeoutLocation: null,
         }
     },
 
@@ -65,6 +66,7 @@ app.component('entity-field-location', {
 
         address() {
             this.initializeAddressFields('entity');
+            this.populateEntity();
             this.entity.En_Pais = this.statesAndCitiesCountryCode == 'BR' ? this.statesAndCitiesCountryCode : this.entity.En_Pais;
             let rua         = this.entity[this.fieldName]?.En_Nome_Logradouro == null ? '' : this.entity[this.fieldName].En_Nome_Logradouro;
             let numero      = this.entity[this.fieldName]?.En_Num             == null ? '' : this.entity[this.fieldName].En_Num;
@@ -155,7 +157,6 @@ app.component('entity-field-location', {
                             this.addressData.En_Estado = data.uf;
 
                             if(executeAddress) {
-                                this.populateEntity();
                                 this.address();
                             }
                         }
@@ -170,75 +171,83 @@ app.component('entity-field-location', {
                         }).join("&");
         },
 
-        geolocation() {
-            let rua         = this.entity[this.fieldName].En_Nome_Logradouro || '';
-            let numero      = this.entity[this.fieldName].En_Num             || '';
-            let bairro      = this.entity[this.fieldName].En_Bairro          || '';
-            let cidade      = this.entity[this.fieldName].En_Municipio       || '';
-            let estado      = this.entity[this.fieldName].En_Estado          || '';
-            let cep         = this.entity[this.fieldName].En_CEP             || '';
-            
-            if (estado && cidade) {
-                var address = bairro ?
-                    rua + " " + numero + ", " + bairro + ", " + cidade + ", " + estado :
-                    rua + " " + numero + ", " + cidade + ", " + estado;
+        geolocation(time = 0) {
+            clearTimeout(this.timeoutLocation);
 
-                var addressElements = {
-                    fullAddress: address,
-                    streetName: rua,
-                    city: cidade,
-                    state: estado,
-                };
-
-                if (numero)
-                    addressElements["number"] = numero;
-
-                if (bairro)
-                    addressElements["neighborhood"] = bairro;
-
-                if (cep)
-                    addressElements["postalCode"] = cep;
-
-                var params = {
-                    format: "json",
-                    countrycodes: "br"
-                };
-                var structured = false;
-
-                if (addressElements.streetName) {
-                    params.street = (addressElements.number ? addressElements.number + " " : "") + addressElements.streetName;
-                    structured = true;
-                }
-                if (addressElements.city) {
-                    params.city = addressElements.city;
-                    structured = true;
-                }
-                if (addressElements.state) {
-                    params.state = addressElements.state;
-                    structured = true;
-                }
-                if (addressElements.country) {
-                    params.country = addressElements.country;
-                    structured = true;
-                }
-                if (!structured && addressElements.fullAddress) {
-                    params.q = addressElements.fullAddress;
-                }
-
-                let url = 'https://nominatim.openstreetmap.org/search' + this.formatParams(params);
-                fetch(url)
-                    .then( response => response.json() )
-                    .then( r => {
-                        // Consideramos o primeiro resultado
-                        if (r[0] && r[0].lat && r[0].lon) {
-                            this.entity[this.fieldName].location = {lat: r[0].lat, lng: r[0].lon};
-                        }
-                    } 
-                );
-
-                this.populateEntity();
-            }            
+            this.timeoutLocation = setTimeout(() => {
+                
+                let rua         = this.entity[this.fieldName].En_Nome_Logradouro || '';
+                let numero      = this.entity[this.fieldName].En_Num             || '';
+                let bairro      = this.entity[this.fieldName].En_Bairro          || '';
+                let cidade      = this.entity[this.fieldName].En_Municipio       || '';
+                let estado      = this.entity[this.fieldName].En_Estado          || '';
+                let cep         = this.entity[this.fieldName].En_CEP             || '';
+                
+                if (estado && cidade) {
+                    var address = bairro ?
+                        rua + " " + numero + ", " + bairro + ", " + cidade + ", " + estado :
+                        rua + " " + numero + ", " + cidade + ", " + estado;
+    
+                    var addressElements = {
+                        fullAddress: address,
+                        streetName: rua,
+                        city: cidade,
+                        state: estado,
+                    };
+    
+                    if (numero)
+                        addressElements["number"] = numero;
+    
+                    if (bairro)
+                        addressElements["neighborhood"] = bairro;
+    
+                    if (cep)
+                        addressElements["postalCode"] = cep;
+    
+                    var params = {
+                        format: "json",
+                        countrycodes: "br"
+                    };
+                    var structured = false;
+    
+                    if (addressElements.streetName) {
+                        params.street = (addressElements.number ? addressElements.number + " " : "") + addressElements.streetName;
+                        structured = true;
+                    }
+                    if (addressElements.city) {
+                        params.city = addressElements.city;
+                        structured = true;
+                    }
+                    if (addressElements.state) {
+                        params.state = addressElements.state;
+                        structured = true;
+                    }
+                    if (addressElements.country) {
+                        params.country = addressElements.country;
+                        structured = true;
+                    }
+                    if (!structured && addressElements.fullAddress) {
+                        params.q = addressElements.fullAddress;
+                    }
+    
+                    let url = 'https://nominatim.openstreetmap.org/search' + this.formatParams(params);
+                    fetch(url)
+                        .then( response => response.json() )
+                        .then( r => {
+                            // Consideramos o primeiro resultado
+                            if (r[0] && r[0].lat && r[0].lon) {
+                                this.entity[this.fieldName].location = {lat: r[0].lat, lng: r[0].lon};
+                            }
+                        } 
+                    );
+    
+                    this.populateEntity();
+                }            
+                
+                this.timeoutLocation = null;
+            }, time);
         },
+
         initializeAddressFields(object) {
             if (!this[object][this.fieldName]) {
                 this[object][this.fieldName] = {};

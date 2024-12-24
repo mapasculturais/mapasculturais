@@ -42,7 +42,6 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityLock,
         Traits\EntityRevision {
             Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
         }
@@ -363,6 +362,7 @@ class Registration extends \MapasCulturais\Entity
         $this->registerFieldsMetadata();
         
         $json = [
+            '@entityType' => $this->getControllerId(),
             'id' => $this->id,
             'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
             'createTimestamp' => $this->createTimestamp,
