@@ -24,6 +24,7 @@ class SendMailNotification extends JobType
         $phase = $registration->opportunity;
         $first_phase = $registration->opportunity->firstPhase;
 
+
         $params = [
             'siteName' => $app->siteName,
             'baseUrl' => $app->getBaseUrl(),
@@ -39,8 +40,11 @@ class SendMailNotification extends JobType
         ];
 
         $params += $job->params ?? [];
+        $template = $job->template;
 
-        $message = $app->renderMailerTemplate($job->template, $params);
+        $app->applyHook("sendMailNotification.registrationStart",[&$registration, &$template, &$params]);
+
+        $message = $app->renderMailerTemplate($template, $params);
       
         $email_params = [
             'from' => $app->config['mailer.from'],
