@@ -18,49 +18,49 @@ $this->import('
     <div class="col-12">
         <div class="grid-12">
 
-            <div class="field col-4">
+            <div class="field col-4" :class="{'not-error': !hasError('En_CEP')}">
                 <label for="cep">
                     <?= i::__('CEP') ?>
                 </label>
                 <input @change="pesquisacep(addressData.En_CEP, true);" id="cep" type="text" v-maska data-maska="#####-###" v-model="addressData.En_CEP" />
             </div>
 
-            <div class="field col-8">
+            <div class="field col-8" :class="{'not-error': !hasError('En_Nome_Logradouro')}">
                 <label for="logradouro">
                     <?= i::__('Logradouro') ?>
                 </label>
                 <input @blur="geolocation()" @input="geolocation(10000)" id="logradouro" type="text" v-model="addressData.En_Nome_Logradouro" @change="save" />
             </div>
 
-            <div class="field col-6">
+            <div class="field col-6" :class="{'not-error': !hasError('En_Num')}">
                 <label for="num">
                     <?= i::__('Número') ?>
                 </label>
                 <input @blur="geolocation()" @input="geolocation(10000)" id="num" type="number" v-model="addressData.En_Num" @change="save" />
             </div>
 
-            <div class="field col-6">
+            <div class="field col-6" :class="{'not-error': !hasError('En_Bairro')}">
                 <label for="bairro">
                     <?= i::__('Bairro') ?>
                 </label>
                 <input @blur="geolocation()" @input="geolocation(10000)" id="bairro" type="text" v-model="addressData.En_Bairro" @change="save" />
             </div>
 
-            <div class="field col-12 sm:col-12">
+            <div class="field col-12 sm:col-12 not-error">
                 <label for="complemento">
                     <?= i::__('Complemento') ?>
                 </label>
                 <input @blur="geolocation()" @input="geolocation(10000)" id="complemento" type="text" v-model="addressData.En_Complemento" @change="save" />
             </div>
 
-            <div v-if="statesAndCitiesCountryCode != 'BR'" class="field">
+            <div v-if="statesAndCitiesCountryCode != 'BR'" class="field" :class="{'not-error': !hasError('En_Pais')}">
                 <label for="country">
                     <?= i::__('País') ?>
                 </label>
                 <input @blur="geolocation()" @input="geolocation(10000)" id="country" type="text" v-model="addressData.En_Pais" @change="save" />
             </div>
 
-            <div class="field col-6">
+            <div class="field col-6" :class="{'not-error': !hasError('En_Estado')}">
                 <label for="field__title">
                     <?= i::__('Estado') ?>
                 </label>
@@ -69,7 +69,7 @@ $this->import('
                 </mc-select>
             </div>
             
-            <div v-if="addressData.En_Estado" class="field col-6">
+            <div v-if="addressData.En_Estado" class="field col-6" :class="{'not-error': !hasError('En_Municipio')}">
                 <label for="field__title">
                     <?= i::__('Cidade') ?>
                 </label>

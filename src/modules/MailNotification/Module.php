@@ -111,7 +111,7 @@ class Module extends \MapasCulturais\Module
 
         $params = [];
 
-        $app->applyHook("sendMailNotification.registrationStart",[&$registration, &$template, &$enable, &$params]);
+        $app->applyHook("sendMailNotification.registrationStart:beforeEnqueue",[&$registration, &$template, &$enable, &$params]);
 
         if($enable){
             $data = [
