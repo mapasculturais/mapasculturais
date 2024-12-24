@@ -15,4 +15,12 @@
             }
         }
     }
+
+    .not-error {
+        input, textarea, select, .mc-select__selected-option {
+
+            border: 0.0625rem solid var(--mc-gray-500) !important;
+            background: transparent !important;
+        }
+    }
 }
