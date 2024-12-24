@@ -5,8 +5,11 @@
  */
 
 use MapasCulturais\ApiQuery;
-
-$this->addRequestedEntityToJs($entity ? $entity->className : null, $entity ? $entity->id : null);
+if ($entity->preview){
+    $this->addRequestedEntityToJs($entity ? $entity->className : null, $entity ? $entity->id : null, entity: $entity);
+} else {
+    $this->addRequestedEntityToJs($entity ? $entity->className : null, $entity ? $entity->id : null);
+}
 $query = new ApiQuery(\MapasCulturais\Entities\Opportunity::class, [
     'id' => "EQ({$entity->opportunity->id})",
     '@select' => "*"
