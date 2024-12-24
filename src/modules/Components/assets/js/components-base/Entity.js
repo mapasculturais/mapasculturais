@@ -400,7 +400,6 @@ class Entity {
     }
 
     async save(delay = 300, preserveValues = true) {
-        this.__processing = this.text('salvando');
         if(!this.id) {
             preserveValues = false;
         }
@@ -415,6 +414,7 @@ class Entity {
             this.rejecters.push(reject);
 
             this.__saveTimeout = setTimeout(async () => {
+                this.__processing = this.text('salvando');
                 try {
                     const data = this.data(true);
                     if(JSON.stringify(data) == '{}') {
@@ -422,7 +422,7 @@ class Entity {
                         for(let resolve of this.resolvers) {
                             resolve(response);
                         }
-
+                        this.sendMessage(this.text('modificacoes salvas'));
                         this.__processing = false;
                         return;
                     }
