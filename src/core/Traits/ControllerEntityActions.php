@@ -193,7 +193,7 @@ trait ControllerEntityActions {
 
         $app = App::i();
 
-        $force_save = (bool) $app->request->headers['MAPAS-Force-Save'] ?? false;
+        $force_save = (bool) ($app->request->headers['MAPAS-Force-Save'] ?? false);
 
         $app->applyHookBoundTo($this, "PATCH({$this->id}.single):data", ['data' => &$data]);
 
