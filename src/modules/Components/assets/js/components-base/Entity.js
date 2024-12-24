@@ -399,7 +399,7 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
-    async save(delay = 300, preserveValues = true) {
+    async save(delay = 300, preserveValues = true, forceSave) {
         if(!this.id) {
             preserveValues = false;
         }
@@ -427,7 +427,7 @@ class Entity {
                         return;
                     }
 
-                    const res = await this.API.persistEntity(this);                    
+                    const res = await this.API.persistEntity(this, forceSave);                    
                     this.doPromise(res, (entity) => {
                         if (this.id) {
                             this.sendMessage(this.text('modificacoes salvas'));
