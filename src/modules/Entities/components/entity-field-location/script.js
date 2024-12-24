@@ -64,6 +64,10 @@ app.component('entity-field-location', {
             })
         },
 
+        hasError(field) {
+            return this.entity[this.fieldName]?.[field] === '';
+        },
+
         address() {
             this.initializeAddressFields('entity');
             this.populateEntity();
