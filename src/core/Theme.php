@@ -1010,7 +1010,8 @@ abstract class Theme {
                 $e['profile']['currentUserPermissions'] = $permissions;
             }
 
-            if(!$entity && $entity_class_name == Registration::class) {
+            
+            if($entity_class_name == Registration::class) {
                 $en = $this->controller->requestedEntity;
                 $meta = $en->jsonSerialize();
                 foreach($meta as $field => $value) {
