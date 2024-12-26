@@ -10,16 +10,17 @@ $this->import('
     mc-popover
 ');
 ?>
-<div :class="['mc-multiselect', {'mc-multiselect--disabled' : disabled}]">
-    <mc-popover :title="title" classes="mc-multiselect__popper">
-        <template #button="popover">
-            <slot :popover="popover" :setFilter="setFilter"></slot>
-        </template>
-        <template #default="popover">
-            <div class="mc-multiselect__content">
+<div :class="['mc-multiselect', {'mc-multiselect--disabled' : disabled}]" :id="uniqueID">
+    <VDropdown :triggers="[]" :shown="open" :autoHide="false" popperClass="mc-multiselect__popper" ref="dropdown" eager-mount :positioning-disabled="$media('max-width: 500px')">
+        <slot :setFilter="setFilter">
+            <input ref="selected" :class="['mc-multiselect__input', {'mc-multiselect__input--open' : open}]" class="mc-multiselect__input" @keyup="setFilter($event.target.value)" @focus="openMultiselect()" :placeholder="placeholder">
+        </slot>
+
+        <template #popper ref="popperr">
+            <div ref="options" :id="uniqueID" class="mc-multiselect__content scrollbar">
                 <div v-if="!$media('max-width: 500px') && !hideFilter" class="mc-multiselect__filter" ref="filter">
                     <input class="mc-multiselect__filter-input" v-model="filter" type="text" placeholder="<?= i::esc_attr__('Filtro') ?>" />
-                    <span class="mc-multiselect__close" @click="close(popover)">
+                    <span class="mc-multiselect__close" @click="toggleMultiselect()">
                         <mc-icon name="close"></mc-icon>
                     </span>
                 </div>
@@ -38,12 +39,17 @@ $this->import('
                         </label>
                     </li>
                 </ul>
+
+                <span v-if="$media('max-width: 500px')" class="mc-multiselect__finish-action" @click="toggleMultiselect()">
+                    <?= i::__("Concluir") ?> <mc-icon name="close"></mc-icon>
+                </span>
+                
                 <div v-if="!hideButton" class="mc-multiselect__confirm-button">
-                    <button class="button button--primary button--large button--sm" @click="close(popover)">
+                    <button class="button button--primary button--large button--sm" @click="toggleMultiselect()">
                         <?php i::_e('Confirmar') ?>
                     </button>
                 </div>
             </div>
         </template>
-    </mc-popover>
+    </VDropdown>
 </div>
