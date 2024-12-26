@@ -16,7 +16,7 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     public function getSlug()
     {
-        return i::__('qualification');
+        return 'qualification';
     }
 
     public function getName()
