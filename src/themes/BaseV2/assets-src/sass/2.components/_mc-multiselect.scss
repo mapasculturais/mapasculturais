@@ -3,39 +3,54 @@
 .mc-multiselect {
     width: 100%;
 
-    &--input {
+    &__input {
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
         background: url(https://api.iconify.design/ic/baseline-arrow-drop-down.svg) no-repeat right size(16) center/contain;
         background-color: var(--mc-white);
         background-size: size(24);
+
+        &--open {
+            background: url(https://api.iconify.design/ic/baseline-arrow-drop-up.svg) no-repeat right size(16) center/contain;
+            background-color: var(--mc-white);
+            background-size: size(24);
+        }
     }
 
     &__filter {
-        padding: size(5) size(10);
         display: flex;
         gap: size(8);
         justify-content: flex-end;
+        padding: size(5) size(10);
     }
 
     &__filter-input {
-        width: 100%;
-        padding: size(6) size(16);
         font-family: var(--mc-font-body);
+        padding: size(6) size(16);
+        width: 100%;
     }
 
     &__close {
-        display: flex;
         align-items: center;
-        padding: size(10);
         cursor: pointer;
+        display: flex;
+        padding: size(10);
     }
 
     &__content {
         display: flex;
         flex-direction: column;
+        max-height: size(256);
         max-width: size(500);
+
+        @include mobile {
+            max-height: 100vh;
+        }
+
+        &>* {
+            border-right: var(--mc-border-hairline) var(--mc-gray-300);
+        }
     }
 
     &__confirm-button {
@@ -43,15 +58,30 @@
         display: flex;
     }
 
+    &__finish-action {
+        align-items: center;
+        background-color: var(--mc-white);
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+        bottom: 0;
+        cursor: pointer;
+        display: flex;
+        gap: size(8);
+        justify-content: center;
+        padding: size(16);
+        position: sticky;
+
+        &:hover {
+            background-color: var(--mc-gray-100);
+        }
+    }
+
     &__options {
         display: flex;
         flex-direction: column;
         list-style: none;
-        overflow-y: auto;
+        margin: 0;
         padding: 0;
         width: 100%;
-        margin: 0;
-        max-height: size(256);
 
         @media (max-width: size(500)) {
             max-height: unset;
@@ -59,11 +89,11 @@
     }
 
     &__option {
-        display: flex;
-        gap: size(8);
         border-radius: var(--mc-border-radius-xs);
         color: var(--mc-low-500);
         cursor: pointer;
+        display: flex;
+        gap: size(8);
         padding: size(5) size(10);
 
         &:hover {
@@ -72,13 +102,21 @@
     }
 
     &__count {
+        background-color: var(--mc-white);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
         padding: size(5) size(10);
+        position: sticky;
+        top: 0;
+
         label {
             justify-content: center;
         }
     }
 
     &__popper {
+        box-shadow: none !important;
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+
         .popover__content {
             background-color: var(--mc-white);
             border-radius: var(--mc-border-radius-xs);
@@ -90,6 +128,8 @@
                 .v-popper {
                     &__inner {
                         border: none;
+                        box-shadow: none !important;
+                        overflow: hidden;
                     }
 
                     &__arrow-container {
@@ -98,11 +138,38 @@
                 }
             }
 
+            &__popper--no-positioning {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+
+                &>.v-popper {
+                    &__backdrop {
+                        position: absolute;
+                        /* top: 0; */
+                        /* left: 0; */
+                        width: 100vw;
+                        height: 100vh;
+                        display: block;
+                        background: rgba(0, 0, 0, .5);
+                    }
+
+                    &__wrapper {
+                        position: fixed;
+                        width: 100%;
+                        bottom: 0;
+                    }
+                }
+
+                .mc-select__options {
+                    max-height: calc(100vh - size(46));
+                }
+            }
         }
     }
 
     &--disabled,
-    &--disabled > input {
+    &--disabled>input {
         opacity: .9;
         pointer-events: none;
         background-color: light-dark(rgba(239, 239, 239, 0.3), rgba(59, 59, 59, 0.3));
