@@ -103,10 +103,6 @@ app.component('opportunity-appeal-phase-config' , {
         
                     this.entity = new Entity('opportunity');
                     this.entity.populate(this.phaseData);
-                    this.entity.isAppealPhase = true;
-                    this.phase.isAppealPhase = true;
-                    this.entity.save();
-                    
                     this.processing = false;
         
                     messages.success(this.text('Fase de recurso criada com sucesso'));
@@ -124,6 +120,24 @@ app.component('opportunity-appeal-phase-config' , {
         addEvaluationCommittee() {
             this.showButtonEvaluationCommittee = false;
         },
+
+        async deleteAppealPhase() {
+            const messages = useMessages();
+            this.processing = true;
+            const entity = this.entity;
+
+            try {
+                this.entity = null;
+                await entity.destroy();
+                messages.success(this.text('Fase de recurso excluída com sucesso'));
+                
+            } catch (error) {
+                this.entity = entity;
+                messages.error(error);
+            }
+
+            this.processing = false;         
+        }
 
     }
 });
