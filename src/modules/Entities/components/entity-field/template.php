@@ -139,7 +139,7 @@ $this->import('
             <select-municipio :entity="entity" :prop="prop" @change="change($event)"></select-municipio>
         </template>
 
-        <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
+        <div v-if="maxLength && (is('string') || is('text') || is('textarea'))" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
     </slot>
 
     <small class="field__description" v-if="!descriptionFirst && (!hideDescription && (fieldDescription || description.description))"> {{ fieldDescription || description.description}} </small>
