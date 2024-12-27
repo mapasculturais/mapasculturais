@@ -93,7 +93,7 @@ class Module extends \MapasCulturais\Module {
                 $registration->owner = $opportunity->owner;
                 $registration->save(true);
 
-                $this->json([]);
+                $this->json($registration);
             }
         });
     }
