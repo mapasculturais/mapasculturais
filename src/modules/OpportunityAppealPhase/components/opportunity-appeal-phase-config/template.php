@@ -8,13 +8,16 @@
 use MapasCulturais\i;
 
 $this->import('
-    opportunity-committee-groups
-    opportunity-phase-publish-date-config
-    mc-confirm-button
-    mc-loading
-    mc-accordion
     entity-field
+    mc-accordion
+    mc-confirm-button
     mc-icon
+    mc-link
+    mc-loading
+    opportunity-committee-groups
+    opportunity-phase-list-evaluation
+    opportunity-phase-publish-date-config
+    opportunity-phase-status
 ');
 ?>
 
@@ -86,10 +89,10 @@ $this->import('
                     </div>
                 </div>
                 <div class="opportunity-appeal-phase-config__config-button">
-                    <button class="button button--icon button--primary button--md"> 
+                    <mc-link :entity="entity" route="formBuilder" class="button button--icon button--primary button--md"> 
                         <?= i::__('Configurar formulário') ?> 
                         <mc-icon name="external" size="sm"></mc-icon>
-                    </button>
+                    </mc-link>
                 </div>
             </template>
         </mc-accordion>
