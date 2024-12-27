@@ -23,7 +23,7 @@ $this->import('
             <div class="registration-field-persons__person-fields grid-12">
                 <div class="field col-12">
                     <label>
-                        <?= $this->text('nome endereço', i::__('Nome do enderço')) ?>
+                        <?= $this->text('nome endereço', i::__('Nome do endereço')) ?>
                     </label>
                     <input type="text" v-model="address.nome" @change="save()" :disabled="disabled" />
                 </div>
