@@ -41,3 +41,8 @@ $this->import('
         <registration-results v-if="phase.publishEvaluationDetails" :registration="registration" :phase="phase"></registration-results>
     </div>
 </div>
+
+<div class="opportunity-phases-timeline__request-appeal">
+    <h5 class="bold opportunity-phases-timeline__label"><?= i::__('Discorda do resultado?')?></h5>
+    <button class="button button--primary button--primary-outline" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
+</div>
