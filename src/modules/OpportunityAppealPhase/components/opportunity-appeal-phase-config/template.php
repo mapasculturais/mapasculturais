@@ -31,7 +31,18 @@ $this->import('
     </div>
     <div v-if="entity" class="opportunity-appeal-phase-config__appeals">
         <div class="opportunity-appeal-phase-config__delete col-12">
-            <mc-confirm-button message="<?=i::esc_attr__('Confirma a execução da ação?')?>">
+            <mc-confirm-button @confirm="deleteAppealPhase()">
+                <template #message="message">
+                    <p>
+                        <?= i::__('Você tem certeza que deseja excluir essa fase de recurso?') ?>
+                    </p>
+                    <br><br>
+                    <p>
+                        <mc-alert type="warning">
+                            <strong><?= i::__('ATENÇÃO') ?>: </strong> <?= i::__('TODOS os recursos enviados, avaliados ou não, serão <strong>excluídos permanentemente</strong>. Esta ação não poderá ser desfeita.') ?>
+                        </mc-alert>
+                    </p>
+                </template> 
                 <template #button="modal">
                     <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
