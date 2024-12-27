@@ -23,6 +23,10 @@
         gap: size(8);
         justify-content: flex-end;
         padding: size(5) size(10);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        position: sticky;
+        top: 0;
+        background-color: var(--mc-white);
     }
 
     &__filter-input {
