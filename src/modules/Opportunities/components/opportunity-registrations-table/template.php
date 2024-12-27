@@ -65,37 +65,13 @@ $entity = $this->controller->requestedEntity;
                             <option v-for="(item,index) in statusEvaluationResult" :value="index">{{item}}</option>
                         </mc-select>
                         
-                        <mc-multiselect class="col-2" :model="selectedStatus" :items="status" title="<?= i::esc_attr__('Status') ?>" @selected="filterByStatus(entities)" @removed="filterByStatus(entities)" hide-filter hide-button>
-                            <template #default="{popover, setFilter}">
-                                <div class="field">
-                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Status: ') ?>">
-                                </div>
-                            </template>
-                        </mc-multiselect>
+                        <mc-multiselect class="col-2" :model="selectedStatus" :items="status" placeholder="<?= i::esc_attr__('Status') ?>" @selected="filterByStatus(entities)" @removed="filterByStatus(entities)" hide-filter hide-button></mc-multiselect>
                         
-                        <mc-multiselect v-if="categories" class="col-2" :model="selectedCategories" :items="categories" title="<?= i::esc_attr__('Categorias') ?>" @selected="filterByCategories(entities)" @removed="filterByCategories(entities)" hide-filter hide-button>
-                            <template #default="{popover, setFilter}">
-                                <div class="field">
-                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Categorias: ') ?>">
-                                </div>
-                            </template>
-                        </mc-multiselect>
+                        <mc-multiselect v-if="categories" class="col-2" :model="selectedCategories" :items="categories" placeholder="<?= i::esc_attr__('Categorias') ?>" @selected="filterByCategories(entities)" @removed="filterByCategories(entities)" hide-filter hide-button></mc-multiselect>
 
-                        <mc-multiselect v-if="proponentTypes" class="col-2" :model="selectedProponentTypes" :items="proponentTypes" title="<?= i::esc_attr__('Tipos de proponente') ?>" @selected="filterByProponentTypes(entities)" @removed="filterByProponentTypes(entities)" hide-filter hide-button>
-                            <template #default="{popover, setFilter}">
-                                <div class="field">
-                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Tipos de proponente: ') ?>">
-                                </div>
-                            </template>
-                        </mc-multiselect>
+                        <mc-multiselect v-if="proponentTypes" class="col-2" :model="selectedProponentTypes" :items="proponentTypes" placeholder="<?= i::esc_attr__('Tipos de proponente') ?>" @selected="filterByProponentTypes(entities)" @removed="filterByProponentTypes(entities)" hide-filter hide-button></mc-multiselect>
 
-                        <mc-multiselect v-if="ranges" class="col-2" :model="selectedRanges" :items="ranges" title="<?= i::esc_attr__('Faixas') ?>" @selected="filterByRanges(entities)" @removed="filterByRanges(entities)" hide-filter hide-button>
-                            <template #default="{popover, setFilter}">
-                                <div class="field">
-                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Faixas:') ?>">
-                                </div>
-                            </template>
-                        </mc-multiselect>
+                        <mc-multiselect v-if="ranges" class="col-2" :model="selectedRanges" :items="ranges" placeholder="<?= i::esc_attr__('Faixas') ?>" @selected="filterByRanges(entities)" @removed="filterByRanges(entities)" hide-filter hide-button></mc-multiselect>
                     </div>
                 </template>
 

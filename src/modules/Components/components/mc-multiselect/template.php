@@ -12,8 +12,10 @@ $this->import('
 ?>
 <div :class="['mc-multiselect', {'mc-multiselect--disabled' : disabled}]" :id="uniqueID">
     <VDropdown :triggers="[]" :shown="open" :autoHide="false" popperClass="mc-multiselect__popper" ref="dropdown" eager-mount :positioning-disabled="$media('max-width: 500px')">
-        <slot :setFilter="setFilter">
-            <input ref="selected" :class="['mc-multiselect__input', {'mc-multiselect__input--open' : open}]" class="mc-multiselect__input" @keyup="setFilter($event.target.value)" @focus="openMultiselect()" :placeholder="placeholder">
+        <slot :toggleMultiselect="toggleMultiselect" :setFilter="setFilter">
+            <div class="field">
+                <input ref="selected" :class="['mc-multiselect__input', {'mc-multiselect__input--open' : open}]" @keyup="setFilter($event.target.value)" @focus="openMultiselect()" :placeholder="placeholder">
+            </div>
         </slot>
 
         <template #popper ref="popperr">

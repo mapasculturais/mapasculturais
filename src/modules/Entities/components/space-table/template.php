@@ -25,29 +25,11 @@ $this->import('
 
         <template #filters="{entities,filters}">
             <div class="space-table__multiselects">
-                <mc-multiselect class="col-2" :model="selectedType" :items="types" title="<?= i::esc_attr__('Selecione os tipos: ') ?>" @selected="filterByType(entities)" @removed="filterByType(entities)" :hide-filter="hideFilters" hide-button>
-                    <template #default="{popover, setFilter, filter}">
-                        <div class="field">
-                            <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione o tipo: ') ?>">
-                        </div>
-                    </template>
-                </mc-multiselect>
+                <mc-multiselect class="col-2" :model="selectedType" :items="types" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>" @selected="filterByType(entities)" @removed="filterByType(entities)" :hide-filter="hideFilters" hide-button></mc-multiselect>
 
-                <mc-multiselect class="col-2" :model="selectedArea" :items="terms" title="<?php i::_e('Selecione as áreas de interesse') ?>" @selected="filterByArea(entities)" @removed="filterByArea(entities)" :hide-filter="hideFilters" hide-button>
-                    <template #default="{setFilter, popover}">
-                        <div class="field">
-                            <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
-                        </div>
-                    </template>
-                </mc-multiselect>
+                <mc-multiselect class="col-2" :model="selectedArea" :items="terms" placeholder="<?php i::_e('Selecione as áreas de interesse') ?>" @selected="filterByArea(entities)" @removed="filterByArea(entities)" :hide-filter="hideFilters" hide-button></mc-multiselect>
         
-                <mc-multiselect class="col-2" :model="selectedSeals" :items="seals" title="<?php i::_e('Selecione os selos') ?>" @selected="filterBySeals(entities)" @removed="filterBySeals(entities)" :hide-filter="hideFilters" hide-button>
-                    <template #default="{setFilter, popover}">
-                        <div class="field">
-                            <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os selos') ?>">
-                        </div>
-                    </template>
-                </mc-multiselect>
+                <mc-multiselect class="col-2" :model="selectedSeals" :items="seals" placeholder="<?php i::_e('Selecione os selos') ?>" @selected="filterBySeals(entities)" @removed="filterBySeals(entities)" :hide-filter="hideFilters" hide-button></mc-multiselect>
             </div>
             <div class="space-table__inputs">
                 <div class="field--horizontal">

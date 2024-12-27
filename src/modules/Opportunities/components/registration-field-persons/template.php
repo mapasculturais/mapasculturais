@@ -134,11 +134,7 @@ $this->import('
                         <?= $this->text('areas', i::__('Quais são as 3 principais áreas de atuação do representante no campo artístico e cultural?')) ?>
                         <span v-if="isFieldRequired?.area" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
-                    <mc-multiselect :model="person.area" title="<?php i::_e('Selecione as áreas de atuação') ?>" :items="areas" hide-filter hide-button @selected="save()" @removeed="save()" :disabled="disabled">
-                        <template #default="{setFilter, popover}">
-                            <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
-                        </template>
-                    </mc-multiselect>
+                    <mc-multiselect :model="person.area" placeholder="<?php i::_e('Selecione as áreas de atuação') ?>" :items="areas" hide-filter hide-button @selected="save()" @removeed="save()" :disabled="disabled"></mc-multiselect>
                     <mc-tag-list editable :tags="person.area" classes="agent__background agent__color"></mc-tag-list>
                 </div>
 
@@ -147,11 +143,7 @@ $this->import('
                         <?= $this->text('funcoes', i::__('Quais as 3 principais funções/profissões do representante no campo artístico e cultural?')) ?>
                         <span v-if="isFieldRequired?.funcao" class="required">*<?= i::__('obrigatório') ?></span>
                     </label>
-                    <mc-multiselect :model="person.funcao" title="<?php i::_e('Selecione as áreas de atuação') ?>" :items="functions" hide-filter hide-button @selected="save()" @removeed="save()" :disabled="disabled">
-                        <template #default="{setFilter, popover}">
-                            <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as funções') ?>">
-                        </template>
-                    </mc-multiselect>
+                    <mc-multiselect :model="person.funcao" placeholder="<?php i::_e('Selecione as áreas de atuação') ?>" :items="functions" hide-filter hide-button @selected="save()" @removeed="save()" :disabled="disabled"></mc-multiselect>
                     <mc-tag-list editable :tags="person.funcao" classes="agent__background agent__color"></mc-tag-list>
                 </div>
             </div>
