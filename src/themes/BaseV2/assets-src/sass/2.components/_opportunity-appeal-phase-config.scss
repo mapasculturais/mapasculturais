@@ -38,6 +38,10 @@
                 background-color: var(--mc-gray-100);
                 max-width: 100%;
                 border-top: var(--mc-border-hairline) var(--mc-gray-300);
+
+                .mc-card {
+                    background-color: var(--mc-gray-100);
+                }
             }
 
             &__title {
@@ -87,6 +91,11 @@
                     line-height: size(19);
                 }
             }
+        }
+
+        .opportunity-phase-status, 
+        .opportunity-phase-list-evaluation {
+            padding-top: size(16);
         }
     }
 

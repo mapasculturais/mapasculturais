@@ -58,12 +58,12 @@ $this->import('
 
         <!-- fase de avaliação -->
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
-            <opportunity-phase-config-evaluation :phases="phases" :phase="item"></opportunity-phase-config-evaluation>
+            <opportunity-phase-config-evaluation :phases="phases" :phase="item" :tab="tab"></opportunity-phase-config-evaluation>
         </template>
 
         <!-- fase de publicação de resultado -->
         <template v-if="item.isLastPhase">
-            <opportunity-phase-config-results :phases="phases" :phase="item"></opportunity-phase-config-results>
+            <opportunity-phase-config-results :phases="phases" :phase="item" :tab="tab"></opportunity-phase-config-results>
         </template>
     </template>
     <template #after-li="{index, item}">

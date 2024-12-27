@@ -22,8 +22,8 @@ $this->import('
 ?>
 
 <div class="opportunity-appeal-phase-config col-12">
-    <h4 class="opportunity-appeal-phase-config__title bold"><?= i::__("Etapa suplementar") ?></h4>
-    <div v-if="!entity" class="opportunity-appeal-phase-config__button">
+    <h4 v-if="tab === 'config'" class="opportunity-appeal-phase-config__title bold"><?= i::__("Etapa suplementar") ?></h4>
+    <div v-if="!entity && tab === 'config'" class="opportunity-appeal-phase-config__button">
         <button v-if="!processing" class="button button--primary" @click="createAppealPhase()">
             <?= i::__("Adicionar recurso") ?>
         </button>
@@ -33,7 +33,7 @@ $this->import('
         </div>
     </div>
     <div v-if="entity" class="opportunity-appeal-phase-config__appeals">
-        <div class="opportunity-appeal-phase-config__delete col-12">
+        <div v-if="tab === 'config'" class="opportunity-appeal-phase-config__delete col-12">
             <mc-confirm-button @confirm="deleteAppealPhase()">
                 <template #message="message">
                     <p>
@@ -80,7 +80,7 @@ $this->import('
             </template>
             <template #icon>
             </template>
-            <template #content>
+            <template #content v-if="tab === 'config'">
                 <div class="opportunity-appeal-phase-config__content-title">
                     <h3 class="bold"><?= i::__('Configuração da fase') ?></h3>
                     <div class="opportunity-appeal-phase-config__datepicker">
@@ -94,6 +94,10 @@ $this->import('
                         <mc-icon name="external" size="sm"></mc-icon>
                     </mc-link>
                 </div>
+            </template>
+
+            <template #content v-if="tab === 'registrations'">
+                <opportunity-phase-status :entity="phase.appealPhase" :phases="phases" :tab="tab"></opportunity-phase-status>
             </template>
         </mc-accordion>
 
@@ -121,7 +125,8 @@ $this->import('
             </template>
             <template #icon>
             </template>
-            <template #content>
+
+            <template #content v-if="tab === 'config'">
                 <div class="opportunity-appeal-phase-config__content-title">
                     <h3 class="bold"><?= i::__('Configuração da fase') ?></h3>
                     <div class="opportunity-appeal-phase-config__datepicker">
@@ -140,7 +145,11 @@ $this->import('
                     </button>
                     <opportunity-committee-groups v-if="!showButtonEvaluationCommittee" :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
-                <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-description></opportunity-phase-publish-date-config>
+                <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
+            </template>
+
+            <template #content v-if="tab === 'registrations'">
+                <opportunity-phase-list-evaluation :entity="phase.appealPhase.evaluationMethodConfiguration" :phases="phases" :tab="tab"></opportunity-phase-list-evaluation>
             </template>
         </mc-accordion>
     </div>
