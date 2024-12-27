@@ -10,7 +10,6 @@ $this->import('
     entity-field
     mc-confirm-button
     opportunity-phase-publish-date-config
-    opportunity-enable-claim
     opportunity-category
     opportunity-ranges-config
     opportunity-proponent-types
