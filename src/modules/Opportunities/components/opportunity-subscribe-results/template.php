@@ -10,6 +10,7 @@ $this->import('
     mc-link
     mc-modal
     mc-stepper-vertical
+    opportunity-appeal-phase-config
     opportunity-phase-status
     opportunity-phase-list-evaluation
     v1-embed-tool
@@ -64,7 +65,7 @@ $this->import('
     <template #default="{index, item}">
         
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
-            <opportunity-phase-list-evaluation :entity="item" :phases="phases"></opportunity-phase-list-evaluation>
+            <opportunity-phase-list-evaluation :entity="item" :phases="phases" :tab="tab"></opportunity-phase-list-evaluation>
         </template>
 
         <template v-if="item.__objectType == 'opportunity'">

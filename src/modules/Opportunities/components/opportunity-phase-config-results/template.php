@@ -13,7 +13,7 @@ $this->import('
 <mc-card>
     <div class="config-phase grid-12">
         <opportunity-phase-publish-date-config :phase="phase" :phases="phases" hide-description hide-button useSealsCertification></opportunity-phase-publish-date-config>
-        <opportunity-appeal-phase-config :phase="phase" :phases="phases"></opportunity-appeal-phase-config>
+        <opportunity-appeal-phase-config :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
 
         <div class="col-12 sm:col-12">
             <?php $this->applyComponentHook('bottom') ?>

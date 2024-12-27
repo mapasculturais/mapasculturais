@@ -16,6 +16,10 @@ app.component('opportunity-appeal-phase-config' , {
             type: Array,
             required: true
         },
+
+        tab: {
+            type: String,
+        },
     },
 
     data() {
