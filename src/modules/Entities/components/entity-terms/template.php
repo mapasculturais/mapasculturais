@@ -45,11 +45,13 @@ $this->import('
         </template>
     </mc-popover>
 
-    <mc-multiselect v-if="!allowInsert && editable" :model="entity.terms[this.taxonomy]" :title="title" :items="terms" @open="loadTerms()" #default="{popover}">
-        <button class="button button--rounded button--sm button--icon button--primary" @click="popover.toggle()" >
-            <?php i::_e("Adicionar nova") ?>
-            <mc-icon name="add"></mc-icon>
-        </button>
+    <mc-multiselect v-if="!allowInsert && editable" :model="entity.terms[this.taxonomy]" :title="title" :items="terms" @open="loadTerms()">
+        <template #default="{ toggleMultiselect }">    
+            <button class="button button--rounded button--sm button--icon button--primary" @click="toggleMultiselect()" >
+                <?php i::_e("Adicionar nova") ?>
+                <mc-icon name="add"></mc-icon>
+            </button>
+        </template>
     </mc-multiselect>
     <small class="field__error" v-if="hasErrors">        
         {{errors.join('; ')}}
