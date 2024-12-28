@@ -100,3 +100,106 @@
         gap: size(24);
     }
 }
+
+.registration-actions {
+    gap: size(24);
+
+    & * {
+        font-family: var(--mc-font-body);
+    }
+    
+    &__errors {
+        border-radius: size(8);
+        border: size(1) solid var(--mc-gray-300);
+        gap: size(12);
+        padding: size(16) size(8) size(8);
+    }
+
+    &__errors-list {
+        overflow-x: hidden;
+        padding-right: size(10);
+    }
+
+    &__errors-title {
+        font-size: var(--mc-font-size-xxs);
+        font-weight: 900;
+        line-height: size(16);
+    }
+
+    &__errors-subtitle {
+        font-size: var(--mc-font-size-xxs);
+        font-weight: var(--mc-font-regular);
+        line-height: size(16);
+        margin-bottom: 0;
+    }
+
+    &__errors-title,
+    &__errors-subtitle {
+        padding: 0 size(8);
+    }
+
+    &__errors-step {
+        padding: 0;
+    }
+
+    &__errors-step-name {
+        font-size: var(--mc-font-size-xxs);
+        margin: size(6) 0 size(4);
+    }
+
+    &__error {
+        align-items: baseline;
+        cursor: pointer;
+        font-size: var(--mc-font-size-xxxs);
+        gap: size(5);
+        grid-template-columns: size(8) 1fr;
+
+        &::before {
+            background-color: var(--mc-error);
+            height: size(8);
+            width: size(8);
+        }
+
+        & > p {
+            font-size: var(--mc-font-size-xxs);
+        }
+    }
+    
+    &__secondary {
+        gap: size(11);
+    }
+
+    &__alert {
+        border-radius: var(--mc-border-radius-sm);
+        display: flex;
+        flex-wrap: wrap;
+        gap: size(15);
+        justify-content: space-between;
+        padding: size(18);
+        background-color: var(--mc-warning-300);
+    }
+
+    &__alert-header {
+        width: 100%;
+        display: grid;
+        grid-template-columns: size(20) 1fr;
+        gap: size(10);
+
+        .iconify {
+            font-size: size(20);
+        }
+    }
+
+    &__alert-content {
+        font-size: var(--mc-font-size-xxs);
+    }
+
+    &__save-buttons {
+        display: grid;
+        gap: size(11);
+    }
+
+    &__send {
+        font-size: size(20);
+    }
+}
