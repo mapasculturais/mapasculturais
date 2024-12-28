@@ -29,21 +29,13 @@ $this->import('
         </div>
         <div class="field">
             <label> <?php i::_e('Tipo de oportunidade') ?></label>
-            <mc-multiselect :model="pseudoQuery['type']" :items="types" title="<?= i::esc_attr__('Selecione os tipos: ') ?>" hide-filter hide-button>
-                <template #default="{popover, setFilter, filter}">
-                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>">
-                </template>
-            </mc-multiselect>
+            <mc-multiselect :model="pseudoQuery['type']" :items="types" placeholder="<?= i::esc_attr__('Selecione os tipos: ') ?>" hide-filter hide-button></mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['type']" :labels="types" classes="opportunity__background opportunity__color"></mc-tag-list>
 
         </div>
         <div class="field">
             <label> <?php i::_e('Área de interesse') ?></label>
-            <mc-multiselect :model="pseudoQuery['term:area']" title="<?php i::_e('Selecione as áreas de interesse') ?>" :items="terms" hide-filter hide-button>
-                <template #default="{setFilter, popover}">
-                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="<?= i::esc_attr__('Selecione as áreas') ?>">
-                </template>
-            </mc-multiselect>
+            <mc-multiselect :model="pseudoQuery['term:area']" placeholder="<?php i::_e('Selecione as áreas de interesse') ?>" :items="terms" hide-filter hide-button></mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['term:area']" classes="agent__background agent__color"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-opportunity', 'end') ?>
