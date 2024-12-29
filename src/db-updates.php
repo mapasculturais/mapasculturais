@@ -2447,4 +2447,25 @@ $$
             FROM areas_novas;
             ");
     },
+    'Atualizando áreas de atuação que tiveram alteração no nome' => function() {
+        __try("UPDATE term SET term = 'Arquitetura e Urbanismo' WHERE taxonomy = 'area' AND term = 'Arquitetura-Urbanismo';");
+        __try("UPDATE term SET term = 'Arquivos' WHERE taxonomy = 'area' AND term = 'Arquivo';");
+        __try("UPDATE term SET term = 'Audiovisual e Mídias Interativas' WHERE taxonomy = 'area' AND term = 'Audiovisual';");
+        __try("UPDATE term SET term = 'Cultura dos Povos Originários' WHERE taxonomy = 'area' AND term = 'Cultura Indígena';");
+        __try("UPDATE term SET term = 'Cultura e Educação' WHERE taxonomy = 'area' AND term = 'Educação';");
+        __try("UPDATE term SET term = 'Cultura e Esporte' WHERE taxonomy = 'area' AND term = 'Esporte';");
+        __try("UPDATE term SET term = 'Cultura e Saúde' WHERE taxonomy = 'area' AND term = 'Saúde';");
+        __try("UPDATE term SET term = 'Cultura e Turismo' WHERE taxonomy = 'area' AND term = 'Turismo';");
+        __try("UPDATE term SET term = 'Cultura LGBTQIAPN+' WHERE taxonomy = 'area' AND term = 'Cultura LGBT';");
+        __try("UPDATE term SET term = 'Cultura, Meio Ambiente e Sustentabilidade' WHERE taxonomy = 'area' AND term = 'Meio Ambiente';");
+        __try("UPDATE term SET term = 'Culturas Populares' WHERE taxonomy = 'area' AND term = 'Cultura Popular';");
+        __try("UPDATE term SET term = 'Design de Moda' WHERE taxonomy = 'area' AND term = 'Moda';");
+        __try("UPDATE term SET term = 'Economia Criativa e da Cultura' WHERE taxonomy = 'area' AND term = 'Economia Criativa';");
+        __try("UPDATE term SET term = 'Jogos eletrônicos/Games' WHERE taxonomy = 'area' AND term = 'Jogos Eletrônicos';");
+        __try("UPDATE term SET term = 'Jornais e outros periódicos' WHERE taxonomy = 'area' AND term = 'Jornalismo';");
+        __try("UPDATE term SET term = 'Museu (Patrimônio Material)' WHERE taxonomy = 'area' AND term = 'Museu';");
+        __try("UPDATE term SET term = 'Patrimônio Cultural Imaterial' WHERE taxonomy = 'area' AND term = 'Patrimônio Imaterial';");
+        __try("UPDATE term SET term = 'Patrimônio Cultural Material' WHERE taxonomy = 'area' AND term = 'Patrimônio Material';");
+        __try("UPDATE term SET term = 'Outra' WHERE taxonomy = 'area' AND term = 'Outros';");
+    }
 ] + $updates ;   
