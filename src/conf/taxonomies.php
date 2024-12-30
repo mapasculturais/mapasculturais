@@ -682,7 +682,6 @@ return array(
             i::__('Malabarista'),
             i::__('Maquetista'),
             i::__('Maquetista na Marcenaria'),
-            i::__('Maquiador'),
             i::__('Maquiador(a)'),
             i::__('Maquinista'),
             i::__('Maquinista de Cinema e Vídeo'),

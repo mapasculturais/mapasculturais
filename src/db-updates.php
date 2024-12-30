@@ -2498,6 +2498,10 @@ $$
         __try("UPDATE term SET term = 'Secretário de Frente' WHERE taxonomy = 'funcao' AND term = 'Secretario(a) de Frente';");
         __try("UPDATE term SET term = 'Outra' WHERE taxonomy = 'funcao' AND term = 'Outra função técnica';");
     },
+    'Atualizando a função Maquiador para Maquiador(a)' => function() {
+        __try("UPDATE term_relation SET term_id = 500041 WHERE term_id = 500040;");
+        __try("DELETE FROM term WHERE id = 500040;");
+    },
     "Adiciona as Etnias" => function() {
         __try("
         WITH etnias(name) AS (
