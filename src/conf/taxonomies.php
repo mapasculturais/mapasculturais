@@ -663,7 +663,6 @@ return array(
             i::__('Hacker'),
             i::__('Homem-bala'),
             i::__('Icarista'),
-            i::__('Iluminador'),
             i::__('Iluminador(a)'),
             i::__('Ilustrador(a)'),
             i::__('Instrumentista'),
