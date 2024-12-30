@@ -1054,9 +1054,10 @@ class ApiQuery {
         if($this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
             $params = $this->apiParams;
             
-            if($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
-                $where_status = '(e.status > 0 OR e.status = -1)';    
-            } else {
+            if ($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
+                $where_status = '(e.status > 0 OR e.status = -1 OR e.status = -20)';
+            }
+            else {
                 $where_status = 'e.status > 0';
             }
             $where = $where ? "($where) AND $where_status" : $where_status;
