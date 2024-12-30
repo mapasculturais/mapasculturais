@@ -877,8 +877,8 @@ abstract class Theme {
                 unset($query_params['@permissions']);
             }
 
-            if(property_exists ($entity_class_name, 'status')) {
-                $query_params['status'] = 'GTE(-10)'; 
+            if (property_exists($entity_class_name, 'status')) {
+                $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
             }
 
             if(property_exists ($entity_class_name, 'project')) {
