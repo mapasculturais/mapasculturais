@@ -2502,11 +2502,14 @@ $$
         __try("UPDATE term_relation SET term_id = 500041 WHERE term_id = 500040;");
         __try("DELETE FROM term WHERE id = 500040;");
     },
-
     'Atualizando a função Técnico de Luz|Técnico(a) de Luz para Técnico(a) de Iluminação' => function() {
         __try("UPDATE term_relation SET term_id = 500412 WHERE term_id = 500284");
         __try("DELETE FROM term WHERE id = 500284;");
         __try("UPDATE term SET term = 'Técnico(a) de iluminação' WHERE id = 500412;");
+    },
+    'Atualizando a função de Iluminador para Iluminador(a)' => function() {
+        __try("UPDATE term_relation SET term_id = 500039 WHERE term_id = 500037;");
+        __try("DELETE FROM term WHERE id = 500037;");
     },
     "Adiciona as Etnias" => function() {
         __try("
