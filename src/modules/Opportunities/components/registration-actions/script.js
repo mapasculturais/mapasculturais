@@ -95,7 +95,7 @@ app.component('registration-actions', {
                     const stepErrors = this.validationErrors[step._id];
                     const fieldEntries = Object.entries(stepErrors);
                     fieldEntries.sort(([a], [b]) => {
-                        return Math.sign(this.fieldsMap[a].displayOrder - this.fieldsMap[b].displayOrder);
+                        return Math.sign(this.fieldsMap[a]?.displayOrder - this.fieldsMap[b]?.displayOrder);
                     });
                     errors[stepIndex] = Object.fromEntries(fieldEntries);
                 }
@@ -112,15 +112,6 @@ app.component('registration-actions', {
         async stepIndex() {
             if (!this.scrolling) {
                 document.querySelector('.section__title')?.scrollIntoView({ behavior: 'instant', block: 'start' });
-            }
-            try {
-                this.registration.disableMessages();
-                await this.save();
-            } catch {
-                // `catch` is needed to avoid uncaught promise warnings
-            } finally {
-                this.registration.enableMessages();
-                this.isValidated = false;
             }
         },
     },
@@ -173,7 +164,24 @@ app.component('registration-actions', {
 
         },
 
-        async send() {
+        async send(modal) {
+            let result;
+            try {
+                this.registration.disableMessages();
+                await this.save();
+                this.registration.enableMessages();
+
+                result = await this.validate();
+            } catch(error) {
+                console.error(error);
+                result = false;
+            }
+
+            if(!result) { 
+                modal.close();
+                return;
+            }
+            
             const route = this.editableFields ? 'sendEditableFields' : 'send';
             const data = {id: this.registration.id};
             if (this.registration.category) {
@@ -181,10 +189,7 @@ app.component('registration-actions', {
             }
 
             try {
-                this.registration.disableMessages();
-                await this.save();
-                this.registration.enableMessages();
-                await this.registration.POST(route, {data});
+                await this.registration.POST(route, {data, processingMessage: this.text('Enviando')});
                 if(this.editableFields) {
                     document.location = this.registration.singleUrl;
                 } else {
@@ -193,6 +198,8 @@ app.component('registration-actions', {
             } catch(error) {
                 console.error(error);
             }
+
+            modal.close();
         },
 
         async validate() {
@@ -200,7 +207,7 @@ app.component('registration-actions', {
 
             try {
                 await this.save();
-                const success = await this.registration.POST('validateEntity', {});
+                const success = await this.registration.POST('validateEntity', {processingMessage: this.text('Validando')});
 
                 if (success) {
                     this.isValidated = true;
@@ -213,25 +220,6 @@ app.component('registration-actions', {
                 if (error?.data) {
                     const validationErrors = this.groupValidationErrors(error.data);
                     Object.assign(this.validationErrors, validationErrors);
-                }
-                return false;
-            }
-        },
-
-        async validateStep(stepId) {
-            try {
-                await this.save();
-                const success = await this.registration.POST('validateEntity', { data: { step: stepId } });
-
-                if (success) {
-                    this.isValidated = true;
-                    this.validationErrors[stepId] = {};
-                }
-
-                return success;
-            } catch (error) {
-                if (error?.data) {
-                    this.validationErrors[stepId] = error.data;
                 }
                 return false;
             }
@@ -270,17 +258,31 @@ app.component('registration-actions', {
         },
 
         async save() {
-            return this.registration.save(300, false);
+            try{
+                await this.registration.save(0, false, true);
+                this.isValidated = false;
+                this.validationErrors = this.getEmptyValidationState();
+                return true;
+            } catch (error) {
+
+                if (error?.data) {
+                    this.isValidated = true;
+
+                    const validationErrors = this.groupValidationErrors(error.data);
+                    Object.assign(this.validationErrors, validationErrors);
+                }
+                return false;
+            }
+        },
+
+        async saveAndExit(modal) {
+            if(await this.save()) {
+                modal.open();
+            }
         },
 
         exit() {
-            this.registration.save().then(() => {
-                if (window.history.length > 2) {
-                    window.history.back();
-                } else {
-                    window.location.href = Utils.createUrl('panel', 'index');
-                }
-            });
+            window.location.href = this.registration.opportunity.singleUrl;
         },
 
         goToField(stepIndex, fieldName) {

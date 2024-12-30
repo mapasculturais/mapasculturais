@@ -48,7 +48,12 @@
     &__dropdown {
         background-color: var(--mc-white);
         border-radius: var(--mc-border-radius-xs);
-        border: var(--mc-border-hairline) var(--mc-gray-500);
+        // border: var(--mc-border-hairline) var(--mc-gray-500);
+        max-height: size(384);
+
+        &>* {
+            border-right: var(--mc-border-hairline) var(--mc-gray-300);
+        }
     }
 
     &__filter {
@@ -56,7 +61,7 @@
         display: flex;
         gap: size(8);
         justify-content: flex-end;
-        border-bottom: var(--mc-border-hairline);
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
     }
 
     &__filter-input {
@@ -73,8 +78,8 @@
     }
 
     &__options {
-        max-height: size(384);
-        overflow: auto;
+        // max-height: size(384);
+        // overflow: auto;
 
         & > * {
             border-radius: var(--mc-border-radius-xs);
@@ -116,11 +121,16 @@
     }
 
     &__popper {
+        box-shadow: none !important;
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+
         &.v-popper {
             &__popper {
                 .v-popper {
                     &__inner {
                         border: none;
+                        box-shadow: none !important;
+                        overflow: hidden;
                     }
 
                     &__arrow-container {
@@ -130,15 +140,13 @@
             }
 
             &__popper--no-positioning {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
 
                 & > .v-popper {
                     &__backdrop {
                         position: absolute;
-                        /* top: 0; */
-                        /* left: 0; */
                         width: 100vw;
                         height: 100vh;
                         display: block;

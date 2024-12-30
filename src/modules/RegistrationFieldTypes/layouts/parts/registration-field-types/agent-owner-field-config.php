@@ -25,6 +25,7 @@ if($registered_taxonomies = $app->getRegisteredTaxonomies()) {
 $app->applyHookBoundTo($this, "registrationFieldTypes--agent-owner-field-config-fields_labels", [&$fields_labels]);
 
 $select_fields = [];
+$multi_select_fields = [];
 $taxonomie_options = [];
 $area = $app->getRegisteredTaxonomyBySlug('area');
 foreach ($agent_fields as $field) {
@@ -33,7 +34,21 @@ foreach ($agent_fields as $field) {
         $taxonomie_options[$field] = $taxonomies_fields[$field];
     }
     
-    if(in_array($definitions[$field]['type'] ?? [], ['select', 'multiselect','checkboxes', 'radio'])){
+    if(in_array($definitions[$field]['type'] ?? [], ['multiselect','checkboxes'])){
+        $options_list = $definitions[$field]['options'] ?? [];
+        $options = [];
+        foreach($options_list as $key => $value){
+            if($key != $value && is_string($key)){
+                $options[] = "{$key}:{$value}";
+            }else{
+                $options[] = $value;
+            }
+        }
+        
+        $multi_select_fields[$field] = implode("\n", $options);
+    }
+    
+    if(in_array($definitions[$field]['type'] ?? [], ['select', 'radio'])){
         $options_list = $definitions[$field]['options'] ?? [];
         $options = [];
         foreach($options_list as $key => $value){
@@ -94,10 +109,39 @@ $this->jsObject['registered_terms'] = array_keys($taxonomie_options);
                 <label><?php i::_e('Limite de Opções') ?><input type="number" ng-model="field.config.maxOptions"></label><br>
                 <small class="registration-help"><?php i::_e('Digite o limite de opções. Deixe em branco ou coloque 0 para selecionar ilimitadas.'); ?></small>
             </div>
+
+            <label>
+                <?php i::_e('Modo de visualização') ?><br>
+                <select ng-model="field.config.viewMode">
+                    <option value="select"><?php i::_e('Caixa de seleção') ?></option>
+                    <option value="radio"><?php i::_e('Lista de botões de rádio') ?></option>
+                </select>
+            </label>
         </div>
+
+    <?php endforeach?>
+
+    <?php foreach($multi_select_fields as $field_name => $options):?>
+        <div ng-if='field.config.entityField === "<?=$field_name?>"'>
+            <?php i::_e("Informe os termos que estarão disponíveis para seleção.") ?>
+            <textarea ng-model="field.fieldOptions" ng-init="field.fieldOptions = field.fieldOptions || '<?=htmlentities($options)?>'" placeholder="<?php \MapasCulturais\i::esc_attr_e("Opções de seleção");?>"></textarea>
+            <div>
+                <label><?php i::_e('Limite de Opções') ?><input type="number" ng-model="field.config.maxOptions"></label><br>
+                <small class="registration-help"><?php i::_e('Digite o limite de opções. Deixe em branco ou coloque 0 para selecionar ilimitadas.'); ?></small>
+            </div>
+            
+            <label>
+                <?php i::_e('Modo de visualização') ?><br>
+                <select ng-model="field.config.viewMode">
+                    <option value="checkbox"><?php i::_e('Lista de checkboxes') ?></option>
+                    <option value="tag"><?php i::_e('Lista de tags') ?></option>
+                </select>
+            </label>
+        </div>
+
     <?php endforeach?>
     
-    <div ng-if="field.config.entityField == '@terms:area' || field.fieldOptions.length > 0">
+    <div ng-if="field.config.entityField == '@terms:area'">
         <label>
             <?php i::_e('Modo de visualização') ?><br>
             <select ng-model="field.config.viewMode">
