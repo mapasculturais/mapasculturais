@@ -57,10 +57,37 @@ app.component('mc-multiselect', {
             type: Boolean,
             default: false,
         },
+
+        placeholder: {
+            type: String,
+            default: 'Selecione'
+        },
+    },
+
+    mounted() {
+        document.addEventListener('mousedown', (event) => {
+            const select = event.target.closest('.mc-multiselect') || event.target.closest('.mc-multiselect__content');
+
+            if (!event.target.closest('.mc-multiselect--input')) {
+                if (!select) {
+                    this.open = false
+                } else if (select.getAttribute('id') != this.uniqueID) {
+                    this.open = false;
+                }
+            }
+        });
+    },
+
+    unmounted() {
+        document.removeEventListener('mousedown', {});
     },
 
     data() {
-        return { filter: '' };
+        return { 
+            filter: '',
+            open: false,
+            uniqueID: (Math.floor(Math.random() * 9000) + 1000),
+        };
     },
 
     computed: {
@@ -136,6 +163,27 @@ app.component('mc-multiselect', {
 
         },
 
+        openMultiselect() {
+            this.open = true;
+
+            const refOptions = this.$refs.options;
+            const refSelected = this.$refs.selected;
+
+            refOptions.style.minWidth = refSelected.clientWidth + 'px'; 
+
+            this.$emit('open', this);
+        },
+
+        closeMultiselect() {
+            this.open = false;
+            this.filter = '';
+            this.$emit('close', this);
+        },
+
+        toggleMultiselect() {
+            this.open ? this.closeMultiselect() : this.openMultiselect();
+        },
+
         toggleItem(key) {
             if(key == '@NA') {
                 if (this.model.includes(key)) {
@@ -164,15 +212,15 @@ app.component('mc-multiselect', {
             }
         },       
 
-        open() {
-            this.$emit('open', this);
-        },
+        // open() {
+        //     this.$emit('open', this);
+        // },
         
-        close(popover) {
-            this.$emit('close', this);
-            this.filter = '';
-            popover.close();
-        },
+        // close(popover) {
+        //     this.$emit('close', this);
+        //     this.filter = '';
+        //     popover.close();
+        // },
 
         setFilter(text) {
             this.filter = text;

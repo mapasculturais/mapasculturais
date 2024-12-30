@@ -76,9 +76,7 @@ $this->import('
         <template v-if="is('multiselect') || is('checklist')">
            <div class="field__group">
                 <template v-if="isMultiSelect()">
-                    <mc-multiselect @selected="change($event)" :model="selectedOptions[prop]" :items="description.options" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" hide-filter hide-button>
-                        <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :placeholder="placeholder || description?.placeholder">
-                    </mc-multiselect>
+                    <mc-multiselect :placeholder="placeholder || description?.placeholder" @selected="change($event)" :model="selectedOptions[prop]" :items="description.options" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" hide-filter hide-button></mc-multiselect>
 
                     <mc-tag-list :tags="selectedOptions[prop]" :labels="description?.options" classes="opportunity__background" @remove="change($event)" editable></mc-tag-list>
                 </template>
@@ -139,7 +137,7 @@ $this->import('
             <select-municipio :entity="entity" :prop="prop" @change="change($event)"></select-municipio>
         </template>
 
-        <div v-if="maxLength" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
+        <div v-if="maxLength && (is('string') || is('text') || is('textarea'))" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
     </slot>
 
     <small class="field__description" v-if="!descriptionFirst && (!hideDescription && (fieldDescription || description.description))"> {{ fieldDescription || description.description}} </small>

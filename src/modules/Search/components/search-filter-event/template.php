@@ -44,20 +44,12 @@ $this->import('
         </div>
         <div class="field">
             <label> <?php i::_e('Classificação Etária') ?></label>
-            <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" title="<?php i::_e('Classificação Etária')?>" :items="ageRating" hide-filter hide-button>
-                <template #default="{popover, setFilter}">
-                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione') ?>">
-                </template>
-            </mc-multiselect>
+            <mc-multiselect :model="pseudoQuery['event:classificacaoEtaria']" placeholder="<?php i::_e('Classificação Etária')?>" :items="ageRating" hide-filter hide-button></mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['event:classificacaoEtaria']" classes="event__background event__color"></mc-tag-list>
         </div>
         <div class="field">
             <label> <?php i::_e('Linguagens') ?></label>
-            <mc-multiselect :model="pseudoQuery['event:term:linguagem']" :items="terms" title="<?php i::_e('Selecione as linguagens') ?>" hide-filter hide-button>
-                <template #default="{popover, setFilter}">
-                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" :triggers="['click']" placeholder="<?= i::esc_attr__('Selecione as linguagens') ?>">
-                </template>
-            </mc-multiselect>
+            <mc-multiselect :model="pseudoQuery['event:term:linguagem']" :items="terms" placeholder="<?php i::_e('Selecione as linguagens') ?>" hide-filter hide-button></mc-multiselect>
             <mc-tag-list editable :tags="pseudoQuery['event:term:linguagem']" classes="event__background event__color"></mc-tag-list>
         </div>
         <?php $this->applyTemplateHook('search-filter-event', 'end') ?>
