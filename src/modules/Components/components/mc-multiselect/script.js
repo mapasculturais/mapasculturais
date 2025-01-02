@@ -60,7 +60,7 @@ app.component('mc-multiselect', {
 
         placeholder: {
             type: String,
-            default: 'Selecione'
+            default: 'Digite para buscar'
         },
     },
 
