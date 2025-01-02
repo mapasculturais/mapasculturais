@@ -1903,6 +1903,7 @@ class App {
 
             if($job->subsite) {
                 $this->_initSubsite($job->subsite->url);
+                $this->_initTheme();
             }
             $this->auth->authenticatedUser = $job->user;
 

@@ -120,7 +120,7 @@ class Module extends \MapasCulturais\Module
                 'params' => $params
             ];
 
-            $app->enqueueJob(SendMailNotification::SLUG, $data);
+            $app->enqueueJob(SendMailNotification::SLUG, $data, '+60 seconds');
         }
     }
 }
