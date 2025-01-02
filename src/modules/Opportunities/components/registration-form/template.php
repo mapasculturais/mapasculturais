@@ -40,7 +40,8 @@
                         :disabled="isDisabled(field)"
                         :prop="field.fieldName"></registration-field-persons>
                         
-                    <entity-field v-else-if="field.fieldName && field.fieldType != 'addresses' && field.fieldType != 'persons'" 
+                    <entity-field v-else-if="field.fieldName && field.fieldType != 'addresses' && field.fieldType != 'persons'"
+                        @change="clearFields()" 
                         :entity="registration" 
                         :disabled="isDisabled(field)"
                         :prop="field.fieldName" 
