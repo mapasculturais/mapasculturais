@@ -93,7 +93,8 @@ $this->breadcrumb = [
                         </template>
                         <template #content>
                             <div class="grid-12">
-                                <entity-field :entity="entity" classes="col-9 sm:col-12" prop="name" label="<?php i::_e('Nome fantasia ou razão social') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-9 sm:col-12" prop="nomeSocial" label="<?php i::_e('Nome Fantasia') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-9 sm:col-12" prop="nomeCompleto" label="<?php i::_e('Razão Social') ?>"></entity-field>
                                 <entity-field v-if="global.auth.is('admin')" :entity="entity" prop="type" @change="entity.save(true).then(() => global.reload())" classes="col-12"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="cnpj" label="CNPJ"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="dataDeNascimento" label="<?= i::__('Data de fundação') ?>"></entity-field>
