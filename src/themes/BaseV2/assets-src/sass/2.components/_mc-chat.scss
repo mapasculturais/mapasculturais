@@ -1,0 +1,44 @@
+@use '../0.settings/mixins' as *;
+
+.mc-chat {
+    background-color: var(--mc-white);
+    border: var(--mc-border-hairline) var(--mc-gray-300);
+    color: var(--mc-black);
+    padding: size(18);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__title {
+        font-size: size(14);
+        line-height: size(16);
+        margin-bottom: size(24);
+    }
+
+    &__message {
+        border-bottom: var(--mc-border-hairline);
+        margin-bottom: size(16);
+    }
+
+    &__message-text {
+        font-size: size(14);
+        line-height: size(16);
+        margin-bottom: size(16);
+    }
+
+    &__form {
+    }
+
+    &__label {
+        display: block;
+        font-size: size(14);
+    }
+
+    &__textarea {
+        display: block;
+        font-size: size(14);
+        width: 100%;
+    }
+}
