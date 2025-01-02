@@ -9,7 +9,7 @@ return array(
     'metadata' => array(
         'nomeCompleto' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('Nome completo ou Razão Social'),
+            'label' => \MapasCulturais\i::__('Nome Completo ou Razão Social'),
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('Seu nome completo ou jurídico deve ser informado.')
             ),
@@ -18,7 +18,7 @@ return array(
 
         'nomeSocial' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('Nome Social'),
+            'label' => \MapasCulturais\i::__('Nome Social ou Nome Fantasia'),
             'available_for_opportunities' => true,
         ),
 
