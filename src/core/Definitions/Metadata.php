@@ -218,7 +218,7 @@ class Metadata extends \MapasCulturais\Definition{
                 }
             },
             'multiselect' => function($value){
-                $value = array_filter($value);
+                $value = $value ? array_filter($value) : [];
                 return json_encode($value);
             },
             'location' => function($value) {
