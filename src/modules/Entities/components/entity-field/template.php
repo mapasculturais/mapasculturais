@@ -91,7 +91,7 @@ $this->import('
                     </div>
 
                     <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
-                       <input :checked="value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled || (maxOptions && value?.length >= maxOptions && !value.includes(optionValue))" /> {{description.options[optionValue]}} 
+                       <input :checked="value?.length > 0 && value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled || (maxOptions && value?.length >= maxOptions && !value?.includes(optionValue))" /> {{description.options[optionValue]}} 
                     </label>
                 </template>
             </div>
