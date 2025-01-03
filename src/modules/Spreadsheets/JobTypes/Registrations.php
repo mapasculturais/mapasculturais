@@ -223,6 +223,21 @@ class Registrations extends SpreadsheetJob
                     $entity['status'] = $this->getStatusName($entity['status']);
                 }
 
+                if (isset($entity['number'])) {
+                    if ($job->extension == 'csv') {
+                        $number = "=HIPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\"; \"" . $entity['number'] . "\")";
+                    }
+
+                    if ($job->extension == 'xlsx') {
+                        $number = "=HYPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\", \"" . $entity['number'] . "\")";
+                    }
+
+                    if ($job->extension == 'ods') {
+                        $number = "=HYPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\"; \"" . $entity['number'] . "\")";
+                    }
+
+                    $entity['number'] = $number;
+                }
                 $entity = $this->replaceArraysWithNull($entity);
             }
         }
