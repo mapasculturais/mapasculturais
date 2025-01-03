@@ -527,14 +527,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         foreach($registrations_valuers as $registration_id => $r) {
             $app->log->debug(print_r($r->valuers, true));
+            $users = array_merge($r->valuers_exceptions_list->include, $r->valuers_exceptions_list->exclude, $r->valuers);
             $r->valuers_exceptions_list->include = $r->valuers;
             $json = json_encode ($r->valuers_exceptions_list);
 
             $app->log->debug("$registration_id  $json");
             $conn->update('registration', ['valuers_exceptions_list' => $json], ['id' => $registration_id]);
+            $r = $app->repo('Registration')->find($registration_id);
+            $r->enqueueToPCacheRecreation($users);
         }
-
-        $evaluation_config->enqueueToPCacheRecreation();
 
         $app->persistPCachePendingQueue();
     }
@@ -560,6 +561,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             'agent' => $user->profile
         ]);
 
+        $is_same_as_evaluator = false;
         $has_global_filter_configs = false;
         foreach($agent_relations as $ar) {
             $config = $evaluation_config->fetchFields->{$ar->group} ?? (object) [];
@@ -572,15 +574,22 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             if(!empty((array) $config)) {
                 $has_global_filter_configs = true;
             }
+
+            if($registration->owner->id == $ar->agent->id) {
+                $is_same_as_evaluator = true;
+            }
         }
 
         if (
-            empty($evaluation_config->fetch->{$user->id}) 
-            && empty($evaluation_config->fetchCategories->{$user->id}) 
-            && empty($evaluation_config->fetchRanges->{$user->id})
-            && empty($evaluation_config->fetchProponentTypes->{$user->id})
-            && empty($evaluation_config->fetchSelectionFields->{$user->id})
-            && !$has_global_filter_configs
+            $is_same_as_evaluator || 
+            (
+                empty($evaluation_config->fetch->{$user->id}) && 
+                empty($evaluation_config->fetchCategories->{$user->id}) && 
+                empty($evaluation_config->fetchRanges->{$user->id}) && 
+                empty($evaluation_config->fetchProponentTypes->{$user->id}) && 
+                empty($evaluation_config->fetchSelectionFields->{$user->id}) && 
+                !$has_global_filter_configs
+            )
         ) {
             return false;
         }

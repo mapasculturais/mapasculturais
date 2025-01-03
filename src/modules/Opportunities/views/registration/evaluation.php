@@ -25,15 +25,16 @@ $this->import('
     v1-embed-tool
 ');
 
+$referer = $app->request->getReferer();
+
 $breadcrumb = [
     ['label' => i::__('Início'), 'url' => $app->createUrl('panel', 'opportunities')],
     ['label' => i::__('Painel de controle'), 'url' => $app->createUrl('panel', 'opportunities')],
-    ['label' => i::__('Minhas Avaliações'), 'url' => $app->createUrl('panel', 'opportunities')],
-    ['label' => i::__('Lista de Avaliações'), 'url' => $app->createUrl('registration', 'index')],
+    ['label' => i::__('Minhas Avaliações'), 'url' => $app->createUrl('panel', 'evaluations')],
+    ['label' => i::__('Lista de Avaliações'), 'url' => $referer],
 ];
 
 $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
-
 
 $this->breadcrumb = $breadcrumb;
 
@@ -47,6 +48,11 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 <div class="main-app registration edit">
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity">
+        <template #title-name>
+            <span class="title__title">
+                <a :href="entity.opportunity.getUrl('userEvaluations')">{{entity.opportunity.name}}</a>
+            </span>
+        </template>
         <template #button>
             <mc-link class="button button--primary-outline" :entity="entity.opportunity" route="userEvaluations" icon="arrow-left"><?= i::__("Voltar") ?></mc-link>
         </template>

@@ -316,7 +316,7 @@ abstract class Theme {
             ];
 
         // VIEWS
-        }elseif(preg_match("#views/([^/]*?)\.php$#", $caller_filename, $matches)) {
+        }elseif(preg_match("#views/{$controller_id}/([^/]*?)\.php$#", $caller_filename, $matches)) {
             $match = $matches[1];
             $keys = [
                 "text:{$controller_id}.{$action}.view({$match}).{$name}",
@@ -859,7 +859,7 @@ abstract class Theme {
         
     }    
 
-    function addRequestedEntityToJs(string $entity_class_name = null, int $entity_id = null) {
+    function addRequestedEntityToJs(string $entity_class_name = null, int $entity_id = null, Entity $entity = null) {
         $entity_class_name = $entity_class_name ?: $this->controller->entityClassName ?? null;
         $entity_id = $entity_id ?: $this->controller->data['id'] ?? null;
         
@@ -867,55 +867,65 @@ abstract class Theme {
 
         if ($entity_class_name && $entity_id) {
             $app = App::i();
-            $query_params = [
-                '@select' => '*', 
-                'id' => "EQ({$entity_id})", 
-                '@permissions'=>'view', 
-            ];
 
-            if($entity_class_name == EvaluationMethodConfiguration::class) {
-                unset($query_params['@permissions']);
+            if (!$entity) {
+                $query_params = [
+                    '@select' => '*', 
+                    'id' => "EQ({$entity_id})", 
+                    '@permissions'=>'view', 
+                ];
+
+                if($entity_class_name == EvaluationMethodConfiguration::class) {
+                    unset($query_params['@permissions']);
+                }
+
+                if(property_exists ($entity_class_name, 'status')) {
+                    $query_params['status'] = 'GTE(-10)'; 
+                    $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
+                }
+
+                if(property_exists ($entity_class_name, 'project')) {
+                    $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
+                }
+
+                if(property_exists ($entity_class_name, 'evaluationMethodConfiguration')) {
+                    $query_params['@select'] .= ',evaluationMethodConfiguration.*';
+                }
+                
+                if ($entity_class_name::usesAgentRelation()) {
+                    $query_params['@select'] .= ',agentRelations';
+                }
+
+                if ($entity_class_name::usesSpaceRelation()) {
+                    $query_params['@select'] .= ',spaceRelations';
+                }
+
+                if ($entity_class_name == Entities\User::class) {
+                    $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
+                }
+
+                $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
+
+                $query = new ApiQuery($entity_class_name, $query_params);
+                $query->__useDQLCache = false;
+
+                $e = $query->findOne();
+            } else {
+                $e = $entity->jsonSerialize();
+
             }
-
-            if (property_exists($entity_class_name, 'status')) {
-                $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
-            }
-
-            if(property_exists ($entity_class_name, 'project')) {
-                $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
-            }
-
-            if(property_exists ($entity_class_name, 'evaluationMethodConfiguration')) {
-                $query_params['@select'] .= ',evaluationMethodConfiguration.*';
-            }
-            
-            if ($entity_class_name::usesAgentRelation()) {
-                $query_params['@select'] .= ',agentRelations';
-            }
-
-            if ($entity_class_name::usesSpaceRelation()) {
-                $query_params['@select'] .= ',spaceRelations';
-            }
-
-            if ($entity_class_name == Entities\User::class) {
-                $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
-            }
-
-            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
-
-            $query = new ApiQuery($entity_class_name, $query_params);
-            $query->__useDQLCache = false;
-
-            $e = $query->findOne();
-
             if(property_exists ($entity_class_name, 'opportunity')) {
-                $query = $app->em->createQuery("
-                    SELECT o FROM                             
-                        MapasCulturais\\Entities\\Opportunity o
-                        WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
-
-                $query->setParameter('id', $e['id']);
-                $opportunity = $query->getSingleResult();
+                if($entity) {
+                    $opportunity = $entity->opportunity;
+                } else {
+                    $query = $app->em->createQuery("
+                        SELECT o FROM                             
+                            MapasCulturais\\Entities\\Opportunity o
+                            WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
+    
+                    $query->setParameter('id', $e['id'] ?? 0);
+                    $opportunity = $query->getSingleResult();
+                }
                 $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
@@ -924,8 +934,6 @@ abstract class Theme {
                     $e['opportunity']->registrationSteps = $opportunity->registrationSteps->toArray();
                 }
             }
-            
-
             if ($entity_class_name == Entities\Agent::class) {
                 $owner_prop = 'parent';
                 if (!$e['parent']) {
@@ -943,8 +951,14 @@ abstract class Theme {
             } else {
                 $owner_prop = 'owner';
             }
+                
+            if($entity) {
+                $owner_id = $entity->$owner_prop->id;
+            } else {
+                $owner_id = $e[$owner_prop] ?? false;
+            }
             
-            if ($owner_id = $e[$owner_prop] ?? false) {
+            if ($owner_id) {
                 $owner_query_params = [
                     '@select' => 'name, terms, files.avatar, singleUrl, shortDescription', 
                     'id' => "EQ({$owner_id})", 
@@ -976,7 +990,7 @@ abstract class Theme {
 
             // adiciona as permissões do usuário sobre a entidade:
             if ($entity_class_name::usesPermissionCache()) {
-                $entity = $app->repo($entity_class_name)->find($entity_id);
+                $entity = $entity ?: $app->repo($entity_class_name)->find($entity_id);
                 $permissions_list = $entity_class_name::getPermissionsList();
                 $permissions = [];
                 foreach($permissions_list as $action) {
@@ -997,6 +1011,7 @@ abstract class Theme {
                 $e['profile']['currentUserPermissions'] = $permissions;
             }
 
+            
             if($entity_class_name == Registration::class) {
                 $en = $this->controller->requestedEntity;
                 $meta = $en->jsonSerialize();
@@ -1006,9 +1021,7 @@ abstract class Theme {
                     }
                 }
             }
-
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
-            
             $this->jsObject['requestedEntity'] = $e;
         }
     }

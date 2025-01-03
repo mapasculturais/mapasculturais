@@ -18,10 +18,19 @@ const useMessages = Pinia.defineStore('messages', {
         push(message, timeout) {
             this.messages.push(message);
             
+            // caso o timeout não tenha sido definido e
+            // caso a quantidade de palavras na mensagem seja maior que 16, 
+            // o timeout terá um acrescimo de 1 segundo para cada 5.5 palavras
+            const messageWords = message.text?.split(' ') || message.split(' ');
+            const minTimeout = 3000;
+            const wordPerSecond = 5.5;
+            const aditionalTimeout = Math.ceil(messageWords.length / wordPerSecond) * 1000;
+            const extendedTimeout = aditionalTimeout > minTimeout ?  aditionalTimeout : minTimeout;
+
             setTimeout(() => {
                 const index = this.messages.indexOf(message);
                 this.messages.splice(index, 1);
-            }, timeout || 3000);
+            }, timeout || extendedTimeout);
         },
         
         success(text, timeout) {

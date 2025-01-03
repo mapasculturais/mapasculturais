@@ -42,7 +42,6 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityLock,
         Traits\EntityRevision {
             Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
         }
@@ -363,6 +362,7 @@ class Registration extends \MapasCulturais\Entity
         $this->registerFieldsMetadata();
         
         $json = [
+            '@entityType' => $this->getControllerId(),
             'id' => $this->id,
             'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
             'createTimestamp' => $this->createTimestamp,
@@ -815,7 +815,7 @@ class Registration extends \MapasCulturais\Entity
     function needsTiebreaker(): bool {
         $evaluation_method = $this->evaluationMethod;
         
-        return $evaluation_method->registrationNeedsTiebreaker($this);
+        return $evaluation_method ? $evaluation_method->registrationNeedsTiebreaker($this) : false;
     }
 
     function _setStatusTo($status, $flush = true){
@@ -1334,7 +1334,7 @@ class Registration extends \MapasCulturais\Entity
               
                 $_fied_name = $conf->conditionalField;
                 $_fied_value = $conf->conditionalValue;
-                if ($rfc->required) {
+                if ($field->required) {
                     if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
                         $field_required = true;
                     } else {

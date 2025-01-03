@@ -181,11 +181,16 @@ class Subsite extends \MapasCulturais\Entity
         return $this->getSingleUrl();
     }
 
-    public function getSubsiteUrl() {
-        $app = \MapasCulturais\App::i();
-        $uri = $app->request->psr7request->getUri();
-        return $uri->getScheme() . "://" . $this->url;
+    /**
+     * Retorna a URL base da instalação
+     * 
+     * @return string
+     */
+    public function getSubsiteUrl(): string {
+        $protocol = $_SERVER['REQUEST_SCHEME'] ?? 'http';
+        return "{$protocol}://{$this->url}/";
     }
+
 
     protected $_logo;
 

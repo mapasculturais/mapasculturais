@@ -289,30 +289,33 @@ class Registration extends EntityController {
     }
     
     function getPreviewEntity(){
-       
-        $registration = new $this->entityClassName;
-        
-        $registration->id = -1;
+        if(preg_match('/^(\d+)-preview$/', $this->urlData[0] ?? '', $matches)){
+            $app = App::i();
+            $opportunity = $app->repo('Opportunity')->find($matches[1]);
 
-        $registration->preview = true;
-        
-        return $registration;
+            $registration = new $this->entityClassName;
+            $registration->id = -1;
+            $registration->preview = true;
+
+            $registration->opportunity = $opportunity;
+
+            $registration->owner = $app->user->profile;
+            
+            return $registration;
+        } else {
+            return null;
+        }
     }
 
     /**
      * @return \MapasCulturais\Entities\Registration
      */
     function getRequestedEntity() {
-        $preview_entity = $this->getPreviewEntity();
-       
-        if(isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
-            if(!App::i()->request->isGet()){
-                $this->errorJson(['message' => [\MapasCulturais\i::__('Este formulário é um pré-visualização da da ficha de inscrição.')]]);
-            } else {
-                return $preview_entity;
-            }
-        }
-        return parent::getRequestedEntity();
+        if($preview_entity = $this->getPreviewEntity()) {
+            return $preview_entity;
+        } else {
+            return parent::getRequestedEntity();
+        }   
     }
 
     /**
@@ -369,11 +372,13 @@ class Registration extends EntityController {
         $this->requireAuthentication();
        
         $entity = $this->requestedEntity;
+
         if(!$entity){
             App::i()->pass();
         }
        
         $entity->checkPermission('view');
+
 
         if($entity->status === Entities\Registration::STATUS_DRAFT && $entity->canUser('modify')){
             parent::GET_edit();

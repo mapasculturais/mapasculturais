@@ -16,7 +16,7 @@ $this->import('
         </div>
 
         <template #popper ref="popperr">
-            <div class="mc-select__dropdown">
+            <div class="mc-select__dropdown scrollbar">
                 <div v-if="showFilter" class="mc-select__filter" ref="filter">
                     <input class="mc-select__filter-input" v-model="filter" type="text" placeholder="<?= i::esc_attr__('Filtro') ?>" @input="filterOptions()" />
                     <span class="mc-select__close" @click="closeSelect()">

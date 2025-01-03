@@ -10,7 +10,6 @@ $this->import('
     entity-field
     mc-confirm-button
     mc-link
-    seals-certifier
 ');
 ?>
 <div class="col-12">
