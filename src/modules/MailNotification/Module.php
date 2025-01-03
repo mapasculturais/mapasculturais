@@ -87,12 +87,15 @@ class Module extends \MapasCulturais\Module
         $template = 'send_registration';
         $enable = $this->config['enabled'];
 
-        $app->applyHook("sendMailNotification.registrationSend",[&$registration, &$template, &$enable]);
+        $params = [];
+
+        $app->applyHook("sendMailNotification.registrationSend",[&$registration, &$template, &$enable, &$params]);
 
         if($enable){    
             $data = [
                 'template' => $template,
                 'registrationId' => $registration->id,
+                'params' => $params
             ];
 
             $app->enqueueJob(SendMailNotification::SLUG, $data);
@@ -106,15 +109,18 @@ class Module extends \MapasCulturais\Module
         $template = $is_first_phase ? 'start_registration' : 'start_data_collection_phase';
         $enable = $this->config['enabled'];
 
-        $app->applyHook("sendMailNotification.registrationStart",[&$registration, &$template, &$enable]);
+        $params = [];
+
+        $app->applyHook("sendMailNotification.registrationStart:beforeEnqueue",[&$registration, &$template, &$enable, &$params]);
 
         if($enable){
             $data = [
                 'template' => $template,
                 'registrationId' => $registration->id,
+                'params' => $params
             ];
 
-            $app->enqueueJob(SendMailNotification::SLUG, $data);
+            $app->enqueueJob(SendMailNotification::SLUG, $data, '+60 seconds');
         }
     }
 }

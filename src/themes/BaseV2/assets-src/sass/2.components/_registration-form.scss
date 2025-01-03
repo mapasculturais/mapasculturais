@@ -3,13 +3,14 @@
 .registration-form {
     &__section {
         margin-bottom: size(16);
+
         >.mc-card__title {
             font-size: $font-size-md;
             font-weight: $font-weight-bold;
         }
 
-        .field:not(.modal-content .field) {
-            margin-top: size(32);
+        >.mc-card__content {
+            gap: size(32);
         }
     }
 

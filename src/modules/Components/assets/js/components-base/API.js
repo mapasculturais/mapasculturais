@@ -121,12 +121,17 @@ class API {
         return pk || 'id';
     }
 
-    getHeaders(data) {
-        if (data instanceof FormData) {
-            return {};
-        } else {
-            return {'Content-Type': 'application/json'};
+    getHeaders(data, forceSave) {
+        const headers = {};
+        if (!(data instanceof FormData)) {
+            headers['Content-Type'] = 'application/json';
         }
+
+        if(forceSave) {
+            headers['MAPAS-Force-Save'] = 'true';
+        }
+
+        return headers;
     }
 
     parseData(data) {
@@ -150,6 +155,7 @@ class API {
         url = this.parseUrl(url);
         const requestInit = {
             cache: this.options.cacheMode,
+            headers: this.getHeaders(data),
             ...init
         }
 
@@ -167,11 +173,11 @@ class API {
         });
     }
 
-    async PATCH(url, data) {
+    async PATCH(url, data, forceSave) {
         url = this.parseUrl(url);
         return fetch(url, {
             method: 'PATCH',
-            headers: this.getHeaders(data),
+            headers: this.getHeaders(data, forceSave),
             body: this.parseData(data)
         }).catch((e) => {
             return new Response(null, {status: 0, statusText: 'erro inesperado'});
@@ -200,13 +206,13 @@ class API {
         });
     }
 
-    async persistEntity(entity) {
+    async persistEntity(entity, forceSave) {
         if (!entity[this.$PK]) {
             let url = Utils.createUrl(this.objectType, 'index');
             return this.POST(url, entity.data())
             
         } else {
-            return this.PATCH(entity.singleUrl, entity.data(true))
+            return this.PATCH(entity.singleUrl, entity.data(true), forceSave)
         }
     }
 

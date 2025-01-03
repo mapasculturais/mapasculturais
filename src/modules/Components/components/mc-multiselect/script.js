@@ -57,25 +57,58 @@ app.component('mc-multiselect', {
             type: Boolean,
             default: false,
         },
+
+        placeholder: {
+            type: String,
+            default: 'Digite para buscar'
+        },
+    },
+
+    mounted() {
+        document.addEventListener('mousedown', (event) => {
+            const select = event.target.closest('.mc-multiselect') || event.target.closest('.mc-multiselect__content');
+
+            if (!event.target.closest('.mc-multiselect--input')) {
+                if (!select) {
+                    this.open = false
+                } else if (select.getAttribute('id') != this.uniqueID) {
+                    this.open = false;
+                }
+            }
+        });
+    },
+
+    unmounted() {
+        document.removeEventListener('mousedown', {});
     },
 
     data() {
-        let dataItems = {};        
-        if (Array.isArray(this.items)) {
-            for (let item of this.items) {
-                if(typeof item == 'object') {
-                    dataItems[item.value] = item
-                } else {
-                    dataItems[item] = item;
-                }
-            }
-        } else {
-            dataItems = Object.assign({}, this.items);
-        }
-        return { dataItems, filter: '' };
+        return { 
+            filter: '',
+            open: false,
+            uniqueID: (Math.floor(Math.random() * 9000) + 1000),
+        };
     },
 
     computed: {
+        dataItems() {
+            let dataItems = {};        
+
+            if (Array.isArray(this.items)) {
+                for (let item of this.items) {
+                    if(typeof item == 'object') {
+                        dataItems[item.value] = item
+                    } else {
+                        dataItems[item] = item;
+                    }
+                }
+            } else {
+                dataItems = Object.assign({}, this.items);
+            }
+
+            return dataItems;
+        },
+
         filteredItems() {
             const result = [];
             for (let value in this.dataItems) {
@@ -130,25 +163,64 @@ app.component('mc-multiselect', {
 
         },
 
-        toggleItem(key) {
-            if (this.model.indexOf(key) >= 0) {
-                this.remove(key);
-            } else if(this.canSelectMore) {
-                this.model.push(key);
-                this.$emit('selected', key);
+        openMultiselect() {
+            this.open = true;
 
+            const refOptions = this.$refs.options;
+            const refSelected = this.$refs.selected;
+
+            refOptions.style.minWidth = refSelected.clientWidth + 'px'; 
+
+            this.$emit('open', this);
+        },
+
+        closeMultiselect() {
+            this.open = false;
+            this.filter = '';
+            this.$emit('close', this);
+        },
+
+        toggleMultiselect() {
+            this.open ? this.closeMultiselect() : this.openMultiselect();
+        },
+
+        toggleItem(key) {
+            if(key == '@NA') {
+                if (this.model.includes(key)) {
+                    this.remove(key);
+                } else {
+                    while (this.model.length > 0) {
+                        this.remove(this.model[0]);
+                    }
+                    
+                    this.model.push(key);
+                    this.$emit('selected', key);
+                }
+            } else {
+                const ndIndex = this.model.indexOf('@NA');
+                
+                if (ndIndex >= 0) {
+                    this.model.splice(ndIndex, 1);
+                }
+
+                if (this.model.indexOf(key) >= 0) {
+                    this.remove(key);
+                } else if(this.canSelectMore) {
+                    this.model.push(key);
+                    this.$emit('selected', key);
+                }
             }
         },       
 
-        open() {
-            this.$emit('open', this);
-        },
+        // open() {
+        //     this.$emit('open', this);
+        // },
         
-        close(popover) {
-            this.$emit('close', this);
-            this.filter = '';
-            popover.close();
-        },
+        // close(popover) {
+        //     this.$emit('close', this);
+        //     this.filter = '';
+        //     popover.close();
+        // },
 
         setFilter(text) {
             this.filter = text;

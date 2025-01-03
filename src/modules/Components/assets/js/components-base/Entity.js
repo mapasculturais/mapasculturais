@@ -419,8 +419,7 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
-    async save(delay = 300, preserveValues = true) {
-        this.__processing = this.text('salvando');
+    async save(delay = 300, preserveValues = true, forceSave) {
         if(!this.id) {
             preserveValues = false;
         }
@@ -435,6 +434,7 @@ class Entity {
             this.rejecters.push(reject);
 
             this.__saveTimeout = setTimeout(async () => {
+                this.__processing = this.text('salvando');
                 try {
                     const data = this.data(true);
                     if(JSON.stringify(data) == '{}') {
@@ -442,12 +442,12 @@ class Entity {
                         for(let resolve of this.resolvers) {
                             resolve(response);
                         }
-
+                        this.sendMessage(this.text('modificacoes salvas'));
                         this.__processing = false;
                         return;
                     }
 
-                    const res = await this.API.persistEntity(this);                    
+                    const res = await this.API.persistEntity(this, forceSave);                    
                     this.doPromise(res, (entity) => {
                         if (this.id) {
                             this.sendMessage(this.text('modificacoes salvas'));

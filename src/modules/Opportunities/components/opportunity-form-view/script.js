@@ -13,7 +13,7 @@ app.component('opportunity-form-view', {
     },
 
     data() {
-        let url = Utils.createUrl('visualizacao-de-formulario',[this.entity.id]);
+        let url = Utils.createUrl('registration','view',[this.entity.id + '-preview']);
         return { url }
     },
 });

@@ -35,19 +35,24 @@ class Module extends \MapasCulturais\Module {
         // faz a keyword buscar pelo documento do owner nas inscrições
         $app->hook('repo(Registration).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) use ($format_doc) {
             if ($format_doc($keyword)) {
-                $joins .= " LEFT JOIN o.__metadata doc WITH doc.key IN('documento','cnpj','cpf')";
+                $joins .= "\n LEFT JOIN o.__metadata doc WITH doc.key IN('documento','cnpj','cpf')";
+                $joins .= "\n LEFT JOIN o.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
+                $joins .= "\n LEFT JOIN coletivo_relation.agent agent_coletivo";
+                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_doc WITH coletivo_doc.key = 'cnpj'";
             }
         });
 
         $app->hook('repo(Registration).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use ($format_doc) {
             if ($doc = $format_doc($keyword)) {
                 $doc2 = trim(str_replace(['%', '.', '/', '-'], '', $keyword));
-                $where .= " OR doc.value = '$doc' OR doc.value = '$doc2'";
+                $where .= "\n OR doc.value = '$doc' OR doc.value = '$doc2'";
+                $where .= "\n OR unaccent(lower(agent_coletivo.name) = unaccent(lower('$keyword'))";
+                $where .= "\n OR coletivo_doc.value = '$doc' OR coletivo_doc.value = '$doc2'";
             }
         });
 
         // faz a keyword buscar pelos termos das taxonomias
-        $app->hook('repo(<<agent|space|event|project|opportunity>>).getIdsByKeywordDQL.join,-repo(Registration).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) {
+        $app->hook('repo(<<agent|space|event|project|opportunity>>).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) {
             /** @var \MapasCulturais\Repository $this */
             $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
 
@@ -59,7 +64,7 @@ class Module extends \MapasCulturais\Module {
                             t.taxonomy = '{$taxonomy->slug}'";
         });
 
-        $app->hook('repo(<<agent|space|event|project|ppportunity>>).getIdsByKeywordDQL.where,-repo(Registration).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) {
+        $app->hook('repo(<<agent|space|event|project|ppportunity>>).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) {
             $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:{$alias})) ";
         });
 

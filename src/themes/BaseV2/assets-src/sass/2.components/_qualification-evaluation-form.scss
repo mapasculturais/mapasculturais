@@ -27,6 +27,11 @@
     &__popup {
         max-width: size(500);
     }
+
+    &__close-popup {
+        display: flex;
+        justify-content: flex-end;
+    }
     
     &__criterion {
         display: flex;
