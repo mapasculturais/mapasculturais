@@ -2386,4 +2386,53 @@ $$
         __exec("CREATE UNIQUE INDEX unique_evaluation_user_id ON registration_evaluation (registration_id, user_id)");
     },
 
+    'cria novos índices em diversas tabelas ' => function() {
+        __exec('CREATE INDEX idx_usr_profile ON usr (profile_id);');
+        __exec('CREATE INDEX id_agent_relation_agent ON agent_relation (agent_id);');
+        __exec('CREATE INDEX idx_space_agent_id ON space (agent_id);');
+        __exec('CREATE INDEX idx_event_agent_id ON event (agent_id);');
+        __exec('CREATE INDEX idx_seal_relation_agent_id ON seal_relation (agent_id);');
+        __exec('CREATE INDEX idx_seal_relation_owner_id ON seal_relation (owner_id);');
+        __exec('CREATE INDEX idx_seal_relation_object ON seal_relation (object_type, object_id);');
+        __exec('CREATE INDEX idx_project_agent_id ON project (agent_id);');
+        __exec('CREATE INDEX idx_project_type ON project (type);');
+        __exec('CREATE INDEX idx_registration_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX idx_opportunity_meta_key ON registration_meta (key);');
+        __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
+    },
+
+    'define valores default para as colunas ids das tabelas sem default' => function() {
+        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
+        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
+        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
+        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
+        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
+        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
+    },
+
+    'refatoração dos índices da tabela pcache' => function () {
+        __exec('CREATE INDEX pcache_object_user_action_idx ON pcache (user_id, object_type, action)');
+
+        // remove índice duplicado
+        // "pcache_permission_user_idx" btree (object_type, object_id, action, user_id)
+        // "unique_object_action" UNIQUE, btree (object_type, object_id, action, user_id)
+        __exec('DROP INDEX pcache_permission_user_idx');
+    },
+
+    'remove entradas da tabela pcache não mais utilizadas' => function () {
+        __exec("
+            DELETE FROM pcache 
+            WHERE action NOT IN (
+                '@control',
+                'modify',
+                'view',
+                'applySeal',
+                'support',
+                'viewUserEvaluation',
+                'evaluateOnTime',
+                'createEvents',
+                'requestEventRelation');");
+    }
+
 ] + $updates ;   

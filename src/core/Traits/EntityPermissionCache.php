@@ -58,6 +58,8 @@ trait EntityPermissionCache {
     static protected array $createdPermissionCache = [];
 
     function createPermissionsCacheForUsers(array $users = null, $flush = false, $delete_old = true) {
+        /** @var \MapasCulturais\Entity $this */
+        
         if(self::$createdPermissionCache["$this"] ?? false) {
             return;
         } else {
@@ -73,11 +75,6 @@ trait EntityPermissionCache {
             return;
         }
 
-        if($app->config['app.log.pcache']){
-            $start_time = microtime(true);
-            $app->log->debug("RECREATING pcache FOR $this");
-        }
-        
         if(is_null($users)){
             if($delete_old) {
                 $this->deletePermissionsCache();
@@ -108,7 +105,7 @@ trait EntityPermissionCache {
 
         $conn = $app->em->getConnection();
         $class_name = $this->getPCacheObjectType();
-        $permissions = $this->getPermissionsList();
+        $permissions = $this->getPCachePermissionsList();
         $this->__enabled = false;
         $isPrivateEntity = $class_name::isPrivateEntity();
         $hasCanUserViewMethod = method_exists($this, 'canUserView');
@@ -165,13 +162,6 @@ trait EntityPermissionCache {
                 $allowed_permissions = implode(',', $allowed_permissions);
                 $app->log->debug(' PCACHE >> ' . str_replace('MapasCulturais\\Entities\\', '', "{$this}:{$user}($allowed_permissions)"));
             }
-        }
-
-        if($app->config['app.log.pcache']){
-            $end_time = microtime(true);
-            $total_time = number_format($end_time - $start_time, 1);
-
-            $app->log->info("pcache FOR $this CREATED IN {$total_time} seconds\n\n");
         }
         
         $this->__enabled = true;

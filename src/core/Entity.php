@@ -563,6 +563,26 @@ abstract class Entity implements \JsonSerializable{
         return self::$__permissions[$class_name];
     }
 
+    /** 
+     * Retorna a lista de permissões que devem ser salvas na tabela de cache de permissões
+     * 
+     * @return array
+     */
+    static function getPCachePermissionsList() {
+        $app = App::i();
+        $prefix = self::getHookPrefix();
+
+        $permissions = [
+            '@control',
+            'view',
+            'modify'
+        ];
+
+        $app->applyHook("{$prefix}.pcachePermissionsList", [&$permissions]);
+
+        return $permissions;
+    }
+
 
     /**
      * Returns the metadata of this entity properties.

@@ -1386,6 +1386,15 @@ class Registration extends \MapasCulturais\Entity
         return $exportData;
     }
 
+    static function getPCachePermissionsList() {
+        $permissions = parent::getPCachePermissionsList();
+
+        $permissions[] = 'viewUserEvaluation';
+        $permissions[] = 'evaluateOnTime';
+        
+        return $permissions;
+    }
+
     protected function canUserCreate($user){
         if($user->is('guest')){
             return false;
