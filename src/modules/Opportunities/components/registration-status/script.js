@@ -22,8 +22,32 @@ app.component('registration-status', {
 
     data() {
         return {
-            processing: false,
+            processing: false, 
             entity: null,
+            appealPhaseRegistrationFrom: this.registration.opportunity.appealPhase.registrationFrom,
+            appealPhaseRegistrationTo: this.registration.opportunity.appealPhase.registrationTo,
+            appealPhaseEvaluationFrom: this.registration.opportunity.appealPhase.evaluationMethodConfiguration.evaluationFrom,
+            appealPhaseEvaluationTo: this.registration.opportunity.appealPhase.evaluationMethodConfiguration.evaluationTo,
+        }
+    },
+
+    mounted() {
+        console.log($MAPAS.registrationPhases[this.appealPhase?.id]);
+        console.log('this.registration', this.registration);
+    },
+
+    computed: {
+        appealPhase() {
+            return this.phase.appealPhase;
+        },
+
+        appealRegistration() {
+            const appealPhaseId = this.appealPhase?.id;
+            if (!appealPhaseId) {
+                return null;
+            }
+
+            return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
         }
     },
 
@@ -43,6 +67,7 @@ app.component('registration-status', {
                     return 'danger__color';
 				case 3 : 
 				case 8 : 
+                case 1 :
                     return 'warning__color';
 
                 case null:
@@ -56,18 +81,15 @@ app.component('registration-status', {
             const messages = useMessages();
         
             const target = this.phase.__objectType === 'evaluationmethodconfiguration' 
-                ? this.phase.opportunity 
+                ? this.phase.opportunity
                 : this.phase;
 
             let args = {
                 registration_id: this.registration._id,
             };
 
-            console.log('this.registration', this.registration);
-
             try {
                 await target.POST('createAppealPhaseRegistration', {data: args, callback: (data) => {
-                        console.log(data);
                         this.entity = new Entity('registration');
                         this.entity.populate(data);
                         this.processing = false;
@@ -81,6 +103,40 @@ app.component('registration-status', {
                 messages.error(error);
             }
             this.processing = false;
-        }
+        },
+
+        fillFormButton() {
+            window.location.href = this.entity.editUrl;
+        },
+
+        dateFrom() {
+			if (this.appealPhaseRegistrationFrom) {
+				return this.appealPhaseRegistrationFrom.date('2-digit year');
+			}	
+			if (this.appealPhaseEvaluationFrom) {
+				return this.appealPhaseEvaluationFrom.date('2-digit year');
+			}
+			return false;
+		},
+
+		dateTo() {
+			if (this.appealPhaseRegistrationTo) {
+				return this.appealPhaseRegistrationTo.date('2-digit year');
+			}	
+			if (this.appealPhaseEvaluationTo) {
+				return this.appealPhaseEvaluationTo.date('2-digit year');
+			}
+			return false;
+		},
+
+		hour() {
+			if (this.appealPhaseRegistrationTo) {
+				return this.appealPhaseRegistrationTo.time();
+			}
+			if (this.appealPhaseEvaluationTo) {
+				return this.appealPhaseEvaluationTo.time();
+			}
+			return false;
+		},
     }
 });
