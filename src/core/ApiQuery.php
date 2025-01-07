@@ -3182,7 +3182,7 @@ class ApiQuery {
                 if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
                     $params = $this->apiParams;
                     if($this->entityClassName === Opportunity::class && (isset($params['id']) || isset($params['parent']) || isset($params['status']))) {
-                        $view_where = 'OR e.status > 0 OR e.status = -1';    
+                        $view_where = 'OR e.status > 0 OR e.status = -1 OR e.status = -20';    
                     } else {
                         $view_where = 'OR e.status > 0';
                     }
