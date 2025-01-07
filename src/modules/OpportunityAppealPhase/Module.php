@@ -63,9 +63,8 @@ class Module extends \MapasCulturais\Module {
             $appeal_phase = $opportunity->appealPhase;
 
             $data = $this->data;
-
             $registration_id = $data['registration_id'] ?? 0;
-
+            
             if ($registration_id) {
                 $registration = $app->repo('Registration')->findOneBy(['id' => $registration_id]);
 
@@ -85,15 +84,17 @@ class Module extends \MapasCulturais\Module {
                     $this->errorJson(sprintf(i::__('Não existe uma fase de recurso para a %s'), $opportunity->name), 403);
                 }
 
-                $registration = new \MapasCulturais\Entities\Registration();
-                $registration->opportunity = $appeal_phase;
-                $registration->category = $opportunity->category;
-                $registration->proponentType = $opportunity->proponentType;
-                $registration->range = $opportunity->range;
-                $registration->owner = $opportunity->owner;
-                $registration->save(true);
+                $new_registration = new \MapasCulturais\Entities\Registration();
+                $new_registration->opportunity = $appeal_phase;
+                $new_registration->category = $registration->category;
+                $new_registration->proponentType = $registration->proponentType;
+                $new_registration->range = $registration->range;
+                $new_registration->owner = $registration->owner;
+                $new_registration->number = $registration->number;
+                
+                $new_registration->save(true);
 
-                $this->json($registration);
+                $this->json($new_registration);
             }
         });
     }
