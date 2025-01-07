@@ -30,11 +30,10 @@
 
             <div>
                 <p><label><?= i::__('Pontuação original: ') ?></label> <strong>{{policy.raw}}</strong></p>
-                <p><label><?= i::__('Acréscimos:') ?></label>
-                    <ul>
-                        <li v-for="rule in policy.rules">{{rule.field.title}}: <em>{{rule.value}}</em> <strong>(+{{rule.percentage}}%)</strong></li>
-                    </ul>
-                </p>
+                <p><label><?= i::__('Acréscimos:') ?></label></p>
+                <ul>
+                    <li v-for="rule in policy.rules">{{rule.field.title}}: <em>{{rule.value}}</em> <strong>(+{{rule.percentage}}%)</strong></li>
+                </ul>
                 <p>
                     <label><?= i::__('Acréscimo total na pontuação:') ?> </label> 
                     <strong>{{parseFloat(policy.raw) / 100 * parseFloat(policy.percentage)}}
