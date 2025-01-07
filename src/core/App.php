@@ -1900,11 +1900,31 @@ class App {
             /** @var Job $job */
             $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
             $job = $this->repo('Job')->find($job_id);
-
-            if($job->subsite) {
+            if( $job->subsite) {
                 $this->_initSubsite($job->subsite->url);
+                $path = (array) $this->view->path;
                 $this->_initTheme();
+                
+                $this->subsite->applyApiFilters();
+                $this->subsite->applyConfigurations();
+
+                $reflaction = new \ReflectionClass(get_class($this->view));
+                $themes_path = [];
+                while($reflaction && $reflaction->getName() != __CLASS__){
+                    $dir = dirname($reflaction->getFileName());
+                    if($dir != __DIR__) {
+                        $themes_path[] = $dir . '/';
+                    }
+                    $reflaction = $reflaction->getParentClass();
+                }
+
+                $path = array_diff($path, $themes_path);
+                $path = array_merge($themes_path, $path);
+                
+                $this->view->path = new \ArrayObject($path);
             }
+            
+            
             $this->auth->authenticatedUser = $job->user;
 
 
