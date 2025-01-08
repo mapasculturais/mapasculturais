@@ -23,54 +23,83 @@ $this->import('
         <div class="right">            
             <div class="header">
                 <div v-if="pictureCard" class="title"> <strong>{{entity.opportunity?.name}}</strong> </div>
-                <div v-if="!pictureCard" class="title"> <?= i::__('Número de inscrição:') ?> <strong>{{entity.number}}</strong> </div>
+                <?php if($app->config['app.registrationCardFields']['number']): ?>
+                    <div v-if="!pictureCard" class="title"> <?= i::__('Número de inscrição:') ?> <strong>{{entity.number}}</strong> </div>
+                <?php endif ?>
                 <div class="actions"></div>
             </div>
 
             <div class="content">
-                <div v-if="pictureCard" class="registerData">
-                    <p class="title"> <?= i::__("Inscrição") ?> </p>
-                    <p class="data"> {{entity.number}} </p>
-                </div>
+                <?php if($app->config['app.registrationCardFields']['number']): ?>
+                    <div v-if="pictureCard" class="registerData">
+                        <p class="title"> <?= $this->text('registration-number-label',i::__('Inscrição')) ?></p>
+                        <p class="data"> {{entity.number}} </p>
+                    </div>
+                <?php endif ?>
 
-                <div v-if="!pictureCard && entity.category" class="registerData">
-                    <p class="title"> <?= i::__("Categoria") ?> </p>
-                    <p class="data"> {{entity.category}} </p>
-                </div>
+                <?php if($app->config['app.registrationCardFields']['category']): ?>
+                    <div v-if="!pictureCard && entity.category" class="registerData">
+                        <p class="title"> <?= $this->text('category-label',i::__('Categoria')) ?></p>
+                        <p class="data"> {{entity.category}} </p>
+                    </div>
+                <?php endif ?>
 
-                <div v-if="entity.createTimestamp" class="registerData">
-                    <p class="title"> <?= i::__("Data de inscrição") ?> </p>
-                    <p class="data"> {{registerDate(entity.createTimestamp)}} <?= i::__("às") ?> {{registerHour(entity.createTimestamp)}} </p>
-                </div>
+                <?php if($app->config['app.registrationCardFields']['createtimestamp']): ?>
+                    <div v-if="entity.createTimestamp" class="registerData">
+                        <p class="title"> <?= $this->text('create-timestamp-label',i::__('Data de inscrição')) ?></p>
+                        <p class="data"> {{registerDate(entity.createTimestamp)}} <?= i::__("às") ?> {{registerHour(entity.createTimestamp)}} </p>
+                    </div>
+                <?php endif ?>
 
-                <div class="registerData">
-                    <p class="title"> <?= i::__("Agente inscrito") ?> </p>
-                    <p class="data"> {{entity.owner?.name}} </p>
-                </div>
+                <?php if($app->config['app.registrationCardFields']['owner']): ?>
+                    <div class="registerData">
+                        <p class="title"> <?= $this->text('owner-label',i::__('Agente inscrito')) ?></p>
+                        <p class="data"> {{entity.owner?.name}} </p>
+                    </div>
+                <?php endif ?>
 
-                <div v-if="pictureCard && entity.category" class="registerData">
-                    <p class="title"> <?= i::__("Categoria") ?> </p>
-                    <p class="data"> {{entity.category}} </p>
-                </div>
+                <?php if($app->config['app.registrationCardFields']['category']): ?>
+                    <div v-if="pictureCard && entity.category" class="registerData">
+                        <p class="title"> <?= $this->text('category-label',i::__('Categoria')) ?> </p>
+                        <p class="data"> {{entity.category}} </p>
+                    </div>
+                <?php endif ?>
 
-                <div v-if="entity.range" class="registerData">
-                    <p class="title"> <?= i::__("Faixa") ?> </p>
-                    <p class="data"> {{entity.range}} </p>
-                </div>
+                <?php if($app->config['app.registrationCardFields']['range']): ?>
+                    <div v-if="entity.range" class="registerData">
+                        <p class="title"> <?= $this->text('range-label',i::__('Faixa')) ?> </p>
+                        <p class="data"> {{entity.range}} </p>
+                    </div>
+                <?php endif ?>
 
-                <div v-if="entity.proponentType" class="registerData">
-                    <p class="title"> <?= i::__("Proponente") ?> </p>
-                    <p class="data"> {{entity.proponentType}} </p>
-                </div>
+                <?php if($app->config['app.registrationCardFields']['proponentType']): ?>
+                    <div v-if="entity.proponentType" class="registerData">
+                        <p class="title"> <?= $this->text('proponentType-label',i::__('Proponente')) ?></p>
+                        <p class="data"> {{entity.proponentType}} </p>
+                    </div>
+                <?php endif ?>
+
+                <?php if($app->config['app.registrationCardFields']['coletive']): ?>
+                    <div v-if="entity?.agentRelations?.coletivo" class="registerData">
+                        <p class="title"> <?= $this->text('coletive-label',i::__('Nome coletivo')) ?></p>
+                        <p class="data"> {{entity?.agentRelations?.coletivo[0].agent.nomeCompleto}} </p>
+                    </div>
+                <?php endif ?>
             </div>
+
         </div>
     </div>
 
     <div class="registration-card__footer">
         <div class="left">
-            <div v-if="!pictureCard" class="status">
-                {{status}}
-            </div>
+            <?php if($app->config['app.registrationCardFields']['status']): ?>
+                <div v-if="!pictureCard" class="registerData">
+                    <p class="title"> <?= $this->text('status-label',i::__('Status')) ?> </p>
+                    <div class="status-point">
+                        <div class="point"></div><p class="data"> {{status}} </p>
+                    </div>
+                </div>
+            <?php endif ?>
             <slot name="entity-actions-left" :entity="entity"></slot>
         </div>
         <div class="right">
