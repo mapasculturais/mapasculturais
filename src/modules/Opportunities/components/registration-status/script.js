@@ -106,7 +106,7 @@ app.component('registration-status', {
         },
 
         fillFormButton() {
-            window.location.href = this.entity.editUrl;
+            window.location.href = this.appealRegistration.editUrl;
         },
 
         dateFrom() {
