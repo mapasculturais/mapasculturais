@@ -28,10 +28,12 @@ class Module extends \MapasCulturais\Module {
 
             $class_name = $opportunity->getSpecializedClassName();
 
+            $phase_name = $opportunity->evaluationMethodConfiguration ? 
+                $opportunity->evaluationMethodConfiguration->name : $opportunity->name;
             $appeal_phase = new $class_name();
             $appeal_phase->parent = $opportunity;
             $appeal_phase->status = Opportunity::STATUS_APPEAL_PHASE;
-            $appeal_phase->name = sprintf(i::__('Fase de recurso para %s'), $opportunity->name);
+            $appeal_phase->name = sprintf(i::__('Recurso para %s'), $phase_name);
             $appeal_phase->ownerEntity = $opportunity->ownerEntity;
             $appeal_phase->registrationCategories = $opportunity->registrationCategories;
             $appeal_phase->registrationRanges = $opportunity->registrationRanges;
