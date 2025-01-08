@@ -26,6 +26,21 @@ app.component('registration-results', {
         }
     },
 
+    computed: {
+        appealPhase() {
+            return this.phase.appealPhase;
+        },
+
+        appealRegistration() {
+            const appealPhaseId = this.appealPhase?.id;
+            if (!appealPhaseId) {
+                return null;
+            }
+
+            return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
+        }
+    },
+
     methods: {
         async createAppealPhaseRegistration() {
             this.processing = true;

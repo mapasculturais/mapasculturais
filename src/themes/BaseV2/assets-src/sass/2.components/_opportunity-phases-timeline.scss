@@ -5,7 +5,7 @@
        max-width: size(256); 
        border-radius: size(4);
        border: 1px solid var(--mc-gray-300);
-       padding: size(8) 0 size(8) size(8);
+       padding: size(8) size(8) size(8);
     }
     &__status {
         display: grid;
@@ -17,12 +17,18 @@
     &__label {
         font-size: size(14);
         text-transform: uppercase;
+
+        &--lowercase {
+            text-transform: unset;
+        }
     }
 
     &__request-appeal {
         display: flex;
         flex-direction: column;
         gap: size(12);
+        max-width: size(256);
+        width: 100%;
 
         &__box {
             display: grid;

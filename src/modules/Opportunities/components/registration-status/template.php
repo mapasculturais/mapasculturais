@@ -44,7 +44,7 @@ $this->import('
 </div>
 
 <div v-if="!appealRegistration?.id && registration.status == 3" class="opportunity-phases-timeline__request-appeal">
-    <h5 v-if="!processing" class="bold opportunity-phases-timeline__label"><?= i::__('Discorda do resultado?')?></h5>
+    <h5 v-if="!processing" class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Discorda do resultado?')?></h5>
     <button v-if="!processing" class="button button--primary button--primary-outline" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
 
     <div v-if="processing" class="col-12">
@@ -76,7 +76,7 @@ $this->import('
         </div>
         
         <div v-if="appealRegistration && appealRegistration.status == 0" class="opportunity-phases-timeline__request-appeal">
-            <h5 class="bold opportunity-phases-timeline__label"><?= i::__('Ainda não finalizou sua inscrição no recurso?')?></h5>
+            <h5 class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Finalize sua inscrição no recurso:')?></h5>
             <button class="button button--primary button--primary" @click="fillFormButton()"><?= i::__('Preencher formulário') ?></button>
         </div>
 

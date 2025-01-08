@@ -17,7 +17,7 @@ $entity = $this->controller->requestedEntity;
                 </div>
             <?php endforeach ?>
 
-            <div v-if="!entity" class="registration-results__request-appeal">
+            <div v-if="!appealRegistration" class="registration-results__request-appeal">
                 <button class="button button--primary" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
             </div>
         </template>
