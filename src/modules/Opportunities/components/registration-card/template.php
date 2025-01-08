@@ -78,6 +78,13 @@ $this->import('
                         <p class="data"> {{entity.proponentType}} </p>
                     </div>
                 <?php endif ?>
+
+                <?php if($app->config['app.registrationCardFields']['coletive']): ?>
+                    <div v-if="entity?.agentRelations?.coletivo" class="registerData">
+                        <p class="title"> <?= $this->text('coletive-label',i::__('Nome coletivo')) ?></p>
+                        <p class="data"> {{entity?.agentRelations?.coletivo[0].agent.nomeCompleto}} </p>
+                    </div>
+                <?php endif ?>
             </div>
 
         </div>
