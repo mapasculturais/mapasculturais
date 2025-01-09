@@ -29,7 +29,6 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 $statusList = [
     ['value' => '2', 'label' =>   i::__('Negado')],
     ['value' => '3', 'label' =>   i::__('Indeferido')],
-    ['value' => '8', 'label' =>   i::__('Suplente')],
     ['value' => '10', 'label' =>   i::__('Deferido')],
 ];
 

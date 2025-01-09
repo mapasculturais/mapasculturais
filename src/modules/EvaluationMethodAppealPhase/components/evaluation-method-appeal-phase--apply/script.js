@@ -66,9 +66,6 @@ app.component('evaluation-method-appeal-phase--apply', {
                 case '3':
                     return this.text('Não selecionada');
                     break;
-                case '8':
-                    return this.text('Suplente');
-                    break;
                 case '10':
                     return this.text('Selecionada');
                     break;

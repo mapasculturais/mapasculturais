@@ -11,7 +11,6 @@ $statusList = [
     ['status' => '1', 'label' =>   i::__('Aguardando resposta')],
     ['status' => '2', 'label' =>   i::__('Negado')],
     ['status' => '3', 'label' =>   i::__('Indeferido')],
-    ['status' => '8', 'label' =>   i::__('Suplente')],
     ['status' => '10', 'label' =>   i::__('Deferido')],
 ];
 
