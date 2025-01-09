@@ -2107,7 +2107,13 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto', 'id' => "IN($agent_ids)"]);
+            $agents_query = new ApiQuery(Agent::class, [
+                '@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto', 
+                'id' => "IN($agent_ids)", 
+                'status' => 'GTE(0)', 
+                '@permissions' => 'view'
+            ]);
+
             $agents = $agents_query->find();
             $agents_by_id = [];
             foreach($agents as $agent) {
@@ -2227,7 +2233,13 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto', 'id' => "IN($agent_ids)"]);
+            $agents_query = new ApiQuery(Agent::class, [
+                '@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto', 
+                'id' => "IN($agent_ids)", 
+                'status' => 'GTE(0)', 
+                '@permissions' => 'view'
+            ]);
+            
             $agents = $agents_query->find();
             $agents_by_id = [];
             foreach($agents as $agent) {
