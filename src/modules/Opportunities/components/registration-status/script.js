@@ -31,11 +31,6 @@ app.component('registration-status', {
         }
     },
 
-    mounted() {
-        console.log($MAPAS.registrationPhases[this.appealPhase?.id]);
-        console.log('this.registration', this.registration);
-    },
-
     computed: {
         appealPhase() {
             return this.phase.appealPhase;
