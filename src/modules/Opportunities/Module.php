@@ -567,7 +567,7 @@ class Module extends \MapasCulturais\Module{
             ];
         });
 
-        $app->hook('entity(EvaluationMethodConfiguration).propertiesMetadata', function(&$result) {
+        $app->hook('entity(EvaluationMethodConfiguration).propertiesMetadata', function(&$result) use($app) {
             $result['useCommitteeGroups'] = [
                 'isMetadata' => false,
                 'isEntityRelation' => false,
@@ -580,6 +580,17 @@ class Module extends \MapasCulturais\Module{
                 'isReadonly' => true,
                 'label' => i::__('Indica se pode ser utilizada a auto aplicação de resultados')
             ];
+
+            // Remove os tipos de avaliação internos da lista de tipos de avaliação
+            $public_evaluation_methods = $app->getRegisteredEvaluationMethods();
+            $types = $result['type']['options'];
+            foreach($types as $type => $label) {
+                if(!isset($public_evaluation_methods[$type])) {
+                    unset($result['type']['options'][$type]);
+                    unset($result['type']['optionsOrder'][array_search($type, $result['type']['optionsOrder'])]);
+                    $result['type']['optionsOrder'] = array_values($result['type']['optionsOrder']);
+                }
+            }
         });
 
        // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento de inserir, atualizar ou remover.
