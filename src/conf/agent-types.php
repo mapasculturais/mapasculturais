@@ -223,6 +223,7 @@ return array(
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
             'serialize' => function($value, $entity = null){
+               if(is_null($value)) { return null; }
                $this->hook("entity(<<*>>).save:before", function() use ($entity){
                     /** @var MapasCulturais\Entity $entity */
                     if($this->equals($entity)){
