@@ -47,7 +47,7 @@ class Module extends \MapasCulturais\Module {
             
             $evaluation = new EvaluationMethodConfiguration();
             $evaluation->opportunity = $appeal_phase;
-            $evaluation->type = 'simple';
+            $evaluation->type = 'appeal-phase';
             $evaluation->save(true);
 
             $this->json($appeal_phase);
