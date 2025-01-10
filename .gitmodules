@@ -16,5 +16,5 @@
 	url = https://github.com/culturagovbr/theme-MapaMinC.git
 [submodule "src/plugins/Metabase"]
 	path = src/plugins/Metabase
-	url = https://github.com/RedeMapas/plugin-Metabase
+	url = https://github.com/culturagovbr/plugin-Metabase
 	branch = main
