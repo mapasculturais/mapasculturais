@@ -963,6 +963,13 @@ abstract class Theme {
                     $e['opportunity']->registrationSteps = $opportunity->registrationSteps->toArray();
                 }
             }
+            
+            if ($entity_class_name == Entities\Opportunity::class) {
+                $opportunity = $app->repo("Opportunity")->find($entity_id);
+
+                $e['registrationSteps'] = $opportunity->registrationSteps->toArray();
+            }
+            
             if ($entity_class_name == Entities\Agent::class) {
                 $owner_prop = 'parent';
                 if (!$e['parent']) {
