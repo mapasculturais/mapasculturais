@@ -28,6 +28,13 @@ $data['evaluationStatusDict'] = [
         '0'  => i::__('Não avaliada'),
         'Habilitado' => i::__('Habilitado'),
         'Inabilitado' => i::__('Inabilitado'),
+    ],
+    'appeal-phase' => [
+        '0'  => i::__('Não avaliada'),
+        '2'  => i::__('Inválida'),
+        '3'  => i::__('Não selecionada'),
+        '8'  => i::__('Suplente'),
+        '10' => i::__('Selecionada')
     ]
 ];
 
