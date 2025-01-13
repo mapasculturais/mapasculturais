@@ -211,6 +211,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl,summary');
         $result['useCommitteeGroups'] = $this->useCommitteeGroups;
         $result['evaluateSelfApplication'] = $this->evaluateSelfApplication;
+        $result['summary'] = $this->summary;
+
         /**
          * @todo Arranjar um modo de colocar isso no módulo de avaliação técnica
          */
