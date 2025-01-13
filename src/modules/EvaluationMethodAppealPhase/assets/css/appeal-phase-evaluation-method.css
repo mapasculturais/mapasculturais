@@ -1,20 +1,20 @@
-/* Simple Evaluation Method Styles */
+/* AppealPhase Evaluation Method Styles */
 
-.simple-evaluation-form {
+.appeal-phase-evaluation-form {
     font-size: 0.75rem;
 }
 
-.simple-evaluation-form label {
+.appeal-phase-evaluation-form label {
     margin-bottom: 10px;
     margin-top: 10px;
 }
 
-.simple-evaluation-form label.input-label {
+.appeal-phase-evaluation-form label.input-label {
     font-size: 1.25em;
     margin-right: 10px;
 }
 
-.simple-evaluation-form textarea {
+.appeal-phase-evaluation-form textarea {
     width:100%;
     height:250px;
 }
@@ -40,11 +40,11 @@ mc-select div.dropdown {
 
 }
 
-.simple-evaluation-view {
+.appeal-phase-evaluation-view {
     margin:-1em;
     padding:1em;
 }
 
-.simple-evaluation-view p {
+.appeal-phase-evaluation-view p {
     font-style: italic;
 }
