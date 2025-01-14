@@ -6,5 +6,6 @@ use MapasCulturais\Traits;
 class ChatMessage extends EntityController
 {
     use Traits\ControllerAPI,
-        Traits\ControllerAPINested;
+        Traits\ControllerAPINested,
+        Traits\ControllerUploads;
 }
