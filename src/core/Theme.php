@@ -158,6 +158,8 @@ abstract class Theme {
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
                 "seal"          => Entities\Seal::getPropertiesMetadata(),
                 'evaluationmethodconfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
+                "chatthread"   => Entities\ChatThread::getPropertiesMetadata(),
+                "chatmessage"   => Entities\ChatMessage::getPropertiesMetadata(),
             ];
 
             $taxonomies = [];
