@@ -428,10 +428,6 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(Opportunity).get(allPhases)', function(&$values) use ($app) {
             /** @var Opportunity $this */
 
-            if ($this->isAppealPhase) {
-                return false;
-            }
-
             $first_phase = $this->firstPhase;
             if(!$first_phase->id) {
                 return;
@@ -527,10 +523,6 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Opportunity).get(countEvaluations)', function(&$value) use ($app) {
             /** @var Opportunity $this */
-
-            if ($this->isAppealPhase) {
-                return false;
-            }
 
             $this->enableCacheGetterResult('countEvaluations');
 
@@ -844,6 +836,7 @@ class Module extends \MapasCulturais\Module{
         /** enfileira job para sincronização das inscrições em segundo plano */
         $app->hook('Entities\Opportunity::enqueueRegistrationSync', function($value, array $registrations = []) use($app) {
             
+            // Não deve sincronizar as inscrições em fase de recurso
             if ($this->isAppealPhase) {
                 return false;
             }
@@ -860,6 +853,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::syncRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
+            // Não deve sincronizar as inscrições da primeira fase ou fase de recurso
             if ($this->isFirstPhase || $this->isAppealPhase) {
                 return false;
             }
@@ -973,6 +967,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::importPreviousPhaseRegistrations', function($value, $as_draft = false, array $registrations = []) use($app, $self){
             /** @var Opportunity $this */
 
+            // Não deve sincronizar as inscrições na primeira fase e na fase de recurso
             if ($this->isFirstPhase || $this->isAppealPhase) {
                 return;
             }
@@ -1169,10 +1164,17 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(Registration).status(<<*>>),entity(Registration).remove:after', function() {
             /** @var Registration $this */
-            if($this->skipSync || $this->isAppealPhase) {
+            if($this->skipSync) {
                 return;
             }
+
             $current_phase = $this->opportunity;
+
+            // Não deve sincronizar inscrições em fase de recursos
+            if ($current_phase->isAppealPhase) {
+                return;
+            }
+
             if($next_phase = $current_phase->nextPhase){
                 $next_phase->enqueueRegistrationSync([$this]);
                 if(!$next_phase->isLastPhase) {
@@ -1522,10 +1524,6 @@ class Module extends \MapasCulturais\Module{
             $app->hook('entity(Registration).insert:after', function() use($app){
                 /** @var Registration $this */
 
-                if ($this->isAppealPhase) {
-                    return false;
-                }
-
                 $app->disableAccessControl();
 
                 if ($this->previousPhase) {
@@ -1545,10 +1543,6 @@ class Module extends \MapasCulturais\Module{
 
             $app->hook('entity(Registration).update:after', function() use($app){
                 /** @var Registration $this */
-                
-                if ($this->isAppealPhase) {
-                    return false;
-                }
 
                 $app->disableAccessControl();
 
