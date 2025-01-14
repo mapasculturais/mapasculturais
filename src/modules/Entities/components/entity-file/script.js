@@ -64,6 +64,10 @@ app.component('entity-file', {
         defaultFile: {
             type: Object,
             required: false
+        },
+        beforeUpload: {
+            type: Function,
+            required: false
         }
     },
 
@@ -90,6 +94,13 @@ app.component('entity-file', {
                 description: this.formData.description,
                 group: this.groupName,
             };
+
+            if (this.beforeUpload) {
+                data = await this.beforeUpload({
+                    data,
+                    file: this.newFile
+                });
+            }
 
             this.entity.disableMessages();
             try{
