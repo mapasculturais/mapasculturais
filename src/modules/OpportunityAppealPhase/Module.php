@@ -3,12 +3,20 @@
 namespace OpportunityAppealPhase;
 
 use MapasCulturais\App;
-use MapasCulturais\i;
 use MapasCulturais\Controllers;
+use MapasCulturais\Entities\ChatMessage;
+use MapasCulturais\Entities\ChatThread;
+use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Registration;
+use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
+
+    const CHAT_THREAD_TYPE = 'opportunity_appeal_phase';
+
     public function _init() {
         $app = App::i();
 
@@ -124,5 +132,32 @@ class Module extends \MapasCulturais\Module {
                 return $evaluationMethodConfiguration->opportunity->appealPhase;
             }
         ]);
+
+        $thread_type_description = i::__('Conversação entre proponente e avaliador');
+        $definition = new ChatThreadType(self::CHAT_THREAD_TYPE, $thread_type_description, function (ChatMessage $message) {
+            $thread = $message->thread;
+            $registration = $thread->ownerEntity;
+            $notification_content = '';
+            $sender = '';
+            $recipient = '';
+            $notification = new Notification;
+            if ($message->thread->checkUserRole($message->user, 'admin')) {
+                // mensagem do parecerista
+                $notification->user = $registration->owner->user;
+                $notification_content = i::__("Nova mensagem do parecerista da prestação de contas número %s");
+                $sender = 'admin';
+                $recipient = 'participant';
+            } else {
+                // mensagem do usuário responsável pela prestação de contas
+                $notification->user = $registration->owner->user;
+                $notification_content = i::__("Nova mensagem na prestação de contas número %s");
+                $sender = 'participant';
+                $recipient = 'admin';
+            }
+            $notification->message = sprintf($notification_content, "<a href=\"{$registration->singleUrl}\" >{$registration->number}</a>");
+            $notification->save(true);
+            $this->sendEmailForNotification($message, $notification, $sender, $recipient);
+        });
+        $app->registerChatThreadType($definition);
     }
 }
