@@ -952,7 +952,6 @@ abstract class Theme {
                     SELECT o FROM                             
                         MapasCulturais\\Entities\\Opportunity o
                         WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
-                // eval(\psy\sh());
                 $query->setParameter('id', $e['id']);
                 $opportunity = $query->getSingleResult();
                 $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
