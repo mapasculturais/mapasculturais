@@ -34,6 +34,7 @@ use \MapasCulturais\i;
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="object_type", type="object_type")
  * @ORM\DiscriminatorMap({
+        "MapasCulturais\Entities\ChatMessage"                   = "\MapasCulturais\Entities\ChatMessageFile",
         "MapasCulturais\Entities\Opportunity"                   = "\MapasCulturais\Entities\OpportunityFile",
         "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectFile",
         "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",

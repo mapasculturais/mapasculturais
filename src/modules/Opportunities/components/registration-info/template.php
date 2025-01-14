@@ -23,6 +23,10 @@ use MapasCulturais\i;
             <h5 class="registration-info__data__title semibold"> <?= i::__('Categoria') ?> </h5>
             <h4 class="registration-info__data__info bold">{{registration.category}}</h4>
         </div>
+        <div v-if="registration.opportunity.registrationTo && registration.opportunity.isAppealPhase" class="registration-info__data">
+            <h5 class="registration-info__data__title semibold"> <?= i::__('Preencher até:') ?> </h5>
+            <h4 class="registration-info__data__info bold">{{registration.opportunity.registrationTo.date('2-digit year')}} <?= i::__('às') ?> {{registration.opportunity.registrationTo.time('short')}}</h4>
+        </div>
     </div>
 </div>
 

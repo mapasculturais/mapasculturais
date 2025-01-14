@@ -24,6 +24,7 @@ use MapasCulturais\Traits;
  */
 class ChatMessage extends \MapasCulturais\Entity
 {
+    use Traits\EntityFiles;
     use Traits\EntityNested;
     use Traits\EntityPermissionCache;
 

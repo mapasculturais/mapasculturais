@@ -141,16 +141,20 @@
 
     &__datepicker {
         display: flex;
-        max-width: size(827);
+        max-width: size(923);
         gap: size(70);
+
+        @media (max-width: 931px) {
+            flex-wrap: wrap;
+        }
 
         .entity-field-datepicker {
             &__date {
-                width: 100%;
+                width: 70%;
             }
 
-            &__time {
-                display: none;
+            @media (max-width: 549px) {
+                flex-wrap: wrap;
             }
         }
     }
