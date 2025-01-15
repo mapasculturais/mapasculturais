@@ -1,0 +1,1 @@
+# Componente `<appeal-phase-chat>`
