@@ -23,7 +23,7 @@ $this->import('
 ?>
 
 <div class="registration__content">
-    <div class="registration__steps">
+    <div v-if="steps.length > 1" class="registration__steps">
         <registration-steps :steps="steps" v-model:step-index="stepIndex"></registration-steps>
     </div>
 

@@ -87,13 +87,15 @@ $this->import('
                         <input v-if="entity.valuersPerRegistration[groupName] !== undefined" 
                             v-model="entity.valuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
 
-                        <mc-toggle v-if="entity.valuersPerRegistration[groupName] !== undefined" 
-                            :modelValue="entity.ignoreStartedEvaluations[groupName] !== undefined" 
-                            @update:modelValue="enableIgnoreStartedEvaluations($event, groupName)"
-                            label="<?= i::__('Desconsiderar as avaliações já feitas na distribuição') ?>"
-                        />
+                        <div class="has-info">
+                            <mc-toggle v-if="entity.valuersPerRegistration[groupName] !== undefined" 
+                                :modelValue="entity.ignoreStartedEvaluations[groupName] !== undefined" 
+                                @update:modelValue="enableIgnoreStartedEvaluations($event, groupName)"
+                                label="<?= i::__('Desconsiderar as avaliações já feitas na distribuição') ?>"
+                            />
 
-                        <?php $this->info('editais-oportunidades -> configuracoes -> desconsiderar-avaliacoes-na-distribuicao') ?>
+                            <?php $this->info('editais-oportunidades -> configuracoes -> desconsiderar-avaliacoes-na-distribuicao') ?>
+                        </div>
                         
                     </div>
     
