@@ -94,6 +94,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                         <template #title="{ entity }">
                             <slot name="card-title" :entity="entity"></slot>
                         </template>
+                        <?php if($app->config['app.panelEtityCardFields']['type']):?>
                         <template #subtitle="{ entity }">
                             <slot name="card-content" :entity="entity">
                                 <span v-if="entity.type">
@@ -101,6 +102,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                                 </span>
                             </slot>
                         </template>
+                        <?php endif?>
                         <template #entity-actions-left>
                             <slot name="entity-actions-left" :entity="entity"></slot>
                         </template>
