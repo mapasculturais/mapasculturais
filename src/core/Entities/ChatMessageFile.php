@@ -26,4 +26,14 @@ class ChatMessageFile extends File{
      * })
      */
     protected $parent;
+
+    protected function canUserCreate($user)
+    {
+        return $this->owner->user->canUser("modify", $user);
+    }
+
+    protected function canUserModify($user)
+    {
+        return $this->owner->user->canUser("modify", $user);
+    }
 }

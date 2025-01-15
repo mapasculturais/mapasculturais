@@ -26,11 +26,16 @@ app.component('mc-chat', {
             currentUser: useGlobalState().auth.user,
             entities: [],
             currentTextareaFocus: false,
+            newAttachmentMessage: null,
             message: '',
             processing: false,
             query: null,
             attachmentMessage: null,
         };
+    },
+
+    created() {
+        this.initAttachmentMessage();
     },
 
     mounted() {
@@ -42,8 +47,6 @@ app.component('mc-chat', {
         } else {
             console.log('Thread não está definida no mounted.');
         }
-
-        this.initAttachmentMessage();
     },
 
     computed: {
@@ -57,7 +60,11 @@ app.component('mc-chat', {
     },
 
     methods: {
-        initAttachmentMessage() {
+        initAttachmentMessage(addNewMessages) {
+            if (addNewMessages) {
+                this.addNewMessages([this.newAttachmentMessage]);
+            }
+
             this.newAttachmentMessage = new Entity('chatmessage');
             this.newAttachmentMessage.disableMessages();
             this.newAttachmentMessage.thread = this.thread;
@@ -65,9 +72,7 @@ app.component('mc-chat', {
         },
 
         async saveAttachmentMessage() {
-            return this.newAttachmentMessage.save().then(() => {
-                this.initAttachmentMessage();
-            });
+            return this.newAttachmentMessage.save()
         },
 
         async sendMessage() {

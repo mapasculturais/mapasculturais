@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-file
     mc-avatar
     mc-entities
     mc-icon
@@ -26,13 +27,13 @@ $this->import('
             ref="chatMessages"
             type="chatmessage"
             :query="query"
-            select="createTimestamp,payload,user.profile.{name,files.avatar}" 
+            select="createTimestamp,payload,user.profile.{name,files.avatar},files" 
             order="createTimestamp DESC"
             :limit="5">
             <template #default="{ entities }">
                 <template v-for="message in entities">
                     <slot :message="message" :sender-name="senderName(message)">
-                        <slot v-if="isMine(message)" name="my-message" :message="message" :sender-name="senderName(message)">
+                        <slot v-if="isMine(message) && message.payload != '@attachment'" name="my-message" :message="message" :sender-name="senderName(message)">
                             <article
                                 class="mc-chat__message mc-chat__owner"
                                 :key="message.id"
@@ -55,7 +56,7 @@ $this->import('
                                 </div>
                             </article>
                         </slot>
-                        <slot v-if="!isMine(message)" name="other-message" :message="message" :sender-name="senderName(message)">
+                        <slot v-if="!isMine(message) && message.payload != '@attachment'" name="other-message" :message="message" :sender-name="senderName(message)">
                             <article
                                 class="mc-chat__message"
                                 :key="message.id"
@@ -78,6 +79,13 @@ $this->import('
                                 </div>
                             </article>
                         </slot>
+                        <slot v-if="message.payload == '@attachment'" :message="message" :sender-name="senderName(message)">
+                            <entity-file
+                                :entity="message"
+                                group-name="chatAttachment"
+                                classes="col-12"
+                                ></entity-file>
+                        </slot>
                     </slot>
                 </template>
             </template>
@@ -92,6 +100,16 @@ $this->import('
             id="agent-response" 
             class="mc-chat__textarea">
         </textarea>
+
+        <entity-file
+            @uploaded="initAttachmentMessage(true)"
+            :entity="newAttachmentMessage"
+            group-name="chatAttachment"
+            :before-upload="saveAttachmentMessage"
+            title-modal="<?php i::_e('Adicionar anexo') ?>"
+            classes="col-12"
+            title="<?php i::esc_attr_e('Adicionar anexo'); ?>"
+            editable></entity-file>
 
         <button type="button" class="button button--primary" @click="sendMessage" :disabled="processing"><?= i::__('Responder') ?></button>
     </div>
