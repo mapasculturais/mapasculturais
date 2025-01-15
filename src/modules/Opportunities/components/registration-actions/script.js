@@ -138,6 +138,18 @@ app.component('registration-actions', {
                 return this.text('Espaço');
             }
 
+            if (field == 'workplan') {
+                return this.text('Plano de trabalho');
+            }
+
+            if (field == 'goal') {
+                return this.text('Meta');
+            }
+
+            if (field == 'delivery') {
+                return this.text('Entrega');
+            }
+
             if (field.slice(0, 6) == 'field_') {
                 for (let regField of this.fields) {
                     if (regField.fieldName == field) {
@@ -252,11 +264,14 @@ app.component('registration-actions', {
                         }
                     }
                 }
-            }
 
+                if (['workplan', 'goal', 'delivery'].includes(fieldName)) {
+                    validationErrors[1][fieldName] = fieldError;
+                }
+            }
+            
             return validationErrors;
         },
-
         async save() {
             try{
                 await this.registration.save(0, false, true);
