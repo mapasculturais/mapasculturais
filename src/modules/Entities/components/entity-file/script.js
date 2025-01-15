@@ -81,6 +81,10 @@ app.component('entity-file', {
         }
     },
 
+    updated() {
+        this.file = this.entity.files?.[this.groupName] || null;
+    },
+
     methods: {
         setFile(event) {
             this.newFile = event.target.files[0];
@@ -96,7 +100,7 @@ app.component('entity-file', {
             };
 
             if (this.beforeUpload) {
-                data = await this.beforeUpload({
+                await this.beforeUpload({
                     data,
                     file: this.newFile
                 });
@@ -104,7 +108,6 @@ app.component('entity-file', {
 
             this.entity.disableMessages();
             try{
-
                 const response = await this.entity.upload(this.newFile, data);
                 this.$emit('uploaded', this);
                 this.file = response;
