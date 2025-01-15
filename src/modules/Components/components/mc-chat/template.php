@@ -7,6 +7,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-file
     mc-avatar
     mc-entities
     mc-icon
@@ -26,34 +27,67 @@ $this->import('
             ref="chatMessages"
             type="chatmessage"
             :query="query"
-            select="createTimestamp,payload,user.profile.{name,files.avatar}" 
+            select="createTimestamp,payload,user.profile.{name,files.avatar},files" 
             order="createTimestamp DESC"
             :limit="5">
             <template #default="{ entities }">
-                <article
-                    class="mc-chat__message"
-                    :key="message.id"
-                    :class="{'mc-chat__owner': isMine(message)}"
-                    v-for="message in entities">
-                    <div class="mc-chat__avatar">
-                        <mc-avatar :entity="message.user.profile" size="small"></mc-avatar>
-                    </div>
-                    <div class="mc-chat__details">
-                        <div class="mc-chat__metadata">
-                            <span class="mc-chat__name">
-                                {{ senderName(message) }}
-                            </span>
+                <template v-for="message in entities">
+                    <slot :message="message" :sender-name="senderName(message)">
+                        <slot v-if="isMine(message) && message.payload != '@attachment'" name="my-message" :message="message" :sender-name="senderName(message)">
+                            <article
+                                class="mc-chat__message mc-chat__owner"
+                                :key="message.id"
+                                >
+                                <div class="mc-chat__avatar">
+                                    <mc-avatar :entity="message.user.profile" size="small"></mc-avatar>
+                                </div>
+                                <div class="mc-chat__details">
+                                    <div class="mc-chat__metadata">
+                                        <span class="mc-chat__name">
+                                            {{ senderName(message) }}
+                                        </span>
 
-                            <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
-                        </div>
+                                        <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
+                                    </div>
 
-                        <div class="mc-chat__text">
-                            <p>{{ message.payload }}</p>
-                        </div>
-                        
+                                    <div class="mc-chat__text">
+                                        <p>{{ message.payload }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </slot>
+                        <slot v-if="!isMine(message) && message.payload != '@attachment'" name="other-message" :message="message" :sender-name="senderName(message)">
+                            <article
+                                class="mc-chat__message"
+                                :key="message.id"
+                                >
+                                <div class="mc-chat__avatar">
+                                    <mc-avatar :entity="message.user.profile" size="small"></mc-avatar>
+                                </div>
+                                <div class="mc-chat__details">
+                                    <div class="mc-chat__metadata">
+                                        <span class="mc-chat__name">
+                                            {{ senderName(message) }}
+                                        </span>
 
-                    </div>
-                </article>
+                                        <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
+                                    </div>
+
+                                    <div class="mc-chat__text">
+                                        <p>{{ message.payload }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </slot>
+                        <slot v-if="message.payload == '@attachment'" :message="message" :sender-name="senderName(message)">
+                            <entity-file
+                                :entity="message"
+                                group-name="chatAttachment"
+                                classes="col-12"
+                                ></entity-file>
+                        </slot>
+                    </slot>
+                </template>
             </template>
         </mc-entities>
     </main>
@@ -66,6 +100,16 @@ $this->import('
             id="agent-response" 
             class="mc-chat__textarea">
         </textarea>
+
+        <entity-file
+            @uploaded="initAttachmentMessage(true)"
+            :entity="newAttachmentMessage"
+            group-name="chatAttachment"
+            :before-upload="saveAttachmentMessage"
+            title-modal="<?php i::_e('Adicionar anexo') ?>"
+            classes="col-12"
+            title="<?php i::esc_attr_e('Adicionar anexo'); ?>"
+            editable></entity-file>
 
         <button type="button" class="button button--primary" @click="sendMessage" :disabled="processing"><?= i::__('Responder') ?></button>
     </div>
