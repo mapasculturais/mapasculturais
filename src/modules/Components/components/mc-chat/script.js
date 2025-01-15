@@ -146,11 +146,13 @@ app.component('mc-chat', {
 
         senderName(message) {
             if (this.isMine(message)) {
-                return
-            }
-
-            if (this.anonymousSender) {
-                return message.user.profile.name;
+                return this.currentUser.profile.name;
+            } else {
+                if (this.anonymousSender) {
+                    return this.anonymousSender;
+                } else {
+                    return message.user.profile.name;
+                }
             }
         },
 

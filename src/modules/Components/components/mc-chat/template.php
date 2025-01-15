@@ -30,30 +30,56 @@ $this->import('
             order="createTimestamp DESC"
             :limit="5">
             <template #default="{ entities }">
-                <article
-                    class="mc-chat__message"
-                    :key="message.id"
-                    :class="{'mc-chat__owner': isMine(message)}"
-                    v-for="message in entities">
-                    <div class="mc-chat__avatar">
-                        <mc-avatar :entity="message.user.profile" size="small"></mc-avatar>
-                    </div>
-                    <div class="mc-chat__details">
-                        <div class="mc-chat__metadata">
-                            <span class="mc-chat__name">
-                                {{ senderName(message) }}
-                            </span>
+                <template v-for="message in entities">
+                    <slot :message="message" :sender-name="senderName(message)">
+                        <slot v-if="isMine(message)" name="my-message" :message="message" :sender-name="senderName(message)">
+                            <article
+                                class="mc-chat__message mc-chat__owner"
+                                :key="message.id"
+                                >
+                                <div class="mc-chat__avatar">
+                                    <mc-avatar :entity="message.user.profile" size="small"></mc-avatar>
+                                </div>
+                                <div class="mc-chat__details">
+                                    <div class="mc-chat__metadata">
+                                        <span class="mc-chat__name">
+                                            {{ senderName(message) }}
+                                        </span>
 
-                            <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
-                        </div>
+                                        <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
+                                    </div>
 
-                        <div class="mc-chat__text">
-                            <p>{{ message.payload }}</p>
-                        </div>
-                        
+                                    <div class="mc-chat__text">
+                                        <p>{{ message.payload }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </slot>
+                        <slot v-if="!isMine(message)" name="other-message" :message="message" :sender-name="senderName(message)">
+                            <article
+                                class="mc-chat__message"
+                                :key="message.id"
+                                >
+                                <div class="mc-chat__avatar">
+                                    <mc-avatar :entity="message.user.profile" size="small"></mc-avatar>
+                                </div>
+                                <div class="mc-chat__details">
+                                    <div class="mc-chat__metadata">
+                                        <span class="mc-chat__name">
+                                            {{ senderName(message) }}
+                                        </span>
 
-                    </div>
-                </article>
+                                        <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
+                                    </div>
+
+                                    <div class="mc-chat__text">
+                                        <p>{{ message.payload }}</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </slot>
+                    </slot>
+                </template>
             </template>
         </mc-entities>
     </main>
