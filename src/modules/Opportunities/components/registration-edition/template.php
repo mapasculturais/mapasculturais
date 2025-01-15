@@ -22,8 +22,8 @@ $this->import('
 
 ?>
 
-<div class="registration__content">
-    <div class="registration__steps">
+<div class="registration__content" :class="{ 'status--20': entity.opportunity.status === -20 }">
+    <div class="registration__steps" :class="{ 'status--20': entity.opportunity.status === -20 }">
         <registration-steps :steps="steps" v-model:step-index="stepIndex"></registration-steps>
     </div>
 
