@@ -19,6 +19,7 @@ class Module extends \MapasCulturais\Module {
 
     public function _init() {
         $app = App::i();
+        $self = $this;
 
         /* Endpoint de criação de fase de recurso na oportunidade */
         $app->hook('POST(opportunity.createAppealPhase)', function() use ($app) {
@@ -66,7 +67,7 @@ class Module extends \MapasCulturais\Module {
          *
          * @param int $registration_id
          */
-        $app->hook('POST(opportunity.createAppealPhaseRegistration)', function() use ($app) {
+        $app->hook('POST(opportunity.createAppealPhaseRegistration)', function() use ($app, $self) {
             /** @var Controllers\Opportunity $this  */
 
             $opportunity = $this->requestedEntity;
@@ -104,7 +105,82 @@ class Module extends \MapasCulturais\Module {
                 
                 $new_registration->save(true);
 
+                // Cria notificação do sistema e disparo de e-mail para o proponente e gestores da oportunidade
+                // Disparo para o proponente
+                $registration_email = ($new_registration->owner->emailPrivado ??
+                    $new_registration->owner->emailPublico ??
+                    $new_registration->ownerUser->email);
+                
+                $self->sendEmail($opportunity, $new_registration, $registration_email);
+                $self->sendSystemNotification($opportunity, $new_registration);
+                
+                // Disparo para os gestores da oportunidade
+                $relations = $opportunity->getAgentRelations();
+                foreach($relations as $relation) {
+                    if($relation->group == 'group-admin') {
+                        $user_email = ($relation->agent->emailPrivado ??
+                            $relation->agent->emailPublico ??
+                            $relation->agent->user->email);
+
+                        $self->sendEmail($opportunity, $new_registration, $user_email);
+                        $self->sendSystemNotification($opportunity, $relation);
+                    }
+                }
+
                 $this->json($new_registration);
+            }
+        });
+
+        // Envio de e-mail e notificação do sistema após o envio da inscrição
+        $app->hook('entity(Registration).send:after', function() use ($app, $self) {
+            /** @var \MapasCulturais\Entities\Registration $this */
+            $opportunity = $this->opportunity;
+
+            if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
+
+                // Disparo de e-mail para todos os avaliadores dessa fase de recurso
+                $relations = $opportunity->evaluationMethodConfiguration->getAgentRelations();
+                foreach($relations as $relation) {
+                    $user_email = ($relation->agent->emailPrivado ??
+                        $relation->agent->emailPublico ??
+                        $relation->agent->user->email);
+
+                    $self->sendEmail($opportunity, $this, $user_email, true);
+                    $self->sendSystemNotification($opportunity, $relation, true);
+                }
+            }
+        });
+
+        // Envio de e-mail e notificação do sistema após status for alterado para indeferido
+        $app->hook('entity(Registration).status(notapproved)', function() use ($app, $self) {
+            /** @var \MapasCulturais\Entities\Registration $this */
+            $opportunity = $this->opportunity;
+
+            if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
+                $self->sendMailNewStatus($opportunity, $this);
+                $self->sendNotificationNewStatus($opportunity, $this);
+            }
+        });
+
+        // Envio de e-mail e notificação do sistema após status for alterado para deferido
+        $app->hook('entity(Registration).status(approved)', function() use ($app, $self) {
+            /** @var \MapasCulturais\Entities\Registration $this */
+            $opportunity = $this->opportunity;
+
+            if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
+                $self->sendMailNewStatus($opportunity, $this);
+                $self->sendNotificationNewStatus($opportunity, $this);
+            }
+        });
+
+        // Envio de e-mail e notificação do sistema após status for alterado para negado
+        $app->hook('entity(Registration).status(invalid)', function() use ($app, $self) {
+            /** @var \MapasCulturais\Entities\Registration $this */
+            $opportunity = $this->opportunity;
+
+            if($opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
+                $self->sendMailNewStatus($opportunity, $this);
+                $self->sendNotificationNewStatus($opportunity, $this);
             }
         });
     }
@@ -159,5 +235,104 @@ class Module extends \MapasCulturais\Module {
             $this->sendEmailForNotification($message, $notification, $sender, $recipient);
         });
         $app->registerChatThreadType($definition);
+    }
+
+    /**
+     * Envia e-mail para o proponente e gestores da oportunidade
+     *
+     * @param Opportunity $opportunity
+     * @param Registration $registration
+     * @param string $email
+     * @param bool $evaluator
+     */
+    function sendEmail(Opportunity $opportunity, Registration $registration, string $email, $evaluator = false) {
+        $app = App::i();
+       
+        $template = "opportunityappealphase/appeal-phase.html";
+
+        $subject = $evaluator ? sprintf(i::__("Aviso sobre uma nova avaliação de recurso em " ."%s"), $opportunity->name) : sprintf(i::__("Aviso sobre um novo recurso em " ."%s"), $opportunity->appealPhase->name);
+        $message = $evaluator ? sprintf(i::__("Um novo recurso para avaliação foi gerado em " ."%s"), $opportunity->name) : sprintf(i::__("Uma nova solicitação de recurso foi feita em " ."%s"), $opportunity->appealPhase->name) ;
+        
+        $params = [
+            "siteName" => $app->siteName,
+            "user" => $registration->owner->name,
+            "baseUrl" => $registration->singleUrl,
+            "message" => $message
+        ];
+        $email_params = [
+            "from" => $app->config["mailer.from"],
+            "to" => $email,
+            "subject" => $subject,
+            "body" => $app->renderMustacheTemplate($template, $params)
+        ];
+        if (!isset($email_params["to"])) {
+            return;
+        }
+        $app->createAndSendMailMessage($email_params);
+    }
+    /**
+     * Envia e-mail para o proponente sobre a alteração de status
+     *
+     * @param Opportunity $opportunity
+     * @param Registration $registration
+     */
+    function sendMailNewStatus(Opportunity $opportunity, Registration $registration) {
+        $app = App::i();
+
+        $template = "opportunityappealphase/update-status.html";
+        $params = [
+            "siteName" => $app->siteName,
+            "user" => $registration->owner->name,
+            "baseUrl" => $registration->singleUrl,
+            "opportunityId" => $opportunity->id,
+            "opportunityTitle" => $opportunity->name,
+            "registrationId" => $registration->id,
+            "registrationUrl" => $registration->singleUrl
+        ];
+        $email_params = [
+            "from" => $app->config["mailer.from"],
+            "to" => ($registration->owner->emailPrivado ??
+                        $registration->owner->emailPublico ??
+                        $registration->ownerUser->email),
+            "subject" => sprintf(i::__("Aviso sobre a mudança do seu status no(a) " .
+                            "%s"),
+                            $opportunity->name),
+            "body" => $app->renderMustacheTemplate($template, $params)
+        ];
+        if (!isset($email_params["to"])) {
+            return;
+        }
+        $app->createAndSendMailMessage($email_params);
+    }
+
+    /**
+     * Envia notificação do sistema para o proponente e gestores da oportunidade
+     *
+     * @param Opportunity $opportunity
+     * @param $recipient
+     * @param bool $evaluator
+     */
+    function sendSystemNotification(Opportunity $opportunity, $recipient, $evaluator = false) {
+        $message = $evaluator ? i::__('Um novo recurso para avaliação foi gerado em ' . $opportunity->name) : i::__('Uma nova solicitação de recurso foi feita em ' . $opportunity->name);
+
+        $notification = new Notification;
+        $notification->user = $recipient->ownerUser;
+        $notification->message = $message;
+        $notification->save(true);
+    }
+    
+    /**
+     * Envia notificação do sistema para o proponente sobre a alteração de status
+     *
+     * @param Opportunity $opportunity
+     * @param $recipient
+     */
+    function sendNotificationNewStatus(Opportunity $opportunity, $recipient) {
+        $message = i::__('O status da sua inscrição na fase de recurso ' . $opportunity->appealPhase->name . ' foi alterado.');
+
+        $notification = new Notification;
+        $notification->user = $recipient->ownerUser;
+        $notification->message = $message;
+        $notification->save(true);
     }
 }
