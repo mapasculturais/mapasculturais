@@ -183,6 +183,13 @@ class Module extends \MapasCulturais\Module {
                 $self->sendNotificationNewStatus($opportunity, $this);
             }
         });
+
+        // Altera o texto de "Não avaliado" para "Aguardando resposta" na tabela de avaliações da fase de recursos
+        $app->hook('component(opportunity.allEvaluations.opportunity-evaluations-table).texts', function(&$texts) {
+            if($this->data['entity']->opportunity->isAppealPhase) {
+                $texts['não avaliado'] = i::__('Aguardando resposta');
+            }
+        });
     }
 
     public function register() {
