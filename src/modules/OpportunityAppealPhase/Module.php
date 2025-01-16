@@ -189,6 +189,31 @@ class Module extends \MapasCulturais\Module {
             if($this->data['entity']->opportunity->isAppealPhase) {
                 $texts['não avaliado'] = i::__('Aguardando resposta');
             }
+            
+        });
+         
+        //Ativação do chat
+        $app->hook('entity(Registration).send:after', function() use ($app) {
+            /** @var Registration $this */
+        
+            $opportunity = $this->opportunity;
+            
+            if ($opportunity->allow_proponent_response && $opportunity->isAppealPhase) {
+                
+                if($committee = $opportunity->getEvaluationCommittee(false)){
+                    $group = i::__('Avaliadores');
+                    $chat_thread = new ChatThread($this->owner->refreshed(), $this, self::CHAT_THREAD_TYPE);
+                    $chat_thread->save(true);
+
+                    $app->disableAccessControl();
+                    
+                    foreach ($committee as $agent) {
+                        $chat_thread->createAgentRelation($agent->refreshed(), $group, true);
+                    }
+
+                    $app->enableAccessControl();
+                }
+            }
         });
     }
 
@@ -203,6 +228,11 @@ class Module extends \MapasCulturais\Module {
         $this->registerOpportunityMetadata('isAppealPhase', [
             'label' => i::__('Indica se é uma fase de recurso'),
             'type'  => 'boolean'
+        ]);
+        
+        $this->registerOpportunityMetadata('allow_proponent_response', [
+                'type' => "checkbox",
+                'label' => \MapasCulturais\i::__('Possibilitar mais de uma resposta do proponente'),
         ]);
 
         $this->registerEvauationMethodConfigurationMetadata('appealPhase', [

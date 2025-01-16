@@ -24,10 +24,10 @@ app.component('registration-status', {
         return {
             processing: false, 
             entity: null,
-            appealPhaseRegistrationFrom: this.registration.opportunity.appealPhase.registrationFrom,
-            appealPhaseRegistrationTo: this.registration.opportunity.appealPhase.registrationTo,
-            appealPhaseEvaluationFrom: this.registration.opportunity.appealPhase.evaluationMethodConfiguration.evaluationFrom,
-            appealPhaseEvaluationTo: this.registration.opportunity.appealPhase.evaluationMethodConfiguration.evaluationTo,
+            appealPhaseRegistrationFrom: this.registration.opportunity.appealPhase?.registrationFrom,
+            appealPhaseRegistrationTo: this.registration.opportunity.appealPhase?.registrationTo,
+            appealPhaseEvaluationFrom: this.registration.opportunity.appealPhase?.evaluationMethodConfiguration.evaluationFrom,
+            appealPhaseEvaluationTo: this.registration.opportunity.appealPhase?.evaluationMethodConfiguration.evaluationTo,
         }
     },
 
