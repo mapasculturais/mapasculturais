@@ -130,7 +130,7 @@ $this->import('
         </mc-entities>
     </main>
 
-    <div class="mc-chat__actions">
+    <div v-if="!isClosed()" class="mc-chat__actions">
         <textarea 
             v-model="message" 
             ref="textarea" 
