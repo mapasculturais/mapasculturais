@@ -67,7 +67,8 @@
         font-size: size(12);
     }
 
-    &__text {
+    &__text,
+    &__attachment {
         background-color: var(--mc-gray-100);
         border-radius: var(--mc-border-radius-sm);
         padding: size(14);
@@ -76,10 +77,17 @@
     &__actions {
         border-top: var(--mc-border-hairline) var(--mc-gray-300);
         display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
         gap: size(16);
         margin-top: size(16);
         padding-top: size(32);
+
+        .entity-file {
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
     }
 
     &__textarea {
