@@ -29,11 +29,19 @@ class ChatMessageFile extends File{
 
     protected function canUserCreate($user)
     {
+        if ($this->owner->thread->status == ChatThread::STATUS_CLOSED) {
+            return false;
+        }
+
         return $this->owner->user->canUser("modify", $user);
     }
 
     protected function canUserModify($user)
     {
+        if ($this->owner->thread->status == ChatThread::STATUS_CLOSED) {
+            return false;
+        }
+
         return $this->owner->user->canUser("modify", $user);
     }
 }
