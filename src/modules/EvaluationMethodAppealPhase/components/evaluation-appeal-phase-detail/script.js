@@ -1,5 +1,5 @@
-app.component('evaluation-appealPhase-detail', {
-    template: $TEMPLATES['evaluation-appealPhase-detail'],
+app.component('evaluation-appeal-phase-detail', {
+    template: $TEMPLATES['evaluation-appeal-phase-detail'],
 
     props: {
         registration: {
