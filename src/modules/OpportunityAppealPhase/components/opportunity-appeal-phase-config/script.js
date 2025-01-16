@@ -77,13 +77,13 @@ app.component('opportunity-appeal-phase-config' , {
         },
 
         evaluationFrom() {
-            return this.entity.evaluationMethodConfiguration.evaluationFrom 
+            return this.entity.evaluationMethodConfiguration?.evaluationFrom
                 ? this.entity.evaluationMethodConfiguration.evaluationFrom.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },
 
         evaluationTo() {
-            return this.entity.evaluationMethodConfiguration.evaluationTo
+            return this.entity.evaluationMethodConfiguration?.evaluationTo
                 ? this.entity.evaluationMethodConfiguration.evaluationTo.format({ day: '2-digit', month: '2-digit', year: 'numeric' })
                 : '';
         },

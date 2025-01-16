@@ -135,8 +135,7 @@ $this->import('
                     </div>
                 </div>
                 <div class="opportunity-appeal-phase-config__checkboxes field">
-                    <input type="checkbox" id="more-response" v-model="moreResponse">
-                    <label for="more-response"><?= i::__('Possibilitar mais de uma resposta do proponente') ?></label> 
+                    <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="allow_proponent_response" :autosave="3000"></entity-field>
                 </div> 
                 <div class="opportunity-appeal-phase-config__config-button opportunity-appeal-phase-config__add-evaluation-committee">
                     <button v-if="showButtonEvaluationCommittee" class="button button--icon button--primary button--md" @click="addEvaluationCommittee()"> 
