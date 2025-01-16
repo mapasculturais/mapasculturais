@@ -46,16 +46,39 @@ $this->import('
                                         <span class="mc-chat__name">
                                             {{ senderName(message) }}
                                         </span>
-
                                         <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
                                     </div>
-
                                     <div class="mc-chat__text">
                                         <p>{{ message.payload }}</p>
                                     </div>
                                 </div>
                             </article>
                         </slot>
+                        <slot v-if="isMine(message) && message.payload == '@attachment'" name="my-attachment" :message="message" :sender-name="senderName(message)">
+                            <article
+                                class="mc-chat__message mc-chat__owner"
+                                :key="message.id">
+                                <div class="mc-chat__avatar">
+                                    <mc-avatar :entity="message.user.profile" size="small"></mc-avatar>
+                                </div>
+                                <div class="mc-chat__details">
+                                    <div class="mc-chat__metadata">
+                                        <span class="mc-chat__name">
+                                            {{ senderName(message) }}
+                                        </span>
+                                        <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
+                                    </div>
+                                    <div class="mc-chat__attachment">
+                                        <entity-file
+                                            :entity="message"
+                                            group-name="chatAttachment"
+                                            classes="col-12"
+                                            ></entity-file>
+                                    </div>
+                                </div>
+                            </article>
+                        </slot>
+
                         <slot v-if="!isMine(message) && message.payload != '@attachment'" name="other-message" :message="message" :sender-name="senderName(message)">
                             <article
                                 class="mc-chat__message"
@@ -69,22 +92,37 @@ $this->import('
                                         <span class="mc-chat__name">
                                             {{ senderName(message) }}
                                         </span>
-
                                         <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
                                     </div>
-
                                     <div class="mc-chat__text">
                                         <p>{{ message.payload }}</p>
                                     </div>
                                 </div>
                             </article>
                         </slot>
-                        <slot v-if="message.payload == '@attachment'" :message="message" :sender-name="senderName(message)">
-                            <entity-file
-                                :entity="message"
-                                group-name="chatAttachment"
-                                classes="col-12"
-                                ></entity-file>
+                        <slot v-if="!isMine(message) && message.payload == '@attachment'" :message="message" :sender-name="senderName(message)">
+                            <article
+                                class="mc-chat__message"
+                                :key="message.id">
+                                <div class="mc-chat__avatar">
+                                    <mc-avatar :entity="message.user.profile" size="small"></mc-avatar>
+                                </div>
+                                <div class="mc-chat__details">
+                                    <div class="mc-chat__metadata">
+                                        <span class="mc-chat__name">
+                                            {{ senderName(message) }}
+                                        </span>
+                                        <span class="mc-chat__timestamp">{{ message.createTimestamp?.date('numeric year') }} - {{ message.createTimestamp?.time() }}</span>
+                                    </div>
+                                    <div class="mc-chat__attachment">
+                                        <entity-file
+                                            :entity="message"
+                                            group-name="chatAttachment"
+                                            classes="col-12"
+                                            ></entity-file>
+                                    </div>
+                                </div>
+                            </article>
                         </slot>
                     </slot>
                 </template>
