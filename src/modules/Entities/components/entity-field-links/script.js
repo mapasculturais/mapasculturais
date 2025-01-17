@@ -7,6 +7,10 @@ app.component('entity-field-links', {
             type: Entity,
             required: true
         },
+        editable: {
+            type: Boolean,
+            default: true
+        },
 
         prop: {
             type: String,
