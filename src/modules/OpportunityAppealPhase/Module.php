@@ -202,7 +202,7 @@ class Module extends \MapasCulturais\Module {
                 
                 if($committee = $opportunity->getEvaluationCommittee(false)){
                     $group = i::__('Avaliadores');
-                    $chat_thread = new ChatThread($this->owner->refreshed(), $this, self::CHAT_THREAD_TYPE);
+                    $chat_thread = new ChatThread($this->refreshed(), $this, self::CHAT_THREAD_TYPE);
                     $chat_thread->save(true);
 
                     $app->disableAccessControl();
