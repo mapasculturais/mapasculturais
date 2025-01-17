@@ -39,7 +39,7 @@ $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
 $this->breadcrumb = $breadcrumb;
 
 if ($entity->opportunity->isAppealPhase) {
-    $parentRegistration = $app->repo('registration')->findBy([
+    $parent_registration = $app->repo('registration')->findBy([
         'owner' => $entity->owner->id,
         'opportunity' => $entity->opportunity->parent->id
     ])[0];
@@ -104,8 +104,6 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                         </div>
                     </section>
 
-                    <!-- {{console.log(entity)}} -->
-
                     <section class="col-12  grid-12 section">
                         <h3 class="col-12"><?= i::__('Dados informados no formulário') ?></h3>
                         <mc-summary-spaces :entity="entity" classes="col-12"></mc-summary-spaces>
@@ -117,7 +115,7 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                                 <v1-embed-tool v-if="!entity.opportunity?.isAppealPhase" route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
                                 
                                 <!-- Caso seja uma fase de recurso -->
-                                <v1-embed-tool v-if="entity.opportunity?.isAppealPhase" route="registrationevaluationtionformview" iframe-id="evaluation-registration" id="<?= $parentRegistration->id ?>"></v1-embed-tool>
+                                <v1-embed-tool v-if="entity.opportunity?.isAppealPhase" route="registrationevaluationtionformview" iframe-id="evaluation-registration" id="<?= $parent_registration->id ?>"></v1-embed-tool>
                                 </div>
                             </div>
                     </section>
