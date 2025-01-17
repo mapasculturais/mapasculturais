@@ -260,6 +260,21 @@ class Module extends \MapasCulturais\EvaluationMethod {
             
             $this->part('appeal-phase--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
+
+        // altera o status de uma avaliação de acordo com o status da mensagem do chat
+        $app->hook('entity(ChatMessage).save:finish', function() use ($app, $self){
+            /** @var \MapasCulturais\Entities\ChatMessage $this */
+            if ($this->thread->ownerEntity instanceof Entities\Registration && 
+                $this->thread->ownerEntity->evaluationMethod instanceof $self && 
+                $app->user->canUser('evaluateOnTime')) {
+                    $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->thread->ownerEntity]);
+                    if ($evaluation) {
+                        $data = json_decode($this->payload, true);
+                        $evaluation->status = $data['status'];
+                        $evaluation->save(true);
+                    }
+            }
+        });
     }
 
     public function findConsolidatedResult($opportunity)
