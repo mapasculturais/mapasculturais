@@ -17,7 +17,7 @@ $this->import('
         <div class="entity-field-links__link-fields grid-12">
             <div class="field col-6 sm:col-12">
                 <label> <?php i::_e('Título') ?> </label>
-                <input type="url" v-model="link.vatitlelue" placeholder="<?php i::esc_attr_e("Título") ?>" />
+                <input type="url" v-model="link.title" placeholder="<?php i::esc_attr_e("Título") ?>" />
             </div>
 
             <div class="field col-6 sm:col-12">
