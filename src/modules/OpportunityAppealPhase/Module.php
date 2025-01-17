@@ -215,6 +215,22 @@ class Module extends \MapasCulturais\Module {
                 }
             }
         });
+
+        // Permite que avaliadores modifiquem o status da avaliação contínua da fase de recursos
+        $app->hook('entity(Registration).canUser(evaluate)', function($user, &$result) use($app){
+            /** @var \MapasCulturais\Entities\Registration $this */
+            $opportunity = $this->opportunity;
+
+            // Verifica se a oportunidade está na fase de recurso
+            if($opportunity->isAppealPhase && $opportunity->allow_proponent_response) {
+                $chat_thread = $app->repo('ChatThread')->findOneBy(['identifier' => "{$this}"]);
+
+                // Verifica se o chat está ativo
+                if($chat_thread && $chat_thread->status == $chat_thread::STATUS_ENABLED) {
+                    $result = true;
+                }
+            }
+        });
     }
 
     public function register() {
