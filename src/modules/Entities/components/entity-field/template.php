@@ -70,7 +70,7 @@ $this->import('
         </template>
 
         <template v-if="is('links')">
-            <entity-field-links :entity="entity" :prop="prop" :show-title="description && Boolean(description.registrationFieldConfiguration?.config?.title)" @change="change($event, true)"></entity-field-links>
+            <entity-field-links :entity="entity" :prop="prop" :show-title="description && Boolean(description.registrationFieldConfiguration?.config?.title)" @change="change($event, true)" :editable="!disabled"></entity-field-links>
         </template>
 
         <template v-if="is('multiselect') || is('checklist')">
