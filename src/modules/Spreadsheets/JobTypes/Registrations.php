@@ -32,6 +32,17 @@ class Registrations extends SpreadsheetJob
         }*/
         $query['@select'] .= ',projectName,owner.{name}';
         $properties = explode(',', $query['@select']);
+
+        usort($properties, function($a, $b) {
+            $is_field_a = str_starts_with($a, 'field_');
+            $is_field_b = str_starts_with($b, 'field_');
+        
+            if ($is_field_a === $is_field_b) {
+                return 0;
+            }
+        
+            return $is_field_a ? 1 : -1;
+        });
         
         foreach($properties as $property) {
             if(str_starts_with($property, 'owner.{')) {
@@ -71,6 +82,10 @@ class Registrations extends SpreadsheetJob
             $opportunity->registerRegistrationMetadata();
 
             $fields = $opportunity->getRegistrationFieldConfigurations();
+
+            usort($fields, function($a, $b) {
+                return $a->displayOrder - $b->displayOrder;
+            });
             
             foreach($fields as $field) {
                 $entity_type_field = $this->is_entity_type_field($field->fieldName);
@@ -94,7 +109,7 @@ class Registrations extends SpreadsheetJob
                 }
             }
         } while($opportunity = $opportunity->previousPhase);
-
+        
         unset($header['id']);
         unset($header[' id']);
         unset($header['agentsData']);
