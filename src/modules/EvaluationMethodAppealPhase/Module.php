@@ -5,6 +5,7 @@ namespace EvaluationMethodAppealPhase;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\ChatThread;
 use MapasCulturais\Entities\Registration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
@@ -272,6 +273,26 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $data = json_decode($this->payload, true);
                         $evaluation->status = $data['status'];
                         $evaluation->save(true);
+                    }
+            }
+        });
+
+        // altera o status do chat de acordo com o checkbox `endChat` da mensagem
+        $app->hook('entity(ChatMessage).save:finish', function() use ($app, $self){
+            /** @var \MapasCulturais\Entities\ChatMessage $this */
+            if ($this->thread->ownerEntity instanceof Entities\Registration && 
+                $this->thread->ownerEntity->evaluationMethod instanceof $self &&
+                $app->user->canUser('evaluateOnTime')) {
+
+                    $data = $this->payload ? json_decode($this->payload, true) : [];
+                    $end_chat = $data['endChat'] ?? false;
+
+                    if ($end_chat) {
+                        $thread = $app->repo('ChatThread')->findOneBy(['id' => $this->thread->id]);
+                        if ($thread) {
+                            $thread->status = ChatThread::STATUS_CLOSED;
+                            $thread->save(true);
+                        }
                     }
             }
         });
