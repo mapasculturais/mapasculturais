@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-chat
+    mc-select
 ');
 
 ?>
