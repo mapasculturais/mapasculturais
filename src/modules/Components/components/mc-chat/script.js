@@ -27,7 +27,7 @@ app.component('mc-chat', {
             currentTextareaFocus: false,
             currentUser: useGlobalState().auth.user,
             entities: [],
-            message: '',
+            message: this.createNewMessage(''),
             newAttachmentMessage: null,
             processing: false,
             query: null,
@@ -80,7 +80,11 @@ app.component('mc-chat', {
         },
 
         async sendMessage() {
-            if (!this.message.trim()) {
+            if ((typeof this.message.payload) === 'string' && this.message.payload.trim() === '') {
+                return;
+            } 
+
+            if ((typeof this.message.payload) === 'object' && this.message.payload.message.trim() === '') {
                 return;
             }
 
@@ -88,7 +92,7 @@ app.component('mc-chat', {
             const messages = useMessages();
 
             try {
-                const newMessage = this.createNewMessage(this.message);
+                const newMessage = this.message; 
                 await newMessage.save();
 
                 this.$refs.chatMessages.entities.unshift({
@@ -99,7 +103,7 @@ app.component('mc-chat', {
                 });
 
                 messages.success(this.text('Mensagem enviada com sucesso'));
-                this.message = '';
+                this.message = this.createNewMessage('');
             } catch (error) {
                 messages.error(error?.data);
             } finally {
@@ -211,5 +215,18 @@ app.component('mc-chat', {
             this.currentTextareaFocus = false;
             this.updateAutoRefreshInterval();
         },
+
+        verifyState(status) {
+            switch (status) {
+                case "2":
+                    return 'Negado';
+                case "3":
+                    return 'Indeferido';
+                case "10":
+                    return 'Deferido';
+                default:
+                    return '';
+            }
+        }
     }
 });
