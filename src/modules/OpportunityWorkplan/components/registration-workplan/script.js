@@ -20,12 +20,22 @@ app.component('registration-workplan', {
         entityWorkplan.culturalArtisticSegment = null;
         entityWorkplan.goals = [];
 
+        const enableWorkplanInStep = this.registration.opportunity.registrationSteps.length > 1 ? false : true;
+
+
         return {
+            enableWorkplanInStep: enableWorkplanInStep,
             opportunity: this.registration.opportunity,
             workplan: entityWorkplan,
             workplanFields: $MAPAS.EntitiesDescription.workplan,
             expandedGoals: [],
         };
+    },
+    mounted() {
+        this.handleHashChange();
+
+
+        window.addEventListener('hashchange', this.handleHashChange);
     },
     computed: {
         getWorkplanLabelDefault() {
@@ -37,8 +47,25 @@ app.component('registration-workplan', {
         getDeliveryLabelDefault() {
             return this.opportunity.deliveryLabelDefault ? this.opportunity.deliveryLabelDefault : $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
         },
+        
     },
     methods: {
+        handleHashChange() {
+            const hash = window.location.hash;
+            const stepMatch = hash.match(/#etapa_(\d+)/);
+
+            if (this.registration.opportunity.registrationSteps.length > 1) {
+                if (stepMatch && stepMatch[1]) {
+                    const stepNumber = parseInt(stepMatch[1], 10); 
+                    this.enableWorkplanInStep = stepNumber === this.registration.opportunity.registrationSteps.length;
+    
+                } else {
+                    this.enableWorkplanInStep = false;
+                }
+            } else {
+                this.enableWorkplanInStep = true;
+            }
+        },
         getWorkplan() {
             const api = new API('workplan');
             

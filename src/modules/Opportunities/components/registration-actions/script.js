@@ -274,10 +274,10 @@ app.component('registration-actions', {
                 }
 
                 if (['workplan', 'goal', 'delivery', 'projectDuration', 'culturalArtisticSegment'].includes(fieldName)) {
-                    validationErrors[1][fieldName] = fieldError;
+                    validationErrors[this.fields[this.fields.length - 1].step.id][fieldName] = fieldError;
                 }
             }
-            
+
             return validationErrors;
         },
         async save() {
