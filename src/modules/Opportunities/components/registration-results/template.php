@@ -10,16 +10,17 @@ use MapasCulturais\i;
 
 $entity = $this->controller->requestedEntity;
 ?>
+{{console.log(registration.consolidatedDetails)}}
 <div v-if="registration.consolidatedDetails?.sentEvaluationCount" class="registration-results">  
     <mc-modal :title="modalTitle" classes="registration-results__modal">
         <template #default>
-            <?php foreach($app->getRegisteredEvaluationMethods() as $evaluation_method): ?>
+            <?php foreach($app->getRegisteredEvaluationMethods(true) as $evaluation_method): ?>
                 <div v-if="phase.type?.id == '<?= $evaluation_method->slug ?>'" class="registration-results__content">
                     <?php $this->part($evaluation_method->slug . '/evaluations-details') ?>
                 </div>
             <?php endforeach ?>
 
-            <div v-if="registration.opportunity.status === -20 && !hideAppealStatus" class="opportunity-phases-timeline__box">
+            <!-- <div v-if="registration.opportunity.status === -20 && !hideAppealStatus" class="opportunity-phases-timeline__box">
                 <div class="opportunity-phases-timeline__content">
                     <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
                     <div class="opportunity-phases-timeline__status">
@@ -31,8 +32,8 @@ $entity = $this->controller->requestedEntity;
                         <p v-if="appealRegistration.status == 0"><?= i::__('Recurso não enviado') ?></p>
                     </div>
                 </div>
-            </div>
-
+            </div> -->
+                {{console.log(appealRegistration)}}
             <div v-if="!appealRegistration && !hideAppealStatus" class="registration-results__request-appeal">
                 <button class="button button--primary" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
             </div>
