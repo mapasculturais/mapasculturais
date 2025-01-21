@@ -70,11 +70,16 @@ $this->import('
             <?php $this->applyComponentHook('bottom') ?>
         </div>
 
-         <div class="col-12 grid-12 opportunity-data-collection__config-button">
+        <?php $this->applyTemplateHook('opportunity-data-collection-config-form','before')?>
+        <div class="col-12 grid-12 opportunity-data-collection__config-button">
+            <?php $this->applyTemplateHook('opportunity-data-collection-config-form','begin')?>
             <mc-link :entity="phase" route='formBuilder' class="config-phase__info-button button--primary button col-6" icon="external" right-icon>
             <?= i::__("Configurar formulário") ?>
             </mc-link>
+            <?php $this->applyTemplateHook('opportunity-data-collection-config-form','end')?>
         </div>
+        <?php $this->applyTemplateHook('opportunity-data-collection-config-form',sufix: 'after')?>
+
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration' && !firstPhase?.isContinuousFlow">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
