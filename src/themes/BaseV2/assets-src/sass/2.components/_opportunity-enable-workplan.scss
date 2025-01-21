@@ -40,4 +40,10 @@
         padding: size(20);
         width: 100%;
     }    
+
+    .field__limits {
+        max-width: 6.25rem;
+        padding: .5rem;
+        z-index: 2;
+    }
 }

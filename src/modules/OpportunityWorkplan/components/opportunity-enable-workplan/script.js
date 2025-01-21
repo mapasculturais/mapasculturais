@@ -31,16 +31,22 @@ app.component('opportunity-enable-workplan', {
         'entity.workplan_dataProjectlimitMaximumDurationOfProjects'(_new) {
             if (!_new) {
                 this.entity.workplan_dataProjectmaximumDurationInMonths = 0;
+            } else {
+                this.entity.workplan_dataProjectmaximumDurationInMonths = 1;
             }
         },
         'entity.workplan_metaLimitNumberOfGoals'(_new) {
             if (!_new) {
                 this.entity.workplan_metaMaximumNumberOfGoals = 0;
+            } else {
+                this.entity.workplan_metaMaximumNumberOfGoals = 1;
             }
         },
         'entity.workplan_deliveryLimitNumberOfDeliveries'(_new) {
             if (!_new) {
                 this.entity.workplan_deliveryMaximumNumberOfDeliveries = 0;
+            } else {
+                this.entity.workplan_deliveryMaximumNumberOfDeliveries = 1;
             }
         },
         'entity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals'(_new) {

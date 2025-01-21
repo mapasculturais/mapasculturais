@@ -20,10 +20,6 @@ $this->import('
         <p><?= i::esc_attr__('Dados da ação cultural.') ?></p>
     </template>
     <template #content>
-        <div v-if="workplan.id" class="field">
-            <label><?= i::esc_attr__('ID:') ?></label>
-            #{{ workplan.id }}
-        </div>
         <div v-if="workplan.projectDuration" class="field">
             <label><?= i::esc_attr__('Duração do projeto (meses)') ?></label>
             {{ workplan.projectDuration }}
@@ -37,7 +33,7 @@ $this->import('
         <div v-for="(goal, index) in workplan.goals" :key="index" class="registration-details-workplan__goals">
             <div class="registration-details-workplan__header-goals">
                 <h4 class="registration-details-workplan__goals-title">
-                    {{ getGoalLabelDefault }} #{{ goal.id }} - {{ goal.title }}</h4>
+                    {{ getGoalLabelDefault }} - {{ goal.title }}</h4>
             </div>
 
             <div v-if="goal.monthInitial" class="field">
@@ -72,12 +68,10 @@ $this->import('
                 {{ convertToCurrency(goal.amount) }}
             </div>
 
-
             <div v-for="(delivery, index_) in goal.deliveries" :key="delivery.id" class="registration-details-workplan__goals__deliveries">
-                
                 <div class="registration-details-workplan__header-deliveries">
                     <h4 class="registration-details-workplan__goals-title">
-                        {{ getDeliveryLabelDefault }} #{{ delivery.id }} - {{ delivery.name }}</h4>
+                        {{ getDeliveryLabelDefault }} - {{ delivery.name }}</h4>
                 </div>
                 <div v-if="delivery.name" class="field">
                     <label><?= i::esc_attr__('Nome') ?></label>

@@ -27,7 +27,7 @@ $this->import('
     <template #content>
         <div class="field">
             <label><?= i::esc_attr__('Duração do projeto (meses)') ?><span class="required">obrigatório*</span></label>
-            <select v-model="workplan.projectDuration" @blur="save_(false)">
+            <select class="field__limits" v-model="workplan.projectDuration" @blur="save_(false)">
                 <option value=""><?= i::esc_attr__('Selecione') ?></option>
                 <option v-for="n in optionsProjectDurationData()" :key="n" :value="n">{{ n }}</option>
             </select>
@@ -71,7 +71,7 @@ $this->import('
             <div v-if="isExpanded(index)" class="collapse-content">
                 <div class="registration-workplan__goals-period">
                     <p>
-                        {{ `Duração da ${getGoalLabelDefault}` }}
+                        {{ `Duração da Meta` }}
                     </p>
                     <div class="registration-workplan__goals-months">
                         <div class="field">
@@ -90,11 +90,11 @@ $this->import('
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- Título da meta -->
                 <div class="field">
                     <label>
-                        {{ `Título da ${getGoalLabelDefault}` }}<span class="required">obrigatório*</span></label>
+                        {{ `Título da Meta` }}<span class="required">obrigatório*</span></label>
                     <input v-model="goal.title" type="text">
                 </div>
 
@@ -116,9 +116,9 @@ $this->import('
                 <!-- Valor da meta -->
                 <div v-if="opportunity.workplan_metaInformTheValueGoals" class="field">
                     <label>
-                        {{ `Valor da ${getGoalLabelDefault} (R$)` }}
+                        {{ `Valor da Meta (R$)` }}
                         <span class="required">obrigatório*</span></label>
-                    <mc-currency-input v-model="goal.amount"></mc-currency-input>
+                    <mc-currency-input class="field__limits" v-model="goal.amount"></mc-currency-input>
                 </div>
 
                 <div v-for="(delivery, index_) in goal.deliveries" :key="delivery.id" class="registration-workplan__goals__deliveries">
@@ -163,7 +163,7 @@ $this->import('
 
                     <div v-if="opportunity.workplan_registrationInformCulturalArtisticSegment" class="field">
                         <label>
-                            {{ `Segmento artístico cultural da ${getDeliveryLabelDefault}` }}
+                            {{ `Segmento artístico-cultural da ${getDeliveryLabelDefault}` }}
                             <span class="required">obrigatório*</span></label>
                         <select v-model="delivery.segmentDelivery">
                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
@@ -181,15 +181,15 @@ $this->import('
 
                     <div v-if="opportunity.workplan_registrationReportTheNumberOfParticipants" class="field">
                         <label><?= i::esc_attr__('Número previsto de pessoas') ?><span class="required">obrigatório*</span></label>
-                        <input v-model="delivery.expectedNumberPeople" type="number">
+                        <input class="field__limits" v-model="delivery.expectedNumberPeople" type="number">
                     </div>
 
                     <div v-if="opportunity.workplan_registrationReportExpectedRenevue">
                         <div class="field">
                             <label>
-                                {{ `A ${getDeliveryLabelDefault} irá gerar receita?` }}
+                                {{ `As ${getDeliveryLabelDefault} irão gerar receita?` }}
                                 <span class="required">obrigatório*</span></label>
-                            <select v-model="delivery.generaterRevenue">
+                            <select class="field__limits" v-model="delivery.generaterRevenue">
                                 <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                 <option v-for="(n, i) in workplanFields.goal.delivery.generaterRevenue.options" :key="i" :value="i">{{ n }}</option>
                             </select>
