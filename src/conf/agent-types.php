@@ -203,6 +203,87 @@ return array(
             'readonly' => true
         ),
 
+        'cnhNumero' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNH - Número de registro'),
+            'type' => 'text',
+            'available_for_opportunities' => true,
+            'readonly' => true
+        ),
+        'cnhCategoria' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNH - Categoria'),
+            'type' => 'multiselect',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não informado'),
+                'A' => \MapasCulturais\i::__('A'),
+                'B' => \MapasCulturais\i::__('B'),
+                'C' => \MapasCulturais\i::__('C'),
+                'D' => \MapasCulturais\i::__('D'),
+                'E' => \MapasCulturais\i::__('E')
+            ),
+            'available_for_opportunities' => true
+        ),
+        'cnhValidade' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNH - Validade'),
+            'type' => 'date',
+            'serialize' => function($value, $entity = null){
+               return (new DateTime($value))->format("Y-m-d");
+            },
+            'validations' => array(
+                'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
+            ),
+            'available_for_opportunities' => true
+        ),
+        'rgNumero' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('RG - Documento'),
+            'type' => 'text',
+            'available_for_opportunities' => true,
+            'readonly' => true
+        ),
+        'rgOrgaoEmissor' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('RG - Órgão Emissor'),
+            'type' => 'text',
+            'available_for_opportunities' => true,
+            'readonly' => true
+        ),
+        'rgUF' => [
+            'private' => true,
+            'label' => \MapasCulturais\i::__('RG - UF'),
+            'type' => 'select',
+            'options' => array(
+                'AC'=>'Acre',
+                'AL'=>'Alagoas',
+                'AP'=>'Amapá',
+                'AM'=>'Amazonas',
+                'BA'=>'Bahia',
+                'CE'=>'Ceará',
+                'DF'=>'Distrito Federal',
+                'ES'=>'Espírito Santo',
+                'GO'=>'Goiás',
+                'MA'=>'Maranhão',
+                'MT'=>'Mato Grosso',
+                'MS'=>'Mato Grosso do Sul',
+                'MG'=>'Minas Gerais',
+                'PA'=>'Pará',
+                'PB'=>'Paraíba',
+                'PR'=>'Paraná',
+                'PE'=>'Pernambuco',
+                'PI'=>'Piauí',
+                'RJ'=>'Rio de Janeiro',
+                'RN'=>'Rio Grande do Norte',
+                'RS'=>'Rio Grande do Sul',
+                'RO'=>'Rondônia',
+                'RR'=>'Roraima',
+                'SC'=>'Santa Catarina',
+                'SP'=>'São Paulo',
+                'SE'=>'Sergipe',
+                'TO'=>'Tocantins',
+            )
+        ],
         'raca' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Raça/cor'),
