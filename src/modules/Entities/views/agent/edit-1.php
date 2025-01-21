@@ -122,6 +122,25 @@ $this->breadcrumb = [
                     </mc-card>
                     <mc-card>
                         <template #title>
+                            <h3 class="bold"><?php i::_e("Outros documentos"); ?></h3>
+                            <p class="data-subtitle"><?php i::_e("Outros documentos"); ?></p>
+                        </template>
+                        <template #content>
+                            <div class="grid-12">
+                                <p class="col-12 data-subtitle bold"><?php i::_e("CNH"); ?></p>
+                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="cnhNumero" label="<?= i::__('Número de registro') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-3 sm:col-12" prop="cnhCategoria" label="<?= i::__('Categoria') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhValidade" label="<?= i::__('Validade') ?>"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <p class="col-12 data-subtitle bold"><?php i::_e("RG"); ?></p>
+                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="rgNumero" label="<?= i::__('Documento') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-3 sm:col-12" prop="rgOrgaoEmissor" label="<?= i::__('Órgão Emissor') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="rgUF" label="<?= i::__('UF') ?>"></entity-field>
+                            </div>
+                        </template>
+                    </mc-card>
+                    <mc-card>
+                        <template #title>
                             <h3 class="bold"><?php i::_e("Dados pessoais sensíveis"); ?> <?php $this->info('cadastro -> configuracoes-entidades -> dados-pessoais-sensiveis') ?></h3>
                             <p class="data-subtitle"><?php i::_e("Os dados inseridos abaixo serão registrados apenas no sistemas e não serão exibidos publicamente"); ?></p>
                         </template>
