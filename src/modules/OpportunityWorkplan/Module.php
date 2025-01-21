@@ -14,7 +14,7 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
 
         $app->hook('app.init:after', function () use($app) {
-            $app->hook("component(opportunity-phase-config-data-collection):bottom", function(){
+            $app->hook("template(opportunity.edit.opportunity-data-collection-config-form):after", function(){
                 $this->part('opportunity-workplan-config');
             });
 
