@@ -100,4 +100,29 @@
         padding: size(14);
         width: 100%;
     }
+
+    &__empty {
+        display: none;
+    }
+
+    &__endChat {
+        flex-direction: row;
+    }
+
+    &__reviewer-message {
+        gap: size(16);
+    }
+
+    &__evaluation {
+        background-color: var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-sm);
+        padding: size(14);
+    }
+
+    &__evaluation-closed,
+    &__evaluation-status {
+        display: flex;
+        gap: size(8);
+        align-items: center;
+    }
 }

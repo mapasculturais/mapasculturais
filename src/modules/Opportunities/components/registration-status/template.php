@@ -38,7 +38,6 @@ $this->import('
                 <?= i::__('Inválido') ?>
             </strong>
         </div>
-    
         <registration-results v-if="phase.publishEvaluationDetails" :registration="registration" :phase="phase"></registration-results>
     </div>
 </div>
@@ -72,9 +71,8 @@ $this->import('
                 <p v-if="appealRegistration.status == 0"><?= i::__('Recurso não enviado') ?></p>
 
             </div>
-            <registration-results v-if="phase.appealPhase.evaluationMethodConfiguration.publishEvaluationDetails" :registration="appealRegistration" :phase="phase"></registration-results>
+            <registration-results v-if="phase.appealPhase.evaluationMethodConfiguration.publishEvaluationDetails" :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
         </div>
-        
         <div v-if="appealRegistration && appealRegistration.status == 0" class="opportunity-phases-timeline__request-appeal">
             <h5 class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Finalize sua inscrição no recurso:')?></h5>
             <button class="button button--primary button--primary" @click="fillFormButton()"><?= i::__('Preencher formulário') ?></button>

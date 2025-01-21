@@ -12,6 +12,7 @@ $this->import('
     mc-modal
     evaluation-actions
     evaluation-appeal-phase-detail
+    registration-results
 ');
 ?>
 
@@ -21,7 +22,7 @@ $this->import('
         <template #default>
             <evaluation-appeal-phase-detail :registration="entity"></evaluation-appeal-phase-detail>
         </template>
-    
+        
         <template #button="modal">
             <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Ver pareceres dos demais avaliadores') ?></button>
         </template>
@@ -41,5 +42,10 @@ $this->import('
             <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
             <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
         </div>
+        
+        <div v-if="!isEditable" class="appeal-phase-evaluation-form__footer field col-12">
+            <registration-results :registration="entity" :phase="entity.opportunity" :hide-appeal-status="true"></registration-results>
+        </div>
+        
     </div>
 </div>
