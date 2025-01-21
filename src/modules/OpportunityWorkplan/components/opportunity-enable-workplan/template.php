@@ -14,10 +14,25 @@ $this->import('
 ');
 ?>
 <div class="opportunity-enable-workplan">
+    <div class="col-12" class="disabled-workplan" v-if="entity.enableWorkplan">
+        <mc-confirm-button @confirm="actionDisabledWorkplan()">
+            <template #button="{open}">
+                <button class="button button--delete button--icon button--sm" @click="open()">
+                    <mc-icon class="icon-workplandisabled" name="trash"></mc-icon> 
+                </button>
+            </template>
+            <template #message="message">
+                <h3>{{ `Você deseja desativar o ${getWorkplanLabelDefault}?` }}</h3><br>
+                <p>
+                    {{ `Todas as configurações e alterações realizadas serão perdidas definitivamente.` }}
+                </p>
+            </template>
+        </mc-confirm-button>
+    </div>
     <h4 class="bold opportunity-enable-workplan__title">
         {{ getWorkplanLabelDefault }}
    
-        <mc-modal title="Editar rótulo">
+        <mc-modal title="Editar rótulo" v-if="entity.enableWorkplan">
             <h4>Rótulo: plano de trabalho</h4>
             <div class="field col-12">
                 <div class="field__group">
@@ -34,20 +49,17 @@ $this->import('
             </template>
 
             <template #button="modal">
-                <a href="#" @click="modal.open()"><mc-icon class="edit" name="edit"></mc-icon></a>
+                <a  href="#"  @click="modal.open()"><mc-icon class="edit" name="edit"></mc-icon></a>
             </template>
         </mc-modal>
         
     </h4>
     <h6>{{ `Configurar parâmetros do ${getWorkplanLabelDefault}` }}</h6>
     <div class="opportunity-enable-workplan__content">
-        <div class="field col-12">
-            <div class="field__group">
-                <label class="field__checkbox">
-                    <input type="checkbox" v-model="entity.enableWorkplan" @click="autoSave()" />
-                    {{ `Habilitar ${getWorkplanLabelDefault}` }}
-                </label>
-            </div>
+        <div class="col-12" v-if="!entity.enableWorkplan">
+            <button class="button button--primary button--icon" @click="actionEnabledWorkplan()">
+                <mc-icon name="add"></mc-icon><label>{{ `Configurar ${getWorkplanLabelDefault}` }}</label>
+            </button>
         </div>
 
         <div v-if="entity.enableWorkplan">

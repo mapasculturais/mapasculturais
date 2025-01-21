@@ -46,4 +46,15 @@
         padding: .5rem;
         z-index: 2;
     }
+
+    .disabled-workplan {
+        display:flex;
+        align-items:right;
+        justify-content: flex-end;
+    }
+
+    .icon-workplandisabled {
+        color: #117C83;
+    }
+
 }
