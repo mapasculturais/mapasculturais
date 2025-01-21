@@ -163,7 +163,7 @@ app.component('registration-workplan', {
                 if ('name' in delivery && !delivery.name) emptyFields.push(`Nome da ${this.getDeliveryLabelDefault}`);
                 if ('description' in delivery && !delivery.description) emptyFields.push("Descrição");
                 if ('type' in delivery && !delivery.type) emptyFields.push(`Tipo de ${this.getDeliveryLabelDefault}`);
-                if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && 'segmentDelivery' in delivery && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico cultural da ${this.getDeliveryLabelDefault}`);
+                if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && 'segmentDelivery' in delivery && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico-cultural da ${this.getDeliveryLabelDefault}`);
                 if (this.opportunity.workplan_registrationInformActionPAAR && 'budgetAction' in delivery && !delivery.budgetAction) emptyFields.push("Ação orçamentária");
                 if (this.opportunity.workplan_registrationReportTheNumberOfParticipants && 'expectedNumberPeople' in delivery && !delivery.expectedNumberPeople) emptyFields.push("Número previsto de pessoas");
                 if (this.opportunity.workplan_registrationReportExpectedRenevue && 'generaterRevenue' in delivery && !delivery.generaterRevenue) emptyFields.push(`A ${this.getDeliveryLabelDefault} irá gerar receita?`);

@@ -64,7 +64,7 @@ $this->import('
                         <label class="field__group">
                             <?php i::_e('Duração máxima (meses):') ?>
                         </label>
-                        <input type="number" :disabled="!entity.workplan_dataProjectlimitMaximumDurationOfProjects" v-model="entity.workplan_dataProjectmaximumDurationInMonths" @change="autoSave()">
+                        <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_dataProjectlimitMaximumDurationOfProjects" v-model="entity.workplan_dataProjectmaximumDurationInMonths" @change="autoSave()">
                     </div>
                 </div>
             </div>
@@ -105,7 +105,7 @@ $this->import('
                     <div class="field__group">
                         <label class="field__checkbox">
                             <input type="checkbox" v-model="entity.workplan_metaInformTheValueGoals" @click="autoSave()" />
-                            {{ `Informar o valor da ${getGoalLabelDefault}` }}
+                            {{ `Informar o valor das ${getGoalLabelDefault}` }}
                         </label>
                     </div>
 
@@ -120,7 +120,7 @@ $this->import('
                         <label>
                             {{ `Limitar número de ${getGoalLabelDefault}:` }}
                         </label>
-                        <input type="number" :disabled="!entity.workplan_metaLimitNumberOfGoals" v-model="entity.workplan_metaMaximumNumberOfGoals" @change="autoSave()">
+                        <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_metaLimitNumberOfGoals" v-model="entity.workplan_metaMaximumNumberOfGoals" @change="autoSave()">
                     </div>
                 </div>
             </div>
@@ -171,16 +171,16 @@ $this->import('
                             <label>
                                 {{ `Número máximo de ${getDeliveryLabelDefault}` }}
                             </label>
-                            <input type="number" :disabled="!entity.workplan_deliveryLimitNumberOfDeliveries" v-model="entity.workplan_deliveryMaximumNumberOfDeliveries" @change="autoSave()">
+                            <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_deliveryLimitNumberOfDeliveries" v-model="entity.workplan_deliveryMaximumNumberOfDeliveries" @change="autoSave()">
                         </div>
 
                         <div class="field">
                             <label> 
                                 {{ `Informar tipo de ${getDeliveryLabelDefault}` }}
                             </label>
-                            <mc-multiselect :model="entity.workplan_monitoringInformDeliveryType" title="<?php i::_e('Selecione as áreas de atuação') ?>" :items="workplan_monitoringInformDeliveryTypeList" hide-filter hide-button>
-                                <template #default="{setFilter, popover}">
-                                    <input class="mc-multiselect--input" @keyup="setFilter($event.target.value)" @focus="popover.open()" placeholder="Selecione as opções">
+                            <mc-multiselect :model="entity.workplan_monitoringInformDeliveryType" title="<?php i::_e('Selecione as áreas de atuação') ?>" :items="workplan_monitoringInformDeliveryTypeList" >
+                                <template #default="{ toggleMultiselect }">    
+                                    <input class="mc-multiselect--input" @click="toggleMultiselect()" placeholder="Selecione as opções">
                                 </template>
                             </mc-multiselect>
                             <mc-tag-list editable :tags="entity.workplan_monitoringInformDeliveryType" classes="opportunity__background opportunity__color"></mc-tag-list>
@@ -199,7 +199,7 @@ $this->import('
                         </div>
                         <div class="field__group">
                             <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_registrationInformCulturalArtisticSegment" @click="autoSave()" /><?= i::__("Informar segmento artístico cultural") ?>
+                                <input type="checkbox" v-model="entity.workplan_registrationInformCulturalArtisticSegment" @click="autoSave()" /><?= i::__("Informar segmento artístico-cultural") ?>
                             </label>
                         </div>
                         <div class="field__group">
