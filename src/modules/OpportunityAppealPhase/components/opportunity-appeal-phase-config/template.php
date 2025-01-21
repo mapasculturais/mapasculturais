@@ -145,6 +145,9 @@ $this->import('
                     <opportunity-committee-groups v-if="!showButtonEvaluationCommittee" :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
                 <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
+                <template v-if="entity.evaluationMethodConfiguration.evaluateSelfApplication">
+                    <entity-field :entity="entity.evaluationMethodConfiguration" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
+                </template>
             </template>
 
             <template #content v-if="tab === 'registrations'">
