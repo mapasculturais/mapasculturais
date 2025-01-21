@@ -142,6 +142,14 @@ app.component('registration-actions', {
                 return this.text('Plano de trabalho');
             }
 
+            if (field == 'projectDuration') {
+                return this.text('Duração do projeto (meses)');
+            }
+
+            if (field == 'culturalArtisticSegment') {
+                return this.text('Segmento artistico-cultural');
+            }
+
             if (field == 'goal') {
                 return this.text('Meta');
             }
@@ -265,7 +273,7 @@ app.component('registration-actions', {
                     }
                 }
 
-                if (['workplan', 'goal', 'delivery'].includes(fieldName)) {
+                if (['workplan', 'goal', 'delivery', 'projectDuration', 'culturalArtisticSegment'].includes(fieldName)) {
                     validationErrors[1][fieldName] = fieldError;
                 }
             }

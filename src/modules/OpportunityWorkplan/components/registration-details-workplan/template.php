@@ -26,7 +26,7 @@ $this->import('
         </div>
 
         <div v-if="workplan.culturalArtisticSegment" class="field">
-            <label><?= i::esc_attr__('Segmento artistico cultural') ?></label>
+            <label><?= i::esc_attr__('Segmento artistico-cultural') ?></label>
             {{ workplan.culturalArtisticSegment }}
         </div>
 

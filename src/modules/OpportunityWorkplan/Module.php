@@ -33,8 +33,17 @@ class Module extends \MapasCulturais\Module{
                     $workplan = $app->repo(Workplan::class)->findOneBy(['registration' => $registration->id]);
 
                     $errors = [];
+
                     if (!$workplan) {
                         $errors['workplan'] = [i::__('Plano de trabalho obrigatório.')];
+                    }
+
+                    if (!$workplan?->projectDuration) {
+                        $errors['projectDuration'] = [i::__('Plano de trabalho - Duração do projeto (meses) obrigatório.')];
+                    }
+
+                    if (!$workplan?->culturalArtisticSegment) {
+                        $errors['culturalArtisticSegment'] = [i::__('Plano de trabalho - Segmento artistico-cultural obrigatório.')];
                     }
                    
                     if ($workplan?->goals->isEmpty()) {
@@ -343,7 +352,7 @@ class Module extends \MapasCulturais\Module{
         $app->registerMetadata($projectDuration, Workplan::class);
 
         $culturalArtisticSegment = new Metadata('culturalArtisticSegment', [
-            'label' => \MapasCulturais\i::__('Segmento artistico cultural'),
+            'label' => \MapasCulturais\i::__('Segmento artistico-cultural'),
             'type' => 'select',
             'options' => array(
                 i::__('Acervos'),
