@@ -30,6 +30,10 @@ $this->import('
             select="createTimestamp,payload,user.profile.{name,files.avatar},files" 
             order="createTimestamp DESC"
             :limit="5">
+            <template #empty>
+                <div class="mc-chat__empty">
+                </div>
+            </template>
             <template #default="{ entities }">
                 <template v-for="message in entities">
                     <slot :message="message" :sender-name="senderName(message)">
@@ -131,24 +135,48 @@ $this->import('
     </main>
 
     <div v-if="!isClosed()" class="mc-chat__actions">
-        <textarea 
-            v-model="message" 
-            ref="textarea" 
-            placeholder="<?= i::__('Digite sua mensagem') ?>" 
-            id="agent-response" 
-            class="mc-chat__textarea">
-        </textarea>
+        <slot name="message-form"
+            :message="message"
+            :send-message="sendMessage"
+            :processing="processing"
+            :new-attachment-message="newAttachmentMessage"
+            :init-attachment-message="initAttachmentMessage"
+            :save-attachment-message="saveAttachmentMessage"
+            >
+            <slot name="message-payload"
+                :message="message"
+                >
+                <textarea 
+                    v-model="message.payload" 
+                    ref="textarea" 
+                    placeholder="<?= i::__('Digite sua mensagem') ?>" 
+                    id="agent-response" 
+                    class="mc-chat__textarea">
+                </textarea>
+            </slot>
+    
+            <slot name="message-upload" 
+                :new-attachament-message="newAttachmentMessage" 
+                :init-attachment-message="initAttachmentMessage" 
+                :save-attachment-message="saveAttachmentMessage"
+                >
+                <entity-file
+                    @uploaded="initAttachmentMessage(true)"
+                    :entity="newAttachmentMessage"
+                    group-name="chatAttachment"
+                    :before-upload="saveAttachmentMessage"
+                    title-modal="<?php i::_e('Adicionar anexo') ?>"
+                    classes="col-12"
+                    title="<?php i::esc_attr_e('Adicionar anexo'); ?>"
+                    editable></entity-file>
+            </slot>
 
-        <entity-file
-            @uploaded="initAttachmentMessage(true)"
-            :entity="newAttachmentMessage"
-            group-name="chatAttachment"
-            :before-upload="saveAttachmentMessage"
-            title-modal="<?php i::_e('Adicionar anexo') ?>"
-            classes="col-12"
-            title="<?php i::esc_attr_e('Adicionar anexo'); ?>"
-            editable></entity-file>
-
-        <button type="button" class="button button--primary" @click="sendMessage" :disabled="processing"><?= i::__('Responder') ?></button>
+            <slot name="message-send-button"
+                :send-message="sendMessage"
+                :processing="processing"
+                >
+                <button type="button" class="button button--primary" @click="sendMessage" :disabled="processing"><?= i::__('Enviar mensagem') ?></button>
+            </slot>
+        </slot>
     </div>
 </div>
