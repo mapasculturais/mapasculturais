@@ -117,10 +117,25 @@
         background-color: var(--mc-gray-100);
         border-radius: var(--mc-border-radius-sm);
         padding: size(14);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
     }
 
     &__evaluation-closed,
     &__evaluation-status {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__evaluation-text {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__evaluation-status-content {
         display: flex;
         gap: size(8);
         align-items: center;

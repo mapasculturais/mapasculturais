@@ -57,14 +57,19 @@ $this->import('
             <div class="mc-chat__evaluation">
                 <div class="mc-chat__evaluation-status">
                     <h4 class="semibold"><?= i::__('Resultado da validação:') ?></h4>
-                    <p>{{message.payload.status}}</p>
+                    <div class="mc-chat__evaluation-status-content">
+                        <mc-icon name="circle" :class="verifyState(message.payload.status)"></mc-icon>
+                        <p v-if="message.payload.status == 10"><?= i::__('Deferido') ?></p>
+                        <p v-if="message.payload.status == 3"><?= i::__('Indeferido') ?></p>
+                        <p v-if="message.payload.status == 2"><?= i::__('Negado') ?></p>
+                    </div>
                 </div>
-                <div class="mc-chat__text">
+                <div class="mc-chat__evaluation-text">
                     <h4 class="semibold"><?= i::__('Justificativa ou observações:') ?></h4>
                     <p>{{message.payload.message}}</p>
                 </div>
                 <div class="mc-chat__evaluation-closed" v-if="message.payload.endChat">
-                    <h4 class="semibold"><?= i::__('Justificativa para encerramento:') ?></h4>
+                    <h4 class="semibold"><?= i::__('Justificativa para encerramento do processo:') ?></h4>
                     <p>{{message.payload.justification}}</p>
                 </div>
             </div>

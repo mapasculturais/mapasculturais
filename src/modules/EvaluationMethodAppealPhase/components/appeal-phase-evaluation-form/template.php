@@ -17,15 +17,6 @@ $this->import('
 ?>
 
 <div class="appeal-phase-evaluation-form">
-    <mc-modal :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
-        <template #default>
-            <evaluation-appeal-phase-detail :registration="entity"></evaluation-appeal-phase-detail>
-        </template>
-        
-        <template #button="modal">
-            <button class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Ver pareceres dos demais avaliadores') ?></button>
-        </template>
-    </mc-modal>
     <div class="appeal-phase-evaluation-form__form grid-12">
         <div class="appeal-phase-evaluation-form__header field col-12">
             <label class="field__label">
@@ -41,5 +32,14 @@ $this->import('
             <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
             <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
         </div>    
+        <mc-modal v-if="!isEditable":title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+            <template #default>
+                <evaluation-appeal-phase-detail :registration="entity"></evaluation-appeal-phase-detail>
+            </template>
+            
+            <template #button="modal">
+                <button class="button button--primary button--sm button--large col-12" @click="modal.open()"><?php i::_e('Ver detalhamento') ?></button>
+            </template>
+        </mc-modal>
     </div>
 </div>
