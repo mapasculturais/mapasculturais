@@ -34,7 +34,7 @@ $this->import('
         </div>
 
         <div class="field">
-            <label><?= i::esc_attr__('Segmento artistico cultural') ?><span class="required">obrigatório*</span></label>
+            <label><?= i::esc_attr__('Segmento artistico-cultural') ?><span class="required">obrigatório*</span></label>
             <select v-model="workplan.culturalArtisticSegment" @blur="save_(false)">
                 <option value=""><?= i::esc_attr__('Selecione') ?></option>
                 <option v-for="n in workplanFields.culturalArtisticSegment.options" :key="n" :value="n">{{ n }}</option>

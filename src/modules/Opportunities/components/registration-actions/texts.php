@@ -12,6 +12,8 @@ return [
     'Enviando' => i::__('Enviando'),
     'Validando' => i::__('Validando'),
     'Plano de trabalho' => i::__('Plano de trabalho'),
+    'Duração do projeto (meses)' => i::__('Duração do projeto (meses)'),
+    'Segmento artistico-cultural' => i::__('Segmento artistico-cultural'),
     'Meta' => i::__('Meta'),
     'Entrega' => i::__('Entrega'),
 ];
