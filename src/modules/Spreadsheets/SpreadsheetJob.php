@@ -2,6 +2,7 @@
 
 namespace Spreadsheets;
 
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
 use MapasCulturais\Definitions\JobType;
@@ -130,6 +131,12 @@ abstract class SpreadsheetJob extends JobType
                         $new_data[] = implode(', ', $data[$prop]);
                     } else {
                         $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
+                    }
+                }
+                foreach($new_data as &$value) {
+                    if($value instanceof DateTime) {
+                        $value = $value->format('d/m/Y H:i:s');
+                        continue;
                     }
                 }
 
