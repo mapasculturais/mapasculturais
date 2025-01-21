@@ -10,6 +10,11 @@ app.component('registration-results', {
             type: Entity,
             required: true
         },
+
+        hideAppealStatus: {
+            type: Boolean,
+            default: false,
+        },
     },
     
     setup(props, { slots }) {
@@ -38,6 +43,14 @@ app.component('registration-results', {
             }
 
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
+        },
+
+        currentEvaluation() {
+            return $MAPAS.config.appealPhaseEvaluationForm?.currentEvaluation;
+        },
+
+        modalTitle() {
+            return this.registration.opportunity.status === -20 ? `Detalhamento do recurso para ${this.phase.name} - ${this.registration.number}` : `${this.phase.name} - ${this.registration.number}`;
         }
     },
 
