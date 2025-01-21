@@ -262,39 +262,43 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $this->part('appeal-phase--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
 
-        // altera o status de uma avaliação de acordo com o status da mensagem do chat
+        
         $app->hook('entity(ChatMessage).save:finish', function() use ($app, $self){
             /** @var \MapasCulturais\Entities\ChatMessage $this */
             if ($this->thread->ownerEntity instanceof Entities\Registration && 
                 $this->thread->ownerEntity->evaluationMethod instanceof $self && 
                 $app->user->canUser('evaluateOnTime')) {
+                    $data = (object) $this->payload;
+
+                    // altera o status de uma avaliação de acordo com o status da mensagem do chat
                     $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->thread->ownerEntity]);
                     if ($evaluation) {
-                        $data = json_decode($this->payload, true);
-                        $evaluation->status = $data['status'];
+                        $evaluation->status = $data->status;
+                        $app->disableAccessControl();
                         $evaluation->save(true);
+                        $app->enableAccessControl();
                     }
-            }
-        });
 
-        // altera o status do chat de acordo com o checkbox `endChat` da mensagem
-        $app->hook('entity(ChatMessage).save:finish', function() use ($app, $self){
-            /** @var \MapasCulturais\Entities\ChatMessage $this */
-            if ($this->thread->ownerEntity instanceof Entities\Registration && 
-                $this->thread->ownerEntity->evaluationMethod instanceof $self &&
-                $app->user->canUser('evaluateOnTime')) {
-
-                    $data = $this->payload ? json_decode($this->payload, true) : [];
-                    $end_chat = $data['endChat'] ?? false;
-
+                    // altera o status do chat de acordo com o checkbox `endChat` da mensagem
+                    $end_chat = $data->endChat ?? false;
                     if ($end_chat) {
                         $thread = $app->repo('ChatThread')->findOneBy(['id' => $this->thread->id]);
                         if ($thread) {
                             $thread->status = ChatThread::STATUS_CLOSED;
+                            $app->disableAccessControl();
                             $thread->save(true);
+                            $app->enableAccessControl();
                         }
                     }
+
             }
+        });
+
+        $app->hook('mapas.printJsObject:before', function() use ($self) {
+            /** @var \MapasCulturais\Theme $this */
+            $this->jsObject['config']['evaluationMethodAppealPhase'] = [
+                'statuses' => $self->getStatuses(),
+            ];
         });
     }
 
@@ -349,24 +353,19 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
     }
 
-    protected function _valueToString($value) {
-        switch ($value) {
-            case '2':
-                return i::__('Inválida');
-                break;
-            case '3':
-                return i::__('Indeferido');
-                break;
-            case '8':
-                return i::__('Suplente');
-                break;
-            case '10':
-                return i::__('Deferido');
-                break;
-            default:
-                return $value ?: '';
+    function getStatuses() {
+        $statuses = [
+            '10' => i::__('Deferido'),
+            '3' => i::__('Indeferido'),
+            '2' => i::__('Negado'),
+        ];
 
-        }
+        return $statuses;
+    }
+
+    protected function _valueToString($value) {
+        $statuses = self::getStatuses();
+        return $statuses[$value] ?? $value;
     }
 
     function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
