@@ -138,6 +138,7 @@ abstract class SpreadsheetJob extends JobType
                         $value = $value->format('d/m/Y H:i:s');
                         continue;
                     }
+                    //TODO: Avaliar como implementar o tratamento de fórmulas apenas para campos preenchidos pelo usuário e permitir que as fórmulas permaneçam nos campos com preenchimento do próprio sistema.
                 }
 
                 $sheet->fromArray($new_data, null, "A$row");
