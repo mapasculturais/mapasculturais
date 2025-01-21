@@ -17,8 +17,7 @@ $this->import('
 ?>
 
 <div class="appeal-phase-evaluation-form">
-    <h2 v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" class="needs-tiebreaker danger__background"><?= i::_e('Voto de minerva') ?></h2>
-    <mc-modal v-if="needsTiebreaker && isMinervaGroup && enableExternalReviews" :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+    <mc-modal :title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
         <template #default>
             <evaluation-appeal-phase-detail :registration="entity"></evaluation-appeal-phase-detail>
         </template>
@@ -41,11 +40,6 @@ $this->import('
             </label>
             <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
             <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
-        </div>
-        
-        <div v-if="!isEditable" class="appeal-phase-evaluation-form__footer field col-12">
-            <registration-results :registration="entity" :phase="entity.opportunity" :hide-appeal-status="true"></registration-results>
-        </div>
-        
+        </div>    
     </div>
 </div>
