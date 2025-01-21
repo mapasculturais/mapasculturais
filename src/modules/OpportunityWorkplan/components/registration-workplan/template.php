@@ -15,7 +15,8 @@ $this->import('
     mc-currency-input
 ');
 ?>
-<mc-card class="registration-workplan" v-if="registration.opportunity.enableWorkplan">
+
+<mc-card class="registration-workplan" v-if="registration.opportunity.enableWorkplan && enableWorkplanInStep">
     <template #title>
         <h3 class="card__title">
             {{ getWorkplanLabelDefault }}
