@@ -33,7 +33,7 @@ app.component('registration-results', {
 
     computed: {
         appealPhase() {
-            return this.phase.appealPhase;
+            return this.phase.opportunity;
         },
 
         appealRegistration() {
@@ -41,7 +41,6 @@ app.component('registration-results', {
             if (!appealPhaseId) {
                 return null;
             }
-
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
         },
 
