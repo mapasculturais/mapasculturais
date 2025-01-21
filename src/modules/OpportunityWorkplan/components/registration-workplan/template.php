@@ -20,6 +20,8 @@ $this->import('
     <template #title>
         <h3 class="card__title">
             {{ getWorkplanLabelDefault }}
+            <?php $this->info('inscricao -> preenchimento -> plano-de-trabalho') ?>
+
         </h3>
         <p>
             {{ `Descrição do ${getWorkplanLabelDefault}` }}
@@ -182,7 +184,7 @@ $this->import('
 
                     <div v-if="opportunity.workplan_registrationReportTheNumberOfParticipants" class="field">
                         <label><?= i::esc_attr__('Número previsto de pessoas') ?><span class="required">obrigatório*</span></label>
-                        <input class="field__limits" v-model="delivery.expectedNumberPeople" type="number">
+                        <input class="field__limits" v-model="delivery.expectedNumberPeople" min="0" type="number">
                     </div>
 
                     <div v-if="opportunity.workplan_registrationReportExpectedRenevue">
@@ -199,7 +201,7 @@ $this->import('
                         <div v-if="delivery.generaterRevenue == 'true'" class="grid-12">
                             <div class="field col-4 sm:col-12">
                                 <label><?= i::esc_attr__('Quantidade') ?><span class="required">obrigatório*</span></label>
-                                <input v-model="delivery.renevueQtd" type="number">
+                                <input v-model="delivery.renevueQtd" type="number" min="0">
                             </div>
 
                             <div class="field col-4 sm:col-12">
