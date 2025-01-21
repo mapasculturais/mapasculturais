@@ -71,6 +71,14 @@ app.component('opportunity-enable-workplan', {
             this.autoSave();
             modal.close();            
         },
+        actionEnabledWorkplan() {
+            this.entity.enableWorkplan = true;
+            this.entity.save();
+        },
+        actionDisabledWorkplan() {
+            this.entity.enableWorkplan = false;
+            this.entity.save();
+        },
         autoSave() {
             this.entity.save(3000);
         },
