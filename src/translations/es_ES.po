@@ -12479,7 +12479,7 @@ msgid ""
 "projetos, espaços e eventos."
 msgstr ""
 "Pero para eso necesitamos tu ayuda!!! Sé parte también: registra tus proyectos, "
-"espacios y eventos. ======xxxxxxx."
+"espacios y eventos."
 
 #: src/modules/Home/components/home-entities/template.php:43
 #: src/modules/Search/components/search-map/texts.php:6
