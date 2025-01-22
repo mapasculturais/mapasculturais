@@ -16,10 +16,10 @@ $this->import('
 
 <div class="agent-table">
     <entity-table type="agent" identifier="agentTable" :query="mergedQuery" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
-        <template #actions="{entities}">
+        <template #actions="{entities, spreadsheetQuery}">
             <div class="agent-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
-                <mc-export-spreadsheet :owner="owner" endpoint="entities" :params="{entityType: 'agent', query}" group="entities-spreadsheets"></mc-export-spreadsheet>
+                <mc-export-spreadsheet :owner="owner" endpoint="entities" :params="{entityType: 'agent', query: spreadsheetQuery}" group="entities-spreadsheets"></mc-export-spreadsheet>
             </div>
         </template>
 
