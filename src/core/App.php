@@ -1915,6 +1915,7 @@ class App {
                 $path = array_merge($themes_path, $path);
                 
                 $this->view->path = new \ArrayObject($path);
+                $this->view->init();
             }
             
             
