@@ -5,8 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.17] - 2025-01-21
+### Correções
+- Correção ortográfica nos labels dos select de ordenação
+
 ## [7.5.16] - 2025-01-21
-### Melhorias
+### Correções
 - Corrige ordenamento das colunas relacionadas aos campos do formulário
 
 ## [7.5.15] - 2025-01-21
