@@ -202,13 +202,24 @@ return array(
             'available_for_opportunities' => true,
             'readonly' => true
         ),
-
+        'cpfAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CPF - anexo'),
+            'type' => 'file',
+            'available_for_opportunities' => true
+        ),
         'cnhNumero' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNH - Número de registro'),
             'type' => 'text',
             'available_for_opportunities' => true,
             'readonly' => true
+        ),
+        'cnhAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNH - anexo'),
+            'type' => 'file',
+            'available_for_opportunities' => true
         ),
         'cnhCategoria' => array(
             'private' => true,
@@ -242,6 +253,12 @@ return array(
             'type' => 'text',
             'available_for_opportunities' => true,
             'readonly' => true
+        ),
+        'rgAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('RG - anexo'),
+            'type' => 'file',
+            'available_for_opportunities' => true
         ),
         'rgOrgaoEmissor' => array(
             'private' => true,
