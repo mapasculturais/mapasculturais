@@ -14384,11 +14384,11 @@ msgid "resultado das avaliações"
 msgstr "resultado de las evaluaciones"
 
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:19
-msgid "enviadas a mais tempo primeiro"
+msgid "enviadas há mais tempo primeiro"
 msgstr "enviadas más antiguas primero"
 
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:20
-msgid "enviadas a menos tempo primeiro"
+msgid "enviadas há menos tempo primeiro"
 msgstr "enviadas antes primero"
 
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:21
