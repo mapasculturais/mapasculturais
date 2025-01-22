@@ -34,7 +34,7 @@ $statusList = [
 
 $needs_tiebreaker = $entity->needsTiebreaker();
 
-$this->jsObject['config']['appealPhaseEvaluationForm'] = [
+$this->jsObject['config']['continuousEvaluationForm'] = [
     'statusList' => $statusList,
     'userId' => $user->id,
     'currentEvaluation' => $entity->getUserEvaluation($user),

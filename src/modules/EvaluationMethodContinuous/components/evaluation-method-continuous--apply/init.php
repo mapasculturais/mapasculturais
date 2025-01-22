@@ -15,7 +15,7 @@ $statusList = [
 ];
 
 
-$this->jsObject['config']['evaluation-method-appeal-phase--apply'] = [
+$this->jsObject['config']['evaluation-method-continuous--apply'] = [
     'statusList' => $statusList,
     'consolidated_results' => $em->findConsolidatedResult($opportunity)
 ];

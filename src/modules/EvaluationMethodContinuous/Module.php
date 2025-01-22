@@ -1,6 +1,6 @@
 <?php
 
-namespace EvaluationMethodAppealPhase;
+namespace EvaluationMethodContinuous;
 
 use MapasCulturais\i;
 use MapasCulturais\App;
@@ -13,11 +13,11 @@ class Module extends \MapasCulturais\EvaluationMethod {
     public $internal = true;
 
     public function getSlug() {
-        return 'appeal-phase';
+        return 'continuous';
     }
 
     public function getName() {
-        return i::__('Fase de Recurso');
+        return i::__('Avaliação Contínua');
     }
 
     public function getDescription() {
@@ -38,7 +38,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
     protected function _register() {
         $app = App::i();
         
-        $app->registerJobType(new JobTypes\Spreadsheet('appeal-phase-spreadsheets'));
+        $app->registerJobType(new JobTypes\Spreadsheet('continuous-spreadsheets'));
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
@@ -61,14 +61,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
     function enqueueScriptsAndStyles() {
         $app = App::i();
 
-        $app->view->enqueueScript('app', 'appeal-phase-evaluation-form', 'js/ng.evaluationMethod.appealPhase.js', ['entity.module.opportunity']);
-        $app->view->enqueueStyle('app', 'appeal-phase-evaluation-method', 'css/appeal-phase-evaluation-method.css');
+        $app->view->enqueueScript('app', 'continuous-evaluation-form', 'js/ng.evaluationMethod.continuous.js', ['entity.module.opportunity']);
+        $app->view->enqueueStyle('app', 'continuous-evaluation-method', 'css/continuous-evaluation-method.css');
 
-        $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.appealPhase';
+        $app->view->jsObject['angularAppDependencies'][] = 'ng.evaluationMethod.continuous';
 
-        $app->view->jsObject['evaluationStatus']['appealPhase'] = $this->evaluationStatues;
+        $app->view->jsObject['evaluationStatus']['continuous'] = $this->evaluationStatues;
 
-        $app->view->localizeScript('appealPhaseEvaluationMethod', [
+        $app->view->localizeScript('continuousEvaluationMethod', [
             'saved' => i::__('Avaliação salva'),
             'applyEvaluationsError' => i::__('É necessário selecionar os campos Avaliação e Status'),
             'applyEvaluationsSuccess' => i::__('Avaliações aplicadas com sucesso'),
@@ -84,8 +84,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $app->hook('template(opportunity.registrations.registration-list-actions-entity-table):begin', function($entity){
             if($em = $entity->evaluationMethodConfiguration){
-                if($em->getEvaluationMethod()->slug == "appeal-phase"){
-                    $this->part('appeal-phase--evaluation-result-apply');
+                if($em->getEvaluationMethod()->slug == "continuous"){
+                    $this->part('continuous--evaluation-result-apply');
                 }
             }
         });
@@ -111,7 +111,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $where .= " OR unaccent(lower(e.consolidatedResult)) LIKE unaccent(lower(:{$alias}))";
         });
 
-        $app->hook('evaluationsReport(appealPhase).sections', function (Entities\Opportunity $opportunity, &$sections) use ($app) {
+        $app->hook('evaluationsReport(continuous).sections', function (Entities\Opportunity $opportunity, &$sections) use ($app) {
             $columns = [];
             $evaluations = $opportunity->getEvaluations();
 
@@ -145,7 +145,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $sections = $result;
         });
 
-        $app->hook('POST(opportunity.applyEvaluationsAppealPhase)', function() {
+        $app->hook('POST(opportunity.applyEvaluationsContinuous)', function() {
             $this->requireAuthentication();
 
             set_time_limit(0);
@@ -158,8 +158,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
     
             $type = $opp->evaluationMethodConfiguration->getDefinition()->slug;
     
-            if($type != 'appeal-phase') {
-                $this->errorJson(i::__('Somente para avaliações simplificadas'), 400);
+            if($type != 'continuous') {
+                $this->errorJson(i::__('Somente para avaliações contínuas'), 400);
                 die;
             }
 
@@ -253,13 +253,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->hook('template(opportunity.single.header-inscritos):actions', function() use($app, $self) {
             $opportunity = $this->controller->requestedEntity;
     
-            if ($opportunity->evaluationMethodConfiguration->getDefinition()->slug != 'appeal-phase') {
+            if ($opportunity->evaluationMethodConfiguration->getDefinition()->slug != 'continuous') {
                 return;
             }
             
             $consolidated_results = $self->findConsolidatedResult($opportunity);
             
-            $this->part('appeal-phase--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
+            $this->part('continuous--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
 
         // altera o status de uma avaliação de acordo com o status da mensagem do chat

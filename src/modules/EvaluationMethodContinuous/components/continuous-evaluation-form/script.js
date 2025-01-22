@@ -1,5 +1,5 @@
-app.component('appeal-phase-evaluation-form', {
-    template: $TEMPLATES['appeal-phase-evaluation-form'],
+app.component('continuous-evaluation-form', {
+    template: $TEMPLATES['continuous-evaluation-form'],
 
     props: {
         entity: {
@@ -19,7 +19,7 @@ app.component('appeal-phase-evaluation-form', {
     },
 
     setup() {
-        const text = Utils.getTexts('appeal-phase-evaluation-form')
+        const text = Utils.getTexts('continuous-evaluation-form')
         return { text }
     },
 
@@ -48,37 +48,37 @@ app.component('appeal-phase-evaluation-form', {
 
     computed: {
         statusList() {
-            return $MAPAS.config.appealPhaseEvaluationForm.statusList;
+            return $MAPAS.config.continuousEvaluationForm.statusList;
         },
 
         userId() {
-            return $MAPAS.config.appealPhaseEvaluationForm.userId;
+            return $MAPAS.config.continuousEvaluationForm.userId;
         },
 
         evaluationData() {
             return {
-                data: $MAPAS.config.appealPhaseEvaluationForm.currentEvaluation?.evaluationData
+                data: $MAPAS.config.continuousEvaluationForm.currentEvaluation?.evaluationData
             };
         },
 
         currentEvaluation() {
-            return $MAPAS.config.appealPhaseEvaluationForm.currentEvaluation;
+            return $MAPAS.config.continuousEvaluationForm.currentEvaluation;
         },
 
         needsTiebreaker() {
-            return $MAPAS.config.appealPhaseEvaluationForm.needsTieBreaker;
+            return $MAPAS.config.continuousEvaluationForm.needsTieBreaker;
         },
 
         isMinervaGroup() {
-            return $MAPAS.config.appealPhaseEvaluationForm.isMinervaGroup;
+            return $MAPAS.config.continuousEvaluationForm.isMinervaGroup;
         },
 
         enableExternalReviews() {
-            return $MAPAS.config.appealPhaseEvaluationForm.showExternalReviews;
+            return $MAPAS.config.continuousEvaluationForm.showExternalReviews;
         },
 
         evaluationName() {
-            return $MAPAS.config.appealPhaseEvaluationForm.evaluationMethodName;
+            return $MAPAS.config.continuousEvaluationForm.evaluationMethodName;
         }
     },
 
