@@ -381,7 +381,7 @@ class Module extends \MapasCulturais\Module {
      * @param $recipient
      */
     function sendNotificationNewStatus(Opportunity $opportunity, $recipient) {
-        $message = i::__('O status da sua inscrição na fase de recurso ' . $opportunity->appealPhase->name . ' foi alterado.');
+        $message = i::__('O status da sua inscrição na fase de recurso ' . $opportunity->name . ' foi alterado.');
 
         $notification = new Notification;
         $notification->user = $recipient->ownerUser;
