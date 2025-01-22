@@ -7,6 +7,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\ChatThread;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
 
 class Module extends \MapasCulturais\EvaluationMethod {
 
@@ -273,10 +274,49 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     // altera o status de uma avaliação de acordo com o status da mensagem do chat
                     $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->thread->ownerEntity]);
                     if ($evaluation && isset($data->status)) {
+
                         $evaluation->result = $data->status;
                         $app->disableAccessControl();
                         $evaluation->save(true);
                         $app->enableAccessControl();
+
+                        $registration = $evaluation->registration;
+                        $opportunity = $registration->opportunity;
+                        $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
+
+                        if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
+                            if($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
+                                return;
+                            }
+                            $conn = $app->em->getConnection();
+                            $evaluations = $conn->fetchAll("
+                                SELECT
+                                *
+                                FROM
+                                    evaluations
+                                WHERE
+                                    registration_id = {$registration->id}"
+                            );
+
+                            $all_status_sent = true;
+
+                            foreach ($evaluations as $ev) {
+                                if ($ev['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
+                                    $all_status_sent = false;
+                                }
+                            }
+
+                            if ($all_status_sent) {
+                                if($evaluation_type == 'appeal-phase') {
+                                    $value = $data->status;
+                                }
+
+                                $app->disableAccessControl();
+                                $registration->setStatus($value);
+                                $registration->save();
+                                $app->enableAccessControl();
+                            }
+                        }
                     }
 
                     // altera o status do chat de acordo com o checkbox `endChat` da mensagem
