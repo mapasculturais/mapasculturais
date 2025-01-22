@@ -247,8 +247,7 @@ return array(
             'private' => true,
             'label' => \MapasCulturais\i::__('RG - Órgão Emissor'),
             'type' => 'text',
-            'available_for_opportunities' => true,
-            'readonly' => true
+            'available_for_opportunities' => true
         ),
         'rgUF' => [
             'private' => true,

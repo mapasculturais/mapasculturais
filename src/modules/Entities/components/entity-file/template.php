@@ -92,7 +92,7 @@ $this->import('
                     <mc-icon name="download"></mc-icon> <?php i::_e("Baixar modelo") ?>
                 </a>
                 <a v-if="!file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">
-                    <mc-icon name="upload"></mc-icon> <?php i::_e("Enviar") ?>
+                    <mc-icon name="upload"></mc-icon> {{ buttonTextValue }}
                 </a>
                 <a v-if="file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">
                     <mc-icon name="upload"></mc-icon> <?php i::_e("Atualizar") ?>
