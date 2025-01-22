@@ -15,7 +15,7 @@ $this->import('
 ?>
 
 <div class="agent-table-1">
-    <agent-table :agentType=1 :additionalHeaders="headers" :extra-query="extraQuery" :visible-columns="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filters="hideFilters">
+    <agent-table :agentType="1" :additionalHeaders="headers" :extra-query="extraQuery" :visible-columns="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filters="hideFilters">
         <template #filters="{entities}">
             <mc-multiselect class="col-3 sm:col-4" :model="selectedSexualOrientation" :items="sexualOrientation" placeholder="<?= i::esc_attr__('Selecione a orientação sexual: ') ?>" @selected="filterByOrientacaoSexual(entities)" @removed="filterByOrientacaoSexual(entities)" :hide-filter="hideFilters" hide-button></mc-multiselect>
 
