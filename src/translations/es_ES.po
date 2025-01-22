@@ -5679,6 +5679,2414 @@ msgid "A requisição foi rejeitada."
 msgstr "La solicitud fue rechazada."
 
 #: application/lib/modules/OpportunityAccountability/Controller.php:133
+#: src/modules/Notifications/components/notification-list/template.php:30
+#: src/modules/Notifications/components/notification-list/template.php:43
+msgid "Ok"
+msgstr "Ok"
+
+#: src/modules/Notifications/components/notification-list/template.php:51
+msgid "Rejeitar"
+msgstr "Rechazar"
+
+#: src/modules/Notifications/components/notification-list/texts.php:5
+msgid "Requsição Aprovada"
+msgstr "La solicitud fue aprobada"
+
+#: src/modules/Notifications/components/notification-list/texts.php:6
+msgid "Requsição Recusada"
+msgstr "Solicitud rechazada"
+
+#: src/modules/Notifications/components/notification-list/texts.php:7
+msgid "Requsição Cancelada"
+msgstr "La solicitud fue cancelada"
+
+#: src/modules/Notifications/components/notification-modal/template.php:14
+#: src/modules/Notifications/components/notification-modal/template.php:41
+#: src/modules/Notifications/components/notification-modal/template.php:53
+#: src/modules/Notifications/components/notification-modal/texts.php:5
+#: src/modules/Notifications/layouts/parts/notifications/header-notification.php:14
+#: src/modules/Notifications/layouts/parts/notifications/panel-dashboard.php:15
+#: src/themes/BaseV1/layouts/parts/header-main-nav.php:106
+#: src/themes/BaseV1/layouts/parts/header-main-nav.php:111
+#: src/themes/BaseV2/layouts/parts/navbar.php:46
+msgid "Notificações"
+msgstr "Notificaciones"
+
+#: src/modules/Notifications/components/notification-modal/template.php:20
+msgid "Você tem"
+msgstr "Tienes"
+
+#: src/modules/Notifications/components/notification-modal/template.php:22
+msgid "notificação"
+msgstr "notificaciones"
+
+#: src/modules/Notifications/components/notification-modal/template.php:33
+msgid "Ver todas as notificações"
+msgstr "Ver todas las notificaciones"
+
+#: src/modules/Opportunities/Module.php:121
+#: src/modules/Opportunities/Module.php:122
+msgid "área de atuação"
+msgstr "área de actuación"
+
+#: src/modules/Opportunities/Module.php:122
+msgid "área de interesse"
+msgstr "área de interés"
+
+#: src/modules/Opportunities/Module.php:215
+msgid "A data inicial das inscrições é obrigatória"
+msgstr "La fecha de inicio de inscripción es obligatoria"
+
+#: src/modules/Opportunities/Module.php:216
+msgid "A data final das inscrições é obrigatória"
+msgstr "Fecha final de las inscripciones es obligatoria"
+
+#: src/modules/Opportunities/Module.php:217
+msgid "A descrição curtá é obrigatória"
+msgstr "La descripción breve es obligatoria"
+
+#: src/modules/Opportunities/Module.php:346
+#: src/modules/Opportunities/Module.php:384
+#: src/modules/Opportunities/views/opportunity/edit.php:27
+#: src/modules/Opportunities/views/opportunity/single.php:45
+#: src/modules/Opportunities/views/panel/opportunities.php:18
+#: src/themes/BaseV1/Theme.php:515 src/themes/BaseV1/Theme.php:516
+#: src/themes/BaseV1/layouts/parts/user-management/user-info/info-opportunities.php:9
+#: src/themes/BaseV1/views/panel/opportunities.php:20
+msgid "Minhas oportunidades"
+msgstr "Mis oportunidades"
+
+#: src/modules/Opportunities/Module.php:347
+#: src/modules/Opportunities/views/panel/registrations.php:17
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--user-registrations.php:4
+#: src/themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:9
+#: src/themes/BaseV1/views/panel/registrations.php:15
+msgid "Minhas inscrições"
+msgstr "Mis Inscripciones"
+
+#: src/modules/Opportunities/Module.php:348
+#: src/modules/Opportunities/Module.php:378
+#: src/modules/Opportunities/views/panel/evaluations.php:19
+msgid "Minhas avaliações"
+msgstr "Mis evaluaciones"
+
+#: src/modules/Opportunities/Module.php:390
+#: src/modules/Opportunities/components/opportunity-phase-support/template.php:18
+#: src/modules/Opportunities/components/opportunity-phases-config/template.php:24
+#: src/modules/Opportunities/components/opportunity-subscribe-results/template.php:22
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:19
+#: src/modules/OpportunityClaimForm/Module.php:58
+#: src/modules/OpportunityPhases/Module.php:815
+msgid "Período de inscrição"
+msgstr "Periodo de inscripción"
+
+#: src/modules/Opportunities/Module.php:490
+#, php-format
+msgid "campo \"%s\" modificado"
+msgstr "campo \"%s\" modificado"
+
+#: src/modules/Opportunities/Module.php:497
+#, php-format
+msgid "campo \"%s\" adicionado"
+msgstr "campo \"%s\" agregado"
+
+#: src/modules/Opportunities/Module.php:504
+#, php-format
+msgid "campo \"%s\" removido"
+msgstr "campo \"%s\" eliminado"
+
+#: src/modules/Opportunities/Module.php:511
+#, php-format
+msgid "anexo \"%s\" modificado"
+msgstr "anexo \"%s\" modificado"
+
+#: src/modules/Opportunities/Module.php:518
+#, php-format
+msgid "anexo \"%s\" adicionado"
+msgstr "adjunto \"%s\" agregado"
+
+#: src/modules/Opportunities/Module.php:525
+#, php-format
+msgid "anexo \"%s\" removido"
+msgstr "adjunto \"%s\" eliminado"
+
+#: src/modules/Opportunities/Module.php:556
+msgid "Detalhes consolidados da avaliação"
+msgstr "Detalles de la evaluación consolidada"
+
+#: src/modules/Opportunities/Module.php:563
+msgid "Detalhes das avaliações"
+msgstr "Detalle de las evaluaciones"
+
+#: src/modules/Opportunities/Module.php:572
+msgid "Indica se pode utilizar grupos de comissão de avaliação"
+msgstr "Indica si se pueden utilizar grupos de tribunales de evaluación"
+
+#: src/modules/Opportunities/Module.php:578
+msgid "Indica se pode ser utilizada a auto aplicação de resultados"
+msgstr "Indica si se puede utilizar la autoaplicación de resultados"
+
+#: src/modules/Opportunities/Module.php:853
+msgid "Textos informativos para as fichas de avaliação"
+msgstr "Textos informativos para las fichas de evaluación"
+
+#: src/modules/Opportunities/Module.php:859
+msgid "Publicar os pareceres para o proponente"
+msgstr "Publicar las revisiones para el postulante"
+
+#: src/modules/Opportunities/Module.php:864
+msgid "Publicar o nome dos avaliadores nos pareceres"
+msgstr "Publicar los nombres de los evaluadores en los dictámenes"
+
+#: src/modules/Opportunities/Module.php:869
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:87
+msgid "Autoaplicação de resultados"
+msgstr "Autoaplicación de resultados"
+
+#: src/modules/Opportunities/Module.php:874
+msgid "Selos de certificação"
+msgstr "Sellos de certificación"
+
+#: src/modules/Opportunities/Module.php:879
+msgid "Selos de certificação para as categorias"
+msgstr "Sellos de certificación por categorías"
+
+#: src/modules/Opportunities/Module.php:884
+msgid "Edital de fluxo contínuo"
+msgstr "Llamado de flujo continuo"
+
+#: src/modules/Opportunities/Module.php:890
+#: src/modules/Opportunities/components/opportunity-basic-info/template.php:43
+msgid "Definir data final para inscrições"
+msgstr "Definir fecha final de las inscripciones"
+
+#: src/modules/Opportunities/Module.php:896
+msgid "Vinculação de Agente coletivo para tipos de proponente"
+msgstr "Vinculación de Agente colectivo a tipos de postulante"
+
+#: src/modules/Opportunities/Module.php:898
+msgid ""
+"Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou "
+"Pessoa Jurídica"
+msgstr ""
+"Almacena si la vinculación de agentes colectivos está habilitada para Colectivo "
+"o Persona Jurídica"
+
+#: src/modules/Opportunities/Module.php:902
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:104
+msgid "Configuração filtro de inscrição para avaliadores/comissão"
+msgstr "Configuración de filtro de inscripción para evaluadores/tribunal"
+
+#: src/modules/Opportunities/Module.php:907
+#: src/modules/Opportunities/Module.php:912
+msgid "Quantidade de avaliadores por inscrição"
+msgstr "Número de evaluadores por inscripción"
+
+#: src/modules/Opportunities/Module.php:917
+msgid "Configuração de campos de seleção"
+msgstr "Configuración de campos de selección"
+
+#: src/modules/Opportunities/Module.php:922
+msgid "Configuração da distribuição das inscrições entre os avaliadores"
+msgstr ""
+"Configuración de la distribución de las inscripciones entre los evaluadores"
+
+#: src/modules/Opportunities/Module.php:927
+msgid ""
+"Configuração da distribuição das inscrições entre os avaliadores por categoria"
+msgstr ""
+"Configuración de la distribución de las inscripciones entre los evaluadores por "
+"categoría"
+
+#: src/modules/Opportunities/Module.php:932
+msgid "Configuração da distribuição das inscrições entre os avaliadores por faixa"
+msgstr ""
+"Configuración de la distribución de inscripciones entre evaluadores por franja"
+
+#: src/modules/Opportunities/Module.php:937
+msgid ""
+"Configuração da distribuição das inscrições entre os avaliadores por tipo de "
+"proponente"
+msgstr ""
+"Configuración de la distribución de registros entre evaluadores por tipo de "
+"postulante"
+
+#: src/modules/Opportunities/Module.php:942
+msgid "Permite visualização de pareceres externos"
+msgstr "Permite la visualización de revisores externos"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:21
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:21
+msgid "Concluir avaliação"
+msgstr "Finalizar evaluación"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:26
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:25
+msgid "Avaliação feita!"
+msgstr "Evaluación realizada!"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:29
+msgid ""
+"Agora é necessário enviar essa avaliação para a pessoa gestora. Você pode "
+"enviar uma por uma ou todas de uma só vez."
+msgstr ""
+"Ahora es necesario enviar esta evaluación a la persona gestora. Puedes "
+"enviarlos uno por uno o todos a la vez."
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:34
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:34
+msgid "Enviar Depois"
+msgstr "Enviar después"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:35
+#: src/modules/Opportunities/components/registration-actions/template.php:41
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:35
+msgid "Enviar agora"
+msgstr "Enviar ahora"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:41
+#: src/modules/Opportunities/components/evaluation-actions/template.php:55
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:40
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:60
+msgid "Enviar avaliação"
+msgstr "Enviar evaluación"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:42
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:41
+msgid "Finalizar e enviar"
+msgstr "Finalizar y enviar"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:49
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:54
+msgid "Reabrir avaliação"
+msgstr "Reabrir evaluación"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:62
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:48
+msgid "Salvar e continuar depois"
+msgstr "Guardar y continuar después"
+
+#: src/modules/Opportunities/components/evaluation-actions/template.php:69
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:67
+#: src/themes/BaseV1/Theme.php:1787
+msgid "Anterior"
+msgstr "Anterior"
+
+#: src/modules/Opportunities/components/evaluation-actions/texts.php:8
+#: src/modules/Opportunities/components/registration-evaluation-actions/texts.php:8
+msgid "Avaliação reaberta"
+msgstr "Evaluación reabierta"
+
+#: src/modules/Opportunities/components/evaluation-actions/texts.php:9
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:171
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:14
+#: src/modules/Opportunities/components/registration-evaluation-actions/texts.php:9
+msgid "Avaliação enviada"
+msgstr "Evaluación enviada"
+
+#: src/modules/Opportunities/components/evaluation-actions/texts.php:10
+msgid "Avaliação finalizada"
+msgstr "Evaluación finalizada"
+
+#: src/modules/Opportunities/components/evaluation-card/template.php:24
+#: src/modules/Opportunities/components/evaluation-card/template.php:25
+msgid "FASE"
+msgstr "FASE"
+
+#: src/modules/Opportunities/components/evaluation-card/template.php:27
+#: src/modules/Opportunities/components/opportunity-phase-evaluation/template.php:23
+#: src/modules/Opportunities/components/opportunity-phase-evaluation/template.php:47
+msgid "PERÍODO DE AVALIAÇÃO"
+msgstr "PERIODO DE EVALUACIÓN"
+
+#: src/modules/Opportunities/components/evaluation-card/template.php:28
+msgid "as"
+msgstr "las"
+
+#: src/modules/Opportunities/components/evaluation-form/template.php:25
+msgid "Formulário de"
+msgstr "Formulario de"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/script.js:75
+msgid "agentsSummary"
+msgstr ""
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/script.js:80
+msgid "spaceSummary"
+msgstr ""
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/template.php:19
+#: src/modules/Opportunities/components/fields-visible-evaluators/template.php:23
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:3
+msgid "Configurar campos visíveis para os avaliadores"
+msgstr "Configurar campos visibles para los evaluadores"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/template.php:20
+msgid "Defina quais campos serão habilitados para avaliação."
+msgstr "Defina qué campos se habilitarán para la evaluación."
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/template.php:26
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:7
+msgid "Filtrar campo"
+msgstr "Filtrar campo"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/template.php:29
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:8
+msgid "Pesquise pelo título ou pelo ID"
+msgstr "Buscar por título o ID"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/template.php:36
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations-fields--config.php:13
+msgid "Selecionar todos os campos"
+msgstr "Seleccionar todos los campos"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/template.php:53
+msgid "Abrir lista de campos"
+msgstr "Abrir lista de campos"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/texts.php:6
+msgid "Para ativar este campo, ative também a 'Categoria'"
+msgstr "Para activar este campo, active también la 'Categoría'"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/texts.php:7
+msgid "Para ativar este campo, ative também o campo"
+msgstr "Para activar este campo, active también el campo"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/texts.php:10
+#: src/themes/BaseV1/Theme.php:2147
+msgid "Resumo dos agentes"
+msgstr "Resumen de agentes"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/texts.php:11
+#: src/themes/BaseV1/Theme.php:2150
+msgid "Salvo com sucesso"
+msgstr "Guardado con éxito"
+
+#: src/modules/Opportunities/components/fields-visible-evaluators/texts.php:12
+#: src/themes/BaseV1/Theme.php:2148
+msgid "Resumo dos espaços"
+msgstr "Resumen de espacios"
+
+#: src/modules/Opportunities/components/opportunity-basic-info/template.php:36
+msgid "Informações obrigatórias"
+msgstr "Información obligatoria"
+
+#: src/modules/Opportunities/components/opportunity-basic-info/template.php:42
+msgid "É um edital de fluxo contínuo?"
+msgstr "¿Es un llamado de flujo continuo?"
+
+#: src/modules/Opportunities/components/opportunity-basic-info/template.php:49
+msgid "Publicação final de resultados (data e hora)"
+msgstr "Publicación final de resultados (fecha y hora)"
+
+#: src/modules/Opportunities/components/opportunity-basic-info/template.php:73
+msgid "Adicionar arquivos"
+msgstr "Agregar archivos"
+
+#: src/modules/Opportunities/components/opportunity-basic-info/template.php:85
+msgid "Adicionar regulamento"
+msgstr "Agregar reglamento"
+
+#: src/modules/Opportunities/components/opportunity-category-list/template.php:21
+msgid "Escreva aqui a categoria. Ex: Artes visuais"
+msgstr "Escribe la categoría aquí. Ej: Artes visuales"
+
+#: src/modules/Opportunities/components/opportunity-category/template.php:20
+msgid "Categorias do edital"
+msgstr "Categorías de la convocatoria"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:25
+msgid "Defina os agentes que farão parte das comissões de avaliação desta fase."
+msgstr ""
+"Definir los agentes que formarán parte de los tribunales de evaluación en esta "
+"etapa o fase."
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:40
+msgid "Adicionar comissão"
+msgstr "Agregar tribunal"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:48
+msgid "Digite o nome da comissão"
+msgstr "Introduzca el nombre del tribunal"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:62
+msgid "Título da comissão"
+msgstr "Título del tribunal"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:65
+msgid "Digite o novo nome do grupo"
+msgstr "Ingrese el nuevo nombre del grupo"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:70
+msgid "Excluir comissão"
+msgstr "Borrar tribunal"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:74
+msgid "Remover comissão de avaliadores?"
+msgstr "¿Eliminar tribunal de evaluadores?"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:85
+msgid "Limitar número de avaliadores por inscrição"
+msgstr "Limitar el número de evaluadores por inscripción"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:93
+msgid "Desconsiderar as avaliações já feitas na distribuição"
+msgstr "Ignorar valoraciones ya realizadas en la distribución"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:123
+msgid "Permitir visualização de pareceres externos"
+msgstr "Permitir la visualización de revisores externos"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:130
+msgid "Habilitados"
+msgstr "Habilitados"
+
+#: src/modules/Opportunities/components/opportunity-committee-groups/template.php:134
+msgid "Desabilitados"
+msgstr "Inhabilitados"
+
+#: src/modules/Opportunities/components/opportunity-create-data-collect-phase/template.php:11
+#: src/modules/Opportunities/components/opportunity-create-data-collect-phase/template.php:32
+msgid "Adicionar fase de coleta de dados"
+msgstr "Agregar fase de recolección de datos"
+
+#: src/modules/Opportunities/components/opportunity-create-evaluation-phase/template.php:13
+#: src/modules/Opportunities/components/opportunity-create-evaluation-phase/template.php:37
+msgid "Adicionar fase de avaliação"
+msgstr "Agregar fase de evaluación"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:26
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:171
+msgid "Adicionar pessoa avaliadora"
+msgstr "Agregar evaluador"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:33
+msgid "Expandir todos os avaliadores"
+msgstr "Expandir todos los evaluadores"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:39
+msgid "Sem avaliadores a serem listados."
+msgstr "No hay evaluadores en la lista."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:62
+msgid "Status das avaliações:"
+msgstr "Estado de las evaluaciones:"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:68
+msgid "Iniciadas"
+msgstr "Iniciadas"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:71
+msgid "Concluídas"
+msgstr "Finalizadas"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:74
+#: src/modules/Opportunities/components/panel--registration-tabs/template.php:44
+#: src/modules/OpportunityAccountability/views/panel/accountabilitys.php:23
+#: src/modules/Reports/Controller.php:389
+#: src/modules/Reports/layouts/parts/registrationsDraftVsSent.php:5
+#: src/modules/Reports/layouts/parts/registrationsDraftVsSent.php:6
+#: src/modules/Reports/layouts/parts/registrationsDraftVsSent.php:45
+#: src/themes/BaseV1/views/panel/registrations.php:23
+msgid "Enviadas"
+msgstr "Enviadas"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:80
+msgid "ainda não tem avaliações disponíveis"
+msgstr "aún no hay evaluaciones disponibles"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:81
+msgid "ainda não aceitou o convite para avaliar esta oportunidade"
+msgstr "aún no has aceptado la invitación para evaluar esta oportunidad"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:87
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:100
+msgid "Cancelar convite"
+msgstr "Cancelar invitación"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:91
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:104
+msgid ""
+"Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}"
+"</strong> avaliar esta oportunidade?"
+msgstr ""
+"¿Está seguro de que desea cancelar la invitación para que "
+"<strong>{{infoReviewer.agent.name}}</strong> evalúe esta oportunidad?"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:129
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:76
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:80
+msgid "Reabrir avaliações"
+msgstr "Reabrir evaluaciones"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:133
+#: src/themes/BaseV1/Theme.php:2125
+msgid "Você tem certeza que deseja reabrir as avaliações para este avaliador?"
+msgstr ""
+"¿Está seguro (a) que desea reabrir las evaluaciones para este/a el evaluador/ar?"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:150
+msgid ""
+"Você tem certeza que deseja excluir <strong>{{infoReviewer.agent.name}}</"
+"strong> da função de avaliador(a)?"
+msgstr ""
+"¿Está seguro (a) que desea borrar <strong>{{infoReviewer.agent.name}}</strong> "
+"de la función de evaluador(a)?"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:155
+#: src/modules/OpportunityAccountability/layouts/parts/accountability-phase-info.php:6
+msgid "ATENÇÃO"
+msgstr "ATENCIÓN"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:155
+msgid ""
+"TODAS as avaliações realizadas por <strong>{{infoReviewer.agent.name}}</strong> "
+"serão <strong>excluídas permanentemente</strong>."
+msgstr ""
+"TODAS las evaluaciones completadas por <strong>{{infoReviewer.agent.name}}</"
+"strong> serán <strong>eliminadas permanentemente</strong>."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:6
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:73
+msgid "Desabilitar"
+msgstr "Deshabilitar"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:7
+msgid "Avaliações reabertas com sucesso"
+msgstr "Evaluaciones reabiertas con éxito"
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:8
+msgid "A distribuição de avaliações foi atualizada com sucesso."
+msgstr "La distribución de evaluaciones se ha actualizado correctamente."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:9
+msgid "Categoria adicionada com sucesso."
+msgstr "Categoría agregada con éxito."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:10
+msgid "Categoria removida com sucesso."
+msgstr "Categoría eliminada con éxito."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:11
+msgid "Faixa/Linha adicionada com sucesso."
+msgstr "Franja/Línea agregada con éxito."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:12
+msgid "Faixa/Linha removida com sucesso."
+msgstr "Franja/Línea eliminada con éxito."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:13
+msgid "Tipo de proponente adicionado com sucesso."
+msgstr "El tipo de postulante se agregó correctamente."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:14
+msgid "Tipo de proponente removido com sucesso."
+msgstr "Tipo de postulante eliminado con éxito."
+
+#: src/modules/Opportunities/components/opportunity-evaluation-committee/texts.php:15
+msgid "sem avaliações"
+msgstr "sin evaluaciones"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-list/template.php:28
+msgid "Selecione para filtrar"
+msgstr "Seleccione para filtrar"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-list/template.php:45
+msgid "Não foram encontrados registros"
+msgstr "No se encontraron registros"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-list/template.php:57
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:6
+#: src/modules/Opportunities/components/registration-edition/template.php:49
+#: src/modules/Spreadsheets/EvaluationsSpreadsheetJob.php:47
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:13
+#: src/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:22
+#: src/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:18
+msgid "Agente responsável"
+msgstr "Agente responsable"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-list/template.php:66
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:7
+#: src/modules/Opportunities/components/registration-actions/texts.php:6
+#: src/modules/Opportunities/components/registration-edition/template.php:69
+#: src/modules/Opportunities/components/registration-evaluation-actions/texts.php:6
+#: src/modules/Opportunities/views/opportunity/preview-form.php:33
+msgid "Agente coletivo"
+msgstr "Agente colectivo"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-list/template.php:76
+msgid "Data da inscrição"
+msgstr "Fecha de inscripción"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-list/template.php:83
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:64
+msgid "Resultado de avaliação"
+msgstr "Resultado de la evaluación"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-list/texts.php:5
+msgid "Informe a palavra chave"
+msgstr "Escriba una palabra clave"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:61
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:247
+#: src/modules/OpportunityAccountability/Module.php:614
+msgid "inscrição"
+msgstr "inscripción"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:62
+#: src/modules/OpportunityAccountability/Module.php:624
+msgid "avaliador"
+msgstr "evaluador"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:63
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:295
+msgid "resultado final"
+msgstr "resultado final"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:64
+msgid "estado"
+msgstr "departamento"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:69
+msgid "coletivo"
+msgstr "colectivo"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:83
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:17
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:88
+#: src/themes/BaseV1/views/panel/index.php:153
+msgid "Avaliações pendentes"
+msgstr "Evaluaciones pendientes"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:167
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:12
+msgid "Avaliação iniciada"
+msgstr "Evaluación iniciada"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:169
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:13
+msgid "Avaliação concluída"
+msgstr "Evaluación finalizada"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:173
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:15
+msgid "Avaliação pendente"
+msgstr "Evaluación pendiente"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/script.js:178
+msgid "não avaliado"
+msgstr "no evaluada"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/template.php:24
+msgid "As avaliações já estão encerradas"
+msgstr "Las evaluaciones ya están cerradas"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/template.php:25
+msgid "As avaliações estão em andamento"
+msgstr "Las evaluaciones están en curso"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/template.php:26
+msgid "As avaliações ainda não iniciaram"
+msgstr "Las evaluaciones aún no iniciaron"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/template.php:50
+msgid "Enviar avaliações"
+msgstr "Enviar evaluaciones"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/template.php:67
+msgid "Estado da avaliação"
+msgstr "Estado de la evaluación"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:8
+msgid "Resultado final da avaliação"
+msgstr "Resultado final de la evaluación"
+
+#: src/modules/Opportunities/components/opportunity-evaluations-table/texts.php:11
+msgid "Não avaliado"
+msgstr "No evaluado"
+
+#: src/modules/Opportunities/components/opportunity-filter-configuration/template.php:17
+msgid "Configuração de filtros"
+msgstr "Configuración de filtros"
+
+#: src/modules/Opportunities/components/opportunity-filter-configuration/template.php:21
+#: src/modules/Opportunities/components/opportunity-registration-filter-configuration/template.php:21
+msgid "Selecione um filtro"
+msgstr "Seleccione un filtro"
+
+#: src/modules/Opportunities/components/opportunity-filter-configuration/template.php:23
+#: src/modules/Opportunities/components/opportunity-proponent-types/template.php:12
+#: src/modules/Opportunities/components/opportunity-registration-filter-configuration/template.php:23
+msgid "Tipos do proponente"
+msgstr "Tipos de postulante"
+
+#: src/modules/Opportunities/components/opportunity-filter-configuration/template.php:54
+#: src/modules/Opportunities/components/opportunity-registration-filter-configuration/template.php:66
+msgid "Adicionar filtro"
+msgstr "Agregar filtro"
+
+#: src/modules/Opportunities/components/opportunity-form-builder-category-list/template.php:18
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:76
+#: src/modules/Support/components/opportunity-support-config/template.php:117
+#: src/themes/BaseV1/Theme.php:2135
+#: src/themes/BaseV1/layouts/parts/singles/registration-edit--categories.php:26
+msgid "Categorias"
+msgstr "Categorías"
+
+#: src/modules/Opportunities/components/opportunity-form-builder-category-list/template.php:44
+msgid "Descrição da categoria"
+msgstr "Descripción de la categoría"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:27
+msgid "Configuração de formulário de coleta de dados"
+msgstr "Configuración del formulario de recolección de datos"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:35
+msgid "Habilitar campo para vínculo de espaço"
+msgstr "Habilitar campo para enlace de espacio"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:36
+msgid "Permite que o proponente selecione um espaço para associar à inscrição."
+msgstr ""
+"Permite al postulante seleccionar un espacio para asociar a la inscripción."
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:51
+msgid "Habilitar campo de nome de projeto"
+msgstr "Habilite el campo del Nombre del Proyecto"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:52
+msgid "Permite que o inscrito dê nome a um projeto no momento da inscrição."
+msgstr ""
+"Permite a los inscriptos nombrar un proyecto en el momento de la inscripción."
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:68
+msgid "Habilitar solicitação de imagem de perfil"
+msgstr "Habilitar solicitud de imagen de perfil"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:69
+msgid ""
+"Solicita ao usuário que insira a imagem de perfil no formulário de inscrição"
+msgstr ""
+"Solicita al usuario que ingrese una foto de perfil en el formulario de registro"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:83
+msgid "Habilitar pergunta 'Vai concorrer às cotas'"
+msgstr "Habilitar pregunta '¿Competirás por cuotas?'"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:110
+msgid "Excluir etapa"
+msgstr "Eliminar etapa"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:116
+msgid "Deseja remover esta etapa?"
+msgstr "¿Desea eliminar esta etapa?"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:131
+msgid "Criar etapa"
+msgstr "Crear etapa"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:135
+msgid "Adicionar etapa"
+msgstr "Agregar etapa"
+
+#: src/modules/Opportunities/components/opportunity-form-builder/template.php:141
+msgid "Nome da etapa"
+msgstr "Nombre de la etapa"
+
+#: src/modules/Opportunities/components/opportunity-form-export/template.php:10
+msgid "Exportar"
+msgstr "Exportar"
+
+#: src/modules/Opportunities/components/opportunity-form-import/template.php:20
+msgid "Importar Formulário"
+msgstr "Importar el formulario"
+
+#: src/modules/Opportunities/components/opportunity-form-import/template.php:30
+msgid "Importe o arquivo de formulário"
+msgstr "Importar el archivo de formulario"
+
+#: src/modules/Opportunities/components/opportunity-form-import/template.php:31
+msgid "O arquivo importado deve estar no formato .txt "
+msgstr "El archivo importado debe estar en formato .txt "
+
+#: src/modules/Opportunities/components/opportunity-form-view/template.php:10
+#: src/modules/Support/components/opportunity-support-config/texts.php:13
+#: src/modules/Support/layouts/parts/support/opportunity-support-fields-association.php:21
+#: src/modules/Support/layouts/parts/support/opportunity-support-fields-association.php:40
+#: src/themes/BaseV1/layouts/parts/panel-em-cartaz.php:28
+#: src/themes/BaseV1/views/panel/em-cartaz.php:65
+msgid "Visualizar"
+msgstr "Visualizar"
+
+#: src/modules/Opportunities/components/opportunity-list/template.php:17
+msgid "Lista de oportunidades vinculadas"
+msgstr "Lista de oportunidades vinculadas"
+
+#: src/modules/Opportunities/components/opportunity-list/template.php:35
+msgid "As Inscrições encerrarão no dia"
+msgstr "La inscripción se cerrará el día"
+
+#: src/modules/Opportunities/components/opportunity-list/template.php:39
+msgid "As inscriçoes encerraram no dia"
+msgstr "Inscripciones cerradas el día"
+
+#: src/modules/Opportunities/components/opportunity-owner-type/template.php:9
+msgid "{{ownerType(entity)}}"
+msgstr ""
+
+#: src/modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:75
+msgid "Configurar formulário"
+msgstr "Configuración del Formulario"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:85
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:97
+msgid "Confirma a execução da ação?"
+msgstr "¿Confirma la ejecución de la acción?"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:5
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/texts.php:5
+#: src/modules/Opportunities/components/opportunity-phases-config/texts.php:5
+#: src/modules/Opportunities/components/opportunity-subscribe-results/texts.php:5
+msgid "Não foi possível remover a fase"
+msgstr "No se puede eliminar la fase"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-data-collection/texts.php:6
+#: src/modules/Opportunities/components/opportunity-phases-config/texts.php:7
+#: src/modules/Opportunities/components/opportunity-subscribe-results/texts.php:7
+msgid "Excluir fase de coleta de dados"
+msgstr "Eliminar fase de recolección de datos"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:32
+#: src/modules/Opportunities/components/opportunity-phase-header/template.php:15
+#: src/modules/Opportunities/components/opportunity-phases-config/template.php:37
+#: src/modules/Opportunities/components/opportunity-subscribe-results/template.php:34
+msgid "Data de início"
+msgstr "Fecha de inicio"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:33
+msgid "Data de término"
+msgstr "Fecha de finalización"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:53
+msgid "Comissões de avaliação"
+msgstr "Tribunales de evaluación"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:70
+msgid "Adicionar textos explicativos das avaliações"
+msgstr "Añadir textos explicativos de las evaluaciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:74
+msgid "Texto configuração geral"
+msgstr "Texto de configuración general"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-evaluation/template.php:103
+#: src/modules/Opportunities/components/opportunity-phases-config/texts.php:6
+#: src/modules/Opportunities/components/opportunity-subscribe-results/texts.php:6
+msgid "Excluir fase de avaliação"
+msgstr "Eliminar fase de evaluación"
+
+#: src/modules/Opportunities/components/opportunity-phase-config-results/texts.php:5
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:5
+#: src/modules/Opportunities/components/opportunity-phases-config/texts.php:8
+#: src/modules/Opportunities/components/opportunity-subscribe-results/texts.php:8
+msgid "Tem certeza que deseja publicar o resultado?"
+msgstr "¿Está seguro (a) que desea publicar el resultado?"
+
+#: src/modules/Opportunities/components/opportunity-phase-evaluation/template.php:11
+#: src/modules/Opportunities/components/panel--evaluations-tabs/template.php:19
+msgid "Avaliações abertas e disponíveis"
+msgstr "Evaluaciones abiertas y disponibles"
+
+#: src/modules/Opportunities/components/opportunity-phase-evaluation/template.php:30
+#: src/modules/Opportunities/components/panel--evaluations-tabs/template.php:43
+#: src/modules/Panel/components/panel--pending-evaluations/template.php:67
+msgid "Avaliar"
+msgstr "Evaluar"
+
+#: src/modules/Opportunities/components/opportunity-phase-evaluation/template.php:34
+msgid "Você não tem avaliações abertas ou disponíveis."
+msgstr "No tienes evaluaciones abiertas o disponibles."
+
+#: src/modules/Opportunities/components/opportunity-phase-evaluation/template.php:36
+msgid "Avaliações Encerradas"
+msgstr "Evaluaciones finalizadas"
+
+#: src/modules/Opportunities/components/opportunity-phase-evaluation/template.php:38
+msgid "Você ainda não tem avaliações encerradas."
+msgstr "Aún no tienes ninguna evaluación cerrada."
+
+#: src/modules/Opportunities/components/opportunity-phase-evaluation/template.php:51
+msgid "Conferir avaliações"
+msgstr "Consultar evaluaciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-header/template.php:19
+#: src/modules/Opportunities/components/opportunity-phases-config/template.php:42
+#: src/modules/Opportunities/components/opportunity-subscribe-results/template.php:39
+#: src/themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:70
+#: src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:121
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:11
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:21
+#: src/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:11
+#: src/themes/BaseV1/views/event/edit.php:62
+#: src/themes/BaseV1/views/event/single.php:62
+msgid "Data final"
+msgstr "Fecha final"
+
+#: src/modules/Opportunities/components/opportunity-phase-header/texts.php:5
+msgid "1. Período de inscrição"
+msgstr "1. Plazo de inscripción"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:18
+msgid ""
+"Após a finalização das avaliações, você precisa acessar a <strong>lista de "
+"inscrições para aplicar os resultados dessas avaliações</strong>."
+msgstr ""
+"Una vez completadas las evaluaciones, debe acceder a la <strong>lista de "
+"inscripciones para aplicar los resultados de estas evaluaciones</strong>."
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:24
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:16
+msgid "Resumo das inscrições"
+msgstr "Resumen de las inscripciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:26
+msgid "Quantidade inscrições:"
+msgstr "Cantidad de inscripciones:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:27
+msgid "Quantidade de inscrições <strong>avaliadas</strong>:"
+msgstr "Número de inscripciones <strong>evaluadas</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:28
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:21
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:60
+msgid "Quantidade de inscrições <strong>selecionadas</strong>:"
+msgstr "Número de inscripciones <strong>seleccionadas</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:29
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:22
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:61
+msgid "Quantidade de inscrições <strong>não selecionadas</strong>:"
+msgstr "Número de solicitudes <strong>no seleccionadas</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:30
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:23
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:62
+msgid "Quantidade de inscrições <strong>suplentes</strong>:"
+msgstr "Número de altas de <strong>suplentes</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:31
+msgid "Quantidade de inscrições <strong>inválidas</strong>:"
+msgstr "Número de inscripciones <strong>inválidas</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:32
+msgid "Quantidade de inscrições <strong>pendentes</strong>:"
+msgstr "Número de inscripciones <strong>pendientes</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:35
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:28
+msgid "As inscrições para esta fase ainda não estão disponíveis"
+msgstr "La inscripción para esta fase aún no está disponible"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:39
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:32
+msgid "Não existem inscrições cadastradas"
+msgstr "No hay inscripciones registradas"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:46
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:38
+#: src/modules/Opportunities/views/opportunity/registrations.php:10
+msgid "Lista de inscrições"
+msgstr "Lista de inscripciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:50
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:42
+msgid "Sincronizar inscrições"
+msgstr "Sincronizar inscripciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:58
+msgid "Resumo das avaliações"
+msgstr "Resumen de las evaluaciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:59
+msgid "Quantidade de inscrições"
+msgstr "Cantidad de inscripciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:63
+#: src/modules/Opportunities/views/opportunity/evaluations-list--all.php:10
+#: src/modules/Opportunities/views/opportunity/evaluations-list--user.php:10
+#: src/modules/Opportunities/views/registration/evaluation.php:64
+msgid "Lista de avaliações"
+msgstr "Lista de evaluaciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/texts.php:5
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/texts.php:5
+msgid "Solicitação executada com sucesso"
+msgstr "Solicitud ejecutada con éxito"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:18
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:57
+msgid "Quantidade de inscrições:"
+msgstr "Cantidad de inscripciones:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:19
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:59
+msgid "Quantidade de inscrições <strong>rascunho</strong>:"
+msgstr "Número de inscripciones <strong>borradores</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:20
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:58
+msgid "Quantidade de inscrições <strong>enviadas/pendentes</strong>:"
+msgstr "Número de inscripciones <strong>enviadas/pendientes</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:24
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:63
+msgid "Quantidade de inscrições <strong>inválida</strong>:"
+msgstr "Número de inscripciones <strong>inválidas</strong>:"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:22
+msgid ""
+"Fique atento! A publicação do resultado é opcional e só pode ser feita após o "
+"término da fase. <strong>Esta ação deixará público o nome e o número de "
+"inscrição das pessoas inscritas.</strong>"
+msgstr ""
+"¡Manténganse al tanto! La publicación del resultado es opcional y sólo podrá "
+"realizarse una vez finalizada la fase. <strong>Esta acción hará públicos el "
+"nombre y número de registro de las personas registradas.</strong>"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:26
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:75
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--publish-button.php:4
+msgid "O resultado já foi publicado"
+msgstr "El resultado ya fue publicado"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:31
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:80
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:39
+#, php-format
+msgid "O resultado será publicado automaticamente no dia %s às %s"
+msgstr "El resultado se publicará automáticamente el %s a las %s"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:38
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:87
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:46
+#, php-format
+msgid "O resultado será publicado no dia %s às %s"
+msgstr "El resultado se publicará el %s a las %s"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:45
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:94
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:53
+msgid "O resultado será publicado automaticamente"
+msgstr "El resultado será publicado automáticamente"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:49
+msgid ""
+"Você pode publicar o resultado manualmente a qualquer momento utilizando o "
+"botão ao lado."
+msgstr ""
+"Puedes publicar el resultado manualmente en cualquier momento usando el botón "
+"del lateral."
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:56
+#: src/modules/Reports/layouts/parts/registrationsStatus.php:10
+msgid "Status das inscrições"
+msgstr "Estado de las inscripciones"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:66
+msgid "A lista de inscrições pode ser acessada utilizando o botão abaixo"
+msgstr ""
+"Se puede acceder a la lista de inscripciones usando el botón a continuación"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:68
+msgid "Conferir lista de inscrições"
+msgstr "Consultar lista de inscriptos"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:97
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:56
+msgid "A publicação do resultado é opcional."
+msgstr "Publicar el resultado es opcional."
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:102
+msgid "Publicar Resultado"
+msgstr "Publicar resultado"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:105
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:63
+msgid "Publicar Resultados"
+msgstr "Publicar resultados"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:109
+msgid "Deseja publicar os resultados?"
+msgstr "¿Quieres publicar los resultados?"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:111
+msgid ""
+"Antes de publicar os resultados, verifique cuidadosamente se todas as "
+"inscrições foram avaliadas e aplicadas."
+msgstr ""
+"Antes de publicar los resultados, verifique cuidadosamente que todas las "
+"inscripciones hayan sido evaluadas y aplicadas."
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:112
+msgid "Com essa ação o resultado da fase ficará público."
+msgstr "Con esta acción, el resultado de la fase será público."
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:123
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:24
+msgid "Despublicar"
+msgstr "Despublicar"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:5
+msgid ""
+"Antes de publicar os resultados, verifique cuidadosamente se todas as "
+"inscrições foram avaliadas e aplicadas. Com essa ação o resultado da fase "
+"ficará público."
+msgstr ""
+"Antes de publicar los resultados, verifique cuidadosamente que todas las "
+"inscripciones hayan sido evaluadas y aplicadas. Con esta acción, el resultado "
+"de la fase será público."
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:6
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:6
+msgid "Tem certeza que deseja despublicar o resultado?"
+msgstr "¿Está seguro (a) que desea despublicar el resultado?"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:7
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:7
+msgid "Os resultados serão publicados automaticamente"
+msgstr "Los resultados serán publicados automáticamente"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:8
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:8
+msgid "Os resultados serão publicados em"
+msgstr "Los resultados serán publicados el"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/texts.php:9
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/texts.php:9
+msgid "Os resultados serão publicados automaticamente em"
+msgstr "Los resultados serán publicados automáticamente el"
+
+#: src/modules/Opportunities/components/opportunity-phase-publish-date-config/template.php:18
+msgid "Publicação de Resultados"
+msgstr "Publicación de resultados"
+
+#: src/modules/Opportunities/components/opportunity-phase-reports/template.php:21
+#: src/modules/Opportunities/components/opportunity-phase-support/template.php:21
+#: src/modules/Opportunities/components/opportunity-phases-config/template.php:28
+#: src/modules/Opportunities/components/opportunity-subscribe-results/template.php:27
+msgid "Coleta de dados"
+msgstr "Recopilación de datos"
+
+#: src/modules/Opportunities/components/opportunity-phase-reports/texts.php:5
+msgid "Periodo de inscrições"
+msgstr "Periodo de inscripción"
+
+#: src/modules/Opportunities/components/opportunity-phase-support/template.php:27
+#: src/modules/Panel/components/panel--entity-support/template.php:22
+msgid "Realizar suporte"
+msgstr "Realizar soporte"
+
+#: src/modules/Opportunities/components/opportunity-phases-config/template.php:47
+msgid "Data publicação"
+msgstr "Fecha de publicación"
+
+#: src/modules/Opportunities/components/opportunity-phases-config/template.php:82
+msgid ""
+"A data e hora da 'Coleta de dados' precisa estar preenchida para adicionar "
+"novas fases."
+msgstr ""
+"Se debe completar la fecha y hora de 'Recogida de Datos' para agregar nuevas "
+"fases."
+
+#: src/modules/Opportunities/components/opportunity-phases-config/template.php:86
+msgid ""
+"A data e hora da 'Publicação final' precisa estar preenchida para adicionar "
+"novas fases."
+msgstr ""
+"Se deberá completar la fecha y hora de 'Publicación final' para añadir nuevas "
+"fases."
+
+#: src/modules/Opportunities/components/opportunity-phases-config/template.php:91
+msgid "Não se pode criar novas fases após a publicação do resultado final"
+msgstr "No se pueden crear nuevas fases después de publicar el resultado final"
+
+#: src/modules/Opportunities/components/opportunity-phases-timeline/template.php:21
+msgid "Fase de inscrições"
+msgstr "Fase o etapa de las inscripciones"
+
+#: src/modules/Opportunities/components/opportunity-phases-timeline/template.php:24
+#: src/modules/Reports/layouts/parts/info-dynamic-graphics-break.php:8
+#: src/themes/BaseV1/Theme.php:1946
+#: src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:116
+#: src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:135
+#: src/themes/BaseV1/layouts/parts/panel-em-cartaz.php:17
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-projects--tab-content.php:24
+msgid "de"
+msgstr "de"
+
+#: src/modules/Opportunities/components/opportunity-phases-timeline/template.php:25
+#: src/themes/BaseV1/Theme.php:1948
+#: src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:120
+#: src/themes/BaseV1/layouts/parts/opportunity-phases/widget-opportunity-phases.php:139
+#: src/themes/BaseV1/layouts/parts/search/filter.php:19
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-about--registration-dates.php:10
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:11
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee--table.php:11
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--config.php:20
+#: src/themes/BaseV1/layouts/parts/singles/project-about--registration-dates.php:10
+msgid "a"
+msgstr "hasta"
+
+#: src/modules/Opportunities/components/opportunity-phases-timeline/template.php:46
+#: src/modules/Opportunities/views/registration/single.php:271
+msgid "Preencher formulário"
+msgstr "Rellenar formulario"
+
+#: src/modules/Opportunities/components/opportunity-proponent-types/template.php:13
+msgid "Selecione um ou mais tipos de proponente que poderá participar do edital"
+msgstr ""
+"Seleccione uno o más tipos de proponentes que pueden participar en el llamado o "
+"convocatoria"
+
+#: src/modules/Opportunities/components/opportunity-proponent-types/template.php:33
+#: src/modules/Opportunities/components/opportunity-proponent-types/template.php:44
+msgid "Habilitar a vinculação de agente coletivo"
+msgstr "Habilitar la vinculación de agentes colectivos"
+
+#: src/modules/Opportunities/components/opportunity-ranges-config/template.php:19
+msgid "Configuração de faixas/linhas"
+msgstr "Configuración franjas/líneas"
+
+#: src/modules/Opportunities/components/opportunity-ranges-config/template.php:22
+msgid ""
+"Crie e configure as faixas abaixo, inserindo um breve resumo, quantidade e "
+"valor de cada uma delas."
+msgstr ""
+"Crea y configura las siguientes franjas, ingresando un breve resumen, cantidad "
+"y valor de cada una."
+
+#: src/modules/Opportunities/components/opportunity-ranges-config/template.php:29
+msgid "Descrição da faixa/linha"
+msgstr "Descripción de la franja/línea"
+
+#: src/modules/Opportunities/components/opportunity-ranges-config/template.php:33
+msgid "Quantidade de vagas"
+msgstr "Cantidad de vacantes"
+
+#: src/modules/Opportunities/components/opportunity-ranges-config/template.php:49
+msgid "Deseja deletar a faixa?"
+msgstr "¿Desea eliminar esta franja?"
+
+#: src/modules/Opportunities/components/opportunity-ranges-config/template.php:56
+msgid "Adicionar Faixa"
+msgstr "Agregar franja"
+
+#: src/modules/Opportunities/components/opportunity-registration-filter-configuration/template.php:17
+msgid "Configuração de filtros de inscrição para avaliadores/comissão"
+msgstr ""
+"Configuración de filtros de las inscripciones entre los evaluadores/tribunal"
+
+#: src/modules/Opportunities/components/opportunity-registration-filter-configuration/template.php:25
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:94
+msgid "Distribuição"
+msgstr "Distribución"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:161
+msgid "concorrendo por cota"
+msgstr "compitiendo por la cuota"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:250
+msgid "anexos"
+msgstr "adjuntos"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:251
+msgid "data de criação"
+msgstr "fecha de creación"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:252
+msgid "data de envio"
+msgstr "fecha de envío"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:253
+msgid "Editavel para o proponente"
+msgstr "Editable para el postulante"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:267
+msgid "Critérios de desempate"
+msgstr "Criterios de desempate"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:274
+msgid "Elegível para cotas"
+msgstr "Cuota elegible"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:279
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:30
+msgid "Cotas aplicadas"
+msgstr "Cuotas aplicadas"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/script.js:286
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:32
+msgid "Região"
+msgstr "Región"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:28
+msgid "Os resultados já foram publicados"
+msgstr "Los resultados ya fueron publicados"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:29
+msgid "A fase já está encerrada"
+msgstr "La fase ya está cerrada"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:30
+msgid "A fase está em andamento"
+msgstr "La fase está en curso"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:31
+msgid "A fase ainda não iniciou"
+msgstr "La fase aún no ha comenzado"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:71
+msgid "Status: "
+msgstr "Estatus: "
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:79
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:105
+msgid "Categorias: "
+msgstr "Categorías: "
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:84
+#: src/modules/Support/components/opportunity-support-config/template.php:129
+#: src/themes/BaseV1/layouts/parts/singles/registration-edit--proponent-types.php:18
+msgid "Tipos de proponente"
+msgstr "Tipos de postulante"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:87
+msgid "Tipos de proponente: "
+msgstr "Tipos de postulantes: "
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:92
+msgid "Faixas"
+msgstr "Franjas"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:95
+msgid "Faixas:"
+msgstr "Franjas:"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:106
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:199
+msgid "Anexo"
+msgstr "Adjunto"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:159
+msgid "Inscrição em andamento"
+msgstr "Inscripción en curso"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:163
+#: src/modules/Opportunities/components/registration-status/template.php:24
+msgid "Inscrição não enviada"
+msgstr "Inscripción no enviada"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/template.php:167
+msgid "Abrir para edição"
+msgstr "Abrir para edición"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:13
+msgid "classificação final"
+msgstr "clasificación final"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:14
+msgid "status descendente"
+msgstr "estatus descendente"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:15
+msgid "status ascendente"
+msgstr "estatus ascendente"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:16
+msgid "resultado das avaliações"
+msgstr "resultado de las evaluaciones"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:19
+msgid "enviadas há mais tempo primeiro"
+msgstr "enviadas más antiguas primero"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:20
+msgid "enviadas há menos tempo primeiro"
+msgstr "enviadas antes primero"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:21
+msgid "Concorrendo por cota"
+msgstr "Compitiendo por cuota"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:23
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:42
+msgid "Responsável pela inscrição"
+msgstr "Responsable por la inscripción"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:26
+#: src/modules/OpportunityAccountability/layouts/parts/accountability-evaluation-admin-table-head.php:2
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:49
+#: src/themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:16
+msgid "Data de envio"
+msgstr "Fecha de envío"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:27
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:56
+#: src/modules/UserManagement/views/panel/my-account.php:53
+#: src/modules/UserManagement/views/panel/user-detail.php:51
+#: src/themes/BaseV1/Theme.php:1949
+msgid "Data de criação"
+msgstr "Fecha de creación"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:28
+msgid "Editável para o proponente"
+msgstr "Editable para el postulante"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:29
+msgid "Resultado final"
+msgstr "Resultado final"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:31
+msgid "Critérios de desempate utilizados"
+msgstr "Criterios de desempate utilizados"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:33
+msgid "Status alterado com sucesso"
+msgstr "Status cambiado con éxito"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:34
+msgid ""
+"A inscrição está atualmente como rascunho. Para alterar o status, por favor, "
+"defina-o como Pendente primeiro"
+msgstr ""
+"La inscripción se encuentra actualmente en forma de borrador. Para cambiar el "
+"estado, configúrelo primero como Pendiente"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:35
+msgid "Não foi possível alterar o status, fale com admnistrador"
+msgstr "No se puede cambiar el estado, comuníquese con el administrador"
+
+#: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:36
+msgid "pontuação final"
+msgstr "puntuación final"
+
+#: src/modules/Opportunities/components/opportunity-subscribe-results/template.php:23
+#, php-format
+msgid "Inscritos em %s"
+msgstr "Inscriptos en %s"
+
+#: src/modules/Opportunities/components/opportunity-subscribe-results/template.php:52
+msgid "Configurações de suporte"
+msgstr "Configuraciones de soporte"
+
+#: src/modules/Opportunities/components/opportunity-subscribe-results/template.php:57
+#: src/modules/Opportunities/layouts/parts/opportunity-tab-support.php:32
+#: src/modules/Support/layouts/parts/support/opportunity-support--tab.php:13
+#: src/modules/Support/views/support/support.php:30
+msgid "Suporte"
+msgstr "Soporte"
+
+#: src/modules/Opportunities/components/opportunity-subscription-list/template.php:18
+msgid "Você tem inscrições neste edital"
+msgstr "Te has registrado para este llamado"
+
+#: src/modules/Opportunities/components/opportunity-subscription-list/template.php:21
+msgid "Acompanhe suas inscrições e saiba o andamento da Oportunidade."
+msgstr ""
+"Realice un seguimiento de sus solicitudes y conozca el progreso de la "
+"Oportunidad."
+
+#: src/modules/Opportunities/components/opportunity-subscription-list/template.php:24
+msgid "O prazo de inscrição se encerrou."
+msgstr "El plazo de inscripción ha pasado."
+
+#: src/modules/Opportunities/components/opportunity-subscription-list/template.php:24
+msgid "Não é mais possível enviar uma inscrição"
+msgstr "Ya no es posible enviar una inscripción"
+
+#: src/modules/Opportunities/components/opportunity-subscription-list/template.php:24
+msgid "“Não enviada”."
+msgstr "\"No enviada\"."
+
+#: src/modules/Opportunities/components/opportunity-subscription-list/template.php:27
+msgid "Você possui inscrições não enviadas."
+msgstr "Tiene inscripciones no enviadas."
+
+#: src/modules/Opportunities/components/opportunity-subscription-list/template.php:27
+msgid "Fique atento ao período das inscrições para enviá-las dentro do prazo. "
+msgstr "Presta atención al plazo de inscripción para enviarlas a tiempo. "
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:27
+msgid "Inscreva-se"
+msgstr "Inscribirse"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:31
+msgid "Selecione as opções abaixo e clique no botão para se inscrever"
+msgstr ""
+"Seleccione las opciones a continuación y haga clic en el botón para registrarse"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:34
+msgid "Selecione uma opções abaixo e clique no botão para se inscrever"
+msgstr ""
+"Seleccione una de las opciones a continuación y haga clic en el botón para "
+"registrarse"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:37
+msgid "Clique no botão para se inscrever"
+msgstr "Haz clic en el botón para registrarte"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:49
+msgid "Agente Cultural"
+msgstr "Agente Cultural"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:67
+#: src/modules/Search/components/search-filter-agent/template.php:30
+msgid "Agente Coletivo"
+msgstr "Agente Colectivo"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:81
+msgid "Selecione a categoria"
+msgstr "Seleccione la categoría"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:87
+msgid "Selecione a faixa"
+msgstr "Seleccione la franja"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:94
+msgid "Selecione o tipo de proponente"
+msgstr "Seleccione el tipo de postulante"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:102
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--form.php:13
+msgid "Fazer inscrição"
+msgstr "Realizar inscripción"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:107
+msgid "Fazendo inscrição"
+msgstr "Realizando inscripción"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:115
+msgid ""
+"Você precisa acessar sua conta ou criar um cadastro na plataforma para poder se "
+"inscrever em editais ou oportunidades"
+msgstr ""
+"Necesitas acceder a tu cuenta o crear un registro en la plataforma para poder "
+"inscribirte en llamados u oportunidades"
+
+#: src/modules/Opportunities/components/opportunity-subscription/template.php:120
+msgid "Acessar ou criar conta"
+msgstr "Acceder o crear cuenta"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:5
+msgid "Por favor, selecione a categoria da inscrição"
+msgstr "Por favor, seleccione el categoría de la inscripción"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:6
+msgid "Por favor, selecione o tipo de proponente da inscrição"
+msgstr "Por favor seleccione el tipo de postulante para la inscripción"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:7
+msgid "Por favor, selecione a faixa para inscrição"
+msgstr "Seleccione la franja para la inscripción"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:8
+msgid "Por favor, selecione o agente responsável pela inscrição"
+msgstr "Por favor, seleccione el agente responsable por la inscripción"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:9
+msgid "Por favor, selecione o agente coletivo vinculado a inscrição"
+msgstr "Por favor, seleccione el agente colectivo responsable por la inscripción"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:10
+msgid ""
+"Inscrições abertas de <strong>{startAt}</strong> a <strong>{endAt}</strong>  às "
+"<strong>{endHour}</strong>"
+msgstr ""
+"Inscripciones abiertas desde <strong>{startAt}</strong> hasta <strong>{endAt}</"
+"strong> a las <strong>{endHour}</strong>"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:11
+msgid ""
+"As inscrições ainda não estão abertas. O período de inscrições começará a "
+"partir do dia <strong>{startAt}</strong> às <strong>{startHour}</strong>"
+msgstr ""
+"Las inscripciones aún no están abiertas. El período de inscripción comenzará "
+"desde el <strong>{startAt}</strong> hasta el <strong>{startHour}</strong>"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:12
+msgid "As inscrições estão <strong>encerradas</strong>"
+msgstr "Las inscripciones están <strong>cerradas</strong>"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:13
+msgid "O periodo de inscrição ainda não foi definido"
+msgstr "El plazo de inscripción aún no está definido"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:14
+msgid "Os resultados da oportunidade já foram publicados"
+msgstr "Los resultados de la oportunidad ya fueron publicados"
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:15
+msgid "O limite de inscrições nessa oportunidade foi atingido."
+msgstr "El límite de inscripciones para la oportunidad se ha agotado."
+
+#: src/modules/Opportunities/components/opportunity-subscription/texts.php:16
+msgid "O limite de inscrições por usuário nessa oportunidade foi atingido."
+msgstr "El límite de inscripciones por usuario en la oportunidad se ha agotado."
+
+#: src/modules/Opportunities/components/panel--evaluations-tabs/template.php:26
+#: src/modules/Support/components/opportunity-support-config/template.php:83
+msgid "Pesquisar"
+msgstr "Buscar"
+
+#: src/modules/Opportunities/components/panel--evaluations-tabs/template.php:32
+#: src/modules/Opportunities/components/panel--registration-tabs/template.php:30
+#: src/modules/Opportunities/components/panel--registration-tabs/template.php:56
+msgid "ordem alfabética"
+msgstr "orden alfabético"
+
+#: src/modules/Opportunities/components/panel--registration-tabs/template.php:18
+msgid "Não enviadas"
+msgstr "No enviadas"
+
+#: src/modules/Opportunities/components/panel--registration-tabs/template.php:62
+msgid "Você tem inscrições não finalizadas. Acesse a aba"
+msgstr "Tienes inscripciones pendientes. Accede a la pestaña"
+
+#: src/modules/Opportunities/components/panel--registration-tabs/template.php:62
+msgid "Não Enviadas"
+msgstr "No Enviadas"
+
+#: src/modules/Opportunities/components/panel--registration-tabs/template.php:62
+msgid "para visualizar."
+msgstr "para visualizar."
+
+#: src/modules/Opportunities/components/registration-actions/template.php:18
+msgid "Ops! Alguns erros foram identificados."
+msgstr "¡Ups! Se identificaron algunos errores."
+
+#: src/modules/Opportunities/components/registration-actions/template.php:20
+msgid "Para continuar, corrija os campos com os erros listados abaixo:"
+msgstr ""
+"Para continuar, corrija los campos con los errores que se enumeran a "
+"continuación:"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:22
+msgid "Exibir erros"
+msgstr "Ver errores"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:25
+msgid "Ocultar erros"
+msgstr "Ocultar errores"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:41
+msgid "Quer enviar sua inscrição?"
+msgstr "¿Quiere enviar esta inscripción?"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:44
+msgid "Enviar formulário"
+msgstr "Enviar formulario"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:49
+msgid "Ao enviar sua inscrição você já estará participando da oportunidade."
+msgstr "Al enviar tu inscripción ya estarás participando de la oportunidad."
+
+#: src/modules/Opportunities/components/registration-actions/template.php:55
+msgid ""
+"Para enviar sua inscrição, você precisa <strong>validá-la</strong> primeiro. "
+"Clique no botão <strong>Validar inscrição</strong> abaixo para verificar se "
+"todas as informações estão corretas."
+msgstr ""
+"Para enviar su inscripción, primero debe <strong>validarla</strong>. Haga clic "
+"en el botón <strong>Validar inscripción</strong> a continuación para verificar "
+"que toda la información sea correcta."
+
+#: src/modules/Opportunities/components/registration-actions/template.php:57
+msgid "Validar inscrição"
+msgstr "Validar inscripción"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:58
+msgid "Validar etapa"
+msgstr "Validar etapa"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:65
+msgid "Próxima etapa"
+msgstr "Próxima etapa"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:71
+msgid "Etapa anterior"
+msgstr "Etapa anterior"
+
+#: src/modules/Opportunities/components/registration-actions/template.php:81
+msgid "Salvar e sair"
+msgstr "Guardar y salir"
+
+#: src/modules/Opportunities/components/registration-actions/texts.php:5
+#: src/modules/Opportunities/components/registration-evaluation-actions/texts.php:5
+#: src/modules/Opportunities/views/opportunity/preview-form.php:45
+#: src/modules/Opportunities/views/registration/single.php:212
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:44
+#: src/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:40
+#: src/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:36
+msgid "Instituição responsável"
+msgstr "Institución responsable"
+
+#: src/modules/Opportunities/components/registration-actions/texts.php:7
+#: src/modules/Opportunities/components/registration-evaluation-actions/texts.php:7
+msgid "Campo não identificado"
+msgstr "Campo no identificado"
+
+#: src/modules/Opportunities/components/registration-actions/texts.php:10
+msgid "Campos validados com sucesso!"
+msgstr "Campos validados con éxito!"
+
+#: src/modules/Opportunities/components/registration-actions/texts.php:12
+msgid "Enviando"
+msgstr "Enviando"
+
+#: src/modules/Opportunities/components/registration-actions/texts.php:13
+msgid "Validando"
+msgstr "Validando"
+
+#: src/modules/Opportunities/components/registration-autosave-notification/template.php:16
+msgid ""
+"Os dados da sua inscrição serão salvos automaticamente a cada {{resultTime}} "
+"segundos."
+msgstr ""
+"Los datos de tu inscripción se guardarán automáticamente cada {{resultTime}} "
+"segundos."
+
+#: src/modules/Opportunities/components/registration-card/template.php:26
+msgid "Número de inscrição:"
+msgstr "Número de inscripción:"
+
+#: src/modules/Opportunities/components/registration-card/template.php:42
+#: src/modules/Panel/components/panel--last-registrations/template.php:27
+msgid "Data de inscrição"
+msgstr "Fecha de inscripción"
+
+#: src/modules/Opportunities/components/registration-card/template.php:47
+msgid "Agente inscrito"
+msgstr "Agente inscripto"
+
+#: src/modules/Opportunities/components/registration-card/template.php:57
+#: src/modules/Opportunities/components/registration-info/template.php:32
+#: src/modules/Opportunities/views/registration/single.php:69
+msgid "Faixa"
+msgstr "Franja"
+
+#: src/modules/Opportunities/components/registration-card/template.php:62
+msgid "Proponente"
+msgstr "Postulante"
+
+#: src/modules/Opportunities/components/registration-card/template.php:83
+msgid "Você realmente deseja excluir a inscrição"
+msgstr "¿Está seguro (a) que desea borrar la inscripción?"
+
+#: src/modules/Opportunities/components/registration-card/template.php:83
+msgid "?"
+msgstr ""
+
+#: src/modules/Opportunities/components/registration-card/template.php:86
+msgid "Acompanhar"
+msgstr "Seguir"
+
+#: src/modules/Opportunities/components/registration-card/template.php:87
+msgid "Continuar"
+msgstr "Continuar"
+
+#: src/modules/Opportunities/components/registration-card/texts.php:5
+#: src/modules/Opportunities/views/registration/single.php:82
+#: src/modules/Opportunities/views/registration/single.php:96
+#: src/themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:32
+msgid "Não enviada"
+msgstr "No enviada"
+
+#: src/modules/Opportunities/components/registration-card/texts.php:6
+#: src/modules/Opportunities/views/registration/single.php:83
+#: src/modules/Opportunities/views/registration/single.php:97
+#: src/modules/Reports/Controller.php:452 src/themes/BaseV1/Theme.php:2130
+msgid "Enviada"
+msgstr "Enviada"
+
+#: src/modules/Opportunities/components/registration-card/texts.php:7
+msgid "Inscrição removida"
+msgstr "Inscripción eliminada"
+
+#: src/modules/Opportunities/components/registration-card/texts.php:8
+msgid "Erro ao remover a inscrição"
+msgstr "Error al eliminar la inscripción"
+
+#: src/modules/Opportunities/components/registration-editable-fields/script.js:47
+msgid "campos para edição"
+msgstr "campos para edición"
+
+#: src/modules/Opportunities/components/registration-editable-fields/script.js:52
+msgid "data limite"
+msgstr "fecha límite"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:18
+msgid "Campos editáveis"
+msgstr "Campos editables"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:21
+msgid "O proponente perdeu o prazo de edição"
+msgstr "El postulante no cumplió con el plazo de edición"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:22
+msgid "O proponente enviou a edição em: "
+msgstr "El proponente envió la edición a: "
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:27
+msgid "O proponente ainda não enviou as edições"
+msgstr "El postulante aún no ha enviado las ediciones"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:31
+msgid "Data limite de edição"
+msgstr "Fecha límite de edición"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:39
+msgid "Selecione os campos que ficarão disponíveis para edição"
+msgstr "Seleccione los campos que estarán disponibles para editar"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:43
+#: src/modules/Support/components/opportunity-support-config/template.php:95
+#: src/modules/Support/layouts/parts/support/opportunity-support-fields-association.php:16
+msgid "Selecionar todos"
+msgstr "Seleccionar todos"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:63
+msgid "Reabrir edição"
+msgstr "Reabrir edición"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:68
+msgid "Deseja reabrir os campos para edição?"
+msgstr "¿Desea reabrir campos para edición?"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:73
+msgid "Salvando"
+msgstr "Guardando"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:74
+msgid "Reabrindo"
+msgstr "Reabriendo"
+
+#: src/modules/Opportunities/components/registration-editable-fields/template.php:79
+msgid "Configurar campos editáveis"
+msgstr "Configurar campos editables"
+
+#: src/modules/Opportunities/components/registration-editable-fields/texts.php:5
+msgid "Selecione os campos disponíveis para edição."
+msgstr "Seleccione los campos disponibles para editar."
+
+#: src/modules/Opportunities/components/registration-editable-fields/texts.php:6
+msgid "Selecione uma data limite para edição."
+msgstr "Seleccione una fecha límite para editar."
+
+#: src/modules/Opportunities/components/registration-editable-fields/texts.php:7
+msgid "Campos reabertos para edição"
+msgstr "Campos reabiertos para edición"
+
+#: src/modules/Opportunities/components/registration-edition/template.php:56
+msgid "*obrigatório"
+msgstr "*obligatorio"
+
+#: src/modules/Opportunities/components/registration-edition/template.php:82
+msgid "Vai concorrer às cotas?"
+msgstr "¿Vas a competir por cuotas?"
+
+#: src/modules/Opportunities/components/registration-edition/texts.php:5
+#: src/modules/Opportunities/components/registration-steps/texts.php:5
+#: src/modules/Support/components/support-steps/texts.php:5
+msgid "Informações básicas"
+msgstr "Datos básicos"
+
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:28
+msgid "Agora é necessário enviar essa avaliação para a pessoa gestora."
+msgstr "Ahora es necesario enviar esta evaluación a la persona gestora."
+
+#: src/modules/Opportunities/components/registration-evaluation-actions/template.php:29
+msgid "Você pode enviar uma por uma ou todas de uma só vez."
+msgstr "Puedes enviarlos uno por uno o todos a la vez."
+
+#: src/modules/Opportunities/components/registration-evaluation-info/template.php:17
+#: src/modules/Seals/views/seal/edit.php:41
+#: src/themes/BaseV1/layouts/parts/singles/registration--sidebar--right.php:44
+msgid "Informações gerais"
+msgstr "Información general"
+
+#: src/modules/Opportunities/components/registration-evaluation-info/template.php:19
+msgid "Exibir"
+msgstr "Mostrar"
+
+#: src/modules/Opportunities/components/registration-evaluation-info/template.php:20
+msgid "Ocultar"
+msgstr "Ocultar"
+
+#: src/modules/Opportunities/components/registration-field-address/template.php:26
+msgid "Nome do enderço"
+msgstr "Nombre de la dirección"
+
+#: src/modules/Opportunities/components/registration-field-address/template.php:61
+msgid "complemento"
+msgstr "complemento"
+
+#: src/modules/Opportunities/components/registration-field-address/template.php:84
+msgid "Remover endereço"
+msgstr "Eliminar dirección"
+
+#: src/modules/Opportunities/components/registration-field-address/template.php:90
+msgid "Adicionar novo endereço"
+msgstr "Agregar nueva dirección"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:20
+msgid "Pessoa"
+msgstr "Persona"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:25
+msgid "Como gostaria de ser chamado?"
+msgstr "¿Cómo te gustaría que te llamaran?"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:33
+msgid "Nome completo"
+msgstr "Nombre completo"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:57
+msgid ""
+"Renda individual em reais (calcular a renda média individual dos últimos três "
+"meses)"
+msgstr ""
+"Ingreso individual en pesos (calcule el ingreso individual promedio de los "
+"últimos tres meses)"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:73
+#: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:18
+#: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:38
+msgid "Telefone do representante"
+msgstr "Número de teléfono del representante"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:81
+#: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:19
+#: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:39
+msgid "Email do representante"
+msgstr "Correo electrónico del representante"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:89
+msgid "Raça / Cor"
+msgstr "Raza/Color"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:97
+#: src/modules/Opportunities/views/registration/single.php:157
+msgid "Genero"
+msgstr "Género"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:105
+msgid "Orientação sexaul"
+msgstr "Orientación sexual"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:113
+msgid "Pessoa com deficiência - PDC?"
+msgstr "Persona con discapacidad?"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:126
+msgid "Considera-se pertencente a algum outro povo ou comunidade tradicional?"
+msgstr "¿Considera que pertenece a algún otro pueblo o comunidad tradicional?"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:134
+msgid ""
+"Quais são as 3 principais áreas de atuação do representante no campo artístico "
+"e cultural?"
+msgstr ""
+"¿Cuáles son las 3 principales áreas de actividad del representante en el ámbito "
+"artístico y cultural?"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:137
+#: src/modules/Opportunities/components/registration-field-persons/template.php:150
+#: src/modules/Search/components/search-filter-agent/template.php:35
+#: src/modules/Search/components/search-filter-space/template.php:38
+msgid "Selecione as áreas de atuação"
+msgstr "Seleccione las Áreas de actuación"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:147
+msgid ""
+"Quais as 3 principais funções/profissões do representante no campo artístico e "
+"cultural?"
+msgstr ""
+"¿Cuáles son las 3 principales funciones/profesiones del representante en el "
+"ámbito artístico y cultural?"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:152
+msgid "Selecione as funções"
+msgstr "Seleccione los roles"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:160
+msgid "Remover pessoa"
+msgstr "Eliminar persona"
+
+#: src/modules/Opportunities/components/registration-field-persons/template.php:166
+msgid "Adicionar nova pessoa"
+msgstr "Agregar nueva persona"
+
+#: src/modules/Opportunities/components/registration-form-timeline/template.php:8
+msgid "Editar dados"
+msgstr "Editar datos"
+
+#: src/modules/Opportunities/components/registration-form/template.php:49
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:32
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--fields.php:72
+msgid "Adicionar anexo"
+msgstr "Agregar adjunto"
+
+#: src/modules/Opportunities/components/registration-info/template.php:11
+msgid "Informações da inscrição"
+msgstr "Datos acerca de la inscripción"
+
+#: src/modules/Opportunities/components/registration-related-agents/template.php:18
+#: src/modules/Opportunities/components/registration-related-space/template.php:19
+msgid "* Obrigatório"
+msgstr "*Obligatorio"
+
+#: src/modules/Opportunities/components/registration-related-agents/template.php:36
+#: src/modules/Opportunities/components/registration-related-space/template.php:37
+msgid "Trocar"
+msgstr "Cambiar"
+
+#: src/modules/Opportunities/components/registration-related-agents/template.php:46
+#: src/modules/Opportunities/components/registration-related-space/template.php:48
+msgid "A solicitação está pendente"
+msgstr "La solicitud está pendiente"
+
+#: src/modules/Opportunities/components/registration-related-project/texts.php:5
+#: src/modules/Opportunities/components/registration-related-space/texts.php:5
+msgid "Espaço vinculado."
+msgstr "Espacios vinculado."
+
+#: src/modules/Opportunities/components/registration-related-project/texts.php:6
+#: src/modules/Opportunities/components/registration-related-space/texts.php:6
+msgid "Espaço desvinculado."
+msgstr "Espacio desvinculado."
+
+#: src/modules/Opportunities/components/registration-results/template.php:22
+msgid "Exibir detalhamento"
+msgstr "Mostrar detalles"
+
+#: src/modules/Opportunities/components/registration-status/template.php:16
+msgid "RESULTADO DA FASE"
+msgstr "RESULTADO DE LA FASE"
+
+#: src/modules/Opportunities/components/registration-status/template.php:19
+msgid "Inscrição selecionada"
+msgstr "Inscripción seleccionada"
+
+#: src/modules/Opportunities/components/registration-status/template.php:20
+msgid "Inscrição suplente"
+msgstr "Inscripción suplente"
+
+#: src/modules/Opportunities/components/registration-status/template.php:21
+msgid "Inscrição não selecionada"
+msgstr "Inscripción no seleccionada"
+
+#: src/modules/Opportunities/components/registration-status/template.php:22
+msgid "Inscrição inválida"
+msgstr "Inscripción no válida"
+
+#: src/modules/Opportunities/components/registration-status/template.php:28
+msgid "Resultado:"
+msgstr "Resultado:"
+
+#: src/modules/Opportunities/components/registration-status/template.php:29
+msgid "Pontuação:"
+msgstr "Puntuación:"
+
+#: src/modules/Opportunities/components/seals-certifier/script.js:22
+msgid "certificador"
+msgstr "certificador"
+
+#: src/modules/Opportunities/components/seals-certifier/template.php:22
+msgid "Selecione o(s) selo(s) para {{ proponentType }}:"
+msgstr "Seleccione los sellos para {{ proponentType }}:"
+
+#: src/modules/Opportunities/components/seals-certifier/template.php:23
+msgid "Selecione o(s) selo(s) para todos proponentes:"
+msgstr "Seleccione el/los sellos(s) para todos los postulantes:"
+
+#: src/modules/Opportunities/components/seals-certifier/template.php:41
+#: src/modules/Opportunities/components/seals-certifier/template.php:82
+#: src/modules/Seals/components/entity-seals/template.php:42
+msgid "Remover selo?"
+msgstr "¿Eliminar sello?"
+
+#: src/modules/Opportunities/components/seals-certifier/template.php:63
+msgid "Selecione o(s) selo(s) para {{ category }}:"
+msgstr "Seleccione las insignias para {{ category }}:"
+
+#: src/modules/Opportunities/components/seals-certifier/template.php:64
+msgid "Selecione o(s) selo(s) para todas categorias:"
+msgstr "Seleccione el/los sello/s para todas las categorías:"
+
+#: src/modules/Opportunities/components/seals-certifier/texts.php:5
+msgid "Selos certificadores"
+msgstr "Sellos certificadores"
+
+#: src/modules/Opportunities/layouts/parts/opportunity-tab-results.php:19
+msgid "Resultados"
+msgstr "Resultados"
+
+#: src/modules/Opportunities/views/opportunity/edit.php:44
+msgid "Configuração de fases"
+msgstr "Configuración de fases"
+
+#: src/modules/Opportunities/views/opportunity/edit.php:47
+msgid "Inscrições e Resultados"
+msgstr "Inscripciones y Resultados"
+
+#: src/modules/Opportunities/views/opportunity/edit.php:50
+#: src/modules/Reports/layouts/parts/opportunity-reports--tab.php:3
+msgid "Relatórios"
+msgstr "Informes"
+
+#: src/modules/Opportunities/views/opportunity/form-builder.php:5
+msgid "Configuração do formulário"
+msgstr "Configuración del formulario"
+
+#: src/modules/Opportunities/views/opportunity/preview-form.php:34
+msgid ""
+"Agente coletivo sem CNPJ, com os campos Data de Nascimento/Fundação e Email "
+"Privado obrigatoriamente preenchidos."
+msgstr ""
+"Agente colectivo sin RUT , con los campos Fecha de Nacimiento / Fundación e  "
+"Email privado obligatoriamente completos."
+
+#: src/modules/Opportunities/views/opportunity/preview-form.php:46
+msgid ""
+"Agente coletivo (pessoa jurídica) com os campos CNPJ, Data de Nascimento/"
+"Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos."
+msgstr ""
+"Agente colectivo (persona jurídica) con los campos RUT, Fecha de Nacimiento / "
+"Fundación, Email Privado y Teléfono 1 obligatoriamente completos."
+
+#: src/modules/Opportunities/views/opportunity/preview-form.php:57
+msgid "Adicionar um espaço"
+msgstr "Agregar un espacio"
+
+#: src/modules/Opportunities/views/opportunity/preview-form.php:58
+msgid "Adicione um Espaço para vincular à sua inscrição."
+msgstr "Agregue un Espacio para vincular a su inscripción."
+
+#: src/modules/Opportunities/views/opportunity/preview-form.php:70
+msgid "Informe o nome do seu projeto."
+msgstr "Introduzca el nombre del proyecto."
+
+#: src/modules/Opportunities/views/opportunity/report-drafts.php:21
+msgid "Email publico"
+msgstr "Email público"
+
+#: src/modules/Opportunities/views/opportunity/report-drafts.php:22
+msgid "Email privado"
+msgstr "Email privado"
+
+#: src/modules/Opportunities/views/opportunity/report-drafts.php:23
+msgid "Email de usuário"
+msgstr "Email de usuario"
+
+#: src/modules/Opportunities/views/opportunity/report-drafts.php:24
+msgid "Telefone Publico"
+msgstr "Teléfono Público"
+
+#: src/modules/Opportunities/views/opportunity/report.php:10
+msgid "selecionada"
+msgstr "seleccionada"
+
+#: src/modules/Opportunities/views/opportunity/report.php:14
+msgid "não selecionada"
+msgstr "no seleccionada"
+
+#: src/modules/Opportunities/views/opportunity/report.php:22
+msgid "inválida"
+msgstr "no válida"
+
+#: src/modules/Opportunities/views/opportunity/report.php:65
+msgid "Inscrição - Data de envio"
+msgstr "Inscripción - Fecha de envío"
+
+#: src/modules/Opportunities/views/opportunity/report.php:66
+msgid "Inscrição - Hora de envio"
+msgstr "Inscripción - Hora de envío"
+
+#: src/modules/Opportunities/views/opportunity/report.php:114
+msgid "zip"
+msgstr ""
+
+#: src/modules/Opportunities/views/opportunity/single.php:66
+msgid "Vinculado com "
+msgstr "Vinculado con  "
+
+#: src/modules/Opportunities/views/opportunity/single.php:85
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:3
+#: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:15
+msgid "Regulamento"
+msgstr "Bases"
+
+#: src/modules/Opportunities/views/opportunity/single.php:96
+msgid "Baixar regulamento"
+msgstr "Descargar las bases"
+
+#: src/modules/Opportunities/views/panel/evaluations.php:24
+msgid ""
+"Nesta seção você encontra as avaliações e os pareceres disponíveis para sua "
+"análise."
+msgstr ""
+"En esta sección encontrarás las evaluaciones y opiniones disponibles para tu "
+"análisis."
+
+#: src/modules/Opportunities/views/panel/opportunities.php:22
+msgid "Nesta seção você pode adicionar e gerenciar suas oportunidades"
+msgstr "En esta sección podrás agregar y gestionar tus oportunidades"
+
+#: src/modules/Opportunities/views/panel/registrations.php:21
+msgid "Nesta seção você pode adicionar e gerenciar suas inscrições"
+msgstr "En esta sección puedes agregar y administrar tus suscripciones"
+
+#: src/modules/Opportunities/views/registration/edit.php:37
+#: src/modules/Opportunities/views/registration/registration-editable-field.php:34
+msgid "Formulário"
+msgstr "Formulario"
+
+#: src/modules/Opportunities/views/registration/edit.php:49
+#: src/modules/Opportunities/views/registration/registration-editable-field.php:49
+msgid "Formulário de inscrição"
+msgstr "Formulario de inscripción"
+
+#: src/modules/Opportunities/views/registration/evaluation.php:29
+#: src/themes/BaseV2/layouts/parts/navbar.php:10
+msgid "Início"
+msgstr "Inicio"
+
+#: src/modules/Opportunities/views/registration/evaluation.php:31
+msgid "Minhas Avaliações"
+msgstr "Mis Evaluaciones"
+
+#: src/modules/Opportunities/views/registration/evaluation.php:32
+msgid "Lista de Avaliações"
+msgstr "Lista de Evaluaciones"
+
+#: src/modules/Opportunities/views/registration/evaluation.php:35
+msgid "Formulário de avaliação"
+msgstr "Formulario de evaluación"
+
+#: src/modules/Opportunities/views/registration/evaluation.php:57
+msgid "Avaliador: "
+msgstr "Evaluador: "
+
+#: src/modules/Opportunities/views/registration/evaluation.php:72
+msgid "Para iniciar a de avaliação documental, selecione um campo de dados abaixo"
+msgstr ""
+"Para iniciar la evaluación documental, seleccione un campo de datos a "
+"continuación"
+
+#: src/modules/Opportunities/views/registration/evaluation.php:78
+#: src/modules/Opportunities/views/registration/registration-print.php:33
+msgid "Dados informados no formulário"
+msgstr "Datos ingresados ​​en el formulario"
+
+#: src/modules/Opportunities/views/registration/registration-print.php:29
+#: src/modules/Opportunities/views/registration/single.php:100
+msgid "Inscrição realizada em"
+msgstr "Inscripción realizada el"
+
+#: src/modules/Opportunities/views/registration/single.php:47
+msgid "Acompanhamento"
+msgstr "Complemento"
+
+#: src/modules/Opportunities/views/registration/single.php:60
+msgid "Nº de inscrição"
+msgstr "Número de inscripción"
+
+#: src/modules/Opportunities/views/registration/single.php:66
+msgid "Sem categoria"
+msgstr "Sin categoría"
+
+#: src/modules/Opportunities/views/registration/single.php:71
+msgid "Faixa não informada"
+msgstr "Dato no informado"
+
+#: src/modules/Opportunities/views/registration/single.php:76
+msgid "Tipo de proponente não informado"
+msgstr "Tipo de postulante no informado"
+
+#: src/modules/Opportunities/views/registration/single.php:103
+msgid "Inscrição sem data de envio."
+msgstr "Inscripción sin Fecha de envío."
+
+#: src/modules/Opportunities/views/registration/single.php:105
+msgid ""
+"Isto pode ter acontecido por uma mudança do status da inscrição, pelo gestor ou "
+"administrador da oportunidade, diretamente do status de rascunho para o de "
+"enviada, inválida, não selecionada, suplente ou selecionada sem que o botão de "
+"enviar inscrição tenha sido apertado."
+msgstr ""
+"Esto puede haber sucedido debido a un cambio en el estado de la inscripción, "
+"por parte del administrador de oportunidades o el gestor, directamente del "
+"estado borrador a enviado, inválido, no seleccionado, alternativo o "
+"seleccionado sin haber presionado el botón enviar inscripción."
+
+#: src/modules/Opportunities/views/registration/single.php:124
+#: src/modules/Support/components/support-edition/template.php:27
+msgid "Ficha de inscrição"
+msgstr "Ficha de Inscripción"
+
+#: src/modules/Opportunities/views/registration/single.php:137
+#: src/themes/BaseV1/layouts/parts/singles/agent-header.php:34
+#: src/themes/BaseV1/views/event/edit.php:167
+#: src/themes/BaseV1/views/event/single.php:167
+#: src/themes/BaseV1/views/project/edit.php:71
+#: src/themes/BaseV1/views/project/single.php:71
+#: src/themes/BaseV1/views/space/edit.php:67
+#: src/themes/BaseV1/views/space/single.php:67
+msgid "Descrição curta"
+msgstr "Descripción breve"
+
+#: src/modules/Opportunities/views/registration/single.php:145
+msgid "Data de nascimento ou fundação"
+msgstr "Fecha de Nacimiento/Fundación"
+
+#: src/modules/Opportunities/views/registration/single.php:149
+#: src/themes/BaseV1/layouts/parts/singles/history_agent.php:147
+#: src/themes/BaseV1/layouts/parts/singles/history_space.php:144
+msgid "Email"
+msgstr "E-mail"
+
+#: src/modules/Opportunities/views/registration/single.php:203
+msgid "Coletivo não informado"
+msgstr "Colectivo no informado"
+
+#: src/modules/Opportunities/views/registration/single.php:227
+msgid "Instituição responsável não informada"
+msgstr "Institución responsable no informada"
+
+#: src/modules/Opportunities/views/registration/single.php:250
+msgid "Sem espaço vinculado"
+msgstr "Sin Espacio vinculado"
+
+#: src/modules/Opportunities/views/registration/single.php:266
+msgid ""
+"Nesta etapa, é necessário inserir informações. Por favor, clique no botão para "
+"acessar o formulário e preenchê-lo"
+msgstr ""
+"En este paso, debe ingresar información. Por favor haga clic en el botón para "
+"acceder al formulario y rellenarlo"
+
+#: src/modules/Opportunities/views/registration/single.php:267
+msgid "dentro do período de"
+msgstr "dentro del periodo de"
+
+#: src/modules/Opportunities/views/registration/single.php:286
+#: src/modules/OpportunityAccountability/Module.php:625
+#: src/themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:40
+msgid "Avaliadores"
+msgstr "Evaluadores"
+
+#: src/modules/OpportunityAccountability/Controller.php:133
 #, php-format
 msgid "Campo aberto para edição na prestação de contas número %s"
 msgstr "Campo abierto para edición de la rendición de cuentas número %s"

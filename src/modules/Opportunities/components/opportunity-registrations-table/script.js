@@ -136,8 +136,8 @@ app.component('opportunity-registrations-table', {
         }
 
         const sortOptions = [
-            { value: 'sentTimestamp ASC', label: this.text('enviadas a mais tempo primeiro') },
-            { value: 'sentTimestamp DESC', label: this.text('enviadas a menos tempo primeiro') },
+            { value: 'sentTimestamp ASC', label: this.text('enviadas há mais tempo primeiro') },
+            { value: 'sentTimestamp DESC', label: this.text('enviadas há menos tempo primeiro') },
         ];
 
         if(this.phase.isLastPhase) {
