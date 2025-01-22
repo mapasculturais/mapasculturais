@@ -17,6 +17,11 @@ app.component('agent-table-1', {
             type: Boolean,
             default: false
         },
+
+        extraQuery: {
+            type: Object,
+            default: () => ({}),
+        }, 
     },
 
     data() {
@@ -28,7 +33,6 @@ app.component('agent-table-1', {
             sexualOrientation: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder.filter((value) => value != ''),
             gender: $DESCRIPTIONS.agent.genero.optionsOrder.filter((value) => value != ''),
             race: $DESCRIPTIONS.agent.raca.optionsOrder.filter((value) => value != ''),
-            extraQuery: {},
         }
     },
 

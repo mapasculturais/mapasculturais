@@ -15,5 +15,5 @@ $this->import('
 ?>
 
 <div class="agent-table-2">
-    <agent-table :agentType=2></agent-table>
+    <agent-table :agentType="2" :extra-query="extraQuery"></agent-table>
 </div>
