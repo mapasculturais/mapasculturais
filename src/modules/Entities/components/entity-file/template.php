@@ -14,7 +14,8 @@ $this->import('
     mc-loading
 ');
 ?>
-<div v-if="file || editable" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName.replace('rfc_', 'file_')">
+
+<div v-if="file || editable" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName?.replace('rfc_', 'file_')">
 
     <label v-if="title" class="entity-file__title">
         {{title}}

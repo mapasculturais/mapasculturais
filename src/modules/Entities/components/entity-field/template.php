@@ -16,6 +16,7 @@ $this->import('
     mc-tag-list
     entity-field-bank-info
     select-municipio
+    entity-file
 ')
 ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]" :data-field="prop">
@@ -50,6 +51,12 @@ $this->import('
         <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change($event, true)"></entity-field-datepicker>
         
         <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled" :readonly="readonly"></textarea>
+
+
+        <template v-if="is('file')">
+            <entity-file :entity="entity" :titleModal="titleModal" :groupName="groupName" classes="col-12" editable button-text-value="Anexar arquivo"></entity-file>
+        </template>
+
 
         <template v-if="is('select')">
             <template v-if="description.registrationFieldConfiguration?.config?.viewMode === 'radio'">

@@ -173,6 +173,15 @@ app.component('entity-field', {
         preserveOrder: {
             type: Boolean,
             default: false
+        },
+        titleModal: {
+            type: String,
+            required: false,
+            default: 'Anexar'
+        },
+        groupName: {
+            type: String,
+            required: false,
         }
     },
 
