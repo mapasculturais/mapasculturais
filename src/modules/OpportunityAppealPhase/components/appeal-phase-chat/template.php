@@ -13,8 +13,8 @@ $this->import('
 
 ?>
 
-<mc-chat v-if="thread" :thread="thread" anonymous-sender="<?= i::__('Avaliador') ?>">
-    <template #message-payload="{ message }">
+<mc-chat v-if="thread" :thread="thread">
+    <template v-if="userRequest === 'evaluation'" #message-payload="{ message }">
         <div class="mc-chat__reviewer-message field" :let="initMessage(message)">
             <label for="status"><?= i::__('Resultado da validação:') ?></label>
             <mc-select :default-value="message.payload.status" @change-option="message.payload.status = $event.value" id="status">
@@ -49,10 +49,6 @@ $this->import('
         </div>
     </template>
     <template #default="{ message }">
-        <div v-if="typeof message.payload === 'string'">
-            <p>{{ message.payload }}</p>
-        </div>
-
         <div v-if="typeof message.payload === 'object'">
             <div class="mc-chat__evaluation">
                 <div class="mc-chat__evaluation-status">
