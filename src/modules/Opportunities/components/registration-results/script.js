@@ -49,7 +49,9 @@ app.component('registration-results', {
         },
 
         modalTitle() {
-            return this.registration.opportunity.status === -20 ? `Detalhamento do recurso para ${this.phase.name} - ${this.registration.number}` : `${this.phase.name} - ${this.registration.number}`;
+            return this.registration.opportunity.status === -20 ? 
+                `${this.text('Detalhamento do recurso para ')} ${this.phase.name} - ${this.registration.number}` :
+                `${this.phase.name} - ${this.registration.number}`;
         }
     },
 
