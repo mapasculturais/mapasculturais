@@ -1,5 +1,5 @@
 <?php
-namespace EvaluationMethodAppealPhase\JobTypes;
+namespace EvaluationMethodContinuous\JobTypes;
 
 use MapasCulturais\App;
 use MapasCulturais\Entities\Job;

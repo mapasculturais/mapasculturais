@@ -1,12 +1,12 @@
 <?php 
 use MapasCulturais\i;
 
-$url = $this->controller->createUrl('applyEvaluationsAppealPhase', [$entity->id]);
+$url = $this->controller->createUrl('applyEvaluationsContinuous', [$entity->id]);
 
 $em = $entity->getEvaluationMethod();
 
 ?>
-<div ng-controller="ApplyAppealPhaseEvaluationResults">
+<div ng-controller="ApplyContinuousEvaluationResults">
 <a class="btn btn-primary hltip"  ng-click="editbox.open('apply-consolidated-results-editbox', $event)"> 
     <?php i::_e('Aplicar avaliações'); ?> 
 </a>

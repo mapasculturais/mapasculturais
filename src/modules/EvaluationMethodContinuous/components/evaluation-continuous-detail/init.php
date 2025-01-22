@@ -51,7 +51,7 @@ if($class == Registration::class) {
         }
     }
     
-    $this->jsObject['config']['appealPhaseEvaluationDetail'] = [
+    $this->jsObject['config']['continuousEvaluationDetail'] = [
         'data' => $data,
     ];
 }

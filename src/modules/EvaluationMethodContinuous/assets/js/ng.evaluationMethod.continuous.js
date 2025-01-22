@@ -1,6 +1,6 @@
 (function (angular) {
     "use strict";
-    var module = angular.module('ng.evaluationMethod.appealPhase', []);
+    var module = angular.module('ng.evaluationMethod.continuous', []);
     
 
     module.config(['$httpProvider', function ($httpProvider) {
@@ -13,12 +13,12 @@
         };
     }]);
 
-    module.factory('ApplyAppealPhaseEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
+    module.factory('ApplyContinuousEvaluationService', ['$http', '$rootScope', 'UrlService', function ($http, $rootScope, UrlService) {
         
         return {
             apply: function (from, to, status) {
                 var data = {from: from, to: to, status: status};
-                var url = MapasCulturais.createUrl('opportunity', 'applyEvaluationsAppealPhase', [MapasCulturais.entity.id]);
+                var url = MapasCulturais.createUrl('opportunity', 'applyEvaluationsContinuous', [MapasCulturais.entity.id]);
                 
                 return $http.post(url, data).
                     success(function (data, status) {
@@ -36,8 +36,8 @@
         };
     }]);
 
-    module.controller('AppealPhaseEvaluationForm',['$scope', 'RegistrationService','ApplyAppealPhaseEvaluationService',function($scope, RegistrationService, ApplyAppealPhaseEvaluationService){
-        var labels = MapasCulturais.gettext.appealPhaseEvaluationMethod;
+    module.controller('ContinuousEvaluationForm',['$scope', 'RegistrationService','ApplyContinuousEvaluationService',function($scope, RegistrationService, ApplyContinuousEvaluationService){
+        var labels = MapasCulturais.gettext.continuousEvaluationMethod;
 
         var evaluation = MapasCulturais.evaluation;
         var statuses = RegistrationService.registrationStatusesNames.filter(function(status) {
@@ -61,8 +61,8 @@
 
     }]);
 
-    module.controller('ApplyAppealPhaseEvaluationResults',['$scope', 'RegistrationService', 'ApplyAppealPhaseEvaluationService', 'EditBox', function($scope, RegistrationService, ApplyAppealPhaseEvaluationService, EditBox){
-        var labels = MapasCulturais.gettext.appealPhaseEvaluationMethod;
+    module.controller('ApplyContinuousEvaluationResults',['$scope', 'RegistrationService', 'ApplyContinuousEvaluationService', 'EditBox', function($scope, RegistrationService, ApplyContinuousEvaluationService, EditBox){
+        var labels = MapasCulturais.gettext.continuousEvaluationMethod;
 
         var evaluation = MapasCulturais.evaluation;
         var statuses = RegistrationService.registrationStatusesNames.filter((status) => {
@@ -92,7 +92,7 @@
                 return;
             }
             $scope.data.applying = true;
-            ApplyAppealPhaseEvaluationService.apply($scope.data.applyFrom, $scope.data.applyTo, $scope.data.status).
+            ApplyContinuousEvaluationService.apply($scope.data.applyFrom, $scope.data.applyTo, $scope.data.status).
                 success(() => {
                     $scope.data.applying = false;
                     MapasCulturais.Messages.success(labels.applyEvaluationsSuccess);

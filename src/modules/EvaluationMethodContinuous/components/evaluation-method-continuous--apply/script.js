@@ -1,9 +1,9 @@
-app.component('evaluation-method-appeal-phase--apply', {
-    template: $TEMPLATES['evaluation-method-appeal-phase--apply'],
+app.component('evaluation-method-continuous--apply', {
+    template: $TEMPLATES['evaluation-method-continuous--apply'],
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente
-        const text = Utils.getTexts('evaluation-method-appeal-phase--apply')
+        const text = Utils.getTexts('evaluation-method-continuous--apply')
         return { text }
     },
 
@@ -30,10 +30,10 @@ app.component('evaluation-method-appeal-phase--apply', {
 
     computed: {
         statusList() {
-            return $MAPAS.config['evaluation-method-appeal-phase--apply'].statusList;
+            return $MAPAS.config['evaluation-method-continuous--apply'].statusList;
         },
         consolidatedResults() {
-            return $MAPAS.config['evaluation-method-appeal-phase--apply'].consolidated_results;
+            return $MAPAS.config['evaluation-method-continuous--apply'].consolidated_results;
         }
     },
 
@@ -44,7 +44,7 @@ app.component('evaluation-method-appeal-phase--apply', {
             this.applyData.status = this.applyAll ? 'all' : 'pending';
             this.entity.disableMessages();
             
-            this.entity.POST('applyEvaluationsAppealPhase', {
+            this.entity.POST('applyEvaluationsContinuous', {
                 data: this.applyData, callback: data => {
                     messages.success(data);
                     modal.close();
