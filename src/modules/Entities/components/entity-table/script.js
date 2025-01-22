@@ -169,14 +169,18 @@ app.component('entity-table', {
 
     computed: {
         visibleColumns() {
-            return this.columns.filter((col) => col.visible);
+            const columns = this.columns.filter((col) => col.visible);
+            return columns;
         },
+
         allHeadersActive() {
             return this.visibleColumns.length == this.columns.length;
         },
+
         $description() {
             return $DESCRIPTIONS[this.type];
         },
+
         advancedFilters() {
             let filters = {};
 
@@ -235,6 +239,19 @@ app.component('entity-table', {
             });
 
             return result;
+        },
+
+        spreadsheetQuery() {
+            let spreadsheetQuery =  Object.assign({}, this.query);
+
+            spreadsheetQuery['@select'] = this.visibleColumns.map(column => column.slug).join(',');
+            spreadsheetQuery['@order'] = this.entitiesOrder;
+
+            spreadsheetQuery = Object.fromEntries(
+                Object.entries(spreadsheetQuery).filter( ([key, value]) => value !== null && value !== undefined )
+            );
+            
+            return spreadsheetQuery;
         },
     },
 
