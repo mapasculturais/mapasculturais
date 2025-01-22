@@ -48,6 +48,18 @@ $this->import('
             </textarea>
         </div>
     </template>
+    <template v-if="userRequest === 'view'" #message-payload="{ message }">
+        <div class="field">
+            <label for="agent-response"><?= i::__('Resposta do agente:') ?></label>
+            <textarea 
+                v-model="message.payload" 
+                ref="textarea" 
+                placeholder="<?= i::__('Digite sua mensagem') ?>" 
+                id="agent-response" 
+                class="mc-chat__textarea">
+            </textarea>
+        </div>
+    </template>
     <template #default="{ message }">
         <div v-if="typeof message.payload === 'object'">
             <div class="mc-chat__evaluation">
