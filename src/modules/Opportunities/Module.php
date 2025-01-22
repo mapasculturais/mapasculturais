@@ -695,7 +695,7 @@ class Module extends \MapasCulturais\Module{
                 }
 
                 if ($all_status_sent) {
-                    if($evaluation_type == 'simple') {
+                    if($evaluation_type == 'simple' || $evaluation_type == 'appeal-phase') {
                         $value = $registration->consolidatedResult;
                     }
 
