@@ -76,7 +76,7 @@ app.component('agent-table', {
 
     computed: {
         mergedQuery() {
-            return {...this.query, ...this.extraQuery};
+            return {...this.extraQuery, ...this.query};
         },
 
         headers () {
