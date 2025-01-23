@@ -11,6 +11,7 @@ $this->import('
     entity-table
     mc-icon
     mc-export-spreadsheet
+    mc-states-and-cities
 ');
 ?>
 
@@ -29,9 +30,7 @@ $this->import('
 
                 <mc-multiselect class="col-3 sm:col-4" :model="selectedSeals" :items="seals" placeholder="<?= i::esc_attr__('Selecione os selos: ') ?>" @selected="filterBySeals(entities)" @removed="filterBySeals(entities)" :hide-filter="hideFilters" hide-button></mc-multiselect>
 
-                <mc-multiselect class="col-3 sm:col-4" :model="selectedState" :items="state" placeholder="<?= i::esc_attr__('Selecione o estado: ') ?>" @selected="filterByState(entities)" @removed="filterByState(entities)" :hide-filter="hideFilters" hide-button></mc-multiselect>
-
-                <mc-multiselect v-if="cities.length > 0 && query['En_Estado']" class="col-3 sm:col-4" :model="selectedCities" :items="cities" placeholder="<?= i::esc_attr__('Selecione o município ') ?>" @selected="filterByCities(entities)" @removed="filterByCities(entities)" :hide-filter="hideFilters" hide-button></mc-multiselect>
+                <mc-states-and-cities field-class="col-3 sm:col-4" hide-labels hide-tags v-model:model-states="selectedStates" v-model:model-cities="selectedCities" @changeCities="filterByCities(entities)" @changeStates="filterByState(entities)"></mc-states-and-cities>
 
                 <div class="agent-table__inputs col-3 sm:col-4">
                     <div class="field">
