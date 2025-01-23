@@ -33,14 +33,8 @@ app.component('agent-table-1', {
     },
 
     computed: {
-        headers () {
-            let itens = [
-                { text: __('orientacaoSexual', 'agent-table-1'), value: "orientacaoSexual", slug: "orientacaoSexual" },
-                { text: __('genero', 'agent-table-1'), value: "genero", slug: "genero" },
-                { text: __('raca', 'agent-table-1'), value: "raca", slug: "raca" },
-            ];
-
-            return itens;  
+        additionalHeaders () {
+            return $MAPAS.config.agentTable1.additionalHeaders;  
         },
     },
     

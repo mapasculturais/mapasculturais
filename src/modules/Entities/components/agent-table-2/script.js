@@ -7,7 +7,7 @@ app.component('agent-table-2', {
 
     data() {
         return {
-            
+            additionalHeaders: $MAPAS.config.agentTable2.additionalHeaders
         }
     },
 
