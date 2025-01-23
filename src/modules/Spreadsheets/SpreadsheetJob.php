@@ -15,6 +15,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\i;
+use MapasCulturais\Types\GeoPoint;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -138,6 +139,12 @@ abstract class SpreadsheetJob extends JobType
                         $value = $value->format('d/m/Y H:i:s');
                         continue;
                     }
+
+                    if($value instanceof GeoPoint) {
+                        $value = "{$value}";
+                        continue;
+                    }
+
                     //TODO: Avaliar como implementar o tratamento de fórmulas apenas para campos preenchidos pelo usuário e permitir que as fórmulas permaneçam nos campos com preenchimento do próprio sistema.
                 }
 
