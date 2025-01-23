@@ -537,7 +537,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!$scope.data.newFieldConfiguration.conditionalValue){
+                if($scope.data.newFieldConfiguration.conditionalField !== 'appliedForQuota' && !$scope.data.newFieldConfiguration.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
@@ -596,7 +596,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!model.conditionalValue){
+                if(model.conditionalField !== 'appliedForQuota' && !model.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
@@ -705,7 +705,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!model.conditionalValue){
+                if(model.conditionalField !== 'appliedForQuota' && !model.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
@@ -1204,6 +1204,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
     $scope.entity = MapasCulturais.registration;
+    $scope.appliedForQuota = $scope.entity.appliedForQuota;
+
+    window.addEventListener('message', ({ data }) => {
+        if (data?.type === 'registration.appliedForQuota') {
+            $scope.appliedForQuota = data.appliedForQuota;
+        }
+    });
 
     $scope.data = {
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
@@ -1795,7 +1802,11 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if(field.conditional){
-            result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+            if (field.conditionalField === 'appliedForQuota') {
+                result = result && $scope.appliedForQuota;
+            } else {
+                result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+            }
         }
 
         if(MapasCulturais.entity.canUserEvaluate){
