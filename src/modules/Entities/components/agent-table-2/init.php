@@ -5,25 +5,29 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
-use MapasCulturais\i;
-
 $definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
 $additionalHeaders = [];
-$skipFieldsAdditionalHeaders = [
-    'id',
+$skipFields = [
     'area',
-    'cnpj',
+    'comunidadesTradicional',
+    'cpf',
     'documento',
+    'escolaridade',
+    'genero',
     'id',
+    'idoso',
     'name',
+    'nomeSocial',
+    'orientacaoSexual',
+    'parent',
+    'pessoaDeficiente',
+    'raca',
+    'renda',
     'seals',
+    'subsite',
     'tag',
     'type',
     'user',
-    'updateTimestamp',
-    'userId',
-    'parent',
-    'subsite',
 ];
 
 $can_see = function ($def) use ($app) {
@@ -37,7 +41,7 @@ $can_see = function ($def) use ($app) {
 };
 
 foreach ($definitions as $field => $def) {
-    if (!in_array($field, $skipFieldsAdditionalHeaders) && !str_starts_with($field, "_") && $can_see($def)) {
+    if (!in_array($field, $skipFields) && !str_starts_with($field, "_") && $can_see($def)) {
         $data = [
             'text' => $def['label'],
             'value' => $field,
@@ -47,8 +51,8 @@ foreach ($definitions as $field => $def) {
     }
 }
 
-$app->applyHook('component(agent-table-1).additionalHeaders', [&$additionalHeaders]);
+$app->applyHook('component(agent-table-2).additionalHeaders', [&$additionalHeaders]);
 
-$this->jsObject['config']['agentTable1'] = [
-    'additionalHeaders' => $additionalHeaders,
+$this->jsObject['config']['agentTable2'] = [
+    'additionalHeaders' => $additionalHeaders
 ];
