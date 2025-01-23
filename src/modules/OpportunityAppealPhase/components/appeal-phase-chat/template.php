@@ -75,6 +75,14 @@ $this->import('
                 <div class="mc-chat__evaluation-text">
                     <h4 class="semibold"><?= i::__('Justificativa ou observações:') ?></h4>
                     <p>{{message.payload.message}}</p>
+
+                    <div v-if="message.files?.chatAttachment" class="mc-chat__attachment">
+                        <entity-file
+                            :entity="message"
+                            group-name="chatAttachment"
+                            classes="col-12"
+                            ></entity-file>
+                    </div>
                 </div>
                 <div class="mc-chat__evaluation-closed" v-if="message.payload.endChat">
                     <h4 class="semibold"><?= i::__('Justificativa para encerramento do processo:') ?></h4>
