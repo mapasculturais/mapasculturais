@@ -63,7 +63,7 @@ $can_see = function ($def) use ($app) {
         return true;
     }
 
-    if ($def->private) {
+    if (isset($def['private']) && $def['private']) {
         return false;
     }
 };
