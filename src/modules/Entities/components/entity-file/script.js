@@ -68,6 +68,10 @@ app.component('entity-file', {
         beforeUpload: {
             type: Function,
             required: false
+        },
+        uploadOnSubmit: {
+            type: Boolean,
+            default: true,
         }
     },
 
@@ -109,11 +113,14 @@ app.component('entity-file', {
             this.entity.disableMessages();
             try{
                 const response = await this.entity.upload(this.newFile, data);
-                this.$emit('uploaded', this);
                 this.file = response;
+                this.$emit('uploaded', this);
                 this.loading = false;
                 this.entity.enableMessages();
-                modal.close()
+
+                if (modal) {
+                    modal.close();
+                }
 
             } catch(e) {
                 this.loading = false;
@@ -126,6 +133,14 @@ app.component('entity-file', {
             }
 
             return true;
+        },
+
+        async submit(modal) {
+            if (this.uploadOnSubmit) {
+                await this.upload();
+            } else {
+                modal.close();
+            }
         },
 
         deleteFile(file) {
