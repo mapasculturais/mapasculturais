@@ -126,6 +126,7 @@ app.component('entity-file', {
                 this.entity.enableMessages();
 
                 this.file = null;
+                this.newFile = {};
 
                 if (modal) {
                     modal.close();
@@ -155,6 +156,7 @@ app.component('entity-file', {
         deleteFile(file) {
             file.delete().then(() => {
                 this.file = null;
+                this.newFile = {};
             });
         }
     },
