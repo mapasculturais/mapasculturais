@@ -36,7 +36,6 @@ app.component('mc-chat', {
     },
 
     created() {
-        this.initAttachmentMessage();
     },
 
     mounted() {
@@ -64,21 +63,6 @@ app.component('mc-chat', {
     },
 
     methods: {
-        initAttachmentMessage(addNewMessages) {
-            if (addNewMessages) {
-                this.addNewMessages([this.newAttachmentMessage]);
-            }
-
-            this.newAttachmentMessage = new Entity('chatmessage');
-            this.newAttachmentMessage.disableMessages();
-            this.newAttachmentMessage.thread = this.thread;
-            this.newAttachmentMessage.payload = '@attachment';
-        },
-
-        async saveAttachmentMessage() {
-            return this.newAttachmentMessage.save()
-        },
-
         async sendMessage() {
             if ((typeof this.message.payload) === 'string' && this.message.payload.trim() === '') {
                 return;
