@@ -1,11 +1,14 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
+use MapasCulturais\i;
+
 $file_name = $app->config['statesAndCities.file'];
-$content = $this->resolveFilename('states-and-cities',$file_name);
+$content = $this->resolveFilename('states-and-cities', $file_name);
 include $content;
 
 $app->view->jsObject['config']['statesAndCities'] = $data;
@@ -17,6 +20,70 @@ $queryParams =  [
 ];
 $querySeals = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Seal::class, $queryParams);
 
-$this->jsObject['config']['agentTable'] =[
+$definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
+$additionalHeaders = [];
+$skipFields = ['parent', 'user', 'subsite', 'id', 'name', 'area', 'tag', 'seals', 'type'];
+
+$defaultHeaders = [
+    [
+        'text' => i::__('id', 'agent-table'),
+        'value' => 'id',
+        'sticky' => true,
+        'width' => '80px',
+    ],
+    [
+        'text' => i::__('name', 'agent-table'),
+        'value' => 'name',
+        'width' => '160px',
+    ],
+    [
+        'text' => i::__('area', 'agent-table'),
+        'value' => 'terms.area.join(\', \')',
+        'slug' => 'area',
+    ],
+    [
+        'text' => i::__('tag', 'agent-table'),
+        'value' => 'terms.tag.join(\', \')',
+        'slug' => 'tag',
+    ],
+    [
+        'text' => i::__('seals', 'agent-table'),
+        'value' => 'seals.map((seal) => seal.name).join(\', \')',
+        'slug' => 'seals',
+    ],
+    [
+        'text' => i::__('endereco', 'agent-table'),
+        'value' => 'endereco',
+        'slug' => 'endereco',
+    ],
+];
+
+$can_see = function ($def) use ($app) {
+    if ($app->user->is('admin')) {
+        return true;
+    }
+
+    if ($def->private) {
+        return false;
+    }
+};
+
+
+foreach ($definitions as $field => $def) {
+    if (!in_array($field, $skipFields) && !str_starts_with($field, "_") && $can_see($def)) {
+        $data = [
+            'text' => $def['label'],
+            'value' => $field,
+            'slug' => $field
+        ];
+        $additionalHeaders[] = $data;
+    }
+}
+
+$app->applyHook('component(agent-table).additionalHeaders', [&$defaultHeaders, &$additionalHeaders]);
+
+$this->jsObject['config']['agentTable'] = [
     'seals' => $querySeals->getFindResult(),
+    'additionalHeaders' => $additionalHeaders,
+    'defaultHeaders' => $defaultHeaders
 ];
