@@ -36,8 +36,20 @@ app.component('agent-table', {
     },
 
     data() {
+        const defaultHeaders = $MAPAS.config.agentTable.defaultHeaders;
+        const _additionalHeaders = (this.additionalHeaders.length > 0) ? this.additionalHeaders : $MAPAS.config.agentTable.additionalHeaders;
+
+        const mergedHeaders = [...defaultHeaders, ..._additionalHeaders];
+        
+        let select = [];
+        for(item of mergedHeaders) {
+            if(item.slug) {
+                select.push(item.slug)
+            }
+        }
+        
         let query = {
-            '@select': 'name,type,shortDescription,files.avatar,seals,endereco,terms,orientacaoSexual,genero,raca',
+            '@select': `name,type,shortDescription,files.avatar,seals,endereco,terms,orientacaoSexual,genero,raca,${select}`,
             '@order': 'createTimestamp DESC',
             '@limit': 20,
             '@page': 1,
@@ -58,7 +70,7 @@ app.component('agent-table', {
         let municipio = [];
 
         return {
-            defaultHeaders :$MAPAS.config.agentTable.defaultHeaders,
+            mergedHeaders,
             terms: $TAXONOMIES.area.terms,
             types: $DESCRIPTIONS.agent.type.options,
             state: $DESCRIPTIONS.agent.En_Estado.optionsOrder,
@@ -81,17 +93,12 @@ app.component('agent-table', {
         },
 
         headers () {
-            const additionalHeaders = (this.additionalHeaders.length > 0) ? this.additionalHeaders : $MAPAS.config.agentTable.additionalHeaders;
-            let itens = [
-                ...this.defaultHeaders,
-                ...additionalHeaders,
-            ];
+            let itens = this.mergedHeaders;
             
             if (!this.agentType) {
                 itens.push({ text: __('type', 'agent-table'), value: "type.name", slug: "type"});
             }
 
-            console.log(additionalHeaders)
             return itens;
         },
 
