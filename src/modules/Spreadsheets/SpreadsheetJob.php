@@ -15,6 +15,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\i;
+use MapasCulturais\Types\GeoPoint;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -139,7 +140,12 @@ abstract class SpreadsheetJob extends JobType
                         continue;
                     }
 
-                    if($value && $value[0] === '=') {
+                    if($value instanceof GeoPoint) {
+                        $value = "{$value}";
+                        continue;
+                    }
+
+                    if(is_string($value) && $value && $value[0] === '=') {
                         $value = "'$value";
                     }
                 }
