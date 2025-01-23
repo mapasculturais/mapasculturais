@@ -92,16 +92,11 @@ app.component('mc-chat', {
 
                 const attachment = this.$refs.attachment;
 
-                if (attachment.newFile) {
+                if (attachment.file) {
                     await attachment.upload();
                 }
 
-                this.$refs.chatMessages.entities.unshift({
-                    id: newMessage.id,
-                    payload: newMessage.payload,
-                    createTimestamp: newMessage.createTimestamp,
-                    user: newMessage.user,
-                });
+                this.$refs.chatMessages.entities.unshift(newMessage);
 
                 messages.success(this.text('Mensagem enviada com sucesso'));
                 this.message = this.createNewMessage('');
@@ -136,8 +131,8 @@ app.component('mc-chat', {
             try {
                 const api = new API('chatmessage');
                 const selectFields = this.anonymousSender
-                    ? 'createTimestamp,payload,user.profile.{name,files.avatar}'
-                    : 'createTimestamp,payload,user';
+                    ? 'createTimestamp,payload,user.profile.{name,files.avatar},files'
+                    : 'createTimestamp,payload,user,files';
 
                 const newMessages = await api.find({
                     thread: `EQ(${this.thread.id})`,

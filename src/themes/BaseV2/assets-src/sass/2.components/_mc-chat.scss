@@ -67,11 +67,21 @@
         font-size: size(12);
     }
 
-    &__text,
-    &__attachment {
+    &__text {
         background-color: var(--mc-gray-100);
         border-radius: var(--mc-border-radius-sm);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
         padding: size(14);
+    }
+    
+    &__attachment {
+        .entity-file {
+            a.entity-file__link, span {
+                color: var(--mc-primary-500);
+            }
+        }
     }
 
     &__actions {
