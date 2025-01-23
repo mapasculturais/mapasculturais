@@ -95,6 +95,12 @@ app.component('mc-chat', {
                 const newMessage = this.message; 
                 await newMessage.save();
 
+                const attachment = this.$refs.attachment;
+
+                if (attachment.newFile) {
+                    await attachment.upload();
+                }
+
                 this.$refs.chatMessages.entities.unshift({
                     id: newMessage.id,
                     payload: newMessage.payload,
