@@ -64,8 +64,26 @@ app.component('mc-states-and-cities', {
             deep: true,
         },
 
+        modelStates: {
+            handler(value) {
+                this.selectedStates = this.modelStates;
+                this.$emit('update:modelStates', value);
+                this.$emit('changeCities', value);
+            },
+            deep: true,
+        },
+
         selectedCities: {
             handler(value) {
+                this.$emit('update:modelCities', value);
+                this.$emit('changeCities', value);
+            },
+            deep: true,
+        },
+
+        modelCities: {
+            handler(value) {
+                this.selectedCities = this.modelCities;
                 this.$emit('update:modelCities', value);
                 this.$emit('changeCities', value);
             },
