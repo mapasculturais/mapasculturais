@@ -1082,6 +1082,11 @@ class Registration extends \MapasCulturais\Entity
         if($field->conditional){
             $_fied_name = $field->conditionalField;
             $_fied_value = $field->conditionalValue;
+
+            if ($_fied_name == 'appliedForQuota') {
+                return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+            }
+
             return $this->$_fied_name == $_fied_value;
         }
 
@@ -1194,7 +1199,12 @@ class Registration extends \MapasCulturais\Entity
             if($rfc->conditional){
                 $_fied_name = $rfc->conditionalField;
                 $_fied_value = $rfc->conditionalValue;
-                $field_required = $this->$_fied_name == $_fied_value && $rfc->required;
+
+                if ($_fied_name == 'appliedForQuota') {
+                    $field_required = $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+                } else {
+                    $field_required = $this->$_fied_name == $_fied_value && $rfc->required;
+                }
             }
 
             $errors = [];
@@ -1228,7 +1238,12 @@ class Registration extends \MapasCulturais\Entity
               
                 $_fied_name = $conf->conditionalField;
                 $_fied_value = $conf->conditionalValue;
-                $field_required = $this->$_fied_name == $_fied_value && $field->required;
+
+                if ($_fied_name == 'appliedForQuota') {
+                    $field_required = $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+                } else {
+                    $field_required = $this->$_fied_name == $_fied_value && $field->required;
+                }
             }
 
             $errors = [];
