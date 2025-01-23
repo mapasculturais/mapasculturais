@@ -12,7 +12,6 @@ $additionalHeaders = [];
 $skipFieldsAdditionalHeaders = [
     'id',
     'area',
-    'cnpj',
     'documento',
     'id',
     'name',
@@ -20,7 +19,6 @@ $skipFieldsAdditionalHeaders = [
     'tag',
     'type',
     'user',
-    'updateTimestamp',
     'userId',
     'parent',
     'subsite',
