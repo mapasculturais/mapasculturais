@@ -17,6 +17,11 @@ app.component('agent-table-1', {
             type: Boolean,
             default: false
         },
+
+        extraQuery: {
+            type: Object,
+            default: () => ({}),
+        }, 
     },
 
     data() {
@@ -28,19 +33,12 @@ app.component('agent-table-1', {
             sexualOrientation: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder.filter((value) => value != ''),
             gender: $DESCRIPTIONS.agent.genero.optionsOrder.filter((value) => value != ''),
             race: $DESCRIPTIONS.agent.raca.optionsOrder.filter((value) => value != ''),
-            extraQuery: {},
         }
     },
 
     computed: {
-        headers () {
-            let itens = [
-                { text: __('orientacaoSexual', 'agent-table-1'), value: "orientacaoSexual", slug: "orientacaoSexual" },
-                { text: __('genero', 'agent-table-1'), value: "genero", slug: "genero" },
-                { text: __('raca', 'agent-table-1'), value: "raca", slug: "raca" },
-            ];
-
-            return itens;  
+        additionalHeaders () {
+            return $MAPAS.config.agentTable1.additionalHeaders;  
         },
     },
     

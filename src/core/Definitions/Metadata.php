@@ -96,6 +96,8 @@ class Metadata extends \MapasCulturais\Definition{
 
     public bool $readonly = false;
 
+    public bool $sensitive = false;
+
     /**
      * Creates a new Metadata Definition.
      *
@@ -136,6 +138,9 @@ class Metadata extends \MapasCulturais\Definition{
         $this->available_for_opportunities = key_exists('available_for_opportunities', $config) ? $config['available_for_opportunities'] : false;
 
         $this->field_type = key_exists('field_type', $config) ? $config['field_type'] : $this->type;
+        
+        $this->sensitive = $config['sensitive'] ?? false;
+
 
         if ($this->field_type === 'string') {
             $this->field_type = 'text'; 

@@ -33,7 +33,7 @@ $this->import('
                 <!-- ações - opcional -->
                 <mc-collapse v-if="hasSlot('actions') || !hideActions">
                     <template #header>
-                        <slot name="actions" :entities="entities" :filters="filters"></slot>
+                        <slot name="actions" :entities="entities" :filters="filters" :spreadsheetQuery="spreadsheetQuery"></slot>
                     </template>
 
                     <template v-if="hasSlot('advanced-actions')" #content>
