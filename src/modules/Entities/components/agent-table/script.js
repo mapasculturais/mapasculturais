@@ -58,6 +58,7 @@ app.component('agent-table', {
         let municipio = [];
 
         return {
+            defaultHeaders :$MAPAS.config.agentTable.defaultHeaders,
             terms: $TAXONOMIES.area.terms,
             types: $DESCRIPTIONS.agent.type.options,
             state: $DESCRIPTIONS.agent.En_Estado.optionsOrder,
@@ -80,20 +81,17 @@ app.component('agent-table', {
         },
 
         headers () {
+            const additionalHeaders = (this.additionalHeaders.length > 0) ? this.additionalHeaders : $MAPAS.config.agentTable.additionalHeaders;
             let itens = [
-                { text: __('id', 'agent-table'), value: "id", sticky: true, width: '80px'},
-                { text: __('name', 'agent-table'), value: "name", width: '160px' },
-                { text: __('area', 'agent-table'), value: "terms.area.join(', ')", slug: "area" },
-                { text: __('tag', 'agent-table'), value: "terms.tag.join(', ')", slug: "tag" },
-                { text: __('seals', 'agent-table'), value: "seals.map((seal) => seal.name).join(', ')", slug: "seals"},
-                { text: __('endereco', 'agent-table'), value: "endereco", slug: "endereco" },
-                ...this.additionalHeaders,
+                ...this.defaultHeaders,
+                ...additionalHeaders,
             ];
-
+            
             if (!this.agentType) {
                 itens.push({ text: __('type', 'agent-table'), value: "type.name", slug: "type"});
             }
 
+            console.log(additionalHeaders)
             return itens;
         },
 
@@ -102,7 +100,8 @@ app.component('agent-table', {
         },
 
         owner() {
-            return new Entity('agent', $MAPAS.user.id);
+            const global = useGlobalState();
+            return new Entity('agent', global.auth.user?.profile.id);
         },
 
     },
