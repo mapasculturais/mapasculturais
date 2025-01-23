@@ -9,9 +9,9 @@ $this->import('
     entity-field
 ');
 ?>
-<div class="card owner">                            
-    <h3 class="card__title"> 
-        <?= i::__('Vai concorrer às cotas?') ?> 
+<div class="card owner">
+    <h3 class="card__title">
+        <?= i::__('Vai concorrer às cotas?') ?>
     </h3>
 
     <div class="card__content">
