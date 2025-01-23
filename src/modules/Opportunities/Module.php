@@ -785,9 +785,13 @@ class Module extends \MapasCulturais\Module{
             /** @var \MapasCulturais\Entities\Registration $this */
 
             $opportunity = $this->opportunity;
+            $seals = $opportunity->proponentSeals;
+
+            if (!$seals) {
+                return;
+            }
 
             if ($opportunity && ($opportunity->publishedRegistrations || $this->opportunity->firstPhase->isContinuousFlow)) {
-                $seals = $opportunity->proponentSeals;
                 $proponent_type = $this->proponentType;
                 $owner = $this->owner;
                 $categories_seals = $opportunity->categorySeals;
