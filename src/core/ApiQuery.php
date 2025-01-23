@@ -2257,8 +2257,8 @@ class ApiQuery {
 
                 $entity['relatedAgents'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
                 
-                $permisions = $entity['currentUserPermissions'];
-
+                $permisions = $entity['currentUserPermissions'] ?? [];
+                
                 $can_view_pending = ($permisions['@controll'] ?? false) || 
                                     ($permisions['viewPrivateData'] ?? false) ||
                                     ($permisions['createAgentRelation'] ?? false) ||
