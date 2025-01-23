@@ -139,9 +139,6 @@ $this->import('
             :message="message"
             :send-message="sendMessage"
             :processing="processing"
-            :new-attachment-message="newAttachmentMessage"
-            :init-attachment-message="initAttachmentMessage"
-            :save-attachment-message="saveAttachmentMessage"
             >
             <slot name="message-payload"
                 :message="message"
@@ -156,19 +153,17 @@ $this->import('
             </slot>
     
             <slot name="message-upload" 
-                :new-attachament-message="newAttachmentMessage" 
-                :init-attachment-message="initAttachmentMessage" 
-                :save-attachment-message="saveAttachmentMessage"
+                :message="message"
                 >
                 <entity-file
-                    @uploaded="initAttachmentMessage(true)"
-                    :entity="newAttachmentMessage"
+                    ref="attachment"
+                    :entity="message"
                     group-name="chatAttachment"
-                    :before-upload="saveAttachmentMessage"
                     title-modal="<?php i::_e('Adicionar anexo') ?>"
                     classes="col-12"
                     title="<?php i::esc_attr_e('Adicionar anexo'); ?>"
-                    editable></entity-file>
+                    editable
+                    :upload-on-submit="false"></entity-file>
             </slot>
 
             <slot name="message-send-button"
