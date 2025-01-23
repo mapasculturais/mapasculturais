@@ -67,7 +67,7 @@ app.component('agent-table', {
             selectedSeals: [],
             selectedBairro: [],
             selectedCities: [],
-            selectedState: [],
+            selectedStates: [],
             seals,
             getCities,
             municipio,
@@ -135,15 +135,15 @@ app.component('agent-table', {
         },
 
         filterByState(entities) {
-            if (this.selectedState.length > 0) {
-                this.query['En_Estado'] = `IN(${this.selectedState.toString()})`;
+            if (this.selectedStates.length > 0) {
+                this.query['En_Estado'] = `IN(${this.selectedStates.toString()})`;
             } else {
                 delete this.query['En_Estado'];
             }
 
             const sigla = Object.keys(this.getCities);
             sigla.filter((item) => {
-                if (item == this.selectedState[0]) {
+                if (item == this.selectedStates[0]) {
                     this.municipio.push(...this.getCities[item].cities);
                 }
             });
@@ -157,7 +157,7 @@ app.component('agent-table', {
                 '@order': 'createTimestamp DESC',
                 '@limit': 20,
                 '@page': 1,
-                'En_Estado': `IN(${this.selectedState.toString()})`,
+                'En_Estado': `IN(${this.selectedStates.toString()})`,
             };
 
             if (this.selectedCities.length > 0) {
@@ -173,7 +173,7 @@ app.component('agent-table', {
             this.selectedSeals = [];
             this.selectedBairro = [];
             this.selectedCities = [];
-            this.selectedState = [];
+            this.selectedStates = [];
             delete this.query['term:area'];
             delete this.query['@seals'];
             delete this.query['En_Bairro'];
@@ -188,6 +188,13 @@ app.component('agent-table', {
             switch (filter.prop) {
                 case 'term:area':
                     this.selectedArea = this.selectedArea.filter(area => area !== filter.value);
+
+                    if (this.selectedArea.length > 0) {
+                        this.query[filter.prop] = `IN(${this.selectedArea.toString()})`;
+                    } else {
+                        delete this.query[filter.prop];
+                    }
+
                     break;
                 case '@seals':
                     delete this.query['@seals'];
@@ -195,16 +202,36 @@ app.component('agent-table', {
                     break;
                 case 'En_Bairro':
                     this.selectedBairro = this.selectedBairro.filter(bairro => bairro !== filter.value);
+
+                    if (this.selectedBairro.length > 0) {
+                        this.query[filter.prop] = `IN(${this.selectedBairro.toString()})`;
+                    } else {
+                        delete this.query[filter.prop];
+                    }
+
                     break;
                 case 'En_Estado':
-                    this.selectedState = this.selectedState.filter(state => state !== filter.value);
-                    this.municipio = [];
+                    this.selectedStates = this.selectedStates.filter(state => state !== filter.value);
+
+                    if (this.selectedStates.length > 0) {
+                        this.query[filter.prop] = `IN(${this.selectedStates.toString()})`;
+                    } else {
+                        delete this.query[filter.prop];
+                    }
+
                     break;
                 case 'En_Municipio':
                     this.selectedCities = this.selectedCities.filter(city => city !== filter.value);
+
+                    if (this.selectedCities.length > 0) {
+                        this.query[filter.prop] = `IN(${this.selectedCities.toString()})`;
+                    } else {
+                        delete this.query[filter.prop];
+                    }
+
                     break;
             }
-            delete this.query[filter.prop];
+            
             this.$emit('remove-filter', filter);
         },
 
