@@ -40,4 +40,6 @@ return [
     'palavras-chave' => i::__('Palavras-chave'),
     'pessoa idosa' => i::__('Pessoa Idosa'),
     'acessibilidade' => i::__('Possui acessibilidade'),
+    'sim' => i::__('Sim'),
+    'nao' => i::__('Não'),
 ];
