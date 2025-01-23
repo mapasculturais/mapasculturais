@@ -48,6 +48,16 @@ class Entities extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'area') {
+                $header['area'] = i::__('Área de interesse');
+                continue;
+            }
+
+            if($property == 'tags') {
+                $header['tags'] = i::__('Tags');
+                continue;
+            }
+
             if($property == 'files.avatar') {
                 continue;
             }
