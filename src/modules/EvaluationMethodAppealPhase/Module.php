@@ -313,6 +313,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                                 $app->disableAccessControl();
                                 $registration->setStatus($value);
+                                $registration->consolidateResult();
                                 $registration->save();
                                 $app->enableAccessControl();
                             }
