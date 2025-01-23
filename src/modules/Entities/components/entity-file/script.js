@@ -86,12 +86,19 @@ app.component('entity-file', {
     },
 
     updated() {
-        this.file = this.entity.files?.[this.groupName] || null;
+        if (this.uploadOnSubmit) {
+            this.file = this.entity.files?.[this.groupName] || null;
+        }
     },
 
     methods: {
         setFile(event) {
             this.newFile = event.target.files[0];
+
+            if (!this.uploadOnSubmit && this.newFile) {
+                this.file = this.newFile;
+            }
+
             this.$emit('setFile', this.newFile);
         },
 
@@ -118,6 +125,8 @@ app.component('entity-file', {
                 this.loading = false;
                 this.entity.enableMessages();
 
+                this.file = null;
+
                 if (modal) {
                     modal.close();
                 }
@@ -137,7 +146,7 @@ app.component('entity-file', {
 
         async submit(modal) {
             if (this.uploadOnSubmit) {
-                await this.upload();
+                await this.upload(modal);
             } else {
                 modal.close();
             }
