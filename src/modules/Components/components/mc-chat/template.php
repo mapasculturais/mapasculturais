@@ -36,6 +36,9 @@ $this->import('
             </template>
             <template #default="{ entities }">
                 <template v-for="message in entities">
+                    <template v-if="entities.length" v-once>
+                        {{ handleEntitiesUpdate(entities) }}
+                    </template>
                     <slot :message="message" :sender-name="senderName(message)">
                         <slot v-if="isMine(message) && message.payload != '@attachment'" name="my-message" :message="message" :sender-name="senderName(message)">
                             <article
@@ -134,7 +137,7 @@ $this->import('
         </mc-entities>
     </main>
 
-    <div v-if="!isClosed()" class="mc-chat__actions">
+    <div v-if="!isClosed() && (!pingPong || (pingPong && !lastMessageIsMine))" class="mc-chat__actions">
         <slot name="message-form"
             :message="message"
             :send-message="sendMessage"
@@ -142,6 +145,7 @@ $this->import('
             >
             <slot name="message-payload"
                 :message="message"
+                :lastMessageIsMine="lastMessageIsMine"
                 >
                 <textarea 
                     v-model="message.payload" 

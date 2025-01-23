@@ -13,8 +13,8 @@ $this->import('
 
 ?>
 
-<mc-chat v-if="thread" :thread="thread">
-    <template v-if="userRequest === 'evaluation'" #message-payload="{ message }">
+<mc-chat v-if="thread" :thread="thread" :ping-pong="true">
+    <template v-if="userRequest === 'evaluation'" #message-payload="{ message, lastMessageIsMine }">
         <div class="mc-chat__reviewer-message field" :let="initMessage(message)">
             <label for="status"><?= i::__('Resultado da validação:') ?></label>
             <mc-select :default-value="message.payload.status" @change-option="message.payload.status = $event.value" id="status">
@@ -25,7 +25,7 @@ $this->import('
             </mc-select>
             
             <label for="agent-response"><?= i::__('Justificativa:') ?></label>
-            <textarea 
+            <textarea
                 v-model="message.payload.message" 
                 ref="textarea" 
                 placeholder="<?= i::__('Digite sua mensagem') ?>" 
@@ -48,7 +48,7 @@ $this->import('
             </textarea>
         </div>
     </template>
-    <template v-if="userRequest === 'view'" #message-payload="{ message }">
+    <template v-if="userRequest === 'view'" #message-payload="{ message, lastMessageIsMine }">
         <div class="field">
             <label for="agent-response"><?= i::__('Resposta do agente:') ?></label>
             <textarea 
@@ -62,7 +62,7 @@ $this->import('
     </template>
     <template #default="{ message }">
         <div v-if="typeof message.payload === 'object'">
-            <div class="mc-chat__evaluation">
+            <div class="mc-chat__evaluation" >
                 <div class="mc-chat__evaluation-status">
                     <h4 class="semibold"><?= i::__('Resultado da validação:') ?></h4>
                     <div class="mc-chat__evaluation-status-content">

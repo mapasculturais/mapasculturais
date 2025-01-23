@@ -17,6 +17,10 @@ app.component('mc-chat', {
         thread: {
             type: Entity,
             required: true
+        },
+        pingPong: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -31,7 +35,8 @@ app.component('mc-chat', {
             newAttachmentMessage: null,
             processing: false,
             query: null,
-            threadStatus: null
+            threadStatus: null,
+            chatEntities: [],
         };
     },
 
@@ -55,7 +60,13 @@ app.component('mc-chat', {
     computed: {
         chatOwner() {
             return this.thread?.owner;
-        }
+        },
+
+        lastMessageIsMine() {
+            const lastMessage = this.chatEntities[0];
+            return lastMessage ? this.isMine(lastMessage) : false;
+        },
+
     },
 
     beforeUnmount() {
@@ -217,6 +228,10 @@ app.component('mc-chat', {
                 default:
                     return '';
             }
-        }
+        },
+
+        handleEntitiesUpdate(entities) {
+            this.chatEntities = entities; 
+        },
     }
 });
