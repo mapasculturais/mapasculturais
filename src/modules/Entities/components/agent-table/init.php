@@ -18,6 +18,9 @@ $queryParams =  [
     '@order' => 'id ASC',
     '@select' => 'id,name,files.avatar',
 ];
+
+$app->applyHook('component(agent-table).querySeals', [&$queryParams]);
+
 $querySeals = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Seal::class, $queryParams);
 
 $definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
