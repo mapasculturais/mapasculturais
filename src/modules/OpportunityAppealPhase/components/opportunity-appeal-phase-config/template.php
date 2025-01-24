@@ -47,7 +47,7 @@ $this->import('
                     </p>
                 </template> 
                 <template #button="modal">
-                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
+                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !entity.evaluationMethodConfiguration.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
                             <mc-icon name="trash" class="secondary__color"></mc-icon> 
                         </div>
