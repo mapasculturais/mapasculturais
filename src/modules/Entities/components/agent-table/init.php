@@ -18,11 +18,14 @@ $queryParams =  [
     '@order' => 'id ASC',
     '@select' => 'id,name,files.avatar',
 ];
+
+$app->applyHook('component(agent-table).querySeals', [&$queryParams]);
+
 $querySeals = new MapasCulturais\ApiQuery(MapasCulturais\Entities\Seal::class, $queryParams);
 
 $definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
 $additionalHeaders = [];
-$skipFields = ['parent', 'user', 'subsite', 'id', 'name', 'area', 'tag', 'seals', 'type'];
+$skipFields = ['parent', 'user', 'subsite', 'id', 'name', 'area', 'tag', 'seals', 'type', 'geoEstado_cod', 'geoMesorregiao_cod', 'geoMicrorregiao_cod', 'geoMunicipio_cod', 'geoPais_cod'];
 
 $defaultHeaders = [
     [
@@ -76,6 +79,11 @@ foreach ($definitions as $field => $def) {
             'value' => $field,
             'slug' => $field
         ];
+
+        if(str_starts_with($field, 'geo')) {
+            $data['value'] = $def['label'] . " - Divisão geográfica";
+        }
+
         $additionalHeaders[] = $data;
     }
 }
