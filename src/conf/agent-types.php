@@ -173,7 +173,12 @@ return array(
             'available_for_opportunities' => true,
             'readonly' => true
         ),
-
+        'cnpjAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNPJ - anexo'),
+            'type' => 'file',
+            'available_for_opportunities' => true
+        ),
         'cpf' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF'),
