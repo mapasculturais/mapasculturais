@@ -15,9 +15,9 @@ use MapasCulturais\i;
     <mc-tag-list v-if="!hideTags" editable :tags="selectedStates" :labels="states" classes="agent__background agent__color"></mc-tag-list>
 </div>
 
-<div v-if="selectedStates.length > 0" class="field" :class="fieldClass">
+<div class="field" :class="[fieldClass, {'disabled' : selectedStates.length == 0}]">
     <label v-if="!hideLabels"><?= i::__('Cidades') ?></label>
 
-    <mc-multiselect :model="selectedCities" title="<?php i::_e('Selecione as cidades') ?>" :items="cities" :placeholder="cityPlaceholder" hide-filter hide-button></mc-multiselect>
+    <mc-multiselect :model="selectedCities" title="<?php i::_e('Selecione as cidades') ?>" :items="cities" :placeholder="cityPlaceholder" :disabled="selectedStates.length == 0" hide-filter hide-button></mc-multiselect>
     <mc-tag-list v-if="!hideTags" editable :tags="selectedCities" :labels="cities" classes="agent__background agent__color"></mc-tag-list>
 </div>
