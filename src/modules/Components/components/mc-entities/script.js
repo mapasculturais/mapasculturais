@@ -6,7 +6,8 @@ app.component('mc-entities', {
         return {
             api: new API(this.type, this.scope || 'default'),
             entities: [],
-            page: 1
+            page: 1,
+            timeout: null,
         }
     },
 
@@ -133,17 +134,25 @@ app.component('mc-entities', {
         },
         
         refresh(debounce) {
-            debounce = debounce || 0;
-            this.page = 1;
-            this.entities.loading = true;
+            if (this.timeout) {
+                clearTimeout(this.timeout)
+            };
+        
+            if (this.entities.loading) {
+                return;
+            };
+        
             this.entities.splice(0);
-            clearTimeout(this.timeout);
             this.timeout = setTimeout(() => {
-                this.getDataFromApi().then(() => { 
-                    this.entities.loading = false;
-                });
+                this.entities.loading = true;
+        
+                this.getDataFromApi()
+                    .then(() => {
+                        this.entities.loading = false;
+                    })
             }, debounce);
         },
+        
 
         loadMore() {
             if (!this.limit) {
