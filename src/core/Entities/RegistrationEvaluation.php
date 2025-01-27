@@ -28,6 +28,7 @@ use ReflectionException;
  * @ORM\HasLifecycleCallbacks
  */
 class RegistrationEvaluation extends \MapasCulturais\Entity {
+    use Traits\EntityFiles;
     use Traits\EntityRevision;
 
     const STATUS_EVALUATED = self::STATUS_ENABLED;
