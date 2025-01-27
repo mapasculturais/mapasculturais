@@ -659,6 +659,19 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).get(appealPhase)', function(&$value) use($registration_repository) {
+            /** @var Registration $this */
+
+            $this->enableCacheGetterResult('appealPhase');
+
+            if($appeal_phase = $this->opportunity->appealPhase) {
+                $value = $registration_repository->findOneBy([
+                    'opportunity' => $appeal_phase, 
+                    'number' => $this->number
+                ]);
+            }
+        });
+
         /** @var \MapasCulturais\Connection $conn */
         $conn = $app->em->getConnection();
 
@@ -765,12 +778,14 @@ class Module extends \MapasCulturais\Module{
          */
 
         $app->hook('entity(Opportunity).canUser(view)', function($user, &$result){
+            /** @var Opportunity $this */
             if($this->isOpportunityPhase && $this->status === -1){
                 $result = true;
             }
         });
 
         $app->hook('entity(Registration).canUser(view)', function($user, &$result) use($app){
+            /** @var Registration $this */
             if($result){
                 return;
             }
@@ -780,6 +795,10 @@ class Module extends \MapasCulturais\Module{
                 if ($next_phase_registration) {
                     $result = $next_phase_registration->canUser('view', $user);
                 }
+            }
+
+            if(!$result && ($appeal_phase = $this->appealPhase)) {
+                $result = $appeal_phase->canUser('view', $user);
             }
         });
 

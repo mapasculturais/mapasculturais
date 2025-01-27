@@ -1779,11 +1779,21 @@ class Registration extends \MapasCulturais\Entity
     }
     
     function getExtraEntitiesToRecreatePermissionCache(): array {
+        $result = [];
+
         if ($previous_phase = $this->previousPhase) {
-            return [$previous_phase];
-        } else {
-            return [];
+            $result[]= $previous_phase;
         }
+
+        if($this->opportunity->isAppealPhase) {
+            $parent_registration = $this->repo()->findOneBy([
+                'number' => $this->number,
+                'opportunity' => $this->opportunity->parent
+            ]);
+            $result[] = $parent_registration;
+        }
+
+        return $result;
     }
 
     function getExtraPermissionCacheUsers(){
