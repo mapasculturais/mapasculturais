@@ -399,7 +399,7 @@ class Subsite extends \MapasCulturais\Entity
             $app->config['app.enabled.opportunities'] = false;
         }
 
-        $app->applyHookBoundTo($this, 'subsite.applyConfigurations:after', ['config' => &$config]);
+        $app->applyHookBoundTo($this, 'subsite.applyConfigurations:after', ['config' => &$app->config]);
 
     }
 

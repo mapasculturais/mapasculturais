@@ -28,6 +28,11 @@ $skipFields = [
     'tag',
     'type',
     'user',
+    'geoEstado_cod',
+    'geoMesorregiao_cod',
+    'geoMicrorregiao_cod',
+    'geoMunicipio_cod',
+    'geoPais_cod'
 ];
 
 $can_see = function ($def) use ($app) {
@@ -47,6 +52,11 @@ foreach ($definitions as $field => $def) {
             'value' => $field,
             'slug' => $field
         ];
+
+        if(str_starts_with($field, 'geo')) {
+            $data['text'] = $def['label'] . " - Divisão geográfica";
+        }
+
         $additionalHeaders[] = $data;
     }
 }

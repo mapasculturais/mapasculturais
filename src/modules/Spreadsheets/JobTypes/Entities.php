@@ -84,7 +84,7 @@ class Entities extends SpreadsheetJob
             $entity['type'] = isset($entity['type']) ? $entity['type']->name : '';
             $entity['area'] = isset($terms['area']) ? implode(', ', $terms['area']) : null;
             $entity['tag'] = isset($terms['tag']) ? implode(', ', $terms['tag']) : null;
-            if($entity['seals']) {
+            if(isset($entity['seals']) && $entity['seals']) {
                 $sealNames = array_map(function($seal) {
                     return $seal['name'];
                 }, $entity['seals']);
