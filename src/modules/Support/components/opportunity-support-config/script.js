@@ -192,6 +192,7 @@ app.component('opportunity-support-config', {
 
     methods: {
         getConditionalField(field) {
+            console.log('getConditionalField', field)
             let conditionalField  = null;
             if(field.conditional) {
                 this.filteredFields.filter((item) => {

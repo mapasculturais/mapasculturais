@@ -1157,7 +1157,10 @@ class Registration extends \MapasCulturais\Entity
         if($field->conditional){
             $_fied_name = $field->conditionalField;
             $_fied_value = $field->conditionalValue;
-            if (is_array($this->$_fied_name)) {
+
+            if ($_fied_name == 'appliedForQuota') {
+                return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+            } elseif (is_array($this->$_fied_name)) {
                 return in_array($_fied_value, $this->$_fied_name);
             } else {
                 return $this->$_fied_name == $_fied_value;
@@ -1293,7 +1296,9 @@ class Registration extends \MapasCulturais\Entity
                 $_fied_name = $rfc->conditionalField;
                 $_fied_value = $rfc->conditionalValue;
                 if ($rfc->required) {
-                    if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
+                    if ($_fied_name == 'appliedForQuota') {
+                        $field_required = $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+                    } elseif (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
                         $field_required = true;
                     } else {
                         $field_required = $this->$_fied_name == $_fied_value;
@@ -1335,7 +1340,9 @@ class Registration extends \MapasCulturais\Entity
                 $_fied_name = $conf->conditionalField;
                 $_fied_value = $conf->conditionalValue;
                 if ($field->required) {
-                    if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
+                    if ($_fied_name == 'appliedForQuota') {
+                        $field_required = $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+                    } elseif (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
                         $field_required = true;
                     } else {
                         $field_required = $this->$_fied_name == $_fied_value;

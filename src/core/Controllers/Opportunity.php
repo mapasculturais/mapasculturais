@@ -1137,13 +1137,18 @@ class Opportunity extends EntityController {
 
         foreach ($fields as &$field) {
             if ($field->conditionalField) {
-                $conditional_field_id = str_replace('field_', '', $field->conditionalField);
-    
                 $conditional_field_exists = false;
-                foreach ($fields as $f) {
-                    if (isset($f->id) && $f->id == $conditional_field_id) {
-                        $conditional_field_exists = true;
-                        break;
+                
+                if ($field->conditionalField == 'appliedForQuota') {
+                    $conditional_field_exists = true;
+                } else {
+                    $conditional_field_id = str_replace('field_', '', $field->conditionalField);
+
+                    foreach ($fields as $f) {
+                        if (isset($f->id) && $f->id == $conditional_field_id) {
+                            $conditional_field_exists = true;
+                            break;
+                        }
                     }
                 }
     
@@ -1159,13 +1164,18 @@ class Opportunity extends EntityController {
 
         foreach ($files as &$file) {
             if ($file->conditionalField) {
-                $conditional_field_id = str_replace('field_', '', $file->conditionalField);
-    
                 $conditional_field_exists = false;
-                foreach ($fields as $f) {
-                    if (isset($f->id) && $f->id == $conditional_field_id) {
-                        $conditional_field_exists = true;
-                        break;
+                
+                if ($file->conditionalField == 'appliedForQuota') {
+                    $conditional_field_exists = true;
+                } else {
+                    $conditional_field_id = str_replace('field_', '', $file->conditionalField);
+                    
+                    foreach ($fields as $f) {
+                        if (isset($f->id) && $f->id == $conditional_field_id) {
+                            $conditional_field_exists = true;
+                            break;
+                        }
                     }
                 }
     

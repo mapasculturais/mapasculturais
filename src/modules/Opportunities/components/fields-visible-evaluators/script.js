@@ -101,6 +101,8 @@ app.component("fields-visible-evaluators", {
         getFields() {
             let avaliableFields = this.entity.opportunity.avaliableEvaluationFields;
 
+            console.log('getFields', this.entity);
+
             _fields = Object.values(this.fields).map((item, index) => {
                 let field = { ...this.fields[index] }
                 field.checked = avaliableFields[item.fieldName || item.groupName] == "true" ? true : false;

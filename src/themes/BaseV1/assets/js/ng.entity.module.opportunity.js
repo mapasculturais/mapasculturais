@@ -581,7 +581,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!$scope.data.newFieldConfiguration.conditionalValue){
+                if($scope.data.newFieldConfiguration.conditionalField !== 'appliedForQuota' && !$scope.data.newFieldConfiguration.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
@@ -649,7 +649,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!model.conditionalValue){
+                if(model.conditionalField !== 'appliedForQuota' && !model.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
@@ -758,7 +758,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!model.conditionalValue){
+                if(model.conditionalField !== 'appliedForQuota' && !model.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
