@@ -14,7 +14,7 @@ $this->import('
 ');
 ?>
 <div class="col-12 opportunity-enable-workplan" v-if="entity.isFirstPhase">
-    <div class="col-12" class="disabled-workplan" v-if="entity.enableWorkplan">
+    <div class="col-12 disabled-workplan" v-if="entity.enableWorkplan">
         <mc-confirm-button @confirm="actionDisabledWorkplan()">
             <template #button="{open}">
                 <button class="button button--delete button--icon button--sm" @click="open()">
