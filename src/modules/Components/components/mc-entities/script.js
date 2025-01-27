@@ -131,12 +131,12 @@ app.component('mc-entities', {
         },
         
         refresh(debounce) {
-            if (this.timeout) {
-                clearTimeout(this.timeout)
-            };
-        
             if (this.entities.loading) {
                 return;
+            };
+
+            if (this.timeout) {
+                clearTimeout(this.timeout)
             };
         
             this.entities.splice(0);
@@ -156,6 +156,11 @@ app.component('mc-entities', {
                 console.error('Tentado obter mais resultados em consulta sem paginação');
                 return;
             }
+
+            if (this.entities.loadingMore) {
+                return;
+            };
+
             this.page++;
             this.entities.loadingMore = true;
             this.getDataFromApi().then(() => { 
