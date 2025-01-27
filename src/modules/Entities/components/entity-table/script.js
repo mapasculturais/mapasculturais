@@ -239,6 +239,9 @@ app.component('entity-table', {
     },
 
     methods: {
+        keyword(entities) {
+            entities.refresh()
+        },
         getFilterLabels(prop, value) {
             const propLabels = {
                 '@keyword': __('palavras-chave', 'entity-table'),
