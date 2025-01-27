@@ -237,7 +237,7 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
 
         $this->registerOpportunityMetadata('appealPhase', [
-            'label' => i::__('Indica se é uma fase de recurso'),
+            'label' => i::__('Fase de recurso'),
             'type'  => 'entity'
         ]);
 
