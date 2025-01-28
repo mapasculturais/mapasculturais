@@ -802,6 +802,24 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).canUser(viewPrivateData)', function($user, &$result) use($app, $registration_repository){
+            /** @var Registration $this */
+            if($result){
+                return;
+            }
+            
+            if(!$result) {
+                if($appeal_phase = $this->opportunity->appealPhase) {
+                    $registration_appeal_phase = $registration_repository->findOneBy([
+                        'opportunity' => $appeal_phase, 
+                        'number' => $this->number
+                    ]);
+
+                    $result = $registration_appeal_phase->canUser('viewPrivateData', $user);
+                }
+            }
+        });
+
 
         /**
          * Demais hooks
