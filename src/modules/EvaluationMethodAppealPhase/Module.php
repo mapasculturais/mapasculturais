@@ -411,8 +411,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
-        
         return [
+            'entityEvaluation' => $evaluation,
             'obs' => $evaluation->evaluationData->obs
         ];
     }
