@@ -13,4 +13,12 @@ app.component('evaluation-appeal-phase-detail', {
             return this.registration.evaluationsDetails ? this.registration.evaluationsDetails : $MAPAS.config.appealPhaseEvaluationDetail.data?.evaluationsDetails;
         }
     },
+
+    methods: {
+        getEvaluationEntity(evaluation) {
+            const entity = new Entity("registrationevaluation");
+            entity.populate(evaluation.entityEvaluation);
+            return entity;
+        }
+    }
 });
