@@ -204,6 +204,29 @@ app.component('entity-table', {
             return filters;
         },
 
+        hasFilters() {
+            const query = JSON.parse(JSON.stringify(this.query));
+
+            delete query['@limit'];
+            delete query['@opportunity'];
+            delete query['opportunity'];
+            delete query['@order'];
+            delete query['@select'];
+            delete query['@page'];
+            delete query['@permission'];
+            delete query['@permissions'];
+            delete query['action'];
+            delete query['userId'];
+            delete query['ip'];
+            delete query['sessionId'];
+           
+            if (this.type == 'agent') {
+                delete query['type']
+            }
+            
+            return Object.keys(query).length > 0;
+        },
+
         appliedFilters() {
             const query = JSON.parse(JSON.stringify(this.query));
             
