@@ -42,7 +42,7 @@ $this->import('
     </div>
 </div>
 
-<div v-if="!appealRegistration?.id && registration.status == 3" class="opportunity-phases-timeline__request-appeal">
+<div v-if="!appealRegistration?.id && registration.status != 10" class="opportunity-phases-timeline__request-appeal">
     <h5 v-if="!processing" class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Discorda do resultado?')?></h5>
     <button v-if="!processing" class="button button--primary button--primary-outline" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
 
