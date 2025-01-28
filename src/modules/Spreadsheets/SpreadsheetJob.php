@@ -122,6 +122,14 @@ abstract class SpreadsheetJob extends JobType
         }
 
         $sheet->fromArray($sub_header, null, $has_sub_header ? "A2" : "A1");
+
+        $highestColumn = $sheet->getHighestColumn();
+        $highestColumnIndex = Coordinate::columnIndexFromString($highestColumn);
+
+        for ($col = 1; $col <= $highestColumnIndex; $col++) {
+            $columnLetter = Coordinate::stringFromColumnIndex($col);
+            $sheet->getColumnDimension($columnLetter)->setAutoSize(true);
+        }
         
         $row = $has_sub_header ? count($header)+1 : 2;
         while($batch = $this->getBatch($job)) {
