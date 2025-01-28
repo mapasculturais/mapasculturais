@@ -160,9 +160,6 @@ $this->import('
                         </template>
                     </mc-modal>  
                 </h4>
-                <h6>
-                    {{ `As ${getDeliveryLabelDefault} são evidências (arquivos ou links) que comprovam a conclusão das ${getGoalLabelDefault}.` }}
-                </h6>
                 <div class="field col-12">
                     <div class="field__group">
                         <label class="field__checkbox">
@@ -179,14 +176,14 @@ $this->import('
                             </label>
                         </div>
 
-                        <div class="field__group">
-                            <label>
+                        <div class="field__group mt">
+                            <label class="field__group">
                                 {{ `Número máximo de ${getDeliveryLabelDefault}` }}
                             </label>
                             <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_deliveryLimitNumberOfDeliveries" v-model="entity.workplan_deliveryMaximumNumberOfDeliveries" @change="autoSave()">
                         </div>
 
-                        <div class="field">
+                        <div class="field__group mt">
                             <label> 
                                 {{ `Informar tipo de ${getDeliveryLabelDefault}` }}
                             </label>
@@ -228,7 +225,7 @@ $this->import('
                 </div>
                 <div v-if="entity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals" id="data-monitoring" class="opportunity-enable-workplan__block  col-12">
                     <h4 class="bold opportunity-enable-workplan__title"><?= i::__('Monitoramento') ?></h4>
-                    <h6><?= $this->text('header-description', i::__('As informações que forem marcadas abaixo serão exigidas dos agentes no momento de monitoramento da oportunidade.')) ?></h6>
+                    <h6><?= $this->text('header-description', i::__('As informações marcadas abaixo serão obrigatórias no monitoramento da oportunidade.')) ?></h6>
                     <div class="field col-12">
                         <div class="field__group">
                             <label class="field__checkbox">

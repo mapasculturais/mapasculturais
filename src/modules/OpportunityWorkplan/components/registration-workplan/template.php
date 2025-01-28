@@ -74,7 +74,7 @@ $this->import('
             <div v-if="isExpanded(index)" class="collapse-content">
                 <div class="registration-workplan__goals-period">
                     <p>
-                        {{ `Duração da Meta` }}
+                        {{ `Especificações das Metas` }}
                     </p>
                     <div class="registration-workplan__goals-months">
                         <div class="field">
@@ -144,9 +144,9 @@ $this->import('
                             </mc-confirm-button>
                         </div>
                     </div>
-                    <h6>{{ getDeliveryLabelDefault }} {{ index_ + 1 }}</h6>
+                    <h6>Entrega {{ index_ + 1 }}</h6>
                     <div class="field">
-                        <label>{{ `Nome da ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
+                        <label>{{ `Nome da entrega` }}<span class="required">obrigatório*</span></label>
                         <input v-model="delivery.name" type="text">
                     </div>
 
@@ -157,7 +157,7 @@ $this->import('
 
                     <div class="field">
                         <label>
-                            {{ `Tipo ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
+                            {{ `Tipo entrega` }}<span class="required">obrigatório*</span></label>
                         <select v-model="delivery.type">
                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
                             <option v-for="type in opportunity.workplan_monitoringInformDeliveryType" :key="type" :value="type">{{ type }}</option>
@@ -166,7 +166,7 @@ $this->import('
 
                     <div v-if="opportunity.workplan_registrationInformCulturalArtisticSegment" class="field">
                         <label>
-                            {{ `Segmento artístico-cultural da ${getDeliveryLabelDefault}` }}
+                            {{ `Segmento artístico-cultural da entrega` }}
                             <span class="required">obrigatório*</span></label>
                         <select v-model="delivery.segmentDelivery">
                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
@@ -200,7 +200,7 @@ $this->import('
 
                         <div v-if="delivery.generaterRevenue == 'true'" class="grid-12">
                             <div class="field col-4 sm:col-12">
-                                <label><?= i::esc_attr__('Quantidade') ?><span class="required">obrigatório*</span></label>
+                                <label><?= i::esc_attr__('Previsão Quantidade') ?><span class="required">obrigatório*</span></label>
                                 <input v-model="delivery.renevueQtd" type="number" min="0">
                             </div>
 
