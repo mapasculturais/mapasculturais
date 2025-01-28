@@ -810,12 +810,15 @@ class Module extends \MapasCulturais\Module{
             
             if(!$result) {
                 if($appeal_phase = $this->opportunity->appealPhase) {
+
                     $registration_appeal_phase = $registration_repository->findOneBy([
                         'opportunity' => $appeal_phase, 
                         'number' => $this->number
                     ]);
 
-                    $result = $registration_appeal_phase->canUser('viewPrivateData', $user);
+                    if($registration_appeal_phase) {
+                        $result = $registration_appeal_phase->canUser('viewPrivateData', $user);
+                    }
                 }
             }
         });
