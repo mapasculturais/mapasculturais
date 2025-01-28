@@ -64,7 +64,7 @@ $this->import('
 
         <div v-if="entity.enableWorkplan">
             <div id="data-project" class="opportunity-enable-workplan__block col-12">
-                <h4 class="bold opportunity-enable-workplan__title"><?= i::__('Dados do projeto') ?></h4>
+                <h4 class="bold opportunity-enable-workplan__title"><?= i::__('Duração do projeto') ?></h4>
                 <div class="field col-12">
                     <div class="field__group">
                         <label class="field__checkbox">
