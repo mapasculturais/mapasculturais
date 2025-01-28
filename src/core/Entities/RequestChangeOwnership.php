@@ -27,6 +27,9 @@ class RequestChangeOwnership extends Request{
     function _doApproveAction() {
         $entity = $this->origin;
         $entity->owner = $this->destination;
+        if($entity->usesLock()) {
+            $entity->__lockEnable = false;
+        }
         $entity->save(true);
         $entity->enqueueToPCacheRecreation();
     }

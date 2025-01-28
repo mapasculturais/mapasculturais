@@ -69,11 +69,14 @@ app.component('agent-table', {
 
         let municipio = [];
 
+        const initialQuery = {...this.extraQuery, ...this.query};
+
         return {
             mergedHeaders,
             terms: $TAXONOMIES.area.terms,
             types: $DESCRIPTIONS.agent.type.options,
             state: $DESCRIPTIONS.agent.En_Estado.optionsOrder,
+            initialQuery,
             query,
             selectedArea: [],
             selectedSeals: [],
@@ -181,11 +184,7 @@ app.component('agent-table', {
             this.selectedBairro = [];
             this.selectedCities = [];
             this.selectedStates = [];
-            delete this.query['term:area'];
-            delete this.query['@seals'];
-            delete this.query['En_Bairro'];
-            delete this.query['En_Estado'];
-            delete this.query['En_Municipio'];
+            this.query = this.initialQuery;
 
             entities.refresh();
             this.$emit('clear-filters', entities);
