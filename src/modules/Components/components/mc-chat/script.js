@@ -63,10 +63,15 @@ app.component('mc-chat', {
         },
 
         lastMessageIsMine() {
+            const action = $MAPAS.request.action;
             const lastMessage = this.chatEntities[0];
+
+            if (!lastMessage && action === 'evaluation') {
+                return true;
+            } 
+
             return lastMessage ? this.isMine(lastMessage) : false;
         },
-
     },
 
     beforeUnmount() {
