@@ -12,7 +12,7 @@ $class = $entity->getClassName();
 $has_request =  false;
 $request_data =  [];
 $destinationName = "";
-if ($request = $app->repo("Request")->findBy(["originType" => $class, "originId" => $entity->id])) {
+if ($request = $app->repo("RequestChangeOwnership")->findBy(["originType" => $class, "originId" => $entity->id])) {
     $destination = $app->repo('Agent')->find($request[0]->destinationId);
     $has_request = true;
     $destinationName = $destination->name;
