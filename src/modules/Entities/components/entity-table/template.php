@@ -47,9 +47,9 @@ $this->import('
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
                                 <slot name="searchKeyword" :query="query">
-                                    <textarea ref="search" v-model="this.query['@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+                                    <textarea ref="search" v-model="this.query['@keyword']" @keyup="entities.refresh()" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
                                     
-                                    <button @click="keyword(entities)" class="entity-table__search-button">
+                                    <button @click="entities.refresh()" class="entity-table__search-button">
                                         <mc-icon name="search"></mc-icon>
                                     </button>
                                 </slot>
