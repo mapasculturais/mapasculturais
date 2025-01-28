@@ -2438,6 +2438,9 @@ class App {
         $this->registerController('chatThread', 'MapasCulturais\Controllers\ChatThread');
         $this->registerController('chatMessage', 'MapasCulturais\Controllers\ChatMessage');
 
+        // registration evaluation
+        $this->registerController('registrationEvaluation', 'MapasCulturais\Controllers\RegistrationEvaluation');
+
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
