@@ -8,14 +8,14 @@ use MapasCulturais\i;
  */
 
 $this->import('
-    mc-select
-    mc-modal
+    entity-file
     evaluation-actions
     evaluation-appeal-phase-detail
+    mc-modal
+    mc-select
     registration-results
 ');
 ?>
-
 <div class="appeal-phase-evaluation-form">
     <div class="appeal-phase-evaluation-form__form grid-12">
         <div class="appeal-phase-evaluation-form__header field col-12">
@@ -31,7 +31,17 @@ $this->import('
             </label>
             <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
             <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
-        </div>    
+        </div>
+
+        <entity-file
+            :entity="currentEvaluation"
+            group-name="evaluationAttachment"
+            title-modal="<?php i::_e('Anexar parecer') ?>"
+            classes="col-12"
+            title="<?php i::_e('Anexar parecer') ?>"
+            editable
+            ></entity-file>
+
         <mc-modal v-if="!isEditable":title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
             <template #default>
                 <evaluation-appeal-phase-detail :registration="entity"></evaluation-appeal-phase-detail>
