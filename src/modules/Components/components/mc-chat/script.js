@@ -55,6 +55,13 @@ app.component('mc-chat', {
         } else {
             console.log('Thread não está definida no mounted.');
         }
+
+        globalThis.addEventListener('afterFetch', (e) => {
+            const header = e.detail.headers.get('MC-Thread-Status');
+            if(header !== null){
+                this.threadStatus = Number(header);
+            }
+        });
     },
 
     computed: {
@@ -71,6 +78,11 @@ app.component('mc-chat', {
             } 
 
             return lastMessage ? this.isMine(lastMessage) : false;
+        },
+
+        // verifica se o chat está fechado
+        isClosed() {
+            return this.threadStatus === $MAPAS.config.chatThreadStatusClosed;
         },
     },
 
@@ -152,11 +164,6 @@ app.component('mc-chat', {
             } catch (error) {
                 console.error('Erro ao buscar novas mensagens:', error);
             }
-        },
-
-        // verifica se o chat está fechado
-        isClosed() {
-            return this.threadStatus === $MAPAS.config.chatThreadStatusClosed;
         },
 
         isMine(message) {

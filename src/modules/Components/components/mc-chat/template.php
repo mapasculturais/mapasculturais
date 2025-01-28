@@ -105,7 +105,7 @@ $this->import('
         </mc-entities>
     </main>
 
-    <div v-if="!isClosed() && (!pingPong || (pingPong && !lastMessageIsMine))" class="mc-chat__actions">
+    <div v-if="!isClosed && (!pingPong || (pingPong && !lastMessageIsMine))" class="mc-chat__actions">
         <slot name="message-form"
             :message="message"
             :send-message="sendMessage"
