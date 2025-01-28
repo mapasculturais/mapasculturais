@@ -90,5 +90,5 @@ $this->import('
                 </div>
             </div>
         </div>
-</template>
+    </template>
 </mc-chat>
