@@ -81,7 +81,7 @@ $this->import('
                             <p v-if="infoReviewer.status == -5"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?> </p>
                         </mc-alert>
 
-                        <mc-confirm-button v-if="infoReviewer.status == -5" @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
+                        <mc-confirm-button v-if="infoReviewer.status == -5" @confirm="delReviewer(infoReviewer)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
                             <template #button="{open}">
                                 <button class="opportunity-evaluation-committee__cancel-invitation button button--text-danger button--icon button--sm col-3" @click="open()">
                                     <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
@@ -91,21 +91,6 @@ $this->import('
                                 <p> <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?> </p>
                             </template> 
                         </mc-confirm-button>
-
-                        <!-- <div class="opportunity-evaluation-committee__card-footer-alert">
-                            <div v-if="infoReviewer.status == -5">
-                                <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
-                                    <template #button="{open}">
-                                        <button class="button button--text-danger button--icon button--sm col-3" @click="open()">
-                                            <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
-                                        </button>
-                                    </template> 
-                                    <template #message="message">
-                                        <p> <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?> </p>
-                                    </template> 
-                                </mc-confirm-button>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
 
