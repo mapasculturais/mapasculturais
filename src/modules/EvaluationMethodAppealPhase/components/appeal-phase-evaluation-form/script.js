@@ -62,7 +62,9 @@ app.component('appeal-phase-evaluation-form', {
         },
 
         currentEvaluation() {
-            return $MAPAS.config.appealPhaseEvaluationForm.currentEvaluation;
+            const entity = new Entity("registrationevaluation");
+            entity.populate($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation);
+            return entity;
         },
 
         needsTiebreaker() {
