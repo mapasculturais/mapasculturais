@@ -160,6 +160,7 @@ abstract class Theme {
                 'evaluationmethodconfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
                 "chatthread"   => Entities\ChatThread::getPropertiesMetadata(),
                 "chatmessage"   => Entities\ChatMessage::getPropertiesMetadata(),
+                "registrationevaluation"   => Entities\RegistrationEvaluation::getPropertiesMetadata(),
             ];
 
             $taxonomies = [];
