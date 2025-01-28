@@ -248,6 +248,7 @@ class Module extends \MapasCulturais\Module{
                 $notification->message = $message;
                 $notification->request = $this;
                 $notification->save(true);
+                $app->applyHookBoundTo($this, 'request(workflow.message.destination).sendMail', ['message' => &$message, 'notification' => $notification]);
                 $module->sendMail($user->email, $message, $subject);
             }
 
@@ -257,6 +258,7 @@ class Module extends \MapasCulturais\Module{
                 $notification->message = $message;
                 $notification->request = $this;
                 $notification->save(true);
+                $app->applyHookBoundTo($this, 'request(workflow.message.origin).sendMail', ['message' => &$message, 'notification' => $notification]);
                 $module->sendMail($origin->ownerUser->email, $message, $subject);
             }
         });

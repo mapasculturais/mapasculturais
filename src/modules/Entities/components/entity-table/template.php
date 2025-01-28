@@ -88,7 +88,7 @@ $this->import('
                                 <span>{{ filter.label }}</span>
                                 <mc-icon name="delete" @click="removeFilter(filter, entities)" is-link></mc-icon>
                             </li>
-                            <li v-if="appliedFilters.length > 0">
+                            <li v-if="hasFilters">
                                 <button class="button button--sm button--text-danger button--icon" @click="clearFilters(entities)"> <?= i::__("Limpar filtros") ?> <mc-icon name="trash"></mc-icon> </button>
                             </li>
                         </ul>
