@@ -274,7 +274,14 @@ app.component('registration-actions', {
                 }
 
                 if (['workplan', 'goal', 'delivery', 'projectDuration', 'culturalArtisticSegment'].includes(fieldName)) {
-                    validationErrors[this.fields[this.fields.length - 1].step.id][fieldName] = fieldError;
+                    const keys = Object.keys(validationErrors);
+                    const lastStep = keys[keys.length - 1]; 
+
+                   if (this.fields.length > 0) {
+                        validationErrors[lastStep][fieldName] = fieldError;
+                   } else {
+                        validationErrors[Object.keys(validationErrors)[0]][fieldName] = fieldError;
+                   }
                 }
             }
 

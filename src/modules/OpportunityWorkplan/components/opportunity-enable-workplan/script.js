@@ -12,14 +12,9 @@ app.component('opportunity-enable-workplan', {
         }
     },
     data() {
-        if (this.entity.workplan_monitoringInformDeliveryType == null) {
-            this.entity.workplan_monitoringInformDeliveryType = [];
-        }
-
         return {
             entity: this.entity,
-            timeOut: null,
-            workplan_monitoringInformDeliveryTypeList: Object.values($MAPAS.EntitiesDescription.opportunity.workplan_monitoringInformDeliveryType.options)
+            timeOut: null
         }
     },
     watch: {
@@ -34,6 +29,7 @@ app.component('opportunity-enable-workplan', {
             } else {
                 this.entity.workplan_dataProjectmaximumDurationInMonths = 1;
             }
+            this.autoSave();
         },
         'entity.workplan_metaLimitNumberOfGoals'(_new) {
             if (!_new) {
@@ -41,6 +37,7 @@ app.component('opportunity-enable-workplan', {
             } else {
                 this.entity.workplan_metaMaximumNumberOfGoals = 1;
             }
+            this.autoSave();
         },
         'entity.workplan_deliveryLimitNumberOfDeliveries'(_new) {
             if (!_new) {
@@ -48,6 +45,7 @@ app.component('opportunity-enable-workplan', {
             } else {
                 this.entity.workplan_deliveryMaximumNumberOfDeliveries = 1;
             }
+            this.autoSave();
         },
         'entity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals'(_new) {
             if (!_new) {
@@ -105,12 +103,54 @@ app.component('opportunity-enable-workplan', {
 
             this.entity.workplan_monitoringInformTheFormOfAvailability = false;
             this.entity.workplan_monitoringEnterDeliverySubtype = false;
-            this.entity.workplan_monitoringInformDeliveryType = [];
             this.entity.workplan_monitoringInformAccessibilityMeasures = false;
             this.entity.workplan_monitoringInformThePriorityTerritories = false;
             this.entity.workplan_monitoringProvideTheProfileOfParticipants = false;
             this.entity.workplan_monitoringInformThePriorityAudience = false;
             this.entity.workplan_monitoringReportExecutedRevenue = false;
         },
+        pluralParaSingular(texto) {
+            const palavras = texto.split(' ');
+        
+            const palavrasNoSingular = palavras.map(palavra => {
+                if (palavra.endsWith('s')) {
+                    palavra = palavra.slice(0, -1);
+        
+                    if (palavra.endsWith('e')) {
+                        palavra = palavra.slice(0, -1);
+                    }
+        
+                    if (palavra.endsWith('ã')) {
+                        palavra = palavra.slice(0, -1) + 'ão';
+                    } else if (palavra.endsWith('õ')) {
+                        palavra = palavra.slice(0, -1) + 'ão';
+                    } else if (palavra.endsWith('is')) {
+                        palavra = palavra.slice(0, -2) + 'il';
+                    } else if (palavra.endsWith('ns')) {
+                        palavra = palavra.slice(0, -2) + 'm';
+                    } else if (palavra.endsWith('ões')) {
+                        palavra = palavra.slice(0, -3) + 'ão';
+                    } else if (palavra.endsWith('ães')) {
+                        palavra = palavra.slice(0, -3) + 'ão';
+                    } else if (palavra.endsWith('ais')) {
+                        palavra = palavra.slice(0, -2) + 'al';
+                    } else if (palavra.endsWith('éis')) {
+                        palavra = palavra.slice(0, -2) + 'el';
+                    } else if (palavra.endsWith('óis')) {
+                        palavra = palavra.slice(0, -2) + 'ol';
+                    } else if (palavra.endsWith('uis')) {
+                        palavra = palavra.slice(0, -2) + 'ul';
+                    } else if (palavra.endsWith('ões')) {
+                        palavra = palavra.slice(0, -3) + 'ão';
+                    } else if (palavra.endsWith('ães')) {
+                        palavra = palavra.slice(0, -3) + 'ão';
+                    }
+                }
+        
+                return palavra;
+            });
+        
+            return palavrasNoSingular.join(' ');
+        }
     },
 })

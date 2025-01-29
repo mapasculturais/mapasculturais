@@ -160,6 +160,9 @@ $this->import('
                         </template>
                     </mc-modal>  
                 </h4>
+                <h6>
+                    {{ `Entregas são os produtos, serviços ou atividades culturais resultantes do projeto fomentado.` }}
+                </h6>
                 <div class="field col-12">
                     <div class="field__group">
                         <label class="field__checkbox">
@@ -181,18 +184,6 @@ $this->import('
                                 {{ `Número máximo de ${getDeliveryLabelDefault}` }}
                             </label>
                             <input type="number" class="field__limits" min="1" :disabled="!entity.workplan_deliveryLimitNumberOfDeliveries" v-model="entity.workplan_deliveryMaximumNumberOfDeliveries" @change="autoSave()">
-                        </div>
-
-                        <div class="field__group mt">
-                            <label> 
-                                {{ `Informar tipo de ${getDeliveryLabelDefault}` }}
-                            </label>
-                            <mc-multiselect :model="entity.workplan_monitoringInformDeliveryType" title="<?php i::_e('Selecione as áreas de atuação') ?>" :items="workplan_monitoringInformDeliveryTypeList" >
-                                <template #default="{ toggleMultiselect }">    
-                                    <input class="mc-multiselect--input" @click="toggleMultiselect()" placeholder="Selecione as opções">
-                                </template>
-                            </mc-multiselect>
-                            <mc-tag-list editable :tags="entity.workplan_monitoringInformDeliveryType" classes="opportunity__background opportunity__color"></mc-tag-list>
                         </div>
                     </div>
                 </div>
@@ -216,6 +207,12 @@ $this->import('
                                 <input type="checkbox" v-model="entity.workplan_registrationReportExpectedRenevue" @click="autoSave()" /><?= i::__("Informar receita prevista") ?>
                             </label>
                         </div>
+                    </div>
+                </div>
+                <div v-if="entity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals" id="data-registration" class="opportunity-enable-workplan__block  col-12">
+                    <h4 class="bold opportunity-enable-workplan__title"><?= i::__('PAAR') ?></h4>
+                    <h6><?= $this->text('header-description', i::__('Plano Anual de Aplicação de Recursos.')) ?></h6>
+                    <div class="field col-12">
                         <div class="field__group">
                             <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_registrationInformActionPAAR" @click="autoSave()" /><?= i::__("Informar a ação orçamentária (PAAR)") ?>

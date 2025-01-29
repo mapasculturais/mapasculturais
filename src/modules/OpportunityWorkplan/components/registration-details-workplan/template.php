@@ -83,9 +83,9 @@ $this->import('
                     {{ delivery.description }}
                 </div>
 
-                <div v-if="delivery.type" class="field">
+                <div v-if="delivery.typeDelivery" class="field">
                     <label><?= i::esc_attr__('Tipo') ?></label>
-                    {{ delivery.type }}
+                    {{ delivery.typeDelivery }}
                 </div>
 
                 <div v-if="delivery.segmentDelivery" class="field">
