@@ -34,6 +34,21 @@ class RegistrationEvaluationFile extends File{
 
     protected function canUserModify($user)
     {
+        // não permite editar/atualizar o arquivo quando a avaliação tem status > 0
+        if ($this->owner->status > 0) {
+            return false;
+        }
+
         return $this->owner->user->canUser("modify", $user);
+    }
+
+    protected function canUserRemove($user)
+    {
+        // permite que o usuário que enviou o arquivo possa remover
+        if ($this->getOwnerUser()->id == $user->id) {
+            return true;
+        }
+
+        return $this->owner->canUser('modify');
     }
 }
