@@ -227,7 +227,7 @@ class Module extends \MapasCulturais\Module{
          *
          * @todo pensar uma maneira de ativas os jobs sem necessidade de salvar as fases
          */
-        $app->hook("entity(Opportunity).<<(un)?publish|(un)?archive|(un)?delete|destroy>>:after", function() use ($app){
+        $app->hook("entity(Opportunity).<<(un)?publish|(un)?archive|(un)?delete>>:after", function() use ($app){
             /** @var Opportunity $this */
 
             foreach($this->allPhases as $phase) {
