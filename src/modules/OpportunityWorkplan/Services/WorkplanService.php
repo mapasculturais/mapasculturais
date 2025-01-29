@@ -56,7 +56,7 @@ class WorkplanService
     
                     $delivery->name = $d['name'] ?? null;
                     $delivery->description = $d['description'] ?? null;
-                    $delivery->type = $d['type'] ?? null;
+                    $delivery->typeDelivery = $d['typeDelivery'] ?? null;
                     $delivery->segmentDelivery = $d['segmentDelivery'] ?? null;
                     $delivery->budgetAction = $d['budgetAction'] ?? null;
                     $delivery->expectedNumberPeople = $d['expectedNumberPeople'] ?? null;

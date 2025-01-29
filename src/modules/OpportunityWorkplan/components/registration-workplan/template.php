@@ -21,11 +21,20 @@ $this->import('
         <h3 class="card__title">
             {{ getWorkplanLabelDefault }}
             <?php $this->info('inscricao -> preenchimento -> plano-de-trabalho') ?>
-
         </h3>
         <p>
             {{ `Descrição do ${getWorkplanLabelDefault}` }}
         </p>
+        <br>
+        <div class="registration-actions__alert">
+            <div class="registration-actions__alert-header">
+                <mc-icon name="exclamation"></mc-icon>
+                <span class="bold"><?= i::__('Atenção - Preenchimento do plano de trabalho') ?></span>
+            </div>
+            <div class="registration-actions__alert-content">
+                <span><?= i::__('Para registrar as metas e entregas do plano de trabalho, preencha os campos obrigatórios e clique no botão "Salvar Meta"') ?></span>
+            </div>
+        </div>
     </template>
     <template #content>
         <div class="field">
@@ -58,7 +67,7 @@ $this->import('
                         <template #button="{open}">
                             <button class="button button--delete button--icon button--sm" @click="open()">
                                 <mc-icon name="trash"></mc-icon>
-                                {{ `Excluir ${getGoalLabelDefault}` }}
+                                {{ `Excluir ${getGoalLabelDefault}`  }}
                             </button>
                         </template>
                         <template #message="message">
@@ -74,7 +83,7 @@ $this->import('
             <div v-if="isExpanded(index)" class="collapse-content">
                 <div class="registration-workplan__goals-period">
                     <p>
-                        {{ `Especificações das Metas` }}
+                        {{ `Especificação da ${getGoalLabelDefault}` }}
                     </p>
                     <div class="registration-workplan__goals-months">
                         <div class="field">
@@ -97,7 +106,7 @@ $this->import('
                 <!-- Título da meta -->
                 <div class="field">
                     <label>
-                        {{ `Título da Meta` }}<span class="required">obrigatório*</span></label>
+                        {{ `Título da ${getGoalLabelDefault}` }}<span class="required">obrigatório*</span></label>
                     <input v-model="goal.title" type="text">
                 </div>
 
@@ -119,7 +128,7 @@ $this->import('
                 <!-- Valor da meta -->
                 <div v-if="opportunity.workplan_metaInformTheValueGoals" class="field">
                     <label>
-                        {{ `Valor da Meta (R$)` }}
+                        {{ `Valor da ${getGoalLabelDefault}(R$)` }}
                         <span class="required">obrigatório*</span></label>
                     <mc-currency-input class="field__limits" v-model="goal.amount"></mc-currency-input>
                 </div>
@@ -144,9 +153,9 @@ $this->import('
                             </mc-confirm-button>
                         </div>
                     </div>
-                    <h6>Entrega {{ index_ + 1 }}</h6>
+                    <h6>{{ getDeliveryLabelDefault }} {{ index_ + 1 }}</h6>
                     <div class="field">
-                        <label>{{ `Nome da entrega` }}<span class="required">obrigatório*</span></label>
+                        <label>{{ `Nome da ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
                         <input v-model="delivery.name" type="text">
                     </div>
 
@@ -157,10 +166,10 @@ $this->import('
 
                     <div class="field">
                         <label>
-                            {{ `Tipo entrega` }}<span class="required">obrigatório*</span></label>
-                        <select v-model="delivery.type">
+                            {{ `Tipo ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
+                        <select v-model="delivery.typeDelivery">
                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                            <option v-for="type in opportunity.workplan_monitoringInformDeliveryType" :key="type" :value="type">{{ type }}</option>
+                            <option v-for="n in workplanFields.goal.delivery.typeDelivery.options" :key="n" :value="n">{{ n }}</option>
                         </select>
                     </div>
 
@@ -190,7 +199,7 @@ $this->import('
                     <div v-if="opportunity.workplan_registrationReportExpectedRenevue">
                         <div class="field">
                             <label>
-                                {{ `As ${getDeliveryLabelDefault} irão gerar receita?` }}
+                                {{ `A ${getDeliveryLabelDefault} irá gerar receita?` }}
                                 <span class="required">obrigatório*</span></label>
                             <select class="field__limits" v-model="delivery.generaterRevenue">
                                 <option value=""><?= i::esc_attr__('Selecione') ?></option>

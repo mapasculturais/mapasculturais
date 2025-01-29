@@ -28,7 +28,7 @@ app.component('registration-workplan', {
             opportunity: this.registration.opportunity,
             workplan: entityWorkplan,
             workplanFields: $MAPAS.EntitiesDescription.workplan,
-            expandedGoals: [],
+            expandedGoals: []
         };
     },
     mounted() {
@@ -42,10 +42,12 @@ app.component('registration-workplan', {
             return this.opportunity.workplanLabelDefault ? this.opportunity.workplanLabelDefault : $MAPAS.EntitiesDescription.opportunity.workplanLabelDefault.default_value;
         },
         getGoalLabelDefault() {
-            return this.opportunity.goalLabelDefault ? this.opportunity.goalLabelDefault : $MAPAS.EntitiesDescription.opportunity.goalLabelDefault.default_value;
+            const label = this.opportunity.goalLabelDefault ? this.opportunity.goalLabelDefault : $MAPAS.EntitiesDescription.opportunity.goalLabelDefault.default_value;
+            return this.pluralParaSingular(label);
         },
         getDeliveryLabelDefault() {
-            return this.opportunity.deliveryLabelDefault ? this.opportunity.deliveryLabelDefault : $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
+            const label = this.opportunity.deliveryLabelDefault ? this.opportunity.deliveryLabelDefault : $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
+            return this.pluralParaSingular(label);
         },
         
     },
@@ -112,7 +114,7 @@ app.component('registration-workplan', {
             entityDelivery.id = null;
             entityDelivery.name = null;
             entityDelivery.description = null;
-            entityDelivery.type = null
+            entityDelivery.typeDelivery = null
             entityDelivery.segmentDelivery = null;
             entityDelivery.budgetAction = null;
             entityDelivery.expectedNumberPeople = null
@@ -189,7 +191,7 @@ app.component('registration-workplan', {
         
                 if ('name' in delivery && !delivery.name) emptyFields.push(`Nome da ${this.getDeliveryLabelDefault}`);
                 if ('description' in delivery && !delivery.description) emptyFields.push("Descrição");
-                if ('type' in delivery && !delivery.type) emptyFields.push(`Tipo de ${this.getDeliveryLabelDefault}`);
+                if ('typeDelivery' in delivery && !delivery.typeDelivery) emptyFields.push(`Tipo de ${this.getDeliveryLabelDefault}`);
                 if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && 'segmentDelivery' in delivery && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico-cultural da ${this.getDeliveryLabelDefault}`);
                 if (this.opportunity.workplan_registrationInformActionPAAR && 'budgetAction' in delivery && !delivery.budgetAction) emptyFields.push("Ação orçamentária");
                 if (this.opportunity.workplan_registrationReportTheNumberOfParticipants && 'expectedNumberPeople' in delivery && !delivery.expectedNumberPeople) emptyFields.push("Número previsto de pessoas");
@@ -275,5 +277,48 @@ app.component('registration-workplan', {
         isExpanded(index) {
             return this.expandedGoals.includes(index); 
         },
+        pluralParaSingular(texto) {
+            const palavras = texto.split(' ');
+        
+            const palavrasNoSingular = palavras.map(palavra => {
+                if (palavra.endsWith('s')) {
+                    palavra = palavra.slice(0, -1);
+        
+                    if (palavra.endsWith('e')) {
+                        palavra = palavra.slice(0, -1);
+                    }
+    
+                    if (palavra.endsWith('ã')) {
+                        palavra = palavra.slice(0, -1) + 'ão';
+                    } else if (palavra.endsWith('õ')) {
+                        palavra = palavra.slice(0, -1) + 'ão';
+                    } else if (palavra.endsWith('is')) {
+                        palavra = palavra.slice(0, -2) + 'il';
+                    } else if (palavra.endsWith('ns')) {
+                        palavra = palavra.slice(0, -2) + 'm';
+                    } else if (palavra.endsWith('ões')) {
+                        palavra = palavra.slice(0, -3) + 'ão';
+                    } else if (palavra.endsWith('ães')) {
+                        palavra = palavra.slice(0, -3) + 'ão';
+                    } else if (palavra.endsWith('ais')) {
+                        palavra = palavra.slice(0, -2) + 'al';
+                    } else if (palavra.endsWith('éis')) {
+                        palavra = palavra.slice(0, -2) + 'el';
+                    } else if (palavra.endsWith('óis')) {
+                        palavra = palavra.slice(0, -2) + 'ol';
+                    } else if (palavra.endsWith('uis')) {
+                        palavra = palavra.slice(0, -2) + 'ul';
+                    } else if (palavra.endsWith('ões')) {
+                        palavra = palavra.slice(0, -3) + 'ão';
+                    } else if (palavra.endsWith('ães')) {
+                        palavra = palavra.slice(0, -3) + 'ão';
+                    }
+                }
+        
+                return palavra.toLowerCase();
+            });
+    
+            return palavrasNoSingular.join(' ');
+        }
     },
 })
