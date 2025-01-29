@@ -151,14 +151,19 @@ app.component('mc-chat', {
                     ? 'createTimestamp,payload,user.profile.{name,files.avatar},files'
                     : 'createTimestamp,payload,user,files';
 
-                const newMessages = await api.find({
+                const params = {
                     thread: `EQ(${this.thread.id})`,
                     '@select': selectFields,
                     '@order': 'createTimestamp DESC',
-                    createTimestamp: `GT(${lastTimestamp})`,
                     '@limit': 100,
                     '@page': 1,
-                });
+                };
+
+                if (lastTimestamp) {
+                    params.createTimestamp = `GT(${lastTimestamp})`;
+                }
+
+                const newMessages = await api.find(params);
 
                 this.addNewMessages(newMessages.reverse());
             } catch (error) {
