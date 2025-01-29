@@ -18,7 +18,7 @@ $this->import('
             <div class="field col-6 sm:col-12">
                 <label> <?php i::_e('Título') ?> </label>
                 <input v-if="editable" type="url" v-model="link.title" placeholder="<?php i::esc_attr_e("Título") ?>" />
-                <span>{{link.title}}</span>
+                <span v-if="!editable">{{link.title}}</span>
             </div>
 
             <div class="field col-6 sm:col-12">
