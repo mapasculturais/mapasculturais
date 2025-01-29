@@ -2,6 +2,7 @@
 
 namespace ProjectMonitoring;
 
+use \MapasCulturais\App;
 use \MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
@@ -10,6 +11,8 @@ class Module extends \MapasCulturais\Module {
     }
     
     public function register() {
+        $app = App::i();
+
         $this->registerOpportunityMetadata('isReportingPhase', [
             'label' => i::__('É fase de prestação de informações?'),
             'type' => 'boolean',
@@ -23,6 +26,8 @@ class Module extends \MapasCulturais\Module {
             'default' => false,
             'private' => false,
         ]);
+
+        $app->registerController('projectReporting', Controller::class);
     }
 
 }
