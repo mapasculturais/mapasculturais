@@ -60,14 +60,14 @@ $this->import('
             <?= i::__('às') ?> <span v-if="hour()">{{hour()}}</span></h5>
         </div>
 
-        <div class="opportunity-phases-timeline__box">
+        <div v-if="appealRegistration.opportunity.allow_proponent_response === '1' || shouldShowResults(appealRegistration.opportunity.evaluationMethodConfiguration)" class="opportunity-phases-timeline__box">
             <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
             <div class="opportunity-phases-timeline__status">
                 <mc-icon name="circle" :class="verifyState(appealRegistration)"></mc-icon>
                 <p v-if="appealRegistration.status == 10"><?= i::__('Deferido') ?></p>
                 <p v-if="appealRegistration.status == 3"><?= i::__('Indeferido') ?></p>
                 <p v-if="appealRegistration.status == 2"><?= i::__('Recurso inválido') ?></p>
-                <p v-if="appealRegistration.status == 1"><?= i::__('Aguardando resposta') ?></p>
+                <p v-if="appealRegistration.status == 1 || !appealRegistration.status"><?= i::__('Aguardando resposta') ?></p>
                 <p v-if="appealRegistration.status == 0"><?= i::__('Recurso não enviado') ?></p>
 
             </div>
