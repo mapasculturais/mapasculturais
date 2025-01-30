@@ -429,6 +429,11 @@ app.component('entity-table', {
             const description = this.$description[prop];
 
             if(description) {
+                if(description.options) {
+                    if(description.options[val]) {
+                        return description.options[val];
+                    }
+                }
                 switch (description.type) {
                     case 'multiselect':
                     case 'array':
@@ -576,6 +581,8 @@ app.component('entity-table', {
             } else {
                 delete this.query[fieldName];
             }
+
+            this.$refs.entities.entities.refresh(this.watchDebounce);
         },
 
         advancedFilterChecked(fieldName, option) { 
@@ -679,9 +686,13 @@ app.component('entity-table', {
             return style;
         },
 
-        optionValue(option) {
-            let _option = option.split(':');
-            return _option[0];
+        optionValue(option, key) {
+            if('string' == typeof key) {
+                return key;
+            } else {
+                let _option = option.split(':');
+                return _option[0];
+            }
         },
 
         optionLabel(option) {
