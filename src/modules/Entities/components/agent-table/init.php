@@ -27,6 +27,8 @@ $definitions = MapasCulturais\Entities\Agent::getPropertiesMetadata();
 $additionalHeaders = [];
 $skipFields = ['parent', 'user', 'subsite', 'id', 'name', 'area', 'tag', 'seals', 'type', 'geoEstado_cod', 'geoMesorregiao_cod', 'geoMicrorregiao_cod', 'geoMunicipio_cod', 'geoPais_cod'];
 
+$default_select = "name,type,shortDescription,files.avatar,seals,endereco,terms,orientacaoSexual,genero,raca";
+
 $defaultHeaders = [
     [
         'text' => i::__('id', 'agent-table'),
@@ -88,10 +90,11 @@ foreach ($definitions as $field => $def) {
     }
 }
 
-$app->applyHook('component(agent-table).additionalHeaders', [&$defaultHeaders, &$additionalHeaders]);
+$app->applyHook('component(agent-table).additionalHeaders', [&$defaultHeaders, &$additionalHeaders, &$default_select]);
 
 $this->jsObject['config']['agentTable'] = [
     'seals' => $querySeals->getFindResult(),
     'additionalHeaders' => $additionalHeaders,
-    'defaultHeaders' => $defaultHeaders
+    'defaultHeaders' => $defaultHeaders,
+    'default_select' => $default_select
 ];
