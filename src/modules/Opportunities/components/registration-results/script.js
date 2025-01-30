@@ -33,7 +33,7 @@ app.component('registration-results', {
 
     computed: {
         appealPhase() {
-            return this.phase.opportunity;
+            return this.phase.opportunity.isAppealPhase ? this.phase.opportunity : this.phase.opportunity.appealPhase;
         },
 
         appealRegistration() {
@@ -52,6 +52,10 @@ app.component('registration-results', {
             return this.registration.opportunity.status === -20 ? 
                 `${this.text('Detalhamento do recurso para ')} ${this.phase.name} - ${this.registration.number}` :
                 `${this.phase.name} - ${this.registration.number}`;
+        },
+
+        showAppealPhaseEvaluationDetails() {
+            return $MAPAS.config.appealPhaseEvaluationDetail.data.consolidatedDetails?.sentEvaluationCount;
         }
     },
 
