@@ -1,6 +1,12 @@
 app.component('evaluation-appeal-phase-detail', {
     template: $TEMPLATES['evaluation-appeal-phase-detail'],
 
+    data() {
+        return {
+            evaluationEntities: {}
+        };
+    },
+
     props: {
         registration: {
             type: Entity,
@@ -16,9 +22,17 @@ app.component('evaluation-appeal-phase-detail', {
 
     methods: {
         getEvaluationEntity(evaluation) {
-            const entity = new Entity("registrationevaluation");
-            entity.populate(evaluation.entityEvaluation);
-            return entity;
+            if (!evaluation || !evaluation.entityEvaluation) {
+                return null;
+            }
+
+            if (!this.evaluationEntities[evaluation.id]) {
+                const entity = new Entity("registrationevaluation");
+                entity.populate(evaluation.entityEvaluation);
+                this.evaluationEntities[evaluation.id] = entity;
+            }
+
+            return this.evaluationEntities[evaluation.id];
         }
     }
 });

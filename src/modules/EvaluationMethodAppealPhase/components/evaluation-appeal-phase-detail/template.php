@@ -27,17 +27,16 @@ use MapasCulturais\i;
             <div class="registration-results__opinion-text">
                 <p>{{evaluation.obs}}</p>
             </div>
-
             <div class="registration-results__opinion-attachment">
                 <entity-file
+                    v-if="getEvaluationEntity(evaluation)"
                     :entity="getEvaluationEntity(evaluation)"
                     group-name="evaluationAttachment"
-                    classes="col-12"
-                    ></entity-file>
-
+                    classes="col-12">
+                </entity-file>
             </div>
         </div>
     </div>
-    
+
     <appeal-phase-chat :registration="registration"></appeal-phase-chat>
 </div>
