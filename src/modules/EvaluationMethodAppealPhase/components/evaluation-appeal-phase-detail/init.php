@@ -13,19 +13,29 @@ $class = $entity->getClassName();
 
 if($class == Registration::class) {
     
-    $opportunity = $entity->opportunity;
+    $opportunity = $entity->opportunity->isAppealPhase ? $entity->opportunity : $entity->opportunity->appealPhase;
     $evaluation_configuration = $opportunity->evaluationMethodConfiguration;
-    
+    $registration_appeal_phase = $app->repo('Registration')->findOneBy(['number' => $entity->number, 'opportunity' => $opportunity]);
     if(!$evaluation_configuration) {
         return;
     }
     
+    $registration = $entity;
+    if (!$entity->opportunity->isAppealPhase) {
+        $registration_appeal_phase = $app->repo('Registration')->findOneBy(['number' => $entity->number, 'opportunity' => $opportunity]);
+        $registration = $registration_appeal_phase;
+    }
+
+    if (!$registration) {
+        return;
+    }
+
     $data = [];
     $em = $evaluation_configuration->evaluationMethod;
-    $data['consolidatedDetails'] = $em->getConsolidatedDetails($entity);
+    $data['consolidatedDetails'] = $em->getConsolidatedDetails($registration);
     $data['evaluationsDetails'] = [];
 
-    $evaluations = $entity->sentEvaluations;
+    $evaluations = $registration->sentEvaluations;
     
     foreach ($evaluations as $eval) {
         $detail = $em->getEvaluationDetails($eval);
@@ -33,7 +43,7 @@ if($class == Registration::class) {
         $data['evaluationsDetails'][] = $detail;
         
     }
-    
+   
     $this->jsObject['config']['appealPhaseEvaluationDetail'] = [
         'data' => $data,
     ];
