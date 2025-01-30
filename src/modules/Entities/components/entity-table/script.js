@@ -581,6 +581,8 @@ app.component('entity-table', {
             } else {
                 delete this.query[fieldName];
             }
+
+            this.$refs.entities.entities.refresh(this.watchDebounce);
         },
 
         advancedFilterChecked(fieldName, option) { 
