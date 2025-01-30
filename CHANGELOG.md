@@ -5,9 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED] 
+## [7.5.18] - 2025-01-29
 #### Correções
 - Corrige contagem de entidades na api, que ficava distorcida dependendo dos filtros
+- Insere mensagem na single de inscrição notificando quando o proponente não enviou a inscrição dentro do prazo
 
 ## [7.5.17] - 2025-01-21
 ### Correções
