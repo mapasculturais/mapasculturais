@@ -32,7 +32,7 @@ app.component('opportunity-create-reporting-phase', {
 
     methods: {
         createEntities () {
-            this.collectionPhase = Vue.reactive(new Entity('evaluationmethodconfiguration'));
+            this.collectionPhase = Vue.reactive(new Entity('opportunity'));
             this.collectionPhase.isFinalReportingPhase = this.isFinal;
             this.evaluationPhase = Vue.reactive(new Entity('evaluationmethodconfiguration'));
         },
@@ -54,14 +54,20 @@ app.component('opportunity-create-reporting-phase', {
                 parent: this.opportunity.id,
             };
 
-            // modal.loading(true);
+            modal.loading(true);
             try {
-                api.POST(url, data).then((res) => res.json()).then((data) => {
-                    console.log(data);
-                });
-                // this.$emit
-                // modal.close();
-                // modal.loading(false);
+                const res = await api.POST(url, data);
+                if (res.ok) {
+                    const { collectionPhase, evaluationPhase } = await res.json();
+                    this.$emit('create', { collectionPhase, evaluationPhase });
+                    modal.close();
+                    modal.loading(false);
+                } else {
+                    const { collectionErrors, evaluationErrors } = await res.json()
+                    this.collectionPhase.__validationErrors = collectionErrors ?? [];
+                    this.evaluationPhase.__validationErrors = evaluationErrors ?? [];
+                    modal.loading(false);
+                }
             } catch (err) {
                 console.error(err);
                 modal.loading(false);
