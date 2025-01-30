@@ -223,7 +223,7 @@ class Module extends \MapasCulturais\Module{
                     break;
             }
 
-            $app->applyHookBoundTo($this, 'request(workflow.message).create:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'message_to_requester' => &$message_to_requester, 'send_message' => &$message]);
+            $app->applyHookBoundTo($this, 'request(workflow.message).create:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'message_to_requester' => &$message_to_requester, 'send_message' => &$message, 'requester' => $requester]);
 
             if($message_to_requester){
                 // message to requester user
@@ -331,7 +331,7 @@ class Module extends \MapasCulturais\Module{
 
             $notified_user_ids = array();
 
-            $app->applyHookBoundTo($this, 'request(workflow.message).approve:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'send_message' => &$message]);
+            $app->applyHookBoundTo($this, 'request(workflow.message).approve:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'send_message' => &$message, 'requester' => $requester]);
 
             foreach ($users as $u) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
@@ -442,7 +442,7 @@ class Module extends \MapasCulturais\Module{
 
             $notified_user_ids = array();
 
-            $app->applyHookBoundTo($this, 'request(workflow.message).reject:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'send_message' => &$message]);
+            $app->applyHookBoundTo($this, 'request(workflow.message).reject:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'send_message' => &$message, 'requester' => $requester]);
 
             foreach ($users as $u) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
