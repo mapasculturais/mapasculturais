@@ -18,6 +18,7 @@ class Module extends \MapasCulturais\Module {
             'type' => 'boolean',
             'default' => false,
             'private' => false,
+            'available_for_opportunities' => true,
         ]);
 
         $this->registerOpportunityMetadata('isFinalReportingPhase', [
@@ -25,6 +26,7 @@ class Module extends \MapasCulturais\Module {
             'type' => 'boolean',
             'default' => false,
             'private' => false,
+            'available_for_opportunities' => true,
         ]);
 
         $app->registerController('projectReporting', Controller::class);
