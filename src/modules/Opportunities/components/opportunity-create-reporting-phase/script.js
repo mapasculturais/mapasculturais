@@ -26,10 +26,6 @@ app.component('opportunity-create-reporting-phase', {
         },
     },
 
-    mounted () {
-        console.log(this.opportunity);
-    },
-
     methods: {
         createEntities () {
             this.collectionPhase = Vue.reactive(new Entity('opportunity'));
