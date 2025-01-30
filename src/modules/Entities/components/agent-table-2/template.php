@@ -15,5 +15,8 @@ $this->import('
 ?>
 
 <div class="agent-table-2">
-    <agent-table :additionalHeaders="additionalHeaders" :agentType="2" :extra-query="extraQuery"></agent-table>
+    <agent-table :additionalHeaders="additionalHeaders" :agentType="2" :extra-query="extraQuery">
+           <template #advanced-filters="{entities}">
+            </template>
+    </agent-table>
 </div>
