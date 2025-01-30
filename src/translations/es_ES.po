@@ -12955,6 +12955,7 @@ msgstr "La solicitud fue cancelada."
 msgid "A requisição foi rejeitada."
 msgstr "La solicitud fue rechazada."
 
+#: application/lib/modules/OpportunityAccountability/Controller.php:133
 #: src/modules/Notifications/components/notification-list/template.php:30
 #: src/modules/Notifications/components/notification-list/template.php:43
 msgid "Ok"

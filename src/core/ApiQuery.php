@@ -885,7 +885,11 @@ class ApiQuery {
         $where = $this->generateWhere();
         $joins = $this->generateJoins();
 
-        $dql = "SELECT\n\tCOUNT(e.{$this->pk})\nFROM \n\t{$this->entityClassName} e {$joins}";
+        $dql = "
+        SELECT COUNT(DISTINCT(e.{$this->pk}))
+        FROM {$this->entityClassName} e 
+            {$joins}";
+            
         if ($where) {
             $dql .= "\nWHERE\n\t{$where}";
         }

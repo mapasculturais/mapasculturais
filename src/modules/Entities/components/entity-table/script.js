@@ -451,6 +451,11 @@ app.component('entity-table', {
                 }
             }
 
+            if(prop == 'seals[0].createTimestamp' ) {
+                let _val = new McDate(val.date);
+                val = _val.date('numeric year') + ' ' + _val.time('2-digit');
+            }
+            
             if(val instanceof McDate) {
                 if(description.type == 'datetime') {
                     val = val.date('numeric year') + ' ' + val.time('2-digit');
