@@ -21,7 +21,7 @@ $this->import('
         </h2>
     </header>
 
-    <main class="mc-chat__content" style="display: flex; flex-direction: column-reverse;">
+    <main class="mc-chat__content">
         <mc-entities
             v-if="query"
             ref="chatMessages"
