@@ -24,7 +24,7 @@ $this->import('
             <div class="header">
                 <div v-if="pictureCard" class="title"> <strong>{{entity.opportunity?.name}}</strong> </div>
                 <?php if($app->config['app.registrationCardFields']['number']): ?>
-                    <div v-if="!pictureCard" class="title"> <?= i::__('Número de inscrição:') ?> <strong>{{entity.number}}</strong> </div>
+                    <div v-if="!pictureCard" class="title"><?= $this->text('my-records-numbers', i::__('Número de inscrição:')) ?> <strong>{{entity.number}}</strong> </div>
                 <?php endif ?>
                 <div class="actions"></div>
             </div>
@@ -109,7 +109,7 @@ $this->import('
                         <button  class="button button--md  delete-registration" @click="modal.open();"> <?php i::_e('Excluir') ?>  </button>
                     </template>
                     <template #message="message">
-                        <?php i::_e('Você realmente deseja excluir a inscrição') ?> {{entity.number}}<?php i::_e('?') ?>
+                        <?= $this->text('notification_deletion', i::__('Você realmente deseja excluir a inscrição')) ?> {{entity.number}}<?php i::_e('?') ?>
                     </template>
                 </mc-confirm-button>
                 <a v-if="!verifyStatus()" class="button button--md button--primary button--icon" :href="entity.singleUrl"> <?= i::__("Acompanhar") ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
