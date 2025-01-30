@@ -37,19 +37,25 @@ app.component('agent-table', {
 
     data() {
         const defaultHeaders = $MAPAS.config.agentTable.defaultHeaders;
+        const default_select = $MAPAS.config.agentTable.default_select;
         const _additionalHeaders = (this.additionalHeaders.length > 0) ? this.additionalHeaders : $MAPAS.config.agentTable.additionalHeaders;
 
         const mergedHeaders = [...defaultHeaders, ..._additionalHeaders];
         
-        let select = [];
+        let adtional_select = [];
         for(item of mergedHeaders) {
             if(item.slug) {
-                select.push(item.slug)
+                adtional_select.push(item.slug)
             }
+        }
+
+        let _adtional_select = "";
+        if(adtional_select.length > 0) {
+            _adtional_select = `,${adtional_select.join(",")}`;
         }
         
         let query = {
-            '@select': `name,type,shortDescription,files.avatar,seals,endereco,terms,orientacaoSexual,genero,raca,${select}`,
+            '@select': `${default_select}${_adtional_select}`,
             '@order': 'createTimestamp DESC',
             '@limit': 20,
             '@page': 1,
