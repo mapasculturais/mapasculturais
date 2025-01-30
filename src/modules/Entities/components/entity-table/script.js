@@ -69,6 +69,7 @@ app.component('entity-table', {
         select: String,
         showIndex: Boolean,
         hideFilters: Boolean,
+        hideAdvancedFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
         hideHeader: Boolean,
@@ -456,7 +457,7 @@ app.component('entity-table', {
                 }
             }
 
-            if(prop == 'seals[0]?.createTimestamp' ) {
+            if(prop == 'seals.?[0]?.createTimestamp' ) {
                 let _val = new McDate(val.date);
                 val = _val.date('numeric year') + ' ' + _val.time('2-digit');
             }
