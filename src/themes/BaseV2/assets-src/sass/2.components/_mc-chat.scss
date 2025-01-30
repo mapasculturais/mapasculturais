@@ -151,3 +151,8 @@
         align-items: center;
     }
 }
+
+.registration-results__modal--with-chat .modal__action {
+    display: flex;
+    padding: 0 size(16) size(16) size(16);
+}
