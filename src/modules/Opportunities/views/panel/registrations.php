@@ -14,11 +14,11 @@ $this->import('
                 <div class="title__icon opportunity__background">
                     <mc-icon name="opportunity"></mc-icon>
                 </div>
-                <h1 class="title__title"> <?= i::_e('Minhas inscrições') ?> </h1>
+                <h1 class="title__title"> <?= $this->text('my-registrations', i::__('Minhas inscrições')) ?></h1>
             </div>
         </div>
         <p class="panel-page__header-subtitle">
-            <?= i::_e('Nesta seção você pode adicionar e gerenciar suas inscrições') ?>
+            <?= $this->text('my-registrations-records', i::__('Nesta seção você pode adicionar e gerenciar suas inscrições')) ?>
         </p>
         <div class="panel-page__header-actions">
             
