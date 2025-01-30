@@ -21,12 +21,8 @@ app.component('opportunity-create-reporting-phase', {
     },
 
     computed: {
-        maxDate () {
-            return this.opportunity.evaluationMethodConfiguration.evaluationTo?._date ?? null; 
-        },
-
-        minDate () {
-            return this.opportunity.evaluationMethodConfiguration.evaluationFrom?._date ?? null;
+        minCollectionDate () {
+            return this.opportunity.evaluationMethodConfiguration.evaluationTo?._date ?? null;
         },
     },
 
@@ -37,6 +33,7 @@ app.component('opportunity-create-reporting-phase', {
     methods: {
         createEntities () {
             this.collectionPhase = Vue.reactive(new Entity('evaluationmethodconfiguration'));
+            this.collectionPhase.isFinalReportingPhase = this.isFinal;
             this.evaluationPhase = Vue.reactive(new Entity('evaluationmethodconfiguration'));
         },
 
