@@ -67,11 +67,11 @@ $this->import('
                 <p v-if="appealRegistration.status == 10"><?= i::__('Deferido') ?></p>
                 <p v-if="appealRegistration.status == 3"><?= i::__('Indeferido') ?></p>
                 <p v-if="appealRegistration.status == 2"><?= i::__('Recurso inválido') ?></p>
-                <p v-if="appealRegistration.status == 1 || !appealRegistration.status"><?= i::__('Aguardando resposta') ?></p>
+                <p v-if="appealRegistration.status == 1"><?= i::__('Aguardando resposta') ?></p>
                 <p v-if="appealRegistration.status == 0"><?= i::__('Recurso não enviado') ?></p>
 
             </div>
-            <registration-results v-if="phase.appealPhase.evaluationMethodConfiguration.publishEvaluationDetails" :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
+            <registration-results :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
         </div>
         <div v-if="appealRegistration && appealRegistration.status == 0" class="opportunity-phases-timeline__request-appeal">
             <h5 class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Finalize sua inscrição no recurso:')?></h5>
