@@ -50,15 +50,16 @@ class Module extends \MapasCulturais\Module {
             $appeal_phase->isDataCollection = true;
             $appeal_phase->isAppealPhase = true;
             $appeal_phase->save(true);
-
+            
             $opportunity->appealPhase = $appeal_phase;
             $opportunity->save(true);
-            
+    
             $evaluation = new EvaluationMethodConfiguration();
             $evaluation->opportunity = $appeal_phase;
             $evaluation->type = 'appeal-phase';
+            $evaluation->publishEvaluationDetails = true;
             $evaluation->save(true);
-
+            
             $this->json($appeal_phase);
         });
 
@@ -261,6 +262,12 @@ class Module extends \MapasCulturais\Module {
                 return $evaluationMethodConfiguration->opportunity->appealPhase;
             }
         ]);
+
+        // $this->registerEvauationMethodConfigurationMetadata('publishEvaluationDetails', [
+        //     'label' => i::__('Publicar os pareceres para o proponente'),
+        //     'type' => 'json',
+        //     'default' => true
+        // ]);
 
         $thread_type_description = i::__('Conversação entre proponente e avaliador');
         $definition = new ChatThreadType(self::CHAT_THREAD_TYPE, $thread_type_description, function (ChatMessage $message) {
