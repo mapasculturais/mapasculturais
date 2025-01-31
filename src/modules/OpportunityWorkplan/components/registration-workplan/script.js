@@ -97,13 +97,23 @@ app.component('registration-workplan', {
             this.workplan.goals.push(entityGoal);
             this.expandedGoals.push(this.workplan.goals.length - 1);
         },
-        async deleteGoal(goalId) {
+        async deleteGoal(goal) {
             const api = new API('workplan');
-
-            const response = api.DELETE('goal', {id: goalId});
-            response.then((res) => res.json().then((data) => {
-                this.workplan.goals = this.workplan.goals.filter(goal => goal.id !== goalId);
-            }));
+            
+            if (goal.id) {
+                const response = api.DELETE('goal', {id: goal.id});
+                response.then((res) => res.json().then((data) => {
+                    this.workplan.goals = this.workplan.goals.filter(g => g.id !== goal.id);
+                }));
+            } else {
+                const index = this.workplan.goals.indexOf(goal);
+                if (index !== -1) {
+                    this.workplan.goals.splice(index, 1);Zs
+                    this.expandedGoals = this.expandedGoals
+                        .filter(i => i !== index)
+                        .map(i => i > index ? i - 1 : i);
+                }
+            }
         },
         async newDelivery(goal) {
             if (!this.validateDelivery(goal)) {
@@ -125,18 +135,27 @@ app.component('registration-workplan', {
 
             goal.deliveries.push(entityDelivery);
         },
-        async deleteDelivery(deliveryId) {
+        async deleteDelivery(delivery) {
             const api = new API('workplan');
 
-            const response = api.DELETE('delivery', {id: deliveryId});
-            response.then((res) => res.json().then((data) => {
+            if (delivery.id) {
+                const response = api.DELETE('delivery', {id: delivery.id});
+                response.then((res) => res.json().then((data) => {
+                    this.workplan.goals = this.workplan.goals.map(goal => {
+                        if (goal.deliveries) {
+                            goal.deliveries = goal.deliveries.filter(delivery_ => delivery_.id !== delivery.id);
+                        }
+                        return goal;
+                    });
+                }));
+            } else {
                 this.workplan.goals = this.workplan.goals.map(goal => {
                     if (goal.deliveries) {
-                        goal.deliveries = goal.deliveries.filter(delivery => delivery.id !== deliveryId);
+                        goal.deliveries = goal.deliveries.filter(d => d !== delivery);
                     }
                     return goal;
                 });
-            }));
+            }
         },
         validateGoal() {
             const messages = useMessages();

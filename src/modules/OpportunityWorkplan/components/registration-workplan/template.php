@@ -62,8 +62,8 @@ $this->import('
                     <mc-icon v-if="!isExpanded(index)" name="arrowPoint-down"></mc-icon>
                 </h4>
 
-                <div v-if="goal.id" class="registration-workplan__delete-goal">
-                    <mc-confirm-button @confirm="deleteGoal(goal.id)">
+                <div class="registration-workplan__delete-goal">
+                    <mc-confirm-button @confirm="deleteGoal(goal)">
                         <template #button="{open}">
                             <button class="button button--delete button--icon button--sm" @click="open()">
                                 <mc-icon name="trash"></mc-icon>
@@ -136,8 +136,8 @@ $this->import('
                 <div v-for="(delivery, index_) in goal.deliveries" :key="delivery.id" class="registration-workplan__goals__deliveries">
                     <div class="registration-workplan__header-deliveries">
                         <h4 class="registration-workplan__goals-title">{{ delivery.name }}</h4>
-                        <div v-if="delivery.id" class="registration-workplan__delete-delivery">
-                            <mc-confirm-button @confirm="deleteDelivery(delivery.id)">
+                        <div  class="registration-workplan__delete-delivery">
+                            <mc-confirm-button @confirm="deleteDelivery(delivery)">
                                 <template #button="{open}">
                                     <button class="button button--delete button--icon button--sm" @click="open()">
                                         <mc-icon name="trash"></mc-icon> 
