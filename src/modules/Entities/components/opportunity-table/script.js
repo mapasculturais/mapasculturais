@@ -53,7 +53,7 @@ app.component('opportunity-table', {
             let itens = [
                 { text: __('id', 'opportunity-table'), value: "id", sticky: true, width: '80px'},
                 { text: __('name', 'opportunity-table'), value: "name", width: '160px' },
-                { text: __('type', 'opportunity-table'), value: "type.name", slug: "type"},
+                { text: __('type', 'opportunity-table'), value: "type?.name", slug: "type"},
                 { text: __('area', 'opportunity-table'), value: "terms.area.join(', ')", slug: "area" },
                 { text: __('tag', 'opportunity-table'), value: "terms.tag.join(', ')", slug: "tag" },
                 { text: __('seals', 'opportunity-table'), value: "seals.map((seal) => seal.name).join(', ')", slug: "seals"},
