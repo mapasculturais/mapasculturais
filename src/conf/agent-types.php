@@ -229,16 +229,6 @@ return array(
             'available_for_opportunities' => true
         ),
 
-        'localizacao' => array(
-            'label' => \MapasCulturais\i::__('Localização'),
-            'type' => 'select',
-            'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
-                'Pública' => \MapasCulturais\i::__('Pública'),
-                'Privada' => \MapasCulturais\i::__('Privada')
-            )
-        ),
-
         'genero' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Gênero'),
