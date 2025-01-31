@@ -1803,7 +1803,9 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
         if(field.conditional){
             if (field.conditionalField === 'appliedForQuota') {
-                result = result && $scope.appliedForQuota;
+                if($scope.appliedForQuota) {
+                    result = result && $scope.appliedForQuota;
+                }
             } else {
                 result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
             }
