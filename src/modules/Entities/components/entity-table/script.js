@@ -373,7 +373,13 @@ app.component('entity-table', {
                     return values.map(val => ({ prop, value: val, label: fieldDescription.options[val] || val }));
                 } else {
                     return values.map(val => {
-                        const label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
+                        
+                        let label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
+                        
+                        if(this.filtersDictComplement && this.filtersDictComplement?.type == this.type) {
+                            label = this.filtersDictComplement[label] || label;
+                        }
+
                         return { prop, value: val, label };
                     });
                 }
