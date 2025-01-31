@@ -139,7 +139,7 @@ app.component('registration-actions', {
             }
 
             if (field == 'workplan') {
-                return this.text('Plano de trabalho');
+                return this.text('Plano de metas');
             }
 
             if (field == 'projectDuration') {

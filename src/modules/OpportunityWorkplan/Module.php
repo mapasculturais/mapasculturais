@@ -35,26 +35,26 @@ class Module extends \MapasCulturais\Module{
                     $errors = [];
 
                     if (!$workplan) {
-                        $errors['workplan'] = [i::__('Plano de trabalho obrigatório.')];
+                        $errors['workplan'] = [i::__('Plano de metas obrigatório.')];
                     }
 
                     if (!$workplan?->projectDuration) {
-                        $errors['projectDuration'] = [i::__('Plano de trabalho - Duração do projeto (meses) obrigatório.')];
+                        $errors['projectDuration'] = [i::__('Plano de metas - Duração do projeto (meses) obrigatório.')];
                     }
 
                     if (!$workplan?->culturalArtisticSegment) {
-                        $errors['culturalArtisticSegment'] = [i::__('Plano de trabalho - Segmento artistico-cultural obrigatório.')];
+                        $errors['culturalArtisticSegment'] = [i::__('Plano de metas - Segmento artistico-cultural obrigatório.')];
                     }
                    
                     if ($workplan?->goals->isEmpty()) {
-                        $errors['goal'] = [i::__('Meta do plano de trabalho obrigatório.')];
+                        $errors['goal'] = [i::__('Meta do plano de metas obrigatório.')];
                     }
 
                     if ($registration->opportunity->workplan_deliveryReportTheDeliveriesLinkedToTheGoals) {
                         if (is_iterable($workplan?->goals)) {
                             foreach ($workplan?->goals as $goal) {
                                 if ($goal?->deliveries->isEmpty()) {
-                                    $errors['delivery'] = [i::__('Entrega da meta do plano de trabalho obrigatório.')];
+                                    $errors['delivery'] = [i::__('Entrega da meta do plano de metas obrigatório.')];
                                 }
                             }
                         }
@@ -77,8 +77,8 @@ class Module extends \MapasCulturais\Module{
         $app->registerController('workplan', ControllersWorkplan::class);
        
         $this->registerOpportunityMetadata('workplanLabelDefault', [
-            'label' => i::__('Plano de trabalho label'),
-            'default_value' => 'Plano de trabalho'
+            'label' => i::__('Plano de metas label'),
+            'default_value' => 'Plano de metas'
         ]);
 
         $this->registerOpportunityMetadata('goalLabelDefault', [
@@ -93,7 +93,7 @@ class Module extends \MapasCulturais\Module{
 
         // metadados opportunity
         $this->registerOpportunityMetadata('enableWorkplan', [
-            'label' => i::__('Habilitar plano de trabalho'),
+            'label' => i::__('Habilitar plano de metas'),
             'type' => 'boolean',
             'default_value' => false
         ]);
@@ -117,14 +117,7 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Informar a etapa do fazer cultural'),
             'type' => 'boolean',
             'default_value' => false
-        ]);
-        
-        $this->registerOpportunityMetadata('workplan_metaInformTheValueGoals', [
-            'label' => i::__('Informar o valor da meta'),
-            'type' => 'boolean',
-            'default_value' => false
-        ]);
-        
+        ]);        
         
         $this->registerOpportunityMetadata('workplan_metaLimitNumberOfGoals', [
             'label' => i::__('Limitar número de metas'),

@@ -20,7 +20,7 @@ $this->import('
     <template #title>
         <h3 class="card__title">
             {{ getWorkplanLabelDefault }}
-            <?php $this->info('inscricao -> preenchimento -> plano-de-trabalho') ?>
+            <?php $this->info('inscricao -> preenchimento -> plano-de-metas') ?>
         </h3>
         <p>
             {{ `Descrição do ${getWorkplanLabelDefault}` }}
@@ -29,10 +29,10 @@ $this->import('
         <div class="registration-actions__alert">
             <div class="registration-actions__alert-header">
                 <mc-icon name="exclamation"></mc-icon>
-                <span class="bold"><?= i::__('Atenção - Preenchimento do plano de trabalho') ?></span>
+                <span class="bold"><?= i::__('Atenção - Preenchimento do plano de metas') ?></span>
             </div>
             <div class="registration-actions__alert-content">
-                <span><?= i::__('Para registrar as metas e entregas do plano de trabalho, preencha os campos obrigatórios e clique no botão "Salvar Meta"') ?></span>
+                <span><?= i::__('Para registrar as metas e entregas do plano de metas, preencha os campos obrigatórios e clique no botão "Salvar Meta"') ?></span>
             </div>
         </div>
     </template>
@@ -126,7 +126,7 @@ $this->import('
                 </div>
 
                 <!-- Valor da meta -->
-                <div v-if="opportunity.workplan_metaInformTheValueGoals" class="field">
+                <div class="field">
                     <label>
                         {{ `Valor da ${getGoalLabelDefault}(R$)` }}
                         <span class="required">obrigatório*</span></label>

@@ -153,7 +153,7 @@ app.component('registration-workplan', {
                 if (!goal.title) emptyFields.push(`Título da ${this.getGoalLabelDefault}`);
                 if (!goal.description) emptyFields.push("Descrição");
                 if (this.opportunity.workplan_metaInformTheStageOfCulturalMaking && !goal.culturalMakingStage) emptyFields.push("Etapa do fazer cultural");
-                if (this.opportunity.workplan_metaInformTheValueGoals && goal.amount == null || goal.amount === "") emptyFields.push(`Valor da ${this.getGoalLabelDefault} (R$)`);
+                if (goal.amount == null || goal.amount === "") emptyFields.push(`Valor da ${this.getGoalLabelDefault} (R$)`);
                 if (this.opportunity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals && goal.deliveries.length === 0) emptyFields.push(`${this.getDeliveryLabelDefault}`);
 
                 const validateDelivery = this.validateDelivery(goal);
