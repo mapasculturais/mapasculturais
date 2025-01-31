@@ -33,8 +33,6 @@ app.component('registration-workplan', {
     },
     mounted() {
         this.handleHashChange();
-
-
         window.addEventListener('hashchange', this.handleHashChange);
     },
     computed: {
@@ -67,6 +65,10 @@ app.component('registration-workplan', {
             } else {
                 this.enableWorkplanInStep = true;
             }
+
+            if (this.enableWorkplanInStep) {
+                this.startTutorialWorkplan();
+            }
         },
         getWorkplan() {
             const api = new API('workplan');
@@ -82,6 +84,8 @@ app.component('registration-workplan', {
             if (!this.validateGoal()) {
                 return false;
             }
+
+            this.startTutorialGoal();
 
             const entityGoal = new Entity('goal');
             entityGoal.id = null;
@@ -119,6 +123,8 @@ app.component('registration-workplan', {
             if (!this.validateDelivery(goal)) {
                 return false;
             }
+
+            this.startTutorialDelivery();
 
             const entityDelivery = new Entity('delivery');
             entityDelivery.id = null;
@@ -338,6 +344,204 @@ app.component('registration-workplan', {
             });
     
             return palavrasNoSingular.join(' ');
-        }
+        },
+        tutorialButtonsDisabled() {
+            return [
+                {
+                    text: 'Desativar assistente de configuração',
+                    action: () => {
+                        this.disableTutorial();
+                        this.tour.complete(); // Fecha o tutorial imediatamente
+                    },
+                    classes: 'button button--secondary button--sm'
+                },
+                {
+                    text: 'Avançar',
+                    action: this.tour.next,
+                    classes: 'button button--primary button--sm'
+                }
+          ];
+        },
+        tutorialButtonsDefault() {
+            return [
+                {
+                  text: 'Voltar',
+                  action: this.tour.back,
+                  classes: 'button button--solid-dark button--sm'
+                },
+                {
+                  text: 'Avançar',
+                  action: this.tour.next,
+                  classes: 'button button--primary button--sm'
+                }
+              ];
+        },
+        titleTutorial() {
+            return "Assistente de Configuração - Plano de metas";
+        },
+        startTutorialWorkplan() {
+            if (this.isTutorialDisabled()) {
+                return;
+            }
+            this.tour = new Shepherd.Tour({
+              useModalOverlay: true, // Escurece a tela
+              defaultStepOptions: {
+                cancelIcon: {
+                    enabled: true
+                },
+                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
+                scrollTo: true
+              }
+            });
+      
+            this.tour.addStep({
+              id: 'registration-workplan',
+              title: this.titleTutorial(),
+              text: 'Bem-vindo ao tutorial do Plano de Metas! Aqui você aprenderá a usá-lo de forma fácil e eficiente.',
+              attachTo: {
+                element: '#registration-workplan',
+                on: 'bottom'
+              },
+              buttons: this.tutorialButtonsDisabled()
+            });
+      
+            this.tour.addStep({
+              id: 'projectDuration',
+              title: this.titleTutorial(),
+              text: 'Este campo exibe a duração do projeto em meses.',
+              attachTo: {
+                element: '#projectDuration',
+                on: 'bottom'
+              },
+              buttons: this.tutorialButtonsDefault()
+            });
+
+            this.tour.addStep({
+                id: 'culturalArtisticSegment',
+                title: this.titleTutorial(),
+                text: 'Este campo exibe o segmento artístico-cultural. Após o preenchimento, um botão para cadastro de metas será habilitado.',
+                attachTo: {
+                  element: '#culturalArtisticSegment',
+                  on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
+            });
+      
+            this.tour.start();
+        },
+        startTutorialGoal() {
+            if (this.isTutorialDisabled()) {
+                return;
+            }
+            this.tour = new Shepherd.Tour({
+              useModalOverlay: true, // Escurece a tela
+              defaultStepOptions: {
+                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
+                scrollTo: true
+              }
+            });
+      
+            this.tour.addStep({
+              id: 'container_goals',
+              title: this.titleTutorial(),
+              text: 'Preencha as metas do projeto.',
+              attachTo: {
+                element: '#container_goals',
+                on: 'bottom'
+              },
+              buttons: this.tutorialButtonsDisabled()
+            });
+      
+            this.tour.addStep({
+              id: 'registration-workplan__delete-goal',
+              title: this.titleTutorial(),
+              text: 'O botão "Excluir meta" permite remover uma meta cadastrada ou em processo de cadastro.',
+              attachTo: {
+                element: '#registration-workplan__delete-goal',
+                on: 'bottom'
+              },
+              buttons: this.tutorialButtonsDefault()
+            });
+
+            this.tour.addStep({
+                id: 'button-registration-workplan__new-delivery',
+                title: this.titleTutorial(),
+                text: 'O botão "+ Entrega" permite adicionar uma nova entrega à sua meta.',
+                attachTo: {
+                  element: '#button-registration-workplan__new-delivery',
+                  on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
+            });
+
+            this.tour.addStep({
+                id: 'button-registration-workplan__save-goal',
+                title: this.titleTutorial(),
+                text: 'Última etapa! Clique no botão "Salvar metas" para garantir que suas metas e entregas sejam salvas.',
+                attachTo: {
+                  element: '#button-registration-workplan__save-goal',
+                  on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
+            });
+            
+            this.tour.start();
+        },
+        startTutorialDelivery() {
+            if (this.isTutorialDisabled()) {
+                return;
+            }
+            this.tour = new Shepherd.Tour({
+              useModalOverlay: true, // Escurece a tela
+              defaultStepOptions: {
+                classes: 'shadow-md bg-white p-4 rounded-lg', // Estilização
+                scrollTo: true
+              }
+            });
+      
+            this.tour.addStep({
+              id: 'container_deliveries',
+              title: this.titleTutorial(),
+              text: 'Preencha as informações das suas entregas.',
+              attachTo: {
+                element: '#container_deliveries',
+                on: 'bottom'
+              },
+              buttons: this.tutorialButtonsDisabled()
+            });
+      
+            this.tour.addStep({
+              id: 'registration-workplan__delete-delivery',
+              title: this.titleTutorial(),
+              text: 'Botão "Excluir entrega" para remover a entrega cadastrada ou em processo de cadastro.',
+              attachTo: {
+                element: '#registration-workplan__delete-delivery',
+                on: 'bottom'
+              },
+              buttons: this.tutorialButtonsDefault()
+            });
+
+            this.tour.addStep({
+                id: 'button-registration-workplan__save-goal',
+                title: this.titleTutorial(),
+                text: 'Última etapa! Para garantir que suas metas e entregas sejam salvas, clique no botão "Salvar metas".',
+                attachTo: {
+                  element: '#button-registration-workplan__save-goal',
+                  on: 'bottom'
+                },
+                buttons: this.tutorialButtonsDefault()
+            });
+            
+            this.tour.start();
+        },
+        isTutorialDisabled() {
+            return localStorage.getItem('tutorialDisabled') === 'true';
+        },
+        disableTutorial() {
+            localStorage.setItem('tutorialDisabled', 'true');
+        },
+        enableTutorial() {
+            localStorage.setItem('tutorialDisabled', 'false');
+        },
     },
 })
