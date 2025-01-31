@@ -18,7 +18,10 @@ $this->import('
                 <h3 class="info__title">{{item.label}}</h3>
                 <div v-if="item.type && item.type != ''" class="info__type">
                     <span class="title"> <?= i::__('Tipo') ?>: </span>
-                    <span v-if="item.__objectType == 'opportunity' && !item.isLastPhase" class="type"><?= i::__('Coleta de dados') ?></span>
+                    <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
+                        <span v-if="item.isReportingPhase" class="type"><?= i::__('Prestação de informações') ?></span>
+                        <span v-else class="type"><?= i::__('Coleta de dados') ?></span>
+                    </template>
                     <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{item.type}}</span>
                 </div>
             </div>
