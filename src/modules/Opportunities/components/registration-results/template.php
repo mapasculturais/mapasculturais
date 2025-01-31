@@ -12,8 +12,6 @@ $entity = $this->controller->requestedEntity;
 ?>
 <div v-if="registration.consolidatedDetails?.sentEvaluationCount || showAppealPhaseEvaluationDetails" class="registration-results">  
     <mc-modal :title="modalTitle" classes="registration-results__modal registration-results__modal--with-chat">
-<div v-if="registration.consolidatedDetails?.sentEvaluationCount" class="registration-results">  
-    <mc-modal :title="modalTitle" classes="registration-results__modal registration-results__modal--with-chat">
         <template #default>
             <?php foreach($app->getRegisteredEvaluationMethods(true) as $evaluation_method): ?>
                 <div v-if="phase.type?.id == '<?= $evaluation_method->slug ?>'" class="registration-results__content">
@@ -27,7 +25,7 @@ $entity = $this->controller->requestedEntity;
         </template>
 
         <template #button="modal">
-            <button v-if="!registration.opportunity.isAppealPhase || (registration.opportunity.isAppealPhase || registration.opportunity.allow_proponent_response === '1')" class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
+            <button  class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
         </template>
     </mc-modal>
 </div>
