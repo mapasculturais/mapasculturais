@@ -60,7 +60,7 @@ $this->import('
                         </div>
                     </template>
 
-                    <template v-if="Object.keys(advancedFilters).length || hasSlot('advanced-filters')"  #content>
+                    <template v-if="((Object.keys(advancedFilters).length || hasSlot('advanced-filters')) && !hideAdvancedFilters)"  #content>
                         <div class="entity-table__advanced-filters custom-scrollbar">
                             <slot name="advanced-filters" :entities="entities" :filters="filters" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
                                 <div class="grid-12">
