@@ -69,6 +69,7 @@ app.component('entity-table', {
         select: String,
         showIndex: Boolean,
         hideFilters: Boolean,
+        hideAdvancedFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
         hideHeader: Boolean,
@@ -372,7 +373,13 @@ app.component('entity-table', {
                     return values.map(val => ({ prop, value: val, label: fieldDescription.options[val] || val }));
                 } else {
                     return values.map(val => {
-                        const label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
+                        
+                        let label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
+                        
+                        if(this.filtersDictComplement && this.filtersDictComplement?.type == this.type) {
+                            label = this.filtersDictComplement[label] || label;
+                        }
+
                         return { prop, value: val, label };
                     });
                 }
@@ -456,7 +463,7 @@ app.component('entity-table', {
                 }
             }
 
-            if(prop == 'seals[0].createTimestamp' ) {
+            if(prop == 'seals.?[0]?.createTimestamp' ) {
                 let _val = new McDate(val.date);
                 val = _val.date('numeric year') + ' ' + _val.time('2-digit');
             }
