@@ -89,7 +89,8 @@ $this->import('
                         <div class="icon">
                             <mc-icon name="trash" class="secondary__color"></mc-icon> 
                         </div>
-                        <h5>{{ text('excluir_fase_coleta_dados') }}</h5>
+                        <h5 v-if="phase.isReportingPhase"><?= i::__("Excluir fase de prestação de informações") ?></h5>
+                        <h5 v-else><?= i::__("Excluir fase de coleta de dados") ?></h5>
                     </button>
                 </template>
             </mc-confirm-button>
