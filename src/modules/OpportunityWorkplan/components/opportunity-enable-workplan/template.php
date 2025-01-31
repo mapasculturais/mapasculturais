@@ -33,7 +33,7 @@ $this->import('
         {{ getWorkplanLabelDefault }}
    
         <mc-modal title="Editar rótulo" v-if="entity.enableWorkplan">
-            <h4>Rótulo: plano de trabalho</h4>
+            <h4>Rótulo: plano de metas</h4>
             <div class="field col-12">
                 <div class="field__group">
                     <label class="field__group">
@@ -111,13 +111,6 @@ $this->import('
                     <div class="field__group">
                         <label class="field__checkbox">
                             <input type="checkbox" v-model="entity.workplan_metaInformTheStageOfCulturalMaking" @click="autoSave()" /><?= i::__("Informar a etapa do fazer cultural") ?>
-                        </label>
-                    </div>
-
-                    <div class="field__group">
-                        <label class="field__checkbox">
-                            <input type="checkbox" v-model="entity.workplan_metaInformTheValueGoals" @click="autoSave()" />
-                            {{ `Informar o valor das ${getGoalLabelDefault}` }}
                         </label>
                     </div>
 

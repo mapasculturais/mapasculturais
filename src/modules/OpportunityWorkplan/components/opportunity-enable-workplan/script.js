@@ -85,7 +85,6 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_dataProjectmaximumDurationInMonths = 0;
 
             this.entity.workplan_metaInformTheStageOfCulturalMaking = false;
-            this.entity.workplan_metaInformTheValueGoals = false;
             this.entity.workplan_metaLimitNumberOfGoals = false;
             this.entity.workplan_metaMaximumNumberOfGoals = 0;
 
