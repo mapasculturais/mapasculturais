@@ -89,14 +89,26 @@ app.component('opportunity-phase-config-data-collection' , {
     },
 
     methods: {
+        removeEvaluationPhase (item) {
+            if (item.evaluationMethodConfiguration?.id) {
+                const evaluationId = item.evaluationMethodConfiguration.id;
+                const evaluationIndex = this.phases.findIndex((phase) => {
+                    return phase.__objectType === 'evaluationmethodconfiguration' && phase.id == evaluationId;
+                });
+                if (evaluationIndex >= 0) {
+                    this.phases.splice(evaluationIndex, 1);
+                }
+            }
+        },
         async deletePhase (event, item, index) {
             const messages = useMessages();
             try{
                 await item.destroy();
                 this.phases.splice(index, 1);
+                this.removeEvaluationPhase(item);
             } catch (e) {
                 messages.error(this.text('nao foi possivel remover fase'));
             }
-        }
+        },
     }
 });
