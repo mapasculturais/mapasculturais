@@ -11,6 +11,7 @@ $this->import('
     mc-stepper-vertical
     opportunity-create-data-collect-phase
     opportunity-create-evaluation-phase
+    opportunity-create-reporting-phase
     opportunity-phase-config-data-collection
     opportunity-phase-config-evaluation
     opportunity-phase-config-results
@@ -72,12 +73,16 @@ $this->import('
     <template #after-li="{index, item}">
         <template v-if="index == phases.length-2">
             <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo && !(firstPhase?.isContinuousFlow && firstPhase?.hasEndDate && !lastPhase.publishTimestamp)" class="add-phase grid-12">
-                <div class="add-phase__evaluation col-12">
+                <div class="col-12">
                     <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
                 </div>
-                <p><label class="add-phase__collection"><?= i::__("ou") ?></label></p>
-                <div class="add-phase__collection col-12">
+                <p><label class="col-12"><?= i::__("ou") ?></label></p>
+                <div class="col-12">
                     <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
+                </div>
+                <p><label class="col-12"><?= i::__("ou") ?></label></p>
+                <div class="col-12">
+                    <opportunity-create-reporting-phase :opportunity="entity" @create="addReportingPhases"></opportunity-create-reporting-phase>
                 </div>
             </div>
             
