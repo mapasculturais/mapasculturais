@@ -106,7 +106,7 @@ app.component('opportunity-phase-config-evaluation' , {
     },
 
     methods: {
-        async deletePhase (event, item, index) {
+        async deletePhase (item, index) {
             const messages = useMessages();
             try {
                 await item.delete();
@@ -115,6 +115,21 @@ app.component('opportunity-phase-config-evaluation' , {
                 messages.error(this.text('nao foi possivel remover fase'));
             }
 
+        },
+        async deleteReportingPhase (item, index) {
+            const opportunityId = item.opportunity.id;
+            const opportunityIndex = this.phases.findIndex((phase) => {
+                return phase.__objectType === 'opportunity' && phase.id == opportunityId;
+            });
+            
+            const messages = useMessages();
+            try {
+                await item.opportunity.destroy();
+                this.phases.splice(index, 1);
+                this.phases.splice(opportunityIndex, 1);
+            } catch (e) {
+                messages.error(this.text('não foi possível remover fase'));
+            }
         },
         savePhase () {
             this.phase.save(3000);
