@@ -53,6 +53,7 @@ $this->breadcrumb = $breadcrumb;
     opportunity-header
     registration-autosave-notification
     registration-info
+    registration-quotas-card
     registration-steps
 ');
 ?>
@@ -109,15 +110,7 @@ $this->breadcrumb = $breadcrumb;
                             </div>
                         </div>
 
-                        <div v-if="entity.opportunity.enableQuotasQuestion" class="card owner">                            
-                            <h3 class="card__title"> 
-                                <?= i::__('Vai concorrer às cotas?') ?> 
-                            </h3>
-
-                            <div class="card__content">
-                                <entity-field :entity="entity" prop="appliedForQuota" :hide-label="true"></entity-field>
-                            </div>
-                        </div>
+                        <registration-quotas-card :entity="entity" v-if="entity.opportunity.enableQuotasQuestion"></registration-quotas-card>
 
                         <registration-related-agents :registration="entity"></registration-related-agents>
                         <registration-related-space :registration="entity"></registration-related-space>
