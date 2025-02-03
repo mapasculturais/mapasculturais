@@ -92,7 +92,7 @@ app.component("fields-visible-evaluators", {
                     field.titleDisabled = this.text("activateCategory", "fields-visible-evaluators");
                 }
 
-                if (item.conditional) {
+                if (item.conditional && item.conditionalField !== "appliedForQuota") {
                     let condidionalField = this.fields.filter(_item => _item.fieldName == item.conditionalField)
                     field.disabled = (avaliableFields[item.conditionalField] == "true" ? false : true);
                     field.titleDisabled = `${this.text('activateField')} '#${condidionalField[0].id}'`
