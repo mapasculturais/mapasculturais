@@ -29,7 +29,7 @@ $this->import('
                             <span v-if="item.isReportingPhase" class="type"><?= i::__('Prestação de informações') ?></span>
                             <span v-else class="type"><?= i::__('Coleta de dados') ?></span>
                         </template>
-                        <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{evaluationTypes[item.type.id]}}</span>
+                        <span v-else-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{item.type.name}}</span>
                     </span>
                     <span v-if="item.__objectType == 'evaluationmethodconfiguration' && item.type.id == 'technical'"> <?php $this->info('editais-oportunidades -> avaliacao-tecnica -> avaliacao-tecnica') ?> </span>
                 </div>
