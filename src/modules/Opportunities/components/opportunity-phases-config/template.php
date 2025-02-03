@@ -31,7 +31,7 @@ $this->import('
                         </template>
                         <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{evaluationTypes[item.type.id]}}</span>
                     </span>
-                    <span v-if="item.__objectType == 'evaluationmethodconfiguration' && evaluationTypes[item.type.id] == 'Avaliação Técnica'"> <?php $this->info('editais-oportunidades -> avaliacao-tecnica -> avaliacao-tecnica') ?> </span>
+                    <span v-if="item.__objectType == 'evaluationmethodconfiguration' && item.type.id == 'technical'"> <?php $this->info('editais-oportunidades -> avaliacao-tecnica -> avaliacao-tecnica') ?> </span>
                 </div>
             </div>
 

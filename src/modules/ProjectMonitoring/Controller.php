@@ -35,7 +35,7 @@ class Controller extends \MapasCulturais\Controller {
 
         $evaluation_phase = new Entities\EvaluationMethodConfiguration();
         $evaluation_phase->opportunity = $collection_phase;
-        $evaluation_phase->type = 'documentary';
+        $evaluation_phase->type = 'continuous';
         $evaluation_phase->name = $params['evaluationPhase']['name'] ?? '';
         $evaluation_phase->evaluationFrom = $params['evaluationPhase']['evaluationFrom']['_date'] ?? false;
         $evaluation_phase->evaluationTo = $params['evaluationPhase']['evaluationTo']['_date'] ?? false;
