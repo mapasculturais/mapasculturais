@@ -136,12 +136,6 @@ $this->import('
                     </div>
 
                     <!-- Valor da meta -->
-                    <div class="field">
-                        <label>
-                            {{ `Valor da ${getGoalLabelDefault}(R$)` }}
-                            <span class="required">obrigatório*</span></label>
-                        <mc-currency-input class="field__limits" v-model="goal.amount"></mc-currency-input>
-                    </div>
                     <div id="container_deliveries">
                         <div v-for="(delivery, index_) in goal.deliveries" :key="delivery.id" class="registration-workplan__goals__deliveries">
                             <div class="registration-workplan__header-deliveries">
@@ -176,7 +170,7 @@ $this->import('
 
                             <div class="field">
                                 <label>
-                                    {{ `Tipo ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
+                                    {{ `Tipo de ${getDeliveryLabelDefault}` }}<span class="required">obrigatório*</span></label>
                                 <select v-model="delivery.typeDelivery">
                                     <option value=""><?= i::esc_attr__('Selecione') ?></option>
                                     <option v-for="n in workplanFields.goal.delivery.typeDelivery.options" :key="n" :value="n">{{ n }}</option>
@@ -255,7 +249,7 @@ $this->import('
             </div>
         </div>
 
-        <div v-if="enableNewGoal(workplan)" id="registration-workplan__new-goal" class="registration-workplan__new-goal">
+        <div v-if="enableButtonNewGoal && enableNewGoal(workplan)" id="registration-workplan__new-goal" class="registration-workplan__new-goal">
             <button class="button button--primary-outline" @click="newGoal">
                 + {{ getGoalLabelDefault }}
             </button>
