@@ -60,14 +60,6 @@ $this->import('
                 {{ goal.culturalMakingStage }}
             </div>
 
-            <!-- Valor da meta -->
-            <div v-if="goal.amount" class="field">
-                <label>
-                    {{ `Valor da ${getGoalLabelDefault} (R$)` }}
-                </label>
-                {{ convertToCurrency(goal.amount) }}
-            </div>
-
             <div v-for="(delivery, index_) in goal.deliveries" :key="delivery.id" class="registration-details-workplan__goals__deliveries">
                 <div class="registration-details-workplan__header-deliveries">
                     <h4 class="registration-details-workplan__goals-title">

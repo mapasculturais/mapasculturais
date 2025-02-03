@@ -28,7 +28,8 @@ app.component('registration-workplan', {
             opportunity: this.registration.opportunity,
             workplan: entityWorkplan,
             workplanFields: $MAPAS.EntitiesDescription.workplan,
-            expandedGoals: []
+            expandedGoals: [],
+            enableButtonNewGoal: false
         };
     },
     mounted() {
@@ -77,9 +78,11 @@ app.component('registration-workplan', {
             response.then((res) => res.json().then((data) => {
                 if (data.workplan != null) {
                     this.workplan = data.workplan;
+                    this.updateEnableButtonNewGoal();
                 }
             }));
         },
+        
         async newGoal() {
             if (!this.validateGoal()) {
                 return false;
@@ -94,7 +97,6 @@ app.component('registration-workplan', {
             entityGoal.title = null;
             entityGoal.description = null;
             entityGoal.culturalMakingStage = null;
-            entityGoal.amount = null;
             entityGoal.deliveries = [];
 
         
@@ -108,6 +110,7 @@ app.component('registration-workplan', {
                 const response = api.DELETE('goal', {id: goal.id});
                 response.then((res) => res.json().then((data) => {
                     this.workplan.goals = this.workplan.goals.filter(g => g.id !== goal.id);
+                    this.updateEnableButtonNewGoal();
                 }));
             } else {
                 const index = this.workplan.goals.indexOf(goal);
@@ -116,6 +119,8 @@ app.component('registration-workplan', {
                     this.expandedGoals = this.expandedGoals
                         .filter(i => i !== index)
                         .map(i => i > index ? i - 1 : i);
+                    
+                        this.updateEnableButtonNewGoal();
                 }
             }
         },
@@ -151,6 +156,7 @@ app.component('registration-workplan', {
                         if (goal.deliveries) {
                             goal.deliveries = goal.deliveries.filter(delivery_ => delivery_.id !== delivery.id);
                         }
+                        this.updateEnableButtonNewGoal();
                         return goal;
                     });
                 }));
@@ -159,9 +165,11 @@ app.component('registration-workplan', {
                     if (goal.deliveries) {
                         goal.deliveries = goal.deliveries.filter(d => d !== delivery);
                     }
+                    this.updateEnableButtonNewGoal();
                     return goal;
                 });
             }
+           
         },
         validateGoal() {
             const messages = useMessages();
@@ -178,7 +186,6 @@ app.component('registration-workplan', {
                 if (!goal.title) emptyFields.push(`Título da ${this.getGoalLabelDefault}`);
                 if (!goal.description) emptyFields.push("Descrição");
                 if (this.opportunity.workplan_metaInformTheStageOfCulturalMaking && !goal.culturalMakingStage) emptyFields.push("Etapa do fazer cultural");
-                if (goal.amount == null || goal.amount === "") emptyFields.push(`Valor da ${this.getGoalLabelDefault} (R$)`);
                 if (this.opportunity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals && goal.deliveries.length === 0) emptyFields.push(`${this.getDeliveryLabelDefault}`);
 
                 const validateDelivery = this.validateDelivery(goal);
@@ -251,11 +258,15 @@ app.component('registration-workplan', {
             const response = api.POST(`save`, data);
             response.then((res) => res.json().then((data) => {                
                 this.getWorkplan();
+                this.updateEnableButtonNewGoal();
                 messages.success(this.text('Modificações salvas'));
             }));    
         },
         range(start, end) {
             return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+        },
+        updateEnableButtonNewGoal() {
+            this.enableButtonNewGoal = this.enableNewGoal(this.workplan);
         },
         enableNewGoal(workplan) {
             if (workplan.projectDuration == null || workplan.culturalArtisticSegment == null) {
@@ -383,6 +394,12 @@ app.component('registration-workplan', {
             if (this.isTutorialDisabled()) {
                 return;
             }
+
+            if (this.tour) {
+                this.tour.complete(); 
+                this.tour = null;
+            }
+
             this.tour = new Shepherd.Tour({
               useModalOverlay: true, // Escurece a tela
               defaultStepOptions: {
@@ -433,6 +450,12 @@ app.component('registration-workplan', {
             if (this.isTutorialDisabled()) {
                 return;
             }
+
+            if (this.tour) {
+                this.tour.complete(); 
+                this.tour = null;
+            }
+
             this.tour = new Shepherd.Tour({
               useModalOverlay: true, // Escurece a tela
               defaultStepOptions: {
@@ -491,6 +514,12 @@ app.component('registration-workplan', {
             if (this.isTutorialDisabled()) {
                 return;
             }
+
+            if (this.tour) {
+                this.tour.complete(); 
+                this.tour = null;
+            }
+
             this.tour = new Shepherd.Tour({
               useModalOverlay: true, // Escurece a tela
               defaultStepOptions: {
