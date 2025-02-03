@@ -47,7 +47,7 @@ $this->import('
 
     <template #button="modal">
         <button class="button button--primary w-100" @click="modal.open()">
-            <?= i::__("Adicionar fase de avaliação") ?>
+            <?= i::__("Adicionar fase de prestação de informações") ?>
         </button>
     </template>
 </mc-modal>
