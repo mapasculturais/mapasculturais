@@ -8,6 +8,25 @@ use \MapasCulturais\i;
 class Module extends \MapasCulturais\Module {
 
     public function _init() {
+        $app = App::i();
+
+        $app->hook('GET(panel.validations)', function() use($app) {
+            /** @var \Panel\Controller $this */
+            $this->requireAuthentication();
+
+            $this->render('validations', []);
+        });
+
+        $app->hook('panel.nav', function(&$group) use($app) {
+            $group['opportunities']['items'][] = [
+                'route' => 'panel/validations',
+                'icon' => 'opportunity',
+                'label' => i::__('Minhas validações'),
+                'condition' => function() use($app) {
+                    return $app->user->getIsEvaluator();
+                }
+            ];
+        });
     }
     
     public function register() {
