@@ -142,7 +142,7 @@ abstract class SpreadsheetJob extends JobType
                         $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
                     }
                 }
-                foreach($new_data as &$value) {
+                foreach($new_data as $colIndex => &$value) {
                     if($value instanceof DateTime) {
                         $value = $value->format('d/m/Y H:i:s');
                         continue;
@@ -150,6 +150,23 @@ abstract class SpreadsheetJob extends JobType
 
                     if($value instanceof GeoPoint) {
                         $value = "{$value}";
+                        continue;
+                    }
+
+                    // Insere link quando 
+                    if (is_string($value) && preg_match('/^https?:\/\//', $value)) {
+                        $columnLetter = Coordinate::stringFromColumnIndex($colIndex + 1);
+                        $cellAddress = $columnLetter . $row;
+        
+                        $sheet->getCell($cellAddress)->setValue($value);
+                        $sheet->getCell($cellAddress)->getHyperlink()->setUrl($value);
+        
+                        $sheet->getStyle($cellAddress)->applyFromArray([
+                            'font' => [
+                                'color' => ['rgb' => '0000FF'],
+                                'underline' => true
+                            ]
+                        ]);
                         continue;
                     }
 

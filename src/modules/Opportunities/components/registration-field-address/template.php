@@ -16,7 +16,7 @@ $this->import('
         <label> {{ title }} </label>
         <small class="field__description"> {{ description }} </small>
 
-        <div v-for="(address, index) in registration[prop]" class="registration-field-persons__person">
+        <div v-for="(address, index) in parseData()" class="registration-field-persons__person">
 
             <p class="semibold"> {{index + 1}}ª <?= i::__("Endereço") ?> </p>
 

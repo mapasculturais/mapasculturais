@@ -658,7 +658,7 @@ class Module extends \MapasCulturais\Module
                         $registration =  $app->repo('Registration')->find($registration->id);
                     }
 
-                    if(is_null($registration) || $registration->status > 0){
+                    if(is_null($registration) || $registration->status > 1){
                             
                         $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
                         if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {

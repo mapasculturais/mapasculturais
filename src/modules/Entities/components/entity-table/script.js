@@ -451,6 +451,15 @@ app.component('entity-table', {
                         break;
                     case 'point':
                         val = val ? `${val.lat}, ${val.lng}` : null
+                        break;
+                    case 'addresses':
+                        let _val = val;
+                        if(typeof val === 'string') {
+                            _val = JSON.parse(val);
+                        } 
+
+                        val = val ? JSON.parse(val).map(item => `${item.nome}: ${item.logradouro}, ${item.numero}, ${item.bairro}, ${item.cidade}, ${item.complemento}  - ${item.estado}, ${item.cep}`).join('<br>') : null
+                        break;
                     case 'boolean':
                         if(prop == "publicLocation") {
                             val = val ? this.text('sim') : this.text('nao')
@@ -463,7 +472,11 @@ app.component('entity-table', {
                 }
             }
 
-            if(prop == 'seals.?[0]?.createTimestamp' ) {
+            if(prop == 'singleUrl' ) {
+                val = `<a href="${val}">${val}</a>`;
+            }
+
+            if(val && prop == 'seals[0]?.createTimestamp' ) {
                 let _val = new McDate(val.date);
                 val = _val.date('numeric year') + ' ' + _val.time('2-digit');
             }
