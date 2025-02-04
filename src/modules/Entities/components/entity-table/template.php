@@ -164,7 +164,7 @@ $this->import('
                                 <template v-for="header in columns" :key="header.slug">
                                     <td v-if="header.visible" :class="{sticky: header.sticky || header.stickyRight}" :style="headerStyle(header)">
                                         <slot :name="header.slug" :entity="entity" :refresh="refresh">
-                                            {{getEntityData(entity, header.value)}}
+                                            <span v-html="getEntityData(entity, header.value)"></span>
                                         </slot>
                                     </td>
                                 </template>
