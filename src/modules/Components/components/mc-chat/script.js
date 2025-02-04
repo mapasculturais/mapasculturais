@@ -148,8 +148,8 @@ app.component('mc-chat', {
             try {
                 const api = new API('chatmessage');
                 const selectFields = this.anonymousSender
-                    ? 'createTimestamp,payload,user.profile.{name,files.avatar},files'
-                    : 'createTimestamp,payload,user,files';
+                    ? 'createTimestamp,payload,user,files'
+                    : 'createTimestamp,payload,user.profile.{name,files.avatar},files';
 
                 const params = {
                     thread: `EQ(${this.thread.id})`,
@@ -213,7 +213,7 @@ app.component('mc-chat', {
         updateAutoRefreshInterval() {
             this.clearAutoRefresh();
 
-            const intervalTime = this.currentTextareaFocus ? 10000 : 30000;
+            const intervalTime = this.currentTextareaFocus ? 5000 : 5000;
             this.autoRefreshInterval = setInterval(() => {
                 this.fetchNewMessages();
             }, intervalTime);
