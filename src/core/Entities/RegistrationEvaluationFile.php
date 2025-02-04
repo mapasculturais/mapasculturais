@@ -29,6 +29,11 @@ class RegistrationEvaluationFile extends File{
 
     protected function canUserCreate($user)
     {
+        // não permite editar/atualizar o arquivo quando a avaliação tem status > 0
+        if ($this->owner->status > 0) {
+            return false;
+        }
+
         return $this->owner->user->canUser("modify", $user);
     }
 
