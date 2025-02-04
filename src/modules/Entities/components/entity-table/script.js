@@ -472,7 +472,11 @@ app.component('entity-table', {
                 }
             }
 
-            if(prop == 'seals.?[0]?.createTimestamp' ) {
+            if(prop == 'singleUrl' ) {
+                val = `<a href="${val}">${val}</a>`;
+            }
+
+            if(val && prop == 'seals[0]?.createTimestamp' ) {
                 let _val = new McDate(val.date);
                 val = _val.date('numeric year') + ' ' + _val.time('2-digit');
             }
