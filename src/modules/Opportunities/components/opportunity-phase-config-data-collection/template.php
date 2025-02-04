@@ -83,7 +83,7 @@ $this->import('
         </template>
 
         <div class="opportunity-data-collection__delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">
-            <mc-confirm-button message="<?=i::esc_attr__('Confirma a execução da ação?')?>" @confirm="deletePhase($event, phase, index)">
+            <mc-confirm-button :message="confirmDeleteMessage" @confirm="deletePhase(phase, index)">
                 <template #button="modal">
                     <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
