@@ -16,14 +16,14 @@ $this->import('
                     <mc-icon name="opportunity"></mc-icon>
                 </div>
 
-                <h2><?= i::__('Minhas avaliações') ?></h2>
+                <h2><?= i::__('Minhas validações') ?></h2>
             </div>
         </div>
 
         <p class="panel-page__header-subtitle">
-            <?= i::__('Nesta seção você encontra as avaliações e os pareceres disponíveis para sua análise.') ?>
+            <?= i::__('Nesta seção você encontra as validações e os pareceres disponíveis para sua análise.') ?>
         </p>
     </header>
 
-    <panel--evaluations-tabs :is-reporting-phase="false"></panel--evaluations-tabs>
+    <panel--evaluations-tabs :is-reporting-phase="true"></panel--evaluations-tabs>
 </div>
