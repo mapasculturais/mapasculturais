@@ -560,6 +560,8 @@ app.component('registration-workplan', {
                 },
                 buttons: this.tutorialButtonsDefault()
             });
+
+            this.disableTutorial();
             
             this.tour.start();
         },
