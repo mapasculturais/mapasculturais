@@ -213,7 +213,7 @@ app.component('mc-chat', {
         updateAutoRefreshInterval() {
             this.clearAutoRefresh();
 
-            const intervalTime = this.currentTextareaFocus ? 5000 : 5000;
+            const intervalTime = this.currentTextareaFocus ? 10000 : 30000;
             this.autoRefreshInterval = setInterval(() => {
                 this.fetchNewMessages();
             }, intervalTime);
