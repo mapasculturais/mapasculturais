@@ -22,7 +22,7 @@ app.component('opportunity-create-reporting-phase', {
 
     computed: {
         minCollectionDate () {
-            return this.opportunity.evaluationMethodConfiguration.evaluationTo?._date ?? null;
+            return this.opportunity.evaluationMethodConfiguration?.evaluationTo?._date ?? null;
         },
     },
 
