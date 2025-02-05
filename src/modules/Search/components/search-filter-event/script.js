@@ -164,12 +164,20 @@ app.component('search-filter-event', {
 
     methods: {
         clearFilters() {
+            const types = ['string', 'boolean'];
             this.date = [this.defaultDateFrom, this.defaultDateTo];
-            this.pseudoQuery['@from'] = new McDate(new Date(this.date[0])).date('sql');
-            this.pseudoQuery['@to'] = new McDate(new Date(this.date[1])).date('sql');
-            delete this.pseudoQuery['event:@verified'];
-            this.pseudoQuery['event:classificacaoEtaria'].length = 0;
-            this.pseudoQuery['event:term:linguagem'].length = 0;        
+            for (const key in this.pseudoQuery) {
+                console.log(key+'\n', typeof this.pseudoQuery[key]);
+                if (['@from', '@to'].includes[key]) {
+                    this.pseudoQuery[key] = new McDate(new Date(key == '@from' ? this.date[0] : this.date[1])).date('sql');
+                } else {
+                    if (Array.isArray(this.pseudoQuery[key])) {
+                        this.pseudoQuery[key] = [];
+                    } else if (types.includes(typeof this.pseudoQuery[key])) {
+                        delete this.pseudoQuery[key];
+                    }
+                }
+            }       
         },
         dateFormat(date) {
             const d0 = new Date(date[0]);
