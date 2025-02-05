@@ -103,18 +103,40 @@ app.component('opportunity-phase-config-evaluation' , {
         seals() {
             return $MAPAS.config?.opportunityPhaseConfigEvaluation?.seals;
         },
+
+        confirmDeleteMessage () {
+            if (this.phase.opportunity?.isReportingPhase) {
+                return this.text('confirma exclusao de fase de prestacao');
+            } else {
+                return this.text('confirma exclusao de fase');
+            }
+        },
     },
 
     methods: {
-        async deletePhase (event, item, index) {
+        async deletePhase (phase, index) {
             const messages = useMessages();
             try {
-                await item.delete();
-                this.phases.splice(index, 1);
+                if (phase.opportunity?.isReportingPhase) {
+                    await this.deleteReportingPhase(phase, index);
+                } else {
+                    await phase.delete();
+                    this.phases.splice(index, 1);
+                }
             } catch (e) {
                 messages.error(this.text('nao foi possivel remover fase'));
             }
 
+        },
+        async deleteReportingPhase (phase, index) {
+            const opportunityId = phase.opportunity.id;
+            const opportunityIndex = this.phases.findIndex((phase) => {
+                return phase.__objectType === 'opportunity' && phase.id == opportunityId;
+            });
+           
+            await phase.opportunity.destroy();
+            this.phases.splice(index, 1);
+            this.phases.splice(opportunityIndex, 1);
         },
         savePhase () {
             this.phase.save(3000);

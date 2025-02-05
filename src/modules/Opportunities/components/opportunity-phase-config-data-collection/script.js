@@ -85,18 +85,40 @@ app.component('opportunity-phase-config-data-collection' , {
 
         firstPhase() {
             return this.phases[0];
-        }
+        },
+
+        confirmDeleteMessage () {
+            if (this.phase?.isReportingPhase) {
+                return this.text('confirma exclusao de fase de prestacao');
+            } else {
+                return this.text('confirma exclusao de fase');
+            }
+        },
     },
 
     methods: {
-        async deletePhase (event, item, index) {
+        removeEvaluationPhase (item) {
+            if (item.evaluationMethodConfiguration?.id) {
+                const evaluationId = item.evaluationMethodConfiguration.id;
+                const evaluationIndex = this.phases.findIndex((phase) => {
+                    return phase.__objectType === 'evaluationmethodconfiguration' && phase.id == evaluationId;
+                });
+                if (evaluationIndex >= 0) {
+                    this.phases.splice(evaluationIndex, 1);
+                }
+            }
+        },
+        async deletePhase (item, index) {
             const messages = useMessages();
             try{
                 await item.destroy();
                 this.phases.splice(index, 1);
+                if (this.phase?.isReportingPhase) {
+                    this.removeEvaluationPhase(item);
+                }
             } catch (e) {
                 messages.error(this.text('nao foi possivel remover fase'));
             }
-        }
+        },
     }
 });

@@ -354,23 +354,15 @@ ol.mc-stepper-vertical>li.active::before {
         border-left: 3px solid red;
         padding-left: 25px;
         display: flex;
+        gap: 15px;
         padding-left: 25px;
+        padding-bottom: 15px;
         flex-direction: column;
         flex-wrap: wrap;
         align-items: center;
 
         &.add-phase.grid-12 {
             border-left: none;
-
-        }
-
-        &__evaluation {
-            margin-top: 25px;
-        }
-
-        &__collection {
-            margin-bottom: 25px;
-
         }
     }
 
