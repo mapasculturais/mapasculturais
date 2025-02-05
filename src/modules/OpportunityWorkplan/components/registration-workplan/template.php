@@ -48,7 +48,7 @@ $this->import('
     <template #content>
         <div class="field" id="projectDuration">
             <label><?= i::esc_attr__('Duração do projeto (meses)') ?><span class="required">obrigatório*</span></label>
-            <select class="field__limits" v-model="workplan.projectDuration" @blur="save_(false)">
+            <select class="field__limits" v-model="workplan.projectDuration" @change="save_(false)">
                 <option value=""><?= i::esc_attr__('Selecione') ?></option>
                 <option v-for="n in optionsProjectDurationData()" :key="n" :value="n">{{ n }}</option>
             </select>
@@ -56,7 +56,7 @@ $this->import('
 
         <div class="field" id="culturalArtisticSegment">
             <label><?= i::esc_attr__('Segmento artistico-cultural') ?><span class="required">obrigatório*</span></label>
-            <select v-model="workplan.culturalArtisticSegment" @blur="save_(false)">
+            <select v-model="workplan.culturalArtisticSegment" @change="save_(false)">
                 <option value=""><?= i::esc_attr__('Selecione') ?></option>
                 <option v-for="n in workplanFields.culturalArtisticSegment.options" :key="n" :value="n">{{ n }}</option>
             </select>
