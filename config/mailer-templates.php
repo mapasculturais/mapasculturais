@@ -51,6 +51,14 @@ return [
             'title' => i::__("Sua inscrição avaçou de fase"),
             'template' => 'start_data_collection_phase.html'
         ],
+        'start_reporting_phase' => [
+            'title' => i::__("Sua inscrição entrou na fase de monitoramento"),
+            'template' => 'start_reporting_phase.html'
+        ],
+        'start_final_reporting_phase' => [
+            'title' => i::__("Sua inscrição entrou na fase de prestação de informações"),
+            'template' => 'start_final_reporting_phase.html'
+        ],
         'export_spreadsheet' => [
             'title' => i::__("Planilha disponível"),
             'template' => 'export_spreadsheet.html'
