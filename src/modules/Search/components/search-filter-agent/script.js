@@ -24,14 +24,13 @@ app.component('search-filter-agent', {
         }
     },
 
-    computed: {
-    },
-    
     methods: {
         clearFilters() {
-            delete this.pseudoQuery['@verified'];
-            delete this.pseudoQuery['type'];
-            this.pseudoQuery['term:area'].length = 0;
+            for (const key in this.pseudoQuery) {
+                if (Array.isArray(this.pseudoQuery[key])) {
+                    this.pseudoQuery[key] = [];
+                }
+            }
         }
     },
 });
