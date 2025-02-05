@@ -13,23 +13,39 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('entity(Registration).insert:after', function () use ($app) {
             /** @var Entities\Registration $this */
-            if ($this->opportunity->isReportingPhase) {
+            $opportunity = $this->opportunity;
+
+            if ($opportunity->isReportingPhase) {
+                if ($opportunity->isFinalReportingPhase) {
+                    $notification_template = i::__('A fase de prestação de informações da inscrição %s, na oportunidade %s, começou. Você deve preenchê-la com as informações solicitadas até %s.');
+                } else {
+                    $notification_template = i::__('A fase de monitoramento da inscrição %s, na oportunidade %s, começou. Você deve preenchê-la com as informações solicitadas até %s.');
+                }
+    
                 $notification_message = sprintf(
-                    i::__('A fase de prestação de informações da inscrição %s se iniciou'),
-                    "<a href='{$this->singleUrl}'>{$this->number}</a>",
+                   $notification_template,
+                    "<strong>{$this->number}</strong>",
+                    "<strong>{$opportunity->name}</strong>",
+                    "<strong>{$opportunity->registrationTo->format('Y-m-d H:i')}</strong>"
                 );
                 
                 $notification = new Entities\Notification();
                 $notification->user = $this->owner;
                 $notification->message = $notification_message;
                 $notification->save(true);
+            }
+        });
 
-                $app->createAndSendMailMessage([
-                    'from' => $app->config['mailer.from'],
-                    'to' => $this->owner->emailPrivado,
-                    'subject' => i::__('Início da fase de prestação de informações'),
-                    'body' => $notification_message,
-                ]);
+        $app->hook('sendMailNotification.registrationStart', function (Entities\Registration &$registration, string &$template, array &$params) {
+            $opportunity = $registration->opportunity;
+
+            if ($opportunity->isReportingPhase) {
+                if ($opportunity->isFinalReportingPhase) {
+                    $template = 'start_final_reporting_phase';
+                } else {
+                    $template = 'start_reporting_phase';
+                }
+                $params['registrationTo'] = $opportunity->registrationTo->format('Y-m-d H:i');
             }
         });
     }
