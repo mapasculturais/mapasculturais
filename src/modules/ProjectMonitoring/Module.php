@@ -26,7 +26,7 @@ class Module extends \MapasCulturais\Module {
                    $notification_template,
                     "<strong>{$this->number}</strong>",
                     "<strong>{$opportunity->firstPhase->name}</strong>",
-                    "<strong>{$opportunity->registrationTo->format('Y-m-d H:i')}</strong>"
+                    "<strong>{$opportunity->registrationTo->format('d/m/Y H:i')}</strong>"
                 );
                 
                 $notification = new Entities\Notification();
@@ -47,6 +47,24 @@ class Module extends \MapasCulturais\Module {
                 }
                 $params['registrationTo'] = $opportunity->registrationTo->format('d/m/Y H:i');
             }
+        });
+        
+        $app->hook('GET(panel.validations)', function() use($app) {
+            /** @var \Panel\Controller $this */
+            $this->requireAuthentication();
+
+            $this->render('validations', []);
+        });
+
+        $app->hook('panel.nav', function(&$group) use($app) {
+            $group['opportunities']['items'][] = [
+                'route' => 'panel/validations',
+                'icon' => 'opportunity',
+                'label' => i::__('Minhas validações'),
+                'condition' => function() use($app) {
+                    return $app->user->getIsEvaluator();
+                }
+            ];
         });
     }
     
