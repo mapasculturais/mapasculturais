@@ -1320,16 +1320,16 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) {
             if($previous_phase = $this->previousPhase){
                 $previous_date_from = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationFrom : $previous_phase->evaluationFrom;
-                $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
-
+                
                 if($this->evaluationFrom < $previous_date_from) {
+                    $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
                     $validations['evaluationFrom']["\$value >= new DateTime('$previous_date_from_string')"] = i::__('A data inicial deve ser maior ou igual a data de inicio da fase anterior');
                 }
 
                 $previous_date_to = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationTo : $previous_phase->evaluationTo;
-                $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
-
+                
                 if($this->evaluationTo < $previous_date_to) {
+                    $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
                     $validations['evaluationTo']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data final deve ser maior ou igual a data de término da fase anterior');
                 }
             }
