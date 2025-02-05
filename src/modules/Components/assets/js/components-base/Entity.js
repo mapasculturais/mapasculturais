@@ -1,8 +1,8 @@
 class Entity {
-    constructor(objectType, id, scope) {
+    constructor(objectType, id, scope = 'default') {
         this.__objectType = objectType;
         this.id = id;
-        this.__scope = (scope || 'default');
+        this.__scope = scope;
         this.__validationErrors = {};
         
         this.__messagesEnabled = true;
@@ -12,6 +12,12 @@ class Entity {
 
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('mc-entity');
+    }
+
+    static fromJson(object, scope = 'default') {
+        const entity = new Entity(object['@entityType'], object.id, scope);
+        entity.populate(object);
+        return entity;
     }
 
     populate(obj, preserveValues = true) {
