@@ -30,7 +30,7 @@ class Module extends \MapasCulturais\Module {
                 );
                 
                 $notification = new Entities\Notification();
-                $notification->user = $this->owner;
+                $notification->user = $this->owner->user;
                 $notification->message = $notification_message;
                 $notification->save(true);
             }
