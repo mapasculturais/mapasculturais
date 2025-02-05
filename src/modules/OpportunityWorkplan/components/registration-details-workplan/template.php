@@ -85,11 +85,6 @@ $this->import('
                     {{ delivery.segmentDelivery }}
                 </div>
 
-                <div v-if="delivery.budgetAction" class="field">
-                    <label><?= i::esc_attr__('Ação orçamentária') ?></label>
-                    {{ delivery.budgetAction }}
-                </div>
-
                 <div v-if="delivery.expectedNumberPeople" class="field">
                     <label><?= i::esc_attr__('Número previsto de pessoas') ?></label>
                     {{ delivery.expectedNumberPeople }}

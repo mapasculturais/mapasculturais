@@ -97,7 +97,6 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_deliveryMaximumNumberOfDeliveries = 0;
             this.entity.workplan_registrationReportTheNumberOfParticipants = false;
             this.entity.workplan_registrationReportExpectedRenevue = false;
-            this.entity.workplan_registrationInformActionPAAR = false;
             this.entity.workplan_registrationInformCulturalArtisticSegment = false;
 
             this.entity.workplan_monitoringInformTheFormOfAvailability = false;

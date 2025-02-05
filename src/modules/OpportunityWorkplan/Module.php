@@ -171,12 +171,6 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
-        $this->registerOpportunityMetadata('workplan_registrationInformActionPAAR', [
-            'label' => i::__('Informar a ação orçamentária (PAAR)'),
-            'type' => 'boolean',
-            'default_value' => false
-        ]);
-
         $this->registerOpportunityMetadata('workplan_monitoringInformTheFormOfAvailability', [
             'label' => i::__('Informar forma de disponibilização'),
             'type' => 'boolean',
@@ -504,17 +498,6 @@ class Module extends \MapasCulturais\Module{
             ),
         ]);
         $app->registerMetadata($segmentDelivery, Delivery::class);
-
-        $budgetAction = new Metadata('budgetAction', [
-            'label' => \MapasCulturais\i::__('Ação orçamentária'),
-            'type' => 'select',
-            'options' => array(
-                \MapasCulturais\i::__('Ação 1'),
-                \MapasCulturais\i::__('Ação 2'),
-            ),
-        ]);
-        $app->registerMetadata($budgetAction, Delivery::class);
-
 
         $expectedNumberPeople = new Metadata('expectedNumberPeople', ['label' => \MapasCulturais\i::__('Número previsto de pessoas')]);
         $app->registerMetadata($expectedNumberPeople, Delivery::class);
