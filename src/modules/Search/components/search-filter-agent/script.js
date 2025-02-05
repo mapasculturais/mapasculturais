@@ -26,9 +26,12 @@ app.component('search-filter-agent', {
 
     methods: {
         clearFilters() {
+            const types = ['string', 'boolean'];
             for (const key in this.pseudoQuery) {
                 if (Array.isArray(this.pseudoQuery[key])) {
                     this.pseudoQuery[key] = [];
+                } else if (types.includes(typeof this.pseudoQuery[key])) {
+                    delete this.pseudoQuery[key];
                 }
             }
         }
