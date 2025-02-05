@@ -187,14 +187,6 @@ $this->import('
                                 </select>
                             </div>
 
-                            <div v-if="opportunity.workplan_registrationInformActionPAAR" class="field">
-                                <label><?= i::esc_attr__('Ação orçamentária') ?><span class="required">obrigatório*</span></label>
-                                <select v-model="delivery.budgetAction">
-                                    <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                                    <option v-for="n in workplanFields.goal.delivery.budgetAction.options" :key="n" :value="n">{{ n }}</option>
-                                </select>
-                            </div>
-
                             <div v-if="opportunity.workplan_registrationReportTheNumberOfParticipants" class="field">
                                 <label><?= i::esc_attr__('Número previsto de pessoas') ?><span class="required">obrigatório*</span></label>
                                 <input class="field__limits" v-model="delivery.expectedNumberPeople" min="0" type="number">

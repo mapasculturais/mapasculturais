@@ -137,7 +137,6 @@ app.component('registration-workplan', {
             entityDelivery.description = null;
             entityDelivery.typeDelivery = null
             entityDelivery.segmentDelivery = null;
-            entityDelivery.budgetAction = null;
             entityDelivery.expectedNumberPeople = null
             entityDelivery.generaterRevenue = null;
             entityDelivery.renevueQtd = null;
@@ -225,7 +224,6 @@ app.component('registration-workplan', {
                 if ('description' in delivery && !delivery.description) emptyFields.push("Descrição");
                 if ('typeDelivery' in delivery && !delivery.typeDelivery) emptyFields.push(`Tipo de ${this.getDeliveryLabelDefault}`);
                 if (this.opportunity.workplan_registrationInformCulturalArtisticSegment && 'segmentDelivery' in delivery && !delivery.segmentDelivery) emptyFields.push(`Segmento artístico-cultural da ${this.getDeliveryLabelDefault}`);
-                if (this.opportunity.workplan_registrationInformActionPAAR && 'budgetAction' in delivery && !delivery.budgetAction) emptyFields.push("Ação orçamentária");
                 if (this.opportunity.workplan_registrationReportTheNumberOfParticipants && 'expectedNumberPeople' in delivery && !delivery.expectedNumberPeople) emptyFields.push("Número previsto de pessoas");
                 if (this.opportunity.workplan_registrationReportExpectedRenevue && 'generaterRevenue' in delivery && !delivery.generaterRevenue) emptyFields.push(`A ${this.getDeliveryLabelDefault} irá gerar receita?`);
                 if (delivery.generaterRevenue == 'true' && 'renevueQtd' in delivery && !delivery.renevueQtd) emptyFields.push("Quantidade");

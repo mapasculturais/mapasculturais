@@ -202,17 +202,6 @@ $this->import('
                         </div>
                     </div>
                 </div>
-                <div v-if="entity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals" id="data-registration" class="opportunity-enable-workplan__block  col-12">
-                    <h4 class="bold opportunity-enable-workplan__title"><?= i::__('PAAR') ?></h4>
-                    <h6><?= $this->text('header-description', i::__('Plano Anual de Aplicação de Recursos.')) ?></h6>
-                    <div class="field col-12">
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_registrationInformActionPAAR" @click="autoSave()" /><?= i::__("Informar a ação orçamentária (PAAR)") ?>
-                            </label>
-                        </div>
-                    </div>
-                </div>
                 <div v-if="entity.workplan_deliveryReportTheDeliveriesLinkedToTheGoals" id="data-monitoring" class="opportunity-enable-workplan__block  col-12">
                     <h4 class="bold opportunity-enable-workplan__title"><?= i::__('Monitoramento') ?></h4>
                     <h6><?= $this->text('header-description', i::__('As informações marcadas abaixo serão obrigatórias no monitoramento da oportunidade.')) ?></h6>
