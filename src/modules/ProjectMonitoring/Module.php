@@ -25,7 +25,7 @@ class Module extends \MapasCulturais\Module {
                 $notification_message = sprintf(
                    $notification_template,
                     "<strong>{$this->number}</strong>",
-                    "<strong>{$opportunity->name}</strong>",
+                    "<strong>{$opportunity->firstPhase->name}</strong>",
                     "<strong>{$opportunity->registrationTo->format('Y-m-d H:i')}</strong>"
                 );
                 
@@ -45,7 +45,7 @@ class Module extends \MapasCulturais\Module {
                 } else {
                     $template = 'start_reporting_phase';
                 }
-                $params['registrationTo'] = $opportunity->registrationTo->format('Y-m-d H:i');
+                $params['registrationTo'] = $opportunity->registrationTo->format('d/m/Y H:i');
             }
         });
     }
