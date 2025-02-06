@@ -26,6 +26,9 @@ $this->import('
             <div class="col-6">
                 <entity-field :entity="collectionPhase" prop="registrationTo" :min="collectionPhase.evaluationFrom?._date" label="<?= i::__("Data final") ?>" hideRequired></entity-field>
             </div>
+            <div class="col-12">
+                <entity-field :entity="collectionPhase" prop="isFinalReportingPhase" label="<?= i::__('É fase final de prestação de informações?') ?>"></entity-field>
+            </div>
 
             <div class="col-12 modal__title"><?= i::__("Avaliação contínua") ?></div>
             <div class="col-12">
