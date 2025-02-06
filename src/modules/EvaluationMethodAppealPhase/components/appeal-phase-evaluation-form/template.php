@@ -39,7 +39,8 @@ $this->import('
             title-modal="<?php i::_e('Anexar parecer') ?>"
             classes="col-12"
             title="<?php i::_e('Anexar parecer') ?>"
-            :editable="!(currentEvaluation.status > 0)"
+            :editable="currentEvaluation.status === 0"
+            @delete="removeEvaluationAttachment"
             ></entity-file>
 
         <mc-modal v-if="!isEditable":title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
