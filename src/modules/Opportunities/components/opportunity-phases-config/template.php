@@ -71,7 +71,7 @@ $this->import('
         </template>
     </template>
     <template #after-li="{index, item}">
-        <template v-if="index == phases.length-2">
+        <template v-if="phases[index + 1]?.isLastPhase">
             <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo && !(firstPhase?.isContinuousFlow && firstPhase?.hasEndDate && !lastPhase.publishTimestamp)" class="add-phase grid-12">
                 <div class="col-12">
                     <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
@@ -79,10 +79,6 @@ $this->import('
                 <p><label class="col-12"><?= i::__("ou") ?></label></p>
                 <div class="col-12">
                     <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
-                </div>
-                <p><label class="col-12"><?= i::__("ou") ?></label></p>
-                <div class="col-12">
-                    <opportunity-create-reporting-phase :opportunity="entity" @create="addReportingPhases"></opportunity-create-reporting-phase>
                 </div>
             </div>
             
@@ -97,6 +93,14 @@ $this->import('
             <div v-if="!showButtons()" class="info-message helper">
                 <mc-icon name="exclamation"></mc-icon>
                 <?= i::__('Não se pode criar novas fases após a publicação do resultado final') ?>
+            </div>
+        </template>
+
+        <template v-else-if="item.isLastPhase">
+            <div class="add-phase grid-12">
+                <div class="col-12" v-if="!finalReportingPhase">
+                    <opportunity-create-reporting-phase :opportunity="entity" @create="addReportingPhases"></opportunity-create-reporting-phase>
+                </div>
             </div>
         </template>
     </template>

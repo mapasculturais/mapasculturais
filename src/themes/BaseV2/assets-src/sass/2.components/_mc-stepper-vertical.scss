@@ -354,7 +354,7 @@ ol.mc-stepper-vertical>li.active::before {
         border-left: 3px solid red;
         padding-left: 25px;
         display: flex;
-        gap: 15px;
+        gap: 1rem;
         padding-left: 25px;
         padding-bottom: 15px;
         flex-direction: column;
@@ -363,6 +363,10 @@ ol.mc-stepper-vertical>li.active::before {
 
         &.add-phase.grid-12 {
             border-left: none;
+        }
+
+        p {
+            font-weight: 600;
         }
     }
 

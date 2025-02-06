@@ -3,10 +3,6 @@ app.component('opportunity-create-reporting-phase', {
     emits: ['create'],
 
     props: {
-        isFinal: {
-            type: Boolean,
-            default: false,
-        },
         opportunity: {
             type: Entity,
             required: true,
@@ -29,7 +25,6 @@ app.component('opportunity-create-reporting-phase', {
     methods: {
         createEntities () {
             this.collectionPhase = Vue.reactive(new Entity('opportunity'));
-            this.collectionPhase.isFinalReportingPhase = this.isFinal;
             this.evaluationPhase = Vue.reactive(new Entity('evaluationmethodconfiguration'));
         },
 

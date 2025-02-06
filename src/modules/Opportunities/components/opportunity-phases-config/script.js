@@ -38,16 +38,17 @@ app.component('opportunity-phases-config', {
     },
 
     computed: {
+        finalReportingPhase() {
+            return this.phases.find((phase) => phase.isFinalReportingPhase);
+        },
+
         firstPhase() {
             return this.phases[0];
         },
 
         lastPhase() {
-            const lastPhase = this.phases[this.phases.length - 1];
-            if (lastPhase.isLastPhase) {
-                return lastPhase;
-            }
-        }
+            return this.phases.findLast((phase) => phase.isLastPhase);
+        },
     },
     
     methods: {
