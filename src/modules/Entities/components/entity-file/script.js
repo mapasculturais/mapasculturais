@@ -1,6 +1,6 @@
 app.component('entity-file', {
     template: $TEMPLATES['entity-file'],
-    emits: ['uploaded', 'setFile'],
+    emits: ['delete', 'setFile', 'uploaded'],
 
     setup(props, {slots}) {
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -153,11 +153,12 @@ app.component('entity-file', {
             }
         },
 
-        deleteFile(file) {
-            file.delete().then(() => {
-                this.file = null;
-                this.newFile = {};
-            });
+        async deleteFile(file) {
+            await file.delete();
+            this.file = null;
+            this.newFile = {};
+
+            this.$emit('delete', file);
         }
     },
 });

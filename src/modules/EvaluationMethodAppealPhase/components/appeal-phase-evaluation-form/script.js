@@ -62,9 +62,10 @@ app.component('appeal-phase-evaluation-form', {
         },
 
         currentEvaluation() {
-            const entity = new Entity("registrationevaluation");
-            entity.populate($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation);
-            return entity;
+            const api = new API('registrationevaluation');
+            const evaluation = api.getEntityInstance($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation.id);
+            evaluation.populate($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation);
+            return evaluation;
         },
 
         needsTiebreaker() {
@@ -101,6 +102,10 @@ app.component('appeal-phase-evaluation-form', {
 
         handleCurrentEvaluationForm() {
             return this.currentEvaluation?.status > 0 ? this.isEditable = false : this.isEditable = this.editable;
+        },
+
+        removeEvaluationAttachment(file) {
+            this.currentEvaluation.files.evaluationAttachment = undefined;
         },
 
         statusToString(status) {
