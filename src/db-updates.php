@@ -2541,6 +2541,6 @@ $$
             ) AS recent_revision
             WHERE r.id = recent_revision.object_id;
         ");
-    }
+    },
 
 ] + $updates ;   
