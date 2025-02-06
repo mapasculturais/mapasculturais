@@ -2522,7 +2522,7 @@ $$
                     etnias.name AS term
                FROM etnias;
         ");
-    }
+    },
     
     'Criação da coluna update timestemp' => function() use($conn) {
 
@@ -2541,6 +2541,6 @@ $$
             ) AS recent_revision
             WHERE r.id = recent_revision.object_id;
         ");
-    },
+    }
 
 ] + $updates ;   
