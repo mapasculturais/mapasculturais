@@ -172,7 +172,7 @@ $this->import('
                         </tbody>
                     </table>
                 </div>          
-                <div class="entity-table__table-scroll" ref="scrollWrapper" @scroll="scroll($event)">
+                <div class="entity-table__table-scroll scrollbar" ref="scrollWrapper" @scroll="scroll($event)">
                     <div :style="{width}">&nbsp;</div>
                 </div>
             </div>
