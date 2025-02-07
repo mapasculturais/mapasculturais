@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.20] - 2025-02-07
+#### Correções
+- Limpeza do cache de usuário antigo na mudança de propriedade em uma entidade
+
 ## [7.5.19] - 2025-02-03
 #### Melhorias
 - Possibilita condicionar campos com a pergunta "Vai concorrer às cotas?"
