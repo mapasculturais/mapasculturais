@@ -1083,6 +1083,10 @@ return [
         ");
     },
 
+    'define a coluna id da tabela permission_cache_pending como auto incremet' => function() {
+        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
