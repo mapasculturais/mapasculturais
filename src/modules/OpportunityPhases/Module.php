@@ -448,8 +448,12 @@ class Module extends \MapasCulturais\Module{
             ]);
 
             $last_phase = null;
+            $reporting_phase = null;
+
             foreach($query->getResult() as $opp) {
-                if($opp->isLastPhase) {
+                if ($opp->isReportingPhase) {
+                    $reporting_phase = $opp;
+                } elseif ($opp->isLastPhase) {
                     $last_phase = $opp;
                 } else {
                     $values[] = $opp;
@@ -460,6 +464,12 @@ class Module extends \MapasCulturais\Module{
                 $values[] = $last_phase;
             }
 
+            /**
+             * Adiciona a fase de prestação de informações ao final da lista de fases se ela existir.
+             */
+            if ($reporting_phase) {
+                $values[] = $reporting_phase;
+            }
         });
 
         /**
