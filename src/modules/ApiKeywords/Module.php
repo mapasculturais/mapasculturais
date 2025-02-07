@@ -34,10 +34,10 @@ class Module extends \MapasCulturais\Module {
 
         // faz a keyword buscar pelo documento do owner nas inscrições
         $app->hook('repo(Registration).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) use ($format_doc) {
-            $joins .= "\n LEFT JOIN o.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
+            $joins .= "\n LEFT JOIN e.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
             $joins .= "\n LEFT JOIN coletivo_relation.agent agent_coletivo";
             $joins .= "\n LEFT JOIN o.__metadata o_nome WITH o_nome.key = 'nomeCompleto'";
-            
+
             if ($format_doc($keyword)) {
                 $joins .= "\n LEFT JOIN o.__metadata doc WITH doc.key IN('documento','cnpj','cpf')";
                 $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_doc WITH coletivo_doc.key = 'cnpj'";
