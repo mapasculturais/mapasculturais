@@ -6,6 +6,10 @@ use Respect\Validation\Rules\AbstractRule;
 final class BrCurrency extends AbstractRule {
     
     public function validate($input): bool {
+        if(is_numeric($input)) {
+            return true;
+        } 
+
         return (bool) preg_match("#^((([1-9]\d?\d?)(\.\d{3})*)|([1-9]\d*)|0),(\d{2})$#", trim((string) $input));
     }
 }
