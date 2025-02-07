@@ -79,6 +79,10 @@ trait EntityPermissionCache {
         }
         
         if(is_null($users)){
+            if($delete_old) {
+                $this->deletePermissionsCache();
+            }
+
             if($this->usesAgentRelation()){
                 $users = $this->getUsersWithControl();
             } else if($this->owner) {
@@ -98,9 +102,7 @@ trait EntityPermissionCache {
             }
             
             $app->applyHookBoundTo($this, "{$this->hookPrefix}.permissionCacheUsers", [&$users]);
-
-        }
-        if($delete_old && $users){
+        } else if($delete_old) {
             $this->deletePermissionsCache($users);
         }
 
