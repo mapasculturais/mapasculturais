@@ -36,7 +36,8 @@ class Module extends \MapasCulturais\Module {
         $app->hook('repo(Registration).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) use ($format_doc) {
             $joins .= "\n LEFT JOIN e.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
             $joins .= "\n LEFT JOIN coletivo_relation.agent agent_coletivo";
-            $joins .= "\n LEFT JOIN o.__metadata o_nome WITH o_nome.key = 'nomeCompleto'";
+            $joins .= "\n LEFT JOIN o.__metadata owner_nome WITH owner_nome.key = 'nomeCompleto'";
+            $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_nome WITH owner_nome.key = 'nomeCompleto'";
 
             if ($format_doc($keyword)) {
                 $joins .= "\n LEFT JOIN o.__metadata doc WITH doc.key IN('documento','cnpj','cpf')";
@@ -44,14 +45,15 @@ class Module extends \MapasCulturais\Module {
             }
 
             if (str_contains($keyword, '@')) {
-                $joins .= "\n LEFT JOIN o.__metadata o_email WITH o_email.key = 'emailPrivado'";
-                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_email WITH o_nome.key = 'emailPrivado'";
+                $joins .= "\n LEFT JOIN o.__metadata owner_email WITH owner_email.key = 'emailPublico'";
+                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_email WITH coletivo_email.key = 'emailPublico'";
             }
         });
 
         $app->hook('repo(Registration).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use ($format_doc) {
             $where .= "\n OR unaccent(lower(agent_coletivo.name)) LIKE unaccent(lower('$keyword'))";
-            $where .= "\n OR unaccent(lower(o_nome.value)) LIKE unaccent(lower('$keyword'))";
+            $where .= "\n OR unaccent(lower(owner_nome.value)) LIKE unaccent(lower('$keyword'))";
+            $where .= "\n OR unaccent(lower(coletivo_nome.value)) LIKE unaccent(lower('$keyword'))";
 
             if ($doc = $format_doc($keyword)) {
                 $doc2 = trim(str_replace(['%', '.', '/', '-'], '', $keyword));
@@ -60,7 +62,7 @@ class Module extends \MapasCulturais\Module {
             }
 
             if (str_contains($keyword, '@')) {
-                $where .= "\n OR lower(o_email.value) LIKE lower('$keyword')";
+                $where .= "\n OR lower(owner_email.value) LIKE lower('$keyword')";
                 $where .= "\n OR lower(coletivo_email.value) LIKE lower('$keyword')";
             }
         });
