@@ -69,6 +69,7 @@ app.component('entity-table', {
         select: String,
         showIndex: Boolean,
         hideFilters: Boolean,
+        hideAdvancedFilters: Boolean,
         hideSort: Boolean,
         hideActions: Boolean,
         hideHeader: Boolean,
@@ -169,14 +170,18 @@ app.component('entity-table', {
 
     computed: {
         visibleColumns() {
-            return this.columns.filter((col) => col.visible);
+            const columns = this.columns.filter((col) => col.visible);
+            return columns;
         },
+
         allHeadersActive() {
             return this.visibleColumns.length == this.columns.length;
         },
+
         $description() {
             return $DESCRIPTIONS[this.type];
         },
+
         advancedFilters() {
             let filters = {};
 
@@ -198,6 +203,29 @@ app.component('entity-table', {
             }
             
             return filters;
+        },
+
+        hasFilters() {
+            const query = JSON.parse(JSON.stringify(this.query));
+
+            delete query['@limit'];
+            delete query['@opportunity'];
+            delete query['opportunity'];
+            delete query['@order'];
+            delete query['@select'];
+            delete query['@page'];
+            delete query['@permission'];
+            delete query['@permissions'];
+            delete query['action'];
+            delete query['userId'];
+            delete query['ip'];
+            delete query['sessionId'];
+           
+            if (this.type == 'agent') {
+                delete query['type']
+            }
+            
+            return Object.keys(query).length > 0;
         },
 
         appliedFilters() {
@@ -235,6 +263,19 @@ app.component('entity-table', {
             });
 
             return result;
+        },
+
+        spreadsheetQuery() {
+            let spreadsheetQuery =  Object.assign({}, this.query);
+
+            spreadsheetQuery['@select'] = this.visibleColumns.map(column => column.slug).join(',');
+            spreadsheetQuery['@order'] = this.entitiesOrder;
+
+            spreadsheetQuery = Object.fromEntries(
+                Object.entries(spreadsheetQuery).filter( ([key, value]) => value !== null && value !== undefined )
+            );
+            
+            return spreadsheetQuery;
         },
     },
 
@@ -332,7 +373,13 @@ app.component('entity-table', {
                     return values.map(val => ({ prop, value: val, label: fieldDescription.options[val] || val }));
                 } else {
                     return values.map(val => {
-                        const label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
+                        
+                        let label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
+                        
+                        if(this.filtersDictComplement && this.filtersDictComplement?.type == this.type) {
+                            label = this.filtersDictComplement[label] || label;
+                        }
+
                         return { prop, value: val, label };
                     });
                 }
@@ -383,22 +430,62 @@ app.component('entity-table', {
             return header.value;
         },
 
-        getEntityData(obj, value) {
-            let val = eval(`obj.${value}`);
+        getEntityData(obj, prop) {
+            let val = eval(`obj.${prop}`);
 
-            if(val instanceof McDate) {
-                const desc = this.$description[value];
-                if(desc.type == 'datetime') {
-                    val = val.date('numeric year') + ' ' + val.time('2-digit');
-                } else {
-                    val = val.date('numeric year');
+            const description = this.$description[prop];
+
+            if(description) {
+                if(description.options) {
+                    if(description.options[val]) {
+                        return description.options[val];
+                    }
+                }
+                switch (description.type) {
+                    case 'multiselect':
+                    case 'array':
+                        val = val?.filter(item => item !== "null" && item !== "").join(', ')
+                        break;
+                    case 'links':
+                        val = val ? JSON.parse(val).map(item => `${item.title}: ${item.value},`).join('\n') : null
+                        break;
+                    case 'point':
+                        val = val ? `${val.lat}, ${val.lng}` : null
+                        break;
+                    case 'addresses':
+                        let _val = val;
+                        if(typeof val === 'string') {
+                            _val = JSON.parse(val);
+                        } 
+
+                        val = val ? JSON.parse(val).map(item => `${item.nome}: ${item.logradouro}, ${item.numero}, ${item.bairro}, ${item.cidade}, ${item.complemento}  - ${item.estado}, ${item.cep}`).join('<br>') : null
+                        break;
+                    case 'boolean':
+                        if(prop == "publicLocation") {
+                            val = val ? this.text('sim') : this.text('nao')
+                        } else {
+                            val = val
+                        }
+                        break;
+                    default:
+                        val = val
                 }
             }
 
-            if(Array.isArray(val)) {
-                const desc = this.$description[value];
-                if(desc.type == 'agent-owner-field') {
-                    val = val.filter(item => item !== "null" && item !== "").join(', ');
+            if(prop == 'singleUrl' ) {
+                val = `<a href="${val}">${val}</a>`;
+            }
+
+            if(val && prop == 'seals[0]?.createTimestamp' ) {
+                let _val = new McDate(val.date);
+                val = _val.date('numeric year') + ' ' + _val.time('2-digit');
+            }
+            
+            if(val instanceof McDate) {
+                if(description.type == 'datetime') {
+                    val = val.date('numeric year') + ' ' + val.time('2-digit');
+                } else {
+                    val = val.date('numeric year');
                 }
             }
 
@@ -514,6 +601,8 @@ app.component('entity-table', {
             } else {
                 delete this.query[fieldName];
             }
+
+            this.$refs.entities.entities.refresh(this.watchDebounce);
         },
 
         advancedFilterChecked(fieldName, option) { 
@@ -617,9 +706,13 @@ app.component('entity-table', {
             return style;
         },
 
-        optionValue(option) {
-            let _option = option.split(':');
-            return _option[0];
+        optionValue(option, key) {
+            if('string' == typeof key) {
+                return key;
+            } else {
+                let _option = option.split(':');
+                return _option[0];
+            }
         },
 
         optionLabel(option) {

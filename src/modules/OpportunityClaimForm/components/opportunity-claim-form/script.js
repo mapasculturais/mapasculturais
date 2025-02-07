@@ -1,9 +1,8 @@
 app.component('opportunity-claim-form', {
     template: $TEMPLATES['opportunity-claim-form'],
     setup() { 
-        const messages = useMessages();
         const text = Utils.getTexts('opportunity-claim-form')
-        return { text, messages }
+        return { text }
     },
 
     props: {
@@ -33,11 +32,12 @@ app.component('opportunity-claim-form', {
             return false;
         },
         async sendClain(modal){
+            const messages = useMessages();
             let api = new API();
             let url = Utils.createUrl('opportunity', 'sendOpportunityClaimMessage', {registration_id: this.registration.id});
 
             await api.POST(url, this.claim).then(data => {
-                this.messages.success(this.text('Solicitação de recurso enviada'));
+                messages.success(this.text('Solicitação de recurso enviada'));
                 this.close(modal);
             });
         }

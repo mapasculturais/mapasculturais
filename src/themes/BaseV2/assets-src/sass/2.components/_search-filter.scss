@@ -64,6 +64,7 @@
             gap: 8px;
             font-weight: bold;
             font-size: 16px;
+            margin-top: size(15);
 
             &.clear-filter:hover,
             &.clear-filter:active {
@@ -78,6 +79,8 @@
         .form {
             max-height: size(650);
             overflow-y: auto;
+            display: grid;
+            gap: size(16);
             
             &__label {
                 color: var(--mc-primary-500);
@@ -89,8 +92,6 @@
             }
 
             & > .field {
-                margin-bottom: size(24);
-
                 label {
                     align-items: center;
                     display: flex;

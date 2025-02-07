@@ -1,5 +1,7 @@
 app.component('complaint-suggestion', {
     template: $TEMPLATES['complaint-suggestion'],
+    emits: ['open', 'close'],
+
     components: {
         VueRecaptcha
     },
@@ -44,7 +46,7 @@ app.component('complaint-suggestion', {
     },
 
     methods: {
-        async send() {
+        async send(modal) {
 
             const api = new API(this.entity.__objectType);
             let url = api.createUrl(this.typeMessage);
@@ -75,6 +77,7 @@ app.component('complaint-suggestion', {
 
             await api.POST(url, objt).then(res => res.json()).then(data => {
                 this.messages.success(this.text('Dados enviados com sucesso'));
+                modal.close();
             });
         },
         async verifyCaptcha(response) {
