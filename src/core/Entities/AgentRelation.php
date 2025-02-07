@@ -112,8 +112,8 @@ abstract class AgentRelation extends \MapasCulturais\Entity
 
     function jsonSerialize(): array {
         $result = parent::jsonSerialize();
-        $result['owner'] = $this->owner->simplify('className,id,name,terms,avatar,singleUrl');
-        $result['agent'] = $this->agent->simplify('id,name,type,terms,avatar,singleUrl');
+        $result['owner'] = $this->owner->simplify('className,id,name,terms,avatar,singleUrl,nomeCompleto');
+        $result['agent'] = $this->agent->simplify('id,name,type,terms,avatar,singleUrl,nomeCompleto');
         $result['ownerUserId'] = $this->owner->ownerUser->id;
         $result['agentUserId'] = $this->agent->user->id;
         $result['metadata'] = $this->metadata;
