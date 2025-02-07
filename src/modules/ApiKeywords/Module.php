@@ -34,20 +34,34 @@ class Module extends \MapasCulturais\Module {
 
         // faz a keyword buscar pelo documento do owner nas inscrições
         $app->hook('repo(Registration).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) use ($format_doc) {
+            $joins .= "\n LEFT JOIN o.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
+            $joins .= "\n LEFT JOIN coletivo_relation.agent agent_coletivo";
+            $joins .= "\n LEFT JOIN o.__metadata o_nome WITH o_nome.key = 'nomeCompleto'";
+            
             if ($format_doc($keyword)) {
                 $joins .= "\n LEFT JOIN o.__metadata doc WITH doc.key IN('documento','cnpj','cpf')";
-                $joins .= "\n LEFT JOIN o.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
-                $joins .= "\n LEFT JOIN coletivo_relation.agent agent_coletivo";
                 $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_doc WITH coletivo_doc.key = 'cnpj'";
+            }
+
+            if (str_contains($keyword, '@')) {
+                $joins .= "\n LEFT JOIN o.__metadata o_email WITH o_email.key = 'emailPrivado'";
+                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_email WITH o_nome.key = 'emailPrivado'";
             }
         });
 
         $app->hook('repo(Registration).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use ($format_doc) {
+            $where .= "\n OR unaccent(lower(agent_coletivo.name)) LIKE unaccent(lower('$keyword'))";
+            $where .= "\n OR unaccent(lower(o_nome.value)) LIKE unaccent(lower('$keyword'))";
+
             if ($doc = $format_doc($keyword)) {
                 $doc2 = trim(str_replace(['%', '.', '/', '-'], '', $keyword));
                 $where .= "\n OR doc.value = '$doc' OR doc.value = '$doc2'";
-                $where .= "\n OR unaccent(lower(agent_coletivo.name) = unaccent(lower('$keyword'))";
                 $where .= "\n OR coletivo_doc.value = '$doc' OR coletivo_doc.value = '$doc2'";
+            }
+
+            if (str_contains($keyword, '@')) {
+                $where .= "\n OR lower(o_email.value) LIKE lower('$keyword')";
+                $where .= "\n OR lower(coletivo_email.value) LIKE lower('$keyword')";
             }
         });
 
