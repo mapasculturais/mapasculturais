@@ -64,7 +64,7 @@ class Module extends \MapasCulturais\Module {
                             t.taxonomy = '{$taxonomy->slug}'";
         });
 
-        $app->hook('repo(<<agent|space|event|project|ppportunity>>).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) {
+        $app->hook('repo(<<agent|space|event|project|opportunity>>).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) {
             $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:{$alias})) ";
         });
 
