@@ -1,6 +1,11 @@
 @use '../0.settings/mixins' as *;
 
 .opportunity-claim-form {
+  
+  @media print {
+    display: none !important;
+  }
+
   &__buttonlabel {
     max-width: size(259);
     width: 100%;
