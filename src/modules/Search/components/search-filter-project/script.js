@@ -29,8 +29,14 @@ app.component('search-filter-project', {
 
     methods: {
         clearFilters() {
-            delete this.pseudoQuery['@verified'];
-            this.pseudoQuery['type'].length = 0;
+            const types = ['string', 'boolean'];
+            for (const key in this.pseudoQuery) {
+                if (Array.isArray(this.pseudoQuery[key])) {
+                    this.pseudoQuery[key] = [];
+                } else if (types.includes(typeof this.pseudoQuery[key])) {
+                    delete this.pseudoQuery[key];
+                }
+            }
         }
     },
 });

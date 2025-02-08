@@ -1054,6 +1054,7 @@ return [
             __exec("ALTER TABLE registration_evaluation ADD is_tiebreaker BOOLEAN DEFAULT FALSE");
         }
     },
+
     'create table workplan' => function () {
         __exec("CREATE TABLE registration_workplan (
           id SERIAL PRIMARY KEY,
@@ -1117,6 +1118,37 @@ return [
               id SERIAL NOT NULL
           );");
         __exec("ALTER TABLE registration_workplan_goal_delivery_meta ADD FOREIGN KEY (object_id) REFERENCES registration_workplan_goal_delivery(id) ON DELETE CASCADE");
+    },
+    'define default para as colunas ids das tabelas sem default' => function() {
+        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
+        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
+        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
+        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
+        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
+    },
+    
+    'Criação da coluna update timestemp' => function() use($conn) {
+
+        if(!__column_exists('registration', 'update_timestamp')){
+            __exec("ALTER TABLE registration ADD COLUMN update_timestamp TIMESTAMP");
+        }
+
+        $conn->executeQuery("
+           UPDATE registration r
+            SET update_timestamp = recent_revision.create_timestamp
+            FROM (
+                SELECT DISTINCT ON (object_id) object_id, create_timestamp
+                FROM entity_revision
+                WHERE object_type = 'MapasCulturais\Entities\Registration'
+                ORDER BY object_id, id DESC
+            ) AS recent_revision
+            WHERE r.id = recent_revision.object_id;
+        ");
+    },
+
+    'define a coluna id da tabela permission_cache_pending como auto incremet' => function() {
+        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
     },
 
     /// MIGRATIONS - DATA CHANGES =========================================
@@ -2489,15 +2521,6 @@ $$
         __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
     },
 
-    'define default para as colunas ids das tabelas sem default' => function() {
-        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
-        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
-        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
-        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
-        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
-        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
-    },
-
     'Adiciona novas áreas de atuação' => function() {
         __try("
         WITH areas_novas(name) AS (
@@ -2585,5 +2608,6 @@ $$
                     etnias.name AS term
                FROM etnias;
         ");
-    }
+    },
+  
 ] + $updates ;   

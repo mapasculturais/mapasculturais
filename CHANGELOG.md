@@ -26,6 +26,23 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - **array** - serializa / deserializa um json fazendo um cast para (array)
   - **entity** - possibilita a vinculação de entidade em metadados
   
+## [7.5.18] - 2025-01-29
+#### Correções
+- Corrige contagem de entidades na api, que ficava distorcida dependendo dos filtros
+- Insere mensagem na single de inscrição notificando quando o proponente não enviou a inscrição dentro do prazo
+
+## [7.5.17] - 2025-01-21
+### Correções
+- Correção ortográfica nos labels dos select de ordenação
+
+## [7.5.16] - 2025-01-21
+### Correções
+- Corrige ordenamento das colunas relacionadas aos campos do formulário
+
+## [7.5.15] - 2025-01-21
+### Melhorias
+- Faz com que a as colunas da planilha de inscritos sejam exportadas na ordem do formulário
+
 ## [7.5.14] - 2024-12-04
 ### Correções
 - Corrige erro que ocorre na propagação do sentTipestemp das inscrições entre fases
