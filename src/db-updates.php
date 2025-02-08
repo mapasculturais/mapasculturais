@@ -1119,6 +1119,7 @@ return [
           );");
         __exec("ALTER TABLE registration_workplan_goal_delivery_meta ADD FOREIGN KEY (object_id) REFERENCES registration_workplan_goal_delivery(id) ON DELETE CASCADE");
     },
+    
     'define default para as colunas ids das tabelas sem default' => function() {
         __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
         __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
@@ -2109,7 +2110,7 @@ $$
         
         }
 
-    },
+    }, 
     'corrige metadados criados por erro em inscricoes de fases' => function () use ($conn, $app) {
         $opp_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE parent_id IS NOT NULL");
         foreach ($opp_ids as $opportunity) {
