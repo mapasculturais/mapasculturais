@@ -94,24 +94,26 @@ $this->import('
                     </div>
                 </div>
             </div>
-            <div v-if="!hideSort" class="entity-table__info">
-                <span v-if="entities.length === entities.metadata.count">
-                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-                </span>
-                <span v-else>    
-                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-                </span>
-                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
-            </div>
+            <template v-if="entities.length > 0">
+                <div v-if="!hideSort" class="entity-table__info">
+                    <span v-if="entities.length === entities.metadata.count">
+                        <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                    </span>
+                    <span v-else>
+                        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                    </span>
+                    <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
+                </div>
 
-            <div v-if="hideSort" class="entity-table__info">
-                <span v-if="entities.length === entities.metadata.count">
-                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
-                </span>
-                <span v-else>    
-                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
-                </span>
-            </div>
+                <div v-if="hideSort" class="entity-table__info">
+                    <span v-if="entities.length === entities.metadata.count">
+                        <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
+                    </span>
+                    <span v-else>
+                        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
+                    </span>
+                </div>
+            </template>
         </template>
 
 
