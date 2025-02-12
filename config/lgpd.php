@@ -8,7 +8,7 @@ return [
         //     'buttonText' => i::__('Aceito os termos de uso')
         // ],
         // 'privacyPolicy' => [
-        //     'title'=>  'Política de Privacidade do Mapa Cultural',
+        //     'title'=>  'Política de Privacidade do Mapa da Cultura',
         //     'text'=> file_get_contents(__DIR__ . '/lgpd-terms/privacy-policy.html'),
         //     'buttonText' => i::__('Aceito as políticas de privacidade')
         // ],

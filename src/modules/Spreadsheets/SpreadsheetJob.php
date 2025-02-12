@@ -132,11 +132,6 @@ abstract class SpreadsheetJob extends JobType
                         $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
                     }
                 }
-                foreach($new_data as &$value) {
-                    if($value && $value[0] === '=') {
-                        $value = "'$value";
-                    }
-                }
 
                 $sheet->fromArray($new_data, null, "A$row");
                 $row++;

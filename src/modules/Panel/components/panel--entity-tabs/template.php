@@ -11,6 +11,7 @@ $this->import('
     mc-tab
     mc-tabs
     panel--entity-card
+    panel--entity-models-card
     registration-card
 ');
 
@@ -18,6 +19,7 @@ $tabs = $tabs ?? [
     'publish' => i::esc_attr__('Publicados'),
     'draft' => i::esc_attr__('Em rascunho'),
     'granted' => i::esc_attr__('Com permissão'),
+    'mymodels' => i::esc_attr__('Meus modelos'),
     'archived' => i::esc_attr__('Arquivados'),
     'trash' => i::esc_attr__('Lixeira'),
 ];
@@ -35,7 +37,7 @@ $sort_options = [
 $this->applyComponentHook('.sortOptions', [&$tabs]);
 
 ?>
-<mc-tabs class="entity-tabs" sync-hash>
+<mc-tabs class="entity-tabs models" sync-hash>
     <?php $this->applyComponentHook('begin') ?>
     <template #header="{ tab }">
         <?php $this->applyComponentHook('tab', 'begin') ?>
@@ -70,7 +72,6 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                                 <?php endforeach ?>
                             </select>
                         </label>
-
                     </slot>
                 </form>
             </template>
@@ -78,12 +79,12 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
             <template #default="{entities}">
                 <slot name='before-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
                 <slot v-for="entity in entities" :key="entity.__objectId" :entity="entity" :moveEntity="moveEntity">
-                    <registration-card v-if="entity.__objectType=='registration'" :entity="entity" pictureCard hasBorders class="panel__row">
+                    <registration-card v-if="entity.__objectType == 'registration'" :entity="entity" pictureCard hasBorders class="panel__row">
                         <template #entity-actions-left>
                             <slot name="entity-actions-left" :entity="entity"></slot>
                         </template>
                     </registration-card>
-                    <panel--entity-card  v-if="entity.__objectType!='registration'" :key="entity.id" :entity="entity" 
+                    <panel--entity-card v-if="(entity.__objectType != 'registration' && entity.__objectType != 'opportunity') || (entity.__objectType == 'opportunity' && entity.isModel != 1)" :key="entity.id" :entity="entity" 
                         @undeleted="moveEntity(entity, $event)" 
                         @deleted="moveEntity(entity, $event)" 
                         @archived="moveEntity(entity, $event)" 
@@ -94,7 +95,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                             <slot name="card-title" :entity="entity"></slot>
                         </template>
                         <template #subtitle="{ entity }">
-                            <slot name="card-content"  :entity="entity">
+                            <slot name="card-content" :entity="entity">
                                 <span v-if="entity.type">
                                     <?=i::__('Tipo: ')?> <strong>{{ entity.type.name }}</strong>
                                 </span>
@@ -110,9 +111,10 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                             <slot name="entity-actions-right" :entity="entity"></slot>
                         </template>
                     </panel--entity-card>
+                    <panel--entity-models-card v-if="entity.__objectType == 'opportunity' && entity.isModel == 1" :key="entity.id" :entity="entity"></panel--entity-models-card>
                 </slot>
                 <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
-           </template>
+            </template>
         </mc-entities>
         <?php $this->applyComponentHook($status, 'end') ?>
     </mc-tab>

@@ -9,7 +9,8 @@ $this->import('
     mc-map-card
 ');
 ?>
-<div v-if="global.enabledEntities.spaces || global.enabledEntities.agents" class="home-map">
+<!--TODO: Trocar a constante "true" abaixo por uma configuração que força a desativação do mapa. Ex: global.disableHomeMap = true -->
+<div v-if="(!true) && (global.enabledEntities.spaces || global.enabledEntities.agents)" class="home-map">
     <div class="home-map__header">
         <label class="title"><?= $this->text('title', i::__('Visualize também no mapa')) ?></label>
         <label class="description"><?= $this->text('description', i::__('Os agentes, espaços e eventos cadastrados contam com a geo localização de seus endereços, encontre-os aqui:')) ?></label>

@@ -259,6 +259,18 @@ return array(
                return ($value == 0 || $value == "" || $value == "0") ? false : true;
             }
         ),
+
+        'isModel' => array(
+            'type' => 'integer',
+            'label' => \MapasCulturais\i::__('É modelo?'),
+            'default_value' => 0
+        ),
+        
+        'isModelPublic' => array(
+            'type' => 'integer',
+            'label' => \MapasCulturais\i::__('É modelo público?'),
+        ),
+        
     ),
     'items' => $items,
     

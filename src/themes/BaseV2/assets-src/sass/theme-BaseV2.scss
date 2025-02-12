@@ -36,6 +36,7 @@
 @import '2.components/entity-actions';
 @import '2.components/entity-activity-card';
 @import '2.components/entity-card';
+@import '2.components/entity-models-card';
 @import '2.components/entity-cover';
 @import '2.components/entity-data';
 @import '2.components/entity-file';
@@ -144,6 +145,7 @@
 @import '2.components/opportunity-phases-timeline';
 @import '2.components/opportunity-proponent-types';
 @import '2.components/opportunity-ranges-config';
+@import '2.components/opportunity-enable-workplan';
 @import '2.components/opportunity-registrations';
 @import '2.components/opportunity-registration-filter-configuration';
 @import '2.components/opportunity-rules';
@@ -179,6 +181,8 @@
 @import '2.components/registration-related-entity';
 @import '2.components/registration-results';
 @import '2.components/registration-status';
+@import '2.components/registration-workplan';
+@import '2.components/registration-details-workplan';
 @import '2.components/opportunity-header';
 @import '2.components/opportunity-registration-table';
 @import '2.components/occurrence-card';

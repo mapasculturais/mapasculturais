@@ -39,7 +39,7 @@ $this->import('
                     <label>
                         <?= $this->text('logradouro', i::__('Logradouro')) ?>
                     </label>
-                    <input type="text" v-model="address.logradouro" @change="save()" :disabled="disabled" />
+                    <input type="text" v-model="address.logradouro" @change="save()" placeholder="rua, avenida, praça, viaduto, travessa, etc" :disabled="disabled" />
                 </div>
 
                 <div class="field col-4">
