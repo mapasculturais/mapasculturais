@@ -361,9 +361,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             }
         }
 
-        // status das avaliações
-
-        // Conta as inscrições avaliadas por consolidated_result
+        // Conta as inscrições avaliadas por consolidatedResult
         $query = $app->em->createQuery("
             SELECT 
                 r.consolidatedResult, 
