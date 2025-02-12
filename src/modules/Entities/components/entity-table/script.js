@@ -452,6 +452,7 @@ app.component('entity-table', {
                         val = val?.filter(item => item !== "null" && item !== "").join(', ')
                         break;
                     case 'links':
+                        val = val === '"null"' ? null : val;                                      
                         val = val ? JSON.parse(val).map(item => `${item.title}: ${item.value},`).join('\n') : null
                         break;
                     case 'point':
