@@ -64,6 +64,10 @@ app.component('entity-file', {
         defaultFile: {
             type: Object,
             required: false
+        },
+        beforeUpload: {
+            type: Function,
+            required: false
         }
     },
 
@@ -75,6 +79,10 @@ app.component('entity-file', {
             maxFileSize: $MAPAS.maxUploadSizeFormatted,
             loading: false
         }
+    },
+
+    updated() {
+        this.file = this.entity.files?.[this.groupName] || null;
     },
 
     methods: {
@@ -91,9 +99,15 @@ app.component('entity-file', {
                 group: this.groupName,
             };
 
+            if (this.beforeUpload) {
+                await this.beforeUpload({
+                    data,
+                    file: this.newFile
+                });
+            }
+
             this.entity.disableMessages();
             try{
-
                 const response = await this.entity.upload(this.newFile, data);
                 this.$emit('uploaded', this);
                 this.file = response;

@@ -10,10 +10,10 @@ $this->import('
     entity-field
     mc-confirm-button
     opportunity-phase-publish-date-config
-    opportunity-enable-claim
     opportunity-category
     opportunity-ranges-config
     opportunity-proponent-types
+    opportunity-appeal-phase-config
 ');
 ?>
     <div class="opportunity-data-collection grid-12">
@@ -83,7 +83,7 @@ $this->import('
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration' && !firstPhase?.isContinuousFlow">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
-            <opportunity-phase-publish-date-config  :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
+            <opportunity-phase-publish-date-config  :phase="phase" :phases="phases" hide-description hide-button useSealsCertification></opportunity-phase-publish-date-config>
         </template>
 
         <div class="opportunity-data-collection__delete col-12" v-if="!phase.isLastPhase && !phase.isFirstPhase">

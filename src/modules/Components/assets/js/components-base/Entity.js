@@ -44,6 +44,10 @@ class Entity {
                 val = this[prop];
             }
 
+            if(definition.type === 'entity'){
+                continue;
+            }
+
             if(prop === 'status' && preserveValues && this[prop] <= 0 && obj[prop] > 0) {
                 this[prop] = obj[prop];
             }
@@ -95,6 +99,22 @@ class Entity {
 
             if (value) {
                 this[key] = value;
+            }
+        }
+
+        for (let prop in __properties) {
+            let definition = __properties[prop];
+            let val = obj[prop];
+
+            if(val === undefined && preserveValues) {
+                val = this[prop];
+            }
+
+            if (definition.type === 'entity' && val?.['@entityType'] && !(val instanceof Entity)) {
+                const entityApi = new API(val['@entityType'], this.__scope);
+                const entity = entityApi.getEntityInstance(val.id);
+                entity.populate(val);
+                this[prop] = entity;
             }
         }
 
@@ -197,7 +217,7 @@ class Entity {
             if (val && (typeof val == 'object')) {
                 if (prop == 'type') {
                     val = val.id;
-                } else {
+                } else if (definition.type != 'entity') {
                     result[prop] = JSON.parse(JSON.stringify(val));
                 }
             } else {

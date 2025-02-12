@@ -2535,6 +2535,8 @@ class App {
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true),
+            'chatImage' => new Definitions\FileGroup('chatImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'chatAttachment' => new Definitions\FileGroup('chatAttachment', unique:true),
         ];
 
         // register file groups
@@ -2575,6 +2577,9 @@ class App {
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
+
+        $this->registerFileGroup('chatMessage',$file_groups['chatImage']);
+        $this->registerFileGroup('chatMessage',$file_groups['chatAttachment']);
 
         if ($theme_image_transformations = $this->view->resolveFilename('','image-transformations.php')) {
             $image_transformations = include $theme_image_transformations;

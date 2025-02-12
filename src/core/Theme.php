@@ -159,6 +159,8 @@ abstract class Theme {
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
                 "seal"          => Entities\Seal::getPropertiesMetadata(),
                 'evaluationmethodconfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
+                "chatthread"   => Entities\ChatThread::getPropertiesMetadata(),
+                "chatmessage"   => Entities\ChatMessage::getPropertiesMetadata(),
             ];
 
             $taxonomies = [];
@@ -882,6 +884,7 @@ abstract class Theme {
 
                 if(property_exists ($entity_class_name, 'status')) {
                     $query_params['status'] = 'GTE(-10)'; 
+                    $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
                 }
 
                 if(property_exists ($entity_class_name, 'project')) {
@@ -914,18 +917,46 @@ abstract class Theme {
                 $e = $entity->jsonSerialize();
 
             }
+
+            if (property_exists($entity_class_name, 'status')) {
+                $query_params['status'] = 'GTE(-20)'; 
+                $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
+            }
+
+            if(property_exists ($entity_class_name, 'project')) {
+                $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
+            }
+
+            if(property_exists ($entity_class_name, 'evaluationMethodConfiguration')) {
+                $query_params['@select'] .= ',evaluationMethodConfiguration.*';
+            }
+            
+            if ($entity_class_name::usesAgentRelation()) {
+                $query_params['@select'] .= ',agentRelations';
+            }
+
+            if ($entity_class_name::usesSpaceRelation()) {
+                $query_params['@select'] .= ',spaceRelations';
+            }
+
+            if ($entity_class_name == Entities\User::class) {
+                $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
+            }
+
+            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
+
+            $query = new ApiQuery($entity_class_name, $query_params);
+            $query->__useDQLCache = false;
+
+            $e = $query->findOne();
+
             if(property_exists ($entity_class_name, 'opportunity')) {
-                if($entity) {
-                    $opportunity = $entity->opportunity;
-                } else {
-                    $query = $app->em->createQuery("
-                        SELECT o FROM                             
-                            MapasCulturais\\Entities\\Opportunity o
-                            WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
-    
-                    $query->setParameter('id', $e['id'] ?? 0);
-                    $opportunity = $query->getSingleResult();
-                }
+                $query = $app->em->createQuery("
+                    SELECT o FROM                             
+                        MapasCulturais\\Entities\\Opportunity o
+                        WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
+                $query->setParameter('id', $e['id']);
+                $opportunity = $query->getSingleResult();
                 $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
@@ -934,6 +965,13 @@ abstract class Theme {
                     $e['opportunity']->registrationSteps = $opportunity->registrationSteps->toArray();
                 }
             }
+            
+            if ($entity_class_name == Entities\Opportunity::class) {
+                $opportunity = $app->repo("Opportunity")->find($entity_id);
+
+                $e['registrationSteps'] = $opportunity->registrationSteps->toArray();
+            }
+            
             if ($entity_class_name == Entities\Agent::class) {
                 $owner_prop = 'parent';
                 if (!$e['parent']) {

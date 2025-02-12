@@ -14,7 +14,11 @@ app.component('opportunity-phase-list-evaluation' , {
         phases: {
             type: Array,
             required: true
-        }
+        },
+
+        tab: {
+            type: String,
+        },
     },
 
     methods: {

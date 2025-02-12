@@ -24,6 +24,7 @@ use MapasCulturais\Traits;
  */
 class ChatMessage extends \MapasCulturais\Entity
 {
+    use Traits\EntityFiles;
     use Traits\EntityNested;
     use Traits\EntityPermissionCache;
 
@@ -147,6 +148,10 @@ class ChatMessage extends \MapasCulturais\Entity
 
     protected function canUserCreate($user)
     {
+        if ($this->thread->status == ChatThread::STATUS_CLOSED) {
+            return false;
+        }
+
         if (!isset($this->thread)) {
             return false;
         }
@@ -156,6 +161,10 @@ class ChatMessage extends \MapasCulturais\Entity
     // editing is disabled until further notice
     protected function canUserModify($user)
     {
+        if ($this->thread->status == ChatThread::STATUS_CLOSED) {
+            return false;
+        }
+
         return false;
     }
 

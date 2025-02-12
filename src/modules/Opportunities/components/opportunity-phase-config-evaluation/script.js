@@ -14,7 +14,11 @@ app.component('opportunity-phase-config-evaluation' , {
         phase: {
             type: Entity,
             required: true
-        }
+        }, 
+
+        tab: {
+            type: String,
+        },
     },
 
     beforeMount() {
