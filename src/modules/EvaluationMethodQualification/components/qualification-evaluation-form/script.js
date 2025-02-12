@@ -70,7 +70,20 @@ app.component('qualification-evaluation-form', {
         },
         evaluationData() {
             const evaluation = $MAPAS.config.qualificationEvaluationForm.evaluationData;
-            return evaluation && evaluation.evaluationData ? evaluation.evaluationData : {};
+            let result = evaluation && evaluation.evaluationData ? evaluation.evaluationData : {};
+
+            // parseia os dados de avaliação para o formato esperado - para inscrições de versões anteriores da 7.6
+            for(let k in result) {
+                if (result[k] === this.text('Habilitado')) {
+                    result[k] = ['valid'];
+                } else if (result[k] === this.text('Inabilitado')) {
+                    result[k] = ['invalid'];
+                } else if (result[k] === this.text('Não se aplica')) {
+                    result[k] = ['not-applicable'];
+                }
+            }
+
+            return result;
         },
         userId() {
             return $MAPAS.userId;

@@ -13,15 +13,16 @@ use MapasCulturais\Entities\Registration;
  *
  * When rendering, the template can access view object whith the $this variable and the controller that call the render/partial methiod with $this->controller.
  *
- * @property \MapasCulturais\View $layout The layout to use when rendering the template.
- * @property \MapasCulturais\Controller $controller The controller that call the render / partial
+ * @property Controller $controller The controller that call the render / partial
  * @property string $template
  * @property \ArrayObject $documentMeta
  * @property \ArrayObject $bodyClasses
  * @property \ArrayObject $bodyProperties
  * @property \ArrayObject $jsObject
- *
- * @property-read \MapasCulturais\AssetManager $assetManager The asset manager
+ * @property \ArrayObject $path
+ * 
+ * @property-read string $title The title of the page
+ * @property-read AssetManager $assetManager The asset manager
  * 
  * @property-read int $version Theme version 
  * 

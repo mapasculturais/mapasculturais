@@ -58,6 +58,27 @@ app.component('entity-field', {
             description.min = 0;
         }
 
+        /**
+         * Aqui podemos passar alguns itens que eventualmente não queremos que sejam listados em alguma tela
+         */
+        if (this.entity.removeOptions && description.options) {
+            const removedOptions = [];
+            const { removeOptions } = this.entity;
+        
+            description.options = Object.fromEntries(
+                Object.entries(description.options).filter(([key, value]) => {
+                    const optionFound = removeOptions.includes(value);
+                    if (optionFound) {
+                        removedOptions.push(parseInt(key));
+                    }
+
+                    return !optionFound;
+                })
+            );
+        
+            description.optionsOrder = description.optionsOrder.filter(item => !removedOptions.includes(item));
+        }
+
         return {
             __timeout: null,
             description: description,

@@ -2,7 +2,7 @@
 use MapasCulturais\i;
 
 return [
-    'notificacao_aprovada' => i::__('Requsição Aprovada'),
-    'notificacao_recusada' => i::__('Requsição Recusada'),
-    'notificacao_cancelada' => i::__('Requsição Cancelada'),
+    'notificacao_aprovada' => i::__('Requisição Aprovada'),
+    'notificacao_recusada' => i::__('Requisição Recusada'),
+    'notificacao_cancelada' => i::__('Requisição Cancelada'),
 ];

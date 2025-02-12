@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import(" 
     mc-modal
+    mc-captcha
 ");
 ?>
 <div class="complaint-suggestion col-12">
@@ -56,7 +57,9 @@ $this->import("
             </div>
             
             <template #actions="modal">
-                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
+                <!-- Componente responsável por renderizar o CAPTCHA -->
+                <mc-captcha @captcha-verified="verifyCaptcha" @captcha-expired="expiredCaptcha" class="col-12"></mc-captcha>
+
                 <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Denúncia') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('cancelar') ?></button>
             </template>
@@ -119,7 +122,9 @@ $this->import("
             </div>
 
             <template #actions="modal">
-                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
+                <!-- Componente responsável por renderizar o CAPTCHA -->
+                <mc-captcha class="complaint-suggestion__recaptcha" @captcha-verified="verifyCaptcha" @captcha-expired="expiredCaptcha"></mc-captcha>
+
                 <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Mensagem') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('Cancelar') ?></button>
             </template>

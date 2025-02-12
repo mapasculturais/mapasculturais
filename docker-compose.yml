@@ -1,0 +1,82 @@
+version: '2'
+services:
+  mapas:
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ./.env:/.env
+      - ./docker/production/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/production/www.conf:/usr/local/etc/php-fpm.d/www.conf
+
+      # scripts principais
+      - ./docker/entrypoint.sh:/entrypoint.sh
+      - ./docker/jobs-cron.sh:/jobs-cron.sh
+      - ./docker/recreate-pending-pcache-cron.sh:/recreate-pending-pcache-cron.sh
+
+      - ./composer.json:/var/www/composer.json
+      - ./composer.lock:/var/www/composer.lock
+
+      - ./config:/var/www/config
+      - ./public:/var/www/html
+      - ./scripts:/var/www/scripts
+      - ./var:/var/www/var
+
+      - ./docker-data/assets:/var/www/html/assets
+      - ./docker-data/public-files:/var/www/html/files
+      - ./docker-data/private-files:/var/www/var/private-files
+
+    links:
+      - redis
+      - sessions
+
+    environment:
+      - BUILD_ASSETS=1
+
+      - REDIS_CACHE=redis
+      - SESSIONS_SAVE_PATH=tcp://sessions:6379
+
+    depends_on:
+      - redis
+      - sessions
+
+    stdin_open: true
+    tty: true
+
+  redis:
+    image: redis:6
+    command: --maxmemory 1024Mb --maxmemory-policy allkeys-lru
+    restart: unless-stopped
+
+  sessions:
+    image: redis:6
+    restart: unless-stopped
+    command: --maxmemory 512Mb --maxmemory-policy allkeys-lru
+    volumes:
+      - ./docker-data/sessions:/data
+
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - /dev/null:/var/www/html/index.php
+
+      - ./docker-data/public-files:/var/www/html/files
+      - ./docker-data/assets:/var/www/html/assets
+
+##### versão sem ssl
+      - ./docker/production/nginx.conf:/etc/nginx/conf.d/default.conf
+
+##### versão com ssl
+#     - ./docker/production/nginx-ssl.conf:/etc/nginx/conf.d/default.conf
+#     - ./docker-data/certs/conf:/etc/letsencrypt
+#     - ./docker-data/certs/www:/var/www/certbot
+    ports:
+     - "80:80"
+    depends_on:
+      - mapas
+    links:
+      - mapas
+
