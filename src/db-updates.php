@@ -2498,6 +2498,7 @@ $$
         __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
     },
 
+
     'Adiciona novas áreas de atuação' => function() {
         __try("
         WITH areas_novas(name) AS (
@@ -2585,5 +2586,10 @@ $$
                     etnias.name AS term
                FROM etnias;
         ");
-    }
+    },
+    
+    'atualizar o type para continuous onde o type for appeal-phase' => function() {
+        __exec("UPDATE evaluation_method_configuration SET type = 'continuous' WHERE type = 'appeal-phase';");
+    },
+
 ] + $updates ;   

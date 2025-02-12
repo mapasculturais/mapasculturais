@@ -87,6 +87,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
             Traits\EntityAgentRelation::canUserRemoveAgentRelationWithControl as __canUserRemoveAgentRelationWithControl;
         }
 
+    const STATUS_APPEAL_PHASE = -20;
+    const STATUS_PHASE = -1;
+
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
 

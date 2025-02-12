@@ -43,12 +43,17 @@ $this->breadcrumb = $breadcrumb;
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
 
     <div class="registration__title">
-        <h1>
+        <h1 v-if="entity.opportunity.status !== -20">
             <?= i::__('Formulário de inscrição') ?>
         </h1>
-        <h3>
-            <?= $opportunity->name ?>
-        </h3>
+        <div>
+            <h1 v-if="entity.opportunity.status == -20">
+                <?= $opportunity->name ?>
+            </h1>
+            <h3 v-else>
+                <?= $opportunity->name ?>
+            </h3>
+        </div>
     </div>
 
     <registration-edition :entity="entity"></registration-edition>

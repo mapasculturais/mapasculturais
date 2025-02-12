@@ -38,6 +38,13 @@ $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
 
 $this->breadcrumb = $breadcrumb;
 
+if ($entity->opportunity->isAppealPhase) {
+    $parent_registration = $app->repo('registration')->findBy([
+        'owner' => $entity->owner->id,
+        'opportunity' => $entity->opportunity->parent->id
+    ])[0];
+}
+    
 if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
     $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
 } else {
@@ -66,38 +73,53 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 
     <div class="registration__content">
         <div class="grid-12 registration__grid">
+
             <aside class="col-3">
                 <opportunity-evaluations-list text-button="<?= i::__("Lista de avaliações") ?>" :entity="entity" user-evaluator-id="<?=$userEvaluator->id?>">
                     <v1-embed-tool route="sidebarleftevaluations" :id="entity.id"></v1-embed-tool>
                 </opportunity-evaluations-list>
             </aside>
 
-            <main class="col-5 grid-12">
-                <?php if ($entity->opportunity->evaluationMethod->slug === "documentary") : ?>
-                    <div class="col-12">
-                        <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo') ?></mc-alert>
-                    </div>
-                <?php endif; ?>
-                <mc-summary-agent :entity="entity" classes="col-12"></mc-summary-agent>
-                <registration-info :registration="entity" classes="col-12"></registration-info>
-                <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
-                <h3 class="col-12"><?= i::__('Dados informados no formulário') ?></h3>
-                <mc-summary-spaces :entity="entity" classes="col-12"></mc-summary-spaces>
-                <mc-summary-project :entity="entity" classes="col-12"></mc-summary-project>
-
-
-                <section class="col-12 section">
-                    <div class="col-12">
+            <main class="col-5">
+                <div class="grid-12 v-top">
+                    <?php if ($entity->opportunity->evaluationMethod->slug === "documentary") : ?>
+                        <div class="col-12">
+                            <mc-alert type="warning"><?= i::__('Para iniciar a de avaliação documental, selecione um campo de dados abaixo') ?></mc-alert>
                         </div>
-                        
-                        <div class="section__content">
+                    <?php endif; ?>
+                    <mc-summary-agent :entity="entity" classes="col-12"></mc-summary-agent>
+                    <registration-info :registration="entity" classes="col-12"></registration-info>
+                    <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
+
+                    <!-- Caso seja uma fase de recurso -->
+                    <section v-if="entity.opportunity?.isAppealPhase" class="col-12 grid-12 section">
+                        <h3 class="col-12"><?= i::__('Recurso') ?></h3>
+
+                        <div class="section__content col-12">
                             <div class="card owner">
-                            <?php $this->applyTemplateHook("registration-evaluation-view", 'before', ['entity' => $entity]) ?>
-                            <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
-                            <?php $this->applyTemplateHook("registration-evaluation-view", 'after', ['entity' => $entity]) ?>
+                                <?php $this->applyTemplateHook("registration-evaluation-view", 'before', ['entity' => $entity]) ?>
+                                    <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
+                                <?php $this->applyTemplateHook("registration-evaluation-view", 'after', ['entity' => $entity]) ?>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+
+                    <section class="col-12  grid-12 section">
+                        <h3 class="col-12"><?= i::__('Dados informados no formulário') ?></h3>
+                        <mc-summary-spaces :entity="entity" classes="col-12"></mc-summary-spaces>
+                        <mc-summary-project :entity="entity" classes="col-12"></mc-summary-project>
+
+                        <div class="section__content col-12">
+                            <div class="card owner">
+                                <!-- Caso não seja uma fase de recurso -->
+                                <v1-embed-tool v-if="!entity.opportunity?.isAppealPhase" route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
+                                
+                                <!-- Caso seja uma fase de recurso -->
+                                <v1-embed-tool v-if="entity.opportunity?.isAppealPhase" route="registrationevaluationtionformview" iframe-id="evaluation-registration" id="<?= $parent_registration->id ?>"></v1-embed-tool>
+                                </div>
+                            </div>
+                    </section>
+                </div>
             </main>
 
             <aside class="col-4">

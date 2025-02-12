@@ -17,6 +17,9 @@
             &__content {
                 background-color: var(--mc-gray-100);
                 padding: size(16) size(12);
+                display: flex;
+                flex-direction: column;
+                gap: size(16);
 
                 &::-webkit-scrollbar-track {
                     background-color: var(--mc-gray-100);
@@ -109,6 +112,35 @@
             display: flex;
             flex-direction: column;
             gap: size(16);
+        }
+    }
+
+    &__chat {
+        padding: size(12) size(16);
+        background-color: var(--mc-white);
+        border-radius: var(--mc-border-radius-xs);
+
+        .mc-chat {
+            border-radius: var(--mc-border-radius-xs);
+        }
+    }
+
+    &__chat-title {
+        padding-bottom: size(12);
+    } 
+
+    .opportunity-phases-timeline {
+        &__box {
+            padding: size(12) size(16);
+            background-color: var(--mc-white);
+            border-radius: var(--mc-border-radius-xs);
+            border: unset;
+        }
+
+        &__content {
+            border-radius: size(4);
+            border:var( --mc-border-hairline) var(--mc-gray-300);
+            padding: size(8) size(8) size(8);
         }
     }
 }

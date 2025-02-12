@@ -32,6 +32,10 @@
             width: 100%;
             padding: size(40) 0;
 
+            &.status--20 {
+                padding: 0; 
+            }
+
             &>* {
                 margin: 0 auto;
                 max-width: size(1170);
@@ -41,6 +45,7 @@
         }
         &__grid {
             max-width: size(1440);
+            padding: 0 size(16);
         }
         .section {
             width: 100%;
@@ -363,6 +368,10 @@
                     width: 100%;
                     z-index: 1;
                     box-shadow: 3px 3px 3px rgba(0,0,0,.5);
+
+                    &.status--20 {
+                        padding: 0; 
+                    }
 
                     .stepper {
                         margin-inline: auto;
