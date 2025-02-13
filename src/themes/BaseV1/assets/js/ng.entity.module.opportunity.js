@@ -1926,6 +1926,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
+        } else if (field.fieldType == 'addresses') {
+            if (value.length === 0) {
+                return 'Não informado';
+            }
+
+            const addresses = value.map((address) => {
+                return `<strong>${address.nome}</strong>: ${address.logradouro || ''}, ${address.numero || ''} - ${address.bairro || ''} - ${address.cidade || ''} - ${address.estado || ''} - ${address.cep || ''}`;
+            });
+
+            return addresses.join('<br>');
         } else if (value instanceof Array) {
             return value.join(', ');
         } else if (field.fieldType === 'bankFields') {
