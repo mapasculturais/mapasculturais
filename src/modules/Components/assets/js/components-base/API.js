@@ -99,6 +99,7 @@ class API {
             this.cache = useEntitiesCache();
             this.lists = useEntitiesLists();
             this.objectType = objectType;
+            this.abortController = null;
             this.options = {
                 cacheMode: 'force-cache', 
                 ...fetchOptions
@@ -269,7 +270,9 @@ class API {
 
     async fetch(endpoint, query, {list, raw, rawProcessor, refresh}) {
         let url = this.createApiUrl(endpoint, query);
-        return this.GET(url).then(response => response.json().then(objs => {
+        this.abortController?.abort();
+        this.abortController = new AbortController();
+        return this.GET(url, {}, { signal: this.abortController.signal }).then(response => response.json().then(objs => {
             let result;
             if(raw) {
                 rawProcessor = rawProcessor || Utils.entityRawProcessor;
