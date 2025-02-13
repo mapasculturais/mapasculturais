@@ -68,6 +68,7 @@ app.component('entity-table', {
         },
         select: String,
         showIndex: Boolean,
+        allHeaders: Boolean,
         hideFilters: Boolean,
         hideAdvancedFilters: Boolean,
         hideSort: Boolean,
@@ -83,8 +84,12 @@ app.component('entity-table', {
         this.originalQuery = JSON.parse(JSON.stringify(this.query));
         for(let header of this.columns) {
             header.slug = this.parseSlug(header);
-            header.visible = visible.includes(header.slug) || required.includes(header.slug);
             header.required = required.includes(header.slug);
+            if (this.allHeaders) {
+                header.visible = true;
+            } else {
+                header.visible = visible.includes(header.slug) || required.includes(header.slug);
+            }
         }
     },
 
@@ -447,6 +452,7 @@ app.component('entity-table', {
                         val = val?.filter(item => item !== "null" && item !== "").join(', ')
                         break;
                     case 'links':
+                        val = val === '"null"' ? null : val;                                      
                         val = val ? JSON.parse(val).map(item => `${item.title}: ${item.value},`).join('\n') : null
                         break;
                     case 'point':
