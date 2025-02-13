@@ -115,7 +115,7 @@ class API {
         }
 
         const __properties = this.getEntityDescription('!relations');
-        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK);
+        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK) ?? [];
 
         Entity.__pkCache.set(this.objectType, pk ?? 'id');
         return pk ?? 'id';
