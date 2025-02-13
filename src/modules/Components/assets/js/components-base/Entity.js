@@ -270,7 +270,7 @@ class Entity {
         }
 
         const __properties = this.$PROPERTIES;
-        const pk = Object.values(__properties).find((prop) => prop.isPK);
+        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK);
 
         Entity.__pkCache.set(this.__objectType, pk);
         return pk;
