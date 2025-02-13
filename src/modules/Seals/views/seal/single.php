@@ -34,12 +34,36 @@ $this->breadcrumb = [
 
                         <div class="entity-seals__validity col-12" v-if="entity.validPeriod" class="col-12">
                             <h2 class="entity-seals__validity--label"><?php i::_e('Validade do certificado do selo');?></h2>
-                            <p class="entity-seals__validity--content">{{ entity.createTimestamp.format({ year: 'numeric', month: 'long', day: 'numeric' }) + ' a ' + entity.createTimestamp.addDays(entity.validPeriod / 12 * 365) }}</p>
+                            
+                            <p v-if="entity.validPeriod <= 12" class="entity-seals__validity--content">
+                                {{ entity.validPeriod }} <?= i::__('Meses') ?>
+                            </p>
+                            
+                            <p v-if="entity.validPeriod > 12" class="entity-seals__validity--content"> 
+                                <template v-if="Math.floor(entity.validPeriod / 12) == 1">
+                                    {{ Math.floor(entity.validPeriod / 12)}} <?= i::__('ano') ?>
+                                </template>
+
+                                <template v-if="Math.floor(entity.validPeriod / 12) > 1">
+                                    {{ Math.floor(entity.validPeriod / 12)}} <?= i::__('anos') ?>
+                                </template>
+
+                                <?= i::__('e') ?>
+
+                                <template v-if="(entity.validPeriod % 12) == 1">
+                                {{(entity.validPeriod % 12)}} <?= i::__('mês') ?>
+                                </template>
+
+                                <template v-if="(entity.validPeriod % 12) > 1">
+                                {{(entity.validPeriod % 12)}} <?= i::__('meses') ?>
+                                </template>
+                            </p>
+
                         </div>
 
-                        <div v-if="entity.longDescription" class="col-12">
-                            <h2><?php i::_e('Descrição');?></h2>
-                            <p class="description" v-html="entity.longDescription"></p>
+                        <div v-if="entity.longDescription" class="col-12 grid-12">
+                            <h2 class="col-12"><?php i::_e('Descrição');?></h2>
+                            <p class="col-12" class="description" v-html="entity.longDescription"></p>
                         </div>
 
                         <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
