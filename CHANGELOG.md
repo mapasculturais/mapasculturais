@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.22] - 2025-02-14
+#### Melhorias
+- Ajusta a tabela de agentes nas telas de busca para exibir todos os campos, respeitando a privacidade e as permissões do usuário
+
 ## [7.5.21] - 2025-02-12
 #### Correções
 - Evita que aconteça erro na exportação de planilhas com valores que começam com o caractere '='
