@@ -3,17 +3,17 @@ use MapasCulturais\i;
 return [
     'module.LGPD' => [
         'termsOfUsage'=>[
-            'title'=> 'Termos de Uso', 
+            'title'=> 'Termos e Condições de Uso', 
             'text'=> file_get_contents(__DIR__ . '/lgpd-terms/terms-of-usage.html'),
-            'buttonText' => i::__('Aceito os termos de uso')
+        'buttonText' => i::__('Aceito os termos e condiçoes de uso')
         ],
         'privacyPolicy' => [
-            'title'=>  'Política de Privacidade do Mapa da Cultura',
+            'title'=>  'Política de Privacidade',
             'text'=> file_get_contents(__DIR__ . '/lgpd-terms/privacy-policy.html'),
-            'buttonText' => i::__('Aceito as políticas de privacidade')
+            'buttonText' => i::__('Aceito a política de privacidade')
         ],
         'termsUse' => [
-            'title'=>  'Autorização de uso de imagem',
+            'title'=>  'Autorização de Uso de Imagem',
             'text'=> file_get_contents(__DIR__ . '/lgpd-terms/images-use.html'),
             'buttonText' => i::__('Autorizo o uso de imagem')
         ],
