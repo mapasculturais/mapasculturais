@@ -4,11 +4,19 @@
     width: fit-content;
     white-space: nowrap;
     margin: 0 auto;
-    grid-template-columns: size(16) 1fr;
+    display: flex;
     gap: size(8);
     font-weight: var(--mc-font-bold);
-    display: grid;
     align-items: center;
+
+    &:before {
+        background-color: currentColor;
+        border-radius: 50%;
+        content: '';
+        display: inline-block;
+        height: size(12);
+        width: size(12);
+    }
 
     &--draft {
         color: var(--mc-low-300);
@@ -22,7 +30,7 @@
         color: var(--mc-danger-500);
     }
 
-    &--warnign {
+    &--warning {
         color: var(--mc-warning-500);
     }
 
@@ -48,9 +56,5 @@
 
     &--evaluation-sent {
         color: #96df37;
-    }
-
-    .iconify {
-        font-size: size(16);
     }
 }

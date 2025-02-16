@@ -5,15 +5,8 @@
  */
 
 use MapasCulturais\i;
-
-$this->import('
-    mc-icon
-');
 ?>
 
-<div :class="statusClass">
-    <mc-icon name="dot"></mc-icon>
-    <span>        
-        {{statusName}}
-    </span>
+<div class="mc-status" :class="statusClass">
+    {{ statusName }}
 </div>
