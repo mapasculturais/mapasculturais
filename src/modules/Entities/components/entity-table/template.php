@@ -137,7 +137,9 @@ $this->import('
 
                             <template #button="popover">
                                 <a href="#" v-tooltip="'<?= i::__("Configurar colunas") ?>'" data-toggle="tooltip" @click.prevent="popover.toggle()">
-                                    <mc-icon name="columns-edit"></mc-icon>
+                                    <slot name="icon-text" :popover="popover">
+                                        <mc-icon name="columns-edit"></mc-icon>
+                                    </slot>
                                 </a>
                             </template>
                         </mc-popover>
