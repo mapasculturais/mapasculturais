@@ -1,4 +1,6 @@
 class Entity {
+    static __pkCache = new Map();
+
     constructor(objectType, id, scope) {
         this.__objectType = objectType;
         this.id = id;
@@ -263,15 +265,14 @@ class Entity {
     }
 
     get $PK() {
-        const __properties = this.$PROPERTIES;
-        let pk;
-        for (let prop in __properties) {
-            if(__properties[prop].isPK) {
-                pk = prop;
-                break;
-            }
+        if (Entity.__pkCache.has(this.__objectType)) {
+            return Entity.__pkCache.get(this.__objectType);
         }
 
+        const __properties = this.$PROPERTIES;
+        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK) ?? [];
+
+        Entity.__pkCache.set(this.__objectType, pk);
         return pk;
     }
 
