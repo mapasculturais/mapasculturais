@@ -44,8 +44,8 @@ class Controller extends \MapasCulturais\Controller {
         $evaluation_errors = $evaluation_phase->getValidationErrors();
 
         if (empty($collection_errors) && empty($evaluation_errors)) {
-            $collection_phase->save();
-            $evaluation_phase->save();
+            $collection_phase->save(true);
+            $evaluation_phase->save(true);
 
             $this->json([
                 'collectionPhase' => $collection_phase,
