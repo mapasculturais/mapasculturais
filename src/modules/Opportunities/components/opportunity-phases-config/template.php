@@ -96,7 +96,7 @@ $this->import('
             </div>
         </template>
 
-        <template v-else-if="item.isLastPhase">
+        <template v-else-if="index === phases.length - 1">
             <div class="add-phase grid-12">
                 <div class="col-12" v-if="!finalReportingPhase">
                     <opportunity-create-reporting-phase :opportunity="entity" @create="addReportingPhases"></opportunity-create-reporting-phase>
