@@ -30,7 +30,8 @@ abstract class AuthProvider {
         $app->hook('auth.successful', function() use($app){
             $user = $app->user;
 
-            if (!$user->is('admin') || $app->config['notifications.to.admin']) {
+            $preventNotifications = (bool) $user->metadata['prevent_notifications'] ?? false;
+            if (!$preventNotifications) {
                 $user->getEntitiesNotifications($app);
             }
 
