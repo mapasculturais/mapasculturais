@@ -29,7 +29,12 @@ abstract class AuthProvider {
 
         $app->hook('auth.successful', function() use($app){
             $user = $app->user;
-            $user->getEntitiesNotifications($app);
+
+            $preventNotifications = (bool) $user->metadata['prevent_notifications'] ?? false;
+            if (!$preventNotifications) {
+                $user->getEntitiesNotifications($app);
+            }
+
             $user->lastLoginTimestamp = new \DateTime;
             $user->save(true);
         });
