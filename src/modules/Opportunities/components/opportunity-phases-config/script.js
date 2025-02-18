@@ -49,20 +49,19 @@ app.component('opportunity-phases-config', {
         lastPhase() {
             return this.phases.findLast((phase) => phase.isLastPhase);
         },
+
+        lastPhaseIndex() {
+            return this.phases.findLastIndex((phase) => phase.isLastPhase);
+        },
     },
     
     methods: {
         addInPhases (phase) {
-            this.phases.splice(this.phases.length - 1, 0, phase);
+            this.phases.splice(this.lastPhaseIndex, 0, phase);
         },
         addReportingPhases (event) {
             const { collectionPhase, evaluationPhase } = event;
-            const lastPhaseIndex = this.phases.findLastIndex((phase) => phase.isLastPhase);
-            if (lastPhaseIndex >= 0) {
-                this.phases.splice(lastPhaseIndex, 0, collectionPhase, evaluationPhase);
-            } else {
-                this.phases.splice(this.phases.length - 1, 0, collectionPhase, evaluationPhase);
-            }
+            this.phases.splice(this.phases.length - 1, 0, collectionPhase, evaluationPhase);
         },
         showPublishTimestamp(phase) {
             const previousPhase = this.getPreviousPhase(phase);
