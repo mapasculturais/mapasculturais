@@ -59,10 +59,12 @@ app.component('opportunity-phases-config', {
         addInPhases (phase) {
             this.phases.splice(this.lastPhaseIndex, 0, phase);
         },
+
         addReportingPhases (event) {
             const { collectionPhase, evaluationPhase } = event;
-            this.phases.splice(this.phases.length - 1, 0, collectionPhase, evaluationPhase);
+            this.phases.splice(this.phases.length, 0, collectionPhase, evaluationPhase);
         },
+
         showPublishTimestamp(phase) {
             const previousPhase = this.getPreviousPhase(phase);
             const nextPhase = this.getNextPhase(phase);
@@ -77,6 +79,7 @@ app.component('opportunity-phases-config', {
                 return false;
             }
         },
+
         publishTimestamp(phase) {
             if (phase.__objectType == 'opportunity') {
                 return phase.publishTimestamp;
