@@ -21,7 +21,7 @@ $this->import('
                 <mc-avatar :entity="entity" size="big"></mc-avatar>
             </div>
             <!-- <mc-icon  v-if="!entity.files.avatar" :entity="entity"></mc-icon> -->
-            <nav class="share" aria-label="<?= i::__('Compartilhar') ?>">
+            <nav v-if="hasSocialNetworks" class="share" aria-label="<?= i::__('Compartilhar') ?>">
                 <a v-if="entity.twitter"  class="button button--text button--icon" aria-label="Twitter" target="_blank" :href="buildSocialMediaLink('twitter')">
                     <mc-icon name="twitter"></mc-icon>
                 </a>
@@ -60,8 +60,8 @@ $this->import('
         <div class="rightSide">
             <div class="data">
                 <mc-title tag="h1" size="big" class="entity-header__title"> {{entity.name}} </mc-title>
-                <div class="metadata">
-                    <slot name="metadata">
+                <slot name="metadata">
+                    <div class="metadata">
                         <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
                             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                             <dd><strong>{{entity.id}}</strong></dd>
@@ -70,10 +70,10 @@ $this->import('
                             <dt><?= i::__('Tipo')?></dt>
                             <dd :class="[entity.__objectType+'__color', 'type']">{{entity.type.name}} </dd>
                         </dl>
-                    </slot>
-                </div>
+                    </div>
+                </slot>
             </div>
-            <nav class="share share-mobile" aria-label="<?= i::__('Compartilhar') ?>">
+            <nav v-if="hasSocialNetworks" class="share share-mobile" aria-label="<?= i::__('Compartilhar') ?>">
                 <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
                     <mc-icon name="twitter"></mc-icon>
                 </a>
