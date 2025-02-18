@@ -216,9 +216,9 @@ return array(
         'cnhNumero' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CNH - Número de registro'),
-            'type' => 'text',
+            'type' => 'cnhNumero',
             'available_for_opportunities' => true,
-            'readonly' => true
+            'readonly' => false
         ),
         'cnhAnexo' => array(
             'private' => true,
@@ -255,9 +255,9 @@ return array(
         'rgNumero' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('RG - Documento'),
-            'type' => 'text',
+            'type' => 'rgNumero',
             'available_for_opportunities' => true,
-            'readonly' => true
+            'readonly' => false
         ),
         'rgAnexo' => array(
             'private' => true,
