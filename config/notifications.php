@@ -7,6 +7,4 @@ return [
     'notifications.seal.toExpire'   =>  (int) env('NOTIFICATIONS_SEAL_EXPIRATION', 1),  // days
  
     'notifications.interval'        =>  (int) env('NOTIFICATIONS_REFRESH_INTERVAL', 60),  // seconds
-
-    'notifications.to.admin'        =>  (bool) env('NOTIFICATIONS_TO_ADMIN', true),  // Send notification to admin
 ];
