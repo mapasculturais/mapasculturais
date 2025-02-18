@@ -69,7 +69,6 @@ app.component('opportunity-phases-config', {
             const nextPhase = this.getNextPhase(phase);
 
             if (phase.isLastPhase || phase.isReportingPhase) {
-                if (phase.isLastPhase || phase.isReportingPhase) {
                 return true;
             } else if (phase.__objectType == 'opportunity' && nextPhase.__objectType != 'evaluationmethodconfiguration' && phase.publishTimestamp) {
                 return true;
