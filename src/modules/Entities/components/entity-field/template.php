@@ -33,6 +33,8 @@ $this->import('
 
         <!-- masked fields -->
         <input v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('cnhNumero')" v-maska data-maska="###########" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('rgNumero')" v-maska data-maska="########" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
         
         <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
 
@@ -54,7 +56,7 @@ $this->import('
 
 
         <template v-if="is('file')">
-            <entity-file :entity="entity" :titleModal="titleModal" :groupName="groupName" classes="col-12" editable button-text-value="Anexar arquivo"></entity-file>
+            <entity-file :entity="entity" disableName="true" :titleModal="titleModal" :groupName="groupName" classes="col-12" editable button-text-value="Anexar arquivo" :disabled="readonly || disabled" :readonly="readonly"></entity-file>
         </template>
 
 
