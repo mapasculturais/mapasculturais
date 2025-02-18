@@ -33,7 +33,7 @@
             gap: size(40);
         }
 
-        .tabs-component {
+        & > .tabs-component {
             position: relative;
             margin-top: size(-43);
         }
