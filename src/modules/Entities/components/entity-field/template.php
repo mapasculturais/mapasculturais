@@ -18,7 +18,7 @@ $this->import('
     select-municipio
 ')
 ?>
-<div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]" :data-field="prop">
+<div v-if="propExists()" class="field" :class="[{error: hasErrors}, {disabled: readonly || disabled}, classes]" :data-field="prop">
     <label class="field__title" v-if="!hideLabel && !is('checkbox')" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
