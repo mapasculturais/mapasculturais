@@ -13,7 +13,7 @@ abstract class AuthProvider {
     use Traits\MagicCallers,
         Traits\MagicGetter,
         Traits\MagicSetter;
-
+ 
     protected $_config = [];
 
     private $_authenticatedUser = null;
@@ -29,7 +29,11 @@ abstract class AuthProvider {
 
         $app->hook('auth.successful', function() use($app){
             $user = $app->user;
-            $user->getEntitiesNotifications($app);
+
+            if (!$user->is('admin') || $app->config['notifications.to.admin']) {
+                $user->getEntitiesNotifications($app);
+            }
+
             $user->lastLoginTimestamp = new \DateTime;
             $user->save(true);
         });
