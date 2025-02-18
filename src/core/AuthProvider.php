@@ -13,7 +13,7 @@ abstract class AuthProvider {
     use Traits\MagicCallers,
         Traits\MagicGetter,
         Traits\MagicSetter;
- 
+
     protected $_config = [];
 
     private $_authenticatedUser = null;
