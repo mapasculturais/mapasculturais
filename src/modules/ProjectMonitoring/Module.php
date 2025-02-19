@@ -37,6 +37,54 @@ class Module extends \MapasCulturais\Module {
         ]);
         $app->registerMetadata($executionDetail, Goal::class);
 
+        // Metadados para Delivery (Entrega)
+        $availabilityType = new Metadata('availabilityType', [
+            'label' => \MapasCulturais\i::__('Forma de disponibilização'),
+            'type' => 'select',
+        ]);
+        $app->registerMetadata($availabilityType, Delivery::class);
+
+        $deliverySubtype = new Metadata('deliverySubtype', [
+            'label' => \MapasCulturais\i::__('Subtipo de entrega'),
+            'type' => 'select',
+        ]);
+        $app->registerMetadata($deliverySubtype, Delivery::class);
+
+        $accessibilityMeasures = new Metadata('accessibilityMeasures', [
+            'label' => \MapasCulturais\i::__('Medidas de acessibilidade'),
+            'type' => 'multiselect',
+        ]);
+        $app->registerMetadata($accessibilityMeasures, Delivery::class);
+
+        $participantProfile = new Metadata('participantProfile', [
+            'label' => \MapasCulturais\i::__('Perfil dos participantes'),
+            'type' => 'text'
+        ]);
+        $app->registerMetadata($participantProfile, Delivery::class);
+
+        $priorityAudience = new Metadata('priorityAudience', [
+            'label' => \MapasCulturais\i::__('Público prioritário'),
+            'type' => 'multiselect',
+        ]);
+        $app->registerMetadata($priorityAudience, Delivery::class);
+
+        $numberOfParticipants = new Metadata('numberOfParticipants', [
+            'label' => \MapasCulturais\i::__('Número de participantes'),
+            'type' => 'number'
+        ]);
+        $app->registerMetadata($numberOfParticipants, Delivery::class);
+
+        $executedRevenue = new Metadata('executedRevenue', [
+            'label' => \MapasCulturais\i::__('Receita executada'),
+            'type' => 'object'
+        ]);
+        $app->registerMetadata($executedRevenue, Delivery::class);
+
+        $evidenceLinks = new Metadata('evidenceLinks', [
+            'label' => \MapasCulturais\i::__('Links das evidências'),
+            'type' => 'array'
+        ]);
+        $app->registerMetadata($evidenceLinks, Delivery::class);
     }
 
 }
