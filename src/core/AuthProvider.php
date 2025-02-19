@@ -30,8 +30,8 @@ abstract class AuthProvider {
         $app->hook('auth.successful', function() use($app){
             $user = $app->user;
 
-            $preventNotifications = (bool) $user->metadata['prevent_notifications'] ?? false;
-            if (!$preventNotifications) {
+            $preventOverhead = (bool) $user->metadata['preventOverhead'] ?? false;
+            if (!$preventOverhead) {
                 $user->getEntitiesNotifications($app);
             }
 
