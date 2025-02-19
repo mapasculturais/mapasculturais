@@ -85,6 +85,19 @@ class Module extends \MapasCulturais\Module {
             'type' => 'array'
         ]);
         $app->registerMetadata($evidenceLinks, Delivery::class);
+
+        // Metadados para Registration (Inscrição)
+        $workplanSnapshot = new Metadata('workplanSnapshot', [
+            'label' => \MapasCulturais\i::__('Snapshot do plano de trabalho'),
+            'type' => 'json'
+        ]);
+        $app->registerMetadata($workplanSnapshot, Registration::class);
+
+        $goalStatuses = new Metadata('goalStatuses', [
+            'label' => \MapasCulturais\i::__('Status das metas'),
+            'type' => 'json'
+        ]);
+        $app->registerMetadata($goalStatuses, Registration::class);
     }
 
 }
