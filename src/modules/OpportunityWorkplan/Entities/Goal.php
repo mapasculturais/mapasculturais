@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 
 use MapasCulturais\Traits\EntityMetadata;
 use MapasCulturais\Traits\EntityOwnerAgent;
+use MapasCulturais\i;
 
 /**
  * 
@@ -16,6 +17,11 @@ use MapasCulturais\Traits\EntityOwnerAgent;
  */
 class Goal extends \MapasCulturais\Entity {
 
+    const STATUS_SCHEDULED = 0;
+    const STATUS_IN_PROGRESS = 1;
+    const STATUS_OVERDUE = 2;
+    const STATUS_CANCELED = 3;
+    const STATUS_COMPLETED = 10;
 
     use EntityMetadata,
         EntityOwnerAgent;
@@ -71,6 +77,13 @@ class Goal extends \MapasCulturais\Entity {
      */
     protected $updateTimestamp;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="smallint", nullable=false)
+     */
+    private $status = self::STATUS_SCHEDULED;
+
     public function getDeliveries(): Collection
     {
         return $this->deliveries;
@@ -79,6 +92,21 @@ class Goal extends \MapasCulturais\Entity {
     public function __construct() {
         $this->deliveries = new ArrayCollection();
         parent::__construct();
+    }
+
+    /**
+     * Retorna array com os nomes dos status
+     * 
+     * @return array
+     */
+    protected static function _getStatusesNames() {
+        return [
+            self::STATUS_SCHEDULED   => i::__('Programada'),
+            self::STATUS_IN_PROGRESS => i::__('Em andamento'),
+            self::STATUS_OVERDUE     => i::__('Atrasada'),
+            self::STATUS_CANCELED    => i::__('Cancelada'),
+            self::STATUS_COMPLETED   => i::__('Concluída')
+        ];
     }
 
     public function jsonSerialize(): array
