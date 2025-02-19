@@ -82,7 +82,7 @@ class Goal extends \MapasCulturais\Entity {
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
-    private $status = self::STATUS_SCHEDULED;
+    protected $status = self::STATUS_SCHEDULED;
 
     public function getDeliveries(): Collection
     {
