@@ -744,7 +744,7 @@ class Module extends \MapasCulturais\Module{
                                 $category_seals = $categories_seals->{$category};
 
                                 // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                                if(isset($opportunity->firstPhase->useAgentRelationColetivo) && $opportunity->firstPhase->useAgentRelationColetivo == 'required') {
+                                if($opportunity->firstPhase->useAgentRelationColetivo == 'required') {
                                     if($agent_type == "coletivo"){
                                         $agents = $this->getAgentRelations();
                                         $self->applySeal($agents[0]->agent, $category_seals);
@@ -809,7 +809,7 @@ class Module extends \MapasCulturais\Module{
                             $category_seals = $categories_seals->{$category};
 
                              // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                            if(isset($opportunity->firstPhase->useAgentRelationColetivo) && $opportunity->firstPhase->useAgentRelationColetivo == 'required') {
+                            if($opportunity->firstPhase->useAgentRelationColetivo == 'required') {
                                 if ($agent_type == "coletivo") {
                                     $agent_relations = $this->getAgentRelations();
     
@@ -876,7 +876,7 @@ class Module extends \MapasCulturais\Module{
                                         $category_seals = $categories_seals->{$category};
         
                                         // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                                        if(isset($this->firstPhase->useAgentRelationColetivo) && $this->firstPhase->useAgentRelationColetivo == 'required') {
+                                        if($this->firstPhase->useAgentRelationColetivo == 'required') {
                                             if($agent_type == "coletivo"){
                                                 $agents = $registration->getAgentRelations();
                                                 $self->applySeal($agents[0]->agent, $category_seals);
@@ -940,7 +940,7 @@ class Module extends \MapasCulturais\Module{
                                     $category_seals = $categories_seals->{$category};
         
                                     // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                                    if(isset($this->firstPhase->useAgentRelationColetivo) && $this->firstPhase->useAgentRelationColetivo == 'required') {
+                                    if($this->firstPhase->useAgentRelationColetivo == 'required') {
                                         if ($agent_type == "coletivo") {
                                             $agent_relations = $this->getAgentRelations();
             
