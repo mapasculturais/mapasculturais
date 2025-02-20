@@ -368,7 +368,7 @@ class Opportunity extends EntityController {
         $this->apiResponse($fields);
     }
 
-    function apiFindRegistrations($opportunity, $query_data) {
+    function apiFindRegistrations($opportunity, $query_data, $enalble_quota = false) {
         $app = App::i();
         $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
         $data = $query_data;
@@ -398,7 +398,8 @@ class Opportunity extends EntityController {
             }
 
             $current_phase_query_params = [
-                'opportunity' => API::EQ($phase->id)
+                'opportunity' => API::EQ($phase->id),
+                '__enableQuota' => $enalble_quota
             ];
             
             // $phase é a fase que foi informada no parâmetro @opportunity
@@ -532,7 +533,7 @@ class Opportunity extends EntityController {
             $query_data['status'] = API::GT(0);
         }
 
-        $result = $this->apiFindRegistrations($opportunity, $query_data);
+        $result = $this->apiFindRegistrations($opportunity, $query_data, enalble_quota: true);
         
         $this->apiAddHeaderMetadata($query_data, $result->registrations, $result->count);
         $this->apiResponse($result->registrations);
