@@ -1119,6 +1119,18 @@ return [
         __exec("ALTER TABLE registration_workplan_goal_delivery_meta ADD FOREIGN KEY (object_id) REFERENCES registration_workplan_goal_delivery(id) ON DELETE CASCADE");
     },
 
+    "Adiciona coluna status na tabela registration_workplan_goal" => function() use ($conn){
+        if(!__column_exists('registration_workplan_goal', 'status')) {
+            __exec("ALTER TABLE registration_workplan_goal ADD status smallint DEFAULT 0;");
+        }
+    },
+
+    "Adiciona coluna status na tabela registration_workplan_goal_delivery" => function() use ($conn){
+        if(!__column_exists('registration_workplan_goal_delivery', 'status')) {
+            __exec("ALTER TABLE registration_workplan_goal_delivery ADD status smallint DEFAULT 0;");
+        }
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
