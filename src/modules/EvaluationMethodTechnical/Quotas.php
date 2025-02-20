@@ -628,13 +628,23 @@ class Quotas {
     }
 
     private function getCriterionName(string $criterion_id): string {
+        $app = App::i();
+        $cache_key = __METHOD__.$criterion_id;
+
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
+        $result = '';
         foreach($this->evaluationConfig->criteria as $criterion) {
             if($criterion->id == $criterion_id) {
-                return $criterion->title;
+                $result = $criterion->title;
+                break;
             }
         }
 
-        return '';
+        $app->rcache->save($cache_key, $result);
+        return $result;
     }
 
     /**
@@ -643,6 +653,14 @@ class Quotas {
      * @return string 
      */
     private function getSectionCriterionName(string $section_id): string {
+        $app = App::i();
+        $cache_key = __METHOD__.$section_id;
+
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
+        $result = '';
         foreach($this->evaluationConfig->sections as $section) {
             if($section->id == $section_id) {
                 return $section->name;
@@ -926,6 +944,12 @@ class Quotas {
      * @return float 
      */
     public function tiebreakerCriterion($criteria_id, $registration_id, $evaluation_data) {
+        $app = APP::i();
+        $cache_key = __METHOD__.":{$criteria_id}:$registration_id";
+        if($app->rcache->contains($cache_key)) {
+            return $app->rcache->fetch($cache_key);
+        }
+
         $criteria = [];
         foreach($this->evaluationConfig->criteria as $criterion) {
             if($criterion->id === $criteria_id) {
@@ -943,8 +967,10 @@ class Quotas {
                 }
             }
         }
-        
-        return number_format($result, 2);
+
+        $_result = number_format($result, 2);
+        $app->rcache->save($cache_key, $_result);
+        return $_result;
     }
 
     /** 
