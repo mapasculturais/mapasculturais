@@ -29,7 +29,7 @@ $this->import('
                 <label for="logradouro">
                     <?= i::__('Logradouro') ?>
                 </label>
-                <input @blur="geolocation()" @input="geolocation(10000)" id="logradouro" type="text" v-model="addressData.En_Nome_Logradouro" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" placeholder="rua, avenida, praça, viaduto, travessa, etc" id="logradouro" type="text" v-model="addressData.En_Nome_Logradouro" @change="save" />
             </div>
 
             <div class="field col-6" :class="{'not-error': !hasError('En_Num')}">

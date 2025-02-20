@@ -885,7 +885,11 @@ class ApiQuery {
         $where = $this->generateWhere();
         $joins = $this->generateJoins();
 
-        $dql = "SELECT\n\tCOUNT(e.{$this->pk})\nFROM \n\t{$this->entityClassName} e {$joins}";
+        $dql = "
+        SELECT COUNT(DISTINCT(e.{$this->pk}))
+        FROM {$this->entityClassName} e 
+            {$joins}";
+            
         if ($where) {
             $dql .= "\nWHERE\n\t{$where}";
         }
@@ -2107,7 +2111,13 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
+            $agents_query = new ApiQuery(Agent::class, [
+                '@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto', 
+                'id' => "IN($agent_ids)", 
+                'status' => 'GTE(0)', 
+                '@permissions' => 'view'
+            ]);
+
             $agents = $agents_query->find();
             $agents_by_id = [];
             foreach($agents as $agent) {
@@ -2136,7 +2146,7 @@ class ApiQuery {
                 $entity_id = $entity[$this->pk];
 
                 $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[];
-                $permisions = $entity['currentUserPermissions'];
+                $permisions = $entity['currentUserPermissions'] ?? [];
 
                 $can_view_pending = ($permisions['@controll'] ?? false) || 
                                     ($permisions['viewPrivateData'] ?? false) ||
@@ -2227,7 +2237,13 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query = new ApiQuery(Agent::class, ['@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl', 'id' => "IN($agent_ids)"]);
+            $agents_query = new ApiQuery(Agent::class, [
+                '@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto', 
+                'id' => "IN($agent_ids)", 
+                'status' => 'GTE(0)', 
+                '@permissions' => 'view'
+            ]);
+            
             $agents = $agents_query->find();
             $agents_by_id = [];
             foreach($agents as $agent) {
