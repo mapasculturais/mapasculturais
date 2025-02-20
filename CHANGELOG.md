@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.23] - 2025-02-20
+#### Correções
+- Corrige problema erro ao carregar a tabela de inscrição
+
+#### Melhorias Não funcionais
+- Implementa cache no retorno da listagemd e inscrições elegíveis a cotas
+
 ## [7.5.22] - 2025-02-14
 #### Melhorias
 - Ajusta a tabela de agentes nas telas de busca para exibir todos os campos, respeitando a privacidade e as permissões do usuário
