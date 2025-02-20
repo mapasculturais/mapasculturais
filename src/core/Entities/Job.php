@@ -98,13 +98,6 @@ class Job extends \MapasCulturais\Entity{
     protected $lastExecutionTimestamp;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
-     */
-    protected $_subsiteId;
-
-    /**
      * @var \MapasCulturais\Entities\Subsite
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")

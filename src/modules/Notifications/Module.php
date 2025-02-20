@@ -223,6 +223,8 @@ class Module extends \MapasCulturais\Module{
                     break;
             }
 
+            $app->applyHookBoundTo($this, 'request(workflow.message).create:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'message_to_requester' => &$message_to_requester, 'send_message' => &$message, 'requester' => $requester]);
+
             if($message_to_requester){
                 // message to requester user
                 $notification = new Notification;
@@ -246,6 +248,7 @@ class Module extends \MapasCulturais\Module{
                 $notification->message = $message;
                 $notification->request = $this;
                 $notification->save(true);
+                $app->applyHookBoundTo($this, 'request(workflow.message.destination).sendMail', ['message' => &$message, 'notification' => $notification]);
                 $module->sendMail($user->email, $message, $subject);
             }
 
@@ -255,6 +258,7 @@ class Module extends \MapasCulturais\Module{
                 $notification->message = $message;
                 $notification->request = $this;
                 $notification->save(true);
+                $app->applyHookBoundTo($this, 'request(workflow.message.origin).sendMail', ['message' => &$message, 'notification' => $notification]);
                 $module->sendMail($origin->ownerUser->email, $message, $subject);
             }
         });
@@ -326,6 +330,8 @@ class Module extends \MapasCulturais\Module{
             }
 
             $notified_user_ids = array();
+
+            $app->applyHookBoundTo($this, 'request(workflow.message).approve:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'send_message' => &$message, 'requester' => $requester]);
 
             foreach ($users as $u) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem
@@ -435,6 +441,8 @@ class Module extends \MapasCulturais\Module{
             }
 
             $notified_user_ids = array();
+
+            $app->applyHookBoundTo($this, 'request(workflow.message).reject:before', ['origin' => $origin, 'destination' => $destination, 'entityType' => $this->getClassName(), 'send_message' => &$message, 'requester' => $requester]);
 
             foreach ($users as $u) {
                 // impede que a notificação seja entregue mais de uma vez ao mesmo usuário se as regras acima se somarem

@@ -16,7 +16,7 @@ $this->import('
         <label> {{ title }} </label>
         <small class="field__description"> {{ description }} </small>
 
-        <div v-for="(address, index) in registration[prop]" class="registration-field-persons__person">
+        <div v-for="(address, index) in parseData()" class="registration-field-persons__person">
 
             <p class="semibold"> {{index + 1}}ª <?= i::__("Endereço") ?> </p>
 
@@ -39,7 +39,7 @@ $this->import('
                     <label>
                         <?= $this->text('logradouro', i::__('Logradouro')) ?>
                     </label>
-                    <input type="text" v-model="address.logradouro" @change="save()" :disabled="disabled" />
+                    <input type="text" v-model="address.logradouro" @change="save()" placeholder="rua, avenida, praça, viaduto, travessa, etc" :disabled="disabled" />
                 </div>
 
                 <div class="field col-4">

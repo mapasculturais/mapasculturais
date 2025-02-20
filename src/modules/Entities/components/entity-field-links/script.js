@@ -7,6 +7,10 @@ app.component('entity-field-links', {
             type: Entity,
             required: true
         },
+        editable: {
+            type: Boolean,
+            default: true
+        },
 
         prop: {
             type: String,
@@ -27,7 +31,21 @@ app.component('entity-field-links', {
 
     created() {
         const existingLinks = this.entity[this.prop] || [];
-        this.links = Array.isArray(existingLinks) ? existingLinks : [];
+        if (typeof existingLinks === 'string') {
+            try {
+                const parsed = JSON.parse(existingLinks);
+                this.links = Array.isArray(parsed) ? parsed : [parsed];
+            } catch (error) {
+                console.error('String inválida para JSON:', error);
+                this.links = [];
+            }
+        } else if (Array.isArray(existingLinks)) {
+            this.links = existingLinks;
+        } else if (typeof existingLinks === 'object' && existingLinks !== null) {
+            this.links = [existingLinks];
+        } else {
+            this.links = [];
+        }
     },
 
     methods: {

@@ -16,7 +16,7 @@ $this->import('
 ?>
 <mc-tabs :class="{'hasDrafts': this.totalDrafts>0}" @changed="changed($event)">
     <mc-tab label="<?= i::_e('Não enviadas') ?>" slug="notSent" name="tem">
-        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,proponentType,range,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,proponentType,range,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}},agentRelations">
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -42,7 +42,7 @@ $this->import('
         </mc-entities>
     </mc-tab>
     <mc-tab label="<?= i::_e('Enviadas') ?>" class="tabs_sent" slug="sent">
-        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,range,proponentType,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}}">            
+        <mc-entities name="registrationsList" type="registration" endpoint="find" :query="query" :order="query['@order']" select="status,range,proponentType,name,number,category,createTimestamp,sentTimestamp,owner.{name,files.avatar},opportunity.{name,files.avatar,isOpportunityPhase,parent.{name,files.avatar}},agentRelations">            
             <template #header="{entities}">
                 <div class="registrations__filter">
                     <form class="form" @submit="entities.refresh(); $event.preventDefault();">
@@ -59,7 +59,7 @@ $this->import('
                         </select>
                     </form>
                     <mc-alert type="warning" :state="showAlert" closeButton>
-                        <?= i::__('Você tem inscrições não finalizadas. Acesse a aba')?> <strong><?= i::__('Não Enviadas') ?></strong> <?= i::__('para visualizar.') ?>
+                        <?= $this->text('registrations_not_completed', i::__('Você tem inscrições não finalizadas. Acesse a aba'))?> <strong><?= i::__('Não Enviadas') ?></strong> <?= i::__('para visualizar.') ?>
                     </mc-alert>
                 </div>
             </template>

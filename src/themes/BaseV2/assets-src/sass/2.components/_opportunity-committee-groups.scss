@@ -77,4 +77,11 @@
         max-width: size(1020);
         min-width: 40%;
     }
+
+    .field {
+        .has-info {
+            display: flex;
+            gap: 5px;
+        }
+    }
 }
