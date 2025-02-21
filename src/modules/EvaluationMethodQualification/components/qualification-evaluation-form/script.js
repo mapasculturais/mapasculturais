@@ -61,6 +61,35 @@ app.component('qualification-evaluation-form', {
         });
     },
 
+    watch: {
+        formData: {
+            handler(value){
+                for (const fieldId in value.data) {
+                    const fieldData = value.data[fieldId];
+                    const fieldElement = this.$refs[fieldId]?.[0];
+                
+                    if (!Array.isArray(fieldData) || fieldData.length === 0 || !fieldElement?.classList?.contains('qualification-evaluation-form__criterion--error')) {
+                        continue;
+                    }
+                
+                    fieldElement.classList.remove('qualification-evaluation-form__criterion--error');
+                
+                    const updatedErrors = {};
+                    for (const [sectionName, errors] of Object.entries(this.errors)) {
+                        const filteredErrors = errors.filter(error => error.id !== fieldId);
+                
+                        if (filteredErrors.length > 0) {
+                            updatedErrors[sectionName] = filteredErrors;
+                        }
+                    }
+                    
+                    this.errors = updatedErrors;
+                }
+            },
+            deep: true,
+        }
+    },
+
     computed: {
         sections() {
             return $MAPAS.config.qualificationEvaluationForm.sections || [];
