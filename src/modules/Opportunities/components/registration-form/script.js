@@ -29,6 +29,9 @@ app.component('registration-form', {
     },
 
     computed: {
+        disableFields() {
+            return $MAPAS.config.registrationForm.disableFields || null;
+        },
         description() {
             return $DESCRIPTIONS.registration
         },
@@ -157,6 +160,11 @@ app.component('registration-form', {
         },
         isDisabled(field) {
             let fieldName = field.fieldName || field.groupName;
+            if (this.editableFields.length > 0) {
+                if (this.disableFields && this.disableFields.includes(fieldName)) {
+                    return true;
+                }
+            }
             return this.editableFields.length > 0 ? !this.editableFields.includes(fieldName) : false;
         },
 

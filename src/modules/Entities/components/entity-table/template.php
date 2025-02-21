@@ -94,24 +94,26 @@ $this->import('
                     </div>
                 </div>
             </div>
-            <div v-if="!hideSort" class="entity-table__info">
-                <span v-if="entities.length === entities.metadata.count">
-                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-                </span>
-                <span v-else>    
-                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-                </span>
-                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
-            </div>
+            <template v-if="entities.length > 0">
+                <div v-if="!hideSort" class="entity-table__info">
+                    <span v-if="entities.length === entities.metadata.count">
+                        <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                    </span>
+                    <span v-else>
+                        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                    </span>
+                    <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
+                </div>
 
-            <div v-if="hideSort" class="entity-table__info">
-                <span v-if="entities.length === entities.metadata.count">
-                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
-                </span>
-                <span v-else>    
-                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
-                </span>
-            </div>
+                <div v-if="hideSort" class="entity-table__info">
+                    <span v-if="entities.length === entities.metadata.count">
+                        <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
+                    </span>
+                    <span v-else>
+                        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
+                    </span>
+                </div>
+            </template>
         </template>
 
 
@@ -135,7 +137,9 @@ $this->import('
 
                             <template #button="popover">
                                 <a href="#" v-tooltip="'<?= i::__("Configurar colunas") ?>'" data-toggle="tooltip" @click.prevent="popover.toggle()">
-                                    <mc-icon name="columns-edit"></mc-icon>
+                                    <slot name="icon-text" :popover="popover">
+                                        <mc-icon name="columns-edit"></mc-icon>
+                                    </slot>
                                 </a>
                             </template>
                         </mc-popover>
@@ -172,7 +176,7 @@ $this->import('
                         </tbody>
                     </table>
                 </div>          
-                <div class="entity-table__table-scroll" ref="scrollWrapper" @scroll="scroll($event)">
+                <div class="entity-table__table-scroll scrollbar" ref="scrollWrapper" @scroll="scroll($event)">
                     <div :style="{width}">&nbsp;</div>
                 </div>
             </div>
