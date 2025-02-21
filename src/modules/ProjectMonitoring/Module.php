@@ -5,13 +5,71 @@ namespace ProjectMonitoring;
 use MapasCulturais\App;
 use MapasCulturais\Controllers\Registration;
 use MapasCulturais\Definitions\Metadata;
-use \MapasCulturais\i;
-use OpportunityWorkplan\Entities\Goal;
+use MapasCulturais\Entities;
+use MapasCulturais\i;
 use OpportunityWorkplan\Entities\Delivery;
+use OpportunityWorkplan\Entities\Goal;
 
 class Module extends \MapasCulturais\Module {
 
     public function _init() {
+        $app = App::i();
+
+        $app->hook('entity(Registration).insert:after', function () use ($app) {
+            /** @var Entities\Registration $this */
+            $opportunity = $this->opportunity;
+
+            if ($opportunity->isReportingPhase) {
+                if ($opportunity->isFinalReportingPhase) {
+                    $notification_template = i::__('A fase de prestação de informações da inscrição %s, na oportunidade %s, começou. Você deve preenchê-la com as informações solicitadas até %s.');
+                } else {
+                    $notification_template = i::__('A fase de monitoramento da inscrição %s, na oportunidade %s, começou. Você deve preenchê-la com as informações solicitadas até %s.');
+                }
+    
+                $notification_message = sprintf(
+                   $notification_template,
+                    "<strong>{$this->number}</strong>",
+                    "<strong>{$opportunity->firstPhase->name}</strong>",
+                    "<strong>{$opportunity->registrationTo->format('d/m/Y H:i')}</strong>"
+                );
+                
+                $notification = new Entities\Notification();
+                $notification->user = $this->owner->user;
+                $notification->message = $notification_message;
+                $notification->save(true);
+            }
+        });
+
+        $app->hook('sendMailNotification.registrationStart', function (Entities\Registration &$registration, string &$template, array &$params) {
+            $opportunity = $registration->opportunity;
+
+            if ($opportunity->isReportingPhase) {
+                if ($opportunity->isFinalReportingPhase) {
+                    $template = 'start_final_reporting_phase';
+                } else {
+                    $template = 'start_reporting_phase';
+                }
+                $params['registrationTo'] = $opportunity->registrationTo->format('d/m/Y H:i');
+            }
+        });
+        
+        $app->hook('GET(panel.validations)', function() use($app) {
+            /** @var \Panel\Controller $this */
+            $this->requireAuthentication();
+
+            $this->render('validations', []);
+        });
+
+        $app->hook('panel.nav', function(&$group) use($app) {
+            $group['opportunities']['items'][] = [
+                'route' => 'panel/validations',
+                'icon' => 'opportunity',
+                'label' => i::__('Minhas validações'),
+                'condition' => function() use($app) {
+                    return $app->user->getIsEvaluator();
+                }
+            ];
+        });
     }
     
     public function register() {
@@ -19,14 +77,31 @@ class Module extends \MapasCulturais\Module {
 
         $this->registerOpportunityMetadata('isReportingPhase', [
             'label' => i::__('É fase de prestação de informações?'),
-            'type' => 'boolean',
+            'type' => 'checkbox',
             'default' => false,
             'private' => false,
+            'available_for_opportunities' => true,
         ]);
 
         $this->registerOpportunityMetadata('isFinalReportingPhase', [
             'label' => i::__('É fase final de prestação de informações?'),
-            'type' => 'boolean',
+            'type' => 'checkbox',
+            'default' => false,
+            'private' => false,
+            'available_for_opportunities' => true,
+        ]);
+
+        $this->registerOpportunityMetadata('includesWorkPlan', [
+            'label' => i::__('Incluir plano de trabalho na prestação de informações?'),
+            'type' => 'checkbox',
+            'default' => false,
+            'private' => false,
+            'available_for_opportunities' => true,
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('allowsMultipleReplies', [
+            'label' => i::__('Possibilitar mais de uma resposta do proponente'),
+            'type' => 'checkbox',
             'default' => false,
             'private' => false,
         ]);
@@ -97,7 +172,10 @@ class Module extends \MapasCulturais\Module {
             'label' => \MapasCulturais\i::__('Status das metas'),
             'type' => 'json'
         ]);
+
         $app->registerMetadata($goalStatuses, Registration::class);
+        
+        $app->registerController('projectReporting', Controller::class);
     }
 
 }

@@ -38,27 +38,38 @@ app.component('opportunity-phases-config', {
     },
 
     computed: {
+        finalReportingPhase() {
+            return this.phases.find((phase) => phase.isFinalReportingPhase);
+        },
+
         firstPhase() {
             return this.phases[0];
         },
 
         lastPhase() {
-            const lastPhase = this.phases[this.phases.length - 1];
-            if (lastPhase.isLastPhase) {
-                return lastPhase;
-            }
-        }
+            return this.phases.findLast((phase) => phase.isLastPhase);
+        },
+
+        lastPhaseIndex() {
+            return this.phases.findLastIndex((phase) => phase.isLastPhase);
+        },
     },
     
     methods: {
         addInPhases (phase) {
-            this.phases.splice(this.phases.length - 1, 0, phase);
+            this.phases.splice(this.lastPhaseIndex, 0, phase);
         },
+
+        addReportingPhases (event) {
+            const { collectionPhase, evaluationPhase } = event;
+            this.phases.splice(this.phases.length, 0, collectionPhase, evaluationPhase);
+        },
+
         showPublishTimestamp(phase) {
             const previousPhase = this.getPreviousPhase(phase);
             const nextPhase = this.getNextPhase(phase);
 
-            if (phase.isLastPhase) {
+            if (phase.isLastPhase || phase.isReportingPhase) {
                 return true;
             } else if (phase.__objectType == 'opportunity' && nextPhase.__objectType != 'evaluationmethodconfiguration' && phase.publishTimestamp) {
                 return true;
@@ -68,6 +79,7 @@ app.component('opportunity-phases-config', {
                 return false;
             }
         },
+
         publishTimestamp(phase) {
             if (phase.__objectType == 'opportunity') {
                 return phase.publishTimestamp;

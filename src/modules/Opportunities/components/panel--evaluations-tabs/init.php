@@ -2,7 +2,7 @@
 
 $queryParams =  [
     '@permissions' => 'evaluateRegistrations',
-    '@select' => 'name,parent.name,status,evaluationMethodConfiguration.{evaluationFrom,evaluationTo}', 
+    '@select' => 'name,parent.name,status,evaluationMethodConfiguration.{evaluationFrom,evaluationTo},isReportingPhase', 
     'status' => 'IN(1,-1)',
 ];
 
