@@ -32,27 +32,37 @@ $defaultHeaders = [
         'width' => '80px',
     ],
     [
-        'text' => i::__('name', 'agent-table'),
+        'text' => i::__('Nome', 'agent-table'),
         'value' => 'name',
         'width' => '160px',
     ],
     [
-        'text' => i::__('area', 'agent-table'),
+        'text' => i::__('Area de atuação', 'agent-table'),
         'value' => 'terms.area.join(\', \')',
         'slug' => 'area',
     ],
     [
-        'text' => i::__('tag', 'agent-table'),
+        'text' => i::__('Tags', 'agent-table'),
         'value' => 'terms.tag.join(\', \')',
         'slug' => 'tag',
     ],
     [
-        'text' => i::__('seals', 'agent-table'),
+        'text' => i::__('Segmento', 'agent-table'),
+        'value' => 'terms.segmento.join(\', \')',
+        'slug' => 'segmento',
+    ],
+    [
+        'text' => i::__('Função', 'agent-table'),
+        'value' => 'terms.funcao.join(\', \')',
+        'slug' => 'funcao',
+    ],
+    [
+        'text' => i::__('Selos', 'agent-table'),
         'value' => 'seals.map((seal) => seal.name).join(\', \')',
         'slug' => 'seals',
     ],
     [
-        'text' => i::__('endereco', 'agent-table'),
+        'text' => i::__('Endereço', 'agent-table'),
         'value' => 'endereco',
         'slug' => 'endereco',
     ],
