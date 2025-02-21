@@ -21,6 +21,7 @@ $this->import('
             <?php $this->info('cadastro -> configuracoes-entidades -> endereco') ?>
         <?php endif; ?>
     </div>
+    
     <div class="col-12" v-if="editable">
         <div class="grid-12">
             <entity-field @change="address(); pesquisacep(entity.En_CEP);" classes="col-4 sm:col-12" :entity="entity" prop="En_CEP"></entity-field>
@@ -62,8 +63,8 @@ $this->import('
         </div>
     </div>
 
-    <div class="col-12">
-        <div class="grid-12" v-if="entity.En_Pais && entity.En_Pais != statesAndCitiesCountryCode">
+    <div v-if="entity.En_Pais && entity.En_Pais != statesAndCitiesCountryCode" class="col-12">
+        <div class="grid-12">
             <div class="field col-6">
                     <label class="field__title">
                     <?php i::_e('Estado')?>
