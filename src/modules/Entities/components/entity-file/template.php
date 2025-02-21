@@ -14,7 +14,8 @@ $this->import('
     mc-loading
 ');
 ?>
-<div v-if="file || editable" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName.replace('rfc_', 'file_')">
+
+<div v-if="file || editable" :class="['entity-file', {'entity-file--disabled' : disabled}, classes]" :data-field="groupName?.replace('rfc_', 'file_')">
 
     <label v-if="title" class="entity-file__title">
         {{title}}
@@ -92,7 +93,7 @@ $this->import('
                     <mc-icon name="download"></mc-icon> <?php i::_e("Baixar modelo") ?>
                 </a>
                 <a v-if="!file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">
-                    <mc-icon name="upload"></mc-icon> <?php i::_e("Enviar") ?>
+                    <mc-icon name="upload"></mc-icon> {{ buttonTextValue }}
                 </a>
                 <a v-if="file" @click="modal.open()" class="button button--primary button--icon button--primary-outline button-up">
                     <mc-icon name="upload"></mc-icon> <?php i::_e("Atualizar") ?>
