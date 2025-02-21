@@ -38,22 +38,22 @@ $defaultHeaders = [
     ],
     [
         'text' => i::__('Area de atuação', 'agent-table'),
-        'value' => 'terms.area.join(\', \')',
+        'value' => 'terms?.area?.join(\', \')',
         'slug' => 'area',
     ],
     [
         'text' => i::__('Tags', 'agent-table'),
-        'value' => 'terms.tag.join(\', \')',
+        'value' => 'terms?.tag?.join(\', \')',
         'slug' => 'tag',
     ],
     [
         'text' => i::__('Segmento', 'agent-table'),
-        'value' => 'terms.segmento.join(\', \')',
+        'value' => 'terms?.segmento?.join(\', \')',
         'slug' => 'segmento',
     ],
     [
         'text' => i::__('Função', 'agent-table'),
-        'value' => 'terms.funcao.join(\', \')',
+        'value' => 'terms?.funcao?.join(\', \')',
         'slug' => 'funcao',
     ],
     [
