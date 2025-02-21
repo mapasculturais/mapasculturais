@@ -448,8 +448,12 @@ class Module extends \MapasCulturais\Module{
             ]);
 
             $last_phase = null;
+            $reporting_phases = [];
+
             foreach($query->getResult() as $opp) {
-                if($opp->isLastPhase) {
+                if ($opp->isReportingPhase) {
+                    $reporting_phases[] = $opp;
+                } elseif ($opp->isLastPhase) {
                     $last_phase = $opp;
                 } else {
                     $values[] = $opp;
@@ -460,6 +464,12 @@ class Module extends \MapasCulturais\Module{
                 $values[] = $last_phase;
             }
 
+            /**
+             * Adiciona as fases de prestação de informações ao final da lista de fases.
+             */
+            if ($reporting_phases) {
+                $values = array_merge($values, $reporting_phases);
+            }
         });
 
         /**
@@ -484,7 +494,7 @@ class Module extends \MapasCulturais\Module{
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
-                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,files");
+                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files");
                         $item->appealPhase = $opportunity->appealPhase;
 
                         $item->registrationSteps = [];
@@ -1320,16 +1330,16 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) {
             if($previous_phase = $this->previousPhase){
                 $previous_date_from = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationFrom : $previous_phase->evaluationFrom;
-                $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
-
+                
                 if($this->evaluationFrom < $previous_date_from) {
+                    $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
                     $validations['evaluationFrom']["\$value >= new DateTime('$previous_date_from_string')"] = i::__('A data inicial deve ser maior ou igual a data de inicio da fase anterior');
                 }
 
                 $previous_date_to = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationTo : $previous_phase->evaluationTo;
-                $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
-
+                
                 if($this->evaluationTo < $previous_date_to) {
+                    $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
                     $validations['evaluationTo']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data final deve ser maior ou igual a data de término da fase anterior');
                 }
             }

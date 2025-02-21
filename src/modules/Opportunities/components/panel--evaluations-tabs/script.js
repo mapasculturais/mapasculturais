@@ -7,10 +7,18 @@ app.component('panel--evaluations-tabs', {
         return { text, hasSlot }
     },
 
+    props: {
+        isReportingPhase: {
+            type: Boolean,
+            default: false
+        },
+    },
+
     data() {
         let query = {
             '@permissions': 'viewEvaluations',
             'status': 'IN(1,-1)',
+            'isReportingPhase': this.isReportingPhase ? `EQ(true)` : 'OR(EQ(false),NULL())',
         };
 
         return {
