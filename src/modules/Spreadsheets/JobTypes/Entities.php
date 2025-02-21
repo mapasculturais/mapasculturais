@@ -70,12 +70,28 @@ class Entities extends SpreadsheetJob
 
     protected function _getBatch(Job $job) : array {
         $entity_class_name = $job->entityClassName;
+        $app = App::i();
 
-        $query = $job->query;
-        $query['@limit'] = $this->limit;
-        $query['@page'] = $this->page;
+        $jobQuery = $job->query;
+        $jobQuery['@limit'] = $this->limit;
+        $jobQuery['@page'] = $this->page;
 
-        $query = new ApiQuery($entity_class_name, $query);
+        if(isset($jobQuery['@select'])) {
+            $taxonomies = array_keys($app->getRegisteredTaxonomies());
+            $select = [];
+            if($props = explode(',', $jobQuery['@select'])) {
+                $select = $props;
+                foreach($props as $prop) {
+                    if(in_array($prop, $taxonomies) && !in_array('terms', $props)) {
+                        $select[] = 'terms';
+                    }
+                }
+
+                $jobQuery['@select'] = implode(',', $select);
+            }
+        }
+
+        $query = new ApiQuery($entity_class_name, $jobQuery);
         $result = $query->getFindResult();
 
         foreach($result as &$entity) {

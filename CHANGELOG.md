@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correções
+- Corrige erro ao exportar as taxonomias na planilha de agentes
+
 ## [7.5.23] - 2025-02-20
 #### Correções
 - Corrige problema erro ao carregar a tabela de inscrição
