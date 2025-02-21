@@ -1,18 +1,19 @@
 <?php
 namespace Spreadsheets\JobTypes;
 
+use MapasCulturais\i;
+use MapasCulturais\App;
 use MapasCulturais\ApiQuery;
+use MapasCulturais\Entities\Job;
+use Spreadsheets\SpreadsheetJob;
+use MapasCulturais\Entities\Seal;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Entities\Job;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Project;
-use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Subsite;
-use MapasCulturais\Entities\User;
-use MapasCulturais\i;
-use Spreadsheets\SpreadsheetJob;
+use MapasCulturais\Entities\Opportunity;
 
 class Entities extends SpreadsheetJob
 {
