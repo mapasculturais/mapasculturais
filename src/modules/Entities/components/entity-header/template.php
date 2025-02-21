@@ -60,8 +60,8 @@ $this->import('
         <div class="rightSide">
             <div class="data">
                 <mc-title tag="h1" size="big" class="entity-header__title"> {{entity.name}} </mc-title>
-                <slot name="metadata">
-                    <div class="metadata">
+                <div class="metadata">
+                    <slot name="metadata">
                         <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
                             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                             <dd><strong>{{entity.id}}</strong></dd>
@@ -70,8 +70,8 @@ $this->import('
                             <dt><?= i::__('Tipo')?></dt>
                             <dd :class="[entity.__objectType+'__color', 'type']">{{entity.type.name}} </dd>
                         </dl>
-                    </div>
-                </slot>
+                    </slot>
+                </div>
             </div>
             <nav v-if="hasSocialNetworks" class="share share-mobile" aria-label="<?= i::__('Compartilhar') ?>">
                 <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
