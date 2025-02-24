@@ -82,7 +82,7 @@ class Delivery extends \MapasCulturais\Entity {
      * 
      * @return array
      */
-    protected static function _getStatusesNames() {
+    static function getStatusesNames() {
         return [
             self::STATUS_SCHEDULED   => i::__('Programada'),
             self::STATUS_IN_PROGRESS => i::__('Em andamento'),
