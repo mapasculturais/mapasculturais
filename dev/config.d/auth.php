@@ -6,7 +6,7 @@ return [
     'auth.config' => [
         'salt' => env('AUTH_SALT', null),
         'wizard' => 'true',
-	'timeout' => '24 hours',
+        'timeout' => '24 hours',
         'strategies' => [
             'Facebook' => [
                 'app_id' => env('AUTH_FACEBOOK_APP_ID', null),
