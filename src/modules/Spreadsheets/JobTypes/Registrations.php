@@ -149,9 +149,8 @@ class Registrations extends SpreadsheetJob
 
                     if($entity_type_field['status']) {
                         if($entity_type_field['ft'] == '@location') {
-                             
-                            $entity['UF'] = $entity[$field->fieldName]->En_Estado;
-                            $entity['Municipio'] = $entity[$field->fieldName]->En_Municipio;
+                            $entity['UF'] = $entity[$field->fieldName] ? $entity[$field->fieldName]->En_Estado : null;
+                            $entity['Municipio'] = $entity[$field->fieldName] ? $entity[$field->fieldName]->En_Municipio : null;
                             unset($entity[$field->fieldName]);
                         }
 
