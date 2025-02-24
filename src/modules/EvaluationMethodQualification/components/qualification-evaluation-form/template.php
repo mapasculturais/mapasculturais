@@ -25,11 +25,24 @@ $this->import('
     <div v-for="section in sections" :key="section.id" class="qualification-evaluation-form__section-wrapper">
         <div v-if="showSectionAndCriterion(section)" class="qualification-evaluation-form__section field">
             <h3>{{ section.name }}</h3>
+
+            <div v-if="errors[section.name]?.length > 0" class="qualification-evaluation-form__section-errors">
+                <h5 class="semibold">
+                    <?= i::__('Corrija os campos:') ?>
+                </h5>
+
+                <ul>
+                    <li v-for="field in errors[section.name]"><a :href="'#'+field.id"> {{field.name}}</a> </li>
+                </ul>
+            </div>
+
             <div v-if="section?.maxNonEliminatory" class="qualification-evaluation-form__section-non-eliminatory field">
                 <label><?php i::_e('ATENÇÃO: Para ser habilitado, o proponente pode não atender até ') ?>{{ section.numberMaxNonEliminatory }}<?= i::__(' critérios') ?></label>
             </div>
+
             <template v-for="crit in section.criteria" :key="crit.id">
-                <div v-if="showSectionAndCriterion(crit)" class="qualification-evaluation-form__criterion field">
+
+                <div v-if="showSectionAndCriterion(crit)" :ref="crit.id" :id="crit.id" class="qualification-evaluation-form__criterion field">
                     <div class="qualification-evaluation-form__criterion-title">
                         <div class="qualification-evaluation-form__criterion-title-fields">
                             <h4>{{ crit.name }}</h4>
@@ -40,6 +53,7 @@ $this->import('
                                 *&nbsp;<?php i::_e('Critério não eliminatório') ?>
                             </span>
                         </div>
+
                         <mc-popover openside="down-right" v-if="crit.description">
                             <template #button="popover">
                                 <a @click="popover.toggle()"> <mc-icon name="help"></mc-icon> </a>
@@ -58,6 +72,7 @@ $this->import('
                             </template>
                         </mc-popover>
                     </div>
+
                     <div class="qualification-evaluation-form__criterion-options-wrapper field">
                         <div class="qualification-evaluation-form__criterion-options field">
                             <label class="qualification-evaluation-form__criterion-options-label">
@@ -89,12 +104,14 @@ $this->import('
                             <textarea v-if="formData.data[crit.id]?.includes('others')" v-model="formData.data[crit.id + '_reason']" :disabled="!isEditable" placeholder="<?= i::__('Descreva as recomendações para atender ao critério') ?>"></textarea>
                         </div>
                     </div>
+
                 </div>
             </template>
 
             <div class="field">
                 <label><?php i::_e('Observações/parecer') ?></label>
                 <textarea v-model="formData.data[section.id]" :disabled="!isEditable" placeholder="<?= i::__('Digite as observações/parecer') ?>"></textarea>
+                
                 <label>
                     <?php i::_e('Resultado da seção:') ?> 
                     <span :class="sectionClass(section.id)">
@@ -104,8 +121,10 @@ $this->import('
             </div>
         </div>
     </div>
+
     <div class="qualification-evaluation-form__observation field">
         <h3><?php i::_e('Resultado da avaliação') ?> </h3>
+
         <label class="qualification-result">
             <span :class="{
                     'qualification-incomplete': consolidatedResult === text('Avaliação incompleta'),
@@ -115,6 +134,7 @@ $this->import('
                 {{ consolidatedResult }}
             </span>
         </label>
+
         <label><?php i::_e('Observações/parecer final') ?></label>
         <textarea v-model="formData.data.obs" :disabled="!isEditable"></textarea>
     </div>

@@ -27,7 +27,7 @@ app.component('qualification-evaluation-form', {
         return {
             isEditable: true,
             evaluationId: null,
-            errors: [],
+            errors: {},
         };
     },
 
@@ -253,7 +253,6 @@ app.component('qualification-evaluation-form', {
 
         validateErrors() {
             let isValid = false;
-            this.errors = [];
             const global = useGlobalState();
 
             for (let sectionIndex in this.sections) {
@@ -262,7 +261,7 @@ app.component('qualification-evaluation-form', {
                     continue;
                 }
 
-                for (let crit of section.criteria) {
+                for (let crit of section.criteria) {                    
                     if (!this.showSectionAndCriterion(crit)) {
                         continue;
                     }
@@ -270,6 +269,15 @@ app.component('qualification-evaluation-form', {
                     let sectionName = section.name;
                     let value = this.formData.data[crit.id];
                     if (value.length <= 0) {
+                        if (!this.$refs[crit.id][0].classList.contains('qualification-evaluation-form__criterion--error')) {
+                            this.$refs[crit.id][0].classList.add('qualification-evaluation-form__criterion--error')
+                        }
+                        
+                        if (!this.errors[sectionName]) {
+                            this.errors[sectionName] = [];
+                        }
+                        this.errors[sectionName].push({name: crit.name, id: crit.id});
+
                         this.messages.error(`${this.text('Na seção')} <b>${sectionName}</b>, ${this.text('O campo')} <b>${crit.name}</b> ${this.text('é obrigatório')}`);
                         isValid = true;
                     }
