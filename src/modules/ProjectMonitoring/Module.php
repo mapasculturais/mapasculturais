@@ -176,6 +176,120 @@ class Module extends \MapasCulturais\Module {
         $app->registerMetadata($goalStatuses, Registration::class);
         
         $app->registerController('projectReporting', Controller::class);
+
+        $workplanProxy = new Metadata('workplanProxy', [
+            'label'     => \MapasCulturais\i::__('Registro de plano de trabalho'),
+            'type'      => 'json',
+            'serialize' => function($value, Registration $registration            = null) use ($app) {
+                if (!$registration) {
+                    return $value;
+                }
+
+                /** @var Registration */
+                $first_phase = $registration->firstPhase;
+
+                if ($first_phase) {
+                    $workplan = $app->repo(\OpportunityWorkplan\Entities\Workplan::class)->findOneBy([
+                        'registration' => $first_phase
+                    ]);
+
+                    $goals = $app->repo(\OpportunityWorkplan\Entities\Goal::class)->findBy([
+                        'workplan' => $workplan
+                    ]);
+
+                    $deliveries = $app->repo(\OpportunityWorkplan\Entities\Delivery::class)->findBy([
+                        'goal' => $goals
+                    ]);
+
+                    foreach($goals as $goal) {
+                        $data = $value['goals'][$goal->id] ?? [];
+                        $goal->status          = $data['status'];
+                        $goal->executionDetail = $data['executionDetail'];
+                    }
+
+                    foreach($deliveries as $delivery) {
+                        $data = $value['deliveries'][$goal->id] ?? [];
+                        $goal->accessibilityMeasures = $data['accessibilityMeasures'];
+                        $goal->availabilityType      = $data['availabilityType'];
+                        $goal->deliverySubtype       = $data['deliverySubtype'];
+                        $goal->evidenceLinks         = $data['evidenceLinks'];
+                        $goal->executedRevenue       = $data['executedRevenue'];
+                        $goal->numberOfParticipants  = $data['numberOfParticipants'];
+                        $goal->participantProfile    = $data['participantProfile'];
+                        $goal->priorityAudience      = $data['priorityAudience'];
+                    }
+
+                    $app->hook('entity(Registration).save:finish', function() use ($goals, $deliveries, $first_phase, $app) {
+                        /** @var Registration $this */
+                        if ($first_phase->equals($this)) {
+                            $app->disableAccessControl();
+                            foreach($goals as $goal) {
+                                $goal->save(true);
+                            }
+
+                            foreach ($deliveries as $delivery) {
+                                $delivery->save(true);
+                            }
+                            $app->enableAccessControl();
+                        }
+                    });
+                }
+
+                return $value;
+            },
+            'unserialize' => function ($value, Registration $registration = null) use ($app) {
+                if (!$registration) {
+                    return $value;
+                }
+
+                /** @var Registration */
+                $first_phase = $registration->firstPhase;
+
+                if ($first_phase) {
+                    $workplan = $app->repo(\OpportunityWorkplan\Entities\Workplan::class)->findOneBy([
+                        'registration' => $first_phase
+                    ]);
+
+                    $goals = $app->repo(\OpportunityWorkplan\Entities\Goal::class)->findBy([
+                        'workplan' => $workplan
+                    ]);
+
+                    $deliveries = $app->repo(\OpportunityWorkplan\Entities\Delivery::class)->findBy([
+                        'goal' => $goals
+                    ]);
+
+                    $result = [
+                        'goals'      => [],
+                        'deliveries' => []
+                    ];
+
+                    foreach ($goals as $goal) {
+                        $result['goals'][$goal->id] = [
+                            'executionDetail' => $goal->executionDetail,
+                            'status'          => $goal->status
+                        ];
+                    }
+
+                    foreach($deliveries as $delivery) {
+                        $result['deliveries'][$delivery->id] = [
+                            'accessibilityMeasures' => $delivery->accessibilityMeasures,
+                            'availabilityType'      => $delivery->availabilityType,
+                            'deliverySubtype'       => $delivery->deliverySubtype,
+                            'evidenceLinks'         => $delivery->evidenceLinks,
+                            'executedRevenue'       => $delivery->executedRevenue,
+                            'goal'                  => $delivery->goal->id,
+                            'numberOfParticipants'  => $delivery->numberOfParticipants,
+                            'participantProfile'    => $delivery->participantProfile,
+                            'priorityAudience'      => $delivery->priorityAudience,
+                            'status'                => $delivery->status
+                        ];
+                    }
+
+                    return $result;
+                }
+            }
+        ]);
+        $app->registerMetadata($workplanProxy, Registration::class);
     }
 
 }
