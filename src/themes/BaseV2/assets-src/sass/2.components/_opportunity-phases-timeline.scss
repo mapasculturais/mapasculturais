@@ -2,7 +2,6 @@
 
 .opportunity-phases-timeline {
     &__box {
-       max-width: size(256); 
        border-radius: size(4);
        border: 1px solid var(--mc-gray-300);
        padding: size(8) size(8) size(8);
@@ -34,6 +33,19 @@
             display: grid;
             grid-template-columns: size(48) 1fr;
         }
+    }
+
+    &__buttons {
+        display: flex;
+        gap: size(10);
+    }
+
+    &__buttons:has(> .registration-results:only-child) .registration-results {
+        flex: 1 1 100%;
+    }
+    
+    &__buttons:has(> .registration-results:nth-child(2)) .registration-results {
+        flex: 0 1 auto;
     }
 }
 

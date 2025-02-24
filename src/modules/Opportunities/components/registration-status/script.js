@@ -132,5 +132,9 @@ app.component('registration-status', {
 			}
 			return false;
 		},
+
+        redirectToRegistrationForm() {
+            return window.location.hash = "#ficha";
+        }
     }
 });
