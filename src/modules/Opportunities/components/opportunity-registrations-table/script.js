@@ -297,7 +297,27 @@ app.component('opportunity-registrations-table', {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }
 
-            itens.splice(3,0,{ text: "Pontuação", value: "score"});
+            let type = this.phase.evaluationMethodConfiguration.type.id;
+            let phases = $MAPAS.opportunityPhases;
+            let hasEvaluationMethodTechnical = false;
+
+            for(let i = 0; i < phases.length; i++){
+                let phase = $MAPAS.opportunityPhases[i];
+                if(phase.id == this.phase.id){
+                    break;
+                }
+
+                let type = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type.id : phase.type.id;
+
+                if(type == "technical"){
+                    hasEvaluationMethodTechnical = true;
+                    break;
+                }
+            }
+
+            if(type == "technical" || hasEvaluationMethodTechnical){
+                itens.splice(3,0,{ text: "Pontuação", value: "score"});
+            }
 
             if(this.avaliableColumns) {
                 itens = itens.filter((item) => {
