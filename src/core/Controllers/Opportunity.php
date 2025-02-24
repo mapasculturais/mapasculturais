@@ -505,7 +505,9 @@ class Opportunity extends EntityController {
 
             $previous_phase_result = $new_previous_phase_result;
 
-            $phase->unregisterRegistrationMetadata();
+            if(count($opportunity_tree) > 1 && $phase->id != $opportunity_tree[0]->id) {
+                $phase->unregisterRegistrationMetadata();
+            }
 
             if($current_evaluation_method){
                 foreach($current_phase_result as &$reg) {
