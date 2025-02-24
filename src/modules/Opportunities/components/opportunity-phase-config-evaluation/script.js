@@ -87,10 +87,10 @@ app.component('opportunity-phase-config-evaluation' , {
         toDateMax() {
             let date;
             
-            if (this.nextPhase.isLastPhase) {
+            if (this.nextPhase?.isLastPhase) {
                 date = this.nextPhase.publishTimestamp;
             } else {
-                date = this.nextPhase.registrationTo || this.nextPhase.evaluationTo;
+                date = this.nextPhase?.registrationTo || this.nextPhase?.evaluationTo;
             }
 
             return date;
