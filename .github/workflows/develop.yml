@@ -1,0 +1,75 @@
+name: Develop Images
+
+on:
+  push:
+    branches:
+      - "dev/**"
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+
+      - 
+        name: Extract branch tag
+        id: tag
+        run: |
+          BRANCH=${{ github.ref_name }}
+          if [[ ! "$BRANCH" =~ ^dev/ ]]; then
+            echo "Branch não é do tipo dev/*. Saindo."
+            exit 1
+          fi
+          TAG="${BRANCH/dev\//}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "BRANCH=$BRANCH" >> $GITHUB_OUTPUT
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            docker.io/hacklab/mapasculturais 
+          tags: ${{ steps.tag.outputs.tag }}
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          file: ./docker/Dockerfile
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      -
+        name: Configure kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'  
+
+      -
+        name: Configure Kubernetes credentials
+        uses: azure/k8s-set-context@v3
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}  
+
+      -
+        name: Deploy to Kubernetes
+        run: |
+          # Atualiza a imagem do deployment no Kubernetes
+          kubectl set image deployment/mapasculturais mapas=docker.io/hacklab/mapasculturais:${{ steps.tag.outputs.tag }} --namespace=mapas-homolog
