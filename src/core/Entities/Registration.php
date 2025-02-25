@@ -1081,13 +1081,15 @@ class Registration extends \MapasCulturais\Entity
 
         if($field->conditional){
             $_fied_name = $field->conditionalField;
-            $_fied_value = $field->conditionalValue;
+            if($_fied_name) {
+                $_fied_value = $field->conditionalValue;
 
-            if ($_fied_name == 'appliedForQuota') {
-                return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+                if ($_fied_name == 'appliedForQuota') {
+                    return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+                }
+
+                return $this->$_fied_name == $_fied_value;
             }
-
-            return $this->$_fied_name == $_fied_value;
         }
 
         return true;
@@ -1241,7 +1243,7 @@ class Registration extends \MapasCulturais\Entity
 
                 if ($_fied_name == 'appliedForQuota') {
                     $field_required = $opportunity->enableQuotasQuestion && $this->appliedForQuota;
-                } else {
+                } else if($_fied_name) {
                     $field_required = $this->$_fied_name == $_fied_value && $field->required;
                 }
             }
