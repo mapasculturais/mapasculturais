@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correção
+- Ajusta o embedTools.js para enviar valores de objetos já limpos, removendo $$hashKey do Angular
+- Corrige erro nas verificações de campos condicionais do formulario de inscrição
+
 ## [7.5.25] - 2025-02-24
 ### Correções
 - Corrige erro que impedia a exibição de campos do formulario na tabela de inscritos
