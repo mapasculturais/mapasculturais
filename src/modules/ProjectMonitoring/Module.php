@@ -70,6 +70,44 @@ class Module extends \MapasCulturais\Module {
                 }
             ];
         });
+
+        // Salva os metadados workplanSnapshot e goalStatuses no envio da inscrição da fase de monitoramento
+        $app->hook('entity(Registration).send:after', function() use ($app) {
+            /** @var Entities\Registration $this */
+            $registration = $this;
+            $opportunity = $registration->opportunity;
+
+            /** @var Registration */
+            $first_phase = $registration->firstPhase;
+
+            if ($opportunity->isReportingPhase && $first_phase) {
+                $workplan = $app->repo(\OpportunityWorkplan\Entities\Workplan::class)->findOneBy([
+                    'registration' => $first_phase
+                ]);
+
+                $registration->workplanSnapshot = $workplan->jsonSerialize();
+
+                $goals = $app->repo(\OpportunityWorkplan\Entities\Goal::class)->findBy([
+                    'workplan' => $workplan
+                ]);
+
+                $goal_statuses = [
+                    "numGoals" => count($goals),
+                    "0" => 0,
+                    "1" => 0,
+                    "2" => 0,
+                    "3" => 0,
+                    "10" => 0
+                ];
+
+                foreach ($goals as $goal) {
+                    $status = $goal->status;
+                    $goal_statuses[$status]++;
+                }
+
+                $registration->goalStatuses = $goal_statuses;
+            }
+        });
     }
     
     public function register() {
@@ -180,7 +218,7 @@ class Module extends \MapasCulturais\Module {
         $workplanProxy = new Metadata('workplanProxy', [
             'label'     => \MapasCulturais\i::__('Registro de plano de trabalho'),
             'type'      => 'json',
-            'serialize' => function($value, Registration $registration            = null) use ($app) {
+            'serialize' => function($value, Registration $registration = null) use ($app) {
                 if (!$registration) {
                     return $value;
                 }
