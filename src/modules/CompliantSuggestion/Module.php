@@ -329,7 +329,7 @@ class Module extends \MapasCulturais\Module {
 
         $config = [
             'recaptcha' => [
-                'sitekey' =>  $app->_config['app.recaptcha.key'],
+                'sitekey' =>  $app->_config['app.recaptcha.key'] ?? '',
             ]
         ];
 
