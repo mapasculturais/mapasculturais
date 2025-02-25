@@ -53,6 +53,20 @@
                 }else if(MapasCulturais.registration[key] !== undefined) {
                     val = JSON.parse(JSON.stringify(MapasCulturais.registration[key]));
                 }
+
+                if(val instanceof Object) {
+                    if(val['$$hashKey']) {
+                        delete val['$$hashKey'];
+                    }
+                }
+
+                if(val instanceof Array) {
+                    for(let item of val) {
+                        if(item['$$hashKey']) {
+                            delete item['$$hashKey'];
+                        }
+                    }
+                }
             } else {
                 continue;
             }
