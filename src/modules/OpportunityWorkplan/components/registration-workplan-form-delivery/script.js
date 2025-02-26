@@ -19,6 +19,10 @@ app.component('registration-workplan-form-delivery', {
             expanded: false,
         };
     },
+    setup () {
+        const vid = Vue.useId();
+        return { vid };
+    },
     computed: {
         deliveriesLabel () {
             const opportunity = this.registration.opportunity;

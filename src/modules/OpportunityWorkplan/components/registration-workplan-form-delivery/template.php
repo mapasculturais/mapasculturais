@@ -17,7 +17,7 @@ $this->import('
         <h4 class="registration-details-workplan__goals-title">{{ deliveriesLabel }} - {{ delivery.name }}</h4>
         
         <div class="registration-details-workplan__goals-status">
-            <mc-select aria-label="Status" @change-option="proxy.status = $event.value">
+            <mc-select v-if="editable" aria-label="Status" @change-option="proxy.status = $event.value">
                 <option v-for="(label, value) of statusOptions" :key="value" :value="value">{{ label }}</option>
             </mc-select>
 
