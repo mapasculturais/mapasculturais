@@ -218,7 +218,7 @@ class Module extends \MapasCulturais\Module {
         $workplanProxy = new Metadata('workplanProxy', [
             'label'     => \MapasCulturais\i::__('Registro de plano de trabalho'),
             'type'      => 'json',
-            'serialize' => function($value, Registration $registration = null) use ($app) {
+            'serialize' => function($value, ?Registration $registration = null) use ($app) {
                 if (!$registration) {
                     return $value;
                 }
@@ -275,7 +275,7 @@ class Module extends \MapasCulturais\Module {
 
                 return $value;
             },
-            'unserialize' => function ($value, Registration $registration = null) use ($app) {
+            'unserialize' => function ($value, ?Registration $registration = null) use ($app) {
                 if (!$registration) {
                     return $value;
                 }

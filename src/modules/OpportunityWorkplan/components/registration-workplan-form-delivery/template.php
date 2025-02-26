@@ -72,5 +72,47 @@ $this->import('
             <label><?= i::esc_attr__(text: 'Previsão de valor total') ?></label>
             {{ convertToCurrency(delivery.totalValueForecast) }}
         </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformTheFormOfAvailability && (editable || proxy.availabilityType)">
+            <label :for="`${vid}__availabilityType`"><?= i::__('Forma de disponibilização') ?></label>
+            <select v-if="editable" :id="`${vid}__availabilityType`" v-model="proxy.availabilityType"></select>
+            <span v-else>{{ proxy.availabilityType }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringEnterDeliverySubtype && (editable || proxy.deliverySubtype)">
+            <label :for="`${vid}__deliverySubtype`"><?= i::__('Subtipo de entrega') ?></label>
+            <mc-multiselect v-if="editable" :id="`${vid}__deliverySubtype`" :model="proxy.deliverySubtype" :items="[]"></mc-multiselect>
+            <span v-else>{{ proxy.deliverySubtype }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityMeasures && (editable || proxy.accessibilityMeasures)">
+            <label :for="`${vid}__accessibilityMeasures`"><?= i::__('Medidas de acessibilidade') ?></label>
+            <mc-multiselect v-if="editable" :id="`${vid}__accessibilityMeasures`" :model="proxy.accessibilityMeasures" :items="[]"></mc-multiselect>
+            <span v-else>{{ proxy.accessibilityMeasures }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringProvideTheProfileOfParticipants && (editable || proxy.participantProfile)">
+            <label :for="`${vid}__participantProfile`"><?= i::__('Perfil dos participantes') ?></label>
+            <mc-multiselect v-if="editable" :id="`${vid}__participantProfile`" :model="proxy.participantProfile" :items="[]"></mc-multiselect>
+            <span v-else>{{ proxy.participantProfile }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringInformThePriorityAudience && (editable || proxy.priorityAudience)">
+            <label :for="`${vid}__priorityAudience`"><?= i::__('Público prioritário') ?></label>
+            <mc-multiselect v-if="editable" :id="`${vid}__priorityAudience`" :model="proxy.priorityAudience" :items="[]"></mc-multiselect>
+            <span v-else>{{ proxy.priorityAudience }}</span>
+        </div>
+
+        <div class="field" v-if="editable || proxy.numberOfParticipants">
+            <label :for="`${vid}__numberOfParticipants`"><?= i::__('Número de participantes') ?></label>
+            <input v-if="editable" :id="`${vid}__numberOfParticipants`" type="number" v-model="proxy.numberOfParticipants" :items="[]">
+            <span v-else>{{ proxy.numberOfParticipants }}</span>
+        </div>
+
+        <div class="field" v-if="opportunity.workplan_monitoringReportExecutedRevenue && (editable || proxy.executedRevenue)">
+            <label :for="`${vid}__executedRevenue`"><?= i::__('Receita executada') ?></label>
+            <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model="proxy.executedRevenue" :items="[]">
+            <span v-else>{{ proxy.executedRevenue }}</span>
+        </div>
     </template>
 </div>
