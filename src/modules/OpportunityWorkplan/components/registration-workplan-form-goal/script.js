@@ -18,6 +18,10 @@ app.component('registration-workplan-form-goal', {
             required: true,
         },
     },
+    setup () {
+        const vid = Vue.useId();
+        return { vid };
+    },
     data () {
         return {
             expanded: this.index === 0,
