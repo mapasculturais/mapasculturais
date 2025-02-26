@@ -53,7 +53,7 @@ $this->import('
             {{ delivery.expectedNumberPeople }}
         </div>
 
-        <div v-if="delivery.generaterRevenu" class="field">
+        <div v-if="delivery.generaterRevenue" class="field">
             <label><?= i::esc_attr__('Irá gerar receita?') ?></label>
             {{ delivery.generaterRevenue }}
         </div>
