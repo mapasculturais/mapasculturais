@@ -28,6 +28,9 @@ app.component('registration-workplan-form-delivery', {
             const opportunity = this.registration.opportunity;
             return opportunity.deliveryLabelDefault ?? $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
         },
+        opportunity () {
+            return this.registration.opportunity;
+        },
         proxy () {
             return this.registration.workplanProxy.deliveries[this.delivery.id];
         },
