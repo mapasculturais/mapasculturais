@@ -441,6 +441,10 @@ app.component('entity-table', {
                 }
             }
 
+            if(prop == 'type') {
+                val = val.name
+            }
+
             if(prop == 'status') {
                 let type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
                 val = this.fromToStatus[type]?.[val] || val;
