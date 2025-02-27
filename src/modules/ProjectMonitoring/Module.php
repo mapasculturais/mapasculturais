@@ -275,9 +275,9 @@ class Module extends \MapasCulturais\Module {
         $this->registerRegistrationMetadata('workplanProxy', [
             'label'     => \MapasCulturais\i::__('Registro de plano de trabalho'),
             'type'      => 'json',
-            'serialize' => function($value, ?Entities\Registration $registration = null) use ($app) {
-                if (!$registration) {
-                    return $value;
+            'serialize' => function($value, ?object $registration = null) use ($app) {
+                if (!($registration instanceof Entities\Registration)) {
+                    return null;
                 }
 
                 /** @var Entities\Registration */
@@ -315,7 +315,7 @@ class Module extends \MapasCulturais\Module {
 
                     $app->hook('entity(Registration).save:finish', function() use ($goals, $deliveries, $first_phase, $app) {
                         /** @var Entities\Registration $this */
-                        if ($first_phase->equals($this)) {
+                        if ($this->opportunity->isReportingPhase && $first_phase->opportunity->enableWorkplan) {
                             $app->disableAccessControl();
                             foreach($goals as $goal) {
                                 $goal->save(true);
@@ -329,11 +329,14 @@ class Module extends \MapasCulturais\Module {
                     });
                 }
 
-                return $value;
+                return null;
             },
-            'unserialize' => function ($value, ?Entities\Registration $registration = null) use ($app) {
-                if (!$registration) {
-                    return $value;
+            'unserialize' => function ($value, ?object $registration = null) use ($app) {
+                if (!($registration instanceof Entities\Registration)) {
+                    return [
+                        'goals'      => [],
+                        'deliveries' => [],
+                    ];
                 }
 
                 /** @var Entities\Registration */

@@ -18,6 +18,7 @@ $this->import('
     registration-related-space
     registration-related-project
     registration-steps
+    registration-workplan-form
 ');
 
 ?>
@@ -94,6 +95,10 @@ $this->import('
 
             <section class="section" v-if="preview || !entity.opportunity.proponentAgentRelation?.[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation?.[entity.proponentType])">
                 <registration-form :registration="entity" :step="step"></registration-form>
+            </section>
+
+            <section class="section" v-if="hasWorkplan && isLastStep && entity.opportunity.isReportingPhase">
+                <registration-workplan-form editable :registration="entity"></registration-workplan-form>
             </section>
         </main>
 
