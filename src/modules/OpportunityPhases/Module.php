@@ -1805,4 +1805,38 @@ class Module extends \MapasCulturais\Module{
         }
         return;
     }
+
+    function createPhaseRegistration(Opportunity $opportunity, Registration $registration) {
+        $current_phase_registration = new Registration;
+    
+        $current_phase_registration->owner = $registration->owner->refreshed();
+        $current_phase_registration->opportunity = $opportunity->refreshed();
+        $current_phase_registration->category = $registration->category;
+        $current_phase_registration->range = $registration->range;
+        $current_phase_registration->proponentType = $registration->proponentType;
+        $current_phase_registration->number = $registration->number;
+        $current_phase_registration->previousPhaseRegistrationId = $registration->id;
+    
+        $current_phase_registration->__skipQueuingPCacheRecreation = true;
+        $current_phase_registration->save(true);
+    
+        $registration->nextPhaseRegistrationId = $current_phase_registration->id;
+        $registration->__skipQueuingPCacheRecreation = true;
+        $registration->save(true);
+    
+        return $current_phase_registration;
+    }
+
+    function getRegistrationStatusLabels($status) {
+        $labels = [
+            Registration::STATUS_DRAFT => [i::__('Não enviou inscrição'), i::__('Não enviou inscrição em "{PHASE_NAME}"')],
+            Registration::STATUS_SENT => [i::__('Pendente'), i::__('Pendente em "{PHASE_NAME}"')],
+            Registration::STATUS_APPROVED => [i::__('Selecionada'), i::__('Selecionada em "{PHASE_NAME}"')],
+            Registration::STATUS_NOTAPPROVED => [i::__('Não selecionada'), i::__('Não selecionada em "{PHASE_NAME}"')],
+            Registration::STATUS_WAITLIST => [i::__('Suplente'), i::__('Suplente em "{PHASE_NAME}"')],
+            Registration::STATUS_INVALID => [i::__('Inválida'), i::__('Inválida em "{PHASE_NAME}"')],
+        ];
+
+        return $labels[$status];
+    }
 }
