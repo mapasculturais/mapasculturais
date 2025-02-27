@@ -121,6 +121,7 @@ class Goal extends \MapasCulturais\Entity {
 
         return [
             'id' => $this->id,
+            'status' => $this->status,
             'deliveries' => $sortedDeliveries,
             ...$metadatas
         ];
