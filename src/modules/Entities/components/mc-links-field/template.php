@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 <div class="entity-field-links">
-    <div v-for="(link, index) in links" :key="index" class="entity-field-links__link">
+    <div v-for="(link, index) in modelValue" :key="index" class="entity-field-links__link">
         <div class="entity-field-links__link-fields grid-12">
             <div class="field col-6 sm:col-12">
                 <label> <?php i::_e('Título') ?> </label>

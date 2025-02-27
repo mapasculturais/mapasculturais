@@ -48,6 +48,7 @@ app.component('registration-workplan-form', {
                 for (const delivery of goal.deliveries) {
                     proxy.deliveries[delivery.id] = {
                         availabilityType: '',
+                        evidenceLinks: [],
                     };
                 }
             }
