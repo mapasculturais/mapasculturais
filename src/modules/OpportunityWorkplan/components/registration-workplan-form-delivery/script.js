@@ -24,9 +24,18 @@ app.component('registration-workplan-form-delivery', {
         return { vid };
     },
     computed: {
+        accessibilityOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.accessibilityMeasures.options);
+        },
+        audienceOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.priorityAudience.options);
+        },
+        availabilityOptions () {
+            return Vue.markRaw($DESCRIPTIONS.delivery.availabilityType.options);
+        },
         deliveriesLabel () {
             const opportunity = this.registration.opportunity;
-            return opportunity.deliveryLabelDefault ?? $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
+            return opportunity.deliveryLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value);
         },
         opportunity () {
             return this.registration.opportunity;
@@ -35,7 +44,7 @@ app.component('registration-workplan-form-delivery', {
             return this.registration.workplanProxy.deliveries[this.delivery.id];
         },
         statusOptions () {
-            return $MAPAS.config.deliveriesStatuses;
+            return Vue.markRaw($MAPAS.config.deliveriesStatuses);
         },
     },
     methods: {

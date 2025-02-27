@@ -177,12 +177,6 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
-        $this->registerOpportunityMetadata('workplan_monitoringEnterDeliverySubtype', [
-            'label' => i::__('Informar subtipo de entrega'),
-            'type' => 'boolean',
-            'default_value' => false
-        ]);
-
         $this->registerOpportunityMetadata('workplan_monitoringInformAccessibilityMeasures', [
             'label' => i::__('Informar as medidas de acessibilidade'),
             'type' => 'boolean',

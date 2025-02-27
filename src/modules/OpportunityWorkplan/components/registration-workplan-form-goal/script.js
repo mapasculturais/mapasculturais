@@ -30,13 +30,13 @@ app.component('registration-workplan-form-goal', {
     computed: {
         goalsLabel () {
             const opportunity = this.registration.opportunity;
-            return opportunity.goalLabelDefault ?? $MAPAS.EntitiesDescription.opportunity.goalLabelDefault.default_value;
+            return opportunity.goalLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.goalLabelDefault.default_value);
         },
         proxy () {
             return this.registration.workplanProxy.goals[this.goal.id];
         },
         statusOptions () {
-            return $MAPAS.config.goalsStatuses;
+            return Vue.markRaw($MAPAS.config.goalsStatuses);
         },
     }
 });
