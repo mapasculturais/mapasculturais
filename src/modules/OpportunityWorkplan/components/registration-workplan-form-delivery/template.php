@@ -114,7 +114,7 @@ $this->import('
         </div>
 
         <div class="field" v-if="editable || proxy.evidenceLinks?.length > 0">
-            <label :for="`${vid}__evidenceLinks`"><?= i::__('Receita executada') ?></label>
+            <label :for="`${vid}__evidenceLinks`"><?= i::__('Links das evidências') ?></label>
             <mc-links-field v-if="editable" :id="`${vid}__evidenceLinks`" v-model="proxy.evidenceLinks"></mc-links-field>
             <ul v-else>
                 <li v-for="(link, index) of proxy.evidenceLinks" :key="index">
