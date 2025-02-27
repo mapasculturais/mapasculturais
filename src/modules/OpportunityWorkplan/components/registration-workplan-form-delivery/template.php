@@ -93,7 +93,7 @@ $this->import('
 
         <div class="field" v-if="opportunity.workplan_monitoringProvideTheProfileOfParticipants && (editable || proxy.participantProfile)">
             <label :for="`${vid}__participantProfile`"><?= i::__('Perfil dos participantes') ?></label>
-            <mc-multiselect v-if="editable" :id="`${vid}__participantProfile`" :model="proxy.participantProfile" :items="[]"></mc-multiselect>
+            <input v-if="editable" :id="`${vid}__participantProfile`" type="text" v-model="proxy.participantProfile"></mc-multiselect>
             <span v-else>{{ proxy.participantProfile }}</span>
         </div>
 
