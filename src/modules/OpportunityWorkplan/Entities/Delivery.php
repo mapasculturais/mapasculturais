@@ -96,10 +96,30 @@ class Delivery extends \MapasCulturais\Entity {
     {
         $metadatas = $this->getMetadata();
 
-        return [
+        $result = [
             'id' => $this->id,
             'status' => $this->status,
             ...$metadatas
         ];
+
+        $json_keys = [
+            'accessibilityMeasures' => [],
+            'evidenceLinks' => [],
+            'executedRevenue' => 0,
+            'numberOfParticipants' => 0,
+            'priorityAudience' => [],
+        ];
+        foreach ($json_keys as $key => $default_value) {
+            if (empty($result[$key])) {
+                $result[$key] = $default_value;
+            } elseif (is_string($result[$key])) {
+                try {
+                    $result[$key] = json_decode($result[$key]);
+                } catch (\Exception $err) {
+                    $result[$key] = $default_value;
+                }
+            }
+        }
+        return $result;
     }
 }
