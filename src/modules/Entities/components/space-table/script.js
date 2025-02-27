@@ -9,8 +9,8 @@ app.component('space-table', {
 
     props: {
         visibleColumns: {
-            type: Array,
-            default: ["id", "name", "type", "area", "tag", "seals"],
+            type: [Boolean, Array],
+            default: [],
         },
 
         hideFilters: {
@@ -20,14 +20,16 @@ app.component('space-table', {
     },
 
     data() {
+        let additionalHeaders = $MAPAS.config.spaceTable.additionalHeaders;
+        let _visibleColumns = $MAPAS.config.spaceTable.visibleColumns;
+        let visible = Object.keys(this.visibleColumns).length > 0 ? this.visibleColumns.join(',') : _visibleColumns.join(',');
+
         let query = {
-            '@select': 'name,type,shortDescription,files.avatar,seals,endereco,terms,acessibilidade',
+            '@select': `owner.{id,name},${visible}`,
             '@order': 'createTimestamp DESC',
             '@limit': 20,
             '@page': 1,
         }
-
-        let visible = this.visibleColumns.join(',');
 
         let getSeals = $MAPAS.config.spaceTable.seals;
         let seals = {}
@@ -36,16 +38,17 @@ app.component('space-table', {
         }
 
         return {
-           selectedType: [],
-           selectedArea: [],
-           selectedSeals: [],
-           selectedAccessibility: false,
-           visible,
-           query,
-           types: $DESCRIPTIONS.space.type.options,
-           terms: $TAXONOMIES.area.terms,
-           seals,
-           verified: undefined
+            additionalHeaders,
+            selectedType: [],
+            selectedArea: [],
+            selectedSeals: [],
+            selectedAccessibility: false,
+            visible,
+            query,
+            types: $DESCRIPTIONS.space.type.options,
+            terms: $TAXONOMIES.area.terms,
+            seals,
+            verified: undefined
         }
     },
 
@@ -61,7 +64,7 @@ app.component('space-table', {
 
             ];
 
-            return itens;
+            return this.additionalHeaders || itens;
         },
 
         owner() {
