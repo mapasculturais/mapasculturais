@@ -17,22 +17,15 @@ app.component('registration-workplan-form', {
     },
     async created () {
         const api = new API('workplan');
-        const response = await api.GET(String(this.registration.id));
+        const response = await api.GET(String($MAPAS.config['registration-workplan-form'].parentRegistration));
+        // const response = await api.GET(String(this.registration.id));
         const data = await response.json();
         if (data.workplan != null) {
             this.workplan = data.workplan;
-            this.registration.workplanProxy = this.createWorkplanProxy(data.workplan);
+            this.registration.workplanProxy ??= this.createWorkplanProxy(data.workplan);
         }
     },
     computed: {
-        deliveriesLabel () {
-            const opportunity = this.registration.opportunity;
-            return opportunity.deliveryLabelDefault ?? $MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value;
-        },
-        goalsLabel () {
-            const opportunity = this.registration.opportunity;
-            return opportunity.goalLabelDefault ?? $MAPAS.EntitiesDescription.opportunity.goalLabelDefault.default_value;
-        },
         workplansLabel () {
             const opportunity = this.registration.opportunity;
             return opportunity.workplanLabelDefault ?? $MAPAS.EntitiesDescription.opportunity.workplanLabelDefault.default_value;
@@ -43,12 +36,21 @@ app.component('registration-workplan-form', {
             const proxy = { goals: {}, deliveries: {} };
 
             for (const goal of workplan.goals) {
-                proxy.goals[goal.id] = {};
+                proxy.goals[goal.id] = {
+                    status: 0,
+                    executionDetail: '',
+                };
 
                 for (const delivery of goal.deliveries) {
                     proxy.deliveries[delivery.id] = {
+                        status: 0,
+                        accessibilityMeasures: [],
                         availabilityType: '',
                         evidenceLinks: [],
+                        executedRevenue: 0,
+                        numberOfParticipants: 0,
+                        participantProfile: '',
+                        priorityAudience: '',
                     };
                 }
             }

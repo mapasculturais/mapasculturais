@@ -17,7 +17,7 @@ $this->import('
         <h4 class="registration-details-workplan__goals-title">{{ goalsLabel }} - {{ goal.title }}</h4>
         
         <div class="registration-details-workplan__goals-status">
-            <mc-select v-if="editable" aria-label="<?= i::esc_attr__('Status') ?>" @change-option="proxy.status = $event.value">
+            <mc-select v-if="editable" :default-value="proxy.status" aria-label="<?= i::esc_attr__('Status') ?>" @change-option="proxy.status = $event.value">
                 <option v-for="(label, value) of statusOptions" :key="value" :value="value">{{ label }}</option>
             </mc-select>
 

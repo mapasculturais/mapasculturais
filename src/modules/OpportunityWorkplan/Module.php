@@ -67,6 +67,12 @@ class Module extends \MapasCulturais\Module{
             $app->hook("template(registration.registrationPrint.section):end", function(){
                 $this->part('registration-details-workplan-print');
             });
+            
+            $app->hook('mapas.printJsObject:before', function() {
+                $this->jsObject['EntitiesDescription']['workplan'] = Workplan::getPropertiesMetadata();
+                $this->jsObject['EntitiesDescription']['goal'] = Goal::getPropertiesMetadata();
+                $this->jsObject['EntitiesDescription']['delivery'] = Delivery::getPropertiesMetadata();
+            });
         });
     }
 
