@@ -10,6 +10,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a exibição do status da entidade no componente de tabelas 'entity-table'
 - Executa register do thema na execução dos JOB's quando o ambiente conta com subisites
 - Corrige a exibição do tipo da entidade no componente de tabelas 'entity-tabele'
+- Corrige a exibição do campo 'Localização pública' no componente de tabelas 'entity-table'
+
+### Melhorias
+- Faz com que o componente space-table retorne todos os dados que estão devidamente registrados na entidade espaços
 
 ## [7.5.26] - 2025-02-25
 ### Correção
