@@ -44,7 +44,8 @@ use \MapasCulturais\i;
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
         "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
         "MapasCulturais\Entities\Subsite"                       = "\MapasCulturais\Entities\SubsiteFile",
-        "MapasCulturais\Entities\User"                          = "\MapasCulturais\Entities\UserFile"
+        "MapasCulturais\Entities\User"                          = "\MapasCulturais\Entities\UserFile",
+        "OpportunityWorkplan\Entities\Delivery"                          = "\OpportunityWorkplan\Entities\DeliveryFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity
