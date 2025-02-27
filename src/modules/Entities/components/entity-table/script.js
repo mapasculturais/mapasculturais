@@ -121,6 +121,7 @@ app.component('entity-table', {
     },
 
     data() {
+        let fromToStatus = $MAPAS.config.entityTable.fromToStatus
         const id = this.query['@opportunity'] ?? '';
         const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
         
@@ -137,6 +138,7 @@ app.component('entity-table', {
         }
 
         return {
+            fromToStatus,
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
             columns,
@@ -543,6 +545,11 @@ app.component('entity-table', {
                 } else {
                     val = val.date('numeric year');
                 }
+            }
+
+            if(prop == 'status') {
+                let type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                val = this.fromToStatus[type]?.[val] || val;
             }
 
             return val;
