@@ -98,6 +98,7 @@ class Delivery extends \MapasCulturais\Entity {
 
         return [
             'id' => $this->id,
+            'status' => $this->status,
             ...$metadatas
         ];
     }
