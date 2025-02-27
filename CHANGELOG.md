@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5.27] - 2025-02-27
 ### Correção
 - Corrige a exibição do status da entidade no componente de tabelas 'entity-table'
+- Executa register do thema na execução dos JOB's quando o ambiente conta com subisites
 
 
 ## [7.5.26] - 2025-02-25
