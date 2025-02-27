@@ -911,7 +911,7 @@ class Module extends \MapasCulturais\Module{
             $app->log->debug("  >> REMOVENDO inscrições órfãs da {$this->name} ({$this->id})");
 
             $first_phase = $this->firstPhase;
-            $previous_phase = $this->previousPhase;
+            $previous_phase = $this->isFinalReportingPhase ? $this->lastPhase : $this->previousPhase;
             $app->log->debug("  >>>>>>>  PREVIOUS  {$previous_phase->name} ({$previous_phase->id})");
 
             $where_numbers = '';
@@ -933,47 +933,30 @@ class Module extends \MapasCulturais\Module{
             // para a última fase vão todas as inscrições que não estejam como rascunho
             $status = $this->isLastPhase || ($this->isReportingPhase && !$this->isFinalReportingPhase && !$previous_phase->isLastPhase) ? 'r2.status > 0' : 'r2.status = 10';
 
-            if($this->isFinalReportingPhase) {
-                $previous_phase = $this->lastPhase;
-                $dql = "
-                    SELECT
-                        r1
-                    FROM
-                        MapasCulturais\Entities\Registration r1
-                    WHERE
-                        r1.opportunity = :target_opportunity AND
-                        r1.number NOT IN (
-                            SELECT
-                                r2.number
-                            FROM
-                                MapasCulturais\Entities\Registration r2
-                            WHERE
-                                r2.opportunity = :previous_opportunity AND
-                                {$status}
-                        )
-                    ORDER BY r1.id ASC
-                ";
-            } else {
-                $dql = "
-                    SELECT
-                        r1
-                    FROM
-                        MapasCulturais\Entities\Registration r1
-                    WHERE
-                        r1.opportunity = :target_opportunity AND
-                        $where_numbers
-                        r1.number NOT IN (
-                            SELECT
-                                r2.number
-                            FROM
-                                MapasCulturais\Entities\Registration r2
-                            WHERE
-                                r2.opportunity = :previous_opportunity AND
-                                {$status}
-                        )
-                    ORDER BY r1.id ASC
-                ";
+            $have_numbers_query = "";
+            if(!$this->isReportingPhase) {
+                $have_numbers_query = $where_numbers;
             }
+
+            $dql = "
+                    SELECT
+                        r1
+                    FROM
+                        MapasCulturais\Entities\Registration r1
+                    WHERE
+                        r1.opportunity = :target_opportunity AND
+                        $have_numbers_query
+                        r1.number NOT IN (
+                            SELECT
+                                r2.number
+                            FROM
+                                MapasCulturais\Entities\Registration r2
+                            WHERE
+                                r2.opportunity = :previous_opportunity AND
+                                {$status}
+                        )
+                    ORDER BY r1.id ASC
+                ";
 
 
             $query = $app->em->createQuery($dql);
