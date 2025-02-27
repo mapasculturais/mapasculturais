@@ -117,6 +117,10 @@ $this->import('
                 <template #status="{entity}">
                     <mc-status :status-name="getStatus(entity.evaluation?.status)"></mc-status>
                 </template>
+
+                <template #goalStatuses="{entity}">
+                    <a :href="entity.singleUrl + '#ficha'" class="entity-table__goals">{{entity.goalStatuses['10']}}/{{entity.goalStatuses.numGoals}} <?= i::__('concluídas') ?></a>
+                </template>
             </entity-table>
         </div>
     </template>
