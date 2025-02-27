@@ -9,6 +9,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-icon
+    mc-links-field
 ');
 ?>
 
@@ -110,6 +111,16 @@ $this->import('
             <label :for="`${vid}__executedRevenue`"><?= i::__('Receita executada') ?></label>
             <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model="proxy.executedRevenue" :items="[]">
             <span v-else>{{ proxy.executedRevenue }}</span>
+        </div>
+
+        <div class="field" v-if="editable || proxy.evidenceLinks?.length > 0">
+            <label :for="`${vid}__evidenceLinks`"><?= i::__('Receita executada') ?></label>
+            <mc-links-field v-if="editable" :id="`${vid}__evidenceLinks`" v-model="proxy.evidenceLinks"></mc-links-field>
+            <ul v-else>
+                <li v-for="(link, index) of proxy.evidenceLinks" :key="index">
+                    <a :href="link.value">{{ link.title || link.value }}</a>
+                </li>
+            </ul>
         </div>
     </template>
 </div>
