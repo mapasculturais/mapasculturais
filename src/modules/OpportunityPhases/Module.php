@@ -286,11 +286,14 @@ class Module extends \MapasCulturais\Module{
                 $complement = "o.id < :this AND";
             }
 
+            if(!$this->isReportingPhase) {
+                $complement = "o.id <> :last AND o.id < :this AND";
+            }
+
             $query = $app->em->createQuery("
                 SELECT o
                 FROM MapasCulturais\Entities\Opportunity o
                 WHERE
-                    o.id <> :last AND
                     {$complement}
                     (
                         o.id = :parent OR
@@ -299,11 +302,17 @@ class Module extends \MapasCulturais\Module{
                 ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
-            $query->setParameters([
-                "last" => $last_phase,
+            
+            $params = [
                 "parent" => $first_phase,
                 "this" => $this,
-            ]);
+            ];
+
+            if(!$this->isReportingPhase) {
+                $params["last"] = $last_phase;
+            }
+
+            $query->setParameters($params);
 
             $value = $query->getOneOrNullResult();
         });
