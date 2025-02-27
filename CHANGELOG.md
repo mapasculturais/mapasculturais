@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.27] - 2025-02-27
+### Correção
+- Corrige a exibição do status da entidade no componente de tabelas 'entity-table'
+
+
 ## [7.5.26] - 2025-02-25
 ### Correção
 - Ajusta o embedTools.js para enviar valores de objetos já limpos, removendo $$hashKey do Angular
