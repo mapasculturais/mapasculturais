@@ -3,7 +3,6 @@
 namespace ProjectMonitoring;
 
 use MapasCulturais\App;
-use MapasCulturais\Controllers\Registration;
 use MapasCulturais\Definitions\Metadata;
 use MapasCulturais\Entities;
 use MapasCulturais\i;
@@ -77,7 +76,7 @@ class Module extends \MapasCulturais\Module {
             $registration = $this;
             $opportunity = $registration->opportunity;
 
-            /** @var Registration */
+            /** @var Entities\Registration */
             $first_phase = $registration->firstPhase;
 
             if ($opportunity->isReportingPhase && $first_phase) {
@@ -105,11 +104,15 @@ class Module extends \MapasCulturais\Module {
                     $goal_statuses[$status]++;
                 }
 
-                $registration->goalStatuses = $goal_statuses;
+                $first_phase->goalStatuses = $goal_statuses;
+
+                $app->disableAccessControl();
+                $first_phase->save(true);
+                $app->enableAccessControl();
             }
         });
     }
-    
+
     public function register() {
         $app = App::i();
 
@@ -247,30 +250,37 @@ class Module extends \MapasCulturais\Module {
         $app->registerMetadata($evidenceLinks, Delivery::class);
 
         // Metadados para Registration (Inscrição)
-        $workplanSnapshot = new Metadata('workplanSnapshot', [
-            'label' => \MapasCulturais\i::__('Snapshot do plano de trabalho'),
-            'type' => 'json'
+        $this->registerRegistrationMetadata('workplanSnapshot', [
+            'label'     => \MapasCulturais\i::__('Snapshot do plano de trabalho'),
+            'type'      => 'json',
+            'serialize' => function ($val){
+                return json_encode($val);
+            },
+            'unserialize' => function($val){
+                return json_decode((string) $val);
+            }
         ]);
-        $app->registerMetadata($workplanSnapshot, Registration::class);
 
-        $goalStatuses = new Metadata('goalStatuses', [
-            'label' => \MapasCulturais\i::__('Status das metas'),
-            'type' => 'json'
+        $this->registerRegistrationMetadata('goalStatuses', [
+            'label'     => \MapasCulturais\i::__('Status das metas'),
+            'type'      => 'json',
+            'serialize' => function ($val){
+                return json_encode($val);
+            },
+            'unserialize' => function($val){
+                return json_decode((string) $val);
+            }
         ]);
 
-        $app->registerMetadata($goalStatuses, Registration::class);
-        
-        $app->registerController('projectReporting', Controller::class);
-
-        $workplanProxy = new Metadata('workplanProxy', [
+        $this->registerRegistrationMetadata('workplanProxy', [
             'label'     => \MapasCulturais\i::__('Registro de plano de trabalho'),
             'type'      => 'json',
-            'serialize' => function($value, ?Registration $registration = null) use ($app) {
+            'serialize' => function($value, ?Entities\Registration $registration = null) use ($app) {
                 if (!$registration) {
                     return $value;
                 }
 
-                /** @var Registration */
+                /** @var Entities\Registration */
                 $first_phase = $registration->firstPhase;
 
                 if ($first_phase) {
@@ -293,18 +303,18 @@ class Module extends \MapasCulturais\Module {
                     }
 
                     foreach($deliveries as $delivery) {
-                        $data = $value['deliveries'][$goal->id] ?? [];
-                        $goal->accessibilityMeasures = $data['accessibilityMeasures'];
-                        $goal->availabilityType      = $data['availabilityType'];
-                        $goal->evidenceLinks         = $data['evidenceLinks'];
-                        $goal->executedRevenue       = $data['executedRevenue'];
-                        $goal->numberOfParticipants  = $data['numberOfParticipants'];
-                        $goal->participantProfile    = $data['participantProfile'];
-                        $goal->priorityAudience      = $data['priorityAudience'];
+                        $data = $value['deliveries'][$delivery->id] ?? [];
+                        $delivery->accessibilityMeasures = $data['accessibilityMeasures'];
+                        $delivery->availabilityType      = $data['availabilityType'];
+                        $delivery->evidenceLinks         = $data['evidenceLinks'];
+                        $delivery->executedRevenue       = $data['executedRevenue'];
+                        $delivery->numberOfParticipants  = $data['numberOfParticipants'];
+                        $delivery->participantProfile    = $data['participantProfile'];
+                        $delivery->priorityAudience      = $data['priorityAudience'];
                     }
 
                     $app->hook('entity(Registration).save:finish', function() use ($goals, $deliveries, $first_phase, $app) {
-                        /** @var Registration $this */
+                        /** @var Entities\Registration $this */
                         if ($first_phase->equals($this)) {
                             $app->disableAccessControl();
                             foreach($goals as $goal) {
@@ -321,12 +331,12 @@ class Module extends \MapasCulturais\Module {
 
                 return $value;
             },
-            'unserialize' => function ($value, ?Registration $registration = null) use ($app) {
+            'unserialize' => function ($value, ?Entities\Registration $registration = null) use ($app) {
                 if (!$registration) {
                     return $value;
                 }
 
-                /** @var Registration */
+                /** @var Entities\Registration */
                 $first_phase = $registration->firstPhase;
 
                 if ($first_phase) {
@@ -372,7 +382,8 @@ class Module extends \MapasCulturais\Module {
                 }
             }
         ]);
-        $app->registerMetadata($workplanProxy, Registration::class);
+
+        $app->registerController('projectReporting', Controller::class);
     }
 
 }
