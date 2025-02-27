@@ -250,7 +250,8 @@ app.component('opportunity-registrations-table', {
                 { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
                 { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
                 { text: __('data de envio', 'opportunity-registrations-table'), value: "sentTimestamp" },
-                { text: __('Editavel para o proponente', 'opportunity-registrations-table'), slug: "editable"}
+                { text: __('Editavel para o proponente', 'opportunity-registrations-table'), slug: "editable"},
+                { text: __('Metas', 'opportunity-registrations-table'), value: "goalStatuses", slug: "goalStatuses" },
             ];
 
             if(this.phase.evaluationMethodConfiguration){
@@ -310,8 +311,7 @@ app.component('opportunity-registrations-table', {
         },
         select() {
             const fields = this.avaliableFields.map((item) => item.fieldName);
-            
-            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields', ...fields].join(',');
+            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields,goalStatuses', ...fields].join(',');
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
