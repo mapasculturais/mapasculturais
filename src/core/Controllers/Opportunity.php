@@ -479,7 +479,7 @@ class Opportunity extends EntityController {
 
             if($phase->isLastPhase && $phase->publishedRegistrations && !$phase->canUser('@control')) {
                 $app->hook('ApiQuery(Registration).parseQueryParams', function() use ($current_phase_query_params) {
-                    if($this->apiParams['opportunity'] == $current_phase_query_params['opportunity']) {
+                    if(($this->apiParams['opportunity'] ?? false) == ($current_phase_query_params['opportunity'] ?? false)) {
                         $this->joins = "";
                         $params = $this->_dqlParams;
                         array_pop($params);
