@@ -1,12 +1,5 @@
 .controller-seal {
   .tabs-component {
-    background-color: var(--mc-white);
-
-    &__panels {
-      margin-bottom: 0;
-      background-color: var(--mc-gray-100);
-    }
-
     &__buttons {
       gap: size(49);
     }

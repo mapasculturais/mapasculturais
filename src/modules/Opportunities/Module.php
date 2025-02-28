@@ -149,7 +149,7 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook('entity(RegistrationEvaluation).send:after', function() use($app, $distribute_execution_time) {
+        $app->hook('entity(<<RegistrationEvaluation|Registration>>).send:after', function() use($app, $distribute_execution_time) {
             /** @var Registration $this */
             $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $distribute_execution_time);
         });
@@ -603,7 +603,9 @@ class Module extends \MapasCulturais\Module{
             }
 
             if ($em = $this->getEvaluationMethodConfiguration()) {
-                $em->getUserRelation($user)->updateSummary(flush: true);
+                if($em->getUserRelation($user)) {
+                    $em->getUserRelation($user)->updateSummary(flush: true);
+                }
             }
         });
 
@@ -755,7 +757,7 @@ class Module extends \MapasCulturais\Module{
                                 $category_seals = $categories_seals->{$category};
 
                                 // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                                if(isset($opportunity->firstPhase->useAgentRelationColetivo) && $opportunity->firstPhase->useAgentRelationColetivo == 'required') {
+                                if($opportunity->firstPhase->useAgentRelationColetivo == 'required') {
                                     if($agent_type == "coletivo"){
                                         $agents = $this->getAgentRelations();
                                         $self->applySeal($agents[0]->agent, $category_seals);
@@ -824,7 +826,7 @@ class Module extends \MapasCulturais\Module{
                             $category_seals = $categories_seals->{$category};
 
                              // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                            if(isset($opportunity->firstPhase->useAgentRelationColetivo) && $opportunity->firstPhase->useAgentRelationColetivo == 'required') {
+                            if($opportunity->firstPhase->useAgentRelationColetivo == 'required') {
                                 if ($agent_type == "coletivo") {
                                     $agent_relations = $this->getAgentRelations();
     
@@ -891,7 +893,7 @@ class Module extends \MapasCulturais\Module{
                                         $category_seals = $categories_seals->{$category};
         
                                         // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                                        if(isset($this->firstPhase->useAgentRelationColetivo) && $this->firstPhase->useAgentRelationColetivo == 'required') {
+                                        if($this->firstPhase->useAgentRelationColetivo == 'required') {
                                             if($agent_type == "coletivo"){
                                                 $agents = $registration->getAgentRelations();
                                                 $self->applySeal($agents[0]->agent, $category_seals);
@@ -955,7 +957,7 @@ class Module extends \MapasCulturais\Module{
                                     $category_seals = $categories_seals->{$category};
         
                                     // Verifica se a opção "Habilitar a vinculação de agente coletivo" esta ativa
-                                    if(isset($this->firstPhase->useAgentRelationColetivo) && $this->firstPhase->useAgentRelationColetivo == 'required') {
+                                    if($this->firstPhase->useAgentRelationColetivo == 'required') {
                                         if ($agent_type == "coletivo") {
                                             $agent_relations = $this->getAgentRelations();
             

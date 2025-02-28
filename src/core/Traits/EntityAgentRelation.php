@@ -36,8 +36,13 @@ trait EntityAgentRelation {
         if(!class_exists($relation_class)){
             return [];
         }
+
+        $app = App::i();
         
         $agent_statuses = [Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED];
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.agentRelationsAllowedStatus", [&$agent_statuses]);
+
         $relations = [];
         
         $__relations = $this->__agentRelations;

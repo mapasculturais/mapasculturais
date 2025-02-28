@@ -17,7 +17,7 @@ app.component('evaluation-card', {
         return { text, hasSlot }
     },
 
-    data:() {
+    data() {
         return {
             formData: {}
         }
