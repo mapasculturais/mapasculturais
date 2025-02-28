@@ -63,8 +63,8 @@ app.component('continuous-evaluation-form', {
 
         currentEvaluation() {
             const api = new API('registrationevaluation');
-            const evaluation = api.getEntityInstance($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation.id);
-            evaluation.populate($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation);
+            const evaluation = api.getEntityInstance($MAPAS.config.continuousEvaluationForm.currentEvaluation.id);
+            evaluation.populate($MAPAS.config.continuousEvaluationForm.currentEvaluation);
             return evaluation;
         },
 
