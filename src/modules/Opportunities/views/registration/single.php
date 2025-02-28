@@ -285,6 +285,9 @@ $today = new DateTime();
                                 <?php else: ?>
                                     <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
                                     <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>
+                                    <?php if ($opportunity->isReportingPhase && $opportunity->parent->enableWorkplan): ?>
+                                        <registration-workplan-form :phase-id="<?= $opportunity->id ?>"></registration-workplan-form>
+                                    <?php endif; ?>
                                     <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
                                 <?php endif ?>
                                 
@@ -293,8 +296,6 @@ $today = new DateTime();
                     <?php endif ?>
                     <?php $phase = $phase->nextPhase; ?>
                 <?php endwhile ?>
-
-                <registration-workplan-form v-if="entity.opportunity.isReportingPhase && entity.opportunity.parent.enableWorkplan" :registration="entity"></registration-workplan-form>
             </div>
         </mc-tab>
 
