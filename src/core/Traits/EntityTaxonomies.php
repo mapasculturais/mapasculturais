@@ -201,7 +201,7 @@ trait EntityTaxonomies{
         if($definition = $app->getRegisteredTaxonomy($this, $taxonomy_slug)){
 
               // if not allowed to insert terms, get the term in the way as defined in restrictedTerms
-            if(!$definition->allowInsert){
+            if(!$definition->allowInsert && key_exists(mb_strtolower(trim($term)), $definition->restrictedTerms)){
                 $term = $definition->restrictedTerms[mb_strtolower(trim($term))];
             }
 

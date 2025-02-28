@@ -26,7 +26,7 @@ $this->import('
                 <mc-entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
                     <template #header="{entities}">
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
-                            <input ref="searchKeyword" v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="searchKeyword" :placeholder="placeholder" @input="entities.refresh(500)"/>
+                            <input ref="searchKeyword" v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="searchKeyword" :placeholder="placeholder" @keyup="entities.refresh(500)"/>
                             <button type="button" class="select-entity__form--button">
                                 <mc-icon name="search"></mc-icon>
                             </button>
