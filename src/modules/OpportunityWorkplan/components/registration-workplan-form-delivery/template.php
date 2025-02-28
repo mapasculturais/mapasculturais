@@ -8,8 +8,10 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-files-list
     mc-icon
     mc-links-field
+    mc-multiselect
     mc-tag-list
 ');
 ?>
@@ -119,6 +121,16 @@ $this->import('
             <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model.number="executedRevenue">
             <span v-else>{{ convertToCurrency(executedRevenue) }}</span>
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
+        </div>
+
+        <div class="field">
+            <label :for="`${vid}__evidenceFiles`"><?= i::__('Links das evidências') ?></label>
+            <entity-files-list :id="`${vid}__evidenceFiles`" :entity="registration" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">
+                <template #description>
+                    <p v-if="editable"><?= i::__('Adicione vídeos, fotos e documentos que servirão como evidência para o seu projeto') ?></p>
+                </template>
+            </entity-files-list>
+            <small class="field__error" v-if="validationErrors.evidenceFiles">{{ validationErrors.evidenceLinks.join('; ') }}</small>
         </div>
 
         <div class="field" v-if="editable || evidenceLinks.length > 0">
