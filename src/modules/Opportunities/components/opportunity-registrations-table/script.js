@@ -304,7 +304,7 @@ app.component('opportunity-registrations-table', {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }
 
-            let type = this.phase.evaluationMethodConfiguration.type.id;
+            let type = this.phase.evaluationMethodConfiguration?.type.id;
             let phases = $MAPAS.opportunityPhases;
             let hasEvaluationMethodTechnical = false;
 
@@ -337,12 +337,8 @@ app.component('opportunity-registrations-table', {
         },
         select() {
             const fields = this.avaliableFields.map((item) => item.fieldName);
-<<<<<<< HEAD
-            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields,goalStatuses', ...fields].join(',');
-=======
             
             return [this.default_select, ...fields].join(',');
->>>>>>> feature/appeal-phase
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
