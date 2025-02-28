@@ -20,6 +20,7 @@ $this->import('
             <mc-select v-if="editable" :default-value="proxy.status" aria-label="<?= i::esc_attr__('Status') ?>" @change-option="proxy.status = $event.value">
                 <option v-for="(label, value) of statusOptions" :key="value" :value="value">{{ label }}</option>
             </mc-select>
+            <span v-else>{{ statusOptions[proxy.status] }}</span>
 
             <button class="button" type="button" :aria-label="expanded ? '<?php i::esc_attr__('Ocultar') ?>' : '<?php i::esc_attr__('Exibir') ?>'" @click="expanded = !expanded">
                 <mc-icon :name="expanded ? 'up' : 'down'"></mc-icon>

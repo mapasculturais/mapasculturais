@@ -120,7 +120,10 @@ class Module extends \MapasCulturais\Module {
 
         $app->hook('entity(Registration).jsonSerialize', function (&$json) {
             /** @var Entities\Registration $this */
-            $json['workplanProxy'] = $this->workplanProxy;
+            if ($this->opportunity->isReportingPhase && $this->opportunity->parent->enableWorkplan) {
+                $json['workplanSnapshot'] = $this->workplanSnapshot;
+                $json['workplanProxy'] = $this->workplanProxy;
+            }
         });
 
         $app->hook('entity(Registration).validationErrors', function (&$errors) use ($app) {
