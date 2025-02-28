@@ -29,7 +29,7 @@ app.component('registration-workplan-form-goal', {
     },
     computed: {
         goalsLabel () {
-            const opportunity = this.registration.opportunity;
+            const opportunity = this.registration.opportunity.parent;
             return opportunity.goalLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.goalLabelDefault.default_value);
         },
         proxy () {

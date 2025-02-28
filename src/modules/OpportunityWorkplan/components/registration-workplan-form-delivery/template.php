@@ -103,21 +103,21 @@ $this->import('
 
         <div class="field" v-if="opportunity.workplan_registrationReportTheNumberOfParticipants && (editable || proxy.numberOfParticipants)">
             <label :for="`${vid}__numberOfParticipants`"><?= i::__('Número de participantes') ?></label>
-            <input v-if="editable" :id="`${vid}__numberOfParticipants`" type="number" v-model="proxy.numberOfParticipants" :items="[]">
+            <input v-if="editable" :id="`${vid}__numberOfParticipants`" type="number" v-model="proxy.numberOfParticipants">
             <span v-else>{{ proxy.numberOfParticipants }}</span>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_monitoringReportExecutedRevenue && (editable || proxy.executedRevenue)">
+        <div class="field" v-if="opportunity.workplan_monitoringReportExecutedRevenue && (editable || executedRevenue)">
             <label :for="`${vid}__executedRevenue`"><?= i::__('Receita executada') ?></label>
-            <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model="proxy.executedRevenue" :items="[]">
+            <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model="executedRevenue">
             <span v-else>{{ proxy.executedRevenue }}</span>
         </div>
 
-        <div class="field" v-if="editable || proxy.evidenceLinks?.length > 0">
+        <div class="field" v-if="editable || evidenceLinks.length > 0">
             <label :for="`${vid}__evidenceLinks`"><?= i::__('Links das evidências') ?></label>
-            <mc-links-field v-if="editable" :id="`${vid}__evidenceLinks`" v-model="proxy.evidenceLinks"></mc-links-field>
+            <mc-links-field v-if="editable" :id="`${vid}__evidenceLinks`" v-model="evidenceLinks"></mc-links-field>
             <ul v-else>
-                <li v-for="(link, index) of proxy.evidenceLinks" :key="index">
+                <li v-for="(link, index) of evidenceLinks" :key="index">
                     <a :href="link.value">{{ link.title || link.value }}</a>
                 </li>
             </ul>

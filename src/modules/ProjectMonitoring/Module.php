@@ -111,6 +111,17 @@ class Module extends \MapasCulturais\Module {
                 $app->enableAccessControl();
             }
         });
+
+        $app->hook('view.requestedEntity(Registration).result', function (&$json) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            $requested_entity = $this->controller->requestedEntity;
+            $json['workplanProxy'] = $requested_entity->workplanProxy;
+        });
+
+        $app->hook('entity(Registration).jsonSerialize', function (&$json) {
+            /** @var Entities\Registration $this */
+            $json['workplanProxy'] = $this->workplanProxy;
+        });
     }
 
     public function register() {

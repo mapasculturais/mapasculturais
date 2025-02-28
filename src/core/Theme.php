@@ -959,7 +959,7 @@ abstract class Theme {
                 $opportunity = $query->getSingleResult();
                 $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
                 if($opportunity->parent){
-                    $e['opportunity']->parent = $opportunity->parent->simplify('id,enableWorkplan,name,type,files,terms,seals');
+                    $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');
                 }
                 if ($opportunity->registrationSteps) {
                     $e['opportunity']->registrationSteps = $opportunity->registrationSteps->toArray();

@@ -34,11 +34,27 @@ app.component('registration-workplan-form-delivery', {
             return Vue.markRaw($DESCRIPTIONS.delivery.availabilityType.options);
         },
         deliveriesLabel () {
-            const opportunity = this.registration.opportunity;
+            const opportunity = this.registration.opportunity.parent;
             return opportunity.deliveryLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value);
         },
+        evidenceLinks: {
+            get () {
+                return this.proxy.evidenceLinks ?? [];
+            },
+            set (value) {
+                this.proxy.evidenceLinks = value;
+            },
+        },
+        executedRevenue: {
+            get () {
+                return this.proxy.executedRevenue?.scalar ?? 0;
+            },
+            set (value) {
+                this.proxy.executedRevenue = { scalar: value };
+            },
+        },
         opportunity () {
-            return this.registration.opportunity;
+            return this.registration.opportunity.parent;
         },
         proxy () {
             return this.registration.workplanProxy.deliveries[this.delivery.id];
