@@ -62,6 +62,9 @@ app.component('registration-workplan-form-delivery', {
         statusOptions () {
             return Vue.markRaw($MAPAS.config.deliveriesStatuses);
         },
+        validationErrors () {
+            return this.registration.__validationErrors?.workplanProxy?.deliveries[this.delivery.id] ?? {};
+        },
     },
     methods: {
         convertToCurrency(field) {

@@ -38,5 +38,8 @@ app.component('registration-workplan-form-goal', {
         statusOptions () {
             return Vue.markRaw($MAPAS.config.goalsStatuses);
         },
+        validationErrors () {
+            return this.registration.__validationErrors?.workplanProxy?.goals[this.goal.id] ?? {};
+        },
     }
 });
