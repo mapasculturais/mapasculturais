@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     mc-icon
     mc-links-field
+    mc-tag-list
 ');
 ?>
 
@@ -56,7 +57,7 @@ $this->import('
 
         <div v-if="delivery.generaterRevenue" class="field">
             <label><?= i::esc_attr__('Irá gerar receita?') ?></label>
-            {{ delivery.generaterRevenue }}
+            <?= i::__('Sim') ?>
         </div>
 
         <div v-if="delivery.renevueQtd" class="field">
@@ -86,7 +87,7 @@ $this->import('
         <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityMeasures && (editable || proxy.accessibilityMeasures)">
             <label :for="`${vid}__accessibilityMeasures`"><?= i::__('Medidas de acessibilidade') ?></label>
             <mc-multiselect v-if="editable" :id="`${vid}__accessibilityMeasures`" :model="proxy.accessibilityMeasures" :items="accessibilityOptions"></mc-multiselect>
-            <span v-else>{{ proxy.accessibilityMeasures }}</span>
+            <mc-tag-list v-else classes="primary__background" :tags="proxy.accessibilityMeasures"></mc-tag-list>
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringProvideTheProfileOfParticipants && (editable || proxy.participantProfile)">
@@ -98,19 +99,19 @@ $this->import('
         <div class="field" v-if="opportunity.workplan_monitoringInformThePriorityAudience && (editable || proxy.priorityAudience)">
             <label :for="`${vid}__priorityAudience`"><?= i::__('Territórios prioritários') ?></label>
             <mc-multiselect v-if="editable" :id="`${vid}__priorityAudience`" :model="proxy.priorityAudience" :items="audienceOptions"></mc-multiselect>
-            <span v-else>{{ proxy.priorityAudience }}</span>
+            <mc-tag-list v-else classes="primary__background" :tags="proxy.priorityAudience"></mc-tag-list>
         </div>
 
         <div class="field" v-if="opportunity.workplan_registrationReportTheNumberOfParticipants && (editable || proxy.numberOfParticipants)">
             <label :for="`${vid}__numberOfParticipants`"><?= i::__('Número de participantes') ?></label>
-            <input v-if="editable" :id="`${vid}__numberOfParticipants`" type="number" v-model="proxy.numberOfParticipants">
+            <input v-if="editable" :id="`${vid}__numberOfParticipants`" type="number" v-model.number="proxy.numberOfParticipants">
             <span v-else>{{ proxy.numberOfParticipants }}</span>
         </div>
 
         <div class="field" v-if="opportunity.workplan_monitoringReportExecutedRevenue && (editable || executedRevenue)">
             <label :for="`${vid}__executedRevenue`"><?= i::__('Receita executada') ?></label>
-            <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model="executedRevenue">
-            <span v-else>{{ proxy.executedRevenue }}</span>
+            <input v-if="editable" :id="`${vid}__executedRevenue`" type="number" v-model.number="executedRevenue">
+            <span v-else>{{ convertToCurrency(executedRevenue) }}</span>
         </div>
 
         <div class="field" v-if="editable || evidenceLinks.length > 0">
