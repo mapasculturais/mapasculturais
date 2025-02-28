@@ -30,8 +30,8 @@ $this->import('
             {{ workplan.culturalArtisticSegment }}
         </div>
 
-        <template v-if="registration.workplanProxy">
-            <registration-workplan-form-goal v-for="(goal, goalIndex) in workplan.goals" :editable="editable" :goal="goal" :index="goalIndex" :key="goal.id" :registration="registration">
+        <template v-if="workplan">
+            <registration-workplan-form-goal v-for="(goal, goalIndex) in workplan.goals" :editable="editable" :goal="goal" :index="goalIndex" :key="goal.id" :registration="registrationModel">
             </registration-workplan-form-goal>
         </template>
     </template>

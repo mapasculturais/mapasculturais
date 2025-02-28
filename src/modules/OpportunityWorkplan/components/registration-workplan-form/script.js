@@ -5,9 +5,13 @@ app.component('registration-workplan-form', {
             type: Boolean,
             default: false,
         },
+        phaseId: {
+            type: Number,
+            required: false,
+        },
         registration: {
             type: Entity,
-            required: true,
+            required: false,
         },
     },
     data () {
@@ -16,6 +20,10 @@ app.component('registration-workplan-form', {
         };
     },
     async created () {
+        if (this.phaseId) {
+            this.workplan = this.registrationModel.workplanSnapshot;
+            return;
+        }
         const api = new API('workplan');
         const response = await api.GET(String($MAPAS.config['registration-workplan-form'].parentRegistration));
         // const response = await api.GET(String(this.registration.id));
@@ -25,8 +33,16 @@ app.component('registration-workplan-form', {
         }
     },
     computed: {
+        registrationModel () {
+            if (this.registration) {
+                return this.registration;
+            } else {
+                const registration = $MAPAS.registrationPhases[this.phaseId];
+                return Vue.reactive(registration);
+            }
+        },
         workplansLabel () {
-            const opportunity = this.registration.opportunity.parent;
+            const opportunity = this.registrationModel.opportunity.parent ?? this.registrationModel.opportunity;
             return opportunity.workplanLabelDefault ?? $MAPAS.EntitiesDescription.opportunity.workplanLabelDefault.default_value;
         },
     },

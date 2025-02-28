@@ -34,7 +34,7 @@ app.component('registration-workplan-form-delivery', {
             return Vue.markRaw($DESCRIPTIONS.delivery.availabilityType.options);
         },
         deliveriesLabel () {
-            const opportunity = this.registration.opportunity.parent;
+            const opportunity = this.registration.opportunity.parent ?? this.registration.opportunity;
             return opportunity.deliveryLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value);
         },
         evidenceLinks: {
@@ -54,7 +54,7 @@ app.component('registration-workplan-form-delivery', {
             },
         },
         opportunity () {
-            return this.registration.opportunity.parent;
+            return this.registration.opportunity.parent ?? this.registration.opportunity;
         },
         proxy () {
             return this.registration.workplanProxy.deliveries[this.delivery.id];
