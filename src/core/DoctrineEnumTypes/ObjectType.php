@@ -30,6 +30,7 @@ class ObjectType extends DoctrineEnumType
             'Space' => 'MapasCulturais\Entities\Space',
             'Subsite' => 'MapasCulturais\Entities\Subsite',
             'User' => 'MapasCulturais\Entities\User',
+            'Delivery' => 'OpportunityWorkplan\Entities\Delivery',
         ];
     }
 }
