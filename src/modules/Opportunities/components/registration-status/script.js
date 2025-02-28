@@ -62,6 +62,7 @@ app.component('registration-status', {
                     return 'danger__color';
 				case 8 : 
                 case 1 :
+                case undefined:
                     return 'warning__color';
 
                 case null:
@@ -135,6 +136,19 @@ app.component('registration-status', {
 
         redirectToRegistrationForm() {
             return window.location.hash = "#ficha";
-        }
+        },
+        
+        shouldShowResults(item) {
+			// se é uma fase de avaliação que não tem uma fase de coleta de dados anterior
+			const isEvaluation = item.__objectType == 'evaluationmethodconfiguration';
+
+			// se é uma fase de coleta de dados que não tem uma fase de avaliação posterior
+			const isRegistrationOnly = item.__objectType == 'opportunity' && !item.evaluationMethodConfiguration;
+
+			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
+
+			return phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation);
+		
+		},
     }
 });

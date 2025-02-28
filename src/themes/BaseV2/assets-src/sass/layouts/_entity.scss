@@ -32,6 +32,11 @@
         .container > main {
             gap: size(40);
         }
+
+        & > .tabs-component {
+            position: relative;
+            margin-top: size(-43);
+        }
     }
 
     &.action-single {

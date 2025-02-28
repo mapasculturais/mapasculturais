@@ -17,6 +17,17 @@
       .modal__action {
         justify-content: flex-end;
       }
+
+      .modal__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+  
+        .modal__close {
+            margin-left: auto; 
+        }
+      }
     }
     .modal__action {
       flex-wrap: unset;

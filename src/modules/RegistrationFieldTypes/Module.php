@@ -351,7 +351,14 @@ class Module extends \MapasCulturais\Module
                 'configTemplate' => 'registration-field-types/currency-config',
                 'validations' => [
                     'v::brCurrency()' => \MapasCulturais\i::__('O valor não está no formato de moeda real (R$)')
-                ]
+                ],
+                'unserialize' => function($value) {
+                    if(is_string($value) && !is_numeric($value)) {
+                        return (float) str_replace(",",".", str_replace(".","", $value));
+                    }
+
+                    return (float) $value;
+                }
             ],
             [
                 'slug' => 'date',
@@ -651,7 +658,7 @@ class Module extends \MapasCulturais\Module
                         $registration =  $app->repo('Registration')->find($registration->id);
                     }
 
-                    if(is_null($registration) || $registration->status > 0){
+                    if(is_null($registration) || $registration->status > 1){
                             
                         $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
                         if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {

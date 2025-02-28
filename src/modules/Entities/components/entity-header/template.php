@@ -21,7 +21,7 @@ $this->import('
                 <mc-avatar :entity="entity" size="big"></mc-avatar>
             </div>
             <!-- <mc-icon  v-if="!entity.files.avatar" :entity="entity"></mc-icon> -->
-            <nav class="share" aria-label="<?= i::__('Compartilhar') ?>">
+            <nav v-if="hasSocialNetworks" class="share" aria-label="<?= i::__('Compartilhar') ?>">
                 <a v-if="entity.twitter"  class="button button--text button--icon" aria-label="Twitter" target="_blank" :href="buildSocialMediaLink('twitter')">
                     <mc-icon name="twitter"></mc-icon>
                 </a>
@@ -73,7 +73,7 @@ $this->import('
                     </slot>
                 </div>
             </div>
-            <nav class="share share-mobile" aria-label="<?= i::__('Compartilhar') ?>">
+            <nav v-if="hasSocialNetworks" class="share share-mobile" aria-label="<?= i::__('Compartilhar') ?>">
                 <a v-if="entity.twitter" :href="entity.twitter" class="button button--text button--icon" aria-label="Twitter" target="_blank">
                     <mc-icon name="twitter"></mc-icon>
                 </a>

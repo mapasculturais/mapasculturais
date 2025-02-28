@@ -99,6 +99,7 @@ class API {
             this.cache = useEntitiesCache();
             this.lists = useEntitiesLists();
             this.objectType = objectType;
+            this.abortController = null;
             this.options = {
                 cacheMode: 'force-cache', 
                 ...fetchOptions
@@ -109,16 +110,15 @@ class API {
     }
 
     get $PK() {
-        const __properties = this.getEntityDescription('!relations');
-        let pk;
-        for (let prop in __properties) {
-            if(__properties[prop].isPK) {
-                pk = prop;
-                break;
-            }
+        if (Entity.__pkCache.has(this.objectType)) {
+            return Entity.__pkCache.get(this.objectType);
         }
 
-        return pk || 'id';
+        const __properties = this.getEntityDescription('!relations');
+        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK) ?? [];
+
+        Entity.__pkCache.set(this.objectType, pk ?? 'id');
+        return pk ?? 'id';
     }
 
     getHeaders(data, forceSave) {
@@ -275,7 +275,9 @@ class API {
 
     async fetch(endpoint, query, {list, raw, rawProcessor, refresh}) {
         let url = this.createApiUrl(endpoint, query);
-        return this.GET(url).then(response => response.json().then(objs => {
+        this.abortController?.abort();
+        this.abortController = new AbortController();
+        return this.GET(url, {}, { signal: this.abortController.signal }).then(response => response.json().then(objs => {
             let result;
             if(raw) {
                 rawProcessor = rawProcessor || Utils.entityRawProcessor;
@@ -340,55 +342,47 @@ class API {
         }
     }   
 
-    getEntityDescription(filter) {
+    getEntityDescription(filter = '') {
         const description = $DESCRIPTIONS[this.objectType];
-                
-        let result = {};
+        const filters = filter.split(',');
+   
+        const result = {};
 
-        function filteredBy(f) {
-            let filters = filter.split(',');
-            return filters.indexOf(f) > -1;
-        }
-
-        for (var key in description) {
-            if(key.substr(0,2) === '__') {
+        for (let key in description) {
+            if (key.startsWith('__')) {
                 continue;
             }
 
-            let desc = description[key];
-            let ok = true
-            
+            const desc = description[key];
+
             if (filter) {
-                if (filteredBy('private') && desc.private !== true) {
-                    ok = false;
+                if (desc.private && filters.includes('public')) {
+                    continue;
+                } else if (desc.private !== true && filters.includes('private')) {
+                    continue;
                 }
 
-                if (filteredBy('public') && desc.private) {
-                    ok = false
+                if (desc.isMetadata && filters.includes('!metadata')) {
+                    continue;
+                } else if (!desc.isMetadata && filters.includes('metadata')) {
+                    continue;
                 }
 
-                if (filteredBy('metadata') && !desc.isMetadata) {
-                    ok = false
-                } else if(filteredBy('!metadata') && desc.isMetadata) {
-                    ok = false
-                }
 
-                if (filteredBy('relations') && !desc.isEntityRelation) {
-                    ok = false
-                } else if(filteredBy('!relations') && desc.isEntityRelation) {
-                    ok = false
+                if (desc.isEntityRelation && filters.includes('!relations')) {
+                    continue;
+                } else if (!desc.isEntityRelation && filters.includes('relations')) {
+                    continue;
                 }
             }
-                
-            if (ok) {
-                key = desc['@select'] || key;
 
-                if (desc.isEntityRelation && key[0] == '_'){
-                    key = key.substr(1);
-                }
-                
-                result[key] = desc;
+            key = desc['@select'] || key;
+
+            if (desc.isEntityRelation && key.startsWith('_')){
+                key = key.slice(1);
             }
+
+            result[key] = desc;
         }
 
         return result;

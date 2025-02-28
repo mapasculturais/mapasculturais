@@ -44,7 +44,7 @@ if ($entity->opportunity->isAppealPhase) {
         'opportunity' => $entity->opportunity->parent->id
     ])[0];
 }
-    
+
 if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
     $userEvaluator = $app->repo("User")->find($this->controller->data['user']);
 } else {
@@ -111,13 +111,13 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
 
                         <div class="section__content col-12">
                             <div class="card owner">
-                                <!-- Caso não seja uma fase de recurso -->
-                                <v1-embed-tool v-if="!entity.opportunity?.isAppealPhase" route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
-                                
-                                <!-- Caso seja uma fase de recurso -->
-                                <v1-embed-tool v-if="entity.opportunity?.isAppealPhase" route="registrationevaluationtionformview" iframe-id="evaluation-registration" id="<?= $parent_registration->id ?>"></v1-embed-tool>
-                                </div>
+                            <?php if ($entity->opportunity->isAppealPhase): ?>
+                                <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" id="<?= $parent_registration->id ?>"></v1-embed-tool>
+                            <?php else: ?>
+                                <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
+                            <?php endif; ?>
                             </div>
+                        </div>
                     </section>
                 </div>
             </main>

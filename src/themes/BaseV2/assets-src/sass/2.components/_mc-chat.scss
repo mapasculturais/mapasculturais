@@ -67,11 +67,21 @@
         font-size: size(12);
     }
 
-    &__text,
-    &__attachment {
+    &__text {
         background-color: var(--mc-gray-100);
         border-radius: var(--mc-border-radius-sm);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
         padding: size(14);
+    }
+    
+    &__attachment {
+        .entity-file {
+            a.entity-file__link, span {
+                color: var(--mc-primary-500);
+            }
+        }
     }
 
     &__actions {
@@ -100,4 +110,49 @@
         padding: size(14);
         width: 100%;
     }
+
+    &__empty {
+        display: none;
+    }
+
+    &__endChat {
+        flex-direction: row;
+    }
+
+    &__reviewer-message {
+        gap: size(16);
+    }
+
+    &__evaluation {
+        background-color: var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-sm);
+        padding: size(14);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__evaluation-closed,
+    &__evaluation-status {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__evaluation-text {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__evaluation-status-content {
+        display: flex;
+        gap: size(8);
+        align-items: center;
+    }
+}
+
+.registration-results__modal--with-chat .modal__action {
+    display: flex;
+    padding: 0 size(16) size(16) size(16);
 }

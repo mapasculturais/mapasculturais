@@ -1922,6 +1922,7 @@ class App {
                 $path = array_merge($themes_path, $path);
                 
                 $this->view->path = new \ArrayObject($path);
+                $this->view->init();
             }
             
             
@@ -2466,6 +2467,9 @@ class App {
         $this->registerController('chatThread', 'MapasCulturais\Controllers\ChatThread');
         $this->registerController('chatMessage', 'MapasCulturais\Controllers\ChatMessage');
 
+        // registration evaluation
+        $this->registerController('registrationEvaluation', 'MapasCulturais\Controllers\RegistrationEvaluation');
+
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
@@ -2537,6 +2541,8 @@ class App {
             'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true),
             'chatImage' => new Definitions\FileGroup('chatImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'chatAttachment' => new Definitions\FileGroup('chatAttachment', unique:true),
+            'evaluationImage' => new Definitions\FileGroup('evaluationImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'evaluationAttachment' => new Definitions\FileGroup('evaluationAttachment', unique:true),
         ];
 
         // register file groups
@@ -2580,6 +2586,9 @@ class App {
 
         $this->registerFileGroup('chatMessage',$file_groups['chatImage']);
         $this->registerFileGroup('chatMessage',$file_groups['chatAttachment']);
+        
+        $this->registerFileGroup('registrationEvaluation',$file_groups['evaluationImage']);
+        $this->registerFileGroup('registrationEvaluation',$file_groups['evaluationAttachment']);
 
         if ($theme_image_transformations = $this->view->resolveFilename('','image-transformations.php')) {
             $image_transformations = include $theme_image_transformations;

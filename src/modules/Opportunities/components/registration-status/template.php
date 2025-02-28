@@ -48,7 +48,7 @@ $this->import('
     </div>
 </div>
 
-<div v-if="!appealRegistration?.id && registration.status == 3" class="opportunity-phases-timeline__request-appeal">
+<div v-if="!appealRegistration?.id && registration.status != 10" class="opportunity-phases-timeline__request-appeal">
     <h5 v-if="!processing" class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Discorda do resultado?')?></h5>
     <button v-if="!processing" class="button button--primary button--primary-outline" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
 
@@ -66,7 +66,7 @@ $this->import('
             <?= i::__('às') ?> <span v-if="hour()">{{hour()}}</span></h5>
         </div>
 
-        <div class="opportunity-phases-timeline__box">
+        <div v-if="appealRegistration.opportunity.allow_proponent_response === '1' || shouldShowResults(appealRegistration.opportunity.evaluationMethodConfiguration)" class="opportunity-phases-timeline__box">
             <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
             <div class="opportunity-phases-timeline__status">
                 <mc-icon name="circle" :class="verifyState(appealRegistration)"></mc-icon>
@@ -77,9 +77,8 @@ $this->import('
                 <p v-if="appealRegistration.status == 0"><?= i::__('Recurso não enviado') ?></p>
 
             </div>
-            <registration-results v-if="phase.appealPhase.evaluationMethodConfiguration.publishEvaluationDetails" :registration="appealRegistration" :phase="phase"></registration-results>
+            <registration-results :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
         </div>
-        
         <div v-if="appealRegistration && appealRegistration.status == 0" class="opportunity-phases-timeline__request-appeal">
             <h5 class="bold opportunity-phases-timeline__label--lowercase"><?= i::__('Finalize sua inscrição no recurso:')?></h5>
             <button class="button button--primary button--primary" @click="fillFormButton()"><?= i::__('Preencher formulário') ?></button>

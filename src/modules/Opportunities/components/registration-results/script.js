@@ -10,6 +10,11 @@ app.component('registration-results', {
             type: Entity,
             required: true
         },
+
+        hideAppealStatus: {
+            type: Boolean,
+            default: false,
+        },
     },
     
     setup(props, { slots }) {
@@ -28,7 +33,7 @@ app.component('registration-results', {
 
     computed: {
         appealPhase() {
-            return this.phase.appealPhase;
+            return this.phase.opportunity.isAppealPhase ? this.phase.opportunity : this.phase.opportunity.appealPhase;
         },
 
         appealRegistration() {
@@ -36,8 +41,21 @@ app.component('registration-results', {
             if (!appealPhaseId) {
                 return null;
             }
-
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
+        },
+
+        currentEvaluation() {
+            return $MAPAS.config.appealPhaseEvaluationForm?.currentEvaluation;
+        },
+
+        modalTitle() {
+            return this.registration.opportunity.status === -20 ? 
+                `${this.text('Detalhamento do recurso para ')} ${this.phase.name} - ${this.registration.number}` :
+                `${this.phase.name} - ${this.registration.number}`;
+        },
+
+        showAppealPhaseEvaluationDetails() {
+            return $MAPAS.config.appealPhaseEvaluationDetail.data.consolidatedDetails?.sentEvaluationCount;
         }
     },
 
