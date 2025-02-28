@@ -38,8 +38,9 @@ $this->import('
                 <?= i::__('Inválido') ?>
             </strong>
         </div>
+
         <div class="opportunity-phases-timeline__buttons">
-            <div class="registration-results" v-if="registration.opportunity.isReportingPhase">
+            <div class="registration-results" v-if="registration.opportunity.isReportingPhase === '1' || registration.opportunity.isFinalReportingPhase === '1'">
                 <button class="button button--primary button--sm button--large" @click="redirectToRegistrationForm()"><?php i::_e('Visualizar relatório') ?></button>
             </div>
             <registration-results v-if="phase.publishEvaluationDetails" :registration="registration" :phase="phase"></registration-results>
