@@ -10,7 +10,6 @@ use MapasCulturais\i;
 $this->import('
     entity-file
     evaluation-actions
-    evaluation-appeal-phase-detail
     evaluation-continuous-detail
     mc-modal
     mc-select
@@ -58,7 +57,7 @@ $this->import('
 
         <mc-modal v-if="!isEditable":title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
             <template #default>
-                <evaluation-appeal-phase-detail :registration="entity"></evaluation-appeal-phase-detail>
+                <evaluation-continuous-detail :registration="entity"></evaluation-continuous-detail>
             </template>
             
             <template #button="modal">

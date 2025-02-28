@@ -22,6 +22,7 @@ $this->import('
     registration-evaluation-actions
     registration-evaluation-info
     registration-info
+    registration-workplan-form
     v1-embed-tool
 ');
 
@@ -117,6 +118,10 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
                                 <v1-embed-tool route="registrationevaluationtionformview" iframe-id="evaluation-registration" :id="entity.id"></v1-embed-tool>
                             <?php endif; ?>
                             </div>
+
+                            <?php if ($entity->opportunity->isReportingPhase && $entity->opportunity->parent->enableWorkplan): ?>
+                                <registration-workplan-form :phase-id="<?= $entity->opportunity->id ?>"></registration-workplan-form>
+                            <?php endif; ?>
                         </div>
                     </section>
                 </div>
