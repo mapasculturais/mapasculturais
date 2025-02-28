@@ -34,7 +34,7 @@ $parse_agent_field = function ($field) use ($agent_description, $field_types) {
 $phase_fields = [];
 $opportunity = $this->controller->requestedEntity->firstPhase;
 while ($opportunity) {
-    if ($opportunity->evaluationMethodConfiguration && $opportunity->evaluationMethodConfiguration->definition->slug == "technical") {
+    if ($opportunity->evaluationMethodConfiguration && $opportunity->evaluationMethodConfiguration->definition && $opportunity->evaluationMethodConfiguration->definition->slug == "technical") {
         $fields = $opportunity->getFields(all:true);
         $fields = array_filter($fields, function ($field) use ($field_types, $parse_agent_field) {
             if ($field->fieldType == "agent-owner-field") {
