@@ -92,6 +92,10 @@ app.component('mc-select', {
 
     mounted() {
         setTimeout(() => {
+            if (!this.$refs.options) {
+                return;
+            }
+
             const options = this.$refs.options.querySelectorAll('[value]');
             
             this.defaultOptions = Object.freeze(Array.from(options));

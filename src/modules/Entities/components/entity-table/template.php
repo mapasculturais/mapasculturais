@@ -21,7 +21,7 @@ $this->import('
 ?>
 <div class="entity-table">
     
-    <mc-entities :select="select" :raw-processor="rawProcessor" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" @fetch="resize()" watch-query>
+    <mc-entities  ref="entities"  :select="select" :raw-processor="rawProcessor" :type="apiController" :query="query" :order="entitiesOrder" :watch-debounce="watchDebounce" :limit="limit" :endpoint="endpoint" @fetch="resize()" watch-query>
 
         <template #header="{entities, filters}">
             <div v-if="!hideHeader" class="entity-table__header">
@@ -33,11 +33,11 @@ $this->import('
                 <!-- ações - opcional -->
                 <mc-collapse v-if="hasSlot('actions') || !hideActions">
                     <template #header>
-                        <slot name="actions" :entities="entities" :filters="filters"></slot>
+                        <slot name="actions" :entities="entities" :filters="filters" :spreadsheetQuery="spreadsheetQuery" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue"></slot>
                     </template>
 
                     <template v-if="hasSlot('advanced-actions')" #content>
-                        <slot name="advanced-actions" :entities="entities" :filters="filters"></slot>
+                        <slot name="advanced-actions" :entities="entities" :filters="filters" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue"></slot>
                     </template>
                 </mc-collapse>
 
@@ -46,31 +46,30 @@ $this->import('
                     <template #header>
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
-                                <slot name="searchKeyword" :query="query">
-                                    <textarea ref="search" v-model="this.query['@keyword']" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+                                <slot name="searchKeyword" :query="query" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
+                                    <textarea ref="search" v-model="this.query['@keyword']" @keyup="entities.refresh()" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
                                     
-                                    <button @click="keyword(entities)" class="entity-table__search-button">
+                                    <button @click="entities.refresh()" class="entity-table__search-button">
                                         <mc-icon name="search"></mc-icon>
                                     </button>
                                 </slot>
                             </div>
                             
-                            <slot name="filters" :entities="entities" :filters="filters">
+                            <slot name="filters" :entities="entities" :filters="filters" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
                             </slot>                            
                         </div>
                     </template>
 
-                    <template v-if="advancedFilters.length > 0 || hasSlot('advanced-filters')"  #content>
+                    <template v-if="((Object.keys(advancedFilters).length || hasSlot('advanced-filters')) && !hideAdvancedFilters)"  #content>
                         <div class="entity-table__advanced-filters custom-scrollbar">
-                            <slot name="advanced-filters" :entities="entities" :filters="filters">
-
+                            <slot name="advanced-filters" :entities="entities" :filters="filters" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
                                 <div class="grid-12">
                                     <div v-for="(filter, slug) in advancedFilters" class="field col-3">
                                         <label>{{filter.label}}</label>
     
                                         <div class="field__group custom-scrollbar">
-                                            <label v-for="option in filter.options" :key="option" class="field__checkbox">
-                                                <input type="checkbox" :checked="advancedFilterChecked(slug, optionValue(option))" @change="toggleAdvancedFilter(slug, optionValue(option))"> {{optionLabel(option)}}
+                                            <label v-for="(option, k) in filter.options" :key="option" class="field__checkbox">
+                                                <input type="checkbox" :checked="advancedFilterChecked(slug, optionValue(option, k))" @change="toggleAdvancedFilter(slug, optionValue(option,k))"> {{optionLabel(option)}}
                                             </label>
                                         </div>
                                     </div>
@@ -88,31 +87,33 @@ $this->import('
                                 <span>{{ filter.label }}</span>
                                 <mc-icon name="delete" @click="removeFilter(filter, entities)" is-link></mc-icon>
                             </li>
-                            <li v-if="appliedFilters.length > 0">
+                            <li v-if="hasFilters">
                                 <button class="button button--sm button--text-danger button--icon" @click="clearFilters(entities)"> <?= i::__("Limpar filtros") ?> <mc-icon name="trash"></mc-icon> </button>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div v-if="!hideSort" class="entity-table__info">
-                <span v-if="entities.length === entities.metadata.count">
-                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-                </span>
-                <span v-else>    
-                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-                </span>
-                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
-            </div>
+            <template v-if="entities.length > 0">
+                <div v-if="!hideSort" class="entity-table__info">
+                    <span v-if="entities.length === entities.metadata.count">
+                        <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                    </span>
+                    <span v-else>
+                        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                    </span>
+                    <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
+                </div>
 
-            <div v-if="hideSort" class="entity-table__info">
-                <span v-if="entities.length === entities.metadata.count">
-                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
-                </span>
-                <span v-else>    
-                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
-                </span>
-            </div>
+                <div v-if="hideSort" class="entity-table__info">
+                    <span v-if="entities.length === entities.metadata.count">
+                        <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
+                    </span>
+                    <span v-else>
+                        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
+                    </span>
+                </div>
+            </template>
         </template>
 
 
@@ -136,7 +137,9 @@ $this->import('
 
                             <template #button="popover">
                                 <a href="#" v-tooltip="'<?= i::__("Configurar colunas") ?>'" data-toggle="tooltip" @click.prevent="popover.toggle()">
-                                    <mc-icon name="columns-edit"></mc-icon>
+                                    <slot name="icon-text" :popover="popover">
+                                        <mc-icon name="columns-edit"></mc-icon>
+                                    </slot>
                                 </a>
                             </template>
                         </mc-popover>
@@ -165,7 +168,7 @@ $this->import('
                                 <template v-for="header in columns" :key="header.slug">
                                     <td v-if="header.visible" :class="{sticky: header.sticky || header.stickyRight}" :style="headerStyle(header)">
                                         <slot :name="header.slug" :entity="entity" :refresh="refresh">
-                                            {{getEntityData(entity, header.value)}}
+                                            <span v-html="getEntityData(entity, header.value)"></span>
                                         </slot>
                                     </td>
                                 </template>
@@ -173,7 +176,7 @@ $this->import('
                         </tbody>
                     </table>
                 </div>          
-                <div class="entity-table__table-scroll" ref="scrollWrapper" @scroll="scroll($event)">
+                <div class="entity-table__table-scroll scrollbar" ref="scrollWrapper" @scroll="scroll($event)">
                     <div :style="{width}">&nbsp;</div>
                 </div>
             </div>

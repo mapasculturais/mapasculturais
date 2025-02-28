@@ -16,10 +16,10 @@ $this->import('
 
 <div class="space-table">
     <entity-table type="space" identifier="spaceTable" :query="query" :limit="100" :headers="headers" endpoint="find" required="name,type" :visible="visibleColumns" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :hide-filter="hideFilters" show-index>
-        <template #actions="{entities}">
+        <template #actions="{entities, spreadsheetQuery}">
             <div class="space-table__actions">
                 <h4 class="bold"><?= i::__('Ações:') ?></h4>
-                <mc-export-spreadsheet :owner="owner" endpoint="entities" :params="{entityType: 'space', query}" group="entities-spreadsheets"></mc-export-spreadsheet>
+                <mc-export-spreadsheet :owner="owner" endpoint="entities" :params="{entityType: 'space', query: spreadsheetQuery}" group="entities-spreadsheets"></mc-export-spreadsheet>
             </div>
         </template>
 

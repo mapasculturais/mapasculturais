@@ -17,6 +17,10 @@ app.component('mc-chat', {
         thread: {
             type: Entity,
             required: true
+        },
+        pingPong: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -27,16 +31,16 @@ app.component('mc-chat', {
             currentTextareaFocus: false,
             currentUser: useGlobalState().auth.user,
             entities: [],
-            message: '',
+            message: this.createNewMessage(''),
             newAttachmentMessage: null,
             processing: false,
             query: null,
-            threadStatus: null
+            threadStatus: null,
+            chatEntities: [],
         };
     },
 
     created() {
-        this.initAttachmentMessage();
     },
 
     mounted() {
@@ -51,12 +55,35 @@ app.component('mc-chat', {
         } else {
             console.log('Thread não está definida no mounted.');
         }
+
+        globalThis.addEventListener('afterFetch', (e) => {
+            const header = e.detail.headers.get('MC-Thread-Status');
+            if(header !== null){
+                this.threadStatus = Number(header);
+            }
+        });
     },
 
     computed: {
         chatOwner() {
             return this.thread?.owner;
-        }
+        },
+
+        lastMessageIsMine() {
+            const action = $MAPAS.request.action;
+            const lastMessage = this.chatEntities[0];
+
+            if (!lastMessage && action === 'evaluation') {
+                return true;
+            } 
+
+            return lastMessage ? this.isMine(lastMessage) : false;
+        },
+
+        // verifica se o chat está fechado
+        isClosed() {
+            return this.threadStatus === $MAPAS.config.chatThreadStatusClosed;
+        },
     },
 
     beforeUnmount() {
@@ -64,23 +91,12 @@ app.component('mc-chat', {
     },
 
     methods: {
-        initAttachmentMessage(addNewMessages) {
-            if (addNewMessages) {
-                this.addNewMessages([this.newAttachmentMessage]);
-            }
-
-            this.newAttachmentMessage = new Entity('chatmessage');
-            this.newAttachmentMessage.disableMessages();
-            this.newAttachmentMessage.thread = this.thread;
-            this.newAttachmentMessage.payload = '@attachment';
-        },
-
-        async saveAttachmentMessage() {
-            return this.newAttachmentMessage.save()
-        },
-
         async sendMessage() {
-            if (!this.message.trim()) {
+            if ((typeof this.message.payload) === 'string' && this.message.payload.trim() === '') {
+                return;
+            } 
+
+            if ((typeof this.message.payload) === 'object' && this.message.payload.message.trim() === '') {
                 return;
             }
 
@@ -88,18 +104,19 @@ app.component('mc-chat', {
             const messages = useMessages();
 
             try {
-                const newMessage = this.createNewMessage(this.message);
+                const newMessage = this.message; 
                 await newMessage.save();
 
-                this.$refs.chatMessages.entities.unshift({
-                    id: newMessage.id,
-                    payload: newMessage.payload,
-                    createTimestamp: newMessage.createTimestamp,
-                    user: newMessage.user,
-                });
+                const attachment = this.$refs.attachment;
+
+                if (attachment.file) {
+                    await attachment.upload();
+                }
+
+                this.$refs.chatMessages.entities.unshift(newMessage);
 
                 messages.success(this.text('Mensagem enviada com sucesso'));
-                this.message = '';
+                this.message = this.createNewMessage('');
             } catch (error) {
                 messages.error(error?.data);
             } finally {
@@ -131,27 +148,27 @@ app.component('mc-chat', {
             try {
                 const api = new API('chatmessage');
                 const selectFields = this.anonymousSender
-                    ? 'createTimestamp,payload,user.profile.{name,files.avatar}'
-                    : 'createTimestamp,payload,user';
+                    ? 'createTimestamp,payload,user,files'
+                    : 'createTimestamp,payload,user.profile.{name,files.avatar},files';
 
-                const newMessages = await api.find({
+                const params = {
                     thread: `EQ(${this.thread.id})`,
                     '@select': selectFields,
                     '@order': 'createTimestamp DESC',
-                    createTimestamp: `GT(${lastTimestamp})`,
                     '@limit': 100,
                     '@page': 1,
-                });
+                };
+
+                if (lastTimestamp) {
+                    params.createTimestamp = `GT(${lastTimestamp})`;
+                }
+
+                const newMessages = await api.find(params);
 
                 this.addNewMessages(newMessages.reverse());
             } catch (error) {
                 console.error('Erro ao buscar novas mensagens:', error);
             }
-        },
-
-        // verifica se o chat está fechado
-        isClosed() {
-            return this.threadStatus === $MAPAS.config.chatThreadStatusClosed;
         },
 
         isMine(message) {
@@ -210,6 +227,23 @@ app.component('mc-chat', {
         handleTextareaBlur() {
             this.currentTextareaFocus = false;
             this.updateAutoRefreshInterval();
+        },
+
+        verifyState(status) {
+            switch (status) {
+                case "2":
+                    return 'Negado';
+                case "3":
+                    return 'Indeferido';
+                case "10":
+                    return 'Deferido';
+                default:
+                    return '';
+            }
+        },
+
+        handleEntitiesUpdate(entities) {
+            this.chatEntities = entities; 
         },
     }
 });

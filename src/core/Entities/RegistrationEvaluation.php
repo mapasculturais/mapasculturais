@@ -28,6 +28,7 @@ use ReflectionException;
  * @ORM\HasLifecycleCallbacks
  */
 class RegistrationEvaluation extends \MapasCulturais\Entity {
+    use Traits\EntityFiles;
     use Traits\EntityRevision;
 
     const STATUS_EVALUATED = self::STATUS_ENABLED;
@@ -111,6 +112,14 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      * @ORM\Column(name="is_tiebreaker", type="boolean", nullable=true)
      */
     protected $isTiebreaker = false;
+
+    /**
+     * @var \MapasCulturais\Entities\RegistrationEvaluationFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
+    */
+    protected $__files;
 
     /**
      * flag que diz que a avaliação está sendo enviada
@@ -272,6 +281,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         $result['agent'] = $this->user->profile->simplify('id,name,singleUrl');
         $result['registration'] = $this->registration->simplify('id,number,singleUrl');
         $result['singleUrl'] = $this->getSingleUrl();
+        $result['files'] = $this->files;
 
         return $result;
     }

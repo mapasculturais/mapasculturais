@@ -215,8 +215,7 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
-        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('deliveryAttachment', unique:true));
-        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('deliveryImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('evidences', unique:true));
 
         // metadados workplan
         $projectDuration = new Metadata('projectDuration', ['label' => \MapasCulturais\i::__('Duração do projeto (meses)')]);
