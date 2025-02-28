@@ -49,7 +49,7 @@ if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguratio
 }
 
 
-$default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
+$default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields,goalStatuses";
 
 $default_headers = [
     [
