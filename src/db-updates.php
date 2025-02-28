@@ -1135,6 +1135,33 @@ return [
         __exec("UPDATE chat_message SET payload = concat('\"',payload,'\"')");
         __exec("ALTER TABLE chat_message ALTER COLUMN payload SET DATA TYPE JSON USING payload::JSON");
     },
+    'define default para as colunas ids das tabelas sem default' => function() {
+        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
+        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
+        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
+        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
+        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
+    },
+    
+    'Criação da coluna update timestemp' => function() use($conn) {
+
+        if(!__column_exists('registration', 'update_timestamp')){
+            __exec("ALTER TABLE registration ADD COLUMN update_timestamp TIMESTAMP");
+        }
+
+        $conn->executeQuery("
+           UPDATE registration r
+            SET update_timestamp = recent_revision.create_timestamp
+            FROM (
+                SELECT DISTINCT ON (object_id) object_id, create_timestamp
+                FROM entity_revision
+                WHERE object_type = 'MapasCulturais\Entities\Registration'
+                ORDER BY object_id, id DESC
+            ) AS recent_revision
+            WHERE r.id = recent_revision.object_id;
+        ");
+    },
 
     /// MIGRATIONS - DATA CHANGES =========================================
 
@@ -2514,8 +2541,6 @@ $$
         __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
         __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
     },
-
-
     'Adiciona novas áreas de atuação' => function() {
         __try("
         WITH areas_novas(name) AS (
@@ -2608,5 +2633,5 @@ $$
     'atualizar o type para continuous onde o type for appeal-phase' => function() {
         __exec("UPDATE evaluation_method_configuration SET type = 'continuous' WHERE type = 'appeal-phase';");
     },
-
+    
 ] + $updates ;   

@@ -293,12 +293,14 @@ class Module extends \MapasCulturais\Module{
             $query = $app->em->createQuery("
                 SELECT o
                 FROM MapasCulturais\Entities\Opportunity o
+                LEFT JOIN o.__metadata om WITH om.key = 'isAppealPhase'
                 WHERE
                     {$complement}
                     (
                         o.id = :parent OR
                         (o.parent = :parent AND o.id <> :this)
                     )
+                    AND om.value IS NULL
                 ORDER BY o.id DESC");
 
             $query->setMaxResults(1);

@@ -68,6 +68,12 @@ class Module extends \MapasCulturais\Module{
             $app->hook("template(registration.registrationPrint.section):end", function(){
                 $this->part('registration-details-workplan-print');
             });
+            
+            $app->hook('mapas.printJsObject:before', function() {
+                $this->jsObject['EntitiesDescription']['workplan'] = Workplan::getPropertiesMetadata();
+                $this->jsObject['EntitiesDescription']['goal'] = Goal::getPropertiesMetadata();
+                $this->jsObject['EntitiesDescription']['delivery'] = Delivery::getPropertiesMetadata();
+            });
         });
     }
 
@@ -179,12 +185,6 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
-        $this->registerOpportunityMetadata('workplan_monitoringEnterDeliverySubtype', [
-            'label' => i::__('Informar subtipo de entrega'),
-            'type' => 'boolean',
-            'default_value' => false
-        ]);
-
         $this->registerOpportunityMetadata('workplan_monitoringInformAccessibilityMeasures', [
             'label' => i::__('Informar as medidas de acessibilidade'),
             'type' => 'boolean',
@@ -215,8 +215,7 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
-        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('deliveryAttachment', unique:true));
-        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('deliveryImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
+        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('evidences', unique:true));
 
         // metadados workplan
         $projectDuration = new Metadata('projectDuration', ['label' => \MapasCulturais\i::__('Duração do projeto (meses)')]);

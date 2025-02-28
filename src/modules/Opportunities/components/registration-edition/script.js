@@ -20,9 +20,19 @@ app.component('registration-edition', {
     },
 
     computed: {
+        hasWorkplan () {
+            const opportunity = this.entity.opportunity.parent;
+            return Boolean(opportunity?.enableWorkplan);
+        },
+
+        isLastStep () {
+            return this.stepIndex === this.steps.length - 1;
+        },
+
         preview() {
             return this.entity.id === -1;
         },
+
         steps () {
             const steps = this.entity.opportunity.registrationSteps ?? [];
             const { category, proponentType, range } = this.entity;

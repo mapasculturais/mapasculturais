@@ -22,6 +22,7 @@ $this->import('
     opportunity-header
     opportunity-phases-timeline
     registration-print
+    registration-workplan-form
     v1-embed-tool
 ');
 
@@ -293,6 +294,7 @@ $today = new DateTime();
                     <?php $phase = $phase->nextPhase; ?>
                 <?php endwhile ?>
 
+                <registration-workplan-form v-if="entity.opportunity.isReportingPhase && entity.opportunity.parent.enableWorkplan" :registration="entity"></registration-workplan-form>
             </div>
         </mc-tab>
 

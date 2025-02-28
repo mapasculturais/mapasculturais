@@ -247,11 +247,11 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     public function getUseCommitteeGroups() {
-        return $this->evaluationMethod->useCommitteeGroups();
+        return $this->evaluationMethod ? $this->evaluationMethod->useCommitteeGroups() : false;
     }
     
     public function getEvaluateSelfApplication() {
-        return $this->evaluationMethod->evaluateSelfApplication();
+        return $this->evaluationMethod ? $this->evaluationMethod->evaluateSelfApplication() : false;
     }
 
     public function getUserRelation($user = null){
@@ -393,8 +393,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         if($data['evaluations']) {
             $data['evaluations'] =  $em->filterEvaluationsSummary($data['evaluations']);
         }
-        $slug = $em->slug;
-        $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
+        
+        if($slug = $em->slug) {
+            $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
+        }
 
         if($app->config['app.useOpportunitySummaryCache']) {
             $app->mscache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
