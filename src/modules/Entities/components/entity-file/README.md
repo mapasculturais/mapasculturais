@@ -12,6 +12,11 @@ Componente resposanvel por subir um unico arquivo
 - *Boolean **enableDescription = false** - Quando definido como true deve exibir um textarea para definir o description
 - *String/Array/Object **classes*** - Classes a serem aplicadas no componente
 
+## Eventos
+- **delete** - disparado quando o método `deleteFile` é chamado
+- **uploaded** - disparado quando o método `upload` é chamado e o arquivo é enviado com sucesso
+- **setFile** - disparado quando o método `setFile` é chamado
+
 ### Importando componente
 ```PHP
 <?php 

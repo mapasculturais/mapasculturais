@@ -3,6 +3,7 @@ namespace OpportunityWorkplan;
 
 use MapasCulturais\App,
     MapasCulturais\i;
+use OpportunityWorkplan\Controllers\Delivery as ControllersDelivery;
 use OpportunityWorkplan\Controllers\Workplan as ControllersWorkplan;
 use OpportunityWorkplan\Entities\Workplan;
 use OpportunityWorkplan\Entities\Goal;
@@ -75,7 +76,8 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
 
         $app->registerController('workplan', ControllersWorkplan::class);
-       
+        $app->registerController('delivery', ControllersDelivery::class);
+        
         $this->registerOpportunityMetadata('workplanLabelDefault', [
             'label' => i::__('Plano de metas label'),
             'default_value' => 'Plano de metas'
@@ -212,6 +214,9 @@ class Module extends \MapasCulturais\Module{
             'type' => 'boolean',
             'default_value' => false
         ]);
+
+        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('deliveryAttachment', unique:true));
+        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('deliveryImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true));
 
         // metadados workplan
         $projectDuration = new Metadata('projectDuration', ['label' => \MapasCulturais\i::__('Duração do projeto (meses)')]);

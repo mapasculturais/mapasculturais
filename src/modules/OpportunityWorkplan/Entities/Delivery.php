@@ -3,6 +3,7 @@ namespace OpportunityWorkplan\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use MapasCulturais\Traits\EntityFiles;
 use MapasCulturais\Traits\EntityMetadata;
 use MapasCulturais\Traits\EntityOwnerAgent;
 use MapasCulturais\i;
@@ -22,7 +23,8 @@ class Delivery extends \MapasCulturais\Entity {
     const STATUS_COMPLETED = 10;
 
     use EntityMetadata,
-        EntityOwnerAgent;
+        EntityOwnerAgent,
+        EntityFiles;
 
     /**
      *
@@ -76,6 +78,14 @@ class Delivery extends \MapasCulturais\Entity {
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
     protected $status = self::STATUS_SCHEDULED;
+
+    /**
+     * @var \OpportunityWorkplan\Entities\DeliveryFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="OpportunityWorkplan\Entities\DeliveryFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
+    */
+    protected $__files;
 
     /**
      * Retorna array com os nomes dos status

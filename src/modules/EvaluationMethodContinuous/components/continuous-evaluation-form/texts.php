@@ -10,6 +10,7 @@ return [
     'field_uid_name' => i::__('Id do avaliador'),
     'emptyField' => i::__('O campo'),
     'required' => i::__('é obrigatório'),
+    'Anexar parecer' => i::__('Anexar parecer'),
 ];
 
 

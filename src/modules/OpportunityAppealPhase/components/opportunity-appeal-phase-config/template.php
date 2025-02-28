@@ -47,7 +47,7 @@ $this->import('
                     </p>
                 </template> 
                 <template #button="modal">
-                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
+                    <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !entity.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">
                             <mc-icon name="trash" class="secondary__color"></mc-icon> 
                         </div>
@@ -138,13 +138,13 @@ $this->import('
                     <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="allow_proponent_response" :autosave="3000"></entity-field>
                 </div> 
                 <div class="opportunity-appeal-phase-config__config-button opportunity-appeal-phase-config__add-evaluation-committee">
-                    <button v-if="showButtonEvaluationCommittee" class="button button--icon button--primary button--md" @click="addEvaluationCommittee()"> 
-                        <mc-icon name="add"></mc-icon>
-                        <?= i::__('Adicionar pessoa avaliadora') ?> 
-                    </button>
-                    <opportunity-committee-groups v-if="!showButtonEvaluationCommittee" :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
+                    <opportunity-committee-groups :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
                 <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
+
+                <div v-if="entity.evaluationMethodConfiguration.evaluateSelfApplication">
+                    <entity-field :entity="entity.evaluationMethodConfiguration" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
+                </div>
             </template>
 
             <template #content v-if="tab === 'registrations'">
