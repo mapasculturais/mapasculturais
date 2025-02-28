@@ -48,13 +48,43 @@ app.component('appeal-phase-chat', {
 
     data() {
         return {
-            thread: null
+            thread: null,
         }
     },
 
     computed: {
+        statusList() {
+            return $MAPAS.config.evaluationMethodAppealPhase.statuses;
+        },
+
+        userRequest() {
+            return $MAPAS.request.action;
+        }
     },
 
     methods: {
+        initMessage(message) {
+            if ((typeof message.payload) !== 'object') {
+                message.payload = {};
+            } 
+            
+        },
+
+        verifyState(status) {
+            status = parseInt(status);
+            switch (status) {
+                case 10:
+                    return 'success__color';
+				case 3 : 
+                    return 'danger__color';
+				case 8 : 
+                case 1 :
+                    return 'warning__color';
+
+                case null:
+                default:
+                    return '';
+            }
+        },
     },
 });

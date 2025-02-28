@@ -29,10 +29,14 @@ app.component('search-filter-opportunity', {
 
     methods: {
         clearFilters() {
-            this.pseudoQuery.type.length = 0;
-            delete this.pseudoQuery['@verified'];
-            delete this.pseudoQuery.registrationFrom;
-            delete this.pseudoQuery.registrationTo;
+            const types = ['string', 'boolean'];
+            for (const key in this.pseudoQuery) {
+                if (Array.isArray(this.pseudoQuery[key])) {
+                    this.pseudoQuery[key] = [];
+                } else if (types.includes(typeof this.pseudoQuery[key])) {
+                    delete this.pseudoQuery[key];
+                }
+            }   
             this.$refs.form.reset();
         },
         actualDate() {

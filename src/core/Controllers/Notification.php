@@ -62,8 +62,11 @@ class Notification extends EntityController {
         if($this->isAjax()){
             $this->json(true);
         }else{
+            $referer = $app->request->getReferer();
+            $app->applyHookBoundTo($this, 'notification.approve.referer', [&$referer]);
+
             //e redireciona de volta para o referer
-            $app->redirect($app->request->getReferer());
+            $app->redirect($referer);
         }
     }
 
@@ -84,8 +87,11 @@ class Notification extends EntityController {
         if($this->isAjax()){
             $this->json(true);
         }else{
+            $referer = $app->request->getReferer();
+            $app->applyHookBoundTo($this, 'notification.reject.referer', [&$referer]);
+
             //e redireciona de volta para o referer
-            $app->redirect($app->request->getReferer());
+            $app->redirect($referer);
         }
     }
 }
