@@ -208,24 +208,27 @@ class Module extends \MapasCulturais\Module {
 
         // Metadados para Goal (Meta)
         $executionDetail = new Metadata('executionDetail', [
-            'label' => \MapasCulturais\i::__('Detalhamento da execução da meta')
+            'label' => i::__('Detalhamento da execução da meta')
         ]);
         $app->registerMetadata($executionDetail, Goal::class);
 
         // Metadados para Delivery (Entrega)
         $availabilityType = new Metadata('availabilityType', [
-            'label' => \MapasCulturais\i::__('Forma de disponibilização'),
+            'label' => i::__('Forma de disponibilização'),
             'type' => 'select',
             'options' => [
                 i::__('Virtual/Digital'),
                 i::__('Presencial/Físico'),
                 i::__('Híbrido'),
             ],
+            'validations' => [
+                '$this->isMetadataRequired("availabilityType")' => i::__('Campo obrigatório')
+            ]
         ]);
         $app->registerMetadata($availabilityType, Delivery::class);
 
         $accessibilityMeasures = new Metadata('accessibilityMeasures', [
-            'label' => \MapasCulturais\i::__('Medidas de acessibilidade'),
+            'label' => i::__('Medidas de acessibilidade'),
             'type' => 'multiselect',
             'options' => [
                 i::__('Rotas acessíveis, com espaço de manobra para cadeira de rodas'),
@@ -258,17 +261,23 @@ class Module extends \MapasCulturais\Module {
                 i::__("Envolvimento de PCD's na concepção do projeto"),
                 i::__('Outras'),
             ],
+            'validations' => [
+                '$this->isMetadataRequired("accessibilityMeasures")' => i::__('Campo obrigatório')
+            ]
         ]);
         $app->registerMetadata($accessibilityMeasures, Delivery::class);
 
         $participantProfile = new Metadata('participantProfile', [
-            'label' => \MapasCulturais\i::__('Perfil dos participantes'),
-            'type' => 'text'
+            'label' => i::__('Perfil dos participantes'),
+            'type' => 'text',
+            'validations' => [
+                '$this->isMetadataRequired("participantProfile")' => i::__('Campo obrigatório')
+            ]
         ]);
         $app->registerMetadata($participantProfile, Delivery::class);
 
         $priorityAudience = new Metadata('priorityAudience', [
-            'label' => \MapasCulturais\i::__('Territórios prioritários'),
+            'label' => i::__('Territórios prioritários'),
             'type' => 'multiselect',
             'options' => [
                 i::__('Território indígena'),
@@ -287,30 +296,40 @@ class Module extends \MapasCulturais\Module {
                 i::__('Não se aplica'),
                 i::__('Outros'),
             ],
+            'validations' => [
+                '$this->isMetadataRequired("priorityAudience")' => i::__('Campo obrigatório')
+            ]
         ]);
         $app->registerMetadata($priorityAudience, Delivery::class);
 
         $numberOfParticipants = new Metadata('numberOfParticipants', [
-            'label' => \MapasCulturais\i::__('Número de participantes'),
-            'type' => 'number'
+            'label' => i::__('Número de participantes'),
+            'type' => 'number',
+            'validations' => [
+                'v::intVal()->positive()' => i::__('O valor deve ser um número inteiro positivo'),
+                '$this->isMetadataRequired("numberOfParticipants")' => i::__('Campo obrigatório')
+            ]
         ]);
         $app->registerMetadata($numberOfParticipants, Delivery::class);
 
         $executedRevenue = new Metadata('executedRevenue', [
-            'label' => \MapasCulturais\i::__('Receita executada'),
-            'type' => 'object'
+            'label' => i::__('Receita executada'),
+            'type' => 'object',
+            'validations' => [
+                '$this->isMetadataRequired("executedRevenue")' => i::__('Campo obrigatório')
+            ]
         ]);
         $app->registerMetadata($executedRevenue, Delivery::class);
 
         $evidenceLinks = new Metadata('evidenceLinks', [
-            'label' => \MapasCulturais\i::__('Links das evidências'),
+            'label' => i::__('Links das evidências'),
             'type' => 'array'
         ]);
         $app->registerMetadata($evidenceLinks, Delivery::class);
 
         // Metadados para Registration (Inscrição)
         $this->registerRegistrationMetadata('workplanSnapshot', [
-            'label'     => \MapasCulturais\i::__('Snapshot do plano de trabalho'),
+            'label'     => i::__('Snapshot do plano de trabalho'),
             'type'      => 'json',
             'serialize' => function ($val){
                 return json_encode($val);
@@ -321,7 +340,7 @@ class Module extends \MapasCulturais\Module {
         ]);
 
         $this->registerRegistrationMetadata('goalStatuses', [
-            'label'     => \MapasCulturais\i::__('Status das metas'),
+            'label'     => i::__('Status das metas'),
             'type'      => 'json',
             'serialize' => function ($val){
                 return json_encode($val);
@@ -332,7 +351,7 @@ class Module extends \MapasCulturais\Module {
         ]);
 
         $this->registerRegistrationMetadata('workplanProxy', [
-            'label'     => \MapasCulturais\i::__('Registro de plano de trabalho'),
+            'label'     => i::__('Registro de plano de trabalho'),
             'type'      => 'json',
             'serialize' => function($value, ?object $registration = null) use ($app) {
                 if (!($registration instanceof Entities\Registration)) {
