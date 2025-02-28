@@ -213,12 +213,6 @@ $this->import('
                         </div>
                         <div class="field__group">
                             <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringEnterDeliverySubtype" @click="autoSave()" />
-                                {{ `Informar subtipo de ${getDeliveryLabelDefault}` }}
-                            </label>
-                        </div>
-                        <div class="field__group">
-                            <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_monitoringInformAccessibilityMeasures" @click="autoSave()" /><?= i::__("Informar as medidas de acessibilidade") ?>
                             </label>
                         </div>

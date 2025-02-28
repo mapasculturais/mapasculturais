@@ -108,7 +108,28 @@ class Delivery extends \MapasCulturais\Entity {
 
         return [
             'id' => $this->id,
+            'status' => $this->status,
             ...$metadatas
         ];
+    }
+
+    public function isMetadataRequired(string $metadata_key):bool {
+        $metadata_map = [
+            'accessibilityMeasures' => 'workplan_monitoringInformAccessibilityMeasures',
+            'availabilityType'      => 'workplan_monitoringInformTheFormOfAvailability',
+            'executedRevenue'       => 'workplan_monitoringReportExecutedRevenue',
+            'numberOfParticipants'  => 'workplan_registrationReportTheNumberOfParticipants',
+            'participantProfile'    => 'workplan_monitoringProvideTheProfileOfParticipants',
+            'priorityAudience'      => 'workplan_monitoringInformThePriorityAudience'
+        ];
+
+        if ($this->$metadata_key !== null) {
+            return true;
+        }
+
+        $opportunity = $this->goal->registration->opportunity->firstPhase;
+        $opportunity_metadata = $metadata_map[$metadata_key];
+
+        return !$opportunity->$opportunity_metadata;
     }
 }

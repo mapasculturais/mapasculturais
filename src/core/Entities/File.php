@@ -45,8 +45,8 @@ use \MapasCulturais\i;
         "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
         "MapasCulturais\Entities\Subsite"                       = "\MapasCulturais\Entities\SubsiteFile",
         "MapasCulturais\Entities\User"                          = "\MapasCulturais\Entities\UserFile",
-        "OpportunityWorkplan\Entities\Delivery"                 = "\OpportunityWorkplan\Entities\DeliveryFile",
         "MapasCulturais\Entities\RegistrationEvaluation"        = "\MapasCulturais\Entities\RegistrationEvaluationFile",
+        "OpportunityWorkplan\Entities\Delivery"                 = "\OpportunityWorkplan\Entities\DeliveryFile",
 
    })
  */
