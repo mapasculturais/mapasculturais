@@ -71,6 +71,13 @@ app.component('registration-field-address', {
     },
     
     methods: {
+        parseData() {
+            if(typeof this.registration[this.prop] === 'string') {
+                return JSON.parse(this.registration[this.prop]);
+            } else {
+                return this.registration[this.prop];
+            }
+        },
         async buscarEnderecoPorCep(address) {
             if (address.cep.length == 9) {
                 const url = `https://viacep.com.br/ws/${address.cep}/json/`;
@@ -115,9 +122,12 @@ app.component('registration-field-address', {
         },
 
         addNewAddress() {
-            if (!this.registration[this.prop]) {
+            if (!this.parseData()) {
                 this.registration[this.prop] = [];
+            } else {
+                this.registration[this.prop] = this.parseData();
             }
+
  
             this.registration[this.prop].push({
                 nome: '',

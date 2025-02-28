@@ -40,6 +40,13 @@ app.component('evaluation-actions', {
         lastRegistration() {
             return this.globalState.lastRegistration;
         },
+
+        evaluation() {
+            const api = new API('registrationevaluation');
+            const evaluation = api.getEntityInstance($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation.id);
+            evaluation.populate($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation);
+            return evaluation;
+        }
     },
 
     methods: {
@@ -109,6 +116,7 @@ app.component('evaluation-actions', {
                 if (response.error) {
                     messages.error(response.data);
                 } else {
+                    this.evaluation.status = 2;
                     this.dispatchResponse('sendEvaluation', response);
                     this.updateSummaryEvaluations('sent');
                     messages.success(this.text('send'));
@@ -198,7 +206,9 @@ app.component('evaluation-actions', {
             if(!this.oldEvaluation) {
                 this.oldEvaluation = {status: null}
             }
+
             
+
             switch(this.oldEvaluation.status) {
                 case 0:
                     this.global.summaryEvaluations.started -= 1;
@@ -213,19 +223,23 @@ app.component('evaluation-actions', {
                     this.global.summaryEvaluations.pending -= 1;
                     break;
             }
-            
+
             // adiciona novo status
             switch(newStatus) {
                 case 'pending':
+                    this.evaluation.status = null;
                     this.global.summaryEvaluations.pending += 1;
                     break;
                 case 'started':
+                    this.evaluation.status = 0;
                     this.global.summaryEvaluations.started += 1;
                     break;
                 case 'completed':
+                    this.evaluation.status = 1;
                     this.global.summaryEvaluations.completed += 1;
                     break;
                 case 'sent':
+                    this.evaluation.status = 2;
                     this.global.summaryEvaluations.sent += 1;
                     break;    
             }

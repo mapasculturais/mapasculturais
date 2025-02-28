@@ -8,10 +8,13 @@ use MapasCulturais\i;
  */
 
 $this->import('
-    mc-select
-    mc-modal
+    entity-file
     evaluation-actions
+    evaluation-appeal-phase-detail
     evaluation-continuous-detail
+    mc-modal
+    mc-select
+    registration-results
 ');
 ?>
 
@@ -28,6 +31,7 @@ $this->import('
     </mc-modal>
     <div class="continuous-evaluation-form__form grid-12">
         <div class="continuous-evaluation-form__header field col-12">
+
             <label class="field__label">
                 <?php i::_e('Selecione o status dessa inscrição') ?>
             </label>
@@ -41,5 +45,25 @@ $this->import('
             <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
             <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
         </div>
+
+        <entity-file
+            :entity="currentEvaluation"
+            group-name="evaluationAttachment"
+            title-modal="<?php i::_e('Anexar parecer') ?>"
+            classes="col-12"
+            title="<?php i::_e('Anexar parecer') ?>"
+            :editable="currentEvaluation.status === 0"
+            @delete="removeEvaluationAttachment"
+            ></entity-file>
+
+        <mc-modal v-if="!isEditable":title="`${evaluationName} - ${entity.number}`" classes="registration-results__modal">
+            <template #default>
+                <evaluation-appeal-phase-detail :registration="entity"></evaluation-appeal-phase-detail>
+            </template>
+            
+            <template #button="modal">
+                <button class="button button--primary button--sm button--large col-12" @click="modal.open()"><?php i::_e('Ver detalhamento') ?></button>
+            </template>
+        </mc-modal>
     </div>
 </div>

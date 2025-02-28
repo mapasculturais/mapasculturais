@@ -161,6 +161,7 @@ abstract class Theme {
                 'evaluationmethodconfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
                 "chatthread"   => Entities\ChatThread::getPropertiesMetadata(),
                 "chatmessage"   => Entities\ChatMessage::getPropertiesMetadata(),
+                "registrationevaluation"   => Entities\RegistrationEvaluation::getPropertiesMetadata(),
             ];
 
             $taxonomies = [];
@@ -883,7 +884,7 @@ abstract class Theme {
                 }
 
                 if(property_exists ($entity_class_name, 'status')) {
-                    $query_params['status'] = 'GTE(-10)'; 
+                    $query_params['status'] = 'GTE(-20)'; 
                     $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
                 }
 
@@ -904,7 +905,7 @@ abstract class Theme {
                 }
 
                 if ($entity_class_name == Entities\User::class) {
-                    $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
+                    $query_params['@select'] .= ',profile.{name,type,files.avatar,terms,seals}';
                 }
 
                 $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
@@ -918,45 +919,18 @@ abstract class Theme {
 
             }
 
-            if (property_exists($entity_class_name, 'status')) {
-                $query_params['status'] = 'GTE(-20)'; 
-                $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
-            }
-
-            if(property_exists ($entity_class_name, 'project')) {
-                $query_params['@select'] .= ',project.{name,type,files.avatar,terms,seals}';
-            }
-
-            if(property_exists ($entity_class_name, 'evaluationMethodConfiguration')) {
-                $query_params['@select'] .= ',evaluationMethodConfiguration.*';
-            }
-            
-            if ($entity_class_name::usesAgentRelation()) {
-                $query_params['@select'] .= ',agentRelations';
-            }
-
-            if ($entity_class_name::usesSpaceRelation()) {
-                $query_params['@select'] .= ',spaceRelations';
-            }
-
-            if ($entity_class_name == Entities\User::class) {
-                $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
-            }
-
-            $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
-
-            $query = new ApiQuery($entity_class_name, $query_params);
-            $query->__useDQLCache = false;
-
-            $e = $query->findOne();
-
             if(property_exists ($entity_class_name, 'opportunity')) {
-                $query = $app->em->createQuery("
-                    SELECT o FROM                             
-                        MapasCulturais\\Entities\\Opportunity o
-                        WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
-                $query->setParameter('id', $e['id']);
-                $opportunity = $query->getSingleResult();
+                if($entity) {
+                    $opportunity = $entity->opportunity;
+                } else {
+                    $query = $app->em->createQuery("
+                        SELECT o FROM                             
+                            MapasCulturais\\Entities\\Opportunity o
+                            WHERE o.id = (SELECT IDENTITY(e.opportunity) FROM $entity_class_name e WHERE e.id = :id)");
+    
+                    $query->setParameter('id', $e['id'] ?? 0);
+                    $opportunity = $query->getSingleResult();
+                }
                 $e['opportunity'] = $opportunity->simplify('id,name,type,files,terms,seals');
                 if($opportunity->parent){
                     $e['opportunity']->parent = $opportunity->parent->simplify('id,name,type,files,terms,seals');

@@ -28,6 +28,10 @@ app.component('opportunity-evaluations-list', {
         this.getEvaluations();
         window.addEventListener('previousEvaluation', this.previousEvaluation);
         window.addEventListener('nextEvaluation', this.nextEvaluation);
+        window.addEventListener('responseEvaluation', this.handleEvaluationResponse);
+    },
+    beforeDestroy() {
+        window.removeEventListener('responseEvaluation', this.handleEvaluationResponse);
     },
     data() {
         return {
@@ -175,6 +179,25 @@ app.component('opportunity-evaluations-list', {
             const dateObj = new Date(value._date);
             return dateObj.toLocaleDateString("pt-BR");
         },
+
+        handleEvaluationResponse(event) {
+            const { response, type } = event.detail;
+
+            if (type === 'saveEvaluation' || type === 'sendEvaluation') {
+                const index = this.evaluations.findIndex(evaluation => evaluation.evaluationId === response.id);
+
+                if (index !== -1) {
+                    this.evaluations[index] = {
+                        ...this.evaluations[index],
+                        resultString: response.resultString || this.evaluations[index].resultString,
+                        status: response.status !== undefined ? response.status : this.evaluations[index].status
+                    };
+
+                    this.evaluations = [...this.evaluations];
+                }
+            }
+        },
+
         emitToggle() {
             this.$emit('toggle');
         },

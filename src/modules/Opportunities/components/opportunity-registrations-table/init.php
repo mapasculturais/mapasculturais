@@ -48,4 +48,50 @@ if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguratio
     $data['isTechnicalEvaluationPhase'] = false;
 }
 
+
+$default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
+
+$default_headers = [
+    [
+        'text' => i::__('inscrição'),
+        'value' => 'number',
+        'sticky' => true,
+        'width' => '160px',
+    ],
+    [
+        'text' => i::__('agente'),
+        'value' => 'owner?.name',
+        'slug' => 'agent',
+    ],
+    [
+        'text' => i::__('anexos'),
+        'value' => 'attachments',
+    ],
+    [
+        'text' => i::__('data de criação'),
+        'value' => 'createTimestamp',
+    ],
+    [
+        'text' => i::__('data de envio'),
+        'value' => 'sentTimestamp',
+    ],
+];
+
+if($phase->isReportingPhase || $phase->isFinalReportingPhase) {
+    $default_headers[] = [
+        'text' => i::__('Metas'),
+        'value' => 'goalStatuses',
+    ];
+}
+
+$default_headers[] = [
+    'text' => i::__('Editavel para o proponente'),
+    'slug' => 'editable',
+];
+
+$app->applyHook('component(opportunity-registrations-table).additionalHeaders', [&$default_headers, &$default_select]);
+
+$data['defaultSelect'] = $default_select;
+$data['defaultHeaders'] = $default_headers;
+
 $this->jsObject['config']['opportunityRegistrationTable'] = $data;

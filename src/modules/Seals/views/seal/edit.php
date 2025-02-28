@@ -36,7 +36,7 @@ $this->breadcrumb = [
 
 <div class="main-app">
   <mc-breadcrumb></mc-breadcrumb>
-  <entity-header :entity="entity"></entity-header>
+  <entity-header :entity="entity" editable></entity-header>
     <mc-tabs class="tabs tabs-seal-edit">
         <mc-tab label="<?= i::__('Informações gerais') ?>" slug="info">
             <div class="tabs__info">

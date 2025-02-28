@@ -112,6 +112,11 @@
         }
     }
 
+    &__goals {
+        color: $primary-500;
+        font-weight: 700;
+    }
+
     &__table-header-wrapper {
         overflow-x: hidden; 
         position: sticky; 
@@ -193,7 +198,12 @@
     &__table-scroll {
         overflow-x: auto; 
         position: sticky; 
-        bottom:0
+        bottom: 0;
+        width: 100vw;
+
+        & > * {
+            height: size(1);
+        }
     }
 
     &__advanced-filters {
