@@ -122,6 +122,51 @@ class Module extends \MapasCulturais\Module {
             /** @var Entities\Registration $this */
             $json['workplanProxy'] = $this->workplanProxy;
         });
+
+        $app->hook('entity(Registration).validationErrors', function (&$errors) use ($app) {
+            /** @var Entities\Registration $this*/
+            $first_phase = $this->firstPhase;
+
+            if (!($this->opportunity->isReportingPhase && $first_phase->opportunity->enableWorkplan)) {
+                return;
+            }
+
+            $workplan = $app->repo(\OpportunityWorkplan\Entities\Workplan::class)->findOneBy([
+                'registration' => $first_phase
+            ]);
+
+            $goals = $app->repo(\OpportunityWorkplan\Entities\Goal::class)->findBy([
+                'workplan' => $workplan
+            ]);
+
+            $deliveries = $app->repo(\OpportunityWorkplan\Entities\Delivery::class)->findBy([
+                'goal' => $goals
+            ]);
+
+            $workplan_errors = [
+                'goals' => [],
+                'deliveries' => [],
+            ];
+            $has_errors = false;
+
+            foreach ($goals as $goal) {
+                if ($goal_errors = $goal->validationErrors) {
+                    $workplan_errors['goals'][$goal->id] = $goal_errors;
+                    $has_errors = true;
+                }
+            }
+
+            foreach ($deliveries as $delivery) {
+                if ($delivery_errors = $delivery->validationErrors) {
+                    $workplan_errors['deliveries'][$delivery->id] = $delivery_errors;
+                    $has_errors = true;
+                }
+            }
+
+            if ($has_errors) {
+                $errors['workplanProxy'] = $workplan_errors;
+            }
+        });
     }
 
     public function register() {

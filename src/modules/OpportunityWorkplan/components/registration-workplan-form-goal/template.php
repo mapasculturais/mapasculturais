@@ -58,6 +58,7 @@ $this->import('
             <label :for="`${vid}__executionDetail`"><?= i::__('Detalhamento da execução da meta') ?></label>
             <textarea v-if="editable" :id="`${vid}__executionDetail`" v-model="proxy.executionDetail" placeholder="<?= i::esc_attr__('Digite') ?>"></textarea>
             <span v-else>{{ proxy.executionDetail }}</span>
+            <small class="field__error" v-if="validationErrors.executionDetail">{{ validationErrors.executionDetail.join('; ') }}</small>
         </div>
 
         <registration-workplan-form-delivery v-for="delivery in goal.deliveries" :delivery="delivery" :editable="editable" :key="delivery.id" :registration="registration">
