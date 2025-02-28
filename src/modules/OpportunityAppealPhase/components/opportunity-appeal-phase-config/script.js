@@ -27,8 +27,7 @@ app.component('opportunity-appeal-phase-config' , {
             processing: false,
             phaseData: {},
             entity: null,
-            moreResponse: false,
-            showButtonEvaluationCommittee: true,   
+            moreResponse: false,   
         }
     },
 
@@ -119,10 +118,6 @@ app.component('opportunity-appeal-phase-config' , {
 
         initializeAppealPhase() {
             this.entity = this.phase.appealPhase;
-        },
-
-        addEvaluationCommittee() {
-            this.showButtonEvaluationCommittee = false;
         },
 
         async deleteAppealPhase() {

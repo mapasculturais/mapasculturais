@@ -34,6 +34,10 @@ class Registrations extends SpreadsheetJob
         $properties = explode(',', $query['@select']);
         
         foreach($properties as $property) {
+            if(str_starts_with($property, 'field_')) {
+                continue;
+            }
+
             if(str_starts_with($property, 'owner.{')) {
                 $values = $this->extractValues($property);
 
@@ -71,6 +75,10 @@ class Registrations extends SpreadsheetJob
             $opportunity->registerRegistrationMetadata();
 
             $fields = $opportunity->getRegistrationFieldConfigurations();
+
+            usort($fields, function($a, $b) {
+                return $a->displayOrder - $b->displayOrder;
+            });
             
             foreach($fields as $field) {
                 $entity_type_field = $this->is_entity_type_field($field->fieldName);
@@ -94,7 +102,7 @@ class Registrations extends SpreadsheetJob
                 }
             }
         } while($opportunity = $opportunity->previousPhase);
-
+        
         unset($header['id']);
         unset($header[' id']);
         unset($header['agentsData']);

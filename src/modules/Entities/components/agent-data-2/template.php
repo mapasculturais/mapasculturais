@@ -14,7 +14,7 @@ $this->import('
     <template v-if="entity.currentUserPermissions.viewPrivateData && verifyEntity()">
         <div v-if="entity.name" class="agent-data__fields">
             <div class="agent-data__fields--field">
-                <label class="title"><?php i::_e("Nome Fantasia ou razão social") ?></label>
+                <label class="title"><?php i::_e("Razão social") ?></label>
                 <div class="box">
                     <label class="box__content">{{entity.name}}</label>
                 </div>

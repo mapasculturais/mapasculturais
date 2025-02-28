@@ -7,6 +7,9 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\ChatThread;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\RegistrationEvaluation;
+use MapasCulturais\Entities\RegistrationFieldConfiguration;
+use MapasCulturais\Entities\RegistrationFileConfiguration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
 
@@ -262,38 +265,117 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $this->part('continuous--apply-results', ['entity' => $opportunity, 'consolidated_results' => $consolidated_results]);
         });
 
-        // altera o status de uma avaliação de acordo com o status da mensagem do chat
+        
         $app->hook('entity(ChatMessage).save:finish', function() use ($app, $self){
             /** @var \MapasCulturais\Entities\ChatMessage $this */
             if ($this->thread->ownerEntity instanceof Entities\Registration && 
                 $this->thread->ownerEntity->evaluationMethod instanceof $self && 
                 $app->user->canUser('evaluateOnTime')) {
+                    $data = (object) $this->payload;
+
+                    // altera o status de uma avaliação de acordo com o status da mensagem do chat
                     $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->thread->ownerEntity]);
-                    if ($evaluation) {
-                        $data = json_decode($this->payload, true);
-                        $evaluation->status = $data['status'];
+                    if ($evaluation && isset($data->status)) {
+
+                        $evaluation->result = $data->status;
+                        $app->disableAccessControl();
                         $evaluation->save(true);
+                        $app->enableAccessControl();
+
+                        $registration = $evaluation->registration;
+                        $opportunity = $registration->opportunity;
+                        $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
+
+                        if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
+                            if($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
+                                return;
+                            }
+                            $conn = $app->em->getConnection();
+                            $evaluations = $conn->fetchAll("
+                                SELECT
+                                *
+                                FROM
+                                    evaluations
+                                WHERE
+                                    registration_id = {$registration->id}"
+                            );
+
+                            $all_status_sent = true;
+
+                            foreach ($evaluations as $ev) {
+                                if ($ev['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
+                                    $all_status_sent = false;
+                                }
+                            }
+
+                            if ($all_status_sent) {
+                                if($evaluation_type == 'appeal-phase') {
+                                    $value = $data->status;
+                                }
+
+                                $app->disableAccessControl();
+                                $registration->setStatus($value);
+                                $registration->consolidateResult();
+                                $registration->save();
+                                $app->enableAccessControl();
+                            }
+                        }
                     }
-            }
-        });
 
-        // altera o status do chat de acordo com o checkbox `endChat` da mensagem
-        $app->hook('entity(ChatMessage).save:finish', function() use ($app, $self){
-            /** @var \MapasCulturais\Entities\ChatMessage $this */
-            if ($this->thread->ownerEntity instanceof Entities\Registration && 
-                $this->thread->ownerEntity->evaluationMethod instanceof $self &&
-                $app->user->canUser('evaluateOnTime')) {
-
-                    $data = $this->payload ? json_decode($this->payload, true) : [];
-                    $end_chat = $data['endChat'] ?? false;
-
+                    // altera o status do chat de acordo com o checkbox `endChat` da mensagem
+                    $end_chat = $data->endChat ?? false;
                     if ($end_chat) {
                         $thread = $app->repo('ChatThread')->findOneBy(['id' => $this->thread->id]);
                         if ($thread) {
                             $thread->status = ChatThread::STATUS_CLOSED;
+                            $app->disableAccessControl();
                             $thread->save(true);
+                            $app->enableAccessControl();
                         }
                     }
+
+            }
+        });
+
+        $app->hook('mapas.printJsObject:before', function() use ($self) {
+            /** @var \MapasCulturais\Theme $this */
+            $this->jsObject['config']['evaluationMethodAppealPhase'] = [
+                'statuses' => $self->getStatuses(),
+            ];
+        });
+
+        $app->hook('entity(Opportunity).get(avaliableEvaluationFields)', function(&$value) use ($app) {
+            // Verificar se a fase ($this) tem uma fase de recurso ($this->appealPhase);
+            // Se o usuário logado é avaliador do recurso
+            // Caso seja, Adiciona todos os campos dessa fase até a primeira ($this->previousPhase)
+            
+            if ($this->isAppealPhase) {
+                $appeal_phase = $this;
+            } else {
+                $appeal_phase = $this->appealPhase;
+            }
+            
+            if (!$appeal_phase) {
+                return;
+            }
+
+            if ($appeal_phase->canUser('evaluateRegistrations')) {
+                $fields = [];
+                
+                $phase = $this;
+                do {
+                    $fields = array_merge($fields, $this->registrationFieldConfigurations, $this->registrationFileConfigurations);
+                } while ($phase = $phase->previousPhase);
+                
+                foreach ($fields as $field) {
+                    if ($field instanceof RegistrationFieldConfiguration) {
+                        $value[$field->fieldName] = "true";
+                    }
+                    
+                    if ($field instanceof RegistrationFileConfiguration) {
+                        $value[$field->fileGroupName] = "true";
+                    }
+                }
             }
         });
     }
@@ -349,30 +431,25 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
     }
 
-    protected function _valueToString($value) {
-        switch ($value) {
-            case '2':
-                return i::__('Inválida');
-                break;
-            case '3':
-                return i::__('Indeferido');
-                break;
-            case '8':
-                return i::__('Suplente');
-                break;
-            case '10':
-                return i::__('Deferido');
-                break;
-            default:
-                return $value ?: '';
+    function getStatuses() {
+        $statuses = [
+            '10' => i::__('Deferido'),
+            '3' => i::__('Indeferido'),
+            '2' => i::__('Negado'),
+        ];
 
-        }
+        return $statuses;
+    }
+
+    protected function _valueToString($value) {
+        $statuses = self::getStatuses();
+        return $statuses[$value] ?? $value;
     }
 
     function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
-        
         return [
+            'entityEvaluation' => $evaluation,
             'obs' => $evaluation->evaluationData->obs
         ];
     }

@@ -715,11 +715,20 @@ class Registration extends EntityController {
         if (!$entity) {
             $app->pass();
         }
+        
+        $entity->checkPermission('viewUserEvaluation');
 
         $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1);
 
-
-        $entity->checkPermission('viewUserEvaluation');
+        $evaluation = $entity->getUserEvaluation($valuer_user);
+        if (!$evaluation) {
+            $entity->checkPermission('evaluate', $valuer_user);
+            $evaluation = new RegistrationEvaluation();
+            $evaluation->registration = $entity;
+            $evaluation->user = $valuer_user;
+            $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
+            $evaluation->save(true);
+        }
 
         $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
     }

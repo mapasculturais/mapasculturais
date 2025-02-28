@@ -50,15 +50,16 @@ class Module extends \MapasCulturais\Module {
             $appeal_phase->isDataCollection = true;
             $appeal_phase->isAppealPhase = true;
             $appeal_phase->save(true);
-
+            
             $opportunity->appealPhase = $appeal_phase;
             $opportunity->save(true);
-            
+    
             $evaluation = new EvaluationMethodConfiguration();
             $evaluation->opportunity = $appeal_phase;
             $evaluation->type = 'continuous';
+            $evaluation->publishEvaluationDetails = true;
             $evaluation->save(true);
-
+            
             $this->json($appeal_phase);
         });
 
@@ -237,7 +238,7 @@ class Module extends \MapasCulturais\Module {
         $app = App::i();
 
         $this->registerOpportunityMetadata('appealPhase', [
-            'label' => i::__('Indica se é uma fase de recurso'),
+            'label' => i::__('Fase de recurso'),
             'type'  => 'entity'
         ]);
 
@@ -261,6 +262,12 @@ class Module extends \MapasCulturais\Module {
                 return $evaluationMethodConfiguration->opportunity->appealPhase;
             }
         ]);
+
+        // $this->registerEvauationMethodConfigurationMetadata('publishEvaluationDetails', [
+        //     'label' => i::__('Publicar os pareceres para o proponente'),
+        //     'type' => 'json',
+        //     'default' => true
+        // ]);
 
         $thread_type_description = i::__('Conversação entre proponente e avaliador');
         $definition = new ChatThreadType(self::CHAT_THREAD_TYPE, $thread_type_description, function (ChatMessage $message) {
@@ -381,7 +388,7 @@ class Module extends \MapasCulturais\Module {
      * @param $recipient
      */
     function sendNotificationNewStatus(Opportunity $opportunity, $recipient) {
-        $message = i::__('O status da sua inscrição na fase de recurso ' . $opportunity->appealPhase->name . ' foi alterado.');
+        $message = i::__('O status da sua inscrição na fase de recurso ' . $opportunity->name . ' foi alterado.');
 
         $notification = new Notification;
         $notification->user = $recipient->ownerUser;
