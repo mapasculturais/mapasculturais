@@ -120,6 +120,7 @@ class Goal extends \MapasCulturais\Entity {
         $metadatas = $this->getMetadata();
 
         return [
+            '@entityType' => 'goal',
             'id' => $this->id,
             'status' => $this->status,
             'deliveries' => $sortedDeliveries,

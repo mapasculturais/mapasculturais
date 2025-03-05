@@ -37,6 +37,12 @@ app.component('registration-workplan-form-delivery', {
             const opportunity = this.registration.opportunity.parent ?? this.registration.opportunity;
             return opportunity.deliveryLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.deliveryLabelDefault.default_value);
         },
+        dummyEntity () {
+            // A dummy entity, just for uploads so far
+            const entity = new Entity('delivery');
+            entity.populate(this.delivery);
+            return Vue.reactive(entity);
+        },
         evidenceLinks: {
             get () {
                 return this.proxy.evidenceLinks ?? [];
