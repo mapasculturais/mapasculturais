@@ -104,10 +104,10 @@ class Module extends \MapasCulturais\Module {
                     $goal_statuses[$status]++;
                 }
 
-                $first_phase->goalStatuses = $goal_statuses;
+                $registration->goalStatuses = $goal_statuses;
 
                 $app->disableAccessControl();
-                $first_phase->save(true);
+                $registration->save(true);
                 $app->enableAccessControl();
             }
         });
