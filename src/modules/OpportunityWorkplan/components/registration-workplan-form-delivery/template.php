@@ -105,7 +105,7 @@ $this->import('
         <div class="field" v-if="opportunity.workplan_monitoringInformThePriorityAudience && (editable || proxy.priorityAudience?.length > 0)">
             <label :for="`${vid}__priorityAudience`"><?= i::__('Territórios prioritários') ?></label>
             <mc-multiselect v-if="editable" :id="`${vid}__priorityAudience`" :model="proxy.priorityAudience" :items="audienceOptions"></mc-multiselect>
-            <mc-tag-list v-else classes="primary__background" :tags="proxy.priorityAudience"></mc-tag-list>
+            <mc-tag-list classes="primary__background" :tags="proxy.priorityAudience"></mc-tag-list>
             <small class="field__error" v-if="validationErrors.priorityAudience">{{ validationErrors.priorityAudience.join('; ') }}</small>
         </div>
 
