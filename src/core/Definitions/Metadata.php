@@ -98,6 +98,8 @@ class Metadata extends \MapasCulturais\Definition{
 
     public bool $sensitive = false;
 
+    public $_should_validate;
+
     /**
      * Creates a new Metadata Definition.
      *
@@ -141,6 +143,7 @@ class Metadata extends \MapasCulturais\Definition{
         
         $this->sensitive = $config['sensitive'] ?? false;
 
+        $this->_should_validate = isset($config['should_validate']) ? $config['should_validate'] : null;
 
         if ($this->field_type === 'string') {
             $this->field_type = 'text'; 
@@ -332,10 +335,14 @@ class Metadata extends \MapasCulturais\Definition{
     function validate(\MapasCulturais\Entity $entity, $value){
         $errors = [];
 
+        $should_validate = false;
         if($this->is_required && (is_null($value) || $value === [])){
             $errors[] = $this->is_required_error_message;
 
-        }elseif(!is_null($value) || $this->_validations){
+        } elseif (is_callable($this->_should_validate)) {
+            $validate = $this->_should_validate;
+            $errors[] = $validate($entity, $value);
+        } elseif (!is_null($value)){
             foreach($this->_validations as $validation => $message){
                 $ok = true;
 

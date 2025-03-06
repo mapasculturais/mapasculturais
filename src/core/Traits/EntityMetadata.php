@@ -365,9 +365,7 @@ trait EntityMetadata{
             $metadata_object = $this->getMetadata($meta_key, true);
           
             if(!$metadata_definition->is_required && (is_null($metadata_object) || !$metadata_object->value)) {
-                if(!in_array('validations', array_keys($metadata_definition->config))) {
-                    continue;
-                }
+                continue;
             }
         
             $val = is_object($metadata_object) ? $metadata_object->value : null;
