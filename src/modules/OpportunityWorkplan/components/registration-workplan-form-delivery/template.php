@@ -125,7 +125,7 @@ $this->import('
 
         <div class="field">
             <label :for="`${vid}__evidenceFiles`"><?= i::__('Links das evidências') ?></label>
-            <entity-files-list :id="`${vid}__evidenceFiles`" :entity="registration" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">
+            <entity-files-list :id="`${vid}__evidenceFiles`" :entity="dummyEntity" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">
                 <template #description>
                     <p v-if="editable"><?= i::__('Adicione vídeos, fotos e documentos que servirão como evidência para o seu projeto') ?></p>
                 </template>
