@@ -12479,7 +12479,7 @@ msgid ""
 "projetos, espaços e eventos."
 msgstr ""
 "Pero para eso necesitamos tu ayuda!!! Sé parte también: registra tus proyectos, "
-"espacios y eventos. ======xxxxxxx."
+"espacios y eventos."
 
 #: src/modules/Home/components/home-entities/template.php:43
 #: src/modules/Search/components/search-map/texts.php:6
@@ -12955,6 +12955,7 @@ msgstr "La solicitud fue cancelada."
 msgid "A requisição foi rejeitada."
 msgstr "La solicitud fue rechazada."
 
+#: application/lib/modules/OpportunityAccountability/Controller.php:133
 #: src/modules/Notifications/components/notification-list/template.php:30
 #: src/modules/Notifications/components/notification-list/template.php:43
 msgid "Ok"
@@ -14384,11 +14385,11 @@ msgid "resultado das avaliações"
 msgstr "resultado de las evaluaciones"
 
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:19
-msgid "enviadas a mais tempo primeiro"
+msgid "enviadas há mais tempo primeiro"
 msgstr "enviadas más antiguas primero"
 
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:20
-msgid "enviadas a menos tempo primeiro"
+msgid "enviadas há menos tempo primeiro"
 msgstr "enviadas antes primero"
 
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:21

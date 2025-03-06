@@ -428,6 +428,35 @@ abstract class Entity implements \JsonSerializable{
         return false;
     }
 
+    /** 
+     * Retorna o prefixo para as chaves de cache de permissão
+     * 
+     * @return bool
+     */
+    protected function getPermissionCacheKeyPrefix(): string {
+        $app = App::i();
+        $key = "{$this}:permissionCachePrefix";
+        if($app->cache->contains($key)){
+            return $app->cache->fetch($key);
+        } else {
+            $prefix = "$this" . uniqid(more_entropy: true) . ":";
+            $app->cache->save($key, $prefix, DAY_IN_SECONDS);
+            return $prefix;
+        }
+    }
+
+    /** 
+     * Limpa o cache de permissão
+     * 
+     * @return void
+     */
+    public function clearPermissionCache(){
+        $app = App::i();
+        $key = "{$this}:permissionCachePrefix";
+        $app->cache->delete($key); 
+    }
+
+    
     public function canUser($action, $userOrAgent = null){
         $app = App::i();
         if(!$app->isAccessControlEnabled()){
@@ -445,7 +474,7 @@ abstract class Entity implements \JsonSerializable{
         $result = false;
 
         if (!empty($user)) {
-            $cache_key = "{$this}:canUser({$user->id}):{$action}";
+            $cache_key = "{$this->permissionCacheKeyPrefix}:canUser({$user->id}):{$action}";
             if($app->config['app.usePermissionsCache'] && $app->cache->contains($cache_key)){
                 return $app->cache->fetch($cache_key);
             }
@@ -1359,5 +1388,7 @@ abstract class Entity implements \JsonSerializable{
         $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.update:after");
+
+        $this->clearPermissionCache();
     }
 }

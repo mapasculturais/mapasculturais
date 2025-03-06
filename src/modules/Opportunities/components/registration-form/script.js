@@ -29,6 +29,12 @@ app.component('registration-form', {
     },
 
     computed: {
+        disableFields() {
+            return $MAPAS.config.registrationForm.disableFields || null;
+        },
+        description() {
+            return $DESCRIPTIONS.registration
+        },
         preview () {
             return this.registration.id === -1;
         },
@@ -141,8 +147,24 @@ app.component('registration-form', {
     },
 
     methods: {
+        showField(field, type) {
+            if(field.fieldType == type) {
+                return true;
+            }
+
+            if(field.fieldType == 'agent-collective-field' || field.fieldType == 'agent-owner-field') {
+                if(this.description[field.fieldName].type == type) {
+                    return true;
+                }
+            }
+        },
         isDisabled(field) {
             let fieldName = field.fieldName || field.groupName;
+            if (this.editableFields.length > 0) {
+                if (this.disableFields && this.disableFields.includes(fieldName)) {
+                    return true;
+                }
+            }
             return this.editableFields.length > 0 ? !this.editableFields.includes(fieldName) : false;
         },
 

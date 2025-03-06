@@ -1,6 +1,7 @@
 <?php
 
- use MapasCulturais\Utils;
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Utils;
 
 /**
  * See https://github.com/Respect/Validation to know how to write validations
@@ -195,6 +196,7 @@ return array(
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
             'serialize' => function($value, $entity = null){
+               if(is_null($value)) { return null; }
                $this->hook("entity(<<*>>).save:before", function() use ($entity){
                     /** @var MapasCulturais\Entity $entity */
                     if($this->equals($entity)){
@@ -226,16 +228,6 @@ return array(
                 return $value ? true : false;
             },
             'available_for_opportunities' => true
-        ),
-
-        'localizacao' => array(
-            'label' => \MapasCulturais\i::__('Localização'),
-            'type' => 'select',
-            'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
-                'Pública' => \MapasCulturais\i::__('Pública'),
-                'Privada' => \MapasCulturais\i::__('Privada')
-            )
         ),
 
         'genero' => array(
@@ -298,7 +290,13 @@ return array(
                 'v::email()' => \MapasCulturais\i::__('O endereço informado não é um email válido.')
             ),
             'available_for_opportunities' => true,
-            'field_type' => 'email'
+            'field_type' => 'email',
+            'unserialize' => function($value, Agent $agent = null){
+                if(!$value && $agent){
+                    return $agent->user->email;
+                }
+                return $value;
+            }
         ),
 
         'telefonePublico' => array(

@@ -11,7 +11,7 @@ $this->import('
     mc-loading
 ');
 ?>
-<mc-modal classes="modal-confirm" :close-button="false" :title="title">
+<mc-modal classes="modal-confirm" :title="title">
     <slot v-if="hasSlot('message')" name="message" :cancel="cancel" :confirm="confirm"></slot>
     <div v-if="!hasSlot('message')">{{message}}</div>
 

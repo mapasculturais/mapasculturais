@@ -48,6 +48,16 @@ class Entities extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'area') {
+                $header['area'] = i::__('Área de interesse');
+                continue;
+            }
+
+            if($property == 'tags') {
+                $header['tags'] = i::__('Tags');
+                continue;
+            }
+
             if($property == 'files.avatar') {
                 continue;
             }
@@ -71,13 +81,15 @@ class Entities extends SpreadsheetJob
         foreach($result as &$entity) {
             $terms = $entity['terms'] ?? null;
 
-            $entity['type'] = $entity['type']->name;
+            $entity['type'] = isset($entity['type']) ? $entity['type']->name : '';
             $entity['area'] = isset($terms['area']) ? implode(', ', $terms['area']) : null;
             $entity['tag'] = isset($terms['tag']) ? implode(', ', $terms['tag']) : null;
-            $sealNames = array_map(function($seal) {
-                return $seal['name'];
-            }, $entity['seals']);
-            $entity['seals'] = implode(', ', $sealNames);
+            if(isset($entity['seals']) && $entity['seals']) {
+                $sealNames = array_map(function($seal) {
+                    return $seal['name'];
+                }, $entity['seals']);
+                $entity['seals'] = implode(', ', $sealNames);
+            }
 
             unset($entity['terms']);
             unset($entity['@entityType']);
