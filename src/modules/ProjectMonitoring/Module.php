@@ -222,7 +222,7 @@ class Module extends \MapasCulturais\Module {
                 i::__('Híbrido'),
             ],
             'validations' => [
-                '$this->isMetadataRequired("availabilityType")' => i::__('Campo obrigatório')
+                '$entity->isMetadataRequired("availabilityType")' => i::__('Campo obrigatório')
             ]
         ]);
         $app->registerMetadata($availabilityType, Delivery::class);
@@ -262,8 +262,8 @@ class Module extends \MapasCulturais\Module {
                 i::__('Outras'),
             ],
             'validations' => [
-                '$this->isMetadataRequired("accessibilityMeasures")' => i::__('Campo obrigatório')
-            ]
+                '$entity->isMetadataRequired("accessibilityMeasures")' => i::__('Campo obrigatório')
+            ],
         ]);
         $app->registerMetadata($accessibilityMeasures, Delivery::class);
 
@@ -271,7 +271,7 @@ class Module extends \MapasCulturais\Module {
             'label' => i::__('Perfil dos participantes'),
             'type' => 'text',
             'validations' => [
-                '$this->isMetadataRequired("participantProfile")' => i::__('Campo obrigatório')
+                '$entity->isMetadataRequired("participantProfile")' => i::__('Campo obrigatório')
             ]
         ]);
         $app->registerMetadata($participantProfile, Delivery::class);
@@ -297,7 +297,7 @@ class Module extends \MapasCulturais\Module {
                 i::__('Outros'),
             ],
             'validations' => [
-                '$this->isMetadataRequired("priorityAudience")' => i::__('Campo obrigatório')
+                '$entity->isMetadataRequired("priorityAudience")' => i::__('Campo obrigatório')
             ]
         ]);
         $app->registerMetadata($priorityAudience, Delivery::class);
@@ -306,8 +306,8 @@ class Module extends \MapasCulturais\Module {
             'label' => i::__('Número de participantes'),
             'type' => 'number',
             'validations' => [
-                'v::intVal()->positive()' => i::__('O valor deve ser um número inteiro positivo'),
-                '$this->isMetadataRequired("numberOfParticipants")' => i::__('Campo obrigatório')
+                'v::positive()' => i::__('O valor deve ser um número inteiro positivo'),
+                '$entity->isMetadataRequired("numberOfParticipants")' => i::__('Campo obrigatório')
             ]
         ]);
         $app->registerMetadata($numberOfParticipants, Delivery::class);
@@ -316,7 +316,7 @@ class Module extends \MapasCulturais\Module {
             'label' => i::__('Receita executada'),
             'type' => 'object',
             'validations' => [
-                '$this->isMetadataRequired("executedRevenue")' => i::__('Campo obrigatório')
+                '$entity->isMetadataRequired("executedRevenue")' => i::__('Campo obrigatório')
             ]
         ]);
         $app->registerMetadata($executedRevenue, Delivery::class);

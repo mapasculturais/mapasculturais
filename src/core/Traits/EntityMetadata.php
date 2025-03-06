@@ -363,11 +363,13 @@ trait EntityMetadata{
 
         foreach($metas as $meta_key => $metadata_definition){
             $metadata_object = $this->getMetadata($meta_key, true);
-
-
-            if(!$metadata_definition->is_required && (is_null($metadata_object) || !$metadata_object->value))
-                continue;
-
+          
+            if(!$metadata_definition->is_required && (is_null($metadata_object) || !$metadata_object->value)) {
+                if(!in_array('validations', array_keys($metadata_definition->config))) {
+                    continue;
+                }
+            }
+        
             $val = is_object($metadata_object) ? $metadata_object->value : null;
 
             $unserialize = $metadata_definition->unserialize;
