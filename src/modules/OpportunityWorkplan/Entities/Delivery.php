@@ -1,12 +1,11 @@
 <?php
 namespace OpportunityWorkplan\Entities;
 
+use MapasCulturais\i;
 use Doctrine\ORM\Mapping as ORM;
-
 use MapasCulturais\Traits\EntityFiles;
 use MapasCulturais\Traits\EntityMetadata;
 use MapasCulturais\Traits\EntityOwnerAgent;
-use MapasCulturais\i;
 
 /**
  * 
@@ -118,18 +117,18 @@ class Delivery extends \MapasCulturais\Entity {
     public function isMetadataRequired(string $metadata_key):bool {
         $metadata_map = [
             'accessibilityMeasures' => 'workplan_monitoringInformAccessibilityMeasures',
-            'availabilityType'      => 'workplan_monitoringInformTheFormOfAvailability',
             'executedRevenue'       => 'workplan_monitoringReportExecutedRevenue',
+            'priorityAudience'      => 'workplan_monitoringInformThePriorityAudience',
+            'availabilityType'      => 'workplan_monitoringInformTheFormOfAvailability',
             'numberOfParticipants'  => 'workplan_registrationReportTheNumberOfParticipants',
             'participantProfile'    => 'workplan_monitoringProvideTheProfileOfParticipants',
-            'priorityAudience'      => 'workplan_monitoringInformThePriorityAudience'
         ];
 
-        if ($this->$metadata_key !== null) {
+        if ($this->$metadata_key) {
             return true;
         }
 
-        $opportunity = $this->goal->registration->opportunity->firstPhase;
+        $opportunity = $this->goal->workplan->registration->opportunity->firstPhase;
         $opportunity_metadata = $metadata_map[$metadata_key];
 
         return !$opportunity->$opportunity_metadata;
