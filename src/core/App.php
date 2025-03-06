@@ -1370,8 +1370,8 @@ class App {
                   if ($expire_in && (microtime (true) - filectime($filename) > $expire_in)) {
                       unlink($filename);
                   } else {
-                      $count += 0.1;
-                      usleep(100000);
+                      $count += 0.01;
+                      usleep(10000);
                   }
               }
           }
@@ -1785,10 +1785,15 @@ class App {
 
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
+        $lock_key = __METHOD__ . ':' . $id;
+
+        $this->lock($lock_key, 5);
+
         if ($job = $this->repo('Job')->find($id)) {
             if ($replace) {
                 $job->delete(true);
             } else {
+                $this->unlock($lock_key);
                 return $job;
             }
         }
@@ -1823,7 +1828,7 @@ class App {
         } catch (\Exception $e) {
             $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
         }
-
+        $this->unlock($lock_key);
         return $job;
     }
 
