@@ -317,9 +317,8 @@ app.component('opportunity-registrations-table', {
                     break;
                 }
 
-                let type = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type.id : phase.type.id;
-
-                if(type == "technical"){
+                let phaseType = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type.id : phase.type.id;
+                if(phaseType == "technical"){
                     hasEvaluationMethodTechnical = true;
                     break;
                 }
