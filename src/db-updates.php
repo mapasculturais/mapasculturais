@@ -2610,5 +2610,16 @@ $$
                FROM etnias;
         ");
     },
+    "Removendo os campos e anexos de formulário erroneamente duplicados pela funcionalidade 'Duplicar Oportunidade'" => function() {
+        __try("DELETE FROM registration_field_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+
+        __try("DELETE FROM registration_file_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+    }
   
 ] + $updates ;   
