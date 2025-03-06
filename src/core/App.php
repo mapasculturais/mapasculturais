@@ -1758,7 +1758,7 @@ class App {
      * @return Job Retorna o objeto Job criado
      * @throws Exception Se o tipo de job for inválido
      */
-    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false, User|int $user = null, Subsite|int $subsite = null) {
+    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false, User|int|null $user = null, Subsite|int|null $subsite = null) {
         if($this->config['app.log.jobs']) {
             $this->log->debug("ENQUEUED JOB: $type_slug");
         }
@@ -1783,17 +1783,13 @@ class App {
 
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
-        $lock_key = __METHOD__ . ':' . $id;
-
-        $this->lock($lock_key, 5);
+        if($replace) {
+            $conn = $this->em->getConnection();
+            $conn->delete('job', ['id' => $id]);
+        }
 
         if ($job = $this->repo('Job')->find($id)) {
-            if ($replace) {
-                $job->delete(true);
-            } else {
-                $this->unlock($lock_key);
-                return $job;
-            }
+            return $job;
         }
 
         $job = new Job($type);
@@ -1820,9 +1816,8 @@ class App {
         try{
             $job->save(true);
         } catch (\Exception $e) {
-            $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
+            $this->log->error("ERRO AO SALVAR JOB ($type_slug): " . print_r($e, true));
         }
-        $this->unlock($lock_key);
         return $job;
     }
 
