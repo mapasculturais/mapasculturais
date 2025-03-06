@@ -1680,11 +1680,15 @@ $$
         
     },
 
-    'RECREATE VIEW evaluations AGAIN!!!!!!' => function() use($conn) {
+    'DROP VIEW evaluations' => function () {
         __try("DROP VIEW evaluations");
+    },
+
+    'RECREATE MATERIALIZED VIEW evaluations' => function() use($conn) {
+        __try("DROP MATERIALIZED VIEW IF EXISTS evaluations");
 
         $conn->executeQuery("
-            CREATE VIEW evaluations AS (
+            CREATE MATERIALIZED VIEW evaluations AS (
                 SELECT 
                     registration_id,
                     registration_sent_timestamp,
@@ -1753,6 +1757,17 @@ $$
                     opportunity_id
             )
         ");
+    },
+
+    'enqueue job to refresh materialized view evaluations' => function() use($conn) {
+        $app = App::i();
+        
+        $app->disableAccessControl();
+        // é para rodar a cada minuto, por 10 anos
+        $app->enqueueOrReplaceJob(\Opportunities\Jobs\RefreshViewEvaluations::SLUG, [], interval_string: '1 minute', iterations: 60*24*365*10);
+
+        // retorna false para executar a cada redeploy do serviço
+        return false;
     },
 
     'adiciona oportunidades na fila de reprocessamento de cache' => function () use($conn) {
