@@ -49,7 +49,7 @@ if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguratio
 }
 
 
-$default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields,goalStatuses";
+$default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
 
 $default_headers = [
     [
@@ -78,6 +78,8 @@ $default_headers = [
 ];
 
 if($phase->isReportingPhase || $phase->isFinalReportingPhase) {
+    $default_select .= ',goalStatuses';
+
     $default_headers[] = [
         'text' => i::__('Metas'),
         'value' => 'goalStatuses',
