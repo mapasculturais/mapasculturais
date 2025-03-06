@@ -61,12 +61,12 @@ $this->import('
                                 </span>
                             </div>
 
-                            <div class="coletive" v-if="evaluation.agentsData?.['coletivo']?.name">
+                            <div class="coletive" v-if="evaluation.agentsData?.['coletivo']?.nomeCompleto">
                             <span>
                                 <small class="bold"><?= i::__('Agente coletivo') ?></small>
                             </span>
                             <span>
-                                <small>{{evaluation.agentsData?.['coletivo']?.name}}</small>
+                                <small>{{evaluation.agentsData?.['coletivo']?.nomeCompleto}}</small>
                             </span>
                             </div>
                         </div>

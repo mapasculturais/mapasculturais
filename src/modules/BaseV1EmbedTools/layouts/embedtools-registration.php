@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV1\Theme $this
+ */
 
 
 $this->jsObject['isEditable'] = true;

@@ -27,7 +27,7 @@ app.component('qualification-evaluation-form', {
         return {
             isEditable: true,
             evaluationId: null,
-            errors: [],
+            errors: {},
         };
     },
 
@@ -61,6 +61,35 @@ app.component('qualification-evaluation-form', {
         });
     },
 
+    watch: {
+        formData: {
+            handler(value){
+                for (const fieldId in value.data) {
+                    const fieldData = value.data[fieldId];
+                    const fieldElement = this.$refs[fieldId]?.[0];
+                
+                    if (!Array.isArray(fieldData) || fieldData.length === 0 || !fieldElement?.classList?.contains('qualification-evaluation-form__criterion--error')) {
+                        continue;
+                    }
+                
+                    fieldElement.classList.remove('qualification-evaluation-form__criterion--error');
+                
+                    const updatedErrors = {};
+                    for (const [sectionName, errors] of Object.entries(this.errors)) {
+                        const filteredErrors = errors.filter(error => error.id !== fieldId);
+                
+                        if (filteredErrors.length > 0) {
+                            updatedErrors[sectionName] = filteredErrors;
+                        }
+                    }
+                    
+                    this.errors = updatedErrors;
+                }
+            },
+            deep: true,
+        }
+    },
+
     computed: {
         sections() {
             return $MAPAS.config.qualificationEvaluationForm.sections || [];
@@ -70,7 +99,20 @@ app.component('qualification-evaluation-form', {
         },
         evaluationData() {
             const evaluation = $MAPAS.config.qualificationEvaluationForm.evaluationData;
-            return evaluation && evaluation.evaluationData ? evaluation.evaluationData : {};
+            let result = evaluation && evaluation.evaluationData ? evaluation.evaluationData : {};
+
+            // parseia os dados de avaliação para o formato esperado - para inscrições de versões anteriores da 7.6
+            for(let k in result) {
+                if (result[k] === this.text('Habilitado')) {
+                    result[k] = ['valid'];
+                } else if (result[k] === this.text('Inabilitado')) {
+                    result[k] = ['invalid'];
+                } else if (result[k] === this.text('Não se aplica')) {
+                    result[k] = ['not-applicable'];
+                }
+            }
+
+            return result;
         },
         userId() {
             return $MAPAS.userId;
@@ -240,7 +282,6 @@ app.component('qualification-evaluation-form', {
 
         validateErrors() {
             let isValid = false;
-            this.errors = [];
             const global = useGlobalState();
 
             for (let sectionIndex in this.sections) {
@@ -249,7 +290,7 @@ app.component('qualification-evaluation-form', {
                     continue;
                 }
 
-                for (let crit of section.criteria) {
+                for (let crit of section.criteria) {                    
                     if (!this.showSectionAndCriterion(crit)) {
                         continue;
                     }
@@ -257,6 +298,15 @@ app.component('qualification-evaluation-form', {
                     let sectionName = section.name;
                     let value = this.formData.data[crit.id];
                     if (value.length <= 0) {
+                        if (!this.$refs[crit.id][0].classList.contains('qualification-evaluation-form__criterion--error')) {
+                            this.$refs[crit.id][0].classList.add('qualification-evaluation-form__criterion--error')
+                        }
+                        
+                        if (!this.errors[sectionName]) {
+                            this.errors[sectionName] = [];
+                        }
+                        this.errors[sectionName].push({name: crit.name, id: crit.id});
+
                         this.messages.error(`${this.text('Na seção')} <b>${sectionName}</b>, ${this.text('O campo')} <b>${crit.name}</b> ${this.text('é obrigatório')}`);
                         isValid = true;
                     }

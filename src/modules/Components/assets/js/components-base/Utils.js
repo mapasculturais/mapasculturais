@@ -1,25 +1,27 @@
-globalThis.__ = (key, componentName) => {
+globalThis.__ = (key, componentName, replacements) => {
     const dict = Utils.getTexts(componentName);
-    const text = dict(key);
-
-    if (!text) {
-        console.error(`TRADUÇÃO FALTANDO "${key}" do componente "${componentName}`);
-    }
-
-    return text || key;
+    return dict(key, replacements);
 }
 
 globalThis.Utils = {
     getTexts(componentName) {
         const texts = $MAPAS.gettext?.[`component:${componentName}`] || {};
-        return (key) => {
+        return (key, replacements) => {
             const text = texts[key];
 
             if (!text) {
                 console.error(`TRADUÇÃO FALTANDO "${key}" do componente "${componentName}`);
             }
         
-            return text || key;
+            let result = text || key;
+
+            if (replacements) {
+                for (let key in replacements) {
+                    result = result.replaceAll('{' + key + '}' , replacements[key]);
+                }
+            }
+
+            return result;
         };
     },
 

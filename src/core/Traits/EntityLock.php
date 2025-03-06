@@ -4,6 +4,8 @@ use MapasCulturais\App;
 
 trait EntityLock {
 
+    public $__lockEnable = true;
+
     /**
      * Esta entidade utiliza Lock
      *
@@ -50,6 +52,10 @@ trait EntityLock {
      * @return array|false Array de dados do lock se estiver bloqueado, caso contrário false.
      */
     public function isLocked() {
+        if(!$this->__lockEnable) {
+            return false;
+        }
+
         $filename = $this->generateLockFilename();
 
         if(file_exists($filename)) {

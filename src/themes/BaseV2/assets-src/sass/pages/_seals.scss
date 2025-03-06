@@ -5,10 +5,18 @@
 
     .tabs-component__panels {
         margin-bottom: 0;
+
+        & .container > main > .grid-12 {
+            gap: size(40) size(20);
+        }
     }
 
     &.action-edit {
         background-color: var(--mc-gray-100);
+
+        .tabs-component__panels {
+            background-color: var(--mc-gray-100);
+        }
 
         .divider {
             width: 100%;

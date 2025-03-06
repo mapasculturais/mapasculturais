@@ -36,8 +36,26 @@ app.component('agent-table', {
     },
 
     data() {
+        const defaultHeaders = $MAPAS.config.agentTable.defaultHeaders;
+        const default_select = $MAPAS.config.agentTable.default_select;
+        const _additionalHeaders = (this.additionalHeaders.length > 0) ? this.additionalHeaders : $MAPAS.config.agentTable.additionalHeaders;
+
+        const mergedHeaders = [...defaultHeaders, ..._additionalHeaders];
+        
+        let adtional_select = [];
+        for(item of mergedHeaders) {
+            if(item.slug) {
+                adtional_select.push(item.slug)
+            }
+        }
+
+        let _adtional_select = "";
+        if(adtional_select.length > 0) {
+            _adtional_select = `,${adtional_select.join(",")}`;
+        }
+        
         let query = {
-            '@select': 'name,type,shortDescription,files.avatar,seals,endereco,terms,orientacaoSexual,genero,raca',
+            '@select': `${default_select}${_adtional_select}`,
             '@order': 'createTimestamp DESC',
             '@limit': 20,
             '@page': 1,
@@ -57,16 +75,20 @@ app.component('agent-table', {
 
         let municipio = [];
 
+        const initialQuery = {...this.extraQuery, ...this.query};
+
         return {
+            mergedHeaders,
             terms: $TAXONOMIES.area.terms,
             types: $DESCRIPTIONS.agent.type.options,
             state: $DESCRIPTIONS.agent.En_Estado.optionsOrder,
+            initialQuery,
             query,
             selectedArea: [],
             selectedSeals: [],
             selectedBairro: [],
             selectedCities: [],
-            selectedState: [],
+            selectedStates: [],
             seals,
             getCities,
             municipio,
@@ -76,20 +98,12 @@ app.component('agent-table', {
 
     computed: {
         mergedQuery() {
-            return {...this.query, ...this.extraQuery};
+            return {...this.extraQuery, ...this.query};
         },
 
         headers () {
-            let itens = [
-                { text: __('id', 'agent-table'), value: "id", sticky: true, width: '80px'},
-                { text: __('name', 'agent-table'), value: "name", width: '160px' },
-                { text: __('area', 'agent-table'), value: "terms.area.join(', ')", slug: "area" },
-                { text: __('tag', 'agent-table'), value: "terms.tag.join(', ')", slug: "tag" },
-                { text: __('seals', 'agent-table'), value: "seals.map((seal) => seal.name).join(', ')", slug: "seals"},
-                { text: __('endereco', 'agent-table'), value: "endereco", slug: "endereco" },
-                ...this.additionalHeaders,
-            ];
-
+            let itens = this.mergedHeaders;
+            
             if (!this.agentType) {
                 itens.push({ text: __('type', 'agent-table'), value: "type.name", slug: "type"});
             }
@@ -102,7 +116,8 @@ app.component('agent-table', {
         },
 
         owner() {
-            return new Entity('agent', $MAPAS.user.id);
+            const global = useGlobalState();
+            return new Entity('agent', global.auth.user?.profile.id);
         },
 
     },
@@ -136,15 +151,15 @@ app.component('agent-table', {
         },
 
         filterByState(entities) {
-            if (this.selectedState.length > 0) {
-                this.query['En_Estado'] = `IN(${this.selectedState.toString()})`;
+            if (this.selectedStates.length > 0) {
+                this.query['En_Estado'] = `IN(${this.selectedStates.toString()})`;
             } else {
                 delete this.query['En_Estado'];
             }
 
             const sigla = Object.keys(this.getCities);
             sigla.filter((item) => {
-                if (item == this.selectedState[0]) {
+                if (item == this.selectedStates[0]) {
                     this.municipio.push(...this.getCities[item].cities);
                 }
             });
@@ -158,7 +173,7 @@ app.component('agent-table', {
                 '@order': 'createTimestamp DESC',
                 '@limit': 20,
                 '@page': 1,
-                'En_Estado': `IN(${this.selectedState.toString()})`,
+                'En_Estado': `IN(${this.selectedStates.toString()})`,
             };
 
             if (this.selectedCities.length > 0) {
@@ -174,12 +189,8 @@ app.component('agent-table', {
             this.selectedSeals = [];
             this.selectedBairro = [];
             this.selectedCities = [];
-            this.selectedState = [];
-            delete this.query['term:area'];
-            delete this.query['@seals'];
-            delete this.query['En_Bairro'];
-            delete this.query['En_Estado'];
-            delete this.query['En_Municipio'];
+            this.selectedStates = [];
+            this.query = this.initialQuery;
 
             entities.refresh();
             this.$emit('clear-filters', entities);
@@ -189,6 +200,13 @@ app.component('agent-table', {
             switch (filter.prop) {
                 case 'term:area':
                     this.selectedArea = this.selectedArea.filter(area => area !== filter.value);
+
+                    if (this.selectedArea.length > 0) {
+                        this.query[filter.prop] = `IN(${this.selectedArea.toString()})`;
+                    } else {
+                        delete this.query[filter.prop];
+                    }
+
                     break;
                 case '@seals':
                     delete this.query['@seals'];
@@ -196,16 +214,36 @@ app.component('agent-table', {
                     break;
                 case 'En_Bairro':
                     this.selectedBairro = this.selectedBairro.filter(bairro => bairro !== filter.value);
+
+                    if (this.selectedBairro.length > 0) {
+                        this.query[filter.prop] = `IN(${this.selectedBairro.toString()})`;
+                    } else {
+                        delete this.query[filter.prop];
+                    }
+
                     break;
                 case 'En_Estado':
-                    this.selectedState = this.selectedState.filter(state => state !== filter.value);
-                    this.municipio = [];
+                    this.selectedStates = this.selectedStates.filter(state => state !== filter.value);
+
+                    if (this.selectedStates.length > 0) {
+                        this.query[filter.prop] = `IN(${this.selectedStates.toString()})`;
+                    } else {
+                        delete this.query[filter.prop];
+                    }
+
                     break;
                 case 'En_Municipio':
                     this.selectedCities = this.selectedCities.filter(city => city !== filter.value);
+
+                    if (this.selectedCities.length > 0) {
+                        this.query[filter.prop] = `IN(${this.selectedCities.toString()})`;
+                    } else {
+                        delete this.query[filter.prop];
+                    }
+
                     break;
             }
-            delete this.query[filter.prop];
+            
             this.$emit('remove-filter', filter);
         },
 
