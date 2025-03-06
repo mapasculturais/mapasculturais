@@ -193,7 +193,7 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
         
-        $this->registerOpportunityMetadata('workplan_monitoringInformThePriorityTerritories', [
+        $this->registerOpportunityMetadata('workplan_monitoringInformThePriorityAudience', [
             'label' => i::__('Informar os territórios prioritários'),
             'type' => 'boolean',
             'default_value' => false
@@ -201,12 +201,6 @@ class Module extends \MapasCulturais\Module{
         
         $this->registerOpportunityMetadata('workplan_monitoringProvideTheProfileOfParticipants', [
             'label' => i::__('Informar o perfil do público'),
-            'type' => 'boolean',
-            'default_value' => false
-        ]);
-
-        $this->registerOpportunityMetadata('workplan_monitoringInformThePriorityAudience', [
-            'label' => i::__('Informar o público prioritário'),
             'type' => 'boolean',
             'default_value' => false
         ]);
