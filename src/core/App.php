@@ -1390,8 +1390,10 @@ class App {
         
         $filename = sys_get_temp_dir()."/lock-{$name}.lock"; 
 
-        unlink($filename);
-     }
+        if (file_exists($filename)){
+            unlink($filename);
+        }
+    }
      
      /**
       * Transforma o texto num slug
