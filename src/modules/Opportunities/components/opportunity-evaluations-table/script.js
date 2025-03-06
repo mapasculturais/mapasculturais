@@ -64,6 +64,11 @@ app.component('opportunity-evaluations-table', {
                 { text: __('estado', 'opportunity-evaluations-table'), value: "evaluation?.status", slug: "status"},
             ];
 
+            let type = this.phase.evaluationMethodConfiguration?.type.id || this.phase.type.id;
+            if(type == 'continuous') {
+                itens.splice(2, 0, { text: __('metas', 'opportunity-evaluations-table'), value: "goalStatuses", slug: "goalStatuses"});
+            }
+
             if(this.avaliableEvaluationFields('agentsSummary')) {
                 itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "agentsData.owner?.name", slug: "agent"});
                 itens.splice(2, 0, { text: __('coletivo', 'opportunity-evaluations-table'), value: "agentsData.coletivo?.name", slug: "coletivo"});
