@@ -222,8 +222,9 @@ class Job extends \MapasCulturais\Entity{
                 $job->status = 0;
                 $job->lastExecutionTimestamp = new DateTime;
                 $job->nextExecutionTimestamp = new DateTime(date('Y-m-d H:i:s', strtotime($job->intervalString, $job->nextExecutionTimestamp->getTimestamp())));
-                
+                $app->disableAccessControl();
                 $job->save(true);
+                $app->enableAccessControl();
             }
 
         } else {
