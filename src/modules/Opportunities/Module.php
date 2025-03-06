@@ -46,6 +46,10 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('entity(Opportunity).insert:after', function() {
+            if ($this->registrationSteps && count($this->registrationSteps) > 0) {
+                return;
+            }
+
             $step = new RegistrationStep();
             $step->name = '';
             $step->opportunity = $this;
