@@ -222,9 +222,10 @@ class Module extends \MapasCulturais\Module {
                 i::__('Híbrido'),
             ],
             'should_validate' => function($entity) {
-                if($entity->isMetadataRequired("availabilityType")) {
+                if($entity->isMetadataRequired('availabilityType')) {
                     return i::__('Campo obrigatório');
-                } 
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($availabilityType, Delivery::class);
@@ -264,9 +265,10 @@ class Module extends \MapasCulturais\Module {
                 i::__('Outras'),
             ],
             'should_validate' => function($entity) {
-                if($entity->isMetadataRequired("accessibilityMeasures")) {
+                if($entity->isMetadataRequired('accessibilityMeasures')) {
                     return i::__('Campo obrigatório');
-                } 
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($accessibilityMeasures, Delivery::class);
@@ -275,9 +277,10 @@ class Module extends \MapasCulturais\Module {
             'label' => i::__('Perfil dos participantes'),
             'type' => 'text',
             'should_validate' => function($entity) {
-                if($entity->isMetadataRequired("participantProfile")) {
+                if($entity->isMetadataRequired('participantProfile')) {
                     return i::__('Campo obrigatório');
-                } 
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($participantProfile, Delivery::class);
@@ -303,9 +306,10 @@ class Module extends \MapasCulturais\Module {
                 i::__('Outros'),
             ],
             'should_validate' => function($entity) {
-                if($entity->isMetadataRequired("priorityAudience")) {
+                if($entity->isMetadataRequired('priorityAudience')) {
                     return i::__('Campo obrigatório');
-                } 
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($priorityAudience, Delivery::class);
@@ -314,12 +318,13 @@ class Module extends \MapasCulturais\Module {
             'label' => i::__('Número de participantes'),
             'type' => 'number',
             'validations' => [
-                'v::positive()' => i::__('O valor deve ser um número inteiro positivo'),
+                'v::intVal()->positive()' => i::__('O valor deve ser um número inteiro positivo'),
             ],
             'should_validate' => function($entity) {
-                if($entity->isMetadataRequired("numberOfParticipants")) {
+                if($entity->isMetadataRequired('numberOfParticipants')) {
                     return i::__('Campo obrigatório');
-                } 
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($numberOfParticipants, Delivery::class);
@@ -328,9 +333,10 @@ class Module extends \MapasCulturais\Module {
             'label' => i::__('Receita executada'),
             'type' => 'object',
             'should_validate' => function($entity) {
-                if($entity->isMetadataRequired("executedRevenue")) {
+                if($entity->isMetadataRequired('executedRevenue')) {
                     return i::__('Campo obrigatório');
-                } 
+                }
+                return false;
             }
         ]);
         $app->registerMetadata($executedRevenue, Delivery::class);

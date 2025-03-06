@@ -364,11 +364,11 @@ trait EntityMetadata{
         foreach($metas as $meta_key => $metadata_definition){
             $metadata_object = $this->getMetadata($meta_key, true);
           
-            if(!$metadata_definition->is_required && (is_null($metadata_object) || !$metadata_object->value)) {
+            $val = is_object($metadata_object) ? $metadata_object->value : null;
+
+            if ((is_null($metadata_object) || !$metadata_object->value) && !$metadata_definition->shouldValidate($this, $val)) {
                 continue;
             }
-        
-            $val = is_object($metadata_object) ? $metadata_object->value : null;
 
             $unserialize = $metadata_definition->unserialize;
             if (is_callable($unserialize)) {
