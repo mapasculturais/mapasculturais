@@ -91,7 +91,7 @@ $this->import('
         <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityMeasures && (editable || proxy.accessibilityMeasures)">
             <label :for="`${vid}__accessibilityMeasures`"><?= i::__('Medidas de acessibilidade') ?></label>
             <mc-multiselect v-if="editable" :id="`${vid}__accessibilityMeasures`" :model="proxy.accessibilityMeasures" :items="accessibilityOptions"></mc-multiselect>
-            <mc-tag-list v-else classes="primary__background" :tags="proxy.accessibilityMeasures"></mc-tag-list>
+            <mc-tag-list classes="primary__background" :tags="proxy.accessibilityMeasures"></mc-tag-list>
             <small class="field__error" v-if="validationErrors.accessibilityMeasures">{{ validationErrors.accessibilityMeasures.join('; ') }}</small>
         </div>
 
