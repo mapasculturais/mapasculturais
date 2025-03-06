@@ -107,8 +107,10 @@ class Delivery extends \MapasCulturais\Entity {
         $metadatas = $this->getMetadata();
 
         return [
+            '@entityType' => 'delivery',
             'id' => $this->id,
             'status' => $this->status,
+            'files' => $this->files,
             ...$metadatas
         ];
     }
