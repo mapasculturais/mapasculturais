@@ -44,6 +44,19 @@ $this->import('
             <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
             <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
         </div>
+        <div class="continuous-evaluation-form__content field col-12">
+            <label class="field__label" v-if="hasChatThread">
+                <?php i::_e('Status') ?>
+            </label>
+            <div class="evaluation-form__status" v-if="isAwaitingMessage">
+                <mc-icon name="clock"></mc-icon>
+                <?php i::_e('Aguardando resposta do agente'); ?>
+            </div>
+            <div class="evaluation-form__status" v-else>
+                <mc-icon name="exclamation" class="warning__color"></mc-icon>
+                <span><?php i::_e('Aguardando validação') ?></span>
+            </div>
+        </div>
 
         <entity-file
             :entity="currentEvaluation"
