@@ -98,8 +98,6 @@ class Metadata extends \MapasCulturais\Definition{
 
     public bool $sensitive = false;
 
-    public $_should_validate;
-
     /**
      * Creates a new Metadata Definition.
      *
@@ -142,8 +140,6 @@ class Metadata extends \MapasCulturais\Definition{
         $this->field_type = key_exists('field_type', $config) ? $config['field_type'] : $this->type;
         
         $this->sensitive = $config['sensitive'] ?? false;
-
-        $this->_should_validate = isset($config['should_validate']) ? $config['should_validate'] : null;
 
         if ($this->field_type === 'string') {
             $this->field_type = 'text'; 
@@ -326,6 +322,25 @@ class Metadata extends \MapasCulturais\Definition{
     }
 
     /**
+     * Checks if the the metadata validation should be run, even if value is empty
+     * 
+     * @return The validation error message, if metadata validation is required, or false otherwise
+     */
+    function shouldValidate(\MapasCulturais\Entity $entity, $value) {
+        if ($this->is_required) {
+            return $this->is_required_error_message;
+        }
+
+        if (!empty($this->config['should_validate']) && is_callable($this->config['should_validate'])) {
+            if ($error_message = $this->config['should_validate']($entity, $value)) {
+                return $error_message;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Validates the value with the defined validation rules.
      *
      * @param mixed $value
@@ -335,14 +350,11 @@ class Metadata extends \MapasCulturais\Definition{
     function validate(\MapasCulturais\Entity $entity, $value){
         $errors = [];
 
-        $should_validate = false;
-        if($this->is_required && (is_null($value) || $value === [])){
-            $errors[] = $this->is_required_error_message;
-
-        } elseif (is_callable($this->_should_validate)) {
-            $validate = $this->_should_validate;
-            $errors[] = $validate($entity, $value);
-        } elseif (!is_null($value)){
+        if(is_null($value) || $value === []){
+            if ($message = $this->shouldValidate($entity, $value)) {
+                $errors[] = $message;
+            }
+        }else{
             foreach($this->_validations as $validation => $message){
                 $ok = true;
 
@@ -357,9 +369,9 @@ class Metadata extends \MapasCulturais\Definition{
                     $errors[] = $message;
             }
 
-            if(!$errors && $this->is_unique && !$this->validateUniqueValue($entity, $value))
+            if(!$errors && $this->is_unique && !$this->validateUniqueValue($entity, $value)){
                 $errors[] = $this->is_unique_error_message;
-
+            }
         }
 
         return $errors ? $errors : true;
