@@ -1,6 +1,10 @@
 <?php
 
+use MapasCulturais\API;
+use MapasCulturais\ApiQuery;
+use MapasCulturais\Entities;
 use MapasCulturais\i;
+use OpportunityAppealPhase;
 
 $entity = $this->controller->requestedEntity;
 
@@ -43,3 +47,28 @@ $this->jsObject['config']['continuousEvaluationForm'] = [
     'showExternalReviews' => $evaluation_configuration->showExternalReviews,
     'evaluationMethodName' => $evaluation_configuration->name
 ];
+
+$thread_query = new ApiQuery(Entities\ChatThread::class, [
+    '@select'    => '*',
+    'objectType' => API::EQ(Entities\Registration::class),
+    'type'       => API::EQ(OpportunityAppealPhase\Module::CHAT_THREAD_TYPE),
+    'objectId'   => API::EQ($entity->id),
+]);
+
+$chat_thread = $thread_query->findOne();
+
+if (empty($chat_thread)) {
+    $this->jsObject['config']['continuousEvaluationForm']['hasChatThread'] = false;
+} else {
+    $messages_query = new ApiQuery(Entities\ChatMessage::class, [
+        '@select' => 'user',
+        'thread'  => API::EQ($chat_thread['id']),
+        '@order'  => 'createTimestamp DESC',
+        '@limit'  => 1,
+    ]);
+
+    $last_message = $messages_query->findOne();
+
+    $this->jsObject['config']['continuousEvaluationForm']['hasChatThread'] = true;
+    $this->jsObject['config']['continuousEvaluationForm']['lastChatMessage'] = $last_message;
+}
