@@ -159,7 +159,7 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #goalStatuses="{entity}">
-                    <a :href="entity.singleUrl + '#ficha'" class="entity-table__goals">{{entity.goalStatuses['10']}}/{{entity.goalStatuses.numGoals}} <?= i::__('concluídas') ?></a>
+                    <a v-if="entity.goalStatuses" :href="entity.singleUrl + '#ficha'" class="entity-table__goals">{{entity.goalStatuses['10']}}/{{entity.goalStatuses.numGoals}} <?= i::__('concluídas') ?></a>
                 </template>
 
             </entity-table>
