@@ -226,7 +226,7 @@ $this->import('
 
                         <div class="field__group">
                             <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringInformThePriorityAudience" @click="autoSave()" /><?= i::__("Informar o público prioritário") ?>
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformThePriorityAudience" @click="autoSave()" /><?= i::__("Informar os territórios prioritários") ?>
                             </label>
                         </div>
 
