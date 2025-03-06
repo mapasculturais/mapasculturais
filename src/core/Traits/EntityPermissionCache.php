@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\UnitOfWork;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 
@@ -67,7 +68,8 @@ trait EntityPermissionCache {
         }
 
         $app = App::i();
-        if($this->getEntityState() !== 2){
+        $entity_state = $this->getEntityState();
+        if(!in_array($entity_state, [UnitOfWork::STATE_MANAGED, UnitOfWork::STATE_NEW])){
             $this->refresh();
         }
         
