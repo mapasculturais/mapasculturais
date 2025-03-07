@@ -2,16 +2,19 @@
 
 namespace EvaluationMethodContinuous;
 
-use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\ChatMessage;
 use MapasCulturais\Entities\ChatThread;
+use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\RegistrationFileConfiguration;
-
+use MapasCulturais\i;
 class Module extends \MapasCulturais\EvaluationMethod {
+    const CHAT_THREAD_TYPE = 'EvaluationMethodContinuous';
 
     public $internal = true;
 
@@ -42,6 +45,39 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app = App::i();
         
         $app->registerJobType(new JobTypes\Spreadsheet('continuous-spreadsheets'));
+        
+        $this->registerOpportunityMetadata('allow_proponent_response', [
+            'type' => "checkbox",
+            'label' => \MapasCulturais\i::__('Possibilitar mais de uma resposta do proponente'),
+        ]);
+
+        $thread_type_description = i::__('Conversação entre proponente e avaliador');
+        $definition = new ChatThreadType(self::CHAT_THREAD_TYPE, $thread_type_description, function (ChatMessage $message) {
+            /** @var ChatThreadType $this */
+            $thread = $message->thread;
+            $registration = $thread->ownerEntity;
+            $notification_content = '';
+            $sender = '';
+            $recipient = '';
+            $notification = new Notification;
+            if ($message->thread->checkUserRole($message->user, 'admin')) {
+                // mensagem do parecerista
+                $notification->user = $registration->owner->user;
+                $notification_content = i::__("Nova mensagem do parecerista na inscrição número %s");
+                $sender = 'admin';
+                $recipient = 'participant';
+            } else {
+                // mensagem do usuário responsável pela inscrição
+                $notification->user = $registration->owner->user;
+                $notification_content = i::__("Nova mensagem na inscrição número %s");
+                $sender = 'participant';
+                $recipient = 'admin';
+            }
+            $notification->message = sprintf($notification_content, "<a href=\"{$registration->singleUrl}\" >{$registration->number}</a>");
+            $notification->save(true);
+            $this->sendEmailForNotification($message, $notification, $sender, $recipient);
+        });
+        $app->registerChatThreadType($definition);
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
@@ -84,7 +120,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app = App::i();
 
         $self = $this;
-
+        
         $app->hook('template(opportunity.registrations.registration-list-actions-entity-table):begin', function($entity){
             if($em = $entity->evaluationMethodConfiguration){
                 if($em->getEvaluationMethod()->slug == "continuous"){
@@ -375,6 +411,49 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     if ($field instanceof RegistrationFileConfiguration) {
                         $value[$field->fileGroupName] = "true";
                     }
+                }
+            }
+        });
+
+        //Ativação do chat
+        $app->hook('entity(Registration).send:after', function() use ($app) {
+            /** @var Registration $this */
+        
+            $opportunity = $this->opportunity;
+            $evaluation_method = $opportunity->evaluationMethod;
+            if ($evaluation_method && $evaluation_method->slug == 'continuous' && $opportunity->allow_proponent_response) {
+                
+                $group = i::__('Avaliadores');
+                $chat_thread = new ChatThread($this->refreshed(), $this, self::CHAT_THREAD_TYPE);
+                $chat_thread->save(true);
+                
+                if($committee = $opportunity->getEvaluationCommittee(false)){
+
+                    $app->disableAccessControl();
+                    
+                    foreach ($committee as $agent) {
+                        $chat_thread->createAgentRelation($agent->refreshed(), $group, true);
+                    }
+
+                    $app->enableAccessControl();
+                }
+            }
+        });
+
+        // Permite que avaliadores modifiquem o status da avaliação contínua da fase de recursos
+        $app->hook('entity(Registration).canUser(evaluate)', function($user, &$result) use($app){
+            /** @var Registration $this */
+            $opportunity = $this->opportunity;
+            $evaluation_method = $opportunity->evaluationMethod;
+
+
+            // Verifica se a oportunidade está na fase de recurso
+            if($evaluation_method && $evaluation_method->slug == 'continuous' && $opportunity->allow_proponent_response) {
+                $chat_thread = $app->repo('ChatThread')->findOneBy(['identifier' => "{$this}"]);
+
+                // Verifica se o chat está ativo
+                if($chat_thread && $chat_thread->status == $chat_thread::STATUS_ENABLED) {
+                    $result = true;
                 }
             }
         });
