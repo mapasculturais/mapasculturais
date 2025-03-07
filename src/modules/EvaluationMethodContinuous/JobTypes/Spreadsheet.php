@@ -58,6 +58,11 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
         foreach ($evaluations['evaluations'] as $evaluation) {
             $registration_data = $evaluation['registration'];
 
+            $goal_statuses = null;
+            if($registration_data['goalStatuses']) {
+                $goal_statuses = $registration_data['goalStatuses'][10] . '/' . $registration_data['goalStatuses']['numGoals'] . " " . i::__('concluídas');
+            }
+
             $result[] = [
                 'projectName' => $registration_data['projectName'],
                 'category' => $registration_data['category'],
@@ -67,6 +72,7 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                 'score' => $registration_data['score'],
                 'proponentType' => $registration_data['proponentType'],
                 'eligible' => $registration_data['eligible'],
+                'goalStatuses' => $goal_statuses,
                 'user' => $evaluation['valuer']['name'],
                 'result' => $evaluation['evaluation']['resultString'],
                 'status' => $this->statusName($registration_data['status']),

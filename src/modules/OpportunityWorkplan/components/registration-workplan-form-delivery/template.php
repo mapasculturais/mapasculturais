@@ -88,7 +88,7 @@ $this->import('
             <small class="field__error" v-if="validationErrors.availabilityType">{{ validationErrors.availabilityType.join('; ') }}</small>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityMeasures && (editable || proxy.accessibilityMeasures)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityMeasures && (editable || proxy.accessibilityMeasures?.length > 0)">
             <label :for="`${vid}__accessibilityMeasures`"><?= i::__('Medidas de acessibilidade') ?></label>
             <mc-multiselect v-if="editable" :id="`${vid}__accessibilityMeasures`" :model="proxy.accessibilityMeasures" :items="accessibilityOptions"></mc-multiselect>
             <mc-tag-list classes="primary__background" :tags="proxy.accessibilityMeasures"></mc-tag-list>
@@ -102,10 +102,10 @@ $this->import('
             <small class="field__error" v-if="validationErrors.participantProfile">{{ validationErrors.participantProfile.join('; ') }}</small>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_monitoringInformThePriorityAudience && (editable || proxy.priorityAudience)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformThePriorityAudience && (editable || proxy.priorityAudience?.length > 0)">
             <label :for="`${vid}__priorityAudience`"><?= i::__('Territórios prioritários') ?></label>
             <mc-multiselect v-if="editable" :id="`${vid}__priorityAudience`" :model="proxy.priorityAudience" :items="audienceOptions"></mc-multiselect>
-            <mc-tag-list v-else classes="primary__background" :tags="proxy.priorityAudience"></mc-tag-list>
+            <mc-tag-list classes="primary__background" :tags="proxy.priorityAudience"></mc-tag-list>
             <small class="field__error" v-if="validationErrors.priorityAudience">{{ validationErrors.priorityAudience.join('; ') }}</small>
         </div>
 
@@ -123,8 +123,8 @@ $this->import('
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
         </div>
 
-        <div class="field">
-            <label :for="`${vid}__evidenceFiles`"><?= i::__('Links das evidências') ?></label>
+        <div class="field" v-if="editable || dummyEntity.files?.length > 0">
+            <label :for="`${vid}__evidenceFiles`"><?= i::__('Evidências') ?></label>
             <entity-files-list :id="`${vid}__evidenceFiles`" :entity="dummyEntity" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">
                 <template #description>
                     <p v-if="editable"><?= i::__('Adicione vídeos, fotos e documentos que servirão como evidência para o seu projeto') ?></p>

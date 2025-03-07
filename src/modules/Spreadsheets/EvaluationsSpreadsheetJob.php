@@ -22,9 +22,12 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $query = $job->query;
         $properties = explode(',', $query['@select']);
         
+        $column_registration_info = $this->slug == 'continuous-spreadsheets' ? 'A1:I1' : 'A1:H1';
+        $column_evaluator_info = $this->slug == 'continuous-spreadsheets' ? 'J1' : 'I1';
+
         $header = [
-            'A1:H1' => i::__('Informações sobre as inscrições e proponentes'), 
-            'I1' => i::__('Informações sobre o avaliador'),
+            $column_registration_info => i::__('Informações sobre as inscrições e proponentes'), 
+            $column_evaluator_info => i::__('Informações sobre o avaliador'),
         ];
 
         $sub_header = [];
@@ -32,6 +35,10 @@ abstract class EvaluationsSpreadsheetJob extends SpreadsheetJob
         $job->owner->registerRegistrationMetadata(true);
         foreach($properties as $property) {
             if (!in_array($property, ['result', 'status', 'evaluationData'])) {
+                if($this->slug !== 'continuous-spreadsheets' && $property === 'goalStatuses') {
+                    continue;
+                }
+
                 $total_properties++;
 
                 if($property === 'projectName') {

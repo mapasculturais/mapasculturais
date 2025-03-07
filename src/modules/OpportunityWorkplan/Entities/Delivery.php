@@ -127,10 +127,10 @@ class Delivery extends \MapasCulturais\Entity {
         if ($this->$metadata_key) {
             return true;
         }
-
+        
         $opportunity = $this->goal->workplan->registration->opportunity->firstPhase;
         $opportunity_metadata = $metadata_map[$metadata_key];
 
-        return !$opportunity->$opportunity_metadata;
+        return $opportunity->$opportunity_metadata ?? false;
     }
 }
