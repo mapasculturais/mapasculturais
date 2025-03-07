@@ -88,10 +88,10 @@ $this->import('
             <small class="field__error" v-if="validationErrors.availabilityType">{{ validationErrors.availabilityType.join('; ') }}</small>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityMeasures && (editable || proxy.accessibilityMeasures?.length > 0)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformAccessibilityMeasures && (editable || accessibilityMeasures.length > 0)">
             <label :for="`${vid}__accessibilityMeasures`"><?= i::__('Medidas de acessibilidade') ?></label>
-            <mc-multiselect v-if="editable" :id="`${vid}__accessibilityMeasures`" :model="proxy.accessibilityMeasures" :items="accessibilityOptions"></mc-multiselect>
-            <mc-tag-list classes="primary__background" :tags="proxy.accessibilityMeasures"></mc-tag-list>
+            <mc-multiselect v-if="editable" :id="`${vid}__accessibilityMeasures`" :model="accessibilityMeasures" :items="accessibilityOptions"></mc-multiselect>
+            <mc-tag-list classes="primary__background" :tags="accessibilityMeasures"></mc-tag-list>
             <small class="field__error" v-if="validationErrors.accessibilityMeasures">{{ validationErrors.accessibilityMeasures.join('; ') }}</small>
         </div>
 
@@ -102,10 +102,10 @@ $this->import('
             <small class="field__error" v-if="validationErrors.participantProfile">{{ validationErrors.participantProfile.join('; ') }}</small>
         </div>
 
-        <div class="field" v-if="opportunity.workplan_monitoringInformThePriorityAudience && (editable || proxy.priorityAudience?.length > 0)">
+        <div class="field" v-if="opportunity.workplan_monitoringInformThePriorityAudience && (editable || priorityAudience.length > 0)">
             <label :for="`${vid}__priorityAudience`"><?= i::__('Territórios prioritários') ?></label>
-            <mc-multiselect v-if="editable" :id="`${vid}__priorityAudience`" :model="proxy.priorityAudience" :items="audienceOptions"></mc-multiselect>
-            <mc-tag-list classes="primary__background" :tags="proxy.priorityAudience"></mc-tag-list>
+            <mc-multiselect v-if="editable" :id="`${vid}__priorityAudience`" :model="priorityAudience" :items="audienceOptions"></mc-multiselect>
+            <mc-tag-list classes="primary__background" :tags="priorityAudience"></mc-tag-list>
             <small class="field__error" v-if="validationErrors.priorityAudience">{{ validationErrors.priorityAudience.join('; ') }}</small>
         </div>
 
@@ -123,7 +123,7 @@ $this->import('
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
         </div>
         
-        <div class="field">
+        <div class="field" v-if="editable || proxy.files.length > 0">
             <label :for="`${vid}__evidenceFiles`"><?= i::__('Evidências') ?></label>
             <entity-files-list :id="`${vid}__evidenceFiles`" :entity="dummyEntity" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">
                 <template #description>
