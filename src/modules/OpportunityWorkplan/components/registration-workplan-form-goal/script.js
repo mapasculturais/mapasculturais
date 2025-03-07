@@ -33,7 +33,11 @@ app.component('registration-workplan-form-goal', {
             return opportunity.goalLabelDefault ?? Vue.markRaw($MAPAS.EntitiesDescription.opportunity.goalLabelDefault.default_value);
         },
         proxy () {
-            return this.registration.workplanProxy.goals[this.goal.id];
+            if (this.editable) {
+                return this.registration.workplanProxy.goals[this.goal.id];
+            } else {
+                return this.goal;
+            }
         },
         statusOptions () {
             return Vue.markRaw($MAPAS.config.goalsStatuses);
