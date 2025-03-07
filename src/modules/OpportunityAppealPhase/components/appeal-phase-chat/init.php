@@ -16,8 +16,15 @@ use MapasCulturais\Entities\Registration;
 $registration = $this->controller->requestedEntity;
 $registration_number = $registration->number;
 
+$opportunity = $registration->opportunity;
+$phases = $opportunity->allPhases;
+$phases_ids = array_map(function($phase) {
+    return $phase->id;
+}, $phases);
+
 $registration_query = new ApiQuery(Registration::class, [
     'number' => API::EQ($registration_number),
+    'opportunity' => API::IN($phases_ids)
 ]);
 
 $thread_query = new ApiQuery(ChatThread::class, [
