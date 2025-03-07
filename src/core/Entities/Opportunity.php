@@ -1615,6 +1615,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     }
 
+    static function getPCachePermissionsList() {
+        $permissions = parent::getPCachePermissionsList();
+
+        $permissions[] = 'support';
+        $permissions[] = 'evaluateRegistrations';
+        
+        return $permissions;
+    }
+
     protected function canUser_control($user) {
 
         if ($this->ownerEntity->canUser('@control', $user)) {
