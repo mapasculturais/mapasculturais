@@ -614,7 +614,7 @@ class Opportunity extends EntityController {
         }
 
         $select = $query_data['registration:@select'] ?? 
-                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData';
+                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData,goalStatuses';
 
         sort($registration_numbers);
         if($registration_numbers){

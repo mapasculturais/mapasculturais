@@ -68,6 +68,17 @@ app.component('continuous-evaluation-form', {
             return evaluation;
         },
 
+        hasChatThread () {
+            return $MAPAS.config.continuousEvaluationForm.hasChatThread;
+        },
+
+        isAwaitingMessage () {
+            if (!this.hasChatThread) {
+                return false;
+            }
+            return $MAPAS.config.continuousEvaluationForm.lastChatMessage != $MAPAS.userId;
+        },
+
         needsTiebreaker() {
             return $MAPAS.config.continuousEvaluationForm.needsTieBreaker;
         },

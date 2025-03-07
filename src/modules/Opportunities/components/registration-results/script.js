@@ -55,7 +55,7 @@ app.component('registration-results', {
         },
 
         showAppealPhaseEvaluationDetails() {
-            return $MAPAS.config.appealPhaseEvaluationDetail.data.consolidatedDetails?.sentEvaluationCount;
+            return $MAPAS.config.appealPhaseEvaluationDetail?.data.consolidatedDetails?.sentEvaluationCount;
         }
     },
 
