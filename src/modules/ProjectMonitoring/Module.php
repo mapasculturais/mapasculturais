@@ -217,13 +217,6 @@ class Module extends \MapasCulturais\Module {
             'available_for_opportunities' => true,
         ]);
 
-        $this->registerEvauationMethodConfigurationMetadata('allowsMultipleReplies', [
-            'label' => i::__('Possibilitar mais de uma resposta do proponente'),
-            'type' => 'checkbox',
-            'default' => false,
-            'private' => false,
-        ]);
-
         // Metadados para Goal (Meta)
         $executionDetail = new Metadata('executionDetail', [
             'label' => i::__('Detalhamento da execução da meta')
