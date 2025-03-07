@@ -4,9 +4,6 @@ namespace OpportunityAppealPhase;
 
 use MapasCulturais\App;
 use MapasCulturais\Controllers;
-use MapasCulturais\Entities\ChatMessage;
-use MapasCulturais\Entities\ChatThread;
-use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Opportunity;
@@ -14,8 +11,6 @@ use MapasCulturais\Entities\Registration;
 use MapasCulturais\i;
 
 class Module extends \MapasCulturais\Module {
-
-    const CHAT_THREAD_TYPE = 'opportunity_appeal_phase';
 
     public function _init() {
         $app = App::i();
@@ -192,46 +187,6 @@ class Module extends \MapasCulturais\Module {
             }
             
         });
-         
-        //Ativação do chat
-        $app->hook('entity(Registration).send:after', function() use ($app) {
-            /** @var Registration $this */
-        
-            $opportunity = $this->opportunity;
-            
-            if ($opportunity->allow_proponent_response && $opportunity->isAppealPhase) {
-                
-                if($committee = $opportunity->getEvaluationCommittee(false)){
-                    $group = i::__('Avaliadores');
-                    $chat_thread = new ChatThread($this->refreshed(), $this, self::CHAT_THREAD_TYPE);
-                    $chat_thread->save(true);
-
-                    $app->disableAccessControl();
-                    
-                    foreach ($committee as $agent) {
-                        $chat_thread->createAgentRelation($agent->refreshed(), $group, true);
-                    }
-
-                    $app->enableAccessControl();
-                }
-            }
-        });
-
-        // Permite que avaliadores modifiquem o status da avaliação contínua da fase de recursos
-        $app->hook('entity(Registration).canUser(evaluate)', function($user, &$result) use($app){
-            /** @var \MapasCulturais\Entities\Registration $this */
-            $opportunity = $this->opportunity;
-
-            // Verifica se a oportunidade está na fase de recurso
-            if($opportunity->isAppealPhase && $opportunity->allow_proponent_response) {
-                $chat_thread = $app->repo('ChatThread')->findOneBy(['identifier' => "{$this}"]);
-
-                // Verifica se o chat está ativo
-                if($chat_thread && $chat_thread->status == $chat_thread::STATUS_ENABLED) {
-                    $result = true;
-                }
-            }
-        });
     }
 
     public function register() {
@@ -246,11 +201,6 @@ class Module extends \MapasCulturais\Module {
             'label' => i::__('Indica se é uma fase de recurso'),
             'type'  => 'boolean'
         ]);
-        
-        $this->registerOpportunityMetadata('allow_proponent_response', [
-                'type' => "checkbox",
-                'label' => \MapasCulturais\i::__('Possibilitar mais de uma resposta do proponente'),
-        ]);
 
         $this->registerEvauationMethodConfigurationMetadata('appealPhase', [
             'label'     => i::__('Indica se é uma fase de recurso'),
@@ -262,39 +212,6 @@ class Module extends \MapasCulturais\Module {
                 return $evaluationMethodConfiguration->opportunity->appealPhase;
             }
         ]);
-
-        // $this->registerEvauationMethodConfigurationMetadata('publishEvaluationDetails', [
-        //     'label' => i::__('Publicar os pareceres para o proponente'),
-        //     'type' => 'json',
-        //     'default' => true
-        // ]);
-
-        $thread_type_description = i::__('Conversação entre proponente e avaliador');
-        $definition = new ChatThreadType(self::CHAT_THREAD_TYPE, $thread_type_description, function (ChatMessage $message) {
-            $thread = $message->thread;
-            $registration = $thread->ownerEntity;
-            $notification_content = '';
-            $sender = '';
-            $recipient = '';
-            $notification = new Notification;
-            if ($message->thread->checkUserRole($message->user, 'admin')) {
-                // mensagem do parecerista
-                $notification->user = $registration->owner->user;
-                $notification_content = i::__("Nova mensagem do parecerista da prestação de contas número %s");
-                $sender = 'admin';
-                $recipient = 'participant';
-            } else {
-                // mensagem do usuário responsável pela prestação de contas
-                $notification->user = $registration->owner->user;
-                $notification_content = i::__("Nova mensagem na prestação de contas número %s");
-                $sender = 'participant';
-                $recipient = 'admin';
-            }
-            $notification->message = sprintf($notification_content, "<a href=\"{$registration->singleUrl}\" >{$registration->number}</a>");
-            $notification->save(true);
-            $this->sendEmailForNotification($message, $notification, $sender, $recipient);
-        });
-        $app->registerChatThreadType($definition);
     }
 
     /**

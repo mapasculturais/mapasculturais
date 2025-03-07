@@ -4,7 +4,6 @@ use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities;
 use MapasCulturais\i;
-use OpportunityAppealPhase;
 
 $entity = $this->controller->requestedEntity;
 
@@ -51,7 +50,7 @@ $this->jsObject['config']['continuousEvaluationForm'] = [
 $thread_query = new ApiQuery(Entities\ChatThread::class, [
     '@select'    => '*',
     'objectType' => API::EQ(Entities\Registration::class),
-    'type'       => API::EQ(OpportunityAppealPhase\Module::CHAT_THREAD_TYPE),
+    'type'       => API::EQ(EvaluationMethodContinuous\Module::CHAT_THREAD_TYPE),
     'objectId'   => API::EQ($entity->id),
 ]);
 
