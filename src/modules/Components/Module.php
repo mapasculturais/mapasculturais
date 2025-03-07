@@ -246,7 +246,7 @@ class Module extends \MapasCulturais\Module {
 
             $texts_filename = $this->resolveFilename("components/{$component}", 'texts.php');
             if($texts_filename && is_file($texts_filename)) {
-                $texts = include $texts_filename;
+                $texts = (array) include $texts_filename;
                 $app->applyHookBoundTo($this, "component({$this->controller->id}.{$this->controller->action}.{$component}).texts", [&$texts]);
                 $this->localizeScript("component:$component", $texts);
             }
