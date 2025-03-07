@@ -382,6 +382,15 @@ class Registration extends EntityController {
         if($entity->status === Entities\Registration::STATUS_DRAFT && $entity->canUser('modify')){
             parent::GET_edit();
         } else {
+            if($entity->opportunity->parent) {
+                $app = App::i();
+                $parent_registration = $app->repo('Registration')->findOneBy([
+                    'opportunity' => $entity->opportunity->parent->id, 
+                    'number' => $entity->number
+                ]);
+
+                $app->redirect($parent_registration->singleUrl);
+            }
             parent::GET_single();
         }
     }
