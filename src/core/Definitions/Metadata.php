@@ -274,10 +274,22 @@ class Metadata extends \MapasCulturais\Definition{
                 return is_null($value) ? null : json_decode($value);
             },
             'object' => function($value) {
-                return is_null($value) ? null : (object) json_decode($value);
+                if (is_null($value)) {
+                    return null;
+                } else if (is_string($value)) {
+                    return (object) json_decode($value);
+                } else {
+                    return $value;
+                }
             },
             'array' => function($value) {
-                return is_null($value) ? null : (array) json_decode($value);
+                if (is_null($value)) {
+                    return null;
+                } else if (is_string($value)) {
+                    return (array) json_decode($value);
+                } else {
+                    return $value;
+                }
             },
             'entity' => function($value) use ($app) {
                 if (is_string($value) && preg_match('#^((\\\?[a-z]\w*)+):(\d+)$#i', $value, $matches)) {
