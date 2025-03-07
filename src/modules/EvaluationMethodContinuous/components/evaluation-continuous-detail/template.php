@@ -4,7 +4,7 @@
  */
 
 $this->import('
- appeal-phase-chat
+    appeal-phase-chat
 ');
 
 use MapasCulturais\i;
