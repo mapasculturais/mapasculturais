@@ -9,7 +9,6 @@ use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\ChatThread;
 use MapasCulturais\Entities\Registration;
-use OpportunityAppealPhase\Module;
 
 /**
  * @var MapasCulturais\Entities\Registration
@@ -24,7 +23,7 @@ $registration_query = new ApiQuery(Registration::class, [
 $thread_query = new ApiQuery(ChatThread::class, [
     '@select'    => '*',
     'objectType' => API::EQ(Registration::class),
-    'type'       => API::EQ(Module::CHAT_THREAD_TYPE),
+    'type'       => API::EQ(EvaluationMethodContinuous\Module::CHAT_THREAD_TYPE),
 ]);
 
 $thread_query->addFilterByApiQuery($registration_query, 'id', 'objectId');

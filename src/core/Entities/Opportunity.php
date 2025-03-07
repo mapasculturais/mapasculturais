@@ -12,6 +12,7 @@ use MapasCulturais\Exceptions\BadRequest;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
 use MapasCulturais\Utils;
+use MapasCulturais\EvaluationMethod;
 
 /**
  * Opportunity
@@ -38,6 +39,7 @@ use MapasCulturais\Utils;
  * @property Agent $owner
  *
  *
+ * @property-read ?EvaluationMethod $evaluationMethod
  * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
  * @property RegistrationStep[] $registrationSteps
  * @property RegistrationFileConfiguration[] $registrationFileConfigurations
