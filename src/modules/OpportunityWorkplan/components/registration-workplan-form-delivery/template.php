@@ -122,8 +122,8 @@ $this->import('
             <span v-else>{{ convertToCurrency(executedRevenue) }}</span>
             <small class="field__error" v-if="validationErrors.executedRevenue">{{ validationErrors.executedRevenue.join('; ') }}</small>
         </div>
-
-        <div class="field" v-if="editable || dummyEntity.files?.length > 0">
+        
+        <div class="field">
             <label :for="`${vid}__evidenceFiles`"><?= i::__('Evidências') ?></label>
             <entity-files-list :id="`${vid}__evidenceFiles`" :entity="dummyEntity" group="evidences" title="<?= i::esc_attr__('Arquivos de evidência') ?>" :editable="editable">
                 <template #description>
