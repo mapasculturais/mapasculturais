@@ -216,7 +216,7 @@ app.component('opportunity-evaluation-committee', {
             properties.forEach(property => {
                 if (this.entity[property]) {
                     if (this.entity[property][userId]) {
-                        delete this.entity[property][userId];
+                        this.entity[property][userId] = undefined;
                     }
                 }
             });
@@ -303,44 +303,31 @@ app.component('opportunity-evaluation-committee', {
         loadFetchs() {
             if(this.infosReviewers) {
                 this.infosReviewers.forEach(info => {
-                    if(!this.entity.fetch) {
-                        this.entity.fetch = {};
-                        this.entity.fetch[info.agentUserId] = ""
-                    }
+                    for (const key of ['fetch', 'fetchCategories', 'fetchRanges', 'fetchProponentTypes']) {
+                        if (!this.entity[key]) {
+                            this.entity[key] = {};
+                        } else if (Array.isArray(this.entity[key])) {
+                            if (this.entity[key].length === 0) {
+                                this.entity[key] = {};
+                            } else {
+                                const entries = Object.entries(this.entity[key]).filter(([key, value]) => {
+                                    return value != null;
+                                });
 
-                    if(this.entity.fetch && !this.entity.fetch[info.agentUserId]) {
-                        this.entity.fetch[info.agentUserId] = "";
-                    }
-    
-                    if(!this.entity.fetchCategories) {
-                        this.entity.fetchCategories = {};
-                        this.entity.fetchCategories[info.agentUserId] = [];
-                    }
-    
-                    if(this.entity.fetchCategories && !this.entity.fetchCategories[info.agentUserId]) {
-                        this.entity.fetchCategories[info.agentUserId] = [];
-                    }
+                                this.entity[key] = Object.fromEntries(entries);
+                            }
+                        }
 
-                    if(!this.entity.fetchRanges) {
-                        this.entity.fetchRanges = {};
-                        this.entity.fetchRanges[info.agentUserId] = [];
-                    }
-
-                    if(this.entity.fetchRanges && !this.entity.fetchRanges[info.agentUserId]) {
-                        this.entity.fetchRanges[info.agentUserId] = [];
-                    }
-
-                    if(!this.entity.fetchProponentTypes) {
-                        this.entity.fetchProponentTypes = {};
-                        this.entity.fetchProponentTypes[info.agentUserId] = [];
-                    }
-
-                    if(this.entity.fetchProponentTypes && !this.entity.fetchProponentTypes[info.agentUserId]) {
-                        this.entity.fetchProponentTypes[info.agentUserId] = [];
+                        if(this.entity[key] && !this.entity[key][info.agentUserId]) {
+                            if (key === 'fetch') {
+                                this.entity[key][info.agentUserId] = '';
+                            } else {
+                                this.entity[key][info.agentUserId] = [];
+                            }
+                        }
                     }
 
                     info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
-
                 });
             }
         },
