@@ -295,6 +295,15 @@ class Project extends \MapasCulturais\Entity
         return $cdate >= $this->startsOn && $cdate <= $this->endsOn;
     }
 
+    static function getPCachePermissionsList() {
+        $permissions = parent::getPCachePermissionsList();
+
+        $permissions[] = 'createEvents';
+        $permissions[] = 'requestEventRelation';
+        
+        return $permissions;
+    }
+
     protected function canUserCreateEvents($user) {
         if ($user->is('guest')) {
             return false;

@@ -7,6 +7,7 @@ use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use Doctrine\ORM\Mapping as ORM;
+use Opportunities\Jobs\UpdateSummaryCaches;
 
 /**
  * EvaluationMethodConfiguration
@@ -316,7 +317,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         if($this->isNew()) {
             return [];
         }
-        
+
         /** @var App $app */
         $app = App::i();
         
@@ -403,6 +404,13 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         return $data;
+    }
+
+    public function enqueueUpdateSummary($start_string = '10 seconds') {
+        $app = App::i();
+        $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
+            'evaluationMethodConfiguration' => $this
+        ], $start_string);
     }
 
     /**
