@@ -17,7 +17,7 @@ $registration = $this->controller->requestedEntity;
 $registration_number = $registration->number;
 
 $opportunity = $registration->opportunity;
-$phases = $opportunity->allPhases;
+$phases = (array) $opportunity->allPhases;
 $phases_ids = array_map(function($phase) {
     return $phase->id;
 }, $phases);
