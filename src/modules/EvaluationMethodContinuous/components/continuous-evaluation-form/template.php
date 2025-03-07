@@ -44,8 +44,8 @@ $this->import('
             <textarea v-if="isEditable" v-model="formData.data.obs"></textarea>
             <textarea v-if="!isEditable" disabled>{{formData.data.obs}}</textarea>
         </div>
-        <div class="continuous-evaluation-form__content field col-12">
-            <label class="field__label" v-if="hasChatThread">
+        <div class="continuous-evaluation-form__content field col-12" v-if="hasChatThread && currentEvaluation.status >= 2">
+            <label class="field__label">
                 <?php i::_e('Status') ?>
             </label>
             <div class="evaluation-form__status" v-if="isAwaitingMessage">
