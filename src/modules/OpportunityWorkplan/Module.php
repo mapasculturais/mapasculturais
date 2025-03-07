@@ -8,6 +8,7 @@ use OpportunityWorkplan\Controllers\Workplan as ControllersWorkplan;
 use OpportunityWorkplan\Entities\Workplan;
 use OpportunityWorkplan\Entities\Goal;
 use MapasCulturais\Definitions\Metadata;
+use MapasCulturais\Themes\BaseV2\Theme;
 use OpportunityWorkplan\Entities\Delivery;
 
 class Module extends \MapasCulturais\Module{
@@ -20,7 +21,10 @@ class Module extends \MapasCulturais\Module{
             });
 
             $app->hook("component(registration-form):after", function(){
-                $this->part('registration-workplan');
+                /** @var Theme $this */
+                if($this->controller->requestedEntity->opportunity->enableWorkplan){
+                    $this->part('registration-workplan');
+                }
             });
 
             $app->hook("template(registration.view.registration-form-view):after", function($phase){
