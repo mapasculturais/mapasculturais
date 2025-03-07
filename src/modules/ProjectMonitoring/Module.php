@@ -70,7 +70,7 @@ class Module extends \MapasCulturais\Module {
             ];
         });
 
-        // Salva os metadados workplanSnapshot e goalStatuses no envio da inscrição da fase de monitoramento
+        // Salva os metadados workplanSnapshot e goalStatuses e uma cópia dos arquivos de evidência no envio da inscrição da fase de monitoramento
         $app->hook('entity(Registration).send:after', function() use ($app) {
             /** @var Entities\Registration $this */
             $registration = $this;
@@ -84,8 +84,26 @@ class Module extends \MapasCulturais\Module {
                     'registration' => $first_phase
                 ]);
 
-                $registration->workplanSnapshot = $workplan->jsonSerialize();
+                $workplan_snapshot = json_decode(json_encode($workplan->jsonSerialize()));
 
+                foreach($workplan_snapshot->goals as &$goal) {
+                    foreach($goal->deliveries as &$delivery) {
+                        foreach(($delivery->files->evidences ?? []) as &$file) {
+                            $entity_file = $app->repo('File')->find($file->id);
+                            $file->id = $file->id . '--snapshot--' . $registration->id;
+                            $file->url = str_replace($file->name, "{$registration->id}--{$file->name}", $file->url);
+                            $target_file_name = str_replace($file->name, "{$registration->id}--{$file->name}", $entity_file->path);
+                            if(file_exists($target_file_name)) {
+                                unlink($target_file_name);
+                            }
+                            link($entity_file->path, $target_file_name);
+                        }
+                        
+                    }
+                }
+                
+                $registration->workplanSnapshot = $workplan_snapshot;
+                
                 $goals = $app->repo(\OpportunityWorkplan\Entities\Goal::class)->findBy([
                     'workplan' => $workplan
                 ]);
