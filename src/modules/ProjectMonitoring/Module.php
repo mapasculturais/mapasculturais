@@ -334,7 +334,7 @@ class Module extends \MapasCulturais\Module {
 
         $numberOfParticipants = new Metadata('numberOfParticipants', [
             'label' => i::__('Número de participantes'),
-            'type' => 'number',
+            'type' => 'integer',
             'validations' => [
                 'v::intVal()->positive()' => i::__('O valor deve ser um número inteiro positivo'),
             ],
