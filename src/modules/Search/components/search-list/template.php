@@ -15,18 +15,19 @@ $this->import('
 <div class="grid-12 search-list">
     <mc-entities :type="type" :select="select" :query="query" :order="order" :limit="limit" watch-query>
         <template #load-more="{entities, loadMore}">
-            <div class="col-9 load-more">
+            <div class="col-8 load-more">
                 <mc-loading :condition="entities.loadingMore"></mc-loading>
                 <button class="button--large button button--primary-outline" v-if="!entities.loadingMore" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
             </div>
         </template>
+
         <template #header="{entities}">
-            <div class="col-3 search-list__filter">
+            <div class="col-4 search-list__filter">
                 <div class="search-list__filter--filter">
                     <slot name="filter"></slot>
                 </div>
             </div>
-            <div v-if="entities.loading" class="col-9">
+            <div v-if="entities.loading" class="col-8">
                 <div class="grid-12">
                     <div class="col-12 search-list__order">
                         <div class="field">
@@ -50,7 +51,7 @@ $this->import('
         </template>
 
         <template #default="{entities}">
-            <div class="col-9">
+            <div class="col-8">
                 <div class="grid-12">
                     <div class="col-12 search-list__order">
                         <div class="field">

@@ -1377,8 +1377,8 @@ class App {
                   if ($expire_in && (microtime (true) - filectime($filename) > $expire_in)) {
                       unlink($filename);
                   } else {
-                      $count += 0.1;
-                      usleep(100000);
+                      $count += 0.01;
+                      usleep(10000);
                   }
               }
           }
@@ -1401,8 +1401,10 @@ class App {
         
         $filename = sys_get_temp_dir()."/lock-{$name}.lock"; 
 
-        unlink($filename);
-     }
+        if (file_exists($filename)){
+            unlink($filename);
+        }
+    }
      
      /**
       * Transforma o texto num slug
@@ -1767,7 +1769,7 @@ class App {
      * @return Job Retorna o objeto Job criado
      * @throws Exception Se o tipo de job for inválido
      */
-    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false, User|int $user = null, Subsite|int $subsite = null) {
+    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false, User|int|null $user = null, Subsite|int|null $subsite = null) {
         if($this->config['app.log.jobs']) {
             $this->log->debug("ENQUEUED JOB: $type_slug");
         }
@@ -1792,12 +1794,13 @@ class App {
 
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
+        if($replace) {
+            $conn = $this->em->getConnection();
+            $conn->delete('job', ['id' => $id]);
+        }
+
         if ($job = $this->repo('Job')->find($id)) {
-            if ($replace) {
-                $job->delete(true);
-            } else {
-                return $job;
-            }
+            return $job;
         }
 
         $job = new Job($type);
@@ -1828,9 +1831,8 @@ class App {
                 $job->save(true);
             }
         } catch (\Exception $e) {
-            $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
+            $this->log->error("ERRO AO SALVAR JOB ($type_slug): " . print_r($e, true));
         }
-
         return $job;
     }
 
