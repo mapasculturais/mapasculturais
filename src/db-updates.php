@@ -2635,7 +2635,7 @@ $$
                      USING registration_step rs
                      WHERE rs.id = rfc.step_id
                        AND rs.opportunity_id != rfc.opportunity_id;");
-    }
+    },
 
     'define valores default para as colunas ids das tabelas sem default' => function() {
         __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
@@ -2669,6 +2669,9 @@ $$
                 'evaluateOnTime',
                 'createEvents',
                 'requestEventRelation');");
-    }
-  
+    },
+
+    // SEMPRE ENCERRAR O ÚLTIMO ITEM COM VÍRGULA A FIM DE
+    // MINIMIZAR RISCO DE ERRO NA INSERÇÃO OU MERGE DE NOVOS ITENS
+    
 ] + $updates ;   
