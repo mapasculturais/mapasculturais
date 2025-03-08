@@ -307,7 +307,7 @@ app.component('opportunity-registrations-table', {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }
 
-            let type = this.phase.evaluationMethodConfiguration.type.id;
+            let type = this.phase.evaluationMethodConfiguration?.type.id || '';
             let phases = $MAPAS.opportunityPhases;
             let hasEvaluationMethodTechnical = false;
 
@@ -317,9 +317,8 @@ app.component('opportunity-registrations-table', {
                     break;
                 }
 
-                let type = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type.id : phase.type.id;
-
-                if(type == "technical"){
+                let phaseType = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type.id : phase.type.id;
+                if(phaseType == "technical"){
                     hasEvaluationMethodTechnical = true;
                     break;
                 }
