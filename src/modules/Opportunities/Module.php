@@ -39,6 +39,7 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
         $app->registerJobType(new Jobs\RedistributeCommitteeRegistrations(Jobs\RedistributeCommitteeRegistrations::SLUG));
+        $app->registerJobType(new Jobs\RefreshViewEvaluations(Jobs\RefreshViewEvaluations::SLUG));
 
         $app->hook('mapas.printJsObject:before', function () {
             /** @var \MapasCulturais\Theme $this */
@@ -588,6 +589,7 @@ class Module extends \MapasCulturais\Module{
 
        // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento de inserir, atualizar ou remover.
         $app->hook("entity(RegistrationEvaluation).<<insert|update|remove>>:after", function() use ($app) {
+            /** @var RegistrationEvaluation $this */
             $opportunity = $this->registration->opportunity;
 
             $user = $app->user;
@@ -596,9 +598,7 @@ class Module extends \MapasCulturais\Module{
             }
 
             if ($em = $this->getEvaluationMethodConfiguration()) {
-                if($em->getUserRelation($user)) {
-                    $em->getUserRelation($user)->updateSummary(flush: true);
-                }
+                $em->enqueueUpdateSummary();
             }
         });
 
@@ -618,27 +618,20 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook("entity(Registration).recreatePermissionCache:after", function(&$users) use ($app) {
-            /** @var \MapasCulturais\Entities\Registration $this */
+            /** 
+             * @var \MapasCulturais\Entities\Registration $this 
+             * @var \MapasCulturais\Entities\EvaluationMethodConfiguration $em
+             */
+
             if($em = $this->getEvaluationMethodConfiguration()) {
-                $relations = $em->getAgentRelations();
-                foreach($relations as $relation) {
-                    $relation->updateSummary(flush: true, started: false, completed: false, sent: false);
-                }
+                $em->enqueueUpdateSummary();
             }
         });
 
         // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento que se atribui uma avaliação.
         $app->hook("entity(EvaluationMethodConfiguration).recreatePermissionCache:after", function(&$users) use ($app) {
             /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
-            if($users) {
-                foreach ($users as $user) {
-                    $relation = $app->repo('EvaluationMethodConfigurationAgentRelation')->findOneBy(['agent' => $user->profile, 'owner' => $this]);
-                    if ($relation) {
-                        /** @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation */
-                        $relation->updateSummary(flush: true, started: false, completed: false, sent: false);
-                    }
-                }
-            }
+            $this->enqueueUpdateSummary();
         });
 
         $app->hook("entity(EvaluationMethodConfiguration).renameAgentRelationGroup:before", function($old_name, $new_name, $relations) {

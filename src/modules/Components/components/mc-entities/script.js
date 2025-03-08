@@ -78,6 +78,11 @@ app.component('mc-entities', {
         scope: {
             type: String,
             default: 'default'
+        },
+
+        emptyTextType: {
+            type: Boolean,
+            default: false,
         }
 
     },
@@ -173,7 +178,23 @@ app.component('mc-entities', {
 
         showLoadMore() {
             return this.entities.length > 0 && this.entities.metadata?.page < this.entities.metadata?.numPages;
-        }
+        },
 
+        showEmptyText(type) {
+            switch(type) {
+                case 'agent':
+                    return this.text('Nenhum agente encontrado');
+                case 'project':
+                    return this.text('Nenhum projeto encontrado');
+                case 'opportunity': 
+                    return this.text('Nenhuma oportunidade encontrada');
+                case 'event':
+                    return this.text('Nenhum evento encontrado');
+                case 'space':
+                    return this.text('Nenhum espaço encontrado');
+                default:
+                    return this.text('Nenhuma entidade encontrada');
+            }
+        },
     },
 });

@@ -1747,11 +1747,15 @@ $$
         
     },
 
-    'RECREATE VIEW evaluations AGAIN!!!!!' => function() use($conn) {
+    'DROP VIEW evaluations' => function () {
         __try("DROP VIEW evaluations");
+    },
+
+    'RECREATE MATERIALIZED VIEW evaluations' => function() use($conn) {
+        __try("DROP MATERIALIZED VIEW IF EXISTS evaluations");
 
         $conn->executeQuery("
-            CREATE VIEW evaluations AS (
+            CREATE MATERIALIZED VIEW evaluations AS (
                 SELECT 
                     registration_id,
                     registration_sent_timestamp,
@@ -1820,6 +1824,17 @@ $$
                     opportunity_id
             )
         ");
+    },
+
+    'enqueue job to refresh materialized view evaluations' => function() use($conn) {
+        $app = App::i();
+        
+        $app->disableAccessControl();
+        // é para rodar a cada minuto, por 10 anos
+        $app->enqueueOrReplaceJob(\Opportunities\Jobs\RefreshViewEvaluations::SLUG, [], interval_string: '1 minute', iterations: 60*24*365*10);
+
+        // retorna false para executar a cada redeploy do serviço
+        return false;
     },
 
     'adiciona oportunidades na fila de reprocessamento de cache' => function () use($conn) {
@@ -2620,6 +2635,40 @@ $$
                      USING registration_step rs
                      WHERE rs.id = rfc.step_id
                        AND rs.opportunity_id != rfc.opportunity_id;");
+    }
+
+    'define valores default para as colunas ids das tabelas sem default' => function() {
+        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
+        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
+        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
+        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
+        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
+        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
+    },
+
+    'refatoração dos índices da tabela pcache' => function () {
+        __exec('CREATE INDEX pcache_object_user_action_idx ON pcache (user_id, object_type, action)');
+
+        // remove índice duplicado
+        // "pcache_permission_user_idx" btree (object_type, object_id, action, user_id)
+        // "unique_object_action" UNIQUE, btree (object_type, object_id, action, user_id)
+        __exec('DROP INDEX pcache_permission_user_idx');
+    },
+
+    'remove entradas da tabela pcache não mais utilizadas' => function () {
+        __exec("
+            DELETE FROM pcache 
+            WHERE action NOT IN (
+                '@control',
+                'modify',
+                'view',
+                'applySeal',
+                'support',
+                'viewUserEvaluation',
+                'evaluateOnTime',
+                'createEvents',
+                'requestEventRelation');");
     }
   
 ] + $updates ;   
