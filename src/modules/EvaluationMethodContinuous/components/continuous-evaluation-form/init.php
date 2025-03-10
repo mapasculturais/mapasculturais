@@ -29,11 +29,30 @@ if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@co
     $user = $app->user;
 }
 
-$statusList = [
-    ['value' => '2', 'label' =>   i::__('Negado')],
-    ['value' => '3', 'label' =>   i::__('Indeferido')],
-    ['value' => '10', 'label' =>   i::__('Deferido')],
-];
+if(!$evaluation_configuration->statusLabels) {
+    $status_label = [];
+
+    if($opportunity->isReportingPhase) {
+        $status_label['3'] = i::__('Reprovado');
+        $status_label['8'] = i::__('Aprovado com ressalvas');
+        $status_label['10'] = i::__('Aprovado');
+    } else {
+        $status_label['2'] = i::__('Negado');
+        $status_label['3'] = i::__('Indeferido');
+        $status_label['10'] = i::__('Deferido');
+    }
+
+    $evaluation_configuration->statusLabels = $status_label;
+
+    $app->disableAccessControl();
+    $evaluation_configuration->save();
+    $app->enableAccessControl();
+}
+
+$statusList = [];
+foreach($evaluation_configuration->statusLabels as $status => $label) {
+    $statusList[] = ['value' => $status, 'label' => $label];
+}
 
 $needs_tiebreaker = $entity->needsTiebreaker();
 
