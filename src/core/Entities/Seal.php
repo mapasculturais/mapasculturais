@@ -212,6 +212,14 @@ class Seal extends \MapasCulturais\Entity
     	return true;
     }
 
+    static function getPCachePermissionsList()
+    {
+        $permissions = parent::getPCachePermissionsList();
+        $permissions[] = 'applySeal';
+
+        return $permissions;
+    }
+
     protected function canUserRemove($user) {
         $app = App::i();
         
