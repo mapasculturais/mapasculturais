@@ -32,6 +32,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Sergipe - http://mapas.cultura.se.gov.br/
 - Tocantins - http://mapa.cultura.to.gov.br/
 ### Instalações municipais
+- Toledo/PR - https://cultura.toledo.pr.gov.br/
 - Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
