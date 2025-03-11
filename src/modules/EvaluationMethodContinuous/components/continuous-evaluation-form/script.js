@@ -1,6 +1,12 @@
 app.component('continuous-evaluation-form', {
     template: $TEMPLATES['continuous-evaluation-form'],
 
+    setup() {
+        const text = Utils.getTexts('continuous-evaluation-form')
+        const global = useGlobalState();
+        return { text, global }
+    },
+
     props: {
         entity: {
             type: Entity,
@@ -18,14 +24,10 @@ app.component('continuous-evaluation-form', {
         }
     },
 
-    setup() {
-        const text = Utils.getTexts('continuous-evaluation-form')
-        return { text }
-    },
-
     data() {
         return {
             isEditable: true,
+            threadId: $MAPAS.config.continuousEvaluationForm?.threadId,
         };
     },
 
@@ -37,12 +39,16 @@ app.component('continuous-evaluation-form', {
             this.formData.data[key] = formData.data[key];
         }
 
+        if (!this.global.threads) {
+            this.global.threads = {};
+            this.global.threads[this.threadId] = $MAPAS.config.continuousEvaluationForm.lastChatMessage;
+        }
+
         this.handleCurrentEvaluationForm();
     },
 
-    mounted() {
+    mounted() {        
         window.addEventListener('responseEvaluation', this.processResponse);
-
         window.addEventListener('processErrors', this.validateErrors);
     },
 
@@ -76,7 +82,8 @@ app.component('continuous-evaluation-form', {
             if (!this.hasChatThread) {
                 return false;
             }
-            return $MAPAS.config.continuousEvaluationForm.lastChatMessage.user == $MAPAS.userId;
+
+            return this.global.threads[this.threadId].user == $MAPAS.userId;
         },
 
         needsTiebreaker() {
@@ -93,7 +100,7 @@ app.component('continuous-evaluation-form', {
 
         evaluationName() {
             return $MAPAS.config.continuousEvaluationForm.evaluationMethodName;
-        }
+        },
     },
 
     methods: {
