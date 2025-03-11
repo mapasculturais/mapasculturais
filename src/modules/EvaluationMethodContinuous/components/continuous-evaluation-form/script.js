@@ -76,7 +76,7 @@ app.component('continuous-evaluation-form', {
             if (!this.hasChatThread) {
                 return false;
             }
-            return $MAPAS.config.continuousEvaluationForm.lastChatMessage != $MAPAS.userId;
+            return $MAPAS.config.continuousEvaluationForm.lastChatMessage.user == $MAPAS.userId;
         },
 
         needsTiebreaker() {

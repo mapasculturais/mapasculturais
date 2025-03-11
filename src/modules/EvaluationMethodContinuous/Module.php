@@ -345,7 +345,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                             }
 
                             if ($all_status_sent) {
-                                if($evaluation_type == 'appeal-phase') {
+                                if($evaluation_type == 'continuous') {
                                     $value = $data->status;
                                 }
 
