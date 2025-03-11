@@ -406,7 +406,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $data;
     }
 
-    public function enqueueUpdateSummary($start_string = '10 seconds') {
+    public function enqueueUpdateSummary($start_string = '90 seconds') {
         $app = App::i();
         $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
             'evaluationMethodConfiguration' => $this

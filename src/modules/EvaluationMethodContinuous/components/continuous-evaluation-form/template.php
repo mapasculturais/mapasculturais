@@ -52,7 +52,7 @@ $this->import('
                 <mc-icon name="clock"></mc-icon>
                 <?php i::_e('Aguardando resposta do agente'); ?>
             </div>
-            <div class="evaluation-form__status" v-else>
+            <div class="evaluation-form__status" v-if="!isAwaitingMessage">
                 <mc-icon name="exclamation" class="warning__color"></mc-icon>
                 <span><?php i::_e('Aguardando validação') ?></span>
             </div>
