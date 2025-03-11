@@ -6,7 +6,9 @@ app.component('mc-chat', {
         const hasSlot = name => !!slots[name];
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('mc-chat');
-        return { text, hasSlot }
+        const global = useGlobalState();
+        
+        return { text, hasSlot, global }
     },
 
     props: {
@@ -41,6 +43,9 @@ app.component('mc-chat', {
     },
 
     created() {
+        if (!this.global.threads) {
+            this.global.threads = {};
+        }
     },
 
     mounted() {
@@ -84,10 +89,26 @@ app.component('mc-chat', {
         isClosed() {
             return this.threadStatus === $MAPAS.config.chatThreadStatusClosed;
         },
+
+        lastMessage() {
+            const chatMessages = this.chatEntities.filter(item => item.__objectType === "chatmessage");
+            return chatMessages[0] || null;
+        }
     },
 
     beforeUnmount() {
         this.clearAutoRefresh();
+    },
+
+    watch: {
+        'chatEntities'(newData, oldData) {       
+            this.$nextTick(() => {
+                this.global.threads[this.thread.id] = {
+                    id: this.lastMessage.id,
+                    user: this.currentUser.id,
+                }
+            });
+        },
     },
 
     methods: {
@@ -106,14 +127,18 @@ app.component('mc-chat', {
             try {
                 const newMessage = this.message; 
                 await newMessage.save();
-
+                
                 const attachment = this.$refs.attachment;
-
                 if (attachment.file) {
                     await attachment.upload();
                 }
 
                 this.$refs.chatMessages.entities.unshift(newMessage);
+
+                this.global.threads[this.thread.id] = {
+                    id: this.lastMessage.id,
+                    user: this.currentUser.id,
+                }
 
                 messages.success(this.text('Mensagem enviada com sucesso'));
                 this.message = this.createNewMessage('');

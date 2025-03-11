@@ -88,5 +88,6 @@ if (empty($chat_thread)) {
     $last_message = $messages_query->findOne();
 
     $this->jsObject['config']['continuousEvaluationForm']['hasChatThread'] = true;
+    $this->jsObject['config']['continuousEvaluationForm']['threadId'] = $chat_thread['id'];
     $this->jsObject['config']['continuousEvaluationForm']['lastChatMessage'] = $last_message;
 }
