@@ -14,6 +14,11 @@ $class = $entity->getClassName();
 if($class == Registration::class) {
     
     $opportunity = $entity->opportunity;
+
+    if(!$opportunity->isReportingPhase) {
+        $opportunity = $entity->opportunity->isAppealPhase ? $entity->opportunity : $entity->opportunity->appealPhase;
+    }
+
     $evaluation_configuration = $opportunity->evaluationMethodConfiguration;
     $registration_appeal_phase = $app->repo('Registration')->findOneBy(['number' => $entity->number, 'opportunity' => $opportunity]);
     if(!$evaluation_configuration) {
