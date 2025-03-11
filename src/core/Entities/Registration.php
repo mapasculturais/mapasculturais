@@ -389,6 +389,7 @@ class Registration extends \MapasCulturais\Entity
             'editableUntil' => $this->editableUntil,
             'editableFields' => $this->editableFields,
             'editSentTimestamp' => $this->editSentTimestamp,
+            'status' => $this->status,
         ];
 
         if($this->canUser('viewConsolidatedResult')){
