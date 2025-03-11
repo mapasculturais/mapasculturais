@@ -775,7 +775,7 @@ class Module extends \MapasCulturais\Module{
            $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
                 'opportunity' => $opportunity,
                 'evaluationMethodConfiguration' => $opportunity->evaluationMethodConfiguration?: null
-            ], '10 seconds');
+            ], '90 seconds');
 
             $this->finish(['message' => i::__('Sincronização das inscrições enfileirada para processamento em segundo plano')]);
         });

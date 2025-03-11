@@ -165,7 +165,7 @@ class Module extends \MapasCulturais\Module{
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
                     'opportunity' => $this->opportunity,
                     'evaluationMethodConfiguration' => $evaluation_method_configuration,
-                ], '10 seconds');
+                ], '90 seconds');
                 $app->mscache->delete($cache_key);
             }
         });
@@ -179,7 +179,7 @@ class Module extends \MapasCulturais\Module{
             do{
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
                     'opportunity' => $opportunity
-                ], '10 seconds');
+                ], '90 seconds');
 
                 $opportunity = $opportunity->nextPhase;
 
@@ -193,7 +193,7 @@ class Module extends \MapasCulturais\Module{
                 $app->mscache->save($cache_key, true, 10);
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
                     'evaluationMethodConfiguration' => $this->registration->opportunity->evaluationMethodConfiguration
-                ], '10 seconds');
+                ], '90 seconds');
                 $app->mscache->delete($cache_key);
             }
 
