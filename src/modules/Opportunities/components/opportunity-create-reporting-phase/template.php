@@ -21,10 +21,10 @@ $this->import('
                 <entity-field :entity="collectionPhase" prop="name" label="<?= i::__("Defina um título") ?>" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="collectionPhase" prop="registrationFrom" :min="minCollectionDate" label="<?= i::__("Data de início") ?>" hideRequired></entity-field>
+                <entity-field :entity="collectionPhase" prop="registrationFrom"  label="<?= i::__("Data de início") ?>" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="collectionPhase" prop="registrationTo" :min="collectionPhase.evaluationFrom?._date" label="<?= i::__("Data final") ?>" hideRequired></entity-field>
+                <entity-field :entity="collectionPhase" prop="registrationTo" label="<?= i::__("Data final") ?>" hideRequired></entity-field>
             </div>
             <div class="col-12">
                 <entity-field :entity="collectionPhase" prop="isFinalReportingPhase" label="<?= i::__('É fase final de prestação de informações?') ?>"></entity-field>
@@ -35,10 +35,10 @@ $this->import('
                 <entity-field :entity="evaluationPhase" prop="name" label="<?= i::__("Defina um título") ?>" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="evaluationPhase" prop="evaluationFrom" :min="collectionPhase.evaluationFrom?._date" label="<?= i::__("Data de início") ?>" hideRequired></entity-field>
+                <entity-field :entity="evaluationPhase" prop="evaluationFrom" label="<?= i::__("Data de início") ?>" hideRequired></entity-field>
             </div>
             <div class="col-6">
-                <entity-field :entity="evaluationPhase" prop="evaluationTo" :min="evaluationPhase.evaluationFrom?._date" label="<?= i::__("Data final") ?>" hideRequired></entity-field>
+                <entity-field :entity="evaluationPhase" prop="evaluationTo"  label="<?= i::__("Data final") ?>" hideRequired></entity-field>
             </div>
         </div>
     </template>
