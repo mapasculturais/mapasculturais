@@ -18,9 +18,17 @@ $registration_number = $registration->number;
 
 $opportunity = $registration->opportunity;
 $phases = (array) $opportunity->allPhases;
+$appeal_phases = [];
+
+foreach($phases as $phase) {
+    if($appeal_phase = $phase->appealPhase) {
+        $appeal_phases[] = $appeal_phase;
+    }
+}
+
 $phases_ids = array_map(function($phase) {
     return $phase->id;
-}, $phases);
+}, [...$phases, ...$appeal_phases]);
 
 $registration_query = new ApiQuery(Registration::class, [
     'number' => API::EQ($registration_number),
