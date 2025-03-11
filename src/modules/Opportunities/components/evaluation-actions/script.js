@@ -43,8 +43,8 @@ app.component('evaluation-actions', {
 
         evaluation() {
             const api = new API('registrationevaluation');
-            const evaluation = api.getEntityInstance($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation.id);
-            evaluation.populate($MAPAS.config.appealPhaseEvaluationForm.currentEvaluation);
+            const evaluation = api.getEntityInstance($MAPAS.config.appealPhaseEvaluationForm?.currentEvaluation.id);
+            evaluation.populate($MAPAS.config.appealPhaseEvaluationForm?.currentEvaluation);
             return evaluation;
         }
     },

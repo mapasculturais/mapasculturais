@@ -2557,6 +2557,7 @@ $$
         __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
         __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
     },
+
     'Adiciona novas áreas de atuação' => function() {
         __try("
         WITH areas_novas(name) AS (
