@@ -270,7 +270,14 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
             if($this->isNew()) {
-                $value = $first_phase->lastPhase->previousPhase;
+                if($this->isReportingPhase) {
+                    $value = $first_phase->lastPhase;
+                    while($next_phase = $value->nextPhase) {
+                        $value = $next_phase;
+                    }
+                } else {
+                    $value = $first_phase->lastPhase->previousPhase;
+                }
                 return;
             }
             if($this->isFirstPhase) {
@@ -356,7 +363,12 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
             if($this->isNew()) {
-                $value = $first_phase->lastPhase;
+                if($this->isReportingPhase) {
+                    $value = null;
+                } else {
+                    $value = $first_phase->lastPhase;
+                }
+
                 return;
             }
 
@@ -383,7 +395,7 @@ class Module extends \MapasCulturais\Module{
 
             if($result = $query->getOneOrNullResult()) {
                 $value = $result;
-            } else {
+            } else if(!$this->isReportingPhase) {
                 $value = $last_phase;
             }
 
@@ -1379,8 +1391,16 @@ class Module extends \MapasCulturais\Module{
                 $previous_date_to_string = '';
             } else {
                 $previous = $this->previousPhase->evaluationMethodConfiguration ?: $this->previousPhase;
-                $previous_date_from = $previous->evaluationFrom ?: $previous->registrationFrom;
-                $previous_date_to = $previous->evaluationTo ?: $previous->registrationTo;
+
+                // Caso da primeira fase de monitoramento
+                if($previous->isLastPhase) {
+                    $previous_date_from = $previous->publishTimestamp;
+                    $previous_date_to = $previous->publishTimestamp;
+                } else {
+                    $previous_date_from = $previous->evaluationFrom ?: $previous->registrationFrom;
+                    $previous_date_to = $previous->evaluationTo ?: $previous->registrationTo;
+                }
+
                 $previous_date_from_string = $previous_date_from ? $previous_date_from->format('Y-m-d H:i:s') : null;
                 $previous_date_to_string = $previous_date_to ? $previous_date_to->format('Y-m-d H:i:s') : null;
 
