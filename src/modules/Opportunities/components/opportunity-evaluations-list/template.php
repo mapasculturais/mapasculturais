@@ -39,6 +39,10 @@ $this->import('
                         </div>
                     </div>
                 </div>
+
+                <div v-if="evaluations.length > 0" class="count">
+                    <?= i::__('Total') ?> {{evaluations.length}} <?= i::__('Avaliações') ?>
+                </div>
             </div>
             
             <mc-loading :condition="loading"><?= i::__('carregando...') ?></mc-loading>
