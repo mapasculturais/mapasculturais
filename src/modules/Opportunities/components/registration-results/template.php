@@ -10,7 +10,7 @@ use MapasCulturais\i;
 
 $entity = $this->controller->requestedEntity;
 ?>
-<div v-if="registration.consolidatedDetails?.sentEvaluationCount || showAppealPhaseEvaluationDetails" class="registration-results">  
+<div v-if="showEvaluationDetails" class="registration-results">  
     <mc-modal :title="modalTitle" classes="registration-results__modal registration-results__modal--with-chat">
         <template #default>
             <?php foreach($app->getRegisteredEvaluationMethods(true) as $evaluation_method): ?>
@@ -19,7 +19,7 @@ $entity = $this->controller->requestedEntity;
                 </div>
             <?php endforeach ?>
 
-            <div v-if="!registration.opportunity.isReportingPhase && !appealRegistration && !hideAppealStatus" class="registration-results__request-appeal">
+            <div v-if="!registration.opportunity.isReportingPhase && !appealRegistration && hideAppealStatus" class="registration-results__request-appeal">
                 <button class="button button--primary" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
             </div>
         </template>
