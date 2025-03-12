@@ -91,6 +91,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     const STATUS_APPEAL_PHASE = -20;
     const STATUS_PHASE = -1;
+    const CONTINUOUS_FLOW_DATE =  "2111-01-01 00:00";
 
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
