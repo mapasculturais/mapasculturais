@@ -42,8 +42,8 @@ $this->import('
                 <entity-field :entity="entity" type="checkbox" prop="isContinuousFlow" label="<?php i::esc_attr_e('É um edital de fluxo contínuo?')?>" classes="col-12 sm:col-12"></entity-field>
                 <entity-field v-if="entity?.isContinuousFlow" :entity="entity" type="checkbox" prop="hasEndDate" label="<?php i::esc_attr_e('Definir data final para inscrições')?>" :autosave="3000" classes="col-12 sm:col-12"></entity-field>
 
-                <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
-                <entity-field v-if="!entity?.isContinuousFlow || entity?.hasEndDate" :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
+                <entity-field :entity="entity" prop="registrationFrom" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
+                <entity-field v-if="!entity?.isContinuousFlow || entity?.hasEndDate" :entity="entity" prop="registrationTo"  :autosave="3000" classes="col-6 sm:col-12"></entity-field>
 
                 <entity-field v-if="lastPhase && (!entity?.isContinuousFlow || entity?.hasEndDate)" :entity="lastPhase" prop="publishTimestamp" :autosave="3000" classes="col-6 sm:col-12">
                     <label><?= i::__("Publicação final de resultados (data e hora)") ?></label>
