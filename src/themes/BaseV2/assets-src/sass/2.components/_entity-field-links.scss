@@ -20,6 +20,10 @@
 
         & > .field {
             margin-top: 0!important;
+
+            & > a {
+                word-break: break-word;
+            }
         }
     }
 }
