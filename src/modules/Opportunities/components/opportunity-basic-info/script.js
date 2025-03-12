@@ -1,6 +1,11 @@
 app.component('opportunity-basic-info' , {
     template: $TEMPLATES['opportunity-basic-info'],
 
+    setup() {
+        const text = Utils.getTexts('opportunity-basic-info');
+        return { text }
+    },
+
     data () {
         return {
             continuousFlowDate: $MAPAS.config.opportunityBasicInfo.date,
