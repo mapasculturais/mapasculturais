@@ -99,11 +99,11 @@ $this->import('
         <template v-else-if="index === phases.length - 1">
             <div class="add-phase grid-12">
                 <div class="col-12" v-if="!finalReportingPhase">
-                    <mc-alert v-if="!lastPhase?.publishTimestamp" type="warning">
+                    <mc-alert v-if="!firstPhase?.isContinuousFlow && !lastPhase?.publishTimestamp" type="warning">
                         <p><small class="required"><?= i::__("A data e hora da 'Publicação final' precisa estar preenchida para adicionar novas fases de prestação de informações.") ?></small></p>
                     </mc-alert>
 
-                    <opportunity-create-reporting-phase v-if="lastPhase?.publishTimestamp" :opportunity="entity" @create="addReportingPhases"></opportunity-create-reporting-phase>
+                    <opportunity-create-reporting-phase v-if="!firstPhase?.isContinuousFlow && lastPhase?.publishTimestamp" :opportunity="entity" @create="addReportingPhases"></opportunity-create-reporting-phase>
                 </div>
             </div>
         </template>
