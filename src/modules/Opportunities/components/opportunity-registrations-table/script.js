@@ -221,6 +221,10 @@ app.component('opportunity-registrations-table', {
             if (this.phase.registrationCategories && this.phase.registrationCategories.length > 0) {
                 const result = {};
                 for (let category of this.phase.registrationCategories) {
+                    if (!category) {
+                        continue;
+                    }
+
                     result[category.replace(/,/g, '\\,')] = category;
                 }
                 return result;

@@ -1054,6 +1054,7 @@ return [
             __exec("ALTER TABLE registration_evaluation ADD is_tiebreaker BOOLEAN DEFAULT FALSE");
         }
     },
+
     'create table workplan' => function () {
         __exec("CREATE TABLE registration_workplan (
           id SERIAL PRIMARY KEY,
@@ -1161,6 +1162,10 @@ return [
             ) AS recent_revision
             WHERE r.id = recent_revision.object_id;
         ");
+    },
+
+    'define a coluna id da tabela permission_cache_pending como auto incremet' => function() {
+        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
     },
 
     /// MIGRATIONS - DATA CHANGES =========================================
@@ -2136,7 +2141,7 @@ $$
         
         }
 
-    },
+    }, 
     'corrige metadados criados por erro em inscricoes de fases' => function () use ($conn, $app) {
         $opp_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE parent_id IS NOT NULL");
         foreach ($opp_ids as $opportunity) {
@@ -2675,4 +2680,16 @@ $$
                 'requestEventRelation');");
     },
     
+    "Removendo os campos e anexos de formulário erroneamente duplicados pela funcionalidade 'Duplicar Oportunidade'" => function() {
+        __try("DELETE FROM registration_field_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+
+        __try("DELETE FROM registration_file_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+    },
+  
 ] + $updates ;   

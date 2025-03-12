@@ -153,10 +153,6 @@ abstract class SpreadsheetJob extends JobType
                         continue;
                     }
 
-                    if(is_string($value) && $value && $value[0] === '=') {
-                        $value = "'$value";
-                    }
-
                     // Insere link quando 
                     if (is_string($value) && preg_match('/^https?:\/\//', $value)) {
                         $columnLetter = Coordinate::stringFromColumnIndex($colIndex + 1);
@@ -173,6 +169,8 @@ abstract class SpreadsheetJob extends JobType
                         ]);
                         continue;
                     }
+
+                    //TODO: Avaliar como implementar o tratamento de fórmulas apenas para campos preenchidos pelo usuário e permitir que as fórmulas permaneçam nos campos com preenchimento do próprio sistema.
                 }
 
                 $sheet->fromArray($new_data, null, "A$row");
