@@ -47,7 +47,7 @@ app.component('opportunity-basic-info' , {
                        
                 } else {
                     if(this.entity.registrationFrom){
-                        const myDate = new McDate(new Date(`2111-01-01 00:00`));
+                        const myDate = new McDate(new Date(this.continuousFlowDate));
                         
                         this.entity.continuousFlow = myDate.sql('full');
                         this.entity.registrationTo = myDate.sql('full');
@@ -79,7 +79,8 @@ app.component('opportunity-basic-info' , {
                         } 
 
                     } else {
-                        const myDate = new McDate(new Date(`2111-01-01 00:00`));
+                        const myDate = new McDate(new Date(this.continuousFlowDate));
+                        
                         this.entity.continuousFlow = myDate;
                         this.entity.registrationTo = myDate;
                     }
