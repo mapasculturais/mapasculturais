@@ -80,42 +80,20 @@ app.component('opportunity-registrations-table', {
     },
     data() {
         const $DESC = $DESCRIPTIONS.registration;
-        const avaliableFields = [];
-
+        
         const isAffirmativePoliciesActive = $MAPAS.config.opportunityRegistrationTable.isAffirmativePoliciesActive;
         const hadTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.hadTechnicalEvaluationPhase;
         const isTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.isTechnicalEvaluationPhase;
-
+        
         const defaultHeaders = $MAPAS.config.opportunityRegistrationTable.defaultHeaders;
         const default_select = $MAPAS.config.opportunityRegistrationTable.defaultSelect;
+        const defaultAvailable = $MAPAS.config.opportunityRegistrationTable.defaultAvailable;
         
+        const avaliableFields = defaultAvailable.length > 0 ? [...defaultAvailable] : [];
+
         let visible = this.visibleColumns.join(',');
         let order = 'status DESC,consolidatedResult DESC';
         let consolidatedResultOrder = 'consolidatedResult';
-
-        if(this.phase.registrationCategories?.length > 0) {
-            avaliableFields.push({
-                title: $DESC.category.label,
-                fieldName: 'category',
-                fieldOptions: this.phase.registrationCategories,
-            });
-        }
-
-        if(this.phase.registrationProponentTypes?.length > 0) {
-            avaliableFields.push({
-                title: $DESC.proponentType.label,
-                fieldName: 'proponentType',
-                fieldOptions: this.phase.registrationProponentTypes,
-            });
-        }
-
-        if(this.phase.registrationRanges?.length > 0) {
-            avaliableFields.push({
-                title: $DESC.range.label,
-                fieldName: 'range',
-                fieldOptions: this.phase.registrationRanges.map((item) => item.label),
-            });
-        }
 
         const fieldTypes = ['select', 'boolean', 'checkbox', 'multiselect', 'checkboxes', 'agent-owner-field', 'agent-collective-field'];
 
