@@ -10,11 +10,6 @@ app.component('registration-results', {
             type: Entity,
             required: true
         },
-
-        hideAppealStatus: {
-            type: Boolean,
-            default: false,
-        },
     },
     
     setup(props, { slots }) {
@@ -44,6 +39,10 @@ app.component('registration-results', {
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
         },
 
+        hideAppealStatus() {
+            return this.registration.status != 10;
+        },
+
         currentEvaluation() {
             return $MAPAS.config.appealPhaseEvaluationForm?.currentEvaluation;
         },
@@ -54,9 +53,18 @@ app.component('registration-results', {
                 `${this.phase.name} - ${this.registration.number}`;
         },
 
-        showAppealPhaseEvaluationDetails() {
-            return $MAPAS.config.continuousEvaluationDetail?.data.consolidatedDetails?.sentEvaluationCount;
-        }
+        evaluationData() {
+            return $MAPAS.config.continuousEvaluationDetail[this.registration.id];
+        },
+
+        showEvaluationDetails() {
+            if (this.phase.opportunity?.allow_proponent_response && this.evaluationData?.consolidatedDetails?.sentEvaluationCount) {
+                return true;
+            } else {
+                return this.evaluationData?.consolidatedDetails?.sentEvaluationCount
+                    || this.registration.consolidatedDetails?.sentEvaluationCount;
+            }
+        },
     },
 
     methods: {
