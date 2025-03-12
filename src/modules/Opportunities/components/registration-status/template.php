@@ -43,7 +43,7 @@ $this->import('
             <div class="registration-results" v-if="registration.opportunity.isReportingPhase === '1' || registration.opportunity.isFinalReportingPhase === '1'">
                 <button class="button button--primary button--sm button--large" @click="redirectToRegistrationForm()"><?php i::_e('Visualizar relatório') ?></button>
             </div>
-            <registration-results v-if="phase.publishEvaluationDetails" :registration="registration" :phase="phase"></registration-results>
+            <registration-results v-if="showRegistrationResults" :registration="registration" :phase="phase"></registration-results>
         </div>
     </div>
 </div>
