@@ -130,9 +130,11 @@ $this->import('
                                     <input ref="allHeaders" type="checkbox" @click="showAllHeaders()" :checked="allHeadersActive"> <?= i::__('Todas as colunas') ?>
                                 </label>
 
-                                <label v-for="column in columns" class="field__checkbox">
-                                    <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
-                                </label>
+                                <template v-for="column in columns">
+                                    <label v-if="column.text" class="field__checkbox">
+                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                    </label>
+                                </template>
                             </div>
 
                             <template #button="popover">

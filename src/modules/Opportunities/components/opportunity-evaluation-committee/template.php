@@ -81,7 +81,7 @@ $this->import('
                             <p v-if="infoReviewer.status == -5"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?> </p>
                         </mc-alert>
 
-                        <mc-confirm-button v-if="infoReviewer.status == -5" @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
+                        <mc-confirm-button v-if="infoReviewer.status == -5" @confirm="delReviewer(infoReviewer)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
                             <template #button="{open}">
                                 <button class="opportunity-evaluation-committee__cancel-invitation button button--text-danger button--icon button--sm col-3" @click="open()">
                                     <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
