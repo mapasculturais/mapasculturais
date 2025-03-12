@@ -15,8 +15,12 @@ app.component('evaluation-continuous-detail', {
     },
 
     computed: {
+        evaluationData() {
+            return $MAPAS.config.continuousEvaluationDetail[this.registration.id];
+        },
+
         evaluationDetails() {
-            return this.registration.evaluationsDetails ? this.registration.evaluationsDetails : $MAPAS.config.continuousEvaluationDetail.data?.evaluationsDetails;
+            return this.registration.evaluationsDetails ? this.registration.evaluationsDetails : this.evaluationData?.evaluationsDetails;
         }
     },
 

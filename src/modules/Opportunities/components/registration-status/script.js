@@ -43,7 +43,18 @@ app.component('registration-status', {
             }
 
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
-        }
+        },
+
+        showRegistrationResults() {
+            const { isReportingPhase, __objectType, publishEvaluationDetails } = this.phase;
+            const { allow_proponent_response } = this.registration.opportunity;
+
+            if (isReportingPhase === '1' && __objectType === 'opportunity' && allow_proponent_response == '1') {
+                return false;
+            }
+
+            return publishEvaluationDetails || allow_proponent_response === '1';
+        },
     },
 
     methods: {
