@@ -10,44 +10,41 @@ $entity = $this->controller->requestedEntity;
 
 // SOLUÇÃO TEMPORÁRIA
 $class = $entity->getClassName();
-
 if($class == Registration::class) {
+
+    $registration = $this->controller->requestedEntity;
+    $registration_number = $registration->number;
     
-    $opportunity = $entity->opportunity;
+    $all_registrations = $app->repo('Registration')->findBy(['number' => $registration_number]);
+    $registrations = [];
 
-    if(!$opportunity->isReportingPhase) {
-        $opportunity = $entity->opportunity->isAppealPhase ? $entity->opportunity : $entity->opportunity->appealPhase;
+    foreach($all_registrations as $reg) {
+        if ($reg->evaluationMethod && $reg->evaluationMethod->slug == 'continuous') {
+            $registrations[] = $reg;
+            
+        }
     }
+   
+    $result = [];
+    foreach($registrations as $reg) {
+        $em = $reg->evaluationMethod;
+        $data = [
+            'consolidatedDetails' => $em->getConsolidatedDetails($reg),
+            'evaluationsDetails' => []
+        ];
 
-    $evaluation_configuration = $opportunity->evaluationMethodConfiguration;
-    $registration_appeal_phase = $app->repo('Registration')->findOneBy(['number' => $entity->number, 'opportunity' => $opportunity]);
-    if(!$evaluation_configuration) {
-        return;
+        $evaluations = $reg->sentEvaluations;
+    
+        foreach ($evaluations as $eval) {
+            $detail = $em->getEvaluationDetails($eval);
+            $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
+            $data['evaluationsDetails'][] = $detail;
+        }
+
+        $result[$reg->id] = $data;
+        
     }
     
-    $registration = $entity;
-    if (!$entity->opportunity->isAppealPhase) {
-        $registration_appeal_phase = $app->repo('Registration')->findOneBy(['number' => $entity->number, 'opportunity' => $opportunity]);
-        $registration = $registration_appeal_phase;
-    }
-
-    if (!$registration) {
-        return;
-    }
-
-    $data = [];
-    $em = $evaluation_configuration->evaluationMethod;
-    $data['consolidatedDetails'] = $em->getConsolidatedDetails($registration);
-    $data['evaluationsDetails'] = [];
-
-    $evaluations = $registration->sentEvaluations;
     
-    foreach ($evaluations as $eval) {
-        $detail = $em->getEvaluationDetails($eval);
-        $detail['valuer'] = $eval->user->profile->simplify('id,name,singleUrl');
-        $data['evaluationsDetails'][] = $detail;
-    }
-    $this->jsObject['config']['continuousEvaluationDetail'] = [
-        'data' => $data,
-    ];
+    $this->jsObject['config']['continuousEvaluationDetail'] = (object) $result;
 }
