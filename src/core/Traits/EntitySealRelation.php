@@ -52,6 +52,8 @@ trait EntitySealRelation {
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.lockedFieldSeals", [&$locked_field_seals]);
         
+        $locked_field_seals = (object) $locked_field_seals;
+
         $app->rcache->save($cache_id, $locked_field_seals);
 
         return $locked_field_seals;
