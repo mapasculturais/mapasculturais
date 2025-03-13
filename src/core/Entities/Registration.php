@@ -817,6 +817,22 @@ class Registration extends \MapasCulturais\Entity
         return (object) $locked_field_seals;
     }
 
+    /**
+     * Retorna a lista dos campos bloqueados.
+     *
+     * @return array Um array contendo os nomes dos campos bloqueados.
+     */
+    function getLockedFields() {
+        $locked_field_seals = (array) $this->lockedFieldSeals;
+
+        $locked_fields = [];
+        if (!empty($locked_field_seals)) {
+            $locked_fields = array_keys($locked_field_seals);
+        }
+
+        return $locked_fields;
+    }
+
     /** 
      * Retorna os avaliadores da inscrição agrupados pelos comitês
      * 
