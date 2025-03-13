@@ -24,6 +24,11 @@ trait EntitySealRelation {
         return self::getClassName() . 'SealRelation';
     }
 
+    /**
+     * Retorna a lista dos campos verificados e os selos que verificam cada campo
+     *
+     *  @return object Um objeto contendo os selos bloqueados de cada campo.
+     */
     function getLockedFieldSeals() {
         /** @var \MapasCulturais\Entity $this */
 
