@@ -24,6 +24,39 @@ trait EntitySealRelation {
         return self::getClassName() . 'SealRelation';
     }
 
+    function getLockedFieldSeals() {
+        /** @var \MapasCulturais\Entity $this */
+
+        $app = App::i();
+
+        $cache_id = "{$this}:lockedFieldSeals";
+
+        if($app->rcache->contains($cache_id)) {
+            return $app->rcache->fetch($cache_id);
+        }
+
+        $locked_field_seals = [];
+
+        foreach ($this->sealRelations as $seal_relation) {
+            $seal = $seal_relation->seal;
+            
+            foreach ($seal->lockedFields ?: [] as $entity_field) {
+                if (preg_match("#{$this->controllerId}\.(.*)#", $entity_field, $match)) {
+                    $field = $match[1];
+    
+                    $locked_field_seals[$field] = $locked_field_seals[$field] ?? [];
+                    $locked_field_seals[$field][] = $seal->id;
+                }
+            }
+        }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.lockedFieldSeals", [&$locked_field_seals]);
+        
+        $app->rcache->save($cache_id, $locked_field_seals);
+
+        return $locked_field_seals;
+    }
+
     function getLockedFields() {
         /** @var \MapasCulturais\Entity $this */
 
