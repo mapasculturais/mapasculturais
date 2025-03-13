@@ -217,6 +217,10 @@ class Registrations extends SpreadsheetJob
                         $formatted_values = implode(', ', $values);
                         $entity[$field->fieldName] = $formatted_values;
                     }
+
+                    if ($field->fieldType == 'checkbox') {
+                        $entity[$field->fieldName] = in_array($entity[$field->fieldName], [1, '1', true]) ? 'Sim' : $entity[$field->fieldName];
+                    }
                 }
 
                 unset($entity['@entityType']);
