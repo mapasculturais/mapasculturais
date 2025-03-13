@@ -64,6 +64,11 @@ trait EntitySealRelation {
         return $locked_field_seals;
     }
 
+    /**
+     * Retorna a lista dos campos bloqueados.
+     *
+     * @return array Um array contendo os nomes dos campos bloqueados.
+     */
     function getLockedFields() {
         /** @var \MapasCulturais\Entity $this */
 
@@ -75,15 +80,12 @@ trait EntitySealRelation {
             return $app->rcache->fetch($cache_id);
         }
 
+        $locked_field_seals = (array) $this->lockedFieldSeals;
+        
         $lockedFields = [];
 
-        foreach($this->sealRelations as $seal_relation) {
-            $seal = $seal_relation->seal;
-            foreach($seal->lockedFields ?: [] as $entity_field) {
-                if(preg_match("#{$this->controllerId}\.(.*)#", $entity_field, $match)) {
-                    $lockedFields[] = $match[1];
-                }
-            }
+        if (!empty($locked_field_seals)) {
+            $lockedFields = array_keys($locked_field_seals);
         }
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.lockedFields", [&$lockedFields]);
