@@ -56,7 +56,7 @@ $this->import('
 
 
         <template v-if="is('file')">
-            <entity-file :entity="entity" disableName="true" :titleModal="titleModal" :groupName="groupName" classes="col-12" editable button-text-value="Anexar arquivo" :disabled="readonly || disabled" :readonly="readonly"></entity-file>
+            <entity-file :entity="entity" disableName :titleModal="titleModal" :groupName="groupName" classes="col-12" editable button-text-value="Anexar arquivo" :disabled="readonly || disabled" :readonly="readonly"></entity-file>
         </template>
 
 
