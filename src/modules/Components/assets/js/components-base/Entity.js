@@ -12,6 +12,9 @@ class Entity {
 
         this.__originalValues = {};
 
+        this.__lockedFields = [];
+        this.__lockedFieldSeals = {};
+
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('mc-entity');
     }
@@ -32,6 +35,14 @@ class Entity {
         ];
         
         this.populateId(obj);
+
+        if(obj.lockedFields) {
+            this.__lockedFields = obj.lockedFields;
+        }
+
+        if(obj.lockedFieldSeals) {
+            this.__lockedFieldSeals = obj.lockedFieldSeals;
+        }
 
         for (const prop of defaultProperties) {
             if (this[prop] && !obj[prop]) {
@@ -320,6 +331,30 @@ class Entity {
 
     get __objectId() {
         return `${this.__scope}-${this.__objectType}-${this.id}`;
+    }
+
+    get lockedFields() {
+        return this.__lockedFields;
+    }
+
+    get lockedFieldSeals() {
+        const result = this.__lockedFieldSeals;
+        const sealsById = {};
+        if(this.seals) {
+            for(let seal of this.seals) {
+                sealsById[seal.sealId] = seal;
+            }
+        }
+
+        if(this.seals && this.seals.length > 0) {
+            for(let field in result) {
+                result[field] = result[field].map((sealId) => {
+                    return sealsById[sealId];
+                });
+            }
+        }
+
+        return result;
     }
 
     get $RELATIONS() {
