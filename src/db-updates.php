@@ -2671,6 +2671,20 @@ $$
                 'requestEventRelation');");
     },
 
+    'Normalização dos campos do tipo checkbox nas inscrições' => function() {
+        __exec("UPDATE registration_meta rm
+		           SET value = '1'
+                  FROM registration r
+                  JOIN (SELECT opportunity_id, array_agg('field_' || rfc.id) AS fields
+                          FROM registration_field_configuration rfc
+                         WHERE rfc.field_type = 'checkbox'
+                      GROUP BY opportunity_id
+                       ) AS towcf ON towcf.opportunity_id = r.opportunity_id
+                 WHERE rm.object_id = r.id
+                   AND rm.value != '1'
+                   AND rm.key = ANY(towcf.fields);");
+    },
+
     // SEMPRE ENCERRAR O ÚLTIMO ITEM COM VÍRGULA A FIM DE
     // MINIMIZAR RISCO DE ERRO NA INSERÇÃO OU MERGE DE NOVOS ITENS
     
