@@ -71,5 +71,11 @@ jobs:
       -
         name: Deploy to Kubernetes
         run: |
+          IMAGE="docker.io/hacklab/mapasculturais:${{ steps.tag.outputs.tag }}"
+          
+          echo "============================================"
+          echo "Iniciando o deploy no Kubernetes..."
+          echo "Aplicando a imagem: $IMAGE"
+          echo "============================================"
           # Atualiza a imagem do deployment no Kubernetes
-          kubectl set image deployment/mapasculturais mapas=docker.io/hacklab/mapasculturais:${{ steps.tag.outputs.tag }} --namespace=mapas-homolog
+          kubectl set image deployment/mapasculturais mapas=$IMAGE --namespace=mapas-homolog
