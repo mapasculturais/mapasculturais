@@ -333,11 +333,11 @@ class Entity {
         return `${this.__scope}-${this.__objectType}-${this.id}`;
     }
 
-    get lockedFields() {
+    get $lockedFields() {
         return this.__lockedFields;
     }
 
-    get lockedFieldSeals() {
+    get $lockedFieldSeals() {
         const result = this.__lockedFieldSeals;
         const sealsById = {};
         if(this.seals) {
