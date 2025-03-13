@@ -784,6 +784,34 @@ class Registration extends \MapasCulturais\Entity
         return $exceptions->exclude;
     }
 
+    function getLockedFieldSeals() {
+        $owner_locked_field_seals = (array) $this->owner->lockedFieldSeals;
+
+        $related_agents = $this->relatedAgents ?: [];
+        $collective_locked_field_seals = [];
+        
+        if(isset($related_agents['coletivo'])) {
+            $collective_locked_field_seals = (array) $related_agents['coletivo'][0]->lockedFieldSeals;
+        }
+
+        $locked_field_seals = [];
+
+        $fields = $this->opportunity->registrationFieldConfigurations;
+
+        foreach($fields as $field) {
+            if($field->fieldType == 'agent-owner-field' && isset($owner_locked_field_seals[$field->config['entityField']])) {
+                $locked_field_seals[$field->fieldName] = $owner_locked_field_seals[$field->config['entityField']];
+                
+            }
+
+            if($field->fieldType == 'agent-collective-field' && isset($collective_locked_field_seals[$field->config['entityField']])) {
+                $locked_field_seals[$field->fieldName] = $collective_locked_field_seals[$field->config['entityField']];
+            }
+        }
+        
+        return (object) $locked_field_seals;
+    }
+
     /** 
      * Retorna os avaliadores da inscrição agrupados pelos comitês
      * 
