@@ -376,6 +376,7 @@ app.component('entity-field', {
 
         isReadonly() {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
+            const lockedFieldSeals = this.entity.__lockedFieldSeals;
 
             if(this.description.readonly) {
                 if(userPermission || !this.value) {
@@ -383,6 +384,10 @@ app.component('entity-field', {
                 } else {
                     this.readonly = true;
                 }
+            }
+
+            if(lockedFieldSeals && lockedFieldSeals[this.prop]) {
+                this.readonly = true;
             }
         }
     },
