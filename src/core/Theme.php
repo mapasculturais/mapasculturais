@@ -1035,11 +1035,11 @@ abstract class Theme {
             }
 
             if(method_exists($entity_class_name, 'getLockedFields')) {
-                $e['lockedFields'] = $request_entity->lockedFields;
+                $e['__lockedFields'] = $request_entity->lockedFields;
             }
 
             if(method_exists($entity_class_name, 'getLockedFieldSeals')) {
-                $e['lockedFieldSeals'] = $request_entity->lockedFieldSeals;
+                $e['__lockedFieldSeals'] = $request_entity->lockedFieldSeals;
             }
 
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);

@@ -36,12 +36,12 @@ class Entity {
         
         this.populateId(obj);
 
-        if(obj.lockedFields) {
-            this.__lockedFields = obj.lockedFields;
+        if(obj.__lockedFields) {
+            this.__lockedFields = obj.__lockedFields;
         }
 
-        if(obj.lockedFieldSeals) {
-            this.__lockedFieldSeals = obj.lockedFieldSeals;
+        if(obj.__lockedFieldSeals) {
+            this.__lockedFieldSeals = obj.__lockedFieldSeals;
         }
 
         for (const prop of defaultProperties) {
@@ -339,14 +339,13 @@ class Entity {
 
     get $lockedFieldSeals() {
         const result = this.__lockedFieldSeals;
-        const sealsById = {};
-        if(this.seals) {
+        if(this.seals && this.seals.length > 0) {
+            const sealsById = {};
+            
             for(let seal of this.seals) {
                 sealsById[seal.sealId] = seal;
             }
-        }
 
-        if(this.seals && this.seals.length > 0) {
             for(let field in result) {
                 result[field] = result[field].map((sealId) => {
                     return sealsById[sealId];
