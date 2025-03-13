@@ -5,9 +5,9 @@ return [
         'config' => [
             'links' => [
                 'painel-agentes' => [
-                    'link' => 'https://mapa.cultura.gov.br/', // dashboard dos agentes
-                    'text' => 'Saiba os números de agentes individuais cadastrados, quantos são criados mensalmente, por onde estão distribuídos no território e outras informações.',
-                    'title' => 'Painel sobre agentes individuais',
+                    'link' => 'https://metabase.cultura.gov.br/public/dashboard/5f06b042-190b-4f3e-8652-26af9283a562', // dashboard dos agentes
+                    'text' => 'Agentes Culturais',
+                    'title' => 'Agentes Culturais',
                     'entity' => 'Agent'
                 ],
                 'painel-espacos' => [
@@ -17,9 +17,9 @@ return [
                     'entity' => 'Space'
                 ],
                 'painel-oportunidades' => [
-                    'link' => 'https://mapa.cultura.gov.br/', //dashboard das oportunidade
-                    'text' => 'Tenha acesso ao número de oportunidades e editais cadastrados, a quantidade de pessoas participantes inscritas, o perfil demográfico e mais informações.',
-                    'title' => 'Painel sobre oportunidades',
+                    'link' => 'https://metabase.cultura.gov.br/public/dashboard/21db967a-ee98-4e82-9a18-fc6a41a1f1da', //dashboard das oportunidade
+                    'text' => 'Ações Culturais e Instrumentos de Fomento',
+                    'title' => 'Ações Culturais e Instrumentos de Fomento',
                     'entity' => 'Opportunity'
                 ],
             ],
