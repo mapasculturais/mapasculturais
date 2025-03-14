@@ -2,13 +2,12 @@ app.component('entity-field', {
     template: $TEMPLATES['entity-field'],
     emits: ['change', 'save'],
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
+    setup(props) {
+        const propId = Vue.useId();
+        return { propId };
     },
 
     data() {         
-        let uid = Math.random().toString(36).slice(2);
         let description, 
             value = this.entity[this.prop];
 
@@ -82,7 +81,6 @@ app.component('entity-field', {
         return {
             __timeout: null,
             description: description,
-            propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType,
             currencyValue: this.entity[this.prop],
             readonly: false,
