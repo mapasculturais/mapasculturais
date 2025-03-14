@@ -171,8 +171,13 @@ app.component('documentary-evaluation-form', {
         },
 
         lockedFields() {
-            const sealIds = this.lockedFieldSeals[`field_${this.fieldId}`];
-            return sealIds && sealIds.length > 0;
+            const lockedFields = this.entity.__lockedFields;
+            if (lockedFields.includes(`field_${this.fieldId}`)) {
+                const sealIds = this.lockedFieldSeals[`field_${this.fieldId}`];
+                return sealIds && sealIds.length > 0;
+            }
+
+            return false;
         },
 
         getSealInfo(fieldId) {
@@ -196,7 +201,7 @@ app.component('documentary-evaluation-form', {
         },
 
         formatSealsInfo(seals) {
-            return seals.map(seal => `<strong>${seal.name}</strong> em ${seal.validateDate}.`).join(', ');
+            return seals.map(seal => `<strong>${seal.name}</strong> em ${seal.validateDate}`).join(', ');
         },
     },
 });
