@@ -12,7 +12,7 @@ app.component('entity-field-seals', {
         },
     },
 
-    emits: ['select'],
+    emits: ['count', 'select'],
 
     setup () {
         const text = Utils.getTexts('entity-field-seals');
@@ -40,6 +40,7 @@ app.component('entity-field-seals', {
                 } else if (this.seals.length === 1) {
                     this.setSeal(this.seals[0]);
                 }
+                this.$emit('count', this.seals.length);
             },
             immediate: true,
         },
