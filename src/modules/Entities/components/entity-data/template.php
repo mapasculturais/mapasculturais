@@ -39,7 +39,7 @@ $this->import('
         <!-- #endregion entity-data__value -->
 
         <slot name="seals">
-            <entity-field-seals class="entity-data__seals" :entity="entity" :prop="prop" @select="changeSeal"></entity-field-seals>
+            <entity-field-seals class="entity-data__seals" :entity="entity" :prop="prop"></entity-field-seals>
         </slot>
     </div>
 
@@ -50,8 +50,4 @@ $this->import('
             </small>
         </div>
     </div>
-
-    <slot name="description">
-        <p class="entity-field-seal-text" v-if="sealingText">{{ sealingText }}</p>
-    </slot>
 </div>

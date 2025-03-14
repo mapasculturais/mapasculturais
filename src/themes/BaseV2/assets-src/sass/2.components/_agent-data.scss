@@ -68,6 +68,7 @@
     }
 
     &__fields {
+        column-gap: size(16);
         display: grid;
         grid-template-columns: 1fr 1fr;
 

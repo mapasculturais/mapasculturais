@@ -338,16 +338,16 @@ class Entity {
     }
 
     get $lockedFieldSeals() {
-        const result = this.__lockedFieldSeals;
+        const result = {};
         if(this.seals && this.seals.length > 0) {
             const sealsById = {};
             
-            for(let seal of this.seals) {
+            for (const seal of this.seals) {
                 sealsById[seal.sealId] = seal;
             }
 
-            for(let field in result) {
-                result[field] = result[field].map((sealId) => {
+            for (const field in this.__lockedFieldSeals) {
+                result[field] = this.__lockedFieldSeals[field].map((sealId) => {
                     return sealsById[sealId];
                 });
             }

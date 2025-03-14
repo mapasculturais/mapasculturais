@@ -21,10 +21,7 @@ app.component('entity-field-seals', {
     
     computed: {
         seals () {
-            const sealIds = this.entity.__lockedFieldSeals?.[this.prop] ?? [];
-            return sealIds.map((sealId) => {
-                return this.entity.seals?.find((seal) => seal.sealId == sealId);
-            }).filter(Boolean);
+            return this.entity.$lockedFieldSeals?.[this.prop] ?? [];
         },
     },
 
@@ -53,6 +50,13 @@ app.component('entity-field-seals', {
                 mcDate = new McDate(date.date);
             }
             return mcDate.date('2-digit year');
+        },
+
+        formatText (seal) {
+            return this.text('validadoPor', {
+                authority: seal.name,
+                date: this.formatDate(seal.createTimestamp.date),
+            })
         },
 
         setSeal (seal) {

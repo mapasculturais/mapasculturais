@@ -84,7 +84,6 @@ app.component('entity-field', {
             fieldType,
             currencyValue: this.entity[this.prop],
             readonly: false,
-            sealingText: null,
             selectedOptions: [],
         }
     },
@@ -349,10 +348,6 @@ app.component('entity-field', {
                 event.target.style.height = "auto";
                 event.target.style.height = (event.target.scrollHeight + 20) + "px";
             }
-        },
-
-        changeSeal (event) {
-            this.sealingText = event.text;
         },
 
         is(type) {
