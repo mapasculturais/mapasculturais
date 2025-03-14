@@ -2337,7 +2337,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$location',
             }
         });
         $scope.findRegistrations = function(){
-            if(registrationsApi.finish()){
+            if($scope.data.findingRegistrations && registrationsApi.finish()){
                 return null;
             }
             $scope.data.findingRegistrations = true;
