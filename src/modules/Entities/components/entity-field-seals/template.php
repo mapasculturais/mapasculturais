@@ -1,0 +1,20 @@
+<?php
+/**
+ * @var MapasCulturais\App $app
+ * @var MapasCulturais\Themes\BaseV2\Theme $this
+ */
+
+$this->import('
+    mc-avatar
+    mc-icon
+');
+?>
+
+<div class="entity-field-seals">
+    <div class="entity-field-seal" v-for="seal of seals" :key="seal.sealRelationId" :title="seal.name">
+        <a class="entity-field-seal__image" href="javascript:void(0)" tabindex="0" @click="setSealTouch(seal)" @mouseenter="setSeal(seal)" @mouseleave="setSeal(null)">
+            <mc-avatar v-if="seal.files?.avatar" :entity="seal" size="small" square></mc-avatar>
+            <mc-icon v-else name="seal"></mc-icon>
+        </a>
+    </div>
+</div>
