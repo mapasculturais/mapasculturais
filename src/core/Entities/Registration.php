@@ -1509,9 +1509,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         if(!$this->opportunity->isRegistrationOpen()){
-            return $this->canUser('@control') && 
-                    $this->sentTimestamp && 
-                    $this->opportunity->publishedRegistrations;
+            return $this->canUser('@control') && $this->sentTimestamp;
         }
 
         if($this->getSendValidationErrors()){
