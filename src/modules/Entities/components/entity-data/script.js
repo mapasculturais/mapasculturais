@@ -24,6 +24,12 @@ app.component('entity-data', {
         return { text, hasSlot }
     },
 
+    data () {
+        return {
+            sealingText: null,
+        }
+    },
+
     computed: {
         description() {
             const description = this.entity.$PROPERTIES[this.prop];
@@ -46,4 +52,10 @@ app.component('entity-data', {
             return this.description.type;
         },
     },
+
+    methods: {
+        changeSeal (event) {
+            this.sealingText = event.text;
+        },
+    }
 });
