@@ -5,6 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.28] - 2025-03-14
+### Correção
+- Corrige slug do método de avaliação habilitaçào documental
+- Corrige erro que impedia a paginação das inscrições com o botão carregar mais na lista de inscritos e suporte
+- Ajusta a permissão canUserSent() da inscrição para permitir que o proponente envie a inscrição após o prazo, caso já a tenha enviado anteriormente dentro do período vigente.
+
 ## [7.5.27] - 2025-02-27
 ### Correção
 - Corrige a exibição do status da entidade no componente de tabelas 'entity-table'
