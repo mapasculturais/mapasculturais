@@ -859,7 +859,7 @@ class Registration extends \MapasCulturais\Entity
                 'name' => $relation->seal->name,
                 'files' => $relation->seal->files ?? null,
                 'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->id]),
-                'createTimestamp' => $relation->seal->createTimestamp,
+                'createTimestamp' => $relation->createTimestamp,
                 'isVerificationSeal' => in_array($relation->seal->id, $app->config['app.verifiedSealsIds']),
             ];
         }
