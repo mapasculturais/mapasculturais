@@ -844,7 +844,7 @@ class Registration extends \MapasCulturais\Entity
         $seals = [];
         $owner_seals = $this->owner->sealRelations;
         $related_agents = $this->relatedAgents ?: [];
-        $collective_seals = isset($related_agents['coletivo']) ? $related_agents['coletivo'][0]->seals : [];
+        $collective_seals = isset($related_agents['coletivo']) ? $related_agents['coletivo'][0]->sealRelations : [];
 
         $all_seals = array_merge($owner_seals, $collective_seals);
 
