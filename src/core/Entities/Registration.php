@@ -833,6 +833,22 @@ class Registration extends \MapasCulturais\Entity
         return $locked_fields;
     }
 
+    /**
+     * Obtém as relações de selos do proprietário e dos agentes relacionados.
+     *
+     * @return array Retorna um array contendo todos os selos do proprietário e do coletivo.
+     */
+    function getAgentSealRelations() {
+        $seals = [];
+        $owner_seals = $this->owner->sealRelations;
+        $related_agents = $this->relatedAgents ?: [];
+        $collective_seals = isset($related_agents['coletivo']) ? $related_agents['coletivo'][0]->seals : [];
+        
+        $seals = array_merge($owner_seals, $collective_seals);
+
+        return $seals;
+    }
+
     /** 
      * Retorna os avaliadores da inscrição agrupados pelos comitês
      * 
