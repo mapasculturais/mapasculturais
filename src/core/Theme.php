@@ -1032,6 +1032,10 @@ abstract class Theme {
                         $e[$field] = $value;
                     }
                 }
+
+                if(method_exists($entity_class_name, 'getAgentSealRelations')) {
+                    $e['seals'] = $request_entity->agentSealRelations;
+                }
             }
 
             if(method_exists($entity_class_name, 'getLockedFields')) {
