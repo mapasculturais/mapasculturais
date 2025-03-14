@@ -18,6 +18,7 @@
     &__input {
         align-items: center;
         display: flex;
+        flex-wrap: wrap;
         gap: size(8);
 
         & > :first-child {
@@ -28,10 +29,11 @@
     &__length {
         text-align: right;
         margin-right: size(10);
-        margin-top: size(-28);
+        margin-top: size(-40);
         font-size: $font-size-xxs;
         font-style: italic;
         color: $low-300;
+        width: 100%;
     }
 
     &__error {

@@ -18,12 +18,6 @@ app.component('entity-field-seals', {
         const text = Utils.getTexts('entity-field-seals');
         return { text };
     },
-
-    data () {
-        return {
-            fadeTimeout: null,
-        }
-    },
     
     computed: {
         seals () {
@@ -39,17 +33,13 @@ app.component('entity-field-seals', {
             handler () {
                 if (this.seals.length === 0) {
                     this.setSeal(null);
-                } else if (this.seals.length === 1) {
+                } else {
                     this.setSeal(this.seals[0]);
                 }
                 this.$emit('count', this.seals.length);
             },
             immediate: true,
         },
-    },
-
-    unmounted () {
-        this.removeTimeout();
     },
 
     methods: {
@@ -65,17 +55,12 @@ app.component('entity-field-seals', {
             return mcDate.date('2-digit year');
         },
 
-        removeTimeout () {
-            if (this.fadeTimeout) {
-                globalThis.clearTimeout(this.fadeTimeout);
-                this.fadeTimeout = null;
-            }
-        },
-
         setSeal (seal) {
-            this.removeTimeout();
             if (seal) {
-                const text = this.text('validadoPor', { authority: seal.name, date: this.formatDate(seal.createTimestamp.date) })
+                const text = this.text('validadoPor', {
+                    authority: seal.name,
+                    date: this.formatDate(seal.createTimestamp.date),
+                });
                 this.$emit('select', { seal, text });
             } else if (this.seals.length > 1) {
                 this.$emit('select', { seal: null, text: null });
@@ -85,9 +70,6 @@ app.component('entity-field-seals', {
         setSealTouch (seal) {
             if (this.$media('(pointer: coarse)')) {
                 this.setSeal(seal);
-                this.fadeTimeout = globalThis.setTimeout(() => {
-                    this.setSeal(null);
-                }, 10_000);
             }
         }
     },
