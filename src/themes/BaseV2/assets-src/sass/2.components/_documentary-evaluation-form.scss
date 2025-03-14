@@ -29,4 +29,12 @@
             min-height: size(155);
         }
     }
+
+    &__verification {
+        &__seals-image {
+            display: flex;
+            gap: size(16);
+            flex-wrap: wrap;
+        }
+    }
 }
