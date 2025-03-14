@@ -28,7 +28,9 @@ app.component('entity-field-seals', {
     computed: {
         seals () {
             const sealIds = this.entity.__lockedFieldSeals?.[this.prop] ?? [];
-            return sealIds.map((sealId) => this.getSealById(sealId));
+            return sealIds.map((sealId) => {
+                return this.entity.seals?.find((seal) => seal.sealId == sealId);
+            }).filter(Boolean);
         },
     },
 
@@ -63,10 +65,6 @@ app.component('entity-field-seals', {
             return mcDate.date('2-digit year');
         },
 
-        getSealById (sealId) {
-            return this.entity.seals?.find((seal) => seal.sealId == sealId);
-        },
-
         removeTimeout () {
             if (this.fadeTimeout) {
                 globalThis.clearTimeout(this.fadeTimeout);
@@ -76,7 +74,6 @@ app.component('entity-field-seals', {
 
         setSeal (seal) {
             this.removeTimeout();
-            console.log({ seal });
             if (seal) {
                 const text = this.text('validadoPor', { authority: seal.name, date: this.formatDate(seal.createTimestamp.date) })
                 this.$emit('select', { seal, text });
