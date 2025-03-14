@@ -839,13 +839,31 @@ class Registration extends \MapasCulturais\Entity
      * @return array Retorna um array contendo todos os selos do proprietário e do coletivo.
      */
     function getAgentSealRelations() {
+        $app = App::i();
+        
         $seals = [];
         $owner_seals = $this->owner->sealRelations;
         $related_agents = $this->relatedAgents ?: [];
         $collective_seals = isset($related_agents['coletivo']) ? $related_agents['coletivo'][0]->seals : [];
-        
-        $seals = array_merge($owner_seals, $collective_seals);
 
+        $all_seals = array_merge($owner_seals, $collective_seals);
+
+        if (empty($all_seals)) {
+            return [];
+        }
+        
+        foreach ($all_seals as $relation) {
+            $seals[] = [
+                'sealRelationId' => $relation->id,
+                'sealId' => $relation->seal->id,
+                'name' => $relation->seal->name,
+                'files' => $relation->seal->files ?? null,
+                'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->id]),
+                'createTimestamp' => $relation->seal->createTimestamp,
+                'isVerificationSeal' => in_array($relation->seal->id, $app->config['app.verifiedSealsIds']),
+            ];
+        }
+    
         return $seals;
     }
 
