@@ -35,7 +35,7 @@ $this->import('
         </div>
         <input type="hidden" v-model="formData.data[fieldId].label" @change="setEvaluationData(fieldId)" />
 
-        <div v-if="lockedFields" class="field documentary-evaluation-form__verification">
+        <div v-if="lockedFields()" class="field documentary-evaluation-form__verification">
             <div class="documentary-evaluation-form__verification__seals-image">
                 <div v-for="seal in getSealInfo(fieldId)" :key="seal.name">
                     <mc-avatar :entity="seal" size="small" square></mc-avatar>
