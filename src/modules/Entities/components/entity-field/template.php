@@ -150,12 +150,10 @@ $this->import('
             <div v-if="maxLength && (is('string') || is('text') || is('textarea'))" class="field__length">{{ value ? value?.length : '0' }}/{{maxLength}}</div>
         </slot>
 
-        <entity-field-seals :entity="entity" :prop="prop" @select="changeSeal"></entity-field-seals>
+        <entity-field-seals :entity="entity" :prop="prop"></entity-field-seals>
     </div>
 
     <small class="field__description" v-if="!descriptionFirst && (!hideDescription && (fieldDescription || description.description))"> {{ fieldDescription || description.description}} </small>
-
-    <p class="entity-field-seal-text" v-if="sealingText">{{ sealingText }}</p>
 
     <small class="field__error" v-if="hasErrors">
         {{errors.join('; ')}}
