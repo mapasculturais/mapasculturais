@@ -1023,16 +1023,29 @@ abstract class Theme {
                 $e['profile']['currentUserPermissions'] = $permissions;
             }
 
+            $request_entity = $this->controller->requestedEntity;
             
             if($entity_class_name == Registration::class) {
-                $en = $this->controller->requestedEntity;
-                $meta = $en->jsonSerialize();
+                $meta = $request_entity->jsonSerialize();
                 foreach($meta as $field => $value) {
                     if (str_starts_with($field, "field_")) {
                         $e[$field] = $value;
                     }
                 }
+
+                if(method_exists($entity_class_name, 'getAgentSealRelations')) {
+                    $e['seals'] = $request_entity->agentSealRelations;
+                }
             }
+
+            if(method_exists($entity_class_name, 'getLockedFields')) {
+                $e['__lockedFields'] = $request_entity->lockedFields;
+            }
+
+            if(method_exists($entity_class_name, 'getLockedFieldSeals')) {
+                $e['__lockedFieldSeals'] = $request_entity->lockedFieldSeals;
+            }
+
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
             $this->jsObject['requestedEntity'] = $e;
         }
