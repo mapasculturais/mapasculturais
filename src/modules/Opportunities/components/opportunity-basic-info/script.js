@@ -59,7 +59,7 @@ app.component('opportunity-basic-info' , {
 
                     if(!this.entity.registrationFrom){
                         let actualDate = new Date();
-                        this.entity.registrationFrom = new McDate(actualDate);
+                        this.entity.registrationFrom = Vue.reactive(new McDate(actualDate));
                     }
                     
                     this.lastPhase.name = this.text("Resultado");
