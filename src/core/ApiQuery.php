@@ -2717,6 +2717,7 @@ class ApiQuery {
                 }
 
                 $this->_relatedSeals[$entity_id][] = [
+                    '__objectType' => 'seal', // Added for compatibility with <mc-avatar>
                     'sealRelationId' => $relation->relation_id,
                     'sealId' => $relation->seal_id,
                     'name' => $relation->seal_name,
