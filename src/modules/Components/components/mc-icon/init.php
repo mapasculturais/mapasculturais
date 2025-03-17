@@ -16,6 +16,7 @@ $iconset = [
     'event' => 'bxs:calendar-event',
     'project' => 'ri:file-list-2-fill',
     'opportunity' => 'mdi:lightbulb-on',
+    'seal' => 'mdi:seal-variant',
 
     // redes sociais
     'facebook' => 'brandico:facebook',
@@ -115,7 +116,6 @@ $iconset = [
     'question' => 'fe:question',
     'required' => 'fontisto:asterisk',
     'role'  => 'ri:profile-line',
-    'seal' => 'mdi:seal-variant',
     'select' => 'octicon:single-select-24',
     'search' => 'ant-design:search-outlined',
     'selected' => 'grommet-icons:radial-selected',
