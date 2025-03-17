@@ -854,6 +854,7 @@ class Registration extends \MapasCulturais\Entity
         
         foreach ($all_seals as $relation) {
             $seals[] = [
+                '__objectType' => 'seal', // Added for compatibility with <mc-avatar>
                 'sealRelationId' => $relation->id,
                 'sealId' => $relation->seal->id,
                 'name' => $relation->seal->name,
