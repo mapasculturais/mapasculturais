@@ -47,7 +47,8 @@ app.component('documentary-evaluation-form', {
             userName: '',
             isEditable: this.editable,
             evaluationData: $MAPAS.config.documentaryEvaluationForm.evaluationData?.evaluationData || {},
-            newStatus: null
+            newStatus: null,
+            lockedFieldSeals: this.entity.__lockedFieldSeals,
         };
     },
 
@@ -167,6 +168,40 @@ app.component('documentary-evaluation-form', {
             }
     
             return true;
-        }
+        },
+
+        lockedFields() {
+            const lockedFields = this.entity.__lockedFields;
+            if (lockedFields.includes(`field_${this.fieldId}`)) {
+                const sealIds = this.lockedFieldSeals[`field_${this.fieldId}`];
+                return sealIds && sealIds.length > 0;
+            }
+
+            return false;
+        },
+
+        getSealInfo(fieldId) {
+            const sealIds = this.lockedFieldSeals[`field_${fieldId}`];
+            if (sealIds && sealIds.length > 0) {
+                return sealIds.map(sealId => {
+                    const sealRelation = this.entity.seals.find(sealRelation => sealRelation.seal.id === sealId);
+                    if (sealRelation) {
+                        return {
+                            ...sealRelation.seal, 
+                            validateDate: sealRelation.validateDate, 
+                            files: {
+                                avatar: sealRelation.seal.files?.avatar 
+                            }
+                        };
+                    }
+                    return null;
+                }).filter(info => info !== null);
+            }
+            return [];
+        },
+
+        formatSealsInfo(seals) {
+            return seals.map(seal => `<strong>${seal.name}</strong> em ${seal.validateDate}`).join(', ');
+        },
     },
 });

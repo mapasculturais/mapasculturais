@@ -60,7 +60,7 @@
     &__title,
     &__secondTitle {
         margin: size(16) 0 size(16) 0;
-        font-family: 'Open Sans';
+        font-family: $font-body;
         font-style: normal;
         font-weight: 700;
         font-size: size(18);
@@ -68,6 +68,7 @@
     }
 
     &__fields {
+        column-gap: size(16);
         display: grid;
         grid-template-columns: 1fr 1fr;
 
@@ -79,8 +80,8 @@
         &--field {
             margin-bottom: size(16);
 
-            label {
-                font-family: 'Open Sans';
+            label, .entity-data__label {
+                font-family: $font-body;
                 font-style: normal;
                 font-weight: 600;
                 font-size: size(14);
