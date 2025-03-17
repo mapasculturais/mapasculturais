@@ -29,7 +29,7 @@ $this->import('
     mc-container
     mc-tabs
     mc-tab
-
+    entity-file
 ');
 
 $label = $this->isRequestedEntityMine() ? i::__('Meus agentes') : i::__('Agentes');
@@ -109,7 +109,9 @@ $this->breadcrumb = [
                                 <entity-field :entity="entity" classes="col-12" prop="nomeCompleto" label="<?= i::__('Nome Completo') ?>"></entity-field>
                                 <entity-field v-if="global.auth.is('admin')" :entity="entity" prop="type" @change="entity.save(true).then(() => global.reload())" classes="col-12"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="cpf"></entity-field>
+                                <entity-field :disabled="!(entity?.cpf?.length == 14)" :entity="entity" classes="col-12" prop="cpfAnexo" title-modal="<?php i::_e('Anexar CPF - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cpf" :hide-label="true"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="cnpj" label="<?= i::__('MEI (CNPJ do MEI)') ?>"></entity-field>
+                                <entity-field :disabled="!(entity?.cnpj?.length == 18)" :entity="entity" classes="col-12" prop="cnpjAnexo" title-modal="<?php i::_e('Anexar CNPJ - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnpj" :hide-label="true"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="emailPrivado" label="<?= i::__('E-mail pessoal') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="telefonePublico" label="<?= i::__('Telefone público com DDD') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" prop="emailPublico" label="<?= i::__('E-mail público') ?>"></entity-field>
@@ -117,6 +119,28 @@ $this->breadcrumb = [
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone2" label="<?= i::__('Telefone privado 2 com DDD') ?>"></entity-field>
                                 <div class="col-12 divider"></div>
                                 <entity-location :entity="entity" classes="col-12" editable></entity-location>
+                            </div>
+                        </template>
+                    </mc-card>
+                    <mc-card>
+                        <template #title>
+                            <h3 class="bold"><?php i::_e("Outros documentos"); ?></h3>
+                            <p class="data-subtitle"><?php i::_e("Outros documentos"); ?></p>
+                        </template>
+                        <template #content>
+                            <div class="grid-12">
+                                <p class="col-12 data-subtitle bold"><?php i::_e("CNH"); ?></p>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhNumero" label="<?= i::__('Número de registro') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhCategoria" label="<?= i::__('Categoria') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="cnhValidade" label="<?= i::__('Validade') ?>"></entity-field>
+                                <entity-field :disabled="!(entity?.cnhNumero && entity?.cnhCategoria?.length && entity?.cnhValidade)" :entity="entity" classes="col-12" prop="cnhAnexo" title-modal="<?php i::_e('Anexar CNH - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-cnh" :hide-label="true"></entity-field>
+                                <div class="col-12 divider"></div>
+                                <p class="col-12 data-subtitle bold"><?php i::_e("RG"); ?></p>
+                                <entity-field :entity="entity" classes="col-5 sm:col-12" prop="rgNumero" label="<?= i::__('Documento') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-3 sm:col-12" prop="rgOrgaoEmissor" label="<?= i::__('Órgão Emissor') ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-4 sm:col-12" prop="rgUF" label="<?= i::__('UF') ?>"></entity-field>                            
+                                <entity-field :disabled="!(entity?.rgNumero && entity?.rgOrgaoEmissor && entity?.rgUF)" :entity="entity" classes="col-12" prop="rgAnexo" title-modal="<?php i::_e('Anexar RG - Formatos: (png, jpeg, pdf)') ?>" group-name="docs-rg" :hide-label="true"></entity-field>
+
                             </div>
                         </template>
                     </mc-card>

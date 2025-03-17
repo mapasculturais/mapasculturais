@@ -1054,6 +1054,7 @@ return [
             __exec("ALTER TABLE registration_evaluation ADD is_tiebreaker BOOLEAN DEFAULT FALSE");
         }
     },
+
     'create table workplan' => function () {
         __exec("CREATE TABLE registration_workplan (
           id SERIAL PRIMARY KEY,
@@ -1161,6 +1162,10 @@ return [
             ) AS recent_revision
             WHERE r.id = recent_revision.object_id;
         ");
+    },
+
+    'define a coluna id da tabela permission_cache_pending como auto incremet' => function() {
+        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
     },
 
     /// MIGRATIONS - DATA CHANGES =========================================
@@ -2136,7 +2141,7 @@ $$
         
         }
 
-    },
+    }, 
     'corrige metadados criados por erro em inscricoes de fases' => function () use ($conn, $app) {
         $opp_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE parent_id IS NOT NULL");
         foreach ($opp_ids as $opportunity) {
@@ -2548,16 +2553,6 @@ $$
         __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
     },
 
-    'define valores default para as colunas ids das tabelas sem default' => function() {
-        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
-        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
-        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
-        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
-        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
-        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
-        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
-    },
-
     'Adiciona novas áreas de atuação' => function() {
         __try("
         WITH areas_novas(name) AS (
@@ -2674,5 +2669,54 @@ $$
                 'createEvents',
                 'requestEventRelation');");
     },
+    
+    "Removendo os campos e anexos de formulário erroneamente duplicados pela funcionalidade 'Duplicar Oportunidade'" => function() {
+        __try("DELETE FROM registration_field_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+
+        __try("DELETE FROM registration_file_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+    },
+
+    'define valores default para as colunas ids das tabelas sem default' => function() {
+        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
+        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
+        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
+        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
+        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
+        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
+    },
+
+    'refatoração dos índices da tabela pcache' => function () {
+        __exec('CREATE INDEX pcache_object_user_action_idx ON pcache (user_id, object_type, action)');
+
+        // remove índice duplicado
+        // "pcache_permission_user_idx" btree (object_type, object_id, action, user_id)
+        // "unique_object_action" UNIQUE, btree (object_type, object_id, action, user_id)
+        __exec('DROP INDEX pcache_permission_user_idx');
+    },
+
+    'remove entradas da tabela pcache não mais utilizadas' => function () {
+        __exec("
+            DELETE FROM pcache 
+            WHERE action NOT IN (
+                '@control',
+                'modify',
+                'view',
+                'applySeal',
+                'support',
+                'viewUserEvaluation',
+                'evaluateOnTime',
+                'createEvents',
+                'requestEventRelation');");
+    },
+
+    // SEMPRE ENCERRAR O ÚLTIMO ITEM COM VÍRGULA A FIM DE
+    // MINIMIZAR RISCO DE ERRO NA INSERÇÃO OU MERGE DE NOVOS ITENS
     
 ] + $updates ;   

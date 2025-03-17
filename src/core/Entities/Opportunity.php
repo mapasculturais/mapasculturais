@@ -779,6 +779,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $new_categories = Utils::nl2array($categories);
         }
 
+        if (is_array($new_categories)) {
+            $new_categories = array_filter($new_categories , function($category){
+                return !empty($category);
+            });
+        }
+
         $removed_categories = array_diff($this->registrationCategories, $new_categories);
         $errors = [];
 

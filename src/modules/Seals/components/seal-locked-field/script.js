@@ -36,7 +36,7 @@ app.component('seal-locked-field', {
         this.iterationAgentFields()
         this.iterationSpaceFields()
 
-        const lockedFields = [...$MAPAS.requestedEntity.lockedFields]
+        const lockedFields = [...($MAPAS.requestedEntity.lockedFields || [])]
         if(lockedFields.length > 0) {
             lockedFields.forEach(item => {
                 const lockedFieldSplit = item.split('.')
