@@ -76,7 +76,7 @@ app.component('complaint-suggestion', {
             }
 
             await api.POST(url, objt).then(res => res.json()).then(data => {
-                this.messages.success(this.text('Dados enviados com suscesso'));
+                this.messages.success(this.text('Dados enviados com sucesso'));
                 modal.close();
             });
         },
