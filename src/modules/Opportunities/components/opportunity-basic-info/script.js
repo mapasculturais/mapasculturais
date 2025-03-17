@@ -38,7 +38,7 @@ app.component('opportunity-basic-info' , {
 
     watch: {
         'entity.isContinuousFlow'(newVal, oldValue) {
-            if(newVal != oldValue){
+            if(Boolean(newVal) != Boolean(oldValue)){
                 if (!newVal) {
                     this.entity.hasEndDate = false;
                     this.entity.continuousFlow = null;
@@ -72,7 +72,7 @@ app.component('opportunity-basic-info' , {
         },
 
         'entity.hasEndDate'(newVal, oldValue) {
-            if(newVal != oldValue){
+            if(Boolean(newVal) != Boolean(oldValue)){
                 if (this.entity.isContinuousFlow) {
                     if(newVal){
                         this.entity.continuousFlow = null;
