@@ -78,5 +78,5 @@ jobs:
           echo "============================================"
           # Atualiza a imagem do deployment no Kubernetes
           kubectl set image deployment/mapasculturais mapas=$IMAGE --namespace=mapas-homolog
+          kubectl rollout restart deployment 	redis  --namespace=mapas-homolog
           kubectl rollout restart deployment mapasculturais --namespace=mapas-homolog          
-          kubectl rollout restart deployment 	redis --namespace=mapas-homolog
