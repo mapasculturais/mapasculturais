@@ -83,7 +83,7 @@ app.component('continuous-evaluation-form', {
                 return false;
             }
 
-            return this.global.threads[this.threadId].user == $MAPAS.userId;
+            return this.global.threads[this.threadId]?.user == $MAPAS.userId;
         },
 
         needsTiebreaker() {
