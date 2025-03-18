@@ -220,6 +220,10 @@ class Module extends \MapasCulturais\Module{
                 $validations['registrationTo']['required'] = i::__('A data final das inscrições é obrigatória');
                 $validations['shortDescription']['required'] = i::__('A descrição curtá é obrigatória');
             }
+
+            if (empty($this->controller->data['registrationTo'])) {
+                $validations['registrationFrom']['$this->validateRegistrationDates()'] = i::__('A data inicial das inscrições deve ser menor ou igual a data final');
+            }
         });
 
         /**
