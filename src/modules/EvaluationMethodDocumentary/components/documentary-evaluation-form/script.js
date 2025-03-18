@@ -184,13 +184,13 @@ app.component('documentary-evaluation-form', {
             const sealIds = this.lockedFieldSeals[`field_${fieldId}`];
             if (sealIds && sealIds.length > 0) {
                 return sealIds.map(sealId => {
-                    const sealRelation = this.entity.seals.find(sealRelation => sealRelation.seal.id === sealId);
-                    if (sealRelation) {
+                    const seal = this.entity.seals.find(seal => seal.sealId === sealId);
+                    if (seal) {
                         return {
-                            ...sealRelation.seal, 
-                            validateDate: sealRelation.validateDate, 
+                            ...seal, 
+                            validateDate: new McDate(seal.createTimestamp.date).date('2-digit year'), 
                             files: {
-                                avatar: sealRelation.seal.files?.avatar 
+                                avatar: seal.files?.avatar 
                             }
                         };
                     }
