@@ -50,7 +50,11 @@ class AutoApplicationResult extends JobType
         }
 
         if ($all_status_sent) {
-            if ($evaluation_type == 'simple' || $evaluation_type == 'continuous') {
+            if ($evaluation_type == 'continuous') {
+                $value = $job->newStatus ?? $registration->consolidatedResult;
+            }
+
+            if ($evaluation_type == 'simple'){
                 $value = $registration->consolidatedResult;
             }
 
