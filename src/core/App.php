@@ -2538,6 +2538,10 @@ class App {
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true),
+            'docs-cpf' => new Definitions\FileGroup('docs-cpf', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-cnpj' => new Definitions\FileGroup('docs-cnpj', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-cnh' => new Definitions\FileGroup('docs-cnh', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-rg' => new Definitions\FileGroup('docs-rg', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
         ];
 
         // register file groups
@@ -2545,6 +2549,10 @@ class App {
         $this->registerFileGroup('agent', $file_groups['header']);
         $this->registerFileGroup('agent', $file_groups['avatar']);
         $this->registerFileGroup('agent', $file_groups['gallery']);
+        $this->registerFileGroup('agent', $file_groups['docs-cpf']);
+        $this->registerFileGroup('agent', $file_groups['docs-cnpj']);
+        $this->registerFileGroup('agent', $file_groups['docs-cnh']);
+        $this->registerFileGroup('agent', $file_groups['docs-rg']);
 
         $this->registerFileGroup('space', $file_groups['downloads']);
         $this->registerFileGroup('space', $file_groups['header']);
