@@ -2625,6 +2625,17 @@ $$
                FROM etnias;
         ");
     },
+    "Removendo os campos e anexos de formulário erroneamente duplicados pela funcionalidade 'Duplicar Oportunidade'" => function() {
+        __try("DELETE FROM registration_field_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+
+        __try("DELETE FROM registration_file_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+    },
 
     'define valores default para as colunas ids das tabelas sem default' => function() {
         __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
@@ -2658,6 +2669,23 @@ $$
                 'evaluateOnTime',
                 'createEvents',
                 'requestEventRelation');");
-    }
-  
+    },
+
+    'Normalização dos campos do tipo checkbox nas inscrições' => function() {
+        __exec("UPDATE registration_meta rm
+		           SET value = '1'
+                  FROM registration r
+                  JOIN (SELECT opportunity_id, array_agg('field_' || rfc.id) AS fields
+                          FROM registration_field_configuration rfc
+                         WHERE rfc.field_type = 'checkbox'
+                      GROUP BY opportunity_id
+                       ) AS towcf ON towcf.opportunity_id = r.opportunity_id
+                 WHERE rm.object_id = r.id
+                   AND rm.value != '1'
+                   AND rm.key = ANY(towcf.fields);");
+    },
+
+    // SEMPRE ENCERRAR O ÚLTIMO ITEM COM VÍRGULA A FIM DE
+    // MINIMIZAR RISCO DE ERRO NA INSERÇÃO OU MERGE DE NOVOS ITENS
+    
 ] + $updates ;   

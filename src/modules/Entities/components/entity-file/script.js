@@ -64,6 +64,11 @@ app.component('entity-file', {
         defaultFile: {
             type: Object,
             required: false
+        },
+        buttonTextValue: {
+            type: String,
+            required: false,
+            default: 'Enviar'
         }
     },
 
