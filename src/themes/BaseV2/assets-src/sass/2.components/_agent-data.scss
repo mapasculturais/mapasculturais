@@ -71,6 +71,7 @@
         column-gap: size(16);
         display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: size(18);
 
         @media (max-width:size(1043)) {
             display: grid;
