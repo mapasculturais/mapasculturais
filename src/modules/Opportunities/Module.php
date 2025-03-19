@@ -40,6 +40,7 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
         $app->registerJobType(new Jobs\RedistributeCommitteeRegistrations(Jobs\RedistributeCommitteeRegistrations::SLUG));
         $app->registerJobType(new Jobs\RefreshViewEvaluations(Jobs\RefreshViewEvaluations::SLUG));
+        $app->registerJobType(new Jobs\AutoApplicationResult(Jobs\AutoApplicationResult::SLUG));
 
         $app->hook('mapas.printJsObject:before', function () {
             /** @var \MapasCulturais\Theme $this */
@@ -669,48 +670,16 @@ class Module extends \MapasCulturais\Module{
             /** @var \MapasCulturais\Entities\RegistrationEvaluation $this */
             $registration = $this->registration;
             $opportunity = $registration->opportunity;
-            $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
+            
+            if ($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
+                $data = [
+                    'registrationEvaluation' => $this,
+                    'registration' => $registration,
+                    'opportunity' => $opportunity,
+                ];
 
-            if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
-                if($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
-                    return;
-                }
-                $conn = $app->em->getConnection();
-                $evaluations = $conn->fetchAll("
-                    SELECT
-                       *
-                    FROM
-                        evaluations
-                    WHERE
-                        registration_id = {$registration->id}"
-                );
-
-                $all_status_sent = true;
-
-                foreach ($evaluations as $evaluation) {
-                    if ($evaluation['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
-                        $all_status_sent = false;
-                    }
-                }
-
-                if ($all_status_sent) {
-                    if($evaluation_type == 'simple' || $evaluation_type == 'continuous') {
-                        $value = $registration->consolidatedResult;
-                    }
-
-                    if($evaluation_type == 'documentary') {
-                        $value = $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
-                    }
-
-                    if($evaluation_type == 'qualification') {
-                        $value = $registration->consolidatedResult == 'Habilitado' ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
-                    }
-
-                    $app->disableAccessControl();
-                    $registration->setStatus($value);
-                    $registration->save();
-                    $app->enableAccessControl();
-                }
+                $start_string = (new DateTime())->modify('+1 minute 20 seconds')->format('Y-m-d H:i:s');
+                $app->enqueueOrReplaceJob(Jobs\AutoApplicationResult::SLUG, $data, $start_string);
             }
         });
 
