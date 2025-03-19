@@ -14,6 +14,7 @@ $this->import('
     <template v-if="modalOpen">
         <div class="modal__header">
             <span v-if="title" class="modal__title">{{title}}</span>
+            <h6 v-if="subtitle">{{subtitle}}</h6>
             <button v-if="closeButton" class="modal__close" @click="close()"> <mc-icon name="close"></mc-icon> </button>
         </div>
         <div class="modal__content">
