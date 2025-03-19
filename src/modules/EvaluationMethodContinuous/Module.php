@@ -2,6 +2,7 @@
 
 namespace EvaluationMethodContinuous;
 
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities;
@@ -320,41 +321,17 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
                         $registration = $evaluation->registration;
                         $opportunity = $registration->opportunity;
-                        $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
-
+                        
                         if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
-                            if($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
-                                return;
-                            }
-                            $conn = $app->em->getConnection();
-                            $evaluations = $conn->fetchAll("
-                                SELECT
-                                *
-                                FROM
-                                    evaluations
-                                WHERE
-                                    registration_id = {$registration->id}"
-                            );
-
-                            $all_status_sent = true;
-
-                            foreach ($evaluations as $ev) {
-                                if ($ev['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
-                                    $all_status_sent = false;
-                                }
-                            }
-
-                            if ($all_status_sent) {
-                                if($evaluation_type == 'continuous') {
-                                    $value = $data->status;
-                                }
-
-                                $app->disableAccessControl();
-                                $registration->setStatus($value);
-                                $registration->consolidateResult();
-                                $registration->save();
-                                $app->enableAccessControl();
-                            }
+                            $data = [
+                                'registrationEvaluation' => $evaluation,
+                                'registration' => $registration,
+                                'opportunity' => $opportunity,
+                                'newStatus' => $data->status 
+                            ];
+            
+                            $start_string = (new DateTime())->modify('+1 minute 20 seconds')->format('Y-m-d H:i:s');
+                            $app->enqueueOrReplaceJob(\Opportunities\Jobs\AutoApplicationResult::SLUG, $data, $start_string);
                         }
                     }
 
