@@ -7,6 +7,10 @@ app.component('mc-modal', {
             type: String,
             default: ''
         },
+        subtitle: {
+            type: String,
+            default: null
+        },
         classes: {
             type: [String, Array],
             default: '',
