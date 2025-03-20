@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.31] - 2025-03-20
+### Melhorias
+- Melhorias de performance no processamento de permission cache
+- Melhorias de performance na view evaluations e no endpoint findEvaluations
+
 ## [7.5.30] - 2025-03-20
 ### Correção
 - Corrige exibição dos campos de dados bancários e data de nacimento na visualização da inscrição
