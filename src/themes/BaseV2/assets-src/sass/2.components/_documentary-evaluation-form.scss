@@ -10,11 +10,19 @@
     &__title {
         display: flex;
         justify-content: center;
+        background-color: #FFCF8F;
+        height: size(58);
+        align-items: center;
 
         h3 {
             padding: size(10);
-            background-color: #FFCF8F;
             text-align: center;
+            font-weight: var(--mc-font-bold);
+            font-size: var(--mc-font-size-xxs);
+            line-height: 100%;
+            letter-spacing: 0%;
+            text-align: center;
+            vertical-align: middle;
         }
     }
 
