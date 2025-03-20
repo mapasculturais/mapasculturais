@@ -1865,14 +1865,17 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.printField = function(field, value){
         
-        if (field.fieldType === 'date') {
+        let entityFiel = ['agent-owner-field', 'agent-collective-field']
+        let fieldType = entityFiel.includes(field.fieldType) ? field.config.entityField : field.fieldType;
+
+        if (fieldType === 'date' || fieldType === 'dataDeNascimento') {
             return moment(value).format('DD-MM-YYYY');
-        }else if (field.fieldType === "checkbox") {
+        }else if (fieldType === "checkbox") {
             return value === "true" ? "Sim" : "Não"; 
         }
-         else if (field.fieldType === 'url'){
+         else if (fieldType === 'url'){
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
-        } else if (field.fieldType === 'email'){
+        } else if (fieldType === 'email'){
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (value instanceof Array) {
             return value.join(', ');
@@ -1895,6 +1898,21 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }else{
             return field.fieldName;
         }
+    }
+
+    $scope.formetBankField = function(value) {
+        const banck_data_dict = MapasCulturais.bank_data_dict;
+
+        let result = {
+            "account_type": banck_data_dict.account_types[value.account_type],
+            "number": banck_data_dict.bank_types[value.number],
+            "branch": value.branch,
+            "dv_branch": value.dv_branch,
+            "account_number": value.account_number,
+            "dv_account_number": value.dv_account_number
+        }
+
+        return result;
     }
 
 }]);
