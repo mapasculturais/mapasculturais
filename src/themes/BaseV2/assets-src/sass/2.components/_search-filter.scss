@@ -2,6 +2,16 @@
 
 .search-filter {
 
+    .foundResults {
+        background-color: var(--mc-white);
+        border-radius: var(--mc-border-radius-sm);
+        font-weight: 700;
+        font-size: size(14);
+        line-height: size(18);
+        margin-bottom: size(16);
+        padding: size(11) size(16);
+    }
+
     &__actions {
         align-items: flex-end;
         display: flex;
