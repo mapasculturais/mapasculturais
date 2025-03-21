@@ -2446,6 +2446,7 @@ $$
                 'support',
                 'viewUserEvaluation',
                 'evaluateOnTime',
+                'evaluateRegistrations',
                 'createEvents',
                 'requestEventRelation');");
     }
