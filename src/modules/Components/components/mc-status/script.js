@@ -33,11 +33,13 @@ app.component('mc-status', {
                 case 'pago':
                 case 'enviado':
                 case 'enviada':
+                case 'habilitado':
                     classes.push('mc-status--success');
                     break;
                 
                 case 'não selecionado':
                 case 'não selecionada':
+                case 'inabilitado':
                 case 'não aceito':
                 case 'inválido':
                 case 'inválida':
@@ -59,23 +61,19 @@ app.component('mc-status', {
                 case 'enviada':
                     classes.push('mc-status--primary');
                     break;
-                case 'Avaliações pendentes':
-                case 'Avaliação pendente':
+                case 'avaliações pendentes':
                 case 'avaliação pendente':
                         classes.push('mc-status--evaluation-pending');
                         break;
-                case 'Avaliações iniciadas':
-                case 'Avaliação iniciada':
+                case 'avaliações iniciadas':
                 case 'avaliação iniciada':
                     classes.push('mc-status--evaluation-started');
                     break;
-                case 'Avaliações concluídas':
-                case 'Avaliação concluída':
+                case 'avaliações concluídas':
                 case 'avaliação concluída':
                     classes.push('mc-status--evaluation-completed');
                     break;
-                case 'Avaliações enviadas':
-                case 'Avaliação enviada':
+                case 'avaliações enviadas':
                 case 'avaliação enviada':
                     classes.push('mc-status--evaluation-sent');
                     break;
