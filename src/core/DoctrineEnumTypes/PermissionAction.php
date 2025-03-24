@@ -62,7 +62,8 @@ class PermissionAction extends DoctrineEnumType
             'viewRegistrations' => 'viewRegistrations',
             'viewUserEvaluation' => 'viewUserEvaluation',
             'modifyReadonlyData' => 'modifyReadonlyData',
-            'sendEditableFields' => 'sendEditableFields'
+            'sendEditableFields' => 'sendEditableFields',
+            'applySeal' => 'applySeal',
         ];
     }
 }
