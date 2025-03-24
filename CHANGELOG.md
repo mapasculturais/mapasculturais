@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [7.5.32] - 2025-03-24
+### Correções
+- Insere na lista de ENUM's a permissão applySeal
+
 ## [7.5.31] - 2025-03-20
 ### Melhorias
 - Melhorias de performance no processamento de permission cache
