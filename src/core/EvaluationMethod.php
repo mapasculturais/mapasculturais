@@ -266,6 +266,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
      * @return Entities\User[][]
      */
     function getCommitteeGroups(Entities\EvaluationMethodConfiguration $evaluation_config): array {
+        $cache_key = __METHOD__ . ':' . $evaluation_config->id;
+        $app = App::i();
+
+        if($app->rcache->contains($cache_key)){
+            return $app->rcache->fetch($cache_key);
+        }
 
         $committee = []; 
         foreach($evaluation_config->getAgentRelations(null, false) as $relation) {
@@ -274,6 +280,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 $committee[$relation->group][] = $relation->agent->user;
             }
         }
+
+        $app->rcache->save($cache_key, $committee);
 
         return $committee;
     }
@@ -289,6 +297,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         if(is_null($evaluation_method_configuration)) {
             return false;
+        }
+
+        $cache_key = __METHOD__ . ':' . $evaluation_method_configuration->id;
+        if($app->rcache->contains($cache_key)){
+            return $app->rcache->fetch($cache_key);
         }
 
         /** @var Connection */
@@ -308,6 +321,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     'id' => $evaluation_method_configuration->id
                 ]);
         
+        $app->rcache->save($cache_key, (bool) $uses);
+
         return (bool) $uses;
     }
 
@@ -322,6 +337,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         if(!$this->evaluationPhaseUsesTiebreaker($registration->evaluationMethodConfiguration)) {
             return false;
+        }
+
+        $cache_key = __METHOD__ . ':' . $registration->id;
+        if($app->rcache->contains($cache_key)){
+            return $app->rcache->fetch($cache_key);
         }
 
         $registration_committee = $registration->getCommittees(true);
@@ -365,6 +385,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
 
             if($num > 0) {
+                $app->rcache->save($cache_key, false);
                 return false;
             }
         }
@@ -382,10 +403,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         // se há mais que um valor no array, então há divergência
         if(count(array_unique($results)) > 1) {
-            return true;
+            $result = true;
         } else {
-            return false;
+            $result = false;
         }
+
+        $app->rcache->save($cache_key, $result);
+        return $result;
     }
 
     public function redistributeRegistrations(Entities\Opportunity $opportunity) {
