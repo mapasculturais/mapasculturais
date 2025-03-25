@@ -46,6 +46,12 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         parent::__construct();
     }
     
+    function save($flush = false)
+    {
+        $this->owner->__skipQueuingPCacheRecreation = true;
+        $this->owner->opportunity->__skipQueuingPCacheRecreation = true;
+        parent::save($flush);
+    }
     
     function delete($flush = false) {
         $app = App::i();
@@ -59,7 +65,9 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         }
         $app->enableAccessControl();
 
-        $this->owner->opportunity->enqueueToPCacheRecreation([$this->agent->user]);
+        $this->owner->opportunity->__skipQueuingPCacheRecreation = true;
+        $this->owner->__skipQueuingPCacheRecreation = true;
+
         parent::delete($flush);
     }
     
@@ -69,8 +77,8 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         $app = App::i();
 
         $app->applyHookBoundTo($this,"{$this->hookPrefix}.reopen:before");
+        
         $this->status = self::STATUS_ENABLED;
-
         $this->save($flush);
 
         $job = $app->enqueueJob(ReopenEvaluations::SLUG, ['agentRelation' => $this]);
@@ -193,6 +201,10 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         }
 
         $metadata->summary = $data;
+
+        if ($app->config['app.log.evaluations']) {
+            $app->log->debug("Atualizando resumo de avaliações do avaliador {$this->agent->name}");
+        }
 
         $conn->update('agent_relation', ['metadata' => json_encode($metadata)], ['id' => $this->id]);
     }
