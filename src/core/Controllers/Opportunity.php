@@ -941,8 +941,8 @@ class Opportunity extends EntityController {
         $rdata = [
             '@select' => 'id',
             'opportunity' => "EQ({$opportunity->id})",
-            '@permissions' => 'viewUserEvaluation',
-            '@order' => 'id ASC'
+            '@order' => 'id ASC',
+            'status' => API::GT(0)
         ];
 
         foreach($query_data as $k => $v){
@@ -959,9 +959,10 @@ class Opportunity extends EntityController {
             }
         }
 
+        $app->disableAccessControl();
         $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
-
         $registration_ids = implode(",", $registrations_query->findIds() ?: [-1]);
+        $app->enableAccessControl();
 
         $query = "
             SELECT 
@@ -1034,12 +1035,15 @@ class Opportunity extends EntityController {
 
         $evaluations = $conn->fetchAll($query, $params);
         
+        $app->disableAccessControl();
         
         $registration_numbers = array_filter(array_unique(array_map(function($r) { return $r['registration_number']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
 
         $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_numbers, $query_data);
         $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
+
+        $app->disableAccessControl();
 
         $_result = [];
 
