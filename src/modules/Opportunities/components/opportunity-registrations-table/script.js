@@ -281,17 +281,16 @@ app.component('opportunity-registrations-table', {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }
 
-            let type = this.phase.evaluationMethodConfiguration.type.id;
-            let phases = $MAPAS.opportunityPhases;
+            const type = this.phase.evaluationMethodConfiguration?.type?.id;
+            const phases = $MAPAS.opportunityPhases;
             let hasEvaluationMethodTechnical = false;
 
-            for(let i = 0; i < phases.length; i++){
-                let phase = $MAPAS.opportunityPhases[i];
+            for (const phase of phases){
                 if(phase.id == this.phase.id){
                     break;
                 }
 
-                let type = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type.id : phase.type.id;
+                let type = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type?.id : phase.type.id;
 
                 if(type == "technical"){
                     hasEvaluationMethodTechnical = true;
@@ -314,7 +313,7 @@ app.component('opportunity-registrations-table', {
         },
         select() {
             const fields = this.avaliableFields.map((item) => item.fieldName);
-            
+
             return [this.default_select, ...fields].join(',');
         },
         previousPhase() {
@@ -380,7 +379,7 @@ app.component('opportunity-registrations-table', {
             }
             entities.refresh();
         },
-        
+
         filterByCategories(entities) {
             if (this.selectedCategories.length > 0) {
                 this.query['category'] = `IN(${this.selectedCategories.toString()})`;
@@ -398,7 +397,7 @@ app.component('opportunity-registrations-table', {
             }
             entities.refresh();
         },
-        
+
         filterByRanges(entities) {
             if (this.selectedRanges.length > 0) {
                 this.query['range'] = `IN(${this.selectedRanges.toString()})`;
@@ -416,7 +415,6 @@ app.component('opportunity-registrations-table', {
                 delete this.query['consolidatedResult'];
             }
             entities.refresh();
-            
         },
 
         consolidatedResultToString(entity) {
@@ -425,7 +423,7 @@ app.component('opportunity-registrations-table', {
             }
 
             if(this.phase.evaluationMethodConfiguration){
-                let type = this.phase.evaluationMethodConfiguration.type.id || this.phase.evaluationMethodConfiguration.type;
+                let type = this.phase.evaluationMethodConfiguration?.type?.id || this.phase.evaluationMethodConfiguration?.type;
                 if(type == "technical"){
                     return entity.consolidatedResult;
                 }else{
@@ -436,7 +434,7 @@ app.component('opportunity-registrations-table', {
             }
             return "";
         },
-        
+
         statusToString(status) {
             return this.text(status)
         },
