@@ -3156,6 +3156,11 @@ class ApiQuery {
 
     protected function _addFilterByPermissions($value) {
         $app = App::i();
+
+        if(!$app->isAccessControlEnabled()) {
+            return;
+        }
+
         $user = $this->_permissionsUser ?
             $app->repo('User')->find($this->_permissionsUser) :
             $app->user;
