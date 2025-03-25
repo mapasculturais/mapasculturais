@@ -516,7 +516,8 @@ class Opportunity extends EntityController {
             }
         }
 
-        
+        $opportunity->registerRegistrationMetadata();
+
         return (object) ['count' => $current_phase_query->count(), 'registrations' => $current_phase_result,];
     }
 
