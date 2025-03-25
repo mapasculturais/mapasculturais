@@ -554,5 +554,20 @@ return [
                 }
             });
         }
-    }
+    },
+
+    'Redistribui as avaliações de todas as oportunidades para os avaliadores novamente' => function() use ($app) {
+        DB_UPDATE::enqueue(Opportunity::class, "id in (select opportunity_id from evaluation_method_configuration)", function (Opportunity $opportunity) use($app) {
+            if($opportunity->getEvaluationMethodDefinition()){
+                $em = $opportunity->getEvaluationMethod();
+                $app->log->debug('distribuindo avaliações da oportunidade ' . $opportunity->id . ' - ' . $opportunity->name);
+                $em->redistributeRegistrations($opportunity);
+                foreach($opportunity->getEvaluationCommittee(true) as $relation) {
+                    $app->log->debug('atualiza sumário do avaliador ' . $relation->agent->id . ' - ' . $relation->agent->name);
+                    $relation->updateSummary(flush: true);
+                }
+
+            }
+        });
+    },
 ];
