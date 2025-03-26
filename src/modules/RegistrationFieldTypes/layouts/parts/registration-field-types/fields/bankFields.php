@@ -8,7 +8,7 @@ $bank_types = $app->config['module.registrationFieldTypes']['bank_types'];
 <div>
     <div>
         <label>
-            <br><strong><?= i::__('Típo de conta') ?></strong>
+            <br><strong><?= i::__('Tipo de conta') ?></strong>
             <select ng-required="requiredField(field)" ng-model="entity[fieldName].account_type" ng-blur="saveField(field, entity[fieldName])">
                 <option value=""><?= i::__('Selecione o tipo de conta') ?></option>
                 <?php foreach($account_types as $key => $value): ?>
