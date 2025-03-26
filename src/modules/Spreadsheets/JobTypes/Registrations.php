@@ -274,6 +274,11 @@ class Registrations extends SpreadsheetJob
 
                     $entity['number'] = $number;
                 }
+
+                if(isset($entity['goalStatuses'])) {
+                    $entity['goalStatuses'] = $entity['goalStatuses']->{10} . '/' . $entity['goalStatuses']->numGoals . " " . i::__('concluídas');
+                }
+                
                 $entity = $this->replaceArraysWithNull($entity);
             }
         }

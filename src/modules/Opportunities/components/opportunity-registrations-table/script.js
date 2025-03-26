@@ -262,6 +262,7 @@ app.component('opportunity-registrations-table', {
                     value: item.fieldName
                 })));
             }
+            
 
             if(this.phase.evaluationMethodConfiguration){
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});

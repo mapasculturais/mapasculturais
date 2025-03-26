@@ -1119,7 +1119,23 @@ return [
           );");
         __exec("ALTER TABLE registration_workplan_goal_delivery_meta ADD FOREIGN KEY (object_id) REFERENCES registration_workplan_goal_delivery(id) ON DELETE CASCADE");
     },
-    
+
+    "Adiciona coluna status na tabela registration_workplan_goal" => function() use ($conn){
+        if(!__column_exists('registration_workplan_goal', 'status')) {
+            __exec("ALTER TABLE registration_workplan_goal ADD status smallint DEFAULT 0;");
+        }
+    },
+
+    "Adiciona coluna status na tabela registration_workplan_goal_delivery" => function() use ($conn){
+        if(!__column_exists('registration_workplan_goal_delivery', 'status')) {
+            __exec("ALTER TABLE registration_workplan_goal_delivery ADD status smallint DEFAULT 0;");
+        }
+    },
+
+    'altera tipo da coluna chat_message.payload para json' => function () {
+        __exec("UPDATE chat_message SET payload = concat('\"',payload,'\"')");
+        __exec("ALTER TABLE chat_message ALTER COLUMN payload SET DATA TYPE JSON USING payload::JSON");
+    },
     'define default para as colunas ids das tabelas sem default' => function() {
         __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
         __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
@@ -2625,6 +2641,35 @@ $$
                FROM etnias;
         ");
     },
+    
+    'atualizar o type para continuous onde o type for appeal-phase' => function() {
+        __exec("UPDATE evaluation_method_configuration SET type = 'continuous' WHERE type = 'appeal-phase';");
+    },
+
+    'refatoração dos índices da tabela pcache' => function () {
+        __exec('CREATE INDEX pcache_object_user_action_idx ON pcache (user_id, object_type, action)');
+
+        // remove índice duplicado
+        // "pcache_permission_user_idx" btree (object_type, object_id, action, user_id)
+        // "unique_object_action" UNIQUE, btree (object_type, object_id, action, user_id)
+        __exec('DROP INDEX pcache_permission_user_idx');
+    },
+
+    'remove entradas da tabela pcache não mais utilizadas' => function () {
+        __exec("
+            DELETE FROM pcache 
+            WHERE action NOT IN (
+                '@control',
+                'modify',
+                'view',
+                'applySeal',
+                'support',
+                'viewUserEvaluation',
+                'evaluateOnTime',
+                'createEvents',
+                'requestEventRelation');");
+    },
+    
     "Removendo os campos e anexos de formulário erroneamente duplicados pela funcionalidade 'Duplicar Oportunidade'" => function() {
         __try("DELETE FROM registration_field_configuration rfc
                      USING registration_step rs

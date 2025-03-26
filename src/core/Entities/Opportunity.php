@@ -12,6 +12,7 @@ use MapasCulturais\Exceptions\BadRequest;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\i;
 use MapasCulturais\Utils;
+use MapasCulturais\EvaluationMethod;
 
 /**
  * Opportunity
@@ -38,6 +39,7 @@ use MapasCulturais\Utils;
  * @property Agent $owner
  *
  *
+ * @property-read ?EvaluationMethod $evaluationMethod
  * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
  * @property RegistrationStep[] $registrationSteps
  * @property RegistrationFileConfiguration[] $registrationFileConfigurations
@@ -86,6 +88,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
             Traits\EntityAgentRelation::canUserCreateAgentRelationWithControl as __canUserCreateAgentRelationWithControl;
             Traits\EntityAgentRelation::canUserRemoveAgentRelationWithControl as __canUserRemoveAgentRelationWithControl;
         }
+
+    const STATUS_APPEAL_PHASE = -20;
+    const STATUS_PHASE = -1;
+    const CONTINUOUS_FLOW_DATE =  "2111-01-01 00:00";
 
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
@@ -638,7 +644,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         if($date instanceof \DateTime){
             $this->registrationTo = $date;
         }elseif($date){
-            $this->registrationTo = \DateTime::createFromFormat('Y-m-d H:i', $date);
+            $this->registrationTo = new \DateTime($date);
         }else{
             $this->registrationTo = null;
         }

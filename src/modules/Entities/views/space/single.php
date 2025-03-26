@@ -6,6 +6,7 @@ $this->import('
     complaint-suggestion
     entity-actions
     entity-admins
+    entity-data 
     entity-files-list
     entity-gallery
     entity-gallery-video
@@ -39,8 +40,7 @@ $this->breadcrumb = [
     <entity-header :entity="entity">
         <template #metadata>
             <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
-                <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
-                    <dd><strong>{{entity.id}}</strong></dd>
+                <entity-data class="metadata__id" :entity="entity" prop="id" label="<?php i::_e("ID:")?>"></entity-data>
             </dl> 
             <dl v-if="entity.type">
                 <dt><?= i::__('Tipo') ?></dt>

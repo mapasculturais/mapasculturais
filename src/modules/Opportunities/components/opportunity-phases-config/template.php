@@ -11,6 +11,7 @@ $this->import('
     mc-stepper-vertical
     opportunity-create-data-collect-phase
     opportunity-create-evaluation-phase
+    opportunity-create-reporting-phase
     opportunity-phase-config-data-collection
     opportunity-phase-config-evaluation
     opportunity-phase-config-results
@@ -25,10 +26,13 @@ $this->import('
                 <div v-if="!item.isLastPhase" class="info__type">
                     <span class="title"> 
                         <?= i::__('Tipo') ?>: 
-                        <span v-if="item.__objectType == 'opportunity' && !item.isLastPhase" class="type"><?= i::__('Coleta de dados') ?></span>
-                        <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{evaluationTypes[item.type.id]}}</span>
+                        <template v-if="item.__objectType == 'opportunity' && !item.isLastPhase">
+                            <span v-if="item.isReportingPhase" class="type"><?= i::__('Prestação de informações') ?></span>
+                            <span v-else class="type"><?= i::__('Coleta de dados') ?></span>
+                        </template>
+                        <span v-else-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{item.type.name}}</span>
                     </span>
-                    <span v-if="item.__objectType == 'evaluationmethodconfiguration' && evaluationTypes[item.type.id] == 'Avaliação Técnica'"> <?php $this->info('editais-oportunidades -> avaliacao-tecnica -> avaliacao-tecnica') ?> </span>
+                    <span v-if="item.__objectType == 'evaluationmethodconfiguration' && item.type.id == 'technical'"> <?php $this->info('editais-oportunidades -> avaliacao-tecnica -> avaliacao-tecnica') ?> </span>
                 </div>
             </div>
 
@@ -58,22 +62,22 @@ $this->import('
 
         <!-- fase de avaliação -->
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
-            <opportunity-phase-config-evaluation :phases="phases" :phase="item"></opportunity-phase-config-evaluation>
+            <opportunity-phase-config-evaluation :phases="phases" :phase="item" :tab="tab"></opportunity-phase-config-evaluation>
         </template>
 
         <!-- fase de publicação de resultado -->
         <template v-if="item.isLastPhase">
-            <opportunity-phase-config-results :phases="phases" :phase="item"></opportunity-phase-config-results>
+            <opportunity-phase-config-results :phases="phases" :phase="item" :tab="tab"></opportunity-phase-config-results>
         </template>
     </template>
     <template #after-li="{index, item}">
-        <template v-if="index == phases.length-2">
+        <template v-if="phases[index + 1]?.isLastPhase">
             <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo && !(firstPhase?.isContinuousFlow && firstPhase?.hasEndDate && !lastPhase.publishTimestamp)" class="add-phase grid-12">
-                <div class="add-phase__evaluation col-12">
+                <div class="col-12">
                     <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
                 </div>
-                <p><label class="add-phase__collection"><?= i::__("ou") ?></label></p>
-                <div class="add-phase__collection col-12">
+                <p><label class="col-12"><?= i::__("ou") ?></label></p>
+                <div class="col-12">
                     <opportunity-create-data-collect-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-data-collect-phase>
                 </div>
             </div>
@@ -89,6 +93,18 @@ $this->import('
             <div v-if="!showButtons()" class="info-message helper">
                 <mc-icon name="exclamation"></mc-icon>
                 <?= i::__('Não se pode criar novas fases após a publicação do resultado final') ?>
+            </div>
+        </template>
+
+        <template v-else-if="index === phases.length - 1">
+            <div class="add-phase grid-12">
+                <div class="col-12" v-if="!finalReportingPhase">
+                    <mc-alert v-if="!firstPhase?.isContinuousFlow && !lastPhase?.publishTimestamp" type="warning">
+                        <p><small class="required"><?= i::__("A data e hora da 'Publicação final' precisa estar preenchida para adicionar novas fases de prestação de informações.") ?></small></p>
+                    </mc-alert>
+
+                    <opportunity-create-reporting-phase v-if="!firstPhase?.isContinuousFlow && lastPhase?.publishTimestamp" :opportunity="entity" @create="addReportingPhases"></opportunity-create-reporting-phase>
+                </div>
             </div>
         </template>
     </template>

@@ -1073,9 +1073,10 @@ class ApiQuery {
         if($this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
             $params = $this->apiParams;
             
-            if($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
-                $where_status = '(e.status > 0 OR e.status = -1)';    
-            } else {
+            if ($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
+                $where_status = '(e.status > 0 OR e.status = -1 OR e.status = -20)';
+            }
+            else {
                 $where_status = 'e.status > 0';
             }
             $where = $where ? "($where) AND $where_status" : $where_status;
@@ -2272,8 +2273,8 @@ class ApiQuery {
 
                 $entity['relatedAgents'] = $relations_by_owner_id[$entity_id] ?? (object)[]; 
                 
-                $permisions = $entity['currentUserPermissions'];
-
+                $permisions = $entity['currentUserPermissions'] ?? [];
+                
                 $can_view_pending = ($permisions['@controll'] ?? false) || 
                                     ($permisions['viewPrivateData'] ?? false) ||
                                     ($permisions['createAgentRelation'] ?? false) ||
@@ -2716,6 +2717,7 @@ class ApiQuery {
                 }
 
                 $this->_relatedSeals[$entity_id][] = [
+                    '__objectType' => 'seal', // Added for compatibility with <mc-avatar>
                     'sealRelationId' => $relation->relation_id,
                     'sealId' => $relation->seal_id,
                     'name' => $relation->seal_name,
@@ -3197,7 +3199,7 @@ class ApiQuery {
                 if($this->usesStatus && $this->_permission == 'view' && !$class::isPrivateEntity()) {
                     $params = $this->apiParams;
                     if($this->entityClassName === Opportunity::class && (isset($params['id']) || isset($params['parent']) || isset($params['status']))) {
-                        $view_where = 'OR e.status > 0 OR e.status = -1';    
+                        $view_where = 'OR e.status > 0 OR e.status = -1 OR e.status = -20';    
                     } else {
                         $view_where = 'OR e.status > 0';
                     }

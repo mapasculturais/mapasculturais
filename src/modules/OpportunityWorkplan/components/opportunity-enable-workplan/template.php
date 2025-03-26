@@ -211,20 +211,10 @@ $this->import('
                                 <input type="checkbox" v-model="entity.workplan_monitoringInformTheFormOfAvailability" @click="autoSave()" /><?= i::__("Informar forma de disponibilização") ?>
                             </label>
                         </div>
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringEnterDeliverySubtype" @click="autoSave()" />
-                                {{ `Informar subtipo de ${getDeliveryLabelDefault}` }}
-                            </label>
-                        </div>
+
                         <div class="field__group">
                             <label class="field__checkbox">
                                 <input type="checkbox" v-model="entity.workplan_monitoringInformAccessibilityMeasures" @click="autoSave()" /><?= i::__("Informar as medidas de acessibilidade") ?>
-                            </label>
-                        </div>
-                        <div class="field__group">
-                            <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringInformThePriorityTerritories" @click="autoSave()" /><?= i::__("Informar os territórios prioritários") ?>
                             </label>
                         </div>
 
@@ -236,7 +226,7 @@ $this->import('
 
                         <div class="field__group">
                             <label class="field__checkbox">
-                                <input type="checkbox" v-model="entity.workplan_monitoringInformThePriorityAudience" @click="autoSave()" /><?= i::__("Informar o público prioritário") ?>
+                                <input type="checkbox" v-model="entity.workplan_monitoringInformThePriorityAudience" @click="autoSave()" /><?= i::__("Informar os territórios prioritários") ?>
                             </label>
                         </div>
 

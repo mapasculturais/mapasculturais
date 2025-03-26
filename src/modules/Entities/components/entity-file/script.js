@@ -1,6 +1,6 @@
 app.component('entity-file', {
     template: $TEMPLATES['entity-file'],
-    emits: ['uploaded', 'setFile'],
+    emits: ['delete', 'setFile', 'uploaded'],
 
     setup(props, {slots}) {
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -65,11 +65,19 @@ app.component('entity-file', {
             type: Object,
             required: false
         },
+        beforeUpload: {
+            type: Function,
+            required: false
+        },
+        uploadOnSubmit: {
+            type: Boolean,
+            default: true,
+        },
         buttonTextValue: {
             type: String,
             required: false,
             default: 'Enviar'
-        }
+        },
     },
 
     data() {
@@ -82,9 +90,20 @@ app.component('entity-file', {
         }
     },
 
+    updated() {
+        if (this.uploadOnSubmit) {
+            this.file = this.entity.files?.[this.groupName] || null;
+        }
+    },
+
     methods: {
         setFile(event) {
             this.newFile = event.target.files[0];
+
+            if (!this.uploadOnSubmit && this.newFile) {
+                this.file = this.newFile;
+            }
+
             this.$emit('setFile', this.newFile);
         },
 
@@ -96,15 +115,27 @@ app.component('entity-file', {
                 group: this.groupName,
             };
 
+            if (this.beforeUpload) {
+                await this.beforeUpload({
+                    data,
+                    file: this.newFile
+                });
+            }
+
             this.entity.disableMessages();
             try{
-
                 const response = await this.entity.upload(this.newFile, data);
-                this.$emit('uploaded', this);
                 this.file = response;
+                this.$emit('uploaded', this);
                 this.loading = false;
                 this.entity.enableMessages();
-                modal.close()
+
+                this.file = null;
+                this.newFile = {};
+
+                if (modal) {
+                    modal.close();
+                }
 
             } catch(e) {
                 this.loading = false;
@@ -119,10 +150,20 @@ app.component('entity-file', {
             return true;
         },
 
-        deleteFile(file) {
-            file.delete().then(() => {
-                this.file = null;
-            });
+        async submit(modal) {
+            if (this.uploadOnSubmit) {
+                await this.upload(modal);
+            } else {
+                modal.close();
+            }
+        },
+
+        async deleteFile(file) {
+            await file.delete();
+            this.file = null;
+            this.newFile = {};
+
+            this.$emit('delete', file);
         }
     },
 });

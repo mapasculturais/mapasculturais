@@ -159,6 +159,9 @@ abstract class Theme {
                 "subsite"       => Entities\Subsite::getPropertiesMetadata(),
                 "seal"          => Entities\Seal::getPropertiesMetadata(),
                 'evaluationmethodconfiguration' => Entities\EvaluationMethodConfiguration::getPropertiesMetadata(),
+                "chatthread"   => Entities\ChatThread::getPropertiesMetadata(),
+                "chatmessage"   => Entities\ChatMessage::getPropertiesMetadata(),
+                "registrationevaluation"   => Entities\RegistrationEvaluation::getPropertiesMetadata(),
             ];
 
             $taxonomies = [];
@@ -881,7 +884,8 @@ abstract class Theme {
                 }
 
                 if(property_exists ($entity_class_name, 'status')) {
-                    $query_params['status'] = 'GTE(-10)'; 
+                    $query_params['status'] = 'GTE(-20)'; 
+                    $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
                 }
 
                 if(property_exists ($entity_class_name, 'project')) {
@@ -901,7 +905,7 @@ abstract class Theme {
                 }
 
                 if ($entity_class_name == Entities\User::class) {
-                    $query_params['@select'] .= ',profile.{name,files.avatar,terms,seals}';
+                    $query_params['@select'] .= ',profile.{name,type,files.avatar,terms,seals}';
                 }
 
                 $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
@@ -914,6 +918,7 @@ abstract class Theme {
                 $e = $entity->jsonSerialize();
 
             }
+
             if(property_exists ($entity_class_name, 'opportunity')) {
                 if($entity) {
                     $opportunity = $entity->opportunity;
@@ -934,6 +939,13 @@ abstract class Theme {
                     $e['opportunity']->registrationSteps = $opportunity->registrationSteps->toArray();
                 }
             }
+            
+            if ($entity_class_name == Entities\Opportunity::class) {
+                $opportunity = $app->repo("Opportunity")->find($entity_id);
+
+                $e['registrationSteps'] = $opportunity->registrationSteps->toArray();
+            }
+            
             if ($entity_class_name == Entities\Agent::class) {
                 $owner_prop = 'parent';
                 if (!$e['parent']) {
@@ -1011,16 +1023,29 @@ abstract class Theme {
                 $e['profile']['currentUserPermissions'] = $permissions;
             }
 
+            $request_entity = $this->controller->requestedEntity;
             
             if($entity_class_name == Registration::class) {
-                $en = $this->controller->requestedEntity;
-                $meta = $en->jsonSerialize();
+                $meta = $request_entity->jsonSerialize();
                 foreach($meta as $field => $value) {
                     if (str_starts_with($field, "field_")) {
                         $e[$field] = $value;
                     }
                 }
+
+                if(method_exists($entity_class_name, 'getAgentSealRelations')) {
+                    $e['seals'] = $request_entity->agentSealRelations;
+                }
             }
+
+            if(method_exists($entity_class_name, 'getLockedFields')) {
+                $e['__lockedFields'] = $request_entity->lockedFields;
+            }
+
+            if(method_exists($entity_class_name, 'getLockedFieldSeals')) {
+                $e['__lockedFieldSeals'] = $request_entity->lockedFieldSeals;
+            }
+
             $app->applyHookBoundTo($this, "view.requestedEntity($_entity).result", [&$e, $entity_class_name, $entity_id]);
             $this->jsObject['requestedEntity'] = $e;
         }

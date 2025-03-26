@@ -100,9 +100,7 @@ app.component('opportunity-enable-workplan', {
             this.entity.workplan_registrationInformCulturalArtisticSegment = false;
 
             this.entity.workplan_monitoringInformTheFormOfAvailability = false;
-            this.entity.workplan_monitoringEnterDeliverySubtype = false;
             this.entity.workplan_monitoringInformAccessibilityMeasures = false;
-            this.entity.workplan_monitoringInformThePriorityTerritories = false;
             this.entity.workplan_monitoringProvideTheProfileOfParticipants = false;
             this.entity.workplan_monitoringInformThePriorityAudience = false;
             this.entity.workplan_monitoringReportExecutedRevenue = false;

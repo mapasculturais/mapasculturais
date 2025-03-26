@@ -450,7 +450,6 @@ return array(
                 if (!$value && $agent instanceof Agent) {
                     return $agent->user->email;
                 }
-
                 return $value;
             }
         ),

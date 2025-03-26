@@ -18,7 +18,7 @@ use MapasCulturais\i;
     </div>
     <div class="registration-results__card-content">
         <div class="registration-results__opinion registration-results__opinion--document">
-        <h5 class="registration-results__opinion-title bold"><?= i::__('Parecer') ?>:</h5>
+        <h5 class="registration-results__opinion-title bold"><?= i::__('Justificativa') ?>:</h5>
             <div class="registration-results__opinion-text">
                 
                 <p>{{evaluation.obs}}</p>

@@ -63,7 +63,7 @@ class Module extends \MapasCulturais\Module
 
             $sendMail = false;
             if($this->status ===  Registration::STATUS_DRAFT && $this->opportunity->isDataCollection) {
-                if($this->opportunity->isFirstPhase) {
+                if($this->opportunity->isFirstPhase || $this->opportunity->isReportingPhase) {
                     $sendMail = true;
                 } else if ($this->opportunity->getRegistrationFieldConfigurations() || $this->opportunity->getRegistrationFileConfigurations()) {
                     $sendMail = true;

@@ -14,7 +14,7 @@ use MapasCulturais\Traits;
  * @property-write int $threadId
  * @property User $user
  * @property-write int $userId
- * @property string $payload
+ * @property mixed $payload
  * @property-read \DateTime $sentTimestamp
  *
  * @ORM\Table(name="chat_message")
@@ -24,6 +24,7 @@ use MapasCulturais\Traits;
  */
 class ChatMessage extends \MapasCulturais\Entity
 {
+    use Traits\EntityFiles;
     use Traits\EntityNested;
     use Traits\EntityPermissionCache;
 
@@ -68,9 +69,9 @@ class ChatMessage extends \MapasCulturais\Entity
     protected $user;
 
     /**
-     * @var string
+     * @var mixed
      *
-     * @ORM\Column(name="payload", type="text", nullable=false)
+     * @ORM\Column(name="payload", type="json", nullable=false)
      */
     protected $payload;
 
@@ -147,6 +148,10 @@ class ChatMessage extends \MapasCulturais\Entity
 
     protected function canUserCreate($user)
     {
+        if ($this->thread->status == ChatThread::STATUS_CLOSED) {
+            return false;
+        }
+
         if (!isset($this->thread)) {
             return false;
         }
@@ -156,6 +161,10 @@ class ChatMessage extends \MapasCulturais\Entity
     // editing is disabled until further notice
     protected function canUserModify($user)
     {
+        if ($this->thread->status == ChatThread::STATUS_CLOSED) {
+            return false;
+        }
+
         return false;
     }
 
