@@ -50,6 +50,11 @@ app.component('opportunity-registration-filter-configuration', {
         },
     },
 
+    setup() {
+        const text = Utils.getTexts('opportunity-registration-filter-configuration');
+        return { text };
+    },
+
     watch: {
         defaultValue(newValue, oldValue) {
             this.$emit('update:defaultValue', newValue);
@@ -204,13 +209,13 @@ app.component('opportunity-registration-filter-configuration', {
 
         dictTypes(type, reverse = false) {
             const typeDictionary = {
-                'category': 'Categoria',
-                'categories': 'Categorias',
-                'proponentType': 'Tipos do proponente',
-                'proponentTypes': 'Tipos de proponente',
-                'range': 'Faixa/Linha',
-                'ranges': 'Faixas/Linhas',
-                'distribution': 'Distribuição',
+                'category': this.text('Categoria'),
+                'categories': this.text('Categorias'),
+                'proponentType': this.text('Tipos do proponente'),
+                'proponentTypes': this.text('Tipos de proponente'),
+                'range': this.text('Faixa/Linha'),
+                'ranges': this.text('Faixas/Linhas'),
+                'distribution': this.text('Distribuição'),
             };
 
             if (reverse) {
