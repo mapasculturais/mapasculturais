@@ -4,6 +4,7 @@ app.component('mc-entities', {
 
     data() {
         return {
+            abortController: null,
             api: new API(this.type, this.scope || 'default'),
             entities: [],
             page: 1,
@@ -81,7 +82,7 @@ app.component('mc-entities', {
         }
 
     },
-    
+
     methods: {
         populateQuery(query) {
             if (this.select) {
@@ -107,7 +108,7 @@ app.component('mc-entities', {
         },
 
         getDataFromApi() {
-            let query = {...this.query};
+            const query = {...this.query};
             this.populateQuery(query);
 
             const options = {list: this.entities, refresh: true};
@@ -115,11 +116,15 @@ app.component('mc-entities', {
             if (this.limit && this.page) {
                 query['@page'] = this.page;
             }
-            
+
             if (this.rawProcessor) {
                 options.raw = true;
                 options.rawProcessor = this.rawProcessor;
             };
+
+            this.abortController?.abort();
+            this.abortController = new AbortController();
+            options.signal = this.abortController.signal;
 
             const result = this.api.fetch(this.endpoint, query, options);
 
@@ -129,18 +134,14 @@ app.component('mc-entities', {
 
             return result;
         },
-        
-        refresh(debounce) {
-            if (this.entities.loading) {
-                return;
-            };
 
+        refresh(debounce) {
             if (this.timeout) {
-                clearTimeout(this.timeout)
+                clearTimeout(this.timeout);
             };
         
-            this.entities.splice(0);
             this.timeout = setTimeout(() => {
+                this.entities.splice(0);
                 this.entities.loading = true;
         
                 this.getDataFromApi()
@@ -149,7 +150,6 @@ app.component('mc-entities', {
                     })
             }, debounce);
         },
-        
 
         loadMore() {
             if (!this.limit) {

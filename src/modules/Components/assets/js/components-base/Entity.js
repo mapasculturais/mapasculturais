@@ -1,5 +1,5 @@
 class Entity {
-    constructor(objectType, id, scope) {
+    constructor(objectType, id, scope = 'default') {
         this.__objectType = objectType;
         this.id = id;
         this.__scope = (scope || 'default');
