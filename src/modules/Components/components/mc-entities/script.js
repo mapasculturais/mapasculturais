@@ -113,7 +113,7 @@ app.component('mc-entities', {
         },
 
         getDataFromApi() {
-            let query = {...this.query};
+            const query = {...this.query};
 
             this.$emit('loading', query);
 
@@ -144,16 +144,12 @@ app.component('mc-entities', {
         },
 
         refresh(debounce) {
-            if (this.entities.loading) {
-                return;
-            };
-
             if (this.timeout) {
-                clearTimeout(this.timeout)
+                clearTimeout(this.timeout);
             };
-
-            this.entities.splice(0);
+        
             this.timeout = setTimeout(() => {
+                this.entities.splice(0);
                 this.entities.loading = true;
 
                 this.getDataFromApi()
