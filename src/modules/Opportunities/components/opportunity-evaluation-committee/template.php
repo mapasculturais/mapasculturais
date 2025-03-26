@@ -16,13 +16,13 @@ $this->import('
     select-entity
 ');
 ?>
-<div class="opportunity-evaluation-committee">        
+<div class="opportunity-evaluation-committee">
     <div class="opportunity-evaluation-committee__header">
         <p><?php i::_e('Defina os agentes que serão avaliadores desta fase.') ?></p>
     </div>
 
     <div v-if="showReviewers" class="opportunity-evaluation-committee__card-grouping">
-        <div class="opportunity-evaluation-committee__card" v-for="infoReviewer in infosReviewers" :key="infoReviewer.id">
+        <div class="opportunity-evaluation-committee__card" v-for="[infoReviewer, index] in sortedReviewers" :key="infoReviewer.id">
             <div v-if="infoReviewer.status == -5" class="grid-12">
                 <mc-alert type="warning" class="col-9">
                     <div class="col-9">
@@ -55,7 +55,7 @@ $this->import('
                             <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
                                 <?php i::_e('Reabrir avaliações') ?>
                             </button>
-                        </template>         
+                        </template>
                         <template #message="message">
                             <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
                         </template> 
