@@ -223,6 +223,10 @@
                 padding: size(16);
                 max-height: size(600);
             }
+
+            .foundResults + form {
+                max-height: size(544); // 600 - (40 + 16) (foundResults)
+            }
         }
 
         &__filter-content {
