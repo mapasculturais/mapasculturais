@@ -1319,7 +1319,7 @@ class ApiQuery {
                 $entity['originSiteUrl'] = $main_site_url;
             }
             if($this->_selectingType && isset($entity['_type'])){
-                $entity['type'] = $types[$entity['_type']];
+                $entity['type'] = $types[$entity['_type']] ?? null;
                 unset($entity['_type']);
             }
             
