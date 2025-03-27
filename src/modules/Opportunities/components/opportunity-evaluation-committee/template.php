@@ -17,7 +17,7 @@ $this->import('
     opportunity-registration-filter-configuration
 ');
 ?>
-<div class="opportunity-evaluation-committee">        
+<div class="opportunity-evaluation-committee">
     <div class="opportunity-evaluation-committee__header">
         <select-entity v-if="!showDisabled" type="agent" :select="queryString" :query="query" @select="selectAgent($event)" openside="down-right" permissions="">
             <template #button="{ toggle }">
@@ -128,7 +128,7 @@ $this->import('
                             <button class="button button--primary" :class="{'disabled' : infoReviewer.metadata.summary.sent <= 0}" @click="open()">
                                 <?php i::_e('Reabrir avaliações') ?>
                             </button>
-                        </template>         
+                        </template>
                         <template #message="message">
                             <?php i::_e('Você tem certeza que deseja reabrir as avaliações para este avaliador?') ?>
                         </template> 

@@ -46,26 +46,26 @@ $default_select = "number,consolidatedResult,score,status,sentTimestamp,createTi
 
 $default_headers = [
     [
-        'text' => i::__('inscrição', 'opportunity-registrations-table'),
+        'text' => i::__('Inscrição', 'opportunity-registrations-table'),
         'value' => 'number',
         'sticky' => true,
         'width' => '160px',
     ],
     [
-        'text' => i::__('agente', 'opportunity-registrations-table'),
+        'text' => i::__('Agente', 'opportunity-registrations-table'),
         'value' => 'owner?.name',
         'slug' => 'agent',
     ],
     [
-        'text' => i::__('anexos', 'opportunity-registrations-table'),
+        'text' => i::__('Anexos', 'opportunity-registrations-table'),
         'value' => 'attachments',
     ],
     [
-        'text' => i::__('data de criação', 'opportunity-registrations-table'),
+        'text' => i::__('Data de criação', 'opportunity-registrations-table'),
         'value' => 'createTimestamp',
     ],
     [
-        'text' => i::__('data de envio', 'opportunity-registrations-table'),
+        'text' => i::__('Data de envio', 'opportunity-registrations-table'),
         'value' => 'sentTimestamp',
     ],
     [
@@ -79,7 +79,7 @@ $available_fields = [];
 
 if(count($phase->registrationCategories) > 0) {
     $available_fields[] = [
-        'title' => $DESC->category->label,
+        'title' => $DESC['registration']['category']['label'],
         'fieldName' => 'category',
         'fieldOptions' => $phase->registrationCategories,
     ];
@@ -87,7 +87,7 @@ if(count($phase->registrationCategories) > 0) {
 
 if(count($phase->registrationProponentTypes) > 0) {
     $available_fields[] = [
-        'title' => $DESC->proponentType->label,
+        'title' => $DESC['registration']['proponentType']['label'],
         'fieldName' => 'proponentType',
         'fieldOptions' => $phase->registrationProponentTypes,
     ];
@@ -95,7 +95,7 @@ if(count($phase->registrationProponentTypes) > 0) {
 
 if(count($phase->registrationRanges) > 0) {
     $available_fields[] = [
-        'title' => $DESC->range->label,
+        'title' => $DESC['registration']['range']['label'],
         'fieldName' => 'range',
         'fieldOptions' =>   array_filter( array_map(function($item) {
                                 return $item['label']; 
