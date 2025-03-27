@@ -773,7 +773,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $new_categories = Utils::nl2array($categories);
         }
 
-        $removed_categories = array_diff($this->registrationCategories, $new_categories);
+        $removed_categories = array_filter(array_diff($this->registrationCategories, $new_categories));
         $errors = [];
 
         foreach ($removed_categories as $removed_category) {
