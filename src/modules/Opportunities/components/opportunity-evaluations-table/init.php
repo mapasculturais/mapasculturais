@@ -4,19 +4,14 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
- use MapasCulturais\i;
+use MapasCulturais\i;
 
- $entity = $this->controller->requestedEntity;
+$entity = $this->controller->requestedEntity;
 
- $committee = [];
- $valuersMetadata = [];
+$committee = [];
+$valuersMetadata = [];
 
-array_push($committee, [
-    "value" => 'all',
-    "label" => i::__('Todos')
-]);
-
- if($comm = $entity->getEvaluationCommittee()) {
+if ($comm = $entity->getEvaluationCommittee()) {
     foreach($comm as $value) {
         array_push($committee, [
             "value" => $value->agent->owner->user->id,
@@ -25,8 +20,14 @@ array_push($committee, [
 
         $valuersMetadata[$value->agent->owner->user->id] = $value->metadata;
     }
- }
+}
 
+usort($committee, fn($a, $b) => $a['label'] <=> $b['label']);
+
+array_unshift($committee, [
+    "value" => 'all',
+    "label" => i::__('Todos')
+]);
 
 $this->jsObject['config']['opportunityEvaluationsTable'] = [
     "isAdmin" => $app->user->is("admin"),
