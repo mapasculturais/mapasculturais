@@ -167,7 +167,7 @@ class Registration extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="valuers_exceptions_list", type="json", nullable=false)
      */
-    protected $__valuersExceptionsList = '{"include": [], "exclude": []}';
+    protected $__valuersExceptionsList;
 
 
 
@@ -273,6 +273,8 @@ class Registration extends \MapasCulturais\Entity
     function __construct() {
         $app = App::i();
 
+        $this->__valuersExceptionsList = (object) ["include" => [], "exclude" => []];
+        
         $this->owner = $app->user->profile;
 
         if(!self::$hooked){
@@ -737,6 +739,9 @@ class Registration extends \MapasCulturais\Entity
      * @return mixed 
      */
     function getValuersExceptionsList(){
+        if(is_string($this->__valuersExceptionsList) && json_validate($this->__valuersExceptionsList)) {
+            $this->__valuersExceptionsList = json_decode($this->__valuersExceptionsList);
+        }
         return (object) $this->__valuersExceptionsList;
     }
 
