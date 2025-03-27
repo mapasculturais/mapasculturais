@@ -321,6 +321,11 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 return $app->mscache->fetch($cache_key);
             }
         }
+
+        if ($app->config['app.log.summary']) {
+            $app->log->debug("SUMMARY: Atualizando o resumo de avaliações da fase {$this->name} ($this->id)");
+        }
+
         $em = $this->evaluationMethod;
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;

@@ -1382,10 +1382,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $cache_key = $this->summaryCacheKey;
 
         if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
-
             if ($app->mscache->contains($cache_key)) {
                 return $app->mscache->fetch($cache_key);
             }
+        }
+        
+        if ($app->config['app.log.summary']) {
+            $app->log->debug("SUMMARY: Atualizando o resumo de inscrições da fase {$this->name} ({$this->id})");
         }
 
         $params = ["opp" => $this];

@@ -57,6 +57,7 @@ return [
     'app.log.auth'          => env('LOG_AUTH', false),
 
     'app.log.evaluations'   => env('LOG_EVALUATIONS', false),
+    'app.log.summary'   => env('LOG_SUMMARY', false),
 
     'app.log.lockfile'      => env('LOG_LOCKFILE', false),
 

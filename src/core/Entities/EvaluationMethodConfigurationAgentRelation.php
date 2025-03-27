@@ -137,6 +137,11 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         $entity = $this->owner;
         $app = App::i();
+
+        if ($app->config['app.log.summary']) {
+            $app->log->debug("SUMMARY: Atualizando o resumo de avaliações do avaliador {$this->agent->name}");
+        }
+
         /** @var \MapasCulturais\Connection $conn */
         $conn = $app->em->getConnection();
 
@@ -201,10 +206,6 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
         }
 
         $metadata->summary = $data;
-
-        if ($app->config['app.log.evaluations']) {
-            $app->log->debug("Atualizando resumo de avaliações do avaliador {$this->agent->name}");
-        }
 
         $conn->update('agent_relation', ['metadata' => json_encode($metadata)], ['id' => $this->id]);
     }
