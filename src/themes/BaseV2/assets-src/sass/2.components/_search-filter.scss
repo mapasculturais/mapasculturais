@@ -191,15 +191,26 @@
         }
     }
 
+    &--map {
+        @include mobile {
+            height: 0;
+        }
+    }
+
     //in map
     &--map & {
         &__actions {
             top: size(-66);
         }
-        
+
         &__actions-form-btn {
             bottom: size(-74);
             position: absolute;
+            right: 0;
+
+            @include mobile {
+                bottom: size(-120);
+            }
         }
 
         &__filter {
@@ -222,10 +233,18 @@
                 border-radius: var(--mc-border-radius-xs);
                 padding: size(16);
                 max-height: size(600);
+
+                @include mobile {
+                    max-height: calc(100vh - #{size(270)});
+                }
             }
 
             .foundResults + form {
                 max-height: size(544); // 600 - (40 + 16) (foundResults)
+
+                @include mobile {
+                    max-height: calc(100vh - #{size(326)});
+                }
             }
         }
 
