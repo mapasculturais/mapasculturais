@@ -29,8 +29,15 @@ $this->import('
         </select-entity>
 
         <div v-if="showReviewers" class="opportunity-evaluation-committee__expand-button">
-            <button class="button button--primary" @click="expandAllToggles">
-                <?php i::_e('Expandir todos os avaliadores') ?>
+            <button class="button button--icon button--primary" @click="expandAllToggles()">
+                <template v-if="allExpanded">
+                    <mc-icon name="arrowPoint-up"></mc-icon>
+                    <?php i::_e('Recolher todos os avaliadores') ?>
+                </template>
+                <template v-else>
+                    <mc-icon name="arrowPoint-down"></mc-icon>
+                    <?php i::_e('Expandir todos os avaliadores') ?>
+                </template>
             </button>
         </div>
     </div>
