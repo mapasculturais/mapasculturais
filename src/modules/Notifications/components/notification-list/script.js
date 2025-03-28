@@ -60,10 +60,6 @@ app.component('notification-list', {
         }
     },
 
-    computed: {
-
-    },
-    
     methods: {
         hasAvatar(entity) {
             return !!entity.request?.requesterUser?.profile?.files?.avatar;
