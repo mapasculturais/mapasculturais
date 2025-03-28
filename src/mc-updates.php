@@ -564,7 +564,7 @@ return [
                 $em->redistributeRegistrations($opportunity);
                 foreach($opportunity->getEvaluationCommittee(true) as $relation) {
                     $app->log->debug('atualiza sumário do avaliador ' . $relation->agent->id . ' - ' . $relation->agent->name);
-                    $relation->updateSummary(flush: true);
+                    $relation->updateSummary();
                 }
 
             }
