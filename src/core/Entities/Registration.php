@@ -165,9 +165,9 @@ class Registration extends \MapasCulturais\Entity
     /**
      * @var integer
      *
-     * @ORM\Column(name="valuers_exceptions_list", type="text", nullable=false)
+     * @ORM\Column(name="valuers_exceptions_list", type="json", nullable=false)
      */
-    protected $__valuersExceptionsList = '{"include": [], "exclude": []}';
+    protected $__valuersExceptionsList;
 
 
 
@@ -273,6 +273,8 @@ class Registration extends \MapasCulturais\Entity
     function __construct() {
         $app = App::i();
 
+        $this->__valuersExceptionsList = (object) ["include" => [], "exclude" => []];
+        
         $this->owner = $app->user->profile;
 
         if(!self::$hooked){
@@ -737,19 +739,20 @@ class Registration extends \MapasCulturais\Entity
      * @return mixed 
      */
     function getValuersExceptionsList(){
-        return json_decode($this->__valuersExceptionsList);
+        if(is_string($this->__valuersExceptionsList) && json_validate($this->__valuersExceptionsList)) {
+            $this->__valuersExceptionsList = json_decode($this->__valuersExceptionsList);
+        }
+        return (object) $this->__valuersExceptionsList;
     }
 
     protected function _setValuersExceptionsList($object){
         $this->checkPermission('modifyValuers');
 
         if(is_object($object) && isset($object->exclude) && is_array($object->exclude) && isset($object->include) && is_array($object->include)){
-            $this->__valuersExceptionsList = json_encode($object);
+            $this->__valuersExceptionsList = $object;
         } else {
             throw new \Exception('Invalid __valuersExceptionsList format');
         }
-
-        $this->enqueueToPCacheRecreation();
     }
 
     function setValuersExcludeList(array $user_ids){
@@ -771,7 +774,7 @@ class Registration extends \MapasCulturais\Entity
      */
     function getValuersIncludeList(){
         $exceptions = $this->getValuersExceptionsList();
-        return $exceptions->include;
+        return (array) $exceptions->include;
     }
     
     /**
@@ -780,7 +783,7 @@ class Registration extends \MapasCulturais\Entity
      */
     function getValuersExcludeList(){
         $exceptions = $this->getValuersExceptionsList();
-        return $exceptions->exclude;
+        return (array) $exceptions->exclude;
     }
 
     /** 

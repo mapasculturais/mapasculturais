@@ -9,7 +9,6 @@ app.component('panel--evaluations-tabs', {
 
     data() {
         let query = {
-            '@permissions': 'evaluateRegistrations',
             'status': 'IN(1,-1)',
         };
 

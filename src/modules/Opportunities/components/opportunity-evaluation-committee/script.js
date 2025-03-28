@@ -37,6 +37,10 @@ app.component('opportunity-evaluation-committee', {
             return query;
         },
 
+        allExpanded() {
+            return this.infosReviewers.every(reviewer => reviewer.isContentVisible);
+        },
+
         select() {
             return "id,owner,agent,agentUserId";
         },
@@ -349,10 +353,9 @@ app.component('opportunity-evaluation-committee', {
         },
 
         expandAllToggles() {
-            const allExpanded = this.infosReviewers.every(reviewer => reviewer.isContentVisible);
-
+            const expand = !this.allExpanded;
             this.infosReviewers.forEach(reviewer => {
-                reviewer.isContentVisible = !allExpanded;
+                reviewer.isContentVisible = expand;
             });
         },
     },

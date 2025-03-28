@@ -23,7 +23,8 @@ app.component('opportunity-committee-groups', {
             selectedFields: {
                 global: '',
                 individual: ''
-            }
+            },
+            distributingEvaluations: false,
         }
     },
 
@@ -260,6 +261,13 @@ app.component('opportunity-committee-groups', {
         enableExternalReviews(value) {
             this.entity.showExternalReviews = value ? true : false;
             this.autoSave();
+        },
+
+        distriuteEvaluations() {
+            this.distributingEvaluations = true;
+            this.entity.POST('registributeEvaluations', {callback: () => {
+                this.distributingEvaluations = false;
+            }});
         }
     },
 });
