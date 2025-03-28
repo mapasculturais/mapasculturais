@@ -1793,7 +1793,12 @@ class App {
         }
 
         if ($job = $this->repo('Job')->find($id)) {
-            return $job;
+            if($job->status == Job::STATUS_PROCESSING && $iterations == 1) {
+                $conn = $this->em->getConnection();
+                $conn->delete('job', ['id' => $id]);
+            } else {
+                return $job;
+            }
         }
 
         $job = new Job($type);
