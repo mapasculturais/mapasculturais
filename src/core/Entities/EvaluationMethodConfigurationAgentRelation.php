@@ -3,6 +3,7 @@ namespace MapasCulturais\Entities;
 
 use MapasCulturais\App;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\EvaluationMethod;
 use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\Exceptions\WorkflowRequest;
 use MapasCulturais\GuestUser;
@@ -133,70 +134,12 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
      * @throws PermissionDenied
      * @throws WorkflowRequest
      */
-    function updateSummary(bool $flush = false, bool $pending = true, bool $started = true, bool $completed = true, bool $sent = true): void
+    function updateSummary(): void
     {
-        $entity = $this->owner;
         $app = App::i();
-
+        
         if ($app->config['app.log.summary']) {
             $app->log->debug("SUMMARY: Atualizando o resumo de avaliações do avaliador {$this->agent->name}");
-        }
-
-        /** @var \MapasCulturais\Connection $conn */
-        $conn = $app->em->getConnection();
-
-        $user = $this->agent->user;
-        $data = $this->metadata["summary"] ?? [];
-
-        /**
-         * Constrói a query para contar as avaliações com base no status.
-         *
-         * @param int|null $status Status da avaliação (0 = iniciada, 1 = concluída, 2 = enviada).
-         * @return int Retorna a contagem de avaliações.
-         */
-        $buildQuery = function ($status = null) use ($user, $entity, $conn): int {
-            $statusCondition = is_null($status) ? "e.status IS NULL" : "e.status = {$status} AND e.registration_id IN (SELECT r.id FROM registration r WHERE r.opportunity_id = {$entity->opportunity->id})";
-
-            $query = "
-                SELECT DISTINCT count(e.registration_id)
-                FROM registration_evaluation e
-                WHERE {$statusCondition} AND user_id = {$user->id}
-            ";
-
-            return $conn->fetchScalar($query);
-        };
-
-        // Atualiza as avaliações pendentes
-        if ($pending) {
-            $query = "
-                SELECT DISTINCT count(e.registration_id)
-                FROM evaluations e
-                WHERE opportunity_id = {$entity->opportunity->id} AND e.evaluation_status IS NULL AND valuer_user_id = {$user->id}
-            ";
-            $data['pending'] = $conn->fetchScalar($query);
-        } else {
-            $data['pending'] = $data['pending'] ?? 0;
-        }
-
-        // Atualiza as avaliações iniciadas
-        if ($started) {
-            $data['started'] = $buildQuery(0);
-        } else {
-            $data['started'] = $data['started'] ?? 0;
-        }
-
-        // Atualiza as avaliações concluídas
-        if ($completed) {
-            $data['completed'] = $buildQuery(1);
-        } else {
-            $data['completed'] = $data['completed'] ?? 0;
-        }
-
-        // Atualiza as avaliações enviadas
-        if ($sent) {
-            $data['sent'] = $buildQuery(2);
-        } else {
-            $data['sent'] = $data['sent'] ?? 0;
         }
 
         if(is_object($this->metadata)) {
@@ -205,8 +148,11 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
             $metadata = (object) [];
         }
 
-        $metadata->summary = $data;
+        $user = $this->agent->user;
+        $evaluation_method_configuration = $this->owner;
+        $metadata->summary = $evaluation_method_configuration->getValuerSummary($user);
 
+        $conn = $app->em->getConnection();
         $conn->update('agent_relation', ['metadata' => json_encode($metadata)], ['id' => $this->id]);
     }
 
