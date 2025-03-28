@@ -344,8 +344,9 @@ app.component('opportunity-evaluation-committee', {
         },
 
         expandAllToggles() {
+            const expand = !this.allExpanded;
             this.infosReviewers.forEach(reviewer => {
-                reviewer.isContentVisible = !this.allExpanded;
+                reviewer.isContentVisible = expand;
             });
         },
     },
