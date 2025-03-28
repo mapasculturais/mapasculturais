@@ -619,7 +619,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $can = true;
 
         $global_filter_configs = $evaluation_config->fetchFields;
-        $global_filter_configs = $global_filter_configs->$committee_name ?? [];
+        $global_filter_configs = (array) ($global_filter_configs->$committee_name ?? []);
 
         if ( $categories = $global_filter_configs['category'] ?? null) {
             unset($global_filter_configs['category']);
@@ -736,19 +736,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         /** @var Opportunity $opportunity */
         $opportunity = $registration->opportunity;
         $opportunity->registerRegistrationMetadata();
-        $fields = $opportunity->registrationFieldConfigurations;
-
-        $field_name = [];
-        foreach($fields as $field) {
-            $field_name[$field->title] = $field->fieldName;
-        }
-
-        foreach($filter_configuration as $key => $values){
+        
+        foreach($filter_configuration as $field_name => $values){
             $found_field = false;
             foreach($values as $val) {
                 $val = trim($val);
                 
-                if(strtolower((string)$registration->metadata[$field_name[$key]]) === strtolower($val)){
+                if(strtolower((string)$registration->metadata[$field_name]) === strtolower($val)){
                     $found_field = true;
                 }
             }
