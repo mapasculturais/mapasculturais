@@ -609,7 +609,7 @@ class Module extends \MapasCulturais\Module{
             }
 
             if ($em = $this->getEvaluationMethodConfiguration()) {
-                $em->getUserRelation($user)->updateSummary(flush: true);
+                $em->getUserRelation($user)->updateSummary();
             }
         });
 
