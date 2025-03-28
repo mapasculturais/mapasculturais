@@ -28,6 +28,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract function _getConsolidatedDetails(Entities\Registration $registration): ?array;
 
 
+    static function getNextRedistributionDateTime(): \DateTime {
+        $app = App::i();
+        $str_time = date($app->config['registrations.distribution.dateString']) . ' ' . $app->config['registrations.distribution.incrementString'];
+        $datetime = new \DateTime($str_time);
+        return $datetime;
+    }
+
     public function cmpValues($value1, $value2){
         if($value1 > $value2){
             return 1;
