@@ -1476,5 +1476,29 @@ class Opportunity extends EntityController {
         $opportunity->fixNextPhaseRegistrationIds();
 
     }
+
+    public function API_findEvaluable(): void {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $user_id = $this->data['@user'] ?? $app->user->id;
+        $user = $app->repo('User')->find($user_id);
+        
+        $user->profile->checkPermission('@control');
+
+        $opportunity_ids = $app->repo('Opportunity')->findValuerOpportunities($user->id, only_ids: true); 
+        
+        $query_params = $this->data;
+        $query_params['id'] = API::IN($opportunity_ids);
+
+        unset($query_params['@user']);
+
+        $query = new ApiQuery(EntitiesOpportunity::class, $query_params);
+        $result = $query->find();
+
+        $this->apiAddHeaderMetadata($query_params, $result, $query->count());
+        $this->apiResponse($result);
+    }
     
 }
