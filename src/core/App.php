@@ -1792,8 +1792,15 @@ class App {
             $conn->delete('job', ['id' => $id]);
         }
 
+        /** @var Entities\Job $job */
         if ($job = $this->repo('Job')->find($id)) {
-            if($job->status == Job::STATUS_PROCESSING && $iterations == 1) {
+            $job_create_timestamp = $job->createTimestamp;
+
+            // o job tem mais que 5 minutos?
+            $is_old = $job_create_timestamp->getTimestamp() < (time() - 5 * MINUTE_IN_SECONDS);
+
+            // remove o job se ele estiver com status de processamento e for mais velho que 5 minutos
+            if($job->status == Job::STATUS_PROCESSING && $iterations == 1 && $is_old) {
                 $conn = $this->em->getConnection();
                 $conn->delete('job', ['id' => $id]);
             } else {
