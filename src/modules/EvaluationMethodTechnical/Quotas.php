@@ -476,7 +476,7 @@ class Quotas {
                 */
                 
                 foreach($this->quotaConfig as $quota_slug => $quota_config) {
-                    $first_quota_index = $this->considerQuotasInGeneralList ? 
+                    $first_quota_index = !$this->considerQuotasInGeneralList ? 
                         0 : count($_result) - $range_total_quota_vacancies;
     
                     $avaliable_quota_vacancies = $range_quota_vacancies[$quota_slug];
