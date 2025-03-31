@@ -1152,6 +1152,13 @@ return [
         __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
     },
 
+    'altera o tipo da coluna valuers_exceptions_list da tabela registration para jsonb' => function () {
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list DROP DEFAULT;"); 
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list TYPE JSONB USING valuers_exceptions_list::JSONB");
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list SET DEFAULT '{\"include\": [], \"exclude\": []}'::jsonb;"); 
+        __exec("CREATE INDEX registration_valuers_index ON registration USING GIN((valuers_exceptions_list->'include') jsonb_path_ops)");
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
@@ -1747,15 +1754,15 @@ $$
         
     },
 
-    'DROP VIEW evaluations' => function () {
-        __try("DROP VIEW evaluations");
+    'DROP MATERIALIZED VIEW evaluations!' => function () {
+        __try("DROP MATERIALIZED VIEW evaluations");
     },
 
-    'RECREATE MATERIALIZED VIEW evaluations' => function() use($conn) {
-        __try("DROP MATERIALIZED VIEW IF EXISTS evaluations");
+    'Recria view evaluations!!!!' => function() use($conn) {
+        __try("DROP VIEW IF EXISTS evaluations");
 
         $conn->executeQuery("
-            CREATE MATERIALIZED VIEW evaluations AS (
+            CREATE VIEW evaluations AS (
                 SELECT 
                     registration_id,
                     registration_sent_timestamp,
@@ -1786,32 +1793,29 @@ $$
                             ON re.registration_id = r.id 
                         JOIN usr u 
                             ON u.id = re.user_id
-                        where 
-                            r.status > 0
-                    UNION
+                    WHERE 
+                        r.status > 0
+                UNION
                     SELECT 
                         r2.id AS registration_id, 
                         r2.sent_timestamp AS registration_sent_timestamp,
                         r2.number AS registration_number, 
                         r2.category AS registration_category,
                         r2.agent_id AS registration_agent_id, 
-                        p2.user_id AS valuer_user_id, 
+                        u2.id AS valuer_user_id, 
                         u2.profile_id AS valuer_agent_id, 
                         r2.opportunity_id,
                         NULL AS evaluation_id,
                         NULL AS evaluation_result,
                         NULL AS evaluation_status
+                    
                     FROM registration r2 
-                        JOIN pcache p2 
-                            ON  p2.object_id = r2.id AND
-                                p2.object_type = 'MapasCulturais\Entities\Registration' AND 
-                                p2.action = 'evaluateOnTime'  
                         JOIN usr u2 
-                            ON u2.id = p2.user_id
+                            on ('[' || u2.id || ']')::jsonb  <@ (r2.valuers_exceptions_list->'include')
                         JOIN evaluation_method_configuration emc
                             ON emc.opportunity_id = r2.opportunity_id
-                        WHERE                          
-                            r2.status > 0
+                    WHERE                          
+                        r2.status = 1
                 ) AS evaluations_view 
                 GROUP BY
                     registration_id,
@@ -1826,15 +1830,8 @@ $$
         ");
     },
 
-    'enqueue job to refresh materialized view evaluations' => function() use($conn) {
-        $app = App::i();
-        
-        $app->disableAccessControl();
-        // é para rodar a cada minuto, por 10 anos
-        $app->enqueueOrReplaceJob(\Opportunities\Jobs\RefreshViewEvaluations::SLUG, [], interval_string: '1 minute', iterations: 60*24*365*10);
-
-        // retorna false para executar a cada redeploy do serviço
-        return false;
+    'delete job de refresh materialized view evaluations' => function() use($conn) {
+        __exec("DELETE FROM job WHERE name = 'RefreshViewEvaluations'");
     },
 
     'adiciona oportunidades na fila de reprocessamento de cache' => function () use($conn) {
