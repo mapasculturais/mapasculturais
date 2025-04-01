@@ -23,15 +23,19 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Ceará - https://mapacultural.secult.ce.gov.br/
 - Espírito Santo - https://mapa.cultura.es.gov.br/
 - Goiás - https://mapagoiano.cultura.go.gov.br/
-- Maranhão - http://ma.mapas.cultura.gov.br/
+- Maranhão - https://mapadacultura.ma.gov.br/
 - Mato Grosso - https://mapas.mt.gov.br/
 - Mato Grosso do Sul - https://www.mapacultural.ms.gov.br/
 - Pará - https://mapacultural.pa.gov.br/
 - Paraíba - http://pb.mapas.cultura.gov.br/
 - Pernambuco - https://www.mapacultural.pe.gov.br/
 - Sergipe - http://mapas.cultura.se.gov.br/
-- Tocantins - http://mapa.cultura.to.gov.br/
+- Tocantins - https://mapadacultura.secult.to.gov.br/
+- Acre - https://mapadacultura.ac.gov.br/
+- Roraima - https://mapadacultura.rr.gov.br/
+
 ### Instalações municipais
+- Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
 - Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
@@ -60,6 +64,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Itu - http://mapacultural.itu.sp.gov.br/
 - Guarulhos - http://grucultura.guarulhos.sp.gov.br/
 - Itapetininga - http://mapacultural.itapetininga.sp.gov.br/
+- Lagoa Santa - https://mapacultural.lagoasanta.mg.gov.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
