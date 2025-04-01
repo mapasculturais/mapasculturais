@@ -1070,7 +1070,7 @@ class ApiQuery {
             $where = $where_dqls;
         }
 
-        if($this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
+        if($app->isAccessControlEnabled() && $this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
             $params = $this->apiParams;
             
             if($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
