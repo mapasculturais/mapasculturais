@@ -55,7 +55,8 @@
                 color: var(--mc-primary-500);
             }
             &:focus,
-            &:hover {
+            &:hover,
+            a.active {
                 svg {
                     color: var(--mc-high-500);
                 }
