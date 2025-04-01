@@ -160,4 +160,9 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     {
         return $this->owner->canUser('manageEvaluationCommittee', $user);
     }
+
+    protected function canUserModify($user): bool
+    {
+        return $this->owner->canUser('manageEvaluationCommittee', $user);
+    }
 }

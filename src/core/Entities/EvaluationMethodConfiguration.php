@@ -551,11 +551,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }    
     
     protected function canUserManageEvaluationCommittee($user){
-        if(!$this->canUser('@controll', $user)){
-            return false;
-        }
-
-        return true;
+        return $this->opportunity->canUser('@control', $user);
     }
     
     protected function canUserCreateAgentRelationWithControl($user){
