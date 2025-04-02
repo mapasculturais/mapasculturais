@@ -13,17 +13,25 @@ $this->import('
 ?>
 <?php $this->applyTemplateHook('user-mail', 'before'); ?>
 
-<div class="user-mail__account-config">
+<div class="user-mail">
     <?php $this->applyTemplateHook('user-mail', 'begin'); ?>
 
-    <label class="user-mail__account-config-label"><?= i::__('Configurações da conta do usuário') ?></label>
-    <p v-if="!entity.editingEmail">
-        <label class="user-mail__account-config-email"><?= i::__('E-mail') ?> : {{entity.email}}</label>
-        <a @click="entity.editingEmail = true" class="user-mail__account-config-edit">
-            <mc-icon name="edit"></mc-icon><label class="user-mail__account-config-edit-label"><?php i::_e('Alterar email') ?></label>
-        </a>
-    </p>
-    <form class="grid-12 user-mail__account-config-form" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
+    <label class="user-mail__title"><?= i::__('Configurações da conta do usuário') ?></label>
+
+    <div class="user-mail__config" v-if="!entity.editingEmail">
+        <div class="user-mail__config-title">
+            <?= i::__('E-mail') ?> :
+        </div>
+        <div class="user-mail__config-content">
+            <b>{{entity.email}}</b>
+            <a @click="entity.editingEmail = true" class="user-mail__config-edit">
+                <mc-icon name="edit"></mc-icon>
+                <?php i::_e('Alterar email') ?>
+            </a>
+        </div>
+    </div>
+
+    <form class="grid-12 user-mail__form" v-if="entity.editingEmail" @submit="entity.save().then(() => entity.editingEmail = false); $event.preventDefault();">
         <div class="col-4">
             <entity-field :entity="entity" prop="email" hide-required></entity-field>
         </div>
