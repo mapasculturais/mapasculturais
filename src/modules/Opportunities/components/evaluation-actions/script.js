@@ -75,8 +75,7 @@ app.component('evaluation-actions', {
             window.dispatchEvent(new CustomEvent('processErrors', { detail: {} }));
         },
 
-        async saveEvaluation(finish = false) {
-            const messages = useMessages();
+        async saveEvaluation(finish = false, disableMessages = false) {
             const args = { id: this.entity.id };
 
             if (finish) {
@@ -85,33 +84,40 @@ app.component('evaluation-actions', {
 
             return this.requestEvaluation('saveEvaluation', this.formData, args).then(response => {
                 if (response.error) {
-                    messages.error(response.data);
+                    this.entity.sendMessage(response.data, 'error');
                 } else {
+                    if (disableMessages) {
+                        this.entity.disableMessages();
+                    }
+
                     this.dispatchResponse('saveEvaluation', response);
                     if (finish) {
-                        messages.success(this.text('finish'));
+                        this.entity.sendMessage(this.text('finish'), 'success');
                         this.updateSummaryEvaluations('completed');
                     } else {
-                        messages.success(this.text('success'));
+                        this.entity.sendMessage(this.text('success'), 'success');
                         this.updateSummaryEvaluations('started');
+                    }
+
+                    if (disableMessages) {
+                        this.entity.enableMessages();
                     }
                 }
             });
         },
 
         async sendEvaluation(){
-            const messages = useMessages();
             const args = { id: this.entity.id };
 
-            await this.saveEvaluation(true);
+            await this.saveEvaluation(true, true);
 
             return this.requestEvaluation('sendEvaluation', { data: this.formData }, args).then(response => {
                 if (response.error) {
-                    messages.error(response.data);
+                    this.entity.sendMessage(response.data, 'error');
                 } else {
                     this.dispatchResponse('sendEvaluation', response);
                     this.updateSummaryEvaluations('sent');
-                    messages.success(this.text('send'));
+                    this.entity.sendMessage(this.text('send'), 'success');
                 }
             });
         },
@@ -139,15 +145,14 @@ app.component('evaluation-actions', {
         },
 
         async reopen(){
-            const messages = useMessages();
             const args = { id: this.entity.id };
 
             return this.requestEvaluation('reopenEvaluation', { data: this.formData }, args).then(response => {
                 if (response.error) {
-                    messages.error(response.data);
+                    this.entity.sendMessage(response.data, 'error');
                 } else {
                     this.dispatchResponse('reopenEvaluation', response);
-                    messages.success(this.text('reopen'));
+                    this.entity.sendMessage(this.text('reopen'), 'success');
                     this.updateSummaryEvaluations('started');
                 }
             });
