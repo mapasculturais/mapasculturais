@@ -14,6 +14,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Correções
 - Evita que seja possivel inserir agentes que nao sejam agentes de perfil como avaliador
+- Implementa mc-update que garante que todos os avaliadores sejam sempre os agentes principais das contas
 
 ## [7.5.33] - 2025-03-31
 ### Correções
