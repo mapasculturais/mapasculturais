@@ -39,10 +39,12 @@ $this->import('
                         </slot>
                         <ul class="select-entity__results">
                             <li v-for="entity in entities" class="select-entity__results--item" :class="type" @click="selectEntity(entity, close)">
-                                <span class="icon">
-                                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
-                                </span>
-                                <span class="label"> {{entity.name}} </span>
+                                <slot name="entityInfo" :entity="entity">
+                                    <span class="icon">
+                                        <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                                    </span>
+                                    <span class="label"> {{entity.name}} </span>
+                                </slot>
                             </li>
                         </ul>
                     </template>
