@@ -90,7 +90,7 @@ globalThis.useEntitiesLists = Pinia.defineStore('entitiesLists', {
 globalThis.apiInstances = {};
 
 class API {
-    constructor(objectType, scope, fetchOptions) {
+    constructor(objectType, scope = 'default', fetchOptions = undefined) {
         const instanceId = `${objectType}:${scope}`;
         if (apiInstances[instanceId]) {
             return apiInstances[instanceId];
@@ -99,7 +99,6 @@ class API {
             this.cache = useEntitiesCache();
             this.lists = useEntitiesLists();
             this.objectType = objectType;
-            this.abortController = null;
             this.options = {
                 cacheMode: 'force-cache', 
                 ...fetchOptions
@@ -273,11 +272,9 @@ class API {
         return this.fetch('find', query, {list, raw, rawProcessor});
     }
 
-    async fetch(endpoint, query, {list, raw, rawProcessor, refresh}) {
+    async fetch(endpoint, query, { list, raw, rawProcessor, refresh, signal }) {
         let url = this.createApiUrl(endpoint, query);
-        this.abortController?.abort();
-        this.abortController = new AbortController();
-        return this.GET(url, {}, { signal: this.abortController.signal }).then(response => response.json().then(objs => {
+        return this.GET(url, {}, { signal }).then(response => response.json().then(objs => {
             let result;
             if(raw) {
                 rawProcessor = rawProcessor || Utils.entityRawProcessor;
