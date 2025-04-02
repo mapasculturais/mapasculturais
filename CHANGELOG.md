@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias nao funcionais
 - Implementa slot no componente select-entity para facilitar a amnipulação das opções exibidas
 
+### Correções
+- Evita que seja possivel inserir agentes que nao sejam agentes de perfil como avaliador
+
 ## [7.5.33] - 2025-03-31
 ### Correções
 - Corrige a exportação de planilhas para tratar os valores dos critérios da avaliação técnica como texto, assegurando a exibição correta de valores zerados
