@@ -33,9 +33,10 @@
 }
 
 .modal__header {
+    align-items: flex-start;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     padding: 1.5rem;
     top: 0;
     z-index: 1;
@@ -64,6 +65,8 @@
     height: 20px;
     padding: 0;
     cursor: pointer;
+    position: absolute;
+    right: 24px;
 }
 
 @media (max-width: 800px)

@@ -1920,7 +1920,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         }else if (field.fieldType === "checkbox") {
-            return value === "true" ? "Sim" : "Não";
+            return ["true", "1"].includes(value) ? "Sim" : "Não";
         }
          else if (field.fieldType === 'url'){
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
