@@ -1070,7 +1070,7 @@ class ApiQuery {
             $where = $where_dqls;
         }
 
-        if($this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
+        if($app->isAccessControlEnabled() && $this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
             $params = $this->apiParams;
             
             if ($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
@@ -1320,7 +1320,7 @@ class ApiQuery {
                 $entity['originSiteUrl'] = $main_site_url;
             }
             if($this->_selectingType && isset($entity['_type'])){
-                $entity['type'] = $types[$entity['_type']];
+                $entity['type'] = $types[$entity['_type']] ?? null;
                 unset($entity['_type']);
             }
             
@@ -3158,6 +3158,11 @@ class ApiQuery {
 
     protected function _addFilterByPermissions($value) {
         $app = App::i();
+
+        if(!$app->isAccessControlEnabled()) {
+            return;
+        }
+
         $user = $this->_permissionsUser ?
             $app->repo('User')->find($this->_permissionsUser) :
             $app->user;

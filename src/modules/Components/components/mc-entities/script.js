@@ -59,10 +59,7 @@ app.component('mc-entities', {
         },
         limit: Number,
         permissions: String,
-        order: {
-            type: String,
-            default: 'id ASC'
-        },
+        order: String,
         watchQuery: {
             type: Boolean,
             default: false
@@ -88,6 +85,16 @@ app.component('mc-entities', {
 
     },
 
+    computed: {
+        defaultOrder () {
+            if ($DESCRIPTIONS[this.type].name) {
+                return 'name ASC';
+            } else {
+                return 'id ASC';
+            }
+        }
+    },
+
     methods: {
         populateQuery(query) {
             if (this.select) {
@@ -100,6 +107,8 @@ app.component('mc-entities', {
 
             if (this.order) {
                 query['@order'] = this.order; 
+            } else if (!query['@order']) {
+                query['@order'] = this.defaultOrder;
             }
 
             if (this.limit) {
@@ -113,7 +122,7 @@ app.component('mc-entities', {
         },
 
         getDataFromApi() {
-            let query = {...this.query};
+            const query = {...this.query};
 
             this.$emit('loading', query);
 
@@ -144,16 +153,12 @@ app.component('mc-entities', {
         },
 
         refresh(debounce) {
-            if (this.entities.loading) {
-                return;
-            };
-
             if (this.timeout) {
-                clearTimeout(this.timeout)
+                clearTimeout(this.timeout);
             };
-
-            this.entities.splice(0);
+        
             this.timeout = setTimeout(() => {
+                this.entities.splice(0);
                 this.entities.loading = true;
 
                 this.getDataFromApi()
