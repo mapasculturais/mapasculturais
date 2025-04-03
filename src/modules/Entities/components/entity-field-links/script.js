@@ -46,6 +46,7 @@ app.component('entity-field-links', {
         } else {
             this.links = [];
         }
+        this.links = this.links.filter(Boolean);
     },
 
     methods: {

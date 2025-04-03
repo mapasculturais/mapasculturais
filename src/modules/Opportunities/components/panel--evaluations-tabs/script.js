@@ -16,7 +16,6 @@ app.component('panel--evaluations-tabs', {
 
     data() {
         let query = {
-            '@permissions': 'viewEvaluations',
             'status': 'IN(1,-1)',
             'isReportingPhase': this.isReportingPhase ? `EQ(1)` : 'OR(EQ(0),NULL())',
         };

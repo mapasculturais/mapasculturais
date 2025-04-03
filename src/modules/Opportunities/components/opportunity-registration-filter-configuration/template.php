@@ -23,7 +23,7 @@ $this->import('
                     <option v-if="showField('proponentType')" value="proponentType" :disabled="isFieldExcluded('proponentType')"><?php i::_e("Tipos do proponente") ?></option>
                     <option v-if="showField('range')" value="range" :disabled="isFieldExcluded('range')"><?php i::_e("Faixa/Linha") ?></option>
                     <option v-if="useDistributionField" value="distribution" :disabled="isGlobal"><?php i::_e("Distribuição") ?></option>
-                    <option v-if="Object.keys(registrationSelectionFields).length > 0" v-for="(options, title) in registrationSelectionFields" :key="title" :value="title" :disabled="isFieldExcluded(title)">{{ title }}</option>
+                    <option v-if="Object.keys(registrationSelectionFields).length > 0" v-for="(field, fieldName) in registrationSelectionFields" :key="fieldName" :value="fieldName" :disabled="isFieldExcluded(fieldName)">{{ field.title }}</option>
                 </select>
             </div>
 
@@ -48,9 +48,8 @@ $this->import('
             <div v-if="selectedField == 'distribution'" class="opportunity-registration-filter-configuration__related-input col-12 field">
                 <input type="text" placeholder="00-99" maxlength="5" v-model="selectedDistribution" />
             </div>
-
-            <div v-if="registrationSelectionFields[selectedField] && registrationSelectionFields[selectedField].length > 0" class="opportunity-registration-filter-configuration__related-input col-12 field">
-                <label class="input__label input__checkboxLabel input__multiselect" v-for="option in registrationSelectionFields[selectedField]">
+            <div v-if="registrationSelectionFields?.[selectedField]?.fieldOptions?.length > 0" class="opportunity-registration-filter-configuration__related-input col-12 field">
+                <label class="input__label input__checkboxLabel input__multiselect" v-for="option in registrationSelectionFields[selectedField].fieldOptions">
                     <input :checked="selectedConfigs.includes[option]" type="checkbox" :value="option" v-model="selectedConfigs"> {{option}}
                 </label>
             </div>
@@ -68,6 +67,5 @@ $this->import('
             </button>
         </template>
     </mc-modal>
-
-    <mc-tag-list classes="opportunity__background" :tags="fillTagsList" @remove="removeTag($event)" editable></mc-tag-list>
+    <mc-tag-list classes="opportunity__background" :tags="fillTagsList" :labels="fillTagsListLabels" @remove="removeTag($event)" editable></mc-tag-list>
 </div>
