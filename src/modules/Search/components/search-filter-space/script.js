@@ -36,6 +36,7 @@ app.component('search-filter-space', {
             this.pseudoQuery['term:area'].length = 0;
 
             delete this.pseudoQuery['acessibilidade'];
+            delete this.pseudoQuery['@seals'];
             
         },
     },

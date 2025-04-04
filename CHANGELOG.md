@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Melhorias não funcionais
+- Implementa novos hooks na tela de busca de espaços para possibilitar a criação de novo filtros apartir de plugins e temas
+
 ## [7.5.35] - 2025-04-02
 ### Melhorias
 - Deixa o card da commisão de avaliação nas configurações com mais informações para ficar evitende qual agente está como avaliador
