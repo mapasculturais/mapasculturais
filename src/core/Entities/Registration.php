@@ -164,13 +164,18 @@ class Registration extends \MapasCulturais\Entity
     protected $range;
     
     /**
-     * @var integer
+     * @var object
      *
      * @ORM\Column(name="valuers_exceptions_list", type="json", nullable=false)
      */
     protected $__valuersExceptionsList;
 
-
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="valuers", type="json", nullable=false)
+     */
+    protected $__valuers;
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
@@ -763,6 +768,10 @@ class Registration extends \MapasCulturais\Entity
      */
     function randomIdGeneratorInitialRange(){
         return 1000;
+    }
+
+    function getValuers(): array {
+        return $this->__valuers;
     }
 
     /**

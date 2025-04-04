@@ -29,6 +29,10 @@ use RuntimeException;
  * @property Registration $registration
  * @property User $user
  * @property integer $status
+ * @property bool $isTiebreaker
+ * @property string $committee
+ * 
+ * 
  *
  * @ORM\Table(name="registration_evaluation")
  * @ORM\Entity
@@ -119,6 +123,17 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      * @ORM\Column(name="is_tiebreaker", type="boolean", nullable=true)
      */
     protected $isTiebreaker = false;
+
+    /**
+     * Nome da comissão avaliadora pela qual o avaliador avaliou essa avaliação
+     * 
+     * @var integer
+     *
+     * @ORM\Column(name="committee", type="string", nullable=true)
+     */
+    protected $committee = '';
+
+    
 
     /**
      * flag que diz que a avaliação está sendo enviada
