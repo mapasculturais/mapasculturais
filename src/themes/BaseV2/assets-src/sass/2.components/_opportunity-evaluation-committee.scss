@@ -39,9 +39,15 @@
     }
 
     &__card-header-info {
+        max-width: 53%;
         align-items: center;
         display: flex;
         gap: size(16);
+
+        .evaluator-data {
+            display: flex;
+            flex-direction: column;
+        }
     }
 
     &__card-header-actions {

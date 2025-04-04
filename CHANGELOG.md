@@ -5,6 +5,25 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.35] - 2025-04-02
+### Melhorias
+- Deixa o card da commisão de avaliação nas configurações com mais informações para ficar evitende qual agente está como avaliador
+
+### Melhorias nao funcionais
+- Implementa slot no componente select-entity para facilitar a amnipulação das opções exibidas
+
+### Correções
+- Evita que seja possivel inserir agentes que nao sejam agentes de perfil como avaliador
+- Implementa mc-update que garante que todos os avaliadores sejam sempre os agentes principais das contas
+
+## [7.5.34] - 2025-04-02
+### Correções
+- Corrige exibição de eventos no mapa da busca de eventos
+
+## [7.5.33] - 2025-03-31
+### Correções
+- Corrige a exportação de planilhas para tratar os valores dos critérios da avaliação técnica como texto, assegurando a exibição correta de valores zerados
+- Resolve um problema que impedia o carregamento da lista de inscritos quando a opção `considerQuotasInGeneralList` não estava configurada
 
 ## [7.5.32] - 2025-03-24
 ### Correções

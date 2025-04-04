@@ -46,7 +46,14 @@ $this->import('
                 <div class="opportunity-evaluation-committee__card-header-info">
                     <mc-avatar :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
                     
-                    <span class="bold">#{{infoReviewer.agent.id}} - {{infoReviewer.agent.name}}</span>
+                   <div class="evaluator-data">
+                        <span class="bold">{{infoReviewer.agent.name}}</span>
+                        <span>
+                            <small>
+                                <strong>E-mail:</strong> {{infoReviewer.agent.user.email}} | <strong>ID Agente:</strong> #{{infoReviewer.agent.id}} | <strong>ID Usuário:</strong> #{{infoReviewer.agent.user.id}}
+                            </small>
+                        </span>
+                   </div>
                 </div>
 
                 <div class="opportunity-evaluation-committee__card-header-actions">
@@ -159,12 +166,19 @@ $this->import('
     </div>
 
     <div class="opportunity-evaluation-committee__add-new-evaluator">
-        <select-entity type="agent" :select="queryString" @select="selectAgent($event)" openside="down-right" permissions="">
+        <select-entity type="agent" :select="queryString" :query="query" @select="selectAgent($event)" openside="down-right" permissions="">
             <template #button="{ toggle }">
                 <button class="button button--icon button--primary" @click="toggle()">
                     <mc-icon name="add"></mc-icon>
                     <?php i::_e('Adicionador pessoa avaliadora') ?>
                 </button>
+            </template>
+
+            <template #entityInfo="{entity}">
+                <span class="icon">
+                    <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                </span>
+                <span class="label"> #{{entity.id}} - {{entity.name}}</span>
             </template>
         </select-entity>
     </div>

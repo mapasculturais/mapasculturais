@@ -16,9 +16,12 @@ app.component('opportunity-evaluation-committee', {
     computed: {
         query() {
             return {
-                '@opportunity': this.entity.id,
-                '@limit': 50,
-                '@page': 1
+                '@select': 'id,name,files.avatar,user',
+                '@order': 'id ASC',
+                '@limit': '25',
+                '@page': '1',
+                'type': 'EQ(1)',
+                'parent': 'NULL()'
             };
         },
         select() {

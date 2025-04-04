@@ -346,7 +346,7 @@ class Opportunity extends EntityController {
             $result = array_map(function($e){
                 $r = $e->simplify('id,hasControl,status,createdAt,metadata');
                 $r->owner = $e->owner->id;
-                $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar');
+                $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar,user');
                 $r->agentUserId = $e->agent->userId;
                 return $r;
             }, $relations);
