@@ -132,7 +132,16 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
             ] + $evaluation_data;
         }
 
-        return $result;
+        $_result = array_map(function($item) {
+            foreach ($item as $key => $value) {
+                if (strpos($key, 'c-') === 0) {
+                    $item[$key] = (string) $value;
+                }
+            }
+            return $item;
+        }, $result);
+        
+        return $_result;
     }
 
     protected function _getFilename(Job $job) : string {
