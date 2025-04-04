@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Melhorias não funcionais
 - Implementa novos hooks na tela de busca de espaços para possibilitar a criação de novo filtros apartir de plugins e temas
+- Implementa novos hooks no controller Search para possibilitar a interceptação e manuseio das p pseudo-querys de busca 
 
 ## [7.5.35] - 2025-04-02
 ### Melhorias
