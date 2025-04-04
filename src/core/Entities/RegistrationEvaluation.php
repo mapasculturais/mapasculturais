@@ -133,8 +133,6 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
      */
     protected $committee = '';
 
-    
-
     /**
      * flag que diz que a avaliação está sendo enviada
      * @var boolean
@@ -145,13 +143,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         if(empty($this->status)){
             $this->status = self::STATUS_DRAFT;
         }
+
+        if(empty($this->committee)){
+            $registration_valuers = $this->registration->valuers;
+            $this->committee = $registration_valuers[$this->user->id] ?? '';
+        }
         
         parent::save($flush);
-        $app = App::i();
-        $opportunity = $this->registration->opportunity;
-        
-        // cache utilizado pelo endpoint findEvaluations
-        $app->mscache->delete("api:opportunity:{$opportunity->id}:evaluations");
     }
 
     function send($flush = false) {
