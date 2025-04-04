@@ -773,6 +773,12 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $new_categories = Utils::nl2array($categories);
         }
 
+        if (is_array($new_categories)) {
+            $new_categories = array_filter($new_categories , function($category){
+                return !empty($category);
+            });
+        }
+
         $removed_categories = array_diff($this->registrationCategories, $new_categories);
         $errors = [];
 
@@ -1515,13 +1521,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
             if (isset($registered_metadata[$field->getFieldName()])) {
                 continue;
             }
-
+            $field_validations = [];
             if(in_array($field->fieldType, ['agent-owner-field', 'agent-collective-field'])) {
                 $agent_properties_metadata = \MapasCulturais\Entities\Agent::getPropertiesMetadata();
                 $agent_field_name = $field->config['entityField'] ?? null;
                 $agent_field = $agent_properties_metadata[$agent_field_name] ?? null;
                 $field_type = $agent_field['field_type'] ?? $agent_field['type'] ?? 'text';
-
+                
                 if(str_starts_with($field->config['entityField'], '@terms')) {
                     $field_type = 'multiselect';
                 }
@@ -1529,7 +1535,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 if($field->config['entityField'] == '@location') {
                     $field_type = 'location';
                 }
-
+                
                 if($field->config['entityField'] == '@links') {
                     $field_type = 'links';
                 }
@@ -1541,6 +1547,9 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 if(in_array($field->config['entityField'], ['longDescription', 'shortDescription'])){
                     $field_type = 'textarea';
                 }
+                
+                $field_validations = $agent_field['validations'] ?? [];
+                unset($field_validations['required']);
 
             } else if ($field->fieldType == 'checkboxes') {
                 $field_type = 'checklist';
@@ -1588,6 +1597,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
                 $cfg['validations'] = [];
             }
 
+            $cfg['validations'] = array_unique(array_merge($cfg['validations'], $field_validations));
+
             if($field->required){
                 $cfg['validations']['required'] = \MapasCulturais\i::__('O campo é obrigatório');
             }
@@ -1605,6 +1616,15 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $this->previousPhase->registerRegistrationMetadata();
         }
 
+    }
+
+    static function getPCachePermissionsList() {
+        $permissions = parent::getPCachePermissionsList();
+
+        $permissions[] = 'support';
+        $permissions[] = 'evaluateRegistrations';
+        
+        return $permissions;
     }
 
     protected function canUser_control($user) {

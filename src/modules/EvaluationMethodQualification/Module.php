@@ -16,7 +16,7 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     public function getSlug()
     {
-        return i::__('qualification');
+        return 'qualification';
     }
 
     public function getName()
@@ -66,6 +66,24 @@ class Module extends \MapasCulturais\EvaluationMethod
         return $status;
     }
 
+    public function parseLegacyResult($result) {
+        switch($result) {
+            case i::__('Habilitado'):
+                $result = ['valid'];
+                break;
+            case i::__('Inabilitado'):
+                $result = ['invalid'];
+                break;
+            case i::__('Não se aplica'):
+                $result = ['not-applicable'];
+                break;
+            default:
+                $result = [$result];
+                break;
+        }
+        return $result;
+    }
+
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation)
     {
         $approved = ['valid', 'not-applicable'];
@@ -84,15 +102,21 @@ class Module extends \MapasCulturais\EvaluationMethod
 
                 $non_eliminatory = ($cri->nonEliminatory ?? false) == 'true';
 
-                if(!isset($evaluation->evaluationData->$key)){
+                $val = isset($evaluation->evaluationData->$key) ? $evaluation->evaluationData->$key : null;
+
+                if(!is_array($val)){
+                    // para as avaliações legadas antes da versão 7.6
+                    $val = $this->parseLegacyResult($val);
+                }
+                if(!isset($val)){
                     return null;
                 } else {
                     if(($non_eliminatory)) {
-                        if(array_diff($evaluation->evaluationData->$key, $approved)){
+                        if(array_diff($val, $approved)){
                             $non_eliminatory_count++;
                         }
                     } else {
-                        if(array_diff($evaluation->evaluationData->$key, $approved)){
+                        if(array_diff($val, $approved)){
                             $result = 'invalid';
                             break;
                         }
@@ -134,8 +158,13 @@ class Module extends \MapasCulturais\EvaluationMethod
                     unset($cri->sid);
                     $result = isset($evaluation->evaluationData->{$cri->id}) ? $evaluation->evaluationData->{$cri->id} : [];
                     
+                    // para as avaliações legadas antes da versão 7.6
+                    if(!is_array($result)){
+                        $result = $this->parseLegacyResult($result);
+                    }
+
                     $cri->result = $result;
-                    if (in_array('others', $result) && isset($evaluation->evaluationData->{$cri->id . '_reason'})) {
+                    if (is_array($result) && in_array('others', $result) && isset($evaluation->evaluationData->{$cri->id . '_reason'})) {
                         $cri->result[] = $evaluation->evaluationData->{$cri->id . '_reason'};
                         $key = array_search('others', $cri->result);
                         unset($cri->result[$key]);

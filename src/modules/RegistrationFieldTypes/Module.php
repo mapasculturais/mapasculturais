@@ -160,7 +160,7 @@ class Module extends \MapasCulturais\Module
         $app->hook("entity(RegistrationMeta).update:before", function () use ($app, $module) {
             $entity = $this->owner;
             if($module->inEditableTransaction) {
-                if(!in_array($this->key, $entity->editableFields)) {
+                if($entity->editableFields && !in_array($this->key, $entity->editableFields)) {
                     $app->em->rollback();
                     throw new \Exception("Permission denied.");
                 }
@@ -351,7 +351,14 @@ class Module extends \MapasCulturais\Module
                 'configTemplate' => 'registration-field-types/currency-config',
                 'validations' => [
                     'v::brCurrency()' => \MapasCulturais\i::__('O valor não está no formato de moeda real (R$)')
-                ]
+                ],
+                'unserialize' => function($value) {
+                    if(is_string($value) && !is_numeric($value)) {
+                        return (float) str_replace(",",".", str_replace(".","", $value));
+                    }
+
+                    return (float) $value;
+                }
             ],
             [
                 'slug' => 'date',
@@ -651,7 +658,7 @@ class Module extends \MapasCulturais\Module
                         $registration =  $app->repo('Registration')->find($registration->id);
                     }
 
-                    if(is_null($registration) || $registration->status > 0){
+                    if(is_null($registration) || $registration->status > 1){
                             
                         $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
                         if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
@@ -763,6 +770,9 @@ class Module extends \MapasCulturais\Module
                 if (!empty($value["location"]["latitude"]) && !empty($value["location"]["longitude"])) {
                     // this order of coordinates is required by the EntityGeoLocation trait's setter
                     $entity->location = [$value["location"]["longitude"], $value["location"]["latitude"]];
+                } else if (!empty($value["location"]["lat"]) && !empty($value["location"]["lng"])) {
+                    $entity->location = [$value["location"]["lng"], $value["location"]["lat"]];
+
                 }
                 $entity->endereco = $value["endereco"] ?? "";
                 $entity->En_CEP = $value["En_CEP"] ?? "";

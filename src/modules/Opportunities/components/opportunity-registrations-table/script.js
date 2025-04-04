@@ -85,6 +85,9 @@ app.component('opportunity-registrations-table', {
         const isAffirmativePoliciesActive = $MAPAS.config.opportunityRegistrationTable.isAffirmativePoliciesActive;
         const hadTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.hadTechnicalEvaluationPhase;
         const isTechnicalEvaluationPhase = $MAPAS.config.opportunityRegistrationTable.isTechnicalEvaluationPhase;
+
+        const defaultHeaders = $MAPAS.config.opportunityRegistrationTable.defaultHeaders;
+        const default_select = $MAPAS.config.opportunityRegistrationTable.defaultSelect;
         
         let visible = this.visibleColumns.join(',');
         let order = 'status DESC,consolidatedResult DESC';
@@ -136,8 +139,8 @@ app.component('opportunity-registrations-table', {
         }
 
         const sortOptions = [
-            { value: 'sentTimestamp ASC', label: this.text('enviadas a mais tempo primeiro') },
-            { value: 'sentTimestamp DESC', label: this.text('enviadas a menos tempo primeiro') },
+            { value: 'sentTimestamp ASC', label: this.text('enviadas há mais tempo primeiro') },
+            { value: 'sentTimestamp DESC', label: this.text('enviadas há menos tempo primeiro') },
         ];
 
         if(this.phase.isLastPhase) {
@@ -190,7 +193,9 @@ app.component('opportunity-registrations-table', {
             visible,
             isAffirmativePoliciesActive,
             hadTechnicalEvaluationPhase,
-            isTechnicalEvaluationPhase
+            isTechnicalEvaluationPhase,
+            defaultHeaders,
+            default_select
         }
     },
 
@@ -216,6 +221,10 @@ app.component('opportunity-registrations-table', {
             if (this.phase.registrationCategories && this.phase.registrationCategories.length > 0) {
                 const result = {};
                 for (let category of this.phase.registrationCategories) {
+                    if (!category) {
+                        continue;
+                    }
+
                     result[category.replace(/,/g, '\\,')] = category;
                 }
                 return result;
@@ -243,15 +252,16 @@ app.component('opportunity-registrations-table', {
             return null;
         },
         headers () {
-            let itens = [
-                { text: __('inscrição', 'opportunity-registrations-table'), value: "number", sticky: true, width: '160px' },
-                { text: __('agente', 'opportunity-registrations-table'), value: "owner?.name", slug: "agent"},
-                ...this.avaliableFields.map((item) => { return {text: item.title, value: item.fieldName} }),
-                { text: __('anexos', 'opportunity-registrations-table'), value: "attachments" },
-                { text: __('data de criação', 'opportunity-registrations-table'), value: "createTimestamp" },
-                { text: __('data de envio', 'opportunity-registrations-table'), value: "sentTimestamp" },
-                { text: __('Editavel para o proponente', 'opportunity-registrations-table'), slug: "editable"}
-            ];
+            let itens = this.defaultHeaders;
+
+            const agentIndex = itens.findIndex(item => item.slug === 'agent');
+
+            if (agentIndex !== -1) {
+                itens.splice(agentIndex + 1, 0, ...this.avaliableFields.map(item => ({
+                    text: item.title,
+                    value: item.fieldName
+                })));
+            }
 
             if(this.phase.evaluationMethodConfiguration){
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
@@ -297,7 +307,26 @@ app.component('opportunity-registrations-table', {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }
 
-            itens.splice(3,0,{ text: "Pontuação", value: "score"});
+            let type = this.phase.evaluationMethodConfiguration?.type.id || '';
+            let phases = $MAPAS.opportunityPhases;
+            let hasEvaluationMethodTechnical = false;
+
+            for(let i = 0; i < phases.length; i++){
+                let phase = $MAPAS.opportunityPhases[i];
+                if(phase.id == this.phase.id){
+                    break;
+                }
+
+                let phaseType = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type.id : phase.type.id;
+                if(phaseType == "technical"){
+                    hasEvaluationMethodTechnical = true;
+                    break;
+                }
+            }
+
+            if(type == "technical" || hasEvaluationMethodTechnical){
+                itens.splice(3,0,{ text: "Pontuação", value: "score"});
+            }
 
             if(this.avaliableColumns) {
                 itens = itens.filter((item) => {
@@ -311,7 +340,7 @@ app.component('opportunity-registrations-table', {
         select() {
             const fields = this.avaliableFields.map((item) => item.fieldName);
             
-            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields', ...fields].join(',');
+            return [this.default_select, ...fields].join(',');
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;

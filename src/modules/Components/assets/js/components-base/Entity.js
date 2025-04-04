@@ -1,5 +1,7 @@
 class Entity {
-    constructor(objectType, id, scope) {
+    static __pkCache = new Map();
+  
+    constructor(objectType, id, scope = 'default') {
         this.__objectType = objectType;
         this.id = id;
         this.__scope = (scope || 'default');
@@ -12,6 +14,12 @@ class Entity {
 
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('mc-entity');
+    }
+
+    static fromJson(object, scope = 'default') {
+        const entity = new Entity(object['@entityType'], object.id, scope);
+        entity.populate(object);
+        return entity;
     }
 
     populate(obj, preserveValues = true) {
@@ -263,15 +271,14 @@ class Entity {
     }
 
     get $PK() {
-        const __properties = this.$PROPERTIES;
-        let pk;
-        for (let prop in __properties) {
-            if(__properties[prop].isPK) {
-                pk = prop;
-                break;
-            }
+        if (Entity.__pkCache.has(this.__objectType)) {
+            return Entity.__pkCache.get(this.__objectType);
         }
 
+        const __properties = this.$PROPERTIES;
+        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK) ?? [];
+
+        Entity.__pkCache.set(this.__objectType, pk);
         return pk;
     }
 
@@ -399,8 +406,7 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
-    async save(delay = 300, preserveValues = true) {
-        this.__processing = this.text('salvando');
+    async save(delay = 300, preserveValues = true, forceSave) {
         if(!this.id) {
             preserveValues = false;
         }
@@ -415,6 +421,7 @@ class Entity {
             this.rejecters.push(reject);
 
             this.__saveTimeout = setTimeout(async () => {
+                this.__processing = this.text('salvando');
                 try {
                     const data = this.data(true);
                     if(JSON.stringify(data) == '{}') {
@@ -422,12 +429,12 @@ class Entity {
                         for(let resolve of this.resolvers) {
                             resolve(response);
                         }
-
+                        this.sendMessage(this.text('modificacoes salvas'));
                         this.__processing = false;
                         return;
                     }
 
-                    const res = await this.API.persistEntity(this);                    
+                    const res = await this.API.persistEntity(this, forceSave);                    
                     this.doPromise(res, (entity) => {
                         if (this.id) {
                             this.sendMessage(this.text('modificacoes salvas'));

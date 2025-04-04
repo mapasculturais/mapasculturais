@@ -42,7 +42,6 @@ class Registration extends \MapasCulturais\Entity
         Traits\EntityAgentRelation,
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
-        Traits\EntityLock,
         Traits\EntityRevision {
             Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
         }
@@ -259,6 +258,13 @@ class Registration extends \MapasCulturais\Entity
      */
     protected $subsite;
 
+    /**
+     * @var dateTime
+     *
+     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
+     */
+    protected $updateTimestamp;
+
 
     public $preview = false;
 
@@ -363,6 +369,7 @@ class Registration extends \MapasCulturais\Entity
         $this->registerFieldsMetadata();
         
         $json = [
+            '@entityType' => $this->getControllerId(),
             'id' => $this->id,
             'opportunity' => $this->opportunity->simplify('id,name,singleUrl'),
             'createTimestamp' => $this->createTimestamp,
@@ -1334,7 +1341,7 @@ class Registration extends \MapasCulturais\Entity
               
                 $_fied_name = $conf->conditionalField;
                 $_fied_value = $conf->conditionalValue;
-                if ($rfc->required) {
+                if ($field->required) {
                     if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
                         $field_required = true;
                     } else {
@@ -1487,6 +1494,15 @@ class Registration extends \MapasCulturais\Entity
         $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).getAgentsData:after", [&$exportData]);
         
         return $exportData;
+    }
+
+    static function getPCachePermissionsList() {
+        $permissions = parent::getPCachePermissionsList();
+
+        $permissions[] = 'viewUserEvaluation';
+        $permissions[] = 'evaluateOnTime';
+        
+        return $permissions;
     }
 
     protected function canUserCreate($user){

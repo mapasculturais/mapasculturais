@@ -1,6 +1,7 @@
 <?php
 
- use MapasCulturais\Utils;
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Utils;
 
 /**
  * See https://github.com/Respect/Validation to know how to write validations
@@ -9,7 +10,7 @@ return array(
     'metadata' => array(
         'nomeCompleto' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('Nome completo ou Razão Social'),
+            'label' => \MapasCulturais\i::__('Nome Completo ou Razão Social'),
             'validations' => array(
                 //'required' => \MapasCulturais\i::__('Seu nome completo ou jurídico deve ser informado.')
             ),
@@ -18,7 +19,7 @@ return array(
 
         'nomeSocial' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('Nome Social'),
+            'label' => \MapasCulturais\i::__('Nome Social ou Nome Fantasia'),
             'available_for_opportunities' => true,
         ),
 
@@ -27,15 +28,21 @@ return array(
             'label' => \MapasCulturais\i::__('Escolaridade'),
             'type' => 'select',
             'options' => array(
-               '' => MapasCulturais\i::__('Não informado'),
-                MapasCulturais\i::__('Fundamental Incompleto'),
-                MapasCulturais\i::__('Fundamental Completo'),
-                MapasCulturais\i::__('Médio Incompleto'),
-                MapasCulturais\i::__('Médio Completo'),
-                MapasCulturais\i::__('Superior Completo'),
-                MapasCulturais\i::__('Superior Incompleto'),
-                MapasCulturais\i::__('Pós-graduação'),
-                MapasCulturais\i::__('Sem formação'),
+               MapasCulturais\i::__('Sem Educação Formal'),
+               MapasCulturais\i::__('Ensino Fundamental Incompleto'),
+               MapasCulturais\i::__('Ensino Fundamental Completo'),
+               MapasCulturais\i::__('Ensino Médio Incompleto'),
+               MapasCulturais\i::__('Ensino Médio Completo'),
+               MapasCulturais\i::__('Ensino Superior Incompleto'),
+               MapasCulturais\i::__('Ensino Superior Completo'),
+               MapasCulturais\i::__('Curso Técnico Incompleto'),
+               MapasCulturais\i::__('Curso Técnico Completo'),
+               MapasCulturais\i::__('Especialização/Residência Incompleta'),
+               MapasCulturais\i::__('Especialização/Residência Completa'),
+               MapasCulturais\i::__('Mestrado Incompleto'),
+               MapasCulturais\i::__('Mestrado Completo'),
+               MapasCulturais\i::__('Doutorado Incompleto'),
+               MapasCulturais\i::__('Doutorado Completo'),
             ),
             'available_for_opportunities' => true,
         ),
@@ -63,12 +70,14 @@ return array(
             'label' => 'Pessoa com deficiência',
             'type' => 'multiselect',
             'options' => [
-                MapasCulturais\i::__('Não sou'),
+                MapasCulturais\i::__('Nenhuma'),
                 MapasCulturais\i::__('Auditiva'),
-                MapasCulturais\i::__('Física'),
+                MapasCulturais\i::__('Física-motora'),
                 MapasCulturais\i::__('Intelectual'),
-                MapasCulturais\i::__('Mental'),
+                MapasCulturais\i::__('Múltipla'),
+                MapasCulturais\i::__('Transtorno do Espectro Autista'),
                 MapasCulturais\i::__('Visual'),
+                MapasCulturais\i::__('Outras'),
             ],
             'available_for_opportunities' => true
         ),
@@ -78,17 +87,36 @@ return array(
             'label' => \MapasCulturais\i::__('Comunidades tradicionais'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não informado'),
+                '' => MapasCulturais\i::__('Não informado'),
                 MapasCulturais\i::__('Não pertenço'),
-                MapasCulturais\i::__('Comunidade extrativista'),
-                MapasCulturais\i::__('Comunidade ribeirinha'),
-                MapasCulturais\i::__('Comunidade rural'),
-                MapasCulturais\i::__('Povos indígenas/originários'),
-                MapasCulturais\i::__('Comunidades de pescadores(as) artesanais'),
+                MapasCulturais\i::__('Andirobeiros'),
+                MapasCulturais\i::__('Apanhadores de flores sempre vivas'),
+                MapasCulturais\i::__('Benzedeiros'),
+                MapasCulturais\i::__('Caatingueiros'),
+                MapasCulturais\i::__('Caboclos'),
+                MapasCulturais\i::__('Caiçaras'),
+                MapasCulturais\i::__('Catadores de mangaba'),
+                MapasCulturais\i::__('Cipozeiros'),
+                MapasCulturais\i::__('Comunidades de fundos e fechos de pasto'),
+                MapasCulturais\i::__('Extrativistas costeiros e marinhos'),
+                MapasCulturais\i::__('Extrativistas'),
+                MapasCulturais\i::__('Faxinalenses'),
+                MapasCulturais\i::__('Geraizeiros'),
+                MapasCulturais\i::__('Ilhéus'),
+                MapasCulturais\i::__('Morroquianos'),
+                MapasCulturais\i::__('Pantaneiros'),
+                MapasCulturais\i::__('Pescadores artesanais'),
+                MapasCulturais\i::__('Povo Pomerano'),
                 MapasCulturais\i::__('Povos ciganos'),
-                MapasCulturais\i::__('Povos de terreiro'),
-                MapasCulturais\i::__('Povos de quilombola'),
-                MapasCulturais\i::__('Pomeranos'),
+                MapasCulturais\i::__('Povos e comunidades de terreiro/povos e comunidades de matriz africana'),
+                MapasCulturais\i::__('Povos indígenas'),
+                MapasCulturais\i::__('Quebradeiras de coco babaçu'),
+                MapasCulturais\i::__('Quilombolas'),
+                MapasCulturais\i::__('Raizeiros'),
+                MapasCulturais\i::__('Retireiros do Araguaia'),
+                MapasCulturais\i::__('Ribeirinhos'),
+                MapasCulturais\i::__('Vazanteiros'),
+                MapasCulturais\i::__('Veredeiros'),                                
             ),
             'available_for_opportunities' => true
         ),
@@ -146,6 +174,12 @@ return array(
             'available_for_opportunities' => true,
             'readonly' => true
         ),
+        'cnpjAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNPJ - anexo'),
+            'type' => 'file',
+            'available_for_opportunities' => true
+        ),
         'cpf' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('CPF'),
@@ -174,7 +208,104 @@ return array(
             'available_for_opportunities' => true,
             'readonly' => true
         ),
-
+        'cpfAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CPF - anexo'),
+            'type' => 'file',
+            'available_for_opportunities' => true
+        ),
+        'cnhNumero' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNH - Número de registro'),
+            'type' => 'cnhNumero',
+            'available_for_opportunities' => true,
+            'readonly' => false
+        ),
+        'cnhAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNH - anexo'),
+            'type' => 'file',
+            'available_for_opportunities' => true
+        ),
+        'cnhCategoria' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNH - Categoria'),
+            'type' => 'multiselect',
+            'options' => array(
+                '' => \MapasCulturais\i::__('Não informado'),
+                'A' => \MapasCulturais\i::__('A'),
+                'B' => \MapasCulturais\i::__('B'),
+                'C' => \MapasCulturais\i::__('C'),
+                'D' => \MapasCulturais\i::__('D'),
+                'E' => \MapasCulturais\i::__('E')
+            ),
+            'available_for_opportunities' => true
+        ),
+        'cnhValidade' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('CNH - Validade'),
+            'type' => 'date',
+            'serialize' => function($value, $entity = null){
+               return (new DateTime($value))->format("Y-m-d");
+            },
+            'validations' => array(
+                'v::date("Y-m-d")' => \MapasCulturais\i::__('Data inválida').'{{format}}',
+            ),
+            'available_for_opportunities' => true
+        ),
+        'rgNumero' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('RG - Documento'),
+            'type' => 'rgNumero',
+            'available_for_opportunities' => true,
+            'readonly' => false
+        ),
+        'rgAnexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('RG - anexo'),
+            'type' => 'file',
+            'available_for_opportunities' => true
+        ),
+        'rgOrgaoEmissor' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('RG - Órgão Emissor'),
+            'type' => 'text',
+            'available_for_opportunities' => true
+        ),
+        'rgUF' => [
+            'private' => true,
+            'label' => \MapasCulturais\i::__('RG - UF'),
+            'type' => 'select',
+            'options' => array(
+                'AC'=>'Acre',
+                'AL'=>'Alagoas',
+                'AP'=>'Amapá',
+                'AM'=>'Amazonas',
+                'BA'=>'Bahia',
+                'CE'=>'Ceará',
+                'DF'=>'Distrito Federal',
+                'ES'=>'Espírito Santo',
+                'GO'=>'Goiás',
+                'MA'=>'Maranhão',
+                'MT'=>'Mato Grosso',
+                'MS'=>'Mato Grosso do Sul',
+                'MG'=>'Minas Gerais',
+                'PA'=>'Pará',
+                'PB'=>'Paraíba',
+                'PR'=>'Paraná',
+                'PE'=>'Pernambuco',
+                'PI'=>'Piauí',
+                'RJ'=>'Rio de Janeiro',
+                'RN'=>'Rio Grande do Norte',
+                'RS'=>'Rio Grande do Sul',
+                'RO'=>'Rondônia',
+                'RR'=>'Roraima',
+                'SC'=>'Santa Catarina',
+                'SP'=>'São Paulo',
+                'SE'=>'Sergipe',
+                'TO'=>'Tocantins',
+            )
+        ],
         'raca' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Raça/cor'),
@@ -195,6 +326,7 @@ return array(
             'label' => \MapasCulturais\i::__('Data de Nascimento/Fundação'),
             'type' => 'date',
             'serialize' => function($value, $entity = null){
+               if(is_null($value)) { return null; }
                $this->hook("entity(<<*>>).save:before", function() use ($entity){
                     /** @var MapasCulturais\Entity $entity */
                     if($this->equals($entity)){
@@ -208,6 +340,7 @@ return array(
             ),
             'available_for_opportunities' => true
         ),
+
         'idoso' => array(
             'private' => true,
             'label' => \MapasCulturais\i::__('Pessoa idosa'),
@@ -228,28 +361,42 @@ return array(
             'available_for_opportunities' => true
         ),
 
-        'localizacao' => array(
-            'label' => \MapasCulturais\i::__('Localização'),
-            'type' => 'select',
-            'options' => array(
-                '' => \MapasCulturais\i::__('Não Informar'),
-                'Pública' => \MapasCulturais\i::__('Pública'),
-                'Privada' => \MapasCulturais\i::__('Privada')
-            )
-        ),
-
         'genero' => array(
             'private' => true,
-            'label' => \MapasCulturais\i::__('Gênero'),
+            'label' => \MapasCulturais\i::__('Identidade de Gênero'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não Informado'),
-                'Mulher Cis' => \MapasCulturais\i::__('Mulher Cis'),
-                'Homem Cis' => \MapasCulturais\i::__('Homem Cis'),
-                'Mulher Trans/travesti' => \MapasCulturais\i::__('Mulher Trans/travesti'),
-                'Homem Trans' => \MapasCulturais\i::__('Homem Trans'),
-                'Não Binárie/outra variabilidade' => \MapasCulturais\i::__('Não Binárie/outra variabilidade'),
-                'Não declarada' => \MapasCulturais\i::__('Não declarada'),
+                'Prefiro não declarar' => \MapasCulturais\i::__('Prefiro não declarar'),
+                'Feminina' => \MapasCulturais\i::__('Feminina'),
+                'Masculina' => \MapasCulturais\i::__('Masculina'),
+                'Não binárie' => \MapasCulturais\i::__('Não binárie'),
+                'Outro' => \MapasCulturais\i::__('Outro'),
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'select'
+        ),
+
+        'pessoaTrans' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('É pessoa trans ou travesti'),
+            'type' => 'select',
+            'options' => array(
+                'Não' => \MapasCulturais\i::__('Não'),
+                'Sim' => \MapasCulturais\i::__('Sim'),
+                'Prefiro não declarar' => \MapasCulturais\i::__('Prefiro não declarar'),
+            ),
+            'available_for_opportunities' => true,
+            'field_type' => 'select'
+        ),
+
+        'pessoaIntersexo' => array(
+            'private' => true,
+            'label' => \MapasCulturais\i::__('É pessoa intersexo'),
+            'type' => 'select',
+            'options' => array(
+                'Não' => \MapasCulturais\i::__('Não'),
+                'Sim' => \MapasCulturais\i::__('Sim'),
+                'Prefiro não declarar' => \MapasCulturais\i::__('Prefiro não declarar'),
             ),
             'available_for_opportunities' => true,
             'field_type' => 'select'
@@ -260,13 +407,13 @@ return array(
             'label' => \MapasCulturais\i::__('Orientação Sexual'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não Informado'),
+                'Prefiro não declarar' => \MapasCulturais\i::__('Prefiro não declarar'),
+                'Assexual' => \MapasCulturais\i::__('Assexual'),
+                'Bissexual' => \MapasCulturais\i::__('Bissexual'),
+                'Gay' => \MapasCulturais\i::__('Gay'),
                 'Heterossexual' => \MapasCulturais\i::__('Heterossexual'),
                 'Lésbica' => \MapasCulturais\i::__('Lésbica'),
-                'Gay' => \MapasCulturais\i::__('Gay'),
-                'Bissexual' => \MapasCulturais\i::__('Bissexual'),
-                'Assexual' => \MapasCulturais\i::__('Assexual'),
-                'Outras' => \MapasCulturais\i::__('Outras')
+                'Outra' => \MapasCulturais\i::__('Outra'),
             ),
             'available_for_opportunities' => true
         ),
@@ -298,7 +445,14 @@ return array(
                 'v::email()' => \MapasCulturais\i::__('O endereço informado não é um email válido.')
             ),
             'available_for_opportunities' => true,
-            'field_type' => 'email'
+            'field_type' => 'email',
+            'unserialize' => function($value, $agent = null){
+                if (!$value && $agent instanceof Agent) {
+                    return $agent->user->email;
+                }
+
+                return $value;
+            }
         ),
 
         'telefonePublico' => array(

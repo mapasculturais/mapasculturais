@@ -98,13 +98,6 @@ class Job extends \MapasCulturais\Entity{
     protected $lastExecutionTimestamp;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
-     */
-    protected $_subsiteId;
-
-    /**
      * @var \MapasCulturais\Entities\Subsite
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
@@ -229,8 +222,9 @@ class Job extends \MapasCulturais\Entity{
                 $job->status = 0;
                 $job->lastExecutionTimestamp = new DateTime;
                 $job->nextExecutionTimestamp = new DateTime(date('Y-m-d H:i:s', strtotime($job->intervalString, $job->nextExecutionTimestamp->getTimestamp())));
-                
+                $app->disableAccessControl();
                 $job->save(true);
+                $app->enableAccessControl();
             }
 
         } else {
@@ -243,6 +237,10 @@ class Job extends \MapasCulturais\Entity{
     }
 
     protected function canUserRemove($user){
+        return true;
+    }
+
+    protected function canUserCreate($user){
         return true;
     }
     

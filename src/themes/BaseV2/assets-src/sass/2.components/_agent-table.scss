@@ -8,6 +8,11 @@
     }
 
     &__inputs {
+        display: flex;
+        justify-content: flex-start;
+        gap: size(20);
+        width: fit-content;
+
         .verified {
             display: flex;
             align-items: center;

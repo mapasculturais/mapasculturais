@@ -192,7 +192,7 @@ $today = new DateTime();
                         <div v-if="entity.agentRelations.hasOwnProperty('coletivo') && entity.agentRelations.coletivo[0]" class="space">
                             <mc-avatar :entity="entity.agentRelations.coletivo[0].agent" size="xsmall"></mc-avatar>
                             <div class="name">
-                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
+                                <a :href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
                             </div>
                         </div>
                         <div v-if="!entity.agentRelations.hasOwnProperty('coletivo')" class="space">
@@ -271,10 +271,23 @@ $today = new DateTime();
                                     <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Preencher formulário') ?></a>
                                 </div>
                             </div>
-                        <?php else: ?>
-                            <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
-                            <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>
-                            <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
+                            <?php else: ?>
+                                <?php if($phase->status === 0 && $today > $opportunity->registrationTo ):?>
+                                    <mc-alert type="warning">
+                                        <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                    </mc-alert>
+                                    <div class="grid-12">
+                                        <div class="col-3 sm:col-12">
+                                            <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Acessar formulário') ?></a>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
+                                    <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>
+                                    <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
+                                <?php endif ?>
+                                
+                            
                         <?php endif ?>
                     <?php endif ?>
                     <?php $phase = $phase->nextPhase; ?>

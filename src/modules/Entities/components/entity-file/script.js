@@ -26,6 +26,9 @@ app.component('entity-file', {
             type: String,
             default: ""
         },
+        description: {
+            type: String
+        },
         uploadFormTitle: {
             type: String,
             required: false
@@ -61,6 +64,11 @@ app.component('entity-file', {
         defaultFile: {
             type: Object,
             required: false
+        },
+        buttonTextValue: {
+            type: String,
+            required: false,
+            default: 'Enviar'
         }
     },
 

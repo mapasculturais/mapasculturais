@@ -18,49 +18,49 @@ $this->import('
     <div class="col-12">
         <div class="grid-12">
 
-            <div class="field col-4">
+            <div class="field col-4" :class="{'not-error': !hasError('En_CEP')}">
                 <label for="cep">
                     <?= i::__('CEP') ?>
                 </label>
                 <input @change="pesquisacep(addressData.En_CEP, true);" id="cep" type="text" v-maska data-maska="#####-###" v-model="addressData.En_CEP" />
             </div>
 
-            <div class="field col-8">
+            <div class="field col-8" :class="{'not-error': !hasError('En_Nome_Logradouro')}">
                 <label for="logradouro">
                     <?= i::__('Logradouro') ?>
                 </label>
-                <input id="logradouro" type="text" v-model="addressData.En_Nome_Logradouro" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" placeholder="rua, avenida, praça, viaduto, travessa, etc" id="logradouro" type="text" v-model="addressData.En_Nome_Logradouro" @change="save" />
             </div>
 
-            <div class="field col-6">
+            <div class="field col-6" :class="{'not-error': !hasError('En_Num')}">
                 <label for="num">
                     <?= i::__('Número') ?>
                 </label>
-                <input id="num" type="number" v-model="addressData.En_Num" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="num" type="number" v-model="addressData.En_Num" @change="save" />
             </div>
 
-            <div class="field col-6">
+            <div class="field col-6" :class="{'not-error': !hasError('En_Bairro')}">
                 <label for="bairro">
                     <?= i::__('Bairro') ?>
                 </label>
-                <input id="bairro" type="text" v-model="addressData.En_Bairro" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="bairro" type="text" v-model="addressData.En_Bairro" @change="save" />
             </div>
 
-            <div class="field col-12 sm:col-12">
+            <div class="field col-12 sm:col-12 not-error">
                 <label for="complemento">
                     <?= i::__('Complemento') ?>
                 </label>
-                <input id="complemento" type="text" v-model="addressData.En_Complemento" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="complemento" type="text" v-model="addressData.En_Complemento" @change="save" />
             </div>
 
-            <div v-if="statesAndCitiesCountryCode != 'BR'" class="field">
+            <div v-if="statesAndCitiesCountryCode != 'BR'" class="field" :class="{'not-error': !hasError('En_Pais')}">
                 <label for="country">
                     <?= i::__('País') ?>
                 </label>
-                <input id="country" type="text" v-model="addressData.En_Pais" @change="save" />
+                <input @blur="geolocation()" @input="geolocation(10000)" id="country" type="text" v-model="addressData.En_Pais" @change="save" />
             </div>
 
-            <div class="field col-6">
+            <div class="field col-6" :class="{'not-error': !hasError('En_Estado')}">
                 <label for="field__title">
                     <?= i::__('Estado') ?>
                 </label>
@@ -69,7 +69,7 @@ $this->import('
                 </mc-select>
             </div>
             
-            <div v-if="addressData.En_Estado" class="field col-6">
+            <div v-if="addressData.En_Estado" class="field col-6" :class="{'not-error': !hasError('En_Municipio')}">
                 <label for="field__title">
                     <?= i::__('Cidade') ?>
                 </label>
@@ -85,11 +85,11 @@ $this->import('
                 <div class="field__group">
                     <label for="publicLocationYes" class="input__radioLabel">
                         <input type="radio" id="publicLocationYes" v-model="addressData.publicLocation" value="true" @change="save()" />
-                        <?= i::__('Sim. Estou ciente de que este endereço aparecerá na plataforma no perfil do agente coletivo vinculado a esta inscrição.') ?>
+                        <?= $this->text('privacy-label--yes', i::__('Sim. Estou ciente de que este endereço aparecerá na plataforma no perfil do agente coletivo vinculado a esta inscrição.')) ?>
                     </label>
                     <label for="publicLocationNo" class="input__radioLabel">
                         <input type="radio" id="publicLocationNo" v-model="addressData.publicLocation" value="false" @change="save()"/>
-                        <?= i::__('Não.') ?>
+                        <?= $this->text('privacy-label--no', i::__('Não.')) ?>
                     </label>
                 </div>
             </div>

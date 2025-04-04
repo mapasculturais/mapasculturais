@@ -23,7 +23,7 @@ $this->import('
 ?>
 
 <div class="registration__content">
-    <div class="registration__steps">
+    <div v-if="steps.length > 1" class="registration__steps">
         <registration-steps :steps="steps" v-model:step-index="stepIndex"></registration-steps>
     </div>
 
@@ -42,7 +42,7 @@ $this->import('
                         <div class="card__content">
                             <div class="owner">
                                 <mc-avatar v-if="!entity.opportunity.requestAgentAvatar" :entity="entity.owner" size="small"></mc-avatar>
-                                <request-agent-avatar v-if="entity.opportunity.requestAgentAvatar" :entity="entity"></request-agent-avatar>
+                                <request-agent-avatar v-if="!preview && entity.opportunity.requestAgentAvatar" :entity="entity"></request-agent-avatar>
                                 <div class="owner__content">
                                     <div class="owner__content--title">
                                         <h3 class="card__title">
@@ -59,7 +59,7 @@ $this->import('
                             </div>
                         </div>
                     </div>
-                    <div class="card collective" v-if="entity.agentRelations.coletivo?.length > 0">
+                    <div class="card collective" v-if="!preview && entity.agentRelations.coletivo?.length > 0">
                         <div class="card__content" v-for="agentCollective in entity.agentRelations.coletivo">
                             <div class="collective">
                                 <mc-avatar :entity="agentCollective.agent" size="small"></mc-avatar>
@@ -93,7 +93,7 @@ $this->import('
                 </div>
             </section>
 
-            <section class="section" v-if="!entity.opportunity.proponentAgentRelation?.[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation?.[entity.proponentType])">
+            <section class="section" v-if="preview || !entity.opportunity.proponentAgentRelation?.[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation?.[entity.proponentType])">
                 <registration-form :registration="entity" :step="step"></registration-form>
             </section>
         </main>

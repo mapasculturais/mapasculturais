@@ -42,6 +42,32 @@ app.component('entity-header', {
                 break;
         }
     },
+    computed: {
+        hasSocialNetworks() {
+            const socialNetworks = [
+                'twitter',
+                'linkedin',
+                'youtube',
+                'vimeo',
+                'spotify',
+                'facebook',
+                'instagram',
+                'telegram',
+                'pinterest',
+                'whatsapp',
+                'tiktok',
+            ]
+
+            let itHas = false;
+            socialNetworks.forEach(network => {
+                if (this.entity[network]) {
+                    itHas = true;
+                }
+            });
+
+            return itHas;
+        }
+    },
     methods: {
         url (source) {
             return `url(${source})`

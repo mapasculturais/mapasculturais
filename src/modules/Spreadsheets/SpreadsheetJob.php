@@ -2,6 +2,7 @@
 
 namespace Spreadsheets;
 
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
 use MapasCulturais\Definitions\JobType;
@@ -14,6 +15,7 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
 use MapasCulturais\i;
+use MapasCulturais\Types\GeoPoint;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
@@ -120,6 +122,14 @@ abstract class SpreadsheetJob extends JobType
         }
 
         $sheet->fromArray($sub_header, null, $has_sub_header ? "A2" : "A1");
+
+        $highestColumn = $sheet->getHighestColumn();
+        $highestColumnIndex = Coordinate::columnIndexFromString($highestColumn);
+
+        for ($col = 1; $col <= $highestColumnIndex; $col++) {
+            $columnLetter = Coordinate::stringFromColumnIndex($col);
+            $sheet->getColumnDimension($columnLetter)->setAutoSize(true);
+        }
         
         $row = $has_sub_header ? count($header)+1 : 2;
         while($batch = $this->getBatch($job)) {
@@ -132,10 +142,35 @@ abstract class SpreadsheetJob extends JobType
                         $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
                     }
                 }
-                foreach($new_data as &$value) {
-                    if($value && $value[0] === '=') {
-                        $value = "'$value";
+                foreach($new_data as $colIndex => &$value) {
+                    if($value instanceof DateTime) {
+                        $value = $value->format('d/m/Y H:i:s');
+                        continue;
                     }
+
+                    if($value instanceof GeoPoint) {
+                        $value = "{$value}";
+                        continue;
+                    }
+
+                    // Insere link quando 
+                    if (is_string($value) && preg_match('/^https?:\/\//', $value)) {
+                        $columnLetter = Coordinate::stringFromColumnIndex($colIndex + 1);
+                        $cellAddress = $columnLetter . $row;
+        
+                        $sheet->getCell($cellAddress)->setValue($value);
+                        $sheet->getCell($cellAddress)->getHyperlink()->setUrl($value);
+        
+                        $sheet->getStyle($cellAddress)->applyFromArray([
+                            'font' => [
+                                'color' => ['rgb' => '0000FF'],
+                                'underline' => true
+                            ]
+                        ]);
+                        continue;
+                    }
+
+                    //TODO: Avaliar como implementar o tratamento de fórmulas apenas para campos preenchidos pelo usuário e permitir que as fórmulas permaneçam nos campos com preenchimento do próprio sistema.
                 }
 
                 $sheet->fromArray($new_data, null, "A$row");

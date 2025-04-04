@@ -96,6 +96,8 @@ class Metadata extends \MapasCulturais\Definition{
 
     public bool $readonly = false;
 
+    public bool $sensitive = false;
+
     /**
      * Creates a new Metadata Definition.
      *
@@ -136,6 +138,9 @@ class Metadata extends \MapasCulturais\Definition{
         $this->available_for_opportunities = key_exists('available_for_opportunities', $config) ? $config['available_for_opportunities'] : false;
 
         $this->field_type = key_exists('field_type', $config) ? $config['field_type'] : $this->type;
+        
+        $this->sensitive = $config['sensitive'] ?? false;
+
 
         if ($this->field_type === 'string') {
             $this->field_type = 'text'; 
@@ -218,6 +223,8 @@ class Metadata extends \MapasCulturais\Definition{
                 }
             },
             'multiselect' => function($value){
+                $value = (array) $value;
+                $value = array_filter($value);
                 return json_encode($value);
             },
             'location' => function($value) {
@@ -274,7 +281,7 @@ class Metadata extends \MapasCulturais\Definition{
                 return is_null($value) ? null : (array) json_decode($value);
             },
             'entity' => function($value) use ($app) {
-                if (preg_match('#^((\\\?[a-z]\w*)+):(\d+)$#i', $value, $matches)) {
+                if (is_string($value) && preg_match('#^((\\\?[a-z]\w*)+):(\d+)$#i', $value, $matches)) {
                     $class = $matches[1];
                     $id = $matches[3];
                     return $app->repo($class)->find($id);
@@ -292,11 +299,15 @@ class Metadata extends \MapasCulturais\Definition{
                 }
             },
             'multiselect' => function($value){
-                $result = is_null($value) ? null : json_decode($value, true);
+                $result = is_null($value) ? [] : json_decode($value, true);
 
                 if($value && !is_array($result) && ($temp_result = explode(';', $value))) {
                     $result = $temp_result;
                 }
+
+                $result = array_filter($result, function($v){
+                    return !is_null($v) && $v !== 'null';
+                });
 
                 return $result;
             }

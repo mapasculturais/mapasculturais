@@ -6,14 +6,15 @@
     position: relative;
     width: 100%;
     
-    @media (max-width: size(500)){
+    @media (max-width: size(800)){
         &__title {
             text-align: center;
         }
     }
+
     &__single {
         margin: 0 auto;
-        max-width: 1170px;
+        max-width: size(1170);
         position: relative;
 
         &--cover {
@@ -22,7 +23,7 @@
             background-image: var(--url);
             background-position: center;
             background-size: cover;
-            max-width: 1170px;
+            max-width: size(1170);
             margin: 0 auto;
             padding: size(10);
             position: relative;
@@ -42,9 +43,11 @@
             max-width: size(1170);
             margin: 0 auto;
             padding: 0 size(16);
+            gap: size(32);
 
             .leftSide {
                 z-index: 1;
+                flex-shrink: 0;
 
                 .avatar {
                     align-items: center;
@@ -54,6 +57,8 @@
                     justify-content: center;
                     object-fit: cover;
                     overflow: hidden;
+                    max-width: size(167);
+                    width: 100%;
 
                     img {
                         width: 100%;
@@ -68,20 +73,22 @@
 
                     @include mobile {
                         height: size(113);
-                        margin: size(-48) auto size(16);
+                        margin-top: size(-48);
                         width: size(113);
                     }
 
                     @include desktop {
-                        height: size(167);
-                        margin: size(-80) size(32) size(22) size(16);
-                        width: size(167);
+                        margin-top: size(-80);
                     }
                 }
             }
 
             .rightSide {
-                padding: 10px 0 0;
+                width: 100%;
+                padding-top: size(8);
+                display: flex;
+                flex-direction: column;
+                gap: size(15);
 
                 .site {
                     display: flex;
@@ -117,12 +124,11 @@
                 }
 
                 .share-mobile {
-                    display: none !important;
-                    gap: size(4) !important;
-                    max-width: unset !important;
-
+                    display: none;
+                    max-width: unset;
+                    
                     @include mobile {
-                        display: flex !important;
+                        display: flex;
                         margin: size(3) 0 size(11);
                     }
                 }
@@ -174,25 +180,26 @@
 
             .metadata {
                 display: flex;
+                gap: size(40);
 
                 &__id {
                     font-family: 'Open Sans';
                     font-style: normal;
                     font-weight: 600;
-                    font-size: 14px;
-                    line-height: 19px;
+                    font-size: size(14);
+                    line-height: size(19);
 
                     &--id {
                         font-weight: 600;
-                        font-size: 14px;
-                        line-height: 19px;
+                        font-size: size(14);
+                        line-height: size(19);
                     }
                     
                 }
                 
                 dl {
                     display: inline-block;
-                    margin: size(8) size(40) size(16) 0;
+                    margin: size(4) 0;
 
                     @include mobile {
                         display: flex;
@@ -258,18 +265,17 @@
         .entity-header {
             &__single {
                 &--content {
+                    padding-bottom: size(30);
                     .leftSide {
                         @media (max-width: size(900)) {
                             margin: 0 auto;
                         }
 
                         .avatar {
-                            height: size(167);
-                            width: size(167);
                             margin-top: 0;
                             margin-left: 0;
 
-                            svg {
+                            .iconify {
                                 height: size(75);
                                 width: size(75);
                             }
@@ -278,11 +284,24 @@
                                 height: size(113);
                                 width: size(113);
 
-                                svg {
+                                .mc-avatar--big {
+                                    min-width: unset;
+                                    min-height: unset;
+                                    width: 100%;
+                                    height: 100%;
+                                }
+
+                                .iconify {
                                     height: size(58);
                                     width: size(58);
                                 }
                             }
+                        }
+                    }
+
+                    .rightSide {
+                        @media (min-width: size(901)) {
+                            padding-top: size(10);
                         }
                     }
 
@@ -375,8 +394,8 @@
 
                     h2 {
                         font-weight: 700;
-                        font-size: 18px;
-                        line-height: 25px;
+                        font-size: size(18);
+                        line-height: size(25);
                     }
                 }
             }

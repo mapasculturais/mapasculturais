@@ -31,6 +31,11 @@ class UpdateSummaryCaches extends JobType
         if($evaluationMethodConfiguration = $job->evaluationMethodConfiguration){
             $app->mscache->delete($evaluationMethodConfiguration->summaryCacheKey);
             $evaluationMethodConfiguration->getSummary(true);
+
+            $relations = $evaluationMethodConfiguration->getAgentRelations();
+            foreach($relations as $relation) {
+                $relation->updateSummary(flush: true);
+            }
         }
        
         return true;
