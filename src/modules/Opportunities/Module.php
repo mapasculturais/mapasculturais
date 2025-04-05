@@ -632,7 +632,7 @@ class Module extends \MapasCulturais\Module{
             $this->enqueueUpdateSummary();
         });
 
-        $app->hook("entity(EvaluationMethodConfiguration).renameAgentRelationGroup:before", function($old_name, $new_name, $relations) {
+        $app->hook("entity(EvaluationMethodConfiguration).renameAgentRelationGroup:before", function($old_name, $new_name, $relations) use($app) {
             /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
 
             if(isset($this->valuersPerRegistration->{$old_name})) {
@@ -650,6 +650,55 @@ class Module extends \MapasCulturais\Module{
 
                 $this->fetchFields = $registration_filter_config;
             }
+        });
+
+        $app->hook("entity(EvaluationMethodConfiguration).renameAgentRelationGroup:after", function($old_name, $new_name, $relations) use($app) {
+            /** @var \MapasCulturais\Entities\EvaluationMethodConfiguration $this */
+
+            /**
+             * Atualiza o nome da comissão dos avaliadores na coluna valuers da tabela registration
+             */
+            $valuer_user_ids = $this->getValuerUserIds(true);
+            $valuer_user_ids = implode(',', $valuer_user_ids);
+            $conn = $app->em->getConnection();
+            if ($valuer_user_ids){
+                $sql = "SELECT valuer_user_id, registration_id, valuer_committee, valuer_user_id 
+                        FROM evaluations 
+                        WHERE valuer_committee = :committe and opportunity_id = :opportunity_id and valuer_user_id in ($valuer_user_ids)";
+
+                $registrations = $conn->fetchAll($sql, [
+                    'committe' => $old_name,
+                    'opportunity_id' => $this->opportunity->id
+                ]);
+
+                foreach($registrations as $registration) {
+                    $registration = (object) $registration;
+                    $update_sql = "
+                        UPDATE registration 
+                        SET valuers['{$registration->valuer_user_id}'] = to_jsonb(:new_name::VARCHAR)
+                        WHERE id = :registration_id";
+
+                    $conn->executeQuery($update_sql, [
+                        'new_name' => $new_name,
+                        'registration_id' => $registration->registration_id
+                    ]);
+                }
+            }
+
+            /**
+             * Atualiza o nome da comissão dos avaliadores na coluna committe da tabela registration_evaluation
+             */
+            $update_evaluations_sql = "
+                UPDATE registration_evaluation 
+                SET committee = :new_name 
+                WHERE   registration_id in (SELECT id FROM registration WHERE opportunity_id = :opportunity_id)
+                    AND committee = :old_name ";
+
+            $conn->executeQuery($update_evaluations_sql, [
+                'new_name' => $new_name,
+                'old_name' => $old_name,
+                'opportunity_id' => $this->opportunity->id
+            ]);
         });
 
         $app->hook("entity(RegistrationEvaluation).send:after", function() use ($app) {

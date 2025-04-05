@@ -352,69 +352,53 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             return $app->rcache->fetch($cache_key);
         }
 
-        $registration_committee = $registration->getCommittees(true);
-        
-        $valuer_users = [];
-        foreach($registration_committee as $users) {
-            $valuer_users = array_merge($valuer_users, $users);
-        }
+        /** @conn \MapasCulturais\Connection */
+        $conn = $app->em->getConnection();
 
-        // não há avaliadores para a inscrição
-        if(count($valuer_users) === 0) {
+        $evaluations = $conn->fetchAllAssociative("SELECT * FROM evaluations WHERE registration_id = :registration_id AND valuer_committee <> '@tiebreaker'", [
+            'registration_id' => $registration->id
+        ]);
+
+        // verifica se todas as avaliações que não são da comissão de desempate estão enviadas, se não, não precisa de desempate
+        $not_sent_evaluations = array_filter($evaluations, function($evaluation) {
+            return $evaluation['evaluation_status'] != RegistrationEvaluation::STATUS_SENT;
+        });
+
+        if($not_sent_evaluations) {
+            $app->rcache->save($cache_key, false);
+
+            // if($registration->id == 1134470122) {
+            //     eval(\psy\sh());
+            // }
             return false;
         }
 
-        $criteria = [
-            'registration' => $registration, 
-            'status' => RegistrationEvaluation::STATUS_SENT,
-            'user' => $valuer_users,
-            'isTiebreaker' => false
-        ];
-        
-        $evaluations =  $app->repo('RegistrationEvaluation')->findBy($criteria);
-
-
-        // se o total de avaliadores por inscrição dentro de cada comissão não está preenchido, 
-        // então a inscrição AINDA NÃO precisa de desempate
-
-        foreach($registration->evaluationMethodConfiguration->valuersPerRegistration as $committee => $num) {
-            if($committee == '@tiebreaker') {
-                continue;
-            }
-
-            $users = $registration_committee[$committee] ?? [];
-
-            foreach($evaluations as $evaluation) {
-                foreach($users as $user) {
-                    if($evaluation->user->equals($user)) {
-                        $num--;
-                    }
-                }
-            }
-
-            if($num > 0) {
-                $app->rcache->save($cache_key, false);
-                return false;
-            }
+        // obtem as avaliações e agrupa elas por comissão
+        $evaluation_ids = array_map(fn($evaluation) => $evaluation['evaluation_id'], $evaluations);
+        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['id' => $evaluation_ids]);
+        $committee_evaluations = [];
+        foreach($evaluations as $evaluation) {
+            $committee_evaluations[$evaluation->committee][] = $evaluation;
         }
 
+        // obtem os resultados consolidados de cada comissão
         $results = [];
 
-        foreach($registration_committee as $group => $users) {
-            $user_ids = array_map(fn($user) => $user->id, $users);
+        foreach($committee_evaluations as $committe => $evaluations) {
+            $user_ids = array_map(fn($evaluation) => $evaluation->user->id, $evaluations);
 
             $group_evaluations = array_filter($evaluations, fn($e) => in_array($e->user->id, $user_ids));
 
-            $results[$group] = $this->_getConsolidatedResult($registration, $group_evaluations);
+            $results[$committe] = $this->_getConsolidatedResult($registration, $group_evaluations);
         }
-
-
+        
         // se há mais que um valor no array, então há divergência
         if(count(array_unique($results)) > 1) {
             $result = true;
         } else {
             $result = false;
         }
+        
 
         $app->rcache->save($cache_key, $result);
         return $result;
@@ -427,6 +411,12 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $app = App::i();
         $evaluation_config = $opportunity->evaluationMethodConfiguration;
 
+        $log_path = PUBLIC_PATH . "files/distributionslog/";
+        if(!is_dir($log_path)){
+            mkdir($log_path, 0755, true);
+        }
+        $log_filename = "$log_path/{$evaluation_config->id}.log";
+
         /** @var Connection */
         $conn = $app->em->getConnection();
 
@@ -438,8 +428,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $ignore_started_evaluations = $evaluation_config->ignoreStartedEvaluations;
 
         /** Limite de avaliadores por inscrição
-         * @var array
-         */
+         * @var array */
         $valuers_per_registration = $evaluation_config->valuersPerRegistration;
 
         // coloca o comitê de desempate no final do array
@@ -450,8 +439,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         }
 
         /** Número de avaliadores da fase
-         * @var int
-         */
+         * @var int */
         $number_of_valuers = 0;
         foreach($committees as $users){
             $number_of_valuers += count($users);
@@ -459,8 +447,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         /** 
          * Número de inscrições que cada avaliador tem por comissão
-         * @var array 
-         **/
+         * @var array */
         $valuers_registrations_count = [];
         foreach($committees as $committee_name => $valuers) {
             $valuers_registrations_count[$committee_name] = [];
@@ -491,15 +478,14 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
          * }
          * ]
          * ```
-         * @var array 
-         * */
+         * @var array */
         $result = [];
 
         // registra os metadados dos campos das inscrições
         $opportunity->registerRegistrationMetadata();
 
         // obtém a lista de inscrições e das avaliações já feitas
-        $registration_evaluations = $conn->fetchAllAssociative("
+        $sql = "
                 SELECT 
                     r.id, 
                     r.number, 
@@ -515,19 +501,21 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     registration_evaluation e ON e.registration_id = r.id
                 LEFT JOIN 
                     registration_evaluation v ON v.registration_id = r.id
-                
                 WHERE 
-                    opportunity_id = 5386 AND
+                    opportunity_id = {$opportunity->id} AND
                     r.status = 1
 
                 GROUP BY r.id, v.id
                 ORDER BY num ASC
-            ");
+            ";
 
+        /**
+         * Lista de inscrições que devem ser distribuidas 
+         * @var array */
+        $registration_evaluations = $conn->fetchAllAssociative($sql);
 
         /** Número de verificações
-         * @var int
-         */
+         * @var int */
         $total_checks = count($registration_evaluations) * $number_of_valuers;
         $checks_count = 0;
 
@@ -555,10 +543,13 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 $result[$registration->id][$user_id] = $committee_name;
 
                 // se a configuração `Desconsiderar as avaliações já feitas na distribuição` estiver desativada
-                if(!$ignore_started_evaluations->$committee_name) {
+                if(!($ignore_started_evaluations->$committee_name ?? false)) {
                     // atualiza o número de avaliadores da inscrição
+                    $valuers_registrations_count[$committee_name][$user_id] = $valuers_registrations_count[$committee_name][$user_id] ?? 0;
                     $valuers_registrations_count[$committee_name][$user_id]++;
                 }
+
+                $registration_valuers_count[$registration->id][$committee_name] = $registration_valuers_count[$registration->id][$committee_name] ?? 0;
 
                 // incrementa o número de avaliações que a inscrição tem por comissão
                 $registration_valuers_count[$registration->id][$committee_name]++;
@@ -601,13 +592,18 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             // passa por cada comissão adicionando os avaliadores até o limite de avaliadores por inscrição configurado na comissão
             foreach($committees as $committee_name => $users) {
+                $percent = round(($checks_count / $total_checks) * 100, 2);
                 if($app->config['app.log.evaluations']) {
                     // imprime a porcentagem de verificações
-                    $percent = round(($checks_count / $total_checks) * 100, 2);
                     $app->log->debug("[$percent%] $registration->number - $checks_count de $total_checks");
                 }
+
+                file_put_contents($log_filename, "$percent%");
+
                 if($committee_name == '@tiebreaker') {
-                    if($this->registrationNeedsTiebreaker($registration)) {
+                    $registration_entity = $registration_entity ?: $repo->find($registration->id);
+
+                    if($this->registrationNeedsTiebreaker($registration_entity)) {
                         $app->log->debug("Registration:: {$registration->id} precisando de DESEMPATE");
                     } else {
                         continue;
@@ -660,9 +656,11 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 }
             }
 
-            $app->em->detach($registration_entity);
+            $app->em->clear();
             $registration_entity = null;
         }
+
+        file_put_contents($log_filename, i::__('Salvando distribuição'));
 
         foreach($result as $registraion_id => $valuers) {
             $conn->update('registration', ['valuers' => json_encode($valuers)], ['id' => $registraion_id]);
@@ -673,6 +671,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $app->mscache->delete($evaluationMethodConfiguration->summaryCacheKey);
 
         if($app->config['app.log.evaluations']) {
+            file_put_contents($log_filename, i::__('Atualizando o resumo de avaliações da fase'));
+
             $app->log->debug("Atualizando o resumo de avaliações da fase {$evaluationMethodConfiguration->name} ({$evaluationMethodConfiguration->id})");
 
         }
@@ -681,12 +681,15 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         /** @var EvaluationMethodConfigurationAgentRelation[] */
         $relations = $evaluationMethodConfiguration->getAgentRelations();
         foreach($relations as $relation) {
+            file_put_contents($log_filename, sprintf(i::__('Atualizando o resumo do avaliador %s da comissão %s'), $relation->agent->name, $relation->group));
             $relation->updateSummary();
         }
 
         if($app->config['app.log.evaluations']) {
             $app->log->debug("Redistribuição de inscrições finalizada em " . round(microtime(true) - $start_time, 2) . " segundos");
         }
+
+        file_put_contents($log_filename, '');
     }
 
     /**
