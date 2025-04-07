@@ -56,7 +56,7 @@ return array(
             'label' => \MapasCulturais\i::__('Áudio descrição'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não Informado'),
+                'Não informado' => \MapasCulturais\i::__('Não Informado'),
                 'Sim' => \MapasCulturais\i::__('Sim'),
                 'Não' => \MapasCulturais\i::__('Não')
             )
