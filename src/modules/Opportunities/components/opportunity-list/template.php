@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 
-<div v-if="opportunities.length>0" class="opportunity-list">
+<div v-if="countOpportunities>0" class="opportunity-list">
     <mc-title tag="h4" class="bold"><?php i::esc_attr_e('Lista de oportunidades vinculadas'); ?></mc-title>
     <div class="opportunity-list__content">
         <ul class="opportunity-list__list">
