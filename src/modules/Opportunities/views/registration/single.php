@@ -23,6 +23,7 @@ $this->import('
     opportunity-phases-timeline
     registration-print
     v1-embed-tool
+    registration-evaluation-tab
 ');
 
 $this->breadcrumb = [
@@ -301,15 +302,7 @@ $today = new DateTime();
                 <?php $phase = $entity; 
                     while($phase): $opportunity = $phase->opportunity;?>
                     <mc-card>
-                        <?php if($today >= $opportunity->registrationFrom):?>
-                            <?php if($opportunity->isFirstPhase):?>
-                                <h2><?= i::__('Inscrição') ?></h2>
-                            <?php else: ?>
-                                <h2><?= $opportunity->name ?></h2>
-                            <?php endif ?>
-
-                            <v1-embed-tool route="valuers" :id="<?=$phase->id?>"></v1-embed-tool>
-                        <?php endif ?>
+                        <registration-evaluation-tab :entity="entity"></registration-evaluation-tab>
                         <?php $phase = $phase->nextPhase; ?>
                     </mc-card>
                 <?php endwhile ?>
