@@ -1,6 +1,7 @@
 <?php
 
- use MapasCulturais\Utils;
+use MapasCulturais\Entities\Agent;
+use MapasCulturais\Utils;
 
 /**
  * See https://github.com/Respect/Validation to know how to write validations
@@ -289,7 +290,13 @@ return array(
                 'v::email()' => \MapasCulturais\i::__('O endereço informado não é um email válido.')
             ),
             'available_for_opportunities' => true,
-            'field_type' => 'email'
+            'field_type' => 'email',
+            'unserialize' => function($value, Agent $agent = null){
+                if(!$value && $agent){
+                    return $agent->user->email;
+                }
+                return $value;
+            }
         ),
 
         'telefonePublico' => array(

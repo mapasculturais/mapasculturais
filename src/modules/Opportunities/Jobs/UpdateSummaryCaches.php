@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Definitions\JobType;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 
 class UpdateSummaryCaches extends JobType
 {
@@ -31,6 +32,12 @@ class UpdateSummaryCaches extends JobType
         if($evaluationMethodConfiguration = $job->evaluationMethodConfiguration){
             $app->mscache->delete($evaluationMethodConfiguration->summaryCacheKey);
             $evaluationMethodConfiguration->getSummary(true);
+
+            /** @var EvaluationMethodConfigurationAgentRelation[] */
+            $relations = $evaluationMethodConfiguration->getAgentRelations();
+            foreach($relations as $relation) {
+                $relation->updateSummary();
+            }
         }
        
         return true;

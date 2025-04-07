@@ -25,18 +25,22 @@ app.component('evaluation-card', {
 
     computed: {
         dateFrom() {
-            if (this.entity.registrationFrom instanceof McDate) {
+            if (!this.entity.registrationFrom) {
+                return null;
+            } else if (this.entity.registrationFrom instanceof McDate) {
                 return this.entity.registrationFrom;
             } else {
-                return new McDate(this.entity.registrationFrom.date);
+                return new McDate(this.entity.registrationFrom?.date);
             }
         },
 
         dateTo() {
-            if (this.entity.registrationTo instanceof McDate) {
+            if (!this.entity.registrationTo) {
+                return null;
+            } else if (this.entity.registrationTo instanceof McDate) {
                 return this.entity.registrationTo;
             } else {
-                return new McDate(this.entity.registrationTo.date);
+                return new McDate(this.entity.registrationTo?.date);
             }
         },
     },
