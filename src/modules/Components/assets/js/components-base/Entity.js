@@ -333,8 +333,7 @@ class Entity {
         return this.API.createCacheId(this.id);
     }
 
-    sendMessage(message, type) {
-        type = type || 'success';
+    sendMessage(message, type = 'success') {
         if(this.__messagesEnabled) {
             const messages = useMessages();
             messages[type](message);
