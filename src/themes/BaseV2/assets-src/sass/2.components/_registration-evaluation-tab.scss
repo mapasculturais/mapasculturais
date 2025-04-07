@@ -1,0 +1,7 @@
+@use '../0.settings/mixins' as *;
+
+.registration-evaluation-tab {
+    &__text {
+        font-style: italic;
+    }
+}
