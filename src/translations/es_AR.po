@@ -26436,7 +26436,7 @@ msgstr "Acerca del sitio web"
 #~ msgid "Marque para deixar tornar sua localização pública."
 #~ msgstr "Marque para que su ubicación se haga pública."
 
-#~ msgid "Típo de conta"
+#~ msgid "Tipo de conta"
 #~ msgstr "Tipo de cuenta"
 
 #~ msgid "Selecione o tipo de conta"
