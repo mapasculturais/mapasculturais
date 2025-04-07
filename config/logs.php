@@ -56,6 +56,11 @@ return [
     'app.log.assets'        => env('LOG_ASSETS', false),
     'app.log.auth'          => env('LOG_AUTH', false),
 
+    'app.log.evaluations'   => env('LOG_EVALUATIONS', false),
+    'app.log.summary'   => env('LOG_SUMMARY', false),
+
+    'app.log.lockfile'      => env('LOG_LOCKFILE', false),
+
     'app.log.components'          => env('LOG_COMPONENTS', false),
     'app.log.assetManager'        => env('LOG_ASSETMANAGER', false),
     
@@ -63,6 +68,8 @@ return [
     'app.log.pcache'        => env('LOG_PCACHE', false),
     'app.log.pcache.users'  => env('LOG_PCACHE_USERS', false),
 
-    'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null)
+    'app.queryLogger' => env('LOG_QUERYLOG_CLASS', null),
+
+
 
 ];

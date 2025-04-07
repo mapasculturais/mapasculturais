@@ -1087,6 +1087,13 @@ return [
         __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
     },
 
+    'altera o tipo da coluna valuers_exceptions_list da tabela registration para jsonb' => function () {
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list DROP DEFAULT;"); 
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list TYPE JSONB USING valuers_exceptions_list::JSONB");
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list SET DEFAULT '{\"include\": [], \"exclude\": []}'::jsonb;"); 
+        __exec("CREATE INDEX registration_valuers_index ON registration USING GIN((valuers_exceptions_list->'include') jsonb_path_ops)");
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
@@ -1680,8 +1687,12 @@ $$
         
     },
 
-    'RECREATE VIEW evaluations AGAIN!!!!!!' => function() use($conn) {
-        __try("DROP VIEW evaluations");
+    'DROP MATERIALIZED VIEW evaluations!' => function () {
+        __try("DROP MATERIALIZED VIEW evaluations");
+    },
+
+    'Recria view evaluations!!!!' => function() use($conn) {
+        __try("DROP VIEW IF EXISTS evaluations");
 
         $conn->executeQuery("
             CREATE VIEW evaluations AS (
@@ -1715,32 +1726,29 @@ $$
                             ON re.registration_id = r.id 
                         JOIN usr u 
                             ON u.id = re.user_id
-                        where 
-                            r.status > 0
-                    UNION
+                    WHERE 
+                        r.status > 0
+                UNION
                     SELECT 
                         r2.id AS registration_id, 
                         r2.sent_timestamp AS registration_sent_timestamp,
                         r2.number AS registration_number, 
                         r2.category AS registration_category,
                         r2.agent_id AS registration_agent_id, 
-                        p2.user_id AS valuer_user_id, 
+                        u2.id AS valuer_user_id, 
                         u2.profile_id AS valuer_agent_id, 
                         r2.opportunity_id,
                         NULL AS evaluation_id,
                         NULL AS evaluation_result,
                         NULL AS evaluation_status
+                    
                     FROM registration r2 
-                        JOIN pcache p2 
-                            ON  p2.object_id = r2.id AND
-                                p2.object_type = 'MapasCulturais\Entities\Registration' AND 
-                                p2.action = 'evaluateOnTime'  
                         JOIN usr u2 
-                            ON u2.id = p2.user_id
+                            on ('[' || u2.id || ']')::jsonb  <@ (r2.valuers_exceptions_list->'include')
                         JOIN evaluation_method_configuration emc
                             ON emc.opportunity_id = r2.opportunity_id
-                        WHERE                          
-                            r2.status > 0
+                    WHERE                          
+                        r2.status = 1
                 ) AS evaluations_view 
                 GROUP BY
                     registration_id,
@@ -1753,6 +1761,10 @@ $$
                     opportunity_id
             )
         ");
+    },
+
+    'delete job de refresh materialized view evaluations' => function() use($conn) {
+        __exec("DELETE FROM job WHERE name = 'RefreshViewEvaluations'");
     },
 
     'adiciona oportunidades na fila de reprocessamento de cache' => function () use($conn) {
@@ -2454,5 +2466,40 @@ $$
         __exec('CREATE INDEX idx_opportunity_meta_key ON registration_meta (key);');
         __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
     },
+
+    'define valores default para as colunas ids das tabelas sem default' => function() {
+        __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
+        __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
+        __exec("ALTER TABLE project_meta ALTER column id SET DEFAULT nextval('project_meta_id_seq');");
+        __exec("ALTER TABLE event_meta ALTER column id SET DEFAULT nextval('event_meta_id_seq');");
+        __exec("ALTER TABLE subsite_meta ALTER column id SET DEFAULT nextval('subsite_meta_id_seq');");
+        __exec("ALTER TABLE evaluationmethodconfiguration_meta ALTER column id SET DEFAULT nextval('evaluationmethodconfiguration_meta_id_seq');");
+        __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
+    },
+
+    'refatoração dos índices da tabela pcache' => function () {
+        __exec('CREATE INDEX pcache_object_user_action_idx ON pcache (user_id, object_type, action)');
+
+        // remove índice duplicado
+        // "pcache_permission_user_idx" btree (object_type, object_id, action, user_id)
+        // "unique_object_action" UNIQUE, btree (object_type, object_id, action, user_id)
+        __exec('DROP INDEX pcache_permission_user_idx');
+    },
+
+    'remove entradas da tabela pcache não mais utilizadas' => function () {
+        __exec("
+            DELETE FROM pcache 
+            WHERE action NOT IN (
+                '@control',
+                'modify',
+                'view',
+                'applySeal',
+                'support',
+                'viewUserEvaluation',
+                'evaluateOnTime',
+                'evaluateRegistrations',
+                'createEvents',
+                'requestEventRelation');");
+    }
     
 ] + $updates ;   

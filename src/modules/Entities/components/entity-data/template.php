@@ -28,7 +28,7 @@ $this->import('
         </div>
         
         <div v-else-if="propertyType == 'radio' || propertyType == 'select'" class="entity-data__data">
-            {{description.options[propertyData]}}
+            {{description.options[propertyData] || propertyData}}
         </div>
         
         <div v-else class="entity-data__data">
