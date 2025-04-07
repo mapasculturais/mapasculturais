@@ -561,10 +561,11 @@ class Registration extends EntityController {
                     }
                 }
 
-                if ($invalids > $valids)
+                if ($invalids > $valids) {
                     $_status = "invalid";
+                    $registration->forceSetStatus($registration, $_status);
+                }
 
-                $registration->forceSetStatus($registration, $_status);
             }
         }
     }
