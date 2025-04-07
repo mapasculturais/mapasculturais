@@ -18,6 +18,22 @@ class API{
         return '!' . self::EQ($value);
     }
 
+    static function LIKE($value) {
+        return "LIKE($value)";
+    }
+
+    static function NOT_LIKE($value) {
+        return '!' . self::LIKE($value);
+    }
+
+    static function ILIKE($value) {
+        return "ILIKE($value)";
+    }
+
+    static function NOT_ILIKE($value) {
+        return '!' . self::LIKE($value);
+    }
+
     static function DIFF( $value) {
         return self::NOT_EQ($value);
     }
@@ -72,5 +88,15 @@ class API{
 
     static function NOT_BET($value_1, $value_2) {
         return '!' . self::BET($value_1, $value_2);
+    }
+
+    static function OR(...$values) {
+        $values = implode(',', $values);
+        return "OR($values)";
+    }
+
+    static function AND(...$values) {
+        $values = implode(',', $values);
+        return "AND($values)";
     }
 }

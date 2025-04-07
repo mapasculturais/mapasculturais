@@ -93,7 +93,7 @@ $this->import('
     </div>
 
     <!-- projetos -->
-    <div v-if="global.enabledEntities.projects" class="panel--entities-summary__card">
+    <div v-if="global.enabledEntities.projects" class="panel--entities-summary__card projeto">
         <mc-link id="summary" route="panel/projects" class="card-summary">
             <div class="panel--entities-summary__card--header">
                 <div class="panel--entities-summary__card--header-icon project__background project__color"> <mc-icon name="project"></mc-icon> </div>

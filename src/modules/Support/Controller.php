@@ -166,6 +166,40 @@ class Controller extends \MapasCulturais\Controller
         
         $entity->opportunity->isSupportUser($app->user);
 
+        $app->hook('mapas.printJsObject:before', function() use ($app, $entity) {
+            foreach ($entity->opportunity->agentRelations as $agent_relation) {
+                if ($agent_relation->group === '@support' && $agent_relation->agent->user->equals($app->user)) {
+                    $support_fields = $agent_relation->metadata['registrationPermissions'];
+                    $this->jsObject['requestedEntity']['editableFields'] = [];
+
+                    foreach ($support_fields as $support_field => $permission) {
+                        if ($permission === 'rw') {
+                            $this->jsObject['requestedEntity']['editableFields'][] = $support_field;
+                        }
+                    }
+
+                    break;
+                }
+            }
+        });
+
         $this->render('support-edit', ['entity' => $entity]);
+    }
+
+    function GET_supportConfig() {
+        
+        $this->requireAuthentication();
+        $app = App::i();
+
+        $this->entityClassName = Entities\Opportunity::class;
+        $entity = $this->requestedEntity;
+
+        if (!$entity) {
+            $app->pass();
+        }   
+
+        $entity->isSupportUser($app->user);
+
+        $this->render('support-config', ['entity' => $entity]);
     }
 }

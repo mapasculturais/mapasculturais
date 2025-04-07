@@ -16,13 +16,14 @@ $this->import('
         <mc-avatar :entity="entity" size="medium"></mc-avatar>
 
         <div class="evaluation-card__group">
-            <mc-title tag="h3" size="medium" :short-length="100" :long-length="130" class="evaluation-card__title">{{entity.parent?.name || entity.name}}</mc-title>
-    
+            <mc-link route="opportunity/userEvaluations" :params="[entity.id]"> 
+                <mc-title tag="h3" size="medium" :short-length="100" :long-length="130" class="evaluation-card__title">{{entity.parent?.name || entity.name}}</mc-title>
+            </mc-link>
             <div class="evaluation-card__infos">
                 <div class="evaluation-card__info"> 
                     <span v-if="entity.parent"><?= i::__('FASE') ?>: <strong> {{entity.name}} </strong></span>
                     <span v-if="!entity.parent"><?= i::__('FASE') ?>: <strong> <?= i::__('Avaliação') ?> </strong></span>
-                    <span>
+                    <span v-if="(dateFrom && dateTo) && !entity.isContinuousFlow || (entity.isContinuousFlow && entity.hasEndDate)">
                         <?= i::__('PERÍODO DE AVALIAÇÃO') ?>: 
                         <strong>{{dateFrom.date('numeric year')}} <?= i::__('até') ?> {{dateTo.date('numeric year')}} <?= i::__('as') ?> {{dateTo.time('long')}} </strong>
                     </span>

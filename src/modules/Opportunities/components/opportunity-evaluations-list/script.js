@@ -15,6 +15,9 @@ app.component('opportunity-evaluations-list', {
             type: String,
             default: 'Content'
         },
+        userEvaluatorId: {
+            type: String,
+        }
     },
 
     setup() {
@@ -25,6 +28,10 @@ app.component('opportunity-evaluations-list', {
         this.getEvaluations();
         window.addEventListener('previousEvaluation', this.previousEvaluation);
         window.addEventListener('nextEvaluation', this.nextEvaluation);
+        window.addEventListener('responseEvaluation', this.handleEvaluationResponse);
+    },
+    beforeDestroy() {
+        window.removeEventListener('responseEvaluation', this.handleEvaluationResponse);
     },
     data() {
         return {
@@ -34,34 +41,70 @@ app.component('opportunity-evaluations-list', {
             keywords: "",
             timeOut: null,
             roles: $MAPAS.currentUserRoles,
-            filterKeyword: false
+            filterKeyword: false,
+            loading: false,
+            onlyMe: true,
+            filtersOptions: [
+                {label: this.text('all'), value: 'all'},
+                {label: this.text('pending'), value: 'pending'},
+                {label: this.text('started'), value: '0'},
+                {label: this.text('completed'), value: 1},
+                {label: this.text('sent'), value: 2},
+            ],
+            filterStatus: $MAPAS.config.opportunityEvaluationsList?.evaluationStatusFilterCache || 'all'
         }
     },
     watch: {
         'pending'(_new, _old) {
-            this.timeOutFind(_new, _old);
+            this.getEvaluations();
+        },
+        'filterStatus'(_new, _old) {
+            this.getEvaluations();
+        },
+        'onlyMe' (_new, _old) {
+            this.getEvaluations();
         }
     },
     methods: {
-        timeOutFind(_new, _old) {
-            if (_new != _old) {
-                clearTimeout(this.timeOut);
-                this.timeOut = setTimeout(() => {
-                    this.getEvaluations();
-                }, 1500);
+        colorByStatus(evaluation) {
+            let result = 'pending';
+            
+            let eval = evaluation ? evaluation.status : null
+            switch (eval) {
+                case null:
+                case "":
+                case undefined:
+                    result = 'pending'
+                    break;
+                case '0':
+                case 0:
+                    result = 'started'
+                    break;
+                case 1:
+                    result = 'completed'
+                    break;
+                case 2:
+                    result = 'sent'
+                    break;
             }
+
+            return result;
         },
-        filterKeywordExec(_new, _old) {
-            if(!this.keywords){
-                messages.error(this.text('Informe a palavra chave'));
-            }else{
+        timeOutFind(delay = 1500) {
+            clearTimeout(this.timeOut);
+
+            this.timeOut = setTimeout(() => {
                 this.getEvaluations();
-            }
+            }, delay);
         },
         async getEvaluations() {
+
+            this.loading = true;
             let args = {};
             args['@select'] = "id,owner.name";
+            args['registration:@select'] = "id,owner.name,sentTimestamp";
             args['@opportunity'] = this.entity.opportunity.id;
+            args['@evaluationId'] = `${this.userEvaluatorId}`
 
             if(this.keywords){
                 args['registration:@keyword'] = this.keywords;
@@ -71,22 +114,41 @@ app.component('opportunity-evaluations-list', {
                 args['@pending'] = true;
             }
 
+            if (this.filterStatus) {
+                args['@filterStatus'] = this.filterStatus;
+            }
+
+            if (this.onlyMe) {
+                args['@onlyMe'] = true;
+            }
+            
+            if(this.entity.opportunity.avaliableEvaluationFields?.['agentsSummary']) {
+                args['registration:@select']+= ',agentsData';
+            }
+            
             api = new API('opportunity');
             let url = api.createApiUrl('findEvaluations', args);
 
             await api.GET(url).then(response => response.json().then(objs => {
                 this.evaluations = objs.map(function(item){
                     return {
-                        registrationid:item.registration.id,
+                        agentsData: item.registration?.agentsData || [],
+                        evaluationId: item.evaluation?.id,
+                        registrationNumber: item.registration.number,
+                        registrationId: item.registration.id,
+                        registrationSentTimestamp: item.registration.sentTimestamp ? new McDate(item.registration.sentTimestamp.date) : null,
                         agentname: item.registration.owner?.name,
                         status: item?.evaluation?.status,
                         resultString: item?.evaluation?.resultString || null,
-                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id])
+                        url: Utils.createUrl('registration', 'evaluation', [item.registration.id]),
+                        valuer: item?.valuer
                     }
                 });
                 this.filterKeyword = false;
-                this.evaluations.sort((a, b) => (a.registrationid - b.registrationid));
+                this.evaluations.sort((a, b) => (a.registrationId - b.registrationId));
                 window.dispatchEvent(new CustomEvent('evaluationRegistrationList', {detail:{evaluationRegistrationList:this.evaluations}}));
+
+                this.loading = false;
             }));
 
             const globalState = useGlobalState();
@@ -100,17 +162,16 @@ app.component('opportunity-evaluations-list', {
             this.goTo(data)
         },
         goTo(data) {
-
             var index = null;
             this.evaluations.forEach((obj, i) => {
-                if (obj.registrationid === data.detail.registrationId) {
+                if (obj.registrationId === data.detail.registrationId) {
                     index = data.type === "nextEvaluation" ? i + 1 : i - 1;
                 }
             });
-
+            
             if (index >= 0 && index < this.evaluations.length) {
                 var url = this.evaluations[index].url.href;
-                window.location.href = url;
+                window.location.href = url +`user:${this.userEvaluatorId}`;
             }
 
         },
@@ -118,6 +179,25 @@ app.component('opportunity-evaluations-list', {
             const dateObj = new Date(value._date);
             return dateObj.toLocaleDateString("pt-BR");
         },
+
+        handleEvaluationResponse(event) {
+            const { response, type } = event.detail;
+
+            if (type === 'saveEvaluation' || type === 'sendEvaluation') {
+                const index = this.evaluations.findIndex(evaluation => evaluation.evaluationId === response.id);
+
+                if (index !== -1) {
+                    this.evaluations[index] = {
+                        ...this.evaluations[index],
+                        resultString: response.resultString || this.evaluations[index].resultString,
+                        status: response.status !== undefined ? response.status : this.evaluations[index].status
+                    };
+
+                    this.evaluations = [...this.evaluations];
+                }
+            }
+        },
+
         emitToggle() {
             this.$emit('toggle');
         },

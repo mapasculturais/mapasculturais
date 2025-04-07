@@ -1,0 +1,13 @@
+@use '../0.settings/mixins' as *;
+
+.simple-evaluation-form {
+    &__content {
+        textarea {
+            min-height: size(223);
+        }
+    }
+
+    .field__label {
+        font-size: size(16);
+    }
+}

@@ -5,9 +5,9 @@ use MapasCulturais\i;
 <br><br>
 <hr>
 <div class="affirmativePolices">
-    <h4><?php i::_e('Políticas Afirmativas') ?></h4>
-    <p><?php i::_e('Configure abaixo os percentuais de cada Política Afirmativa que serão aplicados na nota final, caso o proponente se enquadre. ') ?>
-    <section ng-if="data.isActiveAffirmativePolicies">
+    <h4><?php i::_e('Bônus por pontuação') ?></h4>
+    <p><?php i::_e('Configure abaixo os percentuais de cada bônus por pontuação que serão aplicados na nota final, caso o proponente se enquadre. ') ?>
+    <section ng-if="data.isActivePointReward">
         <header>
             <div class="policy-roof">
                 <p> <?php i::_e('Porcentagem total a ser aplicada') ?> </p>
@@ -64,6 +64,6 @@ use MapasCulturais\i;
         </table>
     </section>
 
-    <button ng-click="activeAffirmativePolicies()" ng-if="!data.isActiveAffirmativePolicies" id="enableAffirmativePolicy" class="btn btn-default add"><?php i::_e('Utilizar Políticas Afirmativas') ?></button>
-    <button ng-click="activeAffirmativePolicies()" ng-if="data.isActiveAffirmativePolicies" id="disableAffirmativePolicy" class="btn btn-danger delete"><?php i::_e('Não Utilizar Políticas Afirmativas') ?></button>
+    <button ng-click="activeAffirmativePolicies()" ng-if="!data.isActivePointReward" id="enableAffirmativePolicy" class="btn btn-default add"><?php i::_e('Utilizar Bônus por pontuação') ?></button>
+    <button ng-click="activeAffirmativePolicies()" ng-if="data.isActivePointReward" id="disableAffirmativePolicy" class="btn btn-danger delete"><?php i::_e('Não Utilizar Bônus por pontuação') ?></button>
 </div>

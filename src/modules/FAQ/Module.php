@@ -2,8 +2,6 @@
 
 namespace FAQ;
 use MapasCulturais\App;
-use MapasCulturais\Themes\BaseV2\Theme;
-use stdClass;
 
 class Module extends \MapasCulturais\Module
 {
@@ -18,7 +16,27 @@ class Module extends \MapasCulturais\Module
     public function _init()
     {
         $app = App::i();
-        $self  = $this;
+        $self = $this;
+
+        $app->hook('Theme::info', function ($result, string $path, $title = null) use($app, $self) {
+            $this->jsObject['config']['faq-info'] = $this->jsObject['config']['faq-info'] ?? [];
+
+            $exploded_path = explode("->", $path);
+
+            if(count($exploded_path) != 3) {
+                throw new \Exception("O caminho da info deve ser no formato 'nome-da-secao->nome-do-contexto->nome-da-pergunta");
+            }
+
+            $exploded_path = array_map(function($item) { return trim($item); }, $exploded_path);
+
+            if($question = $self->getQuestion(...$exploded_path)) {
+                $this->jsObject['config']['faq-info'][$path] = $question;
+                $this->import('faq-info');
+                echo "<faq-info path=\"{$path}\" title=\"{$title}\"></faq-info>";
+            } else {
+                $app->log->warning("FAQ: Pergunta não encontrada no caminho {$path}");
+            }
+        });
     }
 
     public function register()
@@ -28,7 +46,51 @@ class Module extends \MapasCulturais\Module
         $app->controller('faq')->module = $this;
     }
 
-    function getFAQ($section_slug = null): array {
+    function getSection(string $section_slug): object|null {
+        $faq = $this->getFAQ($section_slug);
+
+        foreach($faq as $section) {
+            if ($section->slug == $section_slug) {
+                return $section;
+            }
+        }
+
+        return null;
+    }
+
+    function getContext(string $section_slug, string $context_slug): object|null {
+        $section = $this->getSection($section_slug);
+
+        if(is_null($section)) {
+            return null;
+        }
+
+        foreach($section->contexts as $context) {
+            if($context->slug == $context_slug) {
+                return $context;
+            }
+        }
+
+        return null;
+    }
+
+    function getQuestion(string $section_slug, string $context_slug, string $question_slug): object|null {
+        $context = $this->getContext($section_slug, $context_slug);
+
+        if(is_null($context)) {
+            return null;
+        }
+
+        foreach($context->questions as $question) {
+            if($question->slug == $question_slug) {
+                return $question;
+            }
+        }
+
+        return null;
+    }
+
+    function getFAQ(string $section_slug = null): array {
         $language_code = 'pt_BR';
 
         $faq = [];

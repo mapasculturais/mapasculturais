@@ -716,3 +716,23 @@
 .lowercase {
     text-transform: var(--mc-font-transform-lowercase);
 }
+
+.scrollbar {
+    overflow: auto;
+    
+    &::-webkit-scrollbar {
+        width: size(16); 
+        height: size(16);
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: unset;
+        border-radius: 50px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #6C6C6C;
+        border-radius: var(--mc-border-radius-pill);
+        border: 4px solid var(--mc-white);
+    }
+}

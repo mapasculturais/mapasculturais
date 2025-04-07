@@ -130,7 +130,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
         $result = parent::jsonSerialize();
         $result['@entityType'] = 'sealRelation';
         $result['owner'] = $this->owner->simplify('className,id,name,avatar,singleUrl');
-        $result['seal'] = $this->seal->simplify('id,name,avatar,singleUrl,validateDate');
+        $result['seal'] = $this->seal->simplify('id,name,files,singleUrl,validateDate');
         $result['certificateText'] = $this->getCertificateText(true);
         
         $result['requestSealRelationUrl'] = $this->requestSealRelationUrl;
@@ -325,7 +325,15 @@ abstract class SealRelation extends \MapasCulturais\Entity
 
         return $mensagem;
     }
-    
+
+    /**
+     * Retorna a URL da single do selo
+     * @return string 
+     */
+    public function getSingleUrl(): string
+    {
+        return App::i()->createUrl('seal', 'sealRelation', [$this->id]);
+    }
     
     
 }

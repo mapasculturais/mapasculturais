@@ -133,6 +133,40 @@
                     gap: size(24);
                 }
             }
+
+            &__steps {
+                background: white;
+                box-shadow: none;
+                margin-bottom: size(60);
+                max-width: unset;
+                overflow-x: auto;
+                padding: size(24) 0;
+                position: sticky;
+                top: 0;
+                width: 100%;
+                z-index: 1;
+
+                .stepper {
+                    margin-inline: auto;
+                    padding-inline: size(16);
+
+                    @include mobile {
+                        .step .label {
+                            font-size: size(12);
+                        }
+                    }
+
+                    @media (max-width: size(500)) {
+                        .step {
+                            min-width: unset;
+
+                            .label {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

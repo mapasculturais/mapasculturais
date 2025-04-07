@@ -15,17 +15,16 @@ $this->import('
 ');
 ?>
 <div class="opportunity-category-list">
-    <h5 class="semibold"><?= i::__("Categorias") ?></h5>
-
-    <mc-tag-list v-if="entity.registrationCategories.length" classes="primary__background" @click="autoSave()" :tags="entity.registrationCategories" editable></mc-tag-list>
 
     <div class="opportunity-category-list__add-category">
         <div class="field">
-            <input v-model="category" type="text" name="AddNewCategory" @keyup.enter="addCategory();autoSave()" />
+            <input v-model="category" type="text" name="AddNewCategory" @keyup.enter="addCategory();autoSave()" placeholder="<?= i::__("Escreva aqui a categoria. Ex: Artes visuais") ?>" />
         </div>
 
-        <button @click="addCategory();autoSave()" class="button button--primary button--icon button--primary-outline">
-            <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar") ?></label>
+        <button @click="addCategory();autoSave()" class="button button--primary button--icon" :class="!enabledButton() ? 'disabled' : ''">
+            <mc-icon name="add"></mc-icon><label><?php i::_e("Adicionar categoria") ?></label>
         </button>
     </div>
+
+    <mc-tag-list v-if="entity.registrationCategories.length" classes="opportunity__background" @click="autoSave()" :tags="entity.registrationCategories" editable></mc-tag-list>
 </div>

@@ -60,10 +60,6 @@ app.component('notification-list', {
         }
     },
 
-    computed: {
-
-    },
-    
     methods: {
         hasAvatar(entity) {
             return !!entity.request?.requesterUser?.profile?.files?.avatar;
@@ -105,7 +101,7 @@ app.component('notification-list', {
         async ok (notification) {
             notification.disableMessages();
             notification.delete();
-            if(request) {
+            if(notification) {
                 notification.removeFromLists();
             }
         }

@@ -28,15 +28,21 @@ $this->import('
         :load-more="loadMore" 
         :query="query" 
         :refresh="refresh"></slot>
-    <slot v-else name="empty">
+    <slot 
+        v-else 
+        name="empty" 
+        :entities="entities" 
+        :query="query"
+        :refresh="refresh"
+        >
         <div class="panel__row noEntity">
-            <p><?= i::__('Nenhuma entidade encontrada') ?></p>
+            <p>{{emptyTextType ? showEmptyText(type) : 'Nenhuma entidade encontrada'}}</p>
         </div>
     </slot>
 </template>
 
-<slot v-if="showLoadMore()" name="load-more" :entities="entities">
-    <div class="col-12 search-list__loadMore">
+<slot v-if="showLoadMore()" name="load-more" :entities="entities" :load-more="loadMore">
+    <div class="load-more">
         <mc-loading :condition="entities.loadingMore"></mc-loading>
         <button class="button--large button button--primary-outline" v-if="!entities.loadingMore" @click="loadMore()"><?php i::_e('Carregar Mais') ?></button>
     </div>

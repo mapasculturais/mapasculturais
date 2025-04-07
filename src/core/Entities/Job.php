@@ -98,6 +98,26 @@ class Job extends \MapasCulturais\Entity{
     protected $lastExecutionTimestamp;
 
     /**
+     * @var \MapasCulturais\Entities\Subsite
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="cascade")
+     * })
+     */
+    protected $subsite;
+
+    /**
+     * @var \MapasCulturais\Entities\User
+     * 
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="cascade")
+     * })
+     */
+    protected $user;
+
+    /**
      * @var object
      *
      * @ORM\Column(name="metadata", type="json", nullable=false)
@@ -185,7 +205,7 @@ class Job extends \MapasCulturais\Entity{
 
         if ($success !== false){
             // para evitar que um eventual erro no job deixe a entidade detached
-            $job = $app->repo('Job')->find($this->id);
+            $job = $app->repo('Job')->find($this->id) ?: $this;
 
             $job->iterationsCount++;
             
@@ -202,8 +222,9 @@ class Job extends \MapasCulturais\Entity{
                 $job->status = 0;
                 $job->lastExecutionTimestamp = new DateTime;
                 $job->nextExecutionTimestamp = new DateTime(date('Y-m-d H:i:s', strtotime($job->intervalString, $job->nextExecutionTimestamp->getTimestamp())));
-                
+                $app->disableAccessControl();
                 $job->save(true);
+                $app->enableAccessControl();
             }
 
         } else {
@@ -215,6 +236,13 @@ class Job extends \MapasCulturais\Entity{
         return $success;
     }
 
+    protected function canUserRemove($user){
+        return true;
+    }
+
+    protected function canUserCreate($user){
+        return true;
+    }
     
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.

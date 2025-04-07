@@ -14,9 +14,16 @@ app.component('entity-admins', {
             type: [String, Array, Object],
             required: false
         },
+        title: {
+            type: String,
+            default: __('Administrado por', 'entity-admins'),
+        },
     },
 
     computed: {
+        isEditable() {
+            return this.entity.currentUserPermissions.createAgentRelationWithControl && this.editable;
+        },
         query() {
             const ids = this.group.map((item) => item.agent.id).join(',');
 
@@ -34,6 +41,8 @@ app.component('entity-admins', {
             if (idFilter) {
                 query['id'] = idFilter;
             }
+            
+            query['parent'] = 'NULL()'
 
             return query;
 

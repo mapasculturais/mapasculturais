@@ -17,7 +17,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
     <div class="project-edit-mode--header">
         <h4><?php i::_e("Campos"); ?></h4>
-    
+
         <p ng-if="data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("Configure aqui os campos do formulário de inscrição."); ?></p>
         <p ng-if="!data.entity.canUserModifyRegistrationFields" class="registration-help"><?php i::_e("A edição destas opções estão desabilitadas porque agentes já se inscreveram neste projeto."); ?> </p>
     </div>
@@ -53,7 +53,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
             foreach ($definitions as $def) {
                 $this->part($def->configTemplate);
             }
-            
+
             ?>
 
             <div ng-init="field = data.newFieldConfiguration">
@@ -66,6 +66,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     return false" ng-click="data.newFieldConfiguration.categories = []" ng-checked="allCategories(data.newFieldConfiguration)"> <?php i::_e("Todas"); ?> </label>
                 <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="data.newFieldConfiguration.categories" checklist-value="category"> {{category}} </label>
             </p>
+            <?php $this->part('singles/opportunity-registrations-field--proponent'); ?>
         </edit-box>
 
         <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files" position="right" title="<?php i::esc_attr_e("Adicionar anexo"); ?>" cancel-label="<?php i::esc_attr_e("Cancelar"); ?>" submit-label="<?php i::esc_attr_e("Criar"); ?>" close-on-cancel='true' on-cancel="closeNewFileConfigurationEditBox" on-submit="createFileConfiguration" spinner-condition="data.uploadSpinner">
@@ -79,6 +80,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                 <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="data.newFileConfiguration.categories = []" ng-checked="allCategories(data.newFileConfiguration)"> <?php i::_e("Todas"); ?> </label>
                 <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="data.newFileConfiguration.categories" checklist-value="category"> {{category}} </label>
             </p>
+            <?php $this->part('singles/opportunity-registrations-file--proponent'); ?>
         </edit-box>
 
         <select ng-if="data.categories.length > 0" ng-model="data.filterFieldConfigurationByCategory">
@@ -92,11 +94,23 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                 <div ng-if="field.fieldType !== 'file'" ng-class="{'section' : field.fieldType==='section'}">
                     <div class="js-open-editbox item">
                         <div class="label">
-                            <code onclick="copyToClipboard(this)" class="hltip field-id" title="<?php i::esc_attr_e('Clique para copiar') ?>">{{field.id}}</code> {{field.title}} 
+                            <code onclick="copyToClipboard(this)" class="hltip field-id" title="<?php i::esc_attr_e('Clique para copiar') ?>">{{field.id}}</code> {{field.title}}
                             <em ng-if="field.fieldType !== 'section'"><small>({{field.required.toString() === 'true' ? data.fieldsRequiredLabel : data.fieldsOptionalLabel }})</small></em>
                         </div>
+
+                        <span class="attachment-description">
+                            <?php i::_e("Campo disponível somente para:"); ?>
+                        </span>
                         <span ng-if="field.categories.length" class="attachment-description">
-                            <?php i::_e("Somente para"); ?> <strong>{{field.categories.join(', ')}}</strong>
+                            <?php i::_e("Categorias: "); ?> <strong>{{field.categories.join(', ')}}</strong>
+                            <br>
+                        </span>
+                        <span ng-if="field.proponentTypes.length" class="attachment-description">
+                            <?php i::_e("Tipos de proponentes: "); ?> <strong>{{field.proponentTypes.join(', ')}}</strong>
+                            <br>
+                        </span>
+                        <span ng-if="field.registrationRanges.length" class="attachment-description">
+                            <?php i::_e("Faixas: "); ?> <strong>{{field.registrationRanges.join(', ')}}</strong>
                             <br>
                         </span>
                         <span class="attachment-description type">
@@ -118,6 +132,10 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                             <?php i::_e('Descrição do campo') ?><br>
                             <textarea ng-model="field.description" placeholder="<?php i::esc_attr_e("Descrição do campo"); ?>" /></textarea>
                         </label>
+                        <label ng-if="steps.length > 1">
+                            <?php i::_e('Etapa') ?><br>
+                            <select ng-model="field.step" ng-options="step as step.name for step in steps track by step.id" ng-change="changeFieldStep(field)"></select>
+                        </label>
                         <label>
                             <?php i::_e('Tipo do campo') ?><br>
                             <select ng-model="field.fieldType" ng-options="value.slug as value.name disable when value.disabled for value in data.fieldTypes"></select>
@@ -126,16 +144,40 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                         <?php
                         foreach ($definitions as $def) {
                             $this->part($def->configTemplate);
-                        }     
-                                           
-                        $this->part('singles/opportunity-registrations--fields--field-require'); 
+                        }
+
+                        $this->part('singles/opportunity-registrations--fields--field-require');
                         ?>
 
                         <p ng-if="data.categories.length > 1">
                             <small><?php i::_e("Selecione em quais categorias este campo é utilizado"); ?>:</small><br>
-                            <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?> </label>
-                            <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?>
+                            </label>
+                            <label class="checkbox-label" ng-repeat="category in data.categories">
+                                <input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
                         </p>
+
+                        <p ng-if="data.entity.object.registrationRanges.length > 0">
+                            <small><?php i::_e("Selecione em quais faixas/linhas este campo é utilizado"); ?>:</small><br>
+                            <label class="checkbox-label">
+                                <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.registrationRanges = []" ng-checked="allRanges(field)"> <?php i::_e("Todas"); ?>
+                            </label>
+                            <label class="checkbox-label" ng-repeat="range in data.entity.object.registrationRanges">
+                                <input type="checkbox" checklist-model="field.registrationRanges" checklist-value="range.label"> {{range.label}}
+                            </label>
+                        </p>
+
+                        <p ng-if="data.entity.object.registrationProponentTypes.length > 0">
+                            <small><?php i::_e("Selecione em quais tipos de proponente este campo é utilizado"); ?>:</small><br>
+                            <label class="checkbox-label">
+                                <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.proponentTypes = []" ng-checked="allProponentTypes(field)"> <?php i::_e("Todas"); ?>
+                            </label>
+                            <label class="checkbox-label" ng-repeat="proponent in data.entity.object.registrationProponentTypes">
+                                <input type="checkbox" checklist-model="field.proponentTypes" checklist-value="proponent"> {{proponent}}
+                            </label>
+                        </p>
+
                     </edit-box>
                     <div ng-if="data.entity.canUserModifyRegistrationFields && !isBlockedFields(field.id)" class="btn-group">
                         <a ng-click="openFieldConfigurationEditBox(field.id, $index, $event);" class="btn btn-default edit hltip" title="<?php i::esc_attr_e("editar campo"); ?>"></a>
@@ -166,12 +208,36 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-{{field.id}}" position="left" title="<?php i::esc_attr_e("Editar Anexo"); ?>" cancel-label="<?php i::esc_attr_e("Cancelar"); ?>" submit-label="<?php i::esc_attr_e("Salvar"); ?>" close-on-cancel='true' on-cancel="cancelFileConfigurationEditBox" on-submit="editFileConfiguration" index="{{$index}}" spinner-condition="data.uploadSpinner">
                         <input type="text" ng-model="field.title" placeholder="<?php i::esc_attr_e("Nome do anexo"); ?>" />
                         <textarea ng-model="field.description" placeholder="<?php i::esc_attr_e("Descrição do anexo"); ?>" /></textarea>
+                        <label ng-if="steps.length > 1">
+                            <?php i::_e('Etapa') ?><br>
+                            <select ng-model="field.step" ng-options="step as step.name for step in steps track by step.id" ng-change="changeFileStep(field)"></select>
+                        </label>
                         <p ng-if="data.categories.length > 1">
                             <small><?php i::_e("Selecione em quais categorias este anexo é utilizado"); ?>:</small><br>
                             <label class="checkbox-label"><input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.categories = []" ng-checked="allCategories(field)"> <?php i::_e("Todas"); ?> </label>
                             <label class="checkbox-label" ng-repeat="category in data.categories"><input type="checkbox" checklist-model="field.categories" checklist-value="category"> {{category}} </label>
                         </p>
                         <?php $this->part('singles/opportunity-registrations--fields--field-require'); ?>
+
+                        <p ng-if="data.entity.object.registrationRanges.length > 0">
+                            <small><?php i::_e("Selecione em quais Faixas este campo é utilizado"); ?>:</small><br>
+                            <label class="checkbox-label">
+                                <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.registrationRanges = []" ng-checked="allRanges(field)"> <?php i::_e("Todas"); ?>
+                            </label>
+                            <label class="checkbox-label" ng-repeat="range in data.entity.object.registrationRanges">
+                                <input type="checkbox" checklist-model="field.registrationRanges" checklist-value="range.label"> {{range.label}}
+                            </label>
+                        </p>
+
+                        <p ng-if="data.entity.object.registrationProponentTypes">
+                            <small><?php i::_e("Selecione em quais Tipos do proponente este campo é utilizado"); ?>:</small><br>
+                            <label class="checkbox-label">
+                                <input type="checkbox" onclick="if (!this.checked) return false" ng-click="field.proponentTypes = []" ng-checked="allProponentTypes(field)"> <?php i::_e("Todas"); ?>
+                            </label>
+                            <label class="checkbox-label" ng-repeat="proponent in data.entity.object.registrationProponentTypes">
+                                <input type="checkbox" checklist-model="field.proponentTypes" checklist-value="proponent"> {{proponent}}
+                            </label>
+                        </p>
                     </edit-box>
 
                     <div class="file-{{field.template.id}}" ng-if="field.template">
@@ -187,7 +253,7 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                     <edit-box ng-if="data.entity.canUserModifyRegistrationFields" id="editbox-registration-files-template-{{field.id}}" position="top" title="<?php i::esc_attr_e("Enviar modelo"); ?>" cancel-label="<?php i::esc_attr_e("Cancelar"); ?>" submit-label="<?php i::esc_attr_e("Enviar modelo"); ?>" on-submit="sendFile" close-on-cancel='true' spinner-condition="data.uploadSpinner">
                         <p ng-if="field.template">
                             <a class="file-{{field.template.id}} attachment-template" href="{{field.template.url}}" target="_blank" rel='noopener noreferrer'>{{field.template.name}}</a>
-                        </p>                        
+                        </p>
                         <form class="js-ajax-upload" method="post" data-group="{{uploadFileGroup}}" action="{{getUploadUrl(field.id)}}" enctype="multipart/form-data">
                             <div class="alert danger hidden"></div>
                             <p class="form-help"><?php i::_e("Tamanho máximo do arquivo"); ?>: {{maxUploadSizeFormatted}}</p>
@@ -209,6 +275,10 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
                 </div>
             </li>
         </ul>
+
+        <button type="button" class="btn btn-danger" ng-if="countSteps > 1" ng-click="removeStep()">
+            <?php i::_e('Remover seção') ?>
+        </button>
     </div>
 </div>
 <!-- #registration-attachments -->

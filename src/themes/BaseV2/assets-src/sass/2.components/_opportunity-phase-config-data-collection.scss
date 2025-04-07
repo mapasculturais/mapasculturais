@@ -12,9 +12,6 @@
         max-width: size(1038);
         border-bottom: 1px solid var(--mc-gray-100);
     }
-    &__fields {
-        padding-top: size(16);
-    }
 
     &__field {
         .field {
@@ -60,5 +57,118 @@
 
     &__registration {
         padding-left: size(35);
+    }
+
+    &__preponent {
+        display: flex;
+        flex-direction: column;
+        gap: size(10);
+        margin-bottom: size(16);
+
+        & > h4 {
+            display: flex;
+            gap: size(8);
+            align-items: center;
+        }
+
+        .field__preponent > .field__group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: size(8);
+            width: 80%;
+
+            & > .input__label {
+                display: flex;
+                align-items: center;
+
+                & > input {
+                    margin-right: size(12);
+                }
+            }
+        }
+    }
+
+    &__limits {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+        margin-bottom: size(16);
+        
+        .field {
+            position: relative;
+
+            &::after {
+                position: absolute ;
+                content: '';
+                grid-column: 1 / span 12;
+                height: 10px; 
+                width: 100%;
+                background-color: var(--mc-gray-100);
+                top: size(45);
+                left: 0;
+            }     
+
+            &__limits {
+                & input {
+                    max-width: size(100);
+                    padding: size(8);
+                    z-index: 2;
+                }
+
+                > .field__title {
+                    font-weight: 700;
+                    font-size: size(16);
+                }
+            }
+        }
+
+    }
+
+    &__fields {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: size(20) 0;
+        z-index: 0;
+
+        @media (max-width: 1181px) {
+            grid-template-columns: repeat(2, 1fr);
+
+        }
+
+        @media (max-width: 640px) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+
+    &__config-button {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        padding-top: size(32);
+
+        &::before {
+            background: var(--mc-gray-100);
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: size(10);
+            top: size(52);
+        }
+
+        .config-phase__info-button {
+            background-color: var(--mc-primary-300);
+            border: var(--mc-border-hairline) var(--mc-primary-300);
+            color: var(--mc-low-500);
+            grid-template-columns: calc(70% - size(16)) size(15);
+            align-content: center;
+            max-width: 100%;
+            width: 35%;
+            height: size(52);
+
+            @media (max-width: 680px) {
+                width: 60%;
+                grid-template-columns: 1fr auto;
+            }
+        }
     }
 }

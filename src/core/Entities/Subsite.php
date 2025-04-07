@@ -3,6 +3,8 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\API;
+use MapasCulturais\ApiQuery;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
@@ -179,12 +181,16 @@ class Subsite extends \MapasCulturais\Entity
         return $this->getSingleUrl();
     }
 
-    public function getSubsiteUrl() {
-        $app = \MapasCulturais\App::i();
-        $req = $app->request;
-
-        return $req->getScheme() . "://" . $this->url;
+    /**
+     * Retorna a URL base da instalação
+     * 
+     * @return string
+     */
+    public function getSubsiteUrl(): string {
+        $protocol = $_SERVER['REQUEST_SCHEME'] ?? 'http';
+        return "{$protocol}://{$this->url}/";
     }
+
 
     protected $_logo;
 
@@ -301,19 +307,23 @@ class Subsite extends \MapasCulturais\Entity
 
         foreach($this->filters as $controller_id => $entity_filters){
             $entity_class_name = $app->controller($controller_id)->entityClassName;
-            $query = new \MapasCulturais\ApiQuery($entity_class_name, $entity_filters, $this->id);
+            $query = new ApiQuery($entity_class_name, $entity_filters, $this->id);
 
             $this->_entityApiQueryFilters[$entity_class_name] = $query;
 
-            $app->hook("API.<<*>>({$controller_id}).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($query) {
-                $query_dql = $query->getSubDQL();
-                $dql_where .=  " AND e.id IN({$query_dql})";
+            $app->hook("ApiQuery({$controller_id}).params", function() use($query) {
+                /** @var ApiQuery $this */
+                $this->addFilterByApiQuery($query);
             });
         }
 
-        $app->hook("API.<<*>>(PROJECT).query", function(&$qdata, &$select_properties, &$dql_joins, &$dql_where) use($subsite_id) {
-            $dql_where .= " AND e._subsiteId = {$subsite_id}";
-        });
+        foreach(['project', 'opportunity', 'space', 'agent', 'event'] as $entity_type){
+            if($this->{"filter_subsite_{$entity_type}"} ?: false){
+                $app->hook("ApiQuery({$entity_type}).params", function(&$api_params) use($subsite_id, $app) {
+                    $api_params['_subsiteId'] = API::EQ($subsite_id);
+                });
+            }
+        }
 
         $app->applyHookBoundTo($this, 'subsite.applyFilters:after');
     }
@@ -323,30 +333,6 @@ class Subsite extends \MapasCulturais\Entity
     public function getApiQueryFilter($entity_class){
         return isset($this->_entityApiQueryFilters[$entity_class]) ? $this->_entityApiQueryFilters[$entity_class] : null;
     }
-
-    function jsonSerialize(): array {
-        $result = [
-            'id' => $this->id,
-            'name' => $this->name,
-            'createTimestamp' => $this->createTimestamp,
-            'status' => $this->status,
-            'url' => $this->url,
-            'aliasUrl' => $this->aliasUrl,
-            'verifiedSeals' => $this->verifiedSeals,
-            'controllerId' => "subsite",
-            "deleteUrl" => $this->deleteUrl,
-            "editUrl" => $this->editUrl,
-            "singleUrl" => $this->singleUrl,
-
-        ];
-
-        $app = App::i();
-        
-        $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
-        
-        return $result;
-    }
-
 
     public function applyConfigurations(){
         $app = App::i();
@@ -413,7 +399,7 @@ class Subsite extends \MapasCulturais\Entity
             $app->config['app.enabled.opportunities'] = false;
         }
 
-        $app->applyHookBoundTo($this, 'subsite.applyConfigurations:after', ['config' => &$config]);
+        $app->applyHookBoundTo($this, 'subsite.applyConfigurations:after', ['config' => &$app->config]);
 
     }
 
@@ -480,6 +466,15 @@ class Subsite extends \MapasCulturais\Entity
         $q->execute();
 
         $app->em->flush();
+    }
+
+    public function jsonSerialize(): array
+    {
+        $result = parent::jsonSerialize();
+        $result['owner'] = $result['owner']->simplify('id,name,avatar');
+        $result['files'] = $this->files;
+
+        return $result;
     }
 
     

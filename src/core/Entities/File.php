@@ -42,7 +42,8 @@ use \MapasCulturais\i;
         "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
         "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
         "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
-        "MapasCulturais\Entities\Subsite"                       = "\MapasCulturais\Entities\SubsiteFile"
+        "MapasCulturais\Entities\Subsite"                       = "\MapasCulturais\Entities\SubsiteFile",
+        "MapasCulturais\Entities\User"                          = "\MapasCulturais\Entities\UserFile"
    })
  */
 abstract class File extends \MapasCulturais\Entity
@@ -203,10 +204,15 @@ abstract class File extends \MapasCulturais\Entity
     }
 
     protected function canUserView($user){
-        if($owner = $this->owner){
-            return $owner->canUser('view');
-        }else{
-            return false;
+        $owner = $this->owner;
+        if($this->private) {
+            return $owner->canUser("viewPrivateFiles", $user);
+        }else {
+            if($owner->isPrivateEntity()) {
+                return $this->canUser('view', $user);
+            }else {
+                return true;
+            }
         }
     }
 
@@ -304,15 +310,14 @@ abstract class File extends \MapasCulturais\Entity
     public function jsonSerialize(): array {
         $result = [
             'id' => $this->id,
-            'md5' => $this->md5,
-            'mimeType' => $this->mimeType,
             'name' => $this->name,
-            'description' => $this->description,
-            'group' => $this->group,
-            'files' => $this->getFiles(),
+            'mimeType' => $this->mimeType,
             'url' => $this->url,
-            'deleteUrl' => $this->deleteUrl,
-            'createTimestamp' => $this->createTimestamp
+            'createTimestamp' => $this->createTimestamp,
+            'description' => $this->description,
+            'md5' => $this->md5,
+            'group' => $this->group,
+            'transformations' => $this->getFiles(),
         ];
         $app = App::i();
         

@@ -10,6 +10,7 @@
         font-size: size(14);
     }
     &__header {
+        cursor: pointer;
         padding: 18px 16px;
         background: var(--mc-white);
         justify-content: center;
@@ -18,6 +19,7 @@
         grid-template-columns: 1fr size(12);
         max-width: size(870);
         border-radius: size(4);
+        gap: size(10);
     }
     
     &__content {

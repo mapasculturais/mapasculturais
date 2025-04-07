@@ -22,21 +22,22 @@ app.component('mc-summary-agent-info', {
     },
     methods: {
         canSee(item) {
+            let can = false;
             if(this.entity.currentUserPermissions['@control']){
-                return true
+                can = true
             }
 
-            if (this.avaliableEvaluationFields[item]) {
-                return true;
+            if (can && !this.avaliableEvaluationFields[item]) {
+                can = false;
             }
             
-            return false;
+            return can;
         },
         getAvatarRelatedEntity(type) {
             var avatar = null;
             if (this.entity.agentRelations && this.entity.agentRelations.hasOwnProperty(type)) {
                 this.entity.agentRelations[type].forEach(element => {
-                    var id = this.entity.agentsData[type].id;
+                    var id = this.entity.agentsData?.[type]?.id;
                     if (id == element.agent.id) {
                         if (element.agent?.files?.avatar) {
                             avatar = element.agent.files.avatar.url

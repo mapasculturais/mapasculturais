@@ -20,7 +20,7 @@ $this->import('
             <entity-field :entity="entity" hide-required  :editable="true" label="<?php i::esc_attr_e("Selecione o tipo do agente")?>" prop="type"></entity-field>
             <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></entity-field>
             <entity-terms :entity="entity" hide-required :editable="true" :classes="areaClasses" taxonomy='area' title="<?php i::esc_attr_e("Área de Atuação") ?>"></entity-terms>
-            <entity-field :entity="entity" hide-required prop="shortDescription" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></entity-field>
+            <entity-field :entity="entity" hide-required prop="shortDescription" :max-length="400" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Agente")?>"></entity-field>
             <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
         </div>
     </template>
@@ -45,11 +45,11 @@ $this->import('
     <template v-if="entity?.id && entity.status==1" #actions="modal">
         <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Agente');?></mc-link>
         <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
-        <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
+        <mc-link :entity="entity" route='edit' class="button button--primary button--icon button--complete"><?php i::_e('Completar Informações')?></mc-link>
     </template>
     <template v-if="entity?.id && entity.status==0" #actions="modal">
         <mc-link :entity="entity" class="button button--primary-outline button--icon"><?php i::_e('Ver Agente');?></mc-link>
         <button class="button button--secondarylight button--icon " @click="modal.close()"><?php i::_e('Completar Depois')?></button>
-        <mc-link :entity="entity" route='edit' class="button button--primary button--icon"><?php i::_e('Completar Informações')?></mc-link>
+        <mc-link :entity="entity" route='edit' class="button button--primary button--icon button--complete"><?php i::_e('Completar Informações')?></mc-link>
     </template>
 </mc-modal>

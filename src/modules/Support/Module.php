@@ -71,6 +71,7 @@ class Module extends \MapasCulturais\Module
                 return;
             }
             foreach ($this->owner->opportunity->agentRelations as $relation) {
+                // Se o usuário logado, não é um usuário de suporte, continua.
                 if (($relation->group != self::SUPPORT_GROUP) || ($relation->agent->user->id != $app->user->id)) {
                     continue;
                 }
@@ -93,14 +94,16 @@ class Module extends \MapasCulturais\Module
 
         $app->hook('entity(Opportunity).registrationFieldConfigurations', function(&$result) use ($self, $app){
             $user = $app->user;
-            if($self->isSupportUser($this, $user)){
+            if(!$this->canUser("@control") && $self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
-                        $userAllowedFields = $relation->metadata['registrationPermissions'];
-                        foreach($result as $key => $field){
-                            $field = "field_".$field->id;
-                            if(!isset($userAllowedFields[$field])){
-                                unset($result[$key]);
+                        if( $relation->metadata) {
+                            $userAllowedFields = $relation->metadata['registrationPermissions'];
+                            foreach($result as $key => $field){
+                                $field = "field_".$field->id;
+                                if(!isset($userAllowedFields[$field])){
+                                    unset($result[$key]);
+                                }
                             }
                         }
                     }
@@ -111,16 +114,17 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook('entity(Opportunity).registrationFileConfigurations', function(&$result) use ($self, $app){
-
             $user = $app->user;
-            if($self->isSupportUser($this, $user)){
+            if(!$this->canUser("@control") && $self->isSupportUser($this, $user)){
                 foreach ($this->agentRelations as $relation) {
                     if (($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)){
-                        $userAllowedFields = $relation->metadata['registrationPermissions'];
-                        foreach($result as $key => $field){
-                            $field = $field->getFileGroupName();
-                            if(!isset($userAllowedFields[$field])){
-                                unset($result[$key]);
+                        if( $relation->metadata) {
+                            $userAllowedFields = $relation->metadata['registrationPermissions'];
+                            foreach($result as $key => $field){
+                                $field = $field->getFileGroupName();
+                                if(!isset($userAllowedFields[$field])){
+                                    unset($result[$key]);
+                                }
                             }
                         }
                     }
@@ -149,19 +153,23 @@ class Module extends \MapasCulturais\Module
             return;
         });
         $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) use ($self) {
+            
             if (!$this->owner->canUser("@control")) {
                 if ($self->grantedCoarse) {
                     $result = false;
                 }
-                $key = $this->group ?? $this->key;
-                foreach ($this->owner->opportunity->agentRelations as $relation) {
-                    if ((($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)) &&
-                        (($relation->metadata["registrationPermissions"][$key] ?? "") == "rw")) {
-                            $result = true;
-                            return;
-                        }
-                }
+
             }
+
+            $key = $this->group ?? $this->key;
+            foreach ($this->owner->opportunity->agentRelations as $relation) {
+                if ((($relation->group == self::SUPPORT_GROUP) && ($relation->agent->user->id == $user->id)) &&
+                    (($relation->metadata["registrationPermissions"][$key] ?? "") == "rw")) {
+                        $result = true;
+                        return;
+                    }
+            }
+        
             return;
         });
         $app->hook("entity(Registration).permissionCacheUsers", function (&$users) {
@@ -176,7 +184,7 @@ class Module extends \MapasCulturais\Module
         $app->hook('GET(registration.view):before', function() use($app) {
             $registration = $this->requestedEntity;
             if ($registration->canUser('support', $app->user)){
-                if(!$registration->isUserAdmin($app->user) && !$registration->canUser('evaluate')){
+                if(!$registration->isUserAdmin($app->user) && !$registration->canUser('evaluate') && !$registration->opportunity->canUser('@control')){
                     $app->redirect($app->createUrl('support','registration', [$registration->id]) ) ;
                 }
             }

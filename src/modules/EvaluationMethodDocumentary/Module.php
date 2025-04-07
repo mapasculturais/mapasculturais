@@ -36,7 +36,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     protected function _register() {
-        ;
+        $app = App::i();
+        
+        $app->registerJobType(new JobTypes\Spreadsheet('documentary-spreadsheets'));
     }
 
     public function getEvaluationStatues()
@@ -84,7 +86,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $self = $this;
         
-        $app->hook('template(opportunity.registrations.registration-list-actions):begin', function($entity){
+        $app->hook('template(opportunity.registrations.registration-list-actions-entity-table):begin', function($entity){
             if($em = $entity->evaluationMethodConfiguration){
                 if($em->getEvaluationMethod()->slug == "documentary"){
                     $this->part('documentary--evaluation-result-apply');
@@ -227,13 +229,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
             $count = 0;
             $total = count($registrations);
             
-            if ($total > 0) {
-                $opp->enqueueToPCacheRecreation();
-            }
             // faça um foreach em cada registration e pegue as suas avaliações
             foreach ($registrations as $reg) {
                 $count++;
+                /** @var Registration $registration */
                 $registration = $app->repo('Registration')->find($reg['id']);
+                $registration->skipSync = true;
                 $registration->__skipQueuingPCacheRecreation = true;
 
                 $app->log->debug("{$count}/{$total} Alterando status da inscrição {$registration->number} para {$new_status}");
@@ -257,12 +258,18 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $registration->_setStatusTo($new_status);
                     
                 }
-                $app->disableAccessControl();
-                $registration->save(true);
-                $app->enableAccessControl();
+
+                $app->em->clear();
             }
 
 
+            if($next_phase = $opp->nextPhase) {
+                $next_phase->enqueueRegistrationSync();
+            }
+
+            if ($total > 0) {
+                $opp->enqueueToPCacheRecreation();
+            }
     
             $this->finish(sprintf(i::__("Avaliações aplicadas à %s inscrições"), count($registrations)), 200);
     
@@ -300,10 +307,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $consolidated_results;
     }
 
-    public function _getConsolidatedResult(Entities\Registration $registration) {
+    public function _getConsolidatedResult(Entities\Registration $registration, array $evaluations) {
         $app = App::i();
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
 
         if(is_array($evaluations) && count($evaluations) === 0){
             return 0;
@@ -338,7 +343,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return 1;
     }
 
-    public function valueToString($value) {
+    protected function _valueToString($value) {
 
         if($value == 1){
             return i::__('Válida');
@@ -359,7 +364,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         "fieldId" => $id,
                         "label" => $value['label'],
                         "obs" => $value['obs'],
-                        "obs_items" => $value['obs_items'],
+                        "obs_items" => $value['obsItems'],
                         "evaluation" => $value['evaluation'],
                     ];
 
@@ -373,10 +378,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     function _getConsolidatedDetails(Entities\Registration $registration): ?array {
         return null;
-    }
-    
-    public function fetchRegistrations() {
-        return true;
     }
 
 }

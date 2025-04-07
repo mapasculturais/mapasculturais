@@ -811,6 +811,8 @@ class Theme extends MapasCulturais\Theme {
     	return App::i()->createUrl('site', 'search')."##(global:(enabled:(seal:!t),filterEntity:seal))";
     }
 
+    function register() {}
+
     protected function _init() {
         $app = App::i();
         $this->bodyClasses[] = 'base-v1';
@@ -963,36 +965,6 @@ class Theme extends MapasCulturais\Theme {
             ]);
 
 
-        });
-
-        $app->hook('entity(<<agent|space>>).<<insert|update>>:before', function() use ($app) {
-
-            $rsm = new \Doctrine\ORM\Query\ResultSetMapping();
-            $rsm->addScalarResult('type', 'type');
-            $rsm->addScalarResult('name', 'name');
-            $rsm->addScalarResult('cod', 'cod');
-
-            $x = $this->location->longitude;
-            $y = $this->location->latitude;
-
-            $strNativeQuery = "SELECT type, name, cod FROM geo_division WHERE ST_Contains(geom, ST_Transform(ST_GeomFromText('POINT($x $y)',4326),4326))";
-
-            $query = $app->em->createNativeQuery($strNativeQuery, $rsm);
-
-            $divisions = $query->getScalarResult();
-
-            foreach ($app->getRegisteredGeoDivisions() as $d) {
-                $metakey = $d->metakey;
-                $this->$metakey = '';
-            }
-
-            foreach ($divisions as $div) {
-                $metakey = 'geo' . ucfirst($div['type']);
-                $this->$metakey = $div['name'];
-
-                $metakey2 = 'geo' . ucfirst($div['type']) . '_cod';
-                $this->$metakey2 = $div['cod'];
-            }
         });
 
         $app->hook('entity(<<agent|space|event|project|opportunity|seal>>).insert:after', function() use($app){
@@ -1575,44 +1547,16 @@ class Theme extends MapasCulturais\Theme {
             $this->jsObject['entity']['object']->id = $current_registration->id;
             $this->jsObject['entity']['object']->opportunity = $current_registration->opportunity;
             $this->jsObject['entity']['canUserEvaluate'] = $current_registration->canUser('evaluate');
+            $this->jsObject['entity']['evaluateOnTime'] = $current_registration->canUser('evaluateOnTime');
             $this->jsObject['entity']['canUserModify'] = $current_registration->canUser('modify');
             $this->jsObject['entity']['canUserSend'] = $current_registration->canUser('send');
             $this->jsObject['entity']['canUserViewUserEvaluations'] = $current_registration->canUser('viewUserEvaluations');
     
             
             $this->jsObject['registration']->id = $current_registration->id;
-            $this->jsObject['registration']->status = $current_registration->status;
             $this->jsObject['registration']->opportunity = $current_registration->opportunity;            
     
         }
-    }
-
-    function register() {
-        $app = App::i();
-        $geoDivisionsHierarchyCfg = $app->config['app.geoDivisionsHierarchy'];
-        foreach ($geoDivisionsHierarchyCfg as $slug => $division) {
-
-            // Begin backward compability version < 4.0, $division is string not a array.
-            $label = $division;
-            if (is_array($division)) {
-                $label = $division['name'];
-            }
-            // End backward compability
-
-            foreach (array('MapasCulturais\Entities\Agent', 'MapasCulturais\Entities\Space') as $entity_class) {
-                $entity_types = $app->getRegisteredEntityTypes($entity_class);
-
-                foreach ($entity_types as $type) {
-                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug), array('label' => $label));
-                    $app->registerMetadata($metadata, $entity_class, $type->id);
-
-                    $metadata = new \MapasCulturais\Definitions\Metadata('geo' . ucfirst($slug). '_cod', array('label' => $label));
-                    $app->registerMetadata($metadata, $entity_class, $type->id);
-                }
-            }
-        }
-
-        
     }
 
     function getLockedFieldsSeal(){
@@ -2208,7 +2152,8 @@ class Theme extends MapasCulturais\Theme {
             'fieldsDisabled' => i::__('Atenção, você tentou marcar campos que estão debilitados por algum tipo de condicional ou vinculado a alguma categoria, verifique se todos foram que deseja marcar foram marcados corretamente'),
             'providingAccount' => i::__('Ao enviar a prestação de contas, não será mais permitido editar os campos. tem certeza que deseja continuar?'),
             'disableColumns' => i::__('Não é permitido desabilitar todas as colunas da tabela'),
-            'columnDisabling' => i::__('Não é permitido desabilitar a coluna')
+            'columnDisabling' => i::__('Não é permitido desabilitar a coluna'),
+            'fileTooBig' => i::__('O tamanho do arquivo excede o limite estabelecido')
         ]);
 
         $this->enqueueScript('app', 'entity.module.subsiteAdmins', 'js/ng.entity.module.subsiteAdmins.js', array('ng-mapasculturais'));
@@ -2735,7 +2680,7 @@ class Theme extends MapasCulturais\Theme {
                     }
                 }
             }
-            $_opportunity = $_opportunity->parent;
+            $_opportunity = $_opportunity->previousPhase;
         }
     }
 
@@ -2777,6 +2722,8 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['registrationFieldTypes'] = $field_types;
 
         $this->jsObject['entity']['registrationCategories'] = $entity->registrationCategories;
+        $this->jsObject['entity']['registrationRanges'] = $entity->registrationRanges;
+        $this->jsObject['entity']['registrationProponentTypes'] = $entity->registrationProponentTypes;
         $this->jsObject['entity']['published'] = $entity->publishedRegistrations;
 
         $this->jsObject['entity']['registrationRulesFile'] = $entity->getFile('rules');
@@ -2822,6 +2769,7 @@ class Theme extends MapasCulturais\Theme {
         $this->jsObject['entity']['spaceData'] = $entity->getSpaceData();
 
         $this->jsObject['entity']['canUserEvaluate'] = $entity->canUser('evaluate');
+        $this->jsObject['entity']['evaluateOnTime'] = $entity->canUser('evaluateOnTime');
         $this->jsObject['entity']['canUserModify'] = $entity->canUser('modify');
         $this->jsObject['entity']['canUserSend'] = $entity->canUser('send');
         $this->jsObject['entity']['canUserViewUserEvaluations'] = $entity->canUser('viewUserEvaluations');

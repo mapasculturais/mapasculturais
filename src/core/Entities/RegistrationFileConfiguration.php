@@ -39,6 +39,16 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     protected $owner;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationStep
+     *
+     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\RegistrationStep")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="step_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    protected $step;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=false)
@@ -65,14 +75,14 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      * @ORM\Column(name="categories", type="json", nullable=true)
      */
     protected $categories = [];
-    
+
     /**
      * @var integer
      *
      * @ORM\Column(name="display_order", type="smallint", nullable=false)
      */
     protected $displayOrder = 255;
-    
+
     /**
      * @var boolean
      *
@@ -94,6 +104,20 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
      */
     protected $conditionalValue;
 
+     /**
+      * @var boolean
+      *
+      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
+      */
+    protected $registrationRanges = [];
+
+     /**
+      * @var boolean
+      *
+      * @ORM\Column(name="proponent_types", type="json", nullable=true)
+      */
+    protected $proponentTypes = [];
+
     /**
      * @var \MapasCulturais\Entities\AgentFile[] Files
      *
@@ -105,10 +129,10 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     static function getValidations() {
         $app = App::i();
         $validations = [
-            'owner' => [ 
+            'owner' => [
                 'required' => \MapasCulturais\i::__("A oportunidade é obrigatória.")
             ],
-            'title' => [ 
+            'title' => [
                 'required' => \MapasCulturais\i::__("O título do anexo é obrigatório.")
             ]
         ];
@@ -126,7 +150,7 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     public function setOwnerId($id){
         $this->owner = App::i()->repo('Opportunity')->find($id);
     }
-    
+
     public function setCategories($value) {
         if(!$value){
             $value = [];
@@ -134,6 +158,32 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             $value = explode("\n", $value);
         }
         $this->categories = $value;
+    }
+
+    public function setRegistrationRanges($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->registrationRanges = $value;
+    }
+
+    public function setStep(int|RegistrationStep $step) {
+        if (is_int($step)) {
+            $app = \MapasCulturais\App::i();
+            $step = $app->repo('RegistrationStep')->find($step);
+        }
+        $this->step = $step;
+    }
+
+    public function setProponentTypes($value) {
+        if(!$value){
+            $value = [];
+        } else if (!is_array($value)){
+            $value = explode("\n", $value);
+        }
+        $this->proponentTypes = $value;
     }
 
     public function jsonSerialize(): array {
@@ -145,15 +195,18 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
             'required' => $this->required,
             'template' => $this->getFile('registrationFileTemplate'),
             'groupName' => $this->fileGroupName,
-            'categories' => $this->categories,
+            'categories' => $this->categories ?: [],
             'displayOrder' => $this->displayOrder,
-            'conditional' => $this->conditional ? true : false,
+            'conditional' => filter_var($this->conditional, FILTER_VALIDATE_BOOLEAN),
             'conditionalField' => $this->conditionalField,
-            'conditionalValue' => $this->conditionalValue
+            'conditionalValue' => $this->conditionalValue,
+            'registrationRanges' => $this->registrationRanges ?: [],
+            'proponentTypes' => $this->proponentTypes ?: [],
+            'step' => $this->step ?? null,
         ];
 
         $app = App::i();
-        
+
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.jsonSerialize", [&$result]);
 
         return $result;

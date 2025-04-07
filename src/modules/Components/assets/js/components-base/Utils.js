@@ -1,25 +1,27 @@
-globalThis.__ = (key, componentName) => {
+globalThis.__ = (key, componentName, replacements) => {
     const dict = Utils.getTexts(componentName);
-    const text = dict(key);
-
-    if (!text) {
-        console.error(`TRADUÇÃO FALTANDO "${key}" do componente "${componentName}`);
-    }
-
-    return text || key;
+    return dict(key, replacements);
 }
 
 globalThis.Utils = {
     getTexts(componentName) {
         const texts = $MAPAS.gettext?.[`component:${componentName}`] || {};
-        return (key) => {
+        return (key, replacements) => {
             const text = texts[key];
 
             if (!text) {
                 console.error(`TRADUÇÃO FALTANDO "${key}" do componente "${componentName}`);
             }
         
-            return text || key;
+            let result = text || key;
+
+            if (replacements) {
+                for (let key in replacements) {
+                    result = result.replaceAll('{' + key + '}' , replacements[key]);
+                }
+            }
+
+            return result;
         };
     },
 
@@ -256,6 +258,51 @@ globalThis.Utils = {
     },
 
     buildSocialMediaLink(entity, socialMedia){
+        if(socialMedia == 'linkedin' ){
+            return "https://" + socialMedia + ".com/in/" + entity[socialMedia];
+        }
+        if(socialMedia == 'spotify' ){
+            return "https://open." + socialMedia + ".com/user/" + entity[socialMedia];
+        }
         return "https://" + socialMedia + ".com/" + entity[socialMedia];
+    },
+
+    cookies: {
+        get: function (name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        },
+    
+        set: function (key, value, options) {
+            options = {...options};
+    
+            if (value == null) {
+                options.expires = -1;
+            }
+    
+            if (typeof options.expires === 'number') {
+                var days = options.expires, t = options.expires = new Date();
+                t.setDate(t.getDate() + days);
+                options.expires = options.expires.toUTCString();
+            } else {
+                options.expires = 'Session';
+            }
+    
+            value = String(value);
+    
+            return (document.cookie = [
+                encodeURIComponent(key), '=', options.raw ? value : encodeURIComponent(value),
+                options.expires ? '; expires=' + options.expires : '', // use expires attribute, max-age is not supported by IE
+                options.path ? '; path=' + options.path : '',
+                options.domain ? '; domain=' + options.domain : '',
+                options.secure ? '; secure' : ''
+            ].join(''));
+        }
     }
 }

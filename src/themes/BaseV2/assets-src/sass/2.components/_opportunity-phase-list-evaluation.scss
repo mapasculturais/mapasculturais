@@ -12,6 +12,9 @@
     }
     &__cardfooter {
         padding-top: size(24);
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
     }
     &_action {
 

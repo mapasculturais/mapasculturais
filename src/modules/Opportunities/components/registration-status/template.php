@@ -24,7 +24,8 @@ $this->import('
         <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
     </div>
 
-    <template v-if="phase.type == 'technical' || phase.type == 'documentary'">
+    <div>
+        <div v-if="phase.type == 'qualification'"><?= i::__('Resultado:') ?> <strong>{{registration.consolidatedResult}}</strong></div>
         <div v-if="phase.type == 'technical'"><?= i::__('Pontuação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong></div>
         <div v-if="phase.type == 'documentary'"> 
             <strong v-if="registration.consolidatedResult == '1'">
@@ -38,5 +39,5 @@ $this->import('
         </div>
     
         <registration-results v-if="phase.publishEvaluationDetails" :registration="registration" :phase="phase"></registration-results>
-    </template>
+    </div>
 </div>

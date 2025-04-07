@@ -12,6 +12,7 @@ app.component('search-list-event', {
         return {
             occurrences: [],
             loading: false,
+            page: 1
         }
     },
 
@@ -20,6 +21,7 @@ app.component('search-list-event', {
             handler(){
                 clearTimeout(this.watchTimeout);
                 this.loading = true;
+                this.page = 1;
 
                 this.watchTimeout = setTimeout(() => {
                     this.fetchOccurrences();
@@ -65,12 +67,27 @@ app.component('search-list-event', {
             query['event:@select'] = this.select;
             query['space:@select'] = this.spaceSelect;
             query['@limit'] = this.limit;
+            query['@page'] = this.page;
             
-            this.occurrences = await this.eventApi.fetch('occurrences', query, {
+            const occurrences = await this.eventApi.fetch('occurrences', query, {
                 raw: true,
                 rawProcessor: (rawData) => Utils.occurrenceRawProcessor(rawData, this.eventApi, this.spaceApi)
             });
+            
+            const metadata = occurrences.metadata;
+
+            if(this.page === 1) {
+                this.occurrences = occurrences;
+            } else {
+                this.occurrences = this.occurrences.concat(occurrences);
+                this.occurrences.metadata = metadata;
+            }
             this.loading = false;
+        },
+
+        loadMore() {
+            this.page++;
+            this.fetchOccurrences();
         },
 
         newDate(occurrence) {

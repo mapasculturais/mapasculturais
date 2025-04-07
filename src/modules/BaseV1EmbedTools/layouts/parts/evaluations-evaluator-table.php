@@ -2,7 +2,7 @@
 
 use MapasCulturais\i;
 
-$valuer_id = $valuer_user ? $valuer_user->profile->id : '';
+$valuer_profile_id = $valuer_user ? $valuer_user->profile->id : '';
 
 $evaluation_url = $app->createUrl('registration', 'evaluation');
 ?>
@@ -21,7 +21,7 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
 <?php endif?>
 
 
-<table class="js-registration-list registrations-table" data-valuer-id="<?= $valuer_id ?>" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}">
+<table class="js-registration-list registrations-table" data-valuer-id="<?= $valuer_profile_id ?>" ng-class="{'no-options': data.entity.registrationCategories.length === 0, 'no-attachments': data.entity.registrationFileConfigurations.length === 0, 'registrations-results': data.entity.published}">
 <thead>
     
         <tr>
@@ -63,7 +63,7 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
         <tr ng-repeat="evaluation in data.evaluations" id="registration-{{evaluation.registration.id}}">
             <?php $this->applyTemplateHook('opportunity-evaluations--committee--table-tbody-tr','begin'); ?> 
 
-            <td class="registration-id-col"><a href="<?=$evaluation_url?>{{evaluation.registration.id}}" rel='noopener noreferrer' target="_top">{{evaluation.registration.number}}</a></td>
+            <td class="registration-id-col"><a href="<?=$evaluation_url?>{{evaluation.registration.id}}/user:<?=$valuer_user->id?>" rel='noopener noreferrer' target="_top">{{evaluation.registration.number}}</a></td>
             <td ng-if="data.entity.registrationCategories" class="registration-option-col">{{evaluation.registration.category}}</td>
             <td class="registration-agents-col">
                 <p>

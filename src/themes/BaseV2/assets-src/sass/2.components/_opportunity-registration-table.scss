@@ -5,18 +5,13 @@
         display: flex;
         gap: size(24);
         flex-wrap: wrap;
-    } 
+    }
 
-    .apply-evaluations {
-        .modal-content {
-            max-width: size(570);
-            padding: size(24);
-
-            .modal__content {
-                margin: size(24) 0 0;
-                padding: 0;
-            }
-        }
+    .opportunity-status {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 
     &__filter {
@@ -27,6 +22,7 @@
         background-color: var(--mc-white);
         padding: size(24);
     }
+
     &__search-key {
         display: flex;
         flex-direction: row;
@@ -34,9 +30,18 @@
         width: 100%;
 
     }
-    &__text-filter {
-
+    
+    &__actions {
+        display: grid;
+        gap: size(12);
     }
+
+    &__actions-buttons {
+        display: flex;
+        gap: size(12);
+        flex-wrap: wrap;
+    }
+    
     &__select-tag {
         & > select {
             border-radius: var(--mc-border-radius-xs);
@@ -55,6 +60,7 @@
         align-items: center;
         padding-inline: var(--mc-font-size-xs);
     }
+
     &__search-input {
         border-radius: var(--mc-border-radius-pill) 0 0 var(--mc-border-radius-pill);
         border: 1px solid var(--mc-gray-300);
@@ -62,6 +68,7 @@
         padding: size(12) 0 size(12) size(20);
         width: 100%;
     }
+    
     &__search-fields {
         padding: size(16);
         border: 1px solid var(--mc-gray-100);
@@ -70,5 +77,74 @@
         flex-direction: row;
         gap: size(16);
         align-items: center;
+    }
+
+    &__multiselects {
+        display: flex;
+        gap: size(18);
+        flex-wrap: wrap;
+
+        @media (max-width: 552px) {
+            .mc-multiselect {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 554px) and (max-width: 770px){
+            .mc-multiselect {
+                width: 47.5%;
+            }
+        }
+    }
+
+    .opportunity-payment-table__actions {
+        margin-top: size(8);
+        text-align: center;
+
+        .button {
+            min-width: size(224);
+        }
+
+        @media (max-width: 980px) {
+            display: flex;
+            flex-wrap: wrap;
+            gap: size(20);
+
+            .button {
+                min-width: 100%;
+            }
+        }
+    }
+
+    &__edit {
+        color: var(--mc-gray-700);
+
+        &:hover {
+            color: var(--mc-low-500);
+        }
+    }
+
+    &__edit-open {
+        color: var(--mc-warning-500);
+
+        &:hover {
+            color: var(--mc-warning-700);
+        }
+    }
+
+    &__edit-sent {
+        color: var(--mc-success-500);
+
+        &:hover {
+            color: var(--mc-success-700);
+        }
+    }
+
+    &__edit-missed {
+        color: var(--mc-danger-500);
+
+        &:hover {
+            color: var(--mc-danger-700);
+        }
     }
 }

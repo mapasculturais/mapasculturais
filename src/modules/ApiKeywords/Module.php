@@ -33,21 +33,42 @@ class Module extends \MapasCulturais\Module {
         };
 
         // faz a keyword buscar pelo documento do owner nas inscrições
-        $app->hook('repo(Registration).getIdsByKeywordDQL.join', function (&$joins, $keyword) use ($format_doc) {
+        $app->hook('repo(Registration).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) use ($format_doc) {
+            $joins .= "\n LEFT JOIN e.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
+            $joins .= "\n LEFT JOIN coletivo_relation.agent agent_coletivo";
+            $joins .= "\n LEFT JOIN o.__metadata owner_nome WITH owner_nome.key = 'nomeCompleto'";
+            $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_nome WITH owner_nome.key = 'nomeCompleto'";
+
             if ($format_doc($keyword)) {
-                $joins .= " LEFT JOIN o.__metadata doc WITH doc.key IN('documento','cnpj','cpf')";
+                $joins .= "\n LEFT JOIN o.__metadata doc WITH doc.key IN('documento','cnpj','cpf')";
+                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_doc WITH coletivo_doc.key = 'cnpj'";
+            }
+
+            if (str_contains($keyword, '@')) {
+                $joins .= "\n LEFT JOIN o.__metadata owner_email WITH owner_email.key = 'emailPublico'";
+                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_email WITH coletivo_email.key = 'emailPublico'";
             }
         });
 
-        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function (&$where, $keyword) use ($format_doc) {
+        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use ($format_doc) {
+            $where .= "\n OR unaccent(lower(agent_coletivo.name)) LIKE unaccent(lower('$keyword'))";
+            $where .= "\n OR unaccent(lower(owner_nome.value)) LIKE unaccent(lower('$keyword'))";
+            $where .= "\n OR unaccent(lower(coletivo_nome.value)) LIKE unaccent(lower('$keyword'))";
+
             if ($doc = $format_doc($keyword)) {
                 $doc2 = trim(str_replace(['%', '.', '/', '-'], '', $keyword));
-                $where .= " OR doc.value = '$doc' OR doc.value = '$doc2'";
+                $where .= "\n OR doc.value = '$doc' OR doc.value = '$doc2'";
+                $where .= "\n OR coletivo_doc.value = '$doc' OR coletivo_doc.value = '$doc2'";
+            }
+
+            if (str_contains($keyword, '@')) {
+                $where .= "\n OR lower(owner_email.value) LIKE lower('$keyword')";
+                $where .= "\n OR lower(coletivo_email.value) LIKE lower('$keyword')";
             }
         });
 
         // faz a keyword buscar pelos termos das taxonomias
-        $app->hook('repo(<<agent|space|event|project|opportunity>>).getIdsByKeywordDQL.join,-repo(Registration).getIdsByKeywordDQL.join', function (&$joins, $keyword) {
+        $app->hook('repo(<<agent|space|event|project|opportunity>>).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) {
             /** @var \MapasCulturais\Repository $this */
             $taxonomy = App::i()->getRegisteredTaxonomyBySlug('tag');
 
@@ -59,11 +80,11 @@ class Module extends \MapasCulturais\Module {
                             t.taxonomy = '{$taxonomy->slug}'";
         });
 
-        $app->hook('repo(<<agent|space|event|project|ppportunity>>).getIdsByKeywordDQL.where,-repo(Registration).getIdsByKeywordDQL.where', function (&$where, $keyword) {
-            $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:keyword)) ";
+        $app->hook('repo(<<agent|space|event|project|opportunity>>).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) {
+            $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:{$alias})) ";
         });
 
-        $app->hook('repo(Event).getIdsByKeywordDQL.join', function (&$joins, $keyword) {
+        $app->hook('repo(Event).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) {
             $joins .= " LEFT JOIN e.project p
                     LEFT JOIN e.__metadata m
                     WITH
@@ -73,7 +94,7 @@ class Module extends \MapasCulturais\Module {
                 ";
         });
 
-        $app->hook('repo(Event).getIdsByKeywordDQL.where', function (&$where, $keyword) use ($app) {
+        $app->hook('repo(Event).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use ($app) {
             $projects = $app->repo('Project')->findByKeyword($keyword);
             $project_ids = [];
             foreach ($projects as $project) {
@@ -82,8 +103,8 @@ class Module extends \MapasCulturais\Module {
             if ($project_ids) {
                 $where .= " OR p.id IN ( " . implode(',', $project_ids) . ")";
             }
-            $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:keyword))";
-            $where .= " OR unaccent(lower(sp.name)) LIKE unaccent(lower(:keyword))";
+            $where .= " OR unaccent(lower(m.value)) LIKE unaccent(lower(:{$alias}))";
+            $where .= " OR unaccent(lower(sp.name)) LIKE unaccent(lower(:{$alias}))";
         });
     }
 }

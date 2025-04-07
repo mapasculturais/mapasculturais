@@ -4,12 +4,6 @@
     display: flex;
     gap: size(16);
 
-    &__modal {
-        .modal-content {
-            max-width: size(570);
-        }
-    }
-
     &__modal-content {
         display: grid;
         gap: size(24);
@@ -32,7 +26,6 @@
     }
 
     .modal-content {
-        padding: size(16);
         max-width: size(570);
         width: 100%;
     }

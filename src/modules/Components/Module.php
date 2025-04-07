@@ -37,6 +37,7 @@ class Module extends \MapasCulturais\Module {
             $app->view->enqueueStyle($vendor_group, 'floating-vue', '../node_modules/floating-vue/dist/style.css');
             $app->view->enqueueStyle($vendor_group, 'components-carousel', 'css/components-base/carousel.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet', '../node_modules/leaflet/dist/leaflet.css');
+            $app->view->enqueueStyle($vendor_group, 'slider', '../node_modules/@vueform/slider/themes/default.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster', '../node_modules/leaflet.markercluster/dist/MarkerCluster.css');
             $app->view->enqueueStyle($vendor_group, 'leaflet.markercluster.default', '../node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css');
             $app->view->assetManager->publishFolder('js/vue-init/', 'js/vue-init/');
@@ -89,7 +90,7 @@ class Module extends \MapasCulturais\Module {
                 }
             }
             
-            $this->jsObject['currentUserRoles'] = array_unique($roles);
+            $this->jsObject['currentUserRoles'] = array_values(array_unique($roles));
 
             /* Definindo entidades desligadas */
             $entities = ['agents', 'events', 'projects', 'opportunities', 'spaces', 'seals', 'subsites', 'apps'];
@@ -123,13 +124,13 @@ class Module extends \MapasCulturais\Module {
             $this->insideApp = false;
             $this->part('main-app--end');
         },1000);
-        
+
         if ($app->config['app.mode'] == 'development') {
             $app->hook('template(<<*>>):<<*>>', function () use($app) {
                 $hook = $app->hooks->hookStack[count($app->hooks->hookStack) - 1]->name;
                 if($this->version >= 2) {
                     $this->import('mc-debug');
-                    echo "<mc-debug type='template-hook' name='$hook'></mc-debug>\n";
+                    echo "<template is='vue:mc-debug' type='template-hook' name='$hook'></template>\n";
                 }
             });
         }
@@ -164,7 +165,7 @@ class Module extends \MapasCulturais\Module {
 
             if ($app->mode == APPMODE_DEVELOPMENT) {
                 $this->import('mc-debug');
-                echo "<mc-debug type='component-hook' name='$hook_name'></mc-debug>";
+                echo "<template is='vue:mc-debug' type='component-hook' name='$hook_name'></template>";
             }
 
             $app->applyHookBoundTo($this, $hook_name, $params);
@@ -186,11 +187,23 @@ class Module extends \MapasCulturais\Module {
                 $this->importedComponents = [];
             }
 
+            if (in_array($component, $this->importedComponents)) {
+                return;
+            }
+
             $init_file = $this->resolveFilename("components/{$component}", 'init.php');
 
             if ($init_file) {
-                $app->hook('mapas.printJsObject:before', function () use($init_file, $app) {
+                $app->hook('mapas.printJsObject:before', function () use($init_file, $app, $component) {
+                    $started_at = microtime(true);
                     include $init_file;
+                    $finished_at = microtime(true);
+                    
+                    //loga o tempo de execução
+                    $sec = $finished_at - $started_at;
+                    if($sec  > .1) {
+                        $app->log->debug("Component $component init.php executed in " . ($sec) . " seconds");
+                    }
                 });
             }
 
@@ -199,10 +212,6 @@ class Module extends \MapasCulturais\Module {
                 foreach ($components as $component) {
                     $this->import($component, $data);
                 }
-                return;
-            }
-
-            if (in_array($component, $this->importedComponents)) {
                 return;
             }
             $imported_components = $this->importedComponents;
@@ -295,7 +304,7 @@ class Module extends \MapasCulturais\Module {
             
             $app->applyHookBoundTo($this, "component({$component}):after", [$__data]);
             
-            if ($app->mode == APPMODE_DEVELOPMENT) {
+            if ($app->config['app.mode'] == APPMODE_DEVELOPMENT) {
                 echo "\n<!-- /$component -->";
             }
 

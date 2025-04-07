@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .tabs-component {
-    
+
     @include mobile {
         max-width: 100vw;
     }
@@ -13,8 +13,24 @@
         justify-content: space-between;
         max-width: size(1170);
         margin: 0 auto;
+        padding: 0 0 size(3);
         overflow-x: auto;
-        padding: 0 size(16);
+
+        &::-webkit-scrollbar {
+            width: size(4);
+            height: size(4);
+        }
+
+        &::-webkit-scrollbar-track {
+            background: unset;
+            width: size(8);
+            height: size(8);
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #6C6C6C;
+            border-radius: var(--mc-border-radius-pill);
+        }
 
         &--left {
             align-items: baseline;
@@ -39,7 +55,7 @@
         margin: 0;
         overflow: auto;
         padding: 0;
-        transform: rotateX(180deg); // Hack to put scrollbar above content
+        rotate: x 180deg; // Hack to put scrollbar above content
         white-space: nowrap;
         width: auto;
         gap: size(22);
@@ -49,9 +65,22 @@
     &__button {
         display: inline-block;
         list-style: none;
-        transform: rotateX(180deg);
+        rotate: x 180deg;
+
+        a {
+            align-items: center;
+            color: inherit;
+            display: flex;
+            font-weight: var(--mc-font-regular);
+            line-height: size(20);
+            padding: size(7) size(13);
+            text-decoration: none;
+        }
 
         &--active {
+            a {
+                font-weight: var(--mc-font-semibold);
+            }
 
             &::after {
                 border-radius: var(--mc-border-radius-sm);
@@ -61,21 +90,20 @@
                 content: '';
                 width: 100%;
             }
-        }        
+        }
 
-        a {
-            align-items: center;
-            color: inherit;
-            display: flex;
-            line-height: size(20);
-            padding: size(7) 0;
-            text-decoration: none;
+        &.sortable-chosen, &.sortable-ghost {
+            opacity: 0.5;
+        }
+
+        &.sortable-ghost:not(.sortable-chosen) {
+            rotate: none;
         }
 
         .iconify {
             color: var(--mc-gray-700);
             font-size: size(20);
-            margin: 0 size(6);
+            margin-right: size(6);
         }
 
         &.is-active {

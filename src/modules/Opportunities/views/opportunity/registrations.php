@@ -31,6 +31,6 @@ $this->import('
     <div class="opportunity-registrations__container">
         <opportunity-phase-header :phase="entity"></opportunity-phase-header>
 
-        <opportunity-registrations-table :phase="entity"></opportunity-registrations-table>
+        <opportunity-registrations-table identifier="registrationsList" :phase="entity"></opportunity-registrations-table>
     </div>
 </div>

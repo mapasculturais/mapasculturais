@@ -14,7 +14,11 @@
         gap: size(32) size(62);
         align-items: center;
         min-height: size(510);
-
+        
+        .content__description {
+            text-shadow: .1rem .1rem .1rem #222;
+        }
+          
         &::before {
             content: '';
             position: absolute;

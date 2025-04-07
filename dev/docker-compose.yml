@@ -32,19 +32,25 @@ services:
       - ./docker-data/public-files:/var/www/html/files
       - ./docker-data/private-files:/var/www/private-files
       
+      - ../docker/development/router.php:/var/www/dev/router.php
+
 
     links:
       - db
       - redis
       - sessions
       
-    environment:
-      - BUILD_ASSETS=1
+    environment:  
+      - REDIRECT_404_ASSETS_TO=
+
+      - BUILD_ASSETS=0
       - PENDING_PCACHE_RECREATION_INTERVAL=5
       - JOBS_INTERVAL=5
       - REDIS_CACHE=redis
       - MAILER_TRANSPORT=smtp://mailhog:1025
       - MAILER_FROM=sysadmin@localhost
+      - NUM_PROCESSES=2
+      - MC_UPDATES_PROCESSES=4
       
       # chaves de teste do google recaptcha
       - GOOGLE_RECAPTCHA_SITEKEY=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI

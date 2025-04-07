@@ -2,7 +2,7 @@ app.component('entity-links', {
     template: $TEMPLATES['entity-links'],
     emits: [],
 
-    setup() { 
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('entity-links')
         return { text }
@@ -29,33 +29,46 @@ app.component('entity-links', {
 
     data() {
         return {
-            metalist: {}
+            metalist: {},
+            newLinks: [],
         }
     },
 
     methods: {
-        async create(popover) {
-            if(!this.metalist.value || !this.metalist.title){
+        async save(link, index) {
+            console.log(link);
+            if (!link.value || !link.title) {
                 const messages = useMessages();
                 messages.error(this.text('preencha todos os campos'));
                 return;
             }
-            await this.entity.createMetalist('links', this.metalist);      
-            popover.close();
+            await this.entity.createMetalist('links', link);
+            this.remove(index);
         },
 
-        async save(metalist, popover) {
-            if(!metalist.newData.title || !metalist.newData.value) {
+        async update(metalist) {
+            if (!metalist.newData.title || !metalist.newData.value) {
                 const messages = useMessages();
                 messages.error(this.text('preencha todos os campos'));
                 return;
             }
             metalist.title = metalist.newData.title;
             metalist.value = metalist.newData.value;
-            
+
             await metalist.save();
-            popover.close();
+        },
+
+        remove (index){
+            this.newLinks.splice(index, 1);
+        },
+
+        addLink() {
+            this.newLinks.push({
+                title: '',
+                value: ''
+            });
+            console.log(this.newLinks);
         }
     }
-    
+
 });

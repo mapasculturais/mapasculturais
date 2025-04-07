@@ -90,7 +90,7 @@ globalThis.useEntitiesLists = Pinia.defineStore('entitiesLists', {
 globalThis.apiInstances = {};
 
 class API {
-    constructor(objectType, scope, fetchOptions) {
+    constructor(objectType, scope = 'default', fetchOptions = undefined) {
         const instanceId = `${objectType}:${scope}`;
         if (apiInstances[instanceId]) {
             return apiInstances[instanceId];
@@ -109,24 +109,28 @@ class API {
     }
 
     get $PK() {
-        const __properties = this.getEntityDescription('!relations');
-        let pk;
-        for (let prop in __properties) {
-            if(__properties[prop].isPK) {
-                pk = prop;
-                break;
-            }
+        if (Entity.__pkCache.has(this.objectType)) {
+            return Entity.__pkCache.get(this.objectType);
         }
 
-        return pk || 'id';
+        const __properties = this.getEntityDescription('!relations');
+        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK) ?? [];
+
+        Entity.__pkCache.set(this.objectType, pk ?? 'id');
+        return pk ?? 'id';
     }
 
-    getHeaders(data) {
-        if (data instanceof FormData) {
-            return {};
-        } else {
-            return {'Content-Type': 'application/json'};
+    getHeaders(data, forceSave) {
+        const headers = {};
+        if (!(data instanceof FormData)) {
+            headers['Content-Type'] = 'application/json';
         }
+
+        if(forceSave) {
+            headers['MAPAS-Force-Save'] = 'true';
+        }
+
+        return headers;
     }
 
     parseData(data) {
@@ -150,6 +154,7 @@ class API {
         url = this.parseUrl(url);
         const requestInit = {
             cache: this.options.cacheMode,
+            headers: this.getHeaders(data),
             ...init
         }
 
@@ -167,11 +172,11 @@ class API {
         });
     }
 
-    async PATCH(url, data) {
+    async PATCH(url, data, forceSave) {
         url = this.parseUrl(url);
         return fetch(url, {
             method: 'PATCH',
-            headers: this.getHeaders(data),
+            headers: this.getHeaders(data, forceSave),
             body: this.parseData(data)
         }).catch((e) => {
             return new Response(null, {status: 0, statusText: 'erro inesperado'});
@@ -200,13 +205,13 @@ class API {
         });
     }
 
-    async persistEntity(entity) {
+    async persistEntity(entity, forceSave) {
         if (!entity[this.$PK]) {
             let url = Utils.createUrl(this.objectType, 'index');
             return this.POST(url, entity.data())
             
         } else {
-            return this.PATCH(entity.singleUrl, entity.data(true))
+            return this.PATCH(entity.singleUrl, entity.data(true), forceSave)
         }
     }
 
@@ -261,9 +266,9 @@ class API {
         return this.fetch('find', query, {list, raw, rawProcessor});
     }
 
-    async fetch(endpoint, query, {list, raw, rawProcessor}) {
+    async fetch(endpoint, query, { list, raw, rawProcessor, refresh, signal }) {
         let url = this.createApiUrl(endpoint, query);
-        return this.GET(url).then(response => response.json().then(objs => {
+        return this.GET(url, {}, { signal }).then(response => response.json().then(objs => {
             let result;
             if(raw) {
                 rawProcessor = rawProcessor || Utils.entityRawProcessor;
@@ -271,24 +276,30 @@ class API {
                 result = objs.map(rawProcessor);
 
                 if(list) {
-                    objs.forEach(element => {
+                    result.forEach(element => {
                         list.push(element);
                     });
                 }
             } else {
                 result = list || [];
-    
+                
                 objs.forEach(element => {
-                    let entity = this.getEntityInstance(element[this.$PK]);
-                    entity.populate(element);
+                    const api = new API(element['@entityType'], this.scope);
+                    const entity = api.getEntityInstance(element[api.$PK]);
+                    entity.populate(element, !refresh);
                     result.push(entity);
                     entity.$LISTS.push(result);
                 });
             }
 
-            result.metadata = JSON.parse(response.headers.get('API-Metadata'));
             
-            return result;
+            if(list) {
+                list.metadata = JSON.parse(response.headers.get('API-Metadata'));
+                return list;
+            }else {
+                result.metadata = JSON.parse(response.headers.get('API-Metadata'));
+                return result;
+            }
         }));
     }
 
@@ -322,55 +333,47 @@ class API {
         }
     }   
 
-    getEntityDescription(filter) {
+    getEntityDescription(filter = '') {
         const description = $DESCRIPTIONS[this.objectType];
-                
-        let result = {};
+        const filters = filter.split(',');
+   
+        const result = {};
 
-        function filteredBy(f) {
-            let filters = filter.split(',');
-            return filters.indexOf(f) > -1;
-        }
-
-        for (var key in description) {
-            if(key.substr(0,2) === '__') {
+        for (let key in description) {
+            if (key.startsWith('__')) {
                 continue;
             }
 
-            let desc = description[key];
-            let ok = true
-            
+            const desc = description[key];
+
             if (filter) {
-                if (filteredBy('private') && desc.private !== true) {
-                    ok = false;
+                if (desc.private && filters.includes('public')) {
+                    continue;
+                } else if (desc.private !== true && filters.includes('private')) {
+                    continue;
                 }
 
-                if (filteredBy('public') && desc.private) {
-                    ok = false
+                if (desc.isMetadata && filters.includes('!metadata')) {
+                    continue;
+                } else if (!desc.isMetadata && filters.includes('metadata')) {
+                    continue;
                 }
 
-                if (filteredBy('metadata') && !desc.isMetadata) {
-                    ok = false
-                } else if(filteredBy('!metadata') && desc.isMetadata) {
-                    ok = false
-                }
 
-                if (filteredBy('relations') && !desc.isEntityRelation) {
-                    ok = false
-                } else if(filteredBy('!relations') && desc.isEntityRelation) {
-                    ok = false
+                if (desc.isEntityRelation && filters.includes('!relations')) {
+                    continue;
+                } else if (!desc.isEntityRelation && filters.includes('relations')) {
+                    continue;
                 }
             }
-                
-            if (ok) {
-                key = desc['@select'] || key;
 
-                if (desc.isEntityRelation && key[0] == '_'){
-                    key = key.substr(1);
-                }
-                
-                result[key] = desc;
+            key = desc['@select'] || key;
+
+            if (desc.isEntityRelation && key.startsWith('_')){
+                key = key.slice(1);
             }
+
+            result[key] = desc;
         }
 
         return result;

@@ -17,6 +17,7 @@ use MapasCulturais\Types\GeoPoint;
 class Module extends \MapasCulturais\Module
 {
     protected $entities = [];
+    protected $grantedCoarse = false;
 
     public function _init()
     {
@@ -48,6 +49,21 @@ class Module extends \MapasCulturais\Module
             $module->entities = [];
         });
 
+        $app->hook("entity(Registration).validationErrors", function(&$errors) use($module, $app) {
+            /** @var Registration $this */
+
+            $fields = $this->opportunity->registrationFieldConfigurations;
+            foreach($errors as $field_name => $error) {
+                foreach($fields as $field) {
+                    if($field->fieldName == $field_name) {
+                        if(!$this->isFieldVisisble($field)) {
+                            unset($errors[$field_name]);
+                        }
+                    }
+                }
+            }
+        });
+
         $app->hook("entity(Registration).save:before", function() use($module, $app) {
             /** @var Registration $this */
             $fix_field = function($entity, $field) use($module){
@@ -73,6 +89,10 @@ class Module extends \MapasCulturais\Module
             $fields = $opportunity->getRegistrationFieldConfigurations();
 
             foreach($fields as $field) {
+                if(!$this->isFieldVisisble($field)) {
+                    continue;
+                }
+                
                 if($field->fieldType == 'agent-owner-field') {
                     $entity = $this->owner;
 
@@ -100,6 +120,58 @@ class Module extends \MapasCulturais\Module
         $app->view->jsObject['flatpickr'] = [
             'altFormat' => env('DATEPICKER_VIEW_FORMAT', i::__("d/m/Y"))
         ];
+
+        $app->hook("can(Registration.<<view|modify|viewPrivateData>>)", function ($user, &$result) use ($module) {
+            if (!$result) {
+                /** @var Registration $this */
+                $result = $this->canUser('sendEditableFields');
+                $module->grantedCoarse = $result;
+            }
+        });
+
+        $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) use ($module) {
+            /* 
+                A permissão vem como true, por que o owner canUserModify vai sempre retornar true 
+                por causa do hook can(Registration.<<view|modify|viewPrivateData>>). Por isso começamos
+                definindo como false para depois verificar a permissão sobre o campo específico.
+            */
+            if ($module->grantedCoarse) {
+                if (!$this->owner->canUser("@control")) {
+                    $result = false;
+                }
+                
+                $key = $this->group ?? $this->key;
+
+                if(in_array($key, $this->owner->editableFields)) {
+                    $result = true;
+                    return;
+                }
+            }
+        });
+
+        $app->hook("PATCH(registration.single):before", function () use($app, $module) {
+            $entity = $this->requestedEntity;
+
+            if($entity->canUser('sendEditableFields')) {
+                $module->inEditableTransaction = true;
+                $app->em->beginTransaction();
+            }
+        });
+        $app->hook("entity(RegistrationMeta).update:before", function () use ($app, $module) {
+            $entity = $this->owner;
+            if($module->inEditableTransaction) {
+                if($entity->editableFields && !in_array($this->key, $entity->editableFields)) {
+                    $app->em->rollback();
+                    throw new \Exception("Permission denied.");
+                }
+            }
+        });
+        $app->hook("slim.after", function () use ($app, $module) {
+            if ($module->inEditableTransaction) {
+                $app->em->commit();
+            }
+            return;
+        });
     }
 
     public function register()
@@ -194,19 +266,23 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
 
-        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@terms:area', '@links', '@terms:segmento'];
+        $agent_fields = ['name', 'shortDescription', 'longDescription', '@location', '@links', '@bankFields'];
+        
+        $taxonomies_fields = $this->taxonomiesOpportunityFields(true);
+
+        $properties = array_merge($agent_fields, $taxonomies_fields);
         
         $definitions = Agent::getPropertiesMetadata();
         foreach ($definitions as $key => $def) {
             $def = (object) $def;
             if ($def->isMetadata && $def->available_for_opportunities) {
-                $agent_fields[] = $key;
+                $properties[] = $key;
             }
         }
         
-        $app->applyHookBoundTo($this, "registrationFieldTypes.getAgentFields", [&$agent_fields]);
+        $app->applyHookBoundTo($this, "registrationFieldTypes.getAgentFields", [&$properties]);
 
-        return $agent_fields;
+        return $properties;
     }
 
     function getSpaceFields()
@@ -236,6 +312,27 @@ class Module extends \MapasCulturais\Module
 
         $registration_field_types = [
             [
+                'slug' => 'bankFields',
+                'name' => \MapasCulturais\i::__('Campo de dados bancários'),
+                'viewTemplate' => 'registration-field-types/bankFields',
+                'configTemplate' => 'registration-field-types/bankFields-config',
+                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                    $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    return json_decode($value ?: '{}');
+                },
+                'validations' => [
+                    'v::attribute("account_number", null, true)' => \MapasCulturais\i::__('O número da conta não está preenchido'),
+                    'v::attribute("account_type", null, true)' => \MapasCulturais\i::__('O tipo de conta não está preenchido'),
+                    'v::attribute("branch", null, true)' => \MapasCulturais\i::__('A agência não está preenchida'),
+                    'v::attribute("dv_account_number", null, true)' => \MapasCulturais\i::__('O dígito verificador da conta não está preenchido'),
+                    'v::attribute("dv_branch", null, true)' => \MapasCulturais\i::__('O dígito verificador da agência não está preenchido'),
+                    'v::attribute("number", null, true)' => \MapasCulturais\i::__('O número da conta não está preenchido'),
+                ]
+            ],
+            [
                 'slug' => 'textarea',
                 'name' => \MapasCulturais\i::__('Campo de texto (textarea)'),
                 'viewTemplate' => 'registration-field-types/textarea',
@@ -254,7 +351,14 @@ class Module extends \MapasCulturais\Module
                 'configTemplate' => 'registration-field-types/currency-config',
                 'validations' => [
                     'v::brCurrency()' => \MapasCulturais\i::__('O valor não está no formato de moeda real (R$)')
-                ]
+                ],
+                'unserialize' => function($value) {
+                    if(is_string($value) && !is_numeric($value)) {
+                        return (float) str_replace(",",".", str_replace(".","", $value));
+                    }
+
+                    return (float) $value;
+                }
             ],
             [
                 'slug' => 'date',
@@ -291,7 +395,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'select',
-                'name' => \MapasCulturais\i::__('Seleção única (select)'),
+                'name' => \MapasCulturais\i::__('Seleção única'),
                 'viewTemplate' => 'registration-field-types/select',
                 'configTemplate' => 'registration-field-types/select-config',
                 'requireValuesConfiguration' => true
@@ -337,7 +441,7 @@ class Module extends \MapasCulturais\Module
             ],
             [
                 'slug' => 'checkboxes',
-                'name' => \MapasCulturais\i::__('Seleção múltipla (checkboxes)'),
+                'name' => \MapasCulturais\i::__('Seleção múltipla'),
                 'viewTemplate' => 'registration-field-types/checkboxes',
                 'configTemplate' => 'registration-field-types/checkboxes-config',
                 'requireValuesConfiguration' => true,
@@ -354,6 +458,47 @@ class Module extends \MapasCulturais\Module
                 'unserialize' => function ($value) {
                     return json_decode($value ?: "");
                 }
+            ],
+            [
+                'slug' => 'addresses',
+                'name' => \MapasCulturais\i::__('Campo de listagem de endereços'),
+                // 'viewTemplate' => 'registration-field-types/addresses',
+                'configTemplate' => 'registration-field-types/addresses-config',
+                'serialize' => function($value) {
+                    if(is_array($value)){
+                        foreach($value as &$person){
+                            foreach($person as $key => $v){
+                                if(substr($key, 0, 2) == '$$'){
+                                    unset($person->$key);
+                                }
+                            }
+                        }
+                    }
+
+                    return json_encode($value);
+                },
+                'unserialize' => function($value) {
+                    $addresses = json_decode($value ?: "");
+
+                    if(!is_array($addresses)){
+                        $addresses = [];
+                    }
+
+                    foreach($addresses as &$person){
+                        foreach($person as $key => $value){
+                            if(substr($key, 0, 2) == '$$'){
+                                unset($person->$key);
+                            }
+                        }
+                    }
+                    return $addresses;
+                },
+                'validations' => [
+                    // 'v::allOf(v::attribute("cidade", v::stringType()->notEmpty()), v::attribute("estado", v::stringType()->notEmpty()))' => \MapasCulturais\i::__('O campo Estado é obrigatório.'),
+                    
+                    'v::each(v::attribute("estado", v::stringType()->notEmpty()))'  => \MapasCulturais\i::__('O campo Estado é obrigatório.'),
+                    'v::each(v::attribute("cidade", v::stringType()->notEmpty()))'  => \MapasCulturais\i::__('O campo Cidade é obrigatório.'),
+                ]
             ],
             [
                 'slug' => 'persons',
@@ -428,6 +573,18 @@ class Module extends \MapasCulturais\Module
                 }
             ],
             [
+                'slug' => 'municipio',
+                'name' => \MapasCulturais\i::__('Seleção de município'),
+                'viewTemplate' => 'registration-field-types/municipio',
+                'configTemplate' => 'registration-field-types/municipio-config',
+                'serialize' => function($value) {
+                    return $value ? json_encode($value) : $value;
+                },
+                'unserialize' => function($value) {
+                   return $value ? json_decode($value) : $value;
+                }
+            ],
+            [
                 'slug' => 'agent-owner-field',
                 // o espaço antes da palavra Campo é para que este tipo de campo seja o primeiro da lista
                 'name' => \MapasCulturais\i::__('@ Campo do Agente Responsável'),
@@ -436,7 +593,12 @@ class Module extends \MapasCulturais\Module
                 'requireValuesConfiguration' => true,
                 'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
-                    return json_encode($value);
+
+                    if(is_object($value) || is_array($value)) {
+                        return json_encode($value);
+                    }else {
+                        return $value;
+                    }
                 },
                 'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
 
@@ -445,7 +607,15 @@ class Module extends \MapasCulturais\Module
                     }
                     
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value ?: "");
+                        $value = $value ?: "";
+
+                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
+                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
+                            $result = json_decode($value ?: "");
+                        }else {
+                            $result = $value;
+                        }
+
                     }else{
                         $disable_access_control = false;
 
@@ -473,18 +643,30 @@ class Module extends \MapasCulturais\Module
                 'requireValuesConfiguration' => true,
                 'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
                     $agent = $registration->getRelatedAgents('coletivo');
+
                     if($agent){
                         $module->saveToEntity($agent[0], $value, $registration, $metadata_definition);
                     }
-                    return json_encode($value);
+                    if(is_object($value) || is_array($value)) {
+                        return json_encode($value);
+                    }else {
+                        return $value;
+                    }
                 },
                 'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
                     if(!$registration instanceof \MapasCulturais\Entities\Registration){
                         $registration =  $app->repo('Registration')->find($registration->id);
                     }
 
-                    if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value ?: "");
+                    if(is_null($registration) || $registration->status > 1){
+                            
+                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
+                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
+                            $result = json_decode($value ?: "");
+                        }else {
+                            $result = $value;
+                        }
+
                     } else {
                         $disable_access_control = false;
 
@@ -523,7 +705,11 @@ class Module extends \MapasCulturais\Module
                     if($space_relation){
                         $module->saveToEntity($space_relation->space, $value, $registration, $metadata_definition);
                     }
-                    return json_encode($value);
+                    if(is_object($value) || is_array($value)) {
+                        return json_encode($value);
+                    }else {
+                        return $value;
+                    }
                 },
                 'unserialize' => function($value, $registration = null, Metadata $metadata_definition = null) use ($module, $app) {
                     if(!$registration instanceof \MapasCulturais\Entities\Registration){
@@ -531,7 +717,12 @@ class Module extends \MapasCulturais\Module
                     }
                     
                     if(is_null($registration) || $registration->status > 0){
-                        $result = json_decode($value ?: "");
+                        $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
+                        if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
+                            $result = json_decode($value ?: "");
+                        }else {
+                            $result = $value;
+                        }
                     } else {
                         $disable_access_control = false;
                     
@@ -566,8 +757,11 @@ class Module extends \MapasCulturais\Module
             $app = App::i();
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
             $metadata_definition->config['registrationFieldConfiguration']->id;
+
+            $taxonomies_fields = $this->taxonomiesOpportunityFields();
+
             if ($entity_field == "@location" && is_array($value)) {
-                if($value['location'] instanceof GeoPoint) {
+                if(isset($value['location']) && $value['location'] instanceof GeoPoint) {
                     $value["location"] = [
                         'latitude' => $value['location']->latidude,
                         'longitude' => $value['location']->longitude,
@@ -576,6 +770,9 @@ class Module extends \MapasCulturais\Module
                 if (!empty($value["location"]["latitude"]) && !empty($value["location"]["longitude"])) {
                     // this order of coordinates is required by the EntityGeoLocation trait's setter
                     $entity->location = [$value["location"]["longitude"], $value["location"]["latitude"]];
+                } else if (!empty($value["location"]["lat"]) && !empty($value["location"]["lng"])) {
+                    $entity->location = [$value["location"]["lng"], $value["location"]["lat"]];
+
                 }
                 $entity->endereco = $value["endereco"] ?? "";
                 $entity->En_CEP = $value["En_CEP"] ?? "";
@@ -590,8 +787,9 @@ class Module extends \MapasCulturais\Module
                 }
                 $entity->publicLocation = !empty($value['publicLocation']);
 
-            } else if($entity_field == '@terms:area') {
-                $entity->terms['area'] = $value;
+            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
+                $entity->terms[$taxonomies_fields[$entity_field]] = $value;
+                $entity->save(true);
             } else if($entity_field == '@links') {
                 $savedMetaList = $entity->getMetaLists();
 
@@ -635,6 +833,14 @@ class Module extends \MapasCulturais\Module
             } else if($entity_field == '@type' && $value) {
                 $type = $app->getRegisteredEntityTypeByTypeName($entity, $value);
                 $entity->type = $type;
+            } else if($entity_field == '@bankFields' && $value) {
+                $entity->payment_bank_account_type = $value['account_type'];
+                $entity->payment_bank_number = $value['number'];
+                $entity->payment_bank_branch = $value['branch'];
+                $entity->payment_bank_dv_branch = $value['dv_branch'];
+                $entity->payment_bank_account_number = $value['account_number'];
+                $entity->payment_bank_dv_account_number = $value['dv_account_number'];
+                $entity->save(true);
             } else {
                 $entity->$entity_field = $value;
             }
@@ -655,7 +861,8 @@ class Module extends \MapasCulturais\Module
 
         if (isset($metadata_definition->config['registrationFieldConfiguration']->config['entityField'])) {
             $entity_field = $metadata_definition->config['registrationFieldConfiguration']->config['entityField'];
-            
+
+            $taxonomies_fields = $this->taxonomiesOpportunityFields();
 
             if($entity_field == '@location'){
 
@@ -681,9 +888,9 @@ class Module extends \MapasCulturais\Module
 
                 $value = $result;
 
-            } else if($entity_field == '@terms:area') {
-                $value = $entity->terms['area'];
-
+            } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
+                $term = $taxonomies_fields[$entity_field];
+                $value = $entity->terms[$term];
             } else if($entity_field == '@type') {
                 $value = $entity->type->name;
 
@@ -692,6 +899,16 @@ class Module extends \MapasCulturais\Module
                 $links = isset($metaLists['links'])? $metaLists['links']:[];
                 $videos = isset($metaLists['videos'])? $metaLists['videos']:[];
                 $value = array_merge($links,$videos);
+            } else if($entity_field == '@bankFields') {
+                $value = [
+                    'account_type' => $entity->payment_bank_account_type,
+                    'number' => $entity->payment_bank_number,
+                    'branch' => (int) $entity->payment_bank_branch,
+                    'dv_branch' => $entity->payment_bank_dv_branch,
+                    'account_number' => (int) $entity->payment_bank_account_number,
+                    'dv_account_number' => $entity->payment_bank_dv_account_number,
+                ];
+
             }
              else {
                 $value = $entity->$entity_field;
@@ -704,5 +921,27 @@ class Module extends \MapasCulturais\Module
 
         return $value;
 
+    }
+    
+    /**
+     * @return array 
+     */
+    function taxonomiesOpportunityFields($slugOnly = false): array
+    {
+        $app = App::i();
+        $taxonomies_fields = [];
+        if($registered_taxonomies = $app->getRegisteredTaxonomies()) {
+            foreach($registered_taxonomies as $taxonomie) {
+                if($taxonomie->restrictedTerms && in_array('MapasCulturais\Entities\Opportunity', $taxonomie->entities)) {
+                    if($slugOnly) {
+                        $taxonomies_fields[] = "@terms:{$taxonomie->slug}";
+                    } else {
+                        $taxonomies_fields["@terms:{$taxonomie->slug}"] = $taxonomie->slug;
+                    }
+                }
+            }
+        }
+
+        return $taxonomies_fields;
     }
 }

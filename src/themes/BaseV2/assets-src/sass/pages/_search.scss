@@ -97,7 +97,6 @@
     }
 
     &__tabs {
-
         // label - before - tabs
         &--before {
             line-height: size(22);
@@ -134,8 +133,8 @@
             }
 
             @media (max-width: size(800)) {
-                margin-top: size(60);
-                height: size(63);
+                padding: size(63) size(16) size(8) !important;
+                height: size(111) !important;
                 justify-content: center;
 
                 &--left {
@@ -279,7 +278,7 @@
                 &__filter {
                     display: flex;
                     grid-row-start: 1;
-                    grid-column-start: 10;
+                    grid-column-start: 9;
                     justify-content: flex-end;
                     max-width: size(1170);
                     padding: 0;
@@ -363,11 +362,11 @@
             }
 
             @media (max-width: size(900)) {
-                .col-9 {
+                .col-8 {
                     grid-column-end: span 12;
                 }
 
-                .col-3 {
+                .col-4 {
                     grid-column-start: 1;
                     grid-column-end: 13;
                 }
@@ -380,7 +379,7 @@
             position: relative;
 
             .search-filter {
-                grid-column-start: 10;
+                grid-column-start: 9;
             }
 
             .mc-map {
@@ -409,7 +408,6 @@
 
                     &--filter {
                         position: absolute;
-                        width: size(328);
                         z-index: 1;
                     }
                 }
@@ -584,7 +582,6 @@
     .search {
         .tabs-component__panels {
             background: var(--mc-gray-100);
-            margin-top: size(88);
             padding-bottom: size(40);
             margin-bottom: 0;
             min-height: size(500);

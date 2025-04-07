@@ -17,6 +17,8 @@ class Module extends \MapasCulturais\Module
         $app = App::i();
 
         $config += [
+            'sendMailNotification.startRegistration' =>env('SEND_MAEL_START_REGISTRATION', true),
+            'sendMailNotification.sendRegistration' =>env('SEND_MAEL_SEND_REGISTRATION', true),
             'enabled' => true,
             'project_img_url' => "",
         ];
@@ -34,15 +36,19 @@ class Module extends \MapasCulturais\Module
         $self = $this;
 
         $app->hook("entity(Registration).send:after", function () use ($self) {
+            if(!$self->config['sendMailNotification.sendRegistration']) {
+                return;
+            }
+
             $sendMail = false;
             if($this->opportunity->isDataCollection) {
-                if(!$this->opportunity->parent) {
+                if($this->opportunity->isFirstPhase) {
                     $sendMail = true;
-                }else {
-                    if ($this->opportunity->getRegistrationFieldConfigurations() || $this->opportunity->getRegistrationFileConfigurations()) {
-                        $sendMail = true;
-                    }
                 }
+                // por enquanto só enviar email para inscrições na primeira fase
+                // else if ($this->opportunity->getRegistrationFieldConfigurations() || $this->opportunity->getRegistrationFileConfigurations()) {
+                //     $sendMail = true;
+                // }
             }
 
             if($sendMail) {
@@ -51,20 +57,21 @@ class Module extends \MapasCulturais\Module
         });
 
         $app->hook("entity(Registration).insert:finish", function () use ($self) {
+            if(!$self->config['sendMailNotification.startRegistration']) {
+                return;
+            }
+
             $sendMail = false;
             if($this->status ===  Registration::STATUS_DRAFT && $this->opportunity->isDataCollection) {
-                if(!$this->opportunity->parent) {
+                if($this->opportunity->isFirstPhase) {
                     $sendMail = true;
-                }else {
-                    if ($this->opportunity->getRegistrationFieldConfigurations() || $this->opportunity->getRegistrationFileConfigurations()) {
-                        $sendMail = true;
-                    }
-    
+                } else if ($this->opportunity->getRegistrationFieldConfigurations() || $this->opportunity->getRegistrationFileConfigurations()) {
+                    $sendMail = true;
                 }
             }
            
             if($sendMail) {
-                $self->registrationStart($this);
+                $self->registrationStart($this, $this->opportunity->isFirstPhase);
             }
         });
     }
@@ -80,35 +87,40 @@ class Module extends \MapasCulturais\Module
         $template = 'send_registration';
         $enable = $this->config['enabled'];
 
-        $app->applyHook("sendMailNotification.registrationSend",[&$registration, &$template, &$enable]);
+        $params = [];
 
-        if($enable){
+        $app->applyHook("sendMailNotification.registrationSend",[&$registration, &$template, &$enable, &$params]);
 
+        if($enable){    
             $data = [
                 'template' => $template,
                 'registrationId' => $registration->id,
+                'params' => $params
             ];
 
             $app->enqueueJob(SendMailNotification::SLUG, $data);
         }
     }
 
-    public function registrationStart(Registration $registration)
+    public function registrationStart(Registration $registration, $is_first_phase)
     {
         $app = App::i();
         
-        $template = 'start_registration';
+        $template = $is_first_phase ? 'start_registration' : 'start_data_collection_phase';
         $enable = $this->config['enabled'];
 
-        $app->applyHook("sendMailNotification.registrationStart",[&$registration, &$template, &$enable]);
-        if($enable){
+        $params = [];
 
+        $app->applyHook("sendMailNotification.registrationStart:beforeEnqueue",[&$registration, &$template, &$enable, &$params]);
+
+        if($enable){
             $data = [
                 'template' => $template,
                 'registrationId' => $registration->id,
+                'params' => $params
             ];
 
-            $app->enqueueJob(SendMailNotification::SLUG, $data);
+            $app->enqueueJob(SendMailNotification::SLUG, $data, '+60 seconds');
         }
     }
 }

@@ -12,7 +12,7 @@ $entity = $this->controller->requestedEntity;
     <mc-modal :title="`${phase.name} - ${registration.number}`" classes="registration-results__modal">
         <template #default>
             <?php foreach($app->getRegisteredEvaluationMethods() as $evaluation_method): ?>
-                <div v-if="phase.type == '<?= $evaluation_method->slug ?>'" class="registration-results__content">
+                <div v-if="phase.type?.id == '<?= $evaluation_method->slug ?>'" class="registration-results__content">
                     <?php $this->part($evaluation_method->slug . '/evaluations-details') ?>
                 </div>
             <?php endforeach ?>

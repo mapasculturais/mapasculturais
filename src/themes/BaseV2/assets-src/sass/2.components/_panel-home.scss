@@ -65,6 +65,11 @@
                 }
             }
 
+            &-button {
+                display: flex;
+                gap: size(8);
+            }
+
             @media (max-width: size(700)) {
 
                 &-profile {

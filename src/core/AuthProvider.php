@@ -2,7 +2,13 @@
 namespace MapasCulturais;
 
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\Exceptions\PermissionDenied;
 
+/**
+ * @property Entities\User|GuestUser $authenticatedUser
+ * 
+ * @package MapasCulturais
+ */
 abstract class AuthProvider {
     use Traits\MagicCallers,
         Traits\MagicGetter,
@@ -23,7 +29,12 @@ abstract class AuthProvider {
 
         $app->hook('auth.successful', function() use($app){
             $user = $app->user;
-            $user->getEntitiesNotifications($app);
+
+            $preventOverhead = (bool) ($user->metadata['preventOverhead'] ?? false);
+            if (!$preventOverhead) {
+                $user->getEntitiesNotifications($app);
+            }
+
             $user->lastLoginTimestamp = new \DateTime;
             $user->save(true);
         });
@@ -84,12 +95,19 @@ abstract class AuthProvider {
         }
     }
 
+    /**
+     * Defines the URL to redirect after authentication
+     * @param string $redirect_path
+     */
+    public function setRedirectPath(string $redirect_path) {
+        $this->_setRedirectPath($redirect_path);
+    }
 
     /**
      * Defines the URL to redirect after authentication
      * @param string $redirect_path
      */
-    protected function _setRedirectPath($redirect_path) {
+    protected function _setRedirectPath(string $redirect_path) {
         $_SESSION['mapasculturais.auth.redirect_path'] = $redirect_path;
     }
 
@@ -103,9 +121,18 @@ abstract class AuthProvider {
         return $redirect;
     }
 
-    protected final function _setAuthenticatedUser(Entities\User $user = null){
-        $this->_authenticatedUser = $user;
+    protected final function _setAuthenticatedUser(Entities\User|null $user = null){
+        $this->authenticatedUser = $user;
         App::i()->applyHookBoundTo($this, 'auth.login', [$user]);
+    }
+
+    /**
+     * Define o usuário autenticado.
+     *
+     * @param Entities\User|null $user O usuário autenticado, ou null se não houver usuário autenticado.
+     */
+    protected function setAuthenticatedUser(Entities\User|null $user = null){
+        $this->_authenticatedUser = $user;
     }
 
     abstract function _getAuthenticatedUser();
@@ -117,7 +144,8 @@ abstract class AuthProvider {
         } else {
             if ($user->status < 1) {
                 $this->logout();
-                die(i::__('Usuário não está ativo'));
+                throw new PermissionDenied($user, message: i::__('Usuário inativo'));
+                
             } else {
                 return $user;
             }

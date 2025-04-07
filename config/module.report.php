@@ -13,5 +13,6 @@ return [
         "En_Municipio",
         "En_Bairro",
         "dataDeNascimento",
+        "comunidadesTradicional",
     ],
 ];

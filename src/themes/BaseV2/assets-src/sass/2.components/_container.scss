@@ -22,6 +22,7 @@ $col-columns: 12;
 
 .flex-container {
     display: flex;
+    margin-top: size(24);
     flex-wrap: wrap;
     flex-direction: column;
     gap: size(32) 3%;
@@ -110,15 +111,15 @@ $col-columns: 12;
     }
 
     &.h-center {
-        justify-self: center;
+        justify-items: center;
     }
 
     &.h-left {
-        justify-self: left;
+        justify-items: left;
     }
 
     &.h-right {
-        justify-self: right;
+        justify-items: right;
     }
 
     @media (max-width: size(300)) {

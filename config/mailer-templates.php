@@ -47,6 +47,18 @@ return [
             'title' => i::__("Inscrição iniciada"),
             'template' => 'start_registration.html'
         ],
+        'start_data_collection_phase' => [
+            'title' => i::__("Sua inscrição avaçou de fase"),
+            'template' => 'start_data_collection_phase.html'
+        ],
+        'export_spreadsheet' => [
+            'title' => i::__("Planilha disponível"),
+            'template' => 'export_spreadsheet.html'
+        ],
+        'export_spreadsheet_error' => [
+            'title' => i::__("Houve um erro com o arquivo"),
+            'template' => 'export_spreadsheet_error.html'
+        ],
         'send_registration' => [
             'title' => i::__("Inscrição enviada"),
             'template' => 'send_registration.html'

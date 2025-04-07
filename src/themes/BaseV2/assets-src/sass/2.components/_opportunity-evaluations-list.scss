@@ -4,7 +4,11 @@
     max-width: size(1824) !important;
     position: sticky;
     top: size(40);
-    z-index: 1;
+    z-index: 0;
+
+    .count {
+        margin: 15px;
+    }
 
     &__container {
         width: size(140);
@@ -64,7 +68,7 @@
                         position: relative;
                         border-radius: size(69);
                         height: size(40);
-                        border: size(1) solid var(--mc-gray-100);
+                        border: size(1) solid $gray-700;
                         background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat calc(100% - size(10)) center/size(20);
                         width: 100%;
                         padding: size(12) size(30) size(12) size(20);
@@ -101,6 +105,10 @@
             }
 
             .label-evaluation {
+                &__search {
+                    border-color: $gray-700;
+                }
+
                 &__check {
                     margin-top: size(15);
                     display: flex;
@@ -137,6 +145,10 @@
                 overflow-y: auto;
                 overflow-x: hidden;
                 max-height: size(880);
+
+                li.no-records {
+                    padding: 15px;
+                }
                 
                 li.evaluation-list__card:last-child {
                     margin-bottom: size(16);
@@ -151,7 +163,41 @@
                         border-radius: var(--mc-border-radius-xs);
                         padding: size(16);
                         background-color: var(--mc-white);
-    
+
+                        &.pending {
+                            border-top: solid #FFB5B5 4px;
+                        }
+
+                        &.started {
+                            border-top: solid #FFCF8F 4px;
+                        }
+
+                        &.completed {
+                            border-top: solid #99D6FF 4px;
+                        }
+
+                        &.sent {
+                            border-top: solid #BFE88B 4px;
+                        }
+
+                        .owner-entity {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 3px;
+                            margin-bottom: 15px;
+
+                            .owner, .coletive {
+                                display: flex;
+                                flex-direction: column; 
+                                background-color: #f0ebeb;
+                                padding: 5px;
+                                border-radius: 5px;
+
+                                .bold {
+                                    font-weight: bold;  
+                                }
+                            }
+                        }
                     }
                 
                     .link {
@@ -174,9 +220,9 @@
                                     font-family: 'Open Sans';
                                     font-style: normal;
                                     font-weight: 700;
-                                    font-size: size(14);
+                                    font-size: size(22);
                                     line-height: size(19);
-                                    color: var(--mc-primary-500);
+                                    color: $opportunities-500;
                                 }
                             }
 

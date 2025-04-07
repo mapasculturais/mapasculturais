@@ -83,6 +83,10 @@ app.component('search-filter-event', {
                 label: __('próximos 30 dias', 'search-filter-event'), 
                 range: [today, Dates.addDays(today,30)]
             },
+            thisCurrentMonth: {
+                label: __('este mês', 'search-filter-event'),
+                range: [startOfMonth, endOfMonth],
+            },
             thisMonth: {
                 label: Utils.ucfirst(mctoday.month()),
                 range: [startOfMonth, endOfMonth],
@@ -141,6 +145,7 @@ app.component('search-filter-event', {
             this.ranges.tomorrow,
             this.ranges.thisWeek,
             this.ranges.thisWeekend,
+            this.ranges.thisCurrentMonth,
             this.ranges.nextWeekend,
             this.ranges.next7days,
             this.ranges.next30days,
@@ -159,12 +164,20 @@ app.component('search-filter-event', {
 
     methods: {
         clearFilters() {
+            const types = ['string', 'boolean'];
             this.date = [this.defaultDateFrom, this.defaultDateTo];
-            this.pseudoQuery['@from'] = d0.date('sql');
-            this.pseudoQuery['@to'] = d1.date('sql');
-            delete this.pseudoQuery['event:@verified'];
-            this.pseudoQuery['event:classificacaoEtaria'].length = 0;
-            this.pseudoQuery['event:term:linguagem'].length = 0;        
+            for (const key in this.pseudoQuery) {
+                console.log(key+'\n', typeof this.pseudoQuery[key]);
+                if (['@from', '@to'].includes[key]) {
+                    this.pseudoQuery[key] = new McDate(new Date(key == '@from' ? this.date[0] : this.date[1])).date('sql');
+                } else {
+                    if (Array.isArray(this.pseudoQuery[key])) {
+                        this.pseudoQuery[key] = [];
+                    } else if (types.includes(typeof this.pseudoQuery[key])) {
+                        delete this.pseudoQuery[key];
+                    }
+                }
+            }       
         },
         dateFormat(date) {
             const d0 = new Date(date[0]);

@@ -16,7 +16,7 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     public function getSlug()
     {
-        return i::__('qualification');
+        return 'qualification';
     }
 
     public function getName()
@@ -28,10 +28,12 @@ class Module extends \MapasCulturais\EvaluationMethod
     {
     }
 
-    protected function _getConsolidatedResult(Entities\Registration $registration)
+    protected function _getConsolidatedResult(Entities\Registration $registration, array $evaluations)
     {
         $app = App::i();
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
+        $status = [
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_DRAFT,
+            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
             \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
         ];
 
@@ -41,13 +43,12 @@ class Module extends \MapasCulturais\EvaluationMethod
             $users[] = $item->agent->user->id;
         }
 
-        $evaluations = $app->repo('RegistrationEvaluation')->findByRegistrationAndUsersAndStatus($registration, $users, $status);
-
         $result = i::__("Habilitado");
         foreach ($evaluations as $eval){
             $_result = $this->getEvaluationResult($eval);
-            if($_result == i::__("Inabilitado")){
-                $result = $_result;
+
+            if($_result == 'invalid'){
+                $result = $this->valueToString($_result);
             }
         }
 
@@ -58,55 +59,159 @@ class Module extends \MapasCulturais\EvaluationMethod
     public function getEvaluationStatues()
     {
         $status = [
-            'valid' => i::__(['Habilitado']),
-            'invalid' => i::__(['Inabilitado'])
+            'valid' => i::__('Habilitado'),
+            'invalid' => i::__('Inabilitado')
         ];
 
         return $status;
     }
 
+    public function parseLegacyResult($result) {
+        switch($result) {
+            case i::__('Habilitado'):
+                $result = ['valid'];
+                break;
+            case i::__('Inabilitado'):
+                $result = ['invalid'];
+                break;
+            case i::__('Não se aplica'):
+                $result = ['not-applicable'];
+                break;
+            default:
+                $result = [$result];
+                break;
+        }
+        return $result;
+    }
+
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation)
     {
-        $approved = [i::__('Habilitado'), i::__('Não se aplica')];
-        $result = i::__("Habilitado");
+        $approved = ['valid', 'not-applicable'];
+        $result = 'valid';
         $cfg = $evaluation->getEvaluationMethodConfiguration();
-        foreach($cfg->criteria as $cri){
-            $key = $cri->id;
-            if(!isset($evaluation->evaluationData->$key)){
-                return null;
-            } else {
-                if(!in_array($evaluation->evaluationData->$key, $approved)){
-                    $result = i::__("Inabilitado");
+        
+        foreach(($cfg->sections ?? []) as $section) {
+            $number_max_non_liminatory = $section->numberMaxNonEliminatory ?? 0;
+            $non_eliminatory_count = 0;
+
+            foreach(($cfg->criteria ?? []) as $cri){
+                if($cri->sid != $section->id){
+                    continue;
+                }
+                $key = $cri->id;
+
+                $non_eliminatory = ($cri->nonEliminatory ?? false) == 'true';
+
+                $val = isset($evaluation->evaluationData->$key) ? $evaluation->evaluationData->$key : null;
+
+                if(!is_array($val)){
+                    // para as avaliações legadas antes da versão 7.6
+                    $val = $this->parseLegacyResult($val);
+                }
+                if(!isset($val)){
+                    return null;
+                } else {
+                    if(($non_eliminatory)) {
+                        if(array_diff($val, $approved)){
+                            $non_eliminatory_count++;
+                        }
+                    } else {
+                        if(array_diff($val, $approved)){
+                            $result = 'invalid';
+                            break;
+                        }
+                    }
+                }
+
+                if($non_eliminatory_count > $number_max_non_liminatory){
+                    $result = 'invalid';
                     break;
                 }
             }
+
         }
 
         return $result;
     }
 
-    public function valueToString($value)
+    protected function _valueToString($value)
     {
+        $statuses = $this->getEvaluationStatues();
         if(is_null($value)){
-            return i::__('');
+            return '';
         } else {
-            return $value;
+            return $statuses[$value] ?? $value;
         }
     }
 
     function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
 
-        return [];
+        $sections = $evaluation_configuration->sections ?: [];
+        $criteria = $evaluation_configuration->criteria ?: [];
+
+        foreach($sections as &$section) {
+            $section->criteria = [];
+
+            foreach($criteria as &$cri){
+                if(($cri->sid ?? false) == $section->id) {
+                    unset($cri->sid);
+                    $result = isset($evaluation->evaluationData->{$cri->id}) ? $evaluation->evaluationData->{$cri->id} : [];
+                    
+                    // para as avaliações legadas antes da versão 7.6
+                    if(!is_array($result)){
+                        $result = $this->parseLegacyResult($result);
+                    }
+
+                    $cri->result = $result;
+                    if (is_array($result) && in_array('others', $result) && isset($evaluation->evaluationData->{$cri->id . '_reason'})) {
+                        $cri->result[] = $evaluation->evaluationData->{$cri->id . '_reason'};
+                        $key = array_search('others', $cri->result);
+                        unset($cri->result[$key]);
+                        $cri->result = array_values($cri->result);
+                    }
+                    $section->criteria[] = $cri;
+                }
+            }
+        }
+
+        return [
+            'result' => $evaluation->result,
+            'scores' => $sections,
+            'obs' => $evaluation->evaluationData->obs
+        ];
     }
 
     function _getConsolidatedDetails(Entities\Registration $registration): array {
         $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
-        return [];
+        $sections =  [];
+        $criteria = [];
+
+        if($registration->sentEvaluations){
+            $sections = $evaluation_configuration->sections ?: [];
+            $criteria = $evaluation_configuration->criteria ?: [];
+    
+            foreach($sections as &$section) {
+                $section->criteria = [];
+    
+                foreach($criteria as &$cri){
+                    if(($cri->sid ?? false) == $section->id) {
+                        unset($cri->sid);
+                        $section->criteria[] = $cri;
+                    }
+                }
+            }
+        }
+        
+        return [
+            'scores' => $sections,
+        ];
     }
 
     protected function _register()
     {
+        $app = App::i();
+
         $this->registerEvaluationMethodConfigurationMetadata('sections', [
             'label' => i::__('Seções'),
             'type' => 'json',
@@ -114,7 +219,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return json_encode($val);
             },
             'unserialize' => function ($val) {
-                return json_decode($val);
+                return $val ? json_decode($val) : $val;
             }
         ]);
 
@@ -125,9 +230,11 @@ class Module extends \MapasCulturais\EvaluationMethod
                 return json_encode($val);
             },
             'unserialize' => function ($val) {
-                return json_decode($val);
+                return $val ? json_decode($val) : $val;
             }
         ]);
+
+        $app->registerJobType(new JobTypes\Spreadsheet('qualification-spreadsheets'));
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
@@ -136,12 +243,21 @@ class Module extends \MapasCulturais\EvaluationMethod
               
         foreach($evaluation_method_configuration->criteria as $key => $c){
             if(isset($data[$c->id])){
-                $val = $data[$c->id];
-                $options = array_merge($c->options, ['Habilitado', 'Inabilitado', 'Não se aplica']);
-                if(!in_array($val, $options)){
-                    $errors[] = i::__("O valor do critério {$c->name} é inválido");
-                    break;
-                } 
+                $values = $data[$c->id];
+                $options = ['valid', 'invalid', 'not-applicable', 'others'];
+                
+                if($c->options ?? false) {
+                    $options = array_merge($c->options, $options);
+                }
+
+                if(is_array($values)) {
+                    foreach($values as $val) {
+                        if(!in_array($val, $options)){
+                            $errors[] = i::__("O valor do critério {$c->name} é inválido");
+                            break;
+                        } 
+                    }
+                }
             }
         }
 

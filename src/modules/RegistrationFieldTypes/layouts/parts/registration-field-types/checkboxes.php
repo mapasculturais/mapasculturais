@@ -10,7 +10,5 @@ use MapasCulturais\i; ?>
 
     <div ng-if="::field.description" class="attachment-description">{{::field.description}}</div>
 
-    <p>
-        <?php $this->part('registration-field-types/fields/checkboxes') ?>
-    </p>
+    <?php $this->part('registration-field-types/fields/checkboxes') ?>
 </div>

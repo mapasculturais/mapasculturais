@@ -1,0 +1,106 @@
+@use '../0.settings/mixins' as *;
+
+.seals-certifier {
+    display: flex;
+    flex-direction: column;
+    gap: size(20);
+    flex-wrap: wrap;
+
+    &__proponents, &__categories {
+        border-radius: var(--mc-border-radius-sm);
+        padding: size(10) size(20);
+        background-color: var(--mc-gray-100);
+        display: flex;
+        flex-direction: column;
+        gap: size(24);
+    }
+
+    &__proponent, &__category {
+        gap: size(12);
+
+        &--seals {
+            display: flex;
+            flex-wrap: wrap;
+            gap: size(16);
+        }
+
+        &--seal {
+            display: flex;
+            flex-direction: column;
+            gap: size(4);
+            max-width: size(50);
+            width: 100%;
+
+            .seal-label {
+                font-weight: 700;
+                font-size: size(14);
+                line-height: size(19);
+            }
+
+            .seal-icon {
+                align-items: center;
+                background: #C4C4C4;
+                border-radius: var(--mc-border-radius-xs);
+                cursor: pointer;
+                display: flex;
+                height: size(48);
+                justify-content: center;
+                position: relative;
+                width: size(48);
+
+                .link {
+                    text-decoration: none;
+                    color: inherit;
+
+                    .iconify {
+                        font-size: size(28);
+                    }
+                }
+
+                .image {
+                    align-items: center;
+                    border-radius: var(--mc-border-radius-xs);
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    overflow: hidden;
+                    width: 100%;
+
+                    img {
+                        max-height: 100%;
+                        height: size(47);
+                        width: size(47);
+                    }
+                }
+
+                .icon {
+                    align-items: center;
+                    background-color: red;
+                    border-radius: 50%;
+                    color: white;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: size(13);
+                    height: size(16);
+                    justify-content: center;
+                    position: absolute;
+                    top: size(-8);
+                    right: size(-8);
+                    width: size(16);
+                }
+            }
+        }
+
+        &--addSeal {
+            align-items: center;
+            border: 0.0625rem solid;
+            border-radius: var(--mc-border-radius-xs);
+            display: flex;
+            height: 2.9375rem;
+            justify-content: center;
+            position: relative;
+            width: 2.9375rem;
+            cursor: pointer;
+        }
+    }
+}

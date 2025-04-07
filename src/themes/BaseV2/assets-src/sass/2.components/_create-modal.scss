@@ -7,10 +7,17 @@
     @include desktop {
         .modal-content {
             min-width: size(580);
+            max-width: size(580);
+        }
 
-            select {
-                max-width: size(514);
-            }
+        .modal__action {
+            justify-content: center;
+        }
+    }
+
+    .modal__action {
+        .button--complete{
+            color: $white !important;
         }
     }
 

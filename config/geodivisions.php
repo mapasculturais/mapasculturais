@@ -15,14 +15,21 @@ return [
      */
     'app.geoDivisionsHierarchy' => [
         'pais'              => ['name' => i::__('País'),            'showLayer' => true],
-        'regiao'            => ['name' => i::__('Região'),          'showLayer' => true],
+        // 'regiao'            => ['name' => i::__('Região'),          'showLayer' => true],
         'estado'            => ['name' => i::__('Estado'),          'showLayer' => true],
         'mesorregiao'       => ['name' => i::__('Mesorregião'),     'showLayer' => true],
         'microrregiao'      => ['name' => i::__('Microrregião'),    'showLayer' => true],
         'municipio'         => ['name' => i::__('Município'),       'showLayer' => true],
-        'zona'              => ['name' => i::__('Zona'),            'showLayer' => true],
-        'subprefeitura'     => ['name' => i::__('Subprefeitura'),   'showLayer' => true],
-        'distrito'          => ['name' => i::__('Distrito'),        'showLayer' => true],
-        'setor_censitario'  => ['name' => i::__('Setor Censitario'),'showLayer' => false]
+        // 'zona'              => ['name' => i::__('Zona'),            'showLayer' => true],
+        // 'subprefeitura'     => ['name' => i::__('Subprefeitura'),   'showLayer' => true],
+        // 'distrito'          => ['name' => i::__('Distrito'),        'showLayer' => true],
+        // 'setor_censitario'  => ['name' => i::__('Setor Censitario'),'showLayer' => false]
     ],
+
+     /* Filtro das divisões geográficas  
+     * Adicionar código da subdivisão geográfica no array abaixo
+     * 
+     * Ex: 'app.geoDivisionsFilters' => [25, 26], 
+     */
+    'app.geoDivisionsFilters' => json_decode(env('GEODIVISIONS_FILTERS', '[]')),
 ];

@@ -16,6 +16,7 @@ $this->import('
     complaint-suggestion
     entity-admins
     entity-actions
+    entity-file
     entity-files-list
     entity-gallery
     entity-gallery-video
@@ -35,7 +36,6 @@ $this->import('
     opportunity-evaluations-tab
     opportunity-phase-evaluation
     opportunity-phases-timeline
-    opportunity-rules
     opportunity-subscription
     opportunity-subscription-list
     opportunity-owner-type
@@ -69,13 +69,25 @@ $this->breadcrumb = [
     </template>
   </entity-header>
 
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook("tabs", "begin")?>
         <mc-tab label="<?= i::__('Informações') ?>" slug="info">
             <mc-container class="opportunity">
                 <main class="grid-12">
                     <opportunity-subscription class="col-12" :entity="entity"></opportunity-subscription>
                     <opportunity-subscription-list class="col-12"></opportunity-subscription-list>
+                    <div class="grid-12">
+                        <div v-if="entity.longDescription" class="col-12">
+                            <h3><?= i::__("Apresentação") ?></h3>
+                            <p class="description" v-html="entity.longDescription"></p>
+                        </div>
+                        
+                        <entity-file :entity="entity" group-name="rules" classes="col-12" title="<?php i::esc_attr_e('Regulamento'); ?>"></entity-file>
+                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
+                        <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
+                        <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
+                        <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
+                    </div>
                 </main>
                 <aside>
                     <div class="grid-12">
@@ -84,24 +96,6 @@ $this->breadcrumb = [
                             <a :href="entity.files.rules.url" class="button button--primary-outline" target="_blank"><?= i::__("Baixar regulamento") ?></a>
                         </div>
                     </div>
-                </aside>
-            </mc-container>
-
-            <mc-container>
-                <main>
-                    <div class="grid-12">
-                        <div class="col-12">
-                            <h3><?= i::__("Apresentação") ?></h3>
-                            <p v-html="entity.shortDescription"></p>
-                        </div>
-                        <opportunity-rules :entity="entity" classes="col-12" title="<?php i::esc_attr_e('Regulamento'); ?>"></opportunity-rules>
-                        <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
-                        <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
-                        <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>
-                        <entity-gallery :entity="entity" classes="col-12"></entity-gallery>
-                    </div>
-                </main>
-                <aside>
                     <div class="flex-container">
                         <entity-terms :entity="entity" hide-required title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
                         <entity-social-media :entity="entity" classes="col-12"></entity-social-media>
@@ -113,6 +107,9 @@ $this->breadcrumb = [
                         <mc-share-links  classes="col-12" title="<?php i::esc_attr_e('Compartilhar');?>" text="<?php i::esc_attr_e('Veja este link:');?>"></mc-share-links>
                     </div>  
                 </aside>
+            </mc-container>
+
+            <mc-container>
                 <aside>
                     <div class="grid-12">
                         <complaint-suggestion :entity="entity" classes="col-12"></complaint-suggestion>

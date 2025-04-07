@@ -21,6 +21,9 @@ $this->jsObject['request']['controller'] = "opportunity";
 $site_name = $this->dict('site: name', false);
 $title = isset($entity) ? $this->getTitle($entity) : $this->getTitle();
 $this->jsObject['evaluationConfiguration'] = $entity->evaluationMethodConfiguration;
+
+$this->jsObject['entity']['registrationCategories'] = $this->controller->requestedEntity->firstPhase->registrationCategories
+
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $app->getCurrentLCode(); ?>" dir="ltr">

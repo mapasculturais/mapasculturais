@@ -37,6 +37,14 @@ app.component('opportunity-phase-publish-config-registration' , {
     },
 
     computed: {
+        isOpenPhase() {
+            if(this.phase?.evaluationMethodConfiguration) {
+                return this.phase?.evaluationMethodConfiguration?.evaluationTo?.isFuture();
+            }
+
+            return this.phase?.registrationTo?.isFuture();
+
+        },
         minDate () {
             return this.phase.evaluationTo?._date || this.phase.registrationTo?._date;
         },
@@ -65,12 +73,12 @@ app.component('opportunity-phase-publish-config-registration' , {
     methods: {
         publishRegistration () {
             this.phase.POST('publishRegistrations', this.phase).then(item => {
-                this.phase.populate(item);
+                this.phase.publishedRegistrations = true;
             });
         },
         unpublishRegistration () {
             this.phase.POST('unpublishRegistrations', this.phase).then(item => {
-                this.phase.populate(item);
+                this.phase.publishedRegistrations = false;
             });
         }
     }

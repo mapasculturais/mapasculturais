@@ -41,7 +41,9 @@ $today = new DateTime();
     <mc-breadcrumb></mc-breadcrumb>
     <opportunity-header :opportunity="entity.opportunity"></opportunity-header>
     <registration-print :registration="entity"></registration-print>
-    <mc-tabs>
+    <mc-tabs sync-hash>
+        <?php $this->applyTemplateHook('single-tab', 'begin') ?>
+        
         <mc-tab label="<?= i::_e('Acompanhamento') ?>" slug="acompanhamento">
             <div class="registration__content">
                 <mc-card>
@@ -58,10 +60,20 @@ $today = new DateTime();
                                             <div class="reg__label"> <?= i::__('Nº de inscrição') ?> </div>
                                             <div class="reg__info"> {{entity.number}} </div>
                                         </div>
-                                        <div class="category">
+                                        <div class="category" v-if="entity.opportunity.registrationCategories?.length > 0">
                                             <div class="category__label"> <?= i::__('Categoria de inscrição') ?> </div>
                                             <div v-if="entity.category" class="category__info"> {{entity.category}} </div>
                                             <div v-if="!entity.category" class="category__info"> <?= i::__('Sem categoria') ?> </div>
+                                        </div>
+                                        <div class="category" v-if="entity.opportunity.registrationRanges?.length > 0">
+                                            <div class="category__label"> <?= i::__('Faixa') ?> </div>
+                                            <div v-if="entity.range" class="category__info"> {{entity.range}} </div>
+                                            <div v-if="!entity.range" class="category__info"> <?= i::__('Faixa não informada') ?> </div>
+                                        </div>
+                                        <div class="category" v-if="entity.opportunity.registrationProponentTypes?.length > 0">
+                                            <div class="category__label"> <?= i::__('Tipo de proponente') ?> </div>
+                                            <div v-if="entity.proponentType" class="category__info"> {{entity.proponentType}} </div>
+                                            <div v-if="!entity.proponentType" class="category__info"> <?= i::__('Tipo de proponente não informado') ?> </div>
                                         </div>
                                     </div>
                                 </div>
@@ -111,47 +123,47 @@ $today = new DateTime();
 
         <mc-tab label="<?= i::_e('Ficha de inscrição') ?>" slug="ficha">
             <div class="registration__content">
-                <mc-card>
+                <mc-card v-if="entity.agentsData.owner">
                     <template #content>
                         <div class="registered-info">
                             <span class="info"> 
                                 <strong><?= i::__('Dados do proponente') ?></strong> 
                             </span>
-                            <span class="info" v-if="entity.agentsData.owner.name"> 
+                            <span class="info" v-if="entity.agentsData.owner?.name"> 
                                 <strong> <?= i::__('Nome') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.name}}</span>
+                                <span>{{entity.agentsData.owner?.name}}</span>
                             </span>
-                            <span class="info" v-if="entity.agentsData.owner.shortDescription"> 
+                            <span class="info" v-if="entity.agentsData.owner?.shortDescription"> 
                                 <strong> <?= i::__('Descrição curta') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.shortDescription}}</span>
+                                <span>{{entity.agentsData.owner?.shortDescription}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.documento || entity.agentsData.owner.cnpj"> 
+                            <span class="info" v-if="entity.agentsData.owner?.documento || entity.agentsData.owner?.cnpj"> 
                                 <strong> <?= i::__('CPF ou CNPJ') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.documento || entity.agentsData.owner.cnpj}}</span>
+                                <span>{{entity.agentsData.owner?.documento || entity.agentsData.owner?.cnpj}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.dataDeNascimento"> 
+                            <span class="info" v-if="entity.agentsData.owner?.dataDeNascimento"> 
                                 <strong> <?= i::__('Data de nascimento ou fundação') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.dataDeNascimento}}</span><!-- .date('2-digit year') -->
+                                <span>{{entity.agentsData.owner?.dataDeNascimento}}</span><!-- .date('2-digit year') -->
                             </span>  
-                            <span class="info" v-if="entity.agentsData.owner.emailPublico"> 
+                            <span class="info" v-if="entity.agentsData.owner?.emailPublico"> 
                                 <strong> <?= i::__('Email') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.emailPublico}}</span>
+                                <span>{{entity.agentsData.owner?.emailPublico}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.raca"> 
+                            <span class="info" v-if="entity.agentsData.owner?.raca"> 
                                 <strong> <?= i::__('Raça') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.raca}}</span>
+                                <span>{{entity.agentsData.owner?.raca}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.genero"> 
+                            <span class="info" v-if="entity.agentsData.owner?.genero"> 
                                 <strong> <?= i::__('Genero') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.genero}}</span>
+                                <span>{{entity.agentsData.owner?.genero}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.endereco"> 
+                            <span class="info" v-if="entity.agentsData.owner?.endereco"> 
                                 <strong> <?= i::__('Endereço') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.endereco}}</span>
+                                <span>{{entity.agentsData.owner?.endereco}}</span>
                             </span>                            
-                            <span class="info" v-if="entity.agentsData.owner.En_CEP"> 
+                            <span class="info" v-if="entity.agentsData.owner?.En_CEP"> 
                                 <strong> <?= i::__('CEP') ?>: </strong> 
-                                <span>{{entity.agentsData.owner.En_CEP}}</span>
+                                <span>{{entity.agentsData.owner?.En_CEP}}</span>
                             </span>
                         </div>
                     </template>
@@ -169,7 +181,6 @@ $today = new DateTime();
                             <span class="info" v-if="!entity.projectName">
                                 <?= i::__('Nome do projeto não informado') ?>
                             </div>
-                        </div>
                     </template>
                 </mc-card>
 
@@ -181,7 +192,7 @@ $today = new DateTime();
                         <div v-if="entity.agentRelations.hasOwnProperty('coletivo') && entity.agentRelations.coletivo[0]" class="space">
                             <mc-avatar :entity="entity.agentRelations.coletivo[0].agent" size="xsmall"></mc-avatar>
                             <div class="name">
-                                <a href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
+                                <a :href="entity?.agentRelations.coletivo[0].agent.singleUrl" class="registration__collective-link bold" :class="[entity.agentRelations.coletivo[0]['@entityType'] + '__color']"> {{entity?.agentRelations.coletivo[0].agent.name}} </a>
                             </div>
                         </div>
                         <div v-if="!entity.agentRelations.hasOwnProperty('coletivo')" class="space">
@@ -242,31 +253,69 @@ $today = new DateTime();
                     </template>
                 </mc-card>
 
-                <?php while($entity): $opportunity = $entity->opportunity;?>
-                    <?php if($opportunity->isDataCollection && $today >= $opportunity->registrationFrom):?>
+                <?php $phase = $entity;
+                while($phase): $opportunity = $phase->opportunity;?>
+                    <?php if($opportunity->isDataCollection && $phase->canUser('view')):?>
                         <?php if($opportunity->isFirstPhase):?>
                             <h2><?= i::__('Inscrição') ?></h2>
                         <?php else: ?>
                             <h2><?= $opportunity->name ?></h2>
                         <?php endif ?>
-                        <?php if($entity->status < 1 && !$opportunity->isFirstPhase): ?>
+                        <?php if($phase->status < 1 && !$opportunity->isFirstPhase && $today <= $opportunity->registrationTo): ?>
                             <mc-alert type="warning">
                                 <?= i::__('Nesta etapa, é necessário inserir informações. Por favor, clique no botão para acessar o formulário e preenchê-lo') ?> <br>
-                                <?= i::__('dentro do período de') ?>  <?=$entity->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$entity->opportunity->registrationTo->format("d/m/Y H:i:s")?>
+                                <?= i::__('dentro do período de') ?>  <?=$phase->opportunity->registrationFrom->format("d/m/Y")?> <?= i::__('à') ?> <?=$phase->opportunity->registrationTo->format("d/m/Y H:i:s")?>
                             </mc-alert>
                             <div class="grid-12">
                                 <div class="col-3 sm:col-12">
-                                    <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$entity->id])?>"><?= i::__('Preencher formulário') ?></a>
+                                    <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Preencher formulário') ?></a>
                                 </div>
                             </div>
-                        <?php else: ?>
-                            <v1-embed-tool route="registrationview" :id="<?=$entity->id?>"></v1-embed-tool>
+                            <?php else: ?>
+                                <?php if($phase->status === 0 && $today > $opportunity->registrationTo ):?>
+                                    <mc-alert type="warning">
+                                        <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                    </mc-alert>
+                                    <div class="grid-12">
+                                        <div class="col-3 sm:col-12">
+                                            <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Acessar formulário') ?></a>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
+                                    <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>
+                                    <?php $this->applyTemplateHook("registration-form-view", 'after', [$phase]) ?>
+                                <?php endif ?>
+                                
+                            
                         <?php endif ?>
                     <?php endif ?>
-                    <?php $entity = $entity->nextPhase; ?>
+                    <?php $phase = $phase->nextPhase; ?>
                 <?php endwhile ?>
 
             </div>
         </mc-tab>
+
+        <mc-tab v-if="entity.opportunity.currentUserPermissions['@control']" label="<?= i::_e('Avaliadores') ?>" slug="valuers">
+            <div class="registration__content">
+                <?php $phase = $entity; 
+                    while($phase): $opportunity = $phase->opportunity;?>
+                    <mc-card>
+                        <?php if($today >= $opportunity->registrationFrom):?>
+                            <?php if($opportunity->isFirstPhase):?>
+                                <h2><?= i::__('Inscrição') ?></h2>
+                            <?php else: ?>
+                                <h2><?= $opportunity->name ?></h2>
+                            <?php endif ?>
+
+                            <v1-embed-tool route="valuers" :id="<?=$phase->id?>"></v1-embed-tool>
+                        <?php endif ?>
+                        <?php $phase = $phase->nextPhase; ?>
+                    </mc-card>
+                <?php endwhile ?>
+            </div>
+        </mc-tab>
+        
+        <?php $this->applyTemplateHook('single-tab', 'end') ?>
     </mc-tabs>
 </div>

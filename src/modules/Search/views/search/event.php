@@ -22,7 +22,7 @@ $this->breadcrumb = [
     ['label' => i::__('Eventos'), 'url' => $app->createUrl('events')],
 ];
 ?>
-<search page-title="<?php i::esc_attr_e('Eventos') ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': []}">
+<search page-title="<?= htmlspecialchars($this->text('title', i::__('Eventos'))) ?>" entity-type="event" :initial-pseudo-query="{'event:term:linguagem':[],'event:term:linguagem':[], 'event:classificacaoEtaria': []}">
     <template v-if="global.auth.isLoggedIn" #create-button>
         <create-event #default="{modal}">
             <button @click="modal.open()" class="button button--primary button--icon">
@@ -32,7 +32,7 @@ $this->breadcrumb = [
         </create-event>
     </template>
     <template #default="{pseudoQuery, changeTab}">
-        <mc-tabs  @changed="changeTab($event)" class="search__tabs">
+        <mc-tabs  @changed="changeTab($event)" class="search__tabs" sync-hash>
             <template #before-tablist>
                 <label class="search__tabs--before">
                     <?= i::_e('Visualizar como:') ?>

@@ -1,5 +1,6 @@
 <?php
 namespace MapasCulturais\Traits;
+use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 use MapasCulturais\Exceptions\WorkflowRequest;
@@ -24,7 +25,7 @@ trait ControllerEntityActions {
         foreach($data as $property => $value) {
             if($type = $metadata[$property]['type'] ?? false) {
                 if(in_array($type, ['bool', 'boolean'])) {
-                    if($value == 'false') {
+                    if($value === 'false') {
                         $value = false;
                     } else {
                         $value = (bool) $value;
@@ -68,6 +69,8 @@ trait ControllerEntityActions {
         }
 
         $entity->enqueueToPCacheRecreation($users);
+
+        $this->json(true);
     }
 
     /**
@@ -190,6 +193,8 @@ trait ControllerEntityActions {
 
         $app = App::i();
 
+        $force_save = (bool) ($app->request->headers['MAPAS-Force-Save'] ?? false);
+
         $app->applyHookBoundTo($this, "PATCH({$this->id}.single):data", ['data' => &$data]);
 
         $entity = $this->requestedEntity;
@@ -228,6 +233,9 @@ trait ControllerEntityActions {
             }
 
             if($errors) {
+                if($force_save){
+                    $entity->save(true);
+                }
                 $this->errorJson($errors);
             }
         }

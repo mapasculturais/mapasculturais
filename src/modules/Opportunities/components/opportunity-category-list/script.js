@@ -25,6 +25,15 @@ app.component('opportunity-category-list', {
         };
     },
     methods: {
+        enabledButton() {
+            let value = this.category;
+            
+            if(value && value.trim()) {
+                return true;
+            }
+
+            return false;
+        },
         addCategory() {
             this.entity.registrationCategories.push(this.category);
             this.clear();
@@ -40,10 +49,7 @@ app.component('opportunity-category-list', {
         },
 
         autoSave() {
-            clearTimeout(this.timeout);
-            this.timeout = setTimeout(() => {
-                this.entity.save();
-            }, 1500);
+            this.entity.save(3000);
         }
     }
 });

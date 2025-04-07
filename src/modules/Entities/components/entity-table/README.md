@@ -5,15 +5,25 @@ Tabela de listagem de entidades
 - **clear-filters** - disparado ao clicar no botão `limpar filtros`
   
 ## Propriedades
-- *Entity **entity*** - Entidade
-- *Object/String **query*** - query de busca das entidades
-- *String **select*** - select da query
-- *String **endpoint*** - endpoint onde a query será executada
-- *Number **limit*** - limite de itens carregados por vez
-- *Number **watch-debounce*** 
-- *Array **headers*** - colunas da tabela
-- *Array/String **required*** - colunas obrigatórias da tabela (não podem ser ocultadas nos filtros)
-- *Array/String **visible*** - colunas exibidas na tabela por padrão (podem ser ocultadas nos filtros)
+- *String* **type** - Tipo da entidade a ser listada
+- *String* **controller** - Controller a ser utilizado na busca
+- *Number* **limit** - Limite de resultados listados
+- *String* **order** - Ordem de listagem dos resultados
+- *Object/String* **query** - Query para consulta
+- *Number* **watchDebounce** - Frequência de atualização das consultas
+- *Array* **headers** - Cabeçalhos da tabela
+- *String/Array* **required** - Cabeçalhos obrigatórios da tabela
+- *String/Array* **visible** - Cabeçalhos visiveis por padrão na tabela
+- *String* **endpoint** - Endpoint onde será realizada a busca
+- *Array* **sortOptions** - Opções de ordenação da listagem na tabela
+- *String* **identifier** - Identificador da tabela
+- *String* **select** - Colunas a serem selecionados na busca
+- *Boolean* **showIndex** - Exibe ou não a seleção de colunas da tabela
+- *Boolean* **hideFilters** - Esconde os filtros da tabela
+- *Boolean* **hideSort** - Esconde a ordenação da tabela
+- *Boolean* **hideActions** - Esconde a parte de ações da tabela
+- *Boolean* **hideHeader** - Esconde toda a parte superior da tabela (Actions e Filters)
+- *Function* **rawProcessor** - Função para processamento dos dados brutos
 
 ## Slots
 - **title** - título da tabela

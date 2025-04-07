@@ -12,6 +12,8 @@ $this->import('
     entity-related-agents
     entity-links
     entity-request-ownership
+    mc-tabs
+    mc-tab
 ');
 $this->breadcrumb = [
     ['label' => i::__('Inicio'), 'url' => $app->createUrl('panel', 'index')],
@@ -23,17 +25,45 @@ $this->breadcrumb = [
 <div class="main-app single">
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity"></entity-header>
+
     <mc-container>
         <main>
             <div class="grid-12">
-                <div v-if="entity.validPeriod" class="col-12">
-                    <h2 class="entity-seals__valid--label"><?php i::_e('Validade do certificado do selo');?></h2>
-                    <p class="entity-seals__valid--content">{{ entity.createTimestamp.format({ year: 'numeric', month: 'long', day: 'numeric' }) + ' a ' + entity.createTimestamp.addDays(entity.validPeriod / 12 * 365) }}</p>
+
+                <div class="entity-seals__validity col-12" v-if="entity.validPeriod" class="col-12">
+                    <h2 class="entity-seals__validity--label"><?php i::_e('Validade do certificado do selo');?></h2>
+                    
+                    <p v-if="entity.validPeriod <= 12" class="entity-seals__validity--content">
+                        {{ entity.validPeriod }} <?= i::__('Meses') ?>
+                    </p>
+                    
+                    <p v-if="entity.validPeriod > 12" class="entity-seals__validity--content"> 
+                        <template v-if="Math.floor(entity.validPeriod / 12) == 1">
+                            {{ Math.floor(entity.validPeriod / 12)}} <?= i::__('ano') ?>
+                        </template>
+
+                        <template v-if="Math.floor(entity.validPeriod / 12) > 1">
+                            {{ Math.floor(entity.validPeriod / 12)}} <?= i::__('anos') ?>
+                        </template>
+
+                        <?= i::__('e') ?>
+
+                        <template v-if="(entity.validPeriod % 12) == 1">
+                        {{(entity.validPeriod % 12)}} <?= i::__('mês') ?>
+                        </template>
+
+                        <template v-if="(entity.validPeriod % 12) > 1">
+                        {{(entity.validPeriod % 12)}} <?= i::__('meses') ?>
+                        </template>
+                    </p>
+
                 </div>
-                <div v-if="entity.longDescription" class="col-12">
-                    <h2><?php i::_e('Descrição');?></h2>
-                    <p>{{entity.longDescription}}</p>
+
+                <div v-if="entity.longDescription" class="col-12 grid-12">
+                    <h2 class="col-12"><?php i::_e('Descrição');?></h2>
+                    <p class="col-12" class="description" v-html="entity.longDescription"></p>
                 </div>
+
                 <entity-files-list :entity="entity" classes="col-12" group="downloads"  title="<?php i::esc_attr_e('Arquivos para download');?>"></entity-files-list>
                 <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
             </div>
@@ -45,5 +75,6 @@ $this->breadcrumb = [
             </div>
         </aside>
     </mc-container>
+
     <entity-actions :entity="entity"></entity-actions>
 </div>

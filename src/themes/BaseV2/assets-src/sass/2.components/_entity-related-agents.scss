@@ -5,6 +5,22 @@
     flex-direction: column;
     gap: 1rem 0;
 
+    & > h4 {
+        display: flex;
+        align-items: center;
+        max-width: 200px;
+        gap: size(8);
+
+        a {
+            display: flex;
+            align-items: center;
+        }
+
+        .iconify {
+            font-size: size(20);
+        }
+    }
+
     &__group {
         display: flex;
         flex-direction: column;

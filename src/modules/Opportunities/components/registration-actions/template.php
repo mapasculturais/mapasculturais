@@ -8,42 +8,115 @@ use MapasCulturais\i;
 
 $this->import('
     mc-confirm-button
+    mc-icon
+    mc-alert
 ');
+
+$entity = $this->controller->requestedEntity;
+$term_url = $app->createUrl('site', 'termoAdesao');
 ?>
 <div class="registration-actions">
     <div class="registration-actions__primary">
-        <div v-if="Object.keys(registration.__validationErrors).length > 0" class="errors">
-            <span class="errors__title"> <?= i::__('Ops! Alguns erros foram identificados.') ?> </span>
-            <span class="errors__subtitle"> <?= i::__('Para continuar, corrija os campos com os erros listados abaixo:') ?> </span>
-    
-            <div v-for="(error, index) in registration.__validationErrors" class="errors__error">
-                <div class="errors__error--text">
-                    <strong>{{fieldName(index)}}:</strong> <p v-for="text in error">{{text}}</p>
-                </div>    
+        <div v-if="hasErrors" class="registration-actions__errors">
+            <span class="registration-actions__errors-title"> <?= i::__('Ops! Encontramos erros no preenchimento da inscrição') ?> </span>
+            <span class="registration-actions__errors-subtitle">
+                <?= i::__('Corrija os campos listados antes de enviar o formulário') ?>
+            </span>
+
+            <div class="registration-actions__errors-list scrollbar" :class="{'registration-actions__errors-list--hide' : hideErrors}">
+                <template v-for="(errors, stepIndex) in sortedValidationErrors" :key="stepIndex">
+                    <div class="registration-actions__errors-step" v-if="Object.keys(errors).length > 0">
+                        <div class="registration-actions__errors-step-name">{{stepName(stepIndex)}}</div>
+                        <div v-for="(error, key) in errors" class="registration-actions__error" tabindex="0" @click="goToField(stepIndex, key)" @keydown.enter="goToField(stepIndex, key)">
+                            <strong>{{fieldName(key)}}</strong> <p v-for="text in error">{{text}}</p>
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
 
-        <mc-confirm-button @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
-            <template #button="modal">
-                <button @click="modal.open()" class="button button--large button--xbg button--primary">
-                    <?= i::__("Enviar") ?>
-                </button>
-            </template> 
-            <template #message="message">
-                <?php i::_e('Ao enviar sua inscrição você já estará participando da oportunidade.') ?>
+        <div class="registration-actions__validation">
+            <template v-if="!isValidated">
+                <div class="registration-actions__alert">
+                    <div class="registration-actions__alert-header">
+                        <mc-icon name="exclamation"></mc-icon>
+                        <span class="bold"><?= i::__('Atenção aos campos obrigatórios') ?></span>
+                    </div>
+                    <div class="registration-actions__alert-content">
+                        <span><?= i::__("Só é possível enviar a inscrição após o preenchimento de todos os campos obrigatórios") ?></span>
+                    </div>
+                </div>
             </template>
-        </mc-confirm-button> 
-
-        <!-- <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button> -->
+            <mc-loading v-if="isLastStep" :entity="registration"></mc-loading>
+            <mc-confirm-button 
+                v-if="isLastStep && !registration.__processing" 
+                title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>"
+                yes="<?= i::esc_attr__('Enviar agora') ?>" 
+                no="<?= i::esc_attr__('Cancelar') ?>" 
+                @confirm="send($event)"
+                dont-close-on-confirm
+                :loading="registration.__processing"
+            >
+                <template #button="modal">
+                    <button @click="modal.open()" class="button button--large button--xbg button--primary button--icon registration-actions__send">
+                        <?= i::__("Enviar formulário") ?>
+                        <mc-icon name="send"></mc-icon>
+                    </button>
+                </template>
+                <template #message="message">
+                    <?php i::_e('Ao enviar sua inscrição você já estará participando da oportunidade.') ?>
+                </template>
+            </mc-confirm-button>
+        </div>
     </div>
-    <div class="registration-actions__secondary">
-        <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
-        <button @click="save();" class="button button--large button--primary-outline">
+
+    <div v-if="stepIndex < steps.length - 1 || stepIndex > 0" class="registration-actions__secondary">
+        <button @click="nextStep()" class="button button--bg button--large button--primary  button--icon" v-if="stepIndex < steps.length - 1">
+            <?= i::__("Próxima etapa") ?>
+            <mc-icon name="arrow-right"></mc-icon>
+        </button>
+
+        <button @click="previousStep()" class="button button--md button--large button--primary-outline button--icon" v-if="stepIndex > 0">
+            <mc-icon name="arrow-left"></mc-icon>
+            <?= i::__("Etapa anterior") ?>
+        </button>
+    </div>
+    
+    <mc-loading v-if="!isLastStep" :entity="registration"></mc-loading>
+
+    <div v-show="!registration.__processing" class="registration-actions__save-buttons">
+        <button @click="save()" class="button button--sm button--large button--primary">
             <?= i::__("Salvar") ?>
         </button>
- 
-        <button @click="exit()" class="button button--large button--primary-outline">
-            <?= i::__("Salvar e sair") ?>
-        </button>
+
+        
+        <mc-modal classes="rcv-exit-form-modal" button-label="label do botão" title="<?= i::__('Falta tão pouco! Quer mesmo sair?') ?>">
+            <template #default="modal">
+                <div class="rcv-exit-form-modal modal-options grid-12">
+                    <p class="col-12"><?= i::__('Sua inscrição foi salva em rascunho. Para retornar, vá ao <b><u>Painel de Controle</u></b>, acesse 
+                        <b><u>Minhas Inscrições</u></b> e encontre a inscrição na aba 
+                        <b>Não enviadas</b>.') ?>
+                    </p>
+                </div>
+
+            </template>
+
+            <template #button="modal">
+                <button @click="saveAndExit(modal)" class="button button--sm button--large button--primary">
+                    <?= i::__("Salvar e Sair") ?>
+                </button>
+            </template>
+
+
+            <template #actions="modal">
+                <button class="button-cancel button button--md button--primary" @click="modal.close()">
+                    <?= i::__('Cancelar') ?>
+                </button>
+
+                <button class="button button--md button--primary" @click="exit(modal)">
+                    <?= i::__('Sair') ?>
+                </button>
+            </template>
+        </mc-modal>
     </div>
 </div>

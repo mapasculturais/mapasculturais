@@ -16,25 +16,24 @@
         </div>
 
         <div>
-            <p><label><?= i::__('Pontuação total: ') ?></label> <strong>{{registration.consolidatedResult}}</strong></p>
+            <p><label><?= i::__('Pontuação total: ') ?></label> <strong>{{registration.score}}</strong></p>
             <p><label><?= i::__('Pontuação máxima: ') ?></label> <strong>{{registration.consolidatedDetails.maxScore}}</strong></p>
         </div>
     </div>
 
-    <div v-if="registration.consolidatedDetails.appliedAffirmativePolicy" 
-         v-for="policy in [registration.consolidatedDetails.appliedAffirmativePolicy]" class="registration-results__card-content">                    
+    <div v-if="registration.consolidatedDetails.appliedPointReward" 
+         v-for="policy in [registration.consolidatedDetails.appliedPointReward]" class="registration-results__card-content">                    
         <div class="registration-results__opinion registration-results__opinion--document">
             <h5 class="registration-results__opinion-title bold">
-                <?= i::__('Políticas afirmativas') ?>
+                <?= i::__('Bônus por pontuação') ?>
             </h5>
 
             <div>
                 <p><label><?= i::__('Pontuação original: ') ?></label> <strong>{{policy.raw}}</strong></p>
-                <p><label><?= i::__('Acréscimos:') ?></label>
-                    <ul>
-                        <li v-for="rule in policy.rules">{{rule.field.title}}: <em>{{rule.value}}</em> <strong>(+{{rule.percentage}}%)</strong></li>
-                    </ul>
-                </p>
+                <p><label><?= i::__('Acréscimos:') ?></label></p>
+                <ul>
+                    <li v-for="rule in policy.rules">{{rule.field.title}}: <em>{{rule.value}}</em> <strong>(+{{rule.percentage}}%)</strong></li>
+                </ul>
                 <p>
                     <label><?= i::__('Acréscimo total na pontuação:') ?> </label> 
                     <strong>{{parseFloat(policy.raw) / 100 * parseFloat(policy.percentage)}}

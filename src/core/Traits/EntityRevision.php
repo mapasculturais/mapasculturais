@@ -164,10 +164,18 @@ trait EntityRevision{
         return $revision;
     }
 
-    public function _newModifiedRevision() {
+    public function _newModifiedRevision(string $message = null) { 
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_MODIFIED;
-        $message = i::__("Registro atualizado.");
+        
+        if(is_null($message)) {
+            $message = i::__("Registro atualizado.");
+        }
+
+        $remove_field = false;
+        if(strpos($message, 'field_') !== false || strpos($message, 'rfc_') !== false) {
+            $remove_field = true;
+        }
         
         $last_revision = $this->getLastRevision();
         if(!$last_revision) {
@@ -212,7 +220,7 @@ trait EntityRevision{
         }
 
         $revision = new Revision($revisionData,$this,$action,$message);
-        if($revision->modified) {
+        if($revision->modified || $remove_field) {
             $revision->save(true);
         }
     }

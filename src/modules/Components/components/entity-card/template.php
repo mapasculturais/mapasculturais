@@ -19,9 +19,11 @@ $this->import('
 				<mc-avatar :entity="entity" size="small"></mc-avatar>
 			</slot>
 			<div class="user-info" :class="{'with-labels': useLabels, 'without-labels': !useLabels}">
-				<slot name="title">
-					<mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{entity.name}}</mc-title>
-				</slot>
+				<a :href="entity.singleUrl">
+					<slot name="title">
+						<mc-title tag="h2" :shortLength="55" :longLength="71" class="bold">{{entity.name}}</mc-title>
+					</slot>
+				</a>
 				<slot name="type">
 					<div v-if="entity.type" class="user-info__attr">
 						<?php i::_e('Tipo:') ?> {{entity.type.name}}
@@ -32,7 +34,7 @@ $this->import('
 
 		<div class="entity-card__header user-slot">
 			<slot name="labels">
-				<div class="entity-card__slot">
+				<div class="entity-card__slot" :class="{'no-id' : !global.showIds[entity.__objectType]}">
 					<span v-if="global.showIds[entity.__objectType]" class="uppercase semibold entity-card__id">Id: <span class="bold">{{entity.id}}</span> </span>
 					<span class="openSubscriptions" v-if="openSubscriptions"> <mc-icon name="circle-checked"></mc-icon> <?= i::__('Inscrições Abertas') ?> </span>
 				</div>
@@ -47,14 +49,14 @@ $this->import('
 
 		<template v-if="entity.__objectType=='opportunity'">
 			<!-- inscrições abertas -->
-			<div v-if="openSubscriptions" class="entity-card__registration">
+			<div v-if="showEndDateText" class="entity-card__registration">
 				<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]">
 					<?= i::__('As inscrições encerrarão no dia') ?> {{entity.registrationTo?.date('2-digit year')}} <?= i::__('às') ?> {{entity.registrationTo?.time()}}
 				</p>
 			</div>
 
 			<!-- inscrições futuras -->
-			<div v-if="entity.registrationFrom?.isFuture()" class="entity-card__registration">
+			<div v-if="entity.registrationFrom?.isFuture() && (!entity.isContinuousFlow || (entity.isContinuousFlow && entity.hasEndDate))" class="entity-card__registration">
 				<div class="entity-card__period">
 					<p :class="[entity.__objectType+'__color', 'bold', {'small' : $media('max-width: 500px')}]" v-if="entity.registrationFrom && entity.registrationTo">
 						<?= i::__('Inscrições de') ?> {{entity.registrationFrom.date('2-digit year')}} <?= i::__('até') ?> {{entity.registrationTo.date('2-digit year')}} <?= i::__('às') ?> {{entity.registrationTo.time()}}
@@ -89,8 +91,11 @@ $this->import('
 
 		<div class="entity-card__content--terms">
 			<div v-if="areas" class="entity-card__content--terms-area">
-				<label class="area__title">
+				<label v-if="entity.__objectType === 'opportunity'" class="area__title">
 					<?php i::_e('Áreas de interesse:') ?> ({{entity.terms.area.length}}):
+				</label>
+				<label v-if="entity.__objectType === 'agent' || entity.__objectType === 'space'" class="area__title">
+					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
 				</label>
 				<p :class="['terms', entity.__objectType+'__color']"> {{areas}} </p>
 			</div>
@@ -115,10 +120,9 @@ $this->import('
 		<div class="entity-card__footer--info">
 			<div v-if="seals" class="seals">
 				<label class="seals__title">
-					<?php i::_e('Selos') ?> ({{entity.seals.length}}):
+					<?php i::_e('Selos') ?>:
 				</label>
-				<mc-avatar v-for="seal in seals" :title="seal.name" :entity="seal" square size="xsmall"></mc-avatar>
-				<div v-if="seals.length > 2" class="seals__seal more">+1</div>
+				<mc-avatar v-for="seal in entity.seals" :title="seal.name" :entity="seal" square size="xsmall"></mc-avatar>
 			</div>
 		</div>
 

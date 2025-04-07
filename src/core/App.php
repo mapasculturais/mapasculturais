@@ -30,6 +30,7 @@ use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
 use MapasCulturais\Definitions\RegistrationFieldType;
+use MapasCulturais\Entities\Subsite;
 use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\MailTemplateNotFound;
 use MapasCulturais\Exceptions\NotFound;
@@ -54,6 +55,8 @@ use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\File;
 use TypeError;
 use Throwable;
 
@@ -62,8 +65,11 @@ use Throwable;
  * @property-read Slim\App $slim instância do Slim
  * @property-read Hooks $hooks gerenciador de hooks
  * @property-read EntityManager $em Doctrine Entity Manager
+ * @property-read AuthProvider $auth provedor de autenticação
  * @property-read string $siteName nome do site
  * @property-read string $siteDescription descrição do site
+ * @property-read Subsite $subsite Subsite atual
+ * @property-read Subsite $currentSubsite Subsite atual
  * @property-read string $currentLCode código da linguagem configurada. ex: pt_BR
  * @property-read int|null $currentSubsiteId id do subsite atual
  * @property-read string|float|int $maxUploadSize tamanho máximo de arquivo para upload aceito pelo PHP
@@ -536,7 +542,7 @@ class App {
      * @return void 
      */
     protected function _initAutoloader() {
-        $config = $this->config;
+        $config = &$this->config;
 
         // list of modules
         if($handle = opendir(MODULES_PATH)){
@@ -564,15 +570,19 @@ class App {
             }
         }
 
-        spl_autoload_register(function($class) use ($config){
+        spl_autoload_register(function($class) use (&$config){
             $namespaces = $config['namespaces'];
 
             $namespaces['MapasCulturais\\DoctrineProxies'] = DOCTRINE_PROXIES_PATH;
 
             $subfolders = ['Controllers','Entities','Repositories','Jobs'];
 
-            foreach($config['plugins'] as $plugin){
-                if(is_string($plugin)) {
+            foreach($config['plugins'] as $key => &$plugin){
+                if(is_array($plugin) && isset($plugin['namespace'])) {
+                    // do nothing
+                } else if (is_string($key) && is_array($plugin) && !isset($plugin['namespace'])) {
+                    $plugin = ['namespace' => $key, 'config' => $plugin];
+                } else if (is_numeric($key) && is_string($plugin)) {
                     $plugin = ['namespace' => $plugin];
                 }
                 $namespace = $plugin['namespace'];
@@ -731,8 +741,10 @@ class App {
      * 
      * @return void 
      */
-    protected function _initSubsite() {
-        $domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    protected function _initSubsite($domain = null) {
+        if (!$domain){
+            $domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        }
 
         if(($pos = strpos($domain, ':')) !== false){
             $domain = substr($domain, 0, $pos);
@@ -924,7 +936,7 @@ class App {
      * @return void 
      */
     protected function _initRouteManager() {
-        $this->_routesManager = new RoutesManager($this->config['routes'] ?? []);
+        $this->_routesManager = new RoutesManager;
     }
 
 
@@ -1019,7 +1031,11 @@ class App {
      * @return string the base url
      */
     public function getBaseUrl(){
-        return $this->config['base.url'];
+        if($this->subsite){
+            return $this->subsite->subsiteUrl;
+        } else {
+            return $this->config['base.url'];
+        }
     }
 
     /**
@@ -1354,8 +1370,8 @@ class App {
                   if ($expire_in && (microtime (true) - filectime($filename) > $expire_in)) {
                       unlink($filename);
                   } else {
-                      $count += 0.1;
-                      usleep(100000);
+                      $count += 0.01;
+                      usleep(10000);
                   }
               }
           }
@@ -1378,8 +1394,10 @@ class App {
         
         $filename = sys_get_temp_dir()."/lock-{$name}.lock"; 
 
-        unlink($filename);
-     }
+        if (file_exists($filename)){
+            unlink($filename);
+        }
+    }
      
      /**
       * Transforma o texto num slug
@@ -1610,7 +1628,7 @@ class App {
      *
      * If the 'app.sanitize_filename_function' configuration key is callable, this method call it after sanitizes the filename.
      *
-     * @param type $filename
+     * @param string $filename
      *
      * @return string The sanitized filename.
      */
@@ -1715,36 +1733,50 @@ class App {
      **********************************************/
 
     /**
-     * Enfileira um job, substituindo um já existente
-     * 
-     * @param string $type_slug 
-     * @param array $data 
-     * @param string $start_string 
-     * @param string $interval_string 
-     * @param int $iterations 
-     * @return Job 
-     * @throws Exception 
+     * Enfileira um job e substitui um job existente com o mesmo ID, se necessário.
+     *
+     * @param string $type_slug Tipo do job a ser enfileirado
+     * @param array $data Dados do job a ser enfileirado
+     * @param string $start_string Data/hora de início do job, no formato 'now' ou uma data/hora válida
+     * @param string $interval_string Intervalo de execução do job, no formato de intervalo do PHP (ex: '1 hour', '30 minutes')
+     * @param int $iterations Número de vezes que o job deve ser executado
+     * @param User|int $user Usuário responsável pelo job, pode ser um objeto User ou um ID de usuário
+     * @param Subsite|int $subsite Subsite responsável pelo job, pode ser um objeto Subsite ou um ID de subsite
+     * @return Job Retorna o objeto Job criado
      */
-    public function enqueueOrReplaceJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1) {
-        return $this->enqueueJob($type_slug, $data, $start_string, $interval_string, $iterations, true);
+    public function enqueueOrReplaceJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, User|int $user = null, Subsite|int $subsite = null) {
+        return $this->enqueueJob($type_slug, $data, $start_string, $interval_string, $iterations, true, $user, $subsite);
     }
-
     
     /**
      * Enfileira um job
-     * 
-     * @param string $type_slug 
-     * @param array $data 
-     * @param string $start_string 
-     * @param string $interval_string 
-     * @param int $iterations 
-     * @param bool $replace
-     * @return Job 
-     * @throws Exception 
+     *
+     * @param string $type_slug Tipo do job a ser enfileirado
+     * @param array $data Dados do job a ser enfileirado
+     * @param string $start_string Data/hora de início do job, no formato 'now' ou uma data/hora válida
+     * @param string $interval_string Intervalo de execução do job, no formato de intervalo do PHP (ex: '1 hour', '30 minutes')
+     * @param int $iterations Número de vezes que o job deve ser executado
+     * @param bool $replace Se verdadeiro, substitui o job existente com o mesmo ID
+     * @param User|int $user Usuário responsável pelo job, pode ser um objeto User ou um ID de usuário
+     * @param Subsite|int $subsite Subsite responsável pelo job, pode ser um objeto Subsite ou um ID de subsite
+     * @return Job Retorna o objeto Job criado
+     * @throws Exception Se o tipo de job for inválido
      */
-    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false) {
+    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false, User|int|null $user = null, Subsite|int|null $subsite = null) {
         if($this->config['app.log.jobs']) {
             $this->log->debug("ENQUEUED JOB: $type_slug");
+        }
+
+        if($user && is_numeric($user)) {
+            $user = $this->repo('User')->find($user);
+        } else if (is_null($user) && !$this->user->is('guest')) {
+            $user = $this->repo('User')->find($this->user->id);
+        }
+
+        if($subsite && is_numeric($subsite)) {
+            $subsite = $this->repo('Subsite')->find($subsite);
+        } else if (is_null($subsite)) {
+            $subsite = $this->subsite ? $this->subsite->refreshed() : null;
         }
 
         $type = $this->getRegisteredJobType($type_slug);
@@ -1755,16 +1787,36 @@ class App {
 
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
+        if($replace) {
+            $conn = $this->em->getConnection();
+            $conn->delete('job', ['id' => $id]);
+        }
+
+        /** @var Entities\Job $job */
         if ($job = $this->repo('Job')->find($id)) {
-            $this->log->debug('JOB ID JÁ EXISTE: ' . $id);
-            if ($replace) {
-                $job->delete(true);
+            $job_create_timestamp = $job->createTimestamp;
+
+            // o job tem mais que 5 minutos?
+            $is_old = $job_create_timestamp->getTimestamp() < (time() - 5 * MINUTE_IN_SECONDS);
+
+            // remove o job se ele estiver com status de processamento e for mais velho que 5 minutos
+            if($job->status == Job::STATUS_PROCESSING && $iterations == 1 && $is_old) {
+                $conn = $this->em->getConnection();
+                $conn->delete('job', ['id' => $id]);
             } else {
                 return $job;
             }
         }
 
         $job = new Job($type);
+
+        if($subsite) {
+            $job->subsite = $subsite;
+        }
+
+        if($user) {
+            $job->user = $user;
+        }
 
         $job->id = $id;
 
@@ -1777,8 +1829,15 @@ class App {
             $job->$key = $value;
         }
 
-        $job->save(true);
-
+        try{
+            if($this->config['app.executeJobsImmediately']) {
+                $job->execute();
+            } else {
+                $job->save(true);
+            }
+        } catch (\Exception $e) {
+            $this->log->error("ERRO AO SALVAR JOB ($type_slug): " . print_r($e, true));
+        }
         return $job;
     }
 
@@ -1816,12 +1875,22 @@ class App {
     }
 
     /**
-     * Executa um job
+     * Executa um trabalho agendado (job) que esteja pronto para ser executado.
      * 
-     * @return int|false 
-     * @throws Exception 
+     * Essa função verifica se há algum trabalho agendado que esteja pronto para ser executado (com base na data de próxima execução e no número de iterações restantes), e então executa esse trabalho.
+     * 
+     * Ela também realiza algumas tarefas adicionais, como:
+     * - Atualiza o status do trabalho para "em execução"
+     * - Inicializa o subsite associado ao trabalho, se houver
+     * - Autentica o usuário associado ao trabalho
+     * - Registra informações de log sobre a execução do trabalho
+     * - Aplica os hooks "app.executeJob:before" e "app.executeJob:after" antes e depois da execução do trabalho
+     * - Persiste a fila de reprocessamento do cache de permissões
+     * 
+     * @return int|false O ID do trabalho executado, ou false se nenhum trabalho estiver pronto para ser executado
      */
     public function executeJob(): int|false {
+        /** @var Connection */
         $conn = $this->em->getConnection();
         $now = date('Y-m-d H:i:s');
         $job_id = $conn->fetchScalar("
@@ -1838,12 +1907,49 @@ class App {
             /** @var Job $job */
             $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
             $job = $this->repo('Job')->find($job_id);
+            if( $job->subsite) {
+                $this->_initSubsite($job->subsite->url);
+                $path = (array) $this->view->path;
+                $this->_initTheme();
+                
+                $this->subsite->applyApiFilters();
+                $this->subsite->applyConfigurations();
+
+                $reflaction = new \ReflectionClass(get_class($this->view));
+                $themes_path = [];
+                while($reflaction && $reflaction->getName() != __CLASS__){
+                    $dir = dirname($reflaction->getFileName());
+                    if($dir != __DIR__) {
+                        $themes_path[] = $dir . '/';
+                    }
+                    $reflaction = $reflaction->getParentClass();
+                }
+
+                $path = array_diff($path, $themes_path);
+                $path = array_merge($themes_path, $path);
+                
+                $this->view->path = new \ArrayObject($path);
+                $this->view->init();
+            }
             
-            $this->disableAccessControl();
+            
+            $this->auth->authenticatedUser = $job->user;
+
+
+            if($this->config['app.log.jobs']) {
+                $this->log->debug("EXECUTING JOB: {$job->id} of type {$job->type}");
+                $this->log->debug("AUTHENTICATED USER: {$this->user->id}");
+                if($this->subsite) {
+                    $this->log->debug("SUBSITE: {$this->subsite->url}");
+                }
+
+            }
+
+            // $this->disableAccessControl();
             $this->applyHookBoundTo($this, "app.executeJob:before");
             $job->execute();
             $this->applyHookBoundTo($this, "app.executeJob:after");
-            $this->enableAccessControl();
+            // $this->enableAccessControl();
             $this->persistPCachePendingQueue();
             return (int) $job_id;
         } else {
@@ -1865,6 +1971,10 @@ class App {
      * @return void 
      */
     public function enqueueEntityToPCacheRecreation(Entity $entity, User $user = null) {
+        if($this->config['app.recreateCacheImmediately']) {
+            $entity->recreatePermissionCache($user ? [$user] : null);
+            return;
+        }
         if (!$entity->__skipQueuingPCacheRecreation) {
             $entity_key = $entity->id ? "{$entity}" : "{$entity}:".spl_object_id($entity);
             if($user) {
@@ -1895,28 +2005,73 @@ class App {
      * Persiste a fila de entidades para reprocessamento de cache de permissão
      */
     public function persistPCachePendingQueue() {
-        $created = false;
+        $conn = $this->em->getConnection();
+
         foreach($this->_permissionCachePendingQueue as $config) {
             $entity = $config[0];
             $user = $config[1];
-            if (is_int($entity->id) && !$this->repo('PermissionCachePending')->findBy([
-                    'objectId' => $entity->id, 
-                    'objectType' => $entity->getClassName(),
-                    'status' => 0,
-                    'user' => $user
-                ])) {
-                $pendingCache = new \MapasCulturais\Entities\PermissionCachePending();
-                $pendingCache->objectId = $entity->id;
-                $pendingCache->objectType = $entity->getClassName();
-                $pendingCache->user = $user;
-                $pendingCache->save(true);
-                $this->log->debug("pcache pending: $entity");
-                $created = true;
-            }
-        }
+            
+            if (is_int($entity->id)){
+                $params = [
+                    'object_type' => $entity->getClassName(),
+                    'object_id' => $entity->id
+                ];
 
-        if ($created) {
-            $this->em->flush();
+                if($user) {
+                    $where = 'usr_id = :usr_id AND';
+                    $params['usr_id'] = $user->id;
+                } else {
+                    $where = 'usr_id IS NULL AND';
+                }
+                // verifica se já há uma entrada na tabela para a entidade que não está sendo processada ainda
+                $sql = "
+                    SELECT id 
+                    FROM permission_cache_pending 
+                    WHERE 
+                        object_type = :object_type AND 
+                        object_id = :object_id AND 
+                        {$where}
+                        status = 0";
+
+                $exists = $conn->fetchOne($sql, $params);
+
+                // se existir, não precisa adicionar novamente
+                if($exists) {
+                    continue;
+                }
+
+                // adiciona a entrada no banco
+                $conn->executeQuery("
+                    INSERT INTO permission_cache_pending 
+                        (id, object_type, object_id, usr_id) 
+                    VALUES 
+                        (nextval('agent_id_seq'::regclass), :object_type, :object_id, :usr_id)",
+
+                    [
+                        'object_type' => $entity->getClassName(),
+                        'object_id' => $entity->id,
+                        'usr_id' => $user ? $user->id : null
+                    ]
+                );
+
+
+                // se foi adicionado a fila o processamento para todos os usuários, 
+                // não precisa processar a fila para cada usuário individualmente
+                if(!$user) {
+                    $conn->executeQuery("
+                        DELETE FROM 
+                            permission_cache_pending 
+                        WHERE 
+                            object_type = :object_type AND 
+                            object_id = :object_id AND 
+                            usr_id IS NOT NULL AND
+                            status = 0", 
+                            [
+                                'object_type' => $entity->getClassName(),
+                                'object_id' => $entity->id
+                            ]);
+                }
+            }
         }
 
         $this->_permissionCachePendingQueue = [];
@@ -1959,47 +2114,103 @@ class App {
      * @throws GlobalException 
      */
     public function recreatePermissionsCache(){
+        /** @var Connection $conn */
         $conn = $this->em->getConnection();
 
-        $id = $conn->fetchOne('
-            SELECT id 
-            FROM permission_cache_pending
-            WHERE 
-                status = 0 AND 
-                CONCAT (object_type, object_id, usr_id) NOT IN (
-                    SELECT CONCAT(object_type, object_id, usr_id) 
-                    FROM permission_cache_pending WHERE 
-                    status > 0
-                )');
+        $max_entities = $this->config['pcache.maxEntitiesPerProcess'] ?: 1;
 
-        if(!$id) { 
-            return;
-        }
-        $item = $this->repo('PermissionCachePending')->find($id);
-        if ($item) {
-            $start_time = microtime(true);
+        for($i = 0; $i < $max_entities; $i++) {
+            $queue_summary = $conn->fetchAll("
+                SELECT COUNT(*) AS num, object_type, status 
+                FROM permission_cache_pending 
+                WHERE status in (0,1)
+                GROUP BY object_type, status 
+                ORDER BY num DESC, status DESC");
 
-            $this->disableAccessControl();
-            $item->status = 1;
-            $item->save(true);
-            $this->enableAccessControl();
+            $running = [];
+            $not_running = [];
 
-            try {
-                $entity = $this->repo($item->objectType)->find($item->objectId);
-                if ($entity) {
-                    $entity->recreatePermissionCache($item->user ? [$item->user] : null);
+            foreach($queue_summary as $line) {
+                $line = (object) $line;
+                if($line->status == 1) {
+                    $running[$line->object_type] = $line->num;
+                } else {
+                    $not_running[$line->object_type] = $line->num;
                 }
-                $item = $this->repo('PermissionCachePending')->find($item->id);
-                $this->em->remove($item);
-                $this->em->flush();
-            } catch (\Exception $e ){
-                $this->disableAccessControl();
-                $item = $this->repo('PermissionCachePending')->find($item->id);
-                $item->status = 2; // ERROR
-                $item->save(true);
-                $this->enableAccessControl();
+            }
 
-                if(php_sapi_name()==="cli"){
+            $eligible_classes = [];
+            foreach($not_running as $class => $count) {
+                if(!isset($running[$class])) {
+                    $eligible_classes[] = $class;
+                }
+            }
+
+            if($eligible_classes) {
+                $eligible_classes = implode("','", $eligible_classes);
+                $eligible_classes = "AND object_type IN ('$eligible_classes')";
+            } else {
+                $eligible_classes = '';
+            }
+
+            $cache_pending = $conn->fetchAssoc("
+                SELECT *
+                FROM permission_cache_pending
+                WHERE 
+                    status = 0 $eligible_classes AND 
+                    CONCAT (object_type, object_id, usr_id) NOT IN (
+                        SELECT CONCAT(object_type, object_id, usr_id) 
+                        FROM permission_cache_pending WHERE 
+                        status > 0 
+                    ) ORDER BY id ASC");
+
+            if(!$cache_pending) { 
+                return;
+            }
+
+            $caches_pending = $conn->fetchAll('
+                UPDATE permission_cache_pending SET status = 1 
+                WHERE 
+                    object_type = :object_type AND
+                    object_id = :object_id AND 
+                    status = 0
+                RETURNING *
+                    ',
+                [
+                    'object_type' => $cache_pending['object_type'],
+                    'object_id' => $cache_pending['object_id']
+                ]);
+            
+            if(!$caches_pending) {
+                continue;
+            }
+
+            $cache_pending_ids = array_map(fn($item) => $item['id'], $caches_pending);
+            $cache_pending_ids = implode(',',$cache_pending_ids);
+
+            $start_time = microtime(true);
+            try {
+                $entity = $this->repo($cache_pending['object_type'])->find($cache_pending['object_id']);
+                if ($entity) {
+                    $user_ids = array_map(fn($item) => $item['usr_id'], $caches_pending);
+
+                    if(in_array(null,$user_ids)) {
+                        $user_ids = null;
+                    }
+                    $entity->recreatePermissionCache($user_ids);
+                }
+
+                $conn->executeQuery("
+                    DELETE FROM permission_cache_pending 
+                    WHERE id in($cache_pending_ids)");
+                
+            } catch (\Exception $e ){
+                $conn->executeQuery("
+                    UPDATE permission_cache_pending 
+                    SET status=2 
+                    WHERE id in($cache_pending_ids)");
+
+                if($this->config['app.log.pcache'] && php_sapi_name()==="cli"){
                     echo "\n\t - ERROR - {$e->getMessage()}";
                 }
                 throw $e;
@@ -2009,7 +2220,7 @@ class App {
                 $end_time = microtime(true);
                 $total_time = number_format($end_time - $start_time, 1);
 
-                $this->log->info("PCACHE RECREATED FOR $item IN {$total_time} seconds\n--------\n");
+                $this->log->info("PCACHE RECREATED FOR {$cache_pending['object_type']}:{$cache_pending['object_id']} IN {$total_time} seconds\n--------\n");
             }
             $this->_permissionCachePendingQueue = [];
         }
@@ -2096,9 +2307,16 @@ class App {
                 }
     
                 if(method_exists($message, $method_name)){
-                    $message->$method_name($value);
+                    if($method_name == 'attach' && $value) {
+                        if (file_exists($value)) {
+                            $message->addPart(new DataPart(new File($value)));
+                        }
+                    } else {
+                        $message->$method_name($value);
+                    }
                 }
             }
+
         }
 
         if($this->config['mailer.alwaysTo']){
@@ -2221,7 +2439,6 @@ class App {
         if(($this->view) instanceof Themes\BaseV1\Theme ) {
             $this->registerController('panel',   'MapasCulturais\Controllers\Panel');
         }
-        $this->registerController('geoDivision',    'MapasCulturais\Controllers\GeoDivision');
 
         $this->registerController('user',   'MapasCulturais\Controllers\User');
 
@@ -2365,11 +2582,6 @@ class App {
 
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
-        $this->registerFileGroup('subsite',$file_groups['logo']);
-        $this->registerFileGroup('subsite',$file_groups['background']);
-        $this->registerFileGroup('subsite',$file_groups['share']);
-        $this->registerFileGroup('subsite',$file_groups['institute']);
-        $this->registerFileGroup('subsite',$file_groups['favicon']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
 
         if ($theme_image_transformations = $this->view->resolveFilename('','image-transformations.php')) {
@@ -2680,8 +2892,9 @@ class App {
             $taxonomy_required = key_exists('required', $taxonomy_definition) ? $taxonomy_definition['required'] : false;
             $taxonomy_description = key_exists('description', $taxonomy_definition) ? $taxonomy_definition['description'] : '';
             $restricted_terms = key_exists('restricted_terms', $taxonomy_definition) ? $taxonomy_definition['restricted_terms'] : false;
+            $entities = key_exists('entities', $taxonomy_definition) ? $taxonomy_definition['entities'] : [];
 
-            $definition = new Definitions\Taxonomy($taxonomy_id, $taxonomy_slug, $taxonomy_description, $restricted_terms, $taxonomy_required);
+            $definition = new Definitions\Taxonomy($taxonomy_id, $taxonomy_slug, $taxonomy_description, $restricted_terms, $taxonomy_required, $entities);
             $definition->name = $taxonomy_definition['name'] ?? '';
             $entity_classes = $taxonomy_definition['entities'];
 
@@ -3265,7 +3478,7 @@ class App {
      * @throws ReflectionException 
      * @throws MappingException 
      */
-    function getRegisteredEntityTypeById(Entity|string $entity, int|string $type_id): Definitions\EntityType|null {
+    function getRegisteredEntityTypeById(Entity|string $entity, int|string|null $type_id): Definitions\EntityType|null {
         if (is_object($entity)) {
             $entity = $entity->getClassName();
         }
@@ -3764,7 +3977,7 @@ class App {
                     if($function() !== false){
                         $update = new Entities\DbUpdate();
                         $update->name = $name;
-                        $update->save();
+                        $update->save(true);
                     }
                 }catch(\Exception $e){
                     echo "\nERROR " . $e . "\n";

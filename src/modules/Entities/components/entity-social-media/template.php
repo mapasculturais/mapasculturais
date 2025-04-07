@@ -52,10 +52,16 @@ $this->import('
             <mc-icon name="pinterest"></mc-icon>
             <a target="_blank" :href="buildSocialMediaLink('pinterest')">{{entity.pinterest}}</a>
         </div>
+
+        <div v-if="entity.tiktok" class="entity-social-media__links--link">
+            <mc-icon name="tiktok"></mc-icon>
+            <a target="_blank" :href="buildSocialMediaLink('tiktok')">{{entity.tiktok}}</a>
+        </div>
+
     </div>
 
 
-    <mc-title v-if="editable" tag="h4" :short-length="0" size="medium" class="bold"><?= i::__("Adicionar redes sociais") ?></mc-title>
+    <mc-title v-if="editable" tag="h4" :short-length="0" size="medium" class="bold"><?= i::__("Redes Sociais") ?></mc-title>
 
     <div v-if="editable" class="entity-social-media__edit">
         <div class="entity-social-media__edit--link">
@@ -96,6 +102,11 @@ $this->import('
         <div class="entity-social-media__edit--link">
             <mc-icon name="pinterest"></mc-icon>
             <entity-field :entity="entity" prop="pinterest"></entity-field>
+        </div>
+
+        <div class="entity-social-media__edit--link">
+            <mc-icon name="tiktok"></mc-icon>
+            <entity-field :entity="entity" prop="tiktok"></entity-field>
         </div>
     </div>
 </div>

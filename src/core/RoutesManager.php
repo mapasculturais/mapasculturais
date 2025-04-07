@@ -26,23 +26,27 @@ use Throwable;
  *
  */
 class RoutesManager{
-    protected $config = [];
-
+    use Traits\MagicGetter;
     /**
      * Creates the Routes Menager
      *
      * @param array $config
      */
-    public function __construct(array $config) {
+    public function __construct() {
+        $this->addRoutes();
+    }
+
+    function getConfig(){
+        $app = App::i();
+        $config = $app->config['routes'];
         if(is_array($config['shortcuts'])){
             foreach($config['shortcuts'] as $k => $shortcuts){
                 if(key_exists(2, $shortcuts))
                     ksort($config['shortcuts'][$k][2]);
             }
         }
-        $this->config = $config;
 
-        $this->addRoutes();
+        return $config;
     }
 
     /**
@@ -75,6 +79,7 @@ class RoutesManager{
                 $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => $e], false);
 
             } catch (Exceptions\PermissionDenied $e){
+                $app->response = $app->response->withHeader('Error-Code', $e->code);
                 $this->callAction($app->controller('site'), 'error', ['code' => 403, 'e' => $e], false);
 
             }  catch (Exceptions\WorkflowRequest $e){

@@ -25,6 +25,7 @@ class Event extends EntityController {
         Traits\ControllerDraft,
         Traits\ControllerArchive,
         Traits\ControllerAPI,
+        Traits\ControllerLock,
         Traits\ControllerOpportunities;
 
 
@@ -375,14 +376,14 @@ class Event extends EntityController {
      *   curl -i http://localhost/api/event/occurrences?@from=2016-05-01&@to=2016-05-31&space:id=EQ(8915)
      */
     function API_occurrences(){
-        $result = $this->apiOccurrences($this->getData);
+        $result = $this->apiOccurrences($this->getData, $metadata);
 
-        // @TODO: set headers to
+        $this->apiAddHeaderMetadata($this->getData, $result, $metadata['count']);
         $this->apiResponse($result);
     }
 
 
-    function apiOccurrences($query_data){
+    function apiOccurrences($query_data, &$metadata = []){
         $app = App::i();
         $rsm = new ResultSetMapping();
 
@@ -493,6 +494,10 @@ class Event extends EntityController {
                 $event_ids[] = $occ['event_id'];
             }
         }
+        $offset = $query_data['@offset'] ?? null;
+        $limit = $query_data['@limit'] ?? null;
+        $page = $query_data['@page'] ?? null;
+        $order = $query_data['@order'] ?? null;
 
         if($event_ids){
 
@@ -557,12 +562,14 @@ class Event extends EntityController {
                 }
             }
 
+            $metadata = [
+                'count' => count($result),
+                'page' => $page,
+                'numPages' => $limit ? ceil(count($result) / $limit) : 1,
+                'order' => $order
+            ];
+            
             // pagination
-
-            $offset = isset($this->getData['@offset']) ? $this->getData['@offset'] : null;
-            $limit = isset($this->getData['@limit']) ? $this->getData['@limit'] : null;
-            $page = isset($this->getData['@page']) ? $this->getData['@page'] : null;
-
             if($page && $limit){
                 $offset = (($page - 1) * $limit);
                 $result = array_slice($result, $offset, $limit);
@@ -575,7 +582,15 @@ class Event extends EntityController {
             }
         } else {
             $result = [];
+
+            $metadata = [
+                'count' => count($result),
+                'page' => $page,
+                'numPages' => $limit ? ceil(count($result) / $limit) : 1,
+                'order' => $order
+            ];
         }
+
 
 
         $reccurrence_strings = [];

@@ -29,12 +29,12 @@ trait RepositoryKeyword{
      * 
      * @hook **repo({ENTITY}).getIdsByKeywordDQL.join**
      */
-    protected function _getKeywordDQLFrom($keyword){
+    protected function _getKeywordDQLFrom($keyword, $alias = 'keyword'){
         $class = $this->getClassName();
 
         $join = '';
 
-        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.join', [&$join, $keyword]);
+        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.join', [&$join, $keyword, $alias]);
 
         return "$class e $join";
     }
@@ -49,7 +49,7 @@ trait RepositoryKeyword{
      * 
      * @hook **repo({ENTITY}).getIdsByKeywordDQL.where**
      */
-    protected function _getKeywordDQLWhere($keyword){
+    protected function _getKeywordDQLWhere($keyword, $alias = 'keyword'){
         $class = $this->getClassName();
 
         $app = App::i();
@@ -57,24 +57,28 @@ trait RepositoryKeyword{
         $fields = $app->em->getClassMetadata($class)->fieldMappings;
 
         if(isset($fields['name'])) {
-            $where = ' unaccent(lower(e.name)) LIKE unaccent(lower(:keyword))';
+            $where = " unaccent(lower(e.name)) LIKE unaccent(lower(:{$alias}))";
         } else {
             $where = '';
         }
 
-        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', [&$where, $keyword]);
+        App::i()->applyHookBoundTo($this, 'repo(' . $class::getHookClassPath() . ').getIdsByKeywordDQL.where', [&$where, $keyword, $alias]);
 
         return  $where;
     }
+
+    function getKeywordDQLWhere($keyword, $alias = 'keyword') {
+        return $this->_getKeywordDQLWhere($keyword, $alias);
+    }
     
-    function getIdsByKeywordDQL($keyword){
+    function getIdsByKeywordDQL($keyword, $alias = 'keyword'){
         $keyword = "%{$keyword}%";
 
-        $from = $this->_getKeywordDQLFrom($keyword);
-        $where = $this->_getKeywordDQLWhere($keyword);
+        $from = $this->_getKeywordDQLFrom($keyword, $alias);
+        $where = $this->_getKeywordDQLWhere($keyword, $alias);
 
         $dql = "SELECT e.id FROM $from WHERE $where";
-        
+
         return $dql;
     }
 
@@ -85,17 +89,23 @@ trait RepositoryKeyword{
      * @return array
      */
     function getIdsByKeyword($keyword){
-        $dql = $this->getIdsByKeywordDQL($keyword);
+        $keywords = explode(';', $keyword);
+        $result = [];
         
-        $query = $this->_em->createQuery($dql);
+        foreach($keywords as $keyword) {
+            $dql = $this->getIdsByKeywordDQL($keyword);
+            $query = $this->_em->createQuery($dql);
+    
+            $query->setParameter('keyword', $keyword);
+    
+            $ids = array_map(function($e) {
+                return $e['id'];
+            }, $query->getArrayResult());
 
-        $query->setParameter('keyword', $keyword);
+            $result = [...$result, ...$ids];
+        }
 
-        $ids = array_map(function($e) {
-            return $e['id'];
-        }, $query->getArrayResult());
-
-        return $ids;
+        return array_values(array_unique($result));
     }
 
     /**

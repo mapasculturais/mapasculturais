@@ -33,7 +33,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     protected function _register() {
-        ;
+        $app = App::i();
+        
+        $app->registerJobType(new JobTypes\Spreadsheet('simple-spreadsheets'));
     }
 
     function getValidationErrors(Entities\EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
@@ -77,7 +79,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         $self = $this;
 
-        $app->hook('template(opportunity.registrations.registration-list-actions):begin', function($entity){
+        $app->hook('template(opportunity.registrations.registration-list-actions-entity-table):begin', function($entity){
             if($em = $entity->evaluationMethodConfiguration){
                 if($em->getEvaluationMethod()->slug == "simple"){
                     $this->part('simple--evaluation-result-apply');
@@ -85,7 +87,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             }
         });
 
-        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword) {
+        $app->hook('repo(Registration).getIdsByKeywordDQL.where', function(&$where, $keyword, $alias) {
             $key = trim(strtolower(str_replace('%','',$keyword)));
             
             $value = null;
@@ -103,7 +105,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 $where .= " OR e.consolidatedResult = '$value'";
             } 
             
-            $where .= " OR unaccent(lower(e.consolidatedResult)) LIKE unaccent(lower(:keyword))";
+            $where .= " OR unaccent(lower(e.consolidatedResult)) LIKE unaccent(lower(:{$alias}))";
         });
 
         $app->hook('evaluationsReport(simple).sections', function (Entities\Opportunity $opportunity, &$sections) use ($app) {
@@ -287,10 +289,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $status;
     }
 
-    public function _getConsolidatedResult(Entities\Registration $registration) {
+    public function _getConsolidatedResult(Entities\Registration $registration, array $evaluations) {
         $app = App::i();
-
-        $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration]);
 
         $result = 10;
         foreach ($evaluations as $eval){
@@ -311,7 +311,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
     }
 
-    public function valueToString($value) {
+    protected function _valueToString($value) {
         switch ($value) {
             case '2':
                 return i::__('Inválida');
@@ -333,17 +333,14 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
     function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): array {
         $evaluation_configuration = $evaluation->registration->opportunity->evaluationMethodConfiguration;
-
-        return [];
+        
+        return [
+            'obs' => $evaluation->evaluationData->obs
+        ];
     }
 
-    function _getConsolidatedDetails(Entities\Registration $registration): array {
-        $evaluation_configuration = $registration->opportunity->evaluationMethodConfiguration;
-        return [];
-    }
-    
-    public function fetchRegistrations() {
-        return true;
+    function _getConsolidatedDetails(Entities\Registration $registration): ?array {
+        return null;
     }
 
 }

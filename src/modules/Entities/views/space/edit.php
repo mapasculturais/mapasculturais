@@ -20,6 +20,7 @@ $this->import('
     entity-parent-edit
     entity-profile
     entity-related-agents
+    entity-renew-lock
     entity-social-media
     entity-status
     entity-terms
@@ -39,10 +40,11 @@ $this->breadcrumb = [
 ?>
 
 <div class="main-app">
+    <entity-renew-lock :entity="entity"></entity-renew-lock>
     <mc-breadcrumb></mc-breadcrumb>
     <entity-header :entity="entity" editable></entity-header>
 
-    <mc-tabs class="tabs">
+    <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
             <mc-container>
@@ -69,7 +71,7 @@ $this->breadcrumb = [
                                     </div>
                                     <?php $this->applyTemplateHook('entity-info','end') ?>
                                 </div>
-                                <entity-field :entity="entity" classes="col-12" prop="shortDescription"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
                                 <entity-field :entity="entity" classes="col-12" label="Link para página ou site do espaço" prop="site"></entity-field>
                             </div>
                         </div>

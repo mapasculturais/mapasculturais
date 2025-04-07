@@ -4,16 +4,32 @@
   background-color: #F5F5F5;
 
   &__container {
-    max-width: size(1200);
+    // max-width: size(1200);
     display: flex;
     flex-direction: column;
     margin: 0 auto;
     padding: size(40) size(16);
     min-height: size(500);
+
+    &--bound {
+      max-width: size(1200);
+    }
   }
 
   &__observation {
     margin: size(34) 0;
+  }
+
+  .mc-breadcrumb {
+    &__hasCover  ul {
+      background: transparent;
+      color: #000;
+      padding: size(8) size(16) size(60);
+
+      li::after {
+        content: url('https://api.iconify.design/fe/arrow-right.svg?width=18&height=18');
+      }
+    }
   }
 
 }

@@ -1,6 +1,6 @@
 app.component('entity-file', {
     template: $TEMPLATES['entity-file'],
-    emits: ['uploaded'],
+    emits: ['uploaded', 'setFile'],
 
     setup(props, {slots}) {
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -25,6 +25,9 @@ app.component('entity-file', {
         title: {
             type: String,
             default: ""
+        },
+        description: {
+            type: String
         },
         uploadFormTitle: {
             type: String,
@@ -54,6 +57,14 @@ app.component('entity-file', {
             type: Boolean,
             default: false,
         },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
+        defaultFile: {
+            type: Object,
+            required: false
+        }
     },
 
     data() {
@@ -62,25 +73,43 @@ app.component('entity-file', {
             newFile: {},
             file: this.entity.files?.[this.groupName] || null,
             maxFileSize: $MAPAS.maxUploadSizeFormatted,
+            loading: false
         }
     },
 
     methods: {
         setFile(event) {
             this.newFile = event.target.files[0];
+            this.$emit('setFile', this.newFile);
         },
 
-        upload(modal) {
+        async upload(modal) {
+            this.loading = true;
+
             let data = {
                 description: this.formData.description,
                 group: this.groupName,
             };
 
-            this.entity.upload(this.newFile, data).then((response) => {
+            this.entity.disableMessages();
+            try{
+
+                const response = await this.entity.upload(this.newFile, data);
                 this.$emit('uploaded', this);
                 this.file = response;
+                this.loading = false;
+                this.entity.enableMessages();
                 modal.close()
-            });
+
+            } catch(e) {
+                this.loading = false;
+                if(e.error) {
+                    const messages = useMessages();
+                    messages.error(e.data[this.groupName]);
+                } else {
+                    console.error(e);
+                }
+            }
 
             return true;
         },

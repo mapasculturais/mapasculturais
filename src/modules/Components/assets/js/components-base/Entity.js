@@ -1,5 +1,7 @@
 class Entity {
-    constructor(objectType, id, scope) {
+    static __pkCache = new Map();
+  
+    constructor(objectType, id, scope = 'default') {
         this.__objectType = objectType;
         this.id = id;
         this.__scope = (scope || 'default');
@@ -12,6 +14,12 @@ class Entity {
 
         // as traduções estão no arquivo texts.php do componente <entity>
         this.text = Utils.getTexts('mc-entity');
+    }
+
+    static fromJson(object, scope = 'default') {
+        const entity = new Entity(object['@entityType'], object.id, scope);
+        entity.populate(object);
+        return entity;
     }
 
     populate(obj, preserveValues = true) {
@@ -44,12 +52,20 @@ class Entity {
                 val = this[prop];
             }
 
+            if(prop === 'status' && preserveValues && this[prop] <= 0 && obj[prop] > 0) {
+                this[prop] = obj[prop];
+            }
+
             if ((definition.type == 'datetime' || definition.type == 'date' ) && val && !(val instanceof McDate)) {
                 if (typeof val == 'string') {
                     val = new McDate(val);
                 } else {
                     val = new McDate(val.date);
                 }
+            }
+
+            if (definition.type === 'checklist' && !val) {
+                val = [];
             }
 
             if (prop == 'location' && val) {
@@ -67,7 +83,9 @@ class Entity {
                 };
             }
             if(JSON.stringify(this[prop]) != JSON.stringify(val)) {
-                this[prop] = val;
+                if(!preserveValues || this[prop] == undefined) {
+                    this[prop] = val;
+                }
             }
         }
 
@@ -99,10 +117,14 @@ class Entity {
 
     parseRelation(prop, key) {
         const type = prop?.['@entityType'] || this.$RELATIONS[key]?.targetEntity?.toLocaleLowerCase();
-        if (type && prop?.id) {
+        const id = typeof prop == 'number' ? prop : prop?.id 
+
+        if (type && id) {
             const propAPI = new API(type, this.__scope);
-            const instance = propAPI.getEntityInstance(prop.id);
-            instance.populate(prop, true);
+            const instance = propAPI.getEntityInstance(id);
+            if(typeof prop != 'number') {
+                instance.populate(prop, true);
+            }
             return instance;
         } else {
             return prop;
@@ -184,7 +206,7 @@ class Entity {
                 if (prop == 'type') {
                     val = val.id;
                 } else {
-                    result[prop] = Object.assign({}, val);
+                    result[prop] = JSON.parse(JSON.stringify(val));
                 }
             } else {
                 result[prop] = val;
@@ -217,6 +239,10 @@ class Entity {
 
         if(onlyModifiedFields) {
             for(let key in result) {
+                if(!result[key] && !this.__originalValues[key]) {
+                    delete result[key];
+                }
+
                 if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
                     delete result[key];
                 }
@@ -245,15 +271,14 @@ class Entity {
     }
 
     get $PK() {
-        const __properties = this.$PROPERTIES;
-        let pk;
-        for (let prop in __properties) {
-            if(__properties[prop].isPK) {
-                pk = prop;
-                break;
-            }
+        if (Entity.__pkCache.has(this.__objectType)) {
+            return Entity.__pkCache.get(this.__objectType);
         }
 
+        const __properties = this.$PROPERTIES;
+        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK) ?? [];
+
+        Entity.__pkCache.set(this.__objectType, pk);
         return pk;
     }
 
@@ -274,7 +299,7 @@ class Entity {
     }
 
     get __objectId() {
-        return `${this.__objectType}-${this.id}`;
+        return `${this.__scope}-${this.__objectType}-${this.id}`;
     }
 
     get $RELATIONS() {
@@ -308,8 +333,7 @@ class Entity {
         return this.API.createCacheId(this.id);
     }
 
-    sendMessage(message, type) {
-        type = type || 'success';
+    sendMessage(message, type = 'success') {
         if(this.__messagesEnabled) {
             const messages = useMessages();
             messages[type](message);
@@ -352,7 +376,6 @@ class Entity {
 
         if (res.ok) { // status 20x
             data = cb(data) || data;
-            this.cleanErrors();
             result = Promise.resolve(data);
         } else {
             this.catchErrors(res, data);
@@ -364,7 +387,8 @@ class Entity {
         return result;
     }
 
-    async POST(action, {callback, data}) {        
+    async POST(action, {callback, data, processingMessage}) {
+        this.__processing = processingMessage || this.text('processando');
         const res = await this.API.POST(this.getUrl(action), data);
         callback = callback || (() => {});
 
@@ -381,24 +405,64 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
-    async save(preserveValues = true) {
-        this.__processing = this.text('salvando');
-
-        try {
-            const res = await this.API.persistEntity(this);
-            return this.doPromise(res, (entity) => {
-
-                if (this.id) {
-                    this.sendMessage(this.text('modificacoes salvas'));
-                } else {
-                    this.sendMessage(this.text('entidade salva'));
-                }
-                this.populate(entity, preserveValues)
-            });
-
-        } catch (error) {
-            return this.doCatch(error)
+    async save(delay = 300, preserveValues = true, forceSave) {
+        if(!this.id) {
+            preserveValues = false;
         }
+        
+        clearTimeout(this.__saveTimeout);
+
+        this.resolvers = this.resolvers || [];
+        this.rejecters = this.rejecters || [];
+
+        return new Promise((resolve, reject) => {
+            this.resolvers.push(resolve);
+            this.rejecters.push(reject);
+
+            this.__saveTimeout = setTimeout(async () => {
+                this.__processing = this.text('salvando');
+                try {
+                    const data = this.data(true);
+                    if(JSON.stringify(data) == '{}') {
+                        const response = this.data();
+                        for(let resolve of this.resolvers) {
+                            resolve(response);
+                        }
+                        this.sendMessage(this.text('modificacoes salvas'));
+                        this.__processing = false;
+                        return;
+                    }
+
+                    const res = await this.API.persistEntity(this, forceSave);                    
+                    this.doPromise(res, (entity) => {
+                        if (this.id) {
+                            this.sendMessage(this.text('modificacoes salvas'));
+                        } else {
+                            this.sendMessage(this.text('entidade salva'));
+                        }
+                        this.populate(entity, preserveValues);
+
+                    }).then((response) => {
+                        for(let resolve of this.resolvers) {
+                            resolve(response);
+                        }
+                        this.cleanErrors();
+                    }).catch((error) => {
+                        for(let reject of this.rejecters) {
+                            reject(error);
+                        }
+                    })
+        
+                } catch (error) {
+                    this.doCatch(error).then((response) => {
+                        for(let reject of this.rejecters) {
+                            reject(response);
+                        }                        
+                    });
+                }
+
+            }, delay);
+        });
     }
 
     async delete(removeFromLists) {
@@ -529,7 +593,7 @@ class Entity {
                 return file;
             });
         } catch (error) {
-            this.doCatch(error);
+            return this.doCatch(error);
         }
     }
 
@@ -635,7 +699,6 @@ class Entity {
 
     async renameAgentRelationGroup(oldName, newName) {
         this.__processing = this.text('renomeando grupo de agentes relacionados');
-
         try {
             const res = await this.API.POST(this.getUrl('renameAgentRelationGroup'), {oldName, newName});
             this.doPromise(res, (data) => {
@@ -715,6 +778,16 @@ class Entity {
             });
         } catch (error) {
             return this.doCatch(error);
+        }
+    }
+
+    getHumanReadable(prop) {
+        const propDefinitions = this.$PROPERTIES[prop];
+
+        if(!propDefinitions?.options) {
+            return this[prop]
+        }else {
+            return propDefinitions.options[this[prop]];
         }
     }
 }

@@ -16,6 +16,6 @@ $this->import('
     
     <div class="mc-summary-agent__agent">
         <mc-avatar :entity="entity.owner" size="small"></mc-avatar>
-        <h5>{{owner.name}}</h5>
+        <!-- <h5>{{owner.name}}</h5> -->
     </div>
 </div>

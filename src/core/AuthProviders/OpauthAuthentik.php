@@ -36,20 +36,6 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
             'callback_url' => $app->createUrl('auth','response')
         ];
         
-        
-        /*//  SaaS -- BEGIN
-        $app->hook('template(subsite.<<*>>.tabs):end', function() use($app){
-            if($app->user->is('saasAdmin') || $app->user->is('superSaasAdmin')) {
-                $this->part('singles/subsite--authentik--tab');
-            }
-        });
-        
-        $app->hook('template(subsite.<<*>>.tabs-content):end', function() use($app){
-            if($app->user->is('saasAdmin') || $app->user->is('superSaasAdmin')) {
-                $this->part('singles/subsite--authentik--content');
-            }
-        });*/
-        
         $metadata = [
             'authentik__id' => ['label' => 'Authentik Client ID', 'private' => 'true'],
             'authentik__secret' => ['label' => 'Authentik Client Secret', 'private' => 'true']
@@ -58,24 +44,6 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
         foreach($metadata as $k => $cfg){
             $def = new \MapasCulturais\Definitions\Metadata($k, $cfg);
             //$app->registerMetadata($def, 'MapasCulturais\Entities\Subsite');
-        }
-        
-        /*if($subsite = $app->getCurrentSubsite()){
-
-            
-            $authentik__id = $subsite->getMetadata('authentik__id');
-            $authentik__secret = $subsite->getMetadata('authentik__secret');
-            
-            if($authentik__id && $authentik__secret){
-                $opauth_config['Strategy']['authentik']['client_id'] = $authentik__id;
-                $opauth_config['Strategy']['authentik']['client_secret'] = $authentik__secret;
-            }
-        }*/
-        
-        // SaaS -- END
-
-        if(isset($config['onCreateRedirectUrl'])){
-            $this->onCreateRedirectUrl = $config['onCreateRedirectUrl'];
         }
 
         $opauth = new \Opauth($opauth_config, false );
@@ -111,32 +79,7 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
     public function _cleanUserSession() {
         unset($_SESSION['opauth']);
     }
-    public function _requireAuthentication() {
-        $app = App::i();
-        if($app->request->isAjax()){
-            $app->halt(401, \MapasCulturais\i::__('This action requires authentication'));
-        }else{
-            $this->_setRedirectPath($app->request->getPathInfo());
-            $app->redirect($app->controller('auth')->createUrl(''), 401);
-        }
-    }
-    /**
-     * Defines the URL to redirect after authentication
-     * @param string $redirect_path
-     */
-    protected function _setRedirectPath($redirect_path) {
-        parent::_setRedirectPath($redirect_path);
-    }
-    /**
-     * Returns the URL to redirect after authentication
-     * @return string
-     */
-    public function getRedirectPath(){
-        $path = key_exists('mapasculturais.auth.redirect_path', $_SESSION) ?
-                    $_SESSION['mapasculturais.auth.redirect_path'] : App::i()->createUrl('site','');
-        unset($_SESSION['mapasculturais.auth.redirect_path']);
-        return $path;
-    }
+    
     /**
      * Returns the Opauth authentication response or null if the user not tried to authenticate
      * @return array|null
@@ -150,6 +93,10 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
         switch($this->opauth->env['callback_transport']) {
             case 'session':
                 $response = key_exists('opauth', $_SESSION) ? $_SESSION['opauth'] : null;
+                if(isset($response['error'])) {
+                    unset($_SESSION['opauth']);
+                    return null;
+                }
                 break;
             case 'post':
                 $response = unserialize(base64_decode( $_POST['opauth'] ));
@@ -231,7 +178,6 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
                 $user = $this->createUser($response);
 
                 $profile = $user->profile;
-                $this->_setRedirectPath($this->onCreateRedirectUrl ? $this->onCreateRedirectUrl : $profile->editUrl);
             }
             $this->_setAuthenticatedUser($user);
             App::i()->applyHook('auth.successful');
@@ -258,7 +204,7 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
         // cria um agente do tipo user profile para o usuário criado acima
         $agent = new Entities\Agent($user);
 
-        $agent->status = 0;
+        $agent->status = 1;
         
         if(isset($response['auth']['raw']['name'])){
             $agent->name = $response['auth']['raw']['name'];
@@ -275,8 +221,6 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
         $user->save(true);
 
         $app->enableAccessControl();
-
-        $this->_setRedirectPath($this->onCreateRedirectUrl ? $this->onCreateRedirectUrl : $agent->editUrl);
 
         return $user;
     }

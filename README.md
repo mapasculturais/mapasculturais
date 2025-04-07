@@ -23,15 +23,20 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Ceará - https://mapacultural.secult.ce.gov.br/
 - Espírito Santo - https://mapa.cultura.es.gov.br/
 - Goiás - https://mapagoiano.cultura.go.gov.br/
-- Maranhão - http://ma.mapas.cultura.gov.br/
+- Maranhão - https://mapadacultura.ma.gov.br/
 - Mato Grosso - https://mapas.mt.gov.br/
 - Mato Grosso do Sul - https://www.mapacultural.ms.gov.br/
 - Pará - https://mapacultural.pa.gov.br/
 - Paraíba - http://pb.mapas.cultura.gov.br/
 - Pernambuco - https://www.mapacultural.pe.gov.br/
 - Sergipe - http://mapas.cultura.se.gov.br/
-- Tocantins - http://mapa.cultura.to.gov.br/
+- Tocantins - https://mapadacultura.secult.to.gov.br/
+- Acre - https://mapadacultura.ac.gov.br/
+- Roraima - https://mapadacultura.rr.gov.br/
+
 ### Instalações municipais
+
+- Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
 - Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
@@ -46,6 +51,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Londrina - https://londrinacultura.londrina.pr.gov.br/
 - Foz do Iguaçu - http://mapadaculturafoz.pmfi.pr.gov.br/
 - Maringa - http://maringacultura.maringa.pr.gov.br:38081/
+- Toledo/PR - https://cultura.toledo.pr.gov.br/
 - Rio das Ostras - http://mapadacultura.riodasostras.rj.gov.br/
 - Laguna - http://laguna.sc.mapas.cultura.gov.br/
 - Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/
@@ -60,6 +66,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Itu - http://mapacultural.itu.sp.gov.br/
 - Guarulhos - http://grucultura.guarulhos.sp.gov.br/
 - Itapetininga - http://mapacultural.itapetininga.sp.gov.br/
+- Lagoa Santa - https://mapacultural.lagoasanta.mg.gov.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
@@ -144,12 +151,32 @@ Recomendado:
 
 Vale lembrar que os requisitos de hardware podem variar de acordo com a latência da rede, velocidade dos cores dos cpus, uso de proxies, entre outros fatores. Recomendamos aos sysadmin da rede em que a aplicação será instalada um monitoramento de tráfego e uso durante o período de 6 meses a 1 ano para avaliação de cenário de uso. 
 
-### Canais de comunicação
+## Canais de comunicação
 
-* [Lista de discussão](https://groups.google.com/forum/?hl=en#!forum/mapas-culturais)
-* Telegram: [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
+* Jitsi: https://meet.jit.si/MapasCulturais
+* Canal do Telegram: [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
 
-### Licença de uso e desenvolvimento
+###Regras do grupo do Telegram MAPAS CULTURAIS [DEV]
+
+* Antes de postar, releia e analise se o conteúdo:
+Ofenda as pessoas do grupo;
+Se o conteúdo tem procedência. Só poste se você pode defender a autenticidade do assunto, consulte fontes seguras;
+Seja propositivo, não faça críticas desnecessárias;
+Se precisar chamar a atenção de alguém, faça com mensagens privadas, direto para os responsáveis;
+Evite “ser chato”;
+Qualquer membro que se sentir ofendido por outro, poderá informar aos admins para análise do conteúdo
+Não faça publicidade e propagandas fora do tema Preferencialmente mande mensagem, mas audio não está proibido Nada de correntes: Repassar correntes é de muito mau gosto, até mesmo aquelas de “utilidade pública”. **Evite *
+
+* Atitutdes proibidas, com possibilidade de ser removido do grupo:
+
+Fazer propaganda, sem a permissão dos moderadores;
+Envio de links de grupos sem a prévia autorização dos moderadores;
+Postar assuntos que não sejam pertinentes ao propósito do grupo;
+Postar mensagens com conteúdo de brincadeiras, piadas, racismo, pornografia, correntes, ativismo político, homofóbicos, sexualmente explícitos e abusivos;
+Link externo para páginas inadequadas de forma evitar SPAM;
+Debates políticos com propósitos partidários. 
+  
+## Licença de uso e desenvolvimento
 
 Mapas Culturais é um software livre licenciado com [GPLv3](http://gplv3.fsf.org). 
 

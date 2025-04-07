@@ -12,6 +12,10 @@
         gap: size(10);
         padding: 0;
         flex-wrap: wrap;
+
+        & > li {
+            list-style: none;
+        }
     }
 
     &__tag {
@@ -24,7 +28,6 @@
         gap: size(10);
         justify-content: space-between;
         line-height: size(13);
-        list-style: none;
         min-height: size(33);
         padding: size(7) size(14);
         position: relative;

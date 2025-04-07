@@ -8,7 +8,7 @@ $app->view->jsObject['angularAppDependencies'][] = 'ng.reports';
 
 $module = $app->modules['Reports'];
 
-$statusValue = 'all';
+$statusValue = $this->controller->urlData['status'] ?? 'all';
 
 switch ($statusValue) {
     case 'all':
@@ -16,6 +16,15 @@ switch ($statusValue) {
         break;
     case 'draft':
         $status = '= 0';
+        break;
+    case 'invalid': 
+        $status = '= 2';
+        break;
+    case 'notapproved': 
+        $status = '= 3';
+        break;
+    case 'waitlist': 
+        $status = '= 8';
         break;
     case 'approved':
         $status = '= 10';
@@ -31,7 +40,6 @@ $app->view->jsObject['reportStatus'] = $statusValue;
 
 $opportunity = $this->controller->requestedEntity;
 $sendHook = [];
-
 if (!$opportunity->isOpportunityPhase) {
     if ($registrationsByTime = $module->registrationsByTime($opportunity, $status)) {
         $sendHook['registrationsByTime'] = $registrationsByTime;

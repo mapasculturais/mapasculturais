@@ -260,7 +260,8 @@ select {
 }
 
 textarea {
-    min-height: 5.688rem;
+    min-height: 5.688rem !important;
+    white-space: break-spaces !important;
 }
 
 
@@ -325,6 +326,21 @@ textarea {
     line-height: 19px;
 }
 
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field] .two-column {
+    display: inline-flex;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field] .field_checkbox {
+    margin-bottom: 8px;
+    display: flex;
+    gap: 8px;
+    font-weight: 560;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=field] .field_checkbox:last-child {
+    margin-bottom: 0;
+}
+
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .title_section {
     background-color: #F5F5F5 !important;
     padding: 40px 0 24px!important;
@@ -351,24 +367,38 @@ textarea {
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .label {
     display: flex;
-    font-size: 0.875rem;
+    font-size: 1.125rem;
     font-weight: 600;
     gap: 0.313rem;
     line-height: 1.188rem;
     margin-bottom: 0.5rem;
 }
 
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
-    font-weight: 400;
-    font-size: 0.875rem;
-    line-height: 16px;
-    color: #141414;
-    margin-bottom: 0.5rem;
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .field-required {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1rem;
 }
 
-.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .attachment-description {
-    margin-bottom: 2rem;
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
+    font-weight: 700;
+    font-size: 0.938rem;
+    line-height: 16px;
+    color: #888;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+}
 
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .relation-field-info {
+    display: flex;
+    font-weight: 700;
+    font-size: 0.938rem;
+    padding-bottom: 0.5rem;
+}
+
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .relation-field-info:before,
+.action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item .relation-field-info:after {
+    content: '* ';
 }
 
 .action-registrationform .registration-edit-mode ul.attachment-list li.attachment-list-item div[id^=file] .btn,
@@ -746,7 +776,27 @@ textarea {
 /* Registration View */
 .action-registrationview .registration .registration-fieldset {
     padding: 0;
+    border: none;
 }
+
+.action-registrationview .registration .registration-fieldset .registration-step {
+    display: grid;
+    margin-top: 1rem;
+    border: 1px solid #BBB;
+    border-radius: .5rem;
+    overflow: hidden;
+}
+
+/* .action-registrationview .registration .registration-fieldset .registration-step > ul {
+    padding: 1rem;
+} */
+
+.action-registrationview .registration .registration-fieldset .registration-step__title {
+    padding: 1rem;
+    background-color: white;
+    font-weight: bold;
+}
+
 .action-registrationview .registration .registration-fieldset ul.attachment-list li {
     background-color: #FFFFFF;
     padding: 0 27px 16px;
@@ -1271,6 +1321,16 @@ textarea {
 
 
 /* Registration Evaluation Form View */
+.action-registrationevaluationtionformview .registration-step .registration-step__title {
+    background-color: #606060;
+    border-radius: 4px;
+    color: white;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-block: 16px;
+    padding: 16px;
+}
+
 .action-registrationevaluationtionformview #registration-attachments {
     padding: 0;
     border: none;
@@ -1531,6 +1591,17 @@ table {
     display: none;
 }
 
+.action-registrationformpreview .attachment {
+    display: grid;
+    gap: 5px;
+}
+
+.action-registrationformpreview .attachment label {
+    font-weight: 600;
+    font-size: 13px;
+    color: #333333;
+}
+
 .action-registrationformpreview .btn {
     width: min-content;
     padding: 11px 12px;
@@ -1576,6 +1647,43 @@ table {
     border-top: 16px solid #FFFFFF;
     border-bottom: 16px solid #FFFFFF;
 }
+
+.action-registrationformpreview .registration-edit-mode ul.attachment-list li.attachment-list-item .label {
+    display: flex;
+    font-size: 1.125rem;
+    font-weight: 600;
+    gap: 0.313rem;
+    line-height: 1.188rem;
+    margin-bottom: 0.5rem;
+}
+
+.action-registrationformpreview .registration-edit-mode ul.attachment-list li.attachment-list-item .label .field-required {
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1rem;
+}
+
+.action-registrationformpreview .registration-edit-mode ul.attachment-list li.attachment-list-item .attachment-description {
+    font-weight: 700;
+    font-size: 0.938rem;
+    line-height: 16px;
+    color: #888;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+}
+
+.action-registrationformpreview .registration-edit-mode ul.attachment-list li.attachment-list-item .relation-field-info {
+    display: flex;
+    font-weight: 700;
+    font-size: 0.938rem;
+    padding-bottom: 0.5rem;
+}
+
+.action-registrationformpreview .registration-edit-mode ul.attachment-list li.attachment-list-item .relation-field-info:before,
+.action-registrationformpreview .registration-edit-mode ul.attachment-list li.attachment-list-item .relation-field-info:after {
+    content: '* ';
+}
+
 .action-registrationformpreview .registration ul.registration-list li.registration-list-item:hover {
     background-color: #FFFFFF;
 }
@@ -1649,4 +1757,5 @@ table {
 .action-registrationformpreview #registration-attachments ul.attachment-list li.attachment-list-item {
     background-color: #FFFFFF;
     padding: 16px;
+    margin-bottom: 20px;
 }

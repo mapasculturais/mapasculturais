@@ -1,0 +1,83 @@
+@use '../0.settings/mixins' as *;
+
+.faq-info {
+    max-width: size(400);
+    max-height: size(400);
+    overflow: auto;
+    padding-right: size(10);
+    margin: size(10);
+
+    @media (max-width: size(500)) {
+        max-width: unset;
+        max-height: 100%;
+        margin: 0;
+    }
+
+    &__title {
+        font-weight: 700;
+        color: var(--mc-primary-500);
+        padding: size(15) 0;
+        border-bottom: size(1) solid var(--mc-gray-500);
+        text-align: center;
+    }
+
+    &__content {
+        text-align: justify;
+        overflow: auto;
+        margin: size(15) 0;
+
+        & > blockquote {
+            padding: size(10) size(16);
+            margin: size(16) 0;
+            background-color: var(--mc-gray-100);
+        }
+
+        & > p {
+            margin-bottom: size(15);
+        }
+
+        & > ul {
+            text-align: left;
+        }
+
+        & > table {
+            margin: size(15) 0;
+
+            & > thead > tr > th {
+                border-bottom: size(2) solid var(--mc-low-500);
+                text-align: left;
+            }
+
+            & > tbody > tr > td {
+                border-bottom: size(1) solid var(--mc-low-500);
+            }
+        }
+    }
+
+    &__tags  {
+        & ul {
+            margin-bottom: size(15);
+
+            & li {
+                background-color: var(--mc-faq-500);
+            }
+        }
+    }
+
+    &__button {
+        align-items: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+
+        .iconify {
+            color: var(--mc-primary-500);
+            font-size: size(18);
+            height: size(18);
+            width: size(18);
+        }
+    }
+
+}

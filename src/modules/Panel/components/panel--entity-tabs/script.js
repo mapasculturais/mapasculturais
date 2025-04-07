@@ -24,7 +24,7 @@ app.component('panel--entity-tabs', {
             queries: {
                 publish: { status: 'GTE(1)', ...query },
                 draft: { status: 'EQ(0)', ...query },
-                granted: { '@Permissions': '@control', ...query, user: '!EQ(@me)' },
+                granted: { ...query, '@permissions': '@control', status: 'GTE(0)', user: '!EQ(@me)' },
                 trash: { status: 'EQ(-10)', ...query },
                 archived: { status: 'EQ(-2)', ...query },
             },

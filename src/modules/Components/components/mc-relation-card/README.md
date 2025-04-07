@@ -1,11 +1,11 @@
 # Componente `<mc-relation-card>`
-Card para listagem dos detalhes dos agentes relacionados
+O componente `mc-relation-card` é utilizado para exibir informações sobre uma relação entre entidades no sistema. Este componente mostra detalhes como o nome, tipo, e áreas de atuação do agente relacionado, além de indicar o status da solicitação da relação.
   
 ## Propriedades
-- *Object **relation*** - Relação do agente
+- *Object **relation*** - Define a relação entre entidades. Pode ser um objeto do tipo Entity ou Object.
 
 ## Slots
-- **default** `{open, close, toggle}`: Botão para abrir o card (icone do usuário)
+- **default** `{open, close, toggle}`: permite personalizar o conteúdo do botão que abre o popover
 
 ### Importando componente
 ```PHP
@@ -16,10 +16,12 @@ $this->import('mc-relation-card');
 ### Exemplos de uso
 ```HTML
 <!-- utilizaçao básica -->
-<mc-relation-card :entity="entity" name="Fulano">
-    <a @click="$event.preventDefault(); toggle()">
-        <mc-icon name="agent"></mc-icon>
-    </a>
-</mc-relation-card>
+ <mc-relation-card :relation="relation"></mc-relation-card>
 
+<!-- Utilizando Slots -->
+<mc-relation-card :relation="relation">
+    <template #button="{open, close, toggle}">
+        <button @click="toggle">Abrir Relação</button>
+    </template>
+</mc-relation-card>
 ```

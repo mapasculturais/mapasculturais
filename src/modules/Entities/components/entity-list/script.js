@@ -9,9 +9,11 @@ app.component('entity-list', {
     },
 
     data() {        
+        const ids = this.ids.map((item) => typeof 'object' ? item.id : item).join(',');
+        
         return {
             query: {
-                'id': `IN(${this.ids})`,
+                'id': `IN(${ids})`,
             },
         };
     },

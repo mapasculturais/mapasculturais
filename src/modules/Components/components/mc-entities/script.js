@@ -1,12 +1,14 @@
 app.component('mc-entities', {
     template: $TEMPLATES['mc-entities'],
-    emits: ['fetch'],
+    emits: ['fetch', 'loading'],
 
     data() {
         return {
+            abortController: null,
             api: new API(this.type, this.scope || 'default'),
             entities: [],
-            page: 1
+            page: 1,
+            timeout: null,
         }
     },
 
@@ -57,10 +59,7 @@ app.component('mc-entities', {
         },
         limit: Number,
         permissions: String,
-        order: {
-            type: String,
-            default: 'id ASC'
-        },
+        order: String,
         watchQuery: {
             type: Boolean,
             default: false
@@ -77,48 +76,72 @@ app.component('mc-entities', {
         scope: {
             type: String,
             default: 'default'
+        },
+
+        emptyTextType: {
+            type: Boolean,
+            default: false,
         }
 
     },
-    
+
+    computed: {
+        defaultOrder () {
+            if ($DESCRIPTIONS[this.type].name) {
+                return 'name ASC';
+            } else {
+                return 'id ASC';
+            }
+        }
+    },
+
     methods: {
         populateQuery(query) {
             if (this.select) {
                 query['@select'] = this.select;
-            } 
-    
+            }
+
             if (this.ids) {
                 query[this.API.$PK] = 'IN(' + this.ids.join(',') + ')'
             }
 
             if (this.order) {
                 query['@order'] = this.order; 
+            } else if (!query['@order']) {
+                query['@order'] = this.defaultOrder;
             }
-    
+
             if (this.limit) {
                 query['@limit'] = this.limit;
                 query['@page'] = this.page;
             }
-    
+
             if (this.permissions) {
                 query['@permissions'] = this.permissions;
             }
         },
 
         getDataFromApi() {
-            let query = {...this.query};
+            const query = {...this.query};
+
+            this.$emit('loading', query);
+
             this.populateQuery(query);
 
-            const options = {list: this.entities};
+            const options = {list: this.entities, refresh: true};
 
             if (this.limit && this.page) {
                 query['@page'] = this.page;
             }
-            
+
             if (this.rawProcessor) {
                 options.raw = true;
                 options.rawProcessor = this.rawProcessor;
             };
+
+            this.abortController?.abort();
+            this.abortController = new AbortController();
+            options.signal = this.abortController.signal;
 
             const result = this.api.fetch(this.endpoint, query, options);
 
@@ -128,17 +151,20 @@ app.component('mc-entities', {
 
             return result;
         },
-        
+
         refresh(debounce) {
-            debounce = debounce || 0;
-            this.page = 1;
-            this.entities.loading = true;
-            this.entities.splice(0);
-            clearTimeout(this.timeout);
+            if (this.timeout) {
+                clearTimeout(this.timeout);
+            };
+        
             this.timeout = setTimeout(() => {
-                this.getDataFromApi().then(() => { 
-                    this.entities.loading = false;
-                });
+                this.entities.splice(0);
+                this.entities.loading = true;
+
+                this.getDataFromApi()
+                    .then(() => {
+                        this.entities.loading = false;
+                    })
             }, debounce);
         },
 
@@ -147,6 +173,11 @@ app.component('mc-entities', {
                 console.error('Tentado obter mais resultados em consulta sem paginação');
                 return;
             }
+
+            if (this.entities.loadingMore) {
+                return;
+            };
+
             this.page++;
             this.entities.loadingMore = true;
             this.getDataFromApi().then(() => { 
@@ -156,7 +187,23 @@ app.component('mc-entities', {
 
         showLoadMore() {
             return this.entities.length > 0 && this.entities.metadata?.page < this.entities.metadata?.numPages;
-        }
+        },
 
+        showEmptyText(type) {
+            switch(type) {
+                case 'agent':
+                    return this.text('Nenhum agente encontrado');
+                case 'project':
+                    return this.text('Nenhum projeto encontrado');
+                case 'opportunity': 
+                    return this.text('Nenhuma oportunidade encontrada');
+                case 'event':
+                    return this.text('Nenhum evento encontrado');
+                case 'space':
+                    return this.text('Nenhum espaço encontrado');
+                default:
+                    return this.text('Nenhuma entidade encontrada');
+            }
+        },
     },
 });

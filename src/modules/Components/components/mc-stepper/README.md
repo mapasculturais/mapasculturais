@@ -1,15 +1,17 @@
 # Componente `<mc-stepper>`
-Componente para listar um passo-a-passo
+O componente `mc-stepper` é utilizado para exibir uma barra de navegação sequencial, geralmente usada para orientar o progresso através de uma série de etapas ou passos em um processo.
 
 ### Eventos
-- 
+- **stepChanged** - Disparado quando a etapa atual é alterada através da navegação no stepper.
   
 ## Propriedades
-- *Array/Object **steps*** - Steps a serem listados
-- *Number **actual-step** = 1* - Step atual
-- *Boolean **only-active-label** = false* - Mostra apenas os labels dos steps ativos
-- *Boolean **no-labels** = false* - Não lista nenhuma label 
-- *Boolean **small** = false* - Modifica o estilo do stepper
+- *Small **Boolean*** - Define o tamanho compacto do stepper.
+- *Id **String*** - ID único para o componente.
+- *Steps **Array*** - Array de etapas ou número total de etapas no stepper.
+- *OnlyActiveLabel **Boolean*** - Define se apenas a label da etapa ativa deve ser exibida.
+- *NoLabels **Boolean*** - Define se as labels das etapas devem ser ocultadas.
+- *DisableNavigation **Boolean*** - Desabilita a navegação entre as etapas.
+- *DisabledSteps* - Array com os índices de etapas desabilitadas.
 
 ### Importando componente
 ```PHP

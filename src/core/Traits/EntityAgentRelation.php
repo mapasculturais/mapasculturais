@@ -1,9 +1,12 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\Exception\NotSupported;
 use MapasCulturais\App,
     MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\PermissionDenied;
+use RuntimeException;
 
 /**
  * Defines that this entity has agents related to it.
@@ -26,6 +29,23 @@ trait EntityAgentRelation {
         return self::getClassName() . 'AgentRelation';
     }
 
+    /**
+     * Retorna as relações de agente do usuário
+     * 
+     * @param User $user 
+     * @param mixed $has_control 
+     * @param bool $include_pending_relations 
+     * @return AgentRelation[]|array
+     */
+    function getAgentRelationOfUser(User $user, $has_control = null, $include_pending_relations = false): array {
+        $relations = $this->getAgentRelations($has_control, $include_pending_relations);
+        $result = array_filter($relations, function($relation) use ($user){
+            return $relation->agent->user->id === $user->id;
+        });
+
+        return $result;
+    }
+
     function getAgentRelations($has_control = null, $include_pending_relations = false){
         if(!$this->id){
             return [];
@@ -36,8 +56,13 @@ trait EntityAgentRelation {
         if(!class_exists($relation_class)){
             return [];
         }
+
+        $app = App::i();
         
         $agent_statuses = [Agent::STATUS_ENABLED, Agent::STATUS_INVITED, Agent::STATUS_RELATED];
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.agentRelationsAllowedStatus", [&$agent_statuses]);
+
         $relations = [];
         
         $__relations = $this->__agentRelations;
@@ -188,6 +213,9 @@ trait EntityAgentRelation {
     }
 
     function userHasControl($user){
+        if ($user->is('guest')) {
+            return false;
+        }
         if($this->isUserAdmin($user))
             return true;
 
@@ -237,12 +265,14 @@ trait EntityAgentRelation {
         $this->checkPermission('modify');
 
         $app = App::i();
-
+        
         if($old_name === 'group-admin') {
             return false;
         }
-
+        
         $relations = $this->getRelatedAgents($old_name, true, true) ?: []; 
+        
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.renameAgentRelationGroup:before", [$old_name, &$new_name, $relations]);
 
         foreach($relations as $relation) {
             $relation->group = $new_name;
@@ -253,6 +283,8 @@ trait EntityAgentRelation {
 
             $relation->save(true);
         }
+
+        $app->applyHookBoundTo($this, "{$this->hookPrefix}.renameAgentRelationGroup:after", [$old_name, $new_name, $relations]);
 
         return true;
     }

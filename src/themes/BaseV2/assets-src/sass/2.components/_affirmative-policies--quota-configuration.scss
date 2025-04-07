@@ -1,0 +1,98 @@
+@use '../0.settings/mixins' as *;
+
+.affirmative-policies--quota-configuration {
+    display: grid;
+    gap: size(20);
+
+    &__activate,
+    &__add-category {
+        align-items: center;
+        display: flex;
+        gap: size(19);
+    }
+
+    &__header {
+        border: size(1) solid var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+        padding: size(13) size(23);
+        display: grid;
+        gap: size(8);
+    }
+
+    &__header-fields {
+        display: flex;
+        gap: size(10);
+    }
+
+    // Estilização do card
+    &__card {
+        border: size(1) solid var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+    }
+
+    &__card-header {
+        align-items: center;
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        display: grid;
+        gap: size(9);
+        grid-template-columns: 
+            calc(60% - size(45)) 
+            calc(20% - size(46)) 
+            calc(20% - size(46))
+            size(110);
+            
+        padding: size(13) size(23);
+    }
+
+    &__card-header-info {
+        display: grid;
+        gap: size(8);
+    }
+
+    &__card-content {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        display: grid;
+        gap: size(20);
+        padding: size(18) size(23);
+        max-width: size(1018);
+    }
+
+    &__card-footer {
+        padding: size(10) size(23);
+    }
+
+    // Estilização interna
+    &__quota-field {
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+        
+        padding-top: size(20);
+
+        &:first-child {
+            padding-top: 0;
+            border: 0;
+        }
+
+        .mc-select {
+            max-width: size(870);
+        }
+        .field--horizontal {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__field {
+        margin-bottom:1rem;
+    }
+
+    &__quota-field-sufix {
+        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr size(20);
+        justify-items: center;
+    }
+
+    .field--horizontal {
+        max-width: size(870);
+        flex-wrap: wrap;
+    }
+}

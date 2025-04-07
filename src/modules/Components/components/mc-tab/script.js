@@ -34,12 +34,14 @@ app.component('mc-tab', {
         const hash = '#' + (!props.disabled ? props.slug : '')
         const isActive = Vue.ref(false)
         const tabsProvider = Vue.inject('tabsProvider')
+        const global = useGlobalState();
 
         let timeout = null
         Vue.watch(
             () => tabsProvider.activeTab,
             () => {
                 isActive.value = props.slug === tabsProvider.activeTab?.slug
+                global.mcTabActive = tabsProvider.activeTab?.slug;
 
                 window.clearTimeout(timeout)
                 if (props.cache) {
@@ -55,6 +57,11 @@ app.component('mc-tab', {
             }
         )
 
+        Vue.watch(() => props.label, () => {
+            const tab = tabsProvider.tabs.find((tab) => tab.hash == hash);
+            tab.label = props.label;
+        })
+
         Vue.onBeforeMount(() => {
             tabsProvider.tabs.push({
                 disabled: props.disabled,
@@ -66,6 +73,18 @@ app.component('mc-tab', {
                 slug: props.slug,
             })
         })
+
+        Vue.onBeforeUnmount(() => {
+            const tab = tabsProvider.tabs.find((tab) => tab.hash == hash);
+
+            const index = tabsProvider.tabs.indexOf(tab);
+            if (index > -1) {
+                tabsProvider.tabs.splice(index, 1);
+            }
+            if (tabsProvider.activeTab.slug === props.slug) {
+                tabsProvider.activeTab = tabsProvider.tabs[0];
+            }
+        });
 
         return {
             cached,

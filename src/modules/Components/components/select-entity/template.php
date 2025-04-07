@@ -16,17 +16,17 @@ $this->import('
     create-agent
 ');
 ?>
-    <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" :classes="[classes, 'select-entity__popover']"> 
+    <mc-popover :openside="openside" :button-label="buttonLabel" :title="itensText" :button-classes="[buttonClasses, type + '__color']" :classes="[classes, 'select-entity__popover']" @close="clearField" @confirm="clearField"> 
         <template #button="{ toggle }">
             <slot name="button" :toggle="toggle"></slot>
         </template>
 
         <template #default="{ close }">
             <div class="select-entity">
-                <mc-entities :type="type" :select="select" :query="query" :limit="limit" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
+                <mc-entities :type="type" :select="select" :query="query" :limit="limit" order="name ASC" :scope="scope" :permissions="permissions" @fetch="fetch($event)" watch-query>
                     <template #header="{entities}">
                         <form class="select-entity__form" @submit="entities.refresh(); $event.preventDefault();">
-                            <input v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="search" :placeholder="placeholder" @input="entities.refresh(500)"/>
+                            <input ref="searchKeyword" v-model="entities.query['@keyword']" type="text" class="select-entity__form--input" name="searchKeyword" :placeholder="placeholder" @keyup="entities.refresh(500)"/>
                             <button type="button" class="select-entity__form--button">
                                 <mc-icon name="search"></mc-icon>
                             </button>

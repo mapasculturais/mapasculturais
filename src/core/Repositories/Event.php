@@ -146,7 +146,7 @@ class Event extends \MapasCulturais\Repository{
             $dql_offset = 'OFFSET ' . $offset;
         }
 
-        $space_ids = $this->_getCurrentSubsiteSpaceIds();
+        $space_ids = $this->_getCurrentSubsiteSpaceIds(true);
         
         if(is_array($ids)){
             $ids = implode(',', $ids);
@@ -214,7 +214,7 @@ class Event extends \MapasCulturais\Repository{
             $dql_offset = 'OFFSET ' . $offset;
         }
 
-        $space_ids = $this->_getCurrentSubsiteSpaceIds();
+        $space_ids = $this->_getCurrentSubsiteSpaceIds(true);
 
         $sql = "
             SELECT
@@ -290,7 +290,7 @@ class Event extends \MapasCulturais\Repository{
             $dql_offset = 'OFFSET ' . $offset;
         }
 
-        $space_ids = $this->_getCurrentSubsiteSpaceIds();
+        $space_ids = $this->_getCurrentSubsiteSpaceIds(true);
 
         $sql = "
             SELECT
@@ -339,11 +339,11 @@ class Event extends \MapasCulturais\Repository{
     
     function _getIdsBySQL($sql, $params = []){
         $conn = $this->_em->getConnection();
-
+    
         if($params){
-            $rs = $conn->fetchAssociative($sql, $params);
+            $rs = $conn->fetchAllAssociative($sql, $params);
         } else {
-            $rs = $conn->fetchAssociative($sql);
+            $rs = $conn->fetchAllAssociative($sql);
         }
 
         $rs = $rs ?: [];

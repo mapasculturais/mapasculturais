@@ -13,16 +13,18 @@ $this->import('
 <div v-if="entities.length > 0 && global.enabledEntities.opportunities" class="panel--last-registrations">
     <div class="panel--last-registrations__content">
         <div class="panel--last-registrations__content-title">
-            <label> <?php i::_e('Inscrições recentes')?> </label>
+            <label> <?= $this->text('recent_registrations', i::__('Inscrições recentes'))?> </label>
         </div>
         <div class="panel--last-registrations__content-cards">
             <carousel :settings="settings" :breakpoints="breakpoints">
                 <slide v-for="entity in entities" :key="entity.id">
                     <div class="card">
                         <div class="card__content">
-                            <label class="card__content--title"> {{entity.opportunity.name}} </label>              
+                            <a target="__blank" :href="entity.singleUrl">
+                                <label class="card__content--title"> {{entity.opportunity.name}} </label>  
+                            </a>            
                             <div class="card__content--description date">
-                                <label><?= i::_e('Data de inscrição') ?></label>
+                                <label><?= $this->text('registration_date', i::__('Data de inscrição')) ?></label>
                                 <strong>{{entity.opportunity.registrationFrom?.format()}} <?= i::_e('às') ?> {{entity.opportunity.registrationFrom?.hour()}}h</strong>
                             </div>    
                         </div>
