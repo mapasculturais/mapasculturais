@@ -395,6 +395,15 @@ class Registration extends \MapasCulturais\Entity
             'label' => i::__('Lista de exclusão de avaliadores')
         ];
 
+        $result['valuers'] = [
+            'isEntityRelation' => false,
+            'isMetadata' => false,
+            'isPK' => false,
+            'required' => false,
+            'type' => 'array',
+            'label' => i::__('Lista de avaliadores da inscrição')
+        ];
+
         return $result;
     }
     
@@ -428,6 +437,7 @@ class Registration extends \MapasCulturais\Entity
         if($this->opportunity->canUser('@control')) {
             $json['valuersIncludeList'] = $this->valuersIncludeList;
             $json['valuersExcludeList'] = $this->valuersExcludeList;
+            $json['valuers'] = $this->valuers;
         }
 
         if($this->canUser('viewConsolidatedResult')){
