@@ -300,9 +300,13 @@ $today = new DateTime();
         <mc-tab v-if="entity.opportunity.currentUserPermissions['@control']" label="<?= i::_e('Avaliadores') ?>" slug="valuers">
             <div class="registration__content">
                 <?php $phase = $entity; 
-                    while($phase): $opportunity = $phase->opportunity;?>
+                    while($phase):
+                        if (!$phase->opportunity->evaluationMethodConfiguration) {
+                            continue;
+                        }
+                        ?>
                     <mc-card>
-                        <registration-evaluation-tab :entity="entity"></registration-evaluation-tab>
+                        <registration-evaluation-tab :phase-id="<?= $phase->opportunity->id ?>"></registration-evaluation-tab>
                         <?php $phase = $phase->nextPhase; ?>
                     </mc-card>
                 <?php endwhile ?>
