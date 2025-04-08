@@ -2,8 +2,8 @@ app.component('registration-evaluation-tab', {
     template: $TEMPLATES['registration-evaluation-tab'],
 
     props: {
-        entity: {
-            type: Entity,
+        phaseId: {
+            type: Number,
             required: true
         },
     },
@@ -14,11 +14,11 @@ app.component('registration-evaluation-tab', {
     },
 
     data() {
-        console.log("valuers do init.php =>", $MAPAS.config.registrationEvaluationTab);
         return {
-            valuers: $MAPAS.config.registrationEvaluationTab,
-            valuersIncludeList: this.entity.valuersIncludeList || [],
-            valuersExcludeList: this.entity.valuersExcludeList || [],
+            valuers: $MAPAS.config.registrationEvaluationTab.valuers,
+            groupedValuers: [],
+            valuersIncludeList: [],
+            valuersExcludeList: [],
         };
     },
 
@@ -29,6 +29,7 @@ app.component('registration-evaluation-tab', {
                 const phaseValuers = this.valuers[phaseId];
                 for (const userId in phaseValuers) {
                     const valuer = phaseValuers[userId];
+
                     result.push({
                         id: valuer.id,
                         userId: parseInt(userId),
@@ -38,17 +39,97 @@ app.component('registration-evaluation-tab', {
                     });
                 }
             }
-            console.log("todos os valuers da op =>", result);
+
+            result.sort((a, b) => a.name.localeCompare(b.name));
             return result;
+        },
+
+        entity() {
+            return $MAPAS.registrationPhases[this.phaseId] || {};
+        },
+
+        evaluations() {
+            const evaluations = $MAPAS.config.registrationEvaluationTab.evaluations;
+            return evaluations[this.phaseId];
+        }
+    },
+
+    watch: {
+        entity: {
+            immediate: true,
+            handler(entity) {
+                if (entity?.valuers) {
+                    this.initializeLists();
+                    this.updateGroupedValuers();
+                }
+            }
         }
     },
 
     created() {
-        this.valuersIncludeList = this.entity.valuersIncludeList || [];
-        this.valuersExcludeList = this.entity.valuersExcludeList || [];
+        this.initializeLists();
     },
 
     methods: {
+        initializeLists() {
+            this.valuersIncludeList = [...(this.entity.valuersIncludeList || [])];
+            this.valuersExcludeList = [...(this.entity.valuersExcludeList || [])];
+        },
+
+        updateGroupedValuers() {
+            if (!this.entity?.valuers) {
+                this.groupedValuers = {};
+                return;
+            }
+
+            const groups = {};
+
+            Object.entries(this.entity.valuers).forEach(([userId, groupName]) => {
+                if (!groups[groupName]) {
+                    groups[groupName] = {
+                        name: groupName,
+                        isTiebreaker: groupName === '@tiebreaker',
+                        valuers: []
+                    };
+                }
+            });
+
+            this.allValuers.forEach(valuer => {
+                const groupName = this.entity.valuers[valuer.userId];
+                if (groupName && groups[groupName]) {
+                    groups[groupName].valuers.push({
+                        ...valuer,
+                    });
+                }
+            });
+
+            this.groupedValuers = groups;
+        },
+
+        getValuerCommittees(valuer) {
+            const committees = [];
+            for (const [userId, groupName] of Object.entries(this.entity.valuers)) {
+                if (parseInt(userId) === valuer.userId) {
+                    committees.push(groupName === '@tiebreaker' ? this.text('Voto de minerva') : groupName);
+                }
+            }
+
+            return committees.join(', ');
+        },
+
+        getStatusClass(statusText) {
+            if (!statusText) return '';
+            
+            const statusMap = {
+                'Avaliação pendente': 'mc-status--evaluation-pending',
+                'Avaliação iniciada': 'mc-status--evaluation-started',
+                'Avaliação concluída': 'mc-status--evaluation-completed',
+                'Avaliação enviada': 'mc-status--evaluation-sent'
+            };
+            
+            return statusMap[statusText] || '';
+        },
+
         isIncluded(valuerId) {
             return this.valuersIncludeList.includes(valuerId);
         },
@@ -103,7 +184,7 @@ app.component('registration-evaluation-tab', {
         saveLists() {
             this.entity.valuersIncludeList = this.valuersIncludeList;
             this.entity.valuersExcludeList = this.valuersExcludeList;
-            this.entity.save(); 
+            this.entity.save();
         }
     },
 });
