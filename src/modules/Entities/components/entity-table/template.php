@@ -47,16 +47,16 @@ $this->import('
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
                                 <slot name="searchKeyword" :query="query" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
-                                    <textarea ref="search" v-model="this.query['@keyword']" @keyup="entities.refresh()" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
-                                    
+                                    <textarea ref="search" v-model="debouncedSearchText" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+
                                     <button @click="entities.refresh()" class="entity-table__search-button">
                                         <mc-icon name="search"></mc-icon>
                                     </button>
                                 </slot>
                             </div>
-                            
+
                             <slot name="filters" :entities="entities" :filters="filters" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
-                            </slot>                            
+                            </slot>
                         </div>
                     </template>
 
