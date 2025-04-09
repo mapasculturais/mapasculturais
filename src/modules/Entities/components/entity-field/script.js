@@ -316,7 +316,7 @@ app.component('entity-field', {
             }, this.debounce);
 
 
-            if(this.is('textarea')) {
+            if(this.is('textarea') && event.target) {
                 event.target.style.height = "auto";
                 event.target.style.height = (event.target.scrollHeight + 20) + "px";
             }
