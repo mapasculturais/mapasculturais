@@ -50,6 +50,8 @@ app.component('opportunity-create-reporting-phase', {
                 const res = await api.POST(url, data);
                 if (res.ok) {
                     const data = await res.json();
+                    data.evaluationPhase.opportunity.isReportingPhase = true;
+                    data.evaluationPhase.opportunity.isDataCollection = true;
 
                     const collectionPhase = Vue.reactive(new Entity('opportunity'));
                     collectionPhase.populate(data.collectionPhase);
