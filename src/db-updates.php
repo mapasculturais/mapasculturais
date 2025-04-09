@@ -1722,7 +1722,7 @@ $$
         __try("DROP MATERIALIZED VIEW evaluations");
     },
 
-    'Recria view evaluations!!!!!' => function() use($conn) {
+    'Recria view evaluations!!!!!!' => function() use($conn) {
         __try("DROP VIEW IF EXISTS evaluations");
 
         $conn->executeQuery("
