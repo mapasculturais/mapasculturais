@@ -49,11 +49,13 @@ class Module extends \MapasCulturais\Module {
             $opportunity->appealPhase = $appeal_phase;
             $opportunity->save(true);
     
-            $evaluation = new EvaluationMethodConfiguration();
-            $evaluation->opportunity = $appeal_phase;
-            $evaluation->type = 'continuous';
-            $evaluation->publishEvaluationDetails = true;
-            $evaluation->save(true);
+            $evaluationMethodConfiguration = new EvaluationMethodConfiguration();
+            $evaluationMethodConfiguration->opportunity = $appeal_phase;
+            $evaluationMethodConfiguration->type = 'continuous';
+            $evaluationMethodConfiguration->publishEvaluationDetails = true;
+            $evaluationMethodConfiguration->save(true);
+
+            $appeal_phase->evaluationMethodConfiguration = $evaluationMethodConfiguration;
             
             $this->json($appeal_phase);
         });
