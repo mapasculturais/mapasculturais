@@ -43,7 +43,7 @@ app.component('complaint-suggestion', {
             suggestion: definitions.suggestion_type.config.options,
         }
 
-        return { definitions, options, typeMessage, hasCaptcha, sitekey, sendSuccess, recaptchaResponse, formData, isAuth }
+        return { definitions, options, typeMessage, hasCaptcha, sendSuccess, recaptchaResponse, formData, isAuth }
     },
 
     methods: {
