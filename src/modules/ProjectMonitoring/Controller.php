@@ -17,6 +17,8 @@ class Controller extends \MapasCulturais\Controller {
         $parent_phase = $app->repo('opportunity')->find($params['parent']);
 
         $collection_phase = new ($parent_phase::class)();
+        $collection_phase->ownerEntity = $parent_phase->ownerEntity;
+
         $collection_phase->isDataCollection = true;
         $collection_phase->isReportingPhase = true;
         $collection_phase->isFinalReportingPhase = $params['collectionPhase']['isFinalReportingPhase'] ?? false;
@@ -30,7 +32,6 @@ class Controller extends \MapasCulturais\Controller {
         $collection_phase->registrationCategories = $parent_phase->registrationCategories;
         $collection_phase->registrationRanges = $parent_phase->registrationRanges;
         $collection_phase->registrationProponentTypes = $parent_phase->registrationProponentTypes;
-        $collection_phase->ownerEntity = $parent_phase->ownerEntity;
         $collection_phase->owner = $parent_phase->owner;
 
         $evaluation_phase = new Entities\EvaluationMethodConfiguration();
