@@ -171,7 +171,7 @@ class Registration extends \MapasCulturais\Entity
     protected $__valuersExceptionsList;
 
     /**
-     * @var array
+     * @var object
      *
      * @ORM\Column(name="valuers", type="json", nullable=false)
      */
@@ -280,6 +280,7 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
 
         $this->__valuersExceptionsList = (object) ["include" => [], "exclude" => []];
+        $this->__valuers = (object)[];
         
         $this->owner = $app->user->profile;
 
@@ -395,6 +396,15 @@ class Registration extends \MapasCulturais\Entity
             'label' => i::__('Lista de exclusão de avaliadores')
         ];
 
+        $result['valuers'] = [
+            'isEntityRelation' => false,
+            'isMetadata' => false,
+            'isPK' => false,
+            'required' => false,
+            'type' => 'array',
+            'label' => i::__('Lista de avaliadores da inscrição')
+        ];
+
         return $result;
     }
     
@@ -428,6 +438,7 @@ class Registration extends \MapasCulturais\Entity
         if($this->opportunity->canUser('@control')) {
             $json['valuersIncludeList'] = $this->valuersIncludeList;
             $json['valuersExcludeList'] = $this->valuersExcludeList;
+            $json['valuers'] = $this->valuers;
         }
 
         if($this->canUser('viewConsolidatedResult')){
@@ -771,7 +782,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getValuers(): array {
-        return $this->__valuers;
+        return (array) $this->__valuers;
     }
 
     /**
