@@ -13,7 +13,6 @@ app.component('opportunity-enable-workplan', {
     },
     data() {
         return {
-            entity: this.entity,
             timeOut: null
         }
     },

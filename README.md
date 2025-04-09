@@ -35,6 +35,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Roraima - https://mapadacultura.rr.gov.br/
 
 ### Instalações municipais
+
 - Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
 - Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
@@ -50,6 +51,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Londrina - https://londrinacultura.londrina.pr.gov.br/
 - Foz do Iguaçu - http://mapadaculturafoz.pmfi.pr.gov.br/
 - Maringa - http://maringacultura.maringa.pr.gov.br:38081/
+- Toledo/PR - https://cultura.toledo.pr.gov.br/
 - Rio das Ostras - http://mapadacultura.riodasostras.rj.gov.br/
 - Laguna - http://laguna.sc.mapas.cultura.gov.br/
 - Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/

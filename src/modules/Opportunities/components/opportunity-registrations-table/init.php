@@ -53,26 +53,26 @@ $default_select = "number,consolidatedResult,score,status,sentTimestamp,createTi
 
 $default_headers = [
     [
-        'text' => i::__('Inscrição', 'opportunity-registrations-table'),
+        'text' => i::__('inscrição'),
         'value' => 'number',
         'sticky' => true,
         'width' => '160px',
     ],
     [
-        'text' => i::__('Agente', 'opportunity-registrations-table'),
+        'text' => i::__('agente'),
         'value' => 'owner?.name',
         'slug' => 'agent',
     ],
     [
-        'text' => i::__('Anexos', 'opportunity-registrations-table'),
+        'text' => i::__('anexos'),
         'value' => 'attachments',
     ],
     [
-        'text' => i::__('Data de criação', 'opportunity-registrations-table'),
+        'text' => i::__('data de criação'),
         'value' => 'createTimestamp',
     ],
     [
-        'text' => i::__('Data de envio', 'opportunity-registrations-table'),
+        'text' => i::__('data de envio'),
         'value' => 'sentTimestamp',
     ],
 ];
