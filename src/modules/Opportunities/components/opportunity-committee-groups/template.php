@@ -5,6 +5,7 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
+use MapasCulturais\EvaluationMethod;
 use MapasCulturais\i;
 
 $this->import('
@@ -15,9 +16,12 @@ $this->import('
     mc-tab
     mc-tabs
     mc-toggle
+    mc-alert
     opportunity-evaluation-committee
     opportunity-registration-filter-configuration
 ');
+
+$next_execution_time = EvaluationMethod::getNextRedistributionDateTime();
 ?>
 
 <div class="opportunity-committee-groups">
@@ -141,4 +145,24 @@ $this->import('
             </div>
         </mc-tab>
     </mc-tabs>
+
+    <div>
+        <h3>
+            <?= i::__('Distribuição das avaliações') ?>
+        </h3>
+        <div class="grid-12">
+            <mc-alert type="warning" class="col-10">
+                <?= sprintf(i::__('As inscrições serão distribuidas para as comissões às %s'), $next_execution_time->format('H:i')); ?>
+            </mc-alert>
+            <div class="col-2">
+                <?php $this->info('editais-oportunidades -> configuracoes -> agendamento-distribuicao') ?>
+            </div>
+        </div>
+        <button v-if="!distributingEvaluations" @click="distriuteEvaluations()" class="button button--primary">
+            <?= i::__('Distribuir avaliações agora') ?>
+        </button>
+        <mc-loading :condition="distributingEvaluations" class="opportunity-committee-groups__loading">
+            <?= i::__('Agendando distribuição de avaliações...') ?>
+        </mc-loading>
+    </div>
 </div>

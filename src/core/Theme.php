@@ -863,7 +863,7 @@ abstract class Theme {
         
     }    
 
-    function addRequestedEntityToJs(string $entity_class_name = null, int $entity_id = null, Entity $entity = null) {
+    function addRequestedEntityToJs(string $entity_class_name = null, int $entity_id = null, Entity $entity = null, $disable_access_control = false){
         $entity_class_name = $entity_class_name ?: $this->controller->entityClassName ?? null;
         $entity_id = $entity_id ?: $this->controller->data['id'] ?? null;
         
@@ -909,11 +909,17 @@ abstract class Theme {
                 }
 
                 $app->applyHookBoundTo($this, "view.requestedEntity($_entity).params", [&$query_params, $entity_class_name, $entity_id]);
-
+                if($disable_access_control) {
+                    $app->disableAccessControl();
+                }
+                
                 $query = new ApiQuery($entity_class_name, $query_params);
                 $query->__useDQLCache = false;
 
                 $e = $query->findOne();
+                if($disable_access_control) {
+                    $app->enableAccessControl();
+                }
             } else {
                 $e = $entity->jsonSerialize();
 
@@ -1050,5 +1056,4 @@ abstract class Theme {
             $this->jsObject['requestedEntity'] = $e;
         }
     }
-    
 }
