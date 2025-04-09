@@ -302,6 +302,7 @@ $today = new DateTime();
                 <?php $phase = $entity; 
                     while($phase):
                         if (!$phase->opportunity->evaluationMethodConfiguration) {
+                            $phase = $phase->nextPhase; 
                             continue;
                         }
                         ?>
