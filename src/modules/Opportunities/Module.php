@@ -152,7 +152,9 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('entity(<<RegistrationEvaluation|Registration>>).send:after', function() use($app, $distribute_execution_time) {
             /** @var Registration $this */
-            $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $distribute_execution_time);
+            if($emc = $this->evaluationMethodConfiguration) {
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], $distribute_execution_time);
+            }
         });
 
         // atualiza o cache dos resumos das fase de avaliação
