@@ -441,6 +441,9 @@ app.component('opportunity-registrations-table', {
 
         isFuture() {
             const phase = this.phase;
+            if (phase.parent?.isContinuousFlow) {
+                return false;
+            }
             if (phase.isLastPhase) {
                 const previousPhase = this.previousPhase;
                 const date = previousPhase.evaluationTo || previousPhase.registrationTo;
