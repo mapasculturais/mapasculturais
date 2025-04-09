@@ -48,6 +48,7 @@ class Controller extends \MapasCulturais\Controller {
             $collection_phase->save(true);
             $evaluation_phase->save(true);
 
+            $collection_phase->evaluationMethodConfiguration = $evaluation_phase;
             $this->json([
                 'collectionPhase' => $collection_phase,
                 'evaluationPhase' => $evaluation_phase,
