@@ -37,9 +37,21 @@ app.component('opportunity-evaluation-committee', {
             return query;
         },
 
+        allExpanded() {
+            return this.infosReviewers.every(reviewer => reviewer.isContentVisible);
+        },
+
         select() {
             return "id,owner,agent,agentUserId";
         },
+
+        sortedReviewers () {
+            return (this.infosReviewers ?? [])
+                .map((reviewer, index) => [reviewer, index])
+                .sort(([a], [b]) => {
+                    return (a.agent?.name || '').localeCompare(b.agent?.name || '');
+                });
+        }
     },
 
     mounted() {
@@ -58,7 +70,7 @@ app.component('opportunity-evaluation-committee', {
         return {
             agentData: null,
             showReviewers: false,
-            infosReviewers: {},
+            infosReviewers: [],
             queryString: 'id,name,files.avatar,user',
             selectCategories: [],
             registrationCategories: [
@@ -130,6 +142,7 @@ app.component('opportunity-evaluation-committee', {
             let args = {
                 '@opportunity': this.entity.opportunity.id,
                 '@limit': 50,
+                '@order': 'name ASC',
                 '@page': 1,
             };
 
@@ -301,7 +314,7 @@ app.component('opportunity-evaluation-committee', {
         },
 
         loadFetchs() {
-            if(this.infosReviewers) {
+            if(this.infosReviewers?.length > 0) {
                 this.infosReviewers.forEach(info => {
                     for (const key of ['fetch', 'fetchCategories', 'fetchRanges', 'fetchProponentTypes']) {
                         if (!this.entity[key]) {
@@ -340,10 +353,9 @@ app.component('opportunity-evaluation-committee', {
         },
 
         expandAllToggles() {
-            const allExpanded = this.infosReviewers.every(reviewer => reviewer.isContentVisible);
-
+            const expand = !this.allExpanded;
             this.infosReviewers.forEach(reviewer => {
-                reviewer.isContentVisible = !allExpanded;
+                reviewer.isContentVisible = expand;
             });
         },
     },

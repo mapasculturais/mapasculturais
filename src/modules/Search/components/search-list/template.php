@@ -24,7 +24,7 @@ $this->import('
         <template #header="{entities}">
             <div class="col-4 search-list__filter">
                 <div class="search-list__filter--filter">
-                    <slot name="filter"></slot>
+                    <slot name="filter" :count="entities.metadata?.count"></slot>
                 </div>
             </div>
             <div v-if="entities.loading" class="col-8">

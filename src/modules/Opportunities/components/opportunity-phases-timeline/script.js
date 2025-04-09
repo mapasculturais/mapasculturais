@@ -27,7 +27,21 @@ app.component('opportunity-phases-timeline', {
         }
     },
 
-	methods: {		
+	computed: {
+		firstPhase () {
+			return this.phases.find((phase) => phase.isFirstPhase);
+		},
+
+		isContinuousFlow () {
+			return this.firstPhase.isContinuousFlow;
+		},
+
+		lastPhase () {
+			return this.phases.find((phase) => phase.isLastPhase);
+		},
+	},
+
+	methods: {
 		dateFrom(item) {
 			if (item.registrationFrom) {
 				return item.registrationFrom.date('2-digit year');
@@ -41,7 +55,7 @@ app.component('opportunity-phases-timeline', {
 		dateTo(item) {
 			if (item.registrationTo) {
 				return item.registrationTo.date('2-digit year');
-			}	
+			}
 			if (item.evaluationTo) {
 				return item.evaluationTo.date('2-digit year');
 			}
@@ -59,6 +73,10 @@ app.component('opportunity-phases-timeline', {
 		},
 
 		isActive(item) {
+			if (this.isContinuousFlow) {
+				return !this.firstPhase.hasEndDate || !this.lastPhase.publishedRegistrations;
+			}
+
 			if (item.isLastPhase) {
 				return !item.publishedRegistrations && item.publishTimestamp?.isPast();
 			}
@@ -83,6 +101,10 @@ app.component('opportunity-phases-timeline', {
 		},
 
 		itHappened(item) {
+			if (this.isContinuousFlow) {
+				return this.firstPhase.hasEndDate && this.lastPhase.publishedRegistrations;
+			}
+
 			if (item.isLastPhase) {
 				return item.publishedRegistrations;
 			}
@@ -90,11 +112,11 @@ app.component('opportunity-phases-timeline', {
 			if (item.__objectType == 'opportunity') {
 				return item.registrationTo?.isPast();
 			}
-			
+
 			if (item.__objectType == 'evaluationmethodconfiguration') {
 				return item.evaluationTo?.isPast();
 			}
-			
+
 			return false;
 		},
 
@@ -115,7 +137,7 @@ app.component('opportunity-phases-timeline', {
 
 		getRegistration(item) {
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
-			
+
 			return $MAPAS.registrationPhases ? $MAPAS.registrationPhases[phaseOpportunity.id] : null;
 		},
 	}

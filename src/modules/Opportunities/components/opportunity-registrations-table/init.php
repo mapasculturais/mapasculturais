@@ -91,9 +91,39 @@ $default_headers[] = [
     'slug' => 'editable',
 ];
 
-$app->applyHook('component(opportunity-registrations-table).additionalHeaders', [&$default_headers, &$default_select]);
+$DESC = $this->jsObject['EntitiesDescription'];
+$available_fields = [];
+
+if(count($phase->registrationCategories) > 0) {
+    $available_fields[] = [
+        'title' => $DESC['registration']['category']['label'],
+        'fieldName' => 'category',
+        'fieldOptions' => $phase->registrationCategories,
+    ];
+}
+
+if(count($phase->registrationProponentTypes) > 0) {
+    $available_fields[] = [
+        'title' => $DESC['registration']['proponentType']['label'],
+        'fieldName' => 'proponentType',
+        'fieldOptions' => $phase->registrationProponentTypes,
+    ];
+}
+
+if(count($phase->registrationRanges) > 0) {
+    $available_fields[] = [
+        'title' => $DESC['registration']['range']['label'],
+        'fieldName' => 'range',
+        'fieldOptions' =>   array_filter( array_map(function($item) {
+                                return $item['label']; 
+                            }, $phase->registrationRanges))
+    ];
+}
+
+$app->applyHook('component(opportunity-registrations-table).additionalHeaders', [&$default_headers, &$default_select, &$available_fields]);
 
 $data['defaultSelect'] = $default_select;
 $data['defaultHeaders'] = $default_headers;
+$data['defaultAvailable'] = $available_fields;
 
 $this->jsObject['config']['opportunityRegistrationTable'] = $data;

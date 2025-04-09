@@ -518,7 +518,8 @@ class Opportunity extends EntityController {
             }
         }
 
-        
+        $opportunity->registerRegistrationMetadata();
+
         return (object) ['count' => $current_phase_query->count(), 'registrations' => $current_phase_result,];
     }
 
@@ -942,8 +943,8 @@ class Opportunity extends EntityController {
         $rdata = [
             '@select' => 'id',
             'opportunity' => "EQ({$opportunity->id})",
-            '@permissions' => 'viewUserEvaluation',
-            '@order' => 'id ASC'
+            '@order' => 'id ASC',
+            'status' => API::GT(0)
         ];
 
         foreach($query_data as $k => $v){
@@ -960,9 +961,10 @@ class Opportunity extends EntityController {
             }
         }
 
+        $app->disableAccessControl();
         $registrations_query = new ApiQuery('MapasCulturais\Entities\Registration', $rdata);
-
         $registration_ids = implode(",", $registrations_query->findIds() ?: [-1]);
+        $app->enableAccessControl();
 
         $query = "
             SELECT 
@@ -1035,12 +1037,15 @@ class Opportunity extends EntityController {
 
         $evaluations = $conn->fetchAll($query, $params);
         
+        $app->disableAccessControl();
         
         $registration_numbers = array_filter(array_unique(array_map(function($r) { return $r['registration_number']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
 
         $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_numbers, $query_data);
         $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
+
+        $app->disableAccessControl();
 
         $_result = [];
 
@@ -1472,6 +1477,30 @@ class Opportunity extends EntityController {
 
         $opportunity->fixNextPhaseRegistrationIds();
 
+    }
+
+    public function API_findEvaluable(): void {
+        $this->requireAuthentication();
+
+        $app = App::i();
+
+        $user_id = $this->data['@user'] ?? $app->user->id;
+        $user = $app->repo('User')->find($user_id);
+        
+        $user->profile->checkPermission('@control');
+
+        $opportunity_ids = $app->repo('Opportunity')->findValuerOpportunities($user->id, only_ids: true); 
+        
+        $query_params = $this->data;
+        $query_params['id'] = API::IN($opportunity_ids);
+
+        unset($query_params['@user']);
+
+        $query = new ApiQuery(EntitiesOpportunity::class, $query_params);
+        $result = $query->find();
+
+        $this->apiAddHeaderMetadata($query_params, $result, $query->count());
+        $this->apiResponse($result);
     }
     
 }

@@ -1,9 +1,12 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\Exception\NotSupported;
 use MapasCulturais\App,
     MapasCulturais\Entities\Agent;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\PermissionDenied;
+use RuntimeException;
 
 /**
  * Defines that this entity has agents related to it.
@@ -24,6 +27,23 @@ trait EntityAgentRelation {
 
     static function getAgentRelationEntityClassName(){
         return self::getClassName() . 'AgentRelation';
+    }
+
+    /**
+     * Retorna as relações de agente do usuário
+     * 
+     * @param User $user 
+     * @param mixed $has_control 
+     * @param bool $include_pending_relations 
+     * @return AgentRelation[]|array
+     */
+    function getAgentRelationOfUser(User $user, $has_control = null, $include_pending_relations = false): array {
+        $relations = $this->getAgentRelations($has_control, $include_pending_relations);
+        $result = array_filter($relations, function($relation) use ($user){
+            return $relation->agent->user->id === $user->id;
+        });
+
+        return $result;
     }
 
     function getAgentRelations($has_control = null, $include_pending_relations = false){
