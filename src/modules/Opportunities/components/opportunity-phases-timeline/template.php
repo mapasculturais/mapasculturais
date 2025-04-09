@@ -12,43 +12,47 @@ $this->import('
     registration-status
 ');
 ?>
-<section :class="['timeline', {'center': center}, {'big': big}]">
+<section class="timeline" :class="{ 'center': center, 'big': big }">
     <?php $this->applyComponentHook('item', 'before'); ?>
-    <div v-for="item in phases" :class="['item', {'active': isActive(item)}, {'happened': itHappened(item)}]" :set="registration = getRegistration(item)">
-        <div class="item__dot"> <span class="dot"></span> </div>
-        <div class="item__content">
-            <?php $this->applyComponentHook('item', 'begin'); ?>
-            <div v-if="item.isFirstPhase" class="item__content--title"> <?= $this->text('phase_registration', i::__('Fase de inscrições')) ?> </div>
-            <div v-if="!item.isFirstPhase" class="item__content--title"> {{item.name}} </div>
-            <div v-if="!item.isLastPhase && (!firstPhase.isContinuousFlow || firstPhase.hasEndDate)" class="item__content--description">
-                <h5 class="semibold"><?= i::__('de') ?> <span v-if="dateFrom(item)">{{dateFrom(item)}}</span>
-                <?= i::__('a') ?> <span v-if="dateTo(item)">{{dateTo(item)}}</span>
-                <?= i::__('às') ?> <span v-if="hour(item)">{{hour(item)}}</span></h5>
-            </div>
-            <div v-if="item.isLastPhase" class="item__content--description">
-                <span v-if="item.publishTimestamp">
-                    {{item.publishTimestamp.date('2-digit year')}}
-                    <?= i::__('às') ?>
-                    {{item.publishTimestamp.time()}}
-                </span>
-            </div>
-            
-            <template v-if="registration && item.isFirstPhase">
-                <registration-form-timeline :entity="registration"></registration-form-timeline>
-            </template>
+    <template v-for="item of phases">
+        <template v-for="registration of [getRegistration(item)]">
+            <div class="item" :class="{ 'active': isActive(item, registration), 'happened': itHappened(item, registration) }">
+                <div class="item__dot"> <span class="dot"></span> </div>
+                <div class="item__content">
+                    <?php $this->applyComponentHook('item', 'begin'); ?>
+                    <div v-if="item.isFirstPhase" class="item__content--title"> <?= $this->text('phase_registration', i::__('Fase de inscrições')) ?> </div>
+                    <div v-if="!item.isFirstPhase" class="item__content--title"> {{item.name}} </div>
+                    <div v-if="!item.isLastPhase && (!firstPhase.isContinuousFlow || firstPhase.hasEndDate)" class="item__content--description">
+                        <h5 class="semibold"><?= i::__('de') ?> <span v-if="dateFrom(item)">{{dateFrom(item)}}</span>
+                        <?= i::__('a') ?> <span v-if="dateTo(item)">{{dateTo(item)}}</span>
+                        <?= i::__('às') ?> <span v-if="hour(item)">{{hour(item)}}</span></h5>
+                    </div>
+                    <div v-if="item.isLastPhase" class="item__content--description">
+                        <span v-if="item.publishTimestamp">
+                            {{item.publishTimestamp.date('2-digit year')}}
+                            <?= i::__('às') ?>
+                            {{item.publishTimestamp.time()}}
+                        </span>
+                    </div>
 
-            <template v-if="registration">
-                <?php $this->applyComponentHook('registration', 'begin'); ?>
-                
-                <registration-status v-if="shouldShowResults(item)" :registration="registration" :phase="item"></registration-status>
+                    <template v-if="registration && item.isFirstPhase">
+                        <registration-form-timeline :entity="registration"></registration-form-timeline>
+                    </template>
 
-                <div v-if="isDataCollectionPhase(item) && isActive(item, registration) && registration.status == 0">
-                    <mc-link :entity="registration" route="edit" class="button button--primary"><?= i::__('Preencher formulário') ?></mc-link>
+                    <template v-if="registration">
+                        <?php $this->applyComponentHook('registration', 'begin'); ?>
+
+                        <registration-status v-if="shouldShowResults(item)" :registration="registration" :phase="item"></registration-status>
+
+                        <div v-if="isDataCollectionPhase(item) && isActive(item, registration) && registration.status == 0">
+                            <mc-link :entity="registration" route="edit" class="button button--primary"><?= i::__('Preencher formulário') ?></mc-link>
+                        </div>
+                        <?php $this->applyComponentHook('registration', 'end'); ?>
+                    </template>
+                    <?php $this->applyComponentHook('item', 'end'); ?>
                 </div>
-                <?php $this->applyComponentHook('registration', 'end'); ?>
-            </template>
-            <?php $this->applyComponentHook('item', 'end'); ?>
-        </div>
-    </div>
+            </div>
+        </template>
+    </template>
     <?php $this->applyComponentHook('item', 'after'); ?>
 </section>
