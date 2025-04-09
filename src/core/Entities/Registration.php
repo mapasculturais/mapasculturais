@@ -171,7 +171,7 @@ class Registration extends \MapasCulturais\Entity
     protected $__valuersExceptionsList;
 
     /**
-     * @var array
+     * @var object
      *
      * @ORM\Column(name="valuers", type="json", nullable=false)
      */
@@ -280,6 +280,7 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
 
         $this->__valuersExceptionsList = (object) ["include" => [], "exclude" => []];
+        $this->__valuers = (object)[];
         
         $this->owner = $app->user->profile;
 
@@ -781,7 +782,7 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getValuers(): array {
-        return $this->__valuers;
+        return (array) $this->__valuers;
     }
 
     /**
