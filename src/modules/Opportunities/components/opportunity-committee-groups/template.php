@@ -150,19 +150,24 @@ $next_execution_time = EvaluationMethod::getNextRedistributionDateTime();
         <h3>
             <?= i::__('Distribuição das avaliações') ?>
         </h3>
-        <div class="grid-12">
-            <mc-alert type="warning" class="col-10">
-                <?= sprintf(i::__('As inscrições serão distribuidas para as comissões às %s'), $next_execution_time->format('H:i')); ?>
-            </mc-alert>
-            <div class="col-2">
-                <?php $this->info('editais-oportunidades -> configuracoes -> agendamento-distribuicao') ?>
+        <template v-if="statusMessage">
+            <div style="background-color: var(--mc-success-500); color:black; text-align: center; padding: 1em" :style="{width: percentage}"> {{statusMessage}}</div>
+        </template>
+        <template v-else>
+            <div class="grid-12">
+                <mc-alert type="warning" class="col-10">
+                    <?= sprintf(i::__('As inscrições serão distribuidas para as comissões às %s'), $next_execution_time->format('H:i')); ?>
+                </mc-alert>
+                <div class="col-2">
+                    <?php $this->info('editais-oportunidades -> configuracoes -> agendamento-distribuicao') ?>
+                </div>
             </div>
-        </div>
-        <button v-if="!distributingEvaluations" @click="distriuteEvaluations()" class="button button--primary">
-            <?= i::__('Distribuir avaliações agora') ?>
-        </button>
-        <mc-loading :condition="distributingEvaluations" class="opportunity-committee-groups__loading">
-            <?= i::__('Agendando distribuição de avaliações...') ?>
-        </mc-loading>
+            <button @click="distriuteEvaluations()" class="button button--primary">
+                <?= i::__('Distribuir avaliações agora') ?>
+            </button>
+            <mc-loading :condition="distributingEvaluations" class="opportunity-committee-groups__loading">
+                <?= i::__('Agendando distribuição de avaliações...') ?>
+            </mc-loading>
+        </template>
     </div>
 </div>
