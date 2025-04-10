@@ -2,21 +2,29 @@
 
 namespace MapasCulturais\Entities;
 
+use Doctrine\ORM\Exception\NotSupported;
 use MapasCulturais;
 use MapasCulturais\i;
 use MapasCulturais\Traits;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\Mapping\MappingException;
 use MapasCulturais\App;
+use MapasCulturais\Exceptions\PermissionDenied;
+use MapasCulturais\Exceptions\WorkflowRequest;
 use ReflectionException;
+use RuntimeException;
 
 /**
  * RegistrationMeta
  *
+ * @property-read \MapasCulturais\Definitions\EvaluationMethod $evaluationMethodDefinition
+ * @property-read EvaluationMethodConfiguration $evaluationMethodConfiguration
+ * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod
+ * @property-read string $resultString
+ * @property-read string $statusString
  * @property-read string $result
  * 
  * @property integer $id
- * @property mexed $result
  * @property object $evaluationData
  * @property Registration $registration
  * @property User $user
@@ -167,7 +175,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
 
     /**
      * Returns the Evaluation Method Configuration
-     * @return \MapasCulturais\Definitions\EvaluationMethodConfiguration
+     * @return EvaluationMethodConfiguration
      */
     public function getEvaluationMethodConfiguration() {
         return $this->registration->evaluationMethodConfiguration;
@@ -287,6 +295,20 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return \MapasCulturais\i::__('Avaliação de Inscrição');
     }
 
+    /**
+     * Atualiza os resumos do avaliador
+     * 
+     * @return void 
+     */
+    public function updateValuerSummaries() {
+        /** @var EvaluationMethodConfigurationAgentRelation[] */
+        $relations = $this->evaluationMethodConfiguration->getAgentRelationOfUser($this->user);
+
+        foreach($relations as $relation) {
+            $relation->updateSummary();
+        }
+    }
+
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
@@ -304,6 +326,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         parent::postPersist($args);
         
         $this->registration->consolidateResult(true, $this);
+        $this->updateValuerSummaries();
     }
 
     /** @ORM\PreRemove */
@@ -313,6 +336,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         parent::postRemove($args);
         
         $this->registration->consolidateResult(true, $this);
+        $this->updateValuerSummaries();
     }
 
     /** @ORM\PreUpdate */
@@ -322,9 +346,6 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         parent::postUpdate($args);
         
         $this->registration->consolidateResult(true, $this);
-    }
-
-    public function getResult() {
-        return $this->result;
+        $this->updateValuerSummaries();
     }
 }

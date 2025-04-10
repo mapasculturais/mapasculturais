@@ -174,8 +174,10 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $app->hook("entity(Registration).status(<<*>>)", function() use ($app) {
+        $app->hook("entity(Registration).status(<<*>>)", function() use ($app, $distribute_execution_time) {
             $app->log->debug("Registration {$this->id} status changed to {$this->status}");
+
+            $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $distribute_execution_time);
 
             /** @var Registration $this */
             /** @var Opportunity $opportunity */
@@ -613,7 +615,7 @@ class Module extends \MapasCulturais\Module{
             }
 
             if ($em = $this->getEvaluationMethodConfiguration()) {
-                $em->getUserRelation($user)->updateSummary(flush: true);
+                $em->getUserRelation($user)->updateSummary();
             }
         });
 

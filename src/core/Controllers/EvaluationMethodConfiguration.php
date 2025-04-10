@@ -6,6 +6,7 @@ use MapasCulturais\App;
 use MapasCulturais\Controller;
 use MapasCulturais\Entities\EvaluationMethodConfiguration as EvaluationMethodConfigurationEntity;
 use MapasCulturais\Traits;
+use Opportunities\Jobs\RedistributeCommitteeRegistrations;
 
 // use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
@@ -186,5 +187,22 @@ class EvaluationMethodConfiguration extends Controller {
         }
 
         $entity->__skipQueuingPCacheRecreation = true;
+    }
+
+    function POST_registributeEvaluations() {
+        $app = App::i();
+
+        $this->requireAuthentication();
+
+        $emc = $this->requestedEntity;
+
+        if(!$emc) {
+            $app->pass();
+        }
+        $emc->checkPermission('manageEvaluationCommittee');
+
+        $app->enqueueOrReplaceJob(RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], 'now');
+        
+        $this->json(true);
     }
 }
