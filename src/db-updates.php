@@ -1159,6 +1159,37 @@ return [
         __exec("CREATE INDEX registration_valuers_index ON registration USING GIN((valuers_exceptions_list->'include') jsonb_path_ops)");
     },
 
+    'adiciona coluna valuers à tabela registration' => function () {
+        if(!__column_exists('registration', 'valuers')) {
+            __exec("ALTER TABLE registration ADD COLUMN valuers JSONB DEFAULT '{}'::jsonb NOT NULL");
+            __exec("CREATE INDEX registration_valuers_idx ON registration USING GIN((valuers) jsonb_path_ops)");
+        }
+    },
+
+    'adiciona coluna committee à tabela registration_evaluation' => function () {
+        if(!__column_exists('registration_evaluation', 'committee')) {
+            __exec("ALTER TABLE registration_evaluation ADD COLUMN committee VARCHAR(255)");
+
+            // define o valor da coluna committee
+            __exec("UPDATE registration_evaluation
+                    SET committee = com.committee,
+                        is_tiebreaker = (com.committee = '@tiebreaker')
+                    FROM
+                        (
+                            SELECT re.id, ar.type AS committee
+                            FROM registration_evaluation re
+                                LEFT JOIN usr u on u.id = re.user_id
+                                LEFT JOIN registration r on r.id = re.registration_id
+                                LEFT JOIN opportunity o on o.id = r.opportunity_id
+                                LEFT JOIN evaluation_method_configuration emc on emc.opportunity_id = o.id
+                                LEFT JOIN agent_relation ar on ar.object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'
+                                    AND ar.object_id = emc.id
+                                    AND ar.agent_id = u.profile_id
+                        ) AS com
+                    WHERE registration_evaluation.id = com.id;");
+        }
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
@@ -1758,7 +1789,7 @@ $$
         __try("DROP MATERIALIZED VIEW evaluations");
     },
 
-    'Recria view evaluations!!!!' => function() use($conn) {
+    'Recria view evaluations!!!!!!' => function() use($conn) {
         __try("DROP VIEW IF EXISTS evaluations");
 
         $conn->executeQuery("
@@ -1772,6 +1803,7 @@ $$
                     opportunity_id,
                     valuer_user_id,
                     valuer_agent_id,
+                    valuer_committee,
                     max(evaluation_id) AS evaluation_id,
                     max(evaluation_result) AS evaluation_result,
                     max(evaluation_status) AS evaluation_status
@@ -1784,6 +1816,7 @@ $$
                         r.agent_id AS registration_agent_id, 
                         re.user_id AS valuer_user_id, 
                         u.profile_id AS valuer_agent_id, 
+                        r.valuers ->> u.id::varchar as valuer_committee,
                         r.opportunity_id,
                         re.id AS evaluation_id,
                         re.result AS evaluation_result,
@@ -1804,6 +1837,7 @@ $$
                         r2.agent_id AS registration_agent_id, 
                         u2.id AS valuer_user_id, 
                         u2.profile_id AS valuer_agent_id, 
+                        r2.valuers ->> u2.id::varchar as valuer_committee,
                         r2.opportunity_id,
                         NULL AS evaluation_id,
                         NULL AS evaluation_result,
@@ -1811,7 +1845,7 @@ $$
                     
                     FROM registration r2 
                         JOIN usr u2 
-                            on ('[' || u2.id || ']')::jsonb  <@ (r2.valuers_exceptions_list->'include')
+                            on jsonb_exists(r2.valuers, u2.id::varchar)
                         JOIN evaluation_method_configuration emc
                             ON emc.opportunity_id = r2.opportunity_id
                     WHERE                          
@@ -1825,6 +1859,7 @@ $$
                     registration_agent_id,
                     valuer_user_id,
                     valuer_agent_id,
+                    valuer_committee,
                     opportunity_id
             )
         ");

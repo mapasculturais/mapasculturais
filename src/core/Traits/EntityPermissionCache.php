@@ -58,7 +58,7 @@ trait EntityPermissionCache {
 
     static protected array $createdPermissionCache = [];
 
-    function createPermissionsCacheForUsers(array $users = null, $flush = false, $delete_old = true) {
+    function createPermissionsCacheForUsers(?array $users = null, $flush = false, $delete_old = true) {
         /** @var \MapasCulturais\Entity $this */
         
         if(self::$createdPermissionCache["$this"] ?? false) {

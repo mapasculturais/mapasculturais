@@ -89,17 +89,17 @@ app.component('evaluation-actions', {
 
             return this.requestEvaluation('saveEvaluation', this.formData, args).then(response => {
                 if (response.error) {
-                    this.sendMessage('error', response.data);
+                    this.sendMessages('error', response.data);
                 } else {
                     this.dispatchResponse('saveEvaluation', response);
                     if (finish) {
                         if (!disableMessages) {
-                            this.sendMessage('success', this.text('finish'));
+                            this.sendMessages('success', this.text('finish'));
                         }
                         this.updateSummaryEvaluations('completed');
                     } else {
                         if (!disableMessages) {
-                            this.sendMessage('success', this.text('success'));
+                            this.sendMessages('success', this.text('success'));
                         }
                         this.updateSummaryEvaluations('started');
                     }
@@ -114,11 +114,11 @@ app.component('evaluation-actions', {
 
             return this.requestEvaluation('sendEvaluation', { data: this.formData }, args).then(response => {
                 if (response.error) {
-                    this.sendMessage('error', response.data);
+                    this.sendMessages('error', response.data);
                 } else {
                     this.dispatchResponse('sendEvaluation', response);
                     this.updateSummaryEvaluations('sent');
-                    this.sendMessage('success', this.text('send'));
+                    this.sendMessages('success', this.text('send'));
                 }
             });
         },
@@ -150,10 +150,10 @@ app.component('evaluation-actions', {
 
             return this.requestEvaluation('reopenEvaluation', { data: this.formData }, args).then(response => {
                 if (response.error) {
-                    this.sendMessage('error', response.data);
+                    this.sendMessages('error', response.data);
                 } else {
                     this.dispatchResponse('reopenEvaluation', response);
-                    this.sendMessage('success', this.text('reopen'));
+                    this.sendMessages('success', this.text('reopen'));
                     this.updateSummaryEvaluations('started');
                 }
             });

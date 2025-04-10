@@ -499,6 +499,19 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $committee;
     }
 
+    public function getValuerUserIds (bool $include_disabled = false): array {
+        $user_ids = [];
+        foreach ($this->getAgentRelations() as $agent_relation) {
+            if (!$include_disabled && $agent_relation->status != EvaluationMethodConfigurationAgentRelation::STATUS_ENABLED) {
+                continue;
+            }
+
+            $user_ids[] = $agent_relation->agent->user->id;
+        }
+        
+        return $user_ids;
+    }
+
     /** 
      * Redistribui as inscrições entre os avaliadores
      * 
