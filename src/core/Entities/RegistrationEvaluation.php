@@ -29,6 +29,10 @@ use RuntimeException;
  * @property Registration $registration
  * @property User $user
  * @property integer $status
+ * @property bool $isTiebreaker
+ * @property string $committee
+ * 
+ * 
  *
  * @ORM\Table(name="registration_evaluation")
  * @ORM\Entity
@@ -121,6 +125,15 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $isTiebreaker = false;
 
     /**
+     * Nome da comissão avaliadora pela qual o avaliador avaliou essa avaliação
+     * 
+     * @var integer
+     *
+     * @ORM\Column(name="committee", type="string", nullable=true)
+     */
+    protected $committee = '';
+
+    /**
      * flag que diz que a avaliação está sendo enviada
      * @var boolean
      */
@@ -130,13 +143,13 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         if(empty($this->status)){
             $this->status = self::STATUS_DRAFT;
         }
+
+        if(empty($this->committee)){
+            $registration_valuers = $this->registration->valuers;
+            $this->committee = $registration_valuers[$this->user->id] ?? '';
+        }
         
         parent::save($flush);
-        $app = App::i();
-        $opportunity = $this->registration->opportunity;
-        
-        // cache utilizado pelo endpoint findEvaluations
-        $app->mscache->delete("api:opportunity:{$opportunity->id}:evaluations");
     }
 
     function send($flush = false) {

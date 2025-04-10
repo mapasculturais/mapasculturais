@@ -72,7 +72,11 @@ app.component('opportunity-phases-timeline', {
 			return false;
 		},
 
-		isActive(item) {
+		isActive(item, registration) {
+			if (!registration) {
+				return false;
+			}
+
 			if (this.isContinuousFlow) {
 				return !this.firstPhase.hasEndDate || !this.lastPhase.publishedRegistrations;
 			}
@@ -100,7 +104,11 @@ app.component('opportunity-phases-timeline', {
 			return item.__objectType == 'evaluationmethodconfiguration';
 		},
 
-		itHappened(item) {
+		itHappened(item, registration) {
+			if (!registration) {
+				return false;
+			}
+
 			if (this.isContinuousFlow) {
 				return this.firstPhase.hasEndDate && this.lastPhase.publishedRegistrations;
 			}
@@ -135,8 +143,7 @@ app.component('opportunity-phases-timeline', {
 
 		getRegistration(item) {
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
-
-			return $MAPAS.registrationPhases ? $MAPAS.registrationPhases[phaseOpportunity.id] : null;
+			return $MAPAS.registrationPhases?.[phaseOpportunity.id] ?? null;
 		},
 	}
 });
