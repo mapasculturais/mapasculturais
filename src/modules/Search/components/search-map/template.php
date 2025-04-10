@@ -13,7 +13,7 @@ $this->import('
 <div class="search-map">
     <div class="search-map__filter">
         <div class="search-map__filter--filter">
-            <slot name="filter"></slot>
+            <slot name="filter" :count="entities.metadata?.count"></slot>
         </div>
     </div>
 
