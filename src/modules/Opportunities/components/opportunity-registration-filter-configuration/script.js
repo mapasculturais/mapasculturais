@@ -50,6 +50,11 @@ app.component('opportunity-registration-filter-configuration', {
         },
     },
 
+    setup() {
+        const text = Utils.getTexts('opportunity-registration-filter-configuration');
+        return { text };
+    },
+
     watch: {
         defaultValue(newValue, oldValue) {
             this.$emit('update:defaultValue', newValue);
@@ -61,9 +66,9 @@ app.component('opportunity-registration-filter-configuration', {
             registrationCategories: $MAPAS.opportunityPhases[0].registrationCategories ?? [],
             registrationProponentTypes: $MAPAS.opportunityPhases[0].registrationProponentTypes ?? [],
             registrationRanges: $MAPAS.opportunityPhases[0].registrationRanges?.map(range => range.label) ?? [],
-            registrationSelectionFields: $MAPAS.config.fetchSelectFields?.reduce((acc, fields) => {
-                if (fields) {
-                    acc[fields.title] = fields.fieldOptions;
+            registrationSelectionFields: $MAPAS.config.fetchSelectFields?.reduce((acc, field) => {
+                if (field) {
+                    acc[field.fieldName] = field;
                 }
                 return acc;
             }, {}) ?? {},
@@ -71,6 +76,7 @@ app.component('opportunity-registration-filter-configuration', {
             selectedConfigs: [],
             selectedDistribution: '',
             tagsList: [],
+            tagsLabels: [],
             configs: {},
             localExcludeFields: [],
             isSelected: false,
@@ -120,26 +126,73 @@ app.component('opportunity-registration-filter-configuration', {
                 groupData = this.getAgentData() || {};
             }
 
-            Object.entries(groupData).forEach(([key, values]) => {
-                if ((this.isSection && this.excludeFields.includes(key)) || (this.isCriterion && this.excludeFields.includes(key))) {
+            Object.entries(groupData).forEach(([prop, values]) => {
+                if ((this.isSection && this.excludeFields.includes(prop)) || (this.isCriterion && this.excludeFields.includes(prop))) {
                     return;
                 }
+                let keyPrefix;
+                if(prop.startsWith('field_')) {
+                    keyPrefix = prop;
+                    labelPrefix = this.registrationSelectionFields?.[prop]?.label;
+                } else {
+                    keyPrefix = prop;
+                    labelPrefix = prop;
+                }
+                
                 if (Array.isArray(values)) {
                     values.forEach(value => {
-                        const tag = `${this.dictTypes(key)}: ${value}`;
-                        if (!this.tagsList.includes(tag)) {
-                            this.tagsList.push(tag);
+                        const tagKey = `${this.dictTypes(keyPrefix)}: ${value}`;
+                        if (!this.tagsList.includes(tagKey)) {
+                            this.tagsList.push(tagKey);
                         }
                     });
                 } else {
-                    const tag = `${this.dictTypes(key)}: ${values}`;
-                    if (!this.tagsList.includes(tag)) {
-                        this.tagsList.push(tag);
+                    const tagKey = `${this.dictTypes(prop)}: ${values}`;
+                    if (!this.tagsList.includes(tagKey)) {
+                        this.tagsList.push(tagKey);
                     }
                 }
             });
 
             return this.tagsList.sort();
+        },
+
+        fillTagsListLabels() {
+            
+            let groupData = this.defaultValue || {};
+            this.tagsLabels = {};
+
+            if (!this.isGlobal && !this.isSection && !this.isCriterion) {
+                groupData = this.getAgentData() || {};
+            }
+
+            Object.entries(groupData).forEach(([prop, values]) => {
+                if ((this.isSection && this.excludeFields.includes(prop)) || (this.isCriterion && this.excludeFields.includes(prop))) {
+                    return;
+                }
+                let keyPrefix, labelPrefix;
+                if(prop.startsWith('field_')) {
+                    keyPrefix = prop;
+                    labelPrefix = this.registrationSelectionFields?.[prop]?.title;
+                } else {
+                    keyPrefix = prop;
+                    labelPrefix = prop;
+                }
+                
+                if (Array.isArray(values)) {
+                    values.forEach(value => {
+                        const tagKey = `${this.dictTypes(keyPrefix)}: ${value}`;
+                        const tagLabel = `${this.dictTypes(labelPrefix)}: ${value}`;
+                        this.tagsLabels[tagKey] = tagLabel;
+                    });
+                } else {
+                    const tagKey = `${this.dictTypes(prop)}: ${values}`;
+                    const tagLabel = `${this.dictTypes(labelPrefix)}: ${values}`;
+                    this.tagsLabels[tagKey] = tagLabel;
+                }
+            });
+
+            return this.tagsLabels;
         }
     },
 
@@ -204,13 +257,13 @@ app.component('opportunity-registration-filter-configuration', {
 
         dictTypes(type, reverse = false) {
             const typeDictionary = {
-                'category': 'Categoria',
-                'categories': 'Categorias',
-                'proponentType': 'Tipos do proponente',
-                'proponentTypes': 'Tipos de proponente',
-                'range': 'Faixa/Linha',
-                'ranges': 'Faixas/Linhas',
-                'distribution': 'Distribuição',
+                'category': this.text('Categoria'),
+                'categories': this.text('Categorias'),
+                'proponentType': this.text('Tipos do proponente'),
+                'proponentTypes': this.text('Tipos de proponente'),
+                'range': this.text('Faixa/Linha'),
+                'ranges': this.text('Faixas/Linhas'),
+                'distribution': this.text('Distribuição'),
             };
 
             if (reverse) {
@@ -339,7 +392,6 @@ app.component('opportunity-registration-filter-configuration', {
             if (!this.configs[this.selectedField]) {
                 this.configs[this.selectedField] = [];
             }
-            
             this.configs[this.selectedField] = this.selectedConfigs;                
         },
 

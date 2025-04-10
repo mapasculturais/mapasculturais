@@ -327,6 +327,11 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 return $app->mscache->fetch($cache_key);
             }
         }
+
+        if ($app->config['app.log.summary']) {
+            $app->log->debug("SUMMARY: Atualizando o resumo de avaliações da fase {$this->name} ($this->id)");
+        }
+
         $em = $this->evaluationMethod;
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;
@@ -406,7 +411,63 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $data;
     }
 
-    public function enqueueUpdateSummary($start_string = '90 seconds') {
+    public function getValuerSummary(?User $user = null): array {
+        $app = App::i();
+        
+        /** @var \MapasCulturais\Connection $conn */
+        $conn = $app->em->getConnection();
+        $opportunity = $this->opportunity;
+        $data = [];
+        if($user) {
+            $user_ids = [$user->id];
+        } else {
+            $agent_relations = $this->getAgentRelations();
+            
+            $user_ids = array_map(fn($agent_relation) => $agent_relation->agent->user->id, $agent_relations);
+        }
+
+        $user_ids = implode(',', $user_ids);
+        /**
+         * Constrói a query para contar as avaliações com base no status.
+         *
+         * @param int|null $status Status da avaliação (0 = iniciada, 1 = concluída, 2 = enviada).
+         * @return int Retorna a contagem de avaliações.
+         */
+        $buildQuery = function ($status = null) use ($user_ids, $opportunity, $conn): int {
+            $statusCondition = is_null($status) ? "e.status IS NULL" : "e.status = {$status} AND e.registration_id IN (SELECT r.id FROM registration r WHERE r.opportunity_id = {$opportunity->id})";
+
+            
+            $query = "
+                SELECT DISTINCT count(e.registration_id)
+                FROM registration_evaluation e
+                WHERE {$statusCondition} AND user_id IN($user_ids)
+            ";
+
+            return $conn->fetchScalar($query);
+        };
+
+        // Avaliações pendentes
+        $query = "
+            SELECT DISTINCT count(e.registration_id)
+            FROM evaluations e
+            WHERE opportunity_id = {$opportunity->id} AND e.evaluation_status IS NULL AND valuer_user_id IN ($user_ids)
+        ";
+
+        $data['pending'] = $conn->fetchScalar($query);
+        
+        // Avaliações iniciadas
+        $data['started'] = $buildQuery(0);
+        
+        // Avaliações concluídas
+        $data['completed'] = $buildQuery(1);
+        
+        // Avaliações enviadas
+        $data['sent'] = $buildQuery(2);
+        
+        return $data;
+    }
+
+    public function enqueueUpdateSummary(string $start_string = 'now') {
         $app = App::i();
         $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
             'evaluationMethodConfiguration' => $this
@@ -438,6 +499,19 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}.committee", [&$committee, $return_relation]);
         
         return $committee;
+    }
+
+    public function getValuerUserIds (bool $include_disabled = false): array {
+        $user_ids = [];
+        foreach ($this->getAgentRelations() as $agent_relation) {
+            if (!$include_disabled && $agent_relation->status != EvaluationMethodConfigurationAgentRelation::STATUS_ENABLED) {
+                continue;
+            }
+
+            $user_ids[] = $agent_relation->agent->user->id;
+        }
+        
+        return $user_ids;
     }
 
     /** 
@@ -492,11 +566,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }    
     
     protected function canUserManageEvaluationCommittee($user){
-        if(!$this->canUser('@controll', $user)){
-            return false;
-        }
-
-        return true;
+        return $this->opportunity->canUser('@control', $user);
     }
     
     protected function canUserCreateAgentRelationWithControl($user){

@@ -26,6 +26,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - **array** - serializa / deserializa um json fazendo um cast para (array)
   - **entity** - possibilita a vinculação de entidade em metadados
 - parâmetro para substituições na função text do javascript
+- refatoração da distribuição das avaliações para não mais dependerem do cache de permissão
   
 ## [7.5.18] - 2025-01-29
 #### Correções

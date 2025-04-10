@@ -97,13 +97,14 @@
         }
 
         &-options {
-            display: grid;
-            grid-template-columns: calc(26% - size(8)) calc(34% - size(8)) calc(40% - size(8));
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
             gap: size(16);
             word-break: break-word;
 
-            @media (max-width: 1110px) {
-                grid-template-columns: 1fr;
+            & > label {
+                width: auto;
             }
 
             &-wrapper {

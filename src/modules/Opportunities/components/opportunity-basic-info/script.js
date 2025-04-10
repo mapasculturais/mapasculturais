@@ -38,7 +38,7 @@ app.component('opportunity-basic-info' , {
 
     watch: {
         'entity.isContinuousFlow'(newVal, oldValue) {
-            if(newVal != oldValue){
+            if(Boolean(newVal) != Boolean(oldValue)){
                 if (!newVal) {
                     this.entity.hasEndDate = false;
                     this.entity.continuousFlow = null;
@@ -51,15 +51,15 @@ app.component('opportunity-basic-info' , {
                     this.lastPhase.name = this.text("Publicação final do resultado");
                        
                 } else {
-                    if(this.entity.registrationFrom){
-                        const myDate = new McDate(new Date(this.continuousFlowDate));
-                        
-                        this.entity.continuousFlow = myDate.sql('full');
-                        this.entity.registrationTo = myDate.sql('full');
-                        this.entity.publishedRegistrations = true;
-                        
-                    } else {
-                        this.entity.registrationTo = null;
+                    const myDate = new McDate(new Date(this.continuousFlowDate));
+                    
+                    this.entity.continuousFlow = myDate.sql('full');
+                    this.entity.registrationTo = myDate.sql('full');
+                    this.entity.publishedRegistrations = true;
+
+                    if(!this.entity.registrationFrom){
+                        let actualDate = new Date();
+                        this.entity.registrationFrom = Vue.reactive(new McDate(actualDate));
                     }
                     
                     this.lastPhase.name = this.text("Resultado");
@@ -72,7 +72,7 @@ app.component('opportunity-basic-info' , {
         },
 
         'entity.hasEndDate'(newVal, oldValue) {
-            if(newVal != oldValue){
+            if(Boolean(newVal) != Boolean(oldValue)){
                 if (this.entity.isContinuousFlow) {
                     if(newVal){
                         this.entity.continuousFlow = null;
@@ -100,6 +100,11 @@ app.component('opportunity-basic-info' , {
             newDate.setDate(newDate.getDate() + 2);
     
             this.entity.registrationTo = new McDate(newDate);
-        }
+        },
+
+        createEntities() {
+            this.collectionPhase = reactive(new Entity('opportunity'));
+            this.evaluationPhase = reactive(new Entity('evaluationmethodconfiguration'));
+        },
     }
 });

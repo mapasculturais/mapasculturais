@@ -1168,6 +1168,44 @@ return [
         __exec("ALTER TABLE permission_cache_pending ALTER column id SET DEFAULT nextval('permission_cache_pending_seq');");
     },
 
+    'altera o tipo da coluna valuers_exceptions_list da tabela registration para jsonb' => function () {
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list DROP DEFAULT;"); 
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list TYPE JSONB USING valuers_exceptions_list::JSONB");
+        __exec("ALTER TABLE registration ALTER COLUMN valuers_exceptions_list SET DEFAULT '{\"include\": [], \"exclude\": []}'::jsonb;"); 
+        __exec("CREATE INDEX registration_valuers_index ON registration USING GIN((valuers_exceptions_list->'include') jsonb_path_ops)");
+    },
+
+    'adiciona coluna valuers à tabela registration' => function () {
+        if(!__column_exists('registration', 'valuers')) {
+            __exec("ALTER TABLE registration ADD COLUMN valuers JSONB DEFAULT '{}'::jsonb NOT NULL");
+            __exec("CREATE INDEX registration_valuers_idx ON registration USING GIN((valuers) jsonb_path_ops)");
+        }
+    },
+
+    'adiciona coluna committee à tabela registration_evaluation' => function () {
+        if(!__column_exists('registration_evaluation', 'committee')) {
+            __exec("ALTER TABLE registration_evaluation ADD COLUMN committee VARCHAR(255)");
+
+            // define o valor da coluna committee
+            __exec("UPDATE registration_evaluation
+                    SET committee = com.committee,
+                        is_tiebreaker = (com.committee = '@tiebreaker')
+                    FROM
+                        (
+                            SELECT re.id, ar.type AS committee
+                            FROM registration_evaluation re
+                                LEFT JOIN usr u on u.id = re.user_id
+                                LEFT JOIN registration r on r.id = re.registration_id
+                                LEFT JOIN opportunity o on o.id = r.opportunity_id
+                                LEFT JOIN evaluation_method_configuration emc on emc.opportunity_id = o.id
+                                LEFT JOIN agent_relation ar on ar.object_type = 'MapasCulturais\Entities\EvaluationMethodConfiguration'
+                                    AND ar.object_id = emc.id
+                                    AND ar.agent_id = u.profile_id
+                        ) AS com
+                    WHERE registration_evaluation.id = com.id;");
+        }
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
@@ -1763,15 +1801,15 @@ $$
         
     },
 
-    'DROP VIEW evaluations' => function () {
-        __try("DROP VIEW evaluations");
+    'DROP MATERIALIZED VIEW evaluations!' => function () {
+        __try("DROP MATERIALIZED VIEW evaluations");
     },
 
-    'RECREATE MATERIALIZED VIEW evaluations' => function() use($conn) {
-        __try("DROP MATERIALIZED VIEW IF EXISTS evaluations");
+    'Recria view evaluations!!!!!!' => function() use($conn) {
+        __try("DROP VIEW IF EXISTS evaluations");
 
         $conn->executeQuery("
-            CREATE MATERIALIZED VIEW evaluations AS (
+            CREATE VIEW evaluations AS (
                 SELECT 
                     registration_id,
                     registration_sent_timestamp,
@@ -1781,6 +1819,7 @@ $$
                     opportunity_id,
                     valuer_user_id,
                     valuer_agent_id,
+                    valuer_committee,
                     max(evaluation_id) AS evaluation_id,
                     max(evaluation_result) AS evaluation_result,
                     max(evaluation_status) AS evaluation_status
@@ -1793,6 +1832,7 @@ $$
                         r.agent_id AS registration_agent_id, 
                         re.user_id AS valuer_user_id, 
                         u.profile_id AS valuer_agent_id, 
+                        r.valuers ->> u.id::varchar as valuer_committee,
                         r.opportunity_id,
                         re.id AS evaluation_id,
                         re.result AS evaluation_result,
@@ -1802,32 +1842,30 @@ $$
                             ON re.registration_id = r.id 
                         JOIN usr u 
                             ON u.id = re.user_id
-                        where 
-                            r.status > 0
-                    UNION
+                    WHERE 
+                        r.status > 0
+                UNION
                     SELECT 
                         r2.id AS registration_id, 
                         r2.sent_timestamp AS registration_sent_timestamp,
                         r2.number AS registration_number, 
                         r2.category AS registration_category,
                         r2.agent_id AS registration_agent_id, 
-                        p2.user_id AS valuer_user_id, 
+                        u2.id AS valuer_user_id, 
                         u2.profile_id AS valuer_agent_id, 
+                        r2.valuers ->> u2.id::varchar as valuer_committee,
                         r2.opportunity_id,
                         NULL AS evaluation_id,
                         NULL AS evaluation_result,
                         NULL AS evaluation_status
+                    
                     FROM registration r2 
-                        JOIN pcache p2 
-                            ON  p2.object_id = r2.id AND
-                                p2.object_type = 'MapasCulturais\Entities\Registration' AND 
-                                p2.action = 'evaluateOnTime'  
                         JOIN usr u2 
-                            ON u2.id = p2.user_id
+                            on jsonb_exists(r2.valuers, u2.id::varchar)
                         JOIN evaluation_method_configuration emc
                             ON emc.opportunity_id = r2.opportunity_id
-                        WHERE                          
-                            r2.status > 0
+                    WHERE                          
+                        r2.status = 1
                 ) AS evaluations_view 
                 GROUP BY
                     registration_id,
@@ -1837,20 +1875,14 @@ $$
                     registration_agent_id,
                     valuer_user_id,
                     valuer_agent_id,
+                    valuer_committee,
                     opportunity_id
             )
         ");
     },
 
-    'enqueue job to refresh materialized view evaluations' => function() use($conn) {
-        $app = App::i();
-        
-        $app->disableAccessControl();
-        // é para rodar a cada minuto, por 10 anos
-        $app->enqueueOrReplaceJob(\Opportunities\Jobs\RefreshViewEvaluations::SLUG, [], interval_string: '1 minute', iterations: 60*24*365*10);
-
-        // retorna false para executar a cada redeploy do serviço
-        return false;
+    'delete job de refresh materialized view evaluations' => function() use($conn) {
+        __exec("DELETE FROM job WHERE name = 'RefreshViewEvaluations'");
     },
 
     'adiciona oportunidades na fila de reprocessamento de cache' => function () use($conn) {
@@ -2712,6 +2744,7 @@ $$
                 'support',
                 'viewUserEvaluation',
                 'evaluateOnTime',
+                'evaluateRegistrations',
                 'createEvents',
                 'requestEventRelation');");
     },
