@@ -124,13 +124,13 @@ class Module extends \MapasCulturais\Module {
             $this->insideApp = false;
             $this->part('main-app--end');
         },1000);
-        
+
         if ($app->config['app.mode'] == 'development') {
             $app->hook('template(<<*>>):<<*>>', function () use($app) {
                 $hook = $app->hooks->hookStack[count($app->hooks->hookStack) - 1]->name;
                 if($this->version >= 2) {
                     $this->import('mc-debug');
-                    echo "<mc-debug type='template-hook' name='$hook'></mc-debug>\n";
+                    echo "<template is='vue:mc-debug' type='template-hook' name='$hook'></template>\n";
                 }
             });
         }
@@ -165,7 +165,7 @@ class Module extends \MapasCulturais\Module {
 
             if ($app->mode == APPMODE_DEVELOPMENT) {
                 $this->import('mc-debug');
-                echo "<mc-debug type='component-hook' name='$hook_name'></mc-debug>";
+                echo "<template is='vue:mc-debug' type='component-hook' name='$hook_name'></template>";
             }
 
             $app->applyHookBoundTo($this, $hook_name, $params);
@@ -304,7 +304,7 @@ class Module extends \MapasCulturais\Module {
             
             $app->applyHookBoundTo($this, "component({$component}):after", [$__data]);
             
-            if ($app->mode == APPMODE_DEVELOPMENT) {
+            if ($app->config['app.mode'] == APPMODE_DEVELOPMENT) {
                 echo "\n<!-- /$component -->";
             }
 
