@@ -14,6 +14,11 @@ use MapasCulturais\Entities\Registration;
  * @var MapasCulturais\Entities\Registration
  */
 $registration = $this->controller->requestedEntity;
+
+if(!($registration instanceof Registration)) {
+    return;
+}
+
 $registration_number = $registration->number;
 
 $opportunity = $registration->opportunity;
