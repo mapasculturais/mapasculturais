@@ -85,6 +85,7 @@ COPY src /var/www/src
 COPY var /var/www/var
 
 WORKDIR /var/www/src/
+RUN rm -rf node_modules
 RUN pnpm install && pnpm run build
 
 RUN sass themes/BaseV1/assets/css/sass/main.scss:themes/BaseV1/assets/css/main.css
