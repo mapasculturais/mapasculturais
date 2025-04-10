@@ -37,9 +37,21 @@ app.component('opportunity-evaluation-committee', {
             return query;
         },
 
+        allExpanded() {
+            return this.infosReviewers.every(reviewer => reviewer.isContentVisible);
+        },
+
         select() {
             return "id,owner,agent,agentUserId";
         },
+
+        sortedReviewers () {
+            return (this.infosReviewers ?? [])
+                .map((reviewer, index) => [reviewer, index])
+                .sort(([a], [b]) => {
+                    return (a.agent?.name || '').localeCompare(b.agent?.name || '');
+                });
+        }
     },
 
     mounted() {
@@ -58,7 +70,7 @@ app.component('opportunity-evaluation-committee', {
         return {
             agentData: null,
             showReviewers: false,
-            infosReviewers: {},
+            infosReviewers: [],
             queryString: 'id,name,files.avatar,user',
             selectCategories: [],
             registrationCategories: [
@@ -130,6 +142,7 @@ app.component('opportunity-evaluation-committee', {
             let args = {
                 '@opportunity': this.entity.opportunity.id,
                 '@limit': 50,
+                '@order': 'name ASC',
                 '@page': 1,
             };
 
@@ -216,7 +229,7 @@ app.component('opportunity-evaluation-committee', {
             properties.forEach(property => {
                 if (this.entity[property]) {
                     if (this.entity[property][userId]) {
-                        delete this.entity[property][userId];
+                        this.entity[property][userId] = undefined;
                     }
                 }
             });
@@ -301,46 +314,33 @@ app.component('opportunity-evaluation-committee', {
         },
 
         loadFetchs() {
-            if(this.infosReviewers) {
+            if(this.infosReviewers?.length > 0) {
                 this.infosReviewers.forEach(info => {
-                    if(!this.entity.fetch) {
-                        this.entity.fetch = {};
-                        this.entity.fetch[info.agentUserId] = ""
-                    }
+                    for (const key of ['fetch', 'fetchCategories', 'fetchRanges', 'fetchProponentTypes']) {
+                        if (!this.entity[key]) {
+                            this.entity[key] = {};
+                        } else if (Array.isArray(this.entity[key])) {
+                            if (this.entity[key].length === 0) {
+                                this.entity[key] = {};
+                            } else {
+                                const entries = Object.entries(this.entity[key]).filter(([key, value]) => {
+                                    return value != null;
+                                });
 
-                    if(this.entity.fetch && !this.entity.fetch[info.agentUserId]) {
-                        this.entity.fetch[info.agentUserId] = "";
-                    }
-    
-                    if(!this.entity.fetchCategories) {
-                        this.entity.fetchCategories = {};
-                        this.entity.fetchCategories[info.agentUserId] = [];
-                    }
-    
-                    if(this.entity.fetchCategories && !this.entity.fetchCategories[info.agentUserId]) {
-                        this.entity.fetchCategories[info.agentUserId] = [];
-                    }
+                                this.entity[key] = Object.fromEntries(entries);
+                            }
+                        }
 
-                    if(!this.entity.fetchRanges) {
-                        this.entity.fetchRanges = {};
-                        this.entity.fetchRanges[info.agentUserId] = [];
-                    }
-
-                    if(this.entity.fetchRanges && !this.entity.fetchRanges[info.agentUserId]) {
-                        this.entity.fetchRanges[info.agentUserId] = [];
-                    }
-
-                    if(!this.entity.fetchProponentTypes) {
-                        this.entity.fetchProponentTypes = {};
-                        this.entity.fetchProponentTypes[info.agentUserId] = [];
-                    }
-
-                    if(this.entity.fetchProponentTypes && !this.entity.fetchProponentTypes[info.agentUserId]) {
-                        this.entity.fetchProponentTypes[info.agentUserId] = [];
+                        if(this.entity[key] && !this.entity[key][info.agentUserId]) {
+                            if (key === 'fetch') {
+                                this.entity[key][info.agentUserId] = '';
+                            } else {
+                                this.entity[key][info.agentUserId] = [];
+                            }
+                        }
                     }
 
                     info.default = (this.entity.fetch[info.agentUserId] || this.entity.fetchCategories[info.agentUserId].length > 0 || this.entity.fetchRanges[info.agentUserId].length > 0 || this.entity.fetchProponentTypes[info.agentUserId].length > 0) ? false : true;
-
                 });
             }
         },
@@ -353,10 +353,9 @@ app.component('opportunity-evaluation-committee', {
         },
 
         expandAllToggles() {
-            const allExpanded = this.infosReviewers.every(reviewer => reviewer.isContentVisible);
-
+            const expand = !this.allExpanded;
             this.infosReviewers.forEach(reviewer => {
-                reviewer.isContentVisible = !allExpanded;
+                reviewer.isContentVisible = expand;
             });
         },
     },

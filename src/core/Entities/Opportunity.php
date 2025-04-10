@@ -773,13 +773,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
             $new_categories = Utils::nl2array($categories);
         }
 
-        if (is_array($new_categories)) {
-            $new_categories = array_filter($new_categories , function($category){
-                return !empty($category);
-            });
-        }
-
-        $removed_categories = array_diff($this->registrationCategories, $new_categories);
+        $removed_categories = array_filter(array_diff($this->registrationCategories, $new_categories));
         $errors = [];
 
         foreach ($removed_categories as $removed_category) {
@@ -1388,10 +1382,13 @@ abstract class Opportunity extends \MapasCulturais\Entity
         $cache_key = $this->summaryCacheKey;
 
         if(!$skip_cache && $app->config['app.useOpportunitySummaryCache']) {
-
             if ($app->mscache->contains($cache_key)) {
                 return $app->mscache->fetch($cache_key);
             }
+        }
+        
+        if ($app->config['app.log.summary']) {
+            $app->log->debug("SUMMARY: Atualizando o resumo de inscrições da fase {$this->name} ({$this->id})");
         }
 
         $params = ["opp" => $this];
