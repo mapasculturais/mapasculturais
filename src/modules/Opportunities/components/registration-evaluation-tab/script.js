@@ -25,19 +25,18 @@ app.component('registration-evaluation-tab', {
     computed: {
         allValuers() {
             let result = [];
-            for (const phaseId in this.valuers) {
-                const phaseValuers = this.valuers[phaseId];
-                for (const userId in phaseValuers) {
-                    const valuer = phaseValuers[userId];
+            const phaseId = this.phaseId;
+            const phaseValuers = this.valuers[phaseId];
+            for (const userId in phaseValuers) {
+                const valuer = phaseValuers[userId];
 
-                    result.push({
-                        id: valuer.id,
-                        userId: parseInt(userId),
-                        phaseId: parseInt(phaseId),
-                        name: valuer.name,
-                        ...valuer
-                    });
-                }
+                result.push({
+                    id: valuer.id,
+                    userId: parseInt(userId),
+                    phaseId: parseInt(phaseId),
+                    name: valuer.name,
+                    ...valuer
+                });
             }
 
             result.sort((a, b) => a.name.localeCompare(b.name));
