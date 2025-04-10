@@ -706,8 +706,19 @@ class ApiQuery {
         return $this->getFindResult();
     }
 
+    private $__inGetSubClassesResult = false;
     protected function getSubClassesResult() {
+        $app = App::i();
         $ids = $this->findIds();
+
+        $app->hook('ApiQuery(Opportunity).where', function (&$where) use($app, $ids) {
+            if($this->__inGetSubClassesResult) {
+                $ids = $ids ?: [-1];
+                $_ids = implode(',', $ids);
+                $where .= " AND e.id IN ($_ids)";
+            }
+        });
+        
         $entities = [];
         $subclasses = $this->entityClassMetadata->subClasses;
         $main_class = $this->entityClassName;
@@ -716,8 +727,12 @@ class ApiQuery {
             $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
             $this->entityProperties = array_keys($this->entityClassMetadata->fieldMappings);
             $this->entityRelations = $this->entityClassMetadata->associationMappings;
+            
+            $this->__inGetSubClassesResult = true;
+            $subclass_result = $this->getFindResult();
+            $this->__inGetSubClassesResult = false;
 
-            $entities = array_merge($entities, $this->getFindResult());
+            $entities = array_merge($entities, $subclass_result);
         }
         $this->entityClassName = $main_class;
         $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
@@ -768,11 +783,11 @@ class ApiQuery {
                 $q->enableResultCache($this->__cacheTLS);
             }
     
-            if ($offset = $this->getOffset()) {
+            if (!$this->__inGetSubClassesResult && $offset = $this->getOffset()) {
                 $q->setFirstResult($offset);
             }
     
-            if ($limit = $this->getLimit()) {
+            if (!$this->__inGetSubClassesResult && $limit = $this->getLimit()) {
                 $q->setMaxResults($limit);
             }
     
