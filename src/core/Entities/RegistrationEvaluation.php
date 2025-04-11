@@ -205,10 +205,6 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
             return false;
         }
 
-        if($this->registration->status != Registration::STATUS_SENT) {
-            return false;
-        }
-
         if ($this->registration->opportunity->canUser('@control')) {
             return true;
         }
