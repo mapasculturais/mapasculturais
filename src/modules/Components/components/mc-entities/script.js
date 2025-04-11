@@ -4,6 +4,7 @@ app.component('mc-entities', {
 
     data() {
         return {
+            abortController: null,
             api: new API(this.type, this.scope || 'default'),
             entities: [],
             page: 1,
@@ -58,10 +59,7 @@ app.component('mc-entities', {
         },
         limit: Number,
         permissions: String,
-        order: {
-            type: String,
-            default: 'id ASC'
-        },
+        order: String,
         watchQuery: {
             type: Boolean,
             default: false
@@ -86,36 +84,48 @@ app.component('mc-entities', {
         }
 
     },
-    
+
+    computed: {
+        defaultOrder () {
+            if ($DESCRIPTIONS[this.type].name) {
+                return 'name ASC';
+            } else {
+                return 'id ASC';
+            }
+        }
+    },
+
     methods: {
         populateQuery(query) {
             if (this.select) {
                 query['@select'] = this.select;
-            } 
-    
+            }
+
             if (this.ids) {
                 query[this.API.$PK] = 'IN(' + this.ids.join(',') + ')'
             }
 
             if (this.order) {
                 query['@order'] = this.order; 
+            } else if (!query['@order']) {
+                query['@order'] = this.defaultOrder;
             }
-    
+
             if (this.limit) {
                 query['@limit'] = this.limit;
                 query['@page'] = this.page;
             }
-    
+
             if (this.permissions) {
                 query['@permissions'] = this.permissions;
             }
         },
 
         getDataFromApi() {
-            let query = {...this.query};
-            
+            const query = {...this.query};
+
             this.$emit('loading', query);
-            
+
             this.populateQuery(query);
 
             const options = {list: this.entities, refresh: true};
@@ -123,11 +133,15 @@ app.component('mc-entities', {
             if (this.limit && this.page) {
                 query['@page'] = this.page;
             }
-            
+
             if (this.rawProcessor) {
                 options.raw = true;
                 options.rawProcessor = this.rawProcessor;
             };
+
+            this.abortController?.abort();
+            this.abortController = new AbortController();
+            options.signal = this.abortController.signal;
 
             const result = this.api.fetch(this.endpoint, query, options);
 
@@ -137,27 +151,22 @@ app.component('mc-entities', {
 
             return result;
         },
-        
-        refresh(debounce) {
-            if (this.entities.loading) {
-                return;
-            };
 
+        refresh(debounce) {
             if (this.timeout) {
-                clearTimeout(this.timeout)
+                clearTimeout(this.timeout);
             };
         
-            this.entities.splice(0);
             this.timeout = setTimeout(() => {
+                this.entities.splice(0);
                 this.entities.loading = true;
-        
+
                 this.getDataFromApi()
                     .then(() => {
                         this.entities.loading = false;
                     })
             }, debounce);
         },
-        
 
         loadMore() {
             if (!this.limit) {
