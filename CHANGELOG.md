@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.5.40] - 2025-04-10
 ### Correções 
 - Remove bloqueio de modificação de avaliações quando a inscrição esta com status diferente de pendente
+- Corrige erro que impedia a listagem das tabelas de inscrições e avaliações
 
 ## [7.5.39] - 2025-04-09
 ### Melhorias não funcionais

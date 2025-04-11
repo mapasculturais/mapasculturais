@@ -476,7 +476,7 @@ class Quotas {
                 */
                 
                 foreach($this->quotaConfig as $quota_slug => $quota_config) {
-                    $first_quota_index = !$this->considerQuotasInGeneralList ? 
+                    $first_quota_index = $this->considerQuotasInGeneralList ? 
                         0 : count($_result) - $range_total_quota_vacancies;
     
                     $avaliable_quota_vacancies = $range_quota_vacancies[$quota_slug];
@@ -484,7 +484,7 @@ class Quotas {
                     // calcula o número de vagas ainda disponíveis para o tipo de cota
                     for($i = count($_result) -1; $i >= $first_quota_index; $i--) {
                         // se não tem mais vagas para este tipo de cota
-                        if($avaliable_quota_vacancies <= 0) {
+                        if(!isset($_result[$i]) || $avaliable_quota_vacancies <= 0) {
                             break;
                         }
                         $registration = $_result[$i];
