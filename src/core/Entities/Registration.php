@@ -280,6 +280,7 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
 
         $this->__valuersExceptionsList = (object) ["include" => [], "exclude" => []];
+
         $this->__valuers = (object)[];
         
         $this->owner = $app->user->profile;

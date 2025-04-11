@@ -10,13 +10,6 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\User;
 
-/**
- * @property-read string $slug
- * @property-read string $name
- * @property-read string $description
- * 
- * @package MapasCulturais
- */
 abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract protected function _register();
 

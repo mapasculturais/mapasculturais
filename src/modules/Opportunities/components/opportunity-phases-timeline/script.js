@@ -140,11 +140,11 @@ app.component('opportunity-phases-timeline', {
 			const allowProponentResponse = phaseOpportunity.allow_proponent_response === '1';
 
 			return (phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation)) || allowProponentResponse;
-		
 		},
 
 		getRegistration(item) {
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
+
 			return $MAPAS.registrationPhases?.[phaseOpportunity.id] ?? null;
 		},
 	}
