@@ -307,7 +307,7 @@ $today = new DateTime();
                             continue;
                         }
                         ?>
-                        <mc-tab label="<?= $emc->name ?> valuers-<?= $phase->opportunity->id ?>" slug="valuers-<?= $phase->opportunity->id ?>">
+                        <mc-tab label="<?= htmlspecialchars($emc->name) ?>" slug="valuers-<?= $phase->opportunity->id ?>">
                             <mc-card>
                                 <registration-evaluation-tab :phase-id="<?= $phase->opportunity->id ?>"></registration-evaluation-tab>
                             </mc-card>
