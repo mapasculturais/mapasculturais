@@ -47,6 +47,7 @@ app.component('opportunity-evaluation-committee', {
 
         sortedReviewers () {
             return (this.infosReviewers ?? [])
+                .slice()
                 .sort((a, b) => {
                     const aName = a.agent?.name.toLocaleLowerCase() ?? '';
                     const bName = b.agent?.name.toLocaleLowerCase() ?? '';
