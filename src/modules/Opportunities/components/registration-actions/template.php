@@ -50,7 +50,7 @@ $term_url = $app->createUrl('site', 'termoAdesao');
             <mc-loading v-if="isLastStep" :entity="registration"></mc-loading>
             <mc-confirm-button 
                 v-if="isLastStep && !registration.__processing" 
-                title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>"
+                :title="confirmButtonTitle"
                 yes="<?= i::esc_attr__('Enviar agora') ?>" 
                 no="<?= i::esc_attr__('Cancelar') ?>" 
                 @confirm="send($event)"
@@ -63,7 +63,10 @@ $term_url = $app->createUrl('site', 'termoAdesao');
                         <mc-icon name="send"></mc-icon>
                     </button>
                 </template>
-                <template #message="message">
+                <template v-if="registration.opportunity.isAppealPhase" #message="message">
+                    <?php i::_e('Ao enviá-lo você poderá acompanhá-lo clicando em Minhas Inscrições.') ?>
+                </template>
+                <template v-else #message="message">
                     <?php i::_e('Ao enviar sua inscrição você já estará participando da oportunidade.') ?>
                 </template>
             </mc-confirm-button>
