@@ -12,17 +12,20 @@ $committee = [];
 $valuersMetadata = [];
 
 if ($comm = $entity->getEvaluationCommittee()) {
-    foreach($comm as $value) {
-        array_push($committee, [
-            "value" => $value->agent->owner->user->id,
-            "label" => $value->agent->name,
-        ]);
-
-        $valuersMetadata[$value->agent->owner->user->id] = $value->metadata;
+    foreach($comm as $member) {
+        $user_id = $member->agent->owner->user->id;
+        if (empty($committee[$user_id])) {
+            $committee[$user_id] = [
+                "value" => $user_id,
+                "label" => $member->agent->name,
+            ];
+            $valuersMetadata[$user_id] = $member->metadata;
+        }
     }
+    $committee = array_values($committee);
 }
 
-usort($committee, fn($a, $b) => $a['label'] <=> $b['label']);
+usort($committee, fn($a, $b) => strtolower($a['label']) <=> strtolower($b['label']));
 
 array_unshift($committee, [
     "value" => 'all',
