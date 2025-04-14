@@ -45,7 +45,7 @@ $this->import('
                         <p class="bold"><?= i::__('O resultado será publicado automaticamente') ?></p>
                     </div>
                     <div v-else>
-                        <div v-if="!isOpenPhase" class="col-4">
+                        <div v-if="!isOpenPhase && !phase.publishedRegistrations" class="col-4">
                             <p class="bold"><?= i::__("Você pode publicar o resultado manualmente a qualquer momento utilizando o botão ao lado.") ?></p>
                         </div>
                     </div>
