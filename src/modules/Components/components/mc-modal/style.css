@@ -8,10 +8,6 @@
     align-items: center;
 }
 
-.modal-container.-with-datepicker .modal__content {
-    overflow: unset;
-}
-
 .modal-content {
     background: #fff;
     border-radius: 0.25rem;
