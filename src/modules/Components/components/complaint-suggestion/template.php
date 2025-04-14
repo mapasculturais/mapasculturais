@@ -65,7 +65,9 @@ $this->import("
             </template>
 
             <template v-if="!sendSuccess"  #actions="modal">
-                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
+                <!-- Componente responsável por renderizar o CAPTCHA -->
+                <mc-captcha @captcha-verified="verifyCaptcha" @captcha-expired="expiredCaptcha" :error="error" class="complaint-suggestion__recaptcha"></mc-captcha>
+
                 <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Denúncia') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('cancelar') ?></button>
             </template>
@@ -139,7 +141,9 @@ $this->import("
             </template>
 
             <template v-if="!sendSuccess" #actions="modal">
-                <VueRecaptcha v-if="sitekey" :sitekey="sitekey" @verify="verifyCaptcha" @expired="expiredCaptcha" @render="expiredCaptcha" class="complaint-suggestion__recaptcha"></VueRecaptcha>
+                <!-- Componente responsável por renderizar o CAPTCHA -->
+                <mc-captcha @captcha-verified="verifyCaptcha" @captcha-expired="expiredCaptcha" :error="error" class="complaint-suggestion__recaptcha"></mc-captcha>
+
                 <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Mensagem') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('Cancelar') ?></button>
             </template>
