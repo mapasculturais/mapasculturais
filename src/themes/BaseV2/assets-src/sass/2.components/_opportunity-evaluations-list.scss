@@ -262,12 +262,18 @@
                             display: flex;
                             flex-direction: column;
                             gap: size(4);
+
                             &__info {
                                 display: flex;
                                 align-items: center;
                                 gap: size(8);
-                                padding-bottom: size(16) ;
+                                padding-bottom: size(16);
+
+                                .mc-status {
+                                    margin: 0;
+                                }
                             }
+
                             .state,
                             &label {
                                 font-family: 'Open Sans';

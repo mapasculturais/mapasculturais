@@ -45,22 +45,20 @@
             display: flex;
             flex-direction: column;
             gap: size(4);
-            margin-top: size(4);
 
             &--title {
                 font-size: size(12);
                 font-weight: 700;
-                line-height: size(16);
+                line-height: size(24);
             }
 
             &--description {
                 font-size: size(12);
                 font-weight: 600;
-                line-height: size(16);
             }
         }
 
-        &:last-child {
+        &:last-of-type, &:has(+ :not(.item)) {
             padding: 0;
 
             .item__dot::before {
@@ -73,57 +71,50 @@
         .item {
             gap: 0;
             grid-template-columns: size(70) 1fr;
-            padding-bottom: size(41);
-    
-            &__dot {        
+            padding-bottom: size(40);
+
+            &__dot {
                 .dot {
                     border: size(7) solid var(--mc-high-500);
                     height: size(42);
                     width: size(42);
                 }
             }
-    
+
             &__content {
                 gap: size(8);
-                margin-top: size(10);
-    
+
                 &--title {
                     font-size: size(18);
-                    line-height: size(24);
+                    line-height: size(42);
                 }
-    
+
                 &--description {
                     font-size: size(16);
                     line-height: size(22);
                 }
             }
 
-            &:first-child {
-                .item__content {
-                    margin-top: size(5);
-                }
-            }
-
-            &:last-child {
+            &:last-of-type, &:has(+ :not(.item)) {
                 padding: 0;
             }
-    
-            &.active {    
+
+            &.active {
                 .item {
-                    &__dot {    
+                    &__dot {
                         .dot {
                             background-color: var(--mc-opportunities-500);
                             height: size(70);
                             width: size(70);
                         }
                     }
-    
+
                     &__content {
                         &--title {
                             font-size: size(18);
-                            line-height: size(24);
+                            line-height: size(70);
                         }
-    
+
                         &--description {
                             font-size: size(16);
                             line-height: size(21);
@@ -131,32 +122,26 @@
                     }
                     @media (max-width: size(400)) {
                         &__title {
-
-                            font-size: size(16);
-                            line-height: size(21);
-                        }
-                        &__title {
-
                             font-size: size(14);
                             line-height: size(19);
                         }
 
                     }
-                }    
+                }
             }
 
-            &.happened {    
+            &.happened {
                 .item {
-                    &__dot {   
+                    &__dot {
                         &::before {
                             background-color: var(--mc-opportunities-500);
                         } 
-                        
+
                         .dot {
                             background-color: var(--mc-opportunities-500);
                         }
                     }
-                }    
+                }
             }
         }
     }

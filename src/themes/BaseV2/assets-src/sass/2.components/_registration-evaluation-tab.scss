@@ -1,0 +1,86 @@
+@use '../0.settings/mixins' as *;
+
+.registration-evaluation-tab {
+    &__text {
+        font-style: italic;
+    }
+
+    &__distribution, &__include-list, &__exclude-list {
+        border-radius: var(--mc-border-radius-xs);
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: size(17) size(24);
+        gap: size(16);
+    }
+
+    &__all-valuers {
+        gap: size(20) size(20);
+    } 
+
+    &__list {
+        gap: size(12);
+    }
+
+    .field {
+        gap: size(16);
+        
+        label {
+            font-weight: var(--mc-font-semibold);
+        }
+    }
+
+    .valuers-list {
+        padding: 0;
+        list-style: none;
+    }
+
+    .valuer-item {
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        padding: size(8) size(16);
+        border-radius: var(--mc-border-radius-xs);
+        background-color: var(--mc-gray-100);
+    }
+
+    .valuer-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: size(16); 
+        flex-wrap: wrap;
+    }
+
+    .valuer-name {
+        min-width: size(500);
+    }
+    
+    .valuer-status {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        min-width: size(285);
+        max-width: size(300);
+    }
+
+    .status-bullet {
+        display: inline-block;
+        width: size(10);
+        height: size(10);
+        border-radius: 50%;
+        margin-right: size(8);
+    }
+
+    .status-bullet.mc-status--evaluation-pending {
+        background-color: #fe4f4f;
+    }
+
+    .status-bullet.mc-status--evaluation-started {
+        background-color: #faae4a;
+    }
+
+    .status-bullet.mc-status--evaluation-completed {
+        background-color: #3fb1fd;
+    }
+
+    .status-bullet.mc-status--evaluation-sent {
+        background-color: #96df37;
+    }
+}
