@@ -520,8 +520,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $checks_count = 0;
 
         // processa a lista de inscrições fazendo as definições iniciais das variáveis
-        foreach($registration_evaluations as $registration) {
-            $registration_entity = null;
+        foreach($registration_evaluations as &$registration) {
             $registration = (object) $registration;
             $registration->valuers = json_decode($registration->valuers);
             $registration->valuers_exceptions_list = json_decode($registration->valuers_exceptions_list);
@@ -554,6 +553,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 // incrementa o número de avaliações que a inscrição tem por comissão
                 $registration_valuers_count[$registration->id][$committee_name]++;
             }
+        }
+
+        foreach($registration_evaluations as &$registration) {
+            $registration_entity = null;
 
             // adiciona os usuários da lista de inclusões (valuers_exceptions_list->include)
             foreach($registration->valuers_exceptions_list->include as $user_id) {
@@ -592,7 +595,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
             // passa por cada comissão adicionando os avaliadores até o limite de avaliadores por inscrição configurado na comissão
             foreach($committees as $committee_name => $users) {
-                $percent = round(($checks_count / $total_checks) * 100, 2);
+                $percent = round(($checks_count / $total_checks) * 100, 1);
                 if($app->config['app.log.evaluations']) {
                     // imprime a porcentagem de verificações
                     $app->log->debug("[$percent%] $registration->number - $checks_count de $total_checks");
