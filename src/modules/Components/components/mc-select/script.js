@@ -220,7 +220,9 @@ app.component('mc-select', {
             const refOptions = this.$refs.options;
             const refSelected = this.$refs.selected;
 
-            refOptions.style.minWidth = refSelected.clientWidth + 'px'; 
+            if(refOptions) {
+                refOptions.style.minWidth = refSelected.clientWidth + 'px'; 
+            }
         },
 
         selectOption(event) {

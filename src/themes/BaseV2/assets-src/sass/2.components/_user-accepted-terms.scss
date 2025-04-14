@@ -5,53 +5,48 @@
     &__privacy {
 
         &--accept {
-            max-width: 970px;
             max-height: 100%;
             background-color: var(--mc-high-500);
             border-radius: var(--mc-border-radius-xs);
-            padding: 16px 16px 24px 16px;
+            padding: size(16) size(16) size(24);
 
             &-title {
                 font-weight: 700;
-                font-size: 18px;
-                line-height: 25px;
-                margin-bottom: 24px;
+                font-size: size(18);
+                margin-bottom: size(24);
 
                 &-box {
-                    margin-top: 24px;
+                    margin-top: size(24);
                     @media (max-width: size(500)){
                         .boxterm__list-subterm{
-                           label{
-                               font-weight: 600;
-                               font-size: 14px;
-                               line-height: 19px;
-                           }
+                            label{
+                                font-weight: 600;
+                                font-size: size(14);
+                            }
                         }
                     }
                     .boxterm {
-                        padding-bottom: 24px;
+                        padding-bottom: size(24);
 
                         &__list {
-                            margin-top: 12px;
+                            margin-top: size(12);
 
                             &-subterm {
                                 display: flex;
                                 flex-direction: column;
-                                gap: 4px;
+                                gap: size(4);
 
                                 &-title {
                                     font-weight: 700;
-                                    font-size: 16px;
-                                    line-height: 22px;
+                                    font-size: size(16);
                                     font-style: normal;
                                 }
 
                                 &-content {
-                                    font-family: 'Open Sans';
+                                    font-family: $font-body;
                                     font-style: normal;
                                     font-weight: 600;
-                                    font-size: 14px;
-                                    line-height: 19px;
+                                    font-size: size(14);
                                 }
                             }
                         }
@@ -59,7 +54,7 @@
                         @media (max-width: size(500)) {
                             .boxterm {
                                 max-width: fit-content;
-                                background-color: red;
+                                background-color: var(--mc-danger-500);
                             }
                         }
                     }

@@ -9,6 +9,7 @@ use MapasCulturais\i;
 $this->import('
     mc-icon
     mc-loading
+    mc-status
 ');
 ?>
 <div class="opportunity-evaluations-list" v-if="showList()">
@@ -81,10 +82,9 @@ $this->import('
                         </div>
                         <div class="card-state">
                             <span class="state"><?= i::__('Resultado de avaliação') ?></span>
-                            <span :class="verifyState(evaluation)" class="card-state__info">
-                                <mc-icon  name="circle"></mc-icon>
-                                <h5 class="bold" v-if="evaluation.resultString">{{evaluation.resultString}}</h5>
-                                <h5 class="bold" v-if="!evaluation.resultString"> <?= i::__('Pendente') ?></h5>
+                            <span class="card-state__info">
+                                <mc-status v-if="evaluation.resultString" :status-name="evaluation.resultString"></mc-status>
+                                <mc-status v-if="!evaluation.resultString" status-name="<?= i::__('Pendente') ?>"></mc-status>
                             </span>
                             <mc-link route="registration/evaluation/" :params="{id:evaluation.registrationId,user:userEvaluatorId}" icon="arrowPoint-right" right-icon class="button button--primary-outline"><?= i::__('Acessar') ?></mc-link>
                         </div>

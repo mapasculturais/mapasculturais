@@ -133,7 +133,7 @@ app.component('opportunity-registration-filter-configuration', {
                 let keyPrefix;
                 if(prop.startsWith('field_')) {
                     keyPrefix = prop;
-                    labelPrefix = this.registrationSelectionFields[prop].label;
+                    labelPrefix = this.registrationSelectionFields?.[prop]?.label;
                 } else {
                     keyPrefix = prop;
                     labelPrefix = prop;
@@ -173,7 +173,7 @@ app.component('opportunity-registration-filter-configuration', {
                 let keyPrefix, labelPrefix;
                 if(prop.startsWith('field_')) {
                     keyPrefix = prop;
-                    labelPrefix = this.registrationSelectionFields[prop].title;
+                    labelPrefix = this.registrationSelectionFields?.[prop]?.title;
                 } else {
                     keyPrefix = prop;
                     labelPrefix = prop;

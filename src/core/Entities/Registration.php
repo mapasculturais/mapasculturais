@@ -24,9 +24,10 @@ use MapasCulturais\GuestUser;
  * @property-read RegistrationEvaluation[] $sentEvaluations lista de avaliações enviadas
  * @property-read array|object $spaceData retorna o snapshot dos dados do espaço relacionado
  * @property-read array|object $agentsData retorna o snapshot dos dados dos agentes relacionados e do agente owner
- * @property-read array|object $valuersExceptionsList retorna a configuração de exceções da lista de avaliadores, aqueles que não entram na regra de distribuição padrão
- * @property-read array|object $valuersIncludeList retorna a lista de avaliadores incluídos
- * @property-read array|object $valuersExcludeList retorna a lista de avaliadores excluídos
+ * @property-read object $valuersExceptionsList retorna a configuração de exceções da lista de avaliadores, aqueles que não entram na regra de distribuição padrão
+ * @property-read array $valuersIncludeList retorna a lista de avaliadores incluídos
+ * @property-read array $valuersExcludeList retorna a lista de avaliadores excluídos
+ * @property-read array $valuers retorna a lista de avaliadores excluídos
  * @property-read array $statuses Nomes dos status
  *
  * @ORM\Table(name="registration")
@@ -163,13 +164,18 @@ class Registration extends \MapasCulturais\Entity
     protected $range;
     
     /**
-     * @var integer
+     * @var object
      *
      * @ORM\Column(name="valuers_exceptions_list", type="json", nullable=false)
      */
     protected $__valuersExceptionsList;
 
-
+    /**
+     * @var object
+     *
+     * @ORM\Column(name="valuers", type="json", nullable=false)
+     */
+    protected $__valuers;
 
     /**
     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
@@ -274,6 +280,7 @@ class Registration extends \MapasCulturais\Entity
         $app = App::i();
 
         $this->__valuersExceptionsList = (object) ["include" => [], "exclude" => []];
+        $this->__valuers = (object)[];
         
         $this->owner = $app->user->profile;
 
@@ -366,6 +373,41 @@ class Registration extends \MapasCulturais\Entity
 
         return $validations;
     }
+
+    /** 
+     * @inheritdoc
+     */
+    public static function getPropertiesMetadata($include_column_name = false){
+        $result = parent::getPropertiesMetadata($include_column_name);
+        $result['valuersIncludeList'] = [
+            'isEntityRelation' => false,
+            'isMetadata' => false,
+            'isPK' => false,
+            'required' => false,
+            'type' => 'array',
+            'label' => i::__('Lista de de inclusão avaliadores')
+        ];
+        $result['valuersExcludeList'] = [
+            'isEntityRelation' => false,
+            'isMetadata' => false,
+            'isPK' => false,
+            'required' => false,
+            'type' => 'array',
+            'label' => i::__('Lista de exclusão de avaliadores')
+        ];
+
+        $result['valuers'] = [
+            'isEntityRelation' => false,
+            'isMetadata' => false,
+            'isPK' => false,
+            'required' => false,
+            'type' => 'array',
+            'label' => i::__('Lista de avaliadores da inscrição')
+        ];
+
+        return $result;
+    }
+    
     
     function jsonSerialize(): array {
         $this->registerFieldsMetadata();
@@ -392,6 +434,12 @@ class Registration extends \MapasCulturais\Entity
             'editableFields' => $this->editableFields,
             'editSentTimestamp' => $this->editSentTimestamp,
         ];
+
+        if($this->opportunity->canUser('@control')) {
+            $json['valuersIncludeList'] = $this->valuersIncludeList;
+            $json['valuersExcludeList'] = $this->valuersExcludeList;
+            $json['valuers'] = $this->valuers;
+        }
 
         if($this->canUser('viewConsolidatedResult')){
             $json['evaluationResultValue'] = $this->getEvaluationResultValue();
@@ -731,6 +779,10 @@ class Registration extends \MapasCulturais\Entity
      */
     function randomIdGeneratorInitialRange(){
         return 1000;
+    }
+
+    function getValuers(): array {
+        return (array) $this->__valuers;
     }
 
     /**
