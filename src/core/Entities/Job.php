@@ -3,12 +3,11 @@
 namespace MapasCulturais\Entities;
 
 use DateTime;
-use stdClass;
-use DateInterval;
-use MapasCulturais\App;
-use MapasCulturais\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\App;
 use MapasCulturais\Definitions\JobType;
+use MapasCulturais\Entity;
+use stdClass;
 
 /**
  * Job
@@ -222,7 +221,7 @@ class Job extends \MapasCulturais\Entity{
                 }
                 $job->status = 0;
                 $job->lastExecutionTimestamp = new DateTime;
-                $job->nextExecutionTimestamp = $this->nextExecutCalc($job);
+                $job->nextExecutionTimestamp = new DateTime(date('Y-m-d H:i:s', strtotime($job->intervalString, $job->nextExecutionTimestamp->getTimestamp())));
                 $app->disableAccessControl();
                 $job->save(true);
                 $app->enableAccessControl();
@@ -236,19 +235,6 @@ class Job extends \MapasCulturais\Entity{
 
         return $success;
     }
-
-    /**
-     * @param Job $job
-     * @return DateTime
-     */
-    protected function nextExecutCalc(Job $job) :DateTime
-    {
-        $today = new DateTime('now');
-        
-        $today->add(new DateInterval("PT{$job->intervalString}S"));
-        return $today;
-    }
-
 
     protected function canUserRemove($user){
         return true;
