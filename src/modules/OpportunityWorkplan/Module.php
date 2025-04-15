@@ -122,8 +122,6 @@ class Module extends \MapasCulturais\Module{
         
         $this->registerOpportunityMetadata('workplan_dataProjectmaximumDurationInMonths', [
             'label' => i::__('Duração máxima em meses'),
-            'type' => 'integer',
-            'default' => 1
         ]);
 
         
@@ -142,8 +140,6 @@ class Module extends \MapasCulturais\Module{
          
         $this->registerOpportunityMetadata('workplan_metaMaximumNumberOfGoals', [
             'label' => i::__('Número máximo de metas'),
-            'type' => 'integer',
-            'default' => 1
         ]);
 
          
@@ -163,8 +159,6 @@ class Module extends \MapasCulturais\Module{
          
         $this->registerOpportunityMetadata('workplan_deliveryMaximumNumberOfDeliveries', [
             'label' => i::__('Número máximo de entregas'),
-            'type' => 'integer',
-            'default' => 1
         ]);
          
         $this->registerOpportunityMetadata('workplan_registrationReportTheNumberOfParticipants', [

@@ -296,7 +296,7 @@ app.component('registration-workplan', {
         },
         optionsProjectDurationData() {
             if (this.opportunity.workplan_dataProjectlimitMaximumDurationOfProjects) {
-                return this.opportunity.workplan_dataProjectmaximumDurationInMonths;
+                return parseInt(this.opportunity.workplan_dataProjectmaximumDurationInMonths);
             } else {
                 return 60;
             }
