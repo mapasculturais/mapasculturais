@@ -25,6 +25,7 @@ $this->import('
                 <div v-if="pictureCard" class="title"> <strong>{{entity.opportunity?.name}}</strong> </div>
                 <?php if($app->config['app.registrationCardFields']['number']): ?>
                     <div v-if="!pictureCard" class="title"><?= $this->text('my-records-numbers', i::__('Número de inscrição:')) ?> <strong>{{entity.number}}</strong> </div>
+                    <div v-if="!pictureCard && entity.opportunity" class="title"> <strong>{{entity.opportunity?.name}}</strong> </div>
                 <?php endif ?>
                 <div class="actions"></div>
             </div>
