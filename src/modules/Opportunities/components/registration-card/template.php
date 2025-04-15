@@ -22,7 +22,6 @@ $this->import('
 
         <div class="right">            
             <div class="header">
-                {{console.log(entity.opportunity)}}
                 <div v-if="pictureCard" class="title"> <strong>{{entity.opportunity?.name}}</strong> </div>
                 <?php if($app->config['app.registrationCardFields']['number']): ?>
                     <div v-if="!pictureCard" class="title"><?= $this->text('my-records-numbers', i::__('Número de inscrição:')) ?> <strong>{{entity.number}}</strong> </div>
