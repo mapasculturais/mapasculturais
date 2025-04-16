@@ -91,8 +91,8 @@ $next_execution_time = EvaluationMethod::getNextRedistributionDateTime();
                         <input v-if="entity.valuersPerRegistration[groupName] !== undefined" 
                             v-model="entity.valuersPerRegistration[groupName]" type="number" @change="autoSave()"/>
 
-                        <div class="has-info">
-                            <mc-toggle v-if="entity.valuersPerRegistration[groupName] !== undefined" 
+                        <div v-if="entity.valuersPerRegistration[groupName] !== undefined" class="has-info">
+                            <mc-toggle 
                                 :modelValue="entity.ignoreStartedEvaluations[groupName] !== undefined" 
                                 @update:modelValue="enableIgnoreStartedEvaluations($event, groupName)"
                                 label="<?= i::__('Desconsiderar as avaliações já feitas na distribuição') ?>"
@@ -146,23 +146,33 @@ $next_execution_time = EvaluationMethod::getNextRedistributionDateTime();
         </mc-tab>
     </mc-tabs>
 
-    <div>
-        <h3>
+    <div class="opportunity-committee-groups__distribution">
+        <h3 class="opportunity-committee-groups__distribution-title">
             <?= i::__('Distribuição das avaliações') ?>
+            <?php $this->info('editais-oportunidades -> configuracoes -> agendamento-distribuicao') ?>
         </h3>
-        <div class="grid-12">
-            <mc-alert type="warning" class="col-10">
-                <?= sprintf(i::__('As inscrições serão distribuidas para as comissões às %s'), $next_execution_time->format('H:i')); ?>
-            </mc-alert>
-            <div class="col-2">
-                <?php $this->info('editais-oportunidades -> configuracoes -> agendamento-distribuicao') ?>
-            </div>
+
+        <div v-if="statusMessage" class="opportunity-committee-groups__distribution-progress">
+            <span class="opportunity-committee-groups__distribution-progressbar" :style="{width: percentage}"></span>
+            <span class="opportunity-committee-groups__distribution-message"> {{statusMessage}} </span>
         </div>
-        <button v-if="!distributingEvaluations" @click="distriuteEvaluations()" class="button button--primary">
-            <?= i::__('Distribuir avaliações agora') ?>
-        </button>
-        <mc-loading :condition="distributingEvaluations" class="opportunity-committee-groups__loading">
-            <?= i::__('Agendando distribuição de avaliações...') ?>
-        </mc-loading>
+
+        <template v-else>
+            <div class="opportunity-committee-groups__distribution-content">
+                <mc-alert type="warning" >
+                    <?= sprintf(i::__('As inscrições serão distribuidas para as comissões às %s'), $next_execution_time->format('H:i')); ?>
+                </mc-alert>
+            </div>
+
+            <div class="opportunity-committee-groups__distribution-actions">
+                <button @click="distriuteEvaluations()" class="button button--primary">
+                    <?= i::__('Distribuir avaliações agora') ?>
+                </button>
+
+                <mc-loading :condition="distributingEvaluations" class="opportunity-committee-groups__loading">
+                    <?= i::__('Agendando distribuição de avaliações.') ?>
+                </mc-loading>
+            </div>
+        </template>
     </div>
 </div>
