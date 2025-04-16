@@ -28,7 +28,7 @@ app.component('registration-results', {
 
     computed: {
         appealPhase() {
-            return this.phase.opportunity.isAppealPhase ? this.phase.opportunity : this.phase.opportunity.appealPhase;
+            return this.opportunity.isAppealPhase ? this.opportunity : this.opportunity.appealPhase;
         },
 
         appealRegistration() {
@@ -40,7 +40,7 @@ app.component('registration-results', {
         },
 
         hideAppealStatus() {
-            return this.registration.status != 10;
+            return this.registration.status != 1 && this.registration.status != 10;
         },
 
         currentEvaluation() {
@@ -55,6 +55,14 @@ app.component('registration-results', {
 
         evaluationData() {
             return $MAPAS.config.continuousEvaluationDetail[this.registration.id];
+        },
+
+        opportunity () {
+            if (this.phase.__objectType === 'evaluationmethodconfiguration') {
+                return this.phase.opportunity;
+            } else {
+                return this.phase;
+            }
         },
 
         showEvaluationDetails() {
@@ -72,15 +80,11 @@ app.component('registration-results', {
             this.processing = true;
             const messages = useMessages();
         
-            const target = this.phase.__objectType === 'evaluationmethodconfiguration' 
-                ? this.phase.opportunity 
-                : this.phase;
+            const target = this.opportunity;
 
-            let args = {
+            const args = {
                 registration_id: this.registration._id,
             };
-
-            console.log('this.registration', this.registration);
 
             try {
                 await target.POST('createAppealPhaseRegistration', {data: args, callback: (data) => {

@@ -33,7 +33,7 @@ app.component('registration-status', {
 
     computed: {
         appealPhase() {
-            return this.phase.appealPhase;
+            return this.opportunity.isAppealPhase ? this.opportunity : this.opportunity.appealPhase;
         },
 
         appealRegistration() {
@@ -43,6 +43,18 @@ app.component('registration-status', {
             }
 
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
+        },
+
+        hideAppealStatus() {
+            return this.registration.status != 1 && this.registration.status != 10;
+        },
+
+        opportunity () {
+            if (this.phase.__objectType === 'evaluationmethodconfiguration') {
+                return this.phase.opportunity;
+            } else {
+                return this.phase;
+            }
         },
 
         showRegistrationResults() {
@@ -86,11 +98,9 @@ app.component('registration-status', {
             this.processing = true;
             const messages = useMessages();
         
-            const target = this.phase.__objectType === 'evaluationmethodconfiguration' 
-                ? this.phase.opportunity
-                : this.phase;
+            const target = this.opportunity;
 
-            let args = {
+            const args = {
                 registration_id: this.registration._id,
             };
 
