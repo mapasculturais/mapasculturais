@@ -94,8 +94,8 @@ app.component('registration-results', {
                 }});
                     
             } catch (error) {
-                console.log(error);
-                messages.error(error);
+                console.error(error);
+                messages.error(error.data ?? error);
             }
             this.processing = false;
         },
