@@ -47,9 +47,11 @@ app.component('opportunity-evaluation-committee', {
 
         sortedReviewers () {
             return (this.infosReviewers ?? [])
-                .map((reviewer, index) => [reviewer, index])
-                .sort(([a], [b]) => {
-                    return (a.agent?.name || '').localeCompare(b.agent?.name || '');
+                .slice()
+                .sort((a, b) => {
+                    const aName = a.agent?.name.toLocaleLowerCase() ?? '';
+                    const bName = b.agent?.name.toLocaleLowerCase() ?? '';
+                    return aName.localeCompare(bName);
                 });
         }
     },
