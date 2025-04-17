@@ -17,7 +17,7 @@ $this->import('
             <h6 v-if="subtitle">{{subtitle}}</h6>
             <button v-if="closeButton" class="modal__close" @click="close()"> <mc-icon name="close"></mc-icon> </button>
         </div>
-        <div class="modal__content">
+        <div class="modal__content scrollbar">
             <slot :close="close" :open="open" :isOpen="modalOpen" :toggle="toggle" :loading="loading"></slot>
         </div>
         <div class="modal__action">

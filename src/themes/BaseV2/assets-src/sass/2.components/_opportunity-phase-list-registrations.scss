@@ -12,7 +12,10 @@
     }
 
     &__endbox {
+        align-items: center;
+        display: flex;
         gap: size(8);
+
         a {
             color: var(--mc-white);
 
