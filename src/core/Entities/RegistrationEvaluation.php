@@ -40,6 +40,7 @@ use RuntimeException;
  * @ORM\HasLifecycleCallbacks
  */
 class RegistrationEvaluation extends \MapasCulturais\Entity {
+    use Traits\EntityFiles;
     use Traits\EntityRevision;
 
     const STATUS_EVALUATED = self::STATUS_ENABLED;
@@ -125,9 +126,17 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     protected $isTiebreaker = false;
 
     /**
+     * @var \MapasCulturais\Entities\RegistrationEvaluationFile[] Files
+     *
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
+    */
+    protected $__files;
+
+    /**
      * Nome da comissão avaliadora pela qual o avaliador avaliou essa avaliação
      * 
-     * @var integer
+     * @var string
      *
      * @ORM\Column(name="committee", type="string", nullable=true)
      */
@@ -293,6 +302,7 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         $result['agent'] = $this->user->profile->simplify('id,name,singleUrl');
         $result['registration'] = $this->registration->simplify('id,number,singleUrl');
         $result['singleUrl'] = $this->getSingleUrl();
+        $result['files'] = $this->files;
 
         return $result;
     }

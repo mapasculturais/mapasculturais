@@ -10,6 +10,7 @@ $this->import('
     mc-link
     mc-modal
     mc-stepper-vertical
+    opportunity-appeal-phase-config
     opportunity-phase-status
     opportunity-phase-list-evaluation
     v1-embed-tool
@@ -24,7 +25,10 @@ $this->import('
                 <h3 v-if="item.isLastPhase" class="info__title">{{item.name}}</h3>
                 <div v-if="!item.isLastPhase" class="info__type">
                     <span class="title"> <?= i::__('Tipo') ?>: </span>
-                    <span v-if="item.__objectType == 'opportunity'" class="type"><?= i::__('Coleta de dados') ?></span>
+                    <template v-if="item.__objectType == 'opportunity'">
+                        <span v-if="item.isReportingPhase" class="type"><?= i::__('Prestação de informações') ?></span>
+                        <span v-else class="type"><?= i::__('Coleta de dados') ?></span>
+                    </template>
                     <span v-if="item.__objectType == 'evaluationmethodconfiguration'" class="type">{{item.type.name}}</span>
                 </div>
 
@@ -64,7 +68,7 @@ $this->import('
     <template #default="{index, item}">
         
         <template v-if="item.__objectType == 'evaluationmethodconfiguration'">
-            <opportunity-phase-list-evaluation :entity="item" :phases="phases"></opportunity-phase-list-evaluation>
+            <opportunity-phase-list-evaluation :entity="item" :phases="phases" :tab="tab"></opportunity-phase-list-evaluation>
         </template>
 
         <template v-if="item.__objectType == 'opportunity'">

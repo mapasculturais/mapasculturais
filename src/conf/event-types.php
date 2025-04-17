@@ -56,7 +56,7 @@ return array(
             'label' => \MapasCulturais\i::__('Áudio descrição'),
             'type' => 'select',
             'options' => array(
-                '' => \MapasCulturais\i::__('Não Informado'),
+                'Não informado' => \MapasCulturais\i::__('Não Informado'),
                 'Sim' => \MapasCulturais\i::__('Sim'),
                 'Não' => \MapasCulturais\i::__('Não')
             )
@@ -184,7 +184,7 @@ return array(
             'label' => 'Público presente',
             'type' => 'integer',
             'validations' => [
-                'v::intVal()->positive()' => 'O valor deve ser um número inteiro positivo'
+                'v::intVal()->positive()' => \MapasCulturais\i::__('O valor deve ser um número inteiro positivo'),
             ]
         ),
     ),

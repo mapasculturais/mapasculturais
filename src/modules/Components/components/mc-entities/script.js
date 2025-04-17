@@ -155,8 +155,8 @@ app.component('mc-entities', {
         refresh(debounce) {
             if (this.timeout) {
                 clearTimeout(this.timeout);
-            }
-
+            };
+        
             this.timeout = setTimeout(() => {
                 this.entities.splice(0);
                 this.entities.loading = true;

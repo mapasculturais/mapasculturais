@@ -27,10 +27,10 @@ $this->import('
             </div>
         </div>
 
-        <div v-if="!phase.publishedRegistrations && !firstPhase?.isContinuousFlow" class="grid-12 col-12 notPublished opportunity-phase-publish-date-config__content">
-            <div class="opportunity-phase-publish-date-config__left col-4">
+        <div v-if="(!phase.publishedRegistrations && !firstPhase?.isContinuousFlow)" class="grid-12 col-12 notPublished opportunity-phase-publish-date-config__content">
+            <div class="opportunity-phase-publish-date-config__left" :class="{ 'col-6': phase.appealPhase, 'col-4': !phase.appealPhase }">
 
-                <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="3000" :min="minDate" :max="maxDate" classes="col-4 opportunity-phase-publish-date-config__date"></entity-field>
+                <entity-field v-if="!hideDatepicker" :entity="phase" prop="publishTimestamp" :autosave="3000"  classes="col-4 opportunity-phase-publish-date-config__date"></entity-field>
                 
                 <div v-if="hideDatepicker && phase.publishTimestamp" class="col-4 msgpub-date">
                     <h5 v-if="phase.autoPublish && hideCheckbox">
@@ -77,7 +77,7 @@ $this->import('
         </div>
         
         <div class="col-12 grid-12" v-if="true">
-            <div class="col-12" v-if="phase.evaluationMethodConfiguration">
+            <div class="col-12" v-if="phase.evaluationMethodConfiguration && !phase.isAppealPhase">
                 <entity-field :entity="phase.evaluationMethodConfiguration" prop="publishEvaluationDetails" type="checkbox" :autosave="300" ></entity-field>
             </div>
             <div class="col-12" v-if="phase.evaluationMethodConfiguration">

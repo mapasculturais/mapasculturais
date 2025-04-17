@@ -2,15 +2,47 @@
 
 .opportunity-evaluations-list {
     max-width: size(1824) !important;
-    position: sticky;
-    top: size(40);
+    // position: absolute;
+    height: 100%;
     z-index: 0;
+    // left: 0;
 
     .count {
         margin: 15px;
     }
 
+    &__button {
+        border: 1px solid var(--mc-gray-100);
+        padding: size(13) size(18);
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: size(15);
+        background-color: var(--mc-white);
+        justify-content: space-between;
+        cursor: pointer;
+       
+        .label {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-size: size(14);
+            font-weight: 700;
+            line-height: size(19);
+            color: var(--mc-primary-500);
+            cursor: pointer;
+        }
+
+        .iconify {
+            min-width: size(14);
+            font-size: size(14);
+            color: var(--mc-primary-500);
+        }
+    }
+
     &__container {
+        position: sticky;
+        top: 0;
         width: size(140);
         display: flex;
         flex-direction: column;
@@ -18,91 +50,220 @@
         border-radius: 0px 4px 4px 0px;
         max-height: size(800);
         transition: width .5s;
+        opacity: .7;
+
+        &:hover {
+            opacity: 1;
+        }
 
         @media (max-width: size(500)){
             display: none;
         }
-        .act-button {
-            border: 1px solid var(--mc-gray-100);
-            padding: size(13) size(18);
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: size(15);
-            background-color: var(--mc-white);
-            justify-content: space-between;
-           
-            .label {
-                font-family: 'Open Sans';
-                font-style: normal;
-                font-size: size(14);
-                font-weight: 700;
-                line-height: size(19);
-                color: var(--mc-primary-500);
-            }
+    }
 
-            .icon {
-                .iconify {
-                    font-size: size(14);
-                    color: var(--mc-primary-500);
+    &__filter {
+        border-top: 1px solid var(--mc-gray-100);
+        padding: size(21) size(16);
+        background-color: var(--mc-white);
+        border-bottom: 1px solid var(--mc-gray-100);
+    }
+
+    &__filter-content {
+        display: flex;
+        gap: size(5);
+        align-items: center;
+
+        input[type="text"] {
+            position: relative;
+            border-radius: size(69);
+            height: size(40);
+            border: size(1) solid $gray-700;
+            background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat calc(100% - size(10)) center/size(20);
+            width: 100%;
+            padding: size(12) size(30) size(12) size(20);
+        }
+    }
+
+    &__evaluations {
+        background-color: var(--mc-white);
+        list-style: none;
+        padding:0;
+        margin: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: size(880);
+
+        li.no-records {
+            padding: 15px;
+        }
+        
+        li.evaluation-list__card:last-child {
+            margin-bottom: size(16);
+        }
+        
+        li.evaluation-list__card {
+            background-color: var(--mc-white);
+            padding: size(16);
+           
+            .evaluation-list__content {
+                border: 1px solid var(--mc-gray-100);
+                border-radius: var(--mc-border-radius-xs);
+                padding: size(16);
+                background-color: var(--mc-white);
+
+                &.pending {
+                    border-top: solid #FFB5B5 4px;
+                }
+
+                &.started {
+                    border-top: solid #FFCF8F 4px;
+                }
+
+                &.completed {
+                    border-top: solid #99D6FF 4px;
+                }
+
+                &.sent {
+                    border-top: solid #BFE88B 4px;
+                }
+
+                .owner-entity {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 3px;
+                    margin-bottom: 15px;
+
+                    .owner, .coletive {
+                        display: flex;
+                        flex-direction: column; 
+                        background-color: #f0ebeb;
+                        padding: 5px;
+                        border-radius: 5px;
+
+                        .bold {
+                            font-weight: bold;  
+                        }
+                    }
                 }
             }
-        }
+        
+            .link {
+                text-decoration: none;
+                color: unset;
 
-        &.isOpen {
-            width: size(311);
-
-            .find {
-                border-top: 1px solid var(--mc-gray-100);
-                padding: size(21) size(16);
-                background-color: var(--mc-white);
-                border-bottom: 1px solid var(--mc-gray-100);
-
-                .content {
-                    display: flex;
-                    gap: size(5);
-                    align-items: center;
-
-                    input[type="text"] {
-                        position: relative;
-                        border-radius: size(69);
-                        height: size(40);
-                        border: size(1) solid $gray-700;
-                        background: url(https://api.iconify.design/ant-design/search-outlined.svg) no-repeat calc(100% - size(10)) center/size(20);
-                        width: 100%;
-                        padding: size(12) size(30) size(12) size(20);
-                    }
-
-                    .button-filter {
-                        max-width: size(100);
+                .card {
+                    &-header {
                         display: flex;
                         flex-direction: row;
-                        align-items: center;
-                        width: size(100);
-                        height: size(36);
-                        border-radius: size(4);
-                        border: size(2) solid var(--mc-primary-500);
-                        color: var(--mc-white);
-                        gap: size(12);
+                        gap: size(8);
+                        margin-bottom: size(12);
 
-                        label {
+                        svg {
+                            font-size: (12);
+                            color: var(--mc-primary-500);
+                        }
+
+                        &__name {
                             font-family: 'Open Sans';
                             font-style: normal;
                             font-weight: 700;
-                            font-size: size(14);
-                            line-height: sie(19);
+                            font-size: size(22);
+                            line-height: size(19);
+                            color: $opportunities-500;
                         }
+                    }
 
-                        svg {
-                            font-size: size(16);
-                            color: var(--mc-white);
-                            width: size(16);
-                            height: size(16);
+                    &-content {
+                        display: flex;
+                        flex-direction: row;
+                        gap: size(33);
+
+                        &__middle {
+                            display: flex;
+                            flex-direction: column;
+
+                            .subscribe {
+                                font-family: 'Open Sans';
+                                font-style: normal;
+                                font-weight: 600;
+                                font-size: 12px;
+                                line-height: 16px;
+                                text-transform: uppercase;
+                                color: var(--mc-low-700)
+                            }
+
+                            .value {
+                                font-family: 'Open Sans';
+                                font-style: normal;
+                                font-weight: 700;
+                                font-size: size(14);
+                                line-height: size(19);
+
+                            }
+                        }
+                    }
+                }
+
+                .card-state {
+                    padding-top: size(16);
+                    display: flex;
+                    flex-direction: column;
+                    gap: size(4);
+                    &__info {
+                        display: flex;
+                        align-items: center;
+                        gap: size(8);
+                        padding-bottom: size(16) ;
+                    }
+                    .state,
+                    &label {
+                        font-family: 'Open Sans';
+                        font-style: normal;
+                        font-weight: 600;
+                        font-size: 12px;
+                        line-height: 16px;
+                        color: var(--mc-low-700);
+                        text-transform: uppercase;
+                    }
+
+                    button {
+                        background-color: var(--mc-white);
+                        border: none;
+                        display: flex;
+                        gap: size(8);
+                        max-width: size(100);
+                        padding-left: 0;
+                        
+                        label {
+                            color: var(--mc-low-700);
+                            font-family: 'Open Sans';
+                            font-style: normal;
+                            font-weight: 700;
+                            font-size: size(12);
+                            line-height: size(16);
+                            text-align: center;
+                            text-transform: capitalize;
                         }
                     }
                 }
             }
+        }
+        
+        li.evaluation-list__card--modify {
+            background-color: var(--mc-primary-300);
+        }
+        
+    }
+
+    &.isOpen & {
+        &__button {
+            opacity: 1;
+        }
+
+        &__container {
+            width: 100%;
+            // width: size(311);
+            opacity: 1;
 
             .label-evaluation {
                 &__search {
@@ -321,11 +482,23 @@
                 padding: size(23) size(17);
                 width: 100%;
                 justify-content: space-between;
-
+                
                 .label {
                     width: unset;
                 }
             }
         }
+
+        &__content {
+            max-height: size(999);
+            transition: max-height .5s ease-out;
+        }
+        
+    }
+
+    &__content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height .5s ease-out;
     }
 }

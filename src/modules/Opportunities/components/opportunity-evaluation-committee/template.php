@@ -98,21 +98,6 @@ $this->import('
                                 <p> <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?> </p>
                             </template> 
                         </mc-confirm-button>
-
-                        <!-- <div class="opportunity-evaluation-committee__card-footer-alert">
-                            <div v-if="infoReviewer.status == -5">
-                                <mc-confirm-button @confirm="delReviewer(infoReviewer.agent)" no="<?= i::esc_attr__('Não') ?>" yes="<?= i::esc_attr__('Sim') ?>">
-                                    <template #button="{open}">
-                                        <button class="button button--text-danger button--icon button--sm col-3" @click="open()">
-                                            <mc-icon name="trash"></mc-icon> <?= i::__('Cancelar convite') ?>
-                                        </button>
-                                    </template> 
-                                    <template #message="message">
-                                        <p> <?= i::__('Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}</strong> avaliar esta oportunidade?') ?> </p>
-                                    </template> 
-                                </mc-confirm-button>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
 

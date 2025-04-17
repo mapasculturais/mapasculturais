@@ -29,6 +29,6 @@ $this->import('
     </template>
 
     <template #button="modal">
-        <a class="button button--primary w-100" href="javascript:void(0)" @click="modal.open()"><?= i::__("Adicionar fase de coleta de dados") ?></a>
+        <button type="button" class="button button--primary w-100" @click="modal.open()"><?= i::__("Adicionar fase de coleta de dados") ?></button>
     </template>
 </mc-modal>

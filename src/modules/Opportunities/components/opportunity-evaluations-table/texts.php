@@ -18,4 +18,5 @@ return [
     'Avaliações iniciadas' => i::__('Avaliações iniciadas'),
     'Avaliações concluídas' => i::__('Avaliações concluídas'),
     'Avaliações enviadas' => i::__('Avaliações enviadas'),
+    'metas' => i::__('Metas'),
 ];

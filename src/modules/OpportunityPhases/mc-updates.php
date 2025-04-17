@@ -27,6 +27,7 @@ return [
                 $last_phase->isDataCollection = '0';
                 $last_phase->publishTimestamp = $end_date;
                 $last_phase->publishedRegistrations = $last_created_phase->publishedRegistrations;
+                $last_phase->subsiteId = $opportunity->subsiteId;
                 $last_phase->save(true);
 
                 $last_phase->enqueueRegistrationSync();

@@ -1920,14 +1920,40 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         if (field.fieldType === 'date') {
             return moment(value).format('DD-MM-YYYY');
         }else if (field.fieldType === "checkbox") {
-            return value === "true" ? "Sim" : "Não";
+            return ["true", "1"].includes(value) ? "Sim" : "Não";
         }
          else if (field.fieldType === 'url'){
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType === 'email'){
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
+        } else if (field.fieldType == 'addresses') {
+            if (value.length === 0) {
+                return 'Não informado';
+            }
+
+            const addresses = value.map((address) => {
+                return `<strong>${address.nome}</strong>: ${address.logradouro || ''}, ${address.numero || ''} - ${address.bairro || ''} - ${address.cidade || ''} - ${address.estado || ''} - ${address.cep || ''}`;
+            });
+
+            return addresses.join('<br>');
         } else if (value instanceof Array) {
             return value.join(', ');
+        } else if (field.fieldType === 'bankFields') {
+            const configAccounTypes = MapasCulturais.entity.registrationFieldTypes;
+            let accountType = 'Inválido';
+            let bankType = 'Inválido';
+ 
+            // Obtendo o Tipo de Conta
+            if (configAccounTypes['account_types'][value['account_type']]) {
+                accountType = configAccounTypes['account_types'][value['account_type']];
+            }
+
+            // Obtendo o Banco
+            if (configAccounTypes['bank_types'][value['number']]) {
+                bankType = configAccounTypes['bank_types'][value['number']];
+            }
+
+            return `Tipo: ${accountType} | Banco: ${bankType} | Agência: ${value['branch']}-${value['dv_branch']} | Conta: ${value['account_number']}-${value['dv_account_number']}`;
         } else {
             return value;
         }

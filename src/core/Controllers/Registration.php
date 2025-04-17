@@ -22,7 +22,6 @@ class Registration extends EntityController {
     use Traits\ControllerUploads,
         Traits\ControllerAgentRelation,
     	Traits\ControllerSealRelation,
-        Traits\ControllerLock,
         Traits\ControllerAPI;
 
     function __construct() {
@@ -383,6 +382,15 @@ class Registration extends EntityController {
         if($entity->status === Entities\Registration::STATUS_DRAFT && $entity->canUser('modify')){
             parent::GET_edit();
         } else {
+            if($entity->opportunity->parent) {
+                $app = App::i();
+                $parent_registration = $app->repo('Registration')->findOneBy([
+                    'opportunity' => $entity->opportunity->parent->id, 
+                    'number' => $entity->number
+                ]);
+
+                $app->redirect($parent_registration->singleUrl);
+            }
             parent::GET_single();
         }
     }
@@ -716,11 +724,20 @@ class Registration extends EntityController {
         if (!$entity) {
             $app->pass();
         }
+        
+        $entity->checkPermission('viewUserEvaluation');
 
         $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1);
 
-
-        $entity->checkPermission('viewUserEvaluation');
+        $evaluation = $entity->getUserEvaluation($valuer_user);
+        if (!$evaluation) {
+            $entity->checkPermission('evaluate', $valuer_user);
+            $evaluation = new RegistrationEvaluation();
+            $evaluation->registration = $entity;
+            $evaluation->user = $valuer_user;
+            $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
+            $evaluation->save(true);
+        }
 
         $this->render('evaluation', ['entity' => $entity, 'valuer_user' => $valuer_user]);
     }

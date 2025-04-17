@@ -1,0 +1,192 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-appeal-phase-config {
+    display: flex;
+    flex-direction: column;
+    gap: size(20);
+    
+    &__appeals {
+        display: flex;
+        flex-direction: column;
+        gap: size(28);
+
+        .mc-accordion {
+            background-color: none;
+            border-radius: size(4);
+            padding: size(16) size(20) size(30);
+
+            &__header {
+                padding: 0;
+                background-color: var(--mc-gray-100);
+                max-width: size(1047);
+                grid-template-columns: 1fr size(124);
+
+                @media (max-width: 488px) {
+                    grid-template-columns: 1fr;
+                }
+
+                &--active {
+                    padding-bottom: size(16);
+                }
+            }
+
+            &__content {
+                display: flex;
+                flex-direction: column;
+                gap: size(32);
+                padding: size(16) 0;
+                background-color: var(--mc-gray-100);
+                max-width: 100%;
+                border-top: var(--mc-border-hairline) var(--mc-gray-300);
+
+                .mc-card {
+                    background-color: var(--mc-gray-100);
+                }
+            }
+
+            &__title {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: size(16);
+
+                .info__type {
+                    display: flex;
+                    gap: size(8);
+                }
+
+                .title {
+                    color: var(--mc-gray-700);
+                    font-size: size(14);
+                    font-weight: 600;
+                    line-height: size(19);
+                    text-transform: uppercase;
+                }
+
+                .type {
+                    color: var(--mc-low-500);
+                    font-size: size(14);
+                    font-weight: 700;
+                    line-height: size(19);
+                    text-transform: none;
+                }
+            }
+
+            &__icon {
+                align-items: center;
+                color: var(--mc-primary-500);
+                display: flex;
+                gap: size(4);
+                justify-content: flex-end;
+                min-width: size(82);
+
+                @media (max-width: 488px) {
+                    justify-content: center;
+                }
+
+                label {
+                    font-weight: 700;
+                    font-size: size(14);
+                    line-height: size(19);
+                }
+            }
+        }
+
+        .opportunity-phase-status, 
+        .opportunity-phase-list-evaluation {
+            padding-top: size(16);
+        }
+    }
+
+    &__title {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__content-title {
+        display: flex;
+        flex-direction: column;
+        gap: size(36);
+    }
+
+    &__dates {
+        display: flex;
+        gap: size(48);
+
+        .date {
+            display: flex;
+            flex-direction: column;
+            gap: size(4);
+        }
+
+        .date__title {
+            color: var(--mc-gray-700);
+            font-size: size(14);
+            font-weight: 600;
+            line-height: size(19);
+            text-transform: uppercase;
+        }
+
+        .date__content {
+            align-items: center;
+            color: var(--mc-low-500);
+            display: flex;
+            font-size: size(14);
+            font-weight: 700;
+            line-height: size(19);
+        }
+    }
+
+    &__datepicker {
+        display: flex;
+        max-width: size(923);
+        gap: size(70);
+
+        @media (max-width: 931px) {
+            flex-wrap: wrap;
+        }
+
+        .entity-field-datepicker {
+            &__date {
+                width: 70%;
+            }
+
+            @media (max-width: 549px) {
+                flex-wrap: wrap;
+            }
+        }
+    }
+
+    &__config-button {
+        .button {
+            max-width: 100%;
+            width: size(362);
+        }
+    }
+
+    &__add-evaluation-committee {
+        border-bottom: var(--mc-border-hairline) var(--mc-gray-300);
+        padding-bottom: size(42);
+    }
+
+    &__delete {
+        text-align: end;
+    }
+
+    &__checkboxes {
+        display: flex;
+        gap: size(8);
+        flex-direction: row;
+        width: 50%;
+
+        @include mobile {
+            width: 100%;
+        }
+
+        input {
+            width: size(16);
+        }
+    }
+}

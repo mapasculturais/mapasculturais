@@ -433,6 +433,7 @@ class Registration extends \MapasCulturais\Entity
             'editableUntil' => $this->editableUntil,
             'editableFields' => $this->editableFields,
             'editSentTimestamp' => $this->editSentTimestamp,
+            'status' => $this->status,
         ];
 
         if($this->opportunity->canUser('@control')) {
@@ -836,6 +837,90 @@ class Registration extends \MapasCulturais\Entity
     function getValuersExcludeList(){
         $exceptions = $this->getValuersExceptionsList();
         return (array) $exceptions->exclude;
+    }
+
+    /**
+     * Retorna a lista dos campos verificados e os selos que verificam cada campo
+     *
+     *  @return object Um objeto contendo os selos bloqueados de cada campo.
+     */
+    function getLockedFieldSeals() {
+        $owner_locked_field_seals = (array) $this->owner->lockedFieldSeals;
+
+        $related_agents = $this->relatedAgents ?: [];
+        $collective_locked_field_seals = [];
+        
+        if(isset($related_agents['coletivo'])) {
+            $collective_locked_field_seals = (array) $related_agents['coletivo'][0]->lockedFieldSeals;
+        }
+
+        $locked_field_seals = [];
+
+        $fields = $this->opportunity->registrationFieldConfigurations;
+
+        foreach($fields as $field) {
+            if($field->fieldType == 'agent-owner-field' && isset($owner_locked_field_seals[$field->config['entityField']])) {
+                $locked_field_seals[$field->fieldName] = $owner_locked_field_seals[$field->config['entityField']];
+                
+            }
+
+            if($field->fieldType == 'agent-collective-field' && isset($collective_locked_field_seals[$field->config['entityField']])) {
+                $locked_field_seals[$field->fieldName] = $collective_locked_field_seals[$field->config['entityField']];
+            }
+        }
+        
+        return (object) $locked_field_seals;
+    }
+
+    /**
+     * Retorna a lista dos campos bloqueados.
+     *
+     * @return array Um array contendo os nomes dos campos bloqueados.
+     */
+    function getLockedFields() {
+        $locked_field_seals = (array) $this->lockedFieldSeals;
+
+        $locked_fields = [];
+        if (!empty($locked_field_seals)) {
+            $locked_fields = array_keys($locked_field_seals);
+        }
+
+        return $locked_fields;
+    }
+
+    /**
+     * Obtém as relações de selos do proprietário e dos agentes relacionados.
+     *
+     * @return array Retorna um array contendo todos os selos do proprietário e do coletivo.
+     */
+    function getAgentSealRelations() {
+        $app = App::i();
+        
+        $seals = [];
+        $owner_seals = $this->owner->sealRelations;
+        $related_agents = $this->relatedAgents ?: [];
+        $collective_seals = isset($related_agents['coletivo']) ? $related_agents['coletivo'][0]->sealRelations : [];
+
+        $all_seals = array_merge($owner_seals, $collective_seals);
+
+        if (empty($all_seals)) {
+            return [];
+        }
+        
+        foreach ($all_seals as $relation) {
+            $seals[] = [
+                '__objectType' => 'seal', // Added for compatibility with <mc-avatar>
+                'sealRelationId' => $relation->id,
+                'sealId' => $relation->seal->id,
+                'name' => $relation->seal->name,
+                'files' => $relation->seal->files ?? null,
+                'singleUrl' => $app->createUrl('seal', 'sealRelation', [$relation->id]),
+                'createTimestamp' => $relation->createTimestamp,
+                'isVerificationSeal' => in_array($relation->seal->id, $app->config['app.verifiedSealsIds']),
+            ];
+        }
+    
+        return $seals;
     }
 
     /** 
@@ -1577,7 +1662,7 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if(!in_array($this->opportunity->status, [-1,1]) && !$this->opportunity->canUser('@control', $user)){
+        if(!in_array($this->opportunity->status, [-1,1,-20]) && !$this->opportunity->canUser('@control', $user)){
             return false;
         }
 
@@ -1593,7 +1678,11 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        $can = $this->opportunity->evaluationMethodConfiguration && $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+        if ($this->getEvaluationMethod()) {
+            $can = $this->opportunity->evaluationMethodConfiguration && $this->getEvaluationMethod()->canUserEvaluateRegistration($this, $user);
+        } else {
+            $can = false;
+        }
 
         $exclude_list = $this->getValuersExcludeList();
         $include_list = $this->getValuersIncludeList();
@@ -1673,7 +1762,7 @@ class Registration extends \MapasCulturais\Entity
             return true;
         }
 
-        if(!in_array($this->opportunity->status, [-1,1]) && !$this->opportunity->canUser('@control', $user)){
+        if(!in_array($this->opportunity->status, [-1,1,-20]) && !$this->opportunity->canUser('@control', $user)){
             return false;
         }
 
@@ -1824,7 +1913,11 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserViewConsolidatedResult($user){
-        if($this->status <= 0 || !$this->opportunity->evaluationMethodConfiguration) {
+        if ($this->getEvaluationMethod()) {
+            if($this->status <= 0 || !$this->opportunity->evaluationMethodConfiguration) {
+                return false;
+            }
+        } else {
             return false;
         }
 
@@ -1850,11 +1943,21 @@ class Registration extends \MapasCulturais\Entity
     }
     
     function getExtraEntitiesToRecreatePermissionCache(): array {
+        $result = [];
+
         if ($previous_phase = $this->previousPhase) {
-            return [$previous_phase];
-        } else {
-            return [];
+            $result[]= $previous_phase;
         }
+
+        if($this->opportunity->isAppealPhase) {
+            $parent_registration = $this->repo()->findOneBy([
+                'number' => $this->number,
+                'opportunity' => $this->opportunity->parent
+            ]);
+            $result[] = $parent_registration;
+        }
+
+        return $result;
     }
 
     function getExtraPermissionCacheUsers(){

@@ -207,7 +207,7 @@ app.component('opportunity-evaluations-list', {
             }
         },
         toggleMenu() {
-            this.isOpen =  true;
+            this.isOpen = !this.isOpen;
         },
         showList(){
             result = true;

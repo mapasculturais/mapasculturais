@@ -11,4 +11,11 @@ return [
     'Corrija os erros indicados' => i::__('Corrija os erros indicados'),
     'Enviando' => i::__('Enviando'),
     'Validando' => i::__('Validando'),
+    'Plano de metas' => i::__('Plano de metas'),
+    'Duração do projeto (meses)' => i::__('Duração do projeto (meses)'),
+    'Segmento artistico-cultural' => i::__('Segmento artistico-cultural'),
+    'Meta' => i::__('Meta'),
+    'Entrega' => i::__('Entrega'),
+    'Quer enviar seu recurso?' => i::__('Quer enviar seu recurso?'),
+    'Quer enviar sua inscrição?' => i::__('Quer enviar sua inscrição?'),
 ];

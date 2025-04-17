@@ -1,0 +1,158 @@
+@use '../0.settings/mixins' as *;
+
+.mc-chat {
+    background-color: var(--mc-white);
+    border: var(--mc-border-hairline) var(--mc-gray-300);
+    color: var(--mc-black);
+    padding: size(18);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__title {
+        font-size: size(14);
+        line-height: size(16);
+        margin-bottom: size(24);
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: size(16);
+        max-height: 50vh;
+        overflow-y: auto;
+        position: relative;
+        padding-right: size(16);
+    }
+
+    &__message {
+        display: flex;
+        gap: size(18);
+        margin-bottom: size(16);
+
+        &.mc-chat__owner {
+            flex-direction: row-reverse;
+
+            .mc-chat__metadata {
+                justify-content: flex-end;
+            }
+        }
+    }
+
+    &__avatar {
+        align-content: flex-end;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__details {
+        display: flex;
+        gap: size(14);
+        flex-direction: column;
+    }
+
+    &__metadata {
+        display: flex;
+        gap: size(16);
+    }
+
+    &__name {
+        font-weight: var(--mc-font-bold);
+    }
+
+    &__timestamp {
+        color: var(--mc-gray-700);
+        font-size: size(12);
+    }
+
+    &__text {
+        background-color: var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-sm);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+        padding: size(14);
+    }
+    
+    &__attachment {
+        .entity-file {
+            a.entity-file__link, span {
+                color: var(--mc-primary-500);
+            }
+        }
+    }
+
+    &__actions {
+        border-top: var(--mc-border-hairline) var(--mc-gray-300);
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: size(16);
+        margin-top: size(16);
+        padding-top: size(32);
+
+        .entity-file {
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    }
+
+    &__textarea {
+        background-color: var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-sm);
+        border: 0;
+        display: block;
+        font-size: size(14);
+        min-height: 10vh;
+        padding: size(14);
+        width: 100%;
+    }
+
+    &__empty {
+        display: none;
+    }
+
+    &__endChat {
+        flex-direction: row;
+    }
+
+    &__reviewer-message {
+        gap: size(16);
+    }
+
+    &__evaluation {
+        background-color: var(--mc-gray-100);
+        border-radius: var(--mc-border-radius-sm);
+        padding: size(14);
+        display: flex;
+        flex-direction: column;
+        gap: size(16);
+    }
+
+    &__evaluation-closed,
+    &__evaluation-status {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__evaluation-text {
+        display: flex;
+        flex-direction: column;
+        gap: size(8);
+    }
+
+    &__evaluation-status-content {
+        display: flex;
+        gap: size(8);
+        align-items: center;
+    }
+}
+
+.registration-results__modal--with-chat .modal__action {
+    display: flex;
+    padding: 0 size(16) size(16) size(16);
+}

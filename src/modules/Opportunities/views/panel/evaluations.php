@@ -25,5 +25,5 @@ $this->import('
         </p>
     </header>
 
-    <panel--evaluations-tabs></panel--evaluations-tabs>
+    <panel--evaluations-tabs :is-reporting-phase="false"></panel--evaluations-tabs>
 </div>

@@ -18,21 +18,21 @@ $this->import('
     registration-related-space
     registration-related-project
     registration-steps
+    registration-workplan-form
 ');
 
 ?>
 
-<div class="registration__content">
-    <div v-if="steps.length > 1" class="registration__steps">
+<div class="registration__content" :class="{ 'status--20': entity.opportunity.status === -20 }">
+    <div v-if="steps.length > 1" class="registration__steps" :class="{ 'status--20': entity.opportunity.status === -20 }">
         <registration-steps :steps="steps" v-model:step-index="stepIndex"></registration-steps>
     </div>
 
     <mc-container>
         <main class="grid-12">
             <registration-info :registration="entity" classes="col-12"></registration-info>
-
             <section class="section">
-                <h2 class="section__title" id="main-info">
+                <h2 v-if="entity.opportunity.status !== -20" class="section__title" id="main-info">
                     {{ stepIndex + 1 }}. {{ step?.name || text('Informações básicas') }}
                 </h2>
                 <registration-autosave-notification :registration="entity"></registration-autosave-notification>
@@ -95,6 +95,10 @@ $this->import('
 
             <section class="section" v-if="preview || !entity.opportunity.proponentAgentRelation?.[entity.proponentType] || (entity.agentRelations.coletivo && entity.opportunity.proponentAgentRelation?.[entity.proponentType])">
                 <registration-form :registration="entity" :step="step"></registration-form>
+            </section>
+
+            <section class="section" v-if="hasWorkplan && isLastStep && entity.opportunity.isReportingPhase">
+                <registration-workplan-form editable :registration="entity"></registration-workplan-form>
             </section>
         </main>
 

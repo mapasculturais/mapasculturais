@@ -212,6 +212,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $result['opportunity'] = $this->opportunity->simplify('id,name,singleUrl,summary');
         $result['useCommitteeGroups'] = $this->useCommitteeGroups;
         $result['evaluateSelfApplication'] = $this->evaluateSelfApplication;
+        $result['summary'] = $this->summary;
+
         /**
          * @todo Arranjar um modo de colocar isso no módulo de avaliação técnica
          */
@@ -238,15 +240,19 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
      */
     public function getEvaluationMethod() {
         $definition = $this->getDefinition();
-        return $definition->evaluationMethod;
+        if ($definition) {
+            return $definition->evaluationMethod;
+        } else {
+            return null;
+        }
     }
 
     public function getUseCommitteeGroups() {
-        return $this->evaluationMethod->useCommitteeGroups();
+        return $this->evaluationMethod ? $this->evaluationMethod->useCommitteeGroups() : false;
     }
     
     public function getEvaluateSelfApplication() {
-        return $this->evaluationMethod->evaluateSelfApplication();
+        return $this->evaluationMethod ? $this->evaluationMethod->evaluateSelfApplication() : false;
     }
 
     public function getUserRelation($user = null){
@@ -379,7 +385,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             "opp" => $opportunity,
         ]);
         
-        $em = $this->evaluationMethod;
         if($result = $query->getResult()){
             foreach($result as $values){
                 $status = $em->valueToString($values['consolidatedResult']);
@@ -394,8 +399,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         if($data['evaluations']) {
             $data['evaluations'] =  $em->filterEvaluationsSummary($data['evaluations']);
         }
-        $slug = $em->slug;
-        $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
+        
+        if($slug = $em->slug) {
+            $app->applyHookBoundTo($this, "evaluations({$slug}).summary", [&$data]);
+        }
 
         if($app->config['app.useOpportunitySummaryCache']) {
             $app->mscache->save($cache_key, $data, $app->config['app.opportunitySummaryCache.lifetime']);
@@ -403,8 +410,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
         return $data;
     }
-
-
 
     public function getValuerSummary(?User $user = null): array {
         $app = App::i();
