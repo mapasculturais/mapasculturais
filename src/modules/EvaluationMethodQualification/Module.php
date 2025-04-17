@@ -60,8 +60,8 @@ class Module extends \MapasCulturais\EvaluationMethod
     public function getEvaluationStatues()
     {
         $status = [
-            'valid' => i::__(['Habilitado']),
-            'invalid' => i::__(['Inabilitado'])
+            'valid' => i::__('Habilitado'),
+            'invalid' => i::__('Inabilitado')
         ];
 
         return $status;
