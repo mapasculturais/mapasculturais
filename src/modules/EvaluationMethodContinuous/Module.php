@@ -492,6 +492,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             '10' => i::__('Deferido'),
             '3' => i::__('Indeferido'),
             '2' => i::__('Negado'),
+            '8' => i::__('Suplente'),
         ];
 
         return $statuses;

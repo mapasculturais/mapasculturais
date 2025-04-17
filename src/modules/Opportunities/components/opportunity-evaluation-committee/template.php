@@ -47,7 +47,7 @@ $this->import('
     </div>
 
     <div v-if="showReviewers" class="opportunity-evaluation-committee__content">
-        <div class="opportunity-evaluation-committee__card" v-for="infoReviewer in infosReviewers" :key="infoReviewer.id">
+        <div class="opportunity-evaluation-committee__card" v-for="infoReviewer in sortedReviewers" :key="infoReviewer.id">
             <div :class="['opportunity-evaluation-committee__card-header', {'open-toggle': infoReviewer.isContentVisible}]">
                 <div class="opportunity-evaluation-committee__card-toggle" @click.stop="toggleContent(infoReviewer.id)">
                     <mc-icon :name="infoReviewer.isContentVisible ? 'up' : 'down'"></mc-icon>
