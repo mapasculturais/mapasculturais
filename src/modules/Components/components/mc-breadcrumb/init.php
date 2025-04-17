@@ -1,4 +1,5 @@
 <?php 
-if ($this->breadcrumb) {
-    $this->jsObject['breadcrumb'] = $this->breadcrumb;
+$breadcrumb = $this->breadcrumb ?? [];
+if ($breadcrumb) {
+    $this->jsObject['breadcrumb'] = $breadcrumb;
 }
