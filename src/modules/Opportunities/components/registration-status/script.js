@@ -47,9 +47,9 @@ app.component('registration-status', {
 
         hideAppealStatus() {
             if (this.registration.opportunity.isReportingPhase) {
-                return false;
+                return true;
             }
-            return this.registration.status != 1 && this.registration.status != 10;
+            return this.registration.status == 1 || this.registration.status == 10;
         },
 
         opportunity () {
