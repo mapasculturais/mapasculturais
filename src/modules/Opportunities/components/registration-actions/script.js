@@ -347,13 +347,5 @@ app.component('registration-actions', {
         async nextStep() {
             this.$emit('update:stepIndex', this.stepIndex + 1);
         },
-
-        confirmButtonTitle(registration) {
-            if (registration.opportunity.isAppealPhase) {
-                return this.text('Quer enviar seu recurso?');
-            } else {
-                return this.text('Quer enviar sua inscrição?');
-            }
-        },
     },
 });
