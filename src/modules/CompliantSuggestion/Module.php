@@ -143,7 +143,7 @@ class Module extends \MapasCulturais\Module {
             }
 
             //Verificando recaptcha v2
-            if (!$app->verifyRecaptcha2($_POST['g-recaptcha-response'])) {
+            if (!$app->verifyCaptcha($_POST['g-recaptcha-response'])) {
                 throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
             }
 
@@ -221,7 +221,7 @@ class Module extends \MapasCulturais\Module {
             }
 
             //Verificando recaptcha v2
-            if (!$app->verifyRecaptcha2($_POST['g-recaptcha-response'])) {
+            if (!$app->verifyCaptcha($_POST['g-recaptcha-response'])) {
                 throw new \Exception(\MapasCulturais\i::__('Recaptcha não selecionado ou inválido, tente novamente.'));
             }
 

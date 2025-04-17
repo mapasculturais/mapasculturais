@@ -447,8 +447,11 @@ return array(
             'available_for_opportunities' => true,
             'field_type' => 'email',
             'unserialize' => function($value, $agent = null){
-                if(!$value && $agent){
-                    return $agent->user->email;
+                $agent = (object) $agent;
+                $user = (object) ($agent->user ?? null);  
+                
+                if(!$value && $user->email){
+                    return $user->email;
                 }
                 return $value;
             }

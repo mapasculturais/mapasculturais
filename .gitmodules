@@ -13,3 +13,6 @@
 [submodule "src/themes/MapaMinC"]
 	path = src/themes/MapaMinC
 	url = https://github.com/culturagovbr/theme-MapaMinC.git
+[submodule "src/themes/Funarte"]
+	path = src/themes/Funarte
+	url = https://github.com/culturagovbr/theme-Funarte.git
