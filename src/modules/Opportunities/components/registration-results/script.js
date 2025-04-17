@@ -39,7 +39,7 @@ app.component('registration-results', {
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
         },
 
-        shouldShowAppeal() {
+        canShowAppeal() {
             if (this.registration.opportunity.isReportingPhase) {
                 return false;
             }

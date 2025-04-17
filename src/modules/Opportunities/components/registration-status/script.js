@@ -45,11 +45,11 @@ app.component('registration-status', {
             return $MAPAS.registrationPhases[appealPhaseId] || this.entity;
         },
 
-        hideAppealStatus() {
+        canShowAppeal() {
             if (this.registration.opportunity.isReportingPhase) {
-                return true;
+                return false;
             }
-            return this.registration.status == 1 || this.registration.status == 10;
+            return this.registration.status != 1 && this.registration.status != 10;
         },
 
         opportunity () {
