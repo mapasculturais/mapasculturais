@@ -37,7 +37,7 @@ class Module extends \MapasCulturais\Module {
             $joins .= "\n LEFT JOIN e.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
             $joins .= "\n LEFT JOIN coletivo_relation.agent agent_coletivo";
             $joins .= "\n LEFT JOIN o.__metadata owner_nome WITH owner_nome.key = 'nomeCompleto'";
-            $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_nome WITH owner_nome.key = 'nomeCompleto'";
+            $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_nome WITH coletivo_nome.key = 'nomeCompleto'";
 
             if ($format_doc($keyword)) {
                 $joins .= "\n LEFT JOIN o.__metadata doc WITH doc.key IN('documento','cnpj','cpf')";
@@ -45,8 +45,8 @@ class Module extends \MapasCulturais\Module {
             }
 
             if (str_contains($keyword, '@')) {
-                $joins .= "\n LEFT JOIN o.__metadata owner_email WITH owner_email.key = 'emailPublico'";
-                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_email WITH coletivo_email.key = 'emailPublico'";
+                $joins .= "\n LEFT JOIN o.__metadata owner_email WITH owner_email.key IN ('emailPublico', 'emailPrivado')";
+                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_email WITH coletivo_email.key IN ('emailPublico', 'emailPrivado')";
             }
         });
 
