@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'plugins' => [
-	 'MultipleLocalAuth'
-	]
+    'plugins' => [
+        "MultipleLocalAuth"
+    ]
 ];
