@@ -35,6 +35,7 @@ $phases_ids = array_map(function($phase) {
     return $phase->id;
 }, [...$phases, ...$appeal_phases]);
 
+$app->disableAccessControl();
 $registration_query = new ApiQuery(Registration::class, [
     'number' => API::EQ($registration_number),
     'opportunity' => API::IN($phases_ids)
@@ -49,6 +50,7 @@ $thread_query = new ApiQuery(ChatThread::class, [
 $thread_query->addFilterByApiQuery($registration_query, 'id', 'objectId');
 
 $chat_threads = $thread_query->find();
+$app->enableAccessControl();
 
 $result = [];
 
