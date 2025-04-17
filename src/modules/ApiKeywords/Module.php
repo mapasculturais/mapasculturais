@@ -45,8 +45,8 @@ class Module extends \MapasCulturais\Module {
             }
 
             if (str_contains($keyword, '@')) {
-                $joins .= "\n LEFT JOIN o.__metadata owner_email WITH owner_email.key = 'emailPublico'";
-                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_email WITH coletivo_email.key = 'emailPublico'";
+                $joins .= "\n LEFT JOIN o.__metadata owner_email WITH owner_email.key IN ('emailPublico', 'emailPrivado')";
+                $joins .= "\n LEFT JOIN agent_coletivo.__metadata coletivo_email WITH coletivo_email.key IN ('emailPublico', 'emailPrivado')";
             }
         });
 
