@@ -22,7 +22,7 @@ class Entity {
         return entity;
     }
 
-    populate(obj, preserveValues = true) {
+    populate(obj, preserveValues = true, updatedData = null) {
         const __properties = this.$PROPERTIES;
         const __relations = this.$RELATIONS;
         const defaultProperties = [
@@ -111,7 +111,15 @@ class Entity {
 
         this.cleanErrors();
         
-        this.__originalValues = this.data();
+        if (updatedData) {
+            const data = this.data();
+            for (const key in updatedData) {
+                this.__originalValues[key] = data[key];
+            }
+        } else {
+            this.__originalValues = this.data();
+        }
+      
         return this;
     }
 
@@ -440,7 +448,7 @@ class Entity {
                         } else {
                             this.sendMessage(this.text('entidade salva'));
                         }
-                        this.populate(entity, preserveValues);
+                        this.populate(entity, preserveValues, data);
 
                     }).then((response) => {
                         for(let resolve of this.resolvers) {
