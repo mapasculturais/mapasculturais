@@ -177,7 +177,31 @@ class Registrations extends SpreadsheetJob
                         }
                     }
 
+                    if ($entity[$field->fieldName] instanceof \stdClass) {
+                        $entity[$field->fieldName] = (array) $entity[$field->fieldName];
+                    }	
+
                     if(isset($entity[$field->fieldName]) && is_array($entity[$field->fieldName])) {
+                        $translation = $app->config["field:$field->fieldType"] ?? null;
+
+                        if (!empty($translation)){
+                            $tempField = $entity[$field->fieldName];
+
+                            if ($field->fieldType == 'bankFields') {
+                                $configRegistrationFieldTypes = $app->config['module.registrationFieldTypes'];
+                                $tempField['account_type'] = $configRegistrationFieldTypes['account_types'][$tempField['account_type']] ?? 'Inválido';	
+                                $tempField['number'] = $configRegistrationFieldTypes['bank_types'][$tempField['number']] ?? 'Inválido';
+                            }
+
+                            $entity[$field->fieldName] = str_replace(
+                                array_map(fn($key) => "{" . $key . "}", array_keys($entity[$field->fieldName])),
+                                array_values($tempField),
+                                $translation
+                            );
+
+                            continue;
+                        }
+
                         $values = array_map(function($item) {
                             if (is_object($item)) {
                                 if (isset($item->value)) {
@@ -193,8 +217,12 @@ class Registrations extends SpreadsheetJob
                         $formatted_values = implode(', ', $values);
                         $entity[$field->fieldName] = $formatted_values;
                     }
+
+                    if ($field->fieldType == 'checkbox') {
+                        $entity[$field->fieldName] = in_array($entity[$field->fieldName], [1, '1', true]) ? 'Sim' : $entity[$field->fieldName];
+                    }
                 }
-                
+
                 unset($entity['@entityType']);
                 unset($entity['evaluationResultString']);
 
@@ -231,6 +259,26 @@ class Registrations extends SpreadsheetJob
                     $entity['status'] = $this->getStatusName($entity['status']);
                 }
 
+                if (isset($entity['number'])) {
+                    if ($job->extension == 'csv') {
+                        $number = "=HIPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\"; \"" . $entity['number'] . "\")";
+                    }
+
+                    if ($job->extension == 'xlsx') {
+                        $number = "=HYPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\", \"" . $entity['number'] . "\")";
+                    }
+
+                    if ($job->extension == 'ods') {
+                        $number = "=HYPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\"; \"" . $entity['number'] . "\")";
+                    }
+
+                    $entity['number'] = $number;
+                }
+
+                if(isset($entity['goalStatuses'])) {
+                    $entity['goalStatuses'] = $entity['goalStatuses']->{10} . '/' . $entity['goalStatuses']->numGoals . " " . i::__('concluídas');
+                }
+                
                 $entity = $this->replaceArraysWithNull($entity);
             }
         }

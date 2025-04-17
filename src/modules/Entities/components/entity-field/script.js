@@ -2,13 +2,12 @@ app.component('entity-field', {
     template: $TEMPLATES['entity-field'],
     emits: ['change', 'save'],
 
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name]
-        return { hasSlot }
+    setup(props) {
+        const propId = Vue.useId();
+        return { propId };
     },
 
     data() {         
-        let uid = Math.random().toString(36).slice(2);
         let description, 
             value = this.entity[this.prop];
 
@@ -58,10 +57,30 @@ app.component('entity-field', {
             description.min = 0;
         }
 
+        /**
+         * Aqui podemos passar alguns itens que eventualmente não queremos que sejam listados em alguma tela
+         */
+        if (this.entity.removeOptions && description.options) {
+            const removedOptions = [];
+            const { removeOptions } = this.entity;
+        
+            description.options = Object.fromEntries(
+                Object.entries(description.options).filter(([key, value]) => {
+                    const optionFound = removeOptions.includes(value);
+                    if (optionFound) {
+                        removedOptions.push(parseInt(key));
+                    }
+
+                    return !optionFound;
+                })
+            );
+        
+            description.optionsOrder = description.optionsOrder.filter(item => !removedOptions.includes(item));
+        }
+
         return {
             __timeout: null,
             description: description,
-            propId: `${this.entity.__objectId}--${this.prop}--${uid}`,
             fieldType,
             currencyValue: this.entity[this.prop],
             readonly: false,
@@ -111,11 +130,11 @@ app.component('entity-field', {
         },
         min: {
             type: [ Number, String, Date ],
-            default: 0 || null
+            default: null
         },
         max: {
             type: [ Number, String, Date ],
-            default: 0 || null
+            default: null
         },
 
         maxLength: {
@@ -152,6 +171,15 @@ app.component('entity-field', {
         preserveOrder: {
             type: Boolean,
             default: false
+        },
+        titleModal: {
+            type: String,
+            required: false,
+            default: 'Anexar'
+        },
+        groupName: {
+            type: String,
+            required: false,
         }
     },
 
@@ -346,6 +374,7 @@ app.component('entity-field', {
 
         isReadonly() {
             const userPermission = this.entity.currentUserPermissions?.modifyReadonlyData;
+            const lockedFieldSeals = this.entity.__lockedFieldSeals;
 
             if(this.description.readonly) {
                 if(userPermission || !this.value) {
@@ -353,6 +382,10 @@ app.component('entity-field', {
                 } else {
                     this.readonly = true;
                 }
+            }
+
+            if(lockedFieldSeals && lockedFieldSeals[this.prop]) {
+                this.readonly = true;
             }
         }
     },

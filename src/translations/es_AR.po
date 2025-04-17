@@ -20,11 +20,11 @@ msgstr ""
 
 #: config/0.main.php:22
 #: src/themes/BaseV1/layouts/parts/editable-entity-logo.php:1
-msgid "Mapas Culturais"
+msgid "Mapa da Cultura"
 msgstr "Cultura en Línea"
 
 #: config/0.main.php:25
-msgid "O Mapas Culturais é uma plataforma livre para mapeamento cultural."
+msgid "O Mapa da Cultura é uma plataforma livre para mapeamento cultural."
 msgstr ""
 "Cultura en Línea es una plataforma de software libre, de cartografía "
 "cultural libre y colaborativa."
@@ -229,11 +229,11 @@ msgid "Culturais"
 msgstr "Culturales"
 
 #: config/mailer-templates.php:7
-msgid "Bem-vindo(a) ao Mapas Culturais"
+msgid "Boas vindas ao Mapa da Cultura"
 msgstr "Bienvenido(a) al Mapa Cultural"
 
 #: config/mailer-templates.php:11 config/mailer-templates.php:19
-msgid "Acesse a Mapas Culturais"
+msgid "Acesse o Mapa da Cultura"
 msgstr "Accede a Mapas Culturales"
 
 #: config/mailer-templates.php:15
@@ -241,11 +241,11 @@ msgid "Novo registro"
 msgstr "Nuevo registro"
 
 #: config/mailer-templates.php:23
-msgid "Denúncia - Mapas Culturais"
+msgid "Denúncia - Mapa da Cultura"
 msgstr "Denuncia - Mapas Culturales"
 
 #: config/mailer-templates.php:27
-msgid "Mensagem - Mapas Culturais"
+msgid "Mensagem - Mapa da Cultura"
 msgstr "Mensaje - Mapas Culturales"
 
 #: config/mailer-templates.php:31
@@ -5401,11 +5401,11 @@ msgid "Recaptcha inválida"
 msgstr "Recaptcha no válido"
 
 #: src/modules/Components/components/complaint-suggestion/texts.php:7
-msgid "Todos os campos são obrigatorio"
+msgid "Todos os campos são obrigatórios"
 msgstr "Todos los campos son obligatorios"
 
 #: src/modules/Components/components/complaint-suggestion/texts.php:8
-msgid "Dados enviados com suscesso"
+msgid "Dados enviados com sucesso"
 msgstr "Datos enviados con éxito"
 
 #: src/modules/Components/components/entity-card/template.php:27
@@ -5663,7 +5663,7 @@ msgid "plataforma criada pela comunidade"
 msgstr "plataforma creada por la comunidad"
 
 #: src/modules/Components/components/main-footer/template.php:121
-msgid "mapas culturais"
+msgid "mapa da cultura"
 msgstr "cultura en Línea"
 
 #: src/modules/Components/components/main-footer/template.php:122
@@ -10223,7 +10223,7 @@ msgstr "Hola desarrolladores"
 
 #: src/modules/Home/components/home-developers/template.php:13
 msgid ""
-"Além disso, Mapas Culturais é um software livre, criado em parceria entre a "
+"Além disso, Mapa da Cultura é um software livre, criado em parceria entre a "
 "hacklab/, secretarias de cultura, organizações não governamentais, empresas "
 "e coletivos que investem na plataforma. Você pode contribuir para o seu "
 "desenvolvimento através do GitHub."
@@ -10325,12 +10325,12 @@ msgid "Nenhuma entidade em destaque foi encontrada."
 msgstr "No se encontraron entidades destacadas."
 
 #: src/modules/Home/components/home-header/template.php:19
-msgid "Bem-vinde ao Mapas Culturais"
+msgid "Boas vindas ao Mapa da Cultura"
 msgstr "Bienvenide al Mapa Cultural"
 
 #: src/modules/Home/components/home-header/template.php:22
 msgid ""
-"O Mapas Culturais é uma ferramenta de gestão cultural, que garante a "
+"O Mapa da Cultura é uma ferramenta de gestão cultural, que garante a "
 "estruturação de Sistemas de Informações e Indicadores. A plataforma oferece "
 "soluções para o mapeamento colaborativo de agentes culturais, realização de "
 "todas as etapas de editais e fomentos, organização de uma agenda cultural e "
@@ -14844,7 +14844,7 @@ msgid "como usar do site"
 msgstr "cómo usar el sitio"
 
 #: src/themes/BaseV1/Theme.php:156
-msgid "usado para orientar o usuário a utilizar a plataforma Mapas Culturais"
+msgid "usado para orientar o usuário a utilizar a plataforma Mapa da Cultura"
 msgstr "se utiliza para guiar al usuario a usar la plataforma Cultura en Línea"
 
 #: src/themes/BaseV1/Theme.php:157
@@ -14892,7 +14892,7 @@ msgstr ""
 
 #: src/themes/BaseV1/Theme.php:171
 msgid ""
-"O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de "
+"O Mapa da Cultura é uma plataforma livre, gratuita e colaborativa de "
 "mapeamento cultural."
 msgstr ""
 "Cultura en Línea es una plataforma de software libre, de cartografía "
@@ -14962,7 +14962,7 @@ msgid "Colabore com o SpCultura"
 msgstr "Colabore con SpCultura"
 
 #: src/themes/BaseV1/Theme.php:191
-msgid "Colabore com o Mapas Culturais"
+msgid "Colabore com o Mapa da Cultura"
 msgstr "Colabore con Cultura en Línea"
 
 #: src/themes/BaseV1/Theme.php:194
@@ -15055,9 +15055,9 @@ msgid ""
 "hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_api.md\" "
 "target=\"_blank\" rel=\"noopener noreferrer\">API</a>. Com ela você pode "
 "acessar os dados públicos no nosso banco de dados e utilizá-los para "
-"desenvolver aplicações externas. Além disso, o Mapas Culturais é construído "
+"desenvolver aplicações externas. Além disso, o Mapa da Cultura é construído "
 "a partir do sofware livre <a href=\"http://institutotim.org.br/project/mapas-"
-"culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapas Culturais</"
+"culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapa da Cultura</"
 "a>, criado em parceria com o <a href=\"http://institutotim.org.br\" target="
 "\"_blank\" rel=\"noopener noreferrer\">Instituto TIM</a>, e você pode "
 "contribuir para o seu desenvolvimento através do <a href=\"https://github."
@@ -16519,7 +16519,7 @@ msgstr "Fecha de creación"
 
 #: src/themes/BaseV1/Theme.php:2083
 msgid ""
-"Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com "
+"Sua requisição para enviar um contato pelo Mapa da Cultura foi enviada com "
 "sucesso."
 msgstr ""
 "Su solicitud para enviar un contacto por Cultura en Línea fue enviada con "
@@ -17041,7 +17041,7 @@ msgid "Adicionar Imagem na Galeria"
 msgstr "Agregar una imagen a la Galería"
 
 #: src/themes/BaseV1/layouts/parts/header-about-nav.php:4
-msgid "Sobre os Mapas Culturais"
+msgid "Sobre o Mapa da Cultura"
 msgstr "Acerca de Cultura en Línea"
 
 #: src/themes/BaseV1/layouts/parts/header-about-nav.php:5
@@ -21736,10 +21736,10 @@ msgstr "Acerca del sitio web"
 #~ msgid "Recaptcha inválida"
 #~ msgstr "Recaptcha no válido"
 
-#~ msgid "Todos os campos são obrigatorio"
+#~ msgid "Todos os campos são obrigatórios"
 #~ msgstr "Todos los campos son obligatorios"
 
-#~ msgid "Dados enviados com suscesso"
+#~ msgid "Dados enviados com sucesso"
 #~ msgstr "Datos enviados con éxito"
 
 #~ msgid "ONDE: "
@@ -21814,7 +21814,7 @@ msgstr "Acerca del sitio web"
 #~ msgid "plataforma criada pela comunidade"
 #~ msgstr "plataforma creada por la comunidad"
 
-#~ msgid "mapas culturais"
+#~ msgid "mapa da cultura"
 #~ msgstr "cultura en Línea"
 
 #~ msgid "e desenvolvida por "
@@ -24390,7 +24390,7 @@ msgstr "Acerca del sitio web"
 #~ msgstr "Hola desarrolladores"
 
 #~ msgid ""
-#~ "Além disso, Mapas Culturais é um software livre, criado em parceria entre "
+#~ "Além disso, Mapa da Cultura é um software livre, criado em parceria entre "
 #~ "a hacklab/, secretarias de cultura, organizações não governamentais, "
 #~ "empresas e coletivos que investem na plataforma. Você pode contribuir "
 #~ "para o seu desenvolvimento através do GitHub."
@@ -24452,11 +24452,11 @@ msgstr "Acerca del sitio web"
 #~ msgid "Nenhuma entidade em destaque foi encontrada."
 #~ msgstr "No se encontraron entidades destacadas."
 
-#~ msgid "Bem-vinde ao Mapas Culturais"
+#~ msgid "Boas vindas ao Mapa da Cultura"
 #~ msgstr "Bienvenide al Mapa Cultural"
 
 #~ msgid ""
-#~ "O Mapas Culturais é uma ferramenta de gestão cultural, que garante a "
+#~ "O Mapa da Cultura é uma ferramenta de gestão cultural, que garante a "
 #~ "estruturação de Sistemas de Informações e Indicadores. A plataforma "
 #~ "oferece soluções para o mapeamento colaborativo de agentes culturais, "
 #~ "realização de todas as etapas de editais e fomentos, organização de uma "

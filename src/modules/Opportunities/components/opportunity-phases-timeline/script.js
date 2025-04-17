@@ -137,8 +137,10 @@ app.component('opportunity-phases-timeline', {
 
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
 
-			return phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation);
+			const allowProponentResponse = phaseOpportunity.allow_proponent_response === '1';
 
+			return (phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation)) || allowProponentResponse;
+		
 		},
 
 		getRegistration(item) {

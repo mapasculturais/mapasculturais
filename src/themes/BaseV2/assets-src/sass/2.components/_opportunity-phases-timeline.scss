@@ -14,6 +14,98 @@
         align-items: center;
     }
     &__label {
-        font-size: size(12);
+        font-size: size(14);
+        text-transform: uppercase;
+
+        &--lowercase {
+            text-transform: unset;
+        }
+    }
+
+    &__request-appeal {
+        display: flex;
+        flex-direction: column;
+        gap: size(12);
+        max-width: size(256);
+        width: 100%;
+
+        &__box {
+            display: grid;
+            grid-template-columns: size(48) 1fr;
+        }
+    }
+
+    &__buttons {
+        display: flex;
+        gap: size(10);
+    }
+
+    &__buttons:has(> .registration-results:only-child) .registration-results {
+        flex: 1 1 100%;
+    }
+    
+    &__buttons:has(> .registration-results:nth-child(2)) .registration-results {
+        flex: 0 1 auto;
+    }
+}
+
+.timeline .item {
+    display: grid;
+    gap: size(5);
+    grid-template-columns: size(24) 1fr;
+    padding-bottom: size(28);
+    position: relative;
+
+    &__dot-appeal-phase {
+        align-items: flex-start;
+        display: flex;
+        justify-content: flex-start;
+        
+        .dot {
+            background-color: var(--mc-opportunities-500);
+            border-radius: var(--mc-border-radius-pill);
+            position: relative;
+            border: size(7) solid var(--mc-high-500);
+            height: size(42);
+            width: size(42);
+            left: size(-6);
+
+            &::before {
+                background-color: var(--mc-opportunities-500);
+                content: "";
+                height: size(2);
+                position: absolute;
+                width: size(34);
+                left: size(-37);
+                top: size(14);
+            }
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: size(4);
+        margin-top: size(4);
+
+        &--title {
+            font-size: size(12);
+            font-weight: 700;
+            line-height: size(16);
+        }
+
+        &--description {
+            font-size: size(12);
+            font-weight: 600;
+            line-height: size(16);
+        }
+    }
+
+    &:last-child {
+        padding: 0;
+
+        .item__dot::before {
+            content: unset;
+        }
     }
 }

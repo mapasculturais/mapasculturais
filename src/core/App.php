@@ -805,6 +805,9 @@ class App {
             $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->subsite);
         } else {
             $theme_class = $this->config['themes.active'] . '\Theme';
+
+            // dd($theme_class);
+
             $theme_instance = new $theme_class($this->config['themes.assetManager']);
         }
 
@@ -1110,7 +1113,11 @@ class App {
         $max_post = $convertToKB(ini_get('post_max_size'));
         $memory_limit = $convertToKB(ini_get('memory_limit'));
 
-        $result = min($max_upload, $max_post, $memory_limit);
+        if ($memory_limit == -1) {
+            $result = min($max_upload, $max_post);
+        } else {
+            $result = min($max_upload, $max_post, $memory_limit);
+        }
 
         if(!$useSuffix)
             return $result;
@@ -2474,6 +2481,9 @@ class App {
         $this->registerController('chatThread', 'MapasCulturais\Controllers\ChatThread');
         $this->registerController('chatMessage', 'MapasCulturais\Controllers\ChatMessage');
 
+        // registration evaluation
+        $this->registerController('registrationEvaluation', 'MapasCulturais\Controllers\RegistrationEvaluation');
+
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
@@ -2543,6 +2553,14 @@ class App {
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true),
+            'chatImage' => new Definitions\FileGroup('chatImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'chatAttachment' => new Definitions\FileGroup('chatAttachment', unique:true),
+            'evaluationImage' => new Definitions\FileGroup('evaluationImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'evaluationAttachment' => new Definitions\FileGroup('evaluationAttachment', unique:true),
+            'docs-cpf' => new Definitions\FileGroup('docs-cpf', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-cnpj' => new Definitions\FileGroup('docs-cnpj', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-cnh' => new Definitions\FileGroup('docs-cnh', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-rg' => new Definitions\FileGroup('docs-rg', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
         ];
 
         // register file groups
@@ -2550,6 +2568,10 @@ class App {
         $this->registerFileGroup('agent', $file_groups['header']);
         $this->registerFileGroup('agent', $file_groups['avatar']);
         $this->registerFileGroup('agent', $file_groups['gallery']);
+        $this->registerFileGroup('agent', $file_groups['docs-cpf']);
+        $this->registerFileGroup('agent', $file_groups['docs-cnpj']);
+        $this->registerFileGroup('agent', $file_groups['docs-cnh']);
+        $this->registerFileGroup('agent', $file_groups['docs-rg']);
 
         $this->registerFileGroup('space', $file_groups['downloads']);
         $this->registerFileGroup('space', $file_groups['header']);
@@ -2583,6 +2605,12 @@ class App {
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
+
+        $this->registerFileGroup('chatMessage',$file_groups['chatImage']);
+        $this->registerFileGroup('chatMessage',$file_groups['chatAttachment']);
+        
+        $this->registerFileGroup('registrationEvaluation',$file_groups['evaluationImage']);
+        $this->registerFileGroup('registrationEvaluation',$file_groups['evaluationAttachment']);
 
         if ($theme_image_transformations = $this->view->resolveFilename('','image-transformations.php')) {
             $image_transformations = include $theme_image_transformations;
@@ -3994,4 +4022,70 @@ class App {
         $this->enableAccessControl();
     }
 
+
+    /** 
+     * ============ MÉTODOS DE VERIFICAÇÃO DO CAPTCHA ============ 
+     */
+    function verifyCaptcha(string $token = '')
+    {
+        // If we don't receive the token, there is no reason to advance to the verification
+        if (empty($token)) {
+            return false;
+        }
+
+        // In this point we are sure that the provider was defined
+        $provider = $this->config['captcha']['provider'];
+
+        // If there are no providers available, it means that there was an error in the configuration
+        // Because if it is the new configuration, the provider is mandatory
+        // If it is the old one, the provider is defined by default
+        if (!isset($this->config['captcha']['providers']) || empty($this->config['captcha']['providers'])) {
+            throw new \Exception('No captcha providers defined');
+        }
+
+        // Is necessary to validate if the defined provider exists, because it may have been defined incorrectly in the new configuration
+        if (!in_array($provider, array_keys($this->config['captcha']['providers']))) {
+            return false;
+        }
+
+        // Using the defined provider
+        $selectedProvider = $this->config['captcha']['providers'][$provider];
+
+        // If the provider does not have the token validation address, do not advance
+        if (empty($selectedProvider['verify'])) {
+            throw new \Exception('No verify url defined for the selected provider');
+        }
+
+        // If the provider does not have the secret, do not advance or throw an exception?
+        if (empty($selectedProvider['secret'])) {
+            throw new \Exception('No secret defined for the selected provider');
+        }
+
+        // ############################# Start the verification process #############################
+        // Prepare the request
+        $options = [
+            "http" => [
+                "header" => "Content-type: application/x-www-form-urlencoded\r\n",
+                "method" => "POST",
+                "content" => http_build_query([
+                    'secret' => $selectedProvider['secret'],
+                    'response' => $token
+                ])
+            ]
+        ];
+
+        // Create the context
+        $context = stream_context_create($options);
+     
+        // Send the request
+        $result = file_get_contents($selectedProvider['verify'], false, $context);
+
+        if ($result === false) {
+            return false;
+        }
+     
+        $result = json_decode($result);
+
+        return $result->success;
+    }
 }

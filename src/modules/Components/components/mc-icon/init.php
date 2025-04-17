@@ -1,6 +1,10 @@
 <?php
 // https://icon-sets.iconify.design/
 $iconset = [
+    // minc -- descomentar os ícones que forem aceitos na biblioteca Iconify
+    'cultura-viva-1' => 'bi:person-arms-up',//'minc:cultura-viva-1',
+    'cultura-viva-3' => 'ph:person-arms-spread-fill',//'minc:cultura-viva-3',
+
     // entidades
     'app' => 'heroicons-solid:puzzle',
     'user' => 'fa-solid:user-friends',
@@ -12,6 +16,7 @@ $iconset = [
     'event' => 'bxs:calendar-event',
     'project' => 'ri:file-list-2-fill',
     'opportunity' => 'mdi:lightbulb-on',
+    'seal' => 'mdi:seal-variant',
 
     // redes sociais
     'facebook' => 'brandico:facebook',
@@ -111,7 +116,6 @@ $iconset = [
     'question' => 'fe:question',
     'required' => 'fontisto:asterisk',
     'role'  => 'ri:profile-line',
-    'seal' => 'mdi:seal-variant',
     'select' => 'octicon:single-select-24',
     'search' => 'ant-design:search-outlined',
     'selected' => 'grommet-icons:radial-selected',

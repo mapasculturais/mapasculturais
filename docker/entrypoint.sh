@@ -37,10 +37,14 @@ else
 fi
 
 if [ $BUILD_ASSETS = "1" ]; then
+    chown www-data: /var/www/public/assets
     cd /var/www/src
     pnpm install --recursive 
     pnpm run dev
 fi
+chown -R www-data:www-data /var/www/public/assets 
+chown -R www-data:www-data /var/www/public/files 
+chown -R www-data:www-data /var/www/var/private-files
 
 cd /
 touch /nohup.out

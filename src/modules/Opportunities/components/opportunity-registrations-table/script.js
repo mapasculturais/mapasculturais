@@ -199,6 +199,10 @@ app.component('opportunity-registrations-table', {
             if (this.phase.registrationCategories && this.phase.registrationCategories.length > 0) {
                 const result = {};
                 for (let category of this.phase.registrationCategories) {
+                    if (!category) {
+                        continue;
+                    }
+
                     result[category.replace(/,/g, '\\,')] = category;
                 }
                 return result;
@@ -236,6 +240,7 @@ app.component('opportunity-registrations-table', {
                     value: item.fieldName
                 })));
             }
+            
 
             if(this.phase.evaluationMethodConfiguration){
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
@@ -290,9 +295,9 @@ app.component('opportunity-registrations-table', {
                     break;
                 }
 
-                let type = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type?.id : phase.type.id;
+                const phaseType = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type?.id : phase.type.id;
 
-                if(type == "technical"){
+                if(phaseType == "technical"){
                     hasEvaluationMethodTechnical = true;
                     break;
                 }

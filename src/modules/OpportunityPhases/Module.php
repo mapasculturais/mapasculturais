@@ -270,7 +270,14 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
             if($this->isNew()) {
-                $value = $first_phase->lastPhase->previousPhase;
+                if($this->isReportingPhase) {
+                    $value = $first_phase->lastPhase;
+                    while($next_phase = $value->nextPhase) {
+                        $value = $next_phase;
+                    }
+                } else {
+                    $value = $first_phase->lastPhase->previousPhase;
+                }
                 return;
             }
             if($this->isFirstPhase) {
@@ -286,24 +293,35 @@ class Module extends \MapasCulturais\Module{
                 $complement = "o.id < :this AND";
             }
 
+            if(!$this->isReportingPhase) {
+                $complement = "o.id <> :last AND o.id < :this AND";
+            }
+
             $query = $app->em->createQuery("
                 SELECT o
                 FROM MapasCulturais\Entities\Opportunity o
+                LEFT JOIN o.__metadata om WITH om.key = 'isAppealPhase'
                 WHERE
-                    o.id <> :last AND
                     {$complement}
                     (
                         o.id = :parent OR
                         (o.parent = :parent AND o.id <> :this)
                     )
+                    AND om.value IS NULL
                 ORDER BY o.id DESC");
 
             $query->setMaxResults(1);
-            $query->setParameters([
-                "last" => $last_phase,
+            
+            $params = [
                 "parent" => $first_phase,
                 "this" => $this,
-            ]);
+            ];
+
+            if(!$this->isReportingPhase) {
+                $params["last"] = $last_phase;
+            }
+
+            $query->setParameters($params);
 
             $value = $query->getOneOrNullResult();
         });
@@ -345,11 +363,12 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
             if($this->isNew()) {
-                $value = $first_phase->lastPhase;
-                return;
-            }
+                if($this->isReportingPhase) {
+                    $value = null;
+                } else {
+                    $value = $first_phase->lastPhase;
+                }
 
-            if($this->isLastPhase) {
                 return;
             }
 
@@ -376,7 +395,7 @@ class Module extends \MapasCulturais\Module{
 
             if($result = $query->getOneOrNullResult()) {
                 $value = $result;
-            } else {
+            } else if(!$this->isReportingPhase) {
                 $value = $last_phase;
             }
 
@@ -440,7 +459,7 @@ class Module extends \MapasCulturais\Module{
             $query = $app->em->createQuery("
                 SELECT o
                 FROM $class o
-                WHERE o.parent = :parent
+                WHERE o.parent = :parent AND o.status = -1
                 ORDER BY o.registrationFrom ASC, o.id ASC");
 
             $query->setParameters([
@@ -448,8 +467,12 @@ class Module extends \MapasCulturais\Module{
             ]);
 
             $last_phase = null;
+            $reporting_phases = [];
+
             foreach($query->getResult() as $opp) {
-                if($opp->isLastPhase) {
+                if ($opp->isReportingPhase) {
+                    $reporting_phases[] = $opp;
+                } elseif ($opp->isLastPhase) {
                     $last_phase = $opp;
                 } else {
                     $values[] = $opp;
@@ -460,6 +483,12 @@ class Module extends \MapasCulturais\Module{
                 $values[] = $last_phase;
             }
 
+            /**
+             * Adiciona as fases de prestação de informações ao final da lista de fases.
+             */
+            if ($reporting_phases) {
+                $values = array_merge($values, $reporting_phases);
+            }
         });
 
         /**
@@ -484,7 +513,8 @@ class Module extends \MapasCulturais\Module{
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
-                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,files");
+                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files");
+                        $item->appealPhase = $opportunity->appealPhase;
 
                         $item->registrationSteps = [];
                         foreach ($opportunity->registrationSteps as $step) {
@@ -494,6 +524,7 @@ class Module extends \MapasCulturais\Module{
 
                         if($emc){
                             $item->evaluationMethodConfiguration = $emc->simplify("id,name,evaluationFrom,evaluationTo,useCommitteeGroups,evaluateSelfApplication");
+                            $item->evaluationMethodConfiguration->appealPhase = $emc->appealPhase;
                         }
 
                         $result[] = $item;
@@ -507,7 +538,10 @@ class Module extends \MapasCulturais\Module{
 
                         $app->applyHook('module(OpportunityPhases).evaluationPhaseData', [&$mout_simplify]);
 
-                        $result[] = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo");
+                        $item = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo");
+                        $item->appealPhase = $emc->appealPhase;
+
+                        $result[] = $item;
                     }
                 }
             }
@@ -654,6 +688,19 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
+        $app->hook('entity(Registration).get(appealPhase)', function(&$value) use($registration_repository) {
+            /** @var Registration $this */
+
+            $this->enableCacheGetterResult('appealPhase');
+
+            if($appeal_phase = $this->opportunity->appealPhase) {
+                $value = $registration_repository->findOneBy([
+                    'opportunity' => $appeal_phase, 
+                    'number' => $this->number
+                ]);
+            }
+        });
+
         /** @var \MapasCulturais\Connection $conn */
         $conn = $app->em->getConnection();
 
@@ -740,7 +787,7 @@ class Module extends \MapasCulturais\Module{
            $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
                 'opportunity' => $opportunity,
                 'evaluationMethodConfiguration' => $opportunity->evaluationMethodConfiguration?: null
-            ], '10 seconds');
+            ], '90 seconds');
 
             $this->finish(['message' => i::__('Sincronização das inscrições enfileirada para processamento em segundo plano')]);
         });
@@ -760,12 +807,14 @@ class Module extends \MapasCulturais\Module{
          */
 
         $app->hook('entity(Opportunity).canUser(view)', function($user, &$result){
+            /** @var Opportunity $this */
             if($this->isOpportunityPhase && $this->status === -1){
                 $result = true;
             }
         });
 
         $app->hook('entity(Registration).canUser(view)', function($user, &$result) use($app){
+            /** @var Registration $this */
             if($result){
                 return;
             }
@@ -774,6 +823,31 @@ class Module extends \MapasCulturais\Module{
                 $next_phase_registration = $app->repo('Registration')->find($registration_id);
                 if ($next_phase_registration) {
                     $result = $next_phase_registration->canUser('view', $user);
+                }
+            }
+
+            if(!$result && ($appeal_phase = $this->appealPhase)) {
+                $result = $appeal_phase->canUser('view', $user);
+            }
+        });
+
+        $app->hook('entity(Registration).canUser(viewPrivateData)', function($user, &$result) use($app, $registration_repository){
+            /** @var Registration $this */
+            if($result){
+                return;
+            }
+            
+            if(!$result) {
+                if($appeal_phase = $this->opportunity->appealPhase) {
+
+                    $registration_appeal_phase = $registration_repository->findOneBy([
+                        'opportunity' => $appeal_phase, 
+                        'number' => $this->number
+                    ]);
+
+                    if($registration_appeal_phase) {
+                        $result = $registration_appeal_phase->canUser('viewPrivateData', $user);
+                    }
                 }
             }
         });
@@ -830,6 +904,12 @@ class Module extends \MapasCulturais\Module{
 
         /** enfileira job para sincronização das inscrições em segundo plano */
         $app->hook('Entities\Opportunity::enqueueRegistrationSync', function($value, array $registrations = []) use($app) {
+            
+            // Não deve sincronizar as inscrições em fase de recurso
+            if ($this->isAppealPhase) {
+                return false;
+            }
+
             $data = [
                 'opportunity' => $this,
                 'registrations' => $registrations
@@ -842,7 +922,8 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::syncRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            if ($this->isFirstPhase) {
+            // Não deve sincronizar as inscrições da primeira fase ou fase de recurso
+            if ($this->isFirstPhase || $this->isAppealPhase) {
                 return false;
             }
 
@@ -857,7 +938,7 @@ class Module extends \MapasCulturais\Module{
                 'deleted' => []
             ];
 
-            if ($this->registrationFrom <= $today || $this->isLastPhase) {
+            if ($this->registrationFrom <= $today || $this->isLastPhase || $this->isFinalReportingPhase) {
 
                 $as_draft = $this->isDataCollection;
 
@@ -875,7 +956,7 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::removeOrphanRegistrations', function($value, array $registrations = []) use($app) {
             /** @var Opportunity $this */
 
-            if ($this->isFirstPhase || $this->isLastPhase) {
+            if ($this->isFirstPhase || $this->isLastPhase || $this->isAppealPhase) {
                 return;
             }
 
@@ -884,7 +965,7 @@ class Module extends \MapasCulturais\Module{
             $app->log->debug("  >> REMOVENDO inscrições órfãs da {$this->name} ({$this->id})");
 
             $first_phase = $this->firstPhase;
-            $previous_phase = $this->previousPhase;
+            $previous_phase = $this->isFinalReportingPhase ? $this->lastPhase : $this->previousPhase;
             $app->log->debug("  >>>>>>>  PREVIOUS  {$previous_phase->name} ({$previous_phase->id})");
 
             $where_numbers = '';
@@ -904,27 +985,33 @@ class Module extends \MapasCulturais\Module{
             }
 
             // para a última fase vão todas as inscrições que não estejam como rascunho
-            $status = $this->isLastPhase ? 'r2.status > 0' : 'r2.status = 10';
+            $status = $this->isLastPhase || ($this->isReportingPhase && !$this->isFinalReportingPhase && !$previous_phase->isLastPhase) ? 'r2.status > 0' : 'r2.status = 10';
+
+            $have_numbers_query = "";
+            if(!$this->isReportingPhase) {
+                $have_numbers_query = $where_numbers;
+            }
 
             $dql = "
-                SELECT
-                    r1
-                FROM
-                    MapasCulturais\Entities\Registration r1
-                WHERE
-                    r1.opportunity = :target_opportunity AND
-                    $where_numbers
-                    r1.number NOT IN (
-                        SELECT
-                            r2.number
-                        FROM
-                            MapasCulturais\Entities\Registration r2
-                        WHERE
-                            r2.opportunity = :previous_opportunity AND
-                            {$status}
-                    )
-                ORDER BY r1.id ASC
-            ";
+                    SELECT
+                        r1
+                    FROM
+                        MapasCulturais\Entities\Registration r1
+                    WHERE
+                        r1.opportunity = :target_opportunity AND
+                        $have_numbers_query
+                        r1.number NOT IN (
+                            SELECT
+                                r2.number
+                            FROM
+                                MapasCulturais\Entities\Registration r2
+                            WHERE
+                                r2.opportunity = :previous_opportunity AND
+                                {$status}
+                        )
+                    ORDER BY r1.id ASC
+                ";
+
 
             $query = $app->em->createQuery($dql);
 
@@ -955,7 +1042,8 @@ class Module extends \MapasCulturais\Module{
         $app->hook('Entities\Opportunity::importPreviousPhaseRegistrations', function($value, $as_draft = false, array $registrations = []) use($app, $self){
             /** @var Opportunity $this */
 
-            if ($this->isFirstPhase) {
+            // Não deve sincronizar as inscrições na primeira fase e na fase de recurso
+            if ($this->isFirstPhase || $this->isAppealPhase) {
                 return;
             }
 
@@ -1028,35 +1116,12 @@ class Module extends \MapasCulturais\Module{
                         $current_phase_registration->__skipQueuingPCacheRecreation = true;
 
                     } else {
-                        $current_phase_registration = new Registration;
-                        $current_phase_registration->owner = $registration->owner->refreshed();
-                        $current_phase_registration->opportunity = $this->refreshed();
-                        $current_phase_registration->category = $registration->category;
-                        $current_phase_registration->range = $registration->range;
-                        $current_phase_registration->proponentType = $registration->proponentType;
-                        $current_phase_registration->number = $registration->number;
-                        $current_phase_registration->previousPhaseRegistrationId = $registration->id;
-
-                        $current_phase_registration->__skipQueuingPCacheRecreation = true;
-                        $current_phase_registration->save(true);
-
-                        $registration->nextPhaseRegistrationId = $current_phase_registration->id;
-                        $registration->__skipQueuingPCacheRecreation = true;
-                        $registration->save(true);
+                        $current_phase_registration = $current_phase_registration = $self->createPhaseRegistration($this, $registration);
                     }
-
-                    $labels = [
-                        Registration::STATUS_DRAFT => [i::__('Não enviou inscrição'), i::__('Não enviou inscrição em "{PHASE_NAME}"')],
-                        Registration::STATUS_SENT => [i::__('Pendente'), i::__('Pendente em "{PHASE_NAME}"')],
-                        Registration::STATUS_APPROVED => [i::__('Selecionada'), i::__('Selecionada em "{PHASE_NAME}"')],
-                        Registration::STATUS_NOTAPPROVED => [i::__('Não selecionada'), i::__('Não selecionada em "{PHASE_NAME}"')],
-                        Registration::STATUS_WAITLIST => [i::__('Suplente'), i::__('Suplente em "{PHASE_NAME}"')],
-                        Registration::STATUS_INVALID => [i::__('Inválida'), i::__('Inválida em "{PHASE_NAME}"')],
-                    ];
 
                     $opp_phase = $registration->opportunity;
                     $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
-                    $label = $labels[$registration->status][1];
+                    $label = $self->getRegistrationStatusLabels($registration->status)[1];
                     $label = str_replace('{PHASE_NAME}', $phase->name, $label);
 
                     $current_phase_registration->consolidatedResult = $label;
@@ -1081,6 +1146,103 @@ class Module extends \MapasCulturais\Module{
                 }
 
 
+            } else if($this->isReportingPhase && !$this->isFinalReportingPhase && !$previous_phase->isLastPhase) {
+                $dql = "
+                    SELECT
+                        r1
+                    FROM
+                        MapasCulturais\Entities\Registration r1
+                    WHERE
+                        r1.opportunity = :previous_opportunity AND
+                        r1.status > 0 AND
+                        r1.number NOT IN (
+                            SELECT
+                                r2.number
+                            FROM
+                                MapasCulturais\Entities\Registration r2
+                            WHERE
+                                r2.opportunity = :target_opportunity
+                        )
+                    ORDER BY r1.id ASC";
+
+                $query = $app->em->createQuery($dql);
+                $query->setMaxResults(1);
+
+                $query->setParameters([
+                    'previous_opportunity' => $previous_phase,
+                    'target_opportunity' => $this
+                ]);
+
+                while ($registration = $query->getOneOrNullResult()) {
+                    $count++;
+                    $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+
+                    $current_phase_registration = $self->createPhaseRegistration($this, $registration);
+
+                    if(!$as_draft){
+                        $current_phase_registration->send(false);
+                    }
+
+                    $new_registrations[] = $current_phase_registration->number;
+                    $app->em->clear();
+
+                }
+            } else if($this->isFinalReportingPhase) {
+                $last_phase = $this->lastPhase;
+                $dql = "
+                    SELECT
+                        r1.id
+                    FROM
+                        MapasCulturais\Entities\Registration r1
+                    WHERE
+                        r1.status = 10 AND
+                        r1.opportunity = :previous_opportunity
+
+                    ORDER BY r1.id ASC";
+
+                $query = $app->em->createQuery($dql);
+
+                $query->setParameters([
+                    'previous_opportunity' => $last_phase,
+                ]);
+
+                $ids = $query->getSingleColumnResult();
+                
+                foreach($ids as $registration_id) {
+                    $count++;
+
+                    $registration = $repo->find($registration_id);
+                    while($next_registration_phase = $registration->nextPhase) {
+                        if($next_registration_phase->opportunity->isFinalReportingPhase) {
+                            break;
+                        } else{
+                            $registration = $next_registration_phase;
+                        }
+                    }
+                    
+                    $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+                    
+                    if($current_phase_registration = $repo->findOneBy(['number' => $registration->number, 'opportunity' => $this])) {
+                        $current_phase_registration->__skipQueuingPCacheRecreation = true;
+
+                    } else {
+                        $current_phase_registration = $self->createPhaseRegistration($this, $registration);
+                    }
+                    
+                    $opp_phase = $registration->opportunity;
+                    $phase = $opp_phase->evaluationMethodConfiguration ?: $opp_phase;
+                    $label = $self->getRegistrationStatusLabels($registration->status)[0];
+                    
+                    $current_phase_registration->consolidatedResult = $label;
+                    $current_phase_registration->score = $registration->score;
+
+                    $method = 'setStatusToDraft';
+                    $current_phase_registration->$method();
+
+                    $new_registrations[] = $current_phase_registration->number;
+
+                    $app->em->clear();
+                }
             } else {
                 $dql = "
                     SELECT
@@ -1114,22 +1276,7 @@ class Module extends \MapasCulturais\Module{
                     $count++;
                     $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
 
-                    $current_phase_registration = new Registration;
-                    $current_phase_registration->owner = $registration->owner->refreshed();
-                    $current_phase_registration->opportunity = $this->refreshed();
-                    $current_phase_registration->category = $registration->category;
-                    $current_phase_registration->range = $registration->range;
-                    $current_phase_registration->proponentType = $registration->proponentType;
-                    $current_phase_registration->number = $registration->number;
-                    $current_phase_registration->previousPhaseRegistrationId = $registration->id;
-
-                    $current_phase_registration->__skipQueuingPCacheRecreation = true;
-                    $current_phase_registration->save(true);
-
-
-                    $registration->nextPhaseRegistrationId = $current_phase_registration->id;
-                    $registration->__skipQueuingPCacheRecreation = true;
-                    $registration->save(true);
+                    $current_phase_registration = $self->createPhaseRegistration($this, $registration);
 
                     if(!$as_draft){
                         $current_phase_registration->send(false);
@@ -1154,13 +1301,18 @@ class Module extends \MapasCulturais\Module{
             if($this->skipSync) {
                 return;
             }
+
             $current_phase = $this->opportunity;
+
+            // Não deve sincronizar inscrições em fase de recursos
+            if ($current_phase->isAppealPhase) {
+                return;
+            }
+
             if($next_phase = $current_phase->nextPhase){
                 $next_phase->enqueueRegistrationSync([$this]);
-                if(!$next_phase->isLastPhase) {
-                    $last_phase = $current_phase->lastPhase;
-                    $last_phase->enqueueRegistrationSync([$this]);
-                }
+                $last_phase = $current_phase->lastPhase;
+                $last_phase->enqueueRegistrationSync([$this]);
             }
         });
 
@@ -1239,8 +1391,16 @@ class Module extends \MapasCulturais\Module{
                 $previous_date_to_string = '';
             } else {
                 $previous = $this->previousPhase->evaluationMethodConfiguration ?: $this->previousPhase;
-                $previous_date_from = $previous->evaluationFrom ?: $previous->registrationFrom;
-                $previous_date_to = $previous->evaluationTo ?: $previous->registrationTo;
+
+                // Caso da primeira fase de monitoramento
+                if($previous->isLastPhase) {
+                    $previous_date_from = $previous->publishTimestamp;
+                    $previous_date_to = $previous->publishTimestamp;
+                } else {
+                    $previous_date_from = $previous->evaluationFrom ?: $previous->registrationFrom;
+                    $previous_date_to = $previous->evaluationTo ?: $previous->registrationTo;
+                }
+
                 $previous_date_from_string = $previous_date_from ? $previous_date_from->format('Y-m-d H:i:s') : null;
                 $previous_date_to_string = $previous_date_to ? $previous_date_to->format('Y-m-d H:i:s') : null;
 
@@ -1300,16 +1460,16 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(EvaluationMethodConfiguration).validations', function(&$validations) {
             if($previous_phase = $this->previousPhase){
                 $previous_date_from = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationFrom : $previous_phase->evaluationFrom;
-                $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
-
+                
                 if($this->evaluationFrom < $previous_date_from) {
+                    $previous_date_from_string = $previous_date_from->format('Y-m-d H:i:s');
                     $validations['evaluationFrom']["\$value >= new DateTime('$previous_date_from_string')"] = i::__('A data inicial deve ser maior ou igual a data de inicio da fase anterior');
                 }
 
                 $previous_date_to = ($previous_phase instanceof Opportunity) ? $previous_phase->registrationTo : $previous_phase->evaluationTo;
-                $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
-
+                
                 if($this->evaluationTo < $previous_date_to) {
+                    $previous_date_to_string = $previous_date_to->format('Y-m-d H:i:s');
                     $validations['evaluationTo']["\$value >= new DateTime('$previous_date_to_string')"] = i::__('A data final deve ser maior ou igual a data de término da fase anterior');
                 }
             }
@@ -1365,6 +1525,10 @@ class Module extends \MapasCulturais\Module{
                     $phase = $_phase;
                     break;
                 }
+            }
+
+            if (!$phase && $this->opportunity->status == Opportunity::STATUS_APPEAL_PHASE) {
+                $phase = $this->opportunity;
             }
 
             if(!$phase) {
@@ -1499,6 +1663,7 @@ class Module extends \MapasCulturais\Module{
 
             $app->hook('entity(Registration).insert:after', function() use($app){
                 /** @var Registration $this */
+
                 $app->disableAccessControl();
 
                 if ($this->previousPhase) {
@@ -1518,6 +1683,7 @@ class Module extends \MapasCulturais\Module{
 
             $app->hook('entity(Registration).update:after', function() use($app){
                 /** @var Registration $this */
+
                 $app->disableAccessControl();
 
                 if( $this->nextPhase){
@@ -1573,6 +1739,17 @@ class Module extends \MapasCulturais\Module{
             'type' => 'bool',
             'default'=> false,
         ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('statusLabels', [
+            'label' => i::__('Label dos status das fases de avaliações'),
+            'type' => 'array',
+            'default' => [
+                '2' => i::__('Inválida'),
+                '3' => i::__('Não selecionada'),
+                '8' => i::__('Suplente'),
+                '10' => i::__('Selecionada'),
+            ],
+        ]);
     }
 
 
@@ -1614,5 +1791,39 @@ class Module extends \MapasCulturais\Module{
             $app->createAndSendMailMessage($email_params);
         }
         return;
+    }
+
+    function createPhaseRegistration(Opportunity $opportunity, Registration $registration) {
+        $current_phase_registration = new Registration;
+    
+        $current_phase_registration->owner = $registration->owner->refreshed();
+        $current_phase_registration->opportunity = $opportunity->refreshed();
+        $current_phase_registration->category = $registration->category;
+        $current_phase_registration->range = $registration->range;
+        $current_phase_registration->proponentType = $registration->proponentType;
+        $current_phase_registration->number = $registration->number;
+        $current_phase_registration->previousPhaseRegistrationId = $registration->id;
+    
+        $current_phase_registration->__skipQueuingPCacheRecreation = true;
+        $current_phase_registration->save(true);
+    
+        $registration->nextPhaseRegistrationId = $current_phase_registration->id;
+        $registration->__skipQueuingPCacheRecreation = true;
+        $registration->save(true);
+    
+        return $current_phase_registration;
+    }
+
+    function getRegistrationStatusLabels($status) {
+        $labels = [
+            Registration::STATUS_DRAFT => [i::__('Não enviou inscrição'), i::__('Não enviou inscrição em "{PHASE_NAME}"')],
+            Registration::STATUS_SENT => [i::__('Pendente'), i::__('Pendente em "{PHASE_NAME}"')],
+            Registration::STATUS_APPROVED => [i::__('Selecionada'), i::__('Selecionada em "{PHASE_NAME}"')],
+            Registration::STATUS_NOTAPPROVED => [i::__('Não selecionada'), i::__('Não selecionada em "{PHASE_NAME}"')],
+            Registration::STATUS_WAITLIST => [i::__('Suplente'), i::__('Suplente em "{PHASE_NAME}"')],
+            Registration::STATUS_INVALID => [i::__('Inválida'), i::__('Inválida em "{PHASE_NAME}"')],
+        ];
+
+        return $labels[$status];
     }
 }

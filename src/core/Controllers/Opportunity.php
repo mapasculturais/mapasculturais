@@ -35,6 +35,8 @@ class Opportunity extends EntityController {
         Traits\ControllerAPI,
         Traits\ControllerAPINested,
         Traits\ControllerLock,
+        Traits\EntityOpportunityDuplicator,
+        Traits\EntityManagerModel,
         Traits\ControllerEntityActions {
             Traits\ControllerEntityActions::PATCH_single as _PATCH_single;
         }
@@ -477,7 +479,7 @@ class Opportunity extends EntityController {
 
             if($phase->isLastPhase && $phase->publishedRegistrations && !$phase->canUser('@control')) {
                 $app->hook('ApiQuery(Registration).parseQueryParams', function() use ($current_phase_query_params) {
-                    if($this->apiParams['opportunity'] == $current_phase_query_params['opportunity']) {
+                    if(($this->apiParams['opportunity'] ?? false) == ($current_phase_query_params['opportunity'] ?? false)) {
                         $this->joins = "";
                         $params = $this->_dqlParams;
                         array_pop($params);
@@ -613,7 +615,7 @@ class Opportunity extends EntityController {
         }
 
         $select = $query_data['registration:@select'] ?? 
-                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData';
+                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData,goalStatuses';
 
         sort($registration_numbers);
         if($registration_numbers){

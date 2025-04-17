@@ -1055,6 +1055,86 @@ return [
         }
     },
 
+    'create table workplan' => function () {
+        __exec("CREATE TABLE registration_workplan (
+          id SERIAL PRIMARY KEY,
+          agent_id INTEGER,          
+          registration_id INTEGER,
+          create_timestamp timestamp without time zone NOT NULL,
+          update_timestamp timestamp(0) without time zone
+      )");
+
+        __exec("ALTER TABLE registration_workplan ADD FOREIGN KEY (registration_id) REFERENCES registration(id) ON DELETE CASCADE");
+        __exec("ALTER TABLE registration_workplan ADD FOREIGN KEY (agent_id) REFERENCES agent(id) ON DELETE CASCADE");
+    },
+    'create table workplan_meta' => function () {
+        __exec("CREATE TABLE public.registration_workplan_meta (
+            object_id integer NOT NULL,
+            key character varying(255) NOT NULL,
+            value text,
+            id SERIAL NOT NULL
+        );");
+        __exec("ALTER TABLE registration_workplan_meta ADD FOREIGN KEY (object_id) REFERENCES registration_workplan(id) ON DELETE CASCADE");
+    },
+
+    'create table workplan goal' => function () {
+        __exec("CREATE TABLE registration_workplan_goal (
+            id SERIAL PRIMARY KEY,
+            agent_id INTEGER,          
+            workplan_id INTEGER,
+            create_timestamp timestamp without time zone NOT NULL,
+            update_timestamp timestamp(0) without time zone
+        )");
+
+        __exec("ALTER TABLE registration_workplan_goal ADD FOREIGN KEY (workplan_id) REFERENCES registration_workplan(id) ON DELETE CASCADE");
+        __exec("ALTER TABLE registration_workplan_goal ADD FOREIGN KEY (agent_id) REFERENCES agent(id) ON DELETE CASCADE");
+    },
+    'create table workplan_goal meta' => function () {
+        __exec("CREATE TABLE public.registration_workplan_goal_meta (
+              object_id integer NOT NULL,
+              key character varying(255) NOT NULL,
+              value text,
+              id SERIAL NOT NULL
+          );");
+        __exec("ALTER TABLE registration_workplan_goal_meta ADD FOREIGN KEY (object_id) REFERENCES registration_workplan_goal(id) ON DELETE CASCADE");
+    },
+    'create table workplan goal delivery' => function () {
+        __exec("CREATE TABLE registration_workplan_goal_delivery (
+            id SERIAL PRIMARY KEY,
+            agent_id INTEGER,     
+            goal_id INTEGER,     
+            create_timestamp timestamp without time zone NOT NULL,
+            update_timestamp timestamp(0) without time zone
+        )");
+
+        __exec("ALTER TABLE registration_workplan_goal_delivery ADD FOREIGN KEY (goal_id) REFERENCES registration_workplan_goal(id) ON DELETE CASCADE");
+        __exec("ALTER TABLE registration_workplan_goal_delivery ADD FOREIGN KEY (agent_id) REFERENCES agent(id) ON DELETE CASCADE");
+    },
+    'create table workplan_goal delivery meta' => function () {
+        __exec("CREATE TABLE public.registration_workplan_goal_delivery_meta (
+              object_id integer NOT NULL,
+              key character varying(255) NOT NULL,
+              value text,
+              id SERIAL NOT NULL
+          );");
+        __exec("ALTER TABLE registration_workplan_goal_delivery_meta ADD FOREIGN KEY (object_id) REFERENCES registration_workplan_goal_delivery(id) ON DELETE CASCADE");
+    },
+
+    "Adiciona coluna status na tabela registration_workplan_goal" => function() use ($conn){
+        if(!__column_exists('registration_workplan_goal', 'status')) {
+            __exec("ALTER TABLE registration_workplan_goal ADD status smallint DEFAULT 0;");
+        }
+    },
+
+    "Adiciona coluna status na tabela registration_workplan_goal_delivery" => function() use ($conn){
+        if(!__column_exists('registration_workplan_goal_delivery', 'status')) {
+            __exec("ALTER TABLE registration_workplan_goal_delivery ADD status smallint DEFAULT 0;");
+        }
+    },
+
+    'altera tipo da coluna chat_message.payload para json' => function () {
+        __exec("ALTER TABLE chat_message ALTER COLUMN payload SET DATA TYPE JSON USING to_jsonb(payload)::JSON");
+    },
     'define default para as colunas ids das tabelas sem default' => function() {
         __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
         __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
@@ -1698,7 +1778,6 @@ $$
         __exec("ALTER TABLE seal_meta ADD CONSTRAINT FK_A92E5E22232D562B FOREIGN KEY (object_id) REFERENCES seal (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE request ADD CONSTRAINT FK_3B978F9FBA78F12A FOREIGN KEY (requester_user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE event_occurrence_recurrence ADD CONSTRAINT FK_388ECCB140E9F00 FOREIGN KEY (event_occurrence_id) REFERENCES event_occurrence (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __exec("ALTER TABLE entity_revision ADD CONSTRAINT FK_CF97A98CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A8521DFA7C8F FOREIGN KEY (revision_id) REFERENCES entity_revision (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE entity_revision_revision_data ADD CONSTRAINT FK_9977A852B4906F58 FOREIGN KEY (revision_data_id) REFERENCES entity_revision_data (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE user_app ADD CONSTRAINT FK_22781144A76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
@@ -1714,7 +1793,10 @@ $$
         __exec("ALTER TABLE registration_meta ADD CONSTRAINT FK_18CC03E9232D562B FOREIGN KEY (object_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE notification_meta ADD CONSTRAINT FK_6FCE5F0F232D562B FOREIGN KEY (object_id) REFERENCES notification (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5C833D8F43 FOREIGN KEY (registration_id) REFERENCES registration (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
-        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;        ");
+        __exec("ALTER TABLE registration_evaluation ADD CONSTRAINT FK_2E186C5CA76ED395 FOREIGN KEY (user_id) REFERENCES usr (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE chat_message ADD CONSTRAINT FK_FAB3FC16C47D5262 FOREIGN KEY (chat_thread_id) REFERENCES public.chat_thread (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE chat_message ADD CONSTRAINT FK_FAB3FC16727ACA70 FOREIGN KEY (parent_id) REFERENCES public.chat_message (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
+        __exec("ALTER TABLE chat_message ADD CONSTRAINT FK_FAB3FC16A76ED395 FOREIGN KEY (user_id) REFERENCES public.usr (id) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE;");
         
     },
 
@@ -2090,7 +2172,7 @@ $$
         
         }
 
-    },
+    }, 
     'corrige metadados criados por erro em inscricoes de fases' => function () use ($conn, $app) {
         $opp_ids = $conn->fetchAll("SELECT id FROM opportunity WHERE parent_id IS NOT NULL");
         foreach ($opp_ids as $opportunity) {
@@ -2502,6 +2584,135 @@ $$
         __exec('CREATE INDEX idx_agent_usr ON agent (user_id);');
     },
 
+    'Adiciona novas áreas de atuação' => function() {
+        __try("
+        WITH areas_novas(name) AS (
+            VALUES ('Acervos'), ('Acessibilidade Cultural'), ('Agrofloresta'), ('Animação'), ('Áreas Técnicas'), ('Arte Gráfica'), ('Arte Santeira'), ('Artesanato com Reciclados'), ('Artesanato em Cerâmica'), ('Artesanato em Fibra Vegetal'), ('Artesanato em Fio'), ('Artesanato em Madeira'), ('Artesanato em Metal'), ('Artesanato em Pedra'), ('Artesanato em Tecido'), ('Audiolivro'), ('Audiovisual Expandido'), ('Axé'), ('Baião'), ('Baião (dança)'), ('Ballet'), ('Banda Sinfônica'), ('Bandas de Congo e Ticumbi'), ('Biblioteca tombada'), ('Biblioteconomia'), ('Bioconstrução'), ('Biografia e Autobiografia'), ('Bloco de Carnaval'), ('Boi Bumbá'), ('Bordado'), ('Breakdance'), ('Brega Funk'), ('Caboclinho'), ('Caçada da Rainha'), ('Calypso'), ('Canto'), ('Canto Coral'), ('Carimbó'), ('Carimbó (Dança)'), ('Cavalhadas'), ('Cavalo Marinho'), ('Centro de Memória e patrimônio'), ('Cinemateca'), ('Ciranda'), ('Circo Contemporâneo'), ('Circo de Rua'), ('Circo Itinerante'), ('Circo Tradicional'), ('Coco'), ('Comédia'), ('Congada'), ('Congado'), ('Contação de histórias'), ('Conteúdo Audiovisual por Demanda'), ('Conto'), ('Cordel'), ('Criação literária'), ('Crochê'), ('Crônica'), ('Cultivo e extração tradicional'), ('Cultura Alemã'), ('Cultura Alimentar'), ('Cultura da juventude de povos e comunidades tradicionais'), ('Cultura das comunidades de fundo e fecho de pasto'), ('Cultura das comunidades quilombolas'), ('Cultura das quebradeiras de coco babaçu'), ('Cultura DEF'), ('Cultura do Povo Arara'), ('Cultura do Povo Araweté'), ('Cultura do Povo Ashaninka'), ('Cultura do Povo Bororo'), ('Cultura do Povo Cultura Fulni-ô'), ('Cultura do Povo Enawenê-Nawê'), ('Cultura do Povo Gavião'), ('Cultura do Povo Guarani'), ('Cultura do Povo Ikpeng'), ('Cultura do Povo Javari'), ('Cultura do Povo Kalapalo'), ('Cultura do Povo Kanamari'), ('Cultura do Povo Karajá'), ('Cultura do Povo Karipuna'), ('Cultura do Povo Kaxinawá (Huni Kuin)'), ('Cultura do Povo Kayabi'), ('Cultura do Povo Kayapó'), ('Cultura do Povo Korubo'), ('Cultura do Povo Krahô'), ('Cultura do Povo Maxakali'), ('Cultura do Povo Munduruku'), ('Cultura do Povo Ofaié'), ('Cultura do Povo Panará'), ('Cultura do Povo Pankararu'), ('Cultura do Povo Pareci'), ('Cultura do Povo Paresí'), ('Cultura do Povo Pataxó'), ('Cultura do povo pomerano'), ('Cultura do Povo Suruí'), ('Cultura do Povo Tembé'), ('Cultura do Povo Terena'), ('Cultura do Povo Tikuna'), ('Cultura do Povo Timbira'), ('Cultura do Povo Tukano'), ('Cultura do Povo Tupi'), ('Cultura do Povo Wai Wai'), ('Cultura do Povo Waimiri-Atroari'), ('Cultura do Povo Xavante'), ('Cultura do Povo Xerente'), ('Cultura do Povo Xikrin'), ('Cultura do Povo Yanomami'), ('Cultura do Povo Yawalapiti'), ('Cultura do Povo Yawanawá'), ('Cultura do Povo Zoró'), ('Cultura dos andirobeiros'), ('Cultura dos apanhadores de flores sempre vivas'), ('Cultura dos benzedeiros'), ('Cultura dos caatingueiros'), ('Cultura dos caboclos'), ('Cultura dos caiçaras'), ('Cultura dos catadores de mangaba'), ('Cultura dos cipozeiros'), ('Cultura dos extrativistas'), ('Cultura dos extrativistas costeiros e marinhos'), ('Cultura dos faxinalenses'), ('Cultura dos geraizeiros'), ('Cultura dos ilhéus'), ('Cultura dos morroquianos'), ('Cultura dos pantaneiros'), ('Cultura dos pescadores artesanais'), ('Cultura dos povos ciganos'), ('Cultura dos povos e comunidades de terreiro/povos e comunidades de matriz africana'), ('Cultura dos Povos Nômades'), ('Cultura dos raizeiros'), ('Cultura dos retireiros do Araguaia'), ('Cultura dos ribeirinhos'), ('Cultura dos vazanteiros'), ('Cultura dos veredeiros'), ('Cultura e Bem Viver'), ('Cultura e Comunicação'), ('Cultura e decolonialidade'), ('Cultura e Desenvolvimento Social'), ('Cultura e Direitos Humanos'), ('Cultura e Juventudes'), ('Cultura e Lazer'), ('Cultura e Política'), ('Cultura e Território'), ('Cultura Hip Hop'), ('Cultura Italiana'), ('Cultura Japonesa'), ('Cultura Urbana'), ('Cultura, Infância e Adolescência'), ('Culturas Afrobrasileiras'), ('Culturas dos Povos Originários'), ('Culturas Tradicionais'), ('Culturas Tradicionais e Populares'), ('Dança Afro'), ('Dança Contemporânea'), ('Dança de Salão'), ('Dança do Ventre'), ('Dança Moderna'), ('Dança Silvestre'), ('Danças Clássicas'), ('Danças Contemporâneas'), ('Danças Estrangeiras'), ('Danças Populares'), ('Danças Urbanas'), ('Declamação'), ('Desenho Industrial'), ('Design de Interiores'), ('Design de Jóias'), ('Design e Serviços Criativos'), ('Design Gráfico'), ('Design Paisagístico'), ('Design para a Sociobioeconomia'), ('Diário'), ('Direito'), ('Documentário'), ('Drama'), ('Economia, Produção e Áreas Técnicas da Cultura'), ('Ensaios'), ('Epístola'), ('Epopeia'), ('Escola de Samba'), ('Escultura (Artes Visuais)'), ('Escultura (Artesanato)'), ('Espetáculo de Circo'), ('Fábula'), ('Fandango'), ('Fanfarra'), ('Festa do Divino'), ('Festas Populares'), ('Festejos Juninos'), ('Ficção'), ('Filme-ensaio'), ('Filologia'), ('Folia de Reis'), ('Fomento editorial'), ('Forró'), ('Forró (Dança)'), ('Frevo'), ('Frevo (dança)'), ('Funk'), ('Fuxico'), ('Geografia Humana'), ('Gestão criativa'), ('Grafite'), ('Gravura'), ('Guarânia'), ('Humanidades'), ('Imóvel tombado'), ('Internet Podcasting'), ('Interseccionalidades'), ('Intervenção Urbana'), ('Jazz (Dança)'), ('Jongo'), ('K-pop Dance'), ('Lambada'), ('Lapidação'), ('Lenda'), ('Letras e Literatura (Humanidades)'), ('Lidas Campeiras'), ('Linguística'), ('Literatura Infantil'), ('Livro, Leitura e Literatura'), ('Macramê'), ('Maracatu'), ('Maracatu (Dança)'), ('Marujada'), ('Mediação de Leitura'), ('Memórias'), ('Mito'), ('Moda de Viola'), ('Mosaico'), ('Movimento Sound System'), ('Museologia'), ('Museu tombado'), ('Música de Câmara'), ('Música de Concerto'), ('Música Eletrônica'), ('Música Instrumental'), ('Música Popular'), ('Musical'), ('Novela'), ('Obra Seriada'), ('Oktober Fest'), ('Orquestra Sinfônica'), ('Ourivesaria'), ('Outras Danças'), ('Outras Danças Clássicas'), ('Outras Danças Modernas'), ('Outras Danças Populares'), ('Paisagens Culturais'), ('Patrimônio Histórico Edificado'), ('Performance'), ('Performance Literária'), ('Permacultura'), ('Pintura'), ('Poesia'), ('Políticas e Gestão Culturais'), ('Procissão do Fogaréu'), ('Produção Audiovisual'), ('Produção de Eventos'), ('Psicologia'), ('Punk'), ('Rádio Comunitária'), ('Rádio e TV'), ('Rap'), ('Rasqueado'), ('Realidade Virtual'), ('Reggae'), ('Reisado'), ('Renda'), ('Renda de Bilro'), ('Repente'), ('Rima e improviso'), ('Rock'), ('Romance'), ('Romaria do Divino Pai Eterno'), ('Salsa (Dança)'), ('Salvaguarda do Patrimônio Cultural Imaterial'), ('Samba'), ('Samba (Dança)'), ('Samba de Roda'), ('Sapateado'), ('Sátira'), ('Sertanejo'), ('Sítio Arqueológico'), ('Sítios Históricos e Arqueológicos'), ('Slam'), ('Stand-up Comedy'), ('Street Jazz'), ('Tambor de Crioula'), ('Tango (Dança)'), ('Teatro de Bonecos'), ('Teatro de Improviso'), ('Teatro de Máscaras'), ('Teatro de Rua'), ('Teatro de Sombras'), ('Teatro do Absurdo'), ('Teatro do Oprimido'), ('Teatro Experimental'), ('Teatro Infantil'), ('Tecelagem'), ('Tecnobrega'), ('Teologia'), ('Tradução e Interpretação'), ('Tragédia'), ('Trançagem'), ('Transversalidades'), ('Vídeo'), ('Vídeo Experimental'), ('Vídeo Performance'), ('Vídeo por demanda'), ('Video Teatro'), ('Videoarte'), ('Videocast'), ('Videoclipe'), ('Videodança'), ('Webdesign'), ('Websérie'), ('Xaxado'), ('Xilogravura'), ('Mídias Interativas')
+        )
+        INSERT INTO term(id, taxonomy, term)
+        SELECT nextval('term_id_seq') as id,
+                'area' as taxonomy,
+                areas_novas.name as term
+            FROM areas_novas;
+            ");
+    },
+    'Atualizando áreas de atuação que tiveram alteração no nome' => function() {
+        __try("UPDATE term SET term = 'Arquitetura e Urbanismo' WHERE taxonomy = 'area' AND term = 'Arquitetura-Urbanismo';");
+        __try("UPDATE term SET term = 'Arquivos' WHERE taxonomy = 'area' AND term = 'Arquivo';");
+        __try("UPDATE term SET term = 'Audiovisual e Mídias Interativas' WHERE taxonomy = 'area' AND term = 'Audiovisual';");
+        __try("UPDATE term SET term = 'Cultura dos Povos Originários' WHERE taxonomy = 'area' AND term = 'Cultura Indígena';");
+        __try("UPDATE term SET term = 'Cultura e Educação' WHERE taxonomy = 'area' AND term = 'Educação';");
+        __try("UPDATE term SET term = 'Cultura e Esporte' WHERE taxonomy = 'area' AND term = 'Esporte';");
+        __try("UPDATE term SET term = 'Cultura e Saúde' WHERE taxonomy = 'area' AND term = 'Saúde';");
+        __try("UPDATE term SET term = 'Cultura e Turismo' WHERE taxonomy = 'area' AND term = 'Turismo';");
+        __try("UPDATE term SET term = 'Cultura LGBTQIAPN+' WHERE taxonomy = 'area' AND term = 'Cultura LGBT';");
+        __try("UPDATE term SET term = 'Cultura, Meio Ambiente e Sustentabilidade' WHERE taxonomy = 'area' AND term = 'Meio Ambiente';");
+        __try("UPDATE term SET term = 'Culturas Populares' WHERE taxonomy = 'area' AND term = 'Cultura Popular';");
+        __try("UPDATE term SET term = 'Design de Moda' WHERE taxonomy = 'area' AND term = 'Moda';");
+        __try("UPDATE term SET term = 'Economia Criativa e da Cultura' WHERE taxonomy = 'area' AND term = 'Economia Criativa';");
+        __try("UPDATE term SET term = 'Jogos eletrônicos/Games' WHERE taxonomy = 'area' AND term = 'Jogos Eletrônicos';");
+        __try("UPDATE term SET term = 'Jornais e outros periódicos' WHERE taxonomy = 'area' AND term = 'Jornalismo';");
+        __try("UPDATE term SET term = 'Museu (Patrimônio Material)' WHERE taxonomy = 'area' AND term = 'Museu';");
+        __try("UPDATE term SET term = 'Patrimônio Cultural Imaterial' WHERE taxonomy = 'area' AND term = 'Patrimônio Imaterial';");
+        __try("UPDATE term SET term = 'Patrimônio Cultural Material' WHERE taxonomy = 'area' AND term = 'Patrimônio Material';");
+        __try("UPDATE term SET term = 'Outra' WHERE taxonomy = 'area' AND term = 'Outros';");
+    },
+    'Adiciona novas funções' => function() {
+        __try("
+        WITH novas_funcoes(name) AS (
+            values ('Acrobata'), ('Adestrador circense'), ('Animador'), ('Antipodista'), ('Apresentador de Eventos'), ('Apresentador de Festas Populares'), ('Apresentador de Programas de Televisão'), ('Apresentador/Animador'), ('Aramista'), ('Arqueólogo(a)'), ('Arquiteto(a) e Urbanista'), ('Arranjador'), ('Arte-Finalista'), ('Artesão com Material Reciclável'), ('Artesão Confeccionador de Biojóias e Ecojóias'), ('Artesão Crocheteiro'), ('Artesão do Couro'), ('Artesão Modelador'), ('Artesão Moveleiro (exceto reciclado)'), ('Artesão Rendeiro'), ('Artesão Tecelão'), ('Artesão Trançador'), ('Artesão Tricoteiro'), ('Artesão(ã)'), ('Artista'), ('Artista Aéreo'), ('Artista Circense'), ('Artista de Rua'), ('Artista Urbano'), ('Artista Visual'), ('Assessor de imprensa'), ('Assistente de comunicação'), ('Assistente de direção'), ('Atendente Artístico-Cultural'), ('Atirador de Facas'), ('Ator/Atriz'), ('Avaliador de Joias'), ('Baianas do Acarajé'), ('Bailarino(a)'), ('Bate-folha a máquina'), ('Benzedeiro(a)/Rezadeiro(a)'), ('Bibliotecário'), ('Bonequeiro(a)'), ('Brincante'), ('Cantor'), ('Capoeirista'), ('Caricaturista'), ('Carnavalesco(a)'), ('Cartunista'), ('Ceramista'), ('Chargista'), ('Chef/Cozinheiro(a)'), ('Colecionador'), ('Comedor de Espada'), ('Comedor de Fogo (pirofagista)'), ('Cômico de Circo'), ('Compositor'), ('Comunicador'), ('Confeccionador de Acordeão'), ('Confeccionador de Instrumentos de Corda'), ('Confeccionador de Instrumentos de Percussão'), ('Confeccionador de Instrumentos de Sopro (madeira)'), ('Confeccionador de Instrumentos de Sopro (metal)'), ('Confeccionador de Órgão'), ('Confeccionador de Piano'), ('Conservador/Restaurador'), ('Consultor(a) cultural'), ('Contador(a) de Estórias/Histórias'), ('Contorcionista'), ('Contra-regra'), ('Coreógrafo'), ('Cravador/Cravejador de Joias'), ('Criador(a) de Conteúdos Criativos Digitais'), ('Curador(a)'), ('Dançarino de Rua'), ('Dançarino de Salão'), ('Dançarino Popular, de Danças Folclóricas, Parafolclóricas, Tradicionais ou de Raiz'), ('Dançarino(a)'), ('Decorador de Eventos'), ('Desenhista'), ('Desenhista de Croqui'), ('Desenhista Detalhista'), ('Desenhista Técnico'), ('Desenhista Técnico da Indústria Têxtil'), ('Desenhista Técnico de Embalagens, Maquetes e Leiautes'), ('Desenhista Técnico de Mobiliário'), ('Desenvolvedor(a) de Jogos Eletrônicos'), ('Desenvolvedor(a) de Sistemas Informacionais'), ('Desenvolvedor(a) de Software'), ('Designer de Brinquedos'), ('Designer de Interiores'), ('Designer de Jóias'), ('Designer de Moda'), ('Designer de Som'), ('Designer Gráfico'), ('Designer Paisagístico'), ('Diretor Artístico'), ('Diretor de Arte'), ('Diretor Musical'), ('Dj (disc jockey)'), ('Domador de Animais'), ('Dramaturgo(a)'), ('Dublador(a)'), ('Editor de Texto e Imagem'), ('Editor(a) de Livros'), ('Editor(a) de TV e Vídeo'), ('Educador Museal'), ('Educador Social'), ('Educador(a) artistico-cultural'), ('Enólogo(a)'), ('Equilibrista'), ('Escritor'), ('Escultor'), ('Facilitador'), ('Faquir'), ('Finalizador'), ('Fotógrafo'), ('Fotógrafo Lambe-Lambe'), ('Funâmbulo'), ('Fundidor (joalheria e ourivesaria)'), ('Galerista'), ('Gambista'), ('Gestor Cultural'), ('Gestor de Redes Sociais'), ('Gestor(a) de Inovação'), ('Globista'), ('Grafiteiro(a)'), ('Gravador de Joias'), ('Gravador, à mão (encadernação)'), ('Guia de Turismo'), ('Hacker'), ('Homem-bala'), ('Icarista'), ('Ilustrador(a)'), ('Instrumentista'), ('Instrutor(a)'), ('Intérprete'), ('Inventor'), ('Joalheiro (reparações)'), ('Jornalista'), ('Laminador de metais preciosos a mão'), ('Lapidador de Jóias'), ('Maestro'), ('Mágico'), ('Malabarista'), ('Maquetista'), ('Maquetista na Marcenaria'), ('Maquinista de Cinema e Vídeo'), ('Maquinista de Teatro e Espetáculos'), ('Marceneiro'), ('Marcheteiro'), ('Mestre da cultura afro-brasileira'), ('Mestre da Cultura Popular'), ('Mestre da Cultura Tradicional'), ('Mestre de cultura ayahuasqueira'), ('Mestre de cultura indígena'), ('Mestre Vidreiro'), ('Mestre-sala'), ('Mestre(a) de bateria'), ('Mestres artífices'), ('Microfonista'), ('Mímico'), ('Miniaturista'), ('Modelador de Madeira'), ('Modelista de Calçados'), ('Modelista de Roupas'), ('Monociclista de circo'), ('Multiplicador'), ('Muralista'), ('Museólogo(a)'), ('Oficineiro(a)'), ('Operador de Central de Rádio'), ('Operador de Microfone (boom man)'), ('Operador de Projetor Cinematográfico'), ('Operador de Transmissor de Rádio'), ('Operador(a) de Áudio de Continuidade (rádio)'), ('Operador(a) de Câmera'), ('Operador(a) de Controle Mestre (rádio)'), ('Operador(a) de Externa'), ('Operador(a) de Gravação de Rádio'), ('Palhaço/Clown'), ('Paneleiro(a)'), ('Parteira Indígena'), ('Parteiro(a)'), ('Passista'), ('Patinador(a)'), ('Perna de Pau (ou Pernalta)'), ('Pesquisador(a)'), ('Pirofagista'), ('Poeta'), ('Poeta de Slam'), ('Porta-bandeira/Porta-estandarte'), ('Produtor Audiovisual'), ('Produtor Musical'), ('Produtor(a) Cultural'), ('Professor'), ('Profissional da crítica'), ('Programador(a)'), ('Projecionista'), ('Projetista de Móveis'), ('Projetista de Sistemas de Áudio'), ('Quadrilheiro(a)'), ('Quadrinista'), ('Queijista Artesanal'), ('Rapper'), ('Redator(a)'), ('Rendeiro(a)'), ('Repórter'), ('Restaurador de Livros e Documentos'), ('Restaurador(a)'), ('Revisor(a)'), ('Ritmista'), ('Roteirista'), ('Rumbeira de Circo'), ('Sacerdote de religiosidade popular'), ('Saltimbanco'), ('Sambista'), ('Sineiro'), ('Tacacazeiro(a)'), ('Tanoeiro(a)'), ('Tecelão(ã)'), ('Técnico (a) em biblioteconomia'), ('Técnico em Masterização de Áudio'), ('Técnico em Mixagem de Áudio'), ('Técnico em Operação de Equipamentos de Transmissão/Recepção de Televisão'), ('Técnico(a) audiovisual'), ('Técnico(a) de arquivo'), ('Técnico(a) de sonorização'), ('Técnico(a) em Cenografia'), ('Técnico(a) em Gravação de Áudio'), ('Técnico(a) em Instalação de Equipamentos de Áudio'), ('Técnico(a) em Museologia'), ('Titeriteiro'), ('Trabalhador de Confecções de Bijuterias e Jóias de Fantasia'), ('Tradutor(a)'), ('Trapezista'), ('Trefilador (joalheria e ourivesaria)'), ('Turismólogo(a)'), ('Ventríloquo'), ('Violeiro'), ('VJ'), ('Web Designer')
+        )
+        INSERT INTO term(id, taxonomy, term)
+        SELECT nextval('term_id_seq') AS id,
+                'funcao' AS taxonomy,
+                novas_funcoes.name AS term
+            FROM novas_funcoes;
+        ");
+    },
+    'Atualizando as funções que tiveram alterações no nome' => function() {
+        __try("UPDATE term SET term = 'Afinador de Instrumentos Musicais' WHERE taxonomy = 'funcao' AND term = 'Afinador de Instrumentos';");
+        __try("UPDATE term SET term = 'Apresentador de Programas de Rádio' WHERE taxonomy = 'funcao' AND term = 'Radialista';");
+        __try("UPDATE term SET term = 'Assistente de palco' WHERE taxonomy = 'funcao' AND term = 'Técnico(a) de Palco';");
+        __try("UPDATE term SET term = 'Assistente de produção' WHERE taxonomy = 'funcao' AND term = 'Assistente de Produção em geral';");
+        __try("UPDATE term SET term = 'Cenotécnico (cinema, vídeo, televisão, teatro e espetáculos)' WHERE taxonomy = 'funcao' AND term = 'Cenotécnico(a)';");
+        __try("UPDATE term SET term = 'Designer de Vitrines (Vitrinista)' WHERE taxonomy = 'funcao' AND term = 'Vitrinista';");
+        __try("UPDATE term SET term = 'Engenheiro de Som' WHERE taxonomy = 'funcao' AND term = 'Engenheiro(a) de Som';");
+        __try("UPDATE term SET term = 'Ensaiador' WHERE taxonomy = 'funcao' AND term = 'Ensaiador(a)';");
+        __try("UPDATE term SET term = 'Mediador' WHERE taxonomy = 'funcao' AND term = 'Mediador(a)';");
+        __try("UPDATE term SET term = 'Mestre de Pista' WHERE taxonomy = 'funcao' AND term = 'Mestre(a) de Pista';");
+        __try("UPDATE term SET term = 'Montador' WHERE taxonomy = 'funcao' AND term = 'Montador(a)';");
+        __try("UPDATE term SET term = 'Montador de Palco' WHERE taxonomy = 'funcao' AND term = 'Montador(a) de Palco';");
+        __try("UPDATE term SET term = 'Músico/Musicista' WHERE taxonomy = 'funcao' AND term = 'Músico-Musicista';");
+        __try("UPDATE term SET term = 'Operador de Som' WHERE taxonomy = 'funcao' AND term = 'Operador(a) de Som';");
+        __try("UPDATE term SET term = 'Secretário de Frente' WHERE taxonomy = 'funcao' AND term = 'Secretario(a) de Frente';");
+        __try("UPDATE term SET term = 'Outra' WHERE taxonomy = 'funcao' AND term = 'Outra função técnica';");
+    },
+    'Atualizando a função Maquiador para Maquiador(a)' => function() {
+        __try("UPDATE term_relation SET term_id = 500041 WHERE term_id = 500040;");
+        __try("DELETE FROM term WHERE id = 500040;");
+    },
+    'Atualizando a função Técnico de Luz|Técnico(a) de Luz para Técnico(a) de Iluminação' => function() {
+        __try("UPDATE term_relation SET term_id = 500412 WHERE term_id = 500284");
+        __try("DELETE FROM term WHERE id = 500284;");
+        __try("UPDATE term SET term = 'Técnico(a) de iluminação' WHERE id = 500412;");
+    },
+    'Atualizando a função de Iluminador para Iluminador(a)' => function() {
+        __try("UPDATE term_relation SET term_id = 500039 WHERE term_id = 500037;");
+        __try("DELETE FROM term WHERE id = 500037;");
+    },
+    "Adiciona as Etnias" => function() {
+        __try("
+        WITH etnias(name) AS (
+            VALUES ('Aikanã'), ('Aikewara'), ('Akuntsu'), ('Amanayé'), ('Amondawa'), ('Anacé'), ('Anambé'), ('Aparai'), ('Apiaká'), ('Apinayé'), ('Apurinã'), ('Aranã'), ('Arapaso'), ('Arapium'), ('Arara'), ('AraradaVoltaGrandedoXingu'), ('AraradoRioAmônia'), ('AraradoRioBranco'), ('AraraShawãdawa'), ('Araweté'), ('Arikapú'), ('Aruá'), ('Ashaninka'), ('AsurinidoTocantins'), ('AsurinidoXingu'), ('Atikum'), ('Avá-Canoeiro'), ('AwaGuajá'), ('Aweti'), ('Bakairi'), ('Banawá'), ('Baniwa'), ('Bará'), ('Barasana'), ('Baré'), ('Baré(Boe)'), ('Borari'), ('Bororo'), ('CanelaApanyekrá'), ('CanelaMemortumré'), ('Chiquitano'), ('Cintalarga'), ('Coripaco'), ('Dâw'), ('Deni'), ('Desana'), ('Djeoromitxí'), ('Dow'), ('Enawenê-nawê'), ('Fulni-ô'), ('GalibiKa''lina'), ('Galibi-Marworno'), ('Gamela'), ('GaviãoAkrãtikatêjê'), ('GaviãoKykatejê'), ('GaviãoParkatêjê'), ('GaviãoPykopjê'), ('Guajajara'), ('Guarani'), ('Guató'), ('Hixkaryana'), ('HuniKuin'), ('Hupda'), ('HupdaIkolenIkpengIngarikóIny'), ('Jamamadi'), ('Jaraqui'), ('Jarawara'), ('Javaé'), ('Jenipapo-Kanindé'), ('Jiahui'), ('Jiripancó'), ('Juma'), ('Ka''apor'), ('Kadiwéu'), ('Kaimbé'), ('Kaingang'), ('Kaiowá'), ('Kaixana'), ('Kakwa'), ('Kalankó'), ('Kalapalo'), ('Kamaiurá'), ('Kambeba'), ('Kambiwá'), ('Kanamari'), ('Kanoê'), ('Kantaruré'), ('Kapinawa'), ('KarajádoNorte'), ('KarajáIranxe'), ('Karapanã'), ('Karapotó'), ('KaripunadeRondônia'), ('KaripunadoAmapá'), ('Kariri-Xokó'), ('Karitiana'), ('Karo'), ('Kassupá'), ('Katuenayana'), ('KatukinadoRioBiá'), ('KatukinaPano'), ('Katxuyana'), ('Kawaiwete(Kaiabi)'), ('Kaxarari'), ('Kaxixó'), ('Kinikinau'), ('Kiriri'), ('Kisêdjê'), ('Kokama'), ('Koripako'), ('Korubo'), ('Kotiria'), ('Krahô'), ('Krahô-Kanela'), ('Krenak'), ('Krenyê'), ('Krikatí'), ('Kubeo'), ('Kuikuro'), ('Kujubim'), ('Kulina'), ('KulinaPano'), ('Kuruaya'), ('Kwazá'), ('Macuxi'), ('Makuna'), ('Makurap'), ('Manchineri'), ('Manoki'), ('Marubo'), ('Matipu'), ('Matis'), ('Matsés'), ('Maxakali'), ('Mbya'), ('MebengôkreKayapó'), ('Mehinako'), ('MenkyManoki'), ('Migueleno'), ('Miranha'), ('Mirity-tapuya'), ('Mukurin'), ('Munduruku'), ('Mura'), ('Nadöb'), ('Nahukuá'), ('Nambikwara'), ('Ñandeva'), ('Naruvotu'), ('Nawa'), ('Nukak'), ('Nukini'), ('Ofaié'), ('OroWin'), ('Palikur'), ('Panará'), ('Pankaiuká'), ('Pankará'), ('Pankararé'), ('Pankararu'), ('Pankaru'), ('Parakanã'), ('Paresí'), ('Parintintin'), ('Patamona'), ('Pataxó'), ('PataxóHã-Hã-Hãe'), ('Paumari'), ('PipipãPira-tapuya'), ('Pirahã'), ('Pira-tapuya'), ('Pitaguary'), ('Potiguara'), ('Puruborá'), ('Puyanawa'), ('Rikbaktsa'), ('Sakurabiat'), ('SateréMawé'), ('Shanenawa'), ('Siriano'), ('SuruiPaiter'), ('Suruwaha'), ('Tabajara'), ('Taiwano'), ('Tapajó'), ('Tapayuna'), ('Tapeba'), ('Tapirapé'), ('Tapuia'), ('Tariana'), ('Tatuyo'), ('Taurepang'), ('Tembé'), ('Tenharim'), ('Terena'), ('Ticuna'), ('TinguiBotó'), ('Tiriyó'), ('Torá'), ('Tremembé'), ('Truká'), ('Trumai'), ('Tsohom-dyapa'), ('Tukano'), ('Tumbalalá'), ('Tunayana'), ('Tupari'), ('Tupinambá'), ('Tupiniquim'), ('Turiwara'), ('Tuxá'), ('Tuyuka'), ('Umutina'), ('Uru-Eu-Wau-Wau'), ('WaimiriAtroari'), ('Waiwai'), ('Wajãpi'), ('Wajuru'), ('Wapichana'), ('Warekena'), ('Wari''Wassu'), ('Wauja'), ('Wayana'), ('Witoto'), ('Xakriabá'), ('Xavante'), ('Xerente'), ('Xetá'), ('Xikrin(Mebengôkre)'), ('Xingu'), ('Xipaya'), ('Xokleng'), ('Xokó'), ('Xukuru'), ('Xukuru-Kariri'), ('Yaminawá'), ('Yanomami'), ('Yawalapiti'), ('Yawanawá'), ('Ye''kwana'), ('Yudja'), ('Yuhupde'), ('Yuruti'), ('Zo''é'), ('Zoró'), ('Outra')
+        )
+        INSERT INTO term(id, taxonomy, term)
+             SELECT nextval('term_id_seq') AS id,
+                    'etnia' AS taxonomy,
+                    etnias.name AS term
+               FROM etnias;
+        ");
+    },
+    
+    'atualizar o type para continuous onde o type for appeal-phase' => function() {
+        __exec("UPDATE evaluation_method_configuration SET type = 'continuous' WHERE type = 'appeal-phase';");
+    },
+
+    'refatoração dos índices da tabela pcache' => function () {
+        __exec('CREATE INDEX pcache_object_user_action_idx ON pcache (user_id, object_type, action)');
+
+        // remove índice duplicado
+        // "pcache_permission_user_idx" btree (object_type, object_id, action, user_id)
+        // "unique_object_action" UNIQUE, btree (object_type, object_id, action, user_id)
+        __exec('DROP INDEX pcache_permission_user_idx');
+    },
+
+    'remove entradas da tabela pcache não mais utilizadas' => function () {
+        __exec("
+            DELETE FROM pcache 
+            WHERE action NOT IN (
+                '@control',
+                'modify',
+                'view',
+                'applySeal',
+                'support',
+                'viewUserEvaluation',
+                'evaluateOnTime',
+                'createEvents',
+                'requestEventRelation');");
+    },
+    
+    "Removendo os campos e anexos de formulário erroneamente duplicados pela funcionalidade 'Duplicar Oportunidade'" => function() {
+        __try("DELETE FROM registration_field_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+
+        __try("DELETE FROM registration_file_configuration rfc
+                     USING registration_step rs
+                     WHERE rs.id = rfc.step_id
+                       AND rs.opportunity_id != rfc.opportunity_id;");
+    },
+
     'define valores default para as colunas ids das tabelas sem default' => function() {
         __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");
         __exec("ALTER TABLE space_meta ALTER column id SET DEFAULT nextval('space_meta_id_seq');");
@@ -2535,6 +2746,23 @@ $$
                 'evaluateRegistrations',
                 'createEvents',
                 'requestEventRelation');");
-    }
+    },
+
+    'Normalização dos campos do tipo checkbox nas inscrições' => function() {
+        __exec("UPDATE registration_meta rm
+		           SET value = '1'
+                  FROM registration r
+                  JOIN (SELECT opportunity_id, array_agg('field_' || rfc.id) AS fields
+                          FROM registration_field_configuration rfc
+                         WHERE rfc.field_type = 'checkbox'
+                      GROUP BY opportunity_id
+                       ) AS towcf ON towcf.opportunity_id = r.opportunity_id
+                 WHERE rm.object_id = r.id
+                   AND rm.value != '1'
+                   AND rm.key = ANY(towcf.fields);");
+    },
+
+    // SEMPRE ENCERRAR O ÚLTIMO ITEM COM VÍRGULA A FIM DE
+    // MINIMIZAR RISCO DE ERRO NA INSERÇÃO OU MERGE DE NOVOS ITENS
     
 ] + $updates ;   

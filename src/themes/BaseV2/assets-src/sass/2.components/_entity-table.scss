@@ -112,6 +112,11 @@
         }
     }
 
+    &__goals {
+        color: $primary-500;
+        font-weight: 700;
+    }
+
     &__table-header-wrapper {
         overflow-x: hidden; 
         position: sticky; 

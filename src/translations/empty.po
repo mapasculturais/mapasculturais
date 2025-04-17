@@ -4498,11 +4498,11 @@ msgid "Recaptcha inválida"
 msgstr ""
 
 #: modules/Components/components/complaint-suggestion/texts.php:7
-msgid "Todos os campos são obrigatorio"
+msgid "Todos os campos são obrigatórios"
 msgstr ""
 
 #: modules/Components/components/complaint-suggestion/texts.php:8
-msgid "Dados enviados com suscesso"
+msgid "Dados enviados com sucesso"
 msgstr ""
 
 #: modules/Components/components/entity-card/template.php:27
@@ -4771,7 +4771,7 @@ msgid "plataforma criada pela comunidade"
 msgstr ""
 
 #: modules/Components/components/main-footer/template.php:121
-msgid "mapas culturais"
+msgid "mapa da cultura"
 msgstr ""
 
 #: modules/Components/components/main-footer/template.php:122
@@ -9015,7 +9015,7 @@ msgstr ""
 
 #: modules/Home/components/home-developers/template.php:13
 msgid ""
-"Além disso, Mapas Culturais é um software livre, criado em parceria entre a "
+"Além disso, Mapa da Cultura é um software livre, criado em parceria entre a "
 "hacklab/, secretarias de cultura, organizações não governamentais, empresas "
 "e coletivos que investem na plataforma. Você pode contribuir para o seu "
 "desenvolvimento através do GitHub."
@@ -9092,12 +9092,12 @@ msgid "Nenhuma entidade em destaque foi encontrada."
 msgstr ""
 
 #: modules/Home/components/home-header/template.php:19
-msgid "Bem-vinde ao Mapas Culturais"
+msgid "Boas vindas ao Mapa da Cultura"
 msgstr ""
 
 #: modules/Home/components/home-header/template.php:22
 msgid ""
-"O Mapas Culturais é uma ferramenta de gestão cultural, que garante a "
+"O Mapa da Cultura é uma ferramenta de gestão cultural, que garante a "
 "estruturação de Sistemas de Informações e Indicadores. A plataforma oferece "
 "soluções para o mapeamento colaborativo de agentes culturais, realização de "
 "todas as etapas de editais e fomentos, organização de uma agenda cultural e "
@@ -13360,7 +13360,7 @@ msgid "como usar do site"
 msgstr ""
 
 #: themes/BaseV1/Theme.php:156
-msgid "usado para orientar o usuário a utilizar a plataforma Mapas Culturais"
+msgid "usado para orientar o usuário a utilizar a plataforma Mapa da Cultura"
 msgstr ""
 
 #: themes/BaseV1/Theme.php:157
@@ -13405,7 +13405,7 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:171
 msgid ""
-"O Mapas Culturais é uma plataforma livre, gratuita e colaborativa de "
+"O Mapa da Cultura é uma plataforma livre, gratuita e colaborativa de "
 "mapeamento cultural."
 msgstr ""
 
@@ -13469,7 +13469,7 @@ msgid "Colabore com o SpCultura"
 msgstr ""
 
 #: themes/BaseV1/Theme.php:191
-msgid "Colabore com o Mapas Culturais"
+msgid "Colabore com o Mapa da Cultura"
 msgstr ""
 
 #: themes/BaseV1/Theme.php:194
@@ -13528,9 +13528,9 @@ msgid ""
 "hacklabr/mapasculturais/blob/master/documentation/docs/mc_config_api.md\" "
 "target=\"_blank\" rel=\"noopener noreferrer\">API</a>. Com ela você pode "
 "acessar os dados públicos no nosso banco de dados e utilizá-los para "
-"desenvolver aplicações externas. Além disso, o Mapas Culturais é construído "
+"desenvolver aplicações externas. Além disso, o Mapa da Cultura é construído "
 "a partir do sofware livre <a href=\"http://institutotim.org.br/project/mapas-"
-"culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapas Culturais</"
+"culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapa da Cultura</"
 "a>, criado em parceria com o <a href=\"http://institutotim.org.br\" "
 "target=\"_blank\" rel=\"noopener noreferrer\">Instituto TIM</a>, e você pode "
 "contribuir para o seu desenvolvimento através do <a href=\"https://github."
@@ -14768,7 +14768,7 @@ msgstr ""
 
 #: themes/BaseV1/Theme.php:2083
 msgid ""
-"Sua requisição para enviar um contato pelo Mapas Culturais foi enviada com "
+"Sua requisição para enviar um contato pelo Mapa da Cultura foi enviada com "
 "sucesso."
 msgstr ""
 
@@ -15132,7 +15132,7 @@ msgid "Excluir arquivo"
 msgstr ""
 
 #: themes/BaseV1/layouts/parts/editable-entity-logo.php:1
-msgid "Mapas Culturais"
+msgid "Mapa da Cultura"
 msgstr ""
 
 #: themes/BaseV1/layouts/parts/entity-parent.php:8
@@ -15170,7 +15170,7 @@ msgid "Adicionar Imagem na Galeria"
 msgstr ""
 
 #: themes/BaseV1/layouts/parts/header-about-nav.php:4
-msgid "Sobre os Mapas Culturais"
+msgid "Sobre o Mapa da Cultura"
 msgstr ""
 
 #: themes/BaseV1/layouts/parts/header-about-nav.php:5
