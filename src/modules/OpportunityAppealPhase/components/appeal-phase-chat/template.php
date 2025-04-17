@@ -62,14 +62,15 @@ $this->import('
     </template>
     <template #default="{ message }">
         <div v-if="typeof message.payload === 'object'">
-            <div class="mc-chat__evaluation" >
-                <div class="mc-chat__evaluation-status">
+            <div class="mc-chat__evaluation">
+                <div class="mc-chat__evaluation-status" v-if="message.payload.status != null">
                     <h4 class="semibold"><?= i::__('Resultado da validação:') ?></h4>
                     <div class="mc-chat__evaluation-status-content">
                         <mc-icon name="circle" :class="verifyState(message.payload.status)"></mc-icon>
                         <p v-if="message.payload.status == 10"><?= i::__('Deferido') ?></p>
-                        <p v-if="message.payload.status == 3"><?= i::__('Indeferido') ?></p>
-                        <p v-if="message.payload.status == 2"><?= i::__('Negado') ?></p>
+                        <p v-else-if="message.payload.status == 3"><?= i::__('Indeferido') ?></p>
+                        <p v-else-if="message.payload.status == 2"><?= i::__('Negado') ?></p>
+                        <p v-else-if="message.payload.status == 8"><?= i::__('Suplente') ?></p>
                     </div>
                 </div>
                 <div class="mc-chat__evaluation-text">

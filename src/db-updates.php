@@ -1133,8 +1133,7 @@ return [
     },
 
     'altera tipo da coluna chat_message.payload para json' => function () {
-        __exec("UPDATE chat_message SET payload = concat('\"',payload,'\"')");
-        __exec("ALTER TABLE chat_message ALTER COLUMN payload SET DATA TYPE JSON USING payload::JSON");
+        __exec("ALTER TABLE chat_message ALTER COLUMN payload SET DATA TYPE JSON USING to_jsonb(payload)::JSON");
     },
     'define default para as colunas ids das tabelas sem default' => function() {
         __exec("ALTER TABLE agent_meta ALTER column id SET DEFAULT nextval('agent_meta_id_seq');");

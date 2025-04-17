@@ -32,6 +32,12 @@ app.component('registration-status', {
     },
 
     computed: {
+        firstPhase() {
+            return this.phase.parent || this.phase;
+        },
+        firstPhaseRegistration() {
+            return $MAPAS.registrationPhases[this.firstPhase.id];
+        },
         appealPhase() {
             return this.opportunity.isAppealPhase ? this.opportunity : this.opportunity.appealPhase;
         },
@@ -49,7 +55,12 @@ app.component('registration-status', {
             if (this.registration.opportunity.isReportingPhase) {
                 return false;
             }
-            return this.registration.status != 1 && this.registration.status != 10;
+
+            if(!this.firstPhaseRegistration.currentUserPermissions.create) {
+                return false;
+            }
+
+            return this.registration.status > 1 && this.registration.status < 10;
         },
 
         opportunity () {
