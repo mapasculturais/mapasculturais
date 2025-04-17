@@ -1,12 +1,10 @@
 <?php
 
 return [
-//    'auth.provider' => 'Fake',
-
-    'auth.provider' => '\MultipleLocalAuth\Provider',
+    'auth.provider' => 'Fake',
+    // 'auth.provider' => '\MultipleLocalAuth\Provider',
     'auth.config' => [
         'salt' => env('AUTH_SALT', null),
-        'wizard' => 'true',
         'timeout' => '24 hours',
         'strategies' => [
             'Facebook' => [
@@ -32,7 +30,7 @@ return [
             ],
         ]
     ]
- 
+
     //auth.provider' => 'MapasCulturais\AuthProviders\OpauthAuthentik',
     //'auth.config' => [
     //    'salt' => env('AUTH_SALT', 'SECURITY_SALT'),

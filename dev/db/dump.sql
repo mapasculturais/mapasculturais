@@ -4828,6 +4828,14 @@ ALTER TABLE ONLY public.event_meta
 
 
 --
+-- Name: entity_revision fk_cf97a98ca76ed395; Type: FK CONSTRAINT; Schema: public; Owner: mapas
+--
+
+ALTER TABLE ONLY public.entity_revision
+    ADD CONSTRAINT fk_cf97a98ca76ed395 FOREIGN KEY (user_id) REFERENCES public.usr(id) ON DELETE CASCADE;
+
+
+--
 -- Name: procuration fk_d7bae7f3aeb2ed7; Type: FK CONSTRAINT; Schema: public; Owner: mapas
 --
 
