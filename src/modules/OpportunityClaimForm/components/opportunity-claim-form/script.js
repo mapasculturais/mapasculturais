@@ -45,7 +45,7 @@ app.component('opportunity-claim-form', {
 
     computed: {
         modalTitle() {
-            return 'Solicitar Recurso';
+            return this.text('Solicitar Recurso');
 
         },
     },
