@@ -57,6 +57,8 @@
                 align-items: center;
                 display: flex;
                 justify-content: space-between;
+                flex-wrap: wrap;
+                gap: size(16);
         
                 .title {
                     font-size: size(18);
