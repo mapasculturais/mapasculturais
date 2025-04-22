@@ -557,18 +557,30 @@ trait ControllerAPI{
             $type = $metadatum['type'] ?? '';
             $is_private = $metadatum['private'] ?? false;
             if (!$is_private && ($type == 'select' || $type == 'multiselect')) {
+                $options = [];
+                foreach ($metadatum['options'] as $value => $label) {
+                    $options[] = [ 'label' => $label, 'value' => $value ];
+                }
+
                 $filters['metadata']->$slug = [
-                    'description' => $metadatum['label'] ?? $slug,
-                    'options' => $metadatum['options'] ?? (object) [],
+                    'label' => $metadatum['label'] ?? $slug,
+                    'slug' => $slug,
+                    'options' => $options,
                 ];
             }
         }
 
         foreach ($taxonomies as $slug => $taxonomy) {
             if (in_array($class, $taxonomy->entities)) {
+                $options = [];
+                foreach ($taxonomy->restrictedTerms as $value => $label) {
+                    $options[] = [ 'label' => $label, 'value' => $value ];
+                }
+
                 $filters['taxonomies']->$slug = [
-                    'description' => $taxonomy->description ?? $slug,
-                    'options' => $taxonomy->restrictedTerms ?? (object) [],
+                    'label' => $taxonomy->description ?? $slug,
+                    'slug' => $slug,
+                    'options' => $options,
                 ];
             }
         }
