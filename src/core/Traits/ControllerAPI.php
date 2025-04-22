@@ -541,4 +541,38 @@ trait ControllerAPI{
         $data_array["@file"] = $array;
         $this->apiResponse($data_array);
     }
+
+    public function API_filters() {
+        $app = App::i();
+        $class = $this->entityClassName;
+
+        $metadata = $class::getPropertiesMetadata();
+        $taxonomies = $app->getRegisteredTaxonomies();
+        $filters = [
+            'metadata' => (object) [],
+            'taxonomies' => (object) [],
+        ];
+
+        foreach ($metadata as $slug => $metadatum) {
+            $type = $metadatum['type'] ?? '';
+            $is_private = $metadatum['private'] ?? false;
+            if (!$is_private && ($type == 'select' || $type == 'multiselect')) {
+                $filters['metadata']->$slug = [
+                    'description' => $metadatum['label'] ?? $slug,
+                    'options' => $metadatum['options'] ?? (object) [],
+                ];
+            }
+        }
+
+        foreach ($taxonomies as $slug => $taxonomy) {
+            if (in_array($class, $taxonomy->entities)) {
+                $filters['taxonomies']->$slug = [
+                    'description' => $taxonomy->description ?? $slug,
+                    'options' => $taxonomy->restrictedTerms ?? (object) [],
+                ];
+            }
+        }
+
+        $this->apiResponse($filters);
+    }
 }
