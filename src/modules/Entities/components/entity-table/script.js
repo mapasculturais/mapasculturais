@@ -123,6 +123,12 @@ app.component('entity-table', {
     data() {
         const id = this.query['@opportunity'] ?? '';
         const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
+        
+        const seen = new Set();
+        const columns = this.headers.filter(obj => {
+            const key = `${obj.text}|${obj.value}`;
+            return seen.has(key) ? false : seen.add(key);
+        })
 
         const getSeals = $MAPAS.config.entityTable.seals;
         let seals = {}
@@ -133,7 +139,7 @@ app.component('entity-table', {
         return {
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
-            columns: this.headers,
+            columns,
             searchText: '',
             timeout: null,
             left: 0,
