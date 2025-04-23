@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.41] - 2025-04-23
+### Melhorias
+- Atualiza arquivos de tradução para Espanhol
+
+### Correções 
+- Corrige erro que disparava um wraning no método que atualiza o resumo das avaliações
+
 ## [7.5.40] - 2025-04-10
 ### Correções 
 - Remove bloqueio de modificação de avaliações quando a inscrição esta com status diferente de pendente
