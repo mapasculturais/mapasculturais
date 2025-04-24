@@ -120,7 +120,7 @@ $this->import('
         <template #default="{entities, refresh}">
               <!-- SÓ O HEADER -->
             <div class="entity-table__table-header-wrapper" v-show="ready" ref="headerWrapper" @scroll="scroll($event)">
-                <div class="entity-table__table-header">
+                <div ref="fakeHeaderTable" class="entity-table__table-header">
                     <div v-if="showIndex" class="entity-table__index sticky entity-table__show-columns" :style="{width: columnsWidth['-index'] ?? '', minHeight: headerHeight + 'px'}">
                         <mc-popover>
                             <div class="entity-table__popover">
