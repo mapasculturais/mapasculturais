@@ -541,4 +541,50 @@ trait ControllerAPI{
         $data_array["@file"] = $array;
         $this->apiResponse($data_array);
     }
+
+    public function API_filters() {
+        $app = App::i();
+        $class = $this->entityClassName;
+
+        $metadata = $class::getPropertiesMetadata();
+        $taxonomies = $app->getRegisteredTaxonomies();
+        $filters = [
+            'metadata' => (object) [],
+            'taxonomies' => (object) [],
+        ];
+
+        foreach ($metadata as $slug => $metadatum) {
+            $type = $metadatum['type'] ?? '';
+            $is_private = $metadatum['private'] ?? false;
+            if (!$is_private && ($type == 'select' || $type == 'multiselect')) {
+                $options = [];
+                foreach ($metadatum['options'] as $value => $label) {
+                    $options[] = [ 'label' => $label, 'value' => $value ];
+                }
+
+                $filters['metadata']->$slug = [
+                    'label' => $metadatum['label'] ?? $slug,
+                    'slug' => $slug,
+                    'options' => $options,
+                ];
+            }
+        }
+
+        foreach ($taxonomies as $slug => $taxonomy) {
+            if (in_array($class, $taxonomy->entities)) {
+                $options = [];
+                foreach ($taxonomy->restrictedTerms as $value => $label) {
+                    $options[] = [ 'label' => $label, 'value' => $value ];
+                }
+
+                $filters['taxonomies']->$slug = [
+                    'label' => $taxonomy->description ?? $slug,
+                    'slug' => $slug,
+                    'options' => $options,
+                ];
+            }
+        }
+
+        $this->apiResponse($filters);
+    }
 }
