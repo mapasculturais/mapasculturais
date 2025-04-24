@@ -1,5 +1,5 @@
 <?php $this->applyTemplateHook('registration-field-item', 'begin') ?>
-<div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links' ">
+<div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links'  && !checkRegistrationFields(field, 'links')">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-if="field.fieldType !== 'agent-owner-field'">
         <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
@@ -37,7 +37,8 @@
         <span>{{key.split('_').pop()}}: {{item}}</span>
     </div>
 </div>
-<div ng-if="field.config.entityField === '@links' || field.fieldType === 'links'">
+
+<div ng-if="field.config.entityField === '@links' || field.fieldType === 'links' || checkRegistrationFields(field, 'links')">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' ">
         <b>{{item.title}}:</b> <a target="_blank" href="{{item.value}}">{{item.value}}</a>
