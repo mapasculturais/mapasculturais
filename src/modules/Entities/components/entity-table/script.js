@@ -126,7 +126,7 @@ app.component('entity-table', {
         
         const seen = new Set();
         const columns = this.headers.filter(obj => {
-            const key = `${obj.text}|${obj.value}`;
+            const key = obj.value || obj.slug;
             return seen.has(key) ? false : seen.add(key);
         })
 
@@ -681,6 +681,13 @@ app.component('entity-table', {
 
             this.$nextTick(() => {
                 this._ready = false;
+
+                if (this.$refs.fakeHeaderTable && this.$refs.contentTable) {
+                    const contentWidth = this.$refs.contentTable.offsetWidth + 'px';
+                    
+                    this.$refs.fakeHeaderTable.style.display = 'block'; 
+                    this.$refs.fakeHeaderTable.style.width = contentWidth;
+                }
 
                 this.totalWidth = 0;
                 this.setColumnWidth('-index');
