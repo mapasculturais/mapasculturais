@@ -1975,6 +1975,14 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
     }
 
+    $scope.checkRegistrationFields = function(field, type) {
+        if(MapasCulturais.EntitiesDescription.registration[field.fieldName]?.field_type === type) {
+            return true;
+        }
+
+        return false;
+    }
+
 }]);
 
     module.controller('EvaluationMethodConfigurationController', ['$scope', '$rootScope', 'RelatedAgentsService', 'EvaluationMethodConfigurationService', 'EditBox', 'OpportunityApiService', function($scope, $rootScope, RelatedAgentsService, EvaluationMethodConfigurationService, EditBox, OpportunityApiService) {
