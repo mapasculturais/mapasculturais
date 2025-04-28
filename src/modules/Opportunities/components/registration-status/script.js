@@ -33,7 +33,7 @@ app.component('registration-status', {
 
     computed: {
         firstPhase() {
-            return this.phase.parent || this.phase;
+            return this.opportunity.parent || this.opportunity;
         },
         firstPhaseRegistration() {
             return $MAPAS.registrationPhases[this.firstPhase.id];
