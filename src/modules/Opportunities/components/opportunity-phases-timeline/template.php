@@ -16,12 +16,12 @@ $this->import('
     <?php $this->applyComponentHook('item', 'before'); ?>
     <template v-for="item of phases">
         <template v-for="registration of [getRegistration(item)]">
-            <div class="item" :class="{ 'active': isActive(item, registration), 'happened': itHappened(item, registration) }">
-                <div class="item__dot"> <span class="dot"></span> </div>
+            <div class="item" :class="itemClasses(item, registration)">
+                <div class="item__dot"> <span class="dot"></span> </div> 
                 <div class="item__content">
                     <?php $this->applyComponentHook('item', 'begin'); ?>
                     <div v-if="item.isFirstPhase" class="item__content--title"> <?= $this->text('phase_registration', i::__('Fase de inscrições')) ?> </div>
-                    <div v-if="!item.isFirstPhase" class="item__content--title"> {{item.name}} </div>
+                    <div v-if="!item.isFirstPhase" class="item__content--title"> {{item.name}} </div> 
                     <div v-if="!item.isLastPhase && (!firstPhase.isContinuousFlow || firstPhase.hasEndDate)" class="item__content--description">
                         <h5 class="semibold"><?= i::__('de') ?> <span v-if="dateFrom(item)">{{dateFrom(item)}}</span>
                         <?= i::__('a') ?> <span v-if="dateTo(item)">{{dateTo(item)}}</span>
