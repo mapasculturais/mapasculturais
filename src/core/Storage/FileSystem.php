@@ -64,7 +64,10 @@ class FileSystem extends \MapasCulturais\Storage{
                 }
             }
 
-            rename($file->tmpFile['tmp_name'], $filename);
+            /** Add verification to check if the file is really saved in storage */
+            if (!move_uploaded_file($file->tmpFile['tmp_name'], $filename)) {
+                throw new \MapasCulturais\Exceptions\FileUploadError($file->getGroup(), 500);
+            }
             chmod($filename, 0666);
         }else{
             return false;
