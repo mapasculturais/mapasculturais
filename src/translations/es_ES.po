@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2025-04-26 18:31-0300\n"
+"POT-Creation-Date: 2025-04-29 15:08-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.6\n"
 "X-Poedit-Basepath: ../..\n"
-"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
+"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__;i::__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 
@@ -66,7 +66,9 @@ msgstr "Nombre"
 msgid "Slug"
 msgstr ""
 
-#: config/entities.php:31 src/core/ApiOutputs/Html.php:74
+#: config/entities.php:31 src/conf/notification-types.php:10
+#: src/conf/notification-types.php:18 src/conf/notification-types.php:29
+#: src/core/ApiOutputs/Html.php:74
 #: src/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:40
 #: src/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:90
 #: src/modules/Components/components/complaint-suggestion/template.php:37
@@ -295,7 +297,8 @@ msgid "País"
 msgstr "País"
 
 #: config/geodivisions.php:19 src/conf/agent-types.php:381
-#: src/conf/space-types.php:388 src/core/ApiOutputs/Html.php:37
+#: src/conf/space-types.php:388 src/conf/subsite-types.php:12
+#: src/core/ApiOutputs/Html.php:37
 #: src/modules/Components/components/select-municipio/template.php:17
 #: src/modules/Entities/components/entity-field-location/template.php:65
 #: src/modules/Entities/components/entity-location/template.php:38
@@ -321,7 +324,8 @@ msgid "Microrregião"
 msgstr "Microrregión"
 
 #: config/geodivisions.php:22 src/conf/agent-types.php:375
-#: src/conf/space-types.php:385 src/core/ApiOutputs/Html.php:36
+#: src/conf/space-types.php:385 src/conf/subsite-types.php:180
+#: src/conf/subsite-types.php:203 src/core/ApiOutputs/Html.php:36
 #: src/modules/Components/components/select-municipio/template.php:26
 #: src/modules/Entities/components/entity-location/template.php:39
 #: src/modules/Entities/components/entity-location/template.php:56
@@ -2117,7 +2121,7 @@ msgstr "Autenticación"
 
 #: config/routes.php:128 src/conf/agent-types.php:451
 #: src/conf/event-types.php:66 src/conf/opportunity-types.php:97
-#: src/conf/project-types.php:58 src/conf/seal-types.php:12
+#: src/conf/project-types.php:58 src/conf/seal-types.php:14
 #: src/conf/space-types.php:433
 #: src/themes/BaseV1/layouts/parts/singles/agent-form.php:17
 #: src/themes/BaseV1/layouts/parts/singles/agent-form.php:19
@@ -2637,6 +2641,10 @@ msgstr ""
 msgid "100.001 ou mais"
 msgstr "100.001 o más"
 
+#: src/conf/agent-types.php:64
+msgid "Pessoa com deficiência"
+msgstr "Persona con discapacidad"
+
 #: src/conf/agent-types.php:67
 #: src/modules/Entities/components/agent-data-1/template.php:134
 msgid "Não sou"
@@ -3062,6 +3070,7 @@ msgid "Complemento"
 msgstr "Complemento"
 
 #: src/conf/agent-types.php:369 src/conf/space-types.php:382
+#: src/conf/subsite-types.php:190 src/conf/subsite-types.php:213
 #: src/core/ApiOutputs/Html.php:35
 #: src/modules/Entities/components/entity-field-location/template.php:44
 #: src/modules/Opportunities/components/registration-field-address/template.php:54
@@ -3077,7 +3086,7 @@ msgstr "Barrio"
 
 #: src/conf/agent-types.php:453 src/conf/event-types.php:68
 #: src/conf/opportunity-types.php:99 src/conf/project-types.php:60
-#: src/conf/seal-types.php:14 src/conf/space-types.php:435
+#: src/conf/seal-types.php:16 src/conf/space-types.php:435
 msgid "A url informada é inválida."
 msgstr "La url ingresada no es válida."
 
@@ -3093,6 +3102,12 @@ msgstr "Facebook"
 msgid "O valor deve ser uma URL válida ou o nome ou id do usuário."
 msgstr ""
 "El valor debe ser una URL válida o el nombre o identificación del usuario."
+
+#: src/conf/agent-types.php:466 src/conf/event-types.php:80
+#: src/conf/opportunity-types.php:112 src/conf/project-types.php:73
+#: src/conf/space-types.php:448
+msgid "nomedousuario ou iddousuario"
+msgstr "nombredeusuario o iddeusuario"
 
 #: src/conf/agent-types.php:471 src/conf/event-types.php:85
 #: src/conf/opportunity-types.php:117 src/conf/project-types.php:78
@@ -3123,6 +3138,27 @@ msgstr "Twitter"
 msgid "O valor deve ser uma URL ou usuário válido."
 msgstr "El valor debe ser una URL o un usuario válido."
 
+#: src/conf/agent-types.php:478 src/conf/agent-types.php:495
+#: src/conf/agent-types.php:506 src/conf/agent-types.php:518
+#: src/conf/agent-types.php:530 src/conf/agent-types.php:554
+#: src/conf/agent-types.php:566 src/conf/event-types.php:92
+#: src/conf/event-types.php:109 src/conf/event-types.php:120
+#: src/conf/event-types.php:132 src/conf/event-types.php:144
+#: src/conf/event-types.php:168 src/conf/event-types.php:180
+#: src/conf/opportunity-types.php:124 src/conf/opportunity-types.php:141
+#: src/conf/opportunity-types.php:152 src/conf/opportunity-types.php:164
+#: src/conf/opportunity-types.php:176 src/conf/opportunity-types.php:200
+#: src/conf/opportunity-types.php:212 src/conf/project-types.php:85
+#: src/conf/project-types.php:98 src/conf/project-types.php:109
+#: src/conf/project-types.php:121 src/conf/project-types.php:133
+#: src/conf/project-types.php:157 src/conf/project-types.php:169
+#: src/conf/space-types.php:460 src/conf/space-types.php:477
+#: src/conf/space-types.php:488 src/conf/space-types.php:500
+#: src/conf/space-types.php:512 src/conf/space-types.php:536
+#: src/conf/space-types.php:548
+msgid "nomedousuario"
+msgstr "nombredeusuario"
+
 #: src/conf/agent-types.php:483 src/conf/event-types.php:97
 #: src/conf/opportunity-types.php:129 src/conf/project-types.php:90
 #: src/conf/space-types.php:465
@@ -3152,6 +3188,12 @@ msgstr ""
 #: src/conf/space-types.php:517
 msgid "YouTube"
 msgstr ""
+
+#: src/conf/agent-types.php:542 src/conf/event-types.php:156
+#: src/conf/opportunity-types.php:188 src/conf/project-types.php:145
+#: src/conf/space-types.php:524
+msgid "iddocanal"
+msgstr "iddelcanal"
 
 #: src/conf/agent-types.php:547 src/conf/event-types.php:161
 #: src/conf/opportunity-types.php:193 src/conf/project-types.php:150
@@ -3241,55 +3283,59 @@ msgstr "Traducción para lenguaje de señas"
 msgid "Áudio descrição"
 msgstr "Audio descripción"
 
+#: src/conf/event-types.php:184
+msgid "Público presente"
+msgstr "Público presente"
+
 #: src/conf/event-types.php:192
 msgid "Padrão"
 msgstr "Estándar"
 
-#: src/conf/notification-types.php:11
+#: src/conf/notification-types.php:13
 #: src/modules/Components/components/complaint-suggestion/template.php:15
 #: src/modules/Components/components/complaint-suggestion/template.php:76
 msgid "Denúncia"
 msgstr "Denuncia"
 
-#: src/conf/notification-types.php:12
+#: src/conf/notification-types.php:14
 #: src/modules/CompliantSuggestion/layouts/parts/compliant_suggestion.php:24
 #: src/modules/Components/components/complaint-suggestion/template.php:82
 #: src/modules/Components/components/complaint-suggestion/template.php:150
 msgid "Contato"
 msgstr "Contacto"
 
-#: src/conf/notification-types.php:19
+#: src/conf/notification-types.php:21
 msgid "Conteúdo ofensivo ou inadequado"
 msgstr "Contenido ofensivo o inadecuado"
 
-#: src/conf/notification-types.php:20
+#: src/conf/notification-types.php:22
 msgid "Conteúdo incorreto ou calunioso"
 msgstr "Contenido incorrecto o calumnioso"
 
-#: src/conf/notification-types.php:21
+#: src/conf/notification-types.php:23
 msgid "Conteúdo que viola direitos"
 msgstr "Contenido que viola derechos"
 
-#: src/conf/notification-types.php:22 src/conf/notification-types.php:34
+#: src/conf/notification-types.php:24 src/conf/notification-types.php:36
 #: src/conf/space-types.php:221 src/conf/space-types.php:335
 #: src/conf/taxonomies.php:81 src/conf/taxonomies.php:112
 #: src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/template.php:104
 msgid "Outros"
 msgstr "Otros"
 
-#: src/conf/notification-types.php:30
+#: src/conf/notification-types.php:32
 msgid "Sugestão"
 msgstr "Sugerencia"
 
-#: src/conf/notification-types.php:31
+#: src/conf/notification-types.php:33
 msgid "Crítica"
 msgstr "Crítica"
 
-#: src/conf/notification-types.php:32
+#: src/conf/notification-types.php:34
 msgid "Comentários"
 msgstr "Comentarios"
 
-#: src/conf/notification-types.php:33
+#: src/conf/notification-types.php:35
 msgid "Reclamações"
 msgstr "Reclamos"
 
@@ -3409,7 +3455,7 @@ msgstr "Seminario"
 
 #: src/conf/opportunity-types.php:49
 msgid "Abaixo-assinado"
-msgstr "Abajofirmante"
+msgstr "Abajo firmante"
 
 #: src/conf/opportunity-types.php:50
 msgid "Campanhas"
@@ -3544,23 +3590,23 @@ msgstr "Desfile Político"
 msgid "Parada e Desfile de Ações Afirmativas"
 msgstr "Desfile de Acciones Afirmativas"
 
-#: src/conf/seal-types.php:19
+#: src/conf/seal-types.php:21
 msgid "Infinita"
 msgstr "Infinita"
 
-#: src/conf/seal-types.php:20
+#: src/conf/seal-types.php:22
 msgid "Dias"
 msgstr "Días"
 
-#: src/conf/seal-types.php:21
+#: src/conf/seal-types.php:23
 msgid "Semanas"
 msgstr "Semanas"
 
-#: src/conf/seal-types.php:22 src/modules/Seals/views/seal/single.php:37
+#: src/conf/seal-types.php:24 src/modules/Seals/views/seal/single.php:37
 msgid "Meses"
 msgstr "Meses"
 
-#: src/conf/seal-types.php:23
+#: src/conf/seal-types.php:25
 msgid "Anos"
 msgstr "Años"
 
@@ -4218,6 +4264,34 @@ msgstr "Horario de funcionamento"
 msgid "Critérios de uso do espaço"
 msgstr "Criterios de uso del espacio"
 
+#: src/conf/subsite-types.php:52
+msgid "Cor da entidade"
+msgstr "Color de la entidad"
+
+#: src/conf/subsite-types.php:60
+#: src/modules/Entities/components/agent-table/texts.php:8
+#: src/modules/Entities/views/agent/edit-2.php:80
+#: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:11
+#: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:11
+#: src/modules/Search/components/search-filter-agent/template.php:34
+#: src/modules/Search/components/search-filter-space/template.php:33
+#: src/themes/BaseV1/layouts/parts/home-agents.php:43
+#: src/themes/BaseV1/layouts/parts/home-saas.php:40
+#: src/themes/BaseV1/layouts/parts/home-spaces.php:41
+#: src/themes/BaseV1/layouts/parts/search/infobox-space.php:15
+#: src/themes/BaseV1/layouts/parts/search/list-agent-item.php:14
+#: src/themes/BaseV1/layouts/parts/search/list-space-item.php:17
+msgid "Área de atuação"
+msgstr "Área de actuación"
+
+#: src/conf/subsite-types.php:132
+msgid "A URL informada é inválida."
+msgstr "La url ingresada no es válida."
+
+#: src/conf/subsite-types.php:136
+msgid "Entidades Habilitadas"
+msgstr "Entidades Habilitadas"
+
 #: src/conf/subsite-types.php:157
 msgid "Filtrar oportunidades do subsite"
 msgstr "Filtrar oportunidades del subsitio"
@@ -4237,6 +4311,90 @@ msgstr "Filtrar espacios del subsitio"
 #: src/conf/subsite-types.php:173
 msgid "Filtrar eventos do subsite"
 msgstr "Filtrar eventos del subsitio"
+
+#: src/conf/subsite-types.php:224
+msgid "Tipo de espaço"
+msgstr "Tipo de Espacio"
+
+#: src/conf/subsite-types.php:301 src/conf/taxonomies.php:87
+#: src/themes/BaseV1/Theme.php:716 src/themes/BaseV1/Theme.php:720
+#: src/themes/BaseV1/Theme.php:2428
+#: src/themes/BaseV1/layouts/parts/home-events.php:41
+#: src/themes/BaseV1/layouts/parts/search/infobox-event.php:44
+#: src/themes/BaseV1/layouts/parts/search/list-event-item.php:35
+#: src/themes/BaseV1/layouts/parts/singles/project-events.php:36
+#: src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:84
+msgid "Linguagem"
+msgstr "Tipo de evento"
+
+#: src/conf/subsite-types.php:332
+msgid "Texto boas vindas"
+msgstr "Texto de bienvenida"
+
+#: src/conf/subsite-types.php:336
+msgid "Texto sobre"
+msgstr "Texto sobre"
+
+#: src/conf/subsite-types.php:340
+#: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:28
+msgid "Zoom Padrão"
+msgstr "Zoom Estándar"
+
+#: src/conf/subsite-types.php:343
+msgid "Zoom Aproximado"
+msgstr "Zoom Aproximado"
+
+#: src/conf/subsite-types.php:346
+msgid "Zoom Preciso"
+msgstr "Zoom Preciso"
+
+#: src/conf/subsite-types.php:349
+#: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:34
+msgid "Zoom Mínimo"
+msgstr "Zoom Mínimo"
+
+#: src/conf/subsite-types.php:352
+#: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:38
+msgid "Zoom Máximo"
+msgstr "Zoom Máximo"
+
+#: src/conf/subsite-types.php:355
+#: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:22
+msgid "Latitude"
+msgstr "Latitud"
+
+#: src/conf/subsite-types.php:358
+msgid "Longitude"
+msgstr "Longitud"
+
+#: src/conf/subsite-types.php:361
+#: src/themes/BaseV1/layouts/parts/singles/subsite-tabs.php:6
+msgid "Filtros"
+msgstr "Filtros"
+
+#: src/conf/subsite-types.php:365
+msgid "Textos configurados"
+msgstr "Textos configurados"
+
+#: src/conf/subsite-types.php:375
+msgid "Filtros dispoíveis por Evento"
+msgstr "Filtros disponibles por eventos"
+
+#: src/conf/subsite-types.php:385
+msgid "Filtros dispoíveis por Espaço"
+msgstr "Filtros disponibles por Espacio"
+
+#: src/conf/subsite-types.php:395
+msgid "Filtros dispoíveis por Agente"
+msgstr "Filtros disponibles por Agente"
+
+#: src/conf/subsite-types.php:405
+msgid "Filtros dispoíveis por Projeto"
+msgstr "Filtros disponibles por Proyecto"
+
+#: src/conf/subsite-types.php:415
+msgid "Filtros dispoíveis por Oportunidade"
+msgstr "Filtros disponibles por oportunidades"
 
 #: src/conf/taxonomies.php:7
 msgid "Tag"
@@ -4463,16 +4621,6 @@ msgstr "Televisión"
 #: src/conf/taxonomies.php:80
 msgid "Turismo"
 msgstr "Turismo"
-
-#: src/conf/taxonomies.php:87 src/themes/BaseV1/Theme.php:716
-#: src/themes/BaseV1/Theme.php:720 src/themes/BaseV1/Theme.php:2428
-#: src/themes/BaseV1/layouts/parts/home-events.php:41
-#: src/themes/BaseV1/layouts/parts/search/infobox-event.php:44
-#: src/themes/BaseV1/layouts/parts/search/list-event-item.php:35
-#: src/themes/BaseV1/layouts/parts/singles/project-events.php:36
-#: src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:84
-msgid "Linguagem"
-msgstr "Tipo de evento"
 
 #: src/conf/taxonomies.php:88
 msgid "Você deve informar ao menos uma linguagem"
@@ -8130,21 +8278,6 @@ msgstr "Agentes oficiales"
 #: src/themes/BaseV1/views/generic/list.php:16
 msgid "ID"
 msgstr "ID"
-
-#: src/modules/Entities/components/agent-table/texts.php:8
-#: src/modules/Entities/views/agent/edit-2.php:80
-#: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:11
-#: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:11
-#: src/modules/Search/components/search-filter-agent/template.php:34
-#: src/modules/Search/components/search-filter-space/template.php:33
-#: src/themes/BaseV1/layouts/parts/home-agents.php:43
-#: src/themes/BaseV1/layouts/parts/home-saas.php:40
-#: src/themes/BaseV1/layouts/parts/home-spaces.php:41
-#: src/themes/BaseV1/layouts/parts/search/infobox-space.php:15
-#: src/themes/BaseV1/layouts/parts/search/list-agent-item.php:14
-#: src/themes/BaseV1/layouts/parts/search/list-space-item.php:17
-msgid "Área de atuação"
-msgstr "Área de actuación"
 
 #: src/modules/Entities/components/create-agent/script.js:40
 msgid "agenteCriado"
@@ -24131,10 +24264,6 @@ msgid "Latitude:"
 msgstr "Latitud:"
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:22
-msgid "Latitude"
-msgstr "Latitud"
-
-#: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:22
 msgid "Ex.: 40.7143528"
 msgstr "Ejem.: 40.7143528"
 
@@ -24155,20 +24284,12 @@ msgid "Zoom Padrão:"
 msgstr "Zoom estándar:"
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:28
-msgid "Zoom Padrão"
-msgstr "Zoom Estándar"
-
-#: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:28
 msgid "Zoom padrão do mapa"
 msgstr "Zoom estándar del mapa"
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:33
 msgid "Zoom Mínimo:"
 msgstr "Zoom Mínimo:"
-
-#: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:34
-msgid "Zoom Mínimo"
-msgstr "Zoom Mínimo"
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:34
 msgid "Zoom mínimo do mapa"
@@ -24179,16 +24300,8 @@ msgid "Zoom Máximo:"
 msgstr "Zoom Máximo:"
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:38
-msgid "Zoom Máximo"
-msgstr "Zoom Máximo"
-
-#: src/themes/BaseV1/layouts/parts/singles/subsite-map.php:38
 msgid "Zoom máximo do mapa"
 msgstr "Zoom máximo del mapa"
-
-#: src/themes/BaseV1/layouts/parts/singles/subsite-tabs.php:6
-msgid "Filtros"
-msgstr "Filtros"
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite-tabs.php:7
 msgid "Textos"
