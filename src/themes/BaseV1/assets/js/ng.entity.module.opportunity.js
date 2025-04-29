@@ -1927,8 +1927,16 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         } else if (field.fieldType === 'email'){
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (value instanceof Array) {
+            if (value.includes('@NA')) {
+                return $scope.normalizeNa(field, value);
+            }
+
             return value.join(', ');
         } else {
+            if(value === '@NA') {
+                $scope.normalizeNa(field, value);
+            }
+
             return value;
         }
     };
@@ -1955,6 +1963,26 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         return false;
+    }
+
+    $scope.normalizeNa = function(field, value) {
+        let fieldDescription = MapasCulturais.EntitiesDescription.registration[field.fieldName];
+
+        if (value === '@NA') {
+            if (fieldDescription?.options?.['@NA']) {
+                return fieldDescription.options['@NA'];
+            }
+            return '@NA';
+        }
+
+        if (Array.isArray(value)) {
+            return value.map(val => {
+                if (val === '@NA' && fieldDescription?.options?.['@NA']) {
+                    return fieldDescription.options['@NA'];
+                }
+                return val;
+            }).join(', ');
+        }
     }
 
 }]);
