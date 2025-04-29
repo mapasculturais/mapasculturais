@@ -32,9 +32,9 @@ app.component('registration-status', {
                     
                 case 2 : 
                 case 0 : 
-
-                    return 'danger__color';
 				case 3 : 
+                     return 'danger__color';
+                     
 				case 8 : 
                     return 'warning__color';
 
