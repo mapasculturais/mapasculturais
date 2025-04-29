@@ -1917,7 +1917,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.printField = function(field, value){
 
-        if (field.fieldType === 'date') {
+        if (field.fieldType === 'date' || field?.config?.entityField === 'dataDeNascimento') {
             return moment(value).format('DD-MM-YYYY');
         }else if (field.fieldType === "checkbox") {
             return value === "true" ? "Sim" : "Não";
