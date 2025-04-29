@@ -1,23 +1,30 @@
-<div>
-    <b>
-        <font face="tahoma, sans-serif" color="#444444">{{siteName}}</font>
-    </b>
-</div>
-{{#supportEmail}}
-<div>
-    <font face="tahoma, sans-serif" color="#444444">
-        <a href="mailto:{{supportEmail}}" target="_blank" rel='noopener noreferrer'>{{supportEmail}}</a>
-        <br>
-    </font>
-</div>
-{{/supportEmail}}
-<div>
-    <font face="tahoma, sans-serif" color="#444444">
-        <a href="{{baseUrl}}" target="_blank" rel='noopener noreferrer'>{{baseUrl}}</a><br>
-    </font>
-</div>
-{{#logoUrl}}
-<div>
-    <img src="{{logoUrl}}" ><br>
-</div>
-{{/logoUrl}}
+                   <!-- START FOOTER -->
+                    <div class="footer">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                            {{#supportEmail}}
+                            <tr>
+                                <td>
+                                    <font face="tahoma, sans-serif" color="#444444">
+                                        <a href="mailto:{{supportEmail}}" target="_blank" rel='noopener noreferrer'>{{supportEmail}}</a>
+                                        <br>
+                                    </font>
+                                </td>
+                            </tr>
+                            {{/supportEmail}}
+                            <tr>
+                                <td class="content-block">
+                                    <span class="apple-link"><span></span> {{siteName}} </span><br>
+                                    <span class="apple-link"><span></span> <a href="{{baseUrl}}">{{baseUrl}}</a></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- END FOOTER -->
+                </div>
+            </td>
+            <td>&nbsp;</td>
+        </tr>
+    </table>
+</body>
+
+</html>
