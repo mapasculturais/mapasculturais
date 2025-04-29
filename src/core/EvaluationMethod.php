@@ -995,7 +995,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
 
             // verifica permissão de avaliação por número da inscrição
-            if ($ufetch = $fetch[$user->id] ?? false){
+            if ($ufetch = !empty($fetch[$user->id]) ? $fetch[$user->id] : false){
                 if(!$this->canEvaluateRegistrationNumber($registration, $ufetch)){
                     $can = false;
                 }
