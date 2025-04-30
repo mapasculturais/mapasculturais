@@ -123,6 +123,12 @@ app.component('entity-table', {
     data() {
         const id = this.query['@opportunity'] ?? '';
         const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
+        
+        const seen = new Set();
+        const columns = this.headers.filter(obj => {
+            const key = obj.value || obj.slug;
+            return seen.has(key) ? false : seen.add(key);
+        })
 
         const getSeals = $MAPAS.config.entityTable.seals;
         let seals = {}
@@ -133,7 +139,7 @@ app.component('entity-table', {
         return {
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
-            columns: this.headers,
+            columns,
             searchText: '',
             timeout: null,
             left: 0,
@@ -675,6 +681,13 @@ app.component('entity-table', {
 
             this.$nextTick(() => {
                 this._ready = false;
+
+                if (this.$refs.fakeHeaderTable && this.$refs.contentTable) {
+                    const contentWidth = this.$refs.contentTable.offsetWidth + 'px';
+                    
+                    this.$refs.fakeHeaderTable.style.display = 'block'; 
+                    this.$refs.fakeHeaderTable.style.width = contentWidth;
+                }
 
                 this.totalWidth = 0;
                 this.setColumnWidth('-index');
