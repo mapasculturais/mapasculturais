@@ -28,7 +28,7 @@ $this->enqueueScript('app-v2', 'registration-print', 'js/registration-print.js')
     <div class="col-12 bold" v-if="entity.sentTimestamp" class="sentDate"> 
         <?= i::__('Inscrição realizada em') ?> {{entity.sentTimestamp.date('2-digit year')}} <?= i::__('às') ?> {{entity.sentTimestamp.time('long')}} 
     </div>
-    <opportunity-phases-timeline class="col-12" center big></opportunity-phases-timeline>
+    <opportunity-phases-timeline :entity-status="entity.status" class="col-12" center big></opportunity-phases-timeline>
     <mc-summary-agent-info :entity="entity" classes="col-12"></mc-summary-agent-info>
     <h3 class="col-12 print__side-registration-padding"><?= i::__('Dados informados no formulário') ?></h3>
     <mc-summary-spaces style="justify-content: center;" :entity="entity" classes="col-12"></mc-summary-spaces>

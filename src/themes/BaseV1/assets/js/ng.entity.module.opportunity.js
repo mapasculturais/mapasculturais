@@ -1917,7 +1917,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
     $scope.printField = function(field, value){
 
-        if (field.fieldType === 'date') {
+        if (field.fieldType === 'date' || field?.config?.entityField === 'dataDeNascimento') {
             return moment(value).format('DD-MM-YYYY');
         }else if (field.fieldType === "checkbox") {
             return ["true", "1"].includes(value) ? "Sim" : "Não";
@@ -1937,6 +1937,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
             return addresses.join('<br>');
         } else if (value instanceof Array) {
+            if (value.includes('@NA')) {
+                return $scope.normalizeNa(field, value);
+            }
+
             return value.join(', ');
         } else if (field.fieldType === 'bankFields') {
             const configAccounTypes = MapasCulturais.entity.registrationFieldTypes;
@@ -1955,6 +1959,10 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
 
             return `Tipo: ${accountType} | Banco: ${bankType} | Agência: ${value['branch']}-${value['dv_branch']} | Conta: ${value['account_number']}-${value['dv_account_number']}`;
         } else {
+            if(value === '@NA') {
+                $scope.normalizeNa(field, value);
+            }
+
             return value;
         }
     };
@@ -1972,6 +1980,34 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             return field.groupName;
         }else{
             return field.fieldName;
+        }
+    }
+
+    $scope.checkRegistrationFields = function(field, type) {
+        if(MapasCulturais.EntitiesDescription.registration[field.fieldName]?.field_type === type) {
+            return true;
+        }
+
+        return false;
+    }
+
+    $scope.normalizeNa = function(field, value) {
+        let fieldDescription = MapasCulturais.EntitiesDescription.registration[field.fieldName];
+
+        if (value === '@NA') {
+            if (fieldDescription?.options?.['@NA']) {
+                return fieldDescription.options['@NA'];
+            }
+            return '@NA';
+        }
+
+        if (Array.isArray(value)) {
+            return value.map(val => {
+                if (val === '@NA' && fieldDescription?.options?.['@NA']) {
+                    return fieldDescription.options['@NA'];
+                }
+                return val;
+            }).join(', ');
         }
     }
 
