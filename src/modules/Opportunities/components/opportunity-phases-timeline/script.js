@@ -9,7 +9,12 @@ app.component('opportunity-phases-timeline', {
 		center: {
 			type: Boolean,
 			default: false
-		}
+		},
+
+		entityStatus: {
+			type: Number,
+			required: true,
+		},
 	},
 
     async created() {
@@ -147,5 +152,29 @@ app.component('opportunity-phases-timeline', {
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
 			return $MAPAS.registrationPhases?.[phaseOpportunity.id] ?? null;
 		},
+
+		itemClasses(item, registration) {
+			let classes = [];
+			if (this.isActive(item, registration)) {
+				classes.push('active');
+			} 
+
+			if (this.itHappened(item, registration)) {
+				classes.push('happened');
+			}
+
+			if (item.isLastPhase && this.isActive(item, registration)) {
+				switch(this.entityStatus) {
+					case 10:
+						classes.push('status-10');
+						break;
+					case 3:
+						classes.push('status-3');
+						break;
+				} 
+			}
+
+			return classes;
+		}
 	}
 });

@@ -116,7 +116,7 @@ $today = new DateTime();
                 <mc-card>
                     <template #content>
 
-                        <opportunity-phases-timeline center big></opportunity-phases-timeline>
+                        <opportunity-phases-timeline :entity-status="entity.status" center big></opportunity-phases-timeline>
 
                     </template>
                 </mc-card>
