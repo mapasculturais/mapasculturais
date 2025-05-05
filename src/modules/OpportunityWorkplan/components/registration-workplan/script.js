@@ -564,7 +564,7 @@ app.component('registration-workplan', {
             this.tour.start();
         },
         isTutorialDisabled() {
-            return localStorage.getItem('tutorialDisabled') === 'true';
+            return ($MAPAS.workplan?.enable_workplan_tutorial !== true) || (localStorage.getItem('tutorialDisabled') === 'true');
         },
         disableTutorial() {
             localStorage.setItem('tutorialDisabled', 'true');
