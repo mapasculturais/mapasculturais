@@ -65,13 +65,7 @@ $this->import("
             </template>
 
             <template v-if="!sendSuccess"  #actions="modal">
-<<<<<<< HEAD
                 <mc-captcha @captcha-verified="verifyCaptcha" @captcha-expired="expiredCaptcha" class="col-12"></mc-captcha>
-=======
-                <!-- Componente responsável por renderizar o CAPTCHA -->
-                <mc-captcha @captcha-verified="verifyCaptcha" @captcha-expired="expiredCaptcha" :error="error" class="complaint-suggestion__recaptcha"></mc-captcha>
-
->>>>>>> culturagovbr/develop-minc
                 <button class="button button--primary" @click="send(modal)"><?= i::__('Enviar Denúncia') ?></button>
                 <button class="button button--text button--text-del" @click="modal.close()"><?= i::__('cancelar') ?></button>
             </template>
