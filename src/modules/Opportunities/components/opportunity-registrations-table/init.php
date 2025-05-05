@@ -3,7 +3,6 @@
 use MapasCulturais\i;
 use MapasCulturais\Entities\Registration;
 
-<<<<<<< HEAD
 $registrations = Registration::getStatusesNames();
 
 foreach($registrations as $status => $status_name){
@@ -39,8 +38,6 @@ $data['evaluationStatusDict'] = [
     ]
 ];
 
-=======
->>>>>>> develop
 $phase = $this->controller->requestedEntity;
 
 $data['isAffirmativePoliciesActive'] = $phase->isAffirmativePoliciesActive();
