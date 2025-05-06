@@ -1,4 +1,6 @@
 <?php
+
+use MapasCulturais\Utils;
 /**
  * See https://github.com/Respect/Validation to know how to write validations
  */
