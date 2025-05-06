@@ -100,6 +100,10 @@
     .input__radioLabel {
         font-size: var(--mc-font-size-xxs);
         font-weight: var(--mc-font-semibold);
+        display: grid;
+        gap: size(8); 
+        grid-template-columns: size(18) 1fr;
+        line-height: size(19);
     }
 
     &__color {

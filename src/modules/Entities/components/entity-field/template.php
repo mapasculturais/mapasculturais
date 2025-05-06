@@ -74,9 +74,11 @@ $this->import('
             </template>
 
             <template v-else-if="is('radio')">
-                <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
-                    <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || disabled"> {{description.options[optionValue]}}
-                </label>
+                <div class="field__group">
+                    <label class="input__label input__radioLabel" v-for="(optionLabel, optionValue) in description.options">
+                        <input :checked="isRadioChecked(value, optionValue)" type="radio" :value="optionValue" @input="change($event,true)" @blur="change($event)" :disabled="readonly || disabled"> {{description.options[optionValue]}}
+                    </label>
+                </div>
             </template>
 
             <template v-else-if="is('links')">
