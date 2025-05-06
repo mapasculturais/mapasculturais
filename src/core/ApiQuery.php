@@ -1257,7 +1257,7 @@ class ApiQuery {
                 } elseif (in_array($key, $this->entityProperties)) {
                     $field_type = $this->fieldMappings[$key]['type'];
 
-                    if ($field_type == 'string') {
+                    if ($field_type == 'string' && !$cast) {
                         $_order = str_ireplace($key, 'unaccent(lower(e.' . $key . '))', $prop);
                     } else {
                         $_order = str_ireplace($key, 'e.' . $key, $prop);
@@ -1269,7 +1269,7 @@ class ApiQuery {
 
                     $meta_type = $app->getRegisteredMetadata($this->entityClassName)[$key]->type;
 
-                    if ($meta_type == 'string') {
+                    if ($meta_type == 'string' && !$cast) {
                         $_order = str_replace($key, "unaccent(lower($meta_alias.value))", $prop);
                     } else {
                         $_order = str_replace($key, "$meta_alias.value", $prop);
