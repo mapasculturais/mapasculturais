@@ -206,10 +206,6 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $registration->checkPermission('viewConsolidatedResult');
         $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration, 'status' => RegistrationEvaluation::STATUS_SENT]);
 
-        if(empty($evaluations)){
-            return 0;
-        }
-
         $committees = $registration->getCommittees();
 
         $result = '';
@@ -228,12 +224,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             foreach($committees as $users){
                 $number_of_valuers += count($users);
             }
-
-            if(count($evaluations) < $number_of_valuers){
-                $result =  0;
-            }
             
-            $result =  $this->_getConsolidatedResult($registration, $evaluations);
+            $result = $this->_getConsolidatedResult($registration, $evaluations);
         }
 
         return $result;
