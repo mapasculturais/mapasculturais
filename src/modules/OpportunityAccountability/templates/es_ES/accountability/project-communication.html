@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <div>
+            Hola, {{user}}!<br />
+            Se ha creado un proyecto en el sitio <a href="{{baseUrl}}">{{siteName}}</a> para
+            el seguimiento de tu propuesta aprobada en la oportunidad {{opportunityTitle}}.
+            Revisa los próximos pasos:
+            <ol>
+                <li>Accede al <a href="{{projectUrl}}">proyecto</a>, completa los datos y
+                publícalo.</li>
+                <li>Si tu propuesta contempla la realización de eventos, estos deben ser
+                publicados como eventos relacionados al proyecto.
+                </li>
+                <li>El período de rendición de cuentas comenzará el
+                {{accountabilityStartDate}} y finalizará el
+                {{accountabilityEndDate}}. Durante este período, estará disponible
+                en la página del proyecto el formulario de rendición de cuentas, que deberá
+                ser completado y enviado antes del {{accountabilityEndDate}}.
+                </li>
+            </ol>
+        </div>
+    </body>
+</html>
+
