@@ -171,7 +171,13 @@ trait ControllerUploads{
                     $old_file->delete();
             }
 
-            $file->save();
+            /** Add verification to see if the file is really saved in storage */
+            try {
+                $file->save();
+            } catch (\MapasCulturais\Exceptions\FileUploadError $th) {
+                return $this->errorJson([$th->group => $th->message]);
+            }
+
             $file_group = $file->group;
 
             if($upload_group->unique){

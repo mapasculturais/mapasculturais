@@ -92,6 +92,10 @@ app.component('mc-select', {
 
     mounted() {
         setTimeout(() => {
+            if (!this.$refs.options) {
+                return;
+            }
+
             const options = this.$refs.options.querySelectorAll('[value]');
             
             this.defaultOptions = Object.freeze(Array.from(options));
@@ -216,7 +220,9 @@ app.component('mc-select', {
             const refOptions = this.$refs.options;
             const refSelected = this.$refs.selected;
 
-            refOptions.style.minWidth = refSelected.clientWidth + 'px'; 
+            if(refOptions) {
+                refOptions.style.minWidth = refSelected.clientWidth + 'px'; 
+            }
         },
 
         selectOption(event) {

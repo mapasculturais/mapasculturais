@@ -13,7 +13,7 @@ $this->import('
 ');
 ?>
 <div class="entity-field-links">
-    <div v-for="(link, index) in links" :key="index" class="entity-field-links__link">
+    <div v-if="links.length > 0" v-for="(link, index) in links" :key="index" class="entity-field-links__link">
         <div class="entity-field-links__link-fields grid-12">
             <div class="field col-6 sm:col-12">
                 <label> <?php i::_e('Título') ?> </label>
@@ -43,8 +43,9 @@ $this->import('
         </mc-confirm-button>
     </div>
 
-    <button v-if="editable" type="button" class="button button--sm button--primary button--icon" @click="addLink">
+    <button v-if="editable" type="button" class="button button--sm button--primary button--icon" @click="addLink()">
         <mc-icon name="add"></mc-icon>
-        <?php i::_e('Adicionar novo link') ?>
+        <template v-if="links.length == 0"><?php i::_e('Adicionar link') ?></template>
+        <template v-if="links.length > 0"><?php i::_e('Adicionar novo link') ?></template>
     </button>
 </div>

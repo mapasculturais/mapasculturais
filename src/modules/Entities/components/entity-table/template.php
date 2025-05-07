@@ -47,16 +47,16 @@ $this->import('
                         <div class="entity-table__main-filter">
                             <div class="entity-table__search-field">
                                 <slot name="searchKeyword" :query="query" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
-                                    <textarea ref="search" v-model="this.query['@keyword']" @keyup="entities.refresh()" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
-                                    
+                                    <textarea ref="search" v-model="debouncedSearchText" rows="1" placeholder="<?= i::__('Pesquisa por palavra-chave separados por ;') ?>" class="entity-table__search-input"></textarea>
+
                                     <button @click="entities.refresh()" class="entity-table__search-button">
                                         <mc-icon name="search"></mc-icon>
                                     </button>
                                 </slot>
                             </div>
-                            
+
                             <slot name="filters" :entities="entities" :filters="filters" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
-                            </slot>                            
+                            </slot>
                         </div>
                     </template>
 
@@ -94,31 +94,33 @@ $this->import('
                     </div>
                 </div>
             </div>
-            <div v-if="!hideSort" class="entity-table__info">
-                <span v-if="entities.length === entities.metadata.count">
-                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-                </span>
-                <span v-else>    
-                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
-                </span>
-                <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
-            </div>
+            <template v-if="entities.length > 0">
+                <div v-if="!hideSort" class="entity-table__info">
+                    <span v-if="entities.length === entities.metadata.count">
+                        <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                    </span>
+                    <span v-else>
+                        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados ordenados por ') ?>
+                    </span>
+                    <mc-select small v-model:default-value="entitiesOrder" :options="sortOptions" placeholder="<?= i::__('Selecione a ordem de listagem') ?>"></mc-select>
+                </div>
 
-            <div v-if="hideSort" class="entity-table__info">
-                <span v-if="entities.length === entities.metadata.count">
-                    <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
-                </span>
-                <span v-else>    
-                    <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
-                </span>
-            </div>
+                <div v-if="hideSort" class="entity-table__info">
+                    <span v-if="entities.length === entities.metadata.count">
+                        <?= i::__('Exibindo todos os {{entities.metadata.count}} registros encontrados') ?>
+                    </span>
+                    <span v-else>
+                        <?= i::__('Exibindo {{entities.length}} dos {{entities.metadata.count}} registros encontrados') ?>
+                    </span>
+                </div>
+            </template>
         </template>
 
 
         <template #default="{entities, refresh}">
               <!-- SÓ O HEADER -->
             <div class="entity-table__table-header-wrapper" v-show="ready" ref="headerWrapper" @scroll="scroll($event)">
-                <div class="entity-table__table-header">
+                <div ref="fakeHeaderTable" class="entity-table__table-header">
                     <div v-if="showIndex" class="entity-table__index sticky entity-table__show-columns" :style="{width: columnsWidth['-index'] ?? '', minHeight: headerHeight + 'px'}">
                         <mc-popover>
                             <div class="entity-table__popover">
@@ -128,14 +130,18 @@ $this->import('
                                     <input ref="allHeaders" type="checkbox" @click="showAllHeaders()" :checked="allHeadersActive"> <?= i::__('Todas as colunas') ?>
                                 </label>
 
-                                <label v-for="column in columns" class="field__checkbox">
-                                    <input v-if="column.text" :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
-                                </label>
+                                <template v-for="column in columns">
+                                    <label v-if="column.text" class="field__checkbox">
+                                        <input :checked="column.visible" type="checkbox" :value="column.slug" @click="toggleHeaders($event)"> {{column.text}} 
+                                    </label>
+                                </template>
                             </div>
 
                             <template #button="popover">
                                 <a href="#" v-tooltip="'<?= i::__("Configurar colunas") ?>'" data-toggle="tooltip" @click.prevent="popover.toggle()">
-                                    <mc-icon name="columns-edit"></mc-icon>
+                                    <slot name="icon-text" :popover="popover">
+                                        <mc-icon name="columns-edit"></mc-icon>
+                                    </slot>
                                 </a>
                             </template>
                         </mc-popover>
@@ -172,7 +178,7 @@ $this->import('
                         </tbody>
                     </table>
                 </div>          
-                <div class="entity-table__table-scroll" ref="scrollWrapper" @scroll="scroll($event)">
+                <div class="entity-table__table-scroll scrollbar" ref="scrollWrapper" @scroll="scroll($event)">
                     <div :style="{width}">&nbsp;</div>
                 </div>
             </div>

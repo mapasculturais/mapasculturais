@@ -1,5 +1,7 @@
 class Entity {
-    constructor(objectType, id, scope) {
+    static __pkCache = new Map();
+  
+    constructor(objectType, id, scope = 'default') {
         this.__objectType = objectType;
         this.id = id;
         this.__scope = (scope || 'default');
@@ -14,7 +16,13 @@ class Entity {
         this.text = Utils.getTexts('mc-entity');
     }
 
-    populate(obj, preserveValues = true) {
+    static fromJson(object, scope = 'default') {
+        const entity = new Entity(object['@entityType'], object.id, scope);
+        entity.populate(object);
+        return entity;
+    }
+
+    populate(obj, preserveValues = true, updatedData = null) {
         const __properties = this.$PROPERTIES;
         const __relations = this.$RELATIONS;
         const defaultProperties = [
@@ -103,7 +111,15 @@ class Entity {
 
         this.cleanErrors();
         
-        this.__originalValues = this.data();
+        if (updatedData) {
+            const data = this.data();
+            for (const key in updatedData) {
+                this.__originalValues[key] = data[key];
+            }
+        } else {
+            this.__originalValues = this.data();
+        }
+      
         return this;
     }
 
@@ -231,10 +247,6 @@ class Entity {
 
         if(onlyModifiedFields) {
             for(let key in result) {
-                if(!result[key] && !this.__originalValues[key]) {
-                    delete result[key];
-                }
-
                 if(JSON.stringify(result[key]) == JSON.stringify(this.__originalValues[key])){
                     delete result[key];
                 }
@@ -263,15 +275,14 @@ class Entity {
     }
 
     get $PK() {
-        const __properties = this.$PROPERTIES;
-        let pk;
-        for (let prop in __properties) {
-            if(__properties[prop].isPK) {
-                pk = prop;
-                break;
-            }
+        if (Entity.__pkCache.has(this.__objectType)) {
+            return Entity.__pkCache.get(this.__objectType);
         }
 
+        const __properties = this.$PROPERTIES;
+        const [pk] = Object.entries(__properties).find(([key, prop]) => prop.isPK) ?? [];
+
+        Entity.__pkCache.set(this.__objectType, pk);
         return pk;
     }
 
@@ -326,8 +337,7 @@ class Entity {
         return this.API.createCacheId(this.id);
     }
 
-    sendMessage(message, type) {
-        type = type || 'success';
+    sendMessage(message, type = 'success') {
         if(this.__messagesEnabled) {
             const messages = useMessages();
             messages[type](message);
@@ -434,7 +444,7 @@ class Entity {
                         } else {
                             this.sendMessage(this.text('entidade salva'));
                         }
-                        this.populate(entity, preserveValues);
+                        this.populate(entity, preserveValues, data);
 
                     }).then((response) => {
                         for(let resolve of this.resolvers) {

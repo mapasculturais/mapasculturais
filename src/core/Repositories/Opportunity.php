@@ -4,7 +4,12 @@ use MapasCulturais\Traits;
 use MapasCulturais\Entities\ProjectOpportunity;
 use MapasCulturais\Entities\Project;
 use DateTime;
-
+use Doctrine\DBAL\Exception;
+use Doctrine\ORM\Query;
+use LogicException;
+use Doctrine\ORM\Exception\ORMException;
+use MapasCulturais\App;
+use Psr\Cache\InvalidArgumentException;
 
 class Opportunity extends \MapasCulturais\Repository{
     use Traits\RepositoryKeyword,
@@ -67,6 +72,48 @@ class Opportunity extends \MapasCulturais\Repository{
         $query->setParameters($params);
 
         return $query->getResult();
+    }
+
+    /**
+     * Retornar as oportunidades que o avaliador pode avaliar
+     * 
+     * @param int $valuer_user_id 
+     * @return Opportunity[]|array
+     */
+    function findValuerOpportunities(int $valuer_user_id, $only_ids = false, $hydration_mode = Query::HYDRATE_OBJECT): array {
+        $app = App::i();
+
+        $conn = $app->em->getConnection();
+
+        $opportunity_ids = $conn->fetchFirstColumn("
+            select distinct(opportunity_id) from evaluations where valuer_user_id = :valuer_user_id;
+        ", [
+            'valuer_user_id' => $valuer_user_id,
+        ]);
+        if (empty($opportunity_ids)) {
+            return [];
+        }
+
+        if($only_ids) {
+            return $opportunity_ids;
+        }
+        
+        $query = $app->em->createQuery("
+            SELECT 
+                o
+            FROM
+                MapasCulturais\Entities\Opportunity o
+            WHERE 
+                o.id in (:opportunity_ids)
+                AND o.status = 1 OR o.status = -1"
+
+        );
+
+        $query->setParameters([
+            'opportunity_ids' => $opportunity_ids,
+        ]);
+
+        return $query->getResult($hydration_mode);
     }
 }
 

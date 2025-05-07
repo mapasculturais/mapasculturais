@@ -1377,8 +1377,8 @@ class App {
                   if ($expire_in && (microtime (true) - filectime($filename) > $expire_in)) {
                       unlink($filename);
                   } else {
-                      $count += 0.1;
-                      usleep(100000);
+                      $count += 0.01;
+                      usleep(10000);
                   }
               }
           }
@@ -1401,8 +1401,10 @@ class App {
         
         $filename = sys_get_temp_dir()."/lock-{$name}.lock"; 
 
-        unlink($filename);
-     }
+        if (file_exists($filename)){
+            unlink($filename);
+        }
+    }
      
      /**
       * Transforma o texto num slug
@@ -1767,7 +1769,7 @@ class App {
      * @return Job Retorna o objeto Job criado
      * @throws Exception Se o tipo de job for inválido
      */
-    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false, User|int $user = null, Subsite|int $subsite = null) {
+    public function enqueueJob(string $type_slug, array $data, string $start_string = 'now', string $interval_string = '', int $iterations = 1, $replace = false, User|int|null $user = null, Subsite|int|null $subsite = null) {
         if($this->config['app.log.jobs']) {
             $this->log->debug("ENQUEUED JOB: $type_slug");
         }
@@ -1792,9 +1794,22 @@ class App {
 
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
+        if($replace) {
+            $conn = $this->em->getConnection();
+            $conn->delete('job', ['id' => $id]);
+        }
+
+        /** @var Entities\Job $job */
         if ($job = $this->repo('Job')->find($id)) {
-            if ($replace) {
-                $job->delete(true);
+            $job_create_timestamp = $job->createTimestamp;
+
+            // o job tem mais que 5 minutos?
+            $is_old = $job_create_timestamp->getTimestamp() < (time() - 5 * MINUTE_IN_SECONDS);
+
+            // remove o job se ele estiver com status de processamento e for mais velho que 5 minutos
+            if($job->status == Job::STATUS_PROCESSING && $iterations == 1 && $is_old) {
+                $conn = $this->em->getConnection();
+                $conn->delete('job', ['id' => $id]);
             } else {
                 return $job;
             }
@@ -1828,9 +1843,8 @@ class App {
                 $job->save(true);
             }
         } catch (\Exception $e) {
-            $this->log->error('ERRO AO SALVAR JOB: ' . print_r(array_keys($data), true));
+            $this->log->error("ERRO AO SALVAR JOB ($type_slug): " . print_r($e, true));
         }
-
         return $job;
     }
 
@@ -2536,6 +2550,10 @@ class App {
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true),
+            'docs-cpf' => new Definitions\FileGroup('docs-cpf', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-cnpj' => new Definitions\FileGroup('docs-cnpj', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-cnh' => new Definitions\FileGroup('docs-cnh', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
+            'docs-rg' => new Definitions\FileGroup('docs-rg', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
         ];
 
         // register file groups
@@ -2543,6 +2561,10 @@ class App {
         $this->registerFileGroup('agent', $file_groups['header']);
         $this->registerFileGroup('agent', $file_groups['avatar']);
         $this->registerFileGroup('agent', $file_groups['gallery']);
+        $this->registerFileGroup('agent', $file_groups['docs-cpf']);
+        $this->registerFileGroup('agent', $file_groups['docs-cnpj']);
+        $this->registerFileGroup('agent', $file_groups['docs-cnh']);
+        $this->registerFileGroup('agent', $file_groups['docs-rg']);
 
         $this->registerFileGroup('space', $file_groups['downloads']);
         $this->registerFileGroup('space', $file_groups['header']);

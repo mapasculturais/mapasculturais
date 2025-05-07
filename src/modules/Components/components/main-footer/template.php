@@ -24,9 +24,9 @@ $config = $app->config['social-media'];
             </div>
     
             <div class="main-footer__content--logo-share">
-                <?php foreach ($config as $conf) : ?>
+                <?php foreach ($config as $meta => $conf) : ?>
                     <a target="_blank" href="<?= $conf['link'] ?>">
-                        <mc-icon name='<?= $conf['title'] ?>'></mc-icon>
+                        <mc-icon name='<?= $conf['icon'] ?>'></mc-icon>
                     </a>
                 <?php endforeach; ?>
             </div>

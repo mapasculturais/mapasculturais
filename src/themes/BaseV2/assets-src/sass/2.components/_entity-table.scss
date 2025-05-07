@@ -193,7 +193,13 @@
     &__table-scroll {
         overflow-x: auto; 
         position: sticky; 
-        bottom:0
+        bottom: 0;
+        width: calc(100vw - size(46));
+        z-index: 2;
+
+        & > * {
+            height: size(1);
+        }
     }
 
     &__advanced-filters {
@@ -212,6 +218,8 @@
     .sticky {
         position: sticky;
         background-color: white;
+        width: size(152);
+        z-index: 1;
     }
 
     .table-header-cell {

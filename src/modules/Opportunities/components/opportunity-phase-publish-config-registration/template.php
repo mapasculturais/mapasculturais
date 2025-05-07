@@ -101,7 +101,7 @@ $this->import('
                     <div class="opportunity-phase-publish-config-registration__button " :class="{'col-6': !phase.isLastPhase}">
                         <mc-confirm-button  yes="<?= i::__('Publicar Resultado')?>" @confirm="publishRegistration()">
                             <template #button="modal">
-                                <button  :class="['button', 'button--primary', {'button--large col-6': !phase.isLastPhase}, {'disabled': !firstPhase.status >0}, {'button--bg': phase.isLastPhase}, {'disabled': isOpenPhase}]" @click="modal.open()">
+                                <button  :class="['button', 'button--primary', {'button--large col-6': !phase.isLastPhase}, {'button--bg': phase.isLastPhase}, {'disabled': isOpenPhase}]" @click="modal.open()">
                                     <?= i::__("Publicar Resultados") ?>
                                 </button>
                             </template>

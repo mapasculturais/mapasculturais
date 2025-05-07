@@ -99,7 +99,7 @@ app.component("fields-visible-evaluators", {
             return fields;
         },
         getFields() {
-            let avaliableFields = this.entity.opportunity.avaliableEvaluationFields;
+            let avaliableFields = this.entity.opportunity.avaliableEvaluationFields || {};
 
             _fields = Object.values(this.fields).map((item, index) => {
                 let field = { ...this.fields[index] }

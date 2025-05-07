@@ -23,7 +23,11 @@ app.component('opportunity-committee-groups', {
             selectedFields: {
                 global: '',
                 individual: ''
-            }
+            },
+            distributingEvaluations: false,
+            percentage: null,
+            statusMessage: null,
+            interval: null,
         }
     },
 
@@ -44,6 +48,33 @@ app.component('opportunity-committee-groups', {
                 this.$refs.tabs.activeTab = this.$refs.tabs.tabs[0];
             }
         });
+
+        this.interval = setInterval(async () => {
+            try {
+                const req = await fetch(`/files/distributionslog/${this.entity.id}.log?` + new Date().getTime());
+                if(req.status == 200) {
+                    const message = await req.text();
+                    this.statusMessage = message;
+                    if(/.*\%/.test(message)){
+                        this.percentage = message;
+                    } else {
+                        this.percentage = '100%';
+                    }
+                } else {
+                    this.statusMessage = null;
+                    this.percentage = null;
+                }
+
+            } catch(error) {
+                console.log(error);
+                this.statusMessage = null;
+                this.percentage = null;
+            }
+        }, 1000);
+    },
+
+    unmounted() {
+        clearInterval(this.interval);
     },
     
     methods: {
@@ -260,6 +291,13 @@ app.component('opportunity-committee-groups', {
         enableExternalReviews(value) {
             this.entity.showExternalReviews = value ? true : false;
             this.autoSave();
+        },
+
+        distriuteEvaluations() {
+            this.distributingEvaluations = true;
+            this.entity.POST('registributeEvaluations', {callback: () => {
+                this.distributingEvaluations = false;
+            }});
         }
     },
 });

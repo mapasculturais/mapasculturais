@@ -68,6 +68,7 @@ app.component('entity-table', {
         },
         select: String,
         showIndex: Boolean,
+        allHeaders: Boolean,
         hideFilters: Boolean,
         hideAdvancedFilters: Boolean,
         hideSort: Boolean,
@@ -83,8 +84,12 @@ app.component('entity-table', {
         this.originalQuery = JSON.parse(JSON.stringify(this.query));
         for(let header of this.columns) {
             header.slug = this.parseSlug(header);
-            header.visible = visible.includes(header.slug) || required.includes(header.slug);
             header.required = required.includes(header.slug);
+            if (this.allHeaders) {
+                header.visible = true;
+            } else {
+                header.visible = visible.includes(header.slug) || required.includes(header.slug);
+            }
         }
     },
 
@@ -118,6 +123,12 @@ app.component('entity-table', {
     data() {
         const id = this.query['@opportunity'] ?? '';
         const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
+        
+        const seen = new Set();
+        const columns = this.headers.filter(obj => {
+            const key = obj.value || obj.slug;
+            return seen.has(key) ? false : seen.add(key);
+        })
 
         const getSeals = $MAPAS.config.entityTable.seals;
         let seals = {}
@@ -128,8 +139,9 @@ app.component('entity-table', {
         return {
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
-            columns: this.headers,
+            columns,
             searchText: '',
+            timeout: null,
             left: 0,
             width: '100%', //no exemplo está iniciada em 0,
             columnsWidth: {},
@@ -201,7 +213,7 @@ app.component('entity-table', {
                     }
                 }
             }
-            
+
             return filters;
         },
 
@@ -220,17 +232,17 @@ app.component('entity-table', {
             delete query['userId'];
             delete query['ip'];
             delete query['sessionId'];
-           
+
             if (this.type == 'agent') {
                 delete query['type']
             }
-            
+
             return Object.keys(query).length > 0;
         },
 
         appliedFilters() {
             const query = JSON.parse(JSON.stringify(this.query));
-            
+
             delete query['@limit'];
             delete query['@opportunity'];
             delete query['opportunity'];
@@ -243,7 +255,7 @@ app.component('entity-table', {
             delete query['userId'];
             delete query['ip'];
             delete query['sessionId'];
-           
+
             if (this.type == 'agent') {
                 delete query['type']
             }
@@ -274,9 +286,26 @@ app.component('entity-table', {
             spreadsheetQuery = Object.fromEntries(
                 Object.entries(spreadsheetQuery).filter( ([key, value]) => value !== null && value !== undefined )
             );
-            
+
             return spreadsheetQuery;
         },
+
+        debouncedSearchText: {
+            get () {
+                return this.searchText;
+            },
+            set (value) {
+                if (this.timeout) {
+                    clearTimeout(this.timeout);
+                }
+
+                this.searchText = value;
+                this.timeout = setTimeout(() => {
+                    this.query['@keyword'] = this.searchText;
+                    this.$refs.entities.entities.refresh();
+                }, 500);
+            },
+        }
     },
 
     methods: {
@@ -292,18 +321,18 @@ app.component('entity-table', {
             if (prop === '@verified' && value === 1) {
                 return null;
             }
-        
+
             if (propLabels[prop] && (value != '' || prop === '@pending')) {
                 return [{ prop, value: prop === '@pending' ? 'null' : value, label: propLabels[prop] }];
             }
-        
+
             const typeMappings = {
                 'opportunity': this.opportunityTypes,
                 'project': this.projectTypes,
                 'space': this.spaceTypes,
                 '@seals': this.seals
             };
-        
+
             if (typeMappings[prop] || (prop === 'type' && typeMappings[this.type])) {
                 let values = this.getFilterValues(value);
                 if (values) {
@@ -312,7 +341,7 @@ app.component('entity-table', {
                     return values.map(val => ({ prop, value: val, label: typeMap[val] || val }));
                 }
             }
-        
+
             let values = this.getFilterValues(value);
             if (values) {
                 if (prop == 'status' || prop == '@pending' || prop == '@filterStatus' || prop == '@evaluationId') {
@@ -367,15 +396,14 @@ app.component('entity-table', {
                         return {prop, value, label: filtersDict[value]} 
                     });
                 }
-        
+
                 const fieldDescription = this.$description[prop];
                 if (fieldDescription?.field_type === 'select') {
                     return values.map(val => ({ prop, value: val, label: fieldDescription.options[val] || val }));
                 } else {
                     return values.map(val => {
-                        
                         let label = typeof val === 'string' ? val.replace(/(\\)/g, '') : val;
-                        
+
                         if(this.filtersDictComplement && this.filtersDictComplement?.type == this.type) {
                             label = this.filtersDictComplement[label] || label;
                         }
@@ -384,7 +412,7 @@ app.component('entity-table', {
                     });
                 }
             }
-        
+
             return null;
         },
 
@@ -397,15 +425,15 @@ app.component('entity-table', {
             if (values) {
                 const operator = values[1];
                 const _values = values[2];
-            
+
                 if (exclude.includes(operator)) {
                     return null;
                 }
-            
+
                 if (operator == '@pending') {
                     return 'null';
                 }
-            
+
                 if (_values) {
                     if (operator == 'IN' || operator == 'IIN') {
                         let commaValues = _values.startsWith(',') ? _values.slice(1) : _values;
@@ -413,7 +441,7 @@ app.component('entity-table', {
                     } else {
                         values = _values;
                     }
-            
+
                     return values.split('%break%').filter(value => value.trim());
                 } else {
                     return null;
@@ -447,6 +475,7 @@ app.component('entity-table', {
                         val = val?.filter(item => item !== "null" && item !== "").join(', ')
                         break;
                     case 'links':
+                        val = (!val || val === '"null"' || JSON.parse(val) === '"null"' || val == 'null') ? null : val;                                      
                         val = val ? JSON.parse(val).map(item => `${item.title}: ${item.value},`).join('\n') : null
                         break;
                     case 'point':
@@ -480,7 +509,7 @@ app.component('entity-table', {
                 let _val = new McDate(val.date);
                 val = _val.date('numeric year') + ' ' + _val.time('2-digit');
             }
-            
+
             if(val instanceof McDate) {
                 if(description.type == 'datetime') {
                     val = val.date('numeric year') + ' ' + val.time('2-digit');
@@ -495,7 +524,7 @@ app.component('entity-table', {
         resetHeaders() {
             const visible = this.visible instanceof Array ? this.visible : this.visible.split(",");
             const required = this.required instanceof Array ? this.required : this.required.split(",");
-            
+
             for (let header of this.columns) {
                 if(visible.includes(header.slug) || required.includes(header.slug)) {
                     header.visible = true;
@@ -537,7 +566,8 @@ app.component('entity-table', {
             }
         },
 
-        clearFilters(entities) {            
+        clearFilters(entities) {
+            this.searchText = '';
             for (let prop in this.query) {
                 if (this.originalQuery[prop]) {
                     this.query[prop] = this.originalQuery[prop];
@@ -572,7 +602,7 @@ app.component('entity-table', {
                                     values.splice(index, 1);
                                 }
                             }
-                            
+
                             this.query[filter.prop] = `${operator}(${values.toString()})`;
                         } else {
                             delete this.query[filter.prop];
@@ -595,7 +625,7 @@ app.component('entity-table', {
             } else {
                 currentValues.push(option);
             }
-            
+
             if (currentValues.length > 0) {
                 this.query[fieldName] = `IN(${currentValues.toString()})`;
             } else {
@@ -619,7 +649,6 @@ app.component('entity-table', {
             headerWrapper.scrollLeft = scrollLeft; 
             contentWrapper.scrollLeft = scrollLeft;
             scrollWrapper.scrollLeft = scrollLeft;
-            
         },
 
         setColumnWidth(slug) {
@@ -653,6 +682,13 @@ app.component('entity-table', {
             this.$nextTick(() => {
                 this._ready = false;
 
+                if (this.$refs.fakeHeaderTable && this.$refs.contentTable) {
+                    const contentWidth = this.$refs.contentTable.offsetWidth + 'px';
+                    
+                    this.$refs.fakeHeaderTable.style.display = 'block'; 
+                    this.$refs.fakeHeaderTable.style.width = contentWidth;
+                }
+
                 this.totalWidth = 0;
                 this.setColumnWidth('-index');
                 for(let column of this.visibleColumns) {
@@ -664,14 +700,14 @@ app.component('entity-table', {
                     const column = this.visibleColumns[i];
                     this.setColumnRight(column.slug);
                 }
-                
+
                 if(this._ready && this.$refs.headerTable){
                     this.ready = this._ready;
                     this.headerHeight = this.$refs.headerTable.offsetHeight + 20;
                 }
             });
         },
-        
+
         resize() {
             const self = this;
             self.$nextTick(() => {

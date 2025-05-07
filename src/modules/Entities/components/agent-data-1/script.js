@@ -16,6 +16,15 @@ app.component('agent-data-1', {
             type: [String, Array, Object],
             required: false
         },
+        showOnlyPublicData: {
+            type: Boolean,
+            default: false,
+        },
+
+        alwaysShowTitle: {
+            type: Boolean,
+            default: true,
+        },
     },
     methods: {
         verifyAllFields(fields) {

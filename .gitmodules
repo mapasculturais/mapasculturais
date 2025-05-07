@@ -9,7 +9,10 @@
 	url = https://github.com/culturagovbr/plugin-SpamDetector.git
 [submodule "src/plugins/RecreatePCacheOnLogin"]
 	path = src/plugins/RecreatePCacheOnLogin
-	url = https://github.com/mapasculturais/plugin-RecreatePCacheOnLogin.git
+	url = https://github.com/culturagovbr/plugin-RecreatePCacheOnLogin.git
 [submodule "src/themes/MapaMinC"]
 	path = src/themes/MapaMinC
 	url = https://github.com/culturagovbr/theme-MapaMinC.git
+[submodule "src/themes/Funarte"]
+	path = src/themes/Funarte
+	url = https://github.com/culturagovbr/theme-Funarte.git

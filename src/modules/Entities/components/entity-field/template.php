@@ -16,9 +16,10 @@ $this->import('
     mc-tag-list
     entity-field-bank-info
     select-municipio
+    entity-file
 ')
 ?>
-<div v-if="propExists()" class="field" :class="[{error: hasErrors}, classes]" :data-field="prop">
+<div v-if="propExists()" class="field" :class="[{error: hasErrors}, {disabled: readonly || disabled}, classes]" :data-field="prop">
     <label class="field__title" v-if="!hideLabel && !is('checkbox')" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
@@ -32,6 +33,8 @@ $this->import('
 
         <!-- masked fields -->
         <input v-if="is('cpf')" v-maska data-maska="###.###.###-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('cnhNumero')" v-maska data-maska="###########" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
+        <input v-if="is('rgNumero')" v-maska data-maska="########" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
         
         <input v-if="is('cnpj')" v-maska data-maska="##.###.###/####-##" :value="value" :id="propId" :name="prop" type="text" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" autocomplete="off" :disabled="readonly || disabled" :readonly="readonly">
 
@@ -50,6 +53,12 @@ $this->import('
         <entity-field-datepicker v-if="is('time') || is('datetime') || is('date')" :id="propId" :entity="entity" :prop="prop" :min-date="min" :max-date="max" :field-type="fieldType" @change="change($event, true)"></entity-field-datepicker>
         
         <textarea ref="textarea" v-if="is('textarea')" :value="value" :id="propId" :name="prop" :maxLength="maxLength || undefined" @input="change($event)" @blur="change($event,true)" :disabled="readonly || disabled" :readonly="readonly"></textarea>
+
+
+        <template v-if="is('file')">
+            <entity-file :entity="entity" disableName="true" :titleModal="titleModal" :groupName="groupName" classes="col-12" editable button-text-value="Anexar arquivo" :disabled="readonly || disabled" :readonly="readonly"></entity-file>
+        </template>
+
 
         <template v-if="is('select')">
             <template v-if="description.registrationFieldConfiguration?.config?.viewMode === 'radio'">
@@ -70,7 +79,7 @@ $this->import('
         </template>
 
         <template v-if="is('links')">
-            <entity-field-links :entity="entity" :prop="prop" :show-title="description && Boolean(description.registrationFieldConfiguration?.config?.title)" @change="change($event, true)" :editable="!disabled"></entity-field-links>
+            <entity-field-links :entity="entity" :prop="prop" :show-title="Boolean(description?.registrationFieldConfiguration?.config?.title)" @change="change($event, true)" :editable="!disabled"></entity-field-links>
         </template>
 
         <template v-if="is('multiselect') || is('checklist')">
