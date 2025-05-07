@@ -2535,6 +2535,21 @@ $$
                 'evaluateRegistrations',
                 'createEvents',
                 'requestEventRelation');");
+    },
+
+    'Atualiza o consolidated_result das inscrições com valores salvos em portuguêss' => function () {
+        __exec("
+            UPDATE registration r
+            SET consolidated_result = CASE
+                WHEN r.consolidated_result = 'Habilitado' THEN 'valid'
+                WHEN r.consolidated_result = 'Inabilitado' THEN 'invalid'
+                ELSE r.consolidated_result
+            END
+            FROM evaluation_method_configuration emc
+            WHERE r.opportunity_id = emc.opportunity_id
+                AND emc.type = 'qualification'
+                AND r.consolidated_result IN ('Habilitado', 'Inabilitado')
+        ");
     }
     
 ] + $updates ;   
