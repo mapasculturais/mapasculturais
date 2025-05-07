@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 use MapasCulturais\ApiQuery;
@@ -546,6 +547,11 @@ trait ControllerAPI{
         $app = App::i();
         $class = $this->entityClassName;
 
+        $locale = $this->getData['locale'] ?? null;
+        if ($locale) {
+            i::load_default_textdomain($locale);
+        }
+
         $metadata = $class::getPropertiesMetadata();
         $taxonomies = $app->getRegisteredTaxonomies();
         $filters = [
@@ -559,11 +565,11 @@ trait ControllerAPI{
             if (!$is_private && ($type == 'select' || $type == 'multiselect')) {
                 $options = [];
                 foreach ($metadatum['options'] as $value => $label) {
-                    $options[] = [ 'label' => $label, 'value' => $value ];
+                    $options[] = [ 'label' => i::__($label), 'value' => $value ];
                 }
 
                 $filters['metadata']->$slug = [
-                    'label' => $metadatum['label'] ?? $slug,
+                    'label' => i::__($metadatum['label'] ?? $slug),
                     'slug' => $slug,
                     'options' => $options,
                 ];
@@ -574,11 +580,11 @@ trait ControllerAPI{
             if (in_array($class, $taxonomy->entities)) {
                 $options = [];
                 foreach ($taxonomy->restrictedTerms as $value => $label) {
-                    $options[] = [ 'label' => $label, 'value' => $value ];
+                    $options[] = [ 'label' => i::__($label), 'value' => $value ];
                 }
 
                 $filters['taxonomies']->$slug = [
-                    'label' => $taxonomy->description ?? $slug,
+                    'label' => i::__($taxonomy->description ?? $slug),
                     'slug' => $slug,
                     'options' => $options,
                 ];
