@@ -27,6 +27,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - **entity** - possibilita a vinculação de entidade em metadados
 - parâmetro para substituições na função text do javascript
 - refatoração da distribuição das avaliações para não mais dependerem do cache de permissão
+- Ajusta função de tradução para que faça a leitura dos arquivos de tradução dos plugins
   
 ## [7.5.18] - 2025-01-29
 #### Correções

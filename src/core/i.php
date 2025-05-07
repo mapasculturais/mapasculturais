@@ -45,6 +45,19 @@ class i {
 
     	self::load_textdomain( 'default', THEMES_PATH . "/BaseV1/languages/", $locale );
 
+        // Load plugins into default domain
+        if ($handle = opendir(PLUGINS_PATH)) {
+            while (($file = readdir($handle)) !== false) {
+                if($file !== "." && $file !== ".." && $file !== ".gitkeep") {
+                    $dir = PLUGINS_PATH . $file . "/translations";
+                    if(file_exists($dir)) {
+                        self::load_textdomain( 'default', $dir, $locale );
+                    }
+                }
+            }
+            closedir($handle);
+        }
+
     	return $return;
     }
 
