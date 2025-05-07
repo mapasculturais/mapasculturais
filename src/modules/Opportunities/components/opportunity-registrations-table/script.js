@@ -89,8 +89,7 @@ app.component('opportunity-registrations-table', {
         const default_select = $MAPAS.config.opportunityRegistrationTable.defaultSelect;
         const defaultAvailable = $MAPAS.config.opportunityRegistrationTable.defaultAvailable;
         
-        const avaliableFields = defaultAvailable.length > 0 ? [...defaultAvailable] : [];
-
+        let avaliableFields = defaultAvailable.length > 0 ? [...defaultAvailable] : [];
         let visible = this.visibleColumns.join(',');
         let order = 'status DESC,consolidatedResult DESC';
         let consolidatedResultOrder = 'consolidatedResult';
@@ -111,6 +110,19 @@ app.component('opportunity-registrations-table', {
                 }
             }
         }
+
+        const sortedAvaliableFields = [...avaliableFields];
+        const elementsWithDisplayOrder = avaliableFields.filter(item => item.displayOrder !== undefined);
+        const sortedElements = [...elementsWithDisplayOrder].sort((a, b) => a.displayOrder - b.displayOrder);
+
+        let sortedIndex = 0;
+        for (let i = 0; i < sortedAvaliableFields.length; i++) {
+            if (sortedAvaliableFields[i].displayOrder !== undefined) {
+                sortedAvaliableFields[i] = sortedElements[sortedIndex++];
+            }
+        }
+
+        avaliableFields = sortedAvaliableFields;
 
         if(isTechnicalEvaluationPhase){
             consolidatedResultOrder = 'consolidatedResult AS FLOAT';
@@ -317,7 +329,6 @@ app.component('opportunity-registrations-table', {
                     return this.avaliableColumns.indexOf(item.value) >= 0;
                 });
             }
-
 
             return itens;
         },

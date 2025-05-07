@@ -48,6 +48,7 @@ if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguratio
     $data['isTechnicalEvaluationPhase'] = false;
 }
 
+$skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
 $default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
     [
@@ -99,7 +100,7 @@ $can_see = function ($def) use ($app) {
 // Adiciona os metadados no default_headers
 $definitions = MapasCulturais\Entities\Registration::getPropertiesMetadata();
 foreach ($definitions as $field => $def) {
-    if (!str_starts_with($field, "_") && !str_starts_with($field, "field") && $can_see($def) && $def['label']) {
+    if (!in_array($field, $skipFields) && !str_starts_with($field, "_") && !str_starts_with($field, "field") && $can_see($def) && $def['label']) {
         $data = [
             'text' => $def['label'],
             'value' => $field,
