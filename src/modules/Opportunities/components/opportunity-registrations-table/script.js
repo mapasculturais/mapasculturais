@@ -7,7 +7,7 @@ app.component('opportunity-registrations-table', {
         },
         visibleColumns: {
             type: Array,
-            default: ["agent", "status", "category", "consolidatedResult", "score", "editable"],
+            default: ["agent", "status", "category", "consolidatedResult", "editable","updateTimestamp","sentTimestamp","createTimestamp"],
         },
         identifier: {
             type: String,
@@ -89,8 +89,7 @@ app.component('opportunity-registrations-table', {
         const default_select = $MAPAS.config.opportunityRegistrationTable.defaultSelect;
         const defaultAvailable = $MAPAS.config.opportunityRegistrationTable.defaultAvailable;
         
-        const avaliableFields = defaultAvailable.length > 0 ? [...defaultAvailable] : [];
-
+        let avaliableFields = defaultAvailable.length > 0 ? [...defaultAvailable] : [];
         let visible = this.visibleColumns.join(',');
         let order = 'status DESC,consolidatedResult DESC';
         let consolidatedResultOrder = 'consolidatedResult';
@@ -111,6 +110,19 @@ app.component('opportunity-registrations-table', {
                 }
             }
         }
+
+        const sortedAvaliableFields = [...avaliableFields];
+        const elementsWithDisplayOrder = avaliableFields.filter(item => item.displayOrder !== undefined);
+        const sortedElements = [...elementsWithDisplayOrder].sort((a, b) => a.displayOrder - b.displayOrder);
+
+        let sortedIndex = 0;
+        for (let i = 0; i < sortedAvaliableFields.length; i++) {
+            if (sortedAvaliableFields[i].displayOrder !== undefined) {
+                sortedAvaliableFields[i] = sortedElements[sortedIndex++];
+            }
+        }
+
+        avaliableFields = sortedAvaliableFields;
 
         if(isTechnicalEvaluationPhase){
             consolidatedResultOrder = 'consolidatedResult AS FLOAT';
@@ -149,6 +161,11 @@ app.component('opportunity-registrations-table', {
                     order = '@quota';
                     sortOptions.splice(0, 0, {value: '@quota', label: this.text('classificação final')});
                 }
+            }   
+            
+            // Exibe por padrão as faixas/linhas quando as mesmas existe e estão configuradas
+            if(this.phase.registrationRanges && this.phase.registrationRanges.length > 0) {
+                visible += ',range';
             }
         }
         
@@ -310,7 +327,6 @@ app.component('opportunity-registrations-table', {
                     return this.avaliableColumns.indexOf(item.value) >= 0;
                 });
             }
-
 
             return itens;
         },
