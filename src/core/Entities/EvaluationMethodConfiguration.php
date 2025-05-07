@@ -385,9 +385,49 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
                 $status = $em->valueToString($values['consolidatedResult']);
                 if($status) {
                     $data['evaluations'][$status] = $values['qtd'];
-                } else {
-                    $data['evaluations'][i::__('Não Avaliada')] = $values['qtd'];
                 }
+            }
+        }
+
+        // Conta as inscrições que tenham o status pendente
+        $query = $app->em->createQuery("
+            SELECT 
+                count(r) as qtd 
+            FROM 
+                MapasCulturais\\Entities\\Registration r  
+            WHERE 
+                r.opportunity = :opp AND r.status = 1
+        ");
+
+        $query->setParameters([
+            "opp" => $opportunity,
+        ]);
+
+        if($result = $query->getResult()){
+            foreach($result as $values){
+                $data['evaluations'][i::__('Não Avaliada')] = $values['qtd'];
+            }
+        }
+
+        // Conta as inscrições com avaliações iniciadas
+        $query = $app->em->createQuery("
+            SELECT 
+                COUNT(re) AS qtd 
+            FROM 
+                MapasCulturais\\Entities\\RegistrationEvaluation re
+            JOIN 
+                re.registration r
+            WHERE 
+                r.opportunity = :opp AND r.status < 2
+        ");
+        
+        $query->setParameters([
+            "opp" => $opportunity,
+        ]);
+
+        if($result = $query->getResult()){
+            foreach($result as $values){
+                $data['evaluations'][i::__('Com avaliações iniciadas')] = $values['qtd'];
             }
         }
 
