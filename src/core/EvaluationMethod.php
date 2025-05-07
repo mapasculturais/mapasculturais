@@ -221,11 +221,23 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
         } else {
             $number_of_valuers = 0;
-            foreach($committees as $users){
+            $all_evaluations_sent = true;
+
+            foreach($committees as $committee_name => $users) {
                 $number_of_valuers += count($users);
+
+                foreach($users as $user) {
+                    $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration, 'user' => $user, 'status' => RegistrationEvaluation::STATUS_SENT]);
+                    if(empty($evaluation)){
+                        $all_evaluations_sent = false;
+                        break;
+                    }
+                }
             }
-            
-            $result = $this->_getConsolidatedResult($registration, $evaluations);
+
+            if($all_evaluations_sent || $registration->status > 1) {
+                $result = $this->_getConsolidatedResult($registration, $evaluations);
+            }
         }
 
         return $result;
