@@ -97,6 +97,11 @@ class Registrations extends SpreadsheetJob
                     if($entity_type_field['ft'] == 'pessoaDeficiente') {
                         $header[$field->fieldName] = $field->title;
                     }
+
+                    if($entity_type_field['ft'] == 'persons') {
+                        $header[$field->fieldName] = $field->title;
+                    }
+                    
                 } else {
                     $header[$field->fieldName] = $field->title;
                 }
