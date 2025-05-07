@@ -419,6 +419,9 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             $agent_relations = $this->getAgentRelations();
             
             $user_ids = array_map(fn($agent_relation) => $agent_relation->agent->user->id, $agent_relations);
+            if(!$user_ids) {
+                $user_ids = [-1];
+            }
         }
 
         $user_ids = implode(',', $user_ids);

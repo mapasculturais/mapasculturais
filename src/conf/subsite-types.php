@@ -3,13 +3,13 @@
 /**
  * See https://github.com/Respect/Validation to know how to write validations
  */
-
+use MapasCulturais\Utils;
 use MapasCulturais\i;
 
 $color_validation = "v::regex('/^#([0-9ABCDEFabcdef]{3}|[0-9ABCDEFabcdef]{6})/')";
 
 $metadata_config_estado = [
-    'label' => 'Estado',
+    'label' => \MapasCulturais\i::__('Estado'),
     'type' => 'multiselect',
     'serialize' => function($v) {
         return json_encode($v);
@@ -49,7 +49,7 @@ $metadata_config_estado = [
 ];
 
 $metadata_config_color = [
-    'label' => 'Cor da entidade',
+    'label' => \MapasCulturais\i::__('Cor da entidade'),
     'validations' => [
         $color_validation => 'cor inválida'
     ]
@@ -57,7 +57,7 @@ $metadata_config_color = [
 
 
 $metadata_config_area = [
-    'label' => 'Área de atuação',
+    'label' => \MapasCulturais\i::__('Área de atuação'),
     'type' => 'multiselect',
     'serialize' => function($v) {
         return json_encode($v);
@@ -129,11 +129,11 @@ return array(
             'label' => 'URL',
             'type' => 'text',
             'validations' => array(
-                'v::url()' => 'A URL informada é inválida.'
+                'v::url()' => \MapasCulturais\i::__('A URL informada é inválida.')
             )
         ),
         'entidades_habilitadas' => array(
-            'label' => 'Entidades Habilitadas',
+            'label' => \MapasCulturais\i::__('Entidades Habilitadas'),
             'type' => 'multiselect',
             'options' => array(
                 'Agents',
@@ -177,7 +177,7 @@ return array(
         'filtro_space_meta_En_Estado' => $metadata_config_estado,
 
         'filtro_space_meta_En_Municipio' => [
-            'label' => 'Município',
+            'label' => \MapasCulturais\i::__('Município'),
             'type' => 'tag',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -187,7 +187,7 @@ return array(
             },
         ],
         'filtro_space_meta_En_Bairro' => [
-            'label' => 'Bairro',
+            'label' => \MapasCulturais\i::__('Bairro'),
             'type' => 'tag',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -200,7 +200,7 @@ return array(
         'filtro_agent_meta_En_Estado' => $metadata_config_estado,
 
         'filtro_agent_meta_En_Municipio' => [
-            'label' => 'Município',
+            'label' => \MapasCulturais\i::__('Município'),
             'type' => 'tag',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -210,7 +210,7 @@ return array(
             },
         ],
         'filtro_agent_meta_En_Bairro' => [
-            'label' => 'Bairro',
+            'label' => \MapasCulturais\i::__('Bairro'),
             'type' => 'tag',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -221,7 +221,7 @@ return array(
         ],
 
         'filtro_space_meta_type' => array(
-            'label' => 'Tipo de espaço',
+            'label' => \MapasCulturais\i::__('Tipo de espaço'),
             'type' => 'multiselect',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -298,7 +298,7 @@ return array(
         'filtro_agent_term_area' => $metadata_config_area,
 
         'filtro_event_term_linguagem' => array(
-            'label' => 'Linguagem',
+            'label' => \MapasCulturais\i::__('Linguagem'),
             'type' => 'multiselect',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -329,40 +329,40 @@ return array(
             )
         ),
         'texto_boasvindas' => array(
-            'label' => 'Texto boas vindas',
+            'label' => \MapasCulturais\i::__('Texto boas vindas'),
             'type' => 'text'
         ),
         'texto_sobre' => array(
-            'label' => 'Texto sobre',
+            'label' => \MapasCulturais\i::__('Texto sobre'),
             'type' => 'text'
         ),
         'zoom_default' => array(
-            'label' => 'Zoom Padrão',
+            'label' => \MapasCulturais\i::__('Zoom Padrão'),
         ),
         'zoom_approximate' => array(
-            'label' => 'Zoom Aproximado',
+            'label' => \MapasCulturais\i::__('Zoom Aproximado'),
         ),
         'zoom_precise' => array(
-            'label' => 'Zoom Preciso',
+            'label' => \MapasCulturais\i::__('Zoom Preciso'),
         ),
         'zoom_min' => array(
-            'label' => 'Zoom Mínimo',
+            'label' => \MapasCulturais\i::__('Zoom Mínimo'),
         ),
         'zoom_max' => array(
-            'label' => 'Zoom Máximo',
+            'label' => \MapasCulturais\i::__('Zoom Máximo'),
         ),
         'latitude' => array(
-            'label' => 'Latitude',
+            'label' => \MapasCulturais\i::__('Latitude'),
         ),
         'longitude' => array(
-            'label' => 'Longitude',
+            'label' => \MapasCulturais\i::__('Longitude'),
         ),
         'filtro' => array(
-            'label' => 'Filtros',
+            'label' => \MapasCulturais\i::__('Filtros'),
             'type' => 'text'
         ),
         'dict' => [
-            'label' => 'Textos configurados',
+            'label' => \MapasCulturais\i::__('Textos configurados'),
             'type' => 'array',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -372,7 +372,7 @@ return array(
             },
         ],
         'user_filters__event' => [
-            'label' => 'Filtros dispoíveis por Evento',
+            'label' => \MapasCulturais\i::__('Filtros dispoíveis por Evento'),
             'type' => 'array',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -382,7 +382,7 @@ return array(
             },
         ],
         'user_filters__space' => [
-            'label' => 'Filtros dispoíveis por Espaço',
+            'label' => \MapasCulturais\i::__('Filtros dispoíveis por Espaço'),
             'type' => 'array',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -392,7 +392,7 @@ return array(
             },
         ],
         'user_filters__agent' => [
-            'label' => 'Filtros dispoíveis por Agente',
+            'label' => \MapasCulturais\i::__('Filtros dispoíveis por Agente'),
             'type' => 'array',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -402,7 +402,7 @@ return array(
             },
         ],
         'user_filters__project' => [
-            'label' => 'Filtros dispoíveis por Projeto',
+            'label' => \MapasCulturais\i::__('Filtros dispoíveis por Projeto'),
             'type' => 'array',
             'serialize' => function($v) {
                 return json_encode($v);
@@ -412,7 +412,7 @@ return array(
             },
         ],
         'user_filters__opportunity' => [
-            'label' => 'Filtros dispoíveis por Oportunidade',
+            'label' => \MapasCulturais\i::__('Filtros dispoíveis por Oportunidade'),
             'type' => 'array',
             'serialize' => function($v) {
                 return json_encode($v);
