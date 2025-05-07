@@ -149,16 +149,16 @@ class Registrations extends SpreadsheetJob
 
                     if($entity_type_field['status']) {
                        
-                        if ($entity_type_field['ft'] === 'persons' && isset($entity[$field->fieldName])) {
-                            $entity[$field->fieldName] = array_map(function($item) {
-                                return array_filter((array) $item, function($value) {
-                                    return $value !== '' && $value !== [] && $value !== null;
-                                });
-                            }, $entity[$field->fieldName]);
-                    
-                            $entity[$field->fieldName] = implode(', ', array_map(function($pessoa) {
-                                return $pessoa['fullName'];
-                            }, $entity[$field->fieldName]));
+                        if ($entity_type_field['ft'] === 'persons' && !empty($entity[$field->fieldName])) {
+                            $persons = json_decode(json_encode($entity[$field->fieldName]),true);
+                            $_persons = [];
+
+                            foreach($persons as $person){
+                                if($person['fullName'] || $person['cpf']){
+                                    $_persons[] = $person['fullName'] . " : " . $person['cpf'];
+                                }
+                            }
+                            $entity[$field->fieldName] = implode(', ', $_persons );
                         }
 
                         if($entity_type_field['ft'] == '@location') {
