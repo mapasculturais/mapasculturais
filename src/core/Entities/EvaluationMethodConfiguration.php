@@ -379,6 +379,19 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             }
         }
 
+        // Conta as inscrições pendentes de avaliação
+        $pending_evaluation = $conn->fetchAssoc("
+            SELECT COUNT(DISTINCT r.id) AS qtd
+            FROM registration r,
+                jsonb_object_keys(r.valuers) AS key
+            WHERE 
+                r.opportunity_id = {$opportunity->id}
+                AND r.status = 1
+                AND r.valuers IS NOT NULL
+                AND jsonb_typeof(r.valuers) = 'object'
+        ");
+        $data['evaluations'][i::__('Pendente de avaliação')] = $pending_evaluation['qtd'];
+
         // Conta as inscrições com avaliações iniciadas
         $query = $app->em->createQuery("
             SELECT 
