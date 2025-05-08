@@ -97,6 +97,11 @@ class Registrations extends SpreadsheetJob
                     if($entity_type_field['ft'] == 'pessoaDeficiente') {
                         $header[$field->fieldName] = $field->title;
                     }
+
+                    if($entity_type_field['ft'] == 'persons') {
+                        $header[$field->fieldName] = $field->title;
+                    }
+                    
                 } else {
                     $header[$field->fieldName] = $field->title;
                 }
@@ -148,6 +153,19 @@ class Registrations extends SpreadsheetJob
                     $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                     if($entity_type_field['status']) {
+                       
+                        if ($entity_type_field['ft'] === 'persons' && !empty($entity[$field->fieldName])) {
+                            $persons = json_decode(json_encode($entity[$field->fieldName]),true);
+                            $_persons = [];
+
+                            foreach($persons as $person){
+                                if($person['fullName'] || $person['cpf']){
+                                    $_persons[] = $person['fullName'] . " : " . $person['cpf'];
+                                }
+                            }
+                            $entity[$field->fieldName] = implode(', ', $_persons );
+                        }
+
                         if($entity_type_field['ft'] == '@location') {
                              
                             $entity['UF'] = $entity[$field->fieldName]->En_Estado;
@@ -269,6 +287,27 @@ class Registrations extends SpreadsheetJob
         $result = ['status' => false];
         
         $def = $app->getRegisteredMetadataByMetakey($field_name, Registration::class);
+
+        if($def) {
+            if ($def->config['type'] == 'agent-owner-field') {
+                $field_config = $def->config['registrationFieldConfiguration'];
+                $ft = $field_config->config['entityField'] ?? null;
+        
+                if(($ft == '@location') 
+                    || ($ft == '@links')
+                    || ($ft == 'pessoaDeficiente')
+                ) {
+                    $result['status'] = true;
+                    $result['ft'] = $ft;
+                }
+            }
+
+            if($def->config['type'] == 'persons') {
+                $result['status'] = true;
+                $result['ft'] = 'persons';
+            }
+        }
+
         if ($def && $def->config['type'] == 'agent-owner-field') {
             $field_config = $def->config['registrationFieldConfiguration'];
             $ft = $field_config->config['entityField'] ?? null;
