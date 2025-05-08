@@ -192,6 +192,8 @@ if(count($phase->registrationRanges) > 0) {
     ];
 }
 
+$app->applyHook('component(opportunity-registrations-table).additionalHeaders', [&$default_headers, &$default_select, &$available_fields]);
+
 $data['defaultSelect'] = $default_select;
 $data['defaultHeaders'] = $default_headers;
 $data['defaultAvailable'] = $available_fields;
@@ -222,7 +224,5 @@ foreach($registrations as $status => $status_name){
         $data["registrationStatusDict"][] = ["label" => $status_name, "value" => $status];
     }
 }
-
-$app->applyHook('component(opportunity-registrations-table).additionalHeaders', [&$default_headers, &$default_select, &$available_fields]);
 
 $this->jsObject['config']['opportunityRegistrationTable'] = $data;
