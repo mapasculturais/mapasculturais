@@ -290,7 +290,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     public function _getConsolidatedResult(Entities\Registration $registration, array $evaluations) {
-        $app = App::i();
+        if(empty($evaluations)){
+            return $registration->status > 1 ? $registration->status : 0;
+        }
 
         $result = 10;
         foreach ($evaluations as $eval){
