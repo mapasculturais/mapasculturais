@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2025-05-08 12:06-0300\n"
+"POT-Creation-Date: 2025-05-08 12:35-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -2107,7 +2107,7 @@ msgstr ""
 #: src/modules/Panel/components/panel--entities-summary/texts.php:11
 #: src/modules/Panel/components/panel--last-edited/template.php:33
 #: src/modules/Panel/components/panel--pending-evaluations/texts.php:6
-#: src/modules/Spreadsheets/SpreadsheetJob.php:389
+#: src/modules/Spreadsheets/SpreadsheetJob.php:401
 #: src/themes/BaseV1/Theme.php:251 src/themes/BaseV1/Theme.php:252
 msgid "Espaço"
 msgstr "Espacio"
@@ -2176,7 +2176,7 @@ msgstr "Página web"
 #: src/modules/Panel/components/panel--entities-summary/texts.php:9
 #: src/modules/Panel/components/panel--last-edited/template.php:34
 #: src/modules/Panel/components/panel--pending-evaluations/texts.php:7
-#: src/modules/Spreadsheets/SpreadsheetJob.php:390
+#: src/modules/Spreadsheets/SpreadsheetJob.php:402
 #: src/themes/BaseV1/layouts/parts/singles/history_event.php:61
 #: src/themes/BaseV1/views/event/edit.php:125
 #: src/themes/BaseV1/views/event/single.php:125
@@ -2228,7 +2228,7 @@ msgstr "Eventos"
 #: src/modules/Panel/components/panel--entities-summary/texts.php:5
 #: src/modules/Panel/components/panel--last-edited/template.php:32
 #: src/modules/Panel/components/panel--pending-evaluations/texts.php:5
-#: src/modules/Spreadsheets/SpreadsheetJob.php:386
+#: src/modules/Spreadsheets/SpreadsheetJob.php:398
 msgid "Agente"
 msgstr "Agente"
 
@@ -2318,7 +2318,7 @@ msgstr "Espacios"
 #: src/modules/Panel/components/panel--entities-summary/texts.php:13
 #: src/modules/Panel/components/panel--last-edited/template.php:35
 #: src/modules/Panel/components/panel--pending-evaluations/texts.php:9
-#: src/modules/Spreadsheets/SpreadsheetJob.php:388
+#: src/modules/Spreadsheets/SpreadsheetJob.php:400
 #: src/themes/BaseV1/layouts/parts/search/infobox-event.php:40
 #: src/themes/BaseV1/layouts/parts/search/list-event-item.php:31
 #: src/themes/BaseV1/layouts/parts/singles/history_event.php:262
@@ -2370,7 +2370,7 @@ msgstr "Proyectos"
 #: src/modules/Panel/components/panel--entities-summary/texts.php:7
 #: src/modules/Panel/components/panel--last-edited/template.php:36
 #: src/modules/Panel/components/panel--pending-evaluations/texts.php:8
-#: src/modules/Spreadsheets/SpreadsheetJob.php:387
+#: src/modules/Spreadsheets/SpreadsheetJob.php:399
 #: src/themes/BaseV1/layouts/parts/user-management/user-info/info-registrations.php:14
 msgid "Oportunidade"
 msgstr "Oportunidad"
@@ -2417,7 +2417,7 @@ msgstr "Oportunidades"
 #: src/modules/OpportunityAccountability/Module.php:613
 #: src/modules/OpportunityAccountability/Module.php:643
 #: src/modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:185
-#: src/modules/Spreadsheets/SpreadsheetJob.php:391
+#: src/modules/Spreadsheets/SpreadsheetJob.php:403
 #: src/modules/Support/layouts/parts/support/opportunity-support.php:30
 #: src/themes/BaseV1/Theme.php:2134
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--admin--table.php:35
@@ -3748,13 +3748,12 @@ msgstr "Deshabilitado"
 #: src/conf/opportunity-types.php:256
 #: src/modules/EvaluationMethodQualification/JobTypes/Spreadsheet.php:91
 #: src/modules/EvaluationMethodQualification/JobTypes/Spreadsheet.php:95
-#: src/modules/EvaluationMethodQualification/Module.php:46
-#: src/modules/EvaluationMethodQualification/Module.php:62
-#: src/modules/EvaluationMethodQualification/Module.php:71
-#: src/modules/EvaluationMethodQualification/Module.php:290
-#: src/modules/EvaluationMethodQualification/Module.php:346
-#: src/modules/EvaluationMethodQualification/Module.php:347
-#: src/modules/EvaluationMethodQualification/Module.php:375
+#: src/modules/EvaluationMethodQualification/Module.php:66
+#: src/modules/EvaluationMethodQualification/Module.php:75
+#: src/modules/EvaluationMethodQualification/Module.php:294
+#: src/modules/EvaluationMethodQualification/Module.php:350
+#: src/modules/EvaluationMethodQualification/Module.php:351
+#: src/modules/EvaluationMethodQualification/Module.php:379
 #: src/modules/EvaluationMethodQualification/components/evaluation-qualification-detail/template.php:50
 #: src/modules/EvaluationMethodQualification/components/evaluation-qualification-detail/texts.php:5
 #: src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/texts.php:12
@@ -3766,7 +3765,7 @@ msgstr "Deshabilitado"
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:26
 #: src/modules/EvaluationMethodTechnical/Module.php:218
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:29
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:259
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:261
 msgid "Habilitado"
 msgstr "Habilitado"
 
@@ -9089,10 +9088,18 @@ msgid "A data final das avaliações deve ser maior ou igual a data inicial"
 msgstr ""
 "La fecha final de las evaluacines debe ser mayor o igual que la fecha inicial"
 
-#: src/core/Entities/EvaluationMethodConfiguration.php:394
+#: src/core/Entities/EvaluationMethodConfiguration.php:383
 #: src/themes/BaseV1/Theme.php:2128
 msgid "Não Avaliada"
 msgstr "No evaluada"
+
+#: src/core/Entities/EvaluationMethodConfiguration.php:398
+msgid "Pendente de avaliação"
+msgstr "Pendiente de evaluación"
+
+#: src/core/Entities/EvaluationMethodConfiguration.php:418
+msgid "Com avaliações iniciadas"
+msgstr "Con evaluaciones iniciadas"
 
 #: src/core/Entities/Event.php:228
 msgid "O nome do evento é obrigatório"
@@ -9318,7 +9325,7 @@ msgstr "Lista de evaluadores de la inscripción"
 #: src/modules/Reports/Controller.php:1130 src/modules/Reports/Module.php:311
 #: src/modules/Reports/Module.php:320
 #: src/modules/Spreadsheets/EvaluationsSpreadsheetJob.php:138
-#: src/modules/Spreadsheets/JobTypes/Registrations.php:380
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:385
 #: src/themes/BaseV1/Theme.php:2062 src/themes/BaseV1/Theme.php:2107
 #: src/themes/BaseV1/Theme.php:2691
 #: src/themes/BaseV1/layouts/parts/user-management/info-user.php:227
@@ -9328,28 +9335,28 @@ msgstr "Pendiente"
 #: src/core/Entities/Registration.php:1091
 #: src/modules/Entities/components/entity-table/texts.php:30
 #: src/modules/EvaluationMethodDocumentary/Module.php:131
-#: src/modules/EvaluationMethodDocumentary/Module.php:351
+#: src/modules/EvaluationMethodDocumentary/Module.php:358
 #: src/modules/EvaluationMethodDocumentary/components/documentary-evaluation-form/template.php:63
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/init.php:11
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/texts.php:7
 #: src/modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-form.php:32
 #: src/modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-view.php:30
-#: src/modules/EvaluationMethodSimple/Module.php:317
+#: src/modules/EvaluationMethodSimple/Module.php:319
 #: src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/init.php:12
 #: src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/texts.php:7
 #: src/modules/EvaluationMethodSimple/components/simple-evaluation-form/init.php:30
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:17
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:25
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:34
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:247
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:255
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:249
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:257
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:8
 #: src/modules/OpportunityPhases/Module.php:1747
 #: src/modules/OpportunityPhases/Module.php:1824
 #: src/modules/Reports/Controller.php:1132 src/modules/Reports/Module.php:312
 #: src/modules/Reports/Module.php:321
 #: src/modules/Spreadsheets/EvaluationsSpreadsheetJob.php:136
-#: src/modules/Spreadsheets/JobTypes/Registrations.php:378
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:383
 #: src/themes/BaseV1/Theme.php:2063 src/themes/BaseV1/Theme.php:2108
 #: src/themes/BaseV1/Theme.php:2692
 msgid "Inválida"
@@ -9358,19 +9365,19 @@ msgstr "No válida"
 #: src/core/Entities/Registration.php:1092
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/init.php:12
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/texts.php:8
-#: src/modules/EvaluationMethodSimple/Module.php:320
+#: src/modules/EvaluationMethodSimple/Module.php:322
 #: src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/init.php:13
 #: src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/texts.php:8
 #: src/modules/EvaluationMethodSimple/components/simple-evaluation-form/init.php:31
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:18
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:35
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:248
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:250
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:9
 #: src/modules/OpportunityAccountability/Module.php:658
 #: src/modules/OpportunityPhases/Module.php:1748
 #: src/modules/OpportunityPhases/Module.php:1822
 #: src/modules/Spreadsheets/EvaluationsSpreadsheetJob.php:134
-#: src/modules/Spreadsheets/JobTypes/Registrations.php:376
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:381
 #: src/themes/BaseV1/Theme.php:2064 src/themes/BaseV1/Theme.php:2109
 #: src/themes/BaseV1/Theme.php:2693
 msgid "Não selecionada"
@@ -9381,13 +9388,13 @@ msgstr "No seleccionada"
 #: src/modules/EvaluationMethodContinuous/components/evaluation-method-continuous--apply/texts.php:9
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/init.php:13
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/texts.php:9
-#: src/modules/EvaluationMethodSimple/Module.php:323
+#: src/modules/EvaluationMethodSimple/Module.php:325
 #: src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/init.php:14
 #: src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/texts.php:9
 #: src/modules/EvaluationMethodSimple/components/simple-evaluation-form/init.php:32
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:19
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:36
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:249
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:251
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:10
 #: src/modules/OpportunityAccountability/Module.php:656
 #: src/modules/OpportunityAppealPhase/components/appeal-phase-chat/template.php:73
@@ -9396,7 +9403,7 @@ msgstr "No seleccionada"
 #: src/modules/Reports/Controller.php:1136 src/modules/Reports/Module.php:314
 #: src/modules/Reports/Module.php:323
 #: src/modules/Spreadsheets/EvaluationsSpreadsheetJob.php:132
-#: src/modules/Spreadsheets/JobTypes/Registrations.php:374
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:379
 #: src/themes/BaseV1/Theme.php:2065 src/themes/BaseV1/Theme.php:2110
 #: src/themes/BaseV1/Theme.php:2694
 msgid "Suplente"
@@ -9405,13 +9412,13 @@ msgstr "Suplente"
 #: src/core/Entities/Registration.php:1094
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/init.php:14
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/texts.php:10
-#: src/modules/EvaluationMethodSimple/Module.php:326
+#: src/modules/EvaluationMethodSimple/Module.php:328
 #: src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/init.php:15
 #: src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/texts.php:10
 #: src/modules/EvaluationMethodSimple/components/simple-evaluation-form/init.php:33
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:20
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:37
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:250
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:252
 #: src/modules/Opportunities/components/opportunity-registrations-table/texts.php:11
 #: src/modules/OpportunityAccountability/Module.php:657
 #: src/modules/OpportunityPhases/Module.php:1750
@@ -9419,7 +9426,7 @@ msgstr "Suplente"
 #: src/modules/Reports/Controller.php:1138 src/modules/Reports/Module.php:315
 #: src/modules/Reports/Module.php:324
 #: src/modules/Spreadsheets/EvaluationsSpreadsheetJob.php:130
-#: src/modules/Spreadsheets/JobTypes/Registrations.php:372
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:377
 #: src/themes/BaseV1/Theme.php:2066 src/themes/BaseV1/Theme.php:2111
 #: src/themes/BaseV1/Theme.php:2695
 msgid "Selecionada"
@@ -9497,7 +9504,7 @@ msgstr "El nombre del proyecto es obligatorio."
 #: src/modules/Reports/layouts/parts/registrationsStatus.php:14
 #: src/modules/Reports/layouts/parts/registrationsStatus.php:25
 #: src/modules/Spreadsheets/EvaluationsSpreadsheetJob.php:140
-#: src/modules/Spreadsheets/JobTypes/Registrations.php:382
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:387
 #: src/themes/BaseV1/Theme.php:2067 src/themes/BaseV1/Theme.php:2112
 #: src/themes/BaseV1/Theme.php:2696
 msgid "Rascunho"
@@ -9793,7 +9800,7 @@ msgstr "Información sobre las inscripciones y los proponentes"
 msgid "Informações sobre o avaliador"
 msgstr "Información sobre el evaluador"
 
-#: src/core/EvaluationMethod.php:156 src/db-updates.php:2108
+#: src/core/EvaluationMethod.php:156 src/db-updates.php:2159
 #: src/modules/BaseV1EmbedTools/layouts/parts/evaluations-admin-table.php:37
 #: src/modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:45
 #: src/modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:67
@@ -9821,20 +9828,20 @@ msgstr "Evaluación"
 msgid "Aguardando desempate"
 msgstr "Esperando desempate"
 
-#: src/core/EvaluationMethod.php:673
+#: src/core/EvaluationMethod.php:677
 msgid "Salvando distribuição"
 msgstr "Guardando distribución"
 
-#: src/core/EvaluationMethod.php:684
+#: src/core/EvaluationMethod.php:688
 msgid "Atualizando o resumo de avaliações da fase"
 msgstr "Actualizando el resumen de evaluaciones de la fase"
 
-#: src/core/EvaluationMethod.php:694
+#: src/core/EvaluationMethod.php:698
 #, php-format
 msgid "Atualizando o resumo do avaliador %s da comissão %s"
 msgstr "Actualización del resumen para el evaluador %s del tribunal %s"
 
-#: src/core/EvaluationMethod.php:1125
+#: src/core/EvaluationMethod.php:1129
 msgid "Textos informativos para os avaliadores"
 msgstr "Textos informativos para los evaluadores"
 
@@ -9969,7 +9976,7 @@ msgstr "La latitud debe ser un float entre 90 y -90"
 msgid "Longitude precisa ser um float entre 180 em -180"
 msgstr "La latitud debe ser un flotador entre 180 y -180"
 
-#: src/db-updates.php:2525
+#: src/db-updates.php:2571
 msgid "Comissão de avaliação"
 msgstr "Tribunal evaluador"
 
@@ -12783,7 +12790,7 @@ msgstr "Editar"
 #: src/modules/EvaluationMethodSimple/JobTypes/Spreadsheet.php:81
 #: src/modules/EvaluationMethodTechnical/JobTypes/Spreadsheet.php:139
 #: src/modules/Panel/components/panel--entities-summary/script.js:45
-#: src/modules/Spreadsheets/JobTypes/Registrations.php:306
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:311
 #: src/themes/BaseV1/Theme.php:551 src/themes/BaseV1/Theme.php:552
 #: src/themes/BaseV1/Theme.php:1798
 msgid "oportunidade"
@@ -14452,7 +14459,7 @@ msgstr "Subespacios"
 #: src/modules/EvaluationMethodDocumentary/JobTypes/Spreadsheet.php:41
 #: src/modules/EvaluationMethodDocumentary/Module.php:141
 #: src/modules/EvaluationMethodQualification/JobTypes/Spreadsheet.php:61
-#: src/modules/EvaluationMethodQualification/Module.php:388
+#: src/modules/EvaluationMethodQualification/Module.php:392
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:52
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-form.php:51
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:31
@@ -14464,7 +14471,7 @@ msgstr "Observaciones"
 #: src/modules/EvaluationMethodContinuous/JobTypes/Spreadsheet.php:63
 #: src/modules/Opportunities/components/opportunity-evaluations-table/template.php:122
 #: src/modules/Opportunities/components/opportunity-registrations-table/template.php:162
-#: src/modules/Spreadsheets/JobTypes/Registrations.php:292
+#: src/modules/Spreadsheets/JobTypes/Registrations.php:297
 msgid "concluídas"
 msgstr "finalizadas"
 
@@ -14862,7 +14869,7 @@ msgstr "Incumplimiento del/ de los elemento/s de la convocatoria o llamado"
 
 #: src/modules/EvaluationMethodDocumentary/JobTypes/Spreadsheet.php:153
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-documentary-datail/texts.php:6
-#: src/modules/EvaluationMethodQualification/Module.php:398
+#: src/modules/EvaluationMethodQualification/Module.php:402
 #: src/modules/EvaluationMethodTechnical/Module.php:857
 #: src/modules/Opportunities/components/registration-status/template.php:34
 msgid "Válido"
@@ -14870,7 +14877,7 @@ msgstr "Válido"
 
 #: src/modules/EvaluationMethodDocumentary/JobTypes/Spreadsheet.php:154
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-documentary-datail/texts.php:5
-#: src/modules/EvaluationMethodQualification/Module.php:399
+#: src/modules/EvaluationMethodQualification/Module.php:403
 #: src/modules/EvaluationMethodTechnical/Module.php:858
 #: src/modules/Opportunities/components/registration-status/template.php:38
 msgid "Inválido"
@@ -14894,13 +14901,13 @@ msgid "Nenhum campo foi avaliado"
 msgstr "Ningún campo fue evaluado"
 
 #: src/modules/EvaluationMethodDocumentary/Module.php:129
-#: src/modules/EvaluationMethodDocumentary/Module.php:349
+#: src/modules/EvaluationMethodDocumentary/Module.php:356
 #: src/modules/EvaluationMethodDocumentary/components/documentary-evaluation-form/template.php:59
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/init.php:10
 #: src/modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-form.php:28
 #: src/modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-view.php:28
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:24
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:254
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:256
 msgid "Válida"
 msgstr "Válida"
 
@@ -14984,16 +14991,16 @@ msgstr ""
 "guarde la evaluación."
 
 #: src/modules/EvaluationMethodQualification/JobTypes/Spreadsheet.php:60
-#: src/modules/EvaluationMethodQualification/Module.php:369
+#: src/modules/EvaluationMethodQualification/Module.php:373
 msgid "Motivo(s) da inabilitação"
 msgstr "Motivo(s) de la descalificación"
 
 #: src/modules/EvaluationMethodQualification/JobTypes/Spreadsheet.php:91
 #: src/modules/EvaluationMethodQualification/JobTypes/Spreadsheet.php:97
-#: src/modules/EvaluationMethodQualification/Module.php:63
-#: src/modules/EvaluationMethodQualification/Module.php:74
-#: src/modules/EvaluationMethodQualification/Module.php:289
-#: src/modules/EvaluationMethodQualification/Module.php:353
+#: src/modules/EvaluationMethodQualification/Module.php:67
+#: src/modules/EvaluationMethodQualification/Module.php:78
+#: src/modules/EvaluationMethodQualification/Module.php:293
+#: src/modules/EvaluationMethodQualification/Module.php:357
 #: src/modules/EvaluationMethodQualification/components/evaluation-qualification-detail/template.php:53
 #: src/modules/EvaluationMethodQualification/components/evaluation-qualification-detail/texts.php:6
 #: src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/texts.php:13
@@ -15004,7 +15011,7 @@ msgstr "Motivo(s) de la descalificación"
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:17
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-view.php:27
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:30
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:260
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:262
 msgid "Inabilitado"
 msgstr "Inhabilitado"
 
@@ -15012,40 +15019,40 @@ msgstr "Inhabilitado"
 msgid "Avaliação de habilitação documental"
 msgstr "Evaluación de habilitación documental"
 
-#: src/modules/EvaluationMethodQualification/Module.php:77
-#: src/modules/EvaluationMethodQualification/Module.php:291
-#: src/modules/EvaluationMethodQualification/Module.php:349
-#: src/modules/EvaluationMethodQualification/Module.php:350
-#: src/modules/EvaluationMethodQualification/Module.php:375
+#: src/modules/EvaluationMethodQualification/Module.php:81
+#: src/modules/EvaluationMethodQualification/Module.php:295
+#: src/modules/EvaluationMethodQualification/Module.php:353
+#: src/modules/EvaluationMethodQualification/Module.php:354
+#: src/modules/EvaluationMethodQualification/Module.php:379
 #: src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/template.php:90
 #: src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/texts.php:15
 #: src/modules/ProjectMonitoring/Module.php:316
 msgid "Não se aplica"
 msgstr "No se aplica"
 
-#: src/modules/EvaluationMethodQualification/Module.php:216
+#: src/modules/EvaluationMethodQualification/Module.php:220
 #: src/modules/EvaluationMethodTechnical/Module.php:100
 msgid "Seções"
 msgstr "Secciones"
 
-#: src/modules/EvaluationMethodQualification/Module.php:227
+#: src/modules/EvaluationMethodQualification/Module.php:231
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:6
 #: src/modules/EvaluationMethodTechnical/Module.php:111
 #: src/modules/EvaluationMethodTechnical/layouts/parts/technical--configuration-form.php:6
 msgid "Critérios"
 msgstr "Criterios"
 
-#: src/modules/EvaluationMethodQualification/Module.php:284
+#: src/modules/EvaluationMethodQualification/Module.php:288
 #: src/modules/EvaluationMethodTechnical/Module.php:239
 msgid "Já existe uma seção com o mesmo nome"
 msgstr "Ya existe una sección con el mismo nombre"
 
-#: src/modules/EvaluationMethodQualification/Module.php:285
+#: src/modules/EvaluationMethodQualification/Module.php:289
 #: src/modules/EvaluationMethodTechnical/Module.php:240
 msgid "Alteraçṍes salvas"
 msgstr "Cambios guardados"
 
-#: src/modules/EvaluationMethodQualification/Module.php:286
+#: src/modules/EvaluationMethodQualification/Module.php:290
 #: src/modules/EvaluationMethodTechnical/Module.php:241
 msgid ""
 "Deseja remover a seção? Esta ação não poderá ser desfeita e também removerá "
@@ -15054,21 +15061,21 @@ msgstr ""
 "¿Desea eliminar la sección? Esta acción no se podrá deshacer y también "
 "eliminará todos los criterios de esta sección."
 
-#: src/modules/EvaluationMethodQualification/Module.php:287
+#: src/modules/EvaluationMethodQualification/Module.php:291
 #: src/modules/EvaluationMethodTechnical/Module.php:242
 msgid ""
 "Deseja remover este critério de avaliação? Esta ação não poderá ser desfeita."
 msgstr ""
 "¿Desea eliminar este criterio de evaluación? Esta acción no se puede deshacer."
 
-#: src/modules/EvaluationMethodQualification/Module.php:288
+#: src/modules/EvaluationMethodQualification/Module.php:292
 #: src/modules/EvaluationMethodTechnical/Module.php:243
 msgid ""
 "Deseja remover esta política afirmativa? Esta ação não poderá ser desfeita."
 msgstr ""
 "¿Desea eliminar este política afirmativa? Esta acción no se puede deshacer."
 
-#: src/modules/EvaluationMethodQualification/Module.php:292
+#: src/modules/EvaluationMethodQualification/Module.php:296
 #: src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/init.php:45
 #: src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/init.php:57
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-form.php:43
@@ -15077,9 +15084,9 @@ msgstr ""
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:23
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:28
 #: src/modules/Opportunities/components/opportunity-registrations-table/init.php:33
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:246
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:253
-#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:258
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:248
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:255
+#: src/modules/Opportunities/components/opportunity-registrations-table/init.php:260
 #: src/modules/Reports/layouts/parts/registrationsEvaluation.php:65
 msgid "Não avaliada"
 msgstr "No evaluada"
@@ -15291,7 +15298,7 @@ msgid "Na seção"
 msgstr "En la sección"
 
 #: src/modules/EvaluationMethodQualification/components/qualification-evaluation-form/texts.php:9
-#: src/modules/EvaluationMethodTechnical/Module.php:1132
+#: src/modules/EvaluationMethodTechnical/Module.php:1131
 msgid "Avaliação incompleta"
 msgstr "Evaluación incompleta"
 
@@ -16452,14 +16459,6 @@ msgid "inscricoes"
 msgstr "inscripciones"
 
 #: src/modules/EventImporter/Module.php:98
-#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:27
-#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:28
-#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:29
-#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:30
-#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:31
-#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:32
-#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:33
-#: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:60
 #: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:18
 #: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:19
 #: src/modules/Opportunities/components/opportunity-phase-list-registrations/template.php:20
@@ -18912,7 +18911,8 @@ msgid "Resumo das inscrições"
 msgstr "Resumen de las inscripciones"
 
 #: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:27
-msgid "Quantidade inscrições:"
+#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:57
+msgid "Quantidade de inscrições:"
 msgstr "Cantidad de inscripciones:"
 
 #: src/modules/Opportunities/components/opportunity-phase-list-evaluation/template.php:28
@@ -19060,10 +19060,6 @@ msgstr ""
 #: src/modules/Reports/layouts/parts/registrationsStatus.php:10
 msgid "Status das inscrições"
 msgstr "Estado de las inscripciones"
-
-#: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:57
-msgid "Quantidade de inscrições:"
-msgstr "Cantidad de inscripciones:"
 
 #: src/modules/Opportunities/components/opportunity-phase-publish-config-registration/template.php:58
 msgid "Quantidade de inscrições <strong>enviadas/pendentes</strong>:"
@@ -24116,11 +24112,11 @@ msgstr "Hora de envío"
 msgid "Hora de criação"
 msgstr "Hora de creación"
 
-#: src/modules/Spreadsheets/SpreadsheetJob.php:252
+#: src/modules/Spreadsheets/SpreadsheetJob.php:264
 msgid "Infelizmente, ocorreu um erro durante a extração da planilha."
 msgstr "Lamentablemente, se produjo un error al extraer la plantilla."
 
-#: src/modules/Spreadsheets/SpreadsheetJob.php:392
+#: src/modules/Spreadsheets/SpreadsheetJob.php:404
 msgid "Avaliações de inscrições"
 msgstr "Evaluaciones de inscripciones"
 
@@ -30758,6 +30754,9 @@ msgstr ""
 #: src/themes/Subsite/layouts/parts/header-about-nav.php:21
 msgid "Sobre o Site"
 msgstr "Acerca del Sitio"
+
+#~ msgid "Quantidade inscrições:"
+#~ msgstr "Cantidad de inscripciones:"
 
 #~ msgid "Nome completo ou Razão Social"
 #~ msgstr "Nombre completo o Razón Social"
