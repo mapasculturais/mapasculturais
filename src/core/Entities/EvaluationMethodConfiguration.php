@@ -333,36 +333,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             'evaluations' => []
         ];
         
-        // Conta as inscrições enviadas
-        $registred = $conn->fetchAssoc("SELECT count(r.status) as qtd FROM registration r WHERE r.opportunity_id = {$opportunity->id} AND r.status > 0");
-        $data['registrations'] = $registred['qtd'];
-
-        // Conta as inscrições avaliadas
-        $evaluated = $conn->fetchAssoc("SELECT COUNT(DISTINCT(e.registration_id)) as qtd FROM evaluations e WHERE e.opportunity_id = {$opportunity->id} AND e.evaluation_status > 0");
-        $data['evaluated'] = $evaluated['qtd'];
-
-        // Conta as inscrições avaliadas por status
-        $query = $app->em->createQuery("
-            SELECT 
-                r.status, 
-                count(r) as qtd 
-            FROM 
-                MapasCulturais\\Entities\\Registration r  
-            WHERE 
-                r.opportunity = :opp AND r.status > 0
-            GROUP BY r.status
-        ");
-
-        $query->setParameters([
-            "opp" => $opportunity,
-        ]);
-        
-        if($result = $query->getResult()){
-            foreach($result as $values){
-                $data[$values['status']] = $values['qtd'];
-            }
-        }
-
         // Conta as inscrições avaliadas por consolidatedResult
         $query = $app->em->createQuery("
             SELECT 
