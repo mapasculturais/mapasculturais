@@ -4,7 +4,7 @@ app.component('entity-field-location', {
 
     computed: {
         cities(){
-            return this.addressData.En_Estado ? this.statesAndCities[this.addressData.En_Estado].cities : null;
+            return this.addressData.En_Estado ? this.statesAndCities[this.addressData.En_Estado]?.cities : null;
         },
         statesAndCities(){
             return $MAPAS.config.statesAndCities;
@@ -280,7 +280,7 @@ app.component('entity-field-location', {
         },
 
         citiesList(){
-            this.cities = this.statesAndCities[this.addressData.En_Estado].cities;
+            this.cities = this.statesAndCities[this.addressData.En_Estado]?.cities;
         },
 
         save() {
