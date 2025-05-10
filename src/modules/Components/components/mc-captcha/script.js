@@ -46,15 +46,8 @@ app.component('mc-captcha', {
 
     watch: {
         error(newValue, oldValue) {
-            // check if grecaptcha is not defined
-            if (typeof grecaptcha !== 'undefined') {
-                grecaptcha.reset();
+            if (newValue) {
                 this.expiredCaptcha();
-            }
-
-            // check if turnstile is not defined
-            if (typeof window.turnstile !== 'undefined') {
-                window.turnstile.reset();
             }
         }
     },
@@ -65,6 +58,16 @@ app.component('mc-captcha', {
         },
 
         expiredCaptcha() {
+            // check if grecaptcha is not defined
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+            }
+
+            // check if turnstile is not defined
+            if (typeof window.turnstile !== 'undefined') {
+                window.turnstile.reset();
+            }
+
             this.$emit('captcha-expired');
         },
 
