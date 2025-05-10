@@ -15,7 +15,7 @@ $this->import('
         <div class="content">
             <div class="left">
                 <h1 class="left__title"><?= i::__('Erro 500') ?></h1>
-                <label class="left__message">Erro na página</label>
+                <label class="left__message"><?= i::__('Erro na página') ?></label>
                 <div class="error-footer">
                     <div class="message-error">
                         <label class="text"><br><?= i::__('Identificamos um problema no servidor aqui do nosso lado, mas não se preocupe. ') ?></br></label>
