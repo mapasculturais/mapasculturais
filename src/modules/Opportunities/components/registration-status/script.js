@@ -89,8 +89,10 @@ app.component('registration-status', {
 			return note.toLocaleString($MAPAS.config.locale);
 		},
 		verifyState(registration) {
+            console.log(registration);
             switch (registration.status) {
                 case 10:
+                case 1:
                     return 'success__color';
                     
                 case 2 : 
@@ -185,5 +187,9 @@ app.component('registration-status', {
 			return phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation);
 		
 		},
+        showResults(phase) {
+            const types = ['qualification', 'technical', 'documentary'];
+            return types.includes(phase.type) || phase.publishEvaluationDetails;
+        },
     }
 });

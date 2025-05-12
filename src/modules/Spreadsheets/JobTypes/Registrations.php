@@ -244,7 +244,7 @@ class Registrations extends SpreadsheetJob
                 unset($entity['@entityType']);
                 unset($entity['evaluationResultString']);
 
-                if(isset($entity['agentsData']) && is_array($entity['agentsData'])) {
+                if(!empty($entity['agentsData']) && is_array($entity['agentsData'])) {
                     $entity['name'] = $entity['agentsData']['owner']['name'];
                 }
 
