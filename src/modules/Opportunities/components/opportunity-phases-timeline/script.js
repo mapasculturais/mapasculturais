@@ -133,7 +133,7 @@ app.component('opportunity-phases-timeline', {
 			return false;
 		},
 
-		shouldShowResults(item) {
+		shouldShowResults(item, registration) {
 			// se é uma fase de avaliação que não tem uma fase de coleta de dados anterior
 			const isEvaluation = item.__objectType == 'evaluationmethodconfiguration';
 
@@ -142,7 +142,7 @@ app.component('opportunity-phases-timeline', {
 
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
 
-			return phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation);
+			return (phaseOpportunity.publishedRegistrations || registration.status >= 0) && (isRegistrationOnly || isEvaluation);
 
 		},
 
