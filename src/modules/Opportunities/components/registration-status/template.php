@@ -24,7 +24,7 @@ $this->import('
         <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
     </div>
 
-    <div>
+    <div v-if="showResults(phase)">
         <div v-if="phase.type == 'qualification'"><?= i::__('Resultado:') ?> <strong>{{registration.consolidatedResult}}</strong></div>
         <div v-if="phase.type == 'technical'"><?= i::__('Pontuação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong></div>
         <div v-if="phase.type == 'documentary'"> 

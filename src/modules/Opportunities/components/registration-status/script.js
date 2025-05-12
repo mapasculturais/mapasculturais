@@ -26,15 +26,17 @@ app.component('registration-status', {
 			return note.toLocaleString($MAPAS.config.locale);
 		},
 		verifyState(registration) {
+            console.log(registration);
             switch (registration.status) {
                 case 10:
+                case 1:
                     return 'success__color';
                     
                 case 2 : 
                 case 0 : 
 				case 3 : 
-                     return 'danger__color';
-                     
+                    return 'danger__color';
+                    
 				case 8 : 
                     return 'warning__color';
 
@@ -42,6 +44,10 @@ app.component('registration-status', {
                 default:
                     return '';
             }
-        }
+        },
+        showResults(phase) {
+            const types = ['qualification', 'technical', 'documentary'];
+            return types.includes(phase.type) || phase.publishEvaluationDetails;
+        },
     }
 });
