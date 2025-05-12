@@ -36,6 +36,12 @@
     <div ng-repeat="(key, item) in entity[field.fieldName]" ng-if="item && key !== 'location' && key !== 'publicLocation' ">
         <span>{{key.split('_').pop()}}: {{item}}</span>
     </div>
+    <div ng-if="entity[field.fieldName].hasOwnProperty('publicLocation')">
+        <span>
+            <?php \MapasCulturais\i::_e("Este endereço pode ficar público na plataforma?:"); ?>
+            {{ entity[field.fieldName].publicLocation ? 'Sim' : 'Não' }}
+        </span>
+    </div>
 </div>
 
 <div ng-if="field.config.entityField === '@links' || field.fieldType === 'links' || checkRegistrationFields(field, 'links')">
