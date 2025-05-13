@@ -13,6 +13,8 @@ use Doctrine\Common\Collections\Criteria;
  * @property-read Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
  * @property-read string $controllerId The controller id for this entity
  * @property-read Entities\User $ownerUser The User owner of this entity
+ * @property-read array $userPermissions Returns the user's permission list. If no user is specified, returns the authenticated user.
+
  * 
  * @property-read string $hookClassPath
  * @property-read string $hookPrefix
@@ -485,6 +487,27 @@ abstract class Entity implements \JsonSerializable{
             return $this->canUser('@control', $user);
         }
     }
+
+    /**
+     * Retorna a lista de permissões do usuário. Caso nenhum usuário tenha sido informado, retorna o usuario autenticado
+     * @param Entities\User|GuestUser|null $user
+     * @return array
+     */
+    public function getUserPermissions(Entities\User|GuestUser|null $user = null): array
+    {
+        $app = App::i();
+        $user = $user ?: $app->user;
+        
+        $entity_class_name = $this->className;
+        $permissions_list = $entity_class_name::getPermissionsList();
+        $permissions = [];
+        foreach($permissions_list as $action) {
+            $permissions[$action] = $this->canUser($action, $user);
+        }
+
+        return $permissions;
+    }
+    
 
     public function isUserAdmin(UserInterface $user, $role = 'admin'){
         $result = false;
