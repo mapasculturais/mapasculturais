@@ -5,4 +5,4 @@
 
  use MapasCulturais\i;
 ?>
-<button v-if="showButton()" @click="editForm()" class="button button--primary"><?= i::__('Editar dados') ?></button>
+<button v-if="showButton()" @click="editForm()" class="button button--primary"><?= i::__('Editar informações enviadas') ?></button>
