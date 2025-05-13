@@ -5,6 +5,16 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.42] - 2025-05-13
+### Melhorias não funcionais
+- Implementa método no Entity.php para devolver as permissões do usuário sobre a entidade
+- Melhora texto do botão da função de edição de inscrição que da acesso ao formulário
+- Melhora mensagens na ficha de inscrições para casos de inscrições ainda nao enviadas
+
+### Correções
+- Corrige problema que impedia o botão de editar a inscrição de ser exibido fora da primeira fase
+- Ajusta permissão para que não permita o usuário enviar a inscrição fora do prazo mesmo tendo enviado anteriormente dentro do prazo
+
 ## [7.5.41] - 2025-04-23
 ### Melhorias
 - Atualiza arquivos de tradução para Espanhol
