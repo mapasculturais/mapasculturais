@@ -390,6 +390,7 @@ class Module extends \MapasCulturais\Module{
             foreach($registrations as $reg) {
                 /** @var \MapasCulturais\Entities\Registration $reg */
                 $phases[$reg->opportunity->id] = $reg->jsonSerialize();
+                $phases[$reg->opportunity->id]['currentUserPermissions'] = $reg->getUserPermissions();
             }
 
             $this->jsObject['registrationPhases'] = $phases;
