@@ -308,19 +308,6 @@ class Registrations extends SpreadsheetJob
             }
         }
 
-        if ($def && $def->config['type'] == 'agent-owner-field') {
-            $field_config = $def->config['registrationFieldConfiguration'];
-            $ft = $field_config->config['entityField'] ?? null;
-    
-            if(($ft == '@location') 
-                || ($ft == '@links')
-                || ($ft == 'pessoaDeficiente')
-            ) {
-                $result['status'] = true;
-                $result['ft'] = $ft;
-            }
-        }
-
         return $result;
     }
 
