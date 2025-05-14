@@ -115,17 +115,6 @@ $this->import('
                         </mc-confirm-button>
                     </div>
                 </div>
-                <div v-if="phase.publishedRegistrations && (!phase.isContinuousFlow || (phase.isContinuousFlow && phase.hasEndDate))" class="published">
-                    <div class="col-4">
-                        <mc-confirm-button :message="text('despublicar')" @confirm="unpublishRegistration()">
-                            <template #button="modal">
-                                <button class="button button--primary-outline" @click="modal.open()">
-                                    <?= i::__("Despublicar") ?>
-                                </button>
-                            </template>
-                        </mc-confirm-button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
