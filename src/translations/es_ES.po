@@ -465,8 +465,8 @@ msgid ""
 "obrigatoriamente preenchidos"
 msgstr ""
 "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
-"Fundación, Género, Orientación Sexual, Raza / Color, Email Privado y Teléfono "
-"1 obligatoriamente completados"
+"Fundación, Género, Orientación Sexual, Raza / Color, Email Privado y Teléfono 1 "
+"obligatoriamente completados"
 
 #: config/registrations.php:76 src/conf/agent-types.php:730
 #: src/modules/Opportunities/views/registration/single.php:191
@@ -500,8 +500,8 @@ msgstr ""
 #: src/modules/Panel/components/panel--entities-summary/texts.php:11
 #: src/modules/Panel/components/panel--last-edited/template.php:33
 #: src/modules/Panel/components/panel--pending-evaluations/texts.php:6
-#: src/modules/Spreadsheets/SpreadsheetJob.php:401
-#: src/themes/BaseV1/Theme.php:251 src/themes/BaseV1/Theme.php:252
+#: src/modules/Spreadsheets/SpreadsheetJob.php:401 src/themes/BaseV1/Theme.php:251
+#: src/themes/BaseV1/Theme.php:252
 msgid "Espaço"
 msgstr "Espacio"
 
@@ -532,10 +532,9 @@ msgstr "Panel"
 msgid "Autenticação"
 msgstr "Autenticación"
 
-#: config/routes.php:128 src/conf/agent-types.php:609
-#: src/conf/event-types.php:66 src/conf/opportunity-types.php:97
-#: src/conf/project-types.php:58 src/conf/seal-types.php:14
-#: src/conf/space-types.php:433
+#: config/routes.php:128 src/conf/agent-types.php:609 src/conf/event-types.php:66
+#: src/conf/opportunity-types.php:97 src/conf/project-types.php:58
+#: src/conf/seal-types.php:14 src/conf/space-types.php:433
 #: src/themes/BaseV1/layouts/parts/singles/agent-form.php:17
 #: src/themes/BaseV1/layouts/parts/singles/agent-form.php:19
 #: src/themes/BaseV1/layouts/parts/singles/agent-header.php:41
@@ -822,8 +821,8 @@ msgstr "Oportunidades"
 msgid "Inscrição"
 msgstr "Inscripción"
 
-#: config/routes.php:134 src/conf/event-types.php:14
-#: src/conf/project-types.php:33 src/core/Entities/Registration.php:301
+#: config/routes.php:134 src/conf/event-types.php:14 src/conf/project-types.php:33
+#: src/core/Entities/Registration.php:301
 #: src/modules/EvaluationMethodContinuous/components/evaluation-method-continuous--apply/template.php:30
 #: src/modules/EvaluationMethodContinuous/layouts/parts/continuous--apply-results.php:30
 #: src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:29
@@ -2088,8 +2087,7 @@ msgstr "Límite de inscriptos por agente"
 
 #: src/conf/opportunity-types.php:75
 msgid ""
-"O número máximo de inscrições por agente responsável deve ser um número "
-"inteiro"
+"O número máximo de inscrições por agente responsável deve ser um número inteiro"
 msgstr ""
 "El número máximo de inscripciones por agente responsable debe ser un número "
 "entero"
@@ -2580,8 +2578,7 @@ msgstr "Institución Privada Filantrópica"
 
 #: src/conf/space-types.php:167
 msgid ""
-"Instituições Públicas exclusivamente voltada para formação artistica e "
-"cultural"
+"Instituições Públicas exclusivamente voltada para formação artistica e cultural"
 msgstr ""
 "Instituciones Públicas exclusivamente orientadas a la formación artística y "
 "cultural"
@@ -2591,69 +2588,68 @@ msgid ""
 "Instituição Pública Federal exclusivamente voltada para formação artistica e "
 "cultural"
 msgstr ""
-"Institución Pública Federal exclusivamente orientada a la formación artística "
-"y cultural"
+"Institución Pública Federal exclusivamente orientada a la formación artística y "
+"cultural"
 
 #: src/conf/space-types.php:171
 msgid ""
 "Instituição Pública Estadual exclusivamente voltada para formação artistica e "
 "cultural"
 msgstr ""
-"Institución Pública Estadual exclusivamente orientada a la formación "
-"artística y cultural"
+"Institución Pública Estadual exclusivamente orientada a la formación artística "
+"y cultural"
 
 #: src/conf/space-types.php:172
 msgid ""
-"Instituição Pública Municipal exclusivamente voltada para formação artistica "
-"e cultural"
+"Instituição Pública Municipal exclusivamente voltada para formação artistica e "
+"cultural"
 msgstr ""
-"Institución Pública Municipal exclusivamente orientada a la formación "
-"artística y cultural"
+"Institución Pública Municipal exclusivamente orientada a la formación artística "
+"y cultural"
 
 #: src/conf/space-types.php:173
 msgid ""
-"Instituição Pública Distrital exclusivamente voltada para formação artistica "
-"e cultural"
+"Instituição Pública Distrital exclusivamente voltada para formação artistica e "
+"cultural"
 msgstr ""
-"Institución Pública Distrital exclusivamente orientada a la formación "
-"artística y cultural"
+"Institución Pública Distrital exclusivamente orientada a la formación artística "
+"y cultural"
 
 #: src/conf/space-types.php:177
 msgid ""
-"Instituições Privadas exclusivamente voltada para formação artistica e "
-"cultural"
+"Instituições Privadas exclusivamente voltada para formação artistica e cultural"
 msgstr ""
 "Instituciones Privadas exclusivamente orientadas a la formación artística y "
 "cultural"
 
 #: src/conf/space-types.php:180
 msgid ""
-"Instituição Privada Particular exclusivamente voltada para formação artistica "
-"e cultural"
+"Instituição Privada Particular exclusivamente voltada para formação artistica e "
+"cultural"
 msgstr ""
 "Institución Pública Particular exclusivamente orientada a la formación "
 "artística y cultural"
 
 #: src/conf/space-types.php:181
 msgid ""
-"Instituição Privada Comunitária exclusivamente voltada para formação "
-"artistica e cultural"
+"Instituição Privada Comunitária exclusivamente voltada para formação artistica "
+"e cultural"
 msgstr ""
 "Institución Pública Comunitaria exclusivamente orientada a la formación "
 "artística y cultural"
 
 #: src/conf/space-types.php:182
 msgid ""
-"Instituição Privada Confessional exclusivamente voltada para formação "
-"artistica e cultural"
+"Instituição Privada Confessional exclusivamente voltada para formação artistica "
+"e cultural"
 msgstr ""
 "Institución Privada Confesional exclusivamente orientada a la formación "
 "artística y cultural"
 
 #: src/conf/space-types.php:183
 msgid ""
-"Instituição Privada Filantrópica exclusivamente voltada para formação "
-"artistica e cultural"
+"Instituição Privada Filantrópica exclusivamente voltada para formação artistica "
+"e cultural"
 msgstr ""
 "Institución Privada Filantrópica exclusivamente orientada a la formación "
 "artística y cultural"
@@ -3352,8 +3348,7 @@ msgstr ""
 
 #: src/conf/taxonomies.php:111
 msgid "Cultura das comunidades quilombolas"
-msgstr ""
-"Cultura de las comunidades quilombolas\"  # Comunidades afrodescendiente"
+msgstr "Cultura de las comunidades quilombolas\"  # Comunidades afrodescendiente"
 
 #: src/conf/taxonomies.php:112
 msgid "Cultura das quebradeiras de coco babaçu"
@@ -3545,8 +3540,7 @@ msgstr "Cultura del Pueblo Zoró"
 
 #: src/conf/taxonomies.php:159
 msgid "Cultura dos andirobeiros"
-msgstr ""
-"Cultura de los andiroberos\"  # Recolectores de andiroba (árbol amazónico"
+msgstr "Cultura de los andiroberos\"  # Recolectores de andiroba (árbol amazónico"
 
 #: src/conf/taxonomies.php:160
 msgid "Cultura dos apanhadores de flores sempre vivas"
@@ -4923,8 +4917,7 @@ msgstr "Evaluador de joyas"
 
 #: src/conf/taxonomies.php:529
 msgid "Baianas do Acarajé"
-msgstr ""
-"Baianas del acarajé\"  # Cultural term for traditional Bahian food vendor"
+msgstr "Baianas del acarajé\"  # Cultural term for traditional Bahian food vendor"
 
 #: src/conf/taxonomies.php:530
 msgid "Bailarino(a)"
@@ -5704,8 +5697,7 @@ msgstr "Operador de transmisor de radio\"  # Radio transmitter operato"
 
 #: src/conf/taxonomies.php:722
 msgid "Operador(a) de Áudio de Continuidade (rádio)"
-msgstr ""
-"Operador(a) de audio de continuidad (radio)\"  # Continuity audio operato"
+msgstr "Operador(a) de audio de continuidad (radio)\"  # Continuity audio operato"
 
 #: src/conf/taxonomies.php:723
 msgid "Operador(a) de Câmera"
@@ -5962,8 +5954,8 @@ msgstr "Técnico en mezcla de audio\"  # Audio mixing technicia"
 #: src/conf/taxonomies.php:786
 msgid "Técnico em Operação de Equipamentos de Transmissão/Recepção de Televisão"
 msgstr ""
-"Técnico en operación de equipos de transmisión/recepción de televisión\"  # "
-"TV transmission technicia"
+"Técnico en operación de equipos de transmisión/recepción de televisión\"  # TV "
+"transmission technicia"
 
 #: src/conf/taxonomies.php:787
 msgid "Técnico(a) audiovisual"
@@ -6008,8 +6000,8 @@ msgstr "Técnico(a) en grabación de audio\"  # Audio recording technicia"
 #: src/conf/taxonomies.php:797
 msgid "Técnico(a) em Instalação de Equipamentos de Áudio"
 msgstr ""
-"Técnico(a) en instalación de equipos de audio\"  # Audio equipment "
-"installation technicia"
+"Técnico(a) en instalación de equipos de audio\"  # Audio equipment installation "
+"technicia"
 
 #: src/conf/taxonomies.php:798
 msgid "Técnico(a) em Museologia"
@@ -7064,8 +7056,7 @@ msgstr "Zoró"
 msgid "Data Inicial"
 msgstr "Fecha Inicial"
 
-#: src/core/ApiOutputs/Html.php:16
-#: src/modules/Entities/views/project/edit.php:94
+#: src/core/ApiOutputs/Html.php:16 src/modules/Entities/views/project/edit.php:94
 msgid "Data Final"
 msgstr "Fecha final"
 
@@ -7382,8 +7373,8 @@ msgid "Tema Personalizável"
 msgstr "Tema personalizable"
 
 #: src/core/Controllers/User.php:71 src/core/Controllers/User.php:94
-#: src/modules/BaseV1EmbedTools/Controller.php:64
-#: src/themes/BaseV1/Theme.php:738 src/themes/BaseV1/Theme.php:742
+#: src/modules/BaseV1EmbedTools/Controller.php:64 src/themes/BaseV1/Theme.php:738
+#: src/themes/BaseV1/Theme.php:742
 msgid "Permissão negada"
 msgstr "Permiso denegado"
 
@@ -7415,45 +7406,37 @@ msgstr "La descripción breve debe tener máximo 400 caracteres"
 msgid "O tipo do agente é obrigatório"
 msgstr "El tipo de agente es obligatorio"
 
-#: src/core/Entities/EntityRevision.php:167
-#: src/core/Traits/EntityRevision.php:160
+#: src/core/Entities/EntityRevision.php:167 src/core/Traits/EntityRevision.php:160
 msgid "Registro criado."
 msgstr "Registro creado."
 
 #: src/core/Entities/EntityRevision.php:168
 #: src/core/Entities/EntityRevision.php:175
-#: src/core/Entities/EntityRevision.php:176
-#: src/core/Traits/EntityRevision.php:172
+#: src/core/Entities/EntityRevision.php:176 src/core/Traits/EntityRevision.php:172
 msgid "Registro atualizado."
 msgstr "Registro actualizado."
 
-#: src/core/Entities/EntityRevision.php:169
-#: src/core/Traits/EntityRevision.php:194
+#: src/core/Entities/EntityRevision.php:169 src/core/Traits/EntityRevision.php:194
 msgid "Registro publicado."
 msgstr "Registro publicado."
 
-#: src/core/Entities/EntityRevision.php:170
-#: src/core/Traits/EntityRevision.php:199
+#: src/core/Entities/EntityRevision.php:170 src/core/Traits/EntityRevision.php:199
 msgid "Registro arquivado."
 msgstr "Registro archivado."
 
-#: src/core/Entities/EntityRevision.php:171
-#: src/core/Traits/EntityRevision.php:204
+#: src/core/Entities/EntityRevision.php:171 src/core/Traits/EntityRevision.php:204
 msgid "Registro recuperado da lixeira."
 msgstr "Registro recuperado de la papelera."
 
-#: src/core/Entities/EntityRevision.php:172
-#: src/core/Traits/EntityRevision.php:207
+#: src/core/Entities/EntityRevision.php:172 src/core/Traits/EntityRevision.php:207
 msgid "Registro desarquivado."
 msgstr "Registro desarchivado."
 
-#: src/core/Entities/EntityRevision.php:173
-#: src/core/Traits/EntityRevision.php:211
+#: src/core/Entities/EntityRevision.php:173 src/core/Traits/EntityRevision.php:211
 msgid "Registro despublicado."
 msgstr "Registro despublicado."
 
-#: src/core/Entities/EntityRevision.php:174
-#: src/core/Traits/EntityRevision.php:217
+#: src/core/Entities/EntityRevision.php:174 src/core/Traits/EntityRevision.php:217
 msgid "Registro movido para a lixeira."
 msgstr "Registro movido a la papelera."
 
@@ -7610,8 +7593,7 @@ msgstr "El tipo de oportunidad es obligatorio"
 #: src/core/Entities/Opportunity.php:513 src/core/Entities/Project.php:242
 msgid "A data final das inscrições deve ser maior ou igual a data inicial"
 msgstr ""
-"La fecha final de las inscripciones debe ser mayor o igual que la fecha "
-"inicial"
+"La fecha final de las inscripciones debe ser mayor o igual que la fecha inicial"
 
 #: src/core/Entities/Opportunity.php:797
 #, php-format
@@ -7684,8 +7666,7 @@ msgid "Data final obrigatória caso data inicial preenchida"
 msgstr ""
 "Fecha final obligatoria, en el caso de que la fecha final fuera completada"
 
-#: src/core/Entities/Registration.php:366
-#: src/core/Entities/Registration.php:1377
+#: src/core/Entities/Registration.php:366 src/core/Entities/Registration.php:1377
 msgid "O agente responsável é obrigatório."
 msgstr "El agente responsable es obligatorio."
 
@@ -8033,20 +8014,19 @@ msgstr "Su último acceso fue el <b>%s</b>, actualice sus datos si es necesario.
 #: src/core/Entities/User.php:840
 #, php-format
 msgid ""
-"O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as "
-"informações se necessário. <a class='btn btn-small btn-primary' href='%s' "
-"rel='noopener noreferrer'>editar</a>'"
+"O agente <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações "
+"se necessário. <a class='btn btn-small btn-primary' href='%s' rel='noopener "
+"noreferrer'>editar</a>'"
 msgstr ""
 "El agente <b>%s</b> no está actualizado desde <b>%s</b>, si es necesario "
-"actualice los datos. <a class='btn btn-small btn-primary' href='%s'>editar</"
-"a>'"
+"actualice los datos. <a class='btn btn-small btn-primary' href='%s'>editar</a>'"
 
 #: src/core/Entities/User.php:857
 #, php-format
 msgid ""
-"O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as "
-"informações se necessário. <a class='btn btn-small btn-primary' href='%s' "
-"rel='noopener noreferrer'>editar</a>"
+"O Espaço <b>%s</b> não é atualizado desde de <b>%s</b>, atualize as informações "
+"se necessário. <a class='btn btn-small btn-primary' href='%s' rel='noopener "
+"noreferrer'>editar</a>"
 msgstr ""
 "El Espacio <b>%s</b> no está actualizado desde <b>%s</b>, si es necesario "
 "actualice los datos. <a class='btn btn-small btn-primary' href='%s'>editar</a>"
@@ -8054,13 +8034,13 @@ msgstr ""
 #: src/core/Entities/User.php:877
 #, php-format
 msgid ""
-"O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a "
-"entidade e solicite a renovação da validade. <a class='btn btn-small btn-"
-"primary' href='%s' rel='noopener noreferrer'>editar</a>"
+"O Agente <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade "
+"e solicite a renovação da validade. <a class='btn btn-small btn-primary' "
+"href='%s' rel='noopener noreferrer'>editar</a>"
 msgstr ""
-"El Agente <b>%s</b> está con su sello <b>%s</b> vencido.<br>Acceda a la "
-"entidad y solicite la renovación de la validez. <a class='btn btn-small btn-"
-"primary' href='%s'>editar</a>"
+"El Agente <b>%s</b> está con su sello <b>%s</b> vencido.<br>Acceda a la entidad "
+"y solicite la renovación de la validez. <a class='btn btn-small btn-primary' "
+"href='%s'>editar</a>"
 
 #: src/core/Entities/User.php:884
 #, php-format
@@ -8069,16 +8049,16 @@ msgid ""
 "<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-"
 "small btn-primary' href='' rel='noopener noreferrer'>editar</a>"
 msgstr ""
-"El Agente <b>%s</b> está con su sello <b>%s</b> pronto a vencerse en %s "
-"dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
-"class='btn btn-small btn-primary' href=''>editar</a>"
+"El Agente <b>%s</b> está con su sello <b>%s</b> pronto a vencerse en %s dia(s)."
+"<br>Acceda a la entidad y solicite la renovación de la validez. <a class='btn "
+"btn-small btn-primary' href=''>editar</a>"
 
 #: src/core/Entities/User.php:898
 #, php-format
 msgid ""
-"O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a "
-"entidade e solicite a renovação da validade. <a class='btn btn-small btn-"
-"primary' href='%s' rel='noopener noreferrer'>editar</a>"
+"O Espaço <b>%s</b> está com o seu selo <b>%s</b> expirado.<br>Acesse a entidade "
+"e solicite a renovação da validade. <a class='btn btn-small btn-primary' "
+"href='%s' rel='noopener noreferrer'>editar</a>"
 msgstr ""
 "El Espacio <b>%s</b> está con su sello <b>%s</b> vencido.<br>Acceda a la "
 "entidad y solicite la renovación de la validez. <a class='btn btn-small btn-"
@@ -8091,9 +8071,9 @@ msgid ""
 "<br>Acesse a entidade e solicite a renovação da validade. <a class='btn btn-"
 "small btn-primary' href='%s' rel='noopener noreferrer'>editar</a>"
 msgstr ""
-"El Agente <b>%s</b> está con su sello <b>%s</b> pronto a vencerse en %s "
-"dia(s).<br>Acceda a la entidad y solicite la renovación de la validez. <a "
-"class='btn btn-small btn-primary' href='%s'>editar</a>"
+"El Agente <b>%s</b> está con su sello <b>%s</b> pronto a vencerse en %s dia(s)."
+"<br>Acceda a la entidad y solicite la renovación de la validez. <a class='btn "
+"btn-small btn-primary' href='%s'>editar</a>"
 
 #: src/core/Entity.php:256
 msgid "Arquivado"
@@ -8306,19 +8286,19 @@ msgid ""
 "entidade e renove o certificado. <a class=\"btn btn-small btn-primary\" "
 "href=\"%s\" rel=\"noopener noreferrer\">editar</a>"
 msgstr ""
-"Solicitud de renovación del sello %s para la entidad %s. <br>Acceda a la "
-"página de la entidad y renueve el certificado. <a class=\"btn btn-small btn-"
-"primary\" href=\"%s\">editar</a>"
+"Solicitud de renovación del sello %s para la entidad %s. <br>Acceda a la página "
+"de la entidad y renueve el certificado. <a class=\"btn btn-small btn-primary\" "
+"href=\"%s\">editar</a>"
 
 #: src/core/Traits/ControllerSealRelation.php:160
 #, php-format
 msgid ""
-"Validade do selo %s para a entidade %s renovada.<br>Acesse a página da "
-"entidade e do certificado. <a class=\"btn btn-small btn-sucess\" href=\"%s\" "
+"Validade do selo %s para a entidade %s renovada.<br>Acesse a página da entidade "
+"e do certificado. <a class=\"btn btn-small btn-sucess\" href=\"%s\" "
 "rel=\"noopener noreferrer\">editar</a>"
 msgstr ""
-"Validez del sello %s para la entidad %s renovada. <br>Acceda a la página de "
-"la entidad del certificado. <a class=\"btn btn-small btn-sucess\" "
+"Validez del sello %s para la entidad %s renovada. <br>Acceda a la página de la "
+"entidad del certificado. <a class=\"btn btn-small btn-sucess\" "
 "href=\"%s\">editar</a>"
 
 #: src/core/Traits/ControllerUploads.php:60
@@ -8688,8 +8668,7 @@ msgstr "Filtrar inscripciones:"
 #: src/modules/Support/layouts/parts/support/opportunity-support.php:16
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:30
 msgid ""
-"Busque pelo número de inscrição, status da avaliação, nome ou cpf do "
-"responsável"
+"Busque pelo número de inscrição, status da avaliação, nome ou cpf do responsável"
 msgstr ""
 "Búsqueda por número de registro, estado de evaluación, nombre o CI del "
 "responsable"
@@ -8992,8 +8971,7 @@ msgstr "Denuncia enviada con éxito"
 
 #: src/modules/Components/components/complaint-suggestion/template.php:63
 msgid ""
-"Sua mensagem foi enviada para a equipe responsável. Agradecemos a "
-"contribuição."
+"Sua mensagem foi enviada para a equipe responsável. Agradecemos a contribuição."
 msgstr ""
 "Su mensaje fue enviado al equipo responsable. Agradecemos su contribución."
 
@@ -9086,7 +9064,7 @@ msgstr "DÓNDE: "
 #: src/modules/Components/components/entity-card/template.php:54
 #: src/modules/Components/components/entity-card/texts.php:7
 msgid "As inscrições encerrarão no dia"
-msgstr "Las inscripciones se cerraron el día"
+msgstr "Las inscripciones se cerrarán el día"
 
 #: src/modules/Components/components/entity-card/template.php:54
 #: src/modules/Components/components/entity-card/template.php:62
@@ -10049,8 +10027,8 @@ msgstr "Eliminar cuenta"
 #: src/modules/DeleteAccount/views/panel/delete-account.php:12
 msgid ""
 "A remoção da conta fará com que a maioria de suas informações não sejam mais "
-"acessíveis publicamente. Algumas informações, como por exemplo as inscrições "
-"em editais continuarão acessíveis.<br>Você pode escolher por transferir suas "
+"acessíveis publicamente. Algumas informações, como por exemplo as inscrições em "
+"editais continuarão acessíveis.<br>Você pode escolher por transferir suas "
 "entidades para outro usuário, que será questionado se deseja recebê-las. No "
 "caso do usuário se negar a receber as entidades, estas serão excluidas."
 msgstr ""
@@ -10307,8 +10285,8 @@ msgid ""
 "Para completar e publicar seu novo agente, acesse a área <b>Rascunhos</b> em "
 "<b>Meus Agentes</b> no <b>Painel de Controle</b>.  "
 msgstr ""
-"Para completar y publicar su nuevo agente, acceda al área <b>Borradores</b> "
-"en <b>Mis agentes</b> en el <b>Panel de control</b>. "
+"Para completar y publicar su nuevo agente, acceda al área <b>Borradores</b> en "
+"<b>Mis agentes</b> en el <b>Panel de control</b>. "
 
 #: src/modules/Entities/components/create-agent/template.php:40
 #: src/modules/Entities/components/create-event/template.php:42
@@ -10410,8 +10388,8 @@ msgid ""
 "Para completar e publicar seu novo evento, acesse a área <b>Rascunhos</b> em "
 "<b>Meus Eventos</b> no <b>Painel de Controle</b>.  "
 msgstr ""
-"Para completar y publicar su nuevo evento, acceda al área <b>Borradores</b> "
-"en <b>Mis Eventos</b> en el <b>Panel de control</b>. "
+"Para completar y publicar su nuevo evento, acceda al área <b>Borradores</b> en "
+"<b>Mis Eventos</b> en el <b>Panel de control</b>. "
 
 #: src/modules/Entities/components/create-event/template.php:47
 #: src/modules/Entities/components/create-event/template.php:52
@@ -10445,8 +10423,7 @@ msgstr "una vez"
 
 #: src/modules/Entities/components/create-occurrence/script.js:85
 #: src/modules/EventImporter/Controller.php:766
-#: src/modules/EventImporter/Module.php:24
-#: src/modules/EventImporter/Module.php:52
+#: src/modules/EventImporter/Module.php:24 src/modules/EventImporter/Module.php:52
 msgid "diariamente"
 msgstr "diariamente"
 
@@ -10532,8 +10509,7 @@ msgstr "¿Cuál es la frecuencia del evento?"
 
 #: src/modules/Entities/components/create-occurrence/template.php:73
 #: src/modules/EventImporter/Controller.php:809
-#: src/modules/EventImporter/Module.php:23
-#: src/modules/EventImporter/Module.php:52
+#: src/modules/EventImporter/Module.php:23 src/modules/EventImporter/Module.php:52
 #: src/modules/EventImporter/Module.php:54
 #: src/modules/EventImporter/Module.php:265 src/themes/BaseV1/Theme.php:2226
 #: src/themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:55
@@ -10542,8 +10518,8 @@ msgstr "semanal"
 
 #: src/modules/Entities/components/create-occurrence/template.php:74
 #: src/modules/EventImporter/Controller.php:767
-#: src/modules/EventImporter/Module.php:25
-#: src/modules/EventImporter/Module.php:99 src/themes/BaseV1/Theme.php:2225
+#: src/modules/EventImporter/Module.php:25 src/modules/EventImporter/Module.php:99
+#: src/themes/BaseV1/Theme.php:2225
 #: src/themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:54
 msgid "todos os dias"
 msgstr "todos los días"
@@ -10967,8 +10943,8 @@ msgid ""
 "Você pode completar as informações do seu projeto agora ou pode deixar para "
 "depois. "
 msgstr ""
-"Puedes completar la información de tu proyecto ahora o puedes dejarlo para "
-"más tarde. "
+"Puedes completar la información de tu proyecto ahora o puedes dejarlo para más "
+"tarde. "
 
 #: src/modules/Entities/components/create-project/template.php:31
 msgid ""
@@ -11031,8 +11007,8 @@ msgid ""
 "Para completar e publicar seu novo espaço, acesse a área <b>Rascunhos</b> em "
 "<b>Meus Espaços</b> no <b>Painel de Controle</b>.  "
 msgstr ""
-"Para completar y publicar su nuevo espacio, acceda al área <b>Borradores</b> "
-"en <b>Mis Espacios</b> en el <b>Panel de control</b>. "
+"Para completar y publicar su nuevo espacio, acceda al área <b>Borradores</b> en "
+"<b>Mis Espacios</b> en el <b>Panel de control</b>. "
 
 #: src/modules/Entities/components/create-space/template.php:44
 #: src/modules/Entities/components/create-space/template.php:49
@@ -11606,8 +11582,8 @@ msgid ""
 "Marque o campo acima para tornar o endereço público ou deixe desmarcado para "
 "manter o endereço privado."
 msgstr ""
-"Marque la casilla de arriba para hacer pública la dirección o déjela sin "
-"marcar para mantener la dirección privada."
+"Marque la casilla de arriba para hacer pública la dirección o déjela sin marcar "
+"para mantener la dirección privada."
 
 #: src/modules/Entities/components/entity-lock/template.php:10
 msgid "já esta sendo editada por"
@@ -11660,8 +11636,8 @@ msgstr "Fecha, hora y lugar del evento"
 
 #: src/modules/Entities/components/entity-occurrence-list/template.php:23
 msgid ""
-"Adicione data, hora e local da ocorrência do seu evento. Você pode criar "
-"várias ocorrências com informações diferentes."
+"Adicione data, hora e local da ocorrência do seu evento. Você pode criar várias "
+"ocorrências com informações diferentes."
 msgstr ""
 "Añade fecha, hora y lugar de tu evento. Puede crear múltiples ocurrencias con "
 "información diferente."
@@ -11714,13 +11690,11 @@ msgstr "Cambiar supra proyecto"
 #: src/modules/Entities/components/entity-parent-edit/template.php:41
 msgid ""
 "Selecione um espaço para que o seu espaço atual seja vinculado como integrante"
-msgstr ""
-"Seleccione un espacio para que su espacio actual se vincule como miembro"
+msgstr "Seleccione un espacio para que su espacio actual se vincule como miembro"
 
 #: src/modules/Entities/components/entity-parent-edit/template.php:42
 msgid ""
-"Selecione um projeto para que o seu projeto atual seja vinculado como "
-"integrante"
+"Selecione um projeto para que o seu projeto atual seja vinculado como integrante"
 msgstr ""
 "Seleccione un proyecto para que su proyecto actual esté vinculado como miembro"
 
@@ -11787,8 +11761,7 @@ msgstr "Este agente es un borrador."
 #: src/modules/Entities/components/entity-status/template.php:19
 #: src/modules/Entities/components/entity-status/template.php:34
 #: src/modules/Entities/components/entity-status/template.php:49
-msgid ""
-"Você precisa <strong>publicar</strong> para exibir para todas as pessoas."
+msgid "Você precisa <strong>publicar</strong> para exibir para todas as pessoas."
 msgstr "Debes <strong>publicar</strong> para mostrárselo a todo el mundo."
 
 #: src/modules/Entities/components/entity-status/template.php:22
@@ -12492,8 +12465,8 @@ msgstr "Información pública"
 #: src/modules/Entities/views/agent/edit-2.php:115
 #: src/modules/Entities/views/project/edit.php:115
 msgid ""
-"Os dados inseridos abaixo assim como as informações de apresentação também "
-"são exibidos publicamente"
+"Os dados inseridos abaixo assim como as informações de apresentação também são "
+"exibidos publicamente"
 msgstr ""
 "Los datos ingresados ​​a continuación, así como la información de la "
 "presentación, también se muestran públicamente"
@@ -12692,11 +12665,11 @@ msgstr "Información pública del evento"
 
 #: src/modules/Entities/views/event/edit.php:125
 msgid ""
-"Este é um espaço para você apresentar melhor o seu Evento. Adicione "
-"documentos, links, vídeos e imagens."
+"Este é um espaço para você apresentar melhor o seu Evento. Adicione documentos, "
+"links, vídeos e imagens."
 msgstr ""
-"Este es un espacio para que puedas presentar mejor tu Evento. Añade "
-"documentos, enlaces, vídeos e imágenes."
+"Este es un espacio para que puedas presentar mejor tu Evento. Añade documentos, "
+"enlaces, vídeos e imágenes."
 
 #: src/modules/Entities/views/event/edit.php:129
 #: src/modules/Opportunities/views/opportunity/single.php:81
@@ -12842,8 +12815,8 @@ msgstr "Espacios integrante de"
 msgid "Propriedades do Espaço"
 msgstr "Propiedades del espacio"
 
-#: src/modules/Entities/views/space/single.php:76
-#: src/themes/BaseV1/Theme.php:365 src/themes/BaseV1/Theme.php:366
+#: src/modules/Entities/views/space/single.php:76 src/themes/BaseV1/Theme.php:365
+#: src/themes/BaseV1/Theme.php:366
 msgid "Subespaços"
 msgstr "Subespacios"
 
@@ -13283,8 +13256,7 @@ msgstr "Evaluación documental"
 
 #: src/modules/EvaluationMethodDocumentary/Module.php:24
 msgid ""
-"Consiste num checkbox e um textarea para cada campo do formulário de "
-"inscrição."
+"Consiste num checkbox e um textarea para cada campo do formulário de inscrição."
 msgstr ""
 "Consiste en un checkbox y un textarea para cada campo del formulario de "
 "inscripción."
@@ -13368,15 +13340,14 @@ msgid ""
 "Para <strong>validar</strong> a inscrição salve a avaliação sem invalidar "
 "nenhum campo."
 msgstr ""
-"Para <strong>validar</strong> la inscripción guarde la evaluación sin "
-"invalidad ningún campo."
+"Para <strong>validar</strong> la inscripción guarde la evaluación sin invalidad "
+"ningún campo."
 
 #: src/modules/EvaluationMethodDocumentary/layouts/parts/documentary--evaluation-info.php:2
 msgid ""
-"Para <strong>invalidar</strong> a inscrição, clique no(s) campo(s) "
-"inválido(s), marque o checkbox <strong>Marcar como inválido</strong> e "
-"preencha a justificativa. Após invalidar todos os campos inválidos, salve a "
-"avaliação."
+"Para <strong>invalidar</strong> a inscrição, clique no(s) campo(s) inválido(s), "
+"marque o checkbox <strong>Marcar como inválido</strong> e preencha a "
+"justificativa. Após invalidar todos os campos inválidos, salve a avaliação."
 msgstr ""
 "Para <strong>invalidar</strong> la inscripción, cliquee el(los) campo(s) "
 "inválido(s), marque el checkbox <strong>Marcar como inválido</strong> y "
@@ -13747,8 +13718,7 @@ msgstr "inhabilitación"
 
 #: src/modules/EvaluationMethodQualification/layouts/parts/qualification--configuration-form.php:40
 msgid ""
-"As opções Habilitado e inabilitado já são definidas automaticamente pelo "
-"sistema"
+"As opções Habilitado e inabilitado já são definidas automaticamente pelo sistema"
 msgstr ""
 "Las opciones Activado y Desactivado ya están definidas automáticamente por el "
 "sistema"
@@ -13863,13 +13833,12 @@ msgstr "Viabilidad de la inscripción"
 msgid ""
 "Ao habilitar esta configuração, os avaliadores deverão considerar a "
 "exequibilidade da inscrição. Se a maioria dos avaliadores considerarem a "
-"inabilitação por exequibilidade, a mesma será marcada com o status de "
-"inválida para o dono do edital, que ainda assim poderá mudar seu status para "
-"válida."
+"inabilitação por exequibilidade, a mesma será marcada com o status de inválida "
+"para o dono do edital, que ainda assim poderá mudar seu status para válida."
 msgstr ""
-"Al habilitar esta configuración, los evaluadores deben considerar la "
-"viabilidad de la aplicación. Si la mayoría de los evaluadores consideran que "
-"la descalificación es ejecutable, ésta será marcada como inválida para el "
+"Al habilitar esta configuración, los evaluadores deben considerar la viabilidad "
+"de la aplicación. Si la mayoría de los evaluadores consideran que la "
+"descalificación es ejecutable, ésta será marcada como inválida para el "
 "propietario de la notificación, quien aún podrá cambiar su estado a válido."
 
 #: src/modules/EvaluationMethodTechnical/Module.php:171
@@ -13914,8 +13883,8 @@ msgid ""
 "Ao habilitar esta configuração, os cotistas seráo considerados na listagem da "
 "ampla concorrência."
 msgstr ""
-"Al habilitar esta configuración, los accionistas serán considerados en la "
-"lista amplia de competencia."
+"Al habilitar esta configuración, los accionistas serán considerados en la lista "
+"amplia de competencia."
 
 #: src/modules/EvaluationMethodTechnical/Module.php:535
 msgid "Somente para avaliações técnicas"
@@ -13968,8 +13937,8 @@ msgstr "(reemplazando %s)"
 
 #: src/modules/EvaluationMethodTechnical/components/affirmative-policies--geo-quota-configuration/template.php:20
 msgid ""
-"O número de vagas do edital não foi configurado. Para definir a distribuição "
-"de vagas por território, é necessário primeiro estabelecer esse valor."
+"O número de vagas do edital não foi configurado. Para definir a distribuição de "
+"vagas por território, é necessário primeiro estabelecer esse valor."
 msgstr ""
 "No se ha configurado el número de vacantes del llamado. Para definir la "
 "distribución de las vacantes por territorio, primero es necesario establecer "
@@ -14086,8 +14055,8 @@ msgstr "Vacantes para titulares de cuotas:"
 
 #: src/modules/EvaluationMethodTechnical/components/affirmative-policies--quota-configuration/template.php:49
 msgid ""
-"O número de vagas reservadas para cotistas excede o total de vagas "
-"disponíveis no edita."
+"O número de vagas reservadas para cotistas excede o total de vagas disponíveis "
+"no edita."
 msgstr ""
 "El número de vacantes reservadas a los titulares de cuotas supera el número "
 "total de vacantes disponibles en la convocatoria."
@@ -14202,8 +14171,8 @@ msgstr "Seleccionar entradas ubicadas en el rango de clasificación"
 
 #: src/modules/EvaluationMethodTechnical/components/evaluation-method-technical--apply/template.php:84
 msgid ""
-"Marcar como suplente as inscrições posicionadas fora da faixa de "
-"classificação que estejam acima da nota de corte"
+"Marcar como suplente as inscrições posicionadas fora da faixa de classificação "
+"que estejam acima da nota de corte"
 msgstr ""
 "Marcar como suplentes las inscripciones ubicadas fuera del rango de "
 "clasificación que estén por encima de la puntuación límite"
@@ -14364,11 +14333,11 @@ msgstr "Agregar criterios"
 
 #: src/modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:9
 msgid ""
-"Configure abaixo os percentuais de cada bônus por pontuação que serão "
-"aplicados na nota final, caso o proponente se enquadre. "
+"Configure abaixo os percentuais de cada bônus por pontuação que serão aplicados "
+"na nota final, caso o proponente se enquadre. "
 msgstr ""
-"Configura a continuación los porcentajes de cada bonificación de puntos que "
-"se aplicarán a la calificación final, si el solicitante califica. "
+"Configura a continuación los porcentajes de cada bonificación de puntos que se "
+"aplicarán a la calificación final, si el solicitante califica. "
 
 #: src/modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:13
 msgid "Porcentagem total a ser aplicada"
@@ -14498,11 +14467,10 @@ msgstr "El archivo está vacío, verifique para continuar"
 
 #: src/modules/EventImporter/Controller.php:357
 msgid ""
-"Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma "
-"para continuar"
-msgstr ""
-"Línea inválida. Los datos de línea son datos de ejemplo, bórrelos para "
+"Linha invalida. Os dados da linha são os dados do exemplo, apague a mesma para "
 "continuar"
+msgstr ""
+"Línea inválida. Los datos de línea son datos de ejemplo, bórrelos para continuar"
 
 #: src/modules/EventImporter/Controller.php:369
 msgid "O evento não está cadastrado"
@@ -14555,8 +14523,7 @@ msgstr "La columna de frecuencia está vacía"
 
 #: src/modules/EventImporter/Controller.php:483
 msgid "para a frequencia semanal, pelomenos um dia da semana deve ser informado"
-msgstr ""
-"para la frecuencia semanal, se debe informar al menos un día de la semana"
+msgstr "para la frecuencia semanal, se debe informar al menos un día de la semana"
 
 #: src/modules/EventImporter/Controller.php:489
 msgid "A coluna Hora inícial está vazia"
@@ -14575,8 +14542,8 @@ msgstr "La columna Hora de finalización está vacía"
 #: src/modules/EventImporter/Controller.php:504
 msgid "A coluna Hora final é inválida. O formato esperado é HH:MM Ex.: 12:00"
 msgstr ""
-"La columna Hora de finalización no es válida. El formato esperado es HH:MM, "
-"por ejemplo, 12:00"
+"La columna Hora de finalización no es válida. El formato esperado es HH:MM, por "
+"ejemplo, 12:00"
 
 #: src/modules/EventImporter/Controller.php:509
 msgid "A data inicial é maior que a data final."
@@ -14600,11 +14567,10 @@ msgstr "La columna de fecha de finalización está vacía"
 
 #: src/modules/EventImporter/Controller.php:530
 msgid ""
-"A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: "
-"01/01/2022"
+"A coluna data final é inválida. O formato esperado é DD/MM/YYYY Ex.: 01/01/2022"
 msgstr ""
-"La columna de fecha de finalización no es válida. El formato esperado es DD/"
-"MM/YYYY Ej.: 01/01/2022"
+"La columna de fecha de finalización no es válida. El formato esperado es DD/MM/"
+"YYYY Ej.: 01/01/2022"
 
 #: src/modules/EventImporter/Controller.php:535
 msgid "A coluna total de público é inválida. Essa coluna so aceita números"
@@ -14950,11 +14916,11 @@ msgstr "SELLO ID"
 
 #: src/modules/EventImporter/Module.php:156
 msgid ""
-"PREENCHER O ID DO SELO, CASO QUEIRA APLICAR UM SELO NO EVENTO - garantir que "
-"o selo esteja cadastrado"
+"PREENCHER O ID DO SELO, CASO QUEIRA APLICAR UM SELO NO EVENTO - garantir que o "
+"selo esteja cadastrado"
 msgstr ""
-"COMPLETE EL ID DEL SELLO SI DESEA APLICAR UN SELLO EN EL EVENTO - asegúrese "
-"de que el sello esté registrado"
+"COMPLETE EL ID DEL SELLO SI DESEA APLICAR UN SELLO EN EL EVENTO - asegúrese de "
+"que el sello esté registrado"
 
 #: src/modules/EventImporter/Module.php:159
 msgid "ID_EVENTO"
@@ -14962,8 +14928,7 @@ msgstr "ID_EVENTO"
 
 #: src/modules/EventImporter/Module.php:160
 msgid ""
-"PREENCHER SOMENTE CASO QUEIRA EDITAR UM EVENTO EXISTENTE - Informar ID do "
-"evento"
+"PREENCHER SOMENTE CASO QUEIRA EDITAR UM EVENTO EXISTENTE - Informar ID do evento"
 msgstr ""
 "COMPLETA SOLO SI QUIERES EDITAR UN EVENTO EXISTENTE - Informar ID del evento"
 
@@ -15033,8 +14998,7 @@ msgstr "TRADUCCION_LENGUASEÑAS"
 
 #: src/modules/EventImporter/Module.php:184
 msgid "Informar se o evento conta com tradução por libras usando SIM ou NÃO"
-msgstr ""
-"Informar si el evento tiene traducción por lengua de señas usando SI o NO"
+msgstr "Informar si el evento tiene traducción por lengua de señas usando SI o NO"
 
 #: src/modules/EventImporter/Module.php:187
 msgid "MAIS_INFORMACOES"
@@ -15145,8 +15109,7 @@ msgid "TOTAL_DE_PUBLICO"
 msgstr "TOTAL_DE_PÚBLICO"
 
 #: src/modules/EventImporter/Module.php:224
-msgid ""
-"Informar o número que corresponde ao total de público que o evento suporta"
+msgid "Informar o número que corresponde ao total de público que o evento suporta"
 msgstr ""
 "Informar el número que corresponde a la audiencia total que soporta el evento"
 
@@ -15187,8 +15150,8 @@ msgid ""
 "PREENCHIMENTO OBRIGATÓRIO - Informar as linguagens do evento separando-as com "
 "ponto e virgula, ;"
 msgstr ""
-"LLENADO OBLIGATORIO - Informar los idiomas del evento separándolos con punto "
-"y coma, ;"
+"LLENADO OBLIGATORIO - Informar los idiomas del evento separándolos con punto y "
+"coma, ;"
 
 #: src/modules/EventImporter/Module.php:237
 msgid "Teatro;Música Popular;Livro e Literatura"
@@ -15224,8 +15187,8 @@ msgstr "PROPIETARIO"
 
 #: src/modules/EventImporter/Module.php:248
 msgid ""
-"PREENCHIMENTO OBRIGATÓRIO - Informar ID do agente reponsável pelo evento. "
-"Esse campod eve ser numérico"
+"PREENCHIMENTO OBRIGATÓRIO - Informar ID do agente reponsável pelo evento. Esse "
+"campod eve ser numérico"
 msgstr ""
 "LLENADO OBLIGATORIO - Informar el ID del agente responsable del evento. Este "
 "campo debe ser numérico"
@@ -15271,8 +15234,8 @@ msgid ""
 "PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO OU FREQUEÊNCIA - "
 "Informar final do evento no formato HH:MM"
 msgstr ""
-"LLENADO OBLIGATORIO SI SE INFORMA COLUMNA DE ESPACIO O FRECUENCIA - Informar "
-"la finalización del evento en formato HH:MM"
+"LLENADO OBLIGATORIO SI SE INFORMA COLUMNA DE ESPACIO O FRECUENCIA - Informar la "
+"finalización del evento en formato HH:MM"
 
 #: src/modules/EventImporter/Module.php:261
 msgid "13:00"
@@ -15284,9 +15247,8 @@ msgstr "FRECUENCIA"
 
 #: src/modules/EventImporter/Module.php:264
 msgid ""
-"PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO - Informar a "
-"frequência que o evento irá acontecer usando as opções todos os dias, semanal "
-"ou uma vez"
+"PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO - Informar a frequência "
+"que o evento irá acontecer usando as opções todos os dias, semanal ou uma vez"
 msgstr ""
 "LLENADO OBLIGATORIO SI SE INFORMA LA COLUMNA ESPACIO - Informar con qué "
 "frecuencia se realizará el evento utilizando las opciones todos los días, "
@@ -15301,8 +15263,8 @@ msgid ""
 "PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO OU FREQUEÊNCIA - "
 "Informar data inícial do evento no formato DD/MM/YYYY"
 msgstr ""
-"LLENADO OBLIGATORIO SI INFORMA LA COLUMNA DE ESPACIO O FRECUENCIA - Informar "
-"la fecha de inicio del evento en formato DD/MM/AAAA"
+"LLENADO OBLIGATORIO SI INFORMA LA COLUMNA DE ESPACIO O FRECUENCIA - Informar la "
+"fecha de inicio del evento en formato DD/MM/AAAA"
 
 #: src/modules/EventImporter/Module.php:269
 msgid "01/05/2022"
@@ -15317,8 +15279,8 @@ msgid ""
 "PREENCHIMENTO OBRIGATÓRIO CASO INFORME A CALUNA ESPAÇO OU FREQUEÊNCIA -  "
 "Informar data final do evento no formato DD/MM/YYYY"
 msgstr ""
-"LLENADO OBLIGATORIO SI INFORMA LA COLUMNA DE ESPACIO O FRECUENCIA - Informar "
-"la fecha de finalización del evento en el formato DD/MM/AAAA"
+"LLENADO OBLIGATORIO SI INFORMA LA COLUMNA DE ESPACIO O FRECUENCIA - Informar la "
+"fecha de finalización del evento en el formato DD/MM/AAAA"
 
 #: src/modules/EventImporter/Module.php:273
 msgid "30/05/2022"
@@ -15336,11 +15298,11 @@ msgstr "LUNES"
 #: src/modules/EventImporter/Module.php:296
 #: src/modules/EventImporter/Module.php:300
 msgid ""
-"Caso o evento ocorra neste dia informar um dos valores a seguir (sim,x,1) "
-"caso contrario deixar vazio"
+"Caso o evento ocorra neste dia informar um dos valores a seguir (sim,x,1) caso "
+"contrario deixar vazio"
 msgstr ""
-"Si el evento ocurre en este día, ingrese uno de los siguientes valores (si,"
-"x,1) de lo contrario déjelo en blanco"
+"Si el evento ocurre en este día, ingrese uno de los siguientes valores (si,x,1) "
+"de lo contrario déjelo en blanco"
 
 #: src/modules/EventImporter/Module.php:279
 msgid "TERCA"
@@ -15447,9 +15409,9 @@ msgid ""
 "titulo com dois pontos :. A estrutura deve ser seguida para cada arquivo que "
 "quiser inserir nos downloads"
 msgstr ""
-"Informar entre corchetes [] el enlace y el título del archivo. Separe el "
-"enlace y el título con dos puntos:. Se debe seguir la estructura para cada "
-"archivo que se quiera insertar en las descargas"
+"Informar entre corchetes [] el enlace y el título del archivo. Separe el enlace "
+"y el título con dos puntos:. Se debe seguir la estructura para cada archivo que "
+"se quiera insertar en las descargas"
 
 #: src/modules/EventImporter/Module.php:325
 msgid ""
@@ -15462,13 +15424,13 @@ msgstr ""
 
 #: src/modules/EventImporter/Module.php:328
 msgid ""
-"Informar entre colchetes [] o link e título da video. Separar o link e o "
-"titulo com dois pontos :. A estrutura deve ser seguida para cada imagem que "
-"quiser inserir na galeria de vídeos"
+"Informar entre colchetes [] o link e título da video. Separar o link e o titulo "
+"com dois pontos :. A estrutura deve ser seguida para cada imagem que quiser "
+"inserir na galeria de vídeos"
 msgstr ""
-"Informar entre corchetes [] el enlace y título del video. Separe el enlace y "
-"el título con dos puntos:. Se debe seguir la estructura para cada imagen que "
-"se quiera insertar en la galería de videos"
+"Informar entre corchetes [] el enlace y título del video. Separe el enlace y el "
+"título con dos puntos:. Se debe seguir la estructura para cada imagen que se "
+"quiera insertar en la galería de videos"
 
 #: src/modules/EventImporter/Module.php:329
 msgid "[https://www.youtube.com/watch?v=6pKJRAOqAGw:O Rappa]"
@@ -15480,9 +15442,9 @@ msgstr ""
 
 #: src/modules/EventImporter/Module.php:332
 msgid ""
-"Informar entre colchetes [] o link e título. Separar o link e o titulo com "
-"dois pontos :. A estrutura deve ser seguida para cada link que quiser inserir "
-"na galeria de links"
+"Informar entre colchetes [] o link e título. Separar o link e o titulo com dois "
+"pontos :. A estrutura deve ser seguida para cada link que quiser inserir na "
+"galeria de links"
 msgstr ""
 "Informar entre corchetes [] el enlace y título. Separe el enlace y el título "
 "con dos puntos:. Se debe seguir la estructura para cada enlace que se quiera "
@@ -15500,9 +15462,9 @@ msgid ""
 "Processar"
 msgstr ""
 "En este espacio podrás importar eventos completando la plantilla modelo. Para "
-"ello, descarga la plantilla, complétala con los datos de tu evento, importa "
-"la plantilla usando el botón de abajo y, finalmente, activa la integración "
-"usando el botón Procesar"
+"ello, descarga la plantilla, complétala con los datos de tu evento, importa la "
+"plantilla usando el botón de abajo y, finalmente, activa la integración usando "
+"el botón Procesar"
 
 #: src/modules/EventImporter/components/event-importer-files/template.php:27
 msgid "Nome do arquivo"
@@ -15647,8 +15609,7 @@ msgid ""
 "Confira todas as dúvidas mais frequentes agrupadas em categorias disponíveis "
 "para que você possa consultar."
 msgstr ""
-"Consulta todas las preguntas frecuentes agrupadas en las categorías "
-"disponibles."
+"Consulta todas las preguntas frecuentes agrupadas en las categorías disponibles."
 
 #: src/modules/FAQ/views/faq/section.php:29
 msgid "Navegue entra as categorias:"
@@ -15729,11 +15690,11 @@ msgid ""
 "coletivos que acreditam na plataforma. Você pode contribuir para o seu "
 "desenvolvimento através do GitHub."
 msgstr ""
-"El Mapa Cultural es un software libre para la gestión del fomento a la "
-"cultura y el mapeo colaborativo. Fue creado de forma colaborativa por "
-"hacklab/, organismos públicos de cultura, organizaciones no gubernamentales, "
-"empresas y colectivos que creen en la plataforma. Podés contribuir a su "
-"desarrollo a través de GitHub."
+"El Mapa Cultural es un software libre para la gestión del fomento a la cultura "
+"y el mapeo colaborativo. Fue creado de forma colaborativa por hacklab/, "
+"organismos públicos de cultura, organizaciones no gubernamentales, empresas y "
+"colectivos que creen en la plataforma. Podés contribuir a su desarrollo a "
+"través de GitHub."
 
 #: src/modules/Home/components/home-entities/template.php:18
 msgid "Aqui você encontra as informações da cultura de sua região!"
@@ -15741,11 +15702,11 @@ msgstr "¡Aquí encontrarás información sobre la cultura de tu región!"
 
 #: src/modules/Home/components/home-entities/template.php:21
 msgid ""
-"Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre "
-"seus projetos, espaços e eventos."
+"Mas para isso, precisamos da sua ajuda!!! Faça parte você também: cadastre seus "
+"projetos, espaços e eventos."
 msgstr ""
-"Pero para eso necesitamos tu ayuda!!! Sé parte también: registra tus "
-"proyectos, espacios y eventos."
+"Pero para eso necesitamos tu ayuda!!! Sé parte también: registra tus proyectos, "
+"espacios y eventos."
 
 #: src/modules/Home/components/home-entities/template.php:43
 #: src/modules/Search/components/search-map/texts.php:6
@@ -15771,12 +15732,12 @@ msgstr "Ver todos"
 #: src/modules/Search/components/search-map/texts.php:8
 msgid ""
 "Você pode pesquisar eventos culturais nos campos de busca combinada. Como "
-"usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-"
-"los gratuitamente. (Mais uma linha aqui pra fechar cinco linhas)"
+"usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los "
+"gratuitamente. (Mais uma linha aqui pra fechar cinco linhas)"
 msgstr ""
 "Puede buscar eventos culturales en los campos de búsqueda combinados. Como "
-"usuario registrado, puede incluir su evento en la plataforma y darlo a "
-"conocer de forma gratuita."
+"usuario registrado, puede incluir su evento en la plataforma y darlo a conocer "
+"de forma gratuita."
 
 #: src/modules/Home/components/home-entities/template.php:93
 #: src/modules/Search/components/search-map/texts.php:9
@@ -15787,9 +15748,8 @@ msgid ""
 "espaços onde desenvolve suas atividades artísticas e culturais."
 msgstr ""
 "Busque espacios culturales incluidos en la plataforma, con el acceso a los "
-"campos de búsqueda combinados que ayudan a la exactitud de su búsqueda. "
-"Firmar los espacios donde se desarrollan sus actividades artísticas y "
-"culturales."
+"campos de búsqueda combinados que ayudan a la exactitud de su búsqueda. Firmar "
+"los espacios donde se desarrollan sus actividades artísticas y culturales."
 
 #: src/modules/Home/components/home-entities/template.php:118
 #: src/modules/Search/components/search-map/texts.php:5
@@ -15799,9 +15759,8 @@ msgid ""
 "agentes (grupos, coletivos, bandas instituições, empresas, etc.), (...)"
 msgstr ""
 "En este espacio se registran artistas, directivos y productores; una red de "
-"actores involucrados en la escena cultural de la región. Podrás registrar uno "
-"o más agentes (grupos, colectivos, bandas, instituciones, empresas, etc.), "
-"(...)"
+"actores involucrados en la escena cultural de la región. Podrás registrar uno o "
+"más agentes (grupos, colectivos, bandas, instituciones, empresas, etc.), (...)"
 
 #: src/modules/Home/components/home-entities/template.php:143
 #: src/modules/Search/components/search-map/texts.php:7
@@ -15849,8 +15808,8 @@ msgstr "Ver también en el mapa"
 
 #: src/modules/Home/components/home-map/template.php:16
 msgid ""
-"Os agentes, espaços e eventos cadastrados contam com a geo localização de "
-"seus endereços, encontre-os aqui:"
+"Os agentes, espaços e eventos cadastrados contam com a geo localização de seus "
+"endereços, encontre-os aqui:"
 msgstr ""
 "Los agentes, espacios y eventos registrados cuentan con la geolocalización de "
 "sus direcciones, encuéntralos aquí:"
@@ -15861,8 +15820,8 @@ msgstr "Oportunidades actuales"
 
 #: src/modules/Home/components/home-opportunities/template.php:20
 msgid ""
-"Cadastre-se, participe de editais e oportunidade e concorra aos benefícios "
-"sem sair de casa"
+"Cadastre-se, participe de editais e oportunidade e concorra aos benefícios sem "
+"sair de casa"
 msgstr ""
 "Regístrate, participa en avisos y oportunidades y compite por beneficios sin "
 "salir de casa"
@@ -15878,14 +15837,14 @@ msgstr "Regístrate y colabora"
 #: src/modules/Home/components/home-register/template.php:16
 msgid ""
 "Colabore com a plataforma livre, colaborativa e interativa de mapeamento do "
-"cenário cultural e instrumento de governança digital no aprimoramento da "
-"gestão pública, dos mecanismos de participação e da democratização do acesso "
-"às políticas culturais promovidas pela Secretaria da Cultura."
+"cenário cultural e instrumento de governança digital no aprimoramento da gestão "
+"pública, dos mecanismos de participação e da democratização do acesso às "
+"políticas culturais promovidas pela Secretaria da Cultura."
 msgstr ""
 "Colaborar con la plataforma gratuita, colaborativa e interactiva de mapeo del "
 "escenario cultural e instrumento de gobernanza digital en la mejora de la "
-"gestión pública, los mecanismos de participación y democratización del acceso "
-"a las políticas culturales promovida por ... ."
+"gestión pública, los mecanismos de participación y democratización del acceso a "
+"las políticas culturales promovida por ... ."
 
 #: src/modules/Home/components/home-register/template.php:19
 msgid "Fazer Cadastro"
@@ -15961,8 +15920,7 @@ msgstr "Solicitud para relacionar agente a una inscripción"
 #: src/modules/Notifications/Module.php:153
 #, php-format
 msgid "%s quer relacionar o agente %s à inscrição %s no projeto %s."
-msgstr ""
-"%s quiere relacionar el agente %s a la inscripción %s en el proyecto %s."
+msgstr "%s quiere relacionar el agente %s a la inscripción %s en el proyecto %s."
 
 #: src/modules/Notifications/Module.php:154
 #, php-format
@@ -15970,8 +15928,8 @@ msgid ""
 "Sua requisição para relacionar o agente %s à inscrição %s no projeto %s foi "
 "enviada."
 msgstr ""
-"Su solicitud para relacionar el agente %s a la inscripción %s en el proyecto "
-"%s fue enviada."
+"Su solicitud para relacionar el agente %s a la inscripción %s en el proyecto %s "
+"fue enviada."
 
 #: src/modules/Notifications/Module.php:157
 #, php-format
@@ -15985,8 +15943,8 @@ msgid ""
 "Sua requisição para relacionar o agente %s à inscrição %s no oportunidade %s "
 "foi enviada."
 msgstr ""
-"Su solicitud para relacionar el agente %s a la inscripción %s en la "
-"oportunidad %s fue enviada."
+"Su solicitud para relacionar el agente %s a la inscripción %s en la oportunidad "
+"%s fue enviada."
 
 #: src/modules/Notifications/Module.php:160
 #: src/modules/Notifications/Module.php:166
@@ -16033,11 +15991,9 @@ msgstr ""
 #: src/modules/Notifications/Module.php:181
 #, php-format
 msgid ""
-"Sua requisição para alterar a propriedade do %s %s para o agente %s foi "
-"enviada."
+"Sua requisição para alterar a propriedade do %s %s para o agente %s foi enviada."
 msgstr ""
-"Su solicitud para cambiar la propiedad del %s %s para el agente %s fue "
-"enviada."
+"Su solicitud para cambiar la propiedad del %s %s para el agente %s fue enviada."
 
 #: src/modules/Notifications/Module.php:184
 #, php-format
@@ -16068,8 +16024,8 @@ msgstr "%s quieres agregar el evento %s que se produce %s en el espacio %s. %s"
 msgid ""
 "Sua requisição para criar a ocorrência do evento %s no espaço %s foi enviada."
 msgstr ""
-"Su solicitud para crear \"cuándo y dónde\" es el evento %s en el espacio %s "
-"fue enviada."
+"Su solicitud para crear \"cuándo y dónde\" es el evento %s en el espacio %s fue "
+"enviada."
 
 #: src/modules/Notifications/Module.php:194
 msgid "Requisição para relacionar o evento ao projeto"
@@ -16106,8 +16062,7 @@ msgstr "Solicitud para relacionar el espacio al proyecto"
 #: src/modules/Notifications/Module.php:216
 #, php-format
 msgid "%s quer relacionar o espaço %s à inscrição %s no projeto %s."
-msgstr ""
-"%s quiere relacionar el espacio %s a la inscripción %s en el proyecto %s."
+msgstr "%s quiere relacionar el espacio %s a la inscripción %s en el proyecto %s."
 
 #: src/modules/Notifications/Module.php:217
 #, php-format
@@ -16167,8 +16122,7 @@ msgstr "%s canceló el pedido de relacionar el agente %s con el %s %s."
 #: src/modules/Notifications/Module.php:379
 #, php-format
 msgid "%s rejeitou o relacionamento do agente %s à inscrição %s no projeto %s."
-msgstr ""
-"%s rechazó relacionar el agente %s a la inscripción %s en el proyecto %s."
+msgstr "%s rechazó relacionar el agente %s a la inscripción %s en el proyecto %s."
 
 #: src/modules/Notifications/Module.php:381
 #, php-format
@@ -16202,8 +16156,8 @@ msgstr "%s rechazó que el %s %s sea un %s hijo de %s."
 msgid ""
 "%s cancelou o pedido de autorização do evento %s que ocorre %s no espaço %s."
 msgstr ""
-"%s canceló el pedido de autorización del evento %s que ocorre %s en el "
-"espacio %s."
+"%s canceló el pedido de autorización del evento %s que ocorre %s en el espacio "
+"%s."
 
 #: src/modules/Notifications/Module.php:404
 #, php-format
@@ -16297,8 +16251,7 @@ msgstr "La descripción breve es obligatoria"
 #: src/modules/Opportunities/Module.php:236
 msgid "A data inicial das inscrições deve ser menor ou igual a data final"
 msgstr ""
-"La fecha inicial de las inscripciones debe ser menor o igual que la fecha "
-"final"
+"La fecha inicial de las inscripciones debe ser menor o igual que la fecha final"
 
 #: src/modules/Opportunities/Module.php:365
 #: src/modules/Opportunities/Module.php:403
@@ -16424,8 +16377,8 @@ msgid ""
 "Armazena se a vinculação de agente coletivo está habilitada para Coletivo ou "
 "Pessoa Jurídica"
 msgstr ""
-"Almacena si la vinculación de agentes colectivos está habilitada para "
-"Colectivo o Persona Jurídica"
+"Almacena si la vinculación de agentes colectivos está habilitada para Colectivo "
+"o Persona Jurídica"
 
 #: src/modules/Opportunities/Module.php:1081
 #: src/modules/Opportunities/components/opportunity-committee-groups/template.php:110
@@ -16450,12 +16403,11 @@ msgstr ""
 msgid ""
 "Configuração da distribuição das inscrições entre os avaliadores por categoria"
 msgstr ""
-"Configuración de la distribución de las inscripciones entre los evaluadores "
-"por categoría"
+"Configuración de la distribución de las inscripciones entre los evaluadores por "
+"categoría"
 
 #: src/modules/Opportunities/Module.php:1111
-msgid ""
-"Configuração da distribuição das inscrições entre os avaliadores por faixa"
+msgid "Configuração da distribuição das inscrições entre os avaliadores por faixa"
 msgstr ""
 "Configuración de la distribución de inscripciones entre evaluadores por franja"
 
@@ -16655,8 +16607,8 @@ msgstr "Categorías de la convocatoria"
 #: src/modules/Opportunities/components/opportunity-committee-groups/template.php:29
 msgid "Defina os agentes que farão parte das comissões de avaliação desta fase."
 msgstr ""
-"Definir los agentes que formarán parte de los tribunales de evaluación en "
-"esta etapa o fase."
+"Definir los agentes que formarán parte de los tribunales de evaluación en esta "
+"etapa o fase."
 
 #: src/modules/Opportunities/components/opportunity-committee-groups/template.php:44
 msgid "Adicionar comissão"
@@ -16734,8 +16686,7 @@ msgid "Adicionar etapa de prestação de informações"
 msgstr "Agregar etapa de presentación de información"
 
 #: src/modules/Opportunities/components/opportunity-create-reporting-phase/template.php:17
-msgid ""
-"Para criar a etapa de prestação de informações, preencha os campos abaixo."
+msgid "Para criar a etapa de prestação de informações, preencha os campos abaixo."
 msgstr ""
 "Para crear la etapa de presentación de información, complete los campos a "
 "continuación."
@@ -16848,8 +16799,8 @@ msgstr "Cancelar invitación"
 
 #: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:98
 msgid ""
-"Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent."
-"name}}</strong> avaliar esta oportunidade?"
+"Você tem certeza que cancelar o convite para <strong>{{infoReviewer.agent.name}}"
+"</strong> avaliar esta oportunidade?"
 msgstr ""
 "¿Está seguro de que desea cancelar la invitación para que "
 "<strong>{{infoReviewer.agent.name}}</strong> evalúe esta oportunidad?"
@@ -16864,16 +16815,15 @@ msgstr "Reabrir evaluaciones"
 #: src/themes/BaseV1/Theme.php:2125
 msgid "Você tem certeza que deseja reabrir as avaliações para este avaliador?"
 msgstr ""
-"¿Está seguro (a) que desea reabrir las evaluaciones para este/a el evaluador/"
-"ar?"
+"¿Está seguro (a) que desea reabrir las evaluaciones para este/a el evaluador/ar?"
 
 #: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:142
 msgid ""
 "Você tem certeza que deseja excluir <strong>{{infoReviewer.agent.name}}</"
 "strong> da função de avaliador(a)?"
 msgstr ""
-"¿Está seguro (a) que desea borrar <strong>{{infoReviewer.agent.name}}</"
-"strong> de la función de evaluador(a)?"
+"¿Está seguro (a) que desea borrar <strong>{{infoReviewer.agent.name}}</strong> "
+"de la función de evaluador(a)?"
 
 #: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:147
 #: src/modules/OpportunityAccountability/layouts/parts/accountability-phase-info.php:6
@@ -16883,8 +16833,8 @@ msgstr "ATENCIÓN"
 
 #: src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:147
 msgid ""
-"TODAS as avaliações realizadas por <strong>{{infoReviewer.agent.name}}</"
-"strong> serão <strong>excluídas permanentemente</strong>."
+"TODAS as avaliações realizadas por <strong>{{infoReviewer.agent.name}}</strong> "
+"serão <strong>excluídas permanentemente</strong>."
 msgstr ""
 "TODAS las evaluaciones completadas por <strong>{{infoReviewer.agent.name}}</"
 "strong> serán <strong>eliminadas permanentemente</strong>."
@@ -17120,8 +17070,7 @@ msgstr "Habilitar solicitud de imagen de perfil"
 msgid ""
 "Solicita ao usuário que insira a imagem de perfil no formulário de inscrição"
 msgstr ""
-"Solicita al usuario que ingrese una foto de perfil en el formulario de "
-"registro"
+"Solicita al usuario que ingrese una foto de perfil en el formulario de registro"
 
 #: src/modules/Opportunities/components/opportunity-form-builder/template.php:83
 msgid "Habilitar pergunta 'Vai concorrer às cotas'"
@@ -17247,8 +17196,8 @@ msgstr "Eliminar fase de evaluación"
 
 #: src/modules/Opportunities/components/opportunity-phase-config-evaluation/texts.php:6
 msgid ""
-"A fase de prestação de informações também será excluída. Confirma a execução "
-"da ação?"
+"A fase de prestação de informações também será excluída. Confirma a execução da "
+"ação?"
 msgstr ""
 "La fase de presentación de información también será excluida. ¿Confirma la "
 "ejecución de la acción?"
@@ -17627,8 +17576,8 @@ msgstr "Rellenar formulario"
 #: src/modules/Opportunities/components/opportunity-proponent-types/template.php:13
 msgid "Selecione um ou mais tipos de proponente que poderá participar do edital"
 msgstr ""
-"Seleccione uno o más tipos de proponentes que pueden participar en el llamado "
-"o convocatoria"
+"Seleccione uno o más tipos de proponentes que pueden participar en el llamado o "
+"convocatoria"
 
 #: src/modules/Opportunities/components/opportunity-proponent-types/template.php:33
 #: src/modules/Opportunities/components/opportunity-proponent-types/template.php:44
@@ -17644,8 +17593,8 @@ msgid ""
 "Crie e configure as faixas abaixo, inserindo um breve resumo, quantidade e "
 "valor de cada uma delas."
 msgstr ""
-"Crea y configura las siguientes franjas, ingresando un breve resumen, "
-"cantidad y valor de cada una."
+"Crea y configura las siguientes franjas, ingresando un breve resumen, cantidad "
+"y valor de cada una."
 
 #: src/modules/Opportunities/components/opportunity-ranges-config/template.php:29
 msgid "Descrição da faixa/linha"
@@ -17895,8 +17844,7 @@ msgstr "Inscribirse"
 #: src/modules/Opportunities/components/opportunity-subscription/template.php:31
 msgid "Selecione as opções abaixo e clique no botão para se inscrever"
 msgstr ""
-"Seleccione las opciones a continuación y haga clic en el botón para "
-"registrarse"
+"Seleccione las opciones a continuación y haga clic en el botón para registrarse"
 
 #: src/modules/Opportunities/components/opportunity-subscription/template.php:34
 msgid "Selecione uma opções abaixo e clique no botão para se inscrever"
@@ -17940,8 +17888,8 @@ msgstr "Realizando inscripción"
 
 #: src/modules/Opportunities/components/opportunity-subscription/template.php:115
 msgid ""
-"Você precisa acessar sua conta ou criar um cadastro na plataforma para poder "
-"se inscrever em editais ou oportunidades"
+"Você precisa acessar sua conta ou criar um cadastro na plataforma para poder se "
+"inscrever em editais ou oportunidades"
 msgstr ""
 "Necesitas acceder a tu cuenta o crear un registro en la plataforma para poder "
 "inscribirte en llamados u oportunidades"
@@ -17968,16 +17916,15 @@ msgstr "Por favor, seleccione el agente responsable por la inscripción"
 
 #: src/modules/Opportunities/components/opportunity-subscription/texts.php:9
 msgid "Por favor, selecione o agente coletivo vinculado a inscrição"
-msgstr ""
-"Por favor, seleccione el agente colectivo responsable por la inscripción"
+msgstr "Por favor, seleccione el agente colectivo responsable por la inscripción"
 
 #: src/modules/Opportunities/components/opportunity-subscription/texts.php:10
 msgid ""
-"Inscrições abertas de <strong>{startAt}</strong> a <strong>{endAt}</strong>  "
-"às <strong>{endHour}</strong>"
+"Inscrições abertas de <strong>{startAt}</strong> a <strong>{endAt}</strong>  às "
+"<strong>{endHour}</strong>"
 msgstr ""
-"Inscripciones abiertas desde <strong>{startAt}</strong> hasta <strong>{endAt}"
-"</strong> a las <strong>{endHour}</strong>"
+"Inscripciones abiertas desde <strong>{startAt}</strong> hasta <strong>{endAt}</"
+"strong> a las <strong>{endHour}</strong>"
 
 #: src/modules/Opportunities/components/opportunity-subscription/texts.php:11
 msgid ""
@@ -18041,8 +17988,7 @@ msgstr "¡Vaya! Encontramos errores en el llenado de la inscripción"
 #: src/modules/Opportunities/components/registration-actions/template.php:23
 msgid "Corrija os campos listados antes de enviar o formulário"
 msgstr ""
-"Corrija los campos que se enumeran a continuación antes de enviar el "
-"formulario"
+"Corrija los campos que se enumeran a continuación antes de enviar el formulario"
 
 #: src/modules/Opportunities/components/registration-actions/template.php:43
 msgid "Atenção aos campos obrigatórios"
@@ -18085,8 +18031,8 @@ msgstr "¡Queda muy poco tiempo! ¿De verdad quieres irte?"
 msgid ""
 "Sua inscrição foi salva em rascunho. Para retornar, vá ao <b><u>Painel de "
 "Controle</u></b>, acesse \n"
-"                        <b><u>Minhas Inscrições</u></b> e encontre a "
-"inscrição na aba \n"
+"                        <b><u>Minhas Inscrições</u></b> e encontre a inscrição "
+"na aba \n"
 "                        <b>Não enviadas</b>."
 msgstr ""
 "Su inscripción ha sido guardada en borrador. Para volver, vaya al <b><u>Panel "
@@ -18371,8 +18317,7 @@ msgstr "Lista de exclusión"
 
 #: src/modules/Opportunities/components/registration-evaluation-tab/template.php:67
 msgid ""
-"Os avaliadores selecionados NÃO serão incluídos como avaliadores desta "
-"inscrição"
+"Os avaliadores selecionados NÃO serão incluídos como avaliadores desta inscrição"
 msgstr ""
 "Los evaluadores seleccionados NO serán incluidos como evaluadores de esta "
 "inscripción"
@@ -18448,11 +18393,11 @@ msgstr "¿Considera que pertenece a algún otro pueblo o comunidad tradicional?"
 
 #: src/modules/Opportunities/components/registration-field-persons/template.php:134
 msgid ""
-"Quais são as 3 principais áreas de atuação do representante no campo "
-"artístico e cultural?"
+"Quais são as 3 principais áreas de atuação do representante no campo artístico "
+"e cultural?"
 msgstr ""
-"¿Cuáles son las 3 principales áreas de actividad del representante en el "
-"ámbito artístico y cultural?"
+"¿Cuáles son las 3 principales áreas de actividad del representante en el ámbito "
+"artístico y cultural?"
 
 #: src/modules/Opportunities/components/registration-field-persons/template.php:137
 #: src/modules/Opportunities/components/registration-field-persons/template.php:146
@@ -18463,8 +18408,8 @@ msgstr "Seleccione las Áreas de actuación"
 
 #: src/modules/Opportunities/components/registration-field-persons/template.php:143
 msgid ""
-"Quais as 3 principais funções/profissões do representante no campo artístico "
-"e cultural?"
+"Quais as 3 principais funções/profissões do representante no campo artístico e "
+"cultural?"
 msgstr ""
 "¿Cuáles son las 3 principales funciones/profesiones del representante en el "
 "ámbito artístico y cultural?"
@@ -18788,8 +18733,7 @@ msgid "Avaliador: "
 msgstr "Evaluador: "
 
 #: src/modules/Opportunities/views/registration/evaluation.php:88
-msgid ""
-"Para iniciar a de avaliação documental, selecione um campo de dados abaixo"
+msgid "Para iniciar a de avaliação documental, selecione um campo de dados abaixo"
 msgstr ""
 "Para iniciar la evaluación documental, seleccione un campo de datos a "
 "continuación"
@@ -18835,10 +18779,10 @@ msgstr "Inscripción sin Fecha de envío."
 
 #: src/modules/Opportunities/views/registration/single.php:107
 msgid ""
-"Isto pode ter acontecido por uma mudança do status da inscrição, pelo gestor "
-"ou administrador da oportunidade, diretamente do status de rascunho para o de "
-"enviada, inválida, não selecionada, suplente ou selecionada sem que o botão "
-"de enviar inscrição tenha sido apertado."
+"Isto pode ter acontecido por uma mudança do status da inscrição, pelo gestor ou "
+"administrador da oportunidade, diretamente do status de rascunho para o de "
+"enviada, inválida, não selecionada, suplente ou selecionada sem que o botão de "
+"enviar inscrição tenha sido apertado."
 msgstr ""
 "Esto puede haber sucedido debido a un cambio en el estado de la inscripción, "
 "por parte del administrador de oportunidades o el gestor, directamente del "
@@ -18885,8 +18829,8 @@ msgstr "Sin Espacio vinculado"
 
 #: src/modules/Opportunities/views/registration/single.php:268
 msgid ""
-"Nesta etapa, é necessário inserir informações. Por favor, clique no botão "
-"para acessar o formulário e preenchê-lo"
+"Nesta etapa, é necessário inserir informações. Por favor, clique no botão para "
+"acessar o formulário e preenchê-lo"
 msgstr ""
 "En este paso, debe ingresar información. Por favor haga clic en el botón para "
 "acceder al formulario y rellenarlo"
@@ -18956,8 +18900,7 @@ msgid "Parecer técnico reaberto"
 msgstr "Evaluación técnica reabierta"
 
 #: src/modules/OpportunityAccountability/Module.php:252
-msgid ""
-"A prestação de contas não pode ter início antes do término da última fase."
+msgid "A prestação de contas não pode ter início antes do término da última fase."
 msgstr ""
 "La rendición de cuentas no puede comenzar antes del término de la última fase."
 
@@ -19101,10 +19044,8 @@ msgstr ""
 "(primera fase)"
 
 #: src/modules/OpportunityAccountability/Module.php:841
-msgid ""
-"Projeto da prestação de contas vinculada a esta inscrição (primeira fase)"
-msgstr ""
-"Proyecto de rendición de cuentas vinculado a este registro (primera fase)"
+msgid "Projeto da prestação de contas vinculada a esta inscrição (primeira fase)"
+msgstr "Proyecto de rendición de cuentas vinculado a este registro (primera fase)"
 
 #: src/modules/OpportunityAccountability/Module.php:856
 msgid "Indica se o resultado foi publicado a e uma determinada inscrição"
@@ -19171,8 +19112,8 @@ msgid ""
 "- Após criar e publicar a prestação de contas, esta ação <strong>não</strong> "
 "poderá ser desfeita."
 msgstr ""
-"- Después de crear y publicar la rendición de cuentas, esta acción "
-"<strong>no</strong> se puede deshacer."
+"- Después de crear y publicar la rendición de cuentas, esta acción <strong>no</"
+"strong> se puede deshacer."
 
 #: src/modules/OpportunityAccountability/layouts/parts/accountability-phase-info.php:8
 msgid ""
@@ -19184,8 +19125,8 @@ msgstr ""
 
 #: src/modules/OpportunityAccountability/layouts/parts/accountability-phase-project-info.php:7
 msgid ""
-"Seu projeto foi contemplado! O próximo passo é mantê-lo atualizado para a "
-"fase de prestação de contas, que começa em"
+"Seu projeto foi contemplado! O próximo passo é mantê-lo atualizado para a fase "
+"de prestação de contas, que começa em"
 msgstr ""
 "¡Su proyecto ha sido contemplado! El siguiente paso es mantenerlo actualizado "
 "para la fase de rendición de cuentas, que comienza en"
@@ -19205,8 +19146,8 @@ msgstr ""
 #: src/modules/OpportunityAccountability/layouts/parts/accountability-phase-project-info.php:12
 msgid ""
 "Quando chegar o momento da prestação de contas, você precisa sair do modo de "
-"edição e acessar a aba <strong>\"Prestação de contas\"</strong> para "
-"preencher os dados solicitados e enviá-lo"
+"edição e acessar a aba <strong>\"Prestação de contas\"</strong> para preencher "
+"os dados solicitados e enviá-lo"
 msgstr ""
 "Cuando llegue el momento de la rendición de cuentas, debe salir del modo de "
 "edición y acceder a la pestaña <strong>\"Rendición de cuentas\"</strong> para "
@@ -19249,11 +19190,11 @@ msgstr "Aplicar a todos los envíos de rendición de cuentas enviados"
 
 #: src/modules/OpportunityAccountability/layouts/parts/accountability/apply-results.php:44
 msgid ""
-"Deixando desmarcado, o status será aplicado somente às prestações de contas "
-"com status pendente"
+"Deixando desmarcado, o status será aplicado somente às prestações de contas com "
+"status pendente"
 msgstr ""
-"Si se deja sin marcar, el estado solo se aplicará a la rendición de cuenta "
-"con estado pendiente"
+"Si se deja sin marcar, el estado solo se aplicará a la rendición de cuenta con "
+"estado pendiente"
 
 #: src/modules/OpportunityAccountability/layouts/parts/accountability/import-last-phase-button.php:4
 msgid "Importar as novas inscrições selecionadas da última fase."
@@ -19288,8 +19229,8 @@ msgstr "Formulario de rendición de cuentas"
 
 #: src/modules/OpportunityAccountability/layouts/parts/accountability/project-tab-content.php:53
 msgid ""
-"Confira as informações e preencha os campos em aberto para realizar a "
-"prestação solicitada pela equipe gestora da oportunidade."
+"Confira as informações e preencha os campos em aberto para realizar a prestação "
+"solicitada pela equipe gestora da oportunidade."
 msgstr ""
 "Verifique la información y complete los campos abiertos para realizar el "
 "servicio solicitado por el equipo de gestión de oportunidades."
@@ -19357,8 +19298,8 @@ msgstr "reenviar"
 
 #: src/modules/OpportunityAccountability/layouts/parts/accountability/send-button.php:28
 msgid ""
-"Somente super admins podem usar este botão e somente deve ser usado para "
-"enviar prestações de contas que não foram enviadas por problema do sistema."
+"Somente super admins podem usar este botão e somente deve ser usado para enviar "
+"prestações de contas que não foram enviadas por problema do sistema."
 msgstr ""
 "Solamente súper administradores pueden usar este botón y solamente debe ser "
 "usado para enviar rendiciones de cuenta que no fueron enviadas por problemas "
@@ -19532,8 +19473,7 @@ msgstr "Fase de reclamo excluido con éxito"
 msgid ""
 "Sincronização das inscrições enfileirada para processamento em segundo plano"
 msgstr ""
-"Sincronización de las inscripciones en cola para procesamiento en segundo "
-"plano"
+"Sincronización de las inscripciones en cola para procesamiento en segundo plano"
 
 #: src/modules/OpportunityPhases/Module.php:897
 #: src/modules/OpportunityPhases/Module.php:1607
@@ -19544,8 +19484,7 @@ msgstr "Publicación final del resultado"
 #: src/modules/OpportunityPhases/Module.php:1414
 msgid "A data inicial deve ser anterior a data de publicação da última fase"
 msgstr ""
-"La fecha de inicio debe ser anterior a la fecha de publicación de la última "
-"fase"
+"La fecha de inicio debe ser anterior a la fecha de publicación de la última fase"
 
 #: src/modules/OpportunityPhases/Module.php:1415
 msgid "A data inicial deve ser anterior a data de início da próxima fase"
@@ -19577,8 +19516,7 @@ msgstr ""
 "siguiente fase"
 
 #: src/modules/OpportunityPhases/Module.php:1437
-msgid ""
-"A data final deve ser posterior a data de término do período de inscrições"
+msgid "A data final deve ser posterior a data de término do período de inscrições"
 msgstr ""
 "La fecha de cierre debe ser posterior a la fecha de finalización del plazo de "
 "inscripción"
@@ -19591,11 +19529,11 @@ msgstr ""
 
 #: src/modules/OpportunityPhases/Module.php:1447
 msgid ""
-"A data de publicação final do resultado deve ser posterior a data de término "
-"da fase anterior"
+"A data de publicação final do resultado deve ser posterior a data de término da "
+"fase anterior"
 msgstr ""
-"La fecha de publicación final del resultado deberá ser posterior a la fecha "
-"de finalización de la fase anterior"
+"La fecha de publicación final del resultado deberá ser posterior a la fecha de "
+"finalización de la fase anterior"
 
 #: src/modules/OpportunityPhases/Module.php:1449
 msgid ""
@@ -19606,8 +19544,8 @@ msgstr ""
 
 #: src/modules/OpportunityPhases/Module.php:1451
 msgid ""
-"A data de publicação do resultado deve ser posterior a data de término da "
-"fase anterior"
+"A data de publicação do resultado deve ser posterior a data de término da fase "
+"anterior"
 msgstr ""
 "La fecha de publicación del resultado debe ser posterior a la fecha de "
 "finalización de la fase anterior"
@@ -19643,8 +19581,7 @@ msgstr "Indica si el objeto es la primera fase de la oportunidad"
 
 #: src/modules/OpportunityPhases/Module.php:1571
 msgid ""
-"Nome da fase para exibição do usuário, considerando a fase de avaliação "
-"conjunta"
+"Nome da fase para exibição do usuário, considerando a fase de avaliação conjunta"
 msgstr ""
 "Nombre de la fase para visualización del usuario, considerando la fase de "
 "evaluación conjunta"
@@ -20676,11 +20613,11 @@ msgstr "Duración máxima (meses):"
 
 #: src/modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:186
 msgid ""
-"As informações que forem marcadas abaixo serão exigidas dos agentes no "
-"momento de inscrição na oportunidade."
+"As informações que forem marcadas abaixo serão exigidas dos agentes no momento "
+"de inscrição na oportunidade."
 msgstr ""
-"La información que esté marcada a continuación será requerida a los agentes "
-"en el momento de la inscripción en la oportunidad."
+"La información que esté marcada a continuación será requerida a los agentes en "
+"el momento de la inscripción en la oportunidad."
 
 #: src/modules/OpportunityWorkplan/components/opportunity-enable-workplan/template.php:206
 msgid "Monitoramento"
@@ -21035,8 +20972,8 @@ msgid ""
 "Para que seu cadastro fique minimamente preenchido, atente-se em preencher os "
 "dados obrigatórios indicados com caracter"
 msgstr ""
-"Para que su registro sea completado al menos, asegúrese de completar los "
-"datos obligatorios indicados"
+"Para que su registro sea completado al menos, asegúrese de completar los datos "
+"obligatorios indicados"
 
 #: src/modules/ProjectMonitoring/Module.php:23
 #, php-format
@@ -21044,18 +20981,17 @@ msgid ""
 "A fase de prestação de informações da inscrição %s, na oportunidade %s, "
 "começou. Você deve preenchê-la com as informações solicitadas até %s."
 msgstr ""
-"La fase de presentación de información de la inscripción %s, en la "
-"oportunidad %s, ha comenzado. Debe completarla con la información solicitada "
-"antes del %s."
+"La fase de presentación de información de la inscripción %s, en la oportunidad "
+"%s, ha comenzado. Debe completarla con la información solicitada antes del %s."
 
 #: src/modules/ProjectMonitoring/Module.php:25
 #, php-format
 msgid ""
-"A fase de monitoramento da inscrição %s, na oportunidade %s, começou. Você "
-"deve preenchê-la com as informações solicitadas até %s."
+"A fase de monitoramento da inscrição %s, na oportunidade %s, começou. Você deve "
+"preenchê-la com as informações solicitadas até %s."
 msgstr ""
-"La fase de monitoreo de la inscripción %s, en la oportunidad %s, ha "
-"comenzado. Debe completarla con la información solicitada antes del %s."
+"La fase de monitoreo de la inscripción %s, en la oportunidad %s, ha comenzado. "
+"Debe completarla con la información solicitada antes del %s."
 
 #: src/modules/ProjectMonitoring/Module.php:197
 msgid "É fase de prestação de informações?"
@@ -21129,8 +21065,8 @@ msgstr "Plazas de estacionamiento reservadas para PCD"
 
 #: src/modules/ProjectMonitoring/Module.php:258
 msgid ""
-"Assentos para pessoas obesas, pessoas com mobilidade reduzida, PCD's e "
-"pessoas idosas reservadas"
+"Assentos para pessoas obesas, pessoas com mobilidade reduzida, PCD's e pessoas "
+"idosas reservadas"
 msgstr ""
 "Asientos reservados para personas obesas, personas con movilidad reducida, "
 "personas con discapacidad (PCD) y personas mayores"
@@ -21176,11 +21112,9 @@ msgid "Textos adaptados para software de leitor de tela"
 msgstr "Textos adaptados para software lector de pantalla"
 
 #: src/modules/ProjectMonitoring/Module.php:270
-msgid ""
-"Capacitação em acessibilidade para equipes atuantes nos projetos culturais"
+msgid "Capacitação em acessibilidade para equipes atuantes nos projetos culturais"
 msgstr ""
-"Capacitación en accesibilidad para equipos que trabajan en proyectos "
-"culturales"
+"Capacitación en accesibilidad para equipos que trabajan en proyectos culturales"
 
 #: src/modules/ProjectMonitoring/Module.php:271
 msgid "Contratação de profissionais especializados em acessibilidade cultural"
@@ -21199,8 +21133,8 @@ msgid ""
 "Formação e sensibilização de públicos da cadeia produtiva cultural sobre "
 "acessibilidade"
 msgstr ""
-"Formación y sensibilización de los públicos de la cadena de producción "
-"cultural sobre accesibilidad"
+"Formación y sensibilización de los públicos de la cadena de producción cultural "
+"sobre accesibilidad"
 
 #: src/modules/ProjectMonitoring/Module.php:275
 msgid "Envolvimento de PCD's na concepção do projeto"
@@ -21707,9 +21641,9 @@ msgid ""
 "mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. "
 "Exemplo: <strong>Dança:Artes da Dança</strong>"
 msgstr ""
-"Ingrese los términos que estarán disponibles para su selección. <br> Para "
-"hacer un mapeo de valores, use <strong> valor guardado: valor mostrado </"
-"strong>. Ejemplo: <strong> Danza: artes de la danza </strong>"
+"Ingrese los términos que estarán disponibles para su selección. <br> Para hacer "
+"un mapeo de valores, use <strong> valor guardado: valor mostrado </strong>. "
+"Ejemplo: <strong> Danza: artes de la danza </strong>"
 
 #: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:46
 msgid ""
@@ -21718,11 +21652,10 @@ msgid ""
 "Exemplo: <strong>Biblioteca Privada:Biblioteca</strong> vai exibir somente "
 "<em>Biblioteca</em> mas salvará o tipo <em>Biblioteca Privada</em>"
 msgstr ""
-"Introduzca los tipos que estarán disponibles para su selección. <br> Para "
-"hacer un mapeo de valores, use <strong> valor guardado: valor mostrado </"
-"strong>. Ejemplo: <strong> Biblioteca privada: Biblioteca </strong> solo "
-"mostrará <em> Biblioteca </em> pero guardará el tipo <em> Biblioteca privada "
-"</em>"
+"Introduzca los tipos que estarán disponibles para su selección. <br> Para hacer "
+"un mapeo de valores, use <strong> valor guardado: valor mostrado </strong>. "
+"Ejemplo: <strong> Biblioteca privada: Biblioteca </strong> solo mostrará <em> "
+"Biblioteca </em> pero guardará el tipo <em> Biblioteca privada </em>"
 
 #: src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field.php:36
 msgid "Este campo será salvo no espaço relacionado"
@@ -21818,8 +21751,7 @@ msgid "Criar novo gráfico"
 msgstr "Crear nuevo gráfico"
 
 #: src/modules/Reports/layouts/parts/create-reports-modal.php:15
-msgid ""
-"Antes de definir os parâmetros, defina o tipo de gráfico que você deseja:"
+msgid "Antes de definir os parâmetros, defina o tipo de gráfico que você deseja:"
 msgstr "Antes de definir los parámetros, defina el tipo de gráfico que desea:"
 
 #: src/modules/Reports/layouts/parts/create-reports-modal.php:16
@@ -22087,8 +22019,8 @@ msgstr "Los datos introducidos a continuación también se muestran públicament
 #: src/modules/Seals/components/seal-form-information-seal/texts.php:5
 msgid ""
 "Você pode personalizar o texto do certificado do selo. \n"
-"        Observe o modelo abaixo e fique a vontade para alterar a composição "
-"do texto utilizando as palavras-chaves \n"
+"        Observe o modelo abaixo e fique a vontade para alterar a composição do "
+"texto utilizando as palavras-chaves \n"
 "        dinâmicas para customizar o conteúdo do certificado que será recebido "
 "pelas entidades contempladas."
 msgstr ""
@@ -22121,8 +22053,8 @@ msgid ""
 "Selecione abaixo os campos que devem ser bloqueados nos agentes e espaços que "
 "possuírem este selo"
 msgstr ""
-"Seleccione a continuación los campos que deben bloquearse en agentes y "
-"espacios que tienen este sello"
+"Seleccione a continuación los campos que deben bloquearse en agentes y espacios "
+"que tienen este sello"
 
 #: src/modules/Seals/components/seal-locked-field/template.php:27
 msgid "Campos dos agentes"
@@ -22544,8 +22476,8 @@ msgstr "Exportar planilla"
 
 #: src/modules/Spreadsheets/components/mc-export-spreadsheet/texts.php:5
 msgid ""
-"Exportação iniciada com sucesso! Você receberá um email assim que a "
-"exportação estiver concluída."
+"Exportação iniciada com sucesso! Você receberá um email assim que a exportação "
+"estiver concluída."
 msgstr ""
 "¡La exportación comenzó exitosamente! Recibirá un correo electrónico una vez "
 "que se complete la exportación."
@@ -22627,8 +22559,8 @@ msgid ""
 "Você está realizando suporte dessa ficha de inscrição. Verifique os dados e "
 "corrija caso seja necessário."
 msgstr ""
-"Estás realizando soporte a este formulario de inscripción. Verifique los "
-"datos y corríjalos si es necesario."
+"Estás realizando soporte a este formulario de inscripción. Verifique los datos "
+"y corríjalos si es necesario."
 
 #: src/modules/Support/layouts/parts/support/opportunity-support--tab.php:10
 msgid "Configuração do Suporte"
@@ -22862,14 +22794,13 @@ msgstr "Realice su registro en la home"
 
 #: src/modules/ThemeCustomizer/components/home-customizer/init.php:145
 msgid "Título da seção faça seu cadastro da home"
-msgstr ""
-"Título de la sección realice su inscripción de la home (página principal)"
+msgstr "Título de la sección realice su inscripción de la home (página principal)"
 
 #: src/modules/ThemeCustomizer/components/home-customizer/init.php:149
 msgid "Descrição da seção faça seu cadastro da home"
 msgstr ""
-"Descripción de la sección realice su inscripción o registro de la home "
-"(página principal)"
+"Descripción de la sección realice su inscripción o registro de la home (página "
+"principal)"
 
 #: src/modules/ThemeCustomizer/components/home-customizer/init.php:153
 msgid "Imagem de fundo da seção de fazer cadastro"
@@ -22917,13 +22848,13 @@ msgid ""
 "Centralize o mapa no seu município/estado (você pode pesquisar no campo de "
 "busca abaixo)"
 msgstr ""
-"Centra el mapa en tu ciudad/municipio (puedes buscar en el campo de búsqueda "
-"a continuación)"
+"Centra el mapa en tu ciudad/municipio (puedes buscar en el campo de búsqueda a "
+"continuación)"
 
 #: src/modules/ThemeCustomizer/components/subsite-config-map/template.php:23
 msgid ""
-"Utilizando os botões de zoom [+] [-], deixe o mapa exibindo o município/"
-"estado inteiro e clique no botão \"definir zoom padrão\""
+"Utilizando os botões de zoom [+] [-], deixe o mapa exibindo o município/estado "
+"inteiro e clique no botão \"definir zoom padrão\""
 msgstr ""
 "Usando los botones de zoom [+] [-], deje el mapa mostrando toda la ciudad/"
 "municipio y haga clic en el botón \"establecer zoom predeterminado\""
@@ -22931,12 +22862,12 @@ msgstr ""
 #: src/modules/ThemeCustomizer/components/subsite-config-map/template.php:24
 msgid ""
 "Utilizando os botões de zoom [+] [-], aproxime o zoom até onde der pra ver o "
-"maior nível de detalhes desejado (por exemplo, ler os nomes das ruas) e "
-"clique no botão \"definir zoom máximo\""
+"maior nível de detalhes desejado (por exemplo, ler os nomes das ruas) e clique "
+"no botão \"definir zoom máximo\""
 msgstr ""
-"Usando los botones de zoom [+] [-], amplíe lo más posible para ver el nivel "
-"más alto de detalle deseado (por ejemplo, leer los nombres de las calles) y "
-"haga clic en el botón \"establecer zoom máximo\""
+"Usando los botones de zoom [+] [-], amplíe lo más posible para ver el nivel más "
+"alto de detalle deseado (por ejemplo, leer los nombres de las calles) y haga "
+"clic en el botón \"establecer zoom máximo\""
 
 #: src/modules/ThemeCustomizer/components/subsite-config-map/template.php:25
 msgid ""
@@ -22986,8 +22917,7 @@ msgstr "Atención!"
 #: src/modules/ThemeCustomizer/layouts/parts/style.php:19
 msgid "As modificações só serão aplicadas no sistema após atualizar a página."
 msgstr ""
-"Las modificaciones sólo se aplicarán al sistema después de actualizar la "
-"página."
+"Las modificaciones sólo se aplicarán al sistema después de actualizar la página."
 
 #: src/modules/ThemeCustomizer/views/theme-customizer/index.php:23
 msgid "Área de customização do tema"
@@ -23351,10 +23281,8 @@ msgid "Verificações da pessoa usuária"
 msgstr "Comprobaciones de la persona usuaria"
 
 #: src/modules/UserManagement/views/panel/system-roles.php:23
-msgid ""
-"Nesta seção você visualiza e gerencia as funções de usuário customizadas."
-msgstr ""
-"En esta sección puede ver y administrar roles de usuario personalizados."
+msgid "Nesta seção você visualiza e gerencia as funções de usuário customizadas."
+msgstr "En esta sección puede ver y administrar roles de usuario personalizados."
 
 #: src/modules/UserManagement/views/panel/user-detail.php:76
 msgid "Propriedades do usuário"
@@ -23394,9 +23322,9 @@ msgstr "Nombres de las actividades"
 
 #: src/themes/BaseV1/Theme.php:84
 msgid ""
-"Textos relativos aos nomes das entidades utilizadas no site. Em alguns casos "
-"é interessante renomear as entidades, como por exemplo em uma instalação que "
-"só exibe museus é interessante chamar os espaços de museus."
+"Textos relativos aos nomes das entidades utilizadas no site. Em alguns casos é "
+"interessante renomear as entidades, como por exemplo em uma instalação que só "
+"exibe museus é interessante chamar os espaços de museus."
 msgstr ""
 "Textos relativos a los nombres de las entidades utilizadas en el sitio. En "
 "algunos casos es interesante renombrar las entidades, como por ejemplo en una "
@@ -23408,8 +23336,8 @@ msgstr "nombre del sitio"
 
 #: src/themes/BaseV1/Theme.php:109
 msgid ""
-"usado para formar o título do site e título do compartilhamento das páginas "
-"do site"
+"usado para formar o título do site e título do compartilhamento das páginas do "
+"site"
 msgstr ""
 "utilizado para formar el título del sitio y de las páginas web de intercambio "
 "del sitio"
@@ -23433,8 +23361,7 @@ msgstr "descripción del sitio"
 
 #: src/themes/BaseV1/Theme.php:116
 msgid "usado principalmente como texto do compartilhamento da home do site"
-msgstr ""
-"utilizado principalmente como el texto principal del sitio para compartir"
+msgstr "utilizado principalmente como el texto principal del sitio para compartir"
 
 #: src/themes/BaseV1/Theme.php:121
 msgid "nome da instituição responsável pelo site"
@@ -23442,8 +23369,7 @@ msgstr "nombre de la institución responsable del sitio"
 
 #: src/themes/BaseV1/Theme.php:122
 msgid "usado nos lugares do site onde aparece o nome da instituição"
-msgstr ""
-"usado en los lugares del sitio donde aparece el nombre de la institución"
+msgstr "usado en los lugares del sitio donde aparece el nombre de la institución"
 
 #: src/themes/BaseV1/Theme.php:123
 msgid "Ministério da Cultura"
@@ -23539,8 +23465,8 @@ msgstr "nombre del panel de control"
 msgid ""
 "usado principalmente como título dos links para a área administrativa do site"
 msgstr ""
-"usado principalmente como título de los enlaces para el área administrativa "
-"del sitio"
+"usado principalmente como título de los enlaces para el área administrativa del "
+"sitio"
 
 #: src/themes/BaseV1/Theme.php:151
 msgid "Área Administrativa"
@@ -23598,8 +23524,8 @@ msgstr ""
 
 #: src/themes/BaseV1/Theme.php:171
 msgid ""
-"O Mapa da Cultura é uma plataforma livre, gratuita e colaborativa de "
-"mapeamento cultural."
+"O Mapa da Cultura é uma plataforma livre, gratuita e colaborativa de mapeamento "
+"cultural."
 msgstr ""
 "Cultura en Línea es una plataforma de software libre, de cartografía cultural "
 "libre y colaborativa."
@@ -23674,12 +23600,12 @@ msgstr "texto de la sección \"eventos\" de la home (página principal)"
 #: src/themes/BaseV1/Theme.php:196
 msgid ""
 "Você pode pesquisar eventos culturais nos campos de busca combinada. Como "
-"usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-"
-"los gratuitamente."
+"usuário cadastrado, você pode incluir seus eventos na plataforma e divulgá-los "
+"gratuitamente."
 msgstr ""
 "Puede buscar eventos culturales en los campos de búsqueda combinados. Como "
-"usuario registrado, puede incluir su evento en la plataforma y darlo a "
-"conocer de forma gratuita."
+"usuario registrado, puede incluir su evento en la plataforma y darlo a conocer "
+"de forma gratuita."
 
 #: src/themes/BaseV1/Theme.php:199
 msgid "texto da seção \"agentes\" da home"
@@ -23689,17 +23615,17 @@ msgstr "texto de la sección \"agentes\" de la home (página principal)"
 msgid ""
 "Você pode colaborar na gestão da cultura com suas próprias informações, "
 "preenchendo seu perfil de agente cultural. Neste espaço, estão registrados "
-"artistas, gestores e produtores; uma rede de atores envolvidos na cena "
-"cultural da região. Você pode cadastrar um ou mais agentes (grupos, "
-"coletivos, bandas instituições, empresas, etc.), além de associar ao seu "
-"perfil eventos e espaços culturais com divulgação gratuita."
+"artistas, gestores e produtores; uma rede de atores envolvidos na cena cultural "
+"da região. Você pode cadastrar um ou mais agentes (grupos, coletivos, bandas "
+"instituições, empresas, etc.), além de associar ao seu perfil eventos e espaços "
+"culturais com divulgação gratuita."
 msgstr ""
 "Puede colaborar en la gestión de la cultura con su propia información "
 "completando su perfil de agente cultural. En este espacio, son artistas "
 "registrados, gestores y productores; una red de actores involucrados en la "
-"escena cultural de la región. Usted puede registrar uno o más agentes "
-"(grupos, colectivos, grupos de instituciones, empresas, etc.), y asociar con "
-"sus eventos de perfil y espacios culturales con libre difusión."
+"escena cultural de la región. Usted puede registrar uno o más agentes (grupos, "
+"colectivos, grupos de instituciones, empresas, etc.), y asociar con sus eventos "
+"de perfil y espacios culturales con libre difusión."
 
 #: src/themes/BaseV1/Theme.php:204
 msgid "texto da seção \"espaços\" da home"
@@ -23713,11 +23639,11 @@ msgstr "texto de la sección \"proyectos\" de la home (página principal)"
 msgid ""
 "Reúne projetos culturais ou agrupa eventos de todos os tipos. Neste espaço, "
 "você encontra leis de fomento, mostras, convocatórias e editais criados, além "
-"de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se "
-"e divulgue seus projetos."
+"de diversas iniciativas cadastradas pelos usuários da plataforma. Cadastre-se e "
+"divulgue seus projetos."
 msgstr ""
-"Reúna proyectos culturales o eventos grupales de todo tipo. En este espacio, "
-"se encuentran las formas de financiación, espectáculos, reuniones y edictos "
+"Reúna proyectos culturales o eventos grupales de todo tipo. En este espacio, se "
+"encuentran las formas de financiación, espectáculos, reuniones y edictos "
 "creados, y varias iniciativas registradas por los usuarios de la plataforma. "
 "Regístrese ahora y publicar sus proyectos."
 
@@ -23731,15 +23657,15 @@ msgstr "texto de la sección \"desarrolladores\" de la home (página principal)"
 
 #: src/themes/BaseV1/Theme.php:221
 msgid ""
-"Existem algumas maneiras de desenvolvedores interagirem com o Mapa da "
-"Cultura. A primeira é através da nossa <a href=\"https://github.com/hacklabr/"
+"Existem algumas maneiras de desenvolvedores interagirem com o Mapa da Cultura. "
+"A primeira é através da nossa <a href=\"https://github.com/hacklabr/"
 "mapasculturais/blob/master/documentation/docs/mc_config_api.md\" "
 "target=\"_blank\" rel=\"noopener noreferrer\">API</a>. Com ela você pode "
 "acessar os dados públicos no nosso banco de dados e utilizá-los para "
 "desenvolver aplicações externas. Além disso, o Mapa da Cultura é construído a "
 "partir do sofware livre <a href=\"http://institutotim.org.br/project/mapas-"
-"culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapa da Cultura</"
-"a>, criado em parceria com o <a href=\"http://institutotim.org.br\" "
+"culturais/\" target=\"_blank\" rel=\"noopener noreferrer\">Mapa da Cultura</a>, "
+"criado em parceria com o <a href=\"http://institutotim.org.br\" "
 "target=\"_blank\" rel=\"noopener noreferrer\">Instituto TIM</a>, e você pode "
 "contribuir para o seu desenvolvimento através do <a href=\"https://github.com/"
 "hacklabr/mapasculturais/\" target=\"_blank\" rel=\"noopener "
@@ -23747,13 +23673,13 @@ msgid ""
 msgstr ""
 "Hay varias formas en las que los desarrolladores interactúan con los mapas "
 "culturales. La primera es a través de nuestra <a href=\"https://github.com/"
-"LibreCoopUruguay/mapasculturais/blob/master/doc/api.md\" "
-"target=\"_blank\">API</a>. Con ella usted puede acceder a los datos públicos "
-"de nuestra base de datos y utilizarlos para desarrollar aplicaciones "
-"externas. Además, el sistema fue desarrollado a partir del software libre <a "
-"href=\"http://institutotim.org.br/project/mapas-culturais/\" "
-"target=\"_blank\">Mapas Culturais</a>, creado por Hacklabr en asociación con "
-"el Instituto TIM, y puede contribuir con su desarrollo a través de GitHub."
+"LibreCoopUruguay/mapasculturais/blob/master/doc/api.md\" target=\"_blank\">API</"
+"a>. Con ella usted puede acceder a los datos públicos de nuestra base de datos "
+"y utilizarlos para desarrollar aplicaciones externas. Además, el sistema fue "
+"desarrollado a partir del software libre <a href=\"http://institutotim.org.br/"
+"project/mapas-culturais/\" target=\"_blank\">Mapas Culturais</a>, creado por "
+"Hacklabr en asociación con el Instituto TIM, y puede contribuir con su "
+"desarrollo a través de GitHub."
 
 #: src/themes/BaseV1/Theme.php:226
 msgid "resultados verifiados"
@@ -23785,8 +23711,7 @@ msgstr "mostrar solamente resultados verificados"
 
 #: src/themes/BaseV1/Theme.php:233
 msgid ""
-"texto explicativo do botão que aplica/remove o filtro por resultados "
-"verificados"
+"texto explicativo do botão que aplica/remove o filtro por resultados verificados"
 msgstr ""
 "texto explicativo del botón que aplica/remueve el filtro por resultados "
 "verificados"
@@ -23816,8 +23741,8 @@ msgid ""
 "texto do label do filtro de resultados que aparece quando o filtro por "
 "resultados veridicados é aplicado"
 msgstr ""
-"texto de la etiqueta del filtro de resultados que aparece cuando el filtro "
-"por resultados verificados es aplicado"
+"texto de la etiqueta del filtro de resultados que aparece cuando el filtro por "
+"resultados verificados es aplicado"
 
 #: src/themes/BaseV1/Theme.php:240 src/themes/BaseV1/Theme.php:241
 msgid "verificados"
@@ -24757,8 +24682,8 @@ msgstr "Usted no tiene permiso para crear eventos en este espacio."
 msgid ""
 "As datas foram alteradas mas a descrição não. Tem certeza que deseja salvar?"
 msgstr ""
-"Las fechas fueron cambiadas pero la descripción no. ¿Está seguro (a) que "
-"desea guardar?"
+"Las fechas fueron cambiadas pero la descripción no. ¿Está seguro (a) que desea "
+"guardar?"
 
 #: src/themes/BaseV1/Theme.php:964 src/themes/BaseV1/views/event/edit.php:30
 #: src/themes/BaseV1/views/event/single.php:30
@@ -24943,8 +24868,8 @@ msgstr "Agregue un título para el enlace."
 msgid ""
 "A url do link é inválida, insira uma url completa como http://www.google.com/."
 msgstr ""
-"La url del enlace no es válida, agregue una url completa como http://www."
-"google.com/."
+"La url del enlace no es válida, agregue una url completa como http://www.google."
+"com/."
 
 #: src/themes/BaseV1/Theme.php:1888
 msgid "Limpar"
@@ -24992,21 +24917,20 @@ msgstr "Radio"
 
 #: src/themes/BaseV1/Theme.php:1938
 msgid ""
-"Segundo seu navegador, você está aproximadamente neste ponto com margem de "
-"erro de {{errorMargin}} metros. Buscando resultados dentro de um raio de "
-"{{radius}}KM deste ponto."
+"Segundo seu navegador, você está aproximadamente neste ponto com margem de erro "
+"de {{errorMargin}} metros. Buscando resultados dentro de um raio de {{radius}}"
+"KM deste ponto."
 msgstr ""
-"Según su navegador,usted está aproximadamente en este punto con margen de "
-"error de {{errorMargin}} metros. Buscando resultados dentro de un radio de "
-"{{radius}}KM de este punto."
+"Según su navegador,usted está aproximadamente en este punto con margen de error "
+"de {{errorMargin}} metros. Buscando resultados dentro de un radio de {{radius}}"
+"KM de este punto."
 
 #: src/themes/BaseV1/Theme.php:2027
 msgid ""
 "Sua requisição para enviar um contato pelo Mapa da Cultura foi enviada com "
 "sucesso."
 msgstr ""
-"Su solicitud para enviar un contacto por Cultura en Línea fue enviada con "
-"éxito."
+"Su solicitud para enviar un contacto por Cultura en Línea fue enviada con éxito."
 
 #: src/themes/BaseV1/Theme.php:2037
 msgid "O proprietário da entidade foi modificado"
@@ -25087,16 +25011,16 @@ msgstr "Eventos transformados en borradores."
 
 #: src/themes/BaseV1/Theme.php:2070 src/themes/BaseV1/Theme.php:2115
 msgid ""
-"Você tem certeza que deseja reabrir este formulário para edição? Ao fazer "
-"isso, ele sairá dessa lista."
+"Você tem certeza que deseja reabrir este formulário para edição? Ao fazer isso, "
+"ele sairá dessa lista."
 msgstr ""
 "Usted está seguro que desea reabrir este formulario para edición? Al hacer "
 "esto, él saldrá de esta lista."
 
 #: src/themes/BaseV1/Theme.php:2071 src/themes/BaseV1/Theme.php:2116
 msgid ""
-"Você não definiu um número de vagas. Para selecionar essa inscrição, "
-"configure um número de vagas na aba Inscrições, em Agentes."
+"Você não definiu um número de vagas. Para selecionar essa inscrição, configure "
+"um número de vagas na aba Inscrições, em Agentes."
 msgstr ""
 "No ha establecido un número de vacantes. Para seleccionar esta inscripción, "
 "establecer un número de vacantes en la pestaña de registro de agentes."
@@ -25120,8 +25044,7 @@ msgstr "El número de vacantes de la inscripción al proyecto se ha agotado."
 #: src/themes/BaseV1/Theme.php:2076
 msgid ""
 "Para se inscrever neste projeto você deve selecionar um agente responsável."
-msgstr ""
-"Para inscribirse en este proyecto debe seleccionar un agente responsable."
+msgstr "Para inscribirse en este proyecto debe seleccionar un agente responsable."
 
 #: src/themes/BaseV1/Theme.php:2078 src/themes/BaseV1/Theme.php:2123
 msgid "Inscrição enviada. Aguarde tela de sumário."
@@ -25141,13 +25064,11 @@ msgstr "El Agente seleccionado ya fue agregado en el tribunal de evaluadores"
 
 #: src/themes/BaseV1/Theme.php:2120
 msgid "O número de vagas da inscrição no oportunidade se esgotou."
-msgstr ""
-"El número de vacantes de la inscripción en la oportunidad se ha agotado."
+msgstr "El número de vacantes de la inscripción en la oportunidad se ha agotado."
 
 #: src/themes/BaseV1/Theme.php:2121
 msgid ""
-"Para se inscrever nesta oportunidade você deve selecionar um agente "
-"responsável."
+"Para se inscrever nesta oportunidade você deve selecionar um agente responsável."
 msgstr ""
 "Para inscribirse en esta oportunidad usted debe seleccionar un agente "
 "responsable."
@@ -25166,8 +25087,8 @@ msgstr "Aplicar resultado de las evaluaciones"
 
 #: src/themes/BaseV1/Theme.php:2132
 msgid ""
-"Deseja aplicar o resultado de todas as avaliações como o status das "
-"respectivas inscrições?"
+"Deseja aplicar o resultado de todas as avaliações como o status das respectivas "
+"inscrições?"
 msgstr ""
 "¿Desea aplicar el resultado de todas las evaluaciones como el estado de sus "
 "inscripciones?"
@@ -25190,11 +25111,11 @@ msgstr "¿Desea eliminar este campo?"
 
 #: src/themes/BaseV1/Theme.php:2149
 msgid ""
-"Você desativou a categoria, todos os campos vinculado a alguma categoria "
-"serão também desativados"
+"Você desativou a categoria, todos os campos vinculado a alguma categoria serão "
+"também desativados"
 msgstr ""
-"Desactivaste la categoría, todos los campos vinculados a una categoría "
-"también se desactivarán"
+"Desactivaste la categoría, todos los campos vinculados a una categoría también "
+"se desactivarán"
 
 #: src/themes/BaseV1/Theme.php:2151
 msgid "Para ativar este campo, ative também o campo Categoria"
@@ -25212,8 +25133,8 @@ msgstr ""
 
 #: src/themes/BaseV1/Theme.php:2153
 msgid ""
-"Ao enviar a prestação de contas, não será mais permitido editar os campos. "
-"tem certeza que deseja continuar?"
+"Ao enviar a prestação de contas, não será mais permitido editar os campos. tem "
+"certeza que deseja continuar?"
 msgstr ""
 "Al enviar el estado financiero ya no será posible editar los campos. ¿Estás "
 "seguro de que quieres continuar?"
@@ -25236,8 +25157,8 @@ msgid ""
 "Tem certeza que deseja remover o grupo %s? A relação com todos os agentes "
 "dentro deste grupo será removida."
 msgstr ""
-"¿Está seguro que desea eliminar el grupo %s? La relación con todos los "
-"agentes dentre de este grupo será eliminada."
+"¿Está seguro que desea eliminar el grupo %s? La relación con todos los agentes "
+"dentre de este grupo será eliminada."
 
 #: src/themes/BaseV1/Theme.php:2227
 msgid "mensal"
@@ -25683,8 +25604,8 @@ msgstr "Descripción generada por el sistema automaticamente"
 
 #: src/themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:103
 msgid ""
-"Coloque neste campo somente informações sobre a data e hora desta ocorrência "
-"do evento."
+"Coloque neste campo somente informações sobre a data e hora desta ocorrência do "
+"evento."
 msgstr ""
 "Coloque en este campo solamente información sobre la fecha y la hora de este "
 "evento."
@@ -25828,9 +25749,8 @@ msgid ""
 "importar como rascunho: Utilize esta opção se for necessária interação com os "
 "agentes inscritos. A inscrição deverá ser reenviada para esta fase."
 msgstr ""
-"importar como borrador: Utilice esta opción si es necesaria la interacción "
-"con los agentes inscriptos. La inscripción deberá ser reenviada para esta "
-"fase."
+"importar como borrador: Utilice esta opción si es necesaria la interacción con "
+"los agentes inscriptos. La inscripción deberá ser reenviada para esta fase."
 
 #: src/themes/BaseV1/layouts/parts/opportunity-phases/import-last-phase-button.php:4
 msgid "como rascunho"
@@ -26296,8 +26216,8 @@ msgstr "Renombrar"
 
 #: src/themes/BaseV1/layouts/parts/related-agents.php:15
 msgid ""
-"Grupos de agentes podem ser usados para exibir membros de um coletivo, "
-"equipes técnicas, etc."
+"Grupos de agentes podem ser usados para exibir membros de um coletivo, equipes "
+"técnicas, etc."
 msgstr ""
 "Grupos de agentes pueden ser usados para exhibir miembros de un colectivo, "
 "equipos técnicos, etc."
@@ -26579,8 +26499,8 @@ msgstr "Ingrese la fecha de nacimiento o fundación del agente"
 #: src/themes/BaseV1/views/space/edit.php:63
 #: src/themes/BaseV1/views/space/single.php:63
 msgid ""
-"O limite de caracteres da descrição curta foi diminuido para 400, mas seu "
-"texto atual possui"
+"O limite de caracteres da descrição curta foi diminuido para 400, mas seu texto "
+"atual possui"
 msgstr ""
 "El límite de caracteres de la descripción breve fue acortado a 400, pero su "
 "texto actual posee"
@@ -26669,8 +26589,8 @@ msgstr "Eliminar Definitivamente"
 #: src/themes/BaseV1/layouts/parts/singles/control--view-buttons.php:17
 #, php-format
 msgid ""
-"Você possui permissão para editar este %s. Use os botões à direita para "
-"editar ou excluir."
+"Você possui permissão para editar este %s. Use os botões à direita para editar "
+"ou excluir."
 msgstr ""
 "Usted posee permiso para editar este %s. Use los botones a la derecha para "
 "editar o eliminar."
@@ -26740,8 +26660,8 @@ msgstr "Este %s está <b>archivado</b>"
 msgid ""
 "e pode ser acessado clicando <a href=\"%s\" rel='noopener noreferrer'>aqui</a>"
 msgstr ""
-"y se puede acceder haciendo clic <a href=\"%s\" rel='noopener "
-"noreferrer'>aqui</a>"
+"y se puede acceder haciendo clic <a href=\"%s\" rel='noopener noreferrer'>aqui</"
+"a>"
 
 #: src/themes/BaseV1/layouts/parts/singles/history_agent.php:66
 #: src/themes/BaseV1/layouts/parts/singles/history_space.php:66
@@ -26979,15 +26899,15 @@ msgstr ""
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:54
 msgid ""
-"Se você quiser <strong>dividir as inscrições</strong> entre os avaliadores "
-"você pode utilizar os <strong>campos de distribuição</strong> para cada "
-"avaliador. Você pode dividir as inscrições pelo final dos números das "
-"inscrições e/ou pela categoria definida nas inscrições."
+"Se você quiser <strong>dividir as inscrições</strong> entre os avaliadores você "
+"pode utilizar os <strong>campos de distribuição</strong> para cada avaliador. "
+"Você pode dividir as inscrições pelo final dos números das inscrições e/ou pela "
+"categoria definida nas inscrições."
 msgstr ""
 "Si desea <strong>dividir las inscripciones</strong> entre los evaluadores, "
 "puede utilizar los <strong> campos de distribución </ strong> para cada "
-"evaluador. Usted puede dividir las inscripciones por el final de los números "
-"de las inscripciones y / o por la categoría definida en las inscripciones."
+"evaluador. Usted puede dividir las inscripciones por el final de los números de "
+"las inscripciones y / o por la categoría definida en las inscripciones."
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:57
 msgid ""
@@ -27026,11 +26946,10 @@ msgstr "Esperando confirmación del evaluador"
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:94
 msgid ""
-"Distribuição das inscrições: use para dividir as inscrições entre os "
-"avaliadores"
+"Distribuição das inscrições: use para dividir as inscrições entre os avaliadores"
 msgstr ""
-"Distribución de las inscripciones: utilice para dividir las inscripciones "
-"entre los evaluadores"
+"Distribución de las inscripciones: utilice para dividir las inscripciones entre "
+"los evaluadores"
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-evaluations--committee.php:96
 msgid "0-9"
@@ -27083,15 +27002,15 @@ msgstr "Ver agenda"
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:13
 msgid ""
-"Toda inscrição obrigatoriamente deve possuir um Agente Individual "
-"responsável, mas é possível que a inscrição seja feita em nome de um agente "
-"coletivo, com ou sem CNPJ. Nesses casos, é preciso definir abaixo se essas "
-"informações são necessárias e se são obrigatórias."
+"Toda inscrição obrigatoriamente deve possuir um Agente Individual responsável, "
+"mas é possível que a inscrição seja feita em nome de um agente coletivo, com ou "
+"sem CNPJ. Nesses casos, é preciso definir abaixo se essas informações são "
+"necessárias e se são obrigatórias."
 msgstr ""
-"Toda inscripción obligatoriamente debe poseer un Agente Individual "
-"responsable, pero es posible que la inscripción sea hecha en nombre de un "
-"agente colectivo, con o sin RUT. En esos casos, es preciso definir abajo si "
-"esa información es necesaria y si es obligatoria."
+"Toda inscripción obligatoriamente debe poseer un Agente Individual responsable, "
+"pero es posible que la inscripción sea hecha en nombre de un agente colectivo, "
+"con o sin RUT. En esos casos, es preciso definir abajo si esa información es "
+"necesaria y si es obligatoria."
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--agent-relations.php:14
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:17
@@ -27135,9 +27054,9 @@ msgstr "Ingrese el número máximo de inscripciones por agente responsable"
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--categories.php:16
 msgid ""
-"É possível criar opções para os proponentes escolherem na hora de se "
-"inscrever, como, por exemplo, \"categorias\" ou \"modalidades\". Se não "
-"desejar utilizar este recurso, deixe em branco o campo \"Opções\"."
+"É possível criar opções para os proponentes escolherem na hora de se inscrever, "
+"como, por exemplo, \"categorias\" ou \"modalidades\". Se não desejar utilizar "
+"este recurso, deixe em branco o campo \"Opções\"."
 msgstr ""
 "Es posible crear opciones para que los postulantes elijan a la hora de "
 "inscribirse, como por ejemplo \"categorías\" o \"modalidades\". Si no desea "
@@ -27179,8 +27098,8 @@ msgstr "Previsualizar ficha de inscripción"
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--export.php:2
 msgid ""
-"É possível exportar as configurações deste formulário para utilizar como "
-"modelo ao montar um novo formulário."
+"É possível exportar as configurações deste formulário para utilizar como modelo "
+"ao montar um novo formulário."
 msgstr ""
 "Es posible exportar las configuraciones de este formulario para utilizar como "
 "modelo para construir un nuevo formulario."
@@ -27195,8 +27114,7 @@ msgid ""
 "formulário. Salve o arquivo e o utilize para importar em outro formulário."
 msgstr ""
 "Haga clic en el botón de abajo para exportar la configuración y los campos de "
-"este formulario. Guarde el archivo y utilícelo para importar en otra "
-"formulario."
+"este formulario. Guarde el archivo y utilícelo para importar en otra formulario."
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--export.php:11
 msgid "Exportar formulário"
@@ -27427,8 +27345,8 @@ msgid ""
 "campos deste formulário serão substituídas pelas do arquivo importado."
 msgstr ""
 "Seleccione a continuación un archivo exportado de otro formulario. La "
-"configuración y los campos de este formulario serán reemplazados por el "
-"archivo importado."
+"configuración y los campos de este formulario serán reemplazados por el archivo "
+"importado."
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--import.php:15
 msgid "Enviar campos"
@@ -27436,8 +27354,8 @@ msgstr "Importar Campos"
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--import.php:19
 msgid ""
-"Não é possível importar porque você não possui permissão para alterar os "
-"campos deste formulário"
+"Não é possível importar porque você não possui permissão para alterar os campos "
+"deste formulário"
 msgstr ""
 "No se puede importar porque usted no tiene permiso para cambiar los campos de "
 "este formulario"
@@ -27464,8 +27382,8 @@ msgid ""
 "Você só pode publicar a lista de aprovados após o término do período de "
 "inscrições."
 msgstr ""
-"Usted solo puede publicar la lista de aprobados después del término del "
-"período de inscripciones."
+"Usted solo puede publicar la lista de aprobados después del término del período "
+"de inscripciones."
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--rules.php:1
 msgid "Baixar o regulamento"
@@ -27521,11 +27439,11 @@ msgstr "(Sellos atribuidos a agentes colectivos)"
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--space-relations.php:31
 msgid ""
-"Uma inscrição pode pedir para que o agente relacione um Espaço Cultural a "
-"ela. Indique aqui se quer habilitar esta opção."
+"Uma inscrição pode pedir para que o agente relacione um Espaço Cultural a ela. "
+"Indique aqui se quer habilitar esta opção."
 msgstr ""
-"Una inscripción puede pedir al agente que relacione un Espacio Cultural a "
-"ella. Indique aquí si desea habilitar esta opción."
+"Una inscripción puede pedir al agente que relacione un Espacio Cultural a ella. "
+"Indique aquí si desea habilitar esta opción."
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:10
 msgid "Baixar inscritos"
@@ -27569,9 +27487,9 @@ msgid ""
 "uma inscrição. Ao selecionar esta opção, a inscrição não será mais exibida "
 "nesta tabela."
 msgstr ""
-"Borrador - utilice esta opción para permitir que el responsable edite y "
-"reenvíe una inscripción. Al seleccionar esta opción, la inscripción no será "
-"más exhibida en esta tabla."
+"Borrador - utilice esta opción para permitir que el responsable edite y reenvíe "
+"una inscripción. Al seleccionar esta opción, la inscripción no será más "
+"exhibida en esta tabla."
 
 #: src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:100
 msgid "Expandir tabela"
@@ -27687,9 +27605,9 @@ msgid ""
 "Marque/desmarque os avaliadores desta inscrição. Por padrão, são selecionados "
 "aqueles que avaliam de acordo com as regras de distribuição definidas."
 msgstr ""
-"Marque/desmarque los evaluadores de esta inscripción. De forma "
-"predeterminada, se seleccionan aquellos que evalúan de acuerdo con las reglas "
-"de distribución definidas."
+"Marque/desmarque los evaluadores de esta inscripción. De forma predeterminada, "
+"se seleccionan aquellos que evalúan de acuerdo con las reglas de distribución "
+"definidas."
 
 #: src/themes/BaseV1/layouts/parts/singles/registration--valuers-list.php:73
 msgid "Avaliador desta inscrição pela regra de distribuição."
@@ -27767,8 +27685,8 @@ msgid ""
 "Corrija os campos listados abaixo e valide seu formulário utilizando o botão "
 "Salvar e validar."
 msgstr ""
-"Corrija los campos que se enumeran a continuación y valide su formulario "
-"usando el botón Guardar y validar."
+"Corrija los campos que se enumeran a continuación y valide su formulario usando "
+"el botón Guardar y validar."
 
 #: src/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:21
 msgid ""
@@ -27788,8 +27706,8 @@ msgstr "Las inscripciones se cerrarán en"
 
 #: src/themes/BaseV1/layouts/parts/singles/registration-edit--send-button.php:41
 msgid ""
-"Somente super admins podem usar este botão e somente deve ser usado para "
-"enviar inscrições que não foram enviadas por problema do sistema."
+"Somente super admins podem usar este botão e somente deve ser usado para enviar "
+"inscrições que não foram enviadas por problema do sistema."
 msgstr ""
 "Solamente súper administradores pueden usar este botón y solamente debe ser "
 "usado para enviar inscripciones que no fueron enviadas por problemas del "
@@ -27878,8 +27796,8 @@ msgstr "Ingrese el horario de apertura y cierre"
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite--login-cidadao--content.php:6
 msgid ""
-"Use esta seção para configurar as chaves utilizada pelo subsite na "
-"autenticação com o Login Cidadão."
+"Use esta seção para configurar as chaves utilizada pelo subsite na autenticação "
+"com o Login Cidadão."
 msgstr ""
 "Use esta sección para configurar las claves utilizadas por el subsitio en la "
 "autenticación con el Login Ciudadano."
@@ -27889,21 +27807,20 @@ msgid ""
 "A configuração será aplicada somente se ambos os campos abaixo forem "
 "preenchidos."
 msgstr ""
-"La configuración será aplicada solamente si los campos que se encuentran "
-"debajo son completados."
+"La configuración será aplicada solamente si los campos que se encuentran debajo "
+"son completados."
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite--login-cidadao--content.php:13
 #: src/themes/BaseV1/layouts/parts/singles/subsite--login-cidadao--content.php:18
-msgid ""
-"Utilizando a configuração da instalação principal (clique para configurar)"
+msgid "Utilizando a configuração da instalação principal (clique para configurar)"
 msgstr ""
 "Utilizado en la configuración de la instalación principal (haga clic para "
 "configurar)"
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite-entities.php:3
 msgid ""
-"Nesta seção você configura as entidades que estarão habilitadas na instalação "
-"e as cores para cada uma das entidades."
+"Nesta seção você configura as entidades que estarão habilitadas na instalação e "
+"as cores para cada uma das entidades."
 msgstr ""
 "En esta sección configura las entidades que estarán habilitadas en la "
 "instalación y los colores para cada una de las entidades."
@@ -27935,9 +27852,9 @@ msgid ""
 "instalação principal. Deixe em branco os campos onde você não quer aplicar "
 "filtro algum, deixando aparecer todos os dados da instalação principal."
 msgstr ""
-"Configure aquí los filtros que se aplicarán a los datos registrados en el "
-"sitio principal. Dejar campos en blanco en el que no desea aplicar ningún "
-"filtro, dejando que aparezcan todos los datos de la instalación principal."
+"Configure aquí los filtros que se aplicarán a los datos registrados en el sitio "
+"principal. Dejar campos en blanco en el que no desea aplicar ningún filtro, "
+"dejando que aparezcan todos los datos de la instalación principal."
 
 #: src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:30
 msgid "Área de Atuação do Agente:"
@@ -28077,8 +27994,7 @@ msgstr "Seleccione el tema a ser utilizado"
 #: src/themes/BaseV1/layouts/parts/singles/subsite-images.php:3
 msgid ""
 "Nesta seção você configura as imagens que vão aparecer na instalação. É "
-"possível selecionar o logo da instalação, o background e o logo da "
-"instituição."
+"possível selecionar o logo da instalação, o background e o logo da instituição."
 msgstr ""
 "En esta sección configura las imágenes que aparecerán en la instalación. Se "
 "puede seleccionar el logo de la instalación, el fondo y el logo de la "
@@ -28194,9 +28110,9 @@ msgstr "Imágenes"
 #: src/themes/BaseV1/layouts/parts/singles/subsite-texts.php:12
 msgid ""
 "Nesta seção você configura os textos utilizados na interface do site. Cada "
-"texto tem uma explicação do local em que deverá aparecer a informação. A "
-"opção de “exibir opções avançadas” possibilita que outros campos apareçam "
-"para definição dos textos."
+"texto tem uma explicação do local em que deverá aparecer a informação. A opção "
+"de “exibir opções avançadas” possibilita que outros campos apareçam para "
+"definição dos textos."
 msgstr ""
 "En esta sección se configuran los textos utilizados en la interfaz del sitio. "
 "Cada texto tiene una explicación del lugar en el que debe aparecer la "
@@ -28434,8 +28350,8 @@ msgstr "Otros datos públicos"
 #: src/themes/BaseV1/views/agent/edit-1.php:53
 #: src/themes/BaseV1/views/agent/edit-2.php:51
 msgid ""
-"Assim como o cartão de visitas, os dados abaixo também serão exibidos para "
-"quem visitar o seu perfil."
+"Assim como o cartão de visitas, os dados abaixo também serão exibidos para quem "
+"visitar o seu perfil."
 msgstr ""
 "Al igual que la tarjeta de presentación, los datos a continuación también se "
 "mostrarán a cualquier persona que visite su perfil."
@@ -28953,9 +28869,9 @@ msgstr "Contenido de la impresión"
 #: src/themes/BaseV1/views/seal/edit.php:109
 #: src/themes/BaseV1/views/seal/single.php:109
 msgid ""
-"Para personalizar o conteúdo da impressão do selo aplicado, é possível "
-"utilizar as seguintes palavras chaves para obter informações das entidades "
-"relacionadas com o selo no texto abaixo."
+"Para personalizar o conteúdo da impressão do selo aplicado, é possível utilizar "
+"as seguintes palavras chaves para obter informações das entidades relacionadas "
+"com o selo no texto abaixo."
 msgstr ""
 "Para personalizar el contenido de la impresión del sello aplicado, es posible "
 "utilizar las siguientes palabras claves para obtener información de las "
@@ -29067,8 +28983,7 @@ msgstr "/400 Caracteres)"
 
 #: src/themes/BaseV1/views/space/edit.php:153
 #: src/themes/BaseV1/views/space/single.php:153
-msgid ""
-"Para adicionar arquivos para download ou links, primeiro é preciso salvar"
+msgid "Para adicionar arquivos para download ou links, primeiro é preciso salvar"
 msgstr "Para agregar archivos para descarga o enlaces, primero debe guardar"
 
 #: src/themes/BaseV1/views/subsite/create.php:16
@@ -29121,8 +29036,7 @@ msgstr "Esta página ya no existe o ha cambiado de dirección."
 
 #: src/themes/BaseV2/views/site/error-404.php:17
 msgid ""
-"Mas não se preocupe, existem muitas outras páginas para conhecer aqui no "
-"Mapas."
+"Mas não se preocupe, existem muitas outras páginas para conhecer aqui no Mapas."
 msgstr "Pero no te preocupes, hay muchas otras páginas por descubrir aquí."
 
 #: src/themes/BaseV2/views/site/error-500.php:17
@@ -29135,8 +29049,7 @@ msgstr "Error en la página"
 
 #: src/themes/BaseV2/views/site/error-500.php:21
 msgid ""
-"Identificamos um problema no servidor aqui do nosso lado, mas não se "
-"preocupe. "
+"Identificamos um problema no servidor aqui do nosso lado, mas não se preocupe. "
 msgstr ""
 "Hemos identificado un problema con el servidor de nuestra parte, pero no se "
 "preocupe. "
@@ -29145,8 +29058,7 @@ msgstr ""
 msgid ""
 "Já estamos investigando o que aconteceu. Tente novamente após alguns minutos.."
 msgstr ""
-"Ya estamos investigando lo sucedido. Inténtalo de nuevo después de unos "
-"minutos."
+"Ya estamos investigando lo sucedido. Inténtalo de nuevo después de unos minutos."
 
 #: src/themes/Subsite/layouts/parts/header-about-nav.php:21
 msgid "Sobre o Site"
@@ -29282,9 +29194,9 @@ msgstr "Acerca del Sitio"
 #~ msgstr "Ocultar errores"
 
 #~ msgid ""
-#~ "Para enviar sua inscrição, você precisa <strong>validá-la</strong> "
-#~ "primeiro. Clique no botão <strong>Validar inscrição</strong> abaixo para "
-#~ "verificar se todas as informações estão corretas."
+#~ "Para enviar sua inscrição, você precisa <strong>validá-la</strong> primeiro. "
+#~ "Clique no botão <strong>Validar inscrição</strong> abaixo para verificar se "
+#~ "todas as informações estão corretas."
 #~ msgstr ""
 #~ "Para enviar su inscripción, primero debe <strong>validarla</strong>. Haga "
 #~ "clic en el botón <strong>Validar inscripción</strong> a continuación para "
@@ -29364,8 +29276,7 @@ msgstr "Acerca del Sitio"
 #~ msgstr "Soy integrante de los pueblos de quilombola"
 
 #~ msgid ""
-#~ "O usuário informado é inválido. Informe no formato @usuario e tente "
-#~ "novamente"
+#~ "O usuário informado é inválido. Informe no formato @usuario e tente novamente"
 #~ msgstr ""
 #~ "El usuario introducido no es válido. Introduzca en el formato @usuario e "
 #~ "intente nuevamente"
@@ -29456,8 +29367,8 @@ msgstr "Acerca del Sitio"
 #~ msgstr "Definir este agente como tu perfil."
 
 #~ msgid ""
-#~ "É necessário avaliar todas as inscrições e aguardar o prazo de "
-#~ "encerramento da fase em "
+#~ "É necessário avaliar todas as inscrições e aguardar o prazo de encerramento "
+#~ "da fase em "
 #~ msgstr ""
 #~ "Es necesario evaluar todas las inscripciones y aguardar al plazo de cierre "
 #~ "de fase en "
@@ -29487,8 +29398,8 @@ msgstr "Acerca del Sitio"
 #~ "Agente individual (pessoa física) com os campos CPF, Data de Nascimento/"
 #~ "Fundação, Email Privado e Telefone 1 obrigatoriamente preenchidos"
 #~ msgstr ""
-#~ "Agente individual (persona física) con los campos CI, Fecha de "
-#~ "Nacimiento / Fundación, Email Privado y Teléfono 1 completos"
+#~ "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
+#~ "Fundación, Email Privado y Teléfono 1 completos"
 
 #~ msgid "País de residencia"
 #~ msgstr "País de residencia"
@@ -29580,12 +29491,11 @@ msgstr "Acerca del Sitio"
 #~ msgid ""
 #~ "Sucesso: Um e-mail foi enviado com instruções para recuperação da senha."
 #~ msgstr ""
-#~ "Muy bien: un e-mail fue enviado con instrucción para recuperar su "
-#~ "contraseña."
+#~ "Muy bien: un e-mail fue enviado con instrucción para recuperar su contraseña."
 
 #~ msgid ""
-#~ "Erro ao enviar email de recuperação. Entre em contato com os "
-#~ "administradors do site."
+#~ "Erro ao enviar email de recuperação. Entre em contato com os administradors "
+#~ "do site."
 #~ msgstr ""
 #~ "Error al enviar email de recuperación. Entre en contacto con el "
 #~ "administrador del sitio."
@@ -29661,8 +29571,7 @@ msgstr "Acerca del Sitio"
 
 #~ msgid "Para recuperar sua senha, informe o e-mail utilizado no cadastro."
 #~ msgstr ""
-#~ "Para recuperar su contraseña, introduzca el e-mail utilizado al "
-#~ "registrarse."
+#~ "Para recuperar su contraseña, introduzca el e-mail utilizado al registrarse."
 
 #~ msgid "Recuperar senha"
 #~ msgstr "Recuperar contraseña"
@@ -29706,8 +29615,8 @@ msgstr "Acerca del Sitio"
 #~ "Alguien solicitó la recuperación de la contraseña utilizada en %s por este "
 #~ "email.\n"
 #~ "\n"
-#~ "Para recuperarla, acceda al enlace: %s. /n/n Si no pidió la recuperación "
-#~ "de esta contraseña, ignore este mensaje."
+#~ "Para recuperarla, acceda al enlace: %s. /n/n Si no pidió la recuperación de "
+#~ "esta contraseña, ignore este mensaje."
 
 #~ msgid "Registrar-se"
 #~ msgstr "Registrarse"
@@ -29726,8 +29635,8 @@ msgstr "Acerca del Sitio"
 #~ "Tente se inscrever a partir de um dispositivo com a tela maior."
 #~ msgstr ""
 #~ "No es posible realizar las incripciones en línea a través de este "
-#~ "dispositivo. Intente inscribirse a partir de un dispositivo con una "
-#~ "pantalla más grande."
+#~ "dispositivo. Intente inscribirse a partir de un dispositivo con una pantalla "
+#~ "más grande."
 
 #~ msgid "Importar / Exportar o formulário"
 #~ msgstr "Importar / Exportar el formulario"
@@ -29761,8 +29670,8 @@ msgstr "Acerca del Sitio"
 
 #~ msgid "%s quer relacionar o agente %s à inscrição %s no projeto %s. . %s"
 #~ msgstr ""
-#~ "%s quieres relacionar el agente %s a la inscripción %s en el proyecto "
-#~ "%s. . %s"
+#~ "%s quieres relacionar el agente %s a la inscripción %s en el proyecto %s. . "
+#~ "%s"
 
 #~ msgid "Avaliações."
 #~ msgstr "Evaluaciones."
@@ -29793,8 +29702,7 @@ msgstr "Acerca del Sitio"
 
 #~ msgid ""
 #~ "%s está requisitando a mudança de propriedade do %s %s para o agente %s."
-#~ msgstr ""
-#~ "%s está solicitando el cambio de propiedad de %s %s para el agente %s."
+#~ msgstr "%s está solicitando el cambio de propiedad de %s %s para el agente %s."
 
 #~ msgid "%s quer que o %s %s seja um %s filho de %s."
 #~ msgstr "%s quiere que el %s %s sea un %s hijo de %s."
@@ -29821,8 +29729,7 @@ msgstr "Acerca del Sitio"
 #~ "Para se inscrever neste oportunidade você deve selecionar um agente "
 #~ "responsável."
 #~ msgstr ""
-#~ "Para inscribirse en esta oportunidad debe seleccionar un agente "
-#~ "responsable."
+#~ "Para inscribirse en esta oportunidad debe seleccionar un agente responsable."
 
 #~ msgid "Ocorrências"
 #~ msgstr "Cuándo y dónde"
@@ -29846,8 +29753,8 @@ msgstr "Acerca del Sitio"
 #~ msgid ""
 #~ "Sua requisição para criar a ocorrência do evento no espaço %s foi enviada."
 #~ msgstr ""
-#~ "Su solicitud para crear \"cuándo y dónde\" es el evento en el espacio %s "
-#~ "fue enviada."
+#~ "Su solicitud para crear \"cuándo y dónde\" es el evento en el espacio %s fue "
+#~ "enviada."
 
 #~ msgid "Editar Ocorrência"
 #~ msgstr "Editar cuándo y dónde"
