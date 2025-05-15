@@ -36,7 +36,7 @@ $this->import('
         :refresh="refresh"
         >
         <div class="panel__row noEntity">
-            <p>{{emptyTextType ? showEmptyText(type) : 'Nenhuma entidade encontrada'}}</p>
+            <p>{{emptyTextType ? showEmptyText(type) : '<?= i::__('Nenhuma entidade encontrada') ?>'}}</p>
         </div>
     </slot>
 </template>
