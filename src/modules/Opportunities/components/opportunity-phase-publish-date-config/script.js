@@ -45,6 +45,10 @@ app.component('opportunity-phase-publish-date-config' , {
             return index;
         },
 
+        isNotContinuousFlow () {
+            return !this.phases[0].isContinuousFlow;
+        },
+
         previousPhase() {
             return this.phases[this.index - 1];
         },
