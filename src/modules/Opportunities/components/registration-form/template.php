@@ -46,12 +46,11 @@
                         :disabled="isDisabled(field)"
                         :prop="field.fieldName" 
                         :field-description="field.description" 
+                        :max-length="field.maxSize || undefined" 
                         :autosave="60000"
                         description-first
                         :max-options="field?.config?.maxOptions !== undefined && field?.config?.maxOptions !== '' ? Number(field.config.maxOptions) : 0"
-                        preserve-order
-                        v-bind="field.maxSize !== null && field.maxSize > 0 ? { 'max-length': field.maxSize } : {}"
-                        ></entity-field>
+                        preserve-order></entity-field>
 
                     <entity-file v-else-if="field.groupName" 
                         :entity="registration"
