@@ -107,6 +107,7 @@ class Module extends \MapasCulturais\Module{
                 });
                 
                 $app->hook("component(opportunity-phase-config-<<data-collection|evaluation|results>>):bottom", function(){
+                    $this->import('opportunity-enable-claim');
                     $this->part('opportunity-claim-config');
                 });
 
