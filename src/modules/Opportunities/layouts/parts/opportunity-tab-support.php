@@ -13,7 +13,7 @@ foreach($phases as $phase) {
     if ($phase->{'@entityType'} == 'opportunity') {
         $opportunity = $app->repo('Opportunity')->find($phase->id);
         if ($opportunity->isSupportUser($app->user)) {
-            $phasesToJs[] = $opportunity;
+            $phasesToJs[] = $phase;
         }
     }
 }
