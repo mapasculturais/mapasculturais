@@ -3298,11 +3298,17 @@ class ApiQuery {
         if(is_null($property)) {
             $property = $this->pk;
         }
-        $this->_subqueryFilters[] = [
-            'subquery' => $subquery,
-            'subquery_property' => $subquery_property,
-            'property' => $property
-        ];
+        
+        foreach($this->_subqueryFilters as $value){
+
+            if($subquery !== $value['subquery'] && $subquery_property !== $value['subquery_property'] && $property !== $value['property'] ){
+                $this->_subqueryFilters[] = [
+                    'subquery' => $subquery,
+                    'subquery_property' => $subquery_property,
+                    'property' => $property
+                ];
+            }
+        }
     }
     
     protected function _getAllPropertiesNames(){
