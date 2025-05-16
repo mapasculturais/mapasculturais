@@ -5,8 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.5.43] - 2025-05-16
+## [7.5.44] - 2025-05-16
+### Correção
+- Corrige erro que impedia a exibição das fases na aba de suporte da oportunidade para o agente de suporte.
+- Corrige erro que impedia a listagem de inscrições na aba de suporte quando o agente estava vinculado como suporte em uma fase de coleta de dados posterior à fase inicial.
 
+## [7.5.43] - 2025-05-16
 ### Correções
 - Corrige momento em que o componente opportunity-claim-form é importado para evitar conflitos
 
