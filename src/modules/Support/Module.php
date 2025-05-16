@@ -152,6 +152,20 @@ class Module extends \MapasCulturais\Module
             }
             return;
         });
+
+        $app->hook("can(Registration.view)", function ($user, &$result) use ($self) {
+            if($result) {
+                return;
+            }
+
+            $opportunity = $this->opprtunity;
+            if($next_phase = $opportunity->nextPhase) {
+                if($self->isSupportUser($next_phase, $user)){
+                    $result = true;
+                }
+            }
+        });
+
         $app->hook("can(Registration<<File|Meta>>.<<create|remove>>)", function ($user, &$result) use ($self) {
             
             if (!$this->owner->canUser("@control")) {
@@ -172,10 +186,19 @@ class Module extends \MapasCulturais\Module
         
             return;
         });
+        
         $app->hook("entity(Registration).permissionCacheUsers", function (&$users) {
+            $agents = [];
+            $opportunity = $this->opportunity;
+
+            while($opportunity) {
+                $agents = array_merge($agents, $opportunity->relatedAgents[self::SUPPORT_GROUP] ?? []);
+                $opportunity = $opportunity->nextPhase;
+            }
+
             $support_users = array_map(function ($agent) {
                 return $agent->user;
-            }, ($this->opportunity->relatedAgents[self::SUPPORT_GROUP] ?? []));
+            }, $agents);
             $users = array_values(array_unique(array_merge($users, $support_users)));
             return;
         });
