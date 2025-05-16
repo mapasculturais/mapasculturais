@@ -1069,7 +1069,9 @@ class ApiQuery {
                 $app->applyHookBoundTo($this, "{$this->hookPrefix}.subsiteFilters", [&$subsite_query]);
 
                 if($subsite_query){
-                    $filters[] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
+                    $subquery_object_id = spl_object_id($subsite_query);
+                    $filter_id = "{$subquery_object_id}:{$this->pk}:{$this->pk}";
+                    $filters[$filter_id] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
                 }
             }
         }
@@ -3299,16 +3301,14 @@ class ApiQuery {
             $property = $this->pk;
         }
         
-        foreach($this->_subqueryFilters as $value){
+        $subquery_object_id = spl_object_id($subquery);
+        $filter_id = "{$subquery_object_id}:{$subquery_property}:{$property}";
 
-            if($subquery !== $value['subquery'] && $subquery_property !== $value['subquery_property'] && $property !== $value['property'] ){
-                $this->_subqueryFilters[] = [
-                    'subquery' => $subquery,
-                    'subquery_property' => $subquery_property,
-                    'property' => $property
-                ];
-            }
-        }
+        $this->_subqueryFilters[$filter_id] = [
+            'subquery' => $subquery,
+            'subquery_property' => $subquery_property,
+            'property' => $property
+        ];
     }
     
     protected function _getAllPropertiesNames(){
