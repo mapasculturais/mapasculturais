@@ -220,6 +220,22 @@
     module.controller('SupportForm',['$scope', 'SupportService','$window', function($scope, SupportService, $window){        
         $scope.userAllowedFields = MapasCulturais.userAllowedFields
 
+        $scope.hasSupportFields = function(fields) {
+            if (!Array.isArray(fields)) {
+                return false;
+            }
+            
+            const allowedAccess = ['ro', 'rw'];
+            for (let field of fields) {
+                const fieldName = field.groupName || field.fieldName;
+                if(MapasCulturais.userAllowedFields && allowedAccess.includes(MapasCulturais.userAllowedFields[fieldName])) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         $scope.canSupportUserEdit = function(field){
             if(MapasCulturais.entity.userHasControl){
                 return true;
