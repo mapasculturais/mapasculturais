@@ -5,6 +5,14 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.43] - 2025-05-16
+
+### Correções
+- Corrige momento em que o componente opportunity-claim-form é importado para evitar conflitos
+
+### Melhorias nao funcionais
+- Na gestão de usuários, nos card's que listam os agentes, insere ícone que identifica quem é o agente principal
+
 ## [7.5.42] - 2025-05-13
 ### Melhorias não funcionais
 - Implementa método no Entity.php para devolver as permissões do usuário sobre a entidade
