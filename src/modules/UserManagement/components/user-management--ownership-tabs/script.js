@@ -52,6 +52,8 @@ app.component('user-management--ownership-tabs', {
         newSelect() {
             if(this.type=='registration') {
                 return this.select+',owner.name,number,createTimestamp,opportunity.{files.avatar,name}';
+            } if(this.type=='agent') {
+                return this.select+',parent';
             } else {
                 return this.select;
             }
