@@ -36,16 +36,6 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             </div>
         </section>
 
-        <?php foreach($evaluation_methods as $evaluation_method): ?>
-            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'before') ?>
-            <template v-if="phase.type.id == '<?=$evaluation_method->slug?>'">
-                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'begin') ?>
-                <?= $this->part("{$evaluation_method->slug}/phase-config") ?>
-                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'end') ?>
-            </template>
-            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
-        <?php endforeach; ?>
-
         <section class="col-12 evaluation-step__section">
             <?php $this->applyComponentHook("evaluation-step-header", 'before') ?>
             <div class="evaluation-step__section-header">
@@ -56,11 +46,20 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                 <?php $this->applyComponentHook("evaluation-step-header", 'end') ?>
             </div>
             <?php $this->applyComponentHook("evaluation-step-header", 'after') ?>
-
             <div class="evaluation-step__section-content">
                 <opportunity-committee-groups :entity="phase"></opportunity-committee-groups>
             </div>
         </section>
+        
+        <?php foreach($evaluation_methods as $evaluation_method): ?>
+            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'before') ?>
+            <template v-if="phase.type.id == '<?=$evaluation_method->slug?>'">
+                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'begin') ?>
+                <?= $this->part("{$evaluation_method->slug}/phase-config") ?>
+                <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'end') ?>
+            </template>
+            <?php $this->applyComponentHook("{$evaluation_method->slug}-config", 'after') ?>
+        <?php endforeach; ?>
 
         <section class="evaluation-section col-12">
             <fields-visible-evaluators :entity="phase"></fields-visible-evaluators>
