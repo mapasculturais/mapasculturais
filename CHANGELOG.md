@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.45] - 2025-05-19
+### Correções
+- Evita que arquivos que não tenham sido corretamente salvos no sistema de arquivo sejam salvos no banco de dados
+- Corrige definição do Controller::getData para requisições não GET
+
 ## [7.5.44] - 2025-05-16
 ### Correção
 - Corrige erro que impedia a exibição das fases na aba de suporte da oportunidade para o agente de suporte.
