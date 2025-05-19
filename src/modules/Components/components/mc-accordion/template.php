@@ -13,11 +13,14 @@ $this->import('
 ');
 ?>
 <section  class="mc-accordion">
-    <header @click="toggle()" :class="{ 'mc-accordion__header--active': active }" class="mc-accordion__header">
+    <header @click="toggle($event)" :class="{ 'mc-accordion__header--active': active }" class="mc-accordion__header">
         <mc-title tag="h3" class="bold mc-accordion__title">
             <slot name="title"></slot>
         </mc-title>
-        <mc-icon :name="active ? 'arrowPoint-up' : 'arrowPoint-down'" class="primary__color"></mc-icon>
+        
+        <span class="mc-accordion__close">
+            <mc-icon :name="active ? 'arrowPoint-up' : 'arrowPoint-down'" class="primary__color"></mc-icon>
+        </span>
     </header>
     <div v-if="active" class="mc-accordion__content">
         <slot name="content"></slot>
