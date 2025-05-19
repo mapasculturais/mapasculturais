@@ -99,7 +99,7 @@ $config = $app->config['social-media'];
                     <li>
                         <a href="<?= $app->createUrl('faq') ?>"><?php i::_e('Dúvidas frequentes'); ?></a>
                         <p style="margin-top: 15px !important;">
-                            <?= $this->text('description', i::__('')) ?>
+                            <?= $this->text('description', "") ?>
                         </p>
                     </li>
                     
