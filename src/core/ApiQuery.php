@@ -1069,7 +1069,9 @@ class ApiQuery {
                 $app->applyHookBoundTo($this, "{$this->hookPrefix}.subsiteFilters", [&$subsite_query]);
 
                 if($subsite_query){
-                    $filters[] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
+                    $subquery_object_id = spl_object_id($subsite_query);
+                    $filter_id = "{$subquery_object_id}:{$this->pk}:{$this->pk}";
+                    $filters[$filter_id] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
                 }
             }
         }
@@ -3298,7 +3300,11 @@ class ApiQuery {
         if(is_null($property)) {
             $property = $this->pk;
         }
-        $this->_subqueryFilters[] = [
+        
+        $subquery_object_id = spl_object_id($subquery);
+        $filter_id = "{$subquery_object_id}:{$subquery_property}:{$property}";
+
+        $this->_subqueryFilters[$filter_id] = [
             'subquery' => $subquery,
             'subquery_property' => $subquery_property,
             'property' => $property

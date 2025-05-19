@@ -76,6 +76,9 @@ return [
         return $filename;
     },
 
+    /* Define quantidade de memória utilizada para exportação dos dados */
+    'app.export.memoryLimit' => env('EXPORT_MEMORY_LIMIT', '4096M'),
+
     /*
     Define valores de inicialização do PHP para rotas específicas
     
