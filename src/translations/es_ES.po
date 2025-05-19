@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2025-05-19 13:19-0300\n"
+"POT-Creation-Date: 2025-05-19 15:00-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -3144,11 +3144,11 @@ msgstr "Audiovisual Expandido"
 
 #: src/conf/taxonomies.php:55
 msgid "Axé"
-msgstr "Axé\"  # Mantenido como término cultura"
+msgstr "Axé"
 
 #: src/conf/taxonomies.php:56
 msgid "Baião"
-msgstr "Baião\"  # Género musical, se conserv"
+msgstr "Baião"
 
 #: src/conf/taxonomies.php:57
 msgid "Baião (dança)"
@@ -3168,15 +3168,15 @@ msgstr "Banda Sinfónica"
 
 #: src/conf/taxonomies.php:61
 msgid "Bandas de Congo e Ticumbi"
-msgstr "Bandas de Congo y Ticumbi\"  # Tradición afrobrasileñ"
+msgstr "Bandas de Congo y Ticumbi"
 
 #: src/conf/taxonomies.php:62 src/themes/BaseV1/Theme.php:251
 msgid "Biblioteca"
-msgstr "Biblioteca\"  # Ya traducid"
+msgstr "Biblioteca"
 
 #: src/conf/taxonomies.php:63
 msgid "Biblioteca tombada"
-msgstr "Biblioteca declarada patrimonio\"  # \"Tombada\" = protegida por le"
+msgstr "Biblioteca declarada patrimonio"
 
 #: src/conf/taxonomies.php:64
 msgid "Biblioteconomia"
@@ -3192,11 +3192,11 @@ msgstr "Biografía y Autobiografía"
 
 #: src/conf/taxonomies.php:67
 msgid "Bloco de Carnaval"
-msgstr "Comparsa de Carnaval\"  # \"Bloco\" = agrupación carnavalesc"
+msgstr "Comparsa de Carnaval"
 
 #: src/conf/taxonomies.php:68
 msgid "Boi Bumbá"
-msgstr "Boi Bumbá\"  # Folclore amazónico, se conserv"
+msgstr "Boi Bumbá"
 
 #: src/conf/taxonomies.php:69
 msgid "Bordado"
@@ -3208,15 +3208,15 @@ msgstr "Breakdance"
 
 #: src/conf/taxonomies.php:71
 msgid "Brega Funk"
-msgstr "Brega Funk\"  # Género musical brasileñ"
+msgstr "Brega Funk"
 
 #: src/conf/taxonomies.php:72
 msgid "Caboclinho"
-msgstr "Caboclinho\"  # Danza tradiciona"
+msgstr "Caboclinho"
 
 #: src/conf/taxonomies.php:73
 msgid "Caçada da Rainha"
-msgstr "Cacería de la Reina\"  # Tradición folclóric"
+msgstr "Cacería de la Reina"
 
 #: src/conf/taxonomies.php:74
 msgid "Calypso"
@@ -3232,11 +3232,11 @@ msgstr "Canto Coral"
 
 #: src/conf/taxonomies.php:77
 msgid "Capoeira"
-msgstr "Capoeira\"  # Patrimonio cultural, no se traduc"
+msgstr "Capoeira"
 
 #: src/conf/taxonomies.php:78
 msgid "Carimbó"
-msgstr "Carimbó\"  # Ritmo amazónic"
+msgstr "Carimbó"
 
 #: src/conf/taxonomies.php:79
 msgid "Carimbó (Dança)"
@@ -3248,11 +3248,11 @@ msgstr "Carnaval"
 
 #: src/conf/taxonomies.php:81
 msgid "Cavalhadas"
-msgstr "Cabalgadas\"  # Representación históric"
+msgstr "Cabalgadas"
 
 #: src/conf/taxonomies.php:82
 msgid "Cavalo Marinho"
-msgstr "Caballo Marino\"  # Teatro popular nordestin"
+msgstr "Caballo Marino"
 
 #: src/conf/taxonomies.php:83
 msgid "Centro de Memória e patrimônio"
@@ -3264,7 +3264,7 @@ msgstr "Ciencia Política"
 
 #: src/conf/taxonomies.php:85 src/conf/taxonomies.php:424
 msgid "Cinema"
-msgstr "Cine\"  # Ya traducid"
+msgstr "Cine"
 
 #: src/conf/taxonomies.php:86
 msgid "Cinemateca"
@@ -3272,12 +3272,12 @@ msgstr "Cinemateca"
 
 #: src/conf/taxonomies.php:87
 msgid "Ciranda"
-msgstr "Ciranda\"  # Danza y música nordestin"
+msgstr "Ciranda"
 
 #: src/conf/taxonomies.php:88 src/modules/OpportunityWorkplan/Module.php:231
 #: src/modules/OpportunityWorkplan/Module.php:483
 msgid "Circo"
-msgstr "Circo\"  # Ya traducid"
+msgstr "Circo"
 
 #: src/conf/taxonomies.php:89
 msgid "Circo Contemporâneo"
@@ -3289,7 +3289,7 @@ msgstr "Circo Callejero"
 
 #: src/conf/taxonomies.php:93
 msgid "Coco"
-msgstr "Coco\"  # Ritmo tradiciona"
+msgstr "Coco"
 
 #: src/conf/taxonomies.php:94
 msgid "Comédia"
@@ -3297,15 +3297,15 @@ msgstr "Comedia"
 
 #: src/conf/taxonomies.php:95
 msgid "Comunicação"
-msgstr "Comunicación\"  # Ya traducid"
+msgstr "Comunicación"
 
 #: src/conf/taxonomies.php:96
 msgid "Congada"
-msgstr "Congada\"  # Expresión afrobrasileñ"
+msgstr "Congada"
 
 #: src/conf/taxonomies.php:97
 msgid "Congado"
-msgstr "Congado\"  # Similar a Congad"
+msgstr "Congado"
 
 #: src/conf/taxonomies.php:98
 msgid "Contação de histórias"
@@ -3321,7 +3321,7 @@ msgstr "Cuento"
 
 #: src/conf/taxonomies.php:101
 msgid "Cordel"
-msgstr "Literatura de Cordel\"  # Género literario nordestin"
+msgstr "Literatura de Cordel"
 
 #: src/conf/taxonomies.php:102
 msgid "Criação literária"
@@ -3349,7 +3349,7 @@ msgstr "Cultura Alimentaria"
 
 #: src/conf/taxonomies.php:108
 msgid "Cultura Cigana"
-msgstr "Cultura Gitana\"  # Ya traducid"
+msgstr "Cultura Gitana"
 
 #: src/conf/taxonomies.php:109
 msgid "Cultura da juventude de povos e comunidades tradicionais"
@@ -3357,13 +3357,11 @@ msgstr "Cultura de la juventud de pueblos y comunidades tradicionales"
 
 #: src/conf/taxonomies.php:110
 msgid "Cultura das comunidades de fundo e fecho de pasto"
-msgstr ""
-"Cultura de las comunidades de fondo y cierre de pasto\"  # Término específic"
+msgstr "Cultura de las comunidades de fondo y cierre de pasto"
 
 #: src/conf/taxonomies.php:111
 msgid "Cultura das comunidades quilombolas"
-msgstr ""
-"Cultura de las comunidades quilombolas\"  # Comunidades afrodescendiente"
+msgstr "Cultura de las comunidades quilombolas"
 
 #: src/conf/taxonomies.php:112
 msgid "Cultura das quebradeiras de coco babaçu"
@@ -3375,7 +3373,7 @@ msgstr ""
 
 #: src/conf/taxonomies.php:114 src/conf/taxonomies.php:425
 msgid "Cultura Digital"
-msgstr "Cultura Digital\"  # Ya traducid"
+msgstr "Cultura Digital"
 
 #: src/conf/taxonomies.php:115
 msgid "Cultura do Povo Arara"
@@ -3487,7 +3485,7 @@ msgstr "Cultura del Pueblo Pataxó"
 
 #: src/conf/taxonomies.php:142
 msgid "Cultura do povo pomerano"
-msgstr "Cultura del pueblo pomerano\"  # Comunidad germánica en Brasi"
+msgstr "Cultura del pueblo pomerano"
 
 #: src/conf/taxonomies.php:143
 msgid "Cultura do Povo Suruí"
@@ -3555,42 +3553,39 @@ msgstr "Cultura del Pueblo Zoró"
 
 #: src/conf/taxonomies.php:159
 msgid "Cultura dos andirobeiros"
-msgstr ""
-"Cultura de los andiroberos\"  # Recolectores de andiroba (árbol amazónico"
+msgstr "Cultura de los andiroberos"
 
 #: src/conf/taxonomies.php:160
 msgid "Cultura dos apanhadores de flores sempre vivas"
-msgstr ""
-"Cultura de los recolectores de flores siempre vivas\"  # Comunidad tradiciona"
+msgstr "Cultura de los recolectores de flores siempre vivas"
 
 #: src/conf/taxonomies.php:161
 msgid "Cultura dos benzedeiros"
-msgstr "Cultura de los rezanderos\"  # Curanderos tradicionale"
+msgstr "Cultura de los rezanderos"
 
 #: src/conf/taxonomies.php:162
 msgid "Cultura dos caatingueiros"
-msgstr ""
-"Cultura de los caatingueiros\"  # Habitantes de la Caatinga (bioma brasileño"
+msgstr "Cultura de los caatingueiros"
 
 #: src/conf/taxonomies.php:163
 msgid "Cultura dos caboclos"
-msgstr "Cultura de los caboclos\"  # Mestizos rurale"
+msgstr "Cultura de los caboclos"
 
 #: src/conf/taxonomies.php:164
 msgid "Cultura dos caiçaras"
-msgstr "Cultura de los caiçaras\"  # Comunidades costeras del surest"
+msgstr "Cultura de los caiçaras"
 
 #: src/conf/taxonomies.php:165
 msgid "Cultura dos catadores de mangaba"
-msgstr "Cultura de los recolectores de mangaba\"  # Fruto típic"
+msgstr "Cultura de los recolectores de mangaba"
 
 #: src/conf/taxonomies.php:166
 msgid "Cultura dos cipozeiros"
-msgstr "Cultura de los cipozeiros\"  # Recolectores de lianas (cipó"
+msgstr "Cultura de los cipozeiros"
 
 #: src/conf/taxonomies.php:167
 msgid "Cultura dos extrativistas"
-msgstr "Cultura de los extractivistas\"  # Ya traducido en otro context"
+msgstr "Cultura de los extractivistas"
 
 #: src/conf/taxonomies.php:168
 msgid "Cultura dos extrativistas costeiros e marinhos"
@@ -3598,11 +3593,11 @@ msgstr "Cultura de los extractivistas costeros y marinos"
 
 #: src/conf/taxonomies.php:169
 msgid "Cultura dos faxinalenses"
-msgstr "Cultura de los faxinalenses\"  # Sistema agrícola tradiciona"
+msgstr "Cultura de los faxinalenses"
 
 #: src/conf/taxonomies.php:170
 msgid "Cultura dos geraizeiros"
-msgstr "Cultura de los geraizeiros\"  # Pobladores del cerrad"
+msgstr "Cultura de los geraizeiros"
 
 #: src/conf/taxonomies.php:171
 msgid "Cultura dos ilhéus"
@@ -3610,19 +3605,19 @@ msgstr "Cultura de los isleños"
 
 #: src/conf/taxonomies.php:172
 msgid "Cultura dos morroquianos"
-msgstr "Cultura de los morroquianos\"  # Habitantes de morros (cerros"
+msgstr "Cultura de los morroquianos"
 
 #: src/conf/taxonomies.php:173
 msgid "Cultura dos pantaneiros"
-msgstr "Cultura de los pantaneros\"  # Habitantes del Pantana"
+msgstr "Cultura de los pantaneros"
 
 #: src/conf/taxonomies.php:174
 msgid "Cultura dos pescadores artesanais"
-msgstr "Cultura de los pescadores artesanales\"  # Ya traducido en otro context"
+msgstr "Cultura de los pescadores artesanales"
 
 #: src/conf/taxonomies.php:175
 msgid "Cultura dos povos ciganos"
-msgstr "Cultura de los pueblos gitanos\"  # Ya traducido como \"gitana"
+msgstr "Cultura de los pueblos gitanos"
 
 #: src/conf/taxonomies.php:176
 msgid ""
@@ -3630,7 +3625,7 @@ msgid ""
 "africana"
 msgstr ""
 "Cultura de los pueblos y comunidades de terreiro/pueblos y comunidades de "
-"matriz africana\"  # Religiones afrobrasileña"
+"matriz africana"
 
 #: src/conf/taxonomies.php:177
 msgid "Cultura dos Povos Nômades"
@@ -3642,31 +3637,31 @@ msgstr "Cultura de los Pueblos Originarios"
 
 #: src/conf/taxonomies.php:179
 msgid "Cultura dos raizeiros"
-msgstr "Cultura de los raizeros\"  # Recolectores de raíces medicinale"
+msgstr "Cultura de los raizeros"
 
 #: src/conf/taxonomies.php:180
 msgid "Cultura dos retireiros do Araguaia"
-msgstr "Cultura de los retireiros del Araguaia\"  # Ganaderos tradicionale"
+msgstr "Cultura de los retireiros del Araguaia"
 
 #: src/conf/taxonomies.php:181
 msgid "Cultura dos ribeirinhos"
-msgstr "Cultura de los ribereños\"  # Ya traducido en otro context"
+msgstr "Cultura de los ribereños"
 
 #: src/conf/taxonomies.php:182
 msgid "Cultura dos vazanteiros"
-msgstr "Cultura de los vazanteiros\"  # Agricultores de tierras inundable"
+msgstr "Cultura de los vazanteiros"
 
 #: src/conf/taxonomies.php:183
 msgid "Cultura dos veredeiros"
-msgstr "Cultura de los veredeiros\"  # Habitantes de veredas (humedales"
+msgstr "Cultura de los veredeiros"
 
 #: src/conf/taxonomies.php:184
 msgid "Cultura e Bem Viver"
-msgstr "Cultura y Buen Vivir\"  # Concepto filosófic"
+msgstr "Cultura y Buen Vivir"
 
 #: src/conf/taxonomies.php:185
 msgid "Cultura e Comunicação"
-msgstr "Cultura y Comunicación\"  # Ya traducido en otro context"
+msgstr "Cultura y Comunicación"
 
 #: src/conf/taxonomies.php:186
 msgid "Cultura e decolonialidade"
@@ -3682,7 +3677,7 @@ msgstr "Cultura y Derechos Humanos"
 
 #: src/conf/taxonomies.php:189
 msgid "Cultura e Educação"
-msgstr "Cultura y Educación\"  # Ya traducido en otro context"
+msgstr "Cultura y Educación"
 
 #: src/conf/taxonomies.php:190
 msgid "Cultura e Esporte"
@@ -3714,31 +3709,31 @@ msgstr "Cultura y Turismo"
 
 #: src/conf/taxonomies.php:197
 msgid "Cultura Estrangeira (imigrantes)"
-msgstr "Cultura Extranjera (inmigrantes)\"  # Ya traducid"
+msgstr "Cultura Extranjera (inmigrantes)"
 
 #: src/conf/taxonomies.php:198
 msgid "Cultura Hip Hop"
-msgstr "Cultura Hip Hop\"  # Movimiento global, se conserv"
+msgstr "Cultura Hip Hop"
 
 #: src/conf/taxonomies.php:199
 msgid "Cultura Italiana"
-msgstr "Cultura Italiana\"  # Ya traducid"
+msgstr "Cultura Italiana"
 
 #: src/conf/taxonomies.php:200
 msgid "Cultura Japonesa"
-msgstr "Cultura Japonesa\"  # Ya traducid"
+msgstr "Cultura Japonesa"
 
 #: src/conf/taxonomies.php:201
 msgid "Cultura LGBTQIAPN+"
-msgstr "Cultura LGBTQIAPN+\"  # Sigla internaciona"
+msgstr "Cultura LGBTQIAPN+"
 
 #: src/conf/taxonomies.php:202
 msgid "Cultura Negra"
-msgstr "Cultura Negra\"  # Ya traducid"
+msgstr "Cultura Negra"
 
 #: src/conf/taxonomies.php:203
 msgid "Cultura Urbana"
-msgstr "Cultura Urbana\"  # Ya traducid"
+msgstr "Cultura Urbana"
 
 #: src/conf/taxonomies.php:204
 msgid "Cultura, Infância e Adolescência"
@@ -3759,7 +3754,7 @@ msgstr "Culturas de los Pueblos Originarios"
 
 #: src/conf/taxonomies.php:208
 msgid "Culturas Populares"
-msgstr "Culturas Populares\"  # Ya traducido como \"Cultura Popular"
+msgstr "Culturas Populares"
 
 #: src/conf/taxonomies.php:209
 msgid "Culturas Tradicionais"
@@ -3774,7 +3769,7 @@ msgstr "Culturas Tradicionales y Populares"
 #: src/modules/OpportunityWorkplan/Module.php:234
 #: src/modules/OpportunityWorkplan/Module.php:486
 msgid "Dança"
-msgstr "Danza\"  # Ya traducid"
+msgstr "Danza"
 
 #: src/conf/taxonomies.php:212
 msgid "Dança Afro"
@@ -3798,7 +3793,7 @@ msgstr "Danza Moderna"
 
 #: src/conf/taxonomies.php:217
 msgid "Dança Silvestre"
-msgstr "Danza Silvestre\"  # Estilo específico, se conserv"
+msgstr "Danza Silvestre"
 
 #: src/conf/taxonomies.php:218
 msgid "Danças Clássicas"
@@ -3814,7 +3809,7 @@ msgstr "Danzas Extranjeras"
 
 #: src/conf/taxonomies.php:221
 msgid "Danças Populares"
-msgstr "Danzas Populares\"  # Ya traducido en otro context"
+msgstr "Danzas Populares"
 
 #: src/conf/taxonomies.php:222
 msgid "Danças Urbanas"
@@ -3830,7 +3825,7 @@ msgstr "Diseño Industrial"
 
 #: src/conf/taxonomies.php:225
 msgid "Design"
-msgstr "Diseño\"  # Ya traducid"
+msgstr "Diseño"
 
 #: src/conf/taxonomies.php:226
 msgid "Design de Interiores"
@@ -3871,7 +3866,7 @@ msgstr "Derecho"
 
 #: src/conf/taxonomies.php:235
 msgid "Direito Autoral"
-msgstr "Derecho de Autor\"  # Mejor que \"Derecho Actoral\" (error previo"
+msgstr "Derecho de Autor"
 
 #: src/conf/taxonomies.php:236
 msgid "Documentário"
@@ -3904,7 +3899,7 @@ msgstr "Epopeya"
 
 #: src/conf/taxonomies.php:243
 msgid "Escola de Samba"
-msgstr "Escuela de Samba\"  # Término cultural brasileñ"
+msgstr "Escuela de Samba"
 
 #: src/conf/taxonomies.php:244
 msgid "Escultura (Artes Visuais)"
@@ -3924,7 +3919,7 @@ msgstr "Fábula"
 
 #: src/conf/taxonomies.php:248
 msgid "Fandango"
-msgstr "Fandango\"  # Baile tradiciona"
+msgstr "Fandango"
 
 #: src/conf/taxonomies.php:249
 msgid "Fanfarra"
@@ -3932,16 +3927,16 @@ msgstr "Fanfarria"
 
 #: src/conf/taxonomies.php:250
 msgid "Festa do Divino"
-msgstr "Fiesta del Divino\"  # Celebración religiosa tradiciona"
+msgstr "Fiesta del Divino"
 
 #: src/conf/taxonomies.php:251 src/modules/OpportunityWorkplan/Module.php:237
 #: src/modules/OpportunityWorkplan/Module.php:489
 msgid "Festas Populares"
-msgstr "Fiestas Populares\"  # Ya traducido en otro context"
+msgstr "Fiestas Populares"
 
 #: src/conf/taxonomies.php:252
 msgid "Festejos Juninos"
-msgstr "Festejos Juninos\"  # Fiestas de San Juan (patrimonio cultural"
+msgstr "Festejos Juninos"
 
 #: src/conf/taxonomies.php:253
 msgid "Ficção"
@@ -3957,11 +3952,11 @@ msgstr "Filología"
 
 #: src/conf/taxonomies.php:256
 msgid "Filosofia"
-msgstr "Filosofía\"  # Ya traducid"
+msgstr "Filosofía"
 
 #: src/conf/taxonomies.php:257
 msgid "Folia de Reis"
-msgstr "Folia de Reyes\"  # Tradición navideñ"
+msgstr "Folia de Reyes"
 
 #: src/conf/taxonomies.php:258
 msgid "Fomento editorial"
@@ -3969,7 +3964,7 @@ msgstr "Fomento editorial"
 
 #: src/conf/taxonomies.php:259
 msgid "Forró"
-msgstr "Forró\"  # Género musical brasileñ"
+msgstr "Forró"
 
 #: src/conf/taxonomies.php:260
 msgid "Forró (Dança)"
@@ -3977,11 +3972,11 @@ msgstr "Forró (Danza)"
 
 #: src/conf/taxonomies.php:261
 msgid "Fotografia"
-msgstr "Fotografía\"  # Ya traducid"
+msgstr "Fotografía"
 
 #: src/conf/taxonomies.php:262
 msgid "Frevo"
-msgstr "Frevo\"  # Patrimonio cultural de Pernambuc"
+msgstr "Frevo"
 
 #: src/conf/taxonomies.php:263
 msgid "Frevo (dança)"
@@ -3989,15 +3984,15 @@ msgstr "Frevo (danza)"
 
 #: src/conf/taxonomies.php:264
 msgid "Funk"
-msgstr "Funk\"  # Movimiento musical globa"
+msgstr "Funk"
 
 #: src/conf/taxonomies.php:265
 msgid "Fuxico"
-msgstr "Fuxico\"  # Arte textil tradiciona"
+msgstr "Fuxico"
 
 #: src/conf/taxonomies.php:266
 msgid "Gastronomia"
-msgstr "Gastronomía\"  # Ya traducid"
+msgstr "Gastronomía"
 
 #: src/conf/taxonomies.php:267
 msgid "Geografia Humana"
@@ -4009,11 +4004,11 @@ msgstr "Gestión creativa"
 
 #: src/conf/taxonomies.php:269
 msgid "Gestão Cultural"
-msgstr "Gestión Cultural\"  # Ya traducid"
+msgstr "Gestión Cultural"
 
 #: src/conf/taxonomies.php:270
 msgid "Grafite"
-msgstr "Grafiti\"  # Arte urban"
+msgstr "Grafiti"
 
 #: src/conf/taxonomies.php:271
 msgid "Gravura"
@@ -4021,20 +4016,20 @@ msgstr "Grabado"
 
 #: src/conf/taxonomies.php:272
 msgid "Guarânia"
-msgstr "Guarania\"  # Género musical paraguayo/brasileñ"
+msgstr "Guarania"
 
 #: src/conf/taxonomies.php:273
 msgid "História"
-msgstr "Historia\"  # Ya traducid"
+msgstr "Historia"
 
 #: src/conf/taxonomies.php:274 src/modules/OpportunityWorkplan/Module.php:238
 #: src/modules/OpportunityWorkplan/Module.php:490
 msgid "Humanidades"
-msgstr "Humanidades\"  # Ya traducid"
+msgstr "Humanidades"
 
 #: src/conf/taxonomies.php:275
 msgid "Imóvel tombado"
-msgstr "Inmueble declarado patrimonio\"  # \"Tombado\" = protegido por le"
+msgstr "Inmueble declarado patrimonio"
 
 #: src/conf/taxonomies.php:276
 msgid "Internet Podcasting"
@@ -4042,7 +4037,7 @@ msgstr "Podcasting en Internet"
 
 #: src/conf/taxonomies.php:277
 msgid "Interseccionalidades"
-msgstr "Interseccionalidades\"  # Término sociológic"
+msgstr "Interseccionalidades"
 
 #: src/conf/taxonomies.php:278
 msgid "Intervenção Urbana"
@@ -4058,7 +4053,7 @@ msgstr "Juegos Electrónicos/Videojuegos"
 
 #: src/conf/taxonomies.php:281
 msgid "Jongo"
-msgstr "Jongo\"  # Danza afrobrasileñ"
+msgstr "Jongo"
 
 #: src/conf/taxonomies.php:282
 msgid "Jornais e outros periódicos"
@@ -4066,19 +4061,19 @@ msgstr "Periódicos y otras publicaciones"
 
 #: src/conf/taxonomies.php:283
 msgid "K-pop Dance"
-msgstr "Danza K-pop\"  # Coreano, se mantiene \"K-pop"
+msgstr "Danza K-pop"
 
 #: src/conf/taxonomies.php:284
 msgid "Lambada"
-msgstr "Lambada\"  # Baile brasileño internaciona"
+msgstr "Lambada"
 
 #: src/conf/taxonomies.php:285
 msgid "Lapidação"
-msgstr "Lapidación\"  # Arte de tallar piedra"
+msgstr "Lapidación"
 
 #: src/conf/taxonomies.php:286
 msgid "Leitura"
-msgstr "Lectura\"  # Ya traducid"
+msgstr "Lectura"
 
 #: src/conf/taxonomies.php:287
 msgid "Lenda"
@@ -4090,7 +4085,7 @@ msgstr "Letras y Literatura (Humanidades)"
 
 #: src/conf/taxonomies.php:289
 msgid "Lidas Campeiras"
-msgstr "Labores Camperas\"  # Cultura gauch"
+msgstr "Labores Camperas"
 
 #: src/conf/taxonomies.php:290
 msgid "Linguística"
@@ -4098,7 +4093,7 @@ msgstr "Lingüística"
 
 #: src/conf/taxonomies.php:291
 msgid "Literatura"
-msgstr "Literatura\"  # Ya traducid"
+msgstr "Literatura"
 
 #: src/conf/taxonomies.php:292
 msgid "Literatura Infantil"
@@ -4106,7 +4101,7 @@ msgstr "Literatura Infantil"
 
 #: src/conf/taxonomies.php:293
 msgid "Livro"
-msgstr "Libro\"  # Ya traducid"
+msgstr "Libro"
 
 #: src/conf/taxonomies.php:294 src/modules/OpportunityWorkplan/Module.php:239
 #: src/modules/OpportunityWorkplan/Module.php:491
@@ -4119,7 +4114,7 @@ msgstr "Macramé"
 
 #: src/conf/taxonomies.php:296
 msgid "Maracatu"
-msgstr "Maracatu\"  # Ritmo y danza afrobrasileñ"
+msgstr "Maracatu"
 
 #: src/conf/taxonomies.php:297
 msgid "Maracatu (Dança)"
@@ -4127,7 +4122,7 @@ msgstr "Maracatu (Danza)"
 
 #: src/conf/taxonomies.php:298
 msgid "Marujada"
-msgstr "Marujada\"  # Fiesta tradiciona"
+msgstr "Marujada"
 
 #: src/conf/taxonomies.php:299
 msgid "Mediação de Leitura"
@@ -4143,7 +4138,7 @@ msgstr "Medios Interactivos"
 
 #: src/conf/taxonomies.php:302
 msgid "Mídias Sociais"
-msgstr "Redes Sociales\"  # More common than \"Medios Sociales"
+msgstr "Redes Sociales"
 
 #: src/conf/taxonomies.php:303
 msgid "Mito"
@@ -4151,7 +4146,7 @@ msgstr "Mito"
 
 #: src/conf/taxonomies.php:304
 msgid "Moda de Viola"
-msgstr "Música Sertaneja\"  # Traditional Brazilian country music styl"
+msgstr "Música Sertaneja"
 
 #: src/conf/taxonomies.php:305
 msgid "Mosaico"
@@ -4159,7 +4154,7 @@ msgstr "Mosaico"
 
 #: src/conf/taxonomies.php:306
 msgid "Movimento Sound System"
-msgstr "Movimiento Sound System\"  # Cultural movemen"
+msgstr "Movimiento Sound System"
 
 #: src/conf/taxonomies.php:307
 msgid "Museologia"
@@ -4171,12 +4166,12 @@ msgstr "Museo (Patrimonio Material)"
 
 #: src/conf/taxonomies.php:309
 msgid "Museu tombado"
-msgstr "Museo declarado patrimonio\"  # Following \"tombado\" patter"
+msgstr "Museo declarado patrimonio"
 
 #: src/conf/taxonomies.php:310 src/modules/OpportunityWorkplan/Module.php:240
 #: src/modules/OpportunityWorkplan/Module.php:492
 msgid "Música"
-msgstr "Música\"  # Already translate"
+msgstr "Música"
 
 #: src/conf/taxonomies.php:311
 msgid "Música de Câmara"
@@ -4196,23 +4191,23 @@ msgstr "Música Instrumental"
 
 #: src/conf/taxonomies.php:315 src/conf/taxonomies.php:433
 msgid "Música Popular"
-msgstr "Música Popular\"  # Already translate"
+msgstr "Música Popular"
 
 #: src/conf/taxonomies.php:316
 msgid "Musical"
-msgstr "Musical\"  # Theater genr"
+msgstr "Musical"
 
 #: src/conf/taxonomies.php:317
 msgid "Novela"
-msgstr "Telenovela\"  # Specific TV genr"
+msgstr "Novela"
 
 #: src/conf/taxonomies.php:318
 msgid "Obra Seriada"
-msgstr "Obra Seriada\"  # Literary/artistic ter"
+msgstr "Obra Seriada"
 
 #: src/conf/taxonomies.php:319
 msgid "Oktober Fest"
-msgstr "Oktoberfest\"  # International nam"
+msgstr "Oktoberfest"
 
 #: src/conf/taxonomies.php:320
 msgid "Ópera"
@@ -4248,7 +4243,7 @@ msgstr "Paisajes Culturales"
 
 #: src/conf/taxonomies.php:328
 msgid "Patrimônio Cultural"
-msgstr "Patrimonio Cultural\"  # Already translate"
+msgstr "Patrimonio Cultural"
 
 #: src/conf/taxonomies.php:329 src/modules/OpportunityWorkplan/Module.php:241
 #: src/modules/OpportunityWorkplan/Module.php:493
@@ -4267,7 +4262,7 @@ msgstr "Patrimonio Histórico Edificado"
 #: src/conf/taxonomies.php:332 src/modules/OpportunityWorkplan/Module.php:243
 #: src/modules/OpportunityWorkplan/Module.php:495
 msgid "Performance"
-msgstr "Performance\"  # Art term, commonly used in Spanis"
+msgstr "Performance"
 
 #: src/conf/taxonomies.php:333
 msgid "Performance Literária"
@@ -4291,7 +4286,7 @@ msgstr "Políticas y Gestión Culturales"
 
 #: src/conf/taxonomies.php:339
 msgid "Procissão do Fogaréu"
-msgstr "Procesión del Fogaréu\"  # Religious traditio"
+msgstr "Procesión del Fogaréu"
 
 #: src/conf/taxonomies.php:340
 msgid "Produção Audiovisual"
@@ -4299,7 +4294,7 @@ msgstr "Producción Audiovisual"
 
 #: src/conf/taxonomies.php:341
 msgid "Produção Cultural"
-msgstr "Producción Cultural\"  # Already translate"
+msgstr "Producción Cultural"
 
 #: src/conf/taxonomies.php:342
 msgid "Produção de Eventos"
@@ -4311,11 +4306,11 @@ msgstr "Psicología"
 
 #: src/conf/taxonomies.php:344
 msgid "Punk"
-msgstr "Punk\"  # Music genre, international ter"
+msgstr "Punk"
 
 #: src/conf/taxonomies.php:345 src/conf/taxonomies.php:436
 msgid "Rádio"
-msgstr "Radio\"  # Already translate"
+msgstr "Radio"
 
 #: src/conf/taxonomies.php:347
 msgid "Rádio e TV"
@@ -4323,11 +4318,11 @@ msgstr "Radio y Televisión"
 
 #: src/conf/taxonomies.php:348
 msgid "Rap"
-msgstr "Rap\"  # Music genre, international ter"
+msgstr "Rap"
 
 #: src/conf/taxonomies.php:349
 msgid "Rasqueado"
-msgstr "Rasqueado\"  # Traditional Brazilian music styl"
+msgstr "Rasqueado"
 
 #: src/conf/taxonomies.php:350
 msgid "Realidade Virtual"
@@ -4335,19 +4330,19 @@ msgstr "Realidad Virtual"
 
 #: src/conf/taxonomies.php:351
 msgid "Reggae"
-msgstr "Reggae\"  # International music genr"
+msgstr "Reggae"
 
 #: src/conf/taxonomies.php:352
 msgid "Reisado"
-msgstr "Reisado\"  # Traditional Brazilian Christmas celebratio"
+msgstr "Reisado"
 
 #: src/conf/taxonomies.php:354
 msgid "Renda de Bilro"
-msgstr "Encaje de Bolillos\"  # Traditional lace-making techniqu"
+msgstr "Encaje de Bolillos"
 
 #: src/conf/taxonomies.php:355
 msgid "Repente"
-msgstr "Repente\"  # Brazilian musical improvisation styl"
+msgstr "Repente"
 
 #: src/conf/taxonomies.php:356
 msgid "Rima e improviso"
@@ -4355,27 +4350,27 @@ msgstr "Rima e improvisación"
 
 #: src/conf/taxonomies.php:357
 msgid "Rock"
-msgstr "Rock\"  # International music genr"
+msgstr "Rock"
 
 #: src/conf/taxonomies.php:358
 msgid "Romance"
-msgstr "Novela\"  # Literary genr"
+msgstr "Novela"
 
 #: src/conf/taxonomies.php:359
 msgid "Romaria do Divino Pai Eterno"
-msgstr "Romería del Divino Padre Eterno\"  # Religious pilgrimag"
+msgstr "Romería del Divino Padre Eterno"
 
 #: src/conf/taxonomies.php:360
 msgid "Salsa (Dança)"
-msgstr "Salsa (Baile)\"  # Dance styl"
+msgstr "Salsa (Baile)"
 
 #: src/conf/taxonomies.php:361
 msgid "Salvaguarda do Patrimônio Cultural Imaterial"
-msgstr "Salvaguardia del Patrimonio Cultural Inmaterial\"  # UNESCO terminolog"
+msgstr "Salvaguardia del Patrimonio Cultural Inmaterial"
 
 #: src/conf/taxonomies.php:362
 msgid "Samba"
-msgstr "Samba\"  # Brazilian cultural heritag"
+msgstr "Samba"
 
 #: src/conf/taxonomies.php:363
 msgid "Samba (Dança)"
@@ -4383,19 +4378,19 @@ msgstr "Samba (Baile)"
 
 #: src/conf/taxonomies.php:364
 msgid "Samba de Roda"
-msgstr "Samba de Roda\"  # Specific samba styl"
+msgstr "Samba de Roda"
 
 #: src/conf/taxonomies.php:365
 msgid "Sapateado"
-msgstr "Claqué\"  # Tap danc"
+msgstr "Claqué"
 
 #: src/conf/taxonomies.php:366
 msgid "Sátira"
-msgstr "Sátira\"  # Literary genr"
+msgstr "Sátira"
 
 #: src/conf/taxonomies.php:367
 msgid "Sertanejo"
-msgstr "Música Sertaneja\"  # Brazilian country musi"
+msgstr "Música Sertaneja"
 
 #: src/conf/taxonomies.php:368
 msgid "Sítio Arqueológico"
@@ -4407,37 +4402,37 @@ msgstr "Sitios Históricos y Arqueológicos"
 
 #: src/conf/taxonomies.php:370
 msgid "Slam"
-msgstr "Slam\"  # Poetry competition forma"
+msgstr "Slam"
 
 #: src/conf/taxonomies.php:371
 msgid "Sociologia"
-msgstr "Sociología\"  # Already translate"
+msgstr "Sociología"
 
 #: src/conf/taxonomies.php:372
 msgid "Stand-up Comedy"
-msgstr "Comedia Stand-up\"  # Comedy genr"
+msgstr "Comedia Stand-up"
 
 #: src/conf/taxonomies.php:373
 msgid "Street Jazz"
-msgstr "Jazz Callejero\"  # Dance styl"
+msgstr "Jazz Callejero"
 
 #: src/conf/taxonomies.php:374
 msgid "Tambor de Crioula"
-msgstr "Tambor de Criolla\"  # Afro-Brazilian cultural expressio"
+msgstr "Tambor de Criolla"
 
 #: src/conf/taxonomies.php:375
 msgid "Tango (Dança)"
-msgstr "Tango (Baile)\"  # Dance styl"
+msgstr "Tango (Baile)"
 
 #: src/conf/taxonomies.php:376 src/conf/taxonomies.php:437
 #: src/modules/OpportunityWorkplan/Module.php:244
 #: src/modules/OpportunityWorkplan/Module.php:497
 msgid "Teatro"
-msgstr "Teatro\"  # Already translate"
+msgstr "Teatro"
 
 #: src/conf/taxonomies.php:377
 msgid "Teatro de Bonecos"
-msgstr "Teatro de Títeres\"  # Puppet theate"
+msgstr "Teatro de Títeres"
 
 #: src/conf/taxonomies.php:378
 msgid "Teatro de Improviso"
@@ -4453,15 +4448,15 @@ msgstr "Teatro Callejero"
 
 #: src/conf/taxonomies.php:381
 msgid "Teatro de Sombras"
-msgstr "Teatro de Sombras\"  # Shadow theate"
+msgstr "Teatro de Sombras"
 
 #: src/conf/taxonomies.php:382
 msgid "Teatro do Absurdo"
-msgstr "Teatro del Absurdo\"  # Theater genr"
+msgstr "Teatro del Absurdo"
 
 #: src/conf/taxonomies.php:383
 msgid "Teatro do Oprimido"
-msgstr "Teatro del Oprimido\"  # Augusto Boal's metho"
+msgstr "Teatro del Oprimido"
 
 #: src/conf/taxonomies.php:384
 msgid "Teatro Experimental"
@@ -4473,15 +4468,15 @@ msgstr "Teatro Infantil"
 
 #: src/conf/taxonomies.php:386
 msgid "Tecelagem"
-msgstr "Tejeduría\"  # Weavin"
+msgstr "Tejeduría"
 
 #: src/conf/taxonomies.php:387
 msgid "Tecnobrega"
-msgstr "Tecnobrega\"  # Brazilian music genr"
+msgstr "Tecnobrega"
 
 #: src/conf/taxonomies.php:388
 msgid "Televisão"
-msgstr "Televisión\"  # Already translate"
+msgstr "Televisión"
 
 #: src/conf/taxonomies.php:389
 msgid "Teologia"
@@ -4493,20 +4488,20 @@ msgstr "Traducción e Interpretación"
 
 #: src/conf/taxonomies.php:391
 msgid "Tragédia"
-msgstr "Tragedia\"  # Theater genr"
+msgstr "Tragedia"
 
 #: src/conf/taxonomies.php:392
 msgid "Trançagem"
-msgstr "Trenzado\"  # Braiding techniqu"
+msgstr "Trenzado"
 
 #: src/conf/taxonomies.php:393 src/modules/OpportunityWorkplan/Module.php:245
 #: src/modules/OpportunityWorkplan/Module.php:498
 msgid "Transversalidades"
-msgstr "Transversalidades\"  # Academic/cultural concep"
+msgstr "Transversalidades"
 
 #: src/conf/taxonomies.php:394
 msgid "Vídeo"
-msgstr "Vídeo\"  # Already translate"
+msgstr "Video"
 
 #: src/conf/taxonomies.php:395
 msgid "Vídeo Experimental"
@@ -4522,15 +4517,15 @@ msgstr "Vídeo bajo demanda"
 
 #: src/conf/taxonomies.php:398
 msgid "Video Teatro"
-msgstr "Video Teatro\"  # Theater genr"
+msgstr "Video Teatro"
 
 #: src/conf/taxonomies.php:399
 msgid "Videoarte"
-msgstr "Videoarte\"  # Art for"
+msgstr "Videoarte"
 
 #: src/conf/taxonomies.php:400
 msgid "Videocast"
-msgstr "Videocast\"  # Media forma"
+msgstr "Videocast"
 
 #: src/conf/taxonomies.php:401
 msgid "Videoclipe"
@@ -4546,20 +4541,19 @@ msgstr "Diseño web"
 
 #: src/conf/taxonomies.php:404
 msgid "Websérie"
-msgstr "Serie web\"  # Already translate"
+msgstr "Serie web"
 
 #: src/conf/taxonomies.php:405
 msgid "Xaxado"
-msgstr "Xaxado\"  # Traditional Brazilian danc"
+msgstr "Xaxado"
 
 #: src/conf/taxonomies.php:406
 msgid "Xilogravura"
-msgstr "Xilografía\"  # Woodcut printing techniqu"
+msgstr "Xilografía"
 
 #: src/conf/taxonomies.php:414
 msgid "Você deve informar ao menos uma linguagem"
-msgstr ""
-"Debe introducir al menos un tipo de evento\"  # Matching the above translatio"
+msgstr "Debe introducir al menos un tipo de evento"
 
 #: src/conf/taxonomies.php:421
 msgid "Artes Integradas"
@@ -5050,7 +5044,7 @@ msgstr "Asistente de colorista"
 
 #: src/conf/taxonomies.php:559
 msgid "Comedor de Espada"
-msgstr "Tragasables\"  # Circus performe"
+msgstr "Tragasables"
 
 #: src/conf/taxonomies.php:560
 msgid "Comedor de Fogo (pirofagista)"
@@ -5354,71 +5348,71 @@ msgstr "Educador(a) artístico-cultural"
 
 #: src/conf/taxonomies.php:634
 msgid "Eletricista"
-msgstr "Electricista\"  # Already translate"
+msgstr "Electricista"
 
 #: src/conf/taxonomies.php:635
 msgid "Eletricista Chefe"
-msgstr "Jefe de electricistas\"  # More natural than \"Electricista Jefe"
+msgstr "Jefe de electricistas"
 
 #: src/conf/taxonomies.php:636
 msgid "Engenheiro de Som"
-msgstr "Ingeniero de sonido\"  # Already translate"
+msgstr "Ingeniero de sonido"
 
 #: src/conf/taxonomies.php:637
 msgid "Enólogo(a)"
-msgstr "Enólogo(a)\"  # Wine expert (kept original"
+msgstr "Enólogo(a)"
 
 #: src/conf/taxonomies.php:638
 msgid "Ensaiador"
-msgstr "Ensayador\"  # Rehearsal directo"
+msgstr "Ensayador"
 
 #: src/conf/taxonomies.php:639
 msgid "Equilibrista"
-msgstr "Equilibrista\"  # Tightrope walke"
+msgstr "Equilibrista"
 
 #: src/conf/taxonomies.php:640
 msgid "Escritor"
-msgstr "Escritor\"  # Already translate"
+msgstr "Escritor"
 
 #: src/conf/taxonomies.php:641
 msgid "Escultor"
-msgstr "Escultor\"  # Already translate"
+msgstr "Escultor"
 
 #: src/conf/taxonomies.php:642
 msgid "Estampador"
-msgstr "Estampador\"  # Already translated (textile/printer"
+msgstr "Estampador"
 
 #: src/conf/taxonomies.php:643
 msgid "Facilitador"
-msgstr "Facilitador\"  # Already translate"
+msgstr "Facilitador"
 
 #: src/conf/taxonomies.php:644
 msgid "Faquir"
-msgstr "Faquir\"  # Kept original (fakir"
+msgstr "Faquir"
 
 #: src/conf/taxonomies.php:645
 msgid "Figurinista"
-msgstr "Diseñador de vestuario\"  # More precise than \"vestuarista"
+msgstr "Diseñador de vestuario"
 
 #: src/conf/taxonomies.php:646
 msgid "Finalizador"
-msgstr "Editor final\"  # Post-production rol"
+msgstr "Editor final"
 
 #: src/conf/taxonomies.php:647
 msgid "Foley"
-msgstr "Artista de efectos de sonido (Foley)\"  # Sound effects artis"
+msgstr "Artista de efectos de sonido (Foley)"
 
 #: src/conf/taxonomies.php:648
 msgid "Fotógrafo"
-msgstr "Fotógrafo\"  # Already translate"
+msgstr "Fotógrafo"
 
 #: src/conf/taxonomies.php:649
 msgid "Fotógrafo Lambe-Lambe"
-msgstr "Fotógrafo lambe-lambe\"  # Traditional street photographe"
+msgstr "Fotógrafo lambe-lambe"
 
 #: src/conf/taxonomies.php:650
 msgid "Funâmbulo"
-msgstr "Funámbulo\"  # Tightrope walker (alternative to equilibrista"
+msgstr "Funámbulo"
 
 #: src/conf/taxonomies.php:651
 msgid "Fundidor (joalheria e ourivesaria)"
@@ -5426,31 +5420,31 @@ msgstr "Fundidor (joyería y orfebrería)"
 
 #: src/conf/taxonomies.php:652
 msgid "Galerista"
-msgstr "Galerista\"  # Art gallery manage"
+msgstr "Galerista"
 
 #: src/conf/taxonomies.php:653
 msgid "Gambista"
-msgstr "Gambista\"  # Viola da gamba playe"
+msgstr "Gambista"
 
 #: src/conf/taxonomies.php:654
 msgid "Gestor Cultural"
-msgstr "Gestor Cultural\"  # Cultural manage"
+msgstr "Gestor Cultural"
 
 #: src/conf/taxonomies.php:655
 msgid "Gestor de Redes Sociais"
-msgstr "Gestor de Redes Sociales\"  # Social media manage"
+msgstr "Gestor de Redes Sociales"
 
 #: src/conf/taxonomies.php:656
 msgid "Gestor(a) de Inovação"
-msgstr "Gestor(a) de Innovación\"  # Innovation manage"
+msgstr "Gestor(a) de Innovación"
 
 #: src/conf/taxonomies.php:657
 msgid "Globista"
-msgstr "Artista de globos\"  # Balloon artis"
+msgstr "Artista de globos"
 
 #: src/conf/taxonomies.php:658
 msgid "Grafiteiro(a)"
-msgstr "Grafitero(a)\"  # Graffiti artis"
+msgstr "Grafitero(a)"
 
 #: src/conf/taxonomies.php:659
 msgid "Gravador de Joias"
@@ -5462,55 +5456,55 @@ msgstr "Grabador manual (encuadernación)"
 
 #: src/conf/taxonomies.php:661
 msgid "Guia de Turismo"
-msgstr "Guía de Turismo\"  # Tour guid"
+msgstr "Guía de Turismo"
 
 #: src/conf/taxonomies.php:662
 msgid "Guia-intérprete de língua de sinais"
-msgstr "Guía-intérprete de lengua de señas\"  # Sign language interpreter-guid"
+msgstr "Guía-intérprete de lengua de señas"
 
 #: src/conf/taxonomies.php:663
 msgid "Hacker"
-msgstr "Hacker\"  # Kept English ter"
+msgstr "Hacker"
 
 #: src/conf/taxonomies.php:664
 msgid "Homem-bala"
-msgstr "Hombre-bala\"  # Human cannonball performe"
+msgstr "Hombre-bala"
 
 #: src/conf/taxonomies.php:665
 msgid "Icarista"
-msgstr "Icárista\"  # Circus aerial performe"
+msgstr "Icárista"
 
 #: src/conf/taxonomies.php:666
 msgid "Iluminador(a)"
-msgstr "Iluminador(a)\"  # Lighting technicia"
+msgstr "Iluminador(a)"
 
 #: src/conf/taxonomies.php:667
 msgid "Ilustrador(a)"
-msgstr "Ilustrador(a)\"  # Illustrato"
+msgstr "Ilustrador(a)"
 
 #: src/conf/taxonomies.php:668
 msgid "Instrumentista"
-msgstr "Instrumentista\"  # Musicia"
+msgstr "Instrumentista"
 
 #: src/conf/taxonomies.php:669
 msgid "Instrutor(a)"
-msgstr "Instructor(a)\"  # Instructo"
+msgstr "Instructor(a)"
 
 #: src/conf/taxonomies.php:670
 msgid "Intérprete"
-msgstr "Intérprete\"  # Performer/interprete"
+msgstr "Intérprete"
 
 #: src/conf/taxonomies.php:671
 msgid "Inventor"
-msgstr "Inventor\"  # Invento"
+msgstr "Inventor"
 
 #: src/conf/taxonomies.php:672
 msgid "Joalheiro (reparações)"
-msgstr "Joyero (reparaciones)\"  # Jewelry repaire"
+msgstr "Joyero (reparaciones)"
 
 #: src/conf/taxonomies.php:673
 msgid "Jornalista"
-msgstr "Periodista\"  # Journalis"
+msgstr "Periodista"
 
 #: src/conf/taxonomies.php:674
 msgid "Laminador de metais preciosos a mão"
@@ -5522,31 +5516,31 @@ msgstr "Lapidador de joyas"
 
 #: src/conf/taxonomies.php:676
 msgid "Legendista ou Tradutor(a)"
-msgstr "Subtitulador o Traductor(a)\"  # Subtitler or translato"
+msgstr "Subtitulador o Traductor(a)"
 
 #: src/conf/taxonomies.php:677
 msgid "Logger"
-msgstr "Registrador\"  # Data logge"
+msgstr "Registrador"
 
 #: src/conf/taxonomies.php:678
 msgid "Luthier"
-msgstr "Luthier\"  # Instrument maker (kept original"
+msgstr "Luthier"
 
 #: src/conf/taxonomies.php:679
 msgid "Maestro"
-msgstr "Maestro\"  # Conducto"
+msgstr "Maestro"
 
 #: src/conf/taxonomies.php:680
 msgid "Mágico"
-msgstr "Mago\"  # Magicia"
+msgstr "Mago"
 
 #: src/conf/taxonomies.php:681
 msgid "Malabarista"
-msgstr "Malabarista\"  # Juggle"
+msgstr "Malabarista"
 
 #: src/conf/taxonomies.php:682
 msgid "Maquetista"
-msgstr "Maquetista\"  # Model make"
+msgstr "Maquetista"
 
 #: src/conf/taxonomies.php:683
 msgid "Maquetista na Marcenaria"
@@ -5554,11 +5548,11 @@ msgstr "Maquetista en carpintería"
 
 #: src/conf/taxonomies.php:684
 msgid "Maquiador(a)"
-msgstr "Maquillador(a)\"  # Makeup artis"
+msgstr "Maquillador(a)"
 
 #: src/conf/taxonomies.php:685
 msgid "Maquinista"
-msgstr "Maquinista\"  # Machinis"
+msgstr "Maquinista"
 
 #: src/conf/taxonomies.php:686
 msgid "Maquinista de Cinema e Vídeo"
@@ -5570,19 +5564,19 @@ msgstr "Maquinista de teatro y espectáculos"
 
 #: src/conf/taxonomies.php:688
 msgid "Marcador(a) de Cena"
-msgstr "Marcador(a) de Escena\"  # Scene marke"
+msgstr "Marcador(a) de Escena"
 
 #: src/conf/taxonomies.php:689
 msgid "Marceneiro"
-msgstr "Carpintero\"  # Carpente"
+msgstr "Carpintero"
 
 #: src/conf/taxonomies.php:690
 msgid "Marcheteiro"
-msgstr "Marquetero\"  # Marquetry craftsma"
+msgstr "Marquetero"
 
 #: src/conf/taxonomies.php:691
 msgid "Mediador"
-msgstr "Mediador\"  # Mediato"
+msgstr "Mediador"
 
 #: src/conf/taxonomies.php:692
 msgid "Mestre da cultura afro-brasileira"
@@ -5606,394 +5600,391 @@ msgstr "Maestro de cultura indígena"
 
 #: src/conf/taxonomies.php:697
 msgid "Mestre de Pista"
-msgstr "Maestro de Pista\"  # Circus ringmaste"
+msgstr "Maestro de Pista"
 
 #: src/conf/taxonomies.php:698
 msgid "Mestre Vidreiro"
-msgstr "Maestro Vidriero\"  # Glass maste"
+msgstr "Maestro Vidriero"
 
 #: src/conf/taxonomies.php:699
 msgid "Mestre(a) de bateria"
-msgstr "Maestro(a) de batería\"  # Percussion maste"
+msgstr "Maestro(a) de batería"
 
 #: src/conf/taxonomies.php:700
 msgid "Mestre-sala"
-msgstr "Maestro de ceremonias\"  # Master of ceremonie"
+msgstr "Maestro de ceremonias"
 
 #: src/conf/taxonomies.php:701
 msgid "Mestres artífices"
-msgstr "Maestros artesanos\"  # Master craftsme"
+msgstr "Maestros artesanos"
 
 #: src/conf/taxonomies.php:702
 msgid "Microfonista"
-msgstr "Microfonista\"  # Microphone technicia"
+msgstr "Microfonista"
 
 #: src/conf/taxonomies.php:703
 msgid "Mímico"
-msgstr "Mímico\"  # Mime artis"
+msgstr "Mímico"
 
 #: src/conf/taxonomies.php:704
 msgid "Miniaturista"
-msgstr "Miniaturista\"  # Miniature artis"
+msgstr "Miniaturista"
 
 #: src/conf/taxonomies.php:705
 msgid "Modelador de Madeira"
-msgstr "Modelador de madera\"  # Wood modele"
+msgstr "Modelador de madera"
 
 #: src/conf/taxonomies.php:706
 msgid "Modelista de Calçados"
-msgstr "Modelista de calzado\"  # Shoe designe"
+msgstr "Modelista de calzado"
 
 #: src/conf/taxonomies.php:707
 msgid "Modelista de Roupas"
-msgstr "Modelista de ropa\"  # Clothing designe"
+msgstr "Modelista de ropa"
 
 #: src/conf/taxonomies.php:708
 msgid "Monociclista de circo"
-msgstr "Monociclista de circo\"  # Circus unicyclis"
+msgstr "Monociclista de circo"
 
 #: src/conf/taxonomies.php:709
 msgid "Montador"
-msgstr "Montador\"  # Editor/assemble"
+msgstr "Montador"
 
 #: src/conf/taxonomies.php:710
 msgid "Montador de Palco"
-msgstr "Montador de escenario\"  # Stage assemble"
+msgstr "Montador de escenario"
 
 #: src/conf/taxonomies.php:711
 msgid "Motorista de Audiovisual"
-msgstr "Conductor de audiovisual\"  # Audiovisual drive"
+msgstr "Conductor de audiovisual"
 
 #: src/conf/taxonomies.php:712
 msgid "Multiplicador"
-msgstr "Multiplicador\"  # Trainer/facilitato"
+msgstr "Multiplicador"
 
 #: src/conf/taxonomies.php:713
 msgid "Muralista"
-msgstr "Muralista\"  # Mural painte"
+msgstr "Muralista"
 
 #: src/conf/taxonomies.php:714
 msgid "Museólogo(a)"
-msgstr "Museólogo(a)\"  # Museum specialis"
+msgstr "Museólogo(a)"
 
 #: src/conf/taxonomies.php:715
 msgid "Músico/Musicista"
-msgstr "Músico\"  # Musicia"
+msgstr "Músico"
 
 #: src/conf/taxonomies.php:716
 msgid "Oficineiro(a)"
-msgstr "Tallerista\"  # Workshop facilitato"
+msgstr "Tallerista"
 
 #: src/conf/taxonomies.php:717
 msgid "Operador de Central de Rádio"
-msgstr "Operador de central de radio\"  # Radio station operato"
+msgstr "Operador de central de radio"
 
 #: src/conf/taxonomies.php:718
 msgid "Operador de Microfone (boom man)"
-msgstr "Operador de micrófono (boom man)\"  # Boom operato"
+msgstr "Operador de micrófono (boom man)"
 
 #: src/conf/taxonomies.php:719
 msgid "Operador de Projetor Cinematográfico"
-msgstr "Operador de proyector cinematográfico\"  # Film projector operato"
+msgstr "Operador de proyector cinematográfico"
 
 #: src/conf/taxonomies.php:720
 msgid "Operador de Som"
-msgstr "Operador de sonido\"  # Sound operato"
+msgstr "Operador de sonido"
 
 #: src/conf/taxonomies.php:721
 msgid "Operador de Transmissor de Rádio"
-msgstr "Operador de transmisor de radio\"  # Radio transmitter operato"
+msgstr "Operador de transmisor de radio"
 
 #: src/conf/taxonomies.php:722
 msgid "Operador(a) de Áudio de Continuidade (rádio)"
-msgstr ""
-"Operador(a) de audio de continuidad (radio)\"  # Continuity audio operato"
+msgstr "Operador(a) de audio de continuidad (radio)"
 
 #: src/conf/taxonomies.php:723
 msgid "Operador(a) de Câmera"
-msgstr "Operador(a) de cámara\"  # Camera operato"
+msgstr "Operador(a) de cámara"
 
 #: src/conf/taxonomies.php:724
 msgid "Operador(a) de Controle Mestre (rádio)"
-msgstr "Operador(a) de control maestro (radio)\"  # Master control operato"
+msgstr "Operador(a) de control maestro (radio)"
 
 #: src/conf/taxonomies.php:725
 msgid "Operador(a) de Externa"
-msgstr "Operador(a) de externa\"  # Field operato"
+msgstr "Operador(a) de externa"
 
 #: src/conf/taxonomies.php:726
 msgid "Operador(a) de Gravação de Rádio"
-msgstr "Operador(a) de grabación de radio\"  # Radio recording operato"
+msgstr "Operador(a) de grabación de radio"
 
 #: src/conf/taxonomies.php:727
 msgid "Operador(a) de Luz"
-msgstr "Operador(a) de luces\"  # Lighting operato"
+msgstr "Operador(a) de luces"
 
 #: src/conf/taxonomies.php:728
 msgid "Palhaço/Clown"
-msgstr "Payaso/Clown\"  # Clow"
+msgstr "Payaso/Clown"
 
 #: src/conf/taxonomies.php:729
 msgid "Paneleiro(a)"
-msgstr "Hojalatero(a)\"  # Pan maker/tinsmit"
+msgstr "Hojalatero(a)"
 
 #: src/conf/taxonomies.php:730
 msgid "Parteira Indígena"
-msgstr "Partera indígena\"  # Indigenous midwif"
+msgstr "Partera indígena"
 
 #: src/conf/taxonomies.php:731
 msgid "Parteiro(a)"
-msgstr "Partero(a)\"  # Midwif"
+msgstr "Partero(a)"
 
 #: src/conf/taxonomies.php:732
 msgid "Passador (a)"
-msgstr "Pasador(a)\"  # Passer (textile/leather worker"
+msgstr "Pasador(a)"
 
 #: src/conf/taxonomies.php:733
 msgid "Passista"
-msgstr "Passista\"  # Samba dancer (specific to Brazilian carnival"
+msgstr "Passista"
 
 #: src/conf/taxonomies.php:734
 msgid "Patinador(a)"
-msgstr "Patinador(a)\"  # Skate"
+msgstr "Patinador(a)"
 
 #: src/conf/taxonomies.php:735
 msgid "Perna de Pau (ou Pernalta)"
-msgstr "Zancos\"  # Stilt walke"
+msgstr "Zancos"
 
 #: src/conf/taxonomies.php:736
 msgid "Peruqueiro"
-msgstr "Peluquero\"  # Wig make"
+msgstr "Peluquero"
 
 #: src/conf/taxonomies.php:737
 msgid "Peruqueiro(a)"
-msgstr "Peluquero(a)\"  # Wig maker (gender inclusive"
+msgstr "Peluquero(a)"
 
 #: src/conf/taxonomies.php:738
 msgid "Pesquisador(a)"
-msgstr "Investigador(a)\"  # Researche"
+msgstr "Investigador(a)"
 
 #: src/conf/taxonomies.php:739
 msgid "Pilotista"
-msgstr "Conductor(a)\"  # Driver/pilo"
+msgstr "Conductor(a)"
 
 #: src/conf/taxonomies.php:740
 msgid "Pirofagista"
-msgstr "Pirofagista\"  # Fire eate"
+msgstr "Pirofagista"
 
 #: src/conf/taxonomies.php:741
 msgid "Poeta"
-msgstr "Poeta\"  # Poe"
+msgstr "Poeta"
 
 #: src/conf/taxonomies.php:742
 msgid "Poeta de Slam"
-msgstr "Poeta de Slam\"  # Slam poe"
+msgstr "Poeta de Slam"
 
 #: src/conf/taxonomies.php:743
 msgid "Porta-bandeira/Porta-estandarte"
-msgstr "Portaestandarte\"  # Flag beare"
+msgstr "Portaestandarte"
 
 #: src/conf/taxonomies.php:744
 msgid "Produtor Audiovisual"
-msgstr "Productor audiovisual\"  # Audiovisual produce"
+msgstr "Productor audiovisual"
 
 #: src/conf/taxonomies.php:745
 msgid "Produtor de Casting"
-msgstr "Productor de casting\"  # Casting produce"
+msgstr "Productor de casting"
 
 #: src/conf/taxonomies.php:746
 msgid "Produtor Musical"
-msgstr "Productor musical\"  # Music produce"
+msgstr "Productor musical"
 
 #: src/conf/taxonomies.php:747
 msgid "Produtor(a) Cultural"
-msgstr "Productor(a) cultural\"  # Cultural produce"
+msgstr "Productor(a) cultural"
 
 #: src/conf/taxonomies.php:748
 msgid "Produtor(a) de Casting/Booker"
-msgstr "Productor(a) de casting/booker\"  # Casting producer/booke"
+msgstr "Productor(a) de casting/booker"
 
 #: src/conf/taxonomies.php:749
 msgid "Produtor(a) Fonográfico"
-msgstr "Productor(a) fonográfico\"  # Phonographic produce"
+msgstr "Productor(a) fonográfico"
 
 #: src/conf/taxonomies.php:750
 msgid "Professor"
-msgstr "Profesor\"  # Professor/teache"
+msgstr "Profesor"
 
 #: src/conf/taxonomies.php:751
 msgid "Profissional da crítica"
-msgstr "Profesional de la crítica\"  # Professional criti"
+msgstr "Profesional de la crítica"
 
 #: src/conf/taxonomies.php:752
 msgid "Programador(a)"
-msgstr "Programador(a)\"  # Programme"
+msgstr "Programador(a)"
 
 #: src/conf/taxonomies.php:753
 msgid "Projecionista"
-msgstr "Proyeccionista\"  # Projectionis"
+msgstr "Proyeccionista"
 
 #: src/conf/taxonomies.php:754
 msgid "Projetista de Móveis"
-msgstr "Diseñador de muebles\"  # Furniture designe"
+msgstr "Diseñador de muebles"
 
 #: src/conf/taxonomies.php:755
 msgid "Projetista de Sistemas de Áudio"
-msgstr "Diseñador de sistemas de audio\"  # Audio systems designe"
+msgstr "Diseñador de sistemas de audio"
 
 #: src/conf/taxonomies.php:756
 msgid "Quadrilheiro(a)"
-msgstr "Cuatrillero(a)\"  # Square dancer (folk dance"
+msgstr "Cuatrillero(a)"
 
 #: src/conf/taxonomies.php:757
 msgid "Quadrinista"
-msgstr "Historietista\"  # Comic book artis"
+msgstr "Historietista"
 
 #: src/conf/taxonomies.php:758
 msgid "Queijista Artesanal"
-msgstr "Quesero artesanal\"  # Artisanal cheesemake"
+msgstr "Quesero artesanal"
 
 #: src/conf/taxonomies.php:759
 msgid "Rapper"
-msgstr "Rapero\"  # Rappe"
+msgstr "Rapero"
 
 #: src/conf/taxonomies.php:760
 msgid "Redator(a)"
-msgstr "Redactor(a)\"  # Writer/edito"
+msgstr "Redactor(a)"
 
 #: src/conf/taxonomies.php:761
 msgid "Rendeiro(a)"
-msgstr "Encajero(a)\"  # Lace make"
+msgstr "Encajero(a)"
 
 #: src/conf/taxonomies.php:762
 msgid "Repórter"
-msgstr "Reportero\"  # Reporte"
+msgstr "Reportero"
 
 #: src/conf/taxonomies.php:763
 msgid "Restaurador de Livros e Documentos"
-msgstr "Restaurador de libros y documentos\"  # Book/document restore"
+msgstr "Restaurador de libros y documentos"
 
 #: src/conf/taxonomies.php:764
 msgid "Restaurador(a)"
-msgstr "Restaurador(a)\"  # Restore"
+msgstr "Restaurador(a)"
 
 #: src/conf/taxonomies.php:765
 msgid "Revisor(a)"
-msgstr "Revisor(a)\"  # Proofreade"
+msgstr "Revisor(a)"
 
 #: src/conf/taxonomies.php:766
 msgid "Ritmista"
-msgstr "Ritmista\"  # Rhythm player (music"
+msgstr "Ritmista"
 
 #: src/conf/taxonomies.php:767
 msgid "Roadie"
-msgstr "Roadie\"  # Kept English term (concert technician"
+msgstr "Roadie"
 
 #: src/conf/taxonomies.php:768
 msgid "Roteirista"
-msgstr "Guionista\"  # Screenwrite"
+msgstr "Guionista"
 
 #: src/conf/taxonomies.php:769
 msgid "Rumbeira de Circo"
-msgstr "Artista de rumba de circo\"  # Circus rumba performe"
+msgstr "Artista de rumba de circo"
 
 #: src/conf/taxonomies.php:770
 msgid "Sacerdote de religiosidade popular"
-msgstr "Sacerdote de religiosidad popular\"  # Folk religion pries"
+msgstr "Sacerdote de religiosidad popular"
 
 #: src/conf/taxonomies.php:771
 msgid "Saltimbanco"
-msgstr "Saltimbanqui\"  # Street performe"
+msgstr "Saltimbanqui"
 
 #: src/conf/taxonomies.php:772
 msgid "Sambista"
-msgstr "Sambista\"  # Samba musicia"
+msgstr "Sambista"
 
 #: src/conf/taxonomies.php:773
 msgid "Sapateiro"
-msgstr "Zapatero\"  # Shoemake"
+msgstr "Zapatero"
 
 #: src/conf/taxonomies.php:774
 msgid "Secretário de Frente"
-msgstr "Secretario de frente\"  # Front desk secretar"
+msgstr "Secretario de frente"
 
 #: src/conf/taxonomies.php:775
 msgid "Secretário(a) Teatral"
-msgstr "Secretario(a) teatral\"  # Theater secretar"
+msgstr "Secretario(a) teatral"
 
 #: src/conf/taxonomies.php:776
 msgid "Serigrafista"
-msgstr "Serigrafista\"  # Screen printe"
+msgstr "Serigrafista"
 
 #: src/conf/taxonomies.php:777
 msgid "Sineiro"
-msgstr "Campanero\"  # Bell ringe"
+msgstr "Campanero"
 
 #: src/conf/taxonomies.php:778
 msgid "Sonoplasta"
-msgstr "Sonidista\"  # Sound designe"
+msgstr "Sonidista"
 
 #: src/conf/taxonomies.php:779
 msgid "Tacacazeiro(a)"
-msgstr "Vendedor(a) de tacacá\"  # Tacacá (Brazilian dish) vendo"
+msgstr "Vendedor(a) de tacacá"
 
 #: src/conf/taxonomies.php:780
 msgid "Tanoeiro(a)"
-msgstr "Tonelero(a)\"  # Cooper (barrel maker"
+msgstr "Tonelero(a)"
 
 #: src/conf/taxonomies.php:781
 msgid "Tatuador"
-msgstr "Tatuador\"  # Tattoo artis"
+msgstr "Tatuador"
 
 #: src/conf/taxonomies.php:782
 msgid "Tecelão(ã)"
-msgstr "Tejedor(a)\"  # Weave"
+msgstr "Tejedor(a)"
 
 #: src/conf/taxonomies.php:783
 msgid "Técnico (a) em biblioteconomia"
-msgstr "Técnico(a) en bibliotecología\"  # Library technicia"
+msgstr "Técnico(a) en bibliotecología"
 
 #: src/conf/taxonomies.php:784
 msgid "Técnico em Masterização de Áudio"
-msgstr "Técnico en masterización de audio\"  # Audio mastering technicia"
+msgstr "Técnico en masterización de audio"
 
 #: src/conf/taxonomies.php:785
 msgid "Técnico em Mixagem de Áudio"
-msgstr "Técnico en mezcla de audio\"  # Audio mixing technicia"
+msgstr "Técnico en mezcla de audio"
 
 #: src/conf/taxonomies.php:786
 msgid "Técnico em Operação de Equipamentos de Transmissão/Recepção de Televisão"
-msgstr ""
-"Técnico en operación de equipos de transmisión/recepción de televisión\"  # "
-"TV transmission technicia"
+msgstr "Técnico en operación de equipos de transmisión/recepción de televisión"
 
 #: src/conf/taxonomies.php:787
 msgid "Técnico(a) audiovisual"
-msgstr "Técnico(a) audiovisual\"  # Audiovisual technicia"
+msgstr "Técnico(a) audiovisual"
 
 #: src/conf/taxonomies.php:788
 msgid "Técnico(a) Contábil"
-msgstr "Técnico(a) contable\"  # Accounting technicia"
+msgstr "Técnico(a) contable"
 
 #: src/conf/taxonomies.php:789
 msgid "Técnico(a) de arquivo"
-msgstr "Técnico(a) de archivo\"  # Archive technicia"
+msgstr "Técnico(a) de archivo"
 
 #: src/conf/taxonomies.php:790
 msgid "Técnico(a) de Estúdio"
-msgstr "Técnico(a) de estudio\"  # Studio technicia"
+msgstr "Técnico(a) de estudio"
 
 #: src/conf/taxonomies.php:791
 msgid "Técnico(a) de Iluminação"
-msgstr "Técnico(a) de iluminación\"  # Lighting technicia"
+msgstr "Técnico(a) de Iluminación"
 
 #: src/conf/taxonomies.php:792
 msgid "Técnico(a) de Som"
-msgstr "Técnico(a) de sonido\"  # Sound technicia"
+msgstr "Técnico(a) de Sonido"
 
 #: src/conf/taxonomies.php:793
 msgid "Técnico(a) de Som Direto"
-msgstr "Técnico(a) de sonido directo\"  # Live sound technicia"
+msgstr "Técnico(a) de Sonido Directo"
 
 #: src/conf/taxonomies.php:794
 msgid "Técnico(a) de sonorização"
@@ -6001,85 +5992,79 @@ msgstr "Técnico(a) de sonido"
 
 #: src/conf/taxonomies.php:795
 msgid "Técnico(a) em Cenografia"
-msgstr "Técnico(a) en escenografía\"  # Scenography technicia"
+msgstr "Técnico(a) en escenografía"
 
 #: src/conf/taxonomies.php:796
 msgid "Técnico(a) em Gravação de Áudio"
-msgstr "Técnico(a) en grabación de audio\"  # Audio recording technicia"
+msgstr "Técnico(a) en grabación de audio"
 
 #: src/conf/taxonomies.php:797
 msgid "Técnico(a) em Instalação de Equipamentos de Áudio"
-msgstr ""
-"Técnico(a) en instalación de equipos de audio\"  # Audio equipment "
-"installation technicia"
+msgstr "Técnico(a) en instalación de equipos de audio"
 
 #: src/conf/taxonomies.php:798
 msgid "Técnico(a) em Museologia"
-msgstr "Técnico(a) en museología\"  # Museology technicia"
+msgstr "Técnico(a) en museología"
 
 #: src/conf/taxonomies.php:799
 msgid "Titeriteiro"
-msgstr "Titiritero\"  # Puppetee"
+msgstr "Titiritero"
 
 #: src/conf/taxonomies.php:800
 msgid "Trabalhador de Confecções de Bijuterias e Jóias de Fantasia"
-msgstr ""
-"Trabajador de confección de bisutería y joyería de fantasía\"  # Costume "
-"jewelry make"
+msgstr "Trabajador de confección de bisutería y joyería de fantasía"
 
 #: src/conf/taxonomies.php:801
 msgid "Tradutor(a)"
-msgstr "Traductor(a)\"  # Translato"
+msgstr "Traductor(a)"
 
 #: src/conf/taxonomies.php:802
 msgid "Tradutor(a) ou Intérprete de Libras"
-msgstr ""
-"Traductor(a) o Intérprete de lengua de señas\"  # Sign language translator/"
-"interprete"
+msgstr "Traductor(a) o Intérprete de lengua de señas"
 
 #: src/conf/taxonomies.php:803
 msgid "Transcritor ou Revisor em Braille"
-msgstr "Transcriptor o Revisor en Braille\"  # Braille transcriber/reviewe"
+msgstr "Transcriptor o Revisor en Braille"
 
 #: src/conf/taxonomies.php:804
 msgid "Trapezista"
-msgstr "Trapezista\"  # Trapeze artis"
+msgstr "Trapezista"
 
 #: src/conf/taxonomies.php:805
 msgid "Trefilador (joalheria e ourivesaria)"
-msgstr "Trefilador (joyería y orfebrería)\"  # Wire drawer (jewelry"
+msgstr "Trefilador (joyería y orfebrería)"
 
 #: src/conf/taxonomies.php:806
 msgid "Turismólogo(a)"
-msgstr "Turismólogo(a)\"  # Tourism specialis"
+msgstr "Turismólogo(a)"
 
 #: src/conf/taxonomies.php:807
 msgid "Ventríloquo"
-msgstr "Ventrílocuo\"  # Ventriloquis"
+msgstr "Ventrílocuo"
 
 #: src/conf/taxonomies.php:808
 msgid "Violeiro"
-msgstr "Violeiro\"  # Viola player (traditional"
+msgstr "Violeiro"
 
 #: src/conf/taxonomies.php:809
 msgid "Visagista"
-msgstr "Visagista\"  # Makeup artis"
+msgstr "Visagista"
 
 #: src/conf/taxonomies.php:810
 msgid "Visual Merchandiser"
-msgstr "Visual Merchandiser\"  # Kept English ter"
+msgstr "Visual Merchandiser"
 
 #: src/conf/taxonomies.php:811
 msgid "VJ"
-msgstr "VJ\"  # Video Jockey (kept international term"
+msgstr "VJ"
 
 #: src/conf/taxonomies.php:812
 msgid "Web Designer"
-msgstr "Diseñador web\"  # Web designe"
+msgstr "Diseñador web"
 
 #: src/conf/taxonomies.php:818
 msgid "Etnia"
-msgstr "Etnia\"  # Ethnicit"
+msgstr "Etnia"
 
 # Indigenous ethnic groups (maintained original names as they are proper nouns):
 #: src/conf/taxonomies.php:823
@@ -6144,15 +6129,15 @@ msgstr "Arara"
 
 #: src/conf/taxonomies.php:838
 msgid "AraradaVoltaGrandedoXingu"
-msgstr "Arara da Volta Grande do Xingu\"  # Added spaces for readabilit"
+msgstr "Arara da Volta Grande do Xingu"
 
 #: src/conf/taxonomies.php:839
 msgid "AraradoRioAmônia"
-msgstr "Arara do Rio Amônia\"  # Added space"
+msgstr "Arara do Rio Amônia"
 
 #: src/conf/taxonomies.php:840
 msgid "AraradoRioBranco"
-msgstr "Arara do Rio Branco\"  # Added space"
+msgstr "Arara do Rio Branco"
 
 #: src/conf/taxonomies.php:841
 msgid "AraraShawãdawa"
@@ -6176,11 +6161,11 @@ msgstr "Ashaninka"
 
 #: src/conf/taxonomies.php:846
 msgid "AsurinidoTocantins"
-msgstr "Asurini do Tocantins\"  # Added spac"
+msgstr "Asurini do Tocantins"
 
 #: src/conf/taxonomies.php:847
 msgid "AsurinidoXingu"
-msgstr "Asurini do Xingu\"  # Added spac"
+msgstr "Asurini do Xingu"
 
 #: src/conf/taxonomies.php:848
 msgid "Atikum"
@@ -6192,11 +6177,11 @@ msgstr "Avá-Canoeiro"
 
 #: src/conf/taxonomies.php:850
 msgid "AwaGuajá"
-msgstr "Awa Guajá\"  # Added spac"
+msgstr "Awa Guajá"
 
 #: src/conf/taxonomies.php:851
 msgid "Aweti"
-msgstr "Aweti\"  # Nombre propio, se mantiene igua"
+msgstr "Aweti"
 
 #: src/conf/taxonomies.php:852
 msgid "Bakairi"
@@ -6224,7 +6209,7 @@ msgstr "Baré"
 
 #: src/conf/taxonomies.php:858
 msgid "Baré(Boe)"
-msgstr "Baré (Boe)\"  # Se añade espacio para format"
+msgstr "Baré (Boe)"
 
 #: src/conf/taxonomies.php:859
 msgid "Borari"
@@ -6236,7 +6221,7 @@ msgstr "Bororo"
 
 #: src/conf/taxonomies.php:861
 msgid "CanelaApanyekrá"
-msgstr "Canela Apanyekrá\"  # Se separan palabra"
+msgstr "Canela Apanyekrá"
 
 #: src/conf/taxonomies.php:862
 msgid "CanelaMemortumré"
@@ -6264,7 +6249,7 @@ msgstr "Deni"
 
 #: src/conf/taxonomies.php:868
 msgid "Desana"
-msgstr "Desana\"  # Se eliminó #, fuzzy y se mantuvo nombr"
+msgstr "Desana"
 
 #: src/conf/taxonomies.php:869
 msgid "Djeoromitxí"
@@ -6284,7 +6269,7 @@ msgstr "Fulni-ô"
 
 #: src/conf/taxonomies.php:873
 msgid "GalibiKa'lina"
-msgstr "Galibi Ka'lina\"  # Espacio añadid"
+msgstr "Galibi Ka'lina"
 
 #: src/conf/taxonomies.php:874
 msgid "Galibi-Marworno"
@@ -6316,7 +6301,7 @@ msgstr "Guajajara"
 
 #: src/conf/taxonomies.php:881
 msgid "Guarani"
-msgstr "Guaraní\"  # Ajuste ortográfico al españo"
+msgstr "Guaraní"
 
 #: src/conf/taxonomies.php:882
 msgid "Guató"
@@ -6328,7 +6313,7 @@ msgstr "Hixkaryana"
 
 #: src/conf/taxonomies.php:884
 msgid "HuniKuin"
-msgstr "Huni Kuin\"  # Espacio añadid"
+msgstr "Huni Kuin"
 
 #: src/conf/taxonomies.php:885
 msgid "Hupda"
@@ -6336,7 +6321,7 @@ msgstr "Hupda"
 
 #: src/conf/taxonomies.php:886
 msgid "HupdaIkolenIkpengIngarikóIny"
-msgstr "Hupda, Ikolen, Ikpeng, Ingarikó, Iny\"  # Separación con coma"
+msgstr "Hupda, Ikolen, Ikpeng, Ingarikó, Iny"
 
 #: src/conf/taxonomies.php:887
 msgid "Jamamadi"
@@ -6392,7 +6377,7 @@ msgstr "Kaiowá"
 
 #: src/conf/taxonomies.php:900
 msgid "Kaixana"
-msgstr "Kaixana\"  # Se eliminó #, fuzz"
+msgstr "Kaixana"
 
 #: src/conf/taxonomies.php:901
 msgid "Kakwa"
@@ -6732,7 +6717,7 @@ msgstr "Parakanã"
 
 #: src/conf/taxonomies.php:985
 msgid "Paresí"
-msgstr "Paresí\"  # Se eliminó #, fuzz"
+msgstr "Paresí"
 
 #: src/conf/taxonomies.php:986
 msgid "Parintintin"
