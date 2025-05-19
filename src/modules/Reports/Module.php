@@ -145,7 +145,7 @@ class Module extends \MapasCulturais\Module
                     ]
                 ],
             ],
-            \MapasCulturais\i::__(''),
+            "",
             true
         );
         $app->registerMetaListGroup('reports', $metalist);

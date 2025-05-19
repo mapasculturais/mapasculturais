@@ -286,11 +286,11 @@ class Module extends \MapasCulturais\Module
                 ],
                 i::__('QUINTA') => [
                     i::__('Caso o evento ocorra neste dia informar um dos valores a seguir (sim,x,1) caso contrario deixar vazio'),
-                    i::__('')
+                    ""
                 ],
                 i::__('SEXTA') => [
                     i::__('Caso o evento ocorra neste dia informar um dos valores a seguir (sim,x,1) caso contrario deixar vazio'),
-                    i::__('')
+                    ""
                 ],
                 i::__('SABADO') => [
                     i::__('Caso o evento ocorra neste dia informar um dos valores a seguir (sim,x,1) caso contrario deixar vazio'),
