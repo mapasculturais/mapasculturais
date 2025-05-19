@@ -2,45 +2,34 @@
 
 .mc-accordion {
     background-color: var(--mc-gray-100);
-    // &__tags {
-    //     background-color: #FFCF8F;
-    //     margin: 16px 0;
-    // }
+    
     &__title {
         font-size: size(14);
     }
     &__header {
-        cursor: pointer;
-        padding: 18px 16px;
-        background: var(--mc-white);
-        justify-content: center;
         align-items: center;
-        display: grid;
-        grid-template-columns: 1fr size(12);
-        max-width: size(870);
+        background: var(--mc-white);
         border-radius: size(4);
+        cursor: pointer;
+        display: grid;
         gap: size(10);
+        grid-template-columns: 1fr size(30);
+        justify-content: center;
+        max-width: size(870);
+        padding: 18px 16px;
     }
     
     &__content {
-        padding: size(16);
         background: var(--mc-white);
         border-top: 1px solid var(--mc-gray-100);
         max-width: size(870);
+        padding: size(16);
         
     }
-    // &__context {
-    //     font-size: size(14);
-    //     border-radius: 0 0 8px 8px;
-    // }
-    
-    // &__contexts:first-child {
-    //     padding: 0 size(16) size(8) 0;
-    // }
-    
-    // &__contexts {
-    //     max-width: size(870);
-    //     padding: size(24) size(16) size(8) 0;
-    
-    // }
+
+    &__close {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
 }
