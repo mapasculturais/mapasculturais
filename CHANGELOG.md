@@ -5,6 +5,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.46] - 2025-05-20
+
+### Melhorias
+- Melhora a interface da timeline de acompanhamento da inscrição para exibir a data de encerramento do prazo de edição, quando houver campos liberados para edição para o usuário.
+- Implementa endpoint para atualizar o resumo das avaliações dos avaliadores na configuração de avaliação.
+
+### Coreeções
+- Garante que administradores do edital possam conceder permissão de edição em campos das inscrições.
+
 ## [7.5.45] - 2025-05-19
 ### Correções
 - Evita que arquivos que não tenham sido corretamente salvos no sistema de arquivo sejam salvos no banco de dados
