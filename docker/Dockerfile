@@ -1,3 +1,5 @@
+ARG COMPOSER_ARGS="--no-dev"
+
 FROM php:8.3-fpm
 
 RUN apt-get update
@@ -76,7 +78,9 @@ COPY composer.lock /var/www/composer.lock
 WORKDIR /var/www/
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 
-RUN composer.phar install
+ENV COMPOSER_ARGS=${COMPOSER_ARGS}
+
+RUN composer.phar install ${COMPOSER_ARGS}
 
 COPY config /var/www/config
 COPY public /var/www/html
@@ -85,6 +89,7 @@ COPY src /var/www/src
 COPY var /var/www/var
 
 WORKDIR /var/www/src/
+RUN rm -rf node_modules
 RUN pnpm install && pnpm run build
 
 RUN sass themes/BaseV1/assets/css/sass/main.scss:themes/BaseV1/assets/css/main.css

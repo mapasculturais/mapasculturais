@@ -1,8 +1,9 @@
-version: '2'
 services:
   mapas:
     build:
       context: ../
+      args:
+        - COMPOSER_ARGS= 
       dockerfile: docker/Dockerfile
     command: /var/www/dev/start.sh
     ports:
