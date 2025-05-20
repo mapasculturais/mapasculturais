@@ -5,6 +5,7 @@ namespace Opportunities;
 use DateTime;
 use Exception;
 use MapasCulturais\App;
+use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
 use MapasCulturais\Entities\AgentRelation;
 use MapasCulturais\i;
 use MapasCulturais\Entities\Opportunity;
@@ -298,6 +299,32 @@ class Module extends \MapasCulturais\Module{
 
             $this->render("registration-print", ['entity' => $entity]);
         });
+
+        // Atualiza o resumo de avaliações dos avaliadores do edital
+         $app->hook("GET(opportunity.updateSumaryEvaluation)", function() use ($app) {
+            /** @var ControllersOpportunity $this */
+            $app = App::i();
+        
+            $this->requireAuthentication();
+
+            $entity = $this->requestedEntity;
+
+            if(!$entity) {
+                $app->pass();
+            }
+
+            $entity->checkPermission('@control');
+
+            $em = $entity->evaluationMethodConfiguration;
+            
+            if($valuers = $entity->getEvaluationCommittee(true)) {
+                foreach($valuers as $relation) {
+                    $em->getUserRelation($relation->agent->user)->updateSummary(flush: true);
+                    $app->log->debug("Atualiza resumo das avaliações do usuário {$relation->agent->user->id}");
+                }
+            }
+         });
+
 
         $app->hook('panel.nav', function(&$nav_items) use($app) {
             $nav_items['opportunities']['items'] = [
