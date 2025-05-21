@@ -39,9 +39,15 @@ $this->import('
             <?php $this->applyTemplateHook('opportunity-basic-info','before')?>
             <div class="grid-12">
                 <?php $this->applyTemplateHook('opportunity-basic-info','begin')?>
-                <entity-field :entity="entity" type="checkbox" prop="isContinuousFlow" label="<?php i::esc_attr_e('É um edital de fluxo contínuo?')?>" classes="col-12 sm:col-12"></entity-field>
-                <entity-field v-if="entity?.isContinuousFlow" :entity="entity" type="checkbox" prop="hasEndDate" label="<?php i::esc_attr_e('Definir data final para inscrições')?>" :autosave="3000" classes="col-12 sm:col-12"></entity-field>
-
+                
+                <div v-if="entity?.isContinuousFlow" class="field col-12">
+                    <label><?= i::__('Este edital está configurado como fluxo contínuo!') ?></label>
+                </div>
+                
+                <div v-if="entity?.hasEndDate" class="field col-12">
+                    <label><?= i::__('Este edital está configurado para ter uma data final para as incrições!') ?></label>
+                </div>
+                
                 <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
                 <entity-field v-if="!entity?.isContinuousFlow || entity?.hasEndDate" :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
 
