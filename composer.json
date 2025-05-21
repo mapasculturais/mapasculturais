@@ -33,7 +33,8 @@
         "psr-4": {
             "MapasCulturais\\": "src/core",
             "MapasCulturais\\Modules\\": "src/modules",
-            "MapasCulturais\\Themes\\": "src/themes"
+            "MapasCulturais\\Themes\\": "src/themes",
+            "MapasCulturais\\Tests\\": "tests/src"
         }
     },
     "repositories": [
@@ -52,6 +53,7 @@
     ],
     "require-dev": {
         "phpunit/phpunit": "^10.5",
-        "psy/psysh": "^0.12.8"
+        "psy/psysh": "^0.12.8",
+        "fakerphp/faker": "^1.24"
     }
 }
