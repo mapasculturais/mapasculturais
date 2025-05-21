@@ -22,7 +22,7 @@
     }
 
     .field {
-        margin: size(16) 0;
+        // margin: size(16) 0;
 
         label {
             margin: 0;
@@ -30,6 +30,10 @@
     }
 
     &__fields {
+        display: grid;
+        gap: size(16);
+        margin-top: size(20);
+
         .select-list {
             &__label {
                 font-weight: 600;
@@ -223,5 +227,19 @@
         .noEntity {
             margin: 0 size(32);
         }
+    }
+}
+
+.create-opportunity-modal {
+    &__continuous-flow {
+        display: grid;
+        gap: 8px;
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+        padding: 10px;
+    }
+
+    &__continuous-flow-options {
+        display: flex;
     }
 }
