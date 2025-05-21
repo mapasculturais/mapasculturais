@@ -5,8 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.5.46] - 2025-05-20
+## [7.5.47] - 2025-05-21
+### Correções
+- Corrige erro que impedia a exibição do botão "Carregar mais" na lista de inscritos  em editais com múltiplas fases
+- Corrige erro na permissão can(Registration.view) no módulo de suporte
 
+## [7.5.46] - 2025-05-20
 ### Melhorias
 - Melhora a interface da timeline de acompanhamento da inscrição para exibir a data de encerramento do prazo de edição, quando houver campos liberados para edição para o usuário.
 - Implementa endpoint para atualizar o resumo das avaliações dos avaliadores na configuração de avaliação.
