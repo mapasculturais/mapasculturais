@@ -503,7 +503,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var Controller $this */
             $params = $this->data;
             
-            if(Module::$quotaData && isset($params['@opportunity'])) {
+            if(Module::$quotaData && API::EQ($params['@opportunity'] ?? 0) ==  Module::$quotaData->params['opportunity']) {
                 $params['opportunity'] = API::EQ($params['@opportunity']);
 
                 $count_query = new ApiQuery(Registration::class, Module::$quotaData->params);
