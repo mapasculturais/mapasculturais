@@ -3,7 +3,8 @@ namespace MapasCulturais\Traits;
 
 use Exception;
 use \MapasCulturais\App;
-use \MapasCulturais\Exceptions;
+use MapasCulturais\Exceptions\SaveFileError;
+use MapasCulturais\i;
 
 /**
  * Defines that the controller has uploads.
@@ -171,7 +172,11 @@ trait ControllerUploads{
                     $old_file->delete();
             }
 
-            $file->save();
+            try{
+                $file->save();
+            } catch (SaveFileError $e) {
+                $this->errorJson(i::__('Falha ao salvar o arquivo, por favor entre em contato com o suporte.'), 500);
+            }
             $file_group = $file->group;
 
             if($upload_group->unique){
