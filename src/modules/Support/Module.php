@@ -159,7 +159,7 @@ class Module extends \MapasCulturais\Module
             }
 
             $opportunity = $this->opprtunity;
-            if($next_phase = $opportunity->nextPhase) {
+            if($opportunity && $next_phase = $opportunity->nextPhase) {
                 if($self->isSupportUser($next_phase, $user)){
                     $result = true;
                 }
