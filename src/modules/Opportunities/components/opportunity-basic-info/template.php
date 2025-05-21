@@ -29,40 +29,11 @@ $this->import('
 ');
 ?>
 <div class="opportunity-basic-info__container">
-<entity-status :entity="entity"></entity-status>
-
-    <mc-card>
-        <template #title>
-            <h3><?= i::__("Informações obrigatórias") ?></h3>
-        </template>
-        <template #content>
-            <?php $this->applyTemplateHook('opportunity-basic-info','before')?>
-            <div class="grid-12">
-                <?php $this->applyTemplateHook('opportunity-basic-info','begin')?>
-                
-                <div v-if="entity?.isContinuousFlow" class="field col-12">
-                    <label><?= i::__('Este edital está configurado como fluxo contínuo!') ?></label>
-                </div>
-                
-                <div v-if="entity?.hasEndDate" class="field col-12">
-                    <label><?= i::__('Este edital está configurado para ter uma data final para as incrições!') ?></label>
-                </div>
-                
-                <entity-field :entity="entity" prop="registrationFrom" :max="entity.registrationTo?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
-                <entity-field v-if="!entity?.isContinuousFlow || entity?.hasEndDate" :entity="entity" prop="registrationTo" :min="entity.registrationFrom?._date" :autosave="3000" classes="col-6 sm:col-12"></entity-field>
-
-                <entity-field v-if="lastPhase && (!entity?.isContinuousFlow || entity?.hasEndDate)" :entity="lastPhase" prop="publishTimestamp" :autosave="3000" classes="col-6 sm:col-12">
-                    <label><?= i::__("Publicação final de resultados (data e hora)") ?></label>
-                </entity-field>
-                <?php $this->applyTemplateHook('opportunity-basic-info','afeter')?>
-            </div>
-            <?php $this->applyTemplateHook('opportunity-basic-info','end')?>
-        </template>
-    </mc-card>
+    <entity-status :entity="entity"></entity-status>
 </div>
+
 <mc-container>
     <main>
-
         <mc-card>
             <template #content>
                 <div class="header-opp grid-12 v-bottom">
