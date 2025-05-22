@@ -96,6 +96,7 @@
         
         .field {
             position: relative;
+            white-space: nowrap;
 
             &::after {
                 position: absolute ;
