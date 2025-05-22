@@ -55,7 +55,9 @@ abstract class SpreadsheetJob extends JobType
 
     protected function _execute(Job $job)
     {
+        $app = App::i();
         
+        ini_set('memory_limit', $app->config['app.export.memoryLimit']);
         $entity_class_name = $job->entityClassName;
         $file_class = $job->owner->getFileClassName();
         

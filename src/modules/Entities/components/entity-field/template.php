@@ -113,7 +113,10 @@ $this->import('
                 <div class="field__group">
                     <label class="field__checkbox">
                         <input :id="propId" type="checkbox" :checked="value" @click="change($event)"  :disabled="readonly || disabled" />
-                        <slot>{{label || description.label}}</slot>
+                        <span>
+                            <slot>{{label || description.label}}</slot>
+                            <slot name="info"></slot>
+                        </span>
                     </label>
                 </div>
             </template>
