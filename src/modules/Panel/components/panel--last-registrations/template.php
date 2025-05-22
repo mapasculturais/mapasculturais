@@ -18,20 +18,11 @@ $this->import('
         <div class="panel--last-registrations__content-cards">
             <carousel :settings="settings" :breakpoints="breakpoints">
                 <slide v-for="entity in entities" :key="entity.id">
-                    <div class="card">
-                        <div class="card__content">
-                            <a target="__blank" :href="entity.singleUrl">
-                                <label class="card__content--title"> {{entity.opportunity.name}} </label>  
-                            </a>            
-                            <div class="card__content--description date">
-                                <label><?= $this->text('registration_date', i::__('Data de inscrição')) ?></label>
-                                <strong>{{entity.opportunity.registrationFrom?.format()}} <?= i::_e('às') ?> {{entity.opportunity.registrationFrom?.hour()}}h</strong>
-                            </div>    
-                        </div>
-                        <div class="card__action">
-                            <a class="button button--md button--large button--primary button--icon" target="__blank" :href="entity.singleUrl"> <?= i::_e('Acessar e acompanhar') ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
-                        </div>
-                    </div>
+                    <registration-card :entity="entity" :list="entities">
+                        <template #button>
+                            <a class="button button--large button--primary button--icon" target="__blank" :href="entity.singleUrl"> <?= i::_e('Acessar e acompanhar') ?> <mc-icon name="arrowPoint-right"></mc-icon> </a>
+                        </template>
+                    </registration-card>
                 </slide>
                 <template #addons>
                     <div class="actions">
