@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\i;
+use \Spreadsheets\FieldParser;
 use Spreadsheets\SpreadsheetJob;
 
 class Registrations extends SpreadsheetJob
@@ -31,21 +32,20 @@ class Registrations extends SpreadsheetJob
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
         $query['@select'] .= ',projectName,owner.{name}';
-        $properties = explode(',', $query['@select']);
-        
-        foreach($properties as $property) {
+        $properties = FieldParser::parse($query['@select']);
+
+        foreach(array_keys($properties) as $property) {
             if(str_starts_with($property, 'field_')) {
                 continue;
             }
 
-            if(str_starts_with($property, 'owner.{')) {
-                $values = $this->extractValues($property);
+            if($property == 'ownerGeoMesoregiao') {
+                $header[$property] = i::__('Mesorregião do responsável');
+                continue;
+            }
 
-                foreach($values as $val) {
-                    if($val === 'name') {
-                        $header[$val] = i::__('Responsável pela inscrição');
-                    }
-                }
+            if($property == 'ownerName') {
+                $header[$property] = i::__('Responsável pela inscrição');
                 continue;
             }
 
@@ -70,6 +70,26 @@ class Registrations extends SpreadsheetJob
 
             if($property == 'projectName') {
                 $header[$property] = i::__('Nome do projeto');
+                continue;
+            }
+
+            if($property == 'eligible') {
+                $header[$property] = i::__('Concorrendo por cota');
+                continue;
+            }
+
+            if($property == 'editableUntil') {
+                $header[$property] = i::__('Função editar inscrição: Prazo final para edição');
+                continue;
+            }
+
+            if($property == 'editSentTimestamp') {
+                $header[$property] = i::__('Função editar inscrição: Data de envio da edição');
+                continue;
+            }
+
+             if($property == 'editableFields') {
+                unset($header[$property]);
                 continue;
             }
 
@@ -151,6 +171,8 @@ class Registrations extends SpreadsheetJob
         } while($opportunity = $opportunity->previousPhase);
 
         $result = $opportunity_controller->apiFindRegistrations($job->owner, $query_params);
+
+        $properties = FieldParser::parse($query_params['@select']);
         
         if (isset($result->registrations) && is_array($result->registrations)) {
             foreach($result->registrations as &$entity) {                
@@ -221,8 +243,8 @@ class Registrations extends SpreadsheetJob
                 unset($entity['@entityType']);
                 unset($entity['evaluationResultString']);
 
-                if(!empty($entity['agentsData']) && is_array($entity['agentsData'])) {
-                    $entity['name'] = $entity['agentsData']['owner']['name'];
+                if(isset($entity['agentsData']) && is_array($entity['agentsData'])) {
+                    $entity['ownerName'] = $entity['agentsData']['owner']['name'];
                 }
 
                 unset($entity['agentsData']);
@@ -234,6 +256,11 @@ class Registrations extends SpreadsheetJob
                     unset($owner_info['id']);
 
                     $entity = array_merge($entity, $owner_info);
+                }
+
+                if (isset($entity['geoMesoregiao'])) {
+                    $entity['ownerGeoMesoregiao'] = eval('return $entity' . $properties['ownerGeoMesoregiao'] . ';');
+                     unset($entity['geoMesoregiao']);
                 }
                 
                 if(isset($entity['sentTimestamp']) && !is_null($entity['sentTimestamp'])) {
@@ -264,6 +291,20 @@ class Registrations extends SpreadsheetJob
                     $entity['status'] = $this->getStatusName($entity['status']);
                 }
 
+                if(isset($entity['eligible'])) {
+                    $entity['eligible'] = $entity['eligible'] ?  i::__('Sim') : i::__('Não');
+                }
+
+                if(isset($entity['editableUntil'])) {
+                    $date = $entity['editableUntil'];
+                    $entity['editableUntil'] = $date->format('d/m/Y H:i:s');
+                }
+
+                if(isset($entity['editSentTimestamp'])) {
+                    $editSentTimestamp = $entity['editSentTimestamp'];
+                    $entity['editableUntil'] = $editSentTimestamp->format('d/m/Y H:i:s');
+                }
+                
                 $entity = $this->replaceArraysWithNull($entity);
             }
         }
