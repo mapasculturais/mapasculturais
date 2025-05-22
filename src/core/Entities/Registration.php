@@ -1548,9 +1548,15 @@ class Registration extends \MapasCulturais\Entity
         if($this->status !== self::STATUS_DRAFT){
             return false;
         }else{
-            if((new \DateTime() >= $this->opportunity->registrationFrom) && $this->genericPermissionVerification($user)){
+
+            if(!$this->opportunity->isRegistrationOpen() && !$this->opportunity->canUser('@control')) {
+                return false;
+            }
+
+            if($this->genericPermissionVerification($user)){
                 return true;
             }
+            
             return false;
         }
     }
