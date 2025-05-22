@@ -5,6 +5,15 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.48] - 2025-05-22
+### Melhorias
+- Implementa classe responsável por fazer o parse dos dados enviados para exportação de planilhas, garantindo acesso em profundidade aos objetos.
+- Aplica a nova classe de parse de dados para acessar corretamente os objetos de inscrição durante a exportação de planilhas de inscritos.
+
+### Correções
+- Impede a exibição dos botões de ação do formulário de inscrição para o proponente após o encerramento do prazo de edição.
+- Ajusta a permissão canUserModify() da inscrição para impedir alterações no formulário após o encerramento do prazo de edição.
+
 ## [7.5.47] - 2025-05-21
 ### Correções
 - Corrige erro que impedia a exibição do botão "Carregar mais" na lista de inscritos  em editais com múltiplas fases
