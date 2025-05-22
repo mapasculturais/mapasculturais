@@ -35,7 +35,7 @@ $this->import('
 
         <mc-confirm-button v-if="isValidated" @confirm="send()" yes="<?= i::esc_attr__('Enviar agora') ?>" no="<?= i::esc_attr__('Cancelar') ?>" title="<?= i::esc_attr__('Quer enviar sua inscrição?') ?>">
             <template #button="modal">
-                <button @click="modal.open()" class="button button--large button--xbg button--primary">
+                <button v-if="registration.currentUserPermissions.send" @click="modal.open()" class="button button--large button--xbg button--primary">
                     <?= i::__("Enviar") ?>
                 </button>
             </template> 
@@ -44,21 +44,35 @@ $this->import('
             </template>
         </mc-confirm-button> 
 
-        <div class="registration-actions__validation" v-if="!isValidated">
-            <mc-alert type="warning">
-                <span><?= i::__("Para enviar sua inscrição, você precisa <strong>validá-la</strong> primeiro. Clique no botão <strong>Validar inscrição</strong> abaixo para verificar se todas as informações estão corretas.") ?></span>
-            </mc-alert>
-            <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
+        <div>
+            <div class="registration-actions__validation" v-if="!isValidated && registration.currentUserPermissions.modify">
+                <mc-alert type="warning">
+                    <span><?= i::__("Para enviar sua inscrição, você precisa <strong>validá-la</strong> primeiro. Clique no botão <strong>Validar inscrição</strong> abaixo para verificar se todas as informações estão corretas.") ?></span>
+                </mc-alert>
+                <button class="button button--large button--primary-outline" @click="validate()"> <?= i::__('Validar inscrição') ?> </button>
+            </div>
+
+            <div v-else >
+                <mc-alert type="warning">
+                    <span><?= i::__("O período para envio desta inscrição terminou em") ?> <strong>{{registration.opportunity.registrationTo.date('numeric year')}} <?= i::__("às") ?> {{registration.opportunity.registrationTo.time('2-digit')}}</strong></span>
+                </mc-alert>
+            </div>
         </div>
         <!-- <button class="button button--large button--xbg button--primary" @click="send()"> <?= i::__('Enviar') ?> </button> -->
     </div>
     <div class="registration-actions__secondary">
-        <button @click="save();" class="button button--large button--primary-outline">
+        <button v-if="registration.currentUserPermissions.modify" @click="save();" class="button button--large button--primary-outline">
             <?= i::__("Salvar") ?>
         </button>
  
         <button @click="exit()" class="button button--large button--primary-outline">
-            <?= i::__("Salvar e sair") ?>
+            <span v-if="registration.currentUserPermissions.modify">
+                <?= i::__("Salvar e sair") ?>
+            </span>
+
+            <span v-if="!registration.currentUserPermissions.modify">
+                <?= i::__("Sair") ?>
+            </span>
         </button>
     </div>
 </div>

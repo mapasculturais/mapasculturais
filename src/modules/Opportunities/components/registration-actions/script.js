@@ -150,13 +150,20 @@ app.component('registration-actions', {
             }
         },
         exit() {
-            this.registration.save().then(() => {
-                if (window.history.length > 2) {
-                    window.history.back();
-                } else {
-                    window.location.href = Utils.createUrl('panel', 'index');
-                }
-            });
+            if (this.registration.currentUserPermissions.modify) {
+                this.registration.save().then(() => {
+                    this.backHistory();
+                });
+            } else {
+                this.backHistory()
+            }
         },
+        backHistory() {
+            if (window.history.length > 2) {
+                window.history.back();
+            } else {
+                window.location.href = Utils.createUrl('panel', 'index');
+            }
+        }
     },
 });
