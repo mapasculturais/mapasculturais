@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.49] - 2025-05-23
+### Correções
+- Remove componente renew-lock da página de edição da inscrição
+
 ## [7.5.48] - 2025-05-22
 ### Melhorias
 - Implementa classe responsável por fazer o parse dos dados enviados para exportação de planilhas, garantindo acesso em profundidade aos objetos.
