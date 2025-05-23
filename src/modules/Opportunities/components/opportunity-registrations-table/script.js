@@ -309,9 +309,15 @@ app.component('opportunity-registrations-table', {
             return itens;
         },
         select() {
-            const fields = this.avaliableFields.map((item) => item.fieldName);
+            let fields = this.avaliableFields.map((item) => item.fieldName);
             
-            return ['number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields', ...fields].join(',');
+            if(this.isTechnicalEvaluationPhase) {
+                fields.push('usingQuota')
+                fields.push('quotas')
+                fields.push('tiebreaker')
+            }
+
+            return ['number,agentsData,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields', ...fields].join(',');
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
