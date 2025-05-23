@@ -51,6 +51,20 @@ class Registrations extends SpreadsheetJob
 
             if($property == 'files') {
                 $header[$property] = i::__('Anexos');
+            }
+            
+            if($property == 'usingQuota') {
+                $header[$property] = i::__('Cotas aplicadas');
+                continue;
+            }
+
+            if($property == 'quotas') {
+                $header[$property] = i::__('Elegível para as cotas');
+                continue;
+            }
+
+            if($property == 'tiebreaker') {
+                $header[$property] = i::__('Critérios de desempate');
                 continue;
             }
 
@@ -169,8 +183,9 @@ class Registrations extends SpreadsheetJob
             }
 
         } while($opportunity = $opportunity->previousPhase);
+        $enalble_quota = ($query_params['@order'] ?? false) === "@quota";
 
-        $result = $opportunity_controller->apiFindRegistrations($job->owner, $query_params);
+        $result = $opportunity_controller->apiFindRegistrations($job->owner, $query_params, $enalble_quota);
 
         $properties = FieldParser::parse($query_params['@select']);
         
@@ -244,7 +259,11 @@ class Registrations extends SpreadsheetJob
                 unset($entity['evaluationResultString']);
 
                 if(isset($entity['agentsData']) && is_array($entity['agentsData'])) {
-                    $entity['ownerName'] = $entity['agentsData']['owner']['name'];
+                    if($entity['status'] == "0") {
+                        $entity['ownerName'] = $entity['owner']['name'];
+                    } else {
+                        $entity['ownerName'] = $entity['agentsData']['owner']['name'];
+                    }
                 }
 
                 unset($entity['agentsData']);
@@ -303,6 +322,10 @@ class Registrations extends SpreadsheetJob
                 if(isset($entity['editSentTimestamp'])) {
                     $editSentTimestamp = $entity['editSentTimestamp'];
                     $entity['editableUntil'] = $editSentTimestamp->format('d/m/Y H:i:s');
+                }
+
+                if(isset($entity['quotas']) && $entity['quotas']) {
+                    $entity['quotas'] = implode(",", $entity['quotas']);
                 }
                 
                 $entity = $this->replaceArraysWithNull($entity);
