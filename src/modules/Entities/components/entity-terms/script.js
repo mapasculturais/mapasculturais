@@ -79,6 +79,9 @@ app.component('entity-terms', {
                     return term;
                 }
             })
+        },
+        selectedTerms() {
+            return this.entity.terms[this.taxonomy];
         }
     },
 

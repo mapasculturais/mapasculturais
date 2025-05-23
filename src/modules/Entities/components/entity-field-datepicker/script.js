@@ -74,20 +74,19 @@ app.component('entity-field-datepicker', {
     mounted () {
         this.model = this.entity[this.prop]?._date;
         this.modelDate = this.entity[this.prop]?._date;
-        if (this.entity[this.prop]?.time('full')) {
+        if (this.entity[this.prop] && this.entity[this.prop].time('full')) {
             let time = this.entity[this.prop]?.time('full').split(':');
             this.modelTime = {
                 hours: time[0],
                 minutes: time[1],
                 seconds: 0
             };
+
+            this.timeInput = this.entity[this.prop].time('full');
+            this.dateInput = this.entity[this.prop].date('2-digit year');
         } else {
             this.modelTime = '';
         }
-
-        this.timeInput = this.entity[this.prop]?.time('full');
-        this.dateInput = this.entity[this.prop]?.date('2-digit year');
-        
     },
 
     data () {
