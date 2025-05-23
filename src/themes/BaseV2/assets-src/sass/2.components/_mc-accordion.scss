@@ -17,6 +17,10 @@
         justify-content: center;
         max-width: size(870);
         padding: 18px 16px;
+
+        &--active{
+            border-radius: size(4) size(4) 0 0;
+        }
     }
     
     &__content {
