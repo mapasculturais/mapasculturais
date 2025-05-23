@@ -2,6 +2,8 @@
 namespace MapasCulturais\Storage;
 
 use MapasCulturais\App;
+use MapasCulturais\Exceptions\SaveFileError;
+use MapasCulturais\i;
 
 /**
  * Store the files in the filesystem.
@@ -50,8 +52,12 @@ class FileSystem extends \MapasCulturais\Storage{
         if($file->tmpFile['error'] === UPLOAD_ERR_OK){
             $filename = $this->getPath($file);
 
-            if(!is_dir(dirname($filename)))
-                mkdir (dirname($filename), 0755, true);
+            if(!is_dir(dirname($filename))){
+                $success = @mkdir(dirname($filename), 0755, true);
+                if(!$success) {
+                    throw new SaveFileError(i::__('Não foi possível salvar o arquivo'));
+                }
+            }
 
             // if filename exists, add a number before the last dot
             if(file_exists($filename)){
@@ -64,16 +70,11 @@ class FileSystem extends \MapasCulturais\Storage{
                 }
             }
 
-            /** Add verification to check if the file is really saved in storage */
-            if (is_uploaded_file($file->tmpFile['tmp_name'])) {
-                if (!move_uploaded_file($file->tmpFile['tmp_name'], $filename)) {
-                    throw new \MapasCulturais\Exceptions\FileUploadError($file->getGroup(), 500);
-                }
-            } else {
-                rename($file->tmpFile['tmp_name'], $filename);
+            $success = @rename($file->tmpFile['tmp_name'], $filename);
+            if(!$success) {
+                throw new SaveFileError(i::__('Não foi possível salvar o arquivo'));
             }
-
-            chmod($filename, 0666);
+            $success = @chmod($filename, 0666);
         }else{
             return false;
         }

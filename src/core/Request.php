@@ -29,10 +29,7 @@ class Request {
     }
 
     public function params() {
-        return array_merge(
-            (array) $this->psr7request->getParsedBody(), 
-            (array) $this->psr7request->getQueryParams()
-        );
+        return (array) $this->psr7request->getQueryParams();
     }
 
     function getMethod() {
