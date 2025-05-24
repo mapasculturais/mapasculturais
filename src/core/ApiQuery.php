@@ -1453,7 +1453,10 @@ class ApiQuery {
             $entity_id = $entity[$this->pk];
             
             if (isset($metadata[$entity_id])) {
-                
+                if (isset($permissions[$entity_id])) {
+                    $can_view = $permissions[$entity_id];
+                }
+
                 $can_view = $permissions[$entity_id] ?? false;
                 
                 $meta = $metadata[$entity_id];
