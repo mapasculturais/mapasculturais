@@ -163,20 +163,49 @@ trait EntityOpportunityDuplicator {
         $this->entityNewOpportunity->saveTerms();
     }
    
-    private function duplicateRegistrationFieldsAndFiles() : void
+    private function duplicateRegistrationFieldsAndFiles(): void
     {
+        // Criando um mapa de steps originais para os novos steps
+        $stepMap = [];
+
+        // Mapeando os steps existentes na nova Oportunidade
+        $existingSteps = array_column($this->entityNewOpportunity->registrationSteps->toArray(), null, 'id');
+
+        foreach ($this->entityOpportunity->registrationSteps as $oldStep) {
+            // Reutilizando step existente ou criar um novo
+            $stepMap[$oldStep->id] = $existingSteps[$oldStep->id] ?? (function () use ($oldStep) {
+                $newStep = clone $oldStep;
+                $newStep->setOpportunity($this->entityNewOpportunity);
+                $newStep->save(true);
+                return $newStep;
+            })();
+        }
+
+        // Clonando os RegistrationFieldConfigurations e associar aos novos steps
         foreach ($this->entityOpportunity->getRegistrationFieldConfigurations() as $registrationFieldConfiguration) {
             $fieldConfiguration = clone $registrationFieldConfiguration;
             $fieldConfiguration->setOwnerId($this->entityNewOpportunity->id);
+
+            // Atualizando o Step garantindo a correspondência correta
+            if (isset($stepMap[$registrationFieldConfiguration->step->id])) {
+                $fieldConfiguration->setStep($stepMap[$registrationFieldConfiguration->step->id]);
+            }
+
             $fieldConfiguration->save(true);
         }
 
+        // Clonando os RegistrationFileConfigurations e associar aos novos steps
         foreach ($this->entityOpportunity->getRegistrationFileConfigurations() as $registrationFileConfiguration) {
             $fileConfiguration = clone $registrationFileConfiguration;
             $fileConfiguration->setOwnerId($this->entityNewOpportunity->id);
+
+            // Atualizando o Step garantindo a correspondência correta
+            if (isset($stepMap[$registrationFileConfiguration->step->id])) {
+                $fileConfiguration->setStep($stepMap[$registrationFileConfiguration->step->id]);
+            }
+
             $fileConfiguration->save(true);
         }
-
     }
 
     private function duplicateMetalist() : void
