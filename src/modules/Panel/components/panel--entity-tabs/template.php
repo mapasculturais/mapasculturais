@@ -84,7 +84,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                             <slot name="entity-actions-left" :entity="entity"></slot>
                         </template>
                     </registration-card>
-                    <panel--entity-card v-if="entity.__objectType != 'registration' && (entity.type && entity.isModel != 1)" :key="entity.id" :entity="entity" 
+                    <panel--entity-card v-if="(entity.__objectType != 'registration' && entity.__objectType != 'opportunity') || (entity.__objectType == 'opportunity' && entity.isModel != 1)" :key="entity.id" :entity="entity" 
                         @undeleted="moveEntity(entity, $event)" 
                         @deleted="moveEntity(entity, $event)" 
                         @archived="moveEntity(entity, $event)" 
@@ -111,7 +111,7 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
                             <slot name="entity-actions-right" :entity="entity"></slot>
                         </template>
                     </panel--entity-card>
-                    <panel--entity-models-card v-if="entity.__objectType != 'registration' && (entity.type && entity.isModel == 1)" :key="entity.id" :entity="entity"></panel--entity-models-card>
+                    <panel--entity-models-card v-if="entity.__objectType == 'opportunity' && entity.isModel == 1" :key="entity.id" :entity="entity"></panel--entity-models-card>
                 </slot>
                 <slot name='after-list' :entities="entities" :query="queries['<?=$status?>']"></slot>
             </template>
