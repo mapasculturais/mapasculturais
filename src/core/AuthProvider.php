@@ -2,6 +2,7 @@
 namespace MapasCulturais;
 
 use MapasCulturais\Entities\Notification;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Exceptions\PermissionDenied;
 
 /**
@@ -134,17 +135,17 @@ abstract class AuthProvider {
 
     final function getAuthenticatedUser(){
         $user = $this->_authenticatedUser;
-        if (is_null($user)) {
+        
+        if (!$user instanceof User) {
             return $this->_guestUser;
-        } else {
-            if ($user->status < 1) {
-                $this->logout();
-                throw new PermissionDenied($user, message: i::__('Usuário inativo'));
-                
-            } else {
-                return $user;
-            }
+        } 
+
+        if ($user->status < 1) {
+            $this->logout();
+            throw new PermissionDenied($user, message: i::__('Usuário inativo'));
         }
+
+        return $user;
 
     }
 
