@@ -5,7 +5,7 @@ namespace Tests\Builders;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\User;
-use MapasCulturais\Tests\Abstract\Builder;
+use Tests\Abstract\Builder;
 
 class AgentBuilder extends Builder
 {

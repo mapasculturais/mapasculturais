@@ -1,7 +1,7 @@
 <?php
 namespace MapasCulturais\Tests;
 
-use MapasCulturais\Tests\Abstract\TestCase;
+use Tests\Abstract\TestCase;
 
 require_once __DIR__.'/bootstrap.php';
 

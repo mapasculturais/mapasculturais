@@ -11,11 +11,10 @@ class UserRolesTest extends Abstract\TestCase
     function testAdminPermissionsToModifyEntities()
     {
         $admin_user = $this->userDirector->createUser('admin');
-        $normal_user = $this->userDirector->createUser();
-
         $this->login($admin_user);
 
-        $this->assertTrue($normal_user->profile->canUser('modify', $admin_user), 'Certificando que um administrador pode modificar um agente de um outro usuário');
+        $normal_user = $this->userDirector->createUser();
+        $this->assertTrue($normal_user->profile->canUser('modify'), 'Certificando que um administrador pode modificar um agente de um outro usuário');
     }
 
     function testNormalUserPermissionsToPromoteYourself()

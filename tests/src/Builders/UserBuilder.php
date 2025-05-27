@@ -4,7 +4,7 @@ namespace Tests\Builders;
 
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\User;
-use MapasCulturais\Tests\Abstract\Builder;
+use Tests\Abstract\Builder;
 
 /**
  * @var User $instance 
@@ -26,6 +26,8 @@ class UserBuilder extends Builder
     function reset(): self
     {
         $this->instance = new User;
+        $this->instance->setAuthProvider('test');
+        $this->instance->authUid = uniqid('test-');
 
         return $this;
     }
@@ -63,6 +65,7 @@ class UserBuilder extends Builder
             $agent = $this->agentBuilder
                 ->reset($this->instance, 1)
                 ->fillRequiredProperties()
+                ->save()
                 ->getInstance();
         }
         
