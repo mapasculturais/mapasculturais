@@ -66,6 +66,12 @@ app.component('registration-actions', {
     },
 
     computed: {
+        additionalValidateFields() {
+            return $MAPAS.config.registrationActions.additionalValidateFields;
+        },
+        additionalValidateFieldsSteps() {
+            return $MAPAS.config.registrationActions.additionalValidateFieldsSteps;
+        },
         canSubmit() {
             return this.isLastStep && this.isValidated;
         },
@@ -279,12 +285,13 @@ app.component('registration-actions', {
                     }
                 }
 
-                if (['workplan', 'goal', 'delivery', 'projectDuration', 'culturalArtisticSegment'].includes(fieldName)) {
+                if (this.additionalValidateFields.includes(fieldName)) {
                     const keys = Object.keys(validationErrors);
                     const lastStep = keys[keys.length - 1]; 
 
                    if (this.fields.length > 0) {
-                        validationErrors[lastStep][fieldName] = fieldError;
+                        const step = this.additionalValidateFieldsSteps?.[fieldName] || lastStep;
+                        validationErrors[step][fieldName] = fieldError;
                    } else {
                         validationErrors[Object.keys(validationErrors)[0]][fieldName] = fieldError;
                    }
