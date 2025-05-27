@@ -4,7 +4,7 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
       args:
-        - COMPOSER_ARGS="" 
+        - COMPOSER_ARGS="-v" 
     ports:
       - "80:80"
     volumes:

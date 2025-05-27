@@ -24,7 +24,7 @@ abstract class Builder
         }
     }
 
-    function save(): self
+    function save(): static
     {
         $this->getInstance()->save(true);
         return $this;
