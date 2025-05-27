@@ -56,7 +56,7 @@ app.component('registration-status', {
                 return false;
             }
 
-            if(!this.firstPhaseRegistration.currentUserPermissions.create) {
+            if(!this.firstPhaseRegistration?.currentUserPermissions.create) {
                 return false;
             }
 
