@@ -17,6 +17,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   - Comissão de voto de minerva, que recebe inscrições que tenham divergência entre diferentes comissões de avaliação
 - Etapas em formulários de inscrição
 - Cria novos hooks na tela de visualiação do formulario pelo avaliador
+- justa o componente registration-actions para permitir a complementação de erros do formulário com campos externos ao core, como os definidos por plugins e temas
 
 ### Melhorias
 - Redesenho do formulário de inscrição
