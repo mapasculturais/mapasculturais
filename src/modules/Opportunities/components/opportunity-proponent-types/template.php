@@ -23,7 +23,7 @@ use MapasCulturais\i;
                     > 
                     {{ description.options[optionValue] }}
                 </label>
-                <div class="opportunity-proponent-types__field field__collective" v-if="showColetivoBinding && optionValue === 'Coletivo'">
+                <div class="opportunity-proponent-types__field field__collective" v-if="showColetivoBinding && optionValue === '<?= i::__('Coletivo') ?>'">
                     <label>
                         <input 
                             type="checkbox" 
@@ -34,7 +34,7 @@ use MapasCulturais\i;
                     </label>
                 </div>
 
-                <div class="opportunity-proponent-types__field field__legal" v-if="showJuridicaBinding && optionValue === 'Pessoa Jurídica'">
+                <div class="opportunity-proponent-types__field field__legal" v-if="showJuridicaBinding && optionValue === '<?= i::__('Pessoa Jurídica') ?>'">
                     <label>
                         <input 
                             type="checkbox" 
