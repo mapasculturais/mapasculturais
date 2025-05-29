@@ -1661,8 +1661,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             },
             error: function(xhr, status, error) {
                 let response = xhr.responseJSON;
-                MapasCulturais.Messages.error(response.data);
-                MapasCulturais.AjaxUploader.resetProgressBar($form);
+                let data = response.data;
+
+                if (typeof data === 'string') {
+                    MapasCulturais.Messages.error(data);
+
+                } else if (typeof data === 'object' && data !== null) {
+                    const fieldMessages = data[fieldName];
+                    if (Array.isArray(fieldMessages)) {
+                        fieldMessages.forEach(msg => MapasCulturais.Messages.error(msg));
+                    } else if (fieldMessages) {
+                        MapasCulturais.Messages.error(fieldMessages);
+                    }
+                }
                
                 $('.carregando-arquivo').hide();
                 $('.submit-attach-opportunity').show();
@@ -1683,6 +1694,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $http.delete(url).success(function(response){
                 MapasCulturais.Messages.success(labels['attachmentRemoved']);
                 delete $scope.data.fields[$index].file;
+            }).error(function(response){
+                let data = response.data;
+                if (typeof data === 'string') {
+                    MapasCulturais.Messages.error(data);
+
+                } else if (typeof data === 'object' && data !== null) {
+                    const fieldMessages = data[fieldName];
+                    if (Array.isArray(fieldMessages)) {
+                        fieldMessages.forEach(msg => MapasCulturais.Messages.error(msg));
+                    } else if (fieldMessages) {
+                        MapasCulturais.Messages.error(fieldMessages);
+                    }
+                }
             });
         }
     };
