@@ -159,9 +159,13 @@ abstract class File extends \MapasCulturais\Entity
 
     static function getValidations() {
         $app = App::i();
+        
+        $not_allowed_mime_types = $app->config['app.not_allowed_mime_types'];
+        $pattern = '#'. $not_allowed_mime_types . '$#';
+
         $validations = [
             'mimeType' => [
-                'v::not(v::regex("#.php$#"))' => i::__('Tipo de arquivo não permitido')
+                'v::not(v::regex("'.$pattern.'"))' => i::__('Tipo de arquivo não permitido')
             ]
         ];
 
