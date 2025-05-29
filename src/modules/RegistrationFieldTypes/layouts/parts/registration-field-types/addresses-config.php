@@ -1,6 +1,6 @@
 <?php use MapasCulturais\i; ?>
 <div ng-if="field.fieldType === 'addresses'">
-    <label> <?= i::__('Nome do botão') ?> <br> <input type="text" ng-model="field.config.buttonText" placeholder="Nome do botão no formulário" /></label>
+    <label> <?= i::__('Nome do botão') ?> <br> <input type="text" ng-model="field.config.buttonText" placeholder="<?= i::__('Nome do botão no formulário') ?>" /></label>
 </div>
 <div ng-if="field.fieldType === 'addresses'">
     <!-- <label><input type="checkbox" ng-model="field.config.name" ng-true-value="'true'" ng-false-value=""> <?php i::_e('Pedir informação de nome') ?></label><br>
