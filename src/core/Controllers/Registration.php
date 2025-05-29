@@ -702,4 +702,66 @@ class Registration extends EntityController {
 
         $this->json(true);
     }
+
+    function GET_createZipFiles() {
+        $app = App::i();
+        $this->requireAuthentication();
+
+        $entity = $this->requestedEntity;
+        $entity->checkPermission('@control');
+
+        if (!$entity || !$entity->files) {
+            $app->pass(); 
+        }
+
+        $fileName = preg_replace('/[^a-zA-Z0-9_\-.]/', '_', $entity->number . '-' . uniqid()) . '.zip';
+        $tmpZipPath = sys_get_temp_dir() . '/' . uniqid('zip_') . '.zip';
+
+        $zip = new \ZipArchive();
+        if ($zip->open($tmpZipPath, \ZipArchive::CREATE) !== true) {
+            error_log("Erro ao abrir ZIP para entidade {$entity->id}");
+            $this->json([
+                'success' => false,
+                'message' => \MapasCulturais\i::__('Houve um problema ao preparar o arquivo. Fale com o administrador.')
+            ], 500);
+            return;
+        }
+
+        foreach ($entity->files as $file) {
+            if (is_array($file)) {
+                $file = $file[0];
+            }
+
+            if (file_exists($file->path)) {
+                $zip->addFile($file->path, basename($file->path));
+            }
+        }
+
+        $zip->close();
+
+        if (!file_exists($tmpZipPath)) {
+            error_log("ZIP não encontrado após criação (entidade {$entity->id})");
+            $this->json([
+                'success' => false,
+                'message' => \MapasCulturais\i::__('Não foi possível gerar o arquivo. Tente novamente.')
+            ], 500);
+            return;
+        }
+
+        // Cabeçalhos para forçar download
+        header('Content-Type: application/zip');
+        header('Content-Disposition: attachment; filename="' . basename($fileName) . '"');
+        header('Content-Length: ' . filesize($tmpZipPath));
+        header('Pragma: public');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Expires: 0');
+
+        // Envia e remove o arquivo
+        readfile($tmpZipPath);
+        unlink($tmpZipPath);
+        exit;
+    }
+
+
+
 }
