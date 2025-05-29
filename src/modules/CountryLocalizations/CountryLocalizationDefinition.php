@@ -2,12 +2,29 @@
 
 namespace CountryLocalizations;
 
+use MapasCulturais\Entity;
+use MapasCulturais\Traits;
 /**
- * @package CountryLocalizations
+ * @property-read string $countryCode
+ * @property-read string $countryName
+ * @property-read array[] $activeLevels
+ * @property-read string $postalCode
+ * @property-read string $level1
+ * @property-read string $level2
+ * @property-read string $level3
+ * @property-read string $level4
+ * @property-read string $level5
+ * @property-read string $level6
+ * @property-read string $line1
+ * @property-read string $line2
+ * @property-read string $fullAddress
+ * @property-read array[] $levelHierarchy
  */
 abstract class CountryLocalizationDefinition
 {
-
+    use Traits\MagicGetter,
+        Traits\MagicSetter;
+        
     abstract function register();
 
     // =================== GETTERS ================== //
@@ -37,121 +54,121 @@ abstract class CountryLocalizationDefinition
     abstract protected function getPostalCode($entity): string;
 
     /**
-     * 
+     * @param Entity $entity
      * @return string 
      */
-    abstract protected function getLevel1($entity): string;
+    abstract protected function getLevel1(Entity $entity): string;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getLevel2($entity): string;
+    abstract protected function getLevel2(Entity $entity): string;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getLevel3($entity): string;
+    abstract protected function getLevel3(Entity $entity): string;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getLevel4($entity): string;
+    abstract protected function getLevel4(Entity $entity): string;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getLevel5($entity): string;
+    abstract protected function getLevel5(Entity $entity): string;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getLevel6($entity): string;
+    abstract protected function getLevel6(Entity $entity): string;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getLine1($entity): string;
+    abstract protected function getLine1(Entity $entity): string;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getLine2($entity): string;
+    abstract protected function getLine2(Entity $entity): string;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getFullAddress($entity): string;
+    abstract protected function getFullAddress(Entity $entity): string;
 
     /**
-     * 
+     * @param Entity $entity
      * @return array[]
      */
-    abstract protected function getLevelHierarchy($entity): array;
+    abstract protected function getLevelHierarchy(Entity $entity): array;
 
     // =================== SETTERS ===================== //
 
     /**
-     * @param mixed $entity
-     * @param mixed $value
+     * @param Entity $entity
+     * @param string $value
      * @return void
      */
-    abstract protected function setLevel1($entity, $value): void;
+    abstract protected function setLevel1(Entity $entity, string $value): void;
 
     /**
-     * @param mixed $entity
-     * @param mixed $value
+     * @param Entity $entity
+     * @param string $value
      * @return void
      */
-    abstract protected function setLevel2($entity, $value): void;
+    abstract protected function setLevel2(Entity $entity, string $value): void;
 
     /**
-     * @param mixed $entity
-     * @param mixed $value
+     * @param Entity $entity
+     * @param string $value
      * @return void
      */
-    abstract protected function setLevel3($entity, $value): void;
+    abstract protected function setLevel3(Entity $entity, string $value): void;
 
     /**
-     * @param mixed $entity
-     * @param mixed $value
+     * @param Entity $entity
+     * @param string $value
      * @return void
      */
-    abstract protected function setLevel4($entity, $value): void;
+    abstract protected function setLevel4(Entity $entity, string $value): void;
 
     /**
-     * @param mixed $entity
-     * @param mixed $value
+     * @param Entity $entity
+     * @param string $value
      * @return void
      */
-    abstract protected function setLevel5($entity, $value): void;
+    abstract protected function setLevel5(Entity $entity, string $value): void;
 
     /**
-     * @param mixed $entity
-     * @param mixed $value
+     * @param Entity $entity
+     * @param string $value
      * @return void
      */
-    abstract protected function setLevel6($entity, $value): void;
+    abstract protected function setLevel6(Entity $entity, string $value): void;
 
     /**
-     * @param mixed $entity
-     * @param mixed $value
+     * @param Entity $entity
+     * @param string $value
      * @return void
      */
-    abstract protected function setLine1($entity, $value): void;
+    abstract protected function setLine1(Entity $entity, string $value): void;
 
     /**
-     * @param mixed $entity
-     * @param mixed $value
+     * @param Entity $entity
+     * @param string $value
      * @return void
      */
-    abstract protected function setLine2($entity, $value): void;
+    abstract protected function setLine2(Entity $entity, string $value): void;
 
 }
