@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.52] - 2025-05-29
+### Correções
+- Corrige a validação do fluxo de envio da inscrição para considerar o modo de edição de inscrição no componente registration-action
+
 ## [7.5.51] - 2025-05-29
 ### Melhorias
 - Implementa endpoint que gera o arquivo ZIP dos anexos da inscrição em tempo real e realiza o envio direto para download
