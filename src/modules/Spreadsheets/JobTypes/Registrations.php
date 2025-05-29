@@ -254,6 +254,10 @@ class Registrations extends SpreadsheetJob
                     $entity = array_merge($entity, $owner_info);
                 }
 
+                if (isset($entity['files']) && $entity['files']) {
+                    $entity['files'] = $app->createUrl('registration', 'createZipFiles', [$entity['id']]);
+                }
+
                 if (isset($entity['geoMesoregiao'])) {
                     $entity['ownerGeoMesoregiao'] = eval('return $entity' . $properties['ownerGeoMesoregiao'] . ';');
                      unset($entity['geoMesoregiao']);
