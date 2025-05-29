@@ -1608,7 +1608,8 @@ class App {
                     throw new Exceptions\FileUploadError($key, $_FILES[$key]['error']);
                 }
 
-                $mime = mime_content_type($_FILES[$key]['tmp_name']);
+                $mime = Utils::getMimeType($_FILES[$key]['tmp_name']);
+
                 $_FILES[$key]['name'] = $this->sanitizeFilename($_FILES[$key]['name'], $mime);
                 $result = new $file_class_name($_FILES[$key]);
 
