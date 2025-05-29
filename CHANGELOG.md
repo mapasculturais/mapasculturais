@@ -21,6 +21,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Ajusta o fluxo de upload para exibir corretamente os erros de validação retornados
 - Corrige a exibição indevida de mensagem no formulário de inscrição com prazo final expirado
+- Ajusta tradução dos termos Sim e Não do campo pessoa idosa  no componente agent-data-1
 
 ## [7.5.50] - 2025-05-23
 ### Correções
