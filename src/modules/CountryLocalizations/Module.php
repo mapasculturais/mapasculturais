@@ -19,5 +19,10 @@ class Module extends \MapasCulturais\Module {
 
     function register(){
         $app = App::i();
+        
+        $controllers = $app->getRegisteredControllers();
+        if (!isset($controllers['country-localization'])) {
+            $app->registerController('country-localization', Controller::class);
+        }
     }
 }
