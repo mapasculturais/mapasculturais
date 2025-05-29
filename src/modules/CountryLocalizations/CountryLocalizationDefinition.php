@@ -48,10 +48,10 @@ abstract class CountryLocalizationDefinition
     abstract protected function getActiveLevels(): array;
 
     /**
-     * 
-     * @return string 
+     * @param Entity $entity
+     * @return string
      */
-    abstract protected function getPostalCode($entity): string;
+    abstract protected function getPostalCode(Entity $entity): string;
 
     /**
      * @param Entity $entity
