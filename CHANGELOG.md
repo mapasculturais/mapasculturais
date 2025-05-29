@@ -4,6 +4,24 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [7.5.51] - 2025-05-29
+### Melhorias
+- Implementa endpoint que gera o arquivo ZIP dos anexos da inscrição em tempo real e realiza o envio direto para download
+- Ajusta o componente registration-tab para requisitar os anexos da inscrição via novo endpoint createZipFiles()
+- Adiciona link para download do arquivo ZIP com os anexos da inscrição na planilha de inscritos
+
+### Melhorias não funcionais
+- Remove a geração do arquivo ZIP com os anexos do fluxo de envio da inscrição
+- Implementa o método getMimeType() na classe Utils, responsável por retornar o MIME type de um arquivo.
+- Utiliza o método getMimeType() para obter o MIME type dos arquivos durante o processo de upload.
+- Implementa configuração que permite definir quais tipos de MIME devem ser bloqueados.
+- Atualiza a validação de MIME types para utilizar a lista not_allowed_mime_types definida nas configurações
+
+### Correções
+- Ajusta o fluxo de upload para exibir corretamente os erros de validação retornados
+- Corrige a exibição indevida de mensagem no formulário de inscrição com prazo final expirado
+
 ## [7.5.50] - 2025-05-23
 ### Correções
 - Ajusta planilha de inscritos, para conter dados das cotas no momento da exportação
