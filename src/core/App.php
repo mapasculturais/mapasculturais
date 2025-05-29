@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace MapasCulturais;
 
+use CountryLocalizations\CountryLocalizationDefinition;
 use DateTime;
 use Slim\Factory\AppFactory;
 use Slim;
@@ -3939,6 +3940,43 @@ class App {
      */
     function getRegisteredEvaluationMethodBySlug(string $slug){
         return $this->_register['evaluation_method'][$slug] ?? null;
+    }
+
+    /** 
+     * ============ LOCALIZAÇÃO DE PAÍSES ============ 
+     */
+
+    /**
+     * Registra um tipo de localização de país
+     * 
+     * @param CountryLocalizationDefinition $definition 
+     * @return void 
+     * @throws GlobalException 
+     */
+    public function registerCountryLocalization(CountryLocalizationDefinition $definition) {
+        if(key_exists($definition->countryCode, $this->_register['country_localizations'])){
+            throw new \Exception("Country localization {$definition->countryCode} already registered");
+        }
+        $this->_register['country_localizations'][$definition->countryCode] = $definition;
+    }
+
+    /**
+     * Retorna os tipos de localização de país registrados
+     * 
+     * @return CountryLocalizationDefinition[]
+     */
+    public function getRegisteredCountryLocalizations(): array {
+        return $this->_register['country_localizations'];
+    }
+
+    /**
+     * Retorna um tipo de localização de país registrado, dado o código
+     * 
+     * @return CountryLocalizationDefinition|null
+     * @param string $code
+     */
+    public function getRegisteredCountryLocalizationByCountryCode(string $code): CountryLocalizationDefinition|null {
+        return $this->_register['country_localizations'][$code] ?? null;
     }
 
 
