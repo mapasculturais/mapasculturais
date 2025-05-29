@@ -101,4 +101,7 @@ return [
     */
     'footer.supportMessage' => '',
 
+    /* Lista de MIME types bloqueados */
+    'app.not_allowed_mime_types' => env('APP_NOT_ALLOWED_MIME_TYPES', "html|php|javascript|css|executable|msdownload|bat|cmd|installer|bash|diskimage|android|java|octet-stream"),
+
 ];
