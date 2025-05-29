@@ -36,9 +36,9 @@ use MapasCulturais\i;
 
                     <div ng-if="policy.viewDataValues == 'bool' || policy.viewDataValues == null">
                         <select ng-model="data.fieldsAffiermativePolicie[policy.id].value">
-                            <option value=""> Selecione </option>
-                            <option value="true"> Sim </option>
-                            <option value="false"> Não </option>
+                            <option value=""> <?= i::_e('Selecione') ?> </option>
+                            <option value="true"> <?= i::_e('Sim') ?> </option>
+                            <option value="false"> <?= i::_e('Não') ?> </option>
                         </select>
                     </div>
 

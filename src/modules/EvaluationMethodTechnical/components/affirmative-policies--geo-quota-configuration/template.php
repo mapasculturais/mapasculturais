@@ -95,7 +95,7 @@ $this->import('
 
                 <div class="field geo-quota__field">
                     <label><?= i::__('Divisão territorial') ?></label>
-                    <mc-select placeholder="Selecione uma divisão" :default-value="geoQuota.geoDivision" @change-option="setDivision" show-filter> <!-- :default-value="payment.status" @change-option="setPaymentStatus" -->
+                    <mc-select placeholder="<?= i::__('Selecione uma divisão') ?>" :default-value="geoQuota.geoDivision" @change-option="setDivision" show-filter> <!-- :default-value="payment.status" @change-option="setPaymentStatus" -->
                         <option v-for="(division, index) in divisions" :key="index" :value="division.metakey">{{division.name}}</option>
                     </mc-select>
                 </div>

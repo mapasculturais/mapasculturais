@@ -3,11 +3,11 @@
 return [
     'registration.prefix' => env('REGISTRATION_PREFIX', 'on-'),
     
-    'registration.proponentTypes' => [
-        'Pessoa Física',
-        'MEI',
-        'Coletivo',
-        'Pessoa Jurídica',
+   'registration.proponentTypes' => [
+    	\MapasCulturais\i::__('Pessoa Física'),
+    	\MapasCulturais\i::__('MEI'),
+   	\MapasCulturais\i::__('Coletivo'),
+   	\MapasCulturais\i::__('Pessoa Jurídica'),
     ],
 
     'registration.proponentTypesToAgentsMap' => [

@@ -14,7 +14,7 @@ $this->import("
 ");
 ?>
 
-<mc-popover classes="v-popper__popper--no-border" title="Informações">
+<mc-popover classes="v-popper__popper--no-border" title="<?= \MapasCulturais\i::__('Informações') ?>">
     <div class="faq-info scrollbar">
         <mc-title class="faq-info__title bold">{{title || question.question}}</mc-title>
         <div class="faq-info__content" v-html="answer" ></div>
