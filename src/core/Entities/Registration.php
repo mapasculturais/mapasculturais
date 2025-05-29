@@ -1002,11 +1002,6 @@ class Registration extends \MapasCulturais\Entity
 
         // copies agents data including configured private
 
-        // creates zip archive of all files
-        if($this->files){
-            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . ' - ' . uniqid() . '.zip');
-        }
-
         $this->status = self::STATUS_SENT;
         if($update_sent_timestamp){
             $this->sentTimestamp = new \DateTime;
