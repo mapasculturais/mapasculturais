@@ -250,4 +250,19 @@ class Utils {
 
         return false;
     }
+
+    /**
+     * Retorna o MIME type de um arquivo
+     *
+     * @param string $path
+     * @return string
+     */
+    static function getMimeType(string $path): string
+    {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $path); 
+        finfo_close($finfo);
+
+        return $mime;
+    }
 }
