@@ -226,6 +226,7 @@ class App {
         'roles' => [],
         'chat_thread_types' => [],
         'job_types' => [],
+        'country_localizations' => []
     ];
 
     /**
