@@ -5,7 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entity;
 use MapasCulturais\i;
 
-class BrazilLocalization extends CountryLocalizationDefinition
+class BrasilLocalization extends CountryLocalizationDefinition
 {
     function register() {}
 
@@ -110,7 +110,7 @@ class BrazilLocalization extends CountryLocalizationDefinition
         return implode(' - ', $parts);
     }
 
-    protected function getLevelHierarchy(Entity $entity): array
+    protected function getLevelHierarchy(): array
     {
         $file = __DIR__ . '/levels-hierarchies/br.php';
 
