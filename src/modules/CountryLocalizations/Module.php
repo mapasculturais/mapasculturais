@@ -38,5 +38,7 @@ class Module extends \MapasCulturais\Module {
             $this->registerAgentMetadata($slug, ['label' => $label]);
             $this->registerSpaceMetadata($slug, ['label' => $label]);
         }
+
+        $app->registerCountryLocalization(new BrasilLocalization());
     }
 }
