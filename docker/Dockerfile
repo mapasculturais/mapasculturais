@@ -80,7 +80,8 @@ WORKDIR /var/www/
 ENV COMPOSER_ALLOW_SUPERUSER=1 
 ENV COMPOSER_ARGS=${COMPOSER_ARGS}
 
-RUN composer.phar install ${COMPOSER_ARGS}
+RUN composer.phar install $COMPOSER_ARGS
+RUN composer.phar dump-autoload --optimize
 
 COPY config /var/www/config
 COPY public /var/www/html
