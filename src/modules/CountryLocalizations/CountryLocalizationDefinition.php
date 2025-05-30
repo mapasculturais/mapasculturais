@@ -120,6 +120,13 @@ abstract class CountryLocalizationDefinition
      * @param string $value
      * @return void
      */
+    abstract protected function setPostalCode(Entity $entity, string $value): void;
+
+    /**
+     * @param Entity $entity
+     * @param string $value
+     * @return void
+     */
     abstract protected function setLevel1(Entity $entity, string $value): void;
 
     /**
