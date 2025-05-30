@@ -33,85 +33,85 @@ abstract class CountryLocalizationDefinition
      * 
      * @return string 
      */
-    abstract protected function getCountryCode(): string;
+    abstract protected function getCountryCode(): ?string;
     
     /**
      * 
      * @return string 
      */
-    abstract protected function getCountryName(): string;
+    abstract protected function getCountryName(): ?string;
 
     /**
      * 
      * @return array[]
      */
-    abstract protected function getActiveLevels(): array;
+    abstract protected function getActiveLevels(): ?array;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getPostalCode(Entity $entity): string;
+    abstract protected function getPostalCode(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string 
      */
-    abstract protected function getLevel1(Entity $entity): string;
+    abstract protected function getLevel1(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getLevel2(Entity $entity): string;
+    abstract protected function getLevel2(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getLevel3(Entity $entity): string;
+    abstract protected function getLevel3(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getLevel4(Entity $entity): string;
+    abstract protected function getLevel4(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getLevel5(Entity $entity): string;
+    abstract protected function getLevel5(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getLevel6(Entity $entity): string;
+    abstract protected function getLevel6(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getLine1(Entity $entity): string;
+    abstract protected function getLine1(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getLine2(Entity $entity): string;
+    abstract protected function getLine2(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return string
      */
-    abstract protected function getFullAddress(Entity $entity): string;
+    abstract protected function getFullAddress(Entity $entity): ?string;
 
     /**
      * @param Entity $entity
      * @return array[]
      */
-    abstract protected function getLevelHierarchy(Entity $entity): array;
+    abstract protected function getLevelHierarchy(Entity $entity): ?array;
 
     // =================== SETTERS ===================== //
 
