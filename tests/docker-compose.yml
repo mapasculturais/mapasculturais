@@ -1,34 +1,55 @@
-version: '2'
 services:
-  mapas_tests:
+  mapas:
     build:
       context: ../
-      dockerfile: compose/local/Dockerfile
+      dockerfile: docker/Dockerfile
+      args:
+        - COMPOSER_ARGS="" 
+    ports:
+      - "80:80"
     volumes:
-      - ../src:/var/www/src
+      - ./docker/entrypoint.sh:/entrypoint.sh
+
+      - ../composer.json:/var/www/composer.json
+      - ../composer.lock:/var/www/composer.lock
+
+      - ../config:/var/www/config
+      - ../public:/var/www/html
       - ../scripts:/var/www/scripts
-      - ../compose/local/config-tests.php:/var/www/html/protected/application/conf/config.php
-      - ../tests:/var/www/tests
+      - ../src:/var/www/src
+      - ./src:/var/www/tests
+
+      - ./config.d:/var/www/config/config.d
+      
     links:
-      - db_tests:db
-    
+      - db
+      
     environment:
-      - DB_HOST=db_tests
-      - DB_NAME=mapas
-      - DB_USER=mapas
-      - DB_PASS=mapas
+      - TESTING=1
+      - BUILD_ASSETS=0
+      - MAILER_TRANSPORT=smtp://mailhog:1025
+      - MAILER_FROM=sysadmin@localhost
 
     depends_on:
-      - db_tests
-      
+      - db
+      - mailhog
     stdin_open: true
     tty: true
-      
-  db_tests:
-    image: mdillon/postgis:11
+    
+  mailhog: 
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
+
+  db:
+    image: postgis/postgis:16-master
     environment:
       - POSTGRES_PASSWORD=mapas
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
+      
+
+    ports:
+      - "5432:5432"
     volumes:
-      - ../db/db-test.sql:/docker-entrypoint-initdb.d/db.sql
+      - ./db:/docker-entrypoint-initdb.d
