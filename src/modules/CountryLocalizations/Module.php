@@ -26,12 +26,12 @@ class Module extends \MapasCulturais\Module {
         }
 
         $levels = [
-            'address_level_1' => i::__('Campo de endereço de nível 1'),
-            'address_level_2' => i::__('Campo de endereço de nível 2'),
-            'address_level_3' => i::__('Campo de endereço de nível 3'),
-            'address_level_4' => i::__('Campo de endereço de nível 4'),
-            'address_level_5' => i::__('Campo de endereço de nível 5'),
-            'address_level_6' => i::__('Campo de endereço de nível 6'),
+            'address_level_1' => i::__('Campo de endereço de nível 1 (Região)'),
+            'address_level_2' => i::__('Campo de endereço de nível 2 (Estado/Província)'),
+            'address_level_3' => i::__('Campo de endereço de nível 3 (Departamento)'),
+            'address_level_4' => i::__('Campo de endereço de nível 4 (Cidade/Município/Comune)'),
+            'address_level_5' => i::__('Campo de endereço de nível 5 (Subprefeitura/Distrito)'),
+            'address_level_6' => i::__('Campo de endereço de nível 6 (Bairro)'),
         ];
 
         foreach ($levels as $slug => $label) {
