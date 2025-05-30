@@ -1047,6 +1047,9 @@ class Module extends \MapasCulturais\Module{
                 return;
             }
 
+            $lock_key = "importPreviousPhaseRegistrations:{$this->id}";
+            $app->lock($lock_key, wait_for_unlock:10, expire_in:10 * MINUTE_IN_SECONDS);
+
             $this->checkPermission('@control');
 
             $app->log->debug("  >> IMPORTANDO inscrições da fase {$this->name} ({$this->id})");
@@ -1292,6 +1295,7 @@ class Module extends \MapasCulturais\Module{
             $app->enqueueEntityToPCacheRecreation($this);
             $app->enableAccessControl();
 
+            $app->unlock($lock_key);
             return $new_registrations;
         });
 

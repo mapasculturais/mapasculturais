@@ -19,11 +19,20 @@ app.component('home-map', {
         if(this.limit) {
             query['@limit'] = this.limit;
         }
+        
         console.time('home-map: fetchEntities');
-        this.spaces = await spaceAPI.find(query, null, true);
-        this.agents = await agentAPI.find(query, null, true);
-        console.timeEnd('home-map: fetchEntities');
+        const requests = [];
+        requests.push(this.hideSpaces ? [] : spaceAPI.find(query, null, true));
+        requests.push(this.hideAgents ? [] : agentAPI.find(query, null, true));
 
+        Promise.all(requests).then((responses) => {
+            this.spaces = responses[0];
+            this.agents = responses[1];
+        }).finally(() => {
+            console.timeEnd('home-map: fetchEntities');
+        }).catch((err) => {
+            console.error(err);
+        });
     },
     
     data() {
@@ -37,11 +46,11 @@ app.component('home-map', {
         entities() {
             let entities = [];
 
-            if (this.spaces instanceof Array && this.global.enabledEntities.spaces) {
+            if (this.spaces instanceof Array && this.global.enabledEntities.spaces && !this.hideSpaces) {
                 entities = entities.concat(this.spaces);
             } 
             
-            if (this.agents instanceof Array && this.global.enabledEntities.agents) {
+            if (this.agents instanceof Array && this.global.enabledEntities.agents && !this.hideAgents) {
                 entities = entities.concat(this.agents);
             } 
             return Vue.shallowReactive(entities);
@@ -60,7 +69,15 @@ app.component('home-map', {
             type: Object,
             default: {}
         },
-        text: String
+        text: String,
+        hideAgents: {
+            type: Boolean,
+            default: false
+        },
+        hideSpaces: {
+            type: Boolean,
+            default: false
+        },
     },
 
     methods: {

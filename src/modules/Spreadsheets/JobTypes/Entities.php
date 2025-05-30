@@ -1,18 +1,19 @@
 <?php
 namespace Spreadsheets\JobTypes;
 
+use MapasCulturais\i;
+use MapasCulturais\App;
 use MapasCulturais\ApiQuery;
+use MapasCulturais\Entities\Job;
+use Spreadsheets\SpreadsheetJob;
+use MapasCulturais\Entities\Seal;
+use MapasCulturais\Entities\User;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
-use MapasCulturais\Entities\Job;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Project;
-use MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\Space;
+use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\Subsite;
-use MapasCulturais\Entities\User;
-use MapasCulturais\i;
-use Spreadsheets\SpreadsheetJob;
+use MapasCulturais\Entities\Opportunity;
 
 class Entities extends SpreadsheetJob
 {
@@ -70,20 +71,38 @@ class Entities extends SpreadsheetJob
 
     protected function _getBatch(Job $job) : array {
         $entity_class_name = $job->entityClassName;
+        $app = App::i();
 
-        $query = $job->query;
-        $query['@limit'] = $this->limit;
-        $query['@page'] = $this->page;
+        $jobQuery = $job->query;
+        $jobQuery['@limit'] = $this->limit;
+        $jobQuery['@page'] = $this->page;
 
-        $query = new ApiQuery($entity_class_name, $query);
+        if(isset($jobQuery['@select'])) {
+            $taxonomies = array_keys($app->getRegisteredTaxonomies());
+            $select = [];
+            if($props = explode(',', $jobQuery['@select'])) {
+                $select = $props;
+                foreach($props as $prop) {
+                    if(in_array($prop, $taxonomies) && !in_array('terms', $props)) {
+                        $select[] = 'terms';
+                    }
+                }
+
+                $jobQuery['@select'] = implode(',', $select);
+            }
+        }
+
+        $query = new ApiQuery($entity_class_name, $jobQuery);
         $result = $query->getFindResult();
 
         foreach($result as &$entity) {
             $terms = $entity['terms'] ?? null;
-
             $entity['type'] = isset($entity['type']) ? $entity['type']->name : '';
-            $entity['area'] = isset($terms['area']) ? implode(', ', $terms['area']) : null;
             $entity['tag'] = isset($terms['tag']) ? implode(', ', $terms['tag']) : null;
+            $entity['area'] = isset($terms['area']) ? implode(', ', $terms['area']) : null;
+            $entity['linguagem'] = isset($terms['linguagem']) ? implode(', ', $terms['linguagem']) : null;
+            $entity['funcao'] = isset($terms['funcao']) ? implode(', ', $terms['funcao']) : null;
+            $entity['segmento'] = isset($terms['segmento']) ? implode(', ', $terms['segmento']) : null;
             if(isset($entity['seals']) && $entity['seals']) {
                 $sealNames = array_map(function($seal) {
                     return $seal['name'];

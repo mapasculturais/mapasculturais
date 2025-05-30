@@ -153,20 +153,25 @@ app.component('mc-entities', {
         },
 
         refresh(debounce) {
+            if (this.entities.loading) {
+                return;
+            };
+
             if (this.timeout) {
-                clearTimeout(this.timeout);
+                clearTimeout(this.timeout)
             };
         
             this.timeout = setTimeout(() => {
                 this.entities.splice(0);
                 this.entities.loading = true;
-
+        
                 this.getDataFromApi()
                     .then(() => {
                         this.entities.loading = false;
                     })
             }, debounce);
         },
+        
 
         loadMore() {
             if (!this.limit) {

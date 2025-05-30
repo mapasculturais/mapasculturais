@@ -2,9 +2,20 @@
 <div ng-if="field.fieldType !== 'file' && field.fieldType !== 'section' && field.fieldType !== 'persons' && field.config.entityField !== '@location' && field.config.entityField !== '@links' &&  field.fieldType !== 'links'  && !checkRegistrationFields(field, 'links')">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-if="field.fieldType !== 'agent-owner-field'">
-        <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
-        <p ng-if="entity[field.fieldName] && field.fieldType === 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])" style="white-space: pre-line"></p>
-        <span ng-if="!entity[field.fieldName]"><em><?php \MapasCulturais\i::_e("Campo não informado."); ?></em></span>
+        <div ng-if="field.fieldType != 'bankFields'">
+            <span ng-if="entity[field.fieldName] && field.fieldType !== 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])"></span>
+            <p ng-if="entity[field.fieldName] && field.fieldType === 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])" style="white-space: pre-line"></p>
+            <span ng-if="!entity[field.fieldName]"><em><?php \MapasCulturais\i::_e("Campo não informado."); ?></em></span>
+        </div>
+
+        <div ng-if="field.fieldType == 'bankFields'">
+            <p ng-if="entity[field.fieldName] && field.fieldType === 'textarea'" ng-bind-html="printField(field, entity[field.fieldName])" style="white-space: pre-line"></p>
+            <p><strong><?php \MapasCulturais\i::_e("Típo de conta:"); ?></strong> {{formetBankField(entity[field.fieldName]).account_type}}</p>
+            <p><strong><?php \MapasCulturais\i::_e("Banco:"); ?></strong> {{formetBankField(entity[field.fieldName]).number}}</p>
+            <p><strong><?php \MapasCulturais\i::_e("Agencia:"); ?></strong> {{formetBankField(entity[field.fieldName]).branch}} - {{formetBankField(entity[field.fieldName]).dv_branch}}</p>
+            <p><strong><?php \MapasCulturais\i::_e("Conta:"); ?></strong> {{formetBankField(entity[field.fieldName]).account_number}} - {{formetBankField(entity[field.fieldName]).dv_account_number}}</p>
+        </div>
+       
     </div>
 
     <div ng-if="field.fieldType === 'agent-owner-field'">

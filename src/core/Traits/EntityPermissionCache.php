@@ -63,9 +63,9 @@ trait EntityPermissionCache {
         
         if(self::$createdPermissionCache["$this"] ?? false) {
             return;
-        } else {
-            self::$createdPermissionCache["$this"] = true;
-        }
+        } 
+        
+        self::$createdPermissionCache["$this"] = true;
 
         $app = App::i();
         $entity_state = $this->getEntityState();

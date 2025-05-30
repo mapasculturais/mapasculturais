@@ -20,7 +20,7 @@ foreach ($registrations as $status => $status_name) {
 }
 
 $data['isAffirmativePoliciesActive'] = $entity->isAffirmativePoliciesActive();
-if($entity->evaluationMethodConfiguration && $entity->evaluationMethodConfiguration->type == 'technical') {
+if($entity->evaluationMethodConfiguration && $entity->evaluationMethodConfiguration->type->id == 'technical') {
     $data['isTechnicalEvaluationPhase'] = true;
 } else {
     $data['isTechnicalEvaluationPhase'] = false;

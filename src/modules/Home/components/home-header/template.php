@@ -13,6 +13,7 @@ $this->import('
 ?>
 <div :class="['home-header', {'home-header--withBanner' : banner}] ">
     <div class="home-header__content">
+        <?php  $this->applyTemplateHook('home-header-content', 'before') ?>
 
         <div class="home-header__main">
             <label class="home-header__title">
@@ -46,6 +47,7 @@ $this->import('
             </div>
         </div>
   
+        <?php  $this->applyTemplateHook('home-header-content', 'after') ?>
     </div>
     <div class="home-header__background">
         <div class="img">

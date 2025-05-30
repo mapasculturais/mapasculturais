@@ -79,7 +79,7 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #attachments={entity}>
-                    <a v-if="entity.files?.zipArchive?.url" :href="entity.files?.zipArchive?.url"><?= i::__('Anexo') ?></a>
+                    <a href="#" @click.prevent="generateOrDownloadZip(entity)" ><?= i::__('Anexo') ?></a>
                 </template>
 
                 <template #status="{entity}">

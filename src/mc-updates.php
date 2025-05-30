@@ -6,6 +6,7 @@ use MapasCulturais\Utils;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
+use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 
 return [
     'recreate pcache' => function () {
@@ -570,4 +571,34 @@ return [
             }
         });
     },
+    'garante que os avaliadores dos editais sejam sempre os agentes principais de perfis' => function() use ($app) {
+        $filename = PUBLIC_PATH . "/evaluators-default-profiles/logs.txt";
+        $dirname = dirname($filename);
+
+        if (!file_exists($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
+
+        if (!file_exists($filename)) {
+            touch($filename);
+        }
+
+        DB_UPDATE::enqueue(EvaluationMethodConfigurationAgentRelation::class, 'agent_id not in (select profile_id from usr where profile_id is not null)', function (EvaluationMethodConfigurationAgentRelation $relation) use($app, $filename) { 
+            $agent = $relation->agent;
+            $relation->agent = $agent->user->profile; 
+            $relation->save(true); 
+            $content ="-----\n";
+            $content.="Avaliador anterior: {$agent->name} - {$agent->id}\n";
+            $content.="Primeira fase: {$relation->owner->opportunity->firstPhase->name} ({$relation->owner->opportunity->firstPhase->id})\n";
+            $content.="Fase de avaliação: {$relation->owner->opportunity->name} ({$relation->owner->opportunity->id})\n";
+            $content.="Avaliador atual: {$agent->user->profile->name} - {$agent->user->profile->id}\n\n";
+            $content.="-----\n";
+            
+            $app->log->debug($content);
+
+            $relation->owner->opportunity->enqueueToPCacheRecreation([$agent->user]);
+            
+            file_put_contents($filename, $content, FILE_APPEND);
+        });
+    }
 ];

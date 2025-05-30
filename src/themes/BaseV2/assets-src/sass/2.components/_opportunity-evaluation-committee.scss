@@ -57,14 +57,19 @@
         }
 
         &-content {
-            display: grid;
+            display: flex;
             grid-template-columns: 1fr 3fr;
-            align-items: center;
             justify-content: space-between;
             max-width: 100%;
             width: 100%;
             gap: size(16);
             padding: size(10) 0;
+            flex-direction: column;
+
+            &-data {
+                justify-content: space-between;
+                display: flex;
+            }
 
             @media (max-width: size(800)) {
                 grid-template-columns: 1fr;

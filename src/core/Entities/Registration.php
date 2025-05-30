@@ -1185,11 +1185,6 @@ class Registration extends \MapasCulturais\Entity
 
         // copies agents data including configured private
 
-        // creates zip archive of all files
-        if($this->files){
-            $app->storage->createZipOfEntityFiles($this, $fileName = $this->number . ' - ' . uniqid() . '.zip');
-        }
-
         $this->status = self::STATUS_SENT;
         if($update_sent_timestamp){
             $this->sentTimestamp = new \DateTime;
@@ -1284,7 +1279,6 @@ class Registration extends \MapasCulturais\Entity
         $field_ranges = $field->registrationRanges ?: [];
         $field_proponent_types = $field->proponentTypes ?: [];
 
-
         if ($use_category && count($field_categories) > 0 && !in_array($this->category, $field_categories)) {
             return false;
         }
@@ -1301,17 +1295,23 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        if($field->conditional){
-            $_fied_name = $field->conditionalField;
-            $_fied_value = $field->conditionalValue;
-            if (is_array($this->$_fied_name)) {
-                return in_array($_fied_value, $this->$_fied_name);
-            } else {
-                return $this->$_fied_name == $_fied_value;
-            }
+        if(!$field->conditional || !$field->conditionalField) {
+            return true;
+        }
+ 
+        $_fied_name = $field->conditionalField;
+
+        if (is_array($this->$_fied_name)) {
+            return in_array($_fied_value, $this->$_fied_name);
         }
 
-        return true;
+        $_fied_value = $field->conditionalValue;
+
+        if ($_fied_name == 'appliedForQuota') {
+            return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+        }
+
+        return $this->$_fied_name == $_fied_value;
     }
 
     function getValidationErrors() {
@@ -1434,21 +1434,6 @@ class Registration extends \MapasCulturais\Entity
             }
 
             $field_required = $rfc->required;
-            
-            /** @todo Verificar se este if ainda é necessário após a implementação do isFieldVisisble()*/
-            if($rfc->conditional){
-                $_fied_name = $rfc->conditionalField;
-                $_fied_value = $rfc->conditionalValue;
-                if ($rfc->required) {
-                    if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
-                        $field_required = true;
-                    } else {
-                        $field_required = $this->$_fied_name == $_fied_value;
-                    }
-                } else {
-                    $field_required = false;
-                }
-            }
 
             $errors = [];
             if($field_required){
@@ -1474,26 +1459,8 @@ class Registration extends \MapasCulturais\Entity
 
             $field_name = $field_prefix . $field->id;
             $field_required = $field->required;
-            
-            /** @todo Verificar se este if ainda é necessário após a implementação do isFieldVisisble()*/
-            if($metadata_definition && $metadata_definition->config && $metadata_definition->config['registrationFieldConfiguration'] && $metadata_definition->config['registrationFieldConfiguration']->conditional){
-                $conf =  $metadata_definition->config['registrationFieldConfiguration'];
-              
-                $_fied_name = $conf->conditionalField;
-                $_fied_value = $conf->conditionalValue;
-                if ($field->required) {
-                    if (is_array($this->$_fied_name) && in_array($_fied_value, $this->$_fied_name)) {
-                        $field_required = true;
-                    } else {
-                        $field_required = $this->$_fied_name == $_fied_value;
-                    }
-                } else {
-                    $field_required = false;
-                }
-            }
 
             $errors = [];
-
             $prop_name = $field->getFieldName();
             $val = $this->$prop_name;
 
@@ -1772,9 +1739,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         if(!$this->opportunity->isRegistrationOpen()){
-            return $this->canUser('@control') && 
-                    $this->sentTimestamp && 
-                    $this->opportunity->publishedRegistrations;
+            return false;
         }
 
         if($this->getSendValidationErrors()){
@@ -1804,9 +1769,15 @@ class Registration extends \MapasCulturais\Entity
         if($this->status !== self::STATUS_DRAFT){
             return false;
         }else{
-            if((new \DateTime() >= $this->opportunity->registrationFrom) && $this->genericPermissionVerification($user)){
+
+            if(!$this->opportunity->isRegistrationOpen() && !$this->opportunity->canUser('@control')) {
+                return false;
+            }
+
+            if($this->genericPermissionVerification($user)){
                 return true;
             }
+            
             return false;
         }
     }

@@ -448,9 +448,8 @@ return array(
             'field_type' => 'email',
             'unserialize' => function($value, $agent = null){
                 $agent = (object) $agent;
-                $user = (object) ($agent->user ?? null);  
-                
-                if(!$value && $user->email){
+                $user = $agent->user ?? null;  
+                if(!$value && $user && $user->email){
                     return $user->email;
                 }
                 return $value;

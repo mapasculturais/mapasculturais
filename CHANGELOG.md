@@ -32,6 +32,207 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta função de tradução para que faça a leitura dos arquivos de tradução dos plugins
 - Ajusta carregamento dos scripts dos componente entity-location e entity-field-location
   
+## [7.5.52] - 2025-05-29
+### Correções
+- Corrige a validação do fluxo de envio da inscrição para considerar o modo de edição de inscrição no componente registration-action
+
+## [7.5.51] - 2025-05-29
+### Melhorias
+- Implementa endpoint que gera o arquivo ZIP dos anexos da inscrição em tempo real e realiza o envio direto para download
+- Ajusta o componente registration-tab para requisitar os anexos da inscrição via novo endpoint createZipFiles()
+- Adiciona link para download do arquivo ZIP com os anexos da inscrição na planilha de inscritos
+
+### Melhorias não funcionais
+- Remove a geração do arquivo ZIP com os anexos do fluxo de envio da inscrição
+- Implementa o método getMimeType() na classe Utils, responsável por retornar o MIME type de um arquivo.
+- Utiliza o método getMimeType() para obter o MIME type dos arquivos durante o processo de upload.
+- Implementa configuração que permite definir quais tipos de MIME devem ser bloqueados.
+- Atualiza a validação de MIME types para utilizar a lista not_allowed_mime_types definida nas configurações
+
+### Correções
+- Ajusta o fluxo de upload para exibir corretamente os erros de validação retornados
+- Corrige a exibição indevida de mensagem no formulário de inscrição com prazo final expirado
+- Ajusta tradução dos termos Sim e Não do campo pessoa idosa  no componente agent-data-1
+
+## [7.5.50] - 2025-05-23
+### Correções
+- Ajusta planilha de inscritos, para conter dados das cotas no momento da exportação
+
+## [7.5.49] - 2025-05-23
+### Correções
+- Remove componente renew-lock da página de edição da inscrição
+
+## [7.5.48] - 2025-05-22
+### Melhorias
+- Implementa classe responsável por fazer o parse dos dados enviados para exportação de planilhas, garantindo acesso em profundidade aos objetos.
+- Aplica a nova classe de parse de dados para acessar corretamente os objetos de inscrição durante a exportação de planilhas de inscritos.
+
+### Correções
+- Impede a exibição dos botões de ação do formulário de inscrição para o proponente após o encerramento do prazo de edição.
+- Ajusta a permissão canUserModify() da inscrição para impedir alterações no formulário após o encerramento do prazo de edição.
+
+## [7.5.47] - 2025-05-21
+### Correções
+- Corrige erro que impedia a exibição do botão "Carregar mais" na lista de inscritos  em editais com múltiplas fases
+- Corrige erro na permissão can(Registration.view) no módulo de suporte
+
+## [7.5.46] - 2025-05-20
+### Melhorias
+- Melhora a interface da timeline de acompanhamento da inscrição para exibir a data de encerramento do prazo de edição, quando houver campos liberados para edição para o usuário.
+- Implementa endpoint para atualizar o resumo das avaliações dos avaliadores na configuração de avaliação.
+
+### Coreeções
+- Garante que administradores do edital possam conceder permissão de edição em campos das inscrições.
+
+## [7.5.45] - 2025-05-19
+### Correções
+- Evita que arquivos que não tenham sido corretamente salvos no sistema de arquivo sejam salvos no banco de dados
+- Corrige definição do Controller::getData para requisições não GET
+
+## [7.5.44] - 2025-05-16
+### Correção
+- Corrige erro que impedia a exibição das fases na aba de suporte da oportunidade para o agente de suporte.
+- Corrige erro que impedia a listagem de inscrições na aba de suporte quando o agente estava vinculado como suporte em uma fase de coleta de dados posterior à fase inicial.
+
+## [7.5.43] - 2025-05-16
+### Correções
+- Corrige momento em que o componente opportunity-claim-form é importado para evitar conflitos
+
+### Melhorias nao funcionais
+- Na gestão de usuários, nos card's que listam os agentes, insere ícone que identifica quem é o agente principal
+
+## [7.5.42] - 2025-05-13
+### Melhorias não funcionais
+- Implementa método no Entity.php para devolver as permissões do usuário sobre a entidade
+- Melhora texto do botão da função de edição de inscrição que da acesso ao formulário
+- Melhora mensagens na ficha de inscrições para casos de inscrições ainda nao enviadas
+
+### Correções
+- Corrige problema que impedia o botão de editar a inscrição de ser exibido fora da primeira fase
+- Ajusta permissão para que não permita o usuário enviar a inscrição fora do prazo mesmo tendo enviado anteriormente dentro do prazo
+
+## [7.5.41] - 2025-04-23
+### Melhorias
+- Atualiza arquivos de tradução para Espanhol
+
+### Correções 
+- Corrige erro que disparava um wraning no método que atualiza o resumo das avaliações
+
+## [7.5.40] - 2025-04-10
+### Correções 
+- Remove bloqueio de modificação de avaliações quando a inscrição esta com status diferente de pendente
+- Corrige erro que impedia a listagem das tabelas de inscrições e avaliações
+
+## [7.5.39] - 2025-04-09
+### Melhorias não funcionais
+- nova propriedade no componente home-map possibilitando que seja configurado para exibir somente espaços ou somente agentes
+
+## [7.5.37] - 2025-04-07
+### Correções
+- Remove filtro de selos no método que limpa os filtros na tela de busca de espaços
+- Evita que avaliador consiga modificar uma inscrição que não esta com status pendente
+- Corrige erro que passava a inscrição para pendente quando se usava a opção viability na avaliação tecnica
+
+## [7.5.36] - 2025-04-04
+### Melhorias não funcionais
+- Implementa novos hooks na tela de busca de espaços para possibilitar a criação de novo filtros apartir de plugins e temas
+- Implementa novos hooks no controller Search para possibilitar a interceptação e manuseio das p pseudo-querys de busca 
+
+## [7.5.35] - 2025-04-02
+### Melhorias
+- Deixa o card da commisão de avaliação nas configurações com mais informações para ficar evitende qual agente está como avaliador
+
+### Melhorias nao funcionais
+- Implementa slot no componente select-entity para facilitar a amnipulação das opções exibidas
+
+### Correções
+- Evita que seja possivel inserir agentes que nao sejam agentes de perfil como avaliador
+- Implementa mc-update que garante que todos os avaliadores sejam sempre os agentes principais das contas
+
+## [7.5.34] - 2025-04-02
+### Correções
+- Corrige exibição de eventos no mapa da busca de eventos
+
+## [7.5.33] - 2025-03-31
+### Correções
+- Corrige a exportação de planilhas para tratar os valores dos critérios da avaliação técnica como texto, assegurando a exibição correta de valores zerados
+- Resolve um problema que impedia o carregamento da lista de inscritos quando a opção `considerQuotasInGeneralList` não estava configurada
+
+## [7.5.32] - 2025-03-24
+### Correções
+- Insere na lista de ENUM's a permissão applySeal
+
+## [7.5.31] - 2025-03-20
+### Melhorias
+- Melhorias de performance no processamento de permission cache
+- Melhorias de performance na view evaluations e no endpoint findEvaluations
+
+## [7.5.30] - 2025-03-20
+### Correção
+- Corrige exibição dos campos de dados bancários e data de nacimento na visualização da inscrição
+
+### Melhorias
+- Aplica lock na sincronização de inscrição para impedir duplicidade de registros
+
+## [7.5.29] - 2025-03-20
+### Melhorias
+- Faz com que o componente select-entity exiba as entidades por ordem alfabética
+
+## [7.5.28] - 2025-03-14
+### Correção
+- Corrige slug do método de avaliação habilitaçào documental
+- Corrige erro que impedia a paginação das inscrições com o botão carregar mais na lista de inscritos e suporte
+- Ajusta a permissão canUserSent() da inscrição para permitir que o proponente envie a inscrição após o prazo, caso já a tenha enviado anteriormente dentro do período vigente.
+
+## [7.5.27] - 2025-02-27
+### Correção
+- Corrige a exibição do status da entidade no componente de tabelas 'entity-table'
+- Executa register do thema na execução dos JOB's quando o ambiente conta com subisites
+- Corrige a exibição do tipo da entidade no componente de tabelas 'entity-tabele'
+- Corrige a exibição do campo 'Localização pública' no componente de tabelas 'entity-table'
+
+### Melhorias
+- Faz com que o componente space-table retorne todos os dados que estão devidamente registrados na entidade espaços
+
+## [7.5.26] - 2025-02-25
+### Correção
+- Ajusta o embedTools.js para enviar valores de objetos já limpos, removendo $$hashKey do Angular
+- Corrige erro nas verificações de campos condicionais do formulario de inscrição
+
+## [7.5.25] - 2025-02-24
+### Correções
+- Corrige erro que impedia a exibição de campos do formulario na tabela de inscritos
+
+## [7.5.24] - 2025-02-21
+### Correções
+- Corrige erro ao exportar as taxonomias na planilha de agentes
+
+#### Melhorias
+- Insere colunas das taxonomias Segmento e Função na tabela de agentes
+
+## [7.5.23] - 2025-02-20
+#### Correções
+- Corrige problema erro ao carregar a tabela de inscrição
+
+#### Melhorias Não funcionais
+- Implementa cache no retorno da listagemd e inscrições elegíveis a cotas
+
+## [7.5.22] - 2025-02-14
+#### Melhorias
+- Ajusta a tabela de agentes nas telas de busca para exibir todos os campos, respeitando a privacidade e as permissões do usuário
+
+## [7.5.21] - 2025-02-12
+#### Correções
+- Evita que aconteça erro na exportação de planilhas com valores que começam com o caractere '='
+
+## [7.5.20] - 2025-02-07
+#### Correções
+- Limpeza do cache de usuário antigo na mudança de propriedade em uma entidade
+
+## [7.5.19] - 2025-02-03
+#### Melhorias
+- Possibilita condicionar campos com a pergunta "Vai concorrer às cotas?"
+
 ## [7.5.18] - 2025-01-29
 #### Correções
 - Corrige contagem de entidades na api, que ficava distorcida dependendo dos filtros

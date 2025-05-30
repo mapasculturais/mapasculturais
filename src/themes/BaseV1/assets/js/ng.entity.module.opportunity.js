@@ -581,7 +581,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!$scope.data.newFieldConfiguration.conditionalValue){
+                if($scope.data.newFieldConfiguration.conditionalField !== 'appliedForQuota' && !$scope.data.newFieldConfiguration.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
@@ -649,7 +649,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!model.conditionalValue){
+                if(model.conditionalField !== 'appliedForQuota' && !model.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
@@ -758,7 +758,7 @@ module.controller('RegistrationConfigurationsController', ['$scope', '$rootScope
                     MapasCulturais.Messages.error(labels['conditionMandatory']);
                     return;
                 }
-                if(!model.conditionalValue){
+                if(model.conditionalField !== 'appliedForQuota' && !model.conditionalValue){
                     MapasCulturais.Messages.error(labels['fieldCondition']);
                     return;
                 }
@@ -1248,6 +1248,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     $scope.maxUploadSizeFormatted = MapasCulturais.maxUploadSizeFormatted;
 
     $scope.entity = MapasCulturais.registration;
+    $scope.appliedForQuota = $scope.entity.appliedForQuota;
+
+    window.addEventListener('message', ({ data }) => {
+        if (data?.type === 'registration.appliedForQuota') {
+            $scope.appliedForQuota = data.appliedForQuota;
+        }
+    });
 
     $scope.data = {
         fileConfigurations: MapasCulturais.entity.registrationFileConfigurations,
@@ -1714,9 +1721,20 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             },
             error: function(xhr, status, error) {
                 let response = xhr.responseJSON;
-                MapasCulturais.Messages.error(response.data);
-                MapasCulturais.AjaxUploader.resetProgressBar($form);
+                let data = response.data;
 
+                if (typeof data === 'string') {
+                    MapasCulturais.Messages.error(data);
+
+                } else if (typeof data === 'object' && data !== null) {
+                    const fieldMessages = data[fieldName];
+                    if (Array.isArray(fieldMessages)) {
+                        fieldMessages.forEach(msg => MapasCulturais.Messages.error(msg));
+                    } else if (fieldMessages) {
+                        MapasCulturais.Messages.error(fieldMessages);
+                    }
+                }
+               
                 $('.carregando-arquivo').hide();
                 $('.submit-attach-opportunity').show();
             }
@@ -1736,6 +1754,19 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             $http.delete(url).success(function(response){
                 MapasCulturais.Messages.success(labels['attachmentRemoved']);
                 delete $scope.data.fields[$index].file;
+            }).error(function(response){
+                let data = response.data;
+                if (typeof data === 'string') {
+                    MapasCulturais.Messages.error(data);
+
+                } else if (typeof data === 'object' && data !== null) {
+                    const fieldMessages = data[fieldName];
+                    if (Array.isArray(fieldMessages)) {
+                        fieldMessages.forEach(msg => MapasCulturais.Messages.error(msg));
+                    } else if (fieldMessages) {
+                        MapasCulturais.Messages.error(fieldMessages);
+                    }
+                }
             });
         }
     };
@@ -1858,7 +1889,13 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             if($scope.entity[field.conditionalField] instanceof Array){
                 result = result && $scope.entity[field.conditionalField].indexOf(field.conditionalValue) >= 0;
             }else{
-                result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+                if (field.conditionalField === 'appliedForQuota') {
+                    if($scope.appliedForQuota) {
+                        result = result && $scope.appliedForQuota;
+                    }
+                }else {
+                    result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
+                }
             }
         }
 
@@ -1916,15 +1953,18 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
     }
 
     $scope.printField = function(field, value){
+        
+        let entityFiel = ['agent-owner-field', 'agent-collective-field']
+        let fieldType = entityFiel.includes(field.fieldType) ? field.config.entityField : field.fieldType;
 
         if (field.fieldType === 'date' || field?.config?.entityField === 'dataDeNascimento') {
             return moment(value).format('DD-MM-YYYY');
-        }else if (field.fieldType === "checkbox") {
+        }else if (fieldType === "checkbox") {
             return ["true", "1"].includes(value) ? "Sim" : "Não";
         }
-         else if (field.fieldType === 'url'){
+         else if (fieldType === 'url'){
             return '<a href="' + value + '" target="_blank" rel="noopener noreferrer">' + value + '</a>';
-        } else if (field.fieldType === 'email'){
+        } else if (fieldType === 'email'){
             return '<a href="mailto:' + value + '"  target="_blank" rel="noopener noreferrer">' + value + '</a>';
         } else if (field.fieldType == 'addresses') {
             if (value.length === 0) {
@@ -2009,6 +2049,21 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
                 return val;
             }).join(', ');
         }
+    }
+
+     $scope.formetBankField = function(value) {
+        const banck_data_dict = MapasCulturais.bank_data_dict;
+
+        let result = {
+            "account_type": banck_data_dict.account_types[value.account_type],
+            "number": banck_data_dict.bank_types[value.number],
+            "branch": value.branch,
+            "dv_branch": value.dv_branch,
+            "account_number": value.account_number,
+            "dv_account_number": value.dv_account_number
+        }
+
+        return result;
     }
 
 }]);
@@ -2451,7 +2506,7 @@ module.controller('OpportunityController', ['$scope', '$rootScope', '$anchorScro
             }
         });
         $scope.findRegistrations = function(){
-            if(registrationsApi.finish()){
+            if($scope.data.findingRegistrations && registrationsApi.finish()){
                 return null;
             }
             $scope.data.findingRegistrations = true;

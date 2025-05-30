@@ -8,6 +8,12 @@ app.component('registration-form-timeline', {
         },
     },
 
+    computed: {
+        formatEditableUntil() {
+            return `${this.entity.editableUntil.date('numeric year')} às ${this.entity.editableUntil.time('2-digit')}`
+        }
+    },
+
     methods: {
         editForm() {
             const url = Utils.createUrl('registration', 'registrationEdit', [this.entity.id]);
