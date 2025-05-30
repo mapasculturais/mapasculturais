@@ -21,35 +21,28 @@ while(true){
 }
 '
 
-mkdir -p /var/www/var/DoctrineProxies /var/www/var/logs /var/www/var/private-files /var/www/public/files /var/www/public/assets
+mkdir -p /var/www/var/DoctrineProxies /var/www/var/logs
 
 touch /var/www/var/logs/app.log
 
-chown -R www-data: /var/www/var/DoctrineProxies /var/www/var/logs /var/www/var/private-files /var/www/public/files /var/www/public/assets
+chown -R www-data: /var/www/var/DoctrineProxies /var/www/var/logs
+
+/var/www/scripts/db-update.sh
+/var/www/scripts/mc-db-updates.sh
 
 if ! cmp /var/www/version.txt /var/www/var/private-files/deployment-version >/dev/null 2>&1
 then
-    /var/www/scripts/deploy.sh
+    /var/www/scripts/compile-sass.sh
+    /var/www/src/tools/doctrine orm:generate-proxies
     cp /var/www/version.txt /var/www/var/private-files/deployment-version
-else
-    /var/www/scripts/db-update.sh
-    /var/www/scripts/mc-db-updates.sh
 fi
+
 
 if [ $BUILD_ASSETS = "1" ]; then
     cd /var/www/src
     pnpm install --recursive 
     pnpm run dev
 fi
-
-cd /
-touch /nohup.out
-chown www-data: /nohup.out
-sudo -E -u www-data nohup /jobs-cron.sh >> /dev/stdout &
-sudo -E -u www-data nohup /recreate-pending-pcache-cron.sh >> /dev/stdout &
-
-tail -f /nohup.out > /dev/stdout &
-touch /mapas-ready
 
 cd /var/www/tests
 

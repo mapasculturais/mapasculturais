@@ -34,7 +34,7 @@
             "MapasCulturais\\": "src/core",
             "MapasCulturais\\Modules\\": "src/modules",
             "MapasCulturais\\Themes\\": "src/themes",
-            "MapasCulturais\\Tests\\": "tests/src"
+            "Tests\\": "tests"
         }
     },
     "repositories": [
