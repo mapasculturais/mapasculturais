@@ -1,6 +1,11 @@
 <?php
 namespace MapasCulturais\AuthProviders;
 
+use MapasCulturais\App;
+use MapasCulturais\Entities\User;
+use MapasCulturais\GuestUser;
+use MapasCulturais\i;
+
 class Test extends \MapasCulturais\AuthProvider{
     protected $_user = null;
     
@@ -20,8 +25,8 @@ class Test extends \MapasCulturais\AuthProvider{
     }
 
     public function _requireAuthentication() {
-        $app = \MapasCulturais\App::i();
-        $app->halt(401, \MapasCulturais\i::__('This action requires authentication.'));
+        $app = App::i();
+        $app->halt(401, i::__('Esta ação requer autenticação.'));
     }
 
     /**
@@ -42,15 +47,21 @@ class Test extends \MapasCulturais\AuthProvider{
     public function _getAuthenticatedUser() {
         
         if(file_exists($this->filename)){
+            $app = App::i();
             $id = file_get_contents($this->filename);
-            $this->_user = \MapasCulturais\App::i()->repo('User')->find($id);
+            if($id) {
+                $user = $app->repo('User')->find($id);
+            } else {
+                $user = GuestUser::i();
+            }
+            $this->_user = $user;
         }
         
         return $this->_user;
     }
 
-    public function setAuthenticatedUser(\MapasCulturais\Entities\User $user){
-        file_put_contents($this->filename, $user->id);
+    protected function setAuthenticatedUser(User|null $user = null){
+        file_put_contents($this->filename, $user ? $user->id : '');
         $this->_setAuthenticatedUser($user);
     }
     
