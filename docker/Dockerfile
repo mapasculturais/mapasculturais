@@ -1,3 +1,5 @@
+ARG COMPOSER_ARGS="--no-dev"
+
 FROM php:8.3-fpm
 
 RUN apt-get update
@@ -76,7 +78,10 @@ COPY composer.lock /var/www/composer.lock
 WORKDIR /var/www/
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 
-RUN composer.phar install
+ENV COMPOSER_ARGS=${COMPOSER_ARGS}
+
+RUN composer.phar install $COMPOSER_ARGS
+RUN composer.phar dump-autoload --optimize
 
 COPY config /var/www/config
 COPY public /var/www/html
