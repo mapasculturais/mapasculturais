@@ -108,10 +108,10 @@ abstract class CountryLocalizationDefinition
     abstract protected function getFullAddress(Entity $entity): ?string;
 
     /**
-     * @param Entity $entity
+     * 
      * @return array[]
      */
-    abstract protected function getLevelHierarchy(Entity $entity): ?array;
+    abstract protected function getLevelHierarchy(): ?array;
 
     // =================== SETTERS ===================== //
 
