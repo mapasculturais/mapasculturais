@@ -2218,8 +2218,6 @@ class ApiQuery {
             return;
         }
 
-        $app = App::i();
-
         $relation_class_name = $this->agentRelationClassName;
         
         $where = [];
@@ -2281,12 +2279,8 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
-            $agents_query_select = 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto';
-
-            $app->applyHookBoundTo($this, "{$this->hookPrefix}.appendRelatedAgents", [&$agents_query_select]);
-
             $agents_query = new ApiQuery(Agent::class, [
-                '@select' => $agents_query_select, 
+                '@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto', 
                 'id' => "IN($agent_ids)", 
                 'status' => 'GTE(0)', 
                 '@permissions' => 'view'
