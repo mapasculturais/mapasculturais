@@ -25,6 +25,7 @@ app.component('opportunity-evaluation-committee', {
                 '@limit': '25',
                 '@page': '1',
                 'type': 'EQ(1)',
+                'parent': 'NULL()'
             };
 
             if (this.reviewersId.length > 0) {

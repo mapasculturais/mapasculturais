@@ -4,6 +4,8 @@
  * @var MapasCulturais\Themes\BaseV2\Theme $this
  */
 
+$entity = $this->controller->requestedEntity;
+
 $additional_validate_fields = ['workplan', 'goal', 'delivery', 'projectDuration', 'culturalArtisticSegment'];
 $additional_validate_fields_steps = [];
 

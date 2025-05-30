@@ -14,8 +14,8 @@ $this->import('
     <template #header-title="{index, item}">
         <div class="stepper-header__content">
             <div class="info">
-                <h3 v-if="index" class="info__title">{{item.name}}</h3>
-                <h3 v-if="!index" class="info__title"><?= i::__('Período de inscrição') ?></h3>
+                <h3 v-if="!item.isFirstPhase" class="info__title">{{item.name}}</h3>
+                <h3 v-if="item.isFirstPhase" class="info__title"><?= i::__('Período de inscrição') ?></h3>
                 <div v-if="item.type && item.type != ''" class="info__type">
                     <span class="title"> <?= i::__('Tipo') ?>: </span>
                     <span class="type"><?= i::__('Coleta de dados') ?></span>

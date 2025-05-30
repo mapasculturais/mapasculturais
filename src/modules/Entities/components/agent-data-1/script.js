@@ -3,8 +3,8 @@ app.component('agent-data-1', {
 
     setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
-        // const text = Utils.getTexts('entity-owner')
-        // return { text }
+        const text = Utils.getTexts('agent-data-1')
+        return { text }
     },
 
     props: {
@@ -27,6 +27,9 @@ app.component('agent-data-1', {
         },
     },
     methods: {
+        getTextI18n(str) {
+            return this.text(str)
+        },
         verifyAllFields(fields) {
             let empty = true;
 

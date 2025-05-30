@@ -149,4 +149,13 @@
             }
         }
     }
+
+    .editable-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        border: solid 1px #00000042;
+        padding: 15px;
+        border-radius: 5px;
+    }
 }

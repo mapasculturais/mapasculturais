@@ -202,7 +202,7 @@ app.component('opportunity-registrations-table', {
             return $MAPAS.config.opportunityRegistrationTable.evaluationStatusDict;
         },
         statusEvaluationResult () {
-            let evaluationType = this.phase.evaluationMethodConfiguration ? this.phase.evaluationMethodConfiguration.type : null;
+            let evaluationType = this.phase.evaluationMethodConfiguration ? this.phase.evaluationMethodConfiguration.type?.id : null;
             return evaluationType ? this.statusEvaluation[evaluationType] : null;
         },
         status () {
@@ -333,9 +333,17 @@ app.component('opportunity-registrations-table', {
             return itens;
         },
         select() {
-            const fields = this.avaliableFields.map((item) => item.fieldName);
+            let fields = this.avaliableFields.map((item) => item.fieldName);
+            
+            if(this.isTechnicalEvaluationPhase) {
+                fields.push('usingQuota')
+                fields.push('quotas')
+                fields.push('tiebreaker')
+            }
+            console.log(this.isTechnicalEvaluationPhase)
 
             return [this.default_select, ...fields].join(',');
+
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
@@ -516,6 +524,43 @@ app.component('opportunity-registrations-table', {
             if (!editSentTimestamp && editableUntil.isPast()) {
                 return 'missed';
             }
+        },
+        generateOrDownloadZip(entity) {
+            const apiUrl = Utils.createUrl('registration', 'createZipFiles', { id: entity.id });
+
+            fetch(apiUrl)
+                .then(response => {
+                    console.log(response)
+                    if (!response.ok) {
+                        throw new Error('Falha ao gerar o ZIP');
+                    }
+
+                    const contentDisposition = response.headers.get('Content-Disposition');
+                    let fileName = 'arquivo.zip';
+
+                    if (contentDisposition && contentDisposition.includes('filename=')) {
+                        const match = contentDisposition.match(/filename="?([^"]+)"?/);
+                        if (match && match[1]) {
+                            fileName = match[1];
+                        }
+                    }
+
+                    return response.blob().then(blob => ({ blob, fileName }));
+                })
+                .then(({ blob, fileName }) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    URL.revokeObjectURL(url);
+                })
+                .catch(err => {
+                    this.messages.error(err.message);
+                });
         }
+
     }
 });

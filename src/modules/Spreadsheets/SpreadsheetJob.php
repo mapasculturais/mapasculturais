@@ -5,26 +5,25 @@ namespace Spreadsheets;
 use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
-use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Space;
-use MapasCulturais\Entities\Project;
-use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\Entities\Registration;
-use MapasCulturais\Entities\RegistrationEvaluation;
-use MapasCulturais\i;
 use MapasCulturais\Types\GeoPoint;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use MapasCulturais\Entities\Project;
+use MapasCulturais\Definitions\JobType;
+use MapasCulturais\Entities\Opportunity;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use PhpOffice\PhpSpreadsheet\Writer\Ods;
-use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use MapasCulturais\Entities\Registration;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use Symfony\Component\VarDumper\Cloner\Data;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use MapasCulturais\Entities\RegistrationEvaluation;
 
 /**
  * @property-read string $fileGroup
@@ -185,6 +184,9 @@ abstract class SpreadsheetJob extends JobType
                     }
 
                     //TODO: Avaliar como implementar o tratamento de fórmulas apenas para campos preenchidos pelo usuário e permitir que as fórmulas permaneçam nos campos com preenchimento do próprio sistema.
+                    if(is_string($value) && $value && $value[0] === '=') {
+                        $value = "'$value";
+                    }
                 }
 
                 $sheet->fromArray($new_data, null, "A$row");

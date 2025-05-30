@@ -118,6 +118,9 @@ app.component('registration-actions', {
                 ? this.text('Quer enviar seu recurso?') 
                 : this.text('Quer enviar sua inscrição?');
         },
+         formatEditableUntil() {
+            return `${this.registration.editableUntil.date('numeric year')} às ${this.registration.editableUntil.time('2-digit')}`
+        }
     },
 
     watch: {
@@ -129,6 +132,13 @@ app.component('registration-actions', {
     },
 
     methods: {
+        canSeeAction() {
+            if(this.registration.currentUserPermissions.modify || this.registration.currentUserPermissions.sendEditableFields) {
+               return true;
+            }
+
+            return false;
+        },
         toggleErrors() {
             this.hideErrors = !this.hideErrors;
         },

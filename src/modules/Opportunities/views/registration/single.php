@@ -274,15 +274,22 @@ $today = new DateTime();
                                 </div>
                             </div>
                             <?php else: ?>
-                                <?php if($phase->status === 0 && $today > $opportunity->registrationTo ):?>
-                                    <mc-alert type="warning">
-                                        <?= i::__("Você não enviou o formulário desta fase") ?> <br>
-                                    </mc-alert>
-                                    <div class="grid-12">
-                                        <div class="col-3 sm:col-12">
-                                            <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Acessar formulário') ?></a>
+                                <?php if($phase->status === 0):?>
+                                    <?php if($today > $opportunity->registrationTo):?>
+                                        <mc-alert type="warning">
+                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                            <small><?= i::__("O prazo para envio dessa inscrição foi até {$opportunity->registrationTo->format('d/m/Y H:i:s')}") ?></small> <br>
+                                        </mc-alert>
+                                    <?php else: ?>
+                                        <mc-alert type="warning">
+                                            <?= i::__("Você não enviou o formulário desta fase") ?> <br>
+                                        </mc-alert>
+                                        <div class="grid-12">
+                                            <div class="col-3 sm:col-12">
+                                                <a class="button button--primary" href="<?=$app->createUrl("registration", "edit", [$phase->id])?>"><?= i::__('Acessar formulário') ?></a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <?php endif ?>
                                 <?php else: ?>
                                     <?php $this->applyTemplateHook("registration-form-view", 'before', [$phase]) ?>
                                     <v1-embed-tool route="registrationview" :id="<?=$phase->id?>"></v1-embed-tool>

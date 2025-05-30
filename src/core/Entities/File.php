@@ -2,9 +2,10 @@
 
 namespace MapasCulturais\Entities;
 
-use Doctrine\ORM\Mapping as ORM;
-use \MapasCulturais\App;
 use \MapasCulturais\i;
+use \MapasCulturais\App;
+use MapasCulturais\Utils;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * File
@@ -150,7 +151,8 @@ abstract class File extends \MapasCulturais\Entity
         $this->tmpFile = $tmp_file;
         $this->md5 = md5_file($tmp_file['tmp_name']);
         $this->name = $tmp_file['name'];
-        $this->mimeType = $tmp_file['type'];
+        
+        $this->mimeType = Utils::getMimeType($tmp_file['tmp_name']); 
 
         if(isset($tmp_file['parent'])){
             $this->parent = $tmp_file['parent'];
@@ -161,9 +163,13 @@ abstract class File extends \MapasCulturais\Entity
 
     static function getValidations() {
         $app = App::i();
+        
+        $not_allowed_mime_types = $app->config['app.not_allowed_mime_types'];
+        $pattern = '#'. $not_allowed_mime_types . '$#';
+
         $validations = [
             'mimeType' => [
-                'v::not(v::regex("#.php$#"))' => i::__('Tipo de arquivo não permitido')
+                'v::not(v::regex("'.$pattern.'"))' => i::__('Tipo de arquivo não permitido')
             ]
         ];
 

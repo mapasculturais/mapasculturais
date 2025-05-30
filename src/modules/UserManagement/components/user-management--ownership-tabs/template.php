@@ -17,6 +17,9 @@ $this->import('
 ?>
 <panel--entity-tabs tabs="publish,draft,trash,archived" :type='type' :user="user.id" :select="newSelect">
     <template  #entity-actions-left="{entity}">
+        <div v-if="type == 'agent' && !entity.parent">
+            <mc-icon name="agent-default-account-user"></mc-icon>
+        </div>
         <div v-if="global.auth.is('admin') && entity.status >= 0">
             <mc-confirm-button @confirm="entity.delete()">
                 <template #button="modal">

@@ -40,14 +40,6 @@ $data['evaluationStatusDict'] = [
 
 $phase = $this->controller->requestedEntity;
 
-$data['isAffirmativePoliciesActive'] = $phase->isAffirmativePoliciesActive();
-$data['hadTechnicalEvaluationPhase'] = $phase->hadTechnicalEvaluationPhase();
-if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type == 'technical') {
-    $data['isTechnicalEvaluationPhase'] = true;
-} else {
-    $data['isTechnicalEvaluationPhase'] = false;
-}
-
 $skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
 $default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
@@ -268,6 +260,14 @@ foreach($registrations as $status => $status_name){
     if(in_array($status,[0,1,2,3,8,10])){
         $data["registrationStatusDict"][] = ["label" => $status_name, "value" => $status];
     }
+}
+
+$data['isAffirmativePoliciesActive'] = $phase->isAffirmativePoliciesActive();
+$data['hadTechnicalEvaluationPhase'] = $phase->hadTechnicalEvaluationPhase();
+if($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type->id == 'technical') {
+    $data['isTechnicalEvaluationPhase'] = true;
+} else {
+    $data['isTechnicalEvaluationPhase'] = false;
 }
 
 $this->jsObject['config']['opportunityRegistrationTable'] = $data;

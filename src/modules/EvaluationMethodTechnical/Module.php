@@ -387,6 +387,12 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $app->hook('ApiQuery(registration).params', function(&$params) use($app) {
             /** @var ApiQuery $this */
 
+            if($params['__enableQuota'] ?? false) {
+                unset($params['__enableQuota']);
+            } else {
+                return;
+            }
+
             $order = $params['@order'] ?? '';
             preg_match('#EQ\((\d+)\)#', $params['opportunity'] ?? '', $matches);
             $phase_id = $matches[1] ?? null;
@@ -497,7 +503,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var Controller $this */
             $params = $this->data;
             
-            if(Module::$quotaData && isset($params['@opportunity'])) {
+            if(Module::$quotaData && API::EQ($params['@opportunity'] ?? 0) ==  Module::$quotaData->params['opportunity']) {
                 $params['opportunity'] = API::EQ($params['@opportunity']);
 
                 $count_query = new ApiQuery(Registration::class, Module::$quotaData->params);

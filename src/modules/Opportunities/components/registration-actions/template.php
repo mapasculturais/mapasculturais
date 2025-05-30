@@ -15,11 +15,12 @@ $this->import('
 $entity = $this->controller->requestedEntity;
 $term_url = $app->createUrl('site', 'termoAdesao');
 ?>
+{{console.log(registration.currentUserPermissions)}}
 <div class="registration-actions">
     <div class="registration-actions__primary">
         <div v-if="hasErrors" class="registration-actions__errors">
             <span class="registration-actions__errors-title"> <?= i::__('Ops! Encontramos erros no preenchimento da inscrição') ?> </span>
-            <span class="registration-actions__errors-subtitle">
+            <span  class="registration-actions__errors-subtitle">
                 <?= i::__('Corrija os campos listados antes de enviar o formulário') ?>
             </span>
 
@@ -37,8 +38,8 @@ $term_url = $app->createUrl('site', 'termoAdesao');
 
         <div class="registration-actions__validation">
             <template v-if="!isValidated">
-                <div class="registration-actions__alert">
-                    <div class="registration-actions__alert-header">
+                <div v-if="!registration.opportunity.registrationTo.isPast() && registration.status == 0" class="registration-actions__alert">
+                    <div  class="registration-actions__alert-header">
                         <mc-icon name="exclamation"></mc-icon>
                         <span class="bold"><?= i::__('Atenção aos campos obrigatórios') ?></span>
                     </div>
@@ -46,10 +47,22 @@ $term_url = $app->createUrl('site', 'termoAdesao');
                         <span><?= i::__("Só é possível enviar a inscrição após o preenchimento de todos os campos obrigatórios") ?></span>
                     </div>
                 </div>
+
+                 <div v-if="!canSeeAction() && registration.opportunity.registrationTo.isPast()" class="registration-actions__alert">
+                    <div class="registration-actions__alert-content">
+                        <span><?= i::__("O período para envio desta inscrição terminou em") ?> <strong>{{registration.opportunity.registrationTo.date('numeric year')}} <?= i::__("às") ?> {{registration.opportunity.registrationTo.time('2-digit')}}</strong></span>
+                    </div>
+                </div>
+
+                <div v-if="registration.currentUserPermissions.sendEditableFields" class="registration-actions__alert">
+                    <div class="registration-actions__alert-content">
+                        <span><?= i::__("O prazo para editar as informações termina em") ?> <strong>{{formatEditableUntil}}</strong></span>
+                    </div>
+                </div>
             </template>
             <mc-loading v-if="isLastStep" :entity="registration"></mc-loading>
             <mc-confirm-button 
-                v-if="isLastStep && !registration.__processing" 
+                v-if="isLastStep && !registration.__processing && canSeeAction()" 
                 :title="confirmButtonTitle"
                 yes="<?= i::esc_attr__('Enviar agora') ?>" 
                 no="<?= i::esc_attr__('Cancelar') ?>" 
@@ -88,7 +101,7 @@ $term_url = $app->createUrl('site', 'termoAdesao');
     <mc-loading v-if="!isLastStep" :entity="registration"></mc-loading>
 
     <div v-show="!registration.__processing" class="registration-actions__save-buttons">
-        <button @click="save()" class="button button--sm button--large button--primary">
+        <button v-if="canSeeAction()" @click="save()" class="button button--sm button--large button--primary">
             <?= i::__("Salvar") ?>
         </button>
 
@@ -105,8 +118,12 @@ $term_url = $app->createUrl('site', 'termoAdesao');
             </template>
 
             <template #button="modal">
-                <button @click="saveAndExit(modal)" class="button button--sm button--large button--primary">
+                <button v-if="canSeeAction()" @click="saveAndExit(modal)" class="button button--sm button--large button--primary">
                     <?= i::__("Salvar e Sair") ?>
+                </button>
+
+                <button v-else class="button button--md button--primary" @click="exit(modal)">
+                    <?= i::__('Sair') ?>
                 </button>
             </template>
 

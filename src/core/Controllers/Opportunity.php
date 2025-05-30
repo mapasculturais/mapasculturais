@@ -348,7 +348,7 @@ class Opportunity extends EntityController {
             $result = array_map(function($e){
                 $r = $e->simplify('id,hasControl,status,createdAt,metadata');
                 $r->owner = $e->owner->id;
-                $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar');
+                $r->agent = $e->agent->simplify('id,name,type,singleUrl,avatar,user');
                 $r->agentUserId = $e->agent->userId;
                 $r->group = $e->group;
                 return $r;
@@ -371,7 +371,7 @@ class Opportunity extends EntityController {
         $this->apiResponse($fields);
     }
 
-    function apiFindRegistrations($opportunity, $query_data) {
+    function apiFindRegistrations($opportunity, $query_data, $enalble_quota = false) {
         $app = App::i();
         $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
         $data = $query_data;
@@ -401,7 +401,8 @@ class Opportunity extends EntityController {
             }
 
             $current_phase_query_params = [
-                'opportunity' => API::EQ($phase->id)
+                'opportunity' => API::EQ($phase->id),
+                '__enableQuota' => $enalble_quota
             ];
             
             // $phase é a fase que foi informada no parâmetro @opportunity
@@ -507,7 +508,9 @@ class Opportunity extends EntityController {
 
             $previous_phase_result = $new_previous_phase_result;
 
-            $phase->unregisterRegistrationMetadata();
+            if(count($opportunity_tree) > 1 && $phase->id != $opportunity_tree[0]->id) {
+                $phase->unregisterRegistrationMetadata();
+            }
 
             if($current_evaluation_method){
                 foreach($current_phase_result as &$reg) {
@@ -536,7 +539,7 @@ class Opportunity extends EntityController {
             $query_data['status'] = API::GT(0);
         }
 
-        $result = $this->apiFindRegistrations($opportunity, $query_data);
+        $result = $this->apiFindRegistrations($opportunity, $query_data, enalble_quota: true);
         
         $this->apiAddHeaderMetadata($query_data, $result->registrations, $result->count);
         $this->apiResponse($result->registrations);

@@ -45,7 +45,7 @@ $this->import('
             <div v-if="entity.dataDeNascimento" class="agent-data__fields--field">
                 <label class="title"><?php i::_e("Pessoa idosa") ?></label>
                 <div class="box">
-                    <label class="box__content">{{entity.idoso ? 'Sim' : 'Não'}}</label>
+                    <label class="box__content">{{entity.idoso ? getTextI18n('yes') : getTextI18n('no')}}</label>
                 </div>
             </div>
             <entity-data v-if="entity.genero" class="agent-data__fields--field" :entity="entity" prop="genero" label="<?php i::_e("Gênero")?>"></entity-data>

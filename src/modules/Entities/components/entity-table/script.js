@@ -121,6 +121,7 @@ app.component('entity-table', {
     },
 
     data() {
+        let fromToStatus = $MAPAS.config.entityTable.fromToStatus
         const id = this.query['@opportunity'] ?? '';
         const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
         
@@ -137,6 +138,7 @@ app.component('entity-table', {
         }
 
         return {
+            fromToStatus,
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
             columns,
@@ -309,6 +311,9 @@ app.component('entity-table', {
     },
 
     methods: {
+        keyword(entities) {
+            entities.refresh()
+        },
         getFilterLabels(prop, value) {
             const propLabels = {
                 '@keyword': __('palavras-chave', 'entity-table'),
@@ -516,6 +521,19 @@ app.component('entity-table', {
                 } else {
                     val = val.date('numeric year');
                 }
+            }
+
+            if(prop == 'type') {
+                val = val.name
+            }
+
+            if(prop == 'public') {
+                val = val ? this.text('sim') : this.text('nao')
+            }
+
+            if(prop == 'status') {
+                let type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                val = this.fromToStatus[type]?.[val] || val;
             }
 
             return val;

@@ -4,8 +4,9 @@ app.component('entity-files-list', {
 
     setup() { 
         // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('entity-files-list')
-        return { text }
+        const text = Utils.getTexts('entity-files-list');
+        const messages = useMessages();
+        return { text, messages }
     },
 
     created() {
@@ -74,7 +75,17 @@ app.component('entity-files-list', {
 
             this.entity.upload(this.newFile, data).then((response) => {
                 this.$emit('uploaded', this);
-                popover.close()
+                popover.close();
+            })
+            .catch((error) => {
+                const groupMessages = error.data?.[this.group];
+                if (Array.isArray(groupMessages)) {
+                    for (const message of groupMessages) {
+                        this.messages.error(message);
+                    }
+                } else if (groupMessages) {
+                    this.messages.error(groupMessages);
+                }
             });
 
             return true;

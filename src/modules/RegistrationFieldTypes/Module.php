@@ -126,6 +126,10 @@ class Module extends \MapasCulturais\Module
                 /** @var Registration $this */
                 $result = $this->canUser('sendEditableFields');
                 $module->grantedCoarse = $result;
+
+                if(!$result && $this->opportunity->canUser('@control')) {
+                    $result = true;
+                }
             }
         });
 
