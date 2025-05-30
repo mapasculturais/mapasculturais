@@ -27,14 +27,16 @@ touch /var/www/var/logs/app.log
 
 chown -R www-data: /var/www/var/DoctrineProxies /var/www/var/logs
 
+/var/www/scripts/db-update.sh
+/var/www/scripts/mc-db-updates.sh
+
 if ! cmp /var/www/version.txt /var/www/var/private-files/deployment-version >/dev/null 2>&1
 then
-    /var/www/scripts/deploy.sh
+    /var/www/scripts/compile-sass.sh
+    /var/www/src/tools/doctrine orm:generate-proxies
     cp /var/www/version.txt /var/www/var/private-files/deployment-version
-else
-    /var/www/scripts/db-update.sh
-    /var/www/scripts/mc-db-updates.sh
 fi
+
 
 if [ $BUILD_ASSETS = "1" ]; then
     cd /var/www/src
