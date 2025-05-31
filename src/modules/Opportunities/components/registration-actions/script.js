@@ -138,6 +138,26 @@ app.component('registration-actions', {
                 return this.text('Espaço');
             }
 
+            if (field == 'workplan') {
+                return this.text('Plano de metas');
+            }
+
+            if (field == 'projectDuration') {
+                return this.text('Duração do projeto (meses)');
+            }
+
+            if (field == 'culturalArtisticSegment') {
+                return this.text('Segmento artistico-cultural');
+            }
+
+            if (field == 'goal') {
+                return this.text('Meta');
+            }
+
+            if (field == 'delivery') {
+                return this.text('Entrega');
+            }
+
             if (field.slice(0, 6) == 'field_') {
                 for (let regField of this.fields) {
                     if (regField.fieldName == field) {
@@ -251,6 +271,17 @@ app.component('registration-actions', {
                             validationErrors[field.step.id][fieldName] = fieldError;
                         }
                     }
+                }
+
+                if (['workplan', 'goal', 'delivery', 'projectDuration', 'culturalArtisticSegment'].includes(fieldName)) {
+                    const keys = Object.keys(validationErrors);
+                    const lastStep = keys[keys.length - 1]; 
+
+                   if (this.fields.length > 0) {
+                        validationErrors[lastStep][fieldName] = fieldError;
+                   } else {
+                        validationErrors[Object.keys(validationErrors)[0]][fieldName] = fieldError;
+                   }
                 }
             }
 
