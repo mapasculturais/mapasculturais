@@ -17,7 +17,8 @@ import { vMaska } from 'maska'
 import { VueRecaptcha } from 'vue-recaptcha';
 import Slider from '@vueform/slider'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
-
+import Shepherd from 'shepherd.js';
+import 'shepherd.js/dist/css/shepherd.css'
 
 
 const app = Vue.createApp({})
@@ -32,6 +33,7 @@ app.component('Datepicker', Datepicker);
 app.component('Slider', Slider);
 app.component('Draggable', VueDraggable);
 app.component('VueQrcode', VueQrcode);
+app.component('Shepherd', Shepherd);
 app.directive('maska', vMaska);
 app.use(MediaQuery)
 
@@ -50,7 +52,7 @@ globalThis.CurrencyInput = CurrencyInput
 globalThis.Dates = Dates;
 globalThis.VueRecaptcha = VueRecaptcha;
 globalThis.VueQrcode = VueQrcode;
-
+globalThis.Shepherd = Shepherd;
 
 globalThis.$MAPAS = typeof Mapas !== 'undefined' ? Mapas : MapasCulturais
 globalThis.$DESCRIPTIONS = $MAPAS.EntitiesDescription ?? []
