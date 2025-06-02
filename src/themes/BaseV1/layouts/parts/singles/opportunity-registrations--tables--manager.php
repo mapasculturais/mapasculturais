@@ -34,7 +34,7 @@ use MapasCulturais\i;
     <div class="placeholder" ng-click="filter_dropdown = ''"><?php i::_e("Colunas Habilitadas:") ?></div>
     <div class="submenu-dropdown" style="background: #fff;">
         <div class="filter-search" style="padding: 5px;">
-            <input type="text" ng-model="filter_dropdown" style="width:100%;" placeholder="Busque pelo nome dos campos do formulário de inscrição e selecione as colunas visíveis" />
+            <input type="text" ng-model="filter_dropdown" style="width:100%;" placeholder="<?= i::__('Busque pelo nome dos campos do formulário de inscrição e selecione as colunas visíveis') ?>" />
         </div>
         <ul class="filter-list">
             <li ng-repeat="field in data.defaultSelectFields | filter:filter_dropdown" ng-if="field.required"

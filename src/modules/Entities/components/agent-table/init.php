@@ -83,7 +83,7 @@ foreach ($definitions as $field => $def) {
         ];
 
         if(str_starts_with($field, 'geo')) {
-            $data['value'] = $def['label'] . " - Divisão geográfica";
+            $data['value'] = $def['label'] . " - " . i::__('Divisão geográfica');
         }
 
         $additionalHeaders[] = $data;
