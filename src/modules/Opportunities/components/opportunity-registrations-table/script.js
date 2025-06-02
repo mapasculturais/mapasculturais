@@ -190,7 +190,8 @@ app.component('opportunity-registrations-table', {
             visible,
             isAffirmativePoliciesActive,
             hadTechnicalEvaluationPhase,
-            isTechnicalEvaluationPhase
+            isTechnicalEvaluationPhase,
+            downloadZipInLoandingEntity: null
         }
     },
 
@@ -493,42 +494,16 @@ app.component('opportunity-registrations-table', {
                 return 'missed';
             }
         },
+        downloadZipInLoanding(entity) {
+            if(entity.id == this.downloadZipInLoandingEntity) {
+                return true;
+            }
+
+            return false;
+        },
         generateOrDownloadZip(entity) {
             const apiUrl = Utils.createUrl('registration', 'createZipFiles', { id: entity.id });
-
-            fetch(apiUrl)
-                .then(response => {
-                    console.log(response)
-                    if (!response.ok) {
-                        throw new Error('Falha ao gerar o ZIP');
-                    }
-
-                    const contentDisposition = response.headers.get('Content-Disposition');
-                    let fileName = 'arquivo.zip';
-
-                    if (contentDisposition && contentDisposition.includes('filename=')) {
-                        const match = contentDisposition.match(/filename="?([^"]+)"?/);
-                        if (match && match[1]) {
-                            fileName = match[1];
-                        }
-                    }
-
-                    return response.blob().then(blob => ({ blob, fileName }));
-                })
-                .then(({ blob, fileName }) => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = fileName;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                    URL.revokeObjectURL(url);
-                })
-                .catch(err => {
-                    this.messages.error(err.message);
-                });
+            window.open(apiUrl, '_blank');
         }
-
     }
 });

@@ -103,7 +103,8 @@ $entity = $this->controller->requestedEntity;
                 </template>
 
                 <template #attachments={entity}>
-                    <a href="#" @click.prevent="generateOrDownloadZip(entity)" ><?= i::__('Anexo') ?></a>
+                    <mc-loading :condition="downloadZipInLoanding(entity)"></mc-loading>
+                    <a href="#"  v-if="!downloadZipInLoanding(entity)" @click.prevent="generateOrDownloadZip(entity)" ><?= i::__('Anexo') ?></a>
                 </template>
 
                 <template #status="{entity}">
