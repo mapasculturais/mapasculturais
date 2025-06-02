@@ -12,10 +12,10 @@ $this->import('
 ');
 ?>
 
-<?php $this->applyTemplateHook('entity-location','before'); ?>
-<div :class="classes" class="entity-location grid-12">
-    <?php $this->applyTemplateHook('entity-location','begin'); ?>
-    <div v-if="!hideLabel" class="entity-location__title col-12">
+<?php $this->applyTemplateHook('brasil-address-form','before'); ?>
+<div :class="classes" class="brasil-address-form grid-12">
+    <?php $this->applyTemplateHook('brasil-address-form','begin'); ?>
+    <div v-if="!hideLabel" class="brasil-address-form__title col-12">
         <label v-if="verifiedAdress()"><?= i::__('Endereço')?></label>
         <?php if($this->isEditable()): ?>
             <?php $this->info('cadastro -> configuracoes-entidades -> endereco') ?>
@@ -96,12 +96,12 @@ $this->import('
         </div>
     </div>
     <div v-if="verifiedAdress()" class="col-12">
-        <p class="entity-location__address">
+        <p class="brasil-address-form__address">
             <span v-if="entity.endereco">{{entity.endereco}}</span>
             <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
         </p>
         <entity-map  :entity="entity" :editable="editable"></entity-map>
     </div>
-    <?php $this->applyTemplateHook('entity-location','end'); ?>
+    <?php $this->applyTemplateHook('brasil-address-form','end'); ?>
 </div>
-<?php $this->applyTemplateHook('entity-location','after'); ?>
+<?php $this->applyTemplateHook('brasil-address-form','after'); ?>
