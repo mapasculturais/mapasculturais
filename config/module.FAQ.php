@@ -1,4 +1,7 @@
 <?php
+
+use MapasCulturais\i;
+
 return [
     "module.FAQ" => [
         // 'support-message' => '', 
