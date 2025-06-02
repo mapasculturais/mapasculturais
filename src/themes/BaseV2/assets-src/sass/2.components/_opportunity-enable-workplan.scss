@@ -1,0 +1,63 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-enable-workplan {
+    display: flex;
+    flex-direction: column;
+    gap: size(8);
+
+    border-radius: 4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border: 1px solid #bbbbbb;
+    margin-top: size(16);
+    padding: size(20);
+    width: 100%;
+
+    &__block {
+        border-radius: 4px 4px 4px 4px;
+        -webkit-border-radius: 4px 4px 4px 4px;
+        -moz-border-radius: 4px 4px 4px 4px;
+        border: 1px solid #bbbbbb;
+        margin-top: size(16);
+        padding: size(20);
+        width: 100%;
+    }
+
+    h4 {
+        margin-bottom: size(5);
+    }
+
+    h6 {
+        margin-bottom: size(16);
+    }
+
+    .field-delivery-type {
+        border-radius: 4px 4px 4px 4px;
+        -webkit-border-radius: 4px 4px 4px 4px;
+        -moz-border-radius: 4px 4px 4px 4px;
+        border: 1px solid #bbbbbb;
+        margin-top: size(16);
+        padding: size(20);
+        width: 100%;
+    }    
+
+    .field__limits {
+        max-width: 6.25rem;
+        padding: .5rem;
+        z-index: 2;
+    }
+
+    .disabled-workplan {
+        display:flex;
+        align-items:right;
+        justify-content: flex-end;
+    }
+
+    .icon-workplandisabled {
+        color: #117C83;
+    }
+
+    .mt {
+        margin-top: size(8);
+    }
+}
