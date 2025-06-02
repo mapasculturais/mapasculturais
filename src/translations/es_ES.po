@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2025-05-22 18:23-0300\n"
+"POT-Creation-Date: 2025-06-02 12:32-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -66,6 +66,9 @@ msgstr "Id"
 #: core/src/themes/BaseV1/views/generic/list.php:17
 #: core/src/themes/BaseV1/views/generic/list.php:32
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:106
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:12
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:32
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:15
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:123
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:124
 msgid "Nome"
@@ -230,7 +233,9 @@ msgstr "Fecha final de las evaluaciones"
 #: core/src/themes/BaseV1/layouts/parts/singles/history_agent.php:181
 #: core/src/themes/BaseV1/layouts/parts/singles/history_space.php:173
 #: core/src/themes/BaseV1/layouts/parts/singles/location.php:16
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:545
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:550
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:26
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:29
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:376
 msgid "Número"
 msgstr "Número"
@@ -319,7 +324,7 @@ msgstr "Resultado consolidado"
 #: core/config/geodivisions.php:17 core/src/conf/agent-types.php:576
 #: core/src/modules/Entities/components/entity-field-location/template.php:58
 #: core/src/modules/Entities/components/entity-location/template.php:32
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:626
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:631
 msgid "País"
 msgstr "País"
 
@@ -339,7 +344,9 @@ msgstr "País"
 #: core/src/themes/BaseV1/layouts/parts/singles/history_space.php:177
 #: core/src/themes/BaseV1/layouts/parts/singles/location.php:20
 #: core/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:64
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:569
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:574
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:49
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:52
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:388
 msgid "Estado"
 msgstr "Departamento"
@@ -365,7 +372,7 @@ msgstr "Microrregión"
 #: core/src/themes/BaseV1/layouts/parts/singles/location.php:19
 #: core/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:39
 #: core/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:68
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:563
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:568
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:385
 msgid "Município"
 msgstr "Municipio/Localidad"
@@ -451,6 +458,34 @@ msgstr "Solicitud de recurso"
 msgid "Certificado de solicitação de recurso"
 msgstr "Certificado de solicitud de recurso"
 
+#: core/config/module.FAQ.php:7
+msgid "Não encontrou o que procurava? Entre em contato com o suporte."
+msgstr "¿No encuentra lo que busca? Póngase en contacto con soporte."
+
+#: core/config/registrations.php:7
+msgid "Pessoa Física"
+msgstr "Persona Física"
+
+#: core/config/registrations.php:8
+msgid "MEI"
+msgstr "RUT"
+
+#: core/config/registrations.php:9 core/config/registrations.php:76
+#: core/src/conf/agent-types.php:730
+#: core/src/modules/Opportunities/components/opportunity-proponent-types/template.php:26
+#: core/src/modules/Opportunities/views/registration/single.php:191
+#: core/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:74
+#: core/src/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:58
+#: core/src/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:54
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:785
+msgid "Coletivo"
+msgstr "Colectivo"
+
+#: core/config/registrations.php:10
+#: core/src/modules/Opportunities/components/opportunity-proponent-types/template.php:37
+msgid "Pessoa Jurídica"
+msgstr "Personas Jurídica"
+
 #: core/config/registrations.php:27 core/src/conf/opportunity-types.php:91
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:91
 msgid "Não utilizar"
@@ -491,15 +526,6 @@ msgstr ""
 "Agente individual (persona física) con los campos CI, Fecha de Nacimiento / "
 "Fundación, Género, Orientación Sexual, Raza / Color, Email Privado y Teléfono "
 "1 obligatoriamente completados"
-
-#: core/config/registrations.php:76 core/src/conf/agent-types.php:730
-#: core/src/modules/Opportunities/views/registration/single.php:191
-#: core/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--seals.php:74
-#: core/src/themes/BaseV1/layouts/parts/singles/registration-edit--seals.php:58
-#: core/src/themes/BaseV1/layouts/parts/singles/registration-single--seals.php:54
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:780
-msgid "Coletivo"
-msgstr "Colectivo"
 
 #: core/config/registrations.php:78
 msgid ""
@@ -584,7 +610,7 @@ msgstr "Autenticación"
 #: core/src/themes/BaseV1/views/space/edit.php:74
 #: core/src/themes/BaseV1/views/space/single.php:72
 #: core/src/themes/BaseV1/views/space/single.php:74
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:659
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:664
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:68
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:97
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:73
@@ -1017,6 +1043,8 @@ msgstr "Nombre Fantasía"
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/agent-data-1/template.php:55
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:66
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:28
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:17
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:37
 msgid "Escolaridade"
 msgstr "Escolaridad"
 
@@ -1099,6 +1127,8 @@ msgstr "Doctorado Completo"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:16
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:36
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:52
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:16
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:36
 msgid "Renda"
 msgstr "Renta/ingreso"
 
@@ -1415,6 +1445,9 @@ msgstr "adjunto"
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:43
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/agent-data-1/template.php:26
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:187
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:15
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:35
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:19
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:52
 msgid "CPF"
 msgstr "CI"
@@ -1599,6 +1632,7 @@ msgstr "Persona trans o travesti"
 #: core/src/modules/Entities/components/entity-table/texts.php:44
 #: core/src/modules/EvaluationMethodTechnical/components/technical-evaluation-form/template.php:48
 #: core/src/modules/EvaluationMethodTechnical/components/technical-evaluation-form/template.php:49
+#: core/src/modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:41
 #: core/src/modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:43
 #: core/src/modules/EventImporter/Module.php:193
 #: core/src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:91
@@ -1629,6 +1663,7 @@ msgstr "No"
 #: core/src/modules/Entities/components/entity-table/texts.php:43
 #: core/src/modules/EvaluationMethodTechnical/components/technical-evaluation-form/template.php:44
 #: core/src/modules/EvaluationMethodTechnical/components/technical-evaluation-form/template.php:45
+#: core/src/modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:40
 #: core/src/modules/EvaluationMethodTechnical/layouts/parts/technical--evaluation-form.php:40
 #: core/src/modules/EventImporter/Module.php:185
 #: core/src/modules/Opportunities/components/opportunity-evaluation-committee/template.php:91
@@ -1786,7 +1821,7 @@ msgstr "El email proporcionado ne es un email válido."
 #: core/src/themes/BaseV1/layouts/parts/singles/history_space.php:148
 #: core/src/themes/BaseV1/layouts/parts/singles/space-servico.php:37
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/agent-data-1/template.php:28
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:485
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:490
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:209
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:279
 msgid "Telefone Público"
@@ -1806,7 +1841,7 @@ msgstr "El número de teléfono proporcionado no es válido."
 #: core/src/themes/BaseV1/layouts/parts/singles/agent-form.php:110
 #: core/src/themes/BaseV1/layouts/parts/singles/history_agent.php:155
 #: core/src/themes/BaseV1/layouts/parts/singles/history_space.php:152
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:498
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:503
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:221
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:289
 msgid "Telefone 1"
@@ -1820,7 +1855,7 @@ msgstr "Teléfono 1"
 #: core/src/themes/BaseV1/layouts/parts/singles/agent-form.php:117
 #: core/src/themes/BaseV1/layouts/parts/singles/history_agent.php:159
 #: core/src/themes/BaseV1/layouts/parts/singles/history_space.php:156
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:512
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:517
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:234
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:301
 msgid "Telefone 2"
@@ -1844,7 +1879,7 @@ msgstr "Teléfono 2"
 #: core/src/themes/BaseV1/layouts/parts/singles/location.php:36
 #: core/src/themes/BaseV1/views/event/edit.php:93
 #: core/src/themes/BaseV1/views/event/single.php:93
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:527
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:532
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:364
 msgid "Endereço"
 msgstr "Dirección"
@@ -1859,7 +1894,9 @@ msgstr "Dirección"
 #: core/src/themes/BaseV1/layouts/parts/singles/history_agent.php:179
 #: core/src/themes/BaseV1/layouts/parts/singles/history_space.php:171
 #: core/src/themes/BaseV1/layouts/parts/singles/location.php:14
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:532
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:537
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:11
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:14
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:370
 msgid "CEP"
 msgstr "CP"
@@ -1873,7 +1910,9 @@ msgstr "CP"
 #: core/src/themes/BaseV1/layouts/parts/singles/history_agent.php:180
 #: core/src/themes/BaseV1/layouts/parts/singles/history_space.php:172
 #: core/src/themes/BaseV1/layouts/parts/singles/location.php:15
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:539
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:544
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:19
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:22
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:373
 msgid "Logradouro"
 msgstr "Calle"
@@ -1886,7 +1925,9 @@ msgstr "Calle"
 #: core/src/themes/BaseV1/layouts/parts/singles/history_agent.php:182
 #: core/src/themes/BaseV1/layouts/parts/singles/history_space.php:174
 #: core/src/themes/BaseV1/layouts/parts/singles/location.php:17
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:551
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:556
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:33
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:36
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:379
 msgid "Complemento"
 msgstr "Localidad, Apto, Esquina, Referencia u Otro dato útil"
@@ -1903,7 +1944,9 @@ msgstr "Localidad, Apto, Esquina, Referencia u Otro dato útil"
 #: core/src/themes/BaseV1/layouts/parts/singles/location.php:18
 #: core/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:43
 #: core/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:72
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:557
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:562
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:41
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:44
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/space-types.php:382
 msgid "Bairro"
 msgstr "Barrio"
@@ -1911,7 +1954,7 @@ msgstr "Barrio"
 #: core/src/conf/agent-types.php:611 core/src/conf/event-types.php:68
 #: core/src/conf/opportunity-types.php:99 core/src/conf/project-types.php:60
 #: core/src/conf/seal-types.php:16 core/src/conf/space-types.php:435
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:661
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:666
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:70
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:99
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:75
@@ -1922,7 +1965,7 @@ msgstr "La url ingresada no es válida."
 #: core/src/conf/agent-types.php:617 core/src/conf/event-types.php:73
 #: core/src/conf/opportunity-types.php:105 core/src/conf/project-types.php:66
 #: core/src/conf/space-types.php:441
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:667
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:672
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:75
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:105
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:81
@@ -1933,7 +1976,7 @@ msgstr "Facebook"
 #: core/src/conf/agent-types.php:622 core/src/conf/event-types.php:78
 #: core/src/conf/opportunity-types.php:110 core/src/conf/project-types.php:71
 #: core/src/conf/space-types.php:446
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:672
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:677
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:80
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:110
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:86
@@ -1945,7 +1988,7 @@ msgstr ""
 #: core/src/conf/agent-types.php:624 core/src/conf/event-types.php:80
 #: core/src/conf/opportunity-types.php:112 core/src/conf/project-types.php:73
 #: core/src/conf/space-types.php:448
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:674
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:679
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:82
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:112
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:88
@@ -1956,7 +1999,7 @@ msgstr "nombredeusuario o iddeusuario"
 #: core/src/conf/agent-types.php:629 core/src/conf/event-types.php:85
 #: core/src/conf/opportunity-types.php:117 core/src/conf/project-types.php:78
 #: core/src/conf/space-types.php:453
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:679
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:684
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:87
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:117
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:93
@@ -1988,14 +2031,14 @@ msgstr "Twitter"
 #: core/src/conf/space-types.php:495 core/src/conf/space-types.php:507
 #: core/src/conf/space-types.php:519 core/src/conf/space-types.php:531
 #: core/src/conf/space-types.php:546
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:684
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:701
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:712
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:721
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:733
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:745
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:757
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:772
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:689
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:706
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:717
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:726
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:738
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:750
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:762
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:777
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:92
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:109
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:120
@@ -2052,13 +2095,13 @@ msgstr "El valor debe ser una URL o un usuario válido."
 #: core/src/conf/space-types.php:488 core/src/conf/space-types.php:500
 #: core/src/conf/space-types.php:512 core/src/conf/space-types.php:536
 #: core/src/conf/space-types.php:548
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:686
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:703
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:714
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:726
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:738
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:762
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:774
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:691
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:708
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:719
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:731
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:743
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:767
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:779
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:94
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:111
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:122
@@ -2093,7 +2136,7 @@ msgstr "nombredeusuario"
 #: core/src/conf/agent-types.php:641 core/src/conf/event-types.php:97
 #: core/src/conf/opportunity-types.php:129 core/src/conf/project-types.php:90
 #: core/src/conf/space-types.php:465
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:691
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:696
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:99
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:129
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:105
@@ -2104,7 +2147,7 @@ msgstr "Instagram"
 #: core/src/conf/agent-types.php:657 core/src/conf/event-types.php:113
 #: core/src/conf/opportunity-types.php:145 core/src/conf/project-types.php:102
 #: core/src/conf/space-types.php:481
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:707
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:712
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:115
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:145
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:117
@@ -2115,7 +2158,7 @@ msgstr "Linkedin"
 #: core/src/conf/agent-types.php:669 core/src/conf/event-types.php:125
 #: core/src/conf/opportunity-types.php:157 core/src/conf/project-types.php:114
 #: core/src/conf/space-types.php:493
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:719
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:724
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:127
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:157
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:129
@@ -2126,7 +2169,7 @@ msgstr ""
 #: core/src/conf/agent-types.php:681 core/src/conf/event-types.php:137
 #: core/src/conf/opportunity-types.php:169 core/src/conf/project-types.php:126
 #: core/src/conf/space-types.php:505
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:731
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:736
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:139
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:169
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:141
@@ -2137,7 +2180,7 @@ msgstr ""
 #: core/src/conf/agent-types.php:693 core/src/conf/event-types.php:149
 #: core/src/conf/opportunity-types.php:181 core/src/conf/project-types.php:138
 #: core/src/conf/space-types.php:517
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:743
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:748
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:151
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:181
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:153
@@ -2148,7 +2191,7 @@ msgstr ""
 #: core/src/conf/agent-types.php:700 core/src/conf/event-types.php:156
 #: core/src/conf/opportunity-types.php:188 core/src/conf/project-types.php:145
 #: core/src/conf/space-types.php:524
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:750
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:755
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:158
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:188
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:160
@@ -2159,7 +2202,7 @@ msgstr "iddelcanal"
 #: core/src/conf/agent-types.php:705 core/src/conf/event-types.php:161
 #: core/src/conf/opportunity-types.php:193 core/src/conf/project-types.php:150
 #: core/src/conf/space-types.php:529
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:755
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:760
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:163
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:193
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:165
@@ -2170,7 +2213,7 @@ msgstr ""
 #: core/src/conf/agent-types.php:717 core/src/conf/event-types.php:173
 #: core/src/conf/opportunity-types.php:205 core/src/conf/project-types.php:162
 #: core/src/conf/space-types.php:541
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:767
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:772
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:175
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:205
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/project-types.php:177
@@ -2179,7 +2222,7 @@ msgid "Tiktok"
 msgstr ""
 
 #: core/src/conf/agent-types.php:729
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:779
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:784
 msgid "Individual"
 msgstr "Individual"
 
@@ -2272,6 +2315,7 @@ msgid "Áudio descrição"
 msgstr "Audio descripción"
 
 #: core/src/conf/event-types.php:184
+#: core/src/themes/BaseV1/layouts/parts/event-attendance.php:4
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/event-types.php:186
 msgid "Público presente"
 msgstr "Publico presente"
@@ -3492,6 +3536,7 @@ msgstr "Color de la entidad"
 #: core/src/conf/subsite-types.php:60
 #: core/src/modules/Entities/components/agent-table/texts.php:8
 #: core/src/modules/Entities/views/agent/edit-2.php:80
+#: core/src/modules/Entities/views/space/edit.php:80
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:11
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:11
 #: core/src/modules/Search/components/search-filter-agent/template.php:34
@@ -3503,6 +3548,8 @@ msgstr "Color de la entidad"
 #: core/src/themes/BaseV1/layouts/parts/search/list-agent-item.php:14
 #: core/src/themes/BaseV1/layouts/parts/search/list-space-item.php:17
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:108
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:11
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:11
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:126
 msgid "Área de atuação"
 msgstr "Área de actuación"
@@ -3558,7 +3605,7 @@ msgstr "Tipo de evento"
 
 #: core/src/conf/subsite-types.php:332
 msgid "Texto boas vindas"
-msgstr "texto de bienvenida"
+msgstr "Texto de bienvenida"
 
 #: core/src/conf/subsite-types.php:336
 msgid "Texto sobre"
@@ -5228,6 +5275,8 @@ msgstr "Conferencia, Debate o Encuentro"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:9
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:23
 #: core/src/modules/UserManagement/components/user-management--add-role-modal/template.php:18
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:9
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:23
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/taxonomies.php:538
 msgid "Função"
 msgstr "Rol"
@@ -8377,6 +8426,7 @@ msgstr "Descripción legible del horario"
 #: core/src/modules/Entities/views/project/edit.php:133
 #: core/src/modules/Entities/views/project/single.php:94
 #: core/src/modules/Entities/views/project/single.php:138
+#: core/src/modules/Entities/views/space/edit.php:163
 #: core/src/modules/Opportunities/components/opportunity-basic-info/template.php:88
 #: core/src/modules/Opportunities/views/opportunity/single.php:103
 #: core/src/modules/Spreadsheets/JobTypes/Entities.php:47
@@ -8424,6 +8474,7 @@ msgstr "Diariamente"
 #: core/src/modules/Entities/views/project/edit.php:135
 #: core/src/modules/Entities/views/project/single.php:96
 #: core/src/modules/Entities/views/project/single.php:140
+#: core/src/modules/Entities/views/space/edit.php:166
 #: core/src/modules/Entities/views/space/single.php:82
 #: core/src/modules/Opportunities/views/opportunity/single.php:106
 #: core/src/modules/Seals/views/seal/edit.php:52
@@ -9202,6 +9253,7 @@ msgstr "Validado del sello debe ser un número entero."
 
 #: core/src/core/Entities/SealRelation.php:141
 #: core/src/modules/RegistrationFieldTypes/Module.php:121
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:121
 msgid "d/m/Y"
 msgstr "d/m/A"
 
@@ -9954,6 +10006,15 @@ msgstr "Eliminar borrador"
 msgid "Colunas Habilitadas:"
 msgstr "Columnas habilitadas:"
 
+#: core/src/modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:19
+#: core/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:37
+msgid ""
+"Busque pelo nome dos campos do formulário de inscrição e selecione as colunas "
+"visíveis"
+msgstr ""
+"Busque por el nombre de los campos en el formulario de inscripción y "
+"seleccione las columnas visibles"
+
 #: core/src/modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:78
 #: core/src/modules/Support/layouts/parts/support/opportunity-support.php:50
 #: core/src/themes/BaseV1/layouts/parts/singles/opportunity-registrations--tables--manager.php:102
@@ -10216,6 +10277,7 @@ msgstr "Enviar denuncia de forma anónima"
 #: core/src/modules/Entities/components/entity-field-location/template.php:67
 #: core/src/modules/Entities/components/entity-field-location/template.php:76
 #: core/src/modules/EvaluationMethodQualification/layouts/parts/qualification--evaluation-form.php:35
+#: core/src/modules/EvaluationMethodTechnical/layouts/parts/technical--affirmative-polices-configuration.php:39
 #: core/src/modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:84
 #: core/src/modules/OpportunityWorkplan/components/registration-workplan/template.php:52
 #: core/src/modules/OpportunityWorkplan/components/registration-workplan/template.php:60
@@ -10228,11 +10290,14 @@ msgstr "Enviar denuncia de forma anónima"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:54
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:64
 #: core/src/modules/Support/layouts/parts/support/opportunity-support-fields-association.php:19
+#: core/src/themes/BaseV1/layouts/parts/event-attendance.php:4
 #: core/src/themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:16
 #: core/src/themes/BaseV1/layouts/parts/modal/event-occurrence-form.php:24
 #: core/src/themes/BaseV1/layouts/parts/modal/field--select.php:15
 #: core/src/themes/BaseV1/layouts/parts/singles/space-servico.php:15
 #: core/src/themes/BaseV1/layouts/parts/singles/subsite-entities.php:7
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:54
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:64
 msgid "Selecione"
 msgstr "Seleccione"
 
@@ -10973,6 +11038,8 @@ msgstr "Este agente actúa"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:45
 #: core/src/themes/BaseV1/layouts/parts/search/infobox-agent.php:13
 #: core/src/themes/themeCulturaenlinea/views/agent/edit-1.php:75
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:25
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:45
 #: mapasculturais-base-project/themes/themeCulturaenlinea/views/agent/edit-1.php:75
 msgid "Áreas de atuação"
 msgstr "Áreas de actuación"
@@ -11464,6 +11531,8 @@ msgstr "Género"
 #: core/src/themes/BaseV1/layouts/parts/singles/agent-form.php:75
 #: core/src/themes/BaseV1/layouts/parts/singles/history_agent.php:139
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/agent-data-1/template.php:54
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:20
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:40
 msgid "Raça/Cor"
 msgstr "Raza/Color"
 
@@ -11531,6 +11600,10 @@ msgstr "id"
 msgid "Area"
 msgstr "Área"
 
+#: core/src/modules/Entities/components/agent-table/init.php:86
+msgid "Divisão geográfica"
+msgstr "División geográfica"
+
 #: core/src/modules/Entities/components/agent-table/script.js:108
 #: core/src/modules/Entities/components/opportunity-table/script.js:56
 #: core/src/modules/Entities/components/project-table/script.js:54
@@ -11554,6 +11627,10 @@ msgstr "Seleccione las áreas: "
 #: core/src/modules/Entities/components/agent-table/template.php:31
 msgid "Selecione os selos: "
 msgstr "Seleccione los sellos: "
+
+#: core/src/modules/Entities/components/agent-table/template.php:37
+msgid "Digite o bairro"
+msgstr "Ingrese el Barrio"
 
 #: core/src/modules/Entities/components/agent-table/template.php:46
 #: core/src/modules/Search/components/search-filter-agent/template.php:23
@@ -12179,6 +12256,7 @@ msgstr "Seleccione el tipo de oportunidad"
 #: core/src/themes/BaseV1/layouts/parts/ajax-uploader.php:19
 #: core/src/themes/BaseV1/layouts/parts/link-list.php:66
 #: core/src/themes/BaseV1/layouts/parts/video-gallery.php:69
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:4
 msgid "Título"
 msgstr "Título"
 
@@ -12387,6 +12465,7 @@ msgid "Você está certo que deseja arquivar?"
 msgstr "¿Está seguro (a) que desea archivar?"
 
 #: core/src/modules/Entities/components/entity-actions/template.php:42
+#: core/src/modules/Entities/components/entity-activity-card/template.php:30
 #: core/src/modules/Entities/components/entity-occurrence-list/template.php:93
 #: core/src/modules/EvaluationMethodQualification/components/qualification-evaluation-config/template.php:32
 #: core/src/modules/EvaluationMethodTechnical/components/affirmative-policies--quota-configuration/template.php:81
@@ -12482,6 +12561,7 @@ msgid "Gerenciar"
 msgstr "Administrar"
 
 #: core/src/modules/Entities/components/entity-actions/template.php:107
+#: core/src/modules/Entities/components/entity-activity-card/template.php:26
 #: core/src/modules/Entities/components/entity-occurrence-list/template.php:86
 #: core/src/modules/EvaluationMethodTechnical/components/technical-assessment-section/template.php:26
 #: core/src/modules/Panel/components/panel--entity-card/template.php:68
@@ -12518,6 +12598,10 @@ msgstr "Editar"
 msgid "oportunidade"
 msgstr "oportunidad"
 
+#: core/src/modules/Entities/components/entity-activity-card/template.php:13
+msgid "Atividades do projeto"
+msgstr "Actividades del proyecto"
+
 #: core/src/modules/Entities/components/entity-admins/script.js:19
 #: core/src/modules/Entities/components/entity-admins/texts.php:5
 msgid "Administrado por"
@@ -12542,41 +12626,49 @@ msgstr "Agregar imagen de la portada"
 
 #: core/src/modules/Entities/components/entity-field-bank-info/template.php:14
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:11
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:11
 msgid "Tipo de conta"
 msgstr "Tipo de cuenta"
 
 #: core/src/modules/Entities/components/entity-field-bank-info/template.php:16
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:13
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:13
 msgid "Selecione o tipo de conta"
 msgstr "Seleccione el tipo de cuenta"
 
 #: core/src/modules/Entities/components/entity-field-bank-info/template.php:22
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:22
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:22
 msgid "Número do banco"
 msgstr "Número del banco"
 
 #: core/src/modules/Entities/components/entity-field-bank-info/template.php:24
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:24
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:24
 msgid "Selecione o banco"
 msgstr "Seleccione el banco"
 
 #: core/src/modules/Entities/components/entity-field-bank-info/template.php:30
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:33
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:33
 msgid "Agência"
 msgstr "Agencia"
 
 #: core/src/modules/Entities/components/entity-field-bank-info/template.php:34
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:39
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:39
 msgid "Dígito verificador da agência"
 msgstr "Dígito verificador de la agencia"
 
 #: core/src/modules/Entities/components/entity-field-bank-info/template.php:39
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:45
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:45
 msgid "Número da conta"
 msgstr "Número de cuenta"
 
 #: core/src/modules/Entities/components/entity-field-bank-info/template.php:44
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:51
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/bankFields.php:51
 msgid "Dígito verificador da conta"
 msgstr "Dígito verificador de la cuenta"
 
@@ -12585,6 +12677,7 @@ msgstr "Dígito verificador de la cuenta"
 #: core/src/modules/Entities/components/mc-links-field/template.php:24
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:8
 #: core/src/themes/BaseV1/layouts/parts/panel-subsite.php:17
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:8
 msgid "URL"
 msgstr ""
 
@@ -12611,10 +12704,17 @@ msgstr "Agregar enlace"
 msgid "Adicionar novo link"
 msgstr "Agregar nuevo link"
 
+#: core/src/modules/Entities/components/entity-field-location/template.php:32
+#: core/src/modules/Opportunities/components/registration-field-address/template.php:42
+msgid "rua, avenida, praça, viaduto, travessa, etc"
+msgstr "calle, avenida, plaza, viaducto, carril, etc"
+
 #: core/src/modules/Entities/components/entity-field-location/template.php:74
 #: core/src/modules/Opportunities/components/registration-field-address/template.php:76
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:59
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:62
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:59
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:62
 msgid "Cidade"
 msgstr "Ciudad"
 
@@ -12700,6 +12800,26 @@ msgstr "Validado por {authority} el {date}"
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:129
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:137
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:146
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field.php:30
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field.php:31
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/bankFields.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/brPhone.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkbox.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/cnpj.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/cpf.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/currency.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/date.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/email.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/links.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/municipio.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/number.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field.php:33
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/text.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/textarea.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/url.php:8
 msgid "obrigatório"
 msgstr "obligatorio"
 
@@ -12995,6 +13115,13 @@ msgstr "Esta inscripción"
 #: core/src/modules/Entities/components/entity-log/template.php:9
 msgid "Histórico de alterações"
 msgstr "Histórico de cambios"
+
+#: core/src/modules/Entities/components/entity-log/template.php:12
+#: core/src/modules/Entities/components/entity-log/template.php:13
+#: core/src/modules/Entities/components/entity-log/template.php:14
+#: core/src/modules/Entities/components/entity-log/template.php:18
+msgid "Alterações realizadas 13:34:44"
+msgstr "Cambios guardados"
 
 #: core/src/modules/Entities/components/entity-occurrence-list/script.js:46
 msgid "currency"
@@ -13572,6 +13699,11 @@ msgstr "Nombre del modelo"
 msgid "Breve descrição do modelo"
 msgstr "Breve descripción del modelo"
 
+#: core/src/modules/Entities/components/opportunity-create-model/template.php:25
+#: core/src/modules/Reports/layouts/parts/create-reports-modal.php:64
+msgid "Breve descrição"
+msgstr "Breve descripción"
+
 #: core/src/modules/Entities/components/opportunity-create-model/texts.php:8
 msgid "Modelo gerado com sucesso"
 msgstr "Modelo generado con éxito"
@@ -13676,6 +13808,7 @@ msgstr "Espacios oficiales"
 #: core/src/modules/Entities/views/project/single.php:69
 #: core/src/modules/Entities/views/space/edit.php:49
 #: core/src/modules/Entities/views/space/single.php:57
+#: core/src/modules/FAQ/components/faq-info/template.php:17
 #: core/src/modules/Opportunities/views/opportunity/edit.php:41
 #: core/src/modules/Opportunities/views/opportunity/single.php:74
 #: core/src/themes/themeCulturaenlinea/views/agent/edit-1.php:50
@@ -14235,6 +14368,18 @@ msgstr "No hay subproyectos vinculados."
 msgid "Meus Espaços"
 msgstr "Mis Espacios"
 
+#: core/src/modules/Entities/views/space/edit.php:68
+msgid "Nome do espaço"
+msgstr "Nombre del espacio"
+
+#: core/src/modules/Entities/views/space/edit.php:69
+msgid "Tipo do espaço"
+msgstr "Tipos de espacio"
+
+#: core/src/modules/Entities/views/space/edit.php:75
+msgid "Link para página ou site do espaço"
+msgstr "Enlace a la página o sitio web del espacio"
+
 #: core/src/modules/Entities/views/space/edit.php:88
 msgid "Endereço do espaço"
 msgstr "Dirección del espacio"
@@ -14246,6 +14391,14 @@ msgstr "Horario de funcionamiento"
 #: core/src/modules/Entities/views/space/edit.php:130
 msgid "Informações sobre o espaço"
 msgstr "Información sobre el espacio"
+
+#: core/src/modules/Entities/views/space/edit.php:137
+msgid "Telefone privado 1"
+msgstr "Teléfono Privado 1"
+
+#: core/src/modules/Entities/views/space/edit.php:138
+msgid "Telefone privado 2"
+msgstr "Teléfono Privado 2"
 
 #: core/src/modules/Entities/views/space/edit.php:145
 msgid "Apresente melhor o seu Espaço."
@@ -14566,8 +14719,11 @@ msgstr "Justificación"
 msgid "Aguardando resposta"
 msgstr "Esperando respuesta"
 
+#: core/src/modules/EvaluationMethodContinuous/components/evaluation-method-continuous--apply/template.php:15
 #: core/src/modules/EvaluationMethodContinuous/components/evaluation-method-continuous--apply/template.php:20
+#: core/src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:15
 #: core/src/modules/EvaluationMethodDocumentary/components/evaluation-method-documentary--apply/template.php:19
+#: core/src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:15
 #: core/src/modules/EvaluationMethodSimple/components/evaluation-method-simple--apply/template.php:20
 #: core/src/modules/EvaluationMethodTechnical/components/evaluation-method-technical--apply/template.php:19
 #: core/src/modules/EvaluationMethodTechnical/components/evaluation-method-technical--apply/template.php:23
@@ -15483,6 +15639,10 @@ msgstr "Campo que representa la ubicación del postulante"
 #: core/src/modules/EvaluationMethodTechnical/components/affirmative-policies--geo-quota-configuration/template.php:97
 msgid "Divisão territorial"
 msgstr "División territorial"
+
+#: core/src/modules/EvaluationMethodTechnical/components/affirmative-policies--geo-quota-configuration/template.php:98
+msgid "Selecione uma divisão"
+msgstr "Seleccione una división"
 
 #: core/src/modules/EvaluationMethodTechnical/components/affirmative-policies--geo-quota-configuration/template.php:104
 msgid ""
@@ -19874,15 +20034,19 @@ msgstr ""
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:18
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:38
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:74
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:18
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:38
 msgid "Telefone do representante"
-msgstr "Número de teléfono del representante"
+msgstr "Número de teléfono"
 
 #: core/src/modules/Opportunities/components/registration-field-persons/template.php:81
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:19
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:39
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:83
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:19
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:39
 msgid "Email do representante"
-msgstr "Correo electrónico del representante"
+msgstr "Correo electrónico"
 
 #: core/src/modules/Opportunities/components/registration-field-persons/template.php:89
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:91
@@ -22747,67 +22911,84 @@ msgid "Registro de plano de trabalho"
 msgstr "Registro de plan de trabajo"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:316
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:316
 msgid "Campo de dados bancários"
 msgstr "Campo de datos bancarios"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:327
 #: core/src/modules/RegistrationFieldTypes/Module.php:332
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:327
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:332
 msgid "O número da conta não está preenchido"
 msgstr "El número de cuenta no está completado"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:328
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:328
 msgid "O tipo de conta não está preenchido"
 msgstr "El tipo de cuenta no está completado"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:329
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:329
 msgid "A agência não está preenchida"
 msgstr "La agencia no está llena"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:330
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:330
 msgid "O dígito verificador da conta não está preenchido"
 msgstr "El dígito verificador de la cuenta no está completado"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:331
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:331
 msgid "O dígito verificador da agência não está preenchido"
 msgstr "El dígito verificador de la agencia no está completado"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:337
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:337
 msgid "Campo de texto (textarea)"
 msgstr "Campo de texto (textarea)"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:343
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:343
 msgid "Campo de texto simples"
 msgstr "Campo de texto simple"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:349
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:349
 msgid "Campo de moeda (R$)"
 msgstr "Campo de moneda"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:353
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:353
 msgid "O valor não está no formato de moeda real (R$)"
 msgstr "El valor no está en el formato de moneda real (R$)"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:365
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:365
 msgid "Campo de data"
 msgstr "Campo de fecha"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:371
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:371
 msgid "Campo de URL (link)"
 msgstr "Campo de URL (enlace)"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:375
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:375
 msgid "O valor não é uma URL válida"
 msgstr "El valor no es una URL válida"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:380
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:380
 msgid "Campo de email"
 msgstr "Campo de email"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:384
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:384
 msgid "O valor não é um endereço de email válido"
 msgstr "El valor no es una dirección de email válido"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:389
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:389
 msgid "Campo de telefone do Brasil"
 msgstr "Campo de teléfono"
 
@@ -22816,22 +22997,27 @@ msgid "O valor não é um telefone válido"
 msgstr "El valor no es una teléfono válido"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:398
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:399
 msgid "Seleção única"
 msgstr "Selección única"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:405
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:406
 msgid "# Título de Seção"
 msgstr "# Título de Sección"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:411
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:412
 msgid "Campo numérico"
 msgstr "Campo numerico"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:415
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:416
 msgid "O valor inserido não é válido"
 msgstr "El valor informado no es válido"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:420
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:421
 msgid "Campo de CPF"
 msgstr "Campo de CI"
 
@@ -22840,6 +23026,7 @@ msgid "O cpf inserido não é válido"
 msgstr "La ci ingresada no es válida"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:429
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:431
 msgid "Campo de CNPJ"
 msgstr "Campo de RUT"
 
@@ -22848,91 +23035,127 @@ msgid "O cnpj inserido não é válido"
 msgstr "El RUT no es válido"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:438
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:441
 msgid "Caixa de verificação (checkbox)"
 msgstr "Casilla de verificación (checkbox)"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:444
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:447
 msgid "Seleção múltipla"
 msgstr "Selección múltiple"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:464
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:467
 msgid "Campo de listagem de endereços"
 msgstr "Campo de listado de direcciones"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:499
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:502
 msgid "O campo Estado é obrigatório."
 msgstr "El campo Estado es obligatorio."
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:500
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:503
 msgid "O campo Cidade é obrigatório."
 msgstr "El campo Ciudad es obligatorio."
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:505
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:508
 msgid "Campo de listagem de pessoas"
 msgstr "Campo de listado de personas"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:541
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:544
 msgid "Campo de listagem de links"
 msgstr "Campo de listado de links"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:577
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:580
 msgid "Seleção de município"
 msgstr "Selección de municipio"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:590
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:593
 msgid "@ Campo do Agente Responsável"
 msgstr "@ Campo del Agente Responsable"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:640
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:643
 msgid "@ Campo do Agente Coletivo"
 msgstr "@ Campo de Agente Colectivo"
 
 #: core/src/modules/RegistrationFieldTypes/Module.php:698
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/Module.php:701
 msgid "@ Campo do Espaço"
 msgstr "@ Campo del Espacio"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:3
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:6
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:3
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:6
 msgid "Nome do botão"
 msgstr "Nombre del botón"
 
+#: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:3
+#: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:6
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:3
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:6
+msgid "Nome do botão no formulário"
+msgstr "Nombre del botón en el formulario"
+
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:6
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:6
 msgid "Pedir informação de nome"
 msgstr "Solicitar información de nombre"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:7
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:7
 msgid "Pedir informação de cpf"
 msgstr "Solicitar información de la CI"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:8
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:8
 msgid "Pedir informação de parentesco"
 msgstr "Solicitar información sobre parentesco"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:10
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:10
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:10
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:10
 msgid "Campos de endereço"
 msgstr "Campos de dirección"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:12
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:12
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:12
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:12
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:12
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:12
 msgid " Links"
 msgstr " Enlaces"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:80
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:78
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:80
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:78
 msgid "Campo do agente responsável:"
 msgstr "Campo del Agente responsable:"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:90
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:88
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:37
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:90
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:88
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:37
 msgid "Definir a latitude e longitude baseado no CEP?"
 msgstr "¿Establecer la latitud y la longitud según el código postal?"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:91
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:89
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:38
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:91
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:89
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:38
 msgid "Fornecer opção para mudar a privacidade da localização?"
 msgstr "¿Ofrece la opción de cambiar la privacidad de la ubicación?"
 
@@ -22942,6 +23165,12 @@ msgstr "¿Ofrece la opción de cambiar la privacidad de la ubicación?"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:94
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:106
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:126
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:97
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:109
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:128
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:94
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:106
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:126
 msgid "Informe os termos que estarão disponíveis para seleção."
 msgstr "Introduzca los términos que estarán disponibles para su selección."
 
@@ -22956,6 +23185,17 @@ msgstr "Introduzca los términos que estarán disponibles para su selección."
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:6
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:43
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:48
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:98
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:110
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:129
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:95
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:107
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:127
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:6
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/section-config.php:2
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:6
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:43
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:48
 msgid "Opções de seleção"
 msgstr "Opciones de selección"
 
@@ -22966,6 +23206,13 @@ msgstr "Opciones de selección"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:109
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:129
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:9
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:100
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:112
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:131
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:97
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:109
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:129
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:9
 msgid "Limite de Opções"
 msgstr "Límite de opciones"
 
@@ -22976,6 +23223,13 @@ msgstr "Límite de opciones"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:110
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:130
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:11
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:101
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:113
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:132
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:98
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:110
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:130
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:11
 msgid ""
 "Digite o limite de opções. Deixe em branco ou coloque 0 para selecionar "
 "ilimitadas."
@@ -22991,18 +23245,32 @@ msgstr ""
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:146
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:14
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:10
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:117
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:136
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:147
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:114
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:134
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:146
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:14
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:10
 msgid "Modo de visualização"
 msgstr "Modo de visualización"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:119
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:116
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:12
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:119
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:116
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:12
 msgid "Caixa de seleção"
 msgstr "Opciones de selección"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:120
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:117
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:13
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:120
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:117
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:13
 msgid "Lista de botões de rádio"
 msgstr "Lista de botones de opción"
 
@@ -23011,6 +23279,11 @@ msgstr "Lista de botones de opción"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:136
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:148
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:16
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:138
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:149
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:136
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:148
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:16
 msgid "Lista de checkboxes"
 msgstr "Lista de casillas de verificación"
 
@@ -23019,6 +23292,11 @@ msgstr "Lista de casillas de verificación"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:137
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:149
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:17
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:139
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:150
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:137
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:149
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:17
 msgid "Lista de tags"
 msgstr "Lista de etiquetas"
 
@@ -23026,6 +23304,10 @@ msgstr "Lista de etiquetas"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:155
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/text-config.php:2
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/textarea-config.php:2
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:156
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:155
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/text-config.php:2
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/textarea-config.php:2
 msgid "Quantidade máxima de caracteres"
 msgstr "Cantidad máxima de caracteres"
 
@@ -23033,146 +23315,193 @@ msgstr "Cantidad máxima de caracteres"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:159
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/links-config.php:3
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:51
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:160
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:159
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/links-config.php:3
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:51
 msgid "Pedir de título"
 msgstr "Título de la solicitud"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field.php:33
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field.php:33
 msgid "Este campo será salvo no agente coletivo"
 msgstr "Este campo se guardará en el agente colectivo"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field.php:34
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field.php:34
 msgid "Este campo será salvo no agente responsável pela inscrição"
 msgstr "Este campo se guardará en el agente responsable por la inscripción"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:5
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:5
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/checkboxes-config.php:5
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:5
 msgid "Opções do campo"
 msgstr "Opciones del campo"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:74
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/_location.php:74
 msgid "Marque para deixar tornar sua localização pública."
 msgstr "Marque para que su ubicación se haga pública."
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:12
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:42
 #: core/src/modules/UserManagement/Module.php:34
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:12
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:42
 msgid "remover"
 msgstr "eliminar"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:15
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:45
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:15
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:45
 msgid "adicionar"
 msgstr "agregar"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:10
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:10
 msgid "Selecione os campos solicitados"
 msgstr "Seleccionar los campos solicitados"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:13
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:33
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:13
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:33
 msgid "nome completo"
 msgstr "nombre completo"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:14
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:34
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:14
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:34
 msgid "nome social"
 msgstr "razón social"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:21
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:41
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:21
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:41
 msgid "Genero "
 msgstr "Género "
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:22
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:42
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:22
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:42
 msgid "Orientação sexual"
 msgstr "Orientación sexual"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:23
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:43
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:23
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:43
 msgid "Informações sobre deficiencias"
 msgstr "Datos sobre discapacidades"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:24
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:44
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:24
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:44
 msgid "Pertencimento a povos ou comunidades tradicionais"
 msgstr "Perteneciente a pueblos o comunidades tradicionales"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:26
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:46
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:26
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:46
 msgid "Funções/Profissões"
 msgstr "Funciones/Profesiones"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:30
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:30
 msgid "Selecione os campos que serão obrigatórios"
 msgstr "Seleccione los campos son obligatorios"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:27
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:27
 msgid "Parentesco"
 msgstr "Parentezco"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:29
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:29
 msgid "Cônjuge ou Companheiro(a)"
 msgstr "Cónyuge o pareja"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:30
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:30
 msgid "Filho(a)"
 msgstr "Hijo(a)"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:31
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:31
 msgid "Enteado(a)"
 msgstr "Hijastro(a)"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:32
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:32
 msgid "Neto (a) ou Bisneto (a)"
 msgstr "Nieto(a) o Bisnieto(a)"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:33
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:33
 msgid "Pai ou Mãe"
 msgstr "Padra o Madre"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:34
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:34
 msgid "Sogro(a)"
 msgstr "Suegro(a)"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:35
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:35
 msgid "Irmão ou Irmã"
 msgstr "Hermano o Hermana"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:36
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:36
 msgid "Genro ou Nora"
 msgstr "Yerno o nuera"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:37
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:37
 msgid "Outro Parente"
 msgstr "Otros pariente"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:38
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:38
 msgid "Não Parente"
 msgstr "No es pariente"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/section-config.php:3
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:7
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/section-config.php:3
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/select-config.php:7
 msgid "Informe uma opção por linha."
 msgstr "Una opción por línea."
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:10
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:10
 msgid " Campos de endereço"
 msgstr " Campos de dirección"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:11
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:11
 msgid " Área de atuação"
 msgstr " Área de actuación"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:13
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:13
 msgid " Tipo"
 msgstr " Tipo"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:28
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:28
 msgid "Campo do epaço:"
 msgstr "Campo del espacio:"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:41
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:41
 msgid ""
 "Informe os termos que estarão disponíveis para seleção. <br>Para fazer um "
 "mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. "
@@ -23183,6 +23512,7 @@ msgstr ""
 "strong>. Ejemplo: <strong> Danza: artes de la danza </strong>"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:46
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field-config.php:46
 msgid ""
 "Informe os tipos que estarão disponíveis para seleção. <br>Para fazer um "
 "mapeamento de valores utilize <strong>valor salvo:valor exibido</strong>. "
@@ -23196,6 +23526,7 @@ msgstr ""
 "</em>"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field.php:36
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/space-field.php:36
 msgid "Este campo será salvo no espaço relacionado"
 msgstr "Este campo se guardará en el espacio relacionado"
 
@@ -23343,10 +23674,6 @@ msgstr "Título del gráfico"
 #: core/src/modules/Reports/layouts/parts/create-reports-modal.php:61
 msgid "Digite um título que represente os dados do novo gráfico"
 msgstr "Ingrese un título que represente los datos del nuevo gráfico"
-
-#: core/src/modules/Reports/layouts/parts/create-reports-modal.php:64
-msgid "Breve descrição"
-msgstr "Breve descripción"
 
 #: core/src/modules/Reports/layouts/parts/create-reports-modal.php:65
 msgid "Digite uma descrição resumida"
@@ -23998,6 +24325,10 @@ msgstr "Evaluaciones de inscripciones"
 msgid "sucesso"
 msgstr "éxito"
 
+#: core/src/modules/Spreadsheets/components/mc-export-spreadsheet/template.php:17
+msgid "Exportação de planilhas"
+msgstr "Exportar planilla"
+
 #: core/src/modules/Spreadsheets/components/mc-export-spreadsheet/template.php:21
 msgid "Exportar como .csv"
 msgstr "Exportar como .csv"
@@ -24126,6 +24457,10 @@ msgstr "Agentes autorizados"
 #: core/src/themes/BaseV1/layouts/parts/related-agents.php:15
 msgid "Adicionar agentes"
 msgstr "Agregar agentes"
+
+#: core/src/modules/Support/layouts/parts/support/opportunity-support-settings.php:16
+msgid "buscar por nome"
+msgstr "buscar por nombre"
 
 #: core/src/modules/Support/layouts/parts/support/opportunity-support-settings.php:24
 #: core/src/themes/BaseV1/layouts/parts/templates.php:7
@@ -24886,9 +25221,17 @@ msgstr "Configuración de filtros de contenido"
 msgid "Controle de SPAM"
 msgstr "Control de SPAM"
 
-#: core/src/plugins/plugin-SpamDetector/components/spam-add-config/template.php:41
+#: core/src/plugins/plugin-SpamDetector/components/spam-add-config/template.php:31
+msgid "Digite uma nova palavra chave de notificação"
+msgstr "Escriba una nueva palabra clave de notificación"
+
+#: core/src/plugins/plugin-SpamDetector/components/spam-add-config/template.php:42
 msgid "Bloqueio"
 msgstr "Bloqueo"
+
+#: core/src/plugins/plugin-SpamDetector/components/spam-add-config/template.php:44
+msgid "Digite uma nova palavra chave de bloqueio"
+msgstr "Escriba una nueva palabra clave de bloqueo"
 
 #: core/src/plugins/plugin-SpamDetector/components/spam-add-config/texts.php:5
 msgid "Bloqueio e notificações foi salvo com sucesso"
@@ -26974,6 +27317,10 @@ msgstr "Seleccione proyecto padre"
 #: core/src/themes/BaseV1/views/event/single.php:431
 msgid "Aguardando confirmação"
 msgstr "Esperando confirmación"
+
+#: core/src/themes/BaseV1/layouts/parts/event-attendance.php:3
+msgid "Total de Público"
+msgstr "Total de Público"
 
 #: core/src/themes/BaseV1/layouts/parts/footer.php:15
 msgid "Recortar imagem"
@@ -32009,9 +32356,6 @@ msgstr "un número"
 
 #~ msgid "Buscar eventos"
 #~ msgstr "Buscar eventos"
-
-#~ msgid "Buscar projetos"
-#~ msgstr "Buscar proyectos"
 
 #~ msgid "como rascunho."
 #~ msgstr "como borrador."
