@@ -7,30 +7,29 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.6]
 ### Novas Funcionalidades
-- Editais de fluxo contínuo, podendo ter ou não uma data de término.
-- Configuração de selos certificadores para editais, sendo possível configurar quais selos serão aplicados para cada tipo de proponente em cada fase do edital.
-- Opção de autoaplicação dos resultados das avaliações quando todos os avaliadores de uma inscrição tiverem avaliado
-- Comissões de avaliação
-  - Possibilidade de criação de mútiplas comissões de avaliação
-  - Possibilidade de configurar para cada comissão os critérios de distribuição das inscrições 
-  - Possibilidade de limitar o número de avaliadores de uma comissão qua cada inscrição receberá
-  - Comissão de voto de minerva, que recebe inscrições que tenham divergência entre diferentes comissões de avaliação
-- Etapas em formulários de inscrição
-- Cria novos hooks na tela de visualiação do formulario pelo avaliador
-- justa o componente registration-actions para permitir a complementação de erros do formulário com campos externos ao core, como os definidos por plugins e temas
+- **Editais de fluxo contínuo**, onde as inscrições podem ficar abertas indefinidamente e os proponentes recebem os resultados conforme avançam nas fases (como análise técnica ou avaliação documental), sem depender de datas pré-fixadas para divulgação coletiva do resultado — ideal para programas de fomento contínuo ou ocupação de espaços culturais.
+- **Certificação automática de proponentes** por meio de selos vinculados às fases dos editais, que são atribuídos conforme o proponente avança no processo — por exemplo, ao ser aprovado na análise documental, recebe um selo de "CPF verificado", e ao ser contemplado na fase final, ganha o selo "Fomento 2025".
+- **Autoaplicação das avaliações** - Quando todos os avaliadores de uma inscrição finalizam suas avaliações, o sistema processa automaticamente o resultado das avaliações e atualiza o status da inscrição dispensando qualquer ação manual pela equipe gestora.
+- **Formulários de Inscrição por Etapas** - agora é possível dividir o formulário de inscrição em etapas, organizando os campos em blocos sequenciais. A tela de inscrição foi redesenhada para essa nova estrutura, tornando o preenchimento mais claro e fluido para os proponentes.
 
-### Melhorias
-- Redesenho do formulário de inscrição
 
-### Melhorias não funcionais
+- **Nova Interface de Configuração das Comissões de Avaliação** - Permite maior flexibilidade e controle na gestão das comissões de avaliação dos editais.
+  - **Múltiplas comissões**: Agora é possível criar diversas comissões em um mesmo edital, cada uma com critérios próprios de distribuição das inscrições.
+  - **Filtros no nível da comissão**: Os filtros (antes aplicados individualmente por avaliador) agora podem ser definidos na comissão, usando qualquer campo de seleção do formulário, além de categoria, tipo de proponente e faixa. (Continua possível aplicar subfiltros específicos por avaliador dentro da comissão.)
+  - **Limite de avaliadores por inscrição**: Permite definir quantos avaliadores de uma comissão analisarão cada inscrição, facilitando editais com grande volume.
+  - **Comissão de voto de minerva**: Nova instância que recebe inscrições com avaliações divergentes para desempate.
+  - **Maior transparência no processo de distribuição**: Interface que exibe o progresso da distribuição das inscrições entre os avaliadores, especialmente útil em grandes editais.
+
+### Melhorias e correções não funcionais
 - Novos tipos de metadados:
   - **object** - serializa / deserializa um json fazendo um cast para (object)
   - **array** - serializa / deserializa um json fazendo um cast para (array)
   - **entity** - possibilita a vinculação de entidade em metadados
-- parâmetro para substituições na função text do javascript
-- refatoração da distribuição das avaliações para não mais dependerem do cache de permissão
-- Ajusta função de tradução para que faça a leitura dos arquivos de tradução dos plugins
-- Ajusta carregamento dos scripts dos componente entity-location e entity-field-location
+- Parâmetro para substituições na função text do javascript;
+- Refatoração da distribuição das avaliações para não dependerem mais do cache de permissão;
+- Nova estrutura para os testes automatizados 
+- Corrige função de tradução para que faça a leitura dos arquivos de tradução dos plugins
+
   
 ## [7.5.53] - 2025-06-02
 ### Correções
