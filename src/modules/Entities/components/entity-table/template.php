@@ -60,18 +60,26 @@ $this->import('
                         </div>
                     </template>
 
-                    <template v-if="((Object.keys(advancedFilters).length || hasSlot('advanced-filters')) && !hideAdvancedFilters)"  #content>
+                    <template v-if="((Object.keys(advancedFilters).length || hasSlot('advanced-filters')) && !hideAdvancedFilters)" #content>
                         <div class="entity-table__advanced-filters custom-scrollbar">
                             <slot name="advanced-filters" :entities="entities" :filters="filters" :toggle-advanced-filter="toggleAdvancedFilter" :option-value="optionValue">
-                                <div class="grid-12">
-                                    <div v-for="(filter, slug) in advancedFilters" class="field col-3">
-                                        <label>{{filter.label}}</label>
-    
-                                        <div class="field__group custom-scrollbar">
-                                            <label v-for="(option, k) in filter.options" :key="option" class="field__checkbox">
-                                                <input type="checkbox" :checked="advancedFilterChecked(slug, optionValue(option, k))" @change="toggleAdvancedFilter(slug, optionValue(option,k))"> {{optionLabel(option)}}
-                                            </label>
-                                        </div>
+
+                                <div class="entity-table__filter-groups">
+                                    <div v-for="groupFields in advancedFilters" class="entity-table__filter-group">
+                                        <mc-accordion v-for="(filter, slug) in groupFields" >  <!-- class="col-3 sm:col-12" -->
+                                            <template #title>
+                                                {{filter.label}}
+                                            </template>
+                                            <template #content>
+                                                <div class="field__group custom-scrollbar">
+                                                    <div v-for="(option, k) in filter.options" :key="option" class="field">
+                                                        <label class="field__checkbox">
+                                                            <input type="checkbox" :checked="advancedFilterChecked(slug, optionValue(option, k))" @change="toggleAdvancedFilter(slug, optionValue(option,k))"> {{optionLabel(option)}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </mc-accordion>
                                     </div>
                                 </div>
 
