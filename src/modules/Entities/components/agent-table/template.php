@@ -34,7 +34,7 @@ $this->import('
 
                 <div class="agent-table__inputs col-3 sm:col-4">
                     <div class="field">
-                        <input type="text" v-model="selectedBairro" @input="filterByBairro(entities)" placeholder="Digite o bairro">
+                        <input type="text" v-model="selectedBairro" @input="filterByBairro(entities)" placeholder="<?= i::__('Digite o bairro') ?>">
                     </div>
                 </div>
 
