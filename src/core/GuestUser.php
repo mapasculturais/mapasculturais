@@ -2,8 +2,9 @@
 namespace MapasCulturais;
 
 class GuestUser implements UserInterface{
-    use Traits\Singleton;
-    use Traits\MagicGetter;
+    use Traits\Singleton,
+        Traits\MagicGetter,
+        Traits\MagicCallers;
 
     public $id = 0;
 

@@ -766,10 +766,17 @@ class Registration extends EntityController {
         $this->requireAuthentication();
 
         $entity = $this->requestedEntity;
-        $entity->checkPermission('@control');
+        $entity->opportunity->checkPermission('@control');
 
-        if (!$entity || !$entity->files) {
+        if (!$entity) {
             $app->pass(); 
+        }
+
+        if(!$entity->files) {
+          $this->json([
+                'success' => false,
+                'message' => \MapasCulturais\i::__('Não existem arquivos a serem baixados.')
+            ], 400);  
         }
 
         $fileName = preg_replace('/[^a-zA-Z0-9_\-.]/', '_', $entity->number . '-' . uniqid()) . '.zip';

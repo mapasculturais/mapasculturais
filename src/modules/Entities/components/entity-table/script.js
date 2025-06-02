@@ -216,7 +216,7 @@ app.component('entity-table', {
                 }
             }
 
-            return filters;
+            return this.divideFiltersInColumns(filters);
         },
 
         hasFilters() {
@@ -773,5 +773,23 @@ app.component('entity-table', {
             let _option = option.split(':');
             return _option.length > 1 ? _option[1] : _option[0];
         },
-    },
+
+        divideFiltersInColumns(campos, numGrupos = 4) {
+            const keys = Object.keys(campos);
+            const totalCampos = keys.length;
+            const camposPorGrupo = Math.ceil(totalCampos / numGrupos);
+            const grupos = {};
+
+            for (let i = 0; i < numGrupos; i++) {
+                const start = i * camposPorGrupo;
+                const sliceKeys = keys.slice(start, start + camposPorGrupo);
+                grupos[`grupo${i + 1}`] = {};
+                sliceKeys.forEach(key => {
+                grupos[`grupo${i + 1}`][key] = campos[key];
+                });
+            }
+
+            return grupos;
+        },
+    }
 });
