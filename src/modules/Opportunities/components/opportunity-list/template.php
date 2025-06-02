@@ -29,14 +29,14 @@ $this->import('
                             </p>
                         </div>
                         <div v-if="!opp.isLastPhase && opp.registrationFrom.isFuture()" class="col-12">
-                            <p v-if="opp.registrationTo" class="semibold opportunity-list__registration"> <?= i::__('Inscrições de') ?> <span v-if="opp.registrationFrom"> {{opp.registrationFrom.date('2-digit year')}} às {{opp.registrationFrom.hour('2-digit')}}h </span> <?= i::__('até') ?> {{opp.registrationTo.date('2-digit year')}} às {{opp.registrationTo.hour('2-digit')}}h</p>
+                            <p v-if="opp.registrationTo" class="semibold opportunity-list__registration"> <?= i::__('Inscrições de') ?> <span v-if="opp.registrationFrom"> {{opp.registrationFrom.date('2-digit year')}} <?= i::__('às') ?> {{opp.registrationFrom.hour('2-digit')}}h </span> <?= i::__('até') ?> {{opp.registrationTo.date('2-digit year')}} <?= i::__('às') ?> {{opp.registrationTo.hour('2-digit')}}h</p>
                         </div>
                         <div v-if="opp.registrationTo.isFuture() && opp.registrationFrom.isPast()">
                             <p v-if="opp.registrationTo" class="semibold opportunity-list__registration"><?= i::__('As Inscrições encerrarão no dia') ?> {{opp.registrationTo.date('2-digit year')}} <?= i::__('às') ?> {{opp.registrationTo.hour('2-digit')}}h
                             </p>
                         </div>
                         <div v-if="opp.registrationTo.isPast()">
-                            <p v-if="opp.registrationTo" class="semibold opportunity-list__registration"><?= i::__('As inscriçoes encerraram no dia') ?> {{opp.registrationTo.date('2-digit year')}} às {{opp.registrationTo.hour('2-digit')}}h</p>
+                            <p v-if="opp.registrationTo" class="semibold opportunity-list__registration"><?= i::__('As inscriçoes encerraram no dia') ?> {{opp.registrationTo.date('2-digit year')}} <?= i::__('às') ?> {{opp.registrationTo.hour('2-digit')}}h</p>
                         </div>
                         <div class="col-12 opportunity-list__cardlink primary__color">
                             <mc-link :entity="opp" class="opportunity-list__link primary__color bold"><?php i::esc_attr_e('Acessar') ?><mc-icon name="arrowPoint-right" class="opportunity-list__icon"></mc-icon></mc-link>
