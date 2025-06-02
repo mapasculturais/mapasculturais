@@ -13,7 +13,7 @@ use MapasCulturais\i;
             <edit-box id="add-age" position="top" title="" cancel-label="" close-on-cancel="true">
                 <h4><?php i::_e("Adicionar agentes");?></h4>
                 <div class="directive-find-entity ">
-                    <input ng-model="data.searchAgents" ng-change="findAgents()" placeholder="buscar por nome" />
+                    <input ng-model="data.searchAgents" ng-change="findAgents()" placeholder="<?= i::__('buscar por nome') ?>" />
                     <img src="<?php $this->asset('img/spinner-black.gif')?>" class="spinner" ng-class="{hidden:!data.spinner}" />
                     <ul class="result-container" ng-repeat="(key,agent) in data.agents" style="overflow-y: auto;" ng-click="selectAgent(agent)">
                         <li class="search-agent clearfix ng-scope">

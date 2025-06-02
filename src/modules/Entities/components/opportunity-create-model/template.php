@@ -22,7 +22,7 @@ $this->import("
 
                 <div class="field">
                     <label><?= i::__('Breve descrição do modelo') ?><span class="required">*</span></label>
-                    <textarea placeholder="Breve descrição" v-model="formData.description"></textarea>
+                    <textarea placeholder="<?= i::__('Breve descrição') ?>" v-model="formData.description"></textarea>
                 </div>
             </div>
         </template>
