@@ -39,22 +39,11 @@ fi
 
 
 if [ $BUILD_ASSETS = "1" ]; then
-    chown www-data: /var/www/public/assets
     cd /var/www/src
     pnpm install --recursive 
     pnpm run dev
 fi
-chown -R www-data:www-data /var/www/public/assets 
-chown -R www-data:www-data /var/www/public/files 
-chown -R www-data:www-data /var/www/var/private-files
 
-cd /
-touch /nohup.out
-chown www-data: /nohup.out
-sudo -E -u www-data nohup /jobs-cron.sh >> /dev/stdout &
-sudo -E -u www-data nohup /recreate-pending-pcache-cron.sh >> /dev/stdout &
-
-tail -f /nohup.out > /dev/stdout &
-touch /mapas-ready
+cd /var/www/tests
 
 exec "$@"

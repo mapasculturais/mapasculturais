@@ -32,6 +32,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta função de tradução para que faça a leitura dos arquivos de tradução dos plugins
 - Ajusta carregamento dos scripts dos componente entity-location e entity-field-location
   
+## [7.5.53] - 2025-06-02
+### Correções
+- Ajusta verirficação de permissão para baixar arquivos ZIP das inscrições
+
 ## [7.5.52] - 2025-05-29
 ### Correções
 - Corrige a validação do fluxo de envio da inscrição para considerar o modo de edição de inscrição no componente registration-action

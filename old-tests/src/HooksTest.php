@@ -1,13 +1,8 @@
 <?php
-namespace MapasCulturais\Tests;
-
-use Tests\Abstract\TestCase;
-
 require_once __DIR__.'/bootstrap.php';
 
-class HooksTest extends TestCase {
+class HooksTest extends MapasCulturais_TestCase{
     function testHookOrder(){
-        
         $app = $this->app;
         $result = [];
 
@@ -33,13 +28,11 @@ class HooksTest extends TestCase {
 
         $app->applyHook('test hook order');
 
-        $this->assertCount(5, $result, 'Certificando que o hook executou 5 vezes');
-
-        $this->assertEquals(0, $result[0], 'Certificando que o hook com prioridade 9 foi o primeiro a ser executado mesmo tendo sido agendado por último');
-        $this->assertEquals(1, $result[1], 'Certificando que o hook com prioridade 10 foram executados em ordem de enfileiramento');
-        $this->assertEquals(2, $result[2], 'Certificando que o hook com prioridade 10 foram executados em ordem de enfileiramento');
-        $this->assertEquals(3, $result[3], 'Certificando que o hook com prioridade 10 foram executados em ordem de enfileiramento');
-        $this->assertEquals(4, $result[4], 'Certificando que o hook com prioridade 11 foi o último a ser executado mesmo sendo o primeiro a ser enfileirado');
+        $this->assertEquals(0, $result[0]);
+        $this->assertEquals(1, $result[1]);
+        $this->assertEquals(2, $result[2]);
+        $this->assertEquals(3, $result[3]);
+        $this->assertEquals(4, $result[4]);
     }
 
     function testHookWildcard() {

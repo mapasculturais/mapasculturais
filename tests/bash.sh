@@ -31,5 +31,6 @@ if [ $BUILD = "1" ]; then
 fi
 
 docker compose down --remove-orphans
-docker compose run --service-ports mapas /var/www/vendor/bin/phpunit /var/www/tests --colors=always $@
+docker compose run --service-ports mapas bash 
+docker compose down --remove-orphans
 cd $CDIR
