@@ -318,8 +318,9 @@ app.component('opportunity-registrations-table', {
                 }
             }
 
-            if(type == "technical" || hasEvaluationMethodTechnical){
-                itens.splice(3,0,{ text: "Pontuação", value: "score"});
+            const itensToRemove = ["score", "eligible"];
+            if(type != "technical" || !hasEvaluationMethodTechnical) {
+                itens = itens.filter(item => !itensToRemove.includes(item.value));
             }
 
             if(this.avaliableColumns) {
