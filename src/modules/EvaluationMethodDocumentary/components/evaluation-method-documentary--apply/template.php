@@ -12,7 +12,7 @@ $this->import('
 ');
 ?>
 
-<mc-modal title="Aplicar resultados das avaliações" classes="apply-evaluations">
+<mc-modal title="<?= \MapasCulturais\i::__('Aplicar resultados das avaliações') ?>" classes="apply-evaluations">
     <template #button="modal">
         <button class="button button--primary button--icon" @click="modal.open()">
             <mc-icon name="add"></mc-icon>

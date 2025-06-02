@@ -3,7 +3,7 @@
 use MapasCulturais\i; ?>
 
 <div ng-if="field.fieldType === 'persons'">
-    <label> <?= i::__('Nome do botão') ?> <br> <input type="text" ng-model="field.config.buttonText" placeholder="Nome do botão no formulário" /></label>
+    <label> <?= i::__('Nome do botão') ?> <br> <input type="text" ng-model="field.config.buttonText" placeholder="<?= i::__('Nome do botão no formulário') ?>" /></label>
 </div>
 
 <p ng-if="field.fieldType === 'persons'">

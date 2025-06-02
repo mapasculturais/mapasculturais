@@ -14,7 +14,7 @@ $this->import('
 ')
 ?>
 <div class="mc-export-spreadsheet">
-    <mc-modal title="Exportação de planilhas" @open="openModal()" @close="closeModal()">
+    <mc-modal title="<?= i::__('Exportação de planilhas') ?>" @open="openModal()" @close="closeModal()">
         <template #default="modal">
             <div v-if="!processing" class="mc-export-spreadsheet__modal-content">
                 <div class="mc-export-spreadsheet__buttons">
