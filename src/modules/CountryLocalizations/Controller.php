@@ -3,13 +3,9 @@
 namespace CountryLocalizations;
 
 use MapasCulturais\App;
-use MapasCulturais\Traits;
 
 class Controller extends \MapasCulturais\Controller
 {   
-
-    use Traits\ControllerAPI;
-
     function API_findSublevels(){
         $app = App::i();
         $default_country_code = $app->config['address.defaultCountryCode'];
@@ -23,8 +19,47 @@ class Controller extends \MapasCulturais\Controller
             $this->errorJson(true);
         }
 
-        $hierarchy = $hierarchy[1] ?? [];
-        $result = $this->findSublevels($hierarchy, 2, [], $requested_level, $filters);
+        $trail = [];
+        $level = 0;
+
+        // Se o nível 0 é um país (como 'Brasil')
+        if (isset($hierarchy[0]) && is_string($hierarchy[0])) {
+            $trail["level:$level"] = ['code' => $hierarchy[0], 'label' => $hierarchy[0]];
+            $hierarchy = $hierarchy[1];
+            $level++;
+        }
+
+        // pega só as keys do filtro que são do tipo "level:X"
+        $filter_levels = array_filter(array_keys($filters), function($k) {
+            return preg_match('/^level:\d+$/', $k);
+        });
+
+        // ordena por nível numérico crescente
+        usort($filter_levels, function($a, $b) {
+            return (int) substr($a, 6) <=> (int) substr($b, 6);
+        });
+
+        // percorre os filtros na ordem correta
+        foreach ($filter_levels as $level_key) {
+            $code = $filters[$level_key];
+            $found = false;
+
+            foreach ($hierarchy as $key => $val) {
+                $label = is_array($val) ? ($val[0] ?? $key) : $val;
+                $node_code = is_string($key) ? $key : $label;
+
+                if ($node_code === $code) {
+                    $trail[$level_key] = ['code' => $node_code, 'label' => $label];
+                    $hierarchy = is_array($val) && isset($val[1]) ? $val[1] : [];
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) break;
+        }
+
+        $result = $this->findSublevels($hierarchy, $level, $trail, $requested_level, $filters);
         $this->json($result);
     }
 
@@ -39,9 +74,6 @@ class Controller extends \MapasCulturais\Controller
             if (is_array($value) && isset($value[0]) && is_string($value[0]) && !isset($value[1])) {
                 $label = $value[0];
                 $code = $label;
-
-                // Atualiza trilha com nível anterior
-                $trail["level:$current_level"] = $trail["level:$current_level"] ?? ['code' => 'unknown', 'label' => 'unknown'];
 
                 $filter_level = $this->getLastFilterInTrail($filters, $trail);
 
@@ -62,7 +94,6 @@ class Controller extends \MapasCulturais\Controller
                 'label' => $label
             ];
 
-            // Aplica filtro se existir para esse nível
             if (isset($filters["level:$current_level"])) {
                 $allowed = (array) $filters["level:$current_level"];
                 if (!in_array($code, $allowed)) {
@@ -70,7 +101,6 @@ class Controller extends \MapasCulturais\Controller
                 }
             }
 
-            // Se for o nível desejado
             if ($current_level == $target_level) {
                 $filter_level = $this->getLastFilterInTrail($filters, $trail);
 
@@ -90,19 +120,23 @@ class Controller extends \MapasCulturais\Controller
 
         return $result;
     }
-    
 
     function getLastFilterInTrail($filters, $trail) {
-        $filteredLevels = array_keys($filters);
-        rsort($filteredLevels); 
+        $filtered_levels = array_filter(array_keys($filters), function($key) {
+            return preg_match('/^level:\d+$/', $key);
+        });
 
-        foreach ($filteredLevels as $levelKey) {
-            if (isset($trail[$levelKey])) {
-                return $levelKey;
+        sort($filtered_levels);
+
+        $last_level = 'level:0';
+        foreach ($filtered_levels as $level_key) {
+            if (isset($trail[$level_key])) {
+                $last_level = $level_key;
             }
         }
 
-        return 'level:0';
+        return $last_level;
     }
+
 
 }
