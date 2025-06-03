@@ -21,6 +21,10 @@ class Module extends \MapasCulturais\Module {
             /** @var Controllers\Opportunity $this  */
 
             $opportunity = $this->requestedEntity;
+            
+            if($opportunity->firstPhase->isContinuousFlow) {
+                $this->errorJson(i::__('Não é possível criar recurso em oportunidades com fluxo contínuo'), 404);
+            }
 
             $opportunity->checkPermission('@control');
 

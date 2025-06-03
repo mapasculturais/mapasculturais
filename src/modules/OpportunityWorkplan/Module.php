@@ -17,18 +17,20 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook('app.init:after', function () use($app) {
             $app->hook("template(opportunity.edit.opportunity-data-collection-config-form):after", function(){
-                $this->part('opportunity-workplan-config');
+                if(!$this->controller->requestedEntity->firstPhase->isContinuousFlow) {
+                    $this->part('opportunity-workplan-config');
+                }
             });
 
             $app->hook("component(registration-form):after", function(){
                 /** @var Theme $this */
-                if($this->controller->requestedEntity->opportunity->enableWorkplan){
+                if($this->controller->requestedEntity->opportunity->enableWorkplan && !$this->controller->requestedEntity->opportunity->firstPhase->isContinuousFlow){
                     $this->part('registration-workplan');
                 }
             });
 
             $app->hook("template(registration.view.registration-form-view):after", function($phase){
-                if ($phase->opportunity->isFirstPhase && $phase->opportunity->enableWorkplan) {
+                if ($phase->opportunity->isFirstPhase && $phase->opportunity->enableWorkplan && !$phase->opportunity->firstPhase->isContinuousFlow) {
                     $this->part('registration-details-workplan');
                 }
             });
