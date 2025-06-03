@@ -19,6 +19,12 @@ class Controller extends \MapasCulturais\Controller
             $this->errorJson(true);
         }
 
+        foreach ($filters as $key => $value) {
+            if (preg_match('/^level:\d+$/', $key) && is_string($value) && strpos($value, ',') !== false) {
+                $filters[$key] = explode(',', $value);
+            }
+        }
+
         $trail = [];
         $level = 0;
 
@@ -34,35 +40,68 @@ class Controller extends \MapasCulturais\Controller
             return preg_match('/^level:\d+$/', $k);
         });
 
-        // ordena por nível numérico crescente
         usort($filter_levels, function($a, $b) {
             return (int) substr($a, 6) <=> (int) substr($b, 6);
         });
 
-        // percorre os filtros na ordem correta
-        foreach ($filter_levels as $level_key) {
-            $code = $filters[$level_key];
-            $found = false;
+        $results = [];
 
-            foreach ($hierarchy as $key => $val) {
-                $label = is_array($val) ? ($val[0] ?? $key) : $val;
-                $node_code = is_string($key) ? $key : $label;
-
-                if ($node_code === $code) {
-                    $trail[$level_key] = ['code' => $node_code, 'label' => $label];
-                    $hierarchy = is_array($val) && isset($val[1]) ? $val[1] : [];
-                    $found = true;
-                    break;
-                }
+        // Iiteração sobre filtros múltiplos
+        $recursive_find = function($current_hierarchy, $current_level, $current_trail, $filter_levels, $filters, $requested_level) use (&$recursive_find, &$results) {
+            // Se não há mais níveis de filtro para processar, chama findSublevels normalmente
+            if (empty($filter_levels)) {
+                $partial = $this->findSublevels($current_hierarchy, $current_level, $current_trail, $requested_level, $filters);
+                $results = array_merge($results, $partial);
+                return;
             }
 
-            if (!$found) break;
-        }
+            // Pega o próximo nível para filtrar
+            $level_key = array_shift($filter_levels);
+            $codes = (array) ($filters[$level_key] ?? []);
 
-        $result = $this->findSublevels($hierarchy, $level, $trail, $requested_level, $filters);
-        $this->json($result);
+            if (empty($codes)) {
+                $recursive_find($current_hierarchy, $current_level, $current_trail, $filter_levels, $filters, $requested_level);
+                return;
+            }
+
+            // Para cada código nesse nível, tenta achar no hierarchy, monta o trail e continua
+            foreach ($codes as $code) {
+                $found = false;
+                foreach ($current_hierarchy as $key => $val) {
+                    $label = is_array($val) ? ($val[0] ?? $key) : $val;
+                    $node_code = is_string($key) ? $key : $label;
+
+                    if ($node_code === $code) {
+                        $new_trail = $current_trail;
+                        $new_trail[$level_key] = ['code' => $node_code, 'label' => $label];
+                        $new_hierarchy = (is_array($val) && isset($val[1])) ? $val[1] : [];
+
+                        $recursive_find($new_hierarchy, (int)substr($level_key, 6) + 1, $new_trail, $filter_levels, $filters, $requested_level);
+                        $found = true;
+                        break;
+                    }
+                }
+            }
+        };
+
+        // Chama função recursiva com todos os filtros de nível
+        $recursive_find($hierarchy, $level, $trail, $filter_levels, $filters, $requested_level);
+
+        $this->json($results);
     }
 
+    /**
+     * Busca os subníveis da hierarquia a partir do nível atual, respeitando filtros e construindo
+     * o resultado com informações de nível, código, label e referência à trilha.
+     *
+     * @param array       $hierarchy      Hierarquia atual (array) onde cada chave/valor representa um nível ou subnível.
+     * @param int         $current_level  Nível atual na hierarquia sendo processado.
+     * @param array       $trail          Trilha dos níveis já percorridos, com código e label.
+     * @param int         $target_level   Nível alvo para o qual queremos obter os subníveis.
+     * @param array       $filters        Filtros aplicados para restringir os níveis retornados.
+     *
+     * @return array Retorna um array de subníveis que inclui 'level', 'label', 'code' e a referência ao último filtro válido na trilha.
+    */
     function findSublevels($hierarchy, $current_level, $trail, $target_level, $filters) {
         $result = [];
 
@@ -121,6 +160,17 @@ class Controller extends \MapasCulturais\Controller
         return $result;
     }
 
+    /**
+     * Retorna o último nível de filtro presente na trilha (`trail`) com base nos filtros aplicados.
+     *
+     * Percorre os filtros do tipo "level:X" ordenados e verifica qual desses níveis está presente na trilha,
+     * retornando o último nível encontrado. Se nenhum for encontrado, retorna 'level:0' como padrão.
+     *
+     * @param array $filters Array de filtros onde as chaves são do tipo "level:X".
+     * @param array $trail Trilha atual que contém os níveis com seus códigos e labels.
+     *
+     * @return string O último nível de filtro encontrado na trilha (ex: "level:2").
+    */
     function getLastFilterInTrail($filters, $trail) {
         $filtered_levels = array_filter(array_keys($filters), function($key) {
             return preg_match('/^level:\d+$/', $key);
@@ -137,6 +187,4 @@ class Controller extends \MapasCulturais\Controller
 
         return $last_level;
     }
-
-
 }
