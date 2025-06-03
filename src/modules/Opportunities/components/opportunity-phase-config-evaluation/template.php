@@ -90,7 +90,8 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         <template v-if="phase.evaluateSelfApplication">
             <entity-field :entity="phase" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
         </template>
-        <opportunity-appeal-phase-config :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
+        
+        <opportunity-appeal-phase-config v-if="!firstPhase?.isContinuousFlow" :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
         
         <div class="config-phase__line col-12"></div>
 

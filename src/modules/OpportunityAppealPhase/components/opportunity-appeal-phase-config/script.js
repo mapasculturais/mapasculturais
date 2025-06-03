@@ -110,8 +110,8 @@ app.component('opportunity-appeal-phase-config' , {
         
                     messages.success(this.text('Fase de recurso criada com sucesso'));
                 })
-                .catch((data) => {
-                    messages.error(data.error);
+                .catch((error) => {
+                    messages.error(error.data);
                     this.processing = false;
                 });
         },
