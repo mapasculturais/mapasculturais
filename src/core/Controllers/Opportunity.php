@@ -33,6 +33,7 @@ class Opportunity extends EntityController {
         Traits\ControllerDraft,
         Traits\ControllerArchive,
         Traits\ControllerAPI,
+        Traits\EntityOpportunityDuplicator,
         Traits\ControllerAPINested,
         Traits\ControllerLock,
         Traits\EntityOpportunityDuplicator,
