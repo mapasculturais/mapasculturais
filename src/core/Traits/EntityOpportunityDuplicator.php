@@ -3,7 +3,6 @@ namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
 use MapasCulturais\Entity;
-use Exception;
 
 trait EntityOpportunityDuplicator {
 
@@ -222,77 +221,17 @@ trait EntityOpportunityDuplicator {
 
     private function duplicateFiles() : void
     {
-        $app = App::i();        
+        $app = App::i();
 
-        $src = PUBLIC_PATH . 'files/opportunity/' . $this->entityOpportunity->id;
-        $dst = PUBLIC_PATH . 'files/opportunity/' . $this->entityNewOpportunity->id;
-        $this->copyDir($src, $dst);
-        
-        $conn = $app->em->getConnection();
-        $files = $conn->fetchAll("SELECT * FROM file WHERE object_id = {$this->entityOpportunity->id} ORDER BY id ASC");
-        foreach ($files as $file) {
-            if (is_null($file['parent_id'])) {
-                $parentId = null;
-            } else if (isset($futureParentId)) {
-                $parentId = $futureParentId;
-            } else {
-                throw new Exception('File parent_id unexpected');
-            }
+        $opportunityFiles = $app->repo('OpportunityFile')->findBy([
+            'owner' => $this->entityOpportunity
+        ]);
 
-            $sql = 'INSERT INTO file (md5, mime_type, name, object_type, object_id, create_timestamp, grp, description, parent_id, path) VALUES (:md5, :mime_type, :name, :object_type, :object_id, :create_timestamp, :grp, :description, :parent_id, :path)';
-            $stmt = $conn->prepare($sql);
-            $stmt->bindValue('md5', $file['md5']);
-            $stmt->bindValue('mime_type', $file['mime_type']);
-            $stmt->bindValue('name', $file['name']);
-            $stmt->bindValue('object_type', $file['object_type']);
-            $stmt->bindValue('object_id', $this->entityNewOpportunity->id);
-            $stmt->bindValue('create_timestamp', $file['create_timestamp']);
-            $stmt->bindValue('grp', $file['grp']);
-            $stmt->bindValue('description', $file['description']);
-            $stmt->bindValue('parent_id', $parentId);
-
-            $path = str_replace('opportunity/'.$this->entityOpportunity->id, 'opportunity/'.$this->entityNewOpportunity->id, $file['path']);
-            $path = str_replace('file/'.$file['parent_id'], 'file/'.$parentId, $path);
-
-            $diretorioAtual = $dst . '/file/' . $file['parent_id'];
-            $novoDiretorio = $dst . '/file/' . $parentId;
-            
-            if (is_dir($diretorioAtual)) {
-                if (!is_dir($novoDiretorio)) {
-                    if (rename($diretorioAtual, $novoDiretorio)) {
-                    }
-                } 
-            }
-
-            $stmt->bindValue('path', $path);
-            $stmt->execute();
-
-            if (is_null($file['parent_id'])) {
-                $futureParentId = $conn->lastInsertId();
-            }
+        foreach ($opportunityFiles as $opportunityFile) {
+            $newMethodOpportunityFile = clone $opportunityFile;
+            $newMethodOpportunityFile->owner = $this->entityNewOpportunity;
+            $newMethodOpportunityFile->save(true);
         }
-    }
-
-    private function copyDir($src, $dst) {
-        if (!file_exists($src)) {
-            return false;
-        }
-        if (!file_exists($dst)) {
-            mkdir($dst, 0755, true);
-        }
-        $dir = opendir($src);
-        while (($file = readdir($dir)) !== false) {
-            if ($file != '.' && $file != '..') {
-                if (is_dir($src . '/' . $file)) {
-                    $this->copyDir($src . '/' . $file, $dst . '/' . $file);
-                } else {
-                    copy($src . '/' . $file, $dst . '/' . $file);
-                }
-            }
-        }
-        closedir($dir);
-    
-        return true;
     }
 
     private function duplicateAgentRelations() : void
