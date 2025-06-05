@@ -5,6 +5,7 @@ return [
          'MultipleLocalAuth',
          'AdminLoginAsUser',
          'RecreatePCacheOnLogin',
-         'SpamDetector'
+         'SpamDetector',
+         "Metabase"
     ]
 ];
