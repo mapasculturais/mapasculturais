@@ -40,7 +40,7 @@
     <div ng-if="entity[field.fieldName].hasOwnProperty('publicLocation')">
         <span>
             <?php \MapasCulturais\i::_e("Este endereço pode ficar público na plataforma?:"); ?>
-            {{ entity[field.fieldName].publicLocation ? 'Não' : 'Sim' }}
+            {{ entity[field.fieldName].publicLocation === true ? 'Sim' : 'Não' }}
         </span>
     </div>
 </div>
