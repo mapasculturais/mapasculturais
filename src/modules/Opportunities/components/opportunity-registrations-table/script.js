@@ -321,7 +321,7 @@ app.component('opportunity-registrations-table', {
             const type = this.phase.evaluationMethodConfiguration?.type?.id;
             const itensToRemove = ["score", "eligible"];
             
-            if(type != "technical" || !hasEvaluationMethodTechnical) {
+            if(type != "technical" || !this.hasEvaluationMethodTechnical) {
                 itens = itens.filter(item => !itensToRemove.includes(item.value));
             }
 
