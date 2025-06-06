@@ -61,6 +61,9 @@ app.component('opportunity-evaluations-table', {
                 { text: __('inscrição', 'opportunity-evaluations-table'), value: "number", slug: "number", sticky: true, width: '160px' },
                 { text: __('avaliador', 'opportunity-evaluations-table'), value: "valuer?.name", slug: "evaluator", visible: true},
                 { text: __('resultado final', 'opportunity-evaluations-table'), value: "evaluation?.resultString", slug: "result"},
+                { text: __('tipo de proponente', 'opportunity-evaluations-table'), value: "proponentType", slug: "proponentType"},
+                { text: __('categoria', 'opportunity-evaluations-table'), value: "category", slug: "category"},
+                { text: __('faixa', 'opportunity-evaluations-table'), value: "range", slug: "range"},
                 { text: __('estado', 'opportunity-evaluations-table'), value: "evaluation?.status", slug: "status"},
             ];
 
@@ -119,6 +122,13 @@ app.component('opportunity-evaluations-table', {
                 return 'javascript:void(0)';
             } else if (user === 'all' && entity.evaluation) {
                 user = entity.evaluation?.user;
+                console.log(entity.evaluation);               
+                let create = new McDate(entity.evaluation?.createTimestamp.date) 
+                let update = new McDate(entity.evaluation?.updateTimestamp.date) 
+                console.log(create.date('numeric year'))
+                console.log(create.time('long'))
+                console.log(update.date('numeric year'))
+                console.log(update.time('long'))
             }
             
             return Utils.createUrl('registration', 'evaluation', { id: entity._id, user });
