@@ -252,8 +252,8 @@ class Registrations extends SpreadsheetJob
                 
                 if (isset($entity['consolidatedResult']) && !is_null($entity['consolidatedResult'])) {
                     $map = [
-                        "valid" => "Válido",
-                        "invalid" => "Inválido"
+                        "valid" => i::__("Válido"),
+                        "invalid" => i::__( "Inválido")
                     ];
                     if (isset($map[$entity['consolidatedResult']])) {
                         $entity['consolidatedResult'] = $map[$entity['consolidatedResult']];
