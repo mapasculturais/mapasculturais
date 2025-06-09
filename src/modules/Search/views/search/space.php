@@ -38,6 +38,7 @@ $this->breadcrumb = [
                     <?= i::_e('Visualizar como:') ?>
                 </label> 
             </template>
+            <?php $this->applyTemplateHook('search-tabs', 'before'); ?>
             <mc-tab icon="list" label="<?php i::esc_attr_e('Lista') ?>" slug="list">
                 <div class="search__tabs--list">
                     <search-list :pseudo-query="pseudoQuery" type="space" select="name,type,shortDescription,files.avatar,seals,endereco,terms,acessibilidade" >
@@ -59,6 +60,7 @@ $this->breadcrumb = [
             <mc-tab v-if="global.auth.is('admin')" icon="table-view" label="<?php i::esc_attr_e('Tabela') ?>" slug="tables">
                 <space-table></space-table>
             </mc-tab>
+            <?php $this->applyTemplateHook('search-tabs', 'after'); ?>
         </mc-tabs>
     </template>
 </search>
