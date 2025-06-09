@@ -19,7 +19,7 @@ $this->import('
 
     <template v-if="!isFuture()">
         <div class="col-12">
-            <entity-table controller="opportunity" show-index :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator', 'coletivo']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
+            <entity-table controller="opportunity" show-index :select="defaultSelect" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator', 'coletivo']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
                 <template #title>
                     <h2 v-if="isPast()"><?= i::__("As avaliações já estão encerradas") ?></h2>
                     <h2 v-if="isHappening()"><?= i::__("As avaliações estão em andamento") ?></h2>
