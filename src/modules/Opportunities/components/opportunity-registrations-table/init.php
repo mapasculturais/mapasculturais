@@ -10,7 +10,7 @@ $data['hadTechnicalEvaluationPhase'] = $phase->hadTechnicalEvaluationPhase();
 $data['isTechnicalEvaluationPhase'] = ($phase->evaluationMethodConfiguration && $phase->evaluationMethodConfiguration->type == 'technical');
 
 $skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
-$default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
+$default_select = "agentsData,number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
     [
         'text' => i::__('Inscrição', 'opportunity-registrations-table'),
