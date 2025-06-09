@@ -501,7 +501,10 @@ app.component('entity-table', {
                             _val = JSON.parse(val);
                         } 
 
-                        val = val ? JSON.parse(val).map(item => `${item.nome}: ${item.logradouro}, ${item.numero}, ${item.bairro}, ${item.cidade}, ${item.complemento}  - ${item.estado}, ${item.cep}`).join('<br>') : null
+                        if (typeof val === "string") {
+                            val = val ? JSON.parse(val).map(item => `${item.nome}: ${item.logradouro}, ${item.numero}, ${item.bairro}, ${item.cidade}, ${item.complemento}  - ${item.estado}, ${item.cep}`).join('<br>') : null
+                        }
+
                         break;
                     case 'boolean':
                         if(prop == "publicLocation") {
