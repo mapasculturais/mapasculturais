@@ -475,8 +475,22 @@ app.component('entity-table', {
                         val = val?.filter(item => item !== "null" && item !== "").join(', ')
                         break;
                     case 'links':
-                        val = (!val || val === '"null"' || JSON.parse(val) === '"null"' || val == 'null') ? null : val;                                      
-                        val = val ? JSON.parse(val).map(item => `${item.title}: ${item.value},`).join('\n') : null
+                        var hasVal = val != null ?  (val !== '"null"' || val !== 'null' ? true : false) : false ;
+                        if (hasVal && !Array.isArray(val)) {
+                            
+                            const parsed = val !== '' ? JSON.parse(val) : null ;
+                            if (parsed && parsed !== 'null' && Array.isArray(parsed)) {
+                                val = parsed.map(item => `${item.title}: ${item.value},`).join('\n');
+                            } else {
+                                val = null;
+                            }
+                        }
+                        
+                        if (hasVal &&  Array.isArray(val)) {
+                            val = val.map(item => `${item.title}: ${item.value},`).join('\n');
+                        }
+
+                        val = null;
                         break;
                     case 'point':
                         val = val ? `${val.lat}, ${val.lng}` : null

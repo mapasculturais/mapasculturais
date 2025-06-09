@@ -246,6 +246,26 @@ app.component('opportunity-registrations-table', {
             }
             return null;
         },
+        hasEvaluationMethodTechnical (){
+            const type = this.phase.evaluationMethodConfiguration?.type?.id;
+            const phases = $MAPAS.opportunityPhases;
+            let result = false;
+
+            for (const phase of phases){
+                if(phase.id == this.phase.id){
+                    break;
+                }
+
+                const phaseType = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type?.id : phase.type.id;
+
+                if(phaseType == "technical"){
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        },
         headers () {
             let itens = this.defaultHeaders;
 
@@ -302,7 +322,6 @@ app.component('opportunity-registrations-table', {
                 itens.push({ text: __('status', 'opportunity-registrations-table'), value: "status", width: '250px', stickyRight: true})
             }
 
-            let type = this.phase.evaluationMethodConfiguration?.type.id || '';
             let phases = $MAPAS.opportunityPhases;
             let hasEvaluationMethodTechnical = false;
 
@@ -318,8 +337,10 @@ app.component('opportunity-registrations-table', {
                 }
             }
 
+            const type = this.phase.evaluationMethodConfiguration?.type?.id;
             const itensToRemove = ["score", "eligible"];
-            if(type != "technical" || !hasEvaluationMethodTechnical) {
+            
+            if(type != "technical" || !this.hasEvaluationMethodTechnical) {
                 itens = itens.filter(item => !itensToRemove.includes(item.value));
             }
 
@@ -332,9 +353,23 @@ app.component('opportunity-registrations-table', {
             return itens;
         },
         select() {
-            const fields = this.avaliableFields.map((item) => item.fieldName);
+            let avaliableFields = this.avaliableFields.map((item) => item.fieldName);
+            
+            if(this.isTechnicalEvaluationPhase) {
+                avaliableFields.push('usingQuota')
+                avaliableFields.push('quotas')
+                avaliableFields.push('tiebreaker')
+            }
 
-            return [this.default_select, ...fields].join(',');
+            let fields = [...this.default_select.split(','), ...avaliableFields]; 
+            const itensToRemove = ["score", "eligible"];
+            
+            if(!this.isTechnicalEvaluationPhase || !this.hasEvaluationMethodTechnical) {
+                fields = fields.filter(item => !itensToRemove.includes(item));
+            }
+            
+            return fields.join(',');
+
         },
         previousPhase() {
             const phases = $MAPAS.opportunityPhases;
