@@ -11,7 +11,7 @@ $this->import('
 ?>
 <div class="search">
     <mc-breadcrumb></mc-breadcrumb>
-
+    <?php $this->applyTemplateHook('search-header', 'before'); ?>
     <header class="search__header">
         <div class="search__header--content">
             <div class="search__header--content-left">
@@ -27,6 +27,6 @@ $this->import('
             </div>
         </div>
     </header>
-    
+    <?php $this->applyTemplateHook('search-header', 'after'); ?>
     <slot :pseudo-query="pseudoQuery" :changeTab="changeTab"></slot>
 </div>
