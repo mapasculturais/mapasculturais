@@ -287,5 +287,9 @@ app.component('qualification-evaluation-config', {
             this.save();
         },
 
+        save(){
+            this.entity.save();
+        },
+
     },
 });
