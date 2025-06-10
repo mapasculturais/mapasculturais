@@ -126,13 +126,6 @@ app.component('opportunity-evaluations-table', {
                 return 'javascript:void(0)';
             } else if (user === 'all' && entity.evaluation) {
                 user = entity.evaluation?.user;
-                console.log(entity.evaluation);               
-                let create = new McDate(entity.evaluation?.createTimestamp.date) 
-                let update = new McDate(entity.evaluation?.updateTimestamp.date) 
-                console.log(create.date('numeric year'))
-                console.log(create.time('long'))
-                console.log(update.date('numeric year'))
-                console.log(update.time('long'))
             }
             
             return Utils.createUrl('registration', 'evaluation', { id: entity._id, user });
