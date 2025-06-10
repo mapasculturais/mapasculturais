@@ -38,6 +38,17 @@ $this->import('
        <entity-field :entity="entity" prop="address_line_1"></entity-field>
        <entity-field :entity="entity" prop="address_line_2"></entity-field>
     </div>
+
+    <div class="col-12">
+        <div class="col-6 sm:col-12 public-location">
+            <entity-field  @change="address()" type="checkbox" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::esc_attr_e('Localização pública')?>">
+                <template #info>
+                    <?php $this->info('cadastro -> configuracoes-entidades -> localizacao-publica') ?>
+                </template>
+            </entity-field>
+            <label class="public-location__label col-12"><?php i::_e('Marque o campo acima para tornar o endereço público ou deixe desmarcado para manter o endereço privado.')?></label>
+        </div>
+    </div>
     
     <div class="col-12">
         <p class="international-address-form__address">
