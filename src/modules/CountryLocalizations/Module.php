@@ -27,6 +27,7 @@ class Module extends \MapasCulturais\Module {
 
         $address_metadata = [
             'address_postal_code' => i::__('Código postal'),
+            'address_level_0'     => i::__('Campo de endereço de nível 0 (País)'),
             'address_level_1'     => i::__('Campo de endereço de nível 1 (Região)'),
             'address_level_2'     => i::__('Campo de endereço de nível 2 (Estado/Província)'),
             'address_level_3'     => i::__('Campo de endereço de nível 3 (Departamento)'),
