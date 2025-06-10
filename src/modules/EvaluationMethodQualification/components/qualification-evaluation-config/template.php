@@ -64,7 +64,7 @@ $this->import('
                         v-if="section.showFilters"
                         :entity="entity"
                         v-model:default-value="section"
-                        :excludeFields="['id', 'name', 'showFilters', 'maxNonEliminatory', 'numberMaxNonEliminatory']"
+                        :excludeFields="['id', 'name', 'showFilters', 'maxNonEliminatory', 'numberMaxNonEliminatory','requiredSectionObservation']"
                         titleModal="<?= i::__('Configuração de filtros da seção') ?>"
                         is-section
                         ></opportunity-registration-filter-configuration>
