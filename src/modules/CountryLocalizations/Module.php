@@ -26,16 +26,17 @@ class Module extends \MapasCulturais\Module {
         }
 
         $address_metadata = [
-            'address_postal_code' => i::__('Código postal'),
-            'address_level_0'     => i::__('Campo de endereço de nível 0 (País)'),
-            'address_level_1'     => i::__('Campo de endereço de nível 1 (Região)'),
-            'address_level_2'     => i::__('Campo de endereço de nível 2 (Estado/Província)'),
-            'address_level_3'     => i::__('Campo de endereço de nível 3 (Departamento)'),
-            'address_level_4'     => i::__('Campo de endereço de nível 4 (Cidade/Município/Comune)'),
-            'address_level_5'     => i::__('Campo de endereço de nível 5 (Subprefeitura/Distrito)'),
-            'address_level_6'     => i::__('Campo de endereço de nível 6 (Bairro)'),
-            'address_line_1'      => i::__('Endereço linha 1'),
-            'address_line_2'      => i::__('Endereço linha 2')
+            'address'            => i::__('Endereço completo'),
+            'address_postalCode' => i::__('Código postal'),
+            'address_level0'     => i::__('Campo de endereço de nível 0 (País)'),
+            'address_level1'     => i::__('Campo de endereço de nível 1 (Região)'),
+            'address_level2'     => i::__('Campo de endereço de nível 2 (Estado/Província)'),
+            'address_level3'     => i::__('Campo de endereço de nível 3 (Departamento)'),
+            'address_level4'     => i::__('Campo de endereço de nível 4 (Cidade/Município/Comune)'),
+            'address_level5'     => i::__('Campo de endereço de nível 5 (Subprefeitura/Distrito)'),
+            'address_level6'     => i::__('Campo de endereço de nível 6 (Bairro)'),
+            'address_line1'      => i::__('Endereço linha 1'),
+            'address_line2'      => i::__('Endereço linha 2')
         ];
 
         foreach ($address_metadata as $slug => $label) {
