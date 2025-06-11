@@ -11,70 +11,75 @@ class BrasilLocalization extends CountryLocalizationDefinition
 
     // =================== GETTERS ================== //
 
-    protected function getCountryCode(): ?string
+    public function getCountryCode(): ?string
     {
         return 'BR';
     }
 
-    protected function getCountryName(): ?string
+    public function getCountryName(): ?string
     {
         return i::__('Brasil');
     }
 
-    protected function getActiveLevels(): ?array
+    public function getActiveLevels(): ?array
     {
         $app = App::i();
         
         return $app->config['address.defaultActiveLevels'];
     }
 
-    protected function getPostalCode(Entity $entity): ?string
+    public function getPostalCode(Entity $entity): ?string
     {
-        return $entity->En_CEP ?? null;
+        return $entity->En_CEP;
     }
 
-    protected function getLevel1(Entity $entity): ?string
+    public function getLevel0(Entity $entity): ?string
+    {
+        return $entity->En_Pais;
+    }
+
+    public function getLevel1(Entity $entity): ?string
     {
         return null;
     }
 
-    protected function getLevel2(Entity $entity): ?string
+    public function getLevel2(Entity $entity): ?string
     {
-        return $entity->En_Estado ?? null;
+        return $entity->En_Estado;
     }
 
-    protected function getLevel3(Entity $entity): ?string
+    public function getLevel3(Entity $entity): ?string
     {
         return null;
     }
 
-    protected function getLevel4(Entity $entity): ?string
+    public function getLevel4(Entity $entity): ?string
     {
-        return $entity->En_Municipio ?? null;
+        return $entity->En_Municipio;
     }
 
-    protected function getLevel5(Entity $entity): ?string
+    public function getLevel5(Entity $entity): ?string
     {
         return null;
     }
 
-    protected function getLevel6(Entity $entity): ?string
+    public function getLevel6(Entity $entity): ?string
     {
-        return $entity->En_Bairro ?? null;
+        return $entity->En_Bairro;
     }                                                                                                                       
 
-    protected function getLine1(Entity $entity): ?string
+    public function getLine1(Entity $entity): ?string
     {
-        $address = "{$entity->En_Logradouro}, {$entity->En_Numero}";
+        $address = "{$entity->En_Nome_Logradouro}, {$entity->En_Num}";
         return $address;
     }
 
-    protected function getLine2(Entity $entity): ?string
+    public function getLine2(Entity $entity): ?string
     {
-        return $entity->En_Complemento ?? null;
+        return $entity->En_Complemento;
     }
 
-    protected function getFullAddress(Entity $entity): ?string
+    public function getFullAddress(Entity $entity): ?string
     {
         $line_1 = $this->getLine1($entity); // Logradouro e Número
         $line_2 = $this->getLine2($entity); // Complemento
@@ -110,7 +115,7 @@ class BrasilLocalization extends CountryLocalizationDefinition
         return implode(' - ', $parts);
     }
 
-    protected function getLevelHierarchy(): array
+    public function getLevelHierarchy(): array
     {
         $file = __DIR__ . '/levels-hierarchies/br.php';
 
@@ -123,41 +128,51 @@ class BrasilLocalization extends CountryLocalizationDefinition
 
     // =================== SETTERS ===================== //
 
-    protected function setPostalCode(Entity $entity, string $value): void
+    public function setPostalCode(Entity $entity, ?string $value): void
     {
         $entity->En_CEP = $value;
     }
 
-    protected function setLevel1(Entity $entity, string $value): void{}
+    public function setLevel0(Entity $entity, ?string $value): void 
+    {
+        $entity->En_Pais = $value;
+    }
 
-    protected function setLevel2(Entity $entity, string $value): void
+    public function setLevel1(Entity $entity, ?string $value): void{}
+
+    public function setLevel2(Entity $entity, ?string $value): void
     {
         $entity->En_Estado = $value;
     }
 
-    protected function setLevel3(Entity $entity, string $value): void{}
+    public function setLevel3(Entity $entity, ?string $value): void{}
 
-    protected function setLevel4(Entity $entity, string $value): void
+    public function setLevel4(Entity $entity, ?string $value): void
     {
         $entity->En_Municipio = $value;
     }
 
-    protected function setLevel5(Entity $entity, string $value): void{}
+    public function setLevel5(Entity $entity, ?string $value): void{}
 
-    protected function setLevel6(Entity $entity, string $value): void
+    public function setLevel6(Entity $entity, ?string $value): void
     {
         $entity->En_Bairro = $value;
     }
 
-    protected function setLine1(Entity $entity, string $value): void
+    public function setLine1(Entity $entity, ?string $value): void
     {
         $parts = explode(',', $value);
-        $entity->En_Logradouro = trim($parts[0] ?? '');
-        $entity->En_Numero = trim($parts[1] ?? '');
+        $entity->En_Nome_Logradouro = trim($parts[0] ?? '');
+        $entity->En_Num = trim($parts[1] ?? '');
     }
 
-    protected function setLine2(Entity $entity, string $value): void
+    public function setLine2(Entity $entity, ?string $value): void
     {
         $entity->En_Complemento = $value;
+    }
+
+    public function setFullAddress(Entity $entity, ?string $value): void
+    {
+        $entity->endereco = $value;
     }
 }
