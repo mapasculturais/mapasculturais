@@ -160,10 +160,12 @@ $this->breadcrumb = [
                     <mc-card>
                         <template #content>
                             <div class="grid-12">
+                                <?php $this->applyTemplateHook('tab-entity-info', 'before'); ?>
                                 <entity-admins :entity="entity" classes="col-12" editable></entity-admins>
                                 <entity-related-agents :entity="entity" classes="col-12" editable></entity-related-agents>
                                 <entity-terms :entity="entity" taxonomy="tag" classes="col-12" title="Tags" editable></entity-terms>
                                 <entity-owner :entity="entity" classes="col-12" title="Publicado por" editable></entity-owner>
+                                <?php $this->applyTemplateHook('tab-entity-info', 'after'); ?>
                             </div>
                         </template>
                     </mc-card>
