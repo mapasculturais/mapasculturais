@@ -54,7 +54,9 @@ return [
                 'state_salt' => env('AUTH_GOV_BR_STATE_SALT', null),
                 'applySealId' => env('AUTH_GOV_BR_APPLY_SEAL_ID', null),
                 'menssagem_authenticated' => env('AUTH_GOV_BR_MENSSAGEM_AUTHENTICATED','Usuário já se autenticou pelo GovBr'),
-                'dic_agent_fields_update' => json_decode(env('AUTH_GOV_BR_DICT_AGENT_FIELDS_UPDATE', '{}'), true)
+                'dic_agent_fields_update' => json_decode(env('AUTH_GOV_BR_DICT_AGENT_FIELDS_UPDATE', '{}'), true),
+                'post_logout_redirect_uri' => env('post_logout_redirect_uri', null),
+                'url_logout' => env('url_logout', 'https://sso.staging.acesso.gov.br/logout'),
             ]
         ]
     ]
