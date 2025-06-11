@@ -40,7 +40,26 @@ class Module extends \MapasCulturais\Module {
         ];
 
         foreach ($address_metadata as $slug => $label) {
-            $this->registerAgentMetadata($slug, ['label' => $label]);
+            $this->registerAgentMetadata($slug, [
+                'label' => $label,
+                'private' => function(){
+                    return !$this->publicLocation;
+                },
+                'serialize' => function($value, $entity) use($slug, $app) {
+                    $country = $slug == 'address_level0' ? $value : $entity->address_level0;
+                    if($slug == 'address') {
+                        $slug = 'address_fullAddress';
+                    }
+
+                    if($country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country)) {
+                        $setter = 'set'.substr($slug, 8);
+
+                        $country_localization->$setter($entity, $value);
+                    }
+
+                    return $value;
+                },
+            ]);
             $this->registerSpaceMetadata($slug, ['label' => $label]);
         }
 
