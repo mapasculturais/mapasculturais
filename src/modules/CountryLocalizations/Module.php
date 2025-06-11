@@ -15,6 +15,26 @@ class Module extends \MapasCulturais\Module {
     function _init(){
         /** @var App $app */
         $app = App::i();
+
+        $app->hook('entity(<<Agent|Space>>).save:before', function() use($app) {
+            /** @var \MapasCulturais\Entities\Agent|\MapasCulturais\Entities\Space $this */
+            $country = $this->address_level0;
+
+            if($country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country)) {
+                for($i = 0; $i <= 6; $i++) {
+                    $metadata = "address_level{$i}";
+                    $getter = "getLevel{$i}";
+
+                    $this->$metadata = $country_localization->$getter($this);
+                }
+
+                $this->address_postalCode = $country_localization->getPostalCode($this);
+                $this->address_line1 = $country_localization->getLine1($this);
+                $this->address_line2 = $country_localization->getLine2($this);
+                $this->address = $country_localization->getFullAddress($this);
+                $country_localization->setLevel0($this, $country);
+            } 
+        });
     }
 
     function register(){
