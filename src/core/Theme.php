@@ -1008,7 +1008,9 @@ abstract class Theme {
 
             // adiciona as permissões do usuário sobre a entidade:
             if ($entity_class_name::usesPermissionCache()) {
-                $entity = $app->repo($entity_class_name)->find($entity_id);
+                if(!$entity instanceof $entity_class_name) {
+                    $entity = $app->repo($entity_class_name)->find($entity_id);
+                }
                 $e['currentUserPermissions'] = $entity->getUserPermissions();
             }
 
