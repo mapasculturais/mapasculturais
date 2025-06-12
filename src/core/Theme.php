@@ -863,7 +863,7 @@ abstract class Theme {
         
     }    
 
-    function addRequestedEntityToJs(string $entity_class_name = null, int $entity_id = null, Entity $entity = null, $disable_access_control = false){
+    function addRequestedEntityToJs(?string $entity_class_name = null, ?int $entity_id = null, ?Entity $entity = null, $disable_access_control = false){
         $entity_class_name = $entity_class_name ?: $this->controller->entityClassName ?? null;
         $entity_id = $entity_id ?: $this->controller->data['id'] ?? null;
         
