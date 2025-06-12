@@ -893,7 +893,7 @@ abstract class Entity implements \JsonSerializable{
 
         $hook_prefix = $this->getHookPrefix();
 
-        if($this->usesLock() && $this->isLocked()) {
+        if(!$app->user->is('admin') && $this->usesLock() && $this->isLocked()) {
             $lock_info = $this->isLocked();
 
             if($lock_info['userId'] != $app->user->id) {
