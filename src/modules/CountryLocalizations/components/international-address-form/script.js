@@ -50,7 +50,7 @@ app.component('international-address-form', {
                 return null;
             }
 
-            this.entity.address_level_1 = this.levelHierarchy.subLevels[this.selectedLevels['1']].value;
+            this.entity.address_level1 = this.levelHierarchy.subLevels[this.selectedLevels['1']].value;
             return this.levelHierarchy.subLevels[this.selectedLevels['1']]
         },
 
@@ -63,7 +63,7 @@ app.component('international-address-form', {
                 return null;
             }
 
-            this.entity.address_level_2 = this.level1.subLevels[this.selectedLevels['2']].value;
+            this.entity.address_level2 = this.level1.subLevels[this.selectedLevels['2']].value;
             return this.level1.subLevels[this.selectedLevels['2']];
         },
 
@@ -76,7 +76,7 @@ app.component('international-address-form', {
                 return null;
             }
 
-            this.entity.address_level_3 = this.level2.subLevels[this.selectedLevels['3']].value;
+            this.entity.address_level3 = this.level2.subLevels[this.selectedLevels['3']].value;
             return this.level2.subLevels[this.selectedLevels['3']];
 
         },
@@ -90,7 +90,7 @@ app.component('international-address-form', {
                 return null;
             }
 
-            this.entity.address_level_4 = this.level3.subLevels[this.selectedLevels['4']].value;
+            this.entity.address_level4 = this.level3.subLevels[this.selectedLevels['4']].value;
             return this.level3.subLevels[this.selectedLevels['4']];
         },
 
@@ -103,7 +103,7 @@ app.component('international-address-form', {
                 return null;
             }
 
-            this.entity.address_level_5 = this.level4.subLevels[this.selectedLevels['5']].value;
+            this.entity.address_level5 = this.level4.subLevels[this.selectedLevels['5']].value;
             return this.level4.subLevels[this.selectedLevels['5']];
         },
 
@@ -116,7 +116,7 @@ app.component('international-address-form', {
                 return null;
             }
 
-            this.entity.address_level_6 = this.level5.subLevels[this.selectedLevels['6']].value;
+            this.entity.address_level6 = this.level5.subLevels[this.selectedLevels['6']].value;
             return this.level5.subLevels[this.selectedLevels['6']];
         },
     },
@@ -188,7 +188,7 @@ app.component('international-address-form', {
         },
 
         fieldLabel(level) {
-            return this.agentDescription[`address_level_${level}`].label;
+            return this.agentDescription[`address_level${level}`].label;
         },
 
         formatParams( params ){
@@ -198,12 +198,12 @@ app.component('international-address-form', {
         },
 
         geolocation() {
-            let rua         = this.entity.address_line_1 == null ? this.entity.address_line_2 : this.entity.address_line_1
-            let bairro      = this.entity.address_level_6          == null ? '' : this.entity.address_level_6;
-            let cidade      = this.entity.address_level_4       == null ? '' : this.entity.address_level_4;
-            let estado      = this.entity.address_level_2          == null ? '' : this.entity.address_level_2;
-            let cep         = this.entity.address_postal_code             == null ? '' : this.entity.address_postal_code;
-            let departamento = this.entity.address_level_3             == null ? '' : this.entity.address_level_3;
+            let rua         = this.entity.address_line1 == null ? this.entity.address_line2 : this.entity.address_line1
+            let bairro      = this.entity.address_level6          == null ? '' : this.entity.address_level6;
+            let cidade      = this.entity.address_level4       == null ? '' : this.entity.address_level4;
+            let estado      = this.entity.address_level2          == null ? '' : this.entity.address_level2;
+            let cep         = this.entity.address_postalCode             == null ? '' : this.entity.address_postalCode;
+            let departamento = this.entity.address_level3             == null ? '' : this.entity.address_level3;
 
             if (estado && cidade) {
                 var address = bairro ?
@@ -277,16 +277,16 @@ app.component('international-address-form', {
         },
 
         address() {
-            this.entity.En_Pais = this.country;
+            this.entity.address_level0 = this.country;
 
-            const line1         = this.entity.address_line_1 ?? '';
-            const line2         = this.entity.address_line_2 ?? '';
-            const bairro        = this.entity.address_level_6 ?? '';
-            const departamento  = this.entity.address_level_3 ?? '';
-            const cidade        = this.entity.address_level_4 ?? ''; 
-            const estado        = this.entity.address_level_2 ?? '';
-            const cep           = this.entity.address_postal_code ?? '';
-            const pais          = this.entity.En_Pais ?? '';
+            const line1         = this.entity.address_line1 ?? '';
+            const line2         = this.entity.address_line2 ?? '';
+            const bairro        = this.entity.address_level6 ?? '';
+            const departamento  = this.entity.address_level3 ?? '';
+            const cidade        = this.entity.address_level4 ?? ''; 
+            const estado        = this.entity.address_level2 ?? '';
+            const cep           = this.entity.address_postalCode ?? '';
+            const pais          = this.entity.address_level0 ?? '';
 
             const addressParts = [];
 
@@ -301,7 +301,7 @@ app.component('international-address-form', {
 
             if (pais) addressParts.push(pais);
 
-            this.entity.endereco = addressParts.join(', ');
+            this.entity.address = addressParts.join(', ');
             this.geolocation();
         }
 
