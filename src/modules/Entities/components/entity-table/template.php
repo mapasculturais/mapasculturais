@@ -8,6 +8,7 @@
 use MapasCulturais\i;
 
 $this->import('
+    mc-accordion
     mc-card
     mc-collapse
     mc-entities
