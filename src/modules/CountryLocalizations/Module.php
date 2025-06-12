@@ -48,16 +48,17 @@ class Module extends \MapasCulturais\Module {
         $address_metadata = [
             'address'            => i::__('Endereço completo'),
             'address_postalCode' => i::__('Código postal'),
-            'address_level0'     => i::__('Campo de endereço de nível 0 (País)'),
-            'address_level1'     => i::__('Campo de endereço de nível 1 (Região)'),
-            'address_level2'     => i::__('Campo de endereço de nível 2 (Estado/Província)'),
-            'address_level3'     => i::__('Campo de endereço de nível 3 (Departamento)'),
-            'address_level4'     => i::__('Campo de endereço de nível 4 (Cidade/Município/Comune)'),
-            'address_level5'     => i::__('Campo de endereço de nível 5 (Subprefeitura/Distrito)'),
-            'address_level6'     => i::__('Campo de endereço de nível 6 (Bairro)'),
+            'address_level0'     => i::__('País'),
             'address_line1'      => i::__('Endereço linha 1'),
             'address_line2'      => i::__('Endereço linha 2')
         ];
+
+        $level_labels = $app->config['address.defaultLevelsLabels'];
+
+        for($i = 1; $i <= 6; $i++) {
+            $label_config = $level_labels[$i];
+            $address_metadata["address_level{$i}"] = $label_config;
+        }
 
         foreach ($address_metadata as $slug => $label) {
             $this->registerAgentMetadata($slug, [
