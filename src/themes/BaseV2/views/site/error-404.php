@@ -1,9 +1,12 @@
 <?php
-
 use MapasCulturais\i;
 
-?>
+$this->layout = "default";
 
+$this->import('
+    mc-link
+');
+?>
 <div class="error-page">
     <div class="error-card">
         <div class="content">
