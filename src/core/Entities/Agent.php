@@ -443,6 +443,11 @@ class Agent extends \MapasCulturais\Entity
     }
 
     protected function _saveNested($flush = false) {
+        if($this->_newUser) {
+            $this->checkPermission('changeOwner');
+            $this->user = $this->_newUser;
+        }
+        
         if($this->_newParent !== false){
             $app = App::i();
 
