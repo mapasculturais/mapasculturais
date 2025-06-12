@@ -14,7 +14,7 @@ $this->import('
 ');
 ?>
 
-<div class="country-localization">
+<div class="country-address-form">
   <div v-if="countryFieldEnabled">
     <label><?= i::__('País') ?>:</label>
     <mc-select placeholder="<?= i::esc_attr__('Selecione um país') ?>" v-model:default-value="country" @change-option="changeCountry">
