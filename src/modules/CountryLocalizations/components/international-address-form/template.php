@@ -16,7 +16,7 @@ $this->import('
 <div :class="classes" class="international-address-form grid-12">
     <?php $this->applyTemplateHook('international-address-form','begin'); ?>
     <div class="col-12">
-        <entity-field :entity="entity" prop="address_postal_code"></entity-field>
+        <entity-field :entity="entity" prop="address_postalCode"></entity-field>
     
         <div v-for="i in [0, 1, 2, 3, 4, 5]">
             <div v-if="getLevel(i) && showSubLevelSelect(getLevel(i), i)" class="field col-6">
@@ -30,13 +30,13 @@ $this->import('
     
         <div v-for="(level, index) in activeLevels" :key="index">
             <div v-if="!levelHierarchy && !getLevel(index)" class="field col-6">
-                <entity-field :entity="entity" :prop="`address_level_${index}`" @change="address()"></entity-field>
+                <entity-field :entity="entity" :prop="`address_level${index}`" @change="address()"></entity-field>
             </div>
         </div>
         
     
-       <entity-field :entity="entity" prop="address_line_1"></entity-field>
-       <entity-field :entity="entity" prop="address_line_2"></entity-field>
+       <entity-field :entity="entity" prop="address_line1"></entity-field>
+       <entity-field :entity="entity" prop="address_line2"></entity-field>
     </div>
 
     <div class="col-12">
@@ -52,8 +52,8 @@ $this->import('
     
     <div class="col-12">
         <p class="international-address-form__address">
-            <span v-if="entity.endereco">{{entity.endereco}}</span>
-            <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
+            <span v-if="entity.address">{{entity.address}}</span>
+            <span v-if="!entity.address"><?= i::_e("Sem Endereço"); ?></span>
         </p>
         <entity-map :entity="entity"></entity-map>
     </div>
