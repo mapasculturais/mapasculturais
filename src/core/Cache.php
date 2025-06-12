@@ -73,7 +73,7 @@ class Cache {
         $this->flushAll();
     }
 
-    function setNamespace(string $namespace = null) {
+    function setNamespace(?string $namespace = null) {
         // caracteres reservados: {}()/\@:
         $namespace = str_replace(self::$parseFrom, self::$parseTo, $namespace);
         $this->namespace = "NAMESPACE<{$namespace}>#";
