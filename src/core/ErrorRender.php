@@ -21,7 +21,7 @@ class ErrorRender implements ErrorRendererInterface
             $app->controller('site')->render('error-500', [
                 'code' => 500, 
                 'exception' => $exception,
-                'display_details' => \env('DISPLAY_ERROR_DETAIL', false)
+                'display_details' => \env('DISPLAY_ERROR_DETAIL', \env('APP_MODE') != 'production')
             ]);
             return $app->response->getBody()->getContents();
         }
