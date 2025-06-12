@@ -80,7 +80,7 @@ class RoutesManager{
 
             } catch (Exceptions\PermissionDenied $e){
                 $app->response = $app->response->withHeader('Error-Code', $e->code);
-                $this->callAction($app->controller('site'), 'error', ['code' => 403, 'e' => $e], false);
+                $this->callAction($app->controller('site'), 'error', ['code' => 403, 'exception' => $e], false);
 
             }  catch (Exceptions\WorkflowRequest $e){
                 $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
@@ -89,7 +89,7 @@ class RoutesManager{
                 $app->response->getBody()->write(json_encode($requests));
             } 
         } else {
-            $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => new Exceptions\NotFound], false);
+            $this->callAction($app->controller('site'), 'error', ['code' => 404, 'exception' => new Exceptions\NotFound], false);
         }
     }
 
