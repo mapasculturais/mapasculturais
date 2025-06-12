@@ -611,8 +611,8 @@ class Opportunity extends EntityController {
             return [];
         }
 
-        $select =   $query_data['registration:@select'] ?? 
-                    'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData,createTimestamp,updateTimestamp';
+        $select = $query_data['registration:@select'] ?? $query_data['@select'];
+        $select = $select ?? 'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData,createTimestamp,updateTimestamp';
         
         $order = $query_data['@order'] ?? 'createTimestamp ASC';
 
@@ -1042,6 +1042,7 @@ class Opportunity extends EntityController {
         $registration_numbers = array_filter(array_unique(array_map(function($r) { return $r['registration_number']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
 
+        
         $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_numbers, $query_data);
         $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
 
