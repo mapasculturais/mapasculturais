@@ -341,6 +341,10 @@ class App {
         $this->hooks = new Hooks($this);
     }
 
+    function getRegistry() {
+        return $this->_register;
+    }
+
     /**
      * Analisa e se necessário corrige o array de configuração da aplicação
      * 
