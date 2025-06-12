@@ -1,13 +1,12 @@
 <?php
-
 use MapasCulturais\i;
+
+$this->layout = "default";
 
 $this->import('
     mc-link
 ');
 ?>
-
-
 <div class="error-page error-403">
     <div class="error-card">
         <div class="content">
@@ -28,6 +27,10 @@ $this->import('
                 <img src="<?php $this->asset('/img/error403.png', true, true) ?>">
             </div>
         </div>
+        <?php if($display_details): ?>
+            <pre style="font-size: 12px;">
+                <code><?= $exception ?? '' ?></code>
+            </pre>
+        <?php endif ?>
     </div>
-
 </div>

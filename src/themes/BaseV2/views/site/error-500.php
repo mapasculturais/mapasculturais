@@ -1,5 +1,4 @@
 <?php
-
 use MapasCulturais\i;
 
 $this->layout = "default";
@@ -8,8 +7,6 @@ $this->import('
     mc-link
 ');
 ?>
-
-
 <div class="error-page">
     <div class="error-card">
         <div class="content">
@@ -34,9 +31,9 @@ $this->import('
 
         </div>
         <?php if($display_details): ?>
-            <pre style="font-size: 12px;"><code><?= $exception ?? '' ?></code>
+            <pre style="font-size: 12px;">
+                <code><?= $exception ?? '' ?></code>
+            </pre>
         <?php endif ?>
-        </pre>
     </div>
-
 </div>
