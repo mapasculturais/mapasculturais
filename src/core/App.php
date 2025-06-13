@@ -352,6 +352,17 @@ class App {
         $this->hooks = new Hooks($this);
     }
 
+    function reset() {
+        $this->view->importedComponents = [];
+        $this->components->templates = [];
+
+        $this->_initAssetManager();
+        
+        $this->cache->deleteAll();
+        $this->rcache->deleteAll();
+        $this->mscache->deleteAll();
+    }
+
     function getRegistry() {
         return $this->_register;
     }
