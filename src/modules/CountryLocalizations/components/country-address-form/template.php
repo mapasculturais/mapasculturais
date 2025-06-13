@@ -25,7 +25,7 @@ $this->import('
 
   <mc-loading :condition="processing" class="col-12"> <?= i::__('Carregando') ?></mc-loading>
 
-  <div v-if="!processing">
+  <div v-if="!processing && country">
     <brasil-address-form v-if="country == 'BR'" :entity="entity" :hierarchy="levelHierarchy" classes="col-12" editable></brasil-address-form>
     <international-address-form v-else :entity="entity" :country="country" :hierarchy="levelHierarchy" classes="col-12"></international-address-form>
   </div>
