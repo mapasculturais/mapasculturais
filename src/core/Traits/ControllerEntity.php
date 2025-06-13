@@ -19,9 +19,6 @@ trait ControllerEntity {
      */
     protected $entityClassName;
 
-
-    protected $_requestedEntity = false;
-
     static $changeStatusMap = [
         Entity::STATUS_ENABLED => [
             Entity::STATUS_ENABLED => null,
@@ -90,20 +87,16 @@ trait ControllerEntity {
      *
      * @return \MapasCulturais\Entity|null
      */
-    public function getRequestedEntity(){
-        if ($this->_requestedEntity !== false) {
-            return $this->_requestedEntity;
-        }
-
+    public function getRequestedEntity(): Entity{
         if (key_exists('id', $this->urlData)) {
-            $this->_requestedEntity = $this->repository->find($this->urlData['id']);
+            $entity = $this->repository->find($this->urlData['id']);
         } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {
-            $this->_requestedEntity = $this->newEntity;
+            $entity = $this->newEntity;
         } else {
-            $this->_requestedEntity = null;
+            $entity = null;
         }
 
-        return $this->_requestedEntity;
+        return $entity;
     }
 
     /**
