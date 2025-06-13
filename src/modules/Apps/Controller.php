@@ -1,6 +1,7 @@
 <?php
 namespace Apps;
 
+use Apps\Entities\UserApp;
 use MapasCulturais\Controllers\EntityController;
 use MapasCulturais\Traits;
 
@@ -18,7 +19,7 @@ class Controller extends EntityController {
 
     function __construct()
     {
-        $this->entityClassName = Entities\UserApp::class;
+        $this->entityClassName = UserApp::class;
     }
 
     /**
@@ -28,7 +29,7 @@ class Controller extends EntityController {
      *
      * @return \MapasCulturais\Entity|null
      */
-    public function getRequestedEntity() {
+    public function getRequestedEntity(): UserApp {
         $entity = parent::getRequestedEntity();
         if (!$entity && key_exists(0, $this->urlData)) {
             $entity = $this->repository->find($this->urlData[0]);
