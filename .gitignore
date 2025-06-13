@@ -12,3 +12,7 @@ src/themes/BaseV1/assets/css/main.css
 src/themes/BaseV1/assets/css/main.css.map
 **/.env
 !/dev/.env
+src/plugins/*
+.vscode
+.zed
+public/assets
