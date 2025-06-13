@@ -5,6 +5,4 @@
  */
 
 
-$br_localization = $app->getRegisteredCountryLocalizationByCountryCode('BR');
-$app->view->jsObject['config']['brasilAddressForm']['statesAndCities'] = $br_localization->levelHierarchy;
-$app->view->jsObject['config']['brasilAddressForm']['statesAndCitiesCountryCode'] = $br_localization->countryCode;
+$app->view->jsObject['config']['brasilAddressForm']['statesAndCitiesCountryCode'] = 'BR';

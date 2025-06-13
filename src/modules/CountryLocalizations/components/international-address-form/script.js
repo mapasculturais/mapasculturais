@@ -12,6 +12,10 @@ app.component('international-address-form', {
             type: String,
             default: 'US'
         },
+        hierarchy: {
+            type: Object,
+            default: () => null
+        },
         classes: {
             type: [String, Array, Object],
             required: false
@@ -33,7 +37,7 @@ app.component('international-address-form', {
     },
 
     created() {
-        this.levelHierarchy = this.parseLevel($MAPAS.config.internationalAddressForm.levelHierarchy);
+        this.levelHierarchy = this.parseLevel(this.hierarchy);
     },
 
     computed: {

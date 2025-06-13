@@ -3,6 +3,29 @@ app.component('brasil-address-form', {
     template: $TEMPLATES['brasil-address-form'],
     emits: [],
 
+    props: {
+        entity: {
+            type: Entity,
+            required: true
+        },
+        hierarchy: {
+            type: Object,
+            default: () => null
+        },
+        editable: {
+            type: Boolean,
+            default: false,
+        },
+        hideLabel: {
+            type: Boolean,
+            default: false,
+        },
+        classes: {
+            type: [String, Array, Object],
+            required: false
+        },
+    },
+
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
@@ -17,7 +40,7 @@ app.component('brasil-address-form', {
             return !!this.entity.$PROPERTIES.publicLocation;
         },
         statesAndCities(){
-            return $MAPAS.config.brasilAddressForm.statesAndCities;
+            return this.hierarchy || [];
         },
         statesAndCitiesEnable(){
             return true;
@@ -28,15 +51,17 @@ app.component('brasil-address-form', {
         states(){
             let states = [];
 
-            const statesArray = this.statesAndCities[1];
-
-            Object.keys(statesArray).forEach((uf) => {
-                const stateData = statesArray[uf];
-                states.push({
-                    value: uf,
-                    label: stateData[0]
+            if(this.statesAndCities.length > 0) {
+                const statesArray = this.statesAndCities[1];
+    
+                Object.keys(statesArray).forEach((uf) => {
+                    const stateData = statesArray[uf];
+                    states.push({
+                        value: uf,
+                        label: stateData[0]
+                    });
                 });
-            });
+            }
 
             if (this.entity.En_Estado) {
                 this.citiesList();
@@ -44,25 +69,6 @@ app.component('brasil-address-form', {
 
             return states.sort((a, b) => a.label.localeCompare(b.label));
         }
-    },
-
-    props: {
-        entity: {
-            type: Entity,
-            required: true
-        },
-        editable: {
-            type: Boolean,
-            default: false,
-        },
-        hideLabel: {
-            type: Boolean,
-            default: false,
-        },
-        classes: {
-            type: [String, Array, Object],
-            required: false
-        },
     },
 
     watch: {
@@ -269,17 +275,22 @@ app.component('brasil-address-form', {
             }            
         },
         citiesList(){
-            const uf = this.entity.En_Estado;
-            const statesArray = this.statesAndCities[1];
-
-            if (!uf || !statesArray[uf]) {
-                this.cities = [];
+            if(this.statesAndCities.length > 0) {
+                const uf = this.entity.En_Estado;
+                
+                const statesArray = this.statesAndCities[1];
+                if (!uf || !statesArray[uf]) {
+                    this.cities = [];
+                    return;
+                }
+    
+                this.cities = statesArray[uf][1]
+                    .map(c => c[0])
+                    .sort((a, b) => a.localeCompare(b));
                 return;
             }
 
-            this.cities = statesArray[uf][1]
-                .map(c => c[0])
-                .sort((a, b) => a.localeCompare(b));
+            this.cities = [];
         },
         isRequired(field){
             return $DESCRIPTIONS[this.entity.__objectType][field].required;
