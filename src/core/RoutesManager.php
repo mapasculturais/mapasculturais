@@ -62,35 +62,44 @@ class RoutesManager{
      * @throws InvalidArgumentException 
      * @throws RuntimeException 
      */
-    protected function route(RequestInterface $request, ResponseInterface $response, $controller_id, $action, $params = [], $api = false) {
+    protected function route(RequestInterface $request, ResponseInterface $response, $controller_id, $action, $params = [], $api = false): ResponseInterface {
         $app = App::i();
         $app->request = new Request($request, $controller_id, $action, $params);
         $app->response = $response;
-        
-        if ($controller = $app->controller($controller_id)) {
-            $app->view->controller = $controller;
-            $controller->setRequestData($params);
-            
-            try{
-                $controller->callAction($api ? 'API' : $request->getMethod(), $action, $params);
-            } catch (Exceptions\Halt $e){
-                // não precisa fazer nada.
-            } catch (Exceptions\NotFound $e){
-                $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => $e], false);
 
-            } catch (Exceptions\PermissionDenied $e){
-                $app->response = $app->response->withHeader('Error-Code', $e->code);
-                $this->callAction($app->controller('site'), 'error', ['code' => 403, 'exception' => $e], false);
+        $controller = $app->controller($controller_id);
 
-            }  catch (Exceptions\WorkflowRequest $e){
-                $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
-
-                $app->response = $app->response->withStatus(202);
-                $app->response->getBody()->write(json_encode($requests));
-            } 
-        } else {
+        if(!$controller) {
             $this->callAction($app->controller('site'), 'error', ['code' => 404, 'exception' => new Exceptions\NotFound], false);
+            $app->response = $app->response->withHeader('Error-Code', 404);
+            $app->response = $app->response->withStatus(404);
+            return $app->response;
         }
+
+        $app->view->controller = $controller;
+        
+        try{
+            $this->callAction($controller, $action, $params, $api);
+        } catch (Exceptions\Halt $e){
+            // não precisa fazer nada.
+        } catch (Exceptions\NotFound $e){
+            $this->callAction($app->controller('site'), 'error', ['code' => 404, 'e' => $e], false);
+            $app->response = $app->response->withHeader('Error-Code', 404);
+            $app->response = $app->response->withStatus(404);
+
+        } catch (Exceptions\PermissionDenied $e){
+            $this->callAction($app->controller('site'), 'error', ['code' => 403, 'exception' => $e], false);
+            $app->response = $app->response->withHeader('Error-Code', 403);
+            $app->response = $app->response->withStatus(403);
+
+        }  catch (Exceptions\WorkflowRequest $e){
+            $requests = array_map(function($e){ return $e->getRequestType(); }, $e->requests);
+
+            $app->response = $app->response->withStatus(202);
+            $app->response->getBody()->write(json_encode($requests));
+        } 
+        
+        return $app->response;
     }
 
     /**
@@ -117,9 +126,9 @@ class RoutesManager{
             $controller_id = $parts[0] ?? $this->config['default_controller_id'];
             $action_name = $parts[1] ?? $this->config['default_action_name'];
             
-            $this->route($request, $response, $controller_id, $action_name, $args, $api_call);
+            $response = $this->route($request, $response, $controller_id, $action_name, $args, $api_call);
 
-            return $app->response;
+            return $response;
         });
     }
 
@@ -199,14 +208,15 @@ class RoutesManager{
         return $args;
     }
 
-    final function callAction(Controller $controller, $action_name, array $args, $api_call){
+    final function callAction(Controller $controller, $action_name, array $args, $api_call) {
+        $app = App::i();
         $controller->setRequestData( $args );
         if($api_call && !$controller->usesAPI()){
-            App::i()->pass();
+            $app->pass();
         }else{
-            App::i()->view->setController($controller);
+            $app->view->controller = $controller;
             try{
-                $controller->callAction( $api_call ? 'API' : App::i()->request->getMethod(), $action_name, $args );
+                $controller->callAction( $api_call ? 'API' : $app->request->getMethod(), $action_name, $args );
             } catch (Exceptions\Halt $e){
                 // não precisa fazer nada
             }

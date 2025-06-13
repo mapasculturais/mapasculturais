@@ -43,10 +43,13 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler;
 use Monolog\Level;
 use Monolog\Logger;
-
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface as ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\InvalidArgumentException as LogInvalidArgumentException;
 use Respect\Validation\Factory as RespectorValidationFactory;
+use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\ResponseEmitter;
 use Symfony\Component\Mailer\Exception\InvalidArgumentException as ExceptionInvalidArgumentException;
 use Symfony\Component\Mailer\Exception\LogicException as ExceptionLogicException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -83,6 +86,8 @@ use Throwable;
  
  * @property-read User $user usuário autenticado
 
+ * @property ResponseInterface $response
+ * @property Request $request
  * 
  * @package MapasCulturais
  */
@@ -477,12 +482,29 @@ class App {
      * @throws TransactionRequiredException 
      * @throws WorkflowRequest 
      */
-    public function run() {
+    public function run(?ServerRequestInterface $request = null, $emit = true) {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
-        $this->slim->run();
+
+        if (!$request) {
+            $serverRequestCreator = ServerRequestCreatorFactory::create();
+            $request = $serverRequestCreator->createServerRequestFromGlobals();
+        }
+
+        $response = $this->slim->handle($request);
+
+        if ($emit) {
+            $responseEmitter = new ResponseEmitter();
+            $responseEmitter->emit($response);
+        }
+
+        $this->response = $response;
+
         $this->persistPCachePendingQueue();
+        
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
         $this->applyHookBoundTo($this, 'slim.after');
+
+        return $response;
     }
 
     /**
