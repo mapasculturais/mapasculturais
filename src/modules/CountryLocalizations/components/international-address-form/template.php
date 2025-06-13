@@ -27,13 +27,11 @@ $this->import('
             </div>
         </div>
     
-    
-        <div v-for="(level, index) in activeLevels" :key="index">
-            <div v-if="!levelHierarchy && !getLevel(index)" class="field col-6">
+        <div v-if="!levelHierarchy" v-for="(level, index) in activeLevels" :key="index">
+            <div v-if="!getLevel(index)" class="field col-6">
                 <entity-field :entity="entity" :prop="`address_level${index}`" @change="address()"></entity-field>
             </div>
         </div>
-        
     
        <entity-field :entity="entity" prop="address_line1"></entity-field>
        <entity-field :entity="entity" prop="address_line2"></entity-field>
