@@ -3,9 +3,27 @@
 namespace CountryLocalizations;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
 
 class Controller extends \MapasCulturais\Controller
-{   
+{
+    function API_findLevelHierarchy() {
+        $this->requireAuthentication();
+
+        $app = App::i();
+        $country_code = $this->data['country'];
+        
+        if($localization = $app->getRegisteredCountryLocalizationByCountryCode($country_code)) {
+            if($hierarchy = $localization->levelHierarchy) {
+                $this->json($hierarchy);
+            }
+            
+            $this->errorJson(i::__('Nenhum arquivo de localização encontrado'));
+        }
+
+        $this->errorJson(i::__('Nenhuma configuração de localização registrada para o código de país fornecido'));
+    }
+
     function API_findSublevels(){
         $app = App::i();
         $default_country_code = $app->config['address.defaultCountryCode'];
