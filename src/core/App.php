@@ -134,6 +134,12 @@ class App {
     public Theme $view;
 
     /**
+     * Instância do Asset Manager
+     * @var AssetManager
+     */
+    public AssetManager $assetManager;
+
+    /**
      * Instância do subsite ativo
      * @var Entities\Subsite|null
      */
@@ -430,6 +436,7 @@ class App {
         $this->_initRouteManager();
         $this->_initAuthProvider();
 
+        $this->_initAssetManager();
         $this->_initTheme();
 
         $this->applyHookBoundTo($this, 'app.init:before');
@@ -796,6 +803,14 @@ class App {
         $this->auth = $auth;
     }
 
+    protected function _initAssetManager() {
+        if($this->config['themes.assetManager'] instanceof AssetManager) {
+            $this->assetManager = $this->config['themes.assetManager'];
+        } else {
+            $this->assetManager = new AssetManagers\FileSystem($this->config['themes.assetManager']);
+        }
+    }
+
     /**
      * Inicializa a instância do tema
      * @return void 
@@ -806,13 +821,11 @@ class App {
             $this->cache->setNamespace($this->config['app.cache.namespace'] . ':' . $this->subsite->id);
 
             $theme_class = $this->subsite->namespace . "\Theme";
-            $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->subsite);
+            $theme_instance = new $theme_class($this->assetManager, $this->subsite);
         } else {
             $theme_class = $this->config['themes.active'] . '\Theme';
 
-            // dd($theme_class);
-
-            $theme_instance = new $theme_class($this->config['themes.assetManager']);
+            $theme_instance = new $theme_class($this->assetManager);
         }
 
         $theme_path = $theme_class::getThemeFolder() . '/';

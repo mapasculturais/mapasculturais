@@ -3,7 +3,7 @@ $app_mode = env('APP_MODE', 'production');
 $is_production = $app_mode == 'production';
 
 return [
-    'themes.assetManager' => new \MapasCulturais\AssetManagers\FileSystem([
+    'themes.assetManager' => [
         'publishPath' => BASE_PATH . 'assets/',
 
         'mergeScripts' =>  env('ASSETS_MERGE_SCRIPTS', $is_production),
@@ -18,5 +18,5 @@ return [
                 'uglifycss {IN} > {OUT}',
 
         'publishFolderCommand' => 'cp -R {IN} {PUBLISH_PATH}{FILENAME}'
-    ]),
+    ],
 ];
