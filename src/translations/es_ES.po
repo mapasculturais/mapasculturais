@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2025-06-02 12:32-0300\n"
+"POT-Creation-Date: 2025-06-13 14:30-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: librecoop\n"
@@ -12,10 +12,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.6\n"
 "X-Poedit-Basepath: ../../..\n"
-"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__\n"
+"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__;i::__\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: core\n"
 "X-Poedit-SearchPath-1: mapasculturais-base-project\n"
+"X-Poedit-SearchPath-2: core/src/plugins/plugin-SpamDetector\n"
 "X-Poedit-SearchPathExcluded-0: core/config/module.registrationFieldTypes.php\n"
 "X-Poedit-SearchPathExcluded-1: mapasculturais-base-project/plugins/"
 "MultipleLocalAuth/assets/js/app.js\n"
@@ -65,7 +66,8 @@ msgstr "Id"
 #: core/src/themes/BaseV1/layouts/parts/user-management/user-info/info-spaces.php:14
 #: core/src/themes/BaseV1/views/generic/list.php:17
 #: core/src/themes/BaseV1/views/generic/list.php:32
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:106
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:107
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:107
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:12
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:32
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:15
@@ -377,6 +379,18 @@ msgstr "Microrregión"
 msgid "Município"
 msgstr "Municipio/Localidad"
 
+#: core/config/lgpd.php:8
+msgid "Aceito os termos de uso"
+msgstr "Acepto los Términos de uso"
+
+#: core/config/lgpd.php:13
+msgid "Aceito as políticas de privacidade"
+msgstr "Acepto la Política de privacidad"
+
+#: core/config/lgpd.php:18
+msgid "Autorizo o uso de imagem"
+msgstr "Autorizo el uso de imagen"
+
 #: core/config/logo.php:6
 msgid "Mapas"
 msgstr "Mapas"
@@ -553,6 +567,7 @@ msgstr ""
 #: core/src/modules/Panel/components/panel--pending-evaluations/texts.php:6
 #: core/src/modules/Spreadsheets/SpreadsheetJob.php:401
 #: core/src/themes/BaseV1/Theme.php:251 core/src/themes/BaseV1/Theme.php:252
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:87
 msgid "Espaço"
 msgstr "Espacio"
 
@@ -667,6 +682,8 @@ msgstr "Evento"
 #: core/src/themes/BaseV2/layouts/parts/main-header.php:72
 #: core/src/themes/BaseV2/layouts/parts/navbar.php:28
 #: core/src/themes/themeCulturaenlinea/layouts/parts/main-header.php:72
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/main-header.php:72
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/navbar.php:28
 #: mapasculturais-base-project/themes/themeCulturaenlinea/layouts/parts/main-header.php:72
 msgid "Eventos"
 msgstr "Eventos"
@@ -685,6 +702,7 @@ msgstr "Eventos"
 #: core/src/modules/Panel/components/panel--last-edited/template.php:32
 #: core/src/modules/Panel/components/panel--pending-evaluations/texts.php:5
 #: core/src/modules/Spreadsheets/SpreadsheetJob.php:398
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:64
 msgid "Agente"
 msgstr "Agente"
 
@@ -734,7 +752,10 @@ msgstr "Agente"
 #: core/src/themes/BaseV2/layouts/parts/navbar.php:22
 #: core/src/themes/themeCulturaenlinea/layouts/parts/main-header.php:61
 #: core/src/themes/themeCulturaenlinea/views/agent/edit-1.php:35
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/main-header.php:61
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/navbar.php:22
 #: mapasculturais-base-project/themes/themeCulturaenlinea/layouts/parts/main-header.php:61
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:54
 #: mapasculturais-base-project/themes/themeCulturaenlinea/views/agent/edit-1.php:35
 msgid "Agentes"
 msgstr "Agentes"
@@ -764,7 +785,10 @@ msgstr "Agentes"
 #: core/src/themes/BaseV2/layouts/parts/main-header.php:83
 #: core/src/themes/BaseV2/layouts/parts/navbar.php:34
 #: core/src/themes/themeCulturaenlinea/layouts/parts/main-header.php:83
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/main-header.php:83
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/navbar.php:34
 #: mapasculturais-base-project/themes/themeCulturaenlinea/layouts/parts/main-header.php:83
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:77
 msgid "Espaços"
 msgstr "Espacios"
 
@@ -789,6 +813,7 @@ msgstr "Espacios"
 #: core/src/themes/BaseV1/views/event/edit.php:435
 #: core/src/themes/BaseV1/views/event/single.php:408
 #: core/src/themes/BaseV1/views/event/single.php:435
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:110
 msgid "Projeto"
 msgstr "Proyecto"
 
@@ -824,7 +849,10 @@ msgstr "Proyecto"
 #: core/src/themes/BaseV2/layouts/parts/main-header.php:94
 #: core/src/themes/BaseV2/layouts/parts/navbar.php:40
 #: core/src/themes/themeCulturaenlinea/layouts/parts/main-header.php:94
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/main-header.php:94
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/navbar.php:40
 #: mapasculturais-base-project/themes/themeCulturaenlinea/layouts/parts/main-header.php:94
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:100
 msgid "Projetos"
 msgstr "Proyectos"
 
@@ -866,6 +894,7 @@ msgstr "Oportunidad"
 #: core/src/themes/BaseV1/views/panel/user-management.php:48
 #: core/src/themes/BaseV2/layouts/parts/main-header.php:50
 #: core/src/themes/themeCulturaenlinea/layouts/parts/main-header.php:50
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/main-header.php:50
 #: mapasculturais-base-project/themes/themeCulturaenlinea/layouts/parts/main-header.php:50
 msgid "Oportunidades"
 msgstr "Oportunidades"
@@ -1444,6 +1473,7 @@ msgstr "adjunto"
 #: core/src/themes/BaseV1/layouts/parts/singles/agent-form-2.php:62
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:43
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/agent-data-1/template.php:26
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:43
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:187
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:15
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:35
@@ -1639,7 +1669,7 @@ msgstr "Persona trans o travesti"
 #: core/src/modules/OpportunityWorkplan/Module.php:511
 #: core/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:189
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/elderly-person/template.php:14
-#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:131
+#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:133
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:408
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:421
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:451
@@ -1672,7 +1702,7 @@ msgstr "No"
 #: core/src/modules/OpportunityWorkplan/components/registration-workplan-form-delivery/template.php:63
 #: core/src/themes/BaseV1/layouts/parts/singles/subsite-filters.php:188
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/elderly-person/template.php:13
-#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:130
+#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:132
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:409
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:422
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/agent-types.php:450
@@ -3547,7 +3577,8 @@ msgstr "Color de la entidad"
 #: core/src/themes/BaseV1/layouts/parts/search/infobox-space.php:15
 #: core/src/themes/BaseV1/layouts/parts/search/list-agent-item.php:14
 #: core/src/themes/BaseV1/layouts/parts/search/list-space-item.php:17
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:108
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:109
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:109
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:11
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:11
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:126
@@ -5276,7 +5307,7 @@ msgstr "Conferencia, Debate o Encuentro"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:23
 #: core/src/modules/UserManagement/components/user-management--add-role-modal/template.php:18
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/addresses-config.php:9
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:23
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:26
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/taxonomies.php:538
 msgid "Função"
 msgstr "Rol"
@@ -10187,7 +10218,11 @@ msgstr "Denunciar"
 #: core/src/themes/BaseV1/layouts/parts/singles/agent-form.php:91
 #: core/src/themes/BaseV1/views/auth/fake-authentication.php:105
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:38
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:31
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:89
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:38
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:31
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:89
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:44
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:34
 msgid "E-mail"
@@ -10417,7 +10452,9 @@ msgstr "Las inscripciones se cerrarán el día"
 #: core/src/modules/Entities/components/entity-data/template.php:25
 #: core/src/modules/Entities/components/entity-lock/texts.php:5
 #: core/src/modules/EventImporter/components/event-importer-files/template.php:32
+#: core/src/modules/Opportunities/components/opportunity-list/template.php:32
 #: core/src/modules/Opportunities/components/opportunity-list/template.php:35
+#: core/src/modules/Opportunities/components/opportunity-list/template.php:39
 #: core/src/modules/Opportunities/components/opportunity-phases-timeline/template.php:28
 #: core/src/modules/Opportunities/components/opportunity-phases-timeline/template.php:33
 #: core/src/modules/Opportunities/components/registration-card/template.php:51
@@ -10512,6 +10549,7 @@ msgstr "La inscripción cierra el día"
 
 #: core/src/modules/Components/components/error-display/template.php:15
 #: core/src/themes/BaseV2/views/site/error-403.php:15
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-403.php:15
 msgid "Erro 403"
 msgstr "Error 403"
 
@@ -10519,6 +10557,9 @@ msgstr "Error 403"
 #: core/src/themes/BaseV2/views/site/error-403.php:23
 #: core/src/themes/BaseV2/views/site/error-404.php:21
 #: core/src/themes/BaseV2/views/site/error-500.php:27
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-403.php:23
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-404.php:21
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-500.php:27
 msgid "Voltar para a página inicial"
 msgstr "Volver a la página de inicio"
 
@@ -10912,6 +10953,7 @@ msgstr "Ningún archivo seleccionado"
 #: core/src/modules/Components/components/mc-header-menu-user/template.php:26
 #: core/src/modules/Components/components/mc-header-menu-user/template.php:65
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:424
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:422
 msgid "Minha conta"
 msgstr "Mi cuenta"
 
@@ -10973,13 +11015,13 @@ msgstr "Filtro"
 
 #: core/src/modules/Components/components/mc-multiselect/template.php:31
 #: core/src/modules/Entities/components/entity-field/template.php:99
-#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:106
+#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:108
 msgid "Você selecionou"
 msgstr "Tu seleccionaste"
 
 #: core/src/modules/Components/components/mc-multiselect/template.php:33
 #: core/src/modules/Entities/components/entity-field/template.php:101
-#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:108
+#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:110
 msgid "opções"
 msgstr "opciones"
 
@@ -12051,6 +12093,8 @@ msgstr "Agregar nueva ocurrencia"
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:94
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:109
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/views/auth/register.php:16
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:94
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:109
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:103
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:122
 msgid "Voltar"
@@ -12784,7 +12828,7 @@ msgstr "Validado por {authority} el {date}"
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/textarea.php:8
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/url.php:8
 #: core/src/themes/BaseV1/layouts/parts/singles/registration-field-edit.php:16
-#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:26
+#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field/template.php:28
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:26
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:34
 #: mapasculturais-base-project/themes/themeCulturaenlinea/components/registration-field-persons/template.php:42
@@ -14744,6 +14788,7 @@ msgstr "Seleccionar las evaluaciones"
 #: core/src/modules/Search/components/search-filter-agent/template.php:28
 #: core/src/modules/Support/components/opportunity-support-config/template.php:131
 #: core/src/themes/BaseV1/Theme.php:1944 core/src/themes/BaseV1/Theme.php:2392
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:31
 msgid "Todos"
 msgstr "Todos"
 
@@ -17422,14 +17467,17 @@ msgstr ""
 "además de diversas iniciativas registradas por los usuarios de la plataforma."
 
 #: core/src/modules/Home/components/home-feature/template.php:20
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:21
 msgid "Em destaque"
 msgstr "Destacado"
 
 #: core/src/modules/Home/components/home-feature/template.php:23
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:24
 msgid "Confira os últimos destaques de cada uma das entidades"
 msgstr "Consulta las últimas novedades destacadas de cada entidad"
 
 #: core/src/modules/Home/components/home-feature/template.php:125
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/Home/components/home-feature/template.php:126
 msgid "Nenhuma entidade em destaque foi encontrada."
 msgstr "No se encontraron entidades destacadas."
 
@@ -17868,6 +17916,7 @@ msgstr "Solicitud cancelada"
 #: core/src/themes/BaseV1/layouts/parts/header-main-nav.php:106
 #: core/src/themes/BaseV1/layouts/parts/header-main-nav.php:111
 #: core/src/themes/BaseV2/layouts/parts/navbar.php:46
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/navbar.php:46
 msgid "Notificações"
 msgstr "Notificaciones"
 
@@ -19828,7 +19877,8 @@ msgid "Acompanhar"
 msgstr "Seguir"
 
 #: core/src/modules/Opportunities/components/registration-card/template.php:117
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:71
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:72
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:72
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:83
 msgid "Continuar"
 msgstr "Continuar"
@@ -20402,6 +20452,7 @@ msgstr "Formulario de inscripción"
 #: core/src/modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:87
 #: core/src/modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:133
 #: core/src/themes/BaseV2/layouts/parts/navbar.php:10
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/navbar.php:10
 msgid "Início"
 msgstr "Inicio"
 
@@ -23348,14 +23399,14 @@ msgstr "Marque para que su ubicación se haga pública."
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:42
 #: core/src/modules/UserManagement/Module.php:34
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:12
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:42
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:45
 msgid "remover"
 msgstr "eliminar"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:15
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:45
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/fields/links.php:15
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:45
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:48
 msgid "adicionar"
 msgstr "agregar"
 
@@ -23419,57 +23470,57 @@ msgid "Selecione os campos que serão obrigatórios"
 msgstr "Seleccione los campos son obligatorios"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:27
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:27
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:30
 msgid "Parentesco"
 msgstr "Parentezco"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:29
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:29
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:32
 msgid "Cônjuge ou Companheiro(a)"
 msgstr "Cónyuge o pareja"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:30
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:30
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:33
 msgid "Filho(a)"
 msgstr "Hijo(a)"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:31
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:31
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:34
 msgid "Enteado(a)"
 msgstr "Hijastro(a)"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:32
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:32
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:35
 msgid "Neto (a) ou Bisneto (a)"
 msgstr "Nieto(a) o Bisnieto(a)"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:33
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:33
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:36
 msgid "Pai ou Mãe"
 msgstr "Padra o Madre"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:34
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:34
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:37
 msgid "Sogro(a)"
 msgstr "Suegro(a)"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:35
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:35
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:38
 msgid "Irmão ou Irmã"
 msgstr "Hermano o Hermana"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:36
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:36
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:39
 msgid "Genro ou Nora"
 msgstr "Yerno o nuera"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:37
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:37
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:40
 msgid "Outro Parente"
 msgstr "Otros pariente"
 
 #: core/src/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:38
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:38
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons.php:41
 msgid "Não Parente"
 msgstr "No es pariente"
 
@@ -24788,6 +24839,7 @@ msgstr "Definir Zoom Mínimo"
 #: core/src/modules/ThemeCustomizer/layouts/parts/home.php:15
 #: core/src/themes/BaseV2/layouts/parts/main-header.php:39
 #: core/src/themes/themeCulturaenlinea/layouts/parts/main-header.php:39
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/main-header.php:39
 #: mapasculturais-base-project/themes/themeCulturaenlinea/layouts/parts/main-header.php:39
 msgid "Home"
 msgstr "Home"
@@ -27379,7 +27431,9 @@ msgstr "Ver todas las actividades"
 #: core/src/themes/BaseV2/layouts/parts/main-header.php:111
 #: core/src/themes/themeCulturaenlinea/layouts/parts/main-header.php:111
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:46
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/main-header.php:111
 #: mapasculturais-base-project/themes/themeCulturaenlinea/layouts/parts/main-header.php:111
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:46
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:49
 msgid "Entrar"
 msgstr "Entrar"
@@ -31029,56 +31083,69 @@ msgid "Parar configurar os administradores você deve primeiro salvar o subsite.
 msgstr "Para configurar los administradores primero debe guardar el subsitio."
 
 #: core/src/themes/BaseV2/layouts/parts/navbar.php:16
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/navbar.php:16
 msgid "Editais"
 msgstr "Llamados"
 
 #: core/src/themes/BaseV2/layouts/parts/navbar.php:53
+#: mapasculturais-base-project/themes/BaseV2/layouts/parts/navbar.php:53
 msgid "Painel de controles"
 msgstr "Panel de Control"
 
 #: core/src/themes/BaseV2/views/site/error-403.php:16
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-403.php:16
 msgid "Acesso Privado"
 msgstr "Acesso Privado"
 
 #: core/src/themes/BaseV2/views/site/error-403.php:18
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-403.php:18
 msgid " A página que você está tentando acessar é particular."
 msgstr " La página a la que intentas acceder es privada."
 
 #: core/src/themes/BaseV2/views/site/error-403.php:19
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-403.php:19
 msgid "Faça login com outra conta ou solicite acesso."
 msgstr "Inicie sesión con otra cuenta o solicite acceso."
 
 #: core/src/themes/BaseV2/views/site/error-404.php:11
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-404.php:11
 msgid "Erro 404"
 msgstr "Error 404"
 
 #: core/src/themes/BaseV2/views/site/error-404.php:12
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-404.php:12
 msgid "Ops, página "
 msgstr "Upss, página "
 
 #: core/src/themes/BaseV2/views/site/error-404.php:12
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-404.php:12
 msgid "não encontrada."
 msgstr "no encontrada."
 
 #: core/src/themes/BaseV2/views/site/error-404.php:15
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-404.php:15
 msgid "Essa página não existe mais ou mudou de endereço."
 msgstr "Esta página ya no existe o ha cambiado de dirección."
 
 #: core/src/themes/BaseV2/views/site/error-404.php:17
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-404.php:17
 msgid ""
 "Mas não se preocupe, existem muitas outras páginas para conhecer aqui no "
 "Mapas."
 msgstr "Pero no te preocupes, hay muchas otras páginas por descubrir aquí."
 
 #: core/src/themes/BaseV2/views/site/error-500.php:17
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-500.php:17
 msgid "Erro 500"
 msgstr "Error 500"
 
 #: core/src/themes/BaseV2/views/site/error-500.php:18
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-500.php:18
 msgid "Erro na página"
 msgstr "Error en la página"
 
 #: core/src/themes/BaseV2/views/site/error-500.php:21
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-500.php:21
 msgid ""
 "Identificamos um problema no servidor aqui do nosso lado, mas não se "
 "preocupe. "
@@ -31087,6 +31154,7 @@ msgstr ""
 "preocupe. "
 
 #: core/src/themes/BaseV2/views/site/error-500.php:23
+#: mapasculturais-base-project/themes/BaseV2/views/site/error-500.php:23
 msgid ""
 "Já estamos investigando o que aconteceu. Tente novamente após alguns minutos.."
 msgstr ""
@@ -31103,9 +31171,12 @@ msgstr "modificar contraseña"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Plugin.php:53
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/change-password/template.php:33
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:56
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:57
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:36
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:125
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:57
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:36
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:125
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:67
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:39
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:138
@@ -31137,79 +31208,99 @@ msgid "Tempo de bloqueio por excesso de tentativas"
 msgstr "Tiempo de bloqueo debido a intentos excesivos"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:163
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:163
 msgid "Token inválidos"
 msgstr "Token inválidos"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:488
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:486
 msgid "Sua senha deve conter pelo menos "
 msgstr "Su contraseña debe contener por lo menos "
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:491
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:489
 msgid " Sua senha deve conter pelo menos 1 número!"
 msgstr " ¡Su contraseña debe contener al menos 1 número!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:494
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:492
 msgid " Sua senha deve conter pelo menos 1 letra maiúscula!"
 msgstr " ¡Su contraseña debe contener al menos 1 letra mayúscula!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:497
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:495
 msgid " Sua senha deve conter pelo menos 1 letra minúscula!"
 msgstr " ¡Su contraseña debe contener al menos 1 letra minúscula!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:500
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:498
 msgid " Sua senha deve conter pelo menos 1 caractere especial!"
 msgstr " ¡Su contraseña debe contener al menos 1 carácter especial!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:503
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:501
 msgid "Por favor, insira sua senha."
 msgstr "Por favor, introduzca su contraseña."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:507
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:505
 msgid "As senhas não conferem."
 msgstr "Las contraseñas no coinciden."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:542
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:708
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:997
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:540
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:706
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:995
 msgid "Captcha incorreto, tente novamente!"
 msgstr "¡Captcha incorrecto, inténtalo de nuevo!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:554
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:552
 msgid "Por favor, informe um cpf válido."
 msgstr "Por favor, introduzca una ci válida."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:576
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:574
 msgid "Este CPF já esta em uso. Tente recuperar a sua senha."
 msgstr "Esta CI ya está en uso. Intente recuperar su contraseña."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:588
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:586
 msgid "Este endereço de email já está em uso. Tente recuperar a sua senha."
 msgstr ""
 "Esta dirección de correo electrónico ya está en uso. Intente recuperar su "
 "contraseña."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:594
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:592
 msgid "Por favor, informe um email válido."
 msgstr "Por favor, ingrese un correo electrónico válido."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:641
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:639
 msgid "Token não encontrado."
 msgstr "Token no encontrado."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:660
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:658
 msgid "Este token expirou."
 msgstr "Este token expiró."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:716
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:714
 msgid "Email não encontrado"
 msgstr "Email no encontrado"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:742
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:740
 #, php-format
 msgid "Pedido de recuperação de senha para %s"
 msgstr "Pedio de recuperación de contraseña para %s"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:777
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:775
 msgid ""
 "Erro ao enviar email de recuperação. Entre em contato com os administradors "
 "do site."
@@ -31219,38 +31310,48 @@ msgstr ""
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:814
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:865
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:812
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:863
 msgid "Insira sua nova senha."
 msgstr "Ingrese su nueva contraseña."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:860
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:858
 msgid "Senha atual inválida."
 msgstr "Contraseña actual no válida."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:887
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:885
 msgid "A senha deve conter uma letra maiúscula"
 msgstr "La contraseña debe contener una letra mayúscula"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:888
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:886
 msgid "A senha deve conter uma letra minúscula"
 msgstr "La contraseña debe contener una letra minúscula"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:889
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:887
 msgid "A senha deve conter um caractere especial"
 msgstr "La contraseña debe contener un carácter especial"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:890
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:888
 msgid "A senha deve conter um número "
 msgstr "La contraseña debe contener un número "
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:891
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:889
 msgid "O tamanho mínimo da senha é de: "
 msgstr "La longitud mínima de la contraseña es: "
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1028
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1026
 msgid "CPF ou senha incorreta, tente novamente!"
 msgstr "¡CI o contraseña incorrecta, inténtalo de nuevo!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1050
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1048
 msgid ""
 "Você possui 2 ou mais agente com o mesmo CPF! Por favor entre em contato com "
 "o suporte."
@@ -31259,6 +31360,7 @@ msgstr ""
 "soporte."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1055
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1053
 msgid ""
 "Você possui 2 ou mais agentes inativos com o mesmo CPF! Por favor entre em "
 "contato com o suporte."
@@ -31267,23 +31369,29 @@ msgstr ""
 "servicio de soporte."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1061
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1059
 msgid "CPF ou senha incorreta. Utilize o CPF do seu agente principal."
 msgstr "CI o contraseña incorrectas. Utilice la CI de su agente principal."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1081
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1115
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1079
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1113
 msgid "Usuário ou senha inválidos."
 msgstr "Usuario o contraseña incorrectos."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1087
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1085
 msgid "Verifique seu email para validar a sua conta."
 msgstr "Revise su correo electrónico para validar su cuenta."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1096
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1094
 msgid "Login bloqueado, tente novamente em "
 msgstr "Inicio de sesión bloqueado, inténtalo de nuevo en "
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/Provider.php:1421
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/Provider.php:1419
 msgid "É preciso estar autenticado para realizar esta ação"
 msgstr "Es preciso estar autenticado para realizar esta acción"
 
@@ -31295,6 +31403,8 @@ msgstr "Contraseña:"
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:82
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:103
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/views/auth/confirm-email.php:20
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:82
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:103
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:87
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:113
 msgid "Alteração de senha"
@@ -31323,6 +31433,7 @@ msgstr "Confirmar contraseña"
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/change-password/template.php:54
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/change-password/template.php:59
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:93
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:93
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:101
 msgid "Alterar senha"
 msgstr "Cambiar contraseña"
@@ -31340,86 +31451,105 @@ msgid "Área de atuação obrigatória"
 msgstr "Área de actuación obligatoria"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:23
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:23
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:24
 msgid "Novo cadastro"
 msgstr "Nuevo registro"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:24
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:24
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:28
 #, php-format
 msgid "Siga os passos para criar o seu cadastro no %s."
 msgstr "Siga los pasos para crear su registro en %s."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:46
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:46
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:55
 msgid "Por que pedimos este dado"
 msgstr "Por qué pedimos este dato"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:48
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:57
-msgid "Texto sobre o motivo da coleta do CPF"
-msgstr "Texto sobre el motivo del pedido del dato de la CI"
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:48
+msgid ""
+"Para validar el usuario con el correo correspondiente. Este dato no será "
+"público."
+msgstr ""
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:62
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:63
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:63
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:73
 msgid "Confirme sua senha"
 msgstr "Confirmar contraseña"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:79
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:80
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:55
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:80
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:55
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:91
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:58
 msgid "Entrar com Gov.br"
 msgstr "Entrar con Gub.uy"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:83
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:84
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:60
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:84
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:60
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:95
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:63
 msgid "Entrar com Google"
 msgstr "Entrar con Google"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:94
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:95
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:95
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:106
 msgid "Voltar e excluir minhas informações"
 msgstr "Regresar y borrar mi información"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:101
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:102
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:102
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:114
 msgid "Falta pouco para finalizar o seu cadastro!"
 msgstr "Queda poco para que finalice su registro!"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:102
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:103
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:103
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:115
 msgid "Dê um nome e faça uma breve descrição sua."
 msgstr "Ponga su nombre y una breve descripción sobre sí mismo."
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:106
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:107
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:107
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:123
 msgid "As pessoas irão encontrar você por esse nome."
 msgstr "Las personas te encontrarán por ese nombre."
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:107
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:108
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:108
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:125
 msgid "Mini Bio"
 msgstr "Mini Bio"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:112
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:113
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:113
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:130
 msgid "Criar cadastro"
 msgstr "Crear registro"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:123
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:124
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:124
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:142
 msgid "E-mail de confirmação enviado!"
 msgstr "¡Correo electrónico de confirmación enviado!"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:124
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:125
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:125
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:143
 msgid "Seu cadastro foi criado com sucesso!"
 msgstr "Su registro fue creado con éxito!"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:127
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:128
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:128
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:146
 #, php-format
 msgid "Acesse seu e-mail para confirmar a criação de seu cadastro no %s."
@@ -31427,7 +31557,8 @@ msgstr ""
 "Acceda a su correo electrónico para confirmar la creación de su registro en "
 "%s."
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:129
+#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/create-account/template.php:130
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/create-account/template.php:130
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:148
 msgid "Acessar meu cadastro"
 msgstr "Acceder a mi registro"
@@ -31445,75 +31576,83 @@ msgid "A área de atuação é obrigatória!"
 msgstr "El área de actuación es obligatoria!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:23
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:23
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:23
 msgid "Boas vindas!"
 msgstr "Bienvenid@!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:24
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:24
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:24
 #, php-format
 msgid "Entre na sua conta do %s"
 msgstr "Entre en su cuenta de %s"
 
-#: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:31
-#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:33
-msgid "E-mail ou CPF"
-msgstr "E-mail o CI"
-
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:38
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:38
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:41
 msgid "Esqueci minha senha"
 msgstr "Olvidé mi contraseña"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:49
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:49
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:52
 msgid "Ou entre com"
 msgstr "O entre con"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:67
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:67
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:70
 #, php-format
 msgid "Ainda não tem cadastro no %s? Realize seu cadastro agora!"
 msgstr "Todavía no está registrado en %s? Realice su registro ahora!"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:70
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:70
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:74
 msgid "Fazer cadastro"
 msgstr "Hacer registro"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:83
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:83
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:88
 msgid "Se você esqueceu a senha, não se preocupe, todo mundo passa por isso."
 msgstr ""
 "Si has olvidado tu contraseña, no te preocupes, todo el mundo pasa por eso."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:83
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:83
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:88
 msgid "Digite seu e-mail para criar uma nova."
 msgstr "Escriba su correo electrónico para crear su cuenta."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:105
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/views/auth/confirm-email.php:22
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:105
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:117
 msgid "Enviamos as instruções de alteração de senha para seu e-mail."
 msgstr "Enviamos as instruções de alteração de senha para seu e-mail."
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:108
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:108
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:120
 msgid "Não recebi o e-mail"
 msgstr "No recibí el correo electrónico"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:119
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:119
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:132
 msgid "Redefinir senha de acesso"
 msgstr "Redefinir contraseña de acceso"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:131
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:131
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:144
 msgid "Confirme sua nova senha"
 msgstr "Confirme su nueva contraseña"
 
 #: mapasculturais-base-project/plugins/MultipleLocalAuth/components/login/template.php:139
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/components/login/template.php:139
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:152
 msgid "Redefinir senha"
 msgstr "Redefinir contraseña"
@@ -31552,6 +31691,28 @@ msgstr "un número"
 msgid "Entrar na minha conta"
 msgstr "Entrar a mi cuenta"
 
+#: mapasculturais-base-project/themes/themeCulturaenlinea/components/entity-field-seals/texts.php:6
+msgid "Validado por {authority} el {date}"
+msgstr "Validado por {authority} el {date}"
+
+#: mapasculturais-base-project/themes/themeCulturaenlinea/components/main-footer/template.php:104
+msgid "Términos y condiciones"
+msgstr "Términos y Condiciones"
+
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/views/auth/confirm-email.php:20
+msgid "Cambio de contraseña"
+msgstr "Cambio de contraseña"
+
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/views/auth/confirm-email.php:22
+msgid ""
+"Enviamos las instrucciones de cambio de contraseña a su correo electrónico. "
+"Por las dudas verifique la carpeta SPAM."
+msgstr ""
+
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/MultipleLocalAuth/views/auth/confirm-email.php:24
+msgid "Entrar a mi cuenta"
+msgstr "Entrar a mi cuenta"
+
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/opportunity-types.php:42
 msgid "Premio"
 msgstr ""
@@ -31568,6 +31729,10 @@ msgstr "Nuevo registro"
 #, php-format
 msgid "Siga los pasos para registrarse en %s."
 msgstr "Siga los pasos para registrarse en %s."
+
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:57
+msgid "Texto sobre o motivo da coleta do CPF"
+msgstr "Texto sobre el motivo del pedido del dato de la CI"
 
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_create-account.php:74
 msgid "Confirme contraseña"
@@ -31593,6 +31758,10 @@ msgstr "Crear cuenta"
 #, php-format
 msgid "Ingrese en su cuenta en  %s"
 msgstr "Ingrese en su cuenta en  %s"
+
+#: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:33
+msgid "E-mail ou CPF"
+msgstr "E-mail o CI"
 
 #: mapasculturais-base-project/themes/themeCulturaenlinea/php-mod/template_login.php:71
 #, php-format
