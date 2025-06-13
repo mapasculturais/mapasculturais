@@ -27,6 +27,8 @@ app.component('opportunity-evaluations-table', {
     },
 
     data() {
+        const defaultHeaders = $MAPAS.config.opportunityEvaluationsTable.defaultHeaders;
+        const defaultSelect = $MAPAS.config.opportunityEvaluationsTable.defaultSelect;
         return {
             query: {
                 '@opportunity': this.phase.opportunity.id,
@@ -36,6 +38,8 @@ app.component('opportunity-evaluations-table', {
             lastDate: null,
             selectedStatus: null,
             evaluatiorFilter: null,
+            defaultHeaders,
+            defaultSelect,
         }
     },
 
@@ -64,12 +68,12 @@ app.component('opportunity-evaluations-table', {
                 { text: __('tipo de proponente', 'opportunity-evaluations-table'), value: "proponentType", slug: "proponentType"},
                 { text: __('categoria', 'opportunity-evaluations-table'), value: "category", slug: "category"},
                 { text: __('faixa', 'opportunity-evaluations-table'), value: "range", slug: "range"},
-                { text: __('estado', 'opportunity-evaluations-table'), value: "evaluation?.status", slug: "status"},
+                ...this.defaultHeaders,
             ];
 
             if(this.avaliableEvaluationFields('agentsSummary')) {
-                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "agentsData.owner?.name", slug: "agent"});
-                itens.splice(2, 0, { text: __('coletivo', 'opportunity-evaluations-table'), value: "agentsData.coletivo?.name", slug: "coletivo"});
+                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "agentsData?.owner?.name", slug: "agent"});
+                itens.splice(2, 0, { text: __('coletivo', 'opportunity-evaluations-table'), value: "agentsData?.coletivo?.name", slug: "coletivo"});
             }
 
             return itens;
@@ -122,13 +126,6 @@ app.component('opportunity-evaluations-table', {
                 return 'javascript:void(0)';
             } else if (user === 'all' && entity.evaluation) {
                 user = entity.evaluation?.user;
-                console.log(entity.evaluation);               
-                let create = new McDate(entity.evaluation?.createTimestamp.date) 
-                let update = new McDate(entity.evaluation?.updateTimestamp.date) 
-                console.log(create.date('numeric year'))
-                console.log(create.time('long'))
-                console.log(update.date('numeric year'))
-                console.log(update.time('long'))
             }
             
             return Utils.createUrl('registration', 'evaluation', { id: entity._id, user });
