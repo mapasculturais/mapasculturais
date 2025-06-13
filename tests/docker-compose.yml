@@ -5,8 +5,6 @@ services:
       dockerfile: docker/Dockerfile
       args:
         - COMPOSER_ARGS="" 
-    ports:
-      - "80:80"
     volumes:
       - ./docker/entrypoint.sh:/entrypoint.sh
 
@@ -38,8 +36,6 @@ services:
     
   mailhog: 
     image: mailhog/mailhog
-    ports:
-      - "8025:8025"
 
   db:
     image: postgis/postgis:16-master
@@ -48,8 +44,5 @@ services:
       - POSTGRES_USER=mapas
       - POSTGRES_DB=mapas
       
-
-    ports:
-      - "5432:5432"
     volumes:
       - ./db:/docker-entrypoint-initdb.d
