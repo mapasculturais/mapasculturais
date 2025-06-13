@@ -10,6 +10,7 @@ use MapasCulturais\i;
 $this->import('
     brasil-address-form
     international-address-form
+    mc-loading
     mc-select
 ');
 ?>
@@ -17,11 +18,15 @@ $this->import('
 <div class="country-address-form">
   <div v-if="countryFieldEnabled">
     <label><?= i::__('País') ?>:</label>
-    <mc-select placeholder="<?= i::esc_attr__('Selecione um país') ?>" v-model:default-value="country" @change-option="changeCountry">
+    <select v-model="country" @change="changeCountry">
       <option v-for="c in countries" :key="c.sigla" :value="c.sigla">{{ c.nome_pais_int }}</option>
-    </mc-select>
+    </select>
   </div>
 
-  <brasil-address-form v-if="country == 'BR'" :entity="entity" classes="col-12" editable></brasil-address-form>
-  <international-address-form v-else :entity="entity" :country="country" classes="col-12"></international-address-form>
+  <mc-loading :condition="processing" class="col-12"> <?= i::__('Carregando') ?></mc-loading>
+
+  <div v-if="!processing">
+    <brasil-address-form v-if="country == 'BR'" :entity="entity" :hierarchy="levelHierarchy" classes="col-12" editable></brasil-address-form>
+    <international-address-form v-else :entity="entity" :country="country" :hierarchy="levelHierarchy" classes="col-12"></international-address-form>
+  </div>
 </div>

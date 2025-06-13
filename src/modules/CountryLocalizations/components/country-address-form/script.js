@@ -18,9 +18,12 @@ app.component('country-address-form', {
         const hasSlot = name => !!slots[name]
         return { hasSlot }
     },
+
     data() {
         return {
-            country: null
+            country: null,
+            levelHierarchy: null,
+            processing: false
         };
     },
 
@@ -36,8 +39,10 @@ app.component('country-address-form', {
 
     methods: {
         changeCountry() {
+            this.processing = true;
             this.entity.address_level0 = this.country;   
             this.clearFields();
+            this.getLevelHierarchy();
         },
 
         clearFields() {
@@ -50,11 +55,26 @@ app.component('country-address-form', {
             this.entity.address_level6 = null;
             this.entity.address_line1 = null;
             this.entity.address_line2 = null;
+        },
+
+        async getLevelHierarchy() {
+            const api = new API('country-localization');
+
+            let data = {
+                country: this.country,
+            }
+            let url = api.createApiUrl('findLevelHierarchy', data);
+
+            await api.GET(url, data).then(res => res.json()).then(data => {
+                this.levelHierarchy = data.error ? null : data;
+                this.processing = false;
+            });
         }
     },
 
     mounted() {
         this.country = this.entity.address_level0 ?? $MAPAS.config.countryLocalization.countryDefaultCode;
         this.entity.address_level0 = this.country;
-    }
+        this.getLevelHierarchy();
+    },
 });
