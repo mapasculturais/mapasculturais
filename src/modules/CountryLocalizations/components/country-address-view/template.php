@@ -14,6 +14,6 @@ $this->import('
 ?>
 
 <div class="country-address-view">
-    <brasil-addres-view v-if="entity.address_level0 == 'BR'" :entity="entity"></brasil-addres-view>
+    <brasil-address-view v-if="entity.address_level0 == 'BR'" :entity="entity"></brasil-address-view>
     <international-address-view v-else :entity="entity"></international-address-view>
 </div>
