@@ -60,6 +60,7 @@ class Site extends \MapasCulturais\Controller {
     
     function ALL_error() {
         $app = \MapasCulturais\App::i();
+        $this->layout = 'default';
 
         $status = $this->data['code'];
 
