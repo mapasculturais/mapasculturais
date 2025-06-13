@@ -20,7 +20,7 @@ class Module extends \MapasCulturais\Module {
             /** @var \MapasCulturais\Entities\Agent|\MapasCulturais\Entities\Space $this */
             $country = $this->address_level0;
 
-            if($country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country)) {
+            if($country && ($country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country))) {
                 for($i = 0; $i <= 6; $i++) {
                     $metadata = "address_level{$i}";
                     $getter = "getLevel{$i}";
