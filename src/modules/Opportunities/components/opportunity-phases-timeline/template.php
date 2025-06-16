@@ -27,7 +27,7 @@ $this->import('
                         <?= i::__('a') ?> <span v-if="dateTo(item)">{{dateTo(item)}}</span>
                         <?= i::__('às') ?> <span v-if="hour(item)">{{hour(item)}}</span></h5>
                     </div>
-                    <div v-if="item.isLastPhase" class="item__content--description">
+                    <div v-if="item.isLastPhase && item.publishTimestamp" class="item__content--description">
                         <span v-if="item.publishTimestamp">
                             {{item.publishTimestamp.date('2-digit year')}}
                             <?= i::__('às') ?>
@@ -42,7 +42,7 @@ $this->import('
                     <template v-if="registration">
                         <?php $this->applyComponentHook('registration', 'begin'); ?>
 
-                        <registration-status v-if="shouldShowResults(item)" :registration="registration" :phase="item"></registration-status>
+                        <registration-status v-if="shouldShowResults(item, registration)" :registration="registration" :phase="item"></registration-status>
 
                         <div v-if="isDataCollectionPhase(item) && isActive(item, registration) && registration.status == 0">
                             <mc-link :entity="registration" route="edit" class="button button--primary"><?= i::__('Preencher formulário') ?></mc-link>

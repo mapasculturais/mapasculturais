@@ -55,7 +55,9 @@ abstract class SpreadsheetJob extends JobType
 
     protected function _execute(Job $job)
     {
+        $app = App::i();
         
+        ini_set('memory_limit', $app->config['app.export.memoryLimit']);
         $entity_class_name = $job->entityClassName;
         $file_class = $job->owner->getFileClassName();
         
@@ -135,9 +137,21 @@ abstract class SpreadsheetJob extends JobType
         while($batch = $this->getBatch($job)) {
             foreach ($batch as $data) {
                 $new_data = [];
+
                 foreach($sub_header as $prop => $label) {
                     if (isset($data[$prop]) && is_array($data[$prop])) {
-                        $new_data[] = implode(', ', $data[$prop]);
+                        $middle_data = [];
+
+                        foreach ($data[$prop] as $key => $value){
+                            
+                            if(is_array($value)){
+                                $middle_data[] = implode(', ', $value);
+                            }else{
+                                $middle_data[] = $value;
+                            }
+                        }
+                        
+                        $new_data[] = implode(', ', $middle_data);
                     } else {
                         $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
                     }

@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 
 use MapasCulturais\App;
+use MapasCulturais\i;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 use MapasCulturais\ApiQuery;
@@ -545,7 +546,7 @@ trait ControllerAPI{
     public function API_filters() {
         $app = App::i();
         $class = $this->entityClassName;
-
+        
         $metadata = $class::getPropertiesMetadata();
         $taxonomies = $app->getRegisteredTaxonomies();
         $filters = [
@@ -556,33 +557,38 @@ trait ControllerAPI{
         foreach ($metadata as $slug => $metadatum) {
             $type = $metadatum['type'] ?? '';
             $is_private = $metadatum['private'] ?? false;
-            if (!$is_private && ($type == 'select' || $type == 'multiselect')) {
-                $options = [];
-                foreach ($metadatum['options'] as $value => $label) {
-                    $options[] = [ 'label' => $label, 'value' => $value ];
-                }
 
-                $filters['metadata']->$slug = [
-                    'label' => $metadatum['label'] ?? $slug,
-                    'slug' => $slug,
-                    'options' => $options,
-                ];
+            if ($is_private || ($type !== 'select' && $type !== 'multiselect')) {
+                continue;
             }
+
+            $options = [];
+            foreach ($metadatum['options'] as $value => $label) {
+                $options[] = [ 'label' => $label, 'value' => $value ];
+            }
+
+            $filters['metadata']->$slug = [
+                'label' => $metadatum['label'] ?? $slug,
+                'slug' => $slug,
+                'options' => $options,
+            ];
         }
 
         foreach ($taxonomies as $slug => $taxonomy) {
-            if (in_array($class, $taxonomy->entities)) {
-                $options = [];
-                foreach ($taxonomy->restrictedTerms as $value => $label) {
-                    $options[] = [ 'label' => $label, 'value' => $value ];
-                }
-
-                $filters['taxonomies']->$slug = [
-                    'label' => $taxonomy->description ?? $slug,
-                    'slug' => $slug,
-                    'options' => $options,
-                ];
+            if (!in_array($class, $taxonomy->entities)) {
+                continue;
             }
+
+            $options = [];
+            foreach ($taxonomy->restrictedTerms as $value => $label) {
+                $options[] = [ 'label' => $label, 'value' => $value ];
+            }
+
+            $filters['taxonomies']->$slug = [
+                'label' => $taxonomy->description ?? $slug,
+                'slug' => $slug,
+                'options' => $options,
+            ];
         }
 
         $this->apiResponse($filters);

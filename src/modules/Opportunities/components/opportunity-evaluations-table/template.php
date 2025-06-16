@@ -15,11 +15,11 @@ $this->import('
     entity-table
 ')
 ?>
-<div :class="['grid-12', classes]">
+<div :class="['opportunity-evaluations-table', 'grid-12', classes]">
 
     <template v-if="!isFuture()">
         <div class="col-12">
-            <entity-table controller="opportunity" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator', 'coletivo']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
+            <entity-table controller="opportunity" show-index :select="defaultSelect" :raw-processor="rawProcessor" :identifier="identifier" endpoint="findEvaluations" type="registration" :headers="headers" :phase="phase" :visible="['agent', 'number', 'result', 'status', 'evaluator', 'coletivo']" :query="query" :limit="100" @clear-filters="clearFilters" @remove-filter="removeFilter($event)" :filtersDictComplement="filtersDictComplement"> 
                 <template #title>
                     <h2 v-if="isPast()"><?= i::__("As avaliações já estão encerradas") ?></h2>
                     <h2 v-if="isHappening()"><?= i::__("As avaliações estão em andamento") ?></h2>
@@ -116,6 +116,12 @@ $this->import('
 
                 <template #status="{entity}">
                     <mc-status :status-name="getStatus(entity.evaluation?.status)"></mc-status>
+                </template>
+
+                <template #icon-text="popover">
+                    <button class="agent-table__button button button--icon button--primary button--sm">
+                        <?= i::__('Selecionar dados') ?>
+                    </button>
                 </template>
             </entity-table>
         </div>
