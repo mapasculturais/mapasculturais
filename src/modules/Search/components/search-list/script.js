@@ -12,6 +12,7 @@ app.component('search-list', {
         return {
             query: {},
             typeText: '',
+            selectedOrder: 'createTimestamp DESC',
         }
     },
 
