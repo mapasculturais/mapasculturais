@@ -11,8 +11,7 @@ $this->import('
     registration-results
 ');
 ?>
-
-<div class="opportunity-phases-timeline__box">
+<div v-if="!phase.isLastPhase" class="opportunity-phases-timeline__box">
     <label class="semibold opportunity-phases-timeline__label"><?= i::__('RESULTADO DA FASE')?></label>
     <div class="opportunity-phases-timeline__status">
         <mc-icon name="circle" :class="verifyState(registration)"></mc-icon>
