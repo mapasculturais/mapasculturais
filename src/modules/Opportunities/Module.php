@@ -179,8 +179,6 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app, $distribute_execution_time) {
-            $app->log->debug("Registration {$this->id} status changed to {$this->status}");
-
             if($emc = $this->evaluationMethodConfiguration) {
                 $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], $distribute_execution_time);
             }

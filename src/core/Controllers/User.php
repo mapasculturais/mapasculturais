@@ -5,6 +5,7 @@ use MapasCulturais\ApiQuery;
 use MapasCulturais\Controller;
 use MapasCulturais\Entities;
 use MapasCulturais\App;
+use MapasCulturais\Entities\User as UserEntity;
 use MapasCulturais\i;
 use MapasCulturais\Traits;
 /**
@@ -35,7 +36,7 @@ class User extends Controller {
         App::i()->pass();
     }
 
-    function getRequestedEntity() {
+    function getRequestedEntity(): UserEntity {
         $app = App::i();
         if($id = $this->urlData['id']) {
             return $app->repo('User')->find($id);
