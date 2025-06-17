@@ -2,11 +2,7 @@
 $entity = $this->controller->requestedEntity;
 $relatedOpportunities = $entity->getOpportunities();
 
-function orderEntities($a, $b) {
-    return $a->registrationTo <=> $b->registrationTo;
-}
-
-usort($relatedOpportunities, 'orderEntities');
+usort($relatedOpportunities, fn($a, $b) => $a->registrationTo <=> $b->registrationTo);
 
 $opportunities = [];
 
@@ -15,5 +11,3 @@ foreach($relatedOpportunities as $opportunity) {
 }
 
 $this->jsObject['opportunityList']['opportunity'] = $opportunities;
-
-

@@ -11,8 +11,6 @@ class OpportunityBuilder extends Builder
 
     public function fillRequiredProperties(): self
     {
-        
-
         return $this;
     }
 

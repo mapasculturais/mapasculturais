@@ -172,6 +172,29 @@ class Module extends \MapasCulturais\Module {
         });
 
         /**
+         * Executa o init dos componentes
+         */
+        $app->hook('mapas.printJsObject:before', function () use($self, $app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+            foreach($this->importedComponents as $component) {
+                $init_file = $this->resolveFilename("components/{$component}", 'init.php');
+                if(!$init_file) {
+                    continue;
+                }
+
+                $started_at = microtime(true);
+                include $init_file;
+                $finished_at = microtime(true);
+                
+                //loga o tempo de execução
+                $sec = $finished_at - $started_at;
+                if($sec  > .1) {
+                    $app->log->debug("Component $component init.php executed in " . ($sec) . " seconds");
+                }
+            }
+        });
+
+        /**
          * Importa um componente
          *
          * @param string $component Nome do(s) componente(s separados por vírgula)
@@ -182,36 +205,19 @@ class Module extends \MapasCulturais\Module {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
 
             $component = trim($component);
+            
+            if(preg_match('#[ ,\n]+#', $component) && ($components = preg_split('#[ ,\n]+#', $component))) {
+                foreach ($components as $component) {
+                    $this->import($component, $data);
+                }
+                return;
+            }
 
             if (!$this->importedComponents) {
                 $this->importedComponents = [];
             }
 
             if (in_array($component, $this->importedComponents)) {
-                return;
-            }
-
-            $init_file = $this->resolveFilename("components/{$component}", 'init.php');
-
-            if ($init_file) {
-                $app->hook('mapas.printJsObject:before', function () use($init_file, $app, $component) {
-                    $started_at = microtime(true);
-                    include $init_file;
-                    $finished_at = microtime(true);
-                    
-                    //loga o tempo de execução
-                    $sec = $finished_at - $started_at;
-                    if($sec  > .1) {
-                        $app->log->debug("Component $component init.php executed in " . ($sec) . " seconds");
-                    }
-                });
-            }
-
-
-            if(preg_match('#[ ,\n]+#', $component) && ($components = preg_split('#[ ,\n]+#', $component))) {
-                foreach ($components as $component) {
-                    $this->import($component, $data);
-                }
                 return;
             }
             $imported_components = $this->importedComponents;

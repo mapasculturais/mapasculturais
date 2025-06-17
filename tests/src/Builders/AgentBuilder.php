@@ -2,14 +2,14 @@
 
 namespace Tests\Builders;
 
-use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\User;
 use Tests\Abstract\Builder;
+use Tests\Traits\Faker;
 
 class AgentBuilder extends Builder
 {
-    use Traits\Faker,
+    use Faker,
         Traits\AgentRelations,
         Traits\SealRelations,
         Traits\Taxonomies;

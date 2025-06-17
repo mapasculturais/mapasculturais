@@ -39,7 +39,7 @@ RUN docker-php-ext-install -j$(nproc) iconv && \
     docker-php-ext-install -j$(nproc) gd
 
 # Install APCu
-RUN no | pecl install apcu \
+RUN echo no | pecl install apcu \
     && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/apcu.ini
 
 # install imagick from git

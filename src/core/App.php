@@ -43,10 +43,13 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler;
 use Monolog\Level;
 use Monolog\Logger;
-
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface as ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\InvalidArgumentException as LogInvalidArgumentException;
 use Respect\Validation\Factory as RespectorValidationFactory;
+use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\ResponseEmitter;
 use Symfony\Component\Mailer\Exception\InvalidArgumentException as ExceptionInvalidArgumentException;
 use Symfony\Component\Mailer\Exception\LogicException as ExceptionLogicException;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -83,6 +86,8 @@ use Throwable;
  
  * @property-read User $user usuário autenticado
 
+ * @property ResponseInterface $response
+ * @property Request $request
  * 
  * @package MapasCulturais
  */
@@ -132,6 +137,12 @@ class App {
      * @var Theme
      */
     public Theme $view;
+
+    /**
+     * Instância do Asset Manager
+     * @var AssetManager
+     */
+    public AssetManager $assetManager;
 
     /**
      * Instância do subsite ativo
@@ -341,6 +352,17 @@ class App {
         $this->hooks = new Hooks($this);
     }
 
+    function reset() {
+        $this->view->importedComponents = [];
+        $this->components->templates = [];
+
+        $this->_initAssetManager();
+        
+        $this->cache->deleteAll();
+        $this->rcache->deleteAll();
+        $this->mscache->deleteAll();
+    }
+
     function getRegistry() {
         return $this->_register;
     }
@@ -430,6 +452,7 @@ class App {
         $this->_initRouteManager();
         $this->_initAuthProvider();
 
+        $this->_initAssetManager();
         $this->_initTheme();
 
         $this->applyHookBoundTo($this, 'app.init:before');
@@ -470,12 +493,29 @@ class App {
      * @throws TransactionRequiredException 
      * @throws WorkflowRequest 
      */
-    public function run() {
+    public function run(?ServerRequestInterface $request = null, $emit = true) {
         $this->applyHookBoundTo($this, 'mapasculturais.run:before');
-        $this->slim->run();
+
+        if (!$request) {
+            $serverRequestCreator = ServerRequestCreatorFactory::create();
+            $request = $serverRequestCreator->createServerRequestFromGlobals();
+        }
+
+        $response = $this->slim->handle($request);
+
+        if ($emit) {
+            $responseEmitter = new ResponseEmitter();
+            $responseEmitter->emit($response);
+        }
+
+        $this->response = $response;
+
         $this->persistPCachePendingQueue();
+        
         $this->applyHookBoundTo($this, 'mapasculturais.run:after');
         $this->applyHookBoundTo($this, 'slim.after');
+
+        return $response;
     }
 
     /**
@@ -796,6 +836,14 @@ class App {
         $this->auth = $auth;
     }
 
+    protected function _initAssetManager() {
+        if($this->config['themes.assetManager'] instanceof AssetManager) {
+            $this->assetManager = $this->config['themes.assetManager'];
+        } else {
+            $this->assetManager = new AssetManagers\FileSystem($this->config['themes.assetManager']);
+        }
+    }
+
     /**
      * Inicializa a instância do tema
      * @return void 
@@ -806,13 +854,11 @@ class App {
             $this->cache->setNamespace($this->config['app.cache.namespace'] . ':' . $this->subsite->id);
 
             $theme_class = $this->subsite->namespace . "\Theme";
-            $theme_instance = new $theme_class($this->config['themes.assetManager'], $this->subsite);
+            $theme_instance = new $theme_class($this->assetManager, $this->subsite);
         } else {
             $theme_class = $this->config['themes.active'] . '\Theme';
 
-            // dd($theme_class);
-
-            $theme_instance = new $theme_class($this->config['themes.assetManager']);
+            $theme_instance = new $theme_class($this->assetManager);
         }
 
         $theme_path = $theme_class::getThemeFolder() . '/';

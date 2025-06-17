@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Builders\Traits;
+namespace Tests\Traits;
 
 use Faker as PHPFaker;
 

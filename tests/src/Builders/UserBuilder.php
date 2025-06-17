@@ -5,6 +5,7 @@ namespace Tests\Builders;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\User;
 use Tests\Abstract\Builder;
+use Tests\Traits\Faker;
 
 /**
  * @var User $instance 
@@ -12,7 +13,7 @@ use Tests\Abstract\Builder;
  */
 class UserBuilder extends Builder
 {
-    use Traits\Faker;
+    use Faker;
 
     protected User $instance;
 

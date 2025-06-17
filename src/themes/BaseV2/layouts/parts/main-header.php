@@ -13,6 +13,8 @@ $this->import('
     mc-messages 
     theme-logo 
 ');
+
+$redirect_to = $_SERVER['REQUEST_URI'] ?? '/';
 ?>
 <?php $this->applyTemplateHook('main-header', 'before') ?>
 <header class="main-header" id="main-header">
@@ -107,7 +109,7 @@ $this->import('
             <?php $this->applyTemplateHook('mc-header-menu-user', 'before') ?>
             <?php if ($app->user->is('guest')): ?>
                 <!-- Botão login -->
-                <a href="<?= $app->createUrl('auth') ?>?redirectTo=<?=$_SERVER['REQUEST_URI']?>" class="logIn">
+                <a href="<?= $app->createUrl('auth') ?>?redirectTo=<?=$redirect_to?>" class="logIn">
                     <?php i::_e('Entrar') ?>
                 </a>
             <?php else: ?>
