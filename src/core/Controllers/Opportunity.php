@@ -447,7 +447,6 @@ class Opportunity extends EntityController {
                     }
                     $current_phase_query_params['@order'] = $_order;
                 }
-
             }
 
             foreach(['agent_id', 'category', 'proponentType', 'range', 'eligible', 'number'] as $prop) {
@@ -621,7 +620,10 @@ class Opportunity extends EntityController {
         }
 
         $select = $query_data['registration:@select'] ?? 
-                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData,goalStatuses';
+                  $query_data['@select'] ??
+                  'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData,createTimestamp,updateTimestamp,goalStatuses';
+        
+        $order = $query_data['@order'] ?? 'createTimestamp ASC';
 
         sort($registration_numbers);
         if($registration_numbers){
@@ -629,7 +631,8 @@ class Opportunity extends EntityController {
                 '@select' => $select,
                 'number' => API::IN($registration_numbers),
                 'opportunity' => API::EQ($opportunity->id),
-                '@permissions' => 'view'
+                '@permissions' => 'view',
+                '@order' => $order
             ];
             
             foreach($query_data as $k => $v){
@@ -659,7 +662,7 @@ class Opportunity extends EntityController {
         sort($evaluation_ids);
 
         $edata = [
-            '@select' => 'id,result,evaluationData,registration,user,status',
+            '@select' => 'id,result,evaluationData,registration,user,status,createTimestamp,updateTimestamp',
             'id' => API::IN($evaluation_ids),
             "status" => API::GTE(0),
             '@permissions' => 'view'
@@ -949,7 +952,7 @@ class Opportunity extends EntityController {
         $rdata = [
             '@select' => 'id',
             'opportunity' => "EQ({$opportunity->id})",
-            '@order' => 'id ASC',
+            '@order' => $this->data['@order'] ?? 'id ASC',
             'status' => API::GT(0)
         ];
 
@@ -1048,6 +1051,7 @@ class Opportunity extends EntityController {
         $registration_numbers = array_filter(array_unique(array_map(function($r) { return $r['registration_number']; }, $evaluations)));
         $evaluations_ids = array_filter(array_unique(array_map(function($r) { return $r['evaluation_id']; }, $evaluations)));
 
+        
         $_registrations = $this->_getOpportunityRegistrations($opportunity, $registration_numbers, $query_data);
         $_evaluations = $this->_getOpportunityEvaluations($opportunity, $evaluations_ids);
 
@@ -1062,6 +1066,26 @@ class Opportunity extends EntityController {
                 'registration' => $_registrations[$eval['registration_id']] ?? null,
                 'valuer' => $valuer_by_id[$eval['valuer_agent_id']] ?? null
             ];
+        }
+
+        // Verifica se há uma diretiva de ordenação
+        if (!empty($query_data['@order'])) {
+            $order_parts = explode(' ', $query_data['@order']);
+            $field = $order_parts[0];
+            $direction = strtoupper($order_parts[1] ?? 'ASC');
+
+            usort($_result, function($a, $b) use ($field, $direction) {
+                $valA = $a['registration'][$field] ?? null;
+                $valB = $b['registration'][$field] ?? null;
+
+                if ($valA == $valB) return 0;
+
+                if ($direction === 'DESC') {
+                    return $valA < $valB ? 1 : -1;
+                } else {
+                    return $valA > $valB ? 1 : -1;
+                }
+            });
         }
 
         if(!$opportunity->canUser("@control")){

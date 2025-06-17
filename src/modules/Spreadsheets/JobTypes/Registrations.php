@@ -49,6 +49,10 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'files') {
+                $header[$property] = i::__('Anexos');
+            }
+            
             if($property == 'usingQuota') {
                 $header[$property] = i::__('Cotas aplicadas');
                 continue;
@@ -322,7 +326,17 @@ class Registrations extends SpreadsheetJob
                 }
 
                 unset($entity['createTimestamp']);
-
+                
+                if (isset($entity['consolidatedResult']) && !is_null($entity['consolidatedResult'])) {
+                    $map = [
+                        "valid" => i::__("Válido"),
+                        "invalid" => i::__( "Inválido")
+                    ];
+                    if (isset($map[$entity['consolidatedResult']])) {
+                        $entity['consolidatedResult'] = $map[$entity['consolidatedResult']];
+                    }
+                }
+                
                 if(isset($entity['status']) && !is_null($entity['status'])) {
                     $entity['status'] = $this->getStatusName($entity['status']);
                 }

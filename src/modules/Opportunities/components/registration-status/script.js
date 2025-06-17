@@ -89,7 +89,6 @@ app.component('registration-status', {
 			return note.toLocaleString($MAPAS.config.locale);
 		},
 		verifyState(registration) {
-            console.log(registration);
             switch (registration.status) {
                 case 10:
                 case 1:
