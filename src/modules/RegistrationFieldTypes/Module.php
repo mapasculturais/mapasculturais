@@ -12,6 +12,7 @@ use MapasCulturais\Entities\Registration;
 use MapasCulturais\Definitions\Metadata;
 use MapasCulturais\Definitions\RegistrationFieldType;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
+use MapasCulturais\Exceptions\PermissionDenied;
 use MapasCulturais\Types\GeoPoint;
 
 class Module extends \MapasCulturais\Module
@@ -157,12 +158,12 @@ class Module extends \MapasCulturais\Module
                 $app->em->beginTransaction();
             }
         });
-        $app->hook("entity(RegistrationMeta).update:before", function () use ($app, $module) {
+        $app->hook("entity(RegistrationMeta).save:before", function () use ($app, $module) {
             $entity = $this->owner;
             if($module->inEditableTransaction) {
                 if($entity->editableFields && !in_array($this->key, $entity->editableFields)) {
                     $app->em->rollback();
-                    throw new \Exception("Permission denied.");
+                    throw new PermissionDenied(message:i::__('Você está tentando modificar um campo que você não tem permissão'));
                 }
             }
         });
