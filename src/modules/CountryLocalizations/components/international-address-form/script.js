@@ -16,9 +16,9 @@ app.component('international-address-form', {
             type: Object,
             default: () => null
         },
-        classes: {
-            type: [String, Array, Object],
-            required: false
+        editable: {
+            type: Boolean,
+            default: false,
         },
     },
 
@@ -41,6 +41,10 @@ app.component('international-address-form', {
     },
 
     computed: {
+        hasPublicLocation() {
+            return !!this.entity.$PROPERTIES.publicLocation;
+        },
+        
         activeLevels() {
             return $MAPAS.config.internationalAddressForm.activeLevels;
         },
@@ -307,7 +311,18 @@ app.component('international-address-form', {
 
             this.entity.address = addressParts.join(', ');
             this.geolocation();
-        }
+        },
+
+        getColumnClass(level, levels) {
+            const index = levels.indexOf(level)
+            const total = levels.length
+
+            if (total % 2 !== 1 && index === total - 1) {
+                return 'col-12';
+            }
+
+            return 'col-6';
+        },
 
     },
 });

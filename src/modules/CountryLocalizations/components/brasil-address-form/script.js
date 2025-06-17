@@ -16,14 +16,6 @@ app.component('brasil-address-form', {
             type: Boolean,
             default: false,
         },
-        hideLabel: {
-            type: Boolean,
-            default: false,
-        },
-        classes: {
-            type: [String, Array, Object],
-            required: false
-        },
     },
 
     setup(props, { slots }) {
