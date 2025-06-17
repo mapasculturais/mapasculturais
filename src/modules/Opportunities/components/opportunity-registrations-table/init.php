@@ -33,7 +33,7 @@ $data['evaluationStatusDict'] = [
 $phase = $this->controller->requestedEntity;
 
 $skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
-$default_select = "number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
+$default_select = "agentsData,number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
     [
         'text' => i::__('inscrição'),

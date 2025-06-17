@@ -103,7 +103,7 @@ $this->import('
         </main>
 
         <aside>
-            <registration-actions :registration="entity" :steps="steps" v-model:step-index="stepIndex"></registration-actions>
+            <registration-actions :registration="entity" :steps="steps" v-model:step-index="stepIndex" editable-fields></registration-actions>
         </aside>
     </mc-container>
 </div>

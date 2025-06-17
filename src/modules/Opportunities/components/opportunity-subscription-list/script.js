@@ -13,6 +13,12 @@ app.component('opportunity-subscription-list' , {
         $MAPAS.userRegistrations = list;
     },
 
+    props: {
+        hideTitle: Boolean,
+        hideSubtitle: Boolean,
+        hideInfos: Boolean
+    },
+
     data() {
         const registrations = $MAPAS.userRegistrations;
         

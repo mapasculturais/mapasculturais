@@ -27,6 +27,8 @@ app.component('opportunity-evaluations-table', {
     },
 
     data() {
+        const defaultHeaders = $MAPAS.config.opportunityEvaluationsTable.defaultHeaders;
+        const defaultSelect = $MAPAS.config.opportunityEvaluationsTable.defaultSelect;
         return {
             query: {
                 '@opportunity': this.phase.opportunity.id,
@@ -36,6 +38,8 @@ app.component('opportunity-evaluations-table', {
             lastDate: null,
             selectedStatus: null,
             evaluatiorFilter: null,
+            defaultHeaders,
+            defaultSelect,
         }
     },
 
@@ -61,7 +65,10 @@ app.component('opportunity-evaluations-table', {
                 { text: __('inscrição', 'opportunity-evaluations-table'), value: "number", slug: "number", sticky: true, width: '160px' },
                 { text: __('avaliador', 'opportunity-evaluations-table'), value: "valuer?.name", slug: "evaluator", visible: true},
                 { text: __('resultado final', 'opportunity-evaluations-table'), value: "evaluation?.resultString", slug: "result"},
-                { text: __('estado', 'opportunity-evaluations-table'), value: "evaluation?.status", slug: "status"},
+                { text: __('tipo de proponente', 'opportunity-evaluations-table'), value: "proponentType", slug: "proponentType"},
+                { text: __('categoria', 'opportunity-evaluations-table'), value: "category", slug: "category"},
+                { text: __('faixa', 'opportunity-evaluations-table'), value: "range", slug: "range"},
+                ...this.defaultHeaders,
             ];
 
             let type = this.phase.evaluationMethodConfiguration?.type.id || this.phase.type.id;
@@ -70,8 +77,8 @@ app.component('opportunity-evaluations-table', {
             }
 
             if(this.avaliableEvaluationFields('agentsSummary')) {
-                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "agentsData.owner?.name", slug: "agent"});
-                itens.splice(2, 0, { text: __('coletivo', 'opportunity-evaluations-table'), value: "agentsData.coletivo?.name", slug: "coletivo"});
+                itens.splice(2, 0, { text: __('agente', 'opportunity-evaluations-table'), value: "agentsData?.owner?.name", slug: "agent"});
+                itens.splice(2, 0, { text: __('coletivo', 'opportunity-evaluations-table'), value: "agentsData?.coletivo?.name", slug: "coletivo"});
             }
 
             return itens;

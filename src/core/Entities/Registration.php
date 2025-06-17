@@ -1725,6 +1725,10 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
+        if($this->status != self::STATUS_DRAFT) {
+            return false;
+        }
+
         if($this->opportunity->canUser('@control', $user)){
             return true;
         }
