@@ -29,7 +29,12 @@ app.component('country-address-form', {
 
     computed: {
         countries() {
-            return $MAPAS.countries;
+            return $MAPAS.countries.map(item => {
+                return {
+                    label: item.nome_pais_int,
+                    value: item.sigla
+                };
+            });
         },
 
         countryFieldEnabled() {
