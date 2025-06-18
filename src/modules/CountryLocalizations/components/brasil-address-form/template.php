@@ -109,7 +109,7 @@ $this->import('
                 <span v-if="entity.endereco">{{entity.endereco}}</span>
                 <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
             </p>
-            <entity-map  :entity="entity" :editable="editable"></entity-map>
+            <entity-map :entity="entity" :editable="editable"></entity-map>
         </div>
 
         <?php $this->applyTemplateHook('brasil-address-form','end'); ?>
