@@ -43,7 +43,8 @@ $this->import('
             :entity="entity"
             :country="country"
             :hierarchy="levelHierarchy"
-            class="col-12" >
+            class="col-12"
+            editable >
         </international-address-form>
     </div>
 </div>
