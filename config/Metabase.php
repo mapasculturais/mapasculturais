@@ -3,7 +3,7 @@
 return [
     'Metabase' => [
         'enabled' => env('METABASE_ENABLED', false),
-        'configd' => [
+        'config' => [
             'links' => [
                 'painel-agentes' => [
                     'link' => 'https://metabase.cultura.gov.br/public/dashboard/5f06b042-190b-4f3e-8652-26af9283a562', // dashboard dos agentes
