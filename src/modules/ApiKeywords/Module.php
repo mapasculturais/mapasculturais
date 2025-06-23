@@ -95,8 +95,8 @@ class Module extends \MapasCulturais\Module {
         $app->hook('repo(agent).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use ($format_doc) {
 
             if ($doc = $format_doc($keyword)) {
-                $doc2 = trim(str_replace(['.', '-', '/', ' '], '', $keyword));
-                $where .= "\n OR cnpj_meta.value = '{$doc}' OR cnpj_meta.value = '{$doc2}'";
+                $unformattedDoc = trim(str_replace(['.', '-', '/', ' '], '', $keyword));
+                $where .= "\n OR cnpj_meta.value = '{$doc}' OR cnpj_meta.value = '{$ $unformattedDoc}'";
             }
 
             $where .= "\n OR unaccent(lower(coletivo_nome.value)) LIKE unaccent(lower('$keyword'))";
