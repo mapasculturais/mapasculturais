@@ -1235,6 +1235,28 @@ return [
         }
     },
 
+    'Aplica indices UNIQUE nas tabelas auxiliares' => function () {
+        $app = App::i();
+
+        $aux_tables = [
+            'agent_meta',
+            'registration_meta',
+            'opportunity_meta',
+            'space_meta',
+            'project_meta',
+            'event_meta',
+            'evaluationmethodconfiguration_meta',
+            'notification_meta',
+            'seal_meta',
+            'subsite_meta',
+            'user_meta',
+        ];
+
+        foreach ($aux_tables as $table) {
+            __exec("CREATE UNIQUE INDEX unique_object_id_key_value ON {$table} (object_id, key)");
+            $app->log->debug("Aplicado Índice Único na tabela auxiliar {$table}");
+        }
+    },
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
