@@ -163,10 +163,6 @@ app.component('registration-form', {
         isDisabled(field) {
             let fieldName = field.fieldName || field.groupName;
 
-            if (!this.registrationSnapshot[fieldName]) {
-                return false;
-            }
-
             if (this.editableFields.length > 0) {
                 if (this.disableFields && this.disableFields.includes(fieldName)) {
                     return true;
