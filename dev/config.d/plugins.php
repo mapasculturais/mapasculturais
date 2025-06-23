@@ -3,6 +3,7 @@
 return [
 	'plugins' => [
 	 'MultipleLocalAuth',
-	 'Metabase'
+	 'Metabase',
+	 'MapasBlame',
 	]
 ];

@@ -2,6 +2,7 @@
 
 return [
     'Metabase' => [
+        'enabled' => env('METABASE_ENABLED', false),
         'config' => [
             'links' => [
                 'painel-agentes' => [

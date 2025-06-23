@@ -6,6 +6,7 @@ return [
          'AdminLoginAsUser',
          'RecreatePCacheOnLogin',
          'SpamDetector',
-         "Metabase"
+         'Metabase',
+         'MapasBlame',
     ]
 ];
