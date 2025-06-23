@@ -1176,6 +1176,65 @@ return [
         }
     },
 
+     'implementa db-update para remover metadados duplicados em todas as tabelas auxiliares' => function () {
+        $app = App::i();
+        $em = $app->em;
+        $conn = $em->getConnection();
+
+        $tabelas = [
+            'agent_meta' => 'agente',
+            'registration_meta' => 'inscrição',
+            'opportunity_meta' => 'oportunidade',
+            'space_meta' => 'espaço',
+            'project_meta' => 'projeto',
+            'event_meta' => 'evento',
+            'evaluationmethodconfiguration_meta' => 'avaliaçao',
+            'notification_meta' => 'notificação',
+            'seal_meta' => 'selo',
+            'subsite_meta' => 'subsite',
+            'user_meta' => 'usuário',
+        ];
+
+        foreach ($tabelas as $tabela => $tipo_entidade) {
+            $duplicates = $conn->fetchAllAssociative("
+                SELECT key, object_id
+                FROM {$tabela}
+                GROUP BY key, object_id
+                HAVING COUNT(*) > 1
+            ");
+
+            foreach ($duplicates as $dup) {
+                $key = $dup['key'];
+                $object_id = $dup['object_id'];
+
+                $rows = $conn->fetchAllAssociative("
+                    SELECT id, key
+                    FROM {$tabela}
+                    WHERE key = :key AND object_id = :object_id
+                    ORDER BY id DESC
+                ", ['key' => $key, 'object_id' => $object_id]);
+
+                if (count($rows) < 2) {
+                    continue;
+                }
+
+                $rows_to_update = array_slice($rows, 1);
+
+                foreach ($rows_to_update as $row) {
+                    $new_key = $row['key'] . '_' . $row['id'];
+
+                    $conn->update($tabela, [
+                        'key' => $new_key
+                    ], [
+                        'id' => $row['id']
+                    ]);
+
+                    $app->log->debug("Metadado {$key} atualizado para {$new_key} na {$tipo_entidade} de id {$object_id} (tabela {$tabela})");
+                }
+            }
+        }
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
