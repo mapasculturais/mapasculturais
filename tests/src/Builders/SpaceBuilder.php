@@ -3,11 +3,11 @@
 namespace Tests\Builders;
 
 use MapasCulturais\Entities\Agent;
-use MapasCulturais\Entities\User;
+use MapasCulturais\Entities\Space;
 use Tests\Abstract\Builder;
 use Tests\Traits\Faker;
 
-class AgentBuilder extends Builder
+class SpaceBuilder extends Builder
 {
     use Faker,
         Traits\AgentRelations,
@@ -16,29 +16,24 @@ class AgentBuilder extends Builder
         Traits\EntityType,
         Traits\EntityParent;
 
+    protected Space $instance;
 
-    protected Agent $instance;
-
-    function reset(User $user): self
+    function reset(Agent $owner): self
     {
-        $this->instance = new Agent($user);
-
+        $this->instance = new Space();
+        $this->instance->owner = $owner;
+        
         return $this;
     }
 
-    function getInstance(): Agent
+    function getInstance(): Space
     {
         return $this->instance;
     }
 
     function fillRequiredProperties(): self
     {
-        if ($this->instance->type->id == 1) {
-            $this->instance->name = $this->faker->name();
-        } else {
-            $this->instance->name = $this->faker->company();
-        }
-
+        $this->instance->name = $this->faker->company();
         $this->instance->shortDescription = $this->faker->text(400);
 
         $this->addRandomTerms('area');

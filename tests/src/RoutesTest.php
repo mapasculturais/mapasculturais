@@ -6,8 +6,6 @@ use Tests\Traits\Faker;
 use Tests\Traits\RequestFactory;
 use Tests\Traits\UserDirector;
 
-require_once __DIR__ . '/bootstrap.php';
-
 class RoutesTest extends Abstract\TestCase
 {
     use RequestFactory,

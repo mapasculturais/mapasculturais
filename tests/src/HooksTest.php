@@ -3,8 +3,6 @@ namespace MapasCulturais\Tests;
 
 use Tests\Abstract\TestCase;
 
-require_once __DIR__.'/bootstrap.php';
-
 class HooksTest extends TestCase {
     function testHookOrder(){
         
