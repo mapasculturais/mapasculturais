@@ -1535,6 +1535,7 @@ class App {
         if ($this->view->version >= 2) {
             $template_data->siteName = $this->siteName;
             $template_data->siteDescription = $this->siteDescription;
+            $template_data->siteUrl = $this->baseUrl;
 
         } else {
             $template_data->siteName = $this->view->dict('site: name', false);
