@@ -147,7 +147,7 @@ trait EntitySealRelation {
         return $result;
     }
 
-    function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true, Agent $agent = null){
+    function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true, ?Agent $agent = null){
         $app = App::i();
         
         $seal->checkPermission('@control');
