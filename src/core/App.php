@@ -363,6 +363,10 @@ class App {
     }
 
     function reset() {
+        $this->_permissionCachePendingQueue = [];
+        $this->clearRecreatedPermissionCacheList();
+        
+
         $this->view->importedComponents = [];
         $this->components->templates = [];
 
@@ -1958,10 +1962,10 @@ class App {
      * 
      * @return int|false O ID do trabalho executado, ou false se nenhum trabalho estiver pronto para ser executado
      */
-    public function executeJob(): int|false {
+    public function executeJob(?string $mock_date = null): int|false {
         /** @var Connection */
         $conn = $this->em->getConnection();
-        $now = date('Y-m-d H:i:s');
+        $now = $mock_date ?: date('Y-m-d H:i:s');
         $job_id = $conn->fetchScalar("
             SELECT id
             FROM job
@@ -2166,6 +2170,10 @@ class App {
      */
     public function isEntityPermissionCacheRecreated(Entity $entity) {
         return isset($this->_recreatedPermissionCacheList["$entity"]);
+    }
+
+    public function clearRecreatedPermissionCacheList() {
+        $this->_recreatedPermissionCacheList = [];
     }
 
     /**
