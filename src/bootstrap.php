@@ -17,6 +17,7 @@ define('THEMES_PATH', APPLICATION_PATH . 'themes/');
 define('PLUGINS_PATH', APPLICATION_PATH . 'plugins/');
 define('MODULES_PATH', APPLICATION_PATH . 'modules/');
 define('VAR_PATH', PROTECTED_PATH . 'var/');
+define('LOGS_PATH', VAR_PATH . 'logs/');
 define('CONFIG_PATH', PROTECTED_PATH . 'config/');
 
 define('DOCTRINE_PROXIES_PATH', VAR_PATH . 'DoctrineProxies/');
