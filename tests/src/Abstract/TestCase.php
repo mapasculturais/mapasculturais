@@ -3,9 +3,12 @@
 namespace Tests\Abstract;
 
 use MapasCulturais\App;
+use MapasCulturais\Connection;
 use MapasCulturais\Entities\User;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Psr\Http\Message\ServerRequestInterface;
+
+require_once __DIR__ . '/../bootstrap.php';
 
 class TestCase extends PHPUnitTestCase
 {
@@ -34,6 +37,7 @@ class TestCase extends PHPUnitTestCase
         parent::setUp();
         $app = App::i();
         $this->app = $app;
+        $app->reset();
 
         $app->em->clear();
         $app->em->beginTransaction();
@@ -56,6 +60,8 @@ class TestCase extends PHPUnitTestCase
         parent::tearDown();
     }
 
+    // =================== AUTENTICAÇÃO ===================
+
     protected function login(User $user)
     {
         $app = App::i();
@@ -68,6 +74,39 @@ class TestCase extends PHPUnitTestCase
         $app = App::i();
         $app->auth->authenticatedUser = null;
     }
+
+    // =================== PCACHE E JOBS ===================
+
+    protected function processJobs(string $as_date = '2100-01-01 00:00', ?int $number_of_jobs = null): void
+    {
+        $app = App::i();
+        $current_loggedin_user = $app->user;
+
+        $processed_jobs_count = 0;
+        while ($app->executeJob($as_date)) {
+            $processed_jobs_count++;
+            if ($number_of_jobs && $processed_jobs_count >= $number_of_jobs) {
+                break;
+            }
+        }
+
+        $this->login($current_loggedin_user);
+    }
+
+    protected function processPCache(): void
+    {
+        $app = App::i();
+        $app->clearRecreatedPermissionCacheList();
+
+        /** @var Connection */
+        $conn = $app->em->getConnection();
+        
+        while($conn->fetchScalar("SELECT count(*) FROM permission_cache_pending")) {
+            $app->recreatePermissionsCache();
+        }
+    }
+
+    // =================== ASSERTIONS ===================
 
     protected function assertException($exception_class, callable $callable, string $message = "Certificando que a exception %s é disparada")
     {
