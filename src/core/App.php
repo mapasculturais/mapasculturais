@@ -83,9 +83,19 @@ use Throwable;
  * @property-read Definitions\RegistrationAgentRelation[] $registeredRegistrationAgentRelations definições de agentes relacionados de inscrições registrados
  * @property-read Definitions\RegistrationAgentRelation $registrationOwnerDefinition definição do agente owner de inscrição
  * @property-read Definitions\ChatThreadType $registeredChatThreadTypes definições dos tipos de chat registrados
- 
+ *
  * @property-read User $user usuário autenticado
-
+ * @property-read array $registry array do registro do sistema
+ * @property-read string $version versão do core da aplicação
+ * @property-read string $siteName
+ * @property-read string $siteDescription
+ * @property-read RoutesManager $routesManager
+ * @property-read string $baseUrl
+ * @property-read string $assetUrl
+ * @property-read TransportInterface $mailerTransport
+ * @property-read Mailer $mailer
+ * 
+ *
  * @property ResponseInterface $response
  * @property Request $request
  * 
