@@ -2416,11 +2416,55 @@ class App {
 
         try {
             $mailer->send($message);
+            $this->_logMailMessage($message);
             return true;
         } catch(TransportExceptionInterface $exception) {
             $this->log->error('Mailer error: ' . $exception->getMessage());
+            $this->_logMailMessage($message, $exception->getMessage());
             return false;
         }
+    }
+
+    protected function _logMailMessage(Email $message, string $error_message = '') {
+        if(!$this->config['mailer.logMessages']) {
+            return;
+        }
+        $folder = LOGS_PATH . 'mailer/';
+        if(!is_dir($folder) && !file_exists($folder)) {
+            @mkdir($folder);
+        }
+
+        $log_data = [];
+
+        if($error_message) {
+            $log_data['error'] = $error_message;
+        }
+
+        $fields = explode(',', $this->config['mailer.logMessages']);
+        $parseField = '';
+        $parseField = function  ($item) use(&$parseField) {
+            if(is_string($item) || is_numeric($item)) {
+                return $item;
+            } else if (is_array($item)) {
+                return implode(',', array_map($parseField, $item));
+            } else if (is_object($item) && method_exists($item, 'toString')){
+                return $item->toString();
+            } else {
+                return @(string) $item;
+            }
+        };
+
+        foreach($fields as $field) {
+            $getter = 'get' . ucfirst($field);
+            if(!method_exists($message, $getter)) {
+                continue;
+            }
+            $log_data[$field] = $parseField($message->$getter());
+        }
+        $log_line = (new \DateTime())->format('Y-m-d H:i:s.u') . ' ' . json_encode($log_data);
+
+        $filename = date('Y-m') . ($error_message ? '-errors' : '-success') . '.log';
+        file_put_contents($folder . $filename, $log_line . PHP_EOL, FILE_APPEND);
     }
 
     /**
