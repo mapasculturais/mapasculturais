@@ -56,16 +56,8 @@ trait EntityPermissionCache {
         return $class_name;
     }
 
-    static protected array $createdPermissionCache = [];
-
     function createPermissionsCacheForUsers(?array $users = null, $flush = false, $delete_old = true) {
         /** @var \MapasCulturais\Entity $this */
-        
-        if(self::$createdPermissionCache["$this"] ?? false) {
-            return;
-        } 
-        
-        self::$createdPermissionCache["$this"] = true;
 
         $app = App::i();
         $entity_state = $this->getEntityState();
@@ -242,8 +234,6 @@ trait EntityPermissionCache {
         $self = $this;
 
         $app->setEntityPermissionCacheAsRecreated($self);
-
-        $conn = $app->em->getConnection();
 
         try {
             $self->createPermissionsCacheForUsers($users);
