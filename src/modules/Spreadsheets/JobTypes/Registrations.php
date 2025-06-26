@@ -269,7 +269,7 @@ class Registrations extends SpreadsheetJob
                     if($entity['status'] == "0") {
                         $entity['ownerName'] = $entity['owner']['name'];
                     } else {
-                        $entity['ownerName'] = $entity['agentsData']['owner']['name'];
+                        $entity['ownerName'] = $entity['agentsData']['owner']['name'] ?? '';
                     }
                 }
 
