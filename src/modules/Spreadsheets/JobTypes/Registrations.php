@@ -82,6 +82,13 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'updateTimestamp') {
+                $header['updateDate'] = i::__('Data de atualização');
+                $header['updateTime'] = i::__('Hora de atualização');
+
+                continue;
+            }
+
             if($property == 'projectName') {
                 $header[$property] = i::__('Nome do projeto');
                 continue;
