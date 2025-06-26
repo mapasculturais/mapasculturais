@@ -302,6 +302,13 @@ class Registrations extends SpreadsheetJob
                 }
 
                 unset($entity['createTimestamp']);
+
+                if(isset($entity['updateTimestamp']) && !is_null($entity['updateTimestamp'])) {
+                    $entity['updateDate'] = $entity['updateTimestamp']->format('d-m-Y');
+                    $entity['updateTime'] = $entity['updateTimestamp']->format('H:i:s');
+                }
+
+                unset($entity['updateTimestamp']);
                 
                 if (isset($entity['consolidatedResult']) && !is_null($entity['consolidatedResult'])) {
                     $map = [
