@@ -12,7 +12,7 @@ class DataCollectionPhaseBuilder extends Builder
 {
     use Faker;
 
-    private Opportunity $instance;
+    protected Opportunity $instance;
 
     function __construct(private OpportunityBuilder $opportunityBuilder)
     {

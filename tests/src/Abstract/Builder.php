@@ -5,6 +5,7 @@ namespace Tests\Abstract;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 
+/** @property Entity $instance */
 abstract class Builder
 {
     function __construct()
@@ -33,6 +34,10 @@ abstract class Builder
         $app = App::i();
         $app->persistPCachePendingQueue();
         return $this;
+    }
+
+    function refresh() {
+        $this->instance = $this->instance->refreshed();
     }
 
     abstract function getInstance();

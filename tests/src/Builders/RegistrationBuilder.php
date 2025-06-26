@@ -14,7 +14,7 @@ class RegistrationBuilder extends Builder
     use Faker,
         UserDirector;
 
-    private Registration $instance;
+    protected Registration $instance;
 
     public function reset(Opportunity $opportunity, ?Agent $owner = null): self
     {
