@@ -21,7 +21,8 @@ class EvaluationsDistributionTest extends TestCase
         RegistrationDirector,
         UserDirector;
 
-    function testConcurrentEvaluationPhaseDistribution() {
+    function testConcurrentEvaluationPhaseDistribution()
+    {
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
@@ -39,25 +40,25 @@ class EvaluationsDistributionTest extends TestCase
                                     ->addValuers(2, 'committee 1')
                                     ->done()
                                 ->getInstance();
-        
+
         $this->registrationDirector->createDraftRegistrations(
-                $opportunity,
-                number_of_registrations:10
+            $opportunity,
+            number_of_registrations: 10
         );
 
         $this->registrationDirector->createSentRegistrations(
-                $opportunity,
-                number_of_registrations:10
+            $opportunity,
+            number_of_registrations: 10
         );
 
         $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
-        
+
         // atualiza o objeto da fase de avaliação para recarregar os metadados dos agentes relacionados
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
 
         $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
         $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
-        
+
         $this->assertEquals(5, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 tem 5 avaliações pendentes');
         $this->assertEquals(5, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 tem 5 avaliações pendentes');
 
@@ -68,7 +69,8 @@ class EvaluationsDistributionTest extends TestCase
         $this->assertEquals(10, $number_of_evaluations, 'Garantindo que tenha 10 avaliações');
     }
 
-    function testFirstEvaluationPhaseDeletion() {
+    function testFirstEvaluationPhaseDeletion()
+    {
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
