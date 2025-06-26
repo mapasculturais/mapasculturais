@@ -75,6 +75,10 @@ trait MagicGetter{
      * @return void 
      */
     public function enableCacheGetterResult($property_name) {
+        $app = App::i();
+        if(!$app->config['app.useMagicGetterCache']) {
+            return;
+        }
         $this->__magicGetterCache = $this->__magicGetterCache ?? (object) [];
         $this->__enabledMagicGetterCaches = $this->__enabledMagicGetterCaches ?? (object) [];
         $this->__enabledMagicGetterCaches->$property_name = true;
