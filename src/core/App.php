@@ -94,6 +94,7 @@ use Throwable;
  * @property-read string $assetUrl
  * @property-read TransportInterface $mailerTransport
  * @property-read Mailer $mailer
+ * @property-read Connection $conn
  * 
  *
  * @property ResponseInterface $response
@@ -1143,6 +1144,12 @@ class App {
         }
 
         return null;
+    }
+
+    
+    /** @return Connection  */
+    public function getConn() {
+        return $this->em->getConnection();
     }
 
     /**
