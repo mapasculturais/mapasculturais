@@ -45,6 +45,7 @@ class EvaluationPhaseBuilder extends Builder
 
     public function done(): OpportunityBuilder
     {
+        $this->instance->opportunity->evaluationMethodConfiguration = $this->instance;
         return $this->opportunityBuilder;
     }
 
