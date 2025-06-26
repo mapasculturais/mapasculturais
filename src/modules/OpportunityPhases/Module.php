@@ -4,6 +4,7 @@ namespace OpportunityPhases;
 use MapasCulturais\API;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\App;
+use MapasCulturais\Connection;
 use MapasCulturais\Definitions;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
@@ -1553,6 +1554,73 @@ class Module extends \MapasCulturais\Module{
                 $phase->save(true);
             }
             $this->opportunity = $phase;
+        });
+
+        
+        $app->hook('entity(EvaluationMethodConfiguration).remove:after', function () use($app) {
+            /** @var EvaluationMethodConfiguration $this */
+            
+            /** @var Opportunity */
+            $opportunity = $this->opportunity;
+            
+            /** @var Opportunity */
+            $next_phase = $opportunity->nextPhase;
+            
+            /** @var Opportunity */
+            $previous_phase = $opportunity->previousPhase;
+
+            // se a próxima fase for a última fase e a fase atual não for uma fase de coleta de dados, apaga a fase atual
+            if ($next_phase->isLastPhase){
+
+                if (!$opportunity->isDataCollection) {
+                    $opportunity->delete(true);
+                    $previous_phase->fixNextPhaseRegistrationIds();
+                }
+
+                return;
+            }
+
+            // se a próxima fase não for uma fase de coleta de dados, nem for a última fase e tiver uma fase de avaliação, 
+            // transfere a fase de avaliação para a oportunidade que estava vinculada a fase de avaliação deletada
+            
+            if(!$next_phase->isDataCollection && !$next_phase->isLasPhase && $next_phase->evaluationMethodConfiguration) {
+                $emc = $next_phase->evaluationMethodConfiguration;
+                $emc->opportunity = $opportunity;
+                $opportunity->evaluationMethodConfiguration = $emc;
+                $emc->save(true);
+                $opportunity->save(true);
+
+                /** @var Connection */
+                $conn = $app->em->getConnection();
+
+                // apaga todas as avaliações das inscrições da oportunidade vinculada
+                $conn->executeQuery("
+                    DELETE FROM registration_evaluation 
+                    WHERE registration_id IN (
+                        SELECT id FROM registration 
+                        WHERE opportunity_id = {$opportunity->id}
+                    )");
+
+                // transfere as avaliações da próxima fase para a fase atual
+                
+                $conn->executeQuery("
+                    WITH regs AS (
+                        SELECT r.id AS current_id, prev.value::INTEGER as prev_id 
+                        FROM registration r
+                            JOIN registration_meta prev ON 
+                                prev.key = 'previousPhaseRegistrationId' AND 
+                                prev.object_id = r.id
+                        WHERE r.opportunity_id = {$next_phase->id}
+                    )
+                    UPDATE registration_evaluation
+                    SET registration_id = regs.prev_id
+                    FROM regs
+                    WHERE registration_evaluation.registration_id = regs.current_id
+                ");
+
+                $next_phase->delete(true);
+            }
+
         });
 
         /** Adiciona o isFirstPhase ao requestedEntity */
