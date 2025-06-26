@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Criteria;
  * @property-read array $propertiesMetadata Properties Metadata
  * @property-read Controller $controller The controller with the class with the same name of this entity class in the parent namespace.
  * @property-read string $controllerId The controller id for this entity
+ * @property-read string $className 
  * @property-read Entities\User $ownerUser The User owner of this entity
  * @property-read array $userPermissions Returns the user's permission list. If no user is specified, returns the authenticated user.
 

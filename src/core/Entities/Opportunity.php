@@ -18,7 +18,7 @@ use MapasCulturais\EvaluationMethod;
  * Opportunity
  *
  * @property-read int $id
- * @property-read int $status
+ * @property int $status
  * @property-read \DateTime $createTimestamp
  * @property-read \DateTime $updateTimestamp
  * @property-read array $summary
@@ -40,6 +40,7 @@ use MapasCulturais\EvaluationMethod;
  *
  *
  * @property-read ?EvaluationMethod $evaluationMethod
+ * @property-read string $specializedClassName
  * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
  * @property RegistrationStep[] $registrationSteps
  * @property RegistrationFileConfiguration[] $registrationFileConfigurations

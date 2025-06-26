@@ -16,6 +16,8 @@ use MapasCulturais\GuestUser;
  * @property Agent $owner The owner of this registration
  * @property Opportunity $opportunity
  * @property string $category
+ * @property string $proponentType
+ * @property string $range
  * 
  * @property-read EvaluationMethodConfiguration $evaluationMethodConfiguration
  * @property-read EvaluationMethod $evaluationMethod
