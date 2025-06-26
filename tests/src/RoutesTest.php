@@ -11,8 +11,9 @@ class RoutesTest extends Abstract\TestCase
     use RequestFactory,
         UserDirector,
         Faker;
-    
-    function testSiteIndex() {
+
+    function testSiteIndex()
+    {
         $request = $this->requestFactory->GET('site', 'index');
 
         $this->assertStatus200($request, 'Garantindo status 200 na home');
@@ -23,7 +24,8 @@ class RoutesTest extends Abstract\TestCase
         $this->assertStatus200($request, 'Garantindo status 200 na home com usuário logado');
     }
 
-    function testSearchAgents() {
+    function testSearchAgents()
+    {
         $request = $this->requestFactory->GET('search', 'agents');
 
         $this->assertStatus200($request, 'Garantindo status 200 na busca de agentes');
@@ -34,7 +36,8 @@ class RoutesTest extends Abstract\TestCase
         $this->assertStatus200($request, 'Garantindo status 200 na busca de agentes com usuário logado');
     }
 
-    function testSearchSpaces() {
+    function testSearchSpaces()
+    {
         $request = $this->requestFactory->GET('search', 'spaces');
 
         $this->assertStatus200($request, 'Garantindo status 200 na busca de espaços');
@@ -42,10 +45,11 @@ class RoutesTest extends Abstract\TestCase
         $user = $this->userDirector->createUser();
         $this->login($user);
 
-        $this->assertStatus200($request, 'Garantindo status 200 na busca de espaços com usuário logado');        
+        $this->assertStatus200($request, 'Garantindo status 200 na busca de espaços com usuário logado');
     }
 
-    function testSearchProjects() {
+    function testSearchProjects()
+    {
         $request = $this->requestFactory->GET('search', 'projects');
 
         $this->assertStatus200($request, 'Garantindo status 200 na busca de projetos');
@@ -56,7 +60,8 @@ class RoutesTest extends Abstract\TestCase
         $this->assertStatus200($request, 'Garantindo status 200 na busca de projetos com usuário logado');
     }
 
-    function testSearchOpportunities() {
+    function testSearchOpportunities()
+    {
         $request = $this->requestFactory->GET('search', 'projects');
 
         $this->assertStatus200($request, 'Garantindo status 200 na busca de oportunidades');
@@ -67,7 +72,8 @@ class RoutesTest extends Abstract\TestCase
         $this->assertStatus200($request, 'Garantindo status 200 na busca de oportunidades com usuário logado');
     }
 
-    function testFAQIndex() {
+    function testFAQIndex()
+    {
         $request = $this->requestFactory->GET('faq', 'index');
 
         $this->assertStatus200($request, 'Garantindo status 200 na home do FAQ');
@@ -78,7 +84,8 @@ class RoutesTest extends Abstract\TestCase
         $this->assertStatus200($request, 'Garantindo status 200 na home do FAQ com usuário logado');
     }
 
-    function testFAQInterna() {
+    function testFAQInterna()
+    {
         $request = $this->requestFactory->GET('faq', 'index', ['cadastro']);
 
         $this->assertStatus200($request, 'Garantindo status 200 na interna do FAQ');
@@ -89,14 +96,15 @@ class RoutesTest extends Abstract\TestCase
         $this->assertStatus200($request, 'Garantindo status 200 na interna do FAQ com usuário logado');
     }
 
-    function test404Page() {
+    function test404Page()
+    {
         $request = $this->requestFactory->GET('site', 'invalidActionName');
         $this->assertStatus404($request, 'Garantindo status 404 em action não existente');
     }
 
-    function testPanelRoutesForNormalUsers() {
-        $normal_user = $this->userDirector->createUser();
-        $admin_user = $this->userDirector->createUser('admin');
+    function testPanelRoutesForGuestUsers()
+    {
+        $user = $this->userDirector->createUser();
 
         // Testando rotas do painel para usuários deslogados
         $request = $this->requestFactory->GET('panel', 'index');
@@ -136,9 +144,14 @@ class RoutesTest extends Abstract\TestCase
         $request = $this->requestFactory->GET('panel', 'user-management');
         $this->assertStatus401($request, 'Garantindo status 401 na rota "panel.user-management" para USUÁRIO DESLOGADO');
 
-        $request = $this->requestFactory->GET('panel', 'user-detail', [$admin_user->id]);
+        $request = $this->requestFactory->GET('panel', 'user-detail', [$user->id]);
         $this->assertStatus401($request, 'Garantindo status 401 na rota "panel.user-detail" de outro usuário para USUÁRIO DESLOGADO');
+    }
 
+    function testPanelRoutesForNormalUsers()
+    {
+        $normal_user = $this->userDirector->createUser();
+        $admin_user = $this->userDirector->createUser('admin');
 
         // Testando rotas do painel para usuário comum
         $this->login($normal_user);
@@ -177,12 +190,17 @@ class RoutesTest extends Abstract\TestCase
         $request = $this->requestFactory->GET('panel', 'user-management');
         $this->assertStatus403($request, 'Garantindo status 403 na rota "panel.user-management" para USUÁRIO COMUM');
 
-        $request = $this->requestFactory->GET('panel', 'user-management');
-        $this->assertStatus403($request, 'Garantindo status 403 na rota "panel.user-management" para USUÁRIO COMUM');
+        $request = $this->requestFactory->GET('panel', 'system-roles');
+        $this->assertStatus403($request, 'Garantindo status 403 na rota "panel.system-roles" para USUÁRIO COMUM');
 
         $request = $this->requestFactory->GET('panel', 'user-detail', [$admin_user->id]);
         $this->assertStatus403($request, 'Garantindo status 403 na rota "panel.user-detail" de outro usuário para USUÁRIO COMUM');
+    }
 
+    function testPanelRoutesForAdminUsers()
+    {
+        $normal_user = $this->userDirector->createUser();
+        $admin_user = $this->userDirector->createUser('admin');
 
         // Testando rotas do painel para usuário admin
         $this->login($admin_user);
@@ -221,14 +239,115 @@ class RoutesTest extends Abstract\TestCase
         $request = $this->requestFactory->GET('panel', 'user-management');
         $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.user-management" para Admins');
 
-        $request = $this->requestFactory->GET('panel', 'user-management');
-        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.user-management" para Admins');
+        $request = $this->requestFactory->GET('panel', 'system-roles');
+        $this->assertStatus403($request, 'Garantindo status 403 na rota "panel.system-roles" para Admins');
 
         $request = $this->requestFactory->GET('panel', 'user-detail', [$normal_user->id]);
         $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.user-detail" de outro usuário para Admins');
     }
 
-    function testAgentRoutes() {
+    function testPanelRoutesForSuperAdminUsers()
+    {
+        $normal_user = $this->userDirector->createUser();
+        $admin_user = $this->userDirector->createUser('superAdmin');
+
+        // Testando rotas do painel para usuário admin
+        $this->login($admin_user);
+
+        $request = $this->requestFactory->GET('panel', 'index');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.index" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'agents');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.agents" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'spaces');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.spaces" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'projects');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.projects" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'opportunities');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.opportunities" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'events');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.events" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'registrations');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.registrations" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'apps');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.apps" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'my-account');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.my-account" para Super Admins');
+
+        // rotas para administradores
+        $request = $this->requestFactory->GET('panel', 'seals');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.seals" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'user-management');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.user-management" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'system-roles');
+        $this->assertStatus403($request, 'Garantindo status 403 na rota "panel.system-roles" para Super Admins');
+
+        $request = $this->requestFactory->GET('panel', 'user-detail', [$normal_user->id]);
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.user-detail" de outro usuário para Super Admins');
+    }
+
+
+
+    function testPanelRoutesForSaasAdminUsers()
+    {
+        $normal_user = $this->userDirector->createUser();
+        $admin_user = $this->userDirector->createUser('saasAdmin');
+
+        // Testando rotas do painel para usuário admin
+        $this->login($admin_user);
+
+        $request = $this->requestFactory->GET('panel', 'index');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.index" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'agents');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.agents" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'spaces');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.spaces" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'projects');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.projects" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'opportunities');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.opportunities" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'events');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.events" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'registrations');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.registrations" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'apps');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.apps" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'my-account');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.my-account" para Saas Admins');
+
+        // rotas para administradores
+        $request = $this->requestFactory->GET('panel', 'seals');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.seals" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'user-management');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.user-management" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'system-roles');
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.system-roles" para Saas Admins');
+
+        $request = $this->requestFactory->GET('panel', 'user-detail', [$normal_user->id]);
+        $this->assertStatus200($request, 'Garantindo status 200 na rota "panel.user-detail" de outro usuário para Saas Admins');
+    }
+
+    function testAgentRoutes()
+    {
         $normal_user = $this->userDirector->createUser();
         $admin_user = $this->userDirector->createUser('admin');
 
@@ -271,7 +390,7 @@ class RoutesTest extends Abstract\TestCase
         $this->assertStatus403($request, 'Garantindo status 403 na rota PATCH "agent.single" do agente de outro usuário para usuários comuns');
 
         $this->login($admin_user);
-        
+
         $request = $this->requestFactory->GET('agent', 'single', [$admin_user->profile->id]);
         $this->assertStatus200($request, 'Garantindo status 200 na rota "agent.single" do próprio agente para admins');
 
