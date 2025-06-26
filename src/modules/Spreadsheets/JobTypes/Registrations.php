@@ -260,6 +260,10 @@ class Registrations extends SpreadsheetJob
                         $formatted_values = implode(', ', $values);
                         $entity[$field->fieldName] = $formatted_values;
                     }
+
+                    if (isset($entity[$field->fieldName]) && (is_string($entity[$field->fieldName]) || is_null($entity[$field->fieldName]))) {
+                        $entity[$field->fieldName] = $this->cleanTextForExport($entity[$field->fieldName]);
+                    }
                 }
                 
                 unset($entity['@entityType']);
