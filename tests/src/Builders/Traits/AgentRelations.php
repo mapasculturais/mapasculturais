@@ -17,10 +17,10 @@ trait AgentRelations
         return $this;
     }
 
-    function addRelatedAgent(string $group, Agent $agent) {
+    function addRelatedAgent(string $group, Agent $agent, bool $has_control = false) {
         $instance = $this->instance;
 
-        $instance->createAgentRelation($agent, $group, save:true, flush:true);
+        $instance->createAgentRelation($agent, $group, save:true, flush:true, has_control:$has_control);
 
         return $this;
     }

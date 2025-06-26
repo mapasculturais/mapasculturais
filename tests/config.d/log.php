@@ -49,7 +49,7 @@ return [
     // 'app.log.components'    => true,
     // 'app.log.assetManager'  => true,
     
-    'app.log.jobs'          => true,
+    // 'app.log.jobs'          => true,
     // 'app.log.pcache'        => true,
     // 'app.log.pcache.users'  => true,
 

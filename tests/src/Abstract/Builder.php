@@ -3,10 +3,11 @@
 namespace Tests\Abstract;
 
 use MapasCulturais\App;
+use MapasCulturais\Entity;
 
 abstract class Builder
 {
-    final function __construct()
+    function __construct()
     {
 
         if (!property_exists($this, 'instance')) {
@@ -14,7 +15,7 @@ abstract class Builder
         }
 
         if (!method_exists($this, 'reset')) {
-            throw new \Exception(get_called_class() . '::reset method is required');
+            throw new \Exception(get_called_class() . '::reset() method is required');
         }
 
         // chama os inicializadores das classes ou traits
