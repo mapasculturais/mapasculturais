@@ -21,7 +21,7 @@ class EvaluationPhaseBuilder extends Builder
     const PERIOD_CONCURRENT_ENDING_AFTER = 'concurrent-after';
 
 
-    private EvaluationMethodConfiguration $instance;
+    protected EvaluationMethodConfiguration $instance;
 
     function __construct(private OpportunityBuilder $opportunityBuilder)
     {

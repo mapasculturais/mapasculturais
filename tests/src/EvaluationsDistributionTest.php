@@ -56,6 +56,6 @@ class EvaluationsDistributionTest extends TestCase
         $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
 
         $this->assertEquals(5, $valuer1_summary['pending'], 'Garantindo que o avaliadro 1 tem 5 avaliações pendentes');
-        $this->assertEquals(5, $valuer2_summary['pending'], 'Garantindo que o avaliadro 1 tem 5 avaliações pendentes');
+        $this->assertEquals(5, $valuer2_summary['pending'], 'Garantindo que o avaliadro 2 tem 5 avaliações pendentes');
     }
 }
