@@ -36,8 +36,10 @@ abstract class Builder
         return $this;
     }
 
-    function refresh() {
+    function refresh(): self
+    {
         $this->instance = $this->instance->refreshed();
+        return $this;
     }
 
     abstract function getInstance();
