@@ -1571,19 +1571,17 @@ class Module extends \MapasCulturais\Module{
 
             // se a próxima fase for a última fase e a fase atual não for uma fase de coleta de dados, apaga a fase atual
             if ($next_phase->isLastPhase){
-
                 if (!$opportunity->isDataCollection) {
                     $opportunity->delete(true);
                     $previous_phase->fixNextPhaseRegistrationIds();
                 }
 
                 return;
-            }
+            }   
 
             // se a próxima fase não for uma fase de coleta de dados, nem for a última fase e tiver uma fase de avaliação, 
             // transfere a fase de avaliação para a oportunidade que estava vinculada a fase de avaliação deletada
-            
-            if(!$next_phase->isDataCollection && !$next_phase->isLasPhase && $next_phase->evaluationMethodConfiguration) {
+            if(!$next_phase->isDataCollection  && $next_phase->evaluationMethodConfiguration) {
                 $emc = $next_phase->evaluationMethodConfiguration;
                 $emc->opportunity = $opportunity;
                 $opportunity->evaluationMethodConfiguration = $emc;
