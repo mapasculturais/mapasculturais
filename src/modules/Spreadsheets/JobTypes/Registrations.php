@@ -82,6 +82,13 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'updateTimestamp') {
+                $header['updateDate'] = i::__('Data de atualização');
+                $header['updateTime'] = i::__('Hora de atualização');
+
+                continue;
+            }
+
             if($property == 'projectName') {
                 $header[$property] = i::__('Nome do projeto');
                 continue;
@@ -281,6 +288,10 @@ class Registrations extends SpreadsheetJob
                     if ($field->fieldType == 'checkbox') {
                         $entity[$field->fieldName] = in_array($entity[$field->fieldName], [1, '1', true]) ? 'Sim' : $entity[$field->fieldName];
                     }
+
+                    if (isset($entity[$field->fieldName]) && (is_string($entity[$field->fieldName]) || is_null($entity[$field->fieldName]))) {
+                        $entity[$field->fieldName] = $this->cleanTextForExport($entity[$field->fieldName]);
+                    }
                 }
 
                 unset($entity['@entityType']);
@@ -290,7 +301,7 @@ class Registrations extends SpreadsheetJob
                     if($entity['status'] == "0") {
                         $entity['ownerName'] = $entity['owner']['name'];
                     } else {
-                        $entity['ownerName'] = $entity['agentsData']['owner']['name'];
+                        $entity['ownerName'] = $entity['agentsData']['owner']['name'] ?? '';
                     }
                 }
 
@@ -323,6 +334,13 @@ class Registrations extends SpreadsheetJob
                 }
 
                 unset($entity['createTimestamp']);
+
+                if(isset($entity['updateTimestamp']) && !is_null($entity['updateTimestamp'])) {
+                    $entity['updateDate'] = $entity['updateTimestamp']->format('d-m-Y');
+                    $entity['updateTime'] = $entity['updateTimestamp']->format('H:i:s');
+                }
+
+                unset($entity['updateTimestamp']);
                 
                 if (isset($entity['consolidatedResult']) && !is_null($entity['consolidatedResult'])) {
                     $map = [
