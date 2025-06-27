@@ -1176,7 +1176,7 @@ return [
         }
     },
 
-     'implementa db-update para remover metadados duplicados em todas as tabelas auxiliares' => function () {
+     'Implementa db-update para remoção de metadados duplicados em todas as tabelas auxiliares' => function () {
         $app = App::i();
         $em = $app->em;
         $conn = $em->getConnection();
@@ -1253,7 +1253,7 @@ return [
         ];
 
         foreach ($aux_tables as $table) {
-            __exec("CREATE UNIQUE INDEX unique_object_id_key_value ON {$table} (object_id, key)");
+            __exec("CREATE UNIQUE INDEX {$table}_unique_object_id_key_value ON {$table} (object_id, key)");
             $app->log->debug("Aplicado Índice Único na tabela auxiliar {$table}");
         }
     },
