@@ -5,6 +5,7 @@ use MapasCulturais\i;
 $this->layout = 'entity';
 
 $this->import('
+    country-address-form
     confirm-before-exit 
     entity-actions
     entity-admins
@@ -15,7 +16,6 @@ $this->import('
     entity-gallery-video
     entity-header
     entity-links
-    entity-location
     entity-owner
     entity-parent-edit
     entity-profile
@@ -89,7 +89,7 @@ $this->breadcrumb = [
                         </template>
                         <template #content>
                             <div class="grid-12">
-                                <entity-location :entity="entity" classes="col-12" editable hide-label></entity-location>
+                                <country-address-form :entity="entity" classes="col-12"></country-address-form>
                             </div>
                         </template>
                     </mc-card>
