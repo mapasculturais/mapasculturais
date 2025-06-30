@@ -83,9 +83,20 @@ use Throwable;
  * @property-read Definitions\RegistrationAgentRelation[] $registeredRegistrationAgentRelations definições de agentes relacionados de inscrições registrados
  * @property-read Definitions\RegistrationAgentRelation $registrationOwnerDefinition definição do agente owner de inscrição
  * @property-read Definitions\ChatThreadType $registeredChatThreadTypes definições dos tipos de chat registrados
- 
+ *
  * @property-read User $user usuário autenticado
-
+ * @property-read array $registry array do registro do sistema
+ * @property-read string $version versão do core da aplicação
+ * @property-read string $siteName
+ * @property-read string $siteDescription
+ * @property-read RoutesManager $routesManager
+ * @property-read string $baseUrl
+ * @property-read string $assetUrl
+ * @property-read TransportInterface $mailerTransport
+ * @property-read Mailer $mailer
+ * @property-read Connection $conn
+ * 
+ *
  * @property ResponseInterface $response
  * @property Request $request
  * 
@@ -353,6 +364,10 @@ class App {
     }
 
     function reset() {
+        $this->_permissionCachePendingQueue = [];
+        $this->clearRecreatedPermissionCacheList();
+        
+
         $this->view->importedComponents = [];
         $this->components->templates = [];
 
@@ -1131,6 +1146,12 @@ class App {
         return null;
     }
 
+    
+    /** @return Connection  */
+    public function getConn() {
+        return $this->em->getConnection();
+    }
+
     /**
      * Retorna o tamanho máximo de upload configurado no PHP
      * 
@@ -1525,6 +1546,7 @@ class App {
         if ($this->view->version >= 2) {
             $template_data->siteName = $this->siteName;
             $template_data->siteDescription = $this->siteDescription;
+            $template_data->siteUrl = $this->baseUrl;
 
         } else {
             $template_data->siteName = $this->view->dict('site: name', false);
@@ -1947,10 +1969,10 @@ class App {
      * 
      * @return int|false O ID do trabalho executado, ou false se nenhum trabalho estiver pronto para ser executado
      */
-    public function executeJob(): int|false {
+    public function executeJob(?string $mock_date = null): int|false {
         /** @var Connection */
         $conn = $this->em->getConnection();
-        $now = date('Y-m-d H:i:s');
+        $now = $mock_date ?: date('Y-m-d H:i:s');
         $job_id = $conn->fetchScalar("
             SELECT id
             FROM job
@@ -2155,6 +2177,10 @@ class App {
      */
     public function isEntityPermissionCacheRecreated(Entity $entity) {
         return isset($this->_recreatedPermissionCacheList["$entity"]);
+    }
+
+    public function clearRecreatedPermissionCacheList() {
+        $this->_recreatedPermissionCacheList = [];
     }
 
     /**
@@ -2405,11 +2431,55 @@ class App {
 
         try {
             $mailer->send($message);
+            $this->_logMailMessage($message);
             return true;
         } catch(TransportExceptionInterface $exception) {
             $this->log->error('Mailer error: ' . $exception->getMessage());
+            $this->_logMailMessage($message, $exception->getMessage());
             return false;
         }
+    }
+
+    protected function _logMailMessage(Email $message, string $error_message = '') {
+        if(!$this->config['mailer.logMessages']) {
+            return;
+        }
+        $folder = LOGS_PATH . 'mailer/';
+        if(!is_dir($folder) && !file_exists($folder)) {
+            @mkdir($folder);
+        }
+
+        $log_data = [];
+
+        if($error_message) {
+            $log_data['error'] = $error_message;
+        }
+
+        $fields = explode(',', $this->config['mailer.logMessages']);
+        $parseField = '';
+        $parseField = function  ($item) use(&$parseField) {
+            if(is_string($item) || is_numeric($item)) {
+                return $item;
+            } else if (is_array($item)) {
+                return implode(',', array_map($parseField, $item));
+            } else if (is_object($item) && method_exists($item, 'toString')){
+                return $item->toString();
+            } else {
+                return @(string) $item;
+            }
+        };
+
+        foreach($fields as $field) {
+            $getter = 'get' . ucfirst($field);
+            if(!method_exists($message, $getter)) {
+                continue;
+            }
+            $log_data[$field] = $parseField($message->$getter());
+        }
+        $log_line = (new \DateTime())->format('Y-m-d H:i:s.u') . ' ' . json_encode($log_data);
+
+        $filename = date('Y-m') . ($error_message ? '-errors' : '-success') . '.log';
+        file_put_contents($folder . $filename, $log_line . PHP_EOL, FILE_APPEND);
     }
 
     /**

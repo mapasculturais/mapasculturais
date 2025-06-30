@@ -5,6 +5,8 @@ use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
 /**
+ * @property Project $owner
+ * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */

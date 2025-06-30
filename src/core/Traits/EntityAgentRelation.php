@@ -21,6 +21,8 @@ use RuntimeException;
  */
 trait EntityAgentRelation {
 
+    const AGENT_RELATION_ADMIN_GROUP = 'group-admin';
+
     public static function usesAgentRelation(){
         return true;
     }
@@ -266,7 +268,7 @@ trait EntityAgentRelation {
 
         $app = App::i();
         
-        if($old_name === 'group-admin') {
+        if($old_name === self::AGENT_RELATION_ADMIN_GROUP) {
             return false;
         }
         
@@ -294,7 +296,7 @@ trait EntityAgentRelation {
 
         $app = App::i();
 
-        if($name === 'group-admin') {
+        if($name === AGENT_RELATION_ADMIN_GROUP) {
             return false;
         }
 

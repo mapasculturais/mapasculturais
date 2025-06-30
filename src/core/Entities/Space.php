@@ -240,7 +240,7 @@ class Space extends \MapasCulturais\Entity
     protected $subsite;
 
     public function __construct() {
-        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->_children = new \Doctrine\Common\Collections\ArrayCollection();
         $this->owner = App::i()->user->profile;
         parent::__construct();
     }

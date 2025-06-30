@@ -7,6 +7,7 @@ services:
         - COMPOSER_ARGS="" 
     volumes:
       - ./docker/entrypoint.sh:/entrypoint.sh
+      - ./docker/phpunit.sh:/bin/phpunit
 
       - ../composer.json:/var/www/composer.json
       - ../composer.lock:/var/www/composer.lock

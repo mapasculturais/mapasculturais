@@ -73,6 +73,8 @@ class Module extends \MapasCulturais\Module{
          
         // para todos os requests
         $app->hook('workflow(<<*>>).create', function() use($app, $module) {
+            /** @var Request $this */
+
             if ($this->notifications) {
                 $app->disableAccessControl();
                 foreach ($this->notifications as $n) {
@@ -81,7 +83,7 @@ class Module extends \MapasCulturais\Module{
                 $app->enableAccessControl();
             }
 
-            $requester = $app->user;
+            $requester = $this->requesterUser;
             $profile = $requester->profile;
 
             $origin = $this->origin;//registration
@@ -264,6 +266,8 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook('workflow(<<*>>).approve:before', function() use($app) {
+            /** @var Request $this */
+
             $requester = $app->user;
             $profile = $requester->profile;
 
@@ -349,6 +353,8 @@ class Module extends \MapasCulturais\Module{
 
 
         $app->hook('workflow(<<*>>).reject:before', function() use($app) {
+            /** @var Request $this */
+
             $requester = $app->user;
             $profile = $requester->profile;
 
