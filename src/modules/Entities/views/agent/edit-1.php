@@ -6,6 +6,7 @@ $this->layout = 'entity';
 
 $this->import('
     confirm-before-exit
+    country-address-form
     elderly-person
     entity-actions
     entity-admins
@@ -16,7 +17,6 @@ $this->import('
     entity-gallery-video
     entity-header
     entity-links
-    entity-location
     entity-owner
     entity-profile
     entity-related-agents
@@ -118,7 +118,7 @@ $this->breadcrumb = [
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone1" label="<?= i::__('Telefone privado 1 com DDD') ?>"></entity-field>
                                 <entity-field :entity="entity" classes="col-6 sm:col-12" prop="telefone2" label="<?= i::__('Telefone privado 2 com DDD') ?>"></entity-field>
                                 <div class="col-12 divider"></div>
-                                <entity-location :entity="entity" classes="col-12" editable></entity-location>
+                                <country-address-form :entity="entity" class="col-12"></country-address-form>
                             </div>
                         </template>
                     </mc-card>

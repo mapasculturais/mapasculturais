@@ -9,8 +9,8 @@ use MapasCulturais\i;
 $this->layout = 'entity'; 
 
 $this->import('
+    country-address-view
     mc-tag-list 
-    entity-location
 ');
 ?>
 <div class="space-info grid-12">
@@ -22,7 +22,7 @@ $this->import('
     </div>
 
     <div class="space-info__location col-12">
-        <entity-location :entity="entity"></entity-location>
+        <country-address-view :entity="entity" classes="col-12"></country-address-view>
     </div>
 
     <div v-if="entity.acessibilidade || entity.acessibilidade_fisica?.length > 0" class="space-info__accessibility col-12">
