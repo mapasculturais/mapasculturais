@@ -45,5 +45,8 @@ if [ $BUILD_ASSETS = "1" ]; then
 fi
 
 cd /var/www/tests
+echo '#/bin/bash
+/var/www/vendor/bin/phpunit --process-isolation $@
+' > /bin/phpunit
 
 exec "$@"

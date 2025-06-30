@@ -4,6 +4,8 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @property Event $owner
+ * 
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */

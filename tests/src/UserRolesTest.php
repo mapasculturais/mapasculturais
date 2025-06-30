@@ -5,8 +5,6 @@ namespace Tests;
 use MapasCulturais\Exceptions\PermissionDenied;
 use Tests\Traits\UserDirector;
 
-require_once __DIR__ . '/bootstrap.php';
-
 class UserRolesTest extends Abstract\TestCase
 {
     use UserDirector;

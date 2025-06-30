@@ -2,19 +2,23 @@
 
 namespace Tests\Abstract;
 
+use MapasCulturais\App;
+use MapasCulturais\Entity;
+
+/** @property Entity $instance */
 abstract class Builder
 {
-    final function __construct()
+    function __construct()
     {
-        
+
         if (!property_exists($this, 'instance')) {
             throw new \Exception(get_called_class() . '::instance property is required');
         }
-        
+
         if (!method_exists($this, 'reset')) {
-            throw new \Exception(get_called_class() . '::reset method is required');
+            throw new \Exception(get_called_class() . '::reset() method is required');
         }
-    
+
         // chama os inicializadores das classes ou traits
         $methods = get_class_methods($this);
         foreach ($methods as $method) {
@@ -24,9 +28,17 @@ abstract class Builder
         }
     }
 
-    function save(): static
+    function save(bool $flush = true): static
     {
-        $this->getInstance()->save(true);
+        $this->getInstance()->save($flush);
+        $app = App::i();
+        $app->persistPCachePendingQueue();
+        return $this;
+    }
+
+    function refresh(): self
+    {
+        $this->instance = $this->instance->refreshed();
         return $this;
     }
 

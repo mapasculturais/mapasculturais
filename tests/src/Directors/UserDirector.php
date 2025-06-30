@@ -34,6 +34,7 @@ class UserDirector extends Director
             ->save()
             ->addRoles($roles)
             ->getInstance();
+            
         $app->enableAccessControl();
         return $user;
     }

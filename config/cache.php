@@ -27,6 +27,8 @@ return [
         
     'app.cache.namespace' => env('CACHE_NAMESPACE', @$_SERVER['HTTP_HOST']),
 
+    'app.useMagicGetterCache' => __env_not_false('CACHE_MAGIC_GETTER'),
+
     'app.useRegisteredAutoloadCache' => __env_not_false('CACHE_AUTOLOAD'),
     'app.useAssetsUrlCache'          => __env_not_false('CACHE_ASSETS_URL'),
     'app.useFileUrlCache'            => __env_not_false('CACHE_FILE_URL'),

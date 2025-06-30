@@ -12,13 +12,17 @@ class AgentBuilder extends Builder
     use Faker,
         Traits\AgentRelations,
         Traits\SealRelations,
-        Traits\Taxonomies;
+        Traits\Taxonomies,
+        Traits\EntityType,
+        Traits\EntityParent;
+
 
     protected Agent $instance;
 
-    function reset(User $user, int $type): self
+    function reset(User $user): self
     {
         $this->instance = new Agent($user);
+
         return $this;
     }
 

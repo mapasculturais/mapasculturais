@@ -141,8 +141,8 @@ abstract class Request extends \MapasCulturais\Entity{
 
     private $_destination = null;
 
-    public function __construct() {
-        $this->requesterUser = App::i()->user;
+    public function __construct(?User $requester_user = null) {
+        $this->requesterUser = $requester_user ?: App::i()->user;
         parent::__construct();
     }
 
