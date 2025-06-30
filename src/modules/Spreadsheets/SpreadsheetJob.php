@@ -413,6 +413,32 @@ abstract class SpreadsheetJob extends JobType
     }
 
     /**
+     * Limpa e padroniza textos para exportação (ex: planilhas), removendo tags HTML,
+     * caracteres invisíveis, normalizando quebras de linha e garantindo codificação UTF-8.
+     *
+     * @param string|null $text Texto original a ser sanitizado.
+     * @return string Texto limpo e seguro para exportação.
+     */
+    function cleanTextForExport(?string $text): string {
+        if ($text === null) {
+            return '';
+        }
+
+        // Evita interpretação como fórmula no ODS/Excel
+        if (preg_match('/^[=+\-@]/', $text)) {
+            $text = "'" . $text;
+        }
+
+        $text = str_replace('\n', "\n", $text); // "\n" como string literal
+        $text = strip_tags($text);
+        $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+        $text = preg_replace('/[\x00-\x1F\x7F]/u', '', $text);
+
+
+        return trim($text);
+    }
+
+    /**
      * 
      * @return string 
      */

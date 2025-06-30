@@ -134,10 +134,25 @@ foreach ($parentOrder as $parent) {
 }
 $default_select = implode(',', $final_select);
 
+
+$headers = [
+    [ 'text' => i::__('inscrição', 'opportunity-evaluations-table'), 'value' => 'number', 'slug' => 'number', 'sticky' => true, 'width' => '160px' ],
+    [ 'text' => i::__('avaliador', 'opportunity-evaluations-table'), 'value' =>  'valuer?.name', 'slug' => 'evaluator', 'visible' => true],
+    [ 'text' => i::__('resultado final', 'opportunity-evaluations-table'), 'value' => 'evaluation?.resultString', 'slug' => 'result'],
+    [ 'text' => i::__('Tipo de proponente', 'opportunity-evaluations-table'), 'value' => 'proponentType', 'slug' => 'proponentType'],
+    [ 'text' => i::__('Categoria', 'opportunity-evaluations-table'), 'value' => 'category', 'slug' => 'category'],
+    [ 'text' => i::__('Faixa', 'opportunity-evaluations-table'), 'value' => 'range', 'slug' => 'range'],
+];
+
+$default_headers = array_merge($default_headers, $headers);
+
+$app->applyHook('component(opportunity-evaluations-table).additionalHeaders', [&$default_headers, &$default_select]);
+
 $this->jsObject['config']['opportunityEvaluationsTable'] = [
     "isAdmin" => $app->user->is("admin"),
     "committee" => $committee,
     "valuersMetadata" => $valuersMetadata,
     'defaultHeaders' => $default_headers,
     'defaultSelect' => $default_select,
+    'headers' => $headers,
 ];

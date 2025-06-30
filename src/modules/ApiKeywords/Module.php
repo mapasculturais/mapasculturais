@@ -80,6 +80,32 @@ class Module extends \MapasCulturais\Module {
                             t.taxonomy = '{$taxonomy->slug}'";
         });
 
+        //faz a keyword buscar pelo CNPJ, Razão Social,nome da organização
+        $app->hook('repo(agent).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) use($app) {
+            if($app->user->is('admin')){
+                $joins .= "\n LEFT JOIN e.__metadata cnpj_meta WITH cnpj_meta.key = 'cnpj'";
+                $joins .= "\n LEFT JOIN e.__metadata owner_nome WITH owner_nome.key = 'nomeCompleto'";
+        
+                $joins .= "\n LEFT JOIN e.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
+                $joins .= "\n LEFT JOIN coletivo_relation.agent coletivo_agent";
+                $joins .= "\n LEFT JOIN coletivo_agent.__metadata coletivo_nome WITH coletivo_nome.key = 'nomeCompleto'";
+            }
+        });
+        
+          //faz a keyword buscar pelo CNPJ, Razão Social,nome da organização
+        $app->hook('repo(agent).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use ($format_doc,$app) {
+            if($app->user->is('admin')){
+                if ($doc = $format_doc($keyword)) {
+                    $unformattedDoc = trim(str_replace(['.', '-', '/', ' '], '', $keyword));
+                    $where .= "\n OR cnpj_meta.value = '{$doc}' OR cnpj_meta.value = '{$unformattedDoc}'";
+                }
+    
+                $where .= "\n OR unaccent(lower(coletivo_nome.value)) LIKE unaccent(lower('$keyword'))";
+                $where .= "\n OR unaccent(lower(owner_nome.value)) LIKE unaccent(lower('$keyword'))";
+            }
+            
+        });
+
         $app->hook('repo(<<agent|space|event|project|opportunity>>).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) {
             $where .= " OR unaccent(lower(t.term)) LIKE unaccent(lower(:{$alias})) ";
         });
