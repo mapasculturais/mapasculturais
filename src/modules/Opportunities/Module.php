@@ -140,7 +140,9 @@ class Module extends \MapasCulturais\Module{
          */
         $app->hook('entity(EvaluationMethodConfigurationAgentRelation).<<insert|update|delete>>:finish', function() use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfigurationAgentRelation $this */
-            $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner], $distribute_execution_time);
+            if($this->owner){
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner], $distribute_execution_time);
+            }
         });
 
         $_metadata_list = 'valuersPerRegistration|ignoreStartedEvaluations|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes';
@@ -179,21 +181,23 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app, $distribute_execution_time) {
-            if($emc = $this->evaluationMethodConfiguration) {
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], $distribute_execution_time);
+            $app->log->debug("Registration {$this->id} status changed to {$this->status}");
+
+            if($this->evaluationMethodConfiguration){
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $distribute_execution_time);
+
+                /** @var Registration $this */
+                /** @var Opportunity $opportunity */
+                $opportunity = $this->opportunity;
+                do{
+                    $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                        'opportunity' => $opportunity
+                    ], '10 seconds');
+
+                    $opportunity = $opportunity->nextPhase;
+
+                } while ($opportunity);
             }
-
-            /** @var Registration $this */
-            /** @var Opportunity $opportunity */
-            $opportunity = $this->opportunity;
-            do{
-                $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                    'opportunity' => $opportunity
-                ], '90 seconds');
-
-                $opportunity = $opportunity->nextPhase;
-
-            } while ($opportunity);
         });
 
         $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {

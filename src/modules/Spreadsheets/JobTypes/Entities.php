@@ -109,6 +109,7 @@ class Entities extends SpreadsheetJob
                 }, $entity['seals']);
                 $entity['seals'] = implode(', ', $sealNames);
             }
+            $entity['longDescription'] = $this->cleanTextForExport($entity['longDescription'] ?? '');
 
             unset($entity['terms']);
             unset($entity['@entityType']);
