@@ -77,7 +77,7 @@ $this->import('
                 </div>
             </div>
 
-            <mc-accordion class="qualification-evaluation-config__criterions" v-if="entity.criteria && entity.criteria.length > 0">
+            <mc-accordion class="qualification-evaluation-config__criterions">
                 <template #title>
                     <div class="criterions__title field">
                         <label><?php i::_e("Critérios de avaliação") ?></label>
