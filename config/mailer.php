@@ -28,5 +28,9 @@ return [
     'mailer.from'       => env('MAILER_FROM', 'suporte@mapasculturais.org'),
     'mailer.alwaysTo'   => env('MAILER_ALWAYSTO', false),
     'mailer.bcc'        => env('MAILER_BCC', ''),
-    'mailer.replyTo'    => env('MAILER_REPLYTO', '')
+    'mailer.replyTo'    => env('MAILER_REPLYTO', ''),
+
+    /* campos dos emails enviados, separados por vírgula, que deverão ser salvos no log. Deixar vazio para não salvar log. */
+    'mailer.logMessages' => env('MAILER_LOG_MESSAGES', 'to,subject'),
+
 ];
