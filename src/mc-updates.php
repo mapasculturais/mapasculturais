@@ -646,9 +646,13 @@ return [
                         $result[] = $area;
                     }
                 }
+                sort($areas);
+                sort($result);
 
-                $agent->terms['area'] = $result;
-                $agent->save(true);
+                if($areas != $result) {
+                    $agent->terms['area'] = $result;
+                    $agent->save(true);
+                }
             }
         });
     },
