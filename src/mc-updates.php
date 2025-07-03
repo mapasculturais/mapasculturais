@@ -570,4 +570,55 @@ return [
             }
         });
     },
+
+    "Normalização das áreas de atuação" => function () {
+        $app = App::i();
+
+        $taxonomies = $app->getRegisteredTaxonomies(Agent::class);
+        $terms = $taxonomies['area']->restrictedTerms;
+
+        $normalize_for_comparison = function ($input) {
+            $input = Utils::sanitizeString($input, 'lower');
+
+            $input = preg_replace('/\b(e|&|and|\/)\b/i', '', $input);
+
+            $input = str_replace(['-', '_', ',', '.', '(', ')'], ' ', $input);
+
+            $input = preg_replace('/\s+/', ' ', $input);
+
+            return trim($input);
+        };
+
+        $terms_area = [];
+        foreach ($terms as $term) {
+            $terms_area[$term] = $normalize_for_comparison($term);
+        }
+
+        DB_UPDATE::enqueue('Agent', "id > 1", function (Agent $agent) use ($terms_area, $normalize_for_comparison) {
+            if ($areas = $agent->terms['area']) {
+                $result = [];
+
+                foreach ($areas as $area) {
+                    $normalized_area = $normalize_for_comparison($area);
+                    $matched = false;
+
+                    foreach ($terms_area as $correct_value => $normalized_reference) {
+                        if ($normalized_area === $normalized_reference) {
+                            $result[] = $correct_value;
+                            $matched = true;
+                            break;
+                        }
+                    }
+
+                    if (!$matched) {
+                        $result[] = $area;
+                    }
+                }
+
+                $agent->terms['area'] = $result;
+                $agent->save(true);
+            }
+        });
+    }
+
 ];
