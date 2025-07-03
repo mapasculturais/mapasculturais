@@ -265,4 +265,34 @@ class Utils {
 
         return $mime;
     }
+
+    /**
+     * Sanitiza uma string (ou array de strings), removendo acentos, ajustando o case e limpando espaços.
+     *
+     * - Se o input for um array, aplica recursivamente nos valores.
+     * - Remove acentos e espaços em excesso.
+     * - Converte para letras minúsculas ou maiúsculas conforme o parâmetro $case.
+     *
+     * @param string|array $input A string ou array de strings a serem normalizadas.
+     * @param string $case Define o case final da string. Pode ser 'lower' (padrão) ou 'upper'.
+     *
+     * @return string|array A string (ou array) sanitizada.
+     */
+    public static function sanitizeString(string|array $input, string $case = 'lower'): string|array
+    {
+        if (is_array($input)) {
+            $result = [];
+            foreach ($input as $key => $value) {
+                $result[$key] = self::sanitizeString($value, $case);
+            }
+            return $result;
+        }
+
+        $input = mb_convert_encoding((string)$input, 'UTF-8', mb_detect_encoding($input));
+        $input = self::removeAccents($input);
+        $input = trim($input);
+
+        return $case === 'upper' ? mb_strtoupper($input, 'UTF-8') : mb_strtolower($input, 'UTF-8');
+    }
+
 }
