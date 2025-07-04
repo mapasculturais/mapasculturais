@@ -101,9 +101,7 @@ trait EntityRevision{
         }
 
         if($this->usesTaxonomies()) {
-            foreach($this->__termRelations as $termRelation) {
-                $revisionData['_terms'][$termRelation->term->taxonomySlug][] = $termRelation->term->term;
-            }
+            $revisionData['_terms'] = $this->terms;
         }
 
         if($this->usesSealRelation()) {

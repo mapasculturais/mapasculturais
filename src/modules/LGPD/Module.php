@@ -86,7 +86,7 @@ class Module extends \MapasCulturais\Module
                     'timestamp' => (new DateTime())->getTimestamp(),
                     'md5' => Module::createHash($text),
                     'text' => $text,
-                    'ip' => $app->request->getIp(),
+                    'ip' => $_SERVER['HTTP_CF_CONNECTING_IP'] ?? $app->request->getIp(),
                     'userAgent' => $app->request->getUserAgent(),
                 ];
             }

@@ -208,13 +208,52 @@
         display: flex;
         gap: size(16) size(5);
         flex-wrap: wrap; 
+        padding-right: size(5);
 
         .field__group {
             overflow-y: auto;
-            max-height: size(400);
+            max-height: size(250);
+            padding-right: size(5);
+        }
+
+        @media (max-width: size(600)) {
+            max-height: unset;
         }
     }
 
+    &__filter-groups {
+        display: flex;
+        gap: size(16);
+        flex-direction: row;
+        flex-wrap: nowrap;
+        width: 100%;
+
+        @media (max-width: size(900)) {
+            flex-wrap: wrap;
+        }
+    }
+
+    &__filter-group {
+        display: grid;
+        gap: size(16);
+        height: fit-content;
+        min-width: calc(25% - 12px);
+
+        & > .mc-accordion {
+            border: var(--mc-border-hairline) var(--mc-gray-300);
+            border-radius: var(--mc-border-radius-xs);
+            overflow: hidden;
+        }
+
+        @media (max-width: size(900)) {
+            max-width: calc(50% - 16px);
+        }
+
+        @media (max-width: size(600)) {
+            max-width: 100%;
+            width: 100%;
+        }
+    }
     .sticky {
         position: sticky;
         background-color: white;

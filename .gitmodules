@@ -19,3 +19,6 @@
 [submodule "src/plugins/Metabase"]
 	path = src/plugins/Metabase
 	url = https://github.com/culturagovbr/plugin-Metabase
+[submodule "src/plugins/MapasBlame"]
+	path = src/plugins/MapasBlame
+	url = https://github.com/culturagovbr/plugin-MapasBlame.git

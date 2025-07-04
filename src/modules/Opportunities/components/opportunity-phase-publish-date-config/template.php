@@ -12,7 +12,7 @@ $this->import('
     mc-link
 ');
 ?>
-<div class="col-12">
+<div v-if="isNotContinuousFlow" class="col-12">
     <div class="grid-12 opportunity-phase-publish-date-config">
         <h4 class="bold col-12">  <?= i::__("Publicação de Resultados") ?></h4>
         <div v-if="phase.publishedRegistrations" class="published">

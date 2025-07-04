@@ -6,6 +6,10 @@ app.component('registration-edition', {
             type: Entity,
             required: true,
         },
+        editableFields: {
+            type: Boolean,
+            default: false
+        }
     },
 
     setup() {

@@ -7,6 +7,7 @@ use MapasCulturais\Entities\Job;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\i;
+use \Spreadsheets\FieldParser;
 use Spreadsheets\SpreadsheetJob;
 
 class Registrations extends SpreadsheetJob
@@ -31,21 +32,39 @@ class Registrations extends SpreadsheetJob
             $query['@select'] .= ",owner.{{$job->owner_properties}}";
         }*/
         $query['@select'] .= ',projectName,owner.{name}';
-        $properties = explode(',', $query['@select']);
-        
-        foreach($properties as $property) {
+        $properties = FieldParser::parse($query['@select']);
+
+        foreach(array_keys($properties) as $property) {
             if(str_starts_with($property, 'field_')) {
                 continue;
             }
 
-            if(str_starts_with($property, 'owner.{')) {
-                $values = $this->extractValues($property);
+            if($property == 'ownerGeoMesoregiao') {
+                $header[$property] = i::__('Mesorregião do responsável');
+                continue;
+            }
 
-                foreach($values as $val) {
-                    if($val === 'name') {
-                        $header[$val] = i::__('Responsável pela inscrição');
-                    }
-                }
+            if($property == 'ownerName') {
+                $header[$property] = i::__('Responsável pela inscrição');
+                continue;
+            }
+
+            if($property == 'files') {
+                $header[$property] = i::__('Anexos');
+            }
+            
+            if($property == 'usingQuota') {
+                $header[$property] = i::__('Cotas aplicadas');
+                continue;
+            }
+
+            if($property == 'quotas') {
+                $header[$property] = i::__('Elegível para as cotas');
+                continue;
+            }
+
+            if($property == 'tiebreaker') {
+                $header[$property] = i::__('Critérios de desempate');
                 continue;
             }
 
@@ -63,8 +82,35 @@ class Registrations extends SpreadsheetJob
                 continue;
             }
 
+            if($property == 'updateTimestamp') {
+                $header['updateDate'] = i::__('Data de atualização');
+                $header['updateTime'] = i::__('Hora de atualização');
+
+                continue;
+            }
+
             if($property == 'projectName') {
                 $header[$property] = i::__('Nome do projeto');
+                continue;
+            }
+
+            if($property == 'eligible') {
+                $header[$property] = i::__('Concorrendo por cota');
+                continue;
+            }
+
+            if($property == 'editableUntil') {
+                $header[$property] = i::__('Função editar inscrição: Prazo final para edição');
+                continue;
+            }
+
+            if($property == 'editSentTimestamp') {
+                $header[$property] = i::__('Função editar inscrição: Data de envio da edição');
+                continue;
+            }
+
+             if($property == 'editableFields') {
+                unset($header[$property]);
                 continue;
             }
 
@@ -97,6 +143,11 @@ class Registrations extends SpreadsheetJob
                     if($entity_type_field['ft'] == 'pessoaDeficiente') {
                         $header[$field->fieldName] = $field->title;
                     }
+
+                    if($entity_type_field['ft'] == 'persons') {
+                        $header[$field->fieldName] = $field->title;
+                    }
+                    
                 } else {
                     $header[$field->fieldName] = $field->title;
                 }
@@ -139,8 +190,11 @@ class Registrations extends SpreadsheetJob
             }
 
         } while($opportunity = $opportunity->previousPhase);
+        $enalble_quota = ($query_params['@order'] ?? false) === "@quota";
 
-        $result = $opportunity_controller->apiFindRegistrations($job->owner, $query_params);
+        $result = $opportunity_controller->apiFindRegistrations($job->owner, $query_params, $enalble_quota);
+
+        $properties = FieldParser::parse($query_params['@select']);
         
         if (isset($result->registrations) && is_array($result->registrations)) {
             foreach($result->registrations as &$entity) {                
@@ -148,6 +202,19 @@ class Registrations extends SpreadsheetJob
                     $entity_type_field = $this->is_entity_type_field($field->fieldName);
 
                     if($entity_type_field['status']) {
+                       
+                        if ($entity_type_field['ft'] === 'persons' && !empty($entity[$field->fieldName])) {
+                            $persons = json_decode(json_encode($entity[$field->fieldName]),true);
+                            $_persons = [];
+
+                            foreach($persons as $person){
+                                if($person['fullName'] || $person['cpf']){
+                                    $_persons[] = $person['fullName'] . " : " . $person['cpf'];
+                                }
+                            }
+                            $entity[$field->fieldName] = implode(', ', $_persons );
+                        }
+
                         if($entity_type_field['ft'] == '@location') {
                              
                             $entity['UF'] = $entity[$field->fieldName]->En_Estado;
@@ -221,13 +288,21 @@ class Registrations extends SpreadsheetJob
                     if ($field->fieldType == 'checkbox') {
                         $entity[$field->fieldName] = in_array($entity[$field->fieldName], [1, '1', true]) ? 'Sim' : $entity[$field->fieldName];
                     }
+
+                    if (isset($entity[$field->fieldName]) && (is_string($entity[$field->fieldName]) || is_null($entity[$field->fieldName]))) {
+                        $entity[$field->fieldName] = $this->cleanTextForExport($entity[$field->fieldName]);
+                    }
                 }
 
                 unset($entity['@entityType']);
                 unset($entity['evaluationResultString']);
 
                 if(isset($entity['agentsData']) && is_array($entity['agentsData'])) {
-                    $entity['name'] = $entity['agentsData']['owner']['name'];
+                    if($entity['status'] == "0") {
+                        $entity['ownerName'] = $entity['owner']['name'];
+                    } else {
+                        $entity['ownerName'] = $entity['agentsData']['owner']['name'] ?? '';
+                    }
                 }
 
                 unset($entity['agentsData']);
@@ -239,6 +314,11 @@ class Registrations extends SpreadsheetJob
                     unset($owner_info['id']);
 
                     $entity = array_merge($entity, $owner_info);
+                }
+
+                if (isset($entity['geoMesoregiao'])) {
+                    $entity['ownerGeoMesoregiao'] = eval('return $entity' . $properties['ownerGeoMesoregiao'] . ';');
+                     unset($entity['geoMesoregiao']);
                 }
                 
                 if(isset($entity['sentTimestamp']) && !is_null($entity['sentTimestamp'])) {
@@ -255,6 +335,23 @@ class Registrations extends SpreadsheetJob
 
                 unset($entity['createTimestamp']);
 
+                if(isset($entity['updateTimestamp']) && !is_null($entity['updateTimestamp'])) {
+                    $entity['updateDate'] = $entity['updateTimestamp']->format('d-m-Y');
+                    $entity['updateTime'] = $entity['updateTimestamp']->format('H:i:s');
+                }
+
+                unset($entity['updateTimestamp']);
+                
+                if (isset($entity['consolidatedResult']) && !is_null($entity['consolidatedResult'])) {
+                    $map = [
+                        "valid" => i::__("Válido"),
+                        "invalid" => i::__( "Inválido")
+                    ];
+                    if (isset($map[$entity['consolidatedResult']])) {
+                        $entity['consolidatedResult'] = $map[$entity['consolidatedResult']];
+                    }
+                }
+                
                 if(isset($entity['status']) && !is_null($entity['status'])) {
                     $entity['status'] = $this->getStatusName($entity['status']);
                 }
@@ -274,6 +371,25 @@ class Registrations extends SpreadsheetJob
 
                     $entity['number'] = $number;
                 }
+
+                if(isset($entity['eligible'])) {
+                    $entity['eligible'] = $entity['eligible'] ?  i::__('Sim') : i::__('Não');
+                }
+
+                if(isset($entity['editableUntil'])) {
+                    $date = $entity['editableUntil'];
+                    $entity['editableUntil'] = $date->format('d/m/Y H:i:s');
+                }
+
+                if(isset($entity['editSentTimestamp'])) {
+                    $editSentTimestamp = $entity['editSentTimestamp'];
+                    $entity['editableUntil'] = $editSentTimestamp->format('d/m/Y H:i:s');
+                }
+
+                if(isset($entity['quotas']) && $entity['quotas']) {
+                    $entity['quotas'] = implode(",", $entity['quotas']);
+                }
+                
                 $entity = $this->replaceArraysWithNull($entity);
             }
         }
@@ -312,16 +428,24 @@ class Registrations extends SpreadsheetJob
         $result = ['status' => false];
         
         $def = $app->getRegisteredMetadataByMetakey($field_name, Registration::class);
-        if ($def && $def->config['type'] == 'agent-owner-field') {
-            $field_config = $def->config['registrationFieldConfiguration'];
-            $ft = $field_config->config['entityField'] ?? null;
-    
-            if(($ft == '@location') 
-                || ($ft == '@links')
-                || ($ft == 'pessoaDeficiente')
-            ) {
+
+        if($def) {
+            if ($def->config['type'] == 'agent-owner-field') {
+                $field_config = $def->config['registrationFieldConfiguration'];
+                $ft = $field_config->config['entityField'] ?? null;
+        
+                if(($ft == '@location') 
+                    || ($ft == '@links')
+                    || ($ft == 'pessoaDeficiente')
+                ) {
+                    $result['status'] = true;
+                    $result['ft'] = $ft;
+                }
+            }
+
+            if($def->config['type'] == 'persons') {
                 $result['status'] = true;
-                $result['ft'] = $ft;
+                $result['ft'] = 'persons';
             }
         }
 

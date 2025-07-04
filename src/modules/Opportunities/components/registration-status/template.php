@@ -11,8 +11,7 @@ $this->import('
     registration-results
 ');
 ?>
-
-<div class="opportunity-phases-timeline__box">
+<div v-if="!phase.isLastPhase" class="opportunity-phases-timeline__box">
     <label class="semibold opportunity-phases-timeline__label"><?= i::__('RESULTADO DA FASE')?></label>
     <div class="opportunity-phases-timeline__status">
         <mc-icon name="circle" :class="verifyState(registration)"></mc-icon>
@@ -24,7 +23,7 @@ $this->import('
         <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
     </div>
 
-    <div>
+    <div v-if="showResults(phase)">
         <div v-if="phase.type == 'qualification'"><?= i::__('Resultado:') ?> <strong>{{registration.consolidatedResult}}</strong></div>
         <div v-if="phase.type == 'technical'"><?= i::__('Pontuação:') ?> <strong>{{formatNote(registration.consolidatedResult)}}</strong></div>
         <div v-if="phase.type == 'documentary'"> 

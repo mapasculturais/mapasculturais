@@ -12,6 +12,7 @@ app.component('search-list', {
         return {
             query: {},
             typeText: '',
+            selectedOrder: 'createTimestamp DESC',
         }
     },
 
@@ -71,6 +72,10 @@ app.component('search-list', {
         },
 
         order () {
+            if (this.selectedOrder) {
+                return this.selectedOrder;
+            }
+    
             const keyword = this.pseudoQuery['@keyword'] ?? '';
             if ($DESCRIPTIONS[this.type].name && keyword.length >= 3) {
                 return 'name ASC';

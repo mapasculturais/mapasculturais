@@ -55,7 +55,9 @@ abstract class SpreadsheetJob extends JobType
 
     protected function _execute(Job $job)
     {
+        $app = App::i();
         
+        ini_set('memory_limit', $app->config['app.export.memoryLimit']);
         $entity_class_name = $job->entityClassName;
         $file_class = $job->owner->getFileClassName();
         
@@ -135,9 +137,21 @@ abstract class SpreadsheetJob extends JobType
         while($batch = $this->getBatch($job)) {
             foreach ($batch as $data) {
                 $new_data = [];
+
                 foreach($sub_header as $prop => $label) {
                     if (isset($data[$prop]) && is_array($data[$prop])) {
-                        $new_data[] = implode(', ', $data[$prop]);
+                        $middle_data = [];
+
+                        foreach ($data[$prop] as $key => $value){
+                            
+                            if(is_array($value)){
+                                $middle_data[] = implode(', ', $value);
+                            }else{
+                                $middle_data[] = $value;
+                            }
+                        }
+                        
+                        $new_data[] = implode(', ', $middle_data);
                     } else {
                         $new_data[] = isset($data[$prop]) ? $data[$prop] : null; 
                     }
@@ -393,6 +407,32 @@ abstract class SpreadsheetJob extends JobType
         ];
 
         return $entities[$class];
+    }
+
+    /**
+     * Limpa e padroniza textos para exportação (ex: planilhas), removendo tags HTML,
+     * caracteres invisíveis, normalizando quebras de linha e garantindo codificação UTF-8.
+     *
+     * @param string|null $text Texto original a ser sanitizado.
+     * @return string Texto limpo e seguro para exportação.
+     */
+    function cleanTextForExport(?string $text): string {
+        if ($text === null) {
+            return '';
+        }
+
+        // Evita interpretação como fórmula no ODS/Excel
+        if (preg_match('/^[=+\-@]/', $text)) {
+            $text = "'" . $text;
+        }
+
+        $text = str_replace('\n', "\n", $text); // "\n" como string literal
+        $text = strip_tags($text);
+        $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+        $text = preg_replace('/[\x00-\x1F\x7F]/u', '', $text);
+
+
+        return trim($text);
     }
 
     /**

@@ -83,7 +83,7 @@ $this->import('
         </template>
 
         <template v-if="is('multiselect') || is('checklist')">
-           <div class="field__group">
+            <div class="field__group">
                 <template v-if="isMultiSelect()">
                     <mc-multiselect :placeholder="placeholder || description?.placeholder" @selected="change($event)" :model="selectedOptions[prop]" :items="description.options" #default="{popover,setFilter}" :max-options="maxOptions" :preserve-order="preserveOrder" hide-filter hide-button></mc-multiselect>
 
@@ -100,7 +100,7 @@ $this->import('
                     </div>
 
                     <label class="input__label input__checkboxLabel input__multiselect" v-for="optionValue in description.optionsOrder">
-                       <input :checked="value?.length > 0 && value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled || (maxOptions && value?.length >= maxOptions && !value?.includes(optionValue))" /> {{description.options[optionValue]}} 
+                        <input :checked="value?.length > 0 && value?.includes(optionValue)" type="checkbox" :value="optionValue" @change="change($event)" :disabled="readonly || disabled || (maxOptions && value?.length >= maxOptions && !value?.includes(optionValue))" /> {{description.options[optionValue]}} 
                     </label>
                 </template>
             </div>
@@ -110,7 +110,10 @@ $this->import('
             <div class="field__group">
                 <label class="field__checkbox">
                     <input :id="propId" type="checkbox" :checked="value" @click="change($event)"  :disabled="readonly || disabled" />
-                    <slot>{{label || description.label}}</slot>
+                    <span>
+                        <slot>{{label || description.label}}</slot>
+                        <slot name="info"></slot>
+                    </span>
                 </label>
             </div>
         </template>
