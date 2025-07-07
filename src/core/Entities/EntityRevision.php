@@ -159,6 +159,12 @@ class EntityRevision extends \MapasCulturais\Entity{
         } else {
             $this->message = self::defaultMessageForAction($action);
         }
+
+        foreach($this->__data as $key => $data) {
+            if(is_null($data->id)) {
+                unset($this->__data[$key]);
+            }
+        }
     }
 
     public static function defaultMessageForAction(string $action)

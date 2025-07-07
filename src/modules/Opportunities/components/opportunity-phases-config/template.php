@@ -68,7 +68,7 @@ $this->import('
     </template>
     <template #after-li="{index, item}">
         <template v-if="index == phases.length-2">
-            <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo && !(firstPhase?.isContinuousFlow && firstPhase?.hasEndDate && !lastPhase.publishTimestamp)" class="add-phase grid-12">
+            <div v-if="showButtons() && entity.registrationFrom && entity.registrationTo" class="add-phase grid-12">
                 <div class="add-phase__evaluation col-12">
                     <opportunity-create-evaluation-phase :opportunity="entity" :previousPhase="item" :lastPhase="phases[index+1]" @create="addInPhases"></opportunity-create-evaluation-phase>
                 </div>
