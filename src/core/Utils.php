@@ -263,21 +263,28 @@ class Utils {
      *
      * @return string|array A string (ou array) sanitizada.
      */
-    public static function sanitizeString(string|array $input, string $case = 'lower'): string|array
+    public static function sanitizeString(string|array $input, string $case = 'lower', bool $removeSpecials = false): string|array
     {
         if (is_array($input)) {
             $result = [];
             foreach ($input as $key => $value) {
-                $result[$key] = self::sanitizeString($value, $case);
+                $result[$key] = self::sanitizeString($value, $case, $removeSpecials);
             }
             return $result;
         }
 
         $input = mb_convert_encoding((string)$input, 'UTF-8', mb_detect_encoding($input));
+
         $input = self::removeAccents($input);
+
+        if ($removeSpecials) {
+            $input = preg_replace('/[^\p{L}\p{N}\s]/u', '', $input); // remove tudo que não for letra, número ou espaço
+        }
+
         $input = trim($input);
 
         return $case === 'upper' ? mb_strtoupper($input, 'UTF-8') : mb_strtolower($input, 'UTF-8');
     }
+
 
 }
