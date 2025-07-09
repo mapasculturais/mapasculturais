@@ -90,6 +90,7 @@ RUN pnpm install && pnpm run build
 
 RUN sass themes/BaseV1/assets/css/sass/main.scss:themes/BaseV1/assets/css/main.css
 
+RUN chown www-data:www-data -R /var/www
 
 COPY docker/recreate-pending-pcache-cron.sh /recreate-pending-pcache-cron.sh
 COPY docker/jobs-cron.sh /jobs-cron.sh
@@ -102,8 +103,6 @@ COPY docker/production/php.ini /usr/local/etc/php/php.ini
 COPY docker/timezone.ini /usr/local/etc/php/conf.d/timezone.ini
 
 RUN ln -s /var/www/html /var/www/public
-
-RUN chown -R www-data:www-data /var/www/public/
 
 # arquivos exclusivos dos ambientes de desenvolvimento
 COPY docker/development/router.php /var/www/dev/router.php
