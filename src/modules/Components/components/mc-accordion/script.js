@@ -7,6 +7,10 @@ app.component('mc-accordion', {
             type: Boolean,
             default: false,
         },
+        openOnArrow: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
@@ -15,8 +19,12 @@ app.component('mc-accordion', {
         }
     },
     methods: {
-        toggle() {
-          this.active= !this.active;
+        toggle(event) {
+            if (this.openOnArrow && !event.target.closest('.mc-accordion__close')) {
+                return; 
+            }
+            
+            this.active = !this.active;
         },
     },
 });

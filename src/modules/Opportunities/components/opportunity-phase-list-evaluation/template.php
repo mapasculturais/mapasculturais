@@ -24,13 +24,13 @@ $this->import('
                 <div class="opportunity-phase-list-evaluation__status col-6">
                     <h4 class="bold"><?php i::_e("Resumo das inscrições") ?></h4>
                     <div v-if="entity.opportunity.summary?.registrations">
-                        <p v-if="entity.opportunity.summary?.registrations"><?= i::__("Quantidade inscrições:") ?> <strong>{{entity.opportunity.summary?.registrations}}</strong> <?php i::_e('inscrições') ?></p>
-                        <p v-if="entity.opportunity.summary?.evaluated"><?= i::__("Quantidade de inscrições <strong>avaliadas</strong>:") ?> <strong>{{entity.opportunity.summary?.evaluated}}</strong> <?php i::_e('inscrições') ?></p>
-                        <p v-if="entity.opportunity.summary?.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{entity.opportunity.summary?.Approved}}</strong> <?php i::_e('inscrições') ?></p>
-                        <p v-if="entity.opportunity.summary?.Notapproved"><?= i::__("Quantidade de inscrições <strong>não selecionadas</strong>:") ?> <strong>{{entity.opportunity.summary.Notapproved}}</strong> <strong><?= i::__('inscrições') ?></strong></p>
-                        <p v-if="entity.opportunity.summary?.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{entity.opportunity.summary?.Waitlist}}</strong> <?php i::_e('inscrições') ?></p>
-                        <p v-if="entity.opportunity.summary?.Invalid"><?= i::__("Quantidade de inscrições <strong>inválidas</strong>:") ?> <strong>{{entity.opportunity.summary?.Invalid}}</strong> <?php i::_e('inscrições') ?></p>
-                        <p v-if="entity.opportunity.summary?.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{entity.opportunity.summary?.Pending}}</strong> <?php i::_e('inscrições') ?></p>
+                        <p v-if="entity.opportunity.summary?.registrations"><?= i::__("Quantidade de inscrições:") ?> <strong>{{entity.opportunity.summary?.registrations}}</strong> </p>
+                        <p v-if="entity.opportunity.summary?.evaluated"><?= i::__("Quantidade de inscrições <strong>avaliadas</strong>:") ?> <strong>{{entity.opportunity.summary?.evaluated}}</strong> </p>
+                        <p v-if="entity.opportunity.summary?.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{entity.opportunity.summary?.Approved}}</strong> </p>
+                        <p v-if="entity.opportunity.summary?.Notapproved"><?= i::__("Quantidade de inscrições <strong>não selecionadas</strong>:") ?> <strong>{{entity.opportunity.summary.Notapproved}}</strong></p>
+                        <p v-if="entity.opportunity.summary?.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{entity.opportunity.summary?.Waitlist}}</strong> </p>
+                        <p v-if="entity.opportunity.summary?.Invalid"><?= i::__("Quantidade de inscrições <strong>inválidas</strong>:") ?> <strong>{{entity.opportunity.summary?.Invalid}}</strong> </p>
+                        <p v-if="entity.opportunity.summary?.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{entity.opportunity.summary?.Pending}}</strong> </p>
                     </div>
                     <div v-if="!entity.opportunity.summary?.registrations && !entity.isFirstPhase">
                         <?= i::__("As inscrições para esta fase ainda não estão disponíveis") ?>

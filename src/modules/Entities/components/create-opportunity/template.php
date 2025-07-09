@@ -16,14 +16,24 @@ $this->import('
 ?>
 <mc-modal :title="modalTitle" classes="create-modal create-opportunity-modal" button-label="<?php i::_e('Criar Oportunidade')?>" @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.id" #default="modal">
-        <label><?php i::_e('Crie uma oportunidade com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
+        <label><?php i::_e('Crie uma oportunidade com informações básicas e de forma rápida') ?></label>
         <form @submit.prevent="handleSubmit" class="create-modal__fields">
+
             <entity-field :entity="entity" hide-required :editable="true" label="<?php i::esc_attr_e("Selecione o tipo da oportunidade") ?>" prop="type"></entity-field>
             <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Título") ?> prop="name"></entity-field>
-
-            <div class="create-modal__fields">
-                <entity-terms :entity="entity" hide-required :editable="true" title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
+            
+            <div class="create-opportunity-modal__continuous-flow">
+                <div class="create-opportunity-modal__continuous-flow-options">
+                    <entity-field :entity="entity" type="checkbox" prop="isContinuousFlow" label="<?php i::esc_attr_e('Habilitar fluxo contínuo')?>">
+                        <template #info>
+                            <?php $this->info('editais-oportunidades -> configuracoes -> fluxo-continuo') ?>
+                        </template>
+                    </entity-field>
+                    <entity-field v-if="entity?.isContinuousFlow" :entity="entity" type="checkbox" prop="hasEndDate" label="<?php i::esc_attr_e('Habilitar data final das inscrições')?>"></entity-field>
+                </div>
             </div>
+
+            <entity-terms :entity="entity" hide-required :editable="true" title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
 
             <div v-if="!entity.ownerEntity" class="select-list">
                 <label class="select-list__label"><?php i::_e('Vincule a oportunidade a uma entidade: ') ?><br></label>

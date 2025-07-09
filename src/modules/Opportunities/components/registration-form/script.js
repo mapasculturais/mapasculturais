@@ -22,9 +22,11 @@ app.component('registration-form', {
 
     data() {
         const editableFields = this.registration.editableFields ?? [];
+        const registrationSnapshot = Object.assign({}, this.registration)
 
         return {
             editableFields,
+            registrationSnapshot,
         }
     },
 
@@ -160,11 +162,13 @@ app.component('registration-form', {
         },
         isDisabled(field) {
             let fieldName = field.fieldName || field.groupName;
+
             if (this.editableFields.length > 0) {
                 if (this.disableFields && this.disableFields.includes(fieldName)) {
                     return true;
                 }
             }
+
             return this.editableFields.length > 0 ? !this.editableFields.includes(fieldName) : false;
         },
 

@@ -21,8 +21,8 @@ $this->import('
         <div class="grid-12 col-12 opportunity-data-collection__section">
             <?php $this->applyTemplateHook('opportunity-data-collection-config','begin')?>
             <entity-field v-if="!phase.isFirstPhase" :entity="phase" prop="name" :autosave="3000" classes="col-12 sm:col-12"></entity-field>
-            <entity-field :entity="phase" prop="registrationFrom" :autosave="3000"  classes="col-6 sm:col-12"></entity-field>
-            <entity-field v-if="!firstPhase?.isContinuousFlow" :entity="phase" prop="registrationTo" :autosave="3000"  classes="col-6 sm:col-12"></entity-field>
+            <entity-field :entity="phase" prop="registrationFrom" :autosave="3000" :min="fromDateMin?._date" :max="fromDateMax?._date" classes="col-6 sm:col-12"></entity-field>
+            <entity-field v-if="!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate" :entity="phase" prop="registrationTo" :autosave="3000" :min="toDateMin?._date" :max="toDateMax?._date" classes="col-6 sm:col-12"></entity-field>
             <entity-field v-if="phase.isReportingPhase" :entity="phase" prop="includesWorkPlan" classes="col-12"></entity-field>
 
             <?php $this->applyTemplateHook('opportunity-data-collection-config','end')?>

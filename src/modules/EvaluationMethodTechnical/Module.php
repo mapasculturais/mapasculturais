@@ -921,10 +921,9 @@ class Module extends \MapasCulturais\EvaluationMethod {
     }
 
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration, array $evaluations) {
-        $app = App::i();
-        $status = [ \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
-        ];
+        if(empty($evaluations)){
+            return 0;
+        }
 
         $committee = $registration->opportunity->getEvaluationCommittee();
         $users = [];

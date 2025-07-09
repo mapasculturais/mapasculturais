@@ -96,11 +96,11 @@ $this->import('
         </div>
     </div>
     <div v-if="verifiedAdress()" class="col-12">
-        <p class="entity-location__address">
+        <p v-if="entity.publicLocation" class="entity-location__address">
             <span v-if="entity.endereco">{{entity.endereco}}</span>
             <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
         </p>
-        <entity-map  :entity="entity" :editable="editable"></entity-map>
+        <entity-map v-if="entity.publicLocation" :entity="entity" :editable="editable"></entity-map>
     </div>
     <?php $this->applyTemplateHook('entity-location','end'); ?>
 </div>

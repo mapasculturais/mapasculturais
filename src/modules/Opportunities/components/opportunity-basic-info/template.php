@@ -52,9 +52,9 @@ $this->import('
         </template>
     </mc-card>
 </div>
+
 <mc-container>
     <main>
-
         <mc-card>
             <template #content>
                 <div class="header-opp grid-12 v-bottom">

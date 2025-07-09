@@ -30,25 +30,29 @@ class Module extends \MapasCulturais\EvaluationMethod
 
     protected function _getConsolidatedResult(Entities\Registration $registration, array $evaluations)
     {
-        $app = App::i();
-        $status = [
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_DRAFT,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_EVALUATED,
-            \MapasCulturais\Entities\RegistrationEvaluation::STATUS_SENT
-        ];
+        if(empty($evaluations)){
+            $statuses = [
+                Entities\Registration::STATUS_DRAFT => 0,
+                Entities\Registration::STATUS_SENT => 0,
+                Entities\Registration::STATUS_INVALID => 'invalid',
+                Entities\Registration::STATUS_NOTAPPROVED => 'invalid',
+                Entities\Registration::STATUS_WAITLIST => 'invalid',
+                Entities\Registration::STATUS_APPROVED => 'valid',
+            ];
 
+            return $statuses[$registration->status] ?? 0;
+        }
+        
         $committee = $registration->opportunity->getEvaluationCommittee();
         $users = [];
         foreach ($committee as $item) {
             $users[] = $item->agent->user->id;
         }
 
-        $result = i::__("Habilitado");
+        $result = 'valid';
         foreach ($evaluations as $eval){
-            $_result = $this->getEvaluationResult($eval);
-
-            if($_result == 'invalid'){
-                $result = $this->valueToString($_result);
+            if($this->getEvaluationResult($eval) == 'invalid'){
+                $result = 'invalid';
             }
         }
 

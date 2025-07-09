@@ -206,10 +206,6 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $registration->checkPermission('viewConsolidatedResult');
         $evaluations = $app->repo('RegistrationEvaluation')->findBy(['registration' => $registration, 'status' => RegistrationEvaluation::STATUS_SENT]);
 
-        if(empty($evaluations)){
-            return 0;
-        }
-
         $committees = $registration->getCommittees();
 
         $result = '';
@@ -225,15 +221,23 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
         } else {
             $number_of_valuers = 0;
-            foreach($committees as $users){
+            $all_evaluations_sent = true;
+
+            foreach($committees as $committee_name => $users) {
                 $number_of_valuers += count($users);
+
+                foreach($users as $user) {
+                    $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $registration, 'user' => $user, 'status' => RegistrationEvaluation::STATUS_SENT]);
+                    if(empty($evaluation)){
+                        $all_evaluations_sent = false;
+                        break;
+                    }
+                }
             }
 
-            if(count($evaluations) < $number_of_valuers){
-                $result =  0;
+            if($all_evaluations_sent || $registration->status > 1) {
+                $result = $this->_getConsolidatedResult($registration, $evaluations);
             }
-            
-            $result =  $this->_getConsolidatedResult($registration, $evaluations);
         }
 
         return $result;
@@ -995,7 +999,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
 
             // verifica permissão de avaliação por número da inscrição
-            if ($ufetch = $fetch[$user->id] ?? false){
+            if ($ufetch = !empty($fetch[$user->id]) ? $fetch[$user->id] : false){
                 if(!$this->canEvaluateRegistrationNumber($registration, $ufetch)){
                     $can = false;
                 }

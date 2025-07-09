@@ -31,7 +31,7 @@ $this->import('
                 <div class="grid-12">
                     <div class="col-12 search-list__order">
                         <div class="field">
-                            <select v-model="order">
+                            <select v-model="selectedOrder">
                                 <option value="name ASC"> <?php i::_e('Ordem alfabética (A - Z)') ?> </option>
                                 <option value="name DESC"> <?php i::_e('Ordem alfabética (Z - A)') ?> </option>
                                 <option value="createTimestamp ASC"> <?php i::_e('Mais antigas primeiro') ?> </option>
@@ -55,7 +55,7 @@ $this->import('
                 <div class="grid-12">
                     <div class="col-12 search-list__order">
                         <div class="field">
-                            <select v-model="order">
+                            <select v-model="selectedOrder">
                                 <option value="name ASC"> <?php i::_e('Ordem alfabética (A - Z)') ?> </option>
                                 <option value="name DESC"> <?php i::_e('Ordem alfabética (Z - A)') ?> </option>
                                 <option value="createTimestamp ASC"> <?php i::_e('Mais antigas primeiro') ?> </option>

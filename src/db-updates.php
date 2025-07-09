@@ -98,6 +98,14 @@ foreach($registered_taxonomies as $def){
 return [
     // SCHEME CHANGES =========================================
 
+    'create object_type enum type' => function () {
+        $object_types = implode(',', array_map(function($el) {
+            return "'$el'";
+        }, DoctrineEnumTypes\ObjectType::values()));
+
+        __exec("CREATE TYPE object_type AS ENUM($object_types)");
+    }, 
+
     'UPDATING ENUM TYPES' => function() use($conn) {
         $reg = \Acelaya\Doctrine\Type\PhpEnumType::getTypeRegistry();
         
@@ -716,14 +724,6 @@ return [
         }
     },
 
-    'create object_type enum type' => function () {
-        $object_types = implode(',', array_map(function($el) {
-            return "'$el'";
-        }, DoctrineEnumTypes\ObjectType::values()));
-
-        __exec("CREATE TYPE object_type AS ENUM($object_types)");
-    }, 
-
     'create permission_action enum type' => function () {
         $permission_actions = implode(',', array_map(function($el) {
             return "'$el'";
@@ -1205,6 +1205,138 @@ return [
         }
     },
 
+    "Cria coluna continuous_flow na tabela opportunity" => function() use ($conn) {
+        if (!__column_exists('opportunity', 'continuous_flow')) {
+            __exec("ALTER TABLE opportunity ADD COLUMN continuous_flow TIMESTAMP NULL");
+        }
+    },
+    'Cria a tabela da entidade RegistrationStep' => function () {
+        $app = App::i();
+        $em = $app->em;
+
+        $conn = $em->getConnection();
+
+        if (!__table_exists('registration_step')) {
+            if (!__sequence_exists('registration_step_seq')) {
+                $conn->executeQuery("CREATE SEQUENCE registration_step_seq START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;");
+            }
+
+            __exec("CREATE TABLE registration_step (
+                    id INT NOT NULL DEFAULT nextval('registration_step_seq'),
+                    name VARCHAR DEFAULT NULL,
+                    display_order INT NOT NULL DEFAULT 0,
+                    opportunity_id INT NOT NULL,
+                    create_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    update_timestamp TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL,
+                    PRIMARY KEY(id)
+                );"
+            );
+
+            __exec("CREATE INDEX IF NOT EXISTS IDX_registration_step__step_id ON registration_step (id);");
+            __try("ALTER TABLE registration_step ADD CONSTRAINT FK_registration_step__opportunity FOREIGN KEY (opportunity_id) REFERENCES opportunity (id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IF NOT EXISTS IDX_registration_step__opportunity_id ON registration_step (opportunity_id);");
+        }
+
+        if (!__column_exists('registration_field_configuration', "step_id")) {
+            __exec("ALTER TABLE registration_field_configuration ADD COLUMN step_id INT NULL;");
+            __try("ALTER TABLE registration_field_configuration ADD CONSTRAINT FK_registration_field_configuration__registration_step FOREIGN KEY (step_id) REFERENCES registration_step (id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IF NOT EXISTS IDX_registration_field_configuration__step_id ON registration_field_configuration (step_id);");
+        }
+
+        if (!__column_exists('registration_file_configuration', "step_id")) {
+            __exec("ALTER TABLE registration_file_configuration ADD COLUMN step_id INT NULL;");
+            __try("ALTER TABLE registration_file_configuration ADD CONSTRAINT FK_registration_file_configuration__registration_step FOREIGN KEY (step_id) REFERENCES registration_step (id) ON DELETE CASCADE DEFERRABLE INITIALLY IMMEDIATE;");
+            __exec("CREATE INDEX IF NOT EXISTS IDX_registration_file_configuration__step_id ON registration_file_configuration (step_id);");
+        }
+    },
+    
+    'Adiciona coluna de metadados na tabela da entidade RegistrationStep' => function () {
+        if (!__column_exists('registration_step', 'metadata')) {
+            __try("ALTER TABLE registration_step ADD COLUMN metadata json DEFAULT '{}'::json NOT NULL");
+        }
+    },
+
+     'Implementa db-update para remoção de metadados duplicados em todas as tabelas auxiliares' => function () {
+        $app = App::i();
+        $em = $app->em;
+        $conn = $em->getConnection();
+
+        $tabelas = [
+            'agent_meta' => 'agente',
+            'registration_meta' => 'inscrição',
+            'opportunity_meta' => 'oportunidade',
+            'space_meta' => 'espaço',
+            'project_meta' => 'projeto',
+            'event_meta' => 'evento',
+            'evaluationmethodconfiguration_meta' => 'avaliaçao',
+            'notification_meta' => 'notificação',
+            'seal_meta' => 'selo',
+            'subsite_meta' => 'subsite',
+            'user_meta' => 'usuário',
+        ];
+
+        foreach ($tabelas as $tabela => $tipo_entidade) {
+            $duplicates = $conn->fetchAllAssociative("
+                SELECT key, object_id
+                FROM {$tabela}
+                GROUP BY key, object_id
+                HAVING COUNT(*) > 1
+            ");
+
+            foreach ($duplicates as $dup) {
+                $key = $dup['key'];
+                $object_id = $dup['object_id'];
+
+                $rows = $conn->fetchAllAssociative("
+                    SELECT id, key
+                    FROM {$tabela}
+                    WHERE key = :key AND object_id = :object_id
+                    ORDER BY id DESC
+                ", ['key' => $key, 'object_id' => $object_id]);
+
+                if (count($rows) < 2) {
+                    continue;
+                }
+
+                $rows_to_update = array_slice($rows, 1);
+
+                foreach ($rows_to_update as $row) {
+                    $new_key = $row['key'] . '_' . $row['id'];
+
+                    $conn->update($tabela, [
+                        'key' => $new_key
+                    ], [
+                        'id' => $row['id']
+                    ]);
+
+                    $app->log->debug("Metadado {$key} atualizado para {$new_key} na {$tipo_entidade} de id {$object_id} (tabela {$tabela})");
+                }
+            }
+        }
+    },
+
+    'Aplica indices UNIQUE nas tabelas auxiliares' => function () {
+        $app = App::i();
+
+        $aux_tables = [
+            'agent_meta',
+            'registration_meta',
+            'opportunity_meta',
+            'space_meta',
+            'project_meta',
+            'event_meta',
+            'evaluationmethodconfiguration_meta',
+            'notification_meta',
+            'seal_meta',
+            'subsite_meta',
+            'user_meta',
+        ];
+
+        foreach ($aux_tables as $table) {
+            __exec("CREATE UNIQUE INDEX {$table}_unique_object_id_key_value ON {$table} (object_id, key)");
+            $app->log->debug("Aplicado Índice Único na tabela auxiliar {$table}");
+        }
+    },
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {
@@ -2515,12 +2647,7 @@ $$
     'deleta requests com valores dos da coluna metadata inválidos' => function() use($conn) {
         __exec("delete from request where metadata = ':metadata'");
     },
-    "Cria coluna continuous_flow na tabela opportunity" => function() use ($conn) {
-        if (!__column_exists('opportunity', 'continuous_flow')) {
-            __exec("ALTER TABLE opportunity ADD COLUMN continuous_flow TIMESTAMP NULL");
-        }
-    },
-
+    
     "Renomeia a comissão de avaliação" => function () use($conn) {
         $name = i::__('Comissão de avaliação');
         $conn->executeQuery("
@@ -2764,5 +2891,19 @@ $$
 
     // SEMPRE ENCERRAR O ÚLTIMO ITEM COM VÍRGULA A FIM DE
     // MINIMIZAR RISCO DE ERRO NA INSERÇÃO OU MERGE DE NOVOS ITENS
+    'Atualiza o consolidated_result das inscrições com valores salvos em portuguêss' => function () {
+        __exec("
+            UPDATE registration r
+            SET consolidated_result = CASE
+                WHEN r.consolidated_result = 'Habilitado' THEN 'valid'
+                WHEN r.consolidated_result = 'Inabilitado' THEN 'invalid'
+                ELSE r.consolidated_result
+            END
+            FROM evaluation_method_configuration emc
+            WHERE r.opportunity_id = emc.opportunity_id
+                AND emc.type = 'qualification'
+                AND r.consolidated_result IN ('Habilitado', 'Inabilitado')
+        ");
+    }
     
 ] + $updates ;   

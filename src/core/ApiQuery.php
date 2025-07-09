@@ -1069,7 +1069,9 @@ class ApiQuery {
                 $app->applyHookBoundTo($this, "{$this->hookPrefix}.subsiteFilters", [&$subsite_query]);
 
                 if($subsite_query){
-                    $filters[] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
+                    $subquery_object_id = spl_object_id($subsite_query);
+                    $filter_id = "{$subquery_object_id}:{$this->pk}:{$this->pk}";
+                    $filters[$filter_id] = ['subquery' => $subsite_query, 'subquery_property' => $this->pk, 'property' => $this->pk];
                 }
             }
         }
@@ -1257,7 +1259,7 @@ class ApiQuery {
                 } elseif (in_array($key, $this->entityProperties)) {
                     $field_type = $this->fieldMappings[$key]['type'];
 
-                    if ($field_type == 'string') {
+                    if ($field_type == 'string' && !$cast) {
                         $_order = str_ireplace($key, 'unaccent(lower(e.' . $key . '))', $prop);
                     } else {
                         $_order = str_ireplace($key, 'e.' . $key, $prop);
@@ -1269,7 +1271,7 @@ class ApiQuery {
 
                     $meta_type = $app->getRegisteredMetadata($this->entityClassName)[$key]->type;
 
-                    if ($meta_type == 'string') {
+                    if ($meta_type == 'string' && !$cast) {
                         $_order = str_replace($key, "unaccent(lower($meta_alias.value))", $prop);
                     } else {
                         $_order = str_replace($key, "$meta_alias.value", $prop);
@@ -2217,6 +2219,8 @@ class ApiQuery {
             return;
         }
 
+        $app = App::i();
+
         $relation_class_name = $this->agentRelationClassName;
         
         $where = [];
@@ -2278,8 +2282,12 @@ class ApiQuery {
                 return $item['agentId'];
             }, $relations)));
 
+            $agents_query_select = 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto';
+
+            $app->applyHookBoundTo($this, "{$this->hookPrefix}.appendRelatedAgents", [&$agents_query_select]);
+
             $agents_query = new ApiQuery(Agent::class, [
-                '@select' => 'id,type,name,shortDescription,files.avatar,terms,singleUrl,nomeCompleto', 
+                '@select' => $agents_query_select, 
                 'id' => "IN($agent_ids)", 
                 'status' => 'GTE(0)', 
                 '@permissions' => 'view'
@@ -3300,7 +3308,11 @@ class ApiQuery {
         if(is_null($property)) {
             $property = $this->pk;
         }
-        $this->_subqueryFilters[] = [
+        
+        $subquery_object_id = spl_object_id($subquery);
+        $filter_id = "{$subquery_object_id}:{$subquery_property}:{$property}";
+
+        $this->_subqueryFilters[$filter_id] = [
             'subquery' => $subquery,
             'subquery_property' => $subquery_property,
             'property' => $property

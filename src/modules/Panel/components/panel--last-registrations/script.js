@@ -19,8 +19,8 @@ app.component('panel--last-registrations', {
         const registrationAPI = new API('registration');
         
         const query = this.query;
-        query['@select'] = 'id,number,opportunity.{name,files.avatar,registrationFrom,registrationTo}';
-        query['@order'] = 'updateTimestamp DESC';
+        query['@select'] = 'id,number,status,opportunity.{name,files.avatar,registrationFrom,registrationTo},owner.{name},category,range,proponentType,agentRelations,createTimestamp';
+        query['@order'] = 'updateTimestamp ASC';
         query['@permissions'] = 'view';
         query['status'] = 'GTE(0)';
         query['user'] = `EQ(@me)`;
@@ -44,36 +44,18 @@ app.component('panel--last-registrations', {
             },
             breakpoints: {
                 1200: {
-                    itemsToShow: 3.2,
-                    snapAlign: "start"
-                },
-                1100: {
-                    itemsToShow: 3,
-                    snapAlign: "start"
-                },
-                1000: {
-                    itemsToShow: 2.8,
+                    itemsToScrool: 2.8,
+                    itemsToShow: 2.2,
                     snapAlign: "start"
                 },
                 900: {
-                    itemsToShow: 2.6,
+                    itemsToShow: 1.6,
                     snapAlign: "start"
                 },
-                800: {
-                    itemsToShow: 2.4,
-                    snapAlign: "start"
-                },
-                700: {
-                    itemsToShow: 2.7,
-                    snapAlign: "start"
-                },
-                600: {
-                    itemsToShow: 2.5,
-                    snapAlign: "start"
-                },
-                500: {
-                    itemsToShow: 2.2,
-                    snapAlign: "start"
+                400: {
+                    itemsToScrool: 1.25,
+                    itemsToShow: 1.15,
+                    snapAlign: "center"
                 },
             }
         }

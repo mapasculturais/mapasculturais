@@ -12,7 +12,7 @@ app.component('registration-status', {
             required: true
         }
     },
-    
+
     setup(props, { slots }) {
         const hasSlot = name => !!slots[name];
         // os textos estão localizados no arquivo texts.php deste componente 
@@ -22,7 +22,7 @@ app.component('registration-status', {
 
     data() {
         return {
-            processing: false, 
+            processing: false,
             entity: null,
             appealPhaseRegistrationFrom: this.registration.opportunity.appealPhase?.registrationFrom,
             appealPhaseRegistrationTo: this.registration.opportunity.appealPhase?.registrationTo,
@@ -56,14 +56,14 @@ app.component('registration-status', {
                 return false;
             }
 
-            if(!this.firstPhaseRegistration.currentUserPermissions.create) {
+            if (!this.firstPhaseRegistration.currentUserPermissions.create) {
                 return false;
             }
 
             return this.registration.status > 1 && this.registration.status < 10;
         },
 
-        opportunity () {
+        opportunity() {
             if (this.phase.__objectType === 'evaluationmethodconfiguration') {
                 return this.phase.opportunity;
             } else {
@@ -84,21 +84,22 @@ app.component('registration-status', {
     },
 
     methods: {
-		formatNote(note) {
-			note = parseFloat(note);
-			return note.toLocaleString($MAPAS.config.locale);
-		},
-		verifyState(registration) {
+        formatNote(note) {
+            note = parseFloat(note);
+            return note.toLocaleString($MAPAS.config.locale);
+        },
+        verifyState(registration) {
             switch (registration.status) {
                 case 10:
+                case 1:
                     return 'success__color';
-                    
-                case 2 : 
-                case 0 : 
-				case 3 : 
+
+                case 2:
+                case 0:
+                case 3:
                     return 'danger__color';
-				case 8 : 
-                case 1 :
+                case 8:
+                case 1:
                 case undefined:
                     return 'warning__color';
 
@@ -111,7 +112,7 @@ app.component('registration-status', {
         async createAppealPhaseRegistration() {
             this.processing = true;
             const messages = useMessages();
-        
+
             const target = this.opportunity;
 
             const args = {
@@ -119,15 +120,17 @@ app.component('registration-status', {
             };
 
             try {
-                await target.POST('createAppealPhaseRegistration', {data: args, callback: (data) => {
+                await target.POST('createAppealPhaseRegistration', {
+                    data: args, callback: (data) => {
                         this.entity = new Entity('registration');
                         this.entity.populate(data);
                         this.processing = false;
                         messages.success(this.text('Solicitação de recurso criada com sucesso'));
 
                         window.location.href = Utils.createUrl('registration', 'view', [this.entity.id]);
-                }});
-                    
+                    }
+                });
+
             } catch (error) {
                 console.error(error);
                 messages.error(error.data ?? error);
@@ -140,50 +143,54 @@ app.component('registration-status', {
         },
 
         dateFrom() {
-			if (this.appealPhaseRegistrationFrom) {
-				return this.appealPhaseRegistrationFrom.date('2-digit year');
-			}	
-			if (this.appealPhaseEvaluationFrom) {
-				return this.appealPhaseEvaluationFrom.date('2-digit year');
-			}
-			return false;
-		},
+            if (this.appealPhaseRegistrationFrom) {
+                return this.appealPhaseRegistrationFrom.date('2-digit year');
+            }
+            if (this.appealPhaseEvaluationFrom) {
+                return this.appealPhaseEvaluationFrom.date('2-digit year');
+            }
+            return false;
+        },
 
-		dateTo() {
-			if (this.appealPhaseRegistrationTo) {
-				return this.appealPhaseRegistrationTo.date('2-digit year');
-			}	
-			if (this.appealPhaseEvaluationTo) {
-				return this.appealPhaseEvaluationTo.date('2-digit year');
-			}
-			return false;
-		},
+        dateTo() {
+            if (this.appealPhaseRegistrationTo) {
+                return this.appealPhaseRegistrationTo.date('2-digit year');
+            }
+            if (this.appealPhaseEvaluationTo) {
+                return this.appealPhaseEvaluationTo.date('2-digit year');
+            }
+            return false;
+        },
 
-		hour() {
-			if (this.appealPhaseRegistrationTo) {
-				return this.appealPhaseRegistrationTo.time();
-			}
-			if (this.appealPhaseEvaluationTo) {
-				return this.appealPhaseEvaluationTo.time();
-			}
-			return false;
-		},
+        hour() {
+            if (this.appealPhaseRegistrationTo) {
+                return this.appealPhaseRegistrationTo.time();
+            }
+            if (this.appealPhaseEvaluationTo) {
+                return this.appealPhaseEvaluationTo.time();
+            }
+            return false;
+        },
 
         redirectToRegistrationForm() {
             return window.location.hash = "#ficha";
         },
-        
+
         shouldShowResults(item) {
-			// se é uma fase de avaliação que não tem uma fase de coleta de dados anterior
-			const isEvaluation = item.__objectType == 'evaluationmethodconfiguration';
+            // se é uma fase de avaliação que não tem uma fase de coleta de dados anterior
+            const isEvaluation = item.__objectType == 'evaluationmethodconfiguration';
 
-			// se é uma fase de coleta de dados que não tem uma fase de avaliação posterior
-			const isRegistrationOnly = item.__objectType == 'opportunity' && !item.evaluationMethodConfiguration;
+            // se é uma fase de coleta de dados que não tem uma fase de avaliação posterior
+            const isRegistrationOnly = item.__objectType == 'opportunity' && !item.evaluationMethodConfiguration;
 
-			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
+            const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
 
-			return phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation);
-		
-		},
+            return phaseOpportunity.publishedRegistrations && (isRegistrationOnly || isEvaluation);
+
+        },
+        showResults(phase) {
+            const types = ['qualification', 'technical', 'documentary'];
+            return types.includes(phase.type) || phase.publishEvaluationDetails;
+        },
     }
 });

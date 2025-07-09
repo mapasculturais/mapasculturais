@@ -1,0 +1,41 @@
+{{{_header}}}
+<table role="presentation" class="main">
+    <tr>
+        <td class="wrapper">
+            <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td>
+                        <p>
+                            Se realizó una solicitud de reclamo para la oportunidad<br> 
+                            <a href="{{opportunityUrl}}" rel='noopener noreferrer'>{{opportunityName}}</a> <br>
+                            <strong>{{phaseName}}</strong>
+                        </p>
+                        <p>A continuación se muestran datos de la solicitud.</p>
+                        <p>
+                            <strong>Agente: </strong> <a href="{{userUrl}}" rel='noopener noreferrer'>{{userName}}</a> <br>
+                            <strong>Inscripción: </strong> <a href="{{registrationUrl}}" rel='noopener noreferrer'>{{registrationNumber}}</a> <br><br>
+                        </p>
+                        <strong>Mensaje: </strong> 
+                        <p>{{message}}</p>
+                        <p>
+                            {{#enableFile}}
+                                <div>
+                                    Hay archivos adjuntos a este reclamo.<br>
+                                    A continuación se muestran los enlaces para ver los archivos.<br><br>
+                                </div>
+                            {{/enableFile}}
+
+                            {{#files}}
+                                <div>
+                                    {{.}}  
+                                </div>
+                            {{/files}}
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{{{_footer}}}
+
