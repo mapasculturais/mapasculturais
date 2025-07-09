@@ -193,11 +193,8 @@ class Module extends \MapasCulturais\Module{
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
                     'opportunity' => $opportunity
                 ], '90 seconds');
-
-                    $opportunity = $opportunity->nextPhase;
-
-                } while ($opportunity);
-            }
+                $opportunity = $opportunity->nextPhase;
+            } while ($opportunity);
         });
 
         $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {
