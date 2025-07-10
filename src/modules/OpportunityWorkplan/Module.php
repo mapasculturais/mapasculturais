@@ -3,10 +3,12 @@ namespace OpportunityWorkplan;
 
 use MapasCulturais\App,
     MapasCulturais\i;
+use OpportunityWorkplan\Controllers\Delivery as ControllersDelivery;
 use OpportunityWorkplan\Controllers\Workplan as ControllersWorkplan;
 use OpportunityWorkplan\Entities\Workplan;
 use OpportunityWorkplan\Entities\Goal;
 use MapasCulturais\Definitions\Metadata;
+use MapasCulturais\Themes\BaseV2\Theme;
 use OpportunityWorkplan\Entities\Delivery;
 
 class Module extends \MapasCulturais\Module{
@@ -19,11 +21,16 @@ class Module extends \MapasCulturais\Module{
             });
 
             $app->hook("component(registration-form):after", function(){
-                $this->part('registration-workplan');
+                /** @var Theme $this */
+                if($this->controller->requestedEntity->opportunity->enableWorkplan){
+                    $this->part('registration-workplan');
+                }
             });
 
-            $app->hook("template(registration.view.registration-form-view):after", function(){
-                $this->part('registration-details-workplan');
+            $app->hook("template(registration.view.registration-form-view):after", function($phase){
+                if ($phase->opportunity->isFirstPhase && $phase->opportunity->enableWorkplan) {
+                    $this->part('registration-details-workplan');
+                }
             });
 
             $app->hook("entity(Registration).sendValidationErrors", function (&$errorsResult) use($app) {
@@ -67,6 +74,12 @@ class Module extends \MapasCulturais\Module{
             $app->hook("template(registration.registrationPrint.section):end", function(){
                 $this->part('registration-details-workplan-print');
             });
+            
+            $app->hook('mapas.printJsObject:before', function() {
+                $this->jsObject['EntitiesDescription']['workplan'] = Workplan::getPropertiesMetadata();
+                $this->jsObject['EntitiesDescription']['goal'] = Goal::getPropertiesMetadata();
+                $this->jsObject['EntitiesDescription']['delivery'] = Delivery::getPropertiesMetadata();
+            });
         });
     }
 
@@ -75,7 +88,8 @@ class Module extends \MapasCulturais\Module{
         $app = App::i();
 
         $app->registerController('workplan', ControllersWorkplan::class);
-       
+        $app->registerController('delivery', ControllersDelivery::class);
+        
         $this->registerOpportunityMetadata('workplanLabelDefault', [
             'label' => i::__('Plano de metas label'),
             'default_value' => 'Plano de metas'
@@ -108,8 +122,6 @@ class Module extends \MapasCulturais\Module{
         
         $this->registerOpportunityMetadata('workplan_dataProjectmaximumDurationInMonths', [
             'label' => i::__('Duração máxima em meses'),
-            'type' => 'integer',
-            'default' => 1
         ]);
 
         
@@ -128,8 +140,6 @@ class Module extends \MapasCulturais\Module{
          
         $this->registerOpportunityMetadata('workplan_metaMaximumNumberOfGoals', [
             'label' => i::__('Número máximo de metas'),
-            'type' => 'integer',
-            'default' => 1
         ]);
 
          
@@ -149,8 +159,6 @@ class Module extends \MapasCulturais\Module{
          
         $this->registerOpportunityMetadata('workplan_deliveryMaximumNumberOfDeliveries', [
             'label' => i::__('Número máximo de entregas'),
-            'type' => 'integer',
-            'default' => 1
         ]);
          
         $this->registerOpportunityMetadata('workplan_registrationReportTheNumberOfParticipants', [
@@ -177,19 +185,13 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
-        $this->registerOpportunityMetadata('workplan_monitoringEnterDeliverySubtype', [
-            'label' => i::__('Informar subtipo de entrega'),
-            'type' => 'boolean',
-            'default_value' => false
-        ]);
-
         $this->registerOpportunityMetadata('workplan_monitoringInformAccessibilityMeasures', [
             'label' => i::__('Informar as medidas de acessibilidade'),
             'type' => 'boolean',
             'default_value' => false
         ]);
         
-        $this->registerOpportunityMetadata('workplan_monitoringInformThePriorityTerritories', [
+        $this->registerOpportunityMetadata('workplan_monitoringInformThePriorityAudience', [
             'label' => i::__('Informar os territórios prioritários'),
             'type' => 'boolean',
             'default_value' => false
@@ -201,17 +203,13 @@ class Module extends \MapasCulturais\Module{
             'default_value' => false
         ]);
 
-        $this->registerOpportunityMetadata('workplan_monitoringInformThePriorityAudience', [
-            'label' => i::__('Informar o público prioritário'),
-            'type' => 'boolean',
-            'default_value' => false
-        ]);
-
         $this->registerOpportunityMetadata('workplan_monitoringReportExecutedRevenue', [
             'label' => i::__('Informar receita executada'),
             'type' => 'boolean',
             'default_value' => false
         ]);
+
+        $app->registerFileGroup('delivery', new \MapasCulturais\Definitions\FileGroup('evidences'));
 
         // metadados workplan
         $projectDuration = new Metadata('projectDuration', ['label' => \MapasCulturais\i::__('Duração do projeto (meses)')]);

@@ -184,7 +184,7 @@ return array(
             'label' => \MapasCulturais\i::__('Público presente'),
             'type' => 'integer',
             'validations' => [
-                'v::intVal()->positive()' => 'O valor deve ser um número inteiro positivo'
+                'v::intVal()->positive()' => \MapasCulturais\i::__('O valor deve ser um número inteiro positivo'),
             ]
         ),
     ),

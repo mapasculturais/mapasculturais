@@ -3,6 +3,10 @@ app.component('mc-accordion', {
     template: $TEMPLATES['mc-accordion'],
 
     props: {
+        withText: {
+            type: Boolean,
+            default: false,
+        },
         openOnArrow: {
             type: Boolean,
             default: false,

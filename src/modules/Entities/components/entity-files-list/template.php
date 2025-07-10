@@ -13,6 +13,7 @@ $this->import('
 ?>
 <div :class="classes" v-if="getFiles() || editable" class="files-list">
     <label class="files-list__title"> {{title}} </label>
+    <slot name="description"></slot>
 
     <ul v-if="getFiles()" class="files-list__list">
         <li class="files-list__list--item" v-for="file in getFiles()">

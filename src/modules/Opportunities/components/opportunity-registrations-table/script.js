@@ -277,6 +277,7 @@ app.component('opportunity-registrations-table', {
                     value: item.fieldName
                 })));
             }
+            
 
             if(this.phase.evaluationMethodConfiguration){
                 itens.splice(2,0,{ text: "Avaliação", value: "consolidatedResult"});
@@ -330,7 +331,8 @@ app.component('opportunity-registrations-table', {
                     break;
                 }
 
-                let phaseType = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type.id : phase.type.id;
+                const phaseType = phase.evaluationMethodConfiguration ? phase.evaluationMethodConfiguration.type?.id : phase.type.id;
+
                 if(phaseType == "technical"){
                     hasEvaluationMethodTechnical = true;
                     break;

@@ -372,6 +372,10 @@ class Registrations extends SpreadsheetJob
                     $entity['number'] = $number;
                 }
 
+                if(isset($entity['goalStatuses'])) {
+                    $entity['goalStatuses'] = $entity['goalStatuses']->{10} . '/' . $entity['goalStatuses']->numGoals . " " . i::__('concluídas');
+                }
+
                 if(isset($entity['eligible'])) {
                     $entity['eligible'] = $entity['eligible'] ?  i::__('Sim') : i::__('Não');
                 }

@@ -16,4 +16,6 @@ return [
     'Segmento artistico-cultural' => i::__('Segmento artistico-cultural'),
     'Meta' => i::__('Meta'),
     'Entrega' => i::__('Entrega'),
+    'Quer enviar seu recurso?' => i::__('Quer enviar seu recurso?'),
+    'Quer enviar sua inscrição?' => i::__('Quer enviar sua inscrição?'),
 ];

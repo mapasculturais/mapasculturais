@@ -18,6 +18,7 @@ return [
     'Avaliações iniciadas' => i::__('Avaliações iniciadas'),
     'Avaliações concluídas' => i::__('Avaliações concluídas'),
     'Avaliações enviadas' => i::__('Avaliações enviadas'),
+    'metas' => i::__('Metas'),
     'tipo de proponente' => i::__('Tipo de proponente'),
     'categoria' => i::__('Categoria'),
     'faixa' => i::__('Faixa'),

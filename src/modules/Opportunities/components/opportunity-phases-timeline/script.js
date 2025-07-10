@@ -142,12 +142,13 @@ app.component('opportunity-phases-timeline', {
 
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
 
-			return (phaseOpportunity.publishedRegistrations || registration.status >= 0) && (isRegistrationOnly || isEvaluation);
-
+			const allowProponentResponse = phaseOpportunity.allow_proponent_response === '1';
+			return (phaseOpportunity.publishedRegistrations || registration.status >= 0) && (isRegistrationOnly || isEvaluation)|| allowProponentResponse;
 		},
 
 		getRegistration(item) {
 			const phaseOpportunity = item.__objectType == 'opportunity' ? item : item.opportunity;
+
 			return $MAPAS.registrationPhases?.[phaseOpportunity.id] ?? null;
 		},
 

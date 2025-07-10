@@ -2481,6 +2481,9 @@ class App {
         $this->registerController('chatThread', 'MapasCulturais\Controllers\ChatThread');
         $this->registerController('chatMessage', 'MapasCulturais\Controllers\ChatMessage');
 
+        // registration evaluation
+        $this->registerController('registrationEvaluation', 'MapasCulturais\Controllers\RegistrationEvaluation');
+
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Json');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Html');
         $this->registerApiOutput('MapasCulturais\ApiOutputs\Excel');
@@ -2550,6 +2553,10 @@ class App {
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true),
+            'chatImage' => new Definitions\FileGroup('chatImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'chatAttachment' => new Definitions\FileGroup('chatAttachment', unique:true),
+            'evaluationImage' => new Definitions\FileGroup('evaluationImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
+            'evaluationAttachment' => new Definitions\FileGroup('evaluationAttachment', unique:true),
             'docs-cpf' => new Definitions\FileGroup('docs-cpf', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
             'docs-cnpj' => new Definitions\FileGroup('docs-cnpj', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
             'docs-cnh' => new Definitions\FileGroup('docs-cnh', ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'], i::__('O arquivo enviado não é um documento válido.'), true, null, true),
@@ -2598,6 +2605,12 @@ class App {
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
+
+        $this->registerFileGroup('chatMessage',$file_groups['chatImage']);
+        $this->registerFileGroup('chatMessage',$file_groups['chatAttachment']);
+        
+        $this->registerFileGroup('registrationEvaluation',$file_groups['evaluationImage']);
+        $this->registerFileGroup('registrationEvaluation',$file_groups['evaluationAttachment']);
 
         if ($theme_image_transformations = $this->view->resolveFilename('','image-transformations.php')) {
             $image_transformations = include $theme_image_transformations;

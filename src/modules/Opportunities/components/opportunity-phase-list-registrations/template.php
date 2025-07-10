@@ -37,7 +37,7 @@ $this->import('
             <?= i::__("Não existem inscrições cadastradas") ?>
         </div>
     </div>
-    <div class="col-6 grid-2 opportunity-phase-list-registrations__endbox">
+    <div class="col-6 opportunity-phase-list-registrations__endbox">
         <div>
             <mc-link :entity="entity" class="button button--primary button--icon" :class="{'disabled': !entity.summary.registrations}" icon="external" route="registrations" right-icon>
                 <h4 class="semibold"><?= i::__("Lista de inscrições") ?></h4>

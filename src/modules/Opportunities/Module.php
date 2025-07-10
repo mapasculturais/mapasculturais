@@ -40,6 +40,7 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
         $app->registerJobType(new Jobs\RedistributeCommitteeRegistrations(Jobs\RedistributeCommitteeRegistrations::SLUG));
         $app->registerJobType(new Jobs\RefreshViewEvaluations(Jobs\RefreshViewEvaluations::SLUG));
+        $app->registerJobType(new Jobs\AutoApplicationResult(Jobs\AutoApplicationResult::SLUG));
 
         $app->hook('mapas.printJsObject:before', function () {
             /** @var \MapasCulturais\Theme $this */
@@ -173,7 +174,7 @@ class Module extends \MapasCulturais\Module{
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
                     'opportunity' => $this->opportunity,
                     'evaluationMethodConfiguration' => $evaluation_method_configuration,
-                ], '10 seconds');
+                ], '90 seconds');
                 $app->mscache->delete($cache_key);
             }
         });
@@ -181,21 +182,19 @@ class Module extends \MapasCulturais\Module{
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app, $distribute_execution_time) {
             $app->log->debug("Registration {$this->id} status changed to {$this->status}");
 
-            if($this->evaluationMethodConfiguration){
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $distribute_execution_time);
-
-                /** @var Registration $this */
-                /** @var Opportunity $opportunity */
-                $opportunity = $this->opportunity;
-                do{
-                    $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
-                        'opportunity' => $opportunity
-                    ], '10 seconds');
-
-                    $opportunity = $opportunity->nextPhase;
-
-                } while ($opportunity);
+            if($emc = $this->evaluationMethodConfiguration) {
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], $distribute_execution_time);
             }
+
+            /** @var Registration $this */
+            /** @var Opportunity $opportunity */
+            $opportunity = $this->opportunity;
+            do{
+                $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
+                    'opportunity' => $opportunity
+                ], '90 seconds');
+                $opportunity = $opportunity->nextPhase;
+            } while ($opportunity);
         });
 
         $app->hook("entity(RegistrationEvaluation).save:after", function() use ($app) {
@@ -205,7 +204,7 @@ class Module extends \MapasCulturais\Module{
                 $app->mscache->save($cache_key, true, 10);
                 $app->enqueueOrReplaceJob(Jobs\UpdateSummaryCaches::SLUG, [
                     'evaluationMethodConfiguration' => $this->registration->opportunity->evaluationMethodConfiguration
-                ], '10 seconds');
+                ], '90 seconds');
                 $app->mscache->delete($cache_key);
             }
 
@@ -232,6 +231,10 @@ class Module extends \MapasCulturais\Module{
                 $validations['registrationTo']['required'] = i::__('A data final das inscrições é obrigatória');
                 $validations['shortDescription']['required'] = i::__('A descrição curtá é obrigatória');
             }
+
+            if (empty($this->controller->data['registrationTo'])) {
+                $validations['registrationFrom']['$this->validateRegistrationDates()'] = i::__('A data inicial das inscrições deve ser menor ou igual a data final');
+            }
         });
 
         /**
@@ -240,7 +243,7 @@ class Module extends \MapasCulturais\Module{
          *
          * @todo pensar uma maneira de ativas os jobs sem necessidade de salvar as fases
          */
-        $app->hook("entity(Opportunity).<<(un)?publish|(un)?archive|(un)?delete|destroy>>:after", function() use ($app){
+        $app->hook("entity(Opportunity).<<(un)?publish|(un)?archive|(un)?delete>>:after", function() use ($app){
             /** @var Opportunity $this */
 
             foreach($this->allPhases as $phase) {
@@ -580,7 +583,7 @@ class Module extends \MapasCulturais\Module{
             ];
         });
 
-        $app->hook('entity(EvaluationMethodConfiguration).propertiesMetadata', function(&$result) {
+        $app->hook('entity(EvaluationMethodConfiguration).propertiesMetadata', function(&$result) use($app) {
             $result['useCommitteeGroups'] = [
                 'isMetadata' => false,
                 'isEntityRelation' => false,
@@ -593,6 +596,17 @@ class Module extends \MapasCulturais\Module{
                 'isReadonly' => true,
                 'label' => i::__('Indica se pode ser utilizada a auto aplicação de resultados')
             ];
+
+            // Remove os tipos de avaliação internos da lista de tipos de avaliação
+            $public_evaluation_methods = $app->getRegisteredEvaluationMethods();
+            $types = $result['type']['options'];
+            foreach($types as $type => $label) {
+                if(!isset($public_evaluation_methods[$type])) {
+                    unset($result['type']['options'][$type]);
+                    unset($result['type']['optionsOrder'][array_search($type, $result['type']['optionsOrder'])]);
+                    $result['type']['optionsOrder'] = array_values($result['type']['optionsOrder']);
+                }
+            }
         });
 
        // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento de inserir, atualizar ou remover.
@@ -715,48 +729,16 @@ class Module extends \MapasCulturais\Module{
             /** @var \MapasCulturais\Entities\RegistrationEvaluation $this */
             $registration = $this->registration;
             $opportunity = $registration->opportunity;
-            $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
+            
+            if ($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
+                $data = [
+                    'registrationEvaluation' => $this,
+                    'registration' => $registration,
+                    'opportunity' => $opportunity,
+                ];
 
-            if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
-                if($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
-                    return;
-                }
-                $conn = $app->em->getConnection();
-                $evaluations = $conn->fetchAll("
-                    SELECT
-                       *
-                    FROM
-                        evaluations
-                    WHERE
-                        registration_id = {$registration->id}"
-                );
-
-                $all_status_sent = true;
-
-                foreach ($evaluations as $evaluation) {
-                    if ($evaluation['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
-                        $all_status_sent = false;
-                    }
-                }
-
-                if ($all_status_sent) {
-                    if($evaluation_type == 'simple') {
-                        $value = $registration->consolidatedResult;
-                    }
-
-                    if($evaluation_type == 'documentary') {
-                        $value = $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
-                    }
-
-                    if($evaluation_type == 'qualification') {
-                        $value = $registration->consolidatedResult == 'valid' ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
-                    }
-
-                    $app->disableAccessControl();
-                    $registration->setStatus($value);
-                    $registration->save();
-                    $app->enableAccessControl();
-                }
+                $start_string = (new DateTime())->modify('+1 minute 20 seconds')->format('Y-m-d H:i:s');
+                $app->enqueueOrReplaceJob(Jobs\AutoApplicationResult::SLUG, $data, $start_string);
             }
         });
 
@@ -830,9 +812,13 @@ class Module extends \MapasCulturais\Module{
             /** @var \MapasCulturais\Entities\Registration $this */
 
             $opportunity = $this->opportunity;
+            $seals = $opportunity->proponentSeals;
+
+            if (!$seals) {
+                return;
+            }
 
             if ($opportunity && ($opportunity->publishedRegistrations || $this->opportunity->firstPhase->isContinuousFlow)) {
-                $seals = $opportunity->proponentSeals;
                 $proponent_type = $this->proponentType;
                 $owner = $this->owner;
                 $categories_seals = $opportunity->categorySeals;
