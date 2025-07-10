@@ -1474,7 +1474,7 @@ class ApiQuery {
                 foreach($meta as $k => &$v){
                     $unserialize = $definitions[$k]->unserialize;
                     if($unserialize) {
-                        $entity[$k] = $unserialize($v, (object) $entity);
+                        $entity[$k] = $unserialize($v, (object) $entity, $definitions[$k]);
                     }
                 }
             }
