@@ -106,6 +106,12 @@ app.component('registration-actions', {
         step() {
             return this.steps[this.stepIndex];
         },
+
+        confirmButtonTitle() {
+            return this.registration.opportunity.isAppealPhase 
+                ? this.text('Quer enviar seu recurso?') 
+                : this.text('Quer enviar sua inscrição?');
+        },
     },
 
     watch: {

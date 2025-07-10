@@ -478,7 +478,7 @@ class Opportunity extends EntityController {
 
             if($phase->isLastPhase && $phase->publishedRegistrations && !$phase->canUser('@control')) {
                 $app->hook('ApiQuery(Registration).parseQueryParams', function() use ($current_phase_query_params) {
-                    if($this->apiParams['opportunity'] == $current_phase_query_params['opportunity']) {
+                    if(($this->apiParams['opportunity'] ?? false) == ($current_phase_query_params['opportunity'] ?? false)) {
                         $this->joins = "";
                         $params = $this->_dqlParams;
                         array_pop($params);
@@ -614,7 +614,7 @@ class Opportunity extends EntityController {
         }
 
         $select = $query_data['registration:@select'] ?? $query_data['@select'];
-        $select = $select ?? 'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData,createTimestamp,updateTimestamp';
+        $select = $select ?? 'id,status,category,range,proponentType,eligible,score,consolidatedResult,projectName,owner.name,previousPhaseRegistrationId,agentsData,createTimestamp,updateTimestamp,goalStatuses';
         
         $order = $query_data['@order'] ?? 'createTimestamp ASC';
 

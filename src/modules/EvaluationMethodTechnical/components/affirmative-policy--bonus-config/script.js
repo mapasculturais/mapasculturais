@@ -148,7 +148,9 @@ app.component("affirmative-policy--bonus-config", {
     },
 
     autoSave(updated = false, time = 3000) {
-      const filled = Object.values(this.entity.pointReward).filter(
+      const pointReward = this.entity.pointReward || {};
+
+      const filled = Object.values(pointReward).filter(
         pointReward => {
             return pointReward.field !== undefined 
                 && pointReward.field 

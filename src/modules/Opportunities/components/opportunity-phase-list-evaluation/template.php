@@ -8,6 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
     mc-notification
+    opportunity-appeal-phase-config
     opportunity-phase-publish-config-registration
     mc-alert
 ');
@@ -56,7 +57,7 @@ $this->import('
            <div class="col-6 opportunity-phase-list-evaluation_action__box">
                 <div class="opportunity-phase-list-evaluation__status col-6">
                         <h4 class="bold"><?php i::_e("Resumo das avaliações") ?></h4>
-                        <p v-for="(value, label) in entity.summary.evaluations"><?= i::__("Quantidade de inscrições") ?> <strong>{{label.toLowerCase()}}</strong>: <strong>{{value}}</strong></p>
+                        <p v-for="(value, label) in entity.summary?.evaluations"><?= i::__("Quantidade de inscrições") ?> <strong>{{label.toLowerCase()}}</strong>: <strong>{{value}}</strong> <?php i::_e('inscrições') ?></p>
                 </div>
                 <div class="col-6 opportunity-phase-list-evaluation__cardfooter">
                     <mc-link route="opportunity/allEvaluations" :params="[entity.opportunity.id, 'all']" class="opportunity-phase-list-evaluation_buttonbox button button--primary button--icon " icon="external" right-icon>
@@ -67,5 +68,6 @@ $this->import('
         </div>
         <div class="opportunity-phase-list-evaluation__line col-12"></div>
         <opportunity-phase-publish-config-registration :phase="entity.opportunity" :phases="phases" hide-datepicker></opportunity-phase-publish-config-registration>
+        <opportunity-appeal-phase-config :phase="entity" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
     </div>
 </mc-card>

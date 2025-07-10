@@ -27,6 +27,8 @@ class ChatThread extends \MapasCulturais\Entity
 {
     use Traits\EntityAgentRelation;
 
+    const STATUS_CLOSED = 2;
+
     /**
      * @var integer
      *

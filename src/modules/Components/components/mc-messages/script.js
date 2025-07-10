@@ -21,7 +21,7 @@ const useMessages = Pinia.defineStore('messages', {
             // caso o timeout não tenha sido definido e
             // caso a quantidade de palavras na mensagem seja maior que 16, 
             // o timeout terá um acrescimo de 1 segundo para cada 5.5 palavras
-            const messageWords = typeof message?.text === 'string' ? message.text.split(' ') : typeof message === 'string' ? message.split(' ') : [];
+            const messageWords = message.text?.split?.(' ') || message.split?.(' ') || [];
             const minTimeout = 3000;
             const wordPerSecond = 5.5;
             const aditionalTimeout = Math.ceil(messageWords.length / wordPerSecond) * 1000;
