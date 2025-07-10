@@ -1276,6 +1276,16 @@ return [
         ];
 
         foreach ($tabelas as $tabela => $tipo_entidade) {
+            __exec("
+                DELETE FROM $tabela T1
+                USING $tabela T2
+                WHERE
+                    T1.id < T2.id AND
+                    T1.object_id = T2.object_id AND
+                    T1.key = T2.key AND
+                    T1.value = T2.value
+            ");
+
             $duplicates = $conn->fetchAllAssociative("
                 SELECT key, object_id
                 FROM {$tabela}
