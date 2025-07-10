@@ -5,6 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.54] - 2025-07-10
+### Correções
+- Ajusta o método appendMetadata na classe ApiQuery para repassar corretamente os parâmetros de definição durante o processo de unserialize
+
+### Melhorias
+- Ajusta unserialize dos campos de tipo agent-owner-field, agent-collective-field e space-field para melhorar a performace
+
 ## [7.5.53] - 2025-06-02
 ### Correções
 - Ajusta verirficação de permissão para baixar arquivos ZIP das inscrições
