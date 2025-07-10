@@ -76,7 +76,7 @@ $this->import('
             </mc-link>
         </div>
 
-        <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration' && !firstPhase?.isContinuousFlow">
+        <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>
             <opportunity-phase-publish-date-config  :phase="phase" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
         </template>
