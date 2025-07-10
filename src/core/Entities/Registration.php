@@ -569,10 +569,15 @@ class Registration extends \MapasCulturais\Entity
     function sendEditableFields() {
         $app = App::i();
         $this->checkPermission('sendEditableFields');
+
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).sendEditableFields:before");
+
         $this->editSentTimestamp = new DateTime();
         $app->disableAccessControl();
         $this->save(true);
         $app->enableAccessControl();
+
+        $app->applyHookBoundTo($this, "entity({$this->getHookClassPath()}).sendEditableFields:after");
     }
 
     function setOwnerId($id){
