@@ -34,8 +34,8 @@
 <div ng-if="field.config.entityField === '@location'">
     <label>{{field.required ? '*' : ''}} {{field.title}}: </label>
     <div ng-repeat="(key, item) in entity[field.fieldName]"
-        ng-if="key !== 'location' && key !== 'publicLocation' && !(item.En_CEP === '' && item.En_Estado === '' && item.En_Nome_Logradouro === '' && item.En_Num === '' && item.En_Bairro === '' && item.En_Complemento === '' && item.En_Pais === '' && item.En_Municipio === '')">
-        <span>{{ key.split('_').pop() }}: {{ item }}</span>
+        ng-if="key !== 'location' && key !== 'publicLocation' && item && !key.startsWith('field')">
+        <span style="text-transform:capitalize"> {{ key.split('_').pop() }}: {{ item }}</span>
     </div>
     <div ng-if="entity[field.fieldName].hasOwnProperty('publicLocation')">
         <span>
