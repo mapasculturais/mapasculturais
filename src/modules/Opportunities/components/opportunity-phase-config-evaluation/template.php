@@ -83,7 +83,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
         </div>
 
-        <opportunity-phase-publish-date-config v-if="!firstPhase?.isContinuousFlow" :phase="phase.opportunity" :phases="phases" hide-button hide-description useSealsCertification></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
         
         <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>
 
