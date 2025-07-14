@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.55] - 2025-07-14
+### Correções
+- Ajusta cenUserSend() na entidade registration, evitando falso bloqueio causado por erros anteriores no formulário
+
 ## [7.5.54] - 2025-07-10
 ### Correções
 - Ajusta o método appendMetadata na classe ApiQuery para repassar corretamente os parâmetros de definição durante o processo de unserialize
