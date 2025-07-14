@@ -1515,11 +1515,7 @@ class Registration extends \MapasCulturais\Entity
         if(!$this->opportunity->isRegistrationOpen()){
             return false;
         }
-
-        if($this->getSendValidationErrors()){
-            return false;
-        }
-
+       
         if($this->isUserAdmin($user)){
             return true;
         }
