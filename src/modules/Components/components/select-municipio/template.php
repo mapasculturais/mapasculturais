@@ -21,11 +21,11 @@ $this->import('
         </mc-select>
     </div>
     
-    <div v-if="selectedState" class="field col-6">
+    <div v-show="selectedState" class="field col-6">
         <label class="field__title">
             <?=i::__('Município') ?>
         </label>
-        <mc-select placeholder="<?= i::esc_attr_e("Selecione"); ?>" v-model:default-value="selectedCity" @change-option="selectCity($event)" show-filter>
+        <mc-select :key="'city-select-' + selectedState" placeholder="<?= i::esc_attr_e("Selecione"); ?>" v-model:default-value="selectedCity" @change-option="selectCity($event)" show-filter>
             <option v-for="city in cities" :key="city.nome" :value="city.nome">{{city.nome}}</option>
         </mc-select>
     </div>
