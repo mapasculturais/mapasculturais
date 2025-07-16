@@ -14,6 +14,7 @@ use MapasCulturais\Entities\User;
  * @property-read string $slug
  * @property-read string $name
  * @property-read string $description
+ * @property-read array  $defaultStatuses
  * 
  * @package MapasCulturais
  */
@@ -33,6 +34,23 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
     abstract function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): ?array;
     abstract function _getConsolidatedDetails(Entities\Registration $registration): ?array;
+
+    protected abstract function _getDefaultStatuses(): array;
+
+    /**
+     * Retorna os status padrão da fase de avaliação
+     * 
+     * @return array
+     */
+    public function getDefaultStatuses(): array {
+        $app = App::i();
+        $config = $app->config["opportunityPhase.defaultStatuses.{$this->slug}"] ?? [];
+        $statuses = $config ?: $this->_getDefaultStatuses();
+
+        $app->applyHookBoundTo($this, "opportunityPhase({$this->slug}).defaultStatuses", [&$statuses]);
+
+        return $statuses;
+    }
 
 
     static function getNextRedistributionDateTime(): \DateTime {
