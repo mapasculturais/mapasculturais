@@ -14,6 +14,15 @@ const STATUS_VALID = 'valid';
 class Module extends \MapasCulturais\EvaluationMethod
 {
 
+    protected function _getDefaultStatuses(): array
+    {
+        return [
+            '0'  => i::__('Não avaliada'),
+            'invalid' => i::__('Inabilitado'),
+            'valid'   => i::__('Habilitado')
+        ];
+    }
+
     public function getSlug()
     {
         return 'qualification';

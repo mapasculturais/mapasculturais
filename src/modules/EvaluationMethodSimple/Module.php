@@ -9,6 +9,17 @@ use MapasCulturais\Entities\Registration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
 
+    protected function _getDefaultStatuses(): array
+    {
+        return [
+            '0'  => i::__('Não avaliada'),
+            Registration::STATUS_INVALID => i::__('Inválida'),
+            Registration::STATUS_NOTAPPROVED => i::__('Não selecionada'),
+            Registration::STATUS_WAITLIST => i::__('Suplente'),
+            Registration::STATUS_APPROVED => i::__('Selecionada')
+        ];
+    }
+
     public function getSlug() {
         return 'simple';
     }
