@@ -187,8 +187,8 @@ class Subsite extends \MapasCulturais\Entity
      * @return string
      */
     public function getSubsiteUrl(): string {
-        $protocol = $_SERVER['REQUEST_SCHEME'] ?? 'http';
-        return "{$protocol}://{$this->url}/";
+        $app = App::i();
+        return preg_replace("#(https?://)[^\/\:]+(:\d+)?/?#","$1{$this->url}$2/", $app->config['base.url']);
     }
 
 
