@@ -52,6 +52,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         return $statuses;
     }
 
+    public function getDefaultStatusesConfigKey(EvaluationMethodConfiguration $evaluation_method_configuration): string {
+        return "opportunityPhase.defaultStatuses.{$evaluation_method_configuration->slug}";
+    }
+
 
     static function getNextRedistributionDateTime(): \DateTime {
         $app = App::i();
