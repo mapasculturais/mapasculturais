@@ -1813,12 +1813,6 @@ class Module extends \MapasCulturais\Module{
         $this->registerEvauationMethodConfigurationMetadata('statusLabels', [
             'label' => i::__('Label dos status das fases de avaliações'),
             'type' => 'array',
-            'default' => [
-                '2' => i::__('Inválida'),
-                '3' => i::__('Não selecionada'),
-                '8' => i::__('Suplente'),
-                '10' => i::__('Selecionada'),
-            ],
         ]);
     }
 
