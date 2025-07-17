@@ -493,6 +493,12 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $data;
     }
 
+    public function getDefaultStatuses(): array {
+        $evaluation_method = $this->getEvaluationMethod();
+        
+        return $evaluation_method->getDefaultStatuses($this);
+    }
+
     public function enqueueUpdateSummary(string $start_string = 'now') {
         $app = App::i();
         $app->enqueueOrReplaceJob(UpdateSummaryCaches::SLUG, [
