@@ -3,6 +3,8 @@
 use MapasCulturais\i;
 use MapasCulturais\Entities\Registration;
 
+$data = [];
+
 $data['evaluationStatusDict'] = [
     'simple' => [
         '0'  => i::__('Não avaliada'),
@@ -204,26 +206,6 @@ $app->applyHook('component(opportunity-registrations-table).additionalHeaders', 
 $data['defaultSelect'] = $default_select;
 $data['defaultHeaders'] = $default_headers;
 $data['defaultAvailable'] = $available_fields;
-
-$data['evaluationStatusDict'] = [
-    'simple' => [
-        '0'  => i::__('Não avaliada'),
-        '2'  => i::__('Inválida'),
-        '3'  => i::__('Não selecionada'),
-        '8'  => i::__('Suplente'),
-        '10' => i::__('Selecionada')
-    ],
-    'documentary' => [
-        '0'  => i::__('Não avaliada'),
-        '1'  => i::__('Válida'),
-        '-1' => i::__('Inválida'),
-    ],
-    'qualification' => [
-        '0'  => i::__('Não avaliada'),
-        'Habilitado' => i::__('Habilitado'),
-        'Inabilitado' => i::__('Inabilitado'),
-    ]
-];
 
 foreach (Registration::getStatusesNames() as $status => $status_name) {
     if (in_array($status, [0, 1, 2, 3, 8, 10])) {
