@@ -3,6 +3,41 @@
 use MapasCulturais\i;
 use MapasCulturais\Entities\Registration;
 
+$registrations = Registration::getStatusesNames();
+
+foreach($registrations as $status => $status_name){
+    if(in_array($status,[0,1,2,3,8,10])){
+        $data["registrationStatusDict"][] = ["label" => $status_name, "value" => $status];
+    }
+}
+
+$data['evaluationStatusDict'] = [
+    'simple' => [
+        '0'  => i::__('Não avaliada'),
+        '2'  => i::__('Inválida'),
+        '3'  => i::__('Não selecionada'),
+        '8'  => i::__('Suplente'),
+        '10' => i::__('Selecionada')
+    ],
+    'documentary' => [
+        '0'  => i::__('Não avaliada'),
+        '1' => i::__('Válida'),
+        '-1' => i::__('Inválida'),
+    ],
+    'qualification' => [
+        '0'  => i::__('Não avaliada'),
+        'Habilitado' => i::__('Habilitado'),
+        'Inabilitado' => i::__('Inabilitado'),
+    ],
+    'continuous' => [
+        '0'  => i::__('Não avaliada'),
+        '2'  => i::__('Inválida'),
+        '3'  => i::__('Não selecionada'),
+        '8'  => i::__('Suplente'),
+        '10' => i::__('Selecionada')
+    ]
+];
+
 $phase = $this->controller->requestedEntity;
 
 $data['isAffirmativePoliciesActive'] = $phase->isAffirmativePoliciesActive();
@@ -13,32 +48,42 @@ $skipFields = ["previousPhaseRegistrationId", "nextPhaseRegistrationId", "id"];
 $default_select = "agentsData,number,consolidatedResult,score,status,sentTimestamp,createTimestamp,files,owner.{name,geoMesoregiao},editSentTimestamp,editableUntil,editableFields";
 $default_headers = [
     [
-        'text' => i::__('Inscrição', 'opportunity-registrations-table'),
+        'text' => i::__('inscrição'),
         'value' => 'number',
         'sticky' => true,
         'width' => '160px',
     ],
     [
-        'text' => i::__('Agente', 'opportunity-registrations-table'),
+        'text' => i::__('agente'),
         'value' => 'owner?.name',
         'slug' => 'agent',
     ],
     [
-        'text' => i::__('Anexos', 'opportunity-registrations-table'),
+        'text' => i::__('anexos'),
         'value' => 'attachments',
     ],
     [
-        'text' => i::__('Data de criação', 'opportunity-registrations-table'),
+        'text' => i::__('data de criação'),
         'value' => 'createTimestamp',
     ],
     [
-        'text' => i::__('Data de envio', 'opportunity-registrations-table'),
+        'text' => i::__('data de envio'),
         'value' => 'sentTimestamp',
     ],
-    [
-        'text' => i::__('Editavel para o proponente', 'opportunity-registrations-table'),
-        'slug' => 'editable',
-    ],
+];
+
+if($phase->isReportingPhase || $phase->isFinalReportingPhase) {
+    $default_select .= ',goalStatuses';
+
+    $default_headers[] = [
+        'text' => i::__('Metas'),
+        'value' => 'goalStatuses',
+    ];
+}
+
+$default_headers[] = [
+    'text' => i::__('Editavel para o proponente'),
+    'slug' => 'editable',
 ];
 
 // Carrega metadados

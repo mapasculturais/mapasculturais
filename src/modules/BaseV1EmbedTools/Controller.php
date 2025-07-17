@@ -124,7 +124,7 @@ class Controller extends \MapasCulturais\Controllers\Opportunity
     {
         $this->entityClassName = "MapasCulturais\\Entities\\Registration";
         $this->layout = "embedtools-registration";
-        $entity = $this->getEntityAndCheckPermission('viewUserEvaluation');
+        $entity = $this->getEntityAndCheckPermission('view');
         $this->render("registration-view",['entity' => $entity, 'merge_phases' => true]);
     }
 

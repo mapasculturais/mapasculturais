@@ -30,7 +30,11 @@ app.component('opportunity-phase-publish-date-config' , {
         hideDescription: {
             type: Boolean,
             default: false
-        }
+        }, 
+        useSealsCertification: {
+            type: Boolean,
+            default: false
+        },
     },
 
     computed: {
@@ -58,22 +62,30 @@ app.component('opportunity-phase-publish-date-config' , {
         },
 
         minDate () { 
-            let phase;
-            if(this.phase.isLastPhase) {
-                phase = this.previousPhase;
+            if (this.phase.isAppealPhase) {
+                return this.phase.evaluationMethodConfiguration.evaluationTo?._date || this.phase.evaluationMethodConfiguration.registrationTo?._date;
             } else {
-                phase = this.phase;
+                let phase;
+                if(this.phase.isLastPhase) {
+                    phase = this.previousPhase;
+                } else {
+                    phase = this.phase;
+                }
+                const result = phase.evaluationTo?._date || phase.registrationTo?._date;      
+                return result;
             }
-            const result = phase.evaluationTo?._date || phase.registrationTo?._date;      
-            return result;
         },
         maxDate () {
-            if(this.phase.isLastPhase) {
+            if (this.phase.isAppealPhase) {
                 return null;
-            } else if(this.nextPhase.isLastPhase) {
-                return this.nextPhase.publishTimestamp?._date;
             } else {
-                return this.nextPhase.evaluationTo?._date || this.nextPhase.registrationTo?._date;
+                if(this.phase.isLastPhase) {
+                    return null;
+                } else if(this.nextPhase.isLastPhase) {
+                    return this.nextPhase.publishTimestamp?._date;
+                } else {
+                    return this.nextPhase.evaluationTo?._date || this.nextPhase.registrationTo?._date;
+                }
             }
         },
         firstPhase() {

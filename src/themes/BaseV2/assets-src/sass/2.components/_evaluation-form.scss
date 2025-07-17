@@ -12,4 +12,10 @@
         padding: 5px;
         text-align: center;
     }
+
+    &__status {
+        align-items: center;
+        display: flex;
+        gap: size(12);
+    }
 }

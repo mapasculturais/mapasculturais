@@ -44,7 +44,7 @@ $this->import('
                     <template #default>
                         <div class="type-evaluation grid-12">
                             <div class="type-evaluation__type col-12">
-                                <label class="entity-label"><?php i::_e('Tipo:') ?></label> <strong class="opportunity__color entity-strong">{{entity.type.name}}</strong>
+                                <label class="entity-label"><?php i::_e('Tipo:') ?></label> <strong class="opportunity__color entity-strong">{{entity.type?.name}}</strong>
                             </div>
                             <div class="type-evaluation__content col-12">
                                 <label class="type-evaluation__content--label">{{ownerType(entity.ownerEntity)}}:</label> <strong class="type-evaluation__content--strong"><mc-link :entity="entity.ownerEntity"></mc-link></strong>

@@ -14,7 +14,11 @@ app.component('opportunity-phase-config-results' , {
         phases: {
             type: Array,
             required: true
-        }
+        },
+
+        tab: {
+            type: String,
+        },
     },
 
     computed: {

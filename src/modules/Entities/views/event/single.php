@@ -6,6 +6,7 @@ $this->import('
     complaint-suggestion
     entity-actions
     entity-admins
+    entity-data
     entity-files-list
     entity-gallery
     entity-gallery-video
@@ -40,11 +41,10 @@ $this->breadcrumb = [
     <entity-header :entity="entity">
         <template #metadata>
             <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
-                <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
-                <dd><strong>{{entity.id}}</strong></dd>
+                <entity-data v-if="entity.longDescription" class="col-12 long-description" :entity="entity" prop="id" label="<?php i::_e('ID')?>"></entity-data>
             </dl> 
-            <dl v-if="entity.subTitle">
-                <dd>{{entity.subTitle}}</dd>
+            <dl>
+                <entity-data v-if="entity.subTitle" class="col-12 long-description" :entity="entity" prop="subTitle"></entity-data>
             </dl>
         </template>
     </entity-header>    
@@ -58,10 +58,7 @@ $this->breadcrumb = [
                             <event-age-rating :event="entity" classes="col-12"></event-age-rating>
                             <entity-occurrence-list classes="col-12" :entity="entity"></entity-occurrence-list>    
                             <event-info classes="col-12" :entity="entity"></event-info>
-                            <div v-if="entity.longDescription" class="col-12 long-description">
-                                <h3><?php i::_e('Descrição Detalhada');?></h3>
-                                <p class="description"  v-html="entity.longDescription"></p>
-                            </div> 
+                            <entity-data v-if="entity.longDescription" class="col-12 long-description" :entity="entity" prop="longDescription" label="<?php i::_e("Descrição Detalhada")?>"></entity-data>
                             <entity-files-list v-if="entity.files.downloads!= null" :entity="entity"  classes="col-12" group="downloads" title="<?php i::esc_attr_e('Arquivos para download') ?>"></entity-files-list>
                             <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Links'); ?>"></entity-links>
                             <entity-gallery-video :entity="entity" classes="col-12"></entity-gallery-video>

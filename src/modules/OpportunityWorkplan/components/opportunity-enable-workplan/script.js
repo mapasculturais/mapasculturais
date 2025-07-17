@@ -13,7 +13,6 @@ app.component('opportunity-enable-workplan', {
     },
     data() {
         return {
-            entity: this.entity,
             timeOut: null
         }
     },
@@ -24,25 +23,19 @@ app.component('opportunity-enable-workplan', {
             }
         },
         'entity.workplan_dataProjectlimitMaximumDurationOfProjects'(_new) {
-            if (!_new) {
-                this.entity.workplan_dataProjectmaximumDurationInMonths = 0;
-            } else {
+            if (_new) {
                 this.entity.workplan_dataProjectmaximumDurationInMonths = 1;
             }
             this.autoSave();
         },
         'entity.workplan_metaLimitNumberOfGoals'(_new) {
-            if (!_new) {
-                this.entity.workplan_metaMaximumNumberOfGoals = 0;
-            } else {
+            if (_new) {
                 this.entity.workplan_metaMaximumNumberOfGoals = 1;
             }
             this.autoSave();
         },
         'entity.workplan_deliveryLimitNumberOfDeliveries'(_new) {
-            if (!_new) {
-                this.entity.workplan_deliveryMaximumNumberOfDeliveries = 0;
-            } else {
+            if (_new) {
                 this.entity.workplan_deliveryMaximumNumberOfDeliveries = 1;
             }
             this.autoSave();
@@ -71,6 +64,11 @@ app.component('opportunity-enable-workplan', {
         },
         actionEnabledWorkplan() {
             this.entity.enableWorkplan = true;
+            
+            this.entity.workplan_dataProjectmaximumDurationInMonths = 1;
+            this.entity.workplan_metaMaximumNumberOfGoals = 1;
+            this.entity.workplan_deliveryMaximumNumberOfDeliveries = 1;
+
             this.entity.save();
         },
         actionDisabledWorkplan() {
@@ -94,15 +92,12 @@ app.component('opportunity-enable-workplan', {
         },
         disabledDeliveries() {
             this.entity.workplan_deliveryLimitNumberOfDeliveries = false;
-            this.entity.workplan_deliveryMaximumNumberOfDeliveries = 0;
             this.entity.workplan_registrationReportTheNumberOfParticipants = false;
             this.entity.workplan_registrationReportExpectedRenevue = false;
             this.entity.workplan_registrationInformCulturalArtisticSegment = false;
 
             this.entity.workplan_monitoringInformTheFormOfAvailability = false;
-            this.entity.workplan_monitoringEnterDeliverySubtype = false;
             this.entity.workplan_monitoringInformAccessibilityMeasures = false;
-            this.entity.workplan_monitoringInformThePriorityTerritories = false;
             this.entity.workplan_monitoringProvideTheProfileOfParticipants = false;
             this.entity.workplan_monitoringInformThePriorityAudience = false;
             this.entity.workplan_monitoringReportExecutedRevenue = false;

@@ -20,42 +20,38 @@ ol.mc-stepper-vertical {
 
     @media (max-width:size(950)) {
         margin: 0 55 0 55px;
-        // padding-inline: 44px;
     }
 
     @media (max-width:size(600)) {
-        // padding-inline: size(44);
         margin: 0 45px;
     }
 
-}
-
-ol.mc-stepper-vertical>li {
-    position: relative;
-    counter-increment: item;
-    border-left: 3px solid red;
-    padding: 0 0 20px 45px;
-
-    @media (max-width:size(600)) {
-        padding: 0 16px 20px 45px;
-        // margin: 0 45px;
-    }
-
-    .mc-card {
-        padding: size(16);
-
-        .evaluation-box {
-            &__line {
-                max-width: size(1038);
-                border-bottom: 1px solid var(--mc-gray-100);
-                height: 1px;
-                padding-top: 2px;
-                background-color: red;
+    & > li {
+        position: relative;
+        counter-increment: item;
+        border-left: 3px solid red;
+        padding: 0 0 20px 45px;
+    
+        @media (max-width:size(600)) {
+            padding: 0 16px 20px 45px;
+        }
+    
+        .mc-card {
+            padding: size(16);
+    
+            .evaluation-box {
+                &__line {
+                    max-width: size(1038);
+                    border-bottom: 1px solid var(--mc-gray-100);
+                    height: 1px;
+                    padding-top: 2px;
+                    background-color: red;
+                }
             }
         }
     }
 
-    &:last-of-type {
+    & > :last-of-type {
         border-left: 0;
     }
 }
@@ -66,7 +62,7 @@ ol.mc-stepper-vertical>li {
         
         &__field &__label {
             font-size: size(18);
-            font-family: 'Open Sans';
+            font-family: 'Open Sans', sans-serif;
             font-weight: 600;
         }
         
@@ -290,10 +286,6 @@ ol.mc-stepper-vertical>li.active::before {
         display: flex;
         flex-direction: column;
         gap: size(8);
-
-        &__title {}
-
-        &__text {}
     }
 
     .evaluation-box {
@@ -354,23 +346,18 @@ ol.mc-stepper-vertical>li.active::before {
         border-left: 3px solid red;
         padding-left: 25px;
         display: flex;
-        padding-left: 25px;
+        gap: 1rem;
+        padding-bottom: 15px;
         flex-direction: column;
         flex-wrap: wrap;
         align-items: center;
 
         &.add-phase.grid-12 {
             border-left: none;
-
         }
 
-        &__evaluation {
-            margin-top: 25px;
-        }
-
-        &__collection {
-            margin-bottom: 25px;
-
+        p {
+            font-weight: 600;
         }
     }
 
@@ -547,8 +534,6 @@ ol.mc-stepper-vertical>li.active::before {
 
             }
 
-            &__label {}
-
             &__name {
                 @media (max-width:size(600)) {
                     font-size: 20px;
@@ -570,8 +555,6 @@ ol.mc-stepper-vertical>li.active::before {
                 line-height: 19px;
 
             }
-
-            .iconify {}
         }
     }
 }

@@ -873,7 +873,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         // Cria a affirmativePoliciesEligibleFields com os campos da fase atual e anterior
         $app->hook('entity(Opportunity).jsonSerialize', function(&$result) {
             /** @var Entities\Opportunity $this */
-            if($this->evaluationMethodConfiguration && $this->evaluationMethodConfiguration->definition->slug == 'technical') {
+            if($this->evaluationMethodConfiguration && $this->evaluationMethodConfiguration->definition && $this->evaluationMethodConfiguration->definition->slug == 'technical') {
                 $result['affirmativePoliciesEligibleFields'] = $this->getFields();
             }
         });

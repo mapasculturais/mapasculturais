@@ -1,0 +1,21 @@
+@use '../0.settings/mixins' as *;
+
+.v-popper--theme-tooltip {
+
+    .v-popper {
+
+        &__inner {
+            border-radius: var(--mc-border-radius-sm);
+            color: var(--mc-gray-700);
+            background-color: var(--mc-gray-100);
+            box-shadow: 0 0 5px var(--mc-gray-100);
+            font-family: var(--mc-font-body);
+            font-size: size(14);
+            font-weight: bold;
+        }
+
+        &__arrow-outer {
+            border-color: var(--mc-gray-100);
+        }
+    }
+}

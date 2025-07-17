@@ -59,7 +59,7 @@ $this->import('
         <mc-loading :condition="loading"></mc-loading>
 
         <template v-if="!loading" #default>
-            <form @submit="upload(modal); $event.preventDefault();" class="entity-file__newFile">
+            <form @submit.prevent="submit(modal)" class="entity-file__newFile">
                 <div class="grid-12">
                     <slot name="form" :enableDescription="enableDescription" :disableName="disableName" :formData="formData" :setFile="setFile" :file="newFile">
                         <div class="col-12 field">
@@ -103,7 +103,7 @@ $this->import('
 
         <template v-if="!loading" #actions="modal">
             <button class="col-6 button button--text" type="reset" @click="modal.close()"> <?php i::_e("Cancelar") ?> </button>
-            <button class="col-6 button button--primary" type="submit" @click="upload(modal); $event.preventDefault();"> <?php i::_e("Enviar") ?> </button>
+            <button class="col-6 button button--primary" type="submit" @click.prevent="submit(modal)"> <?php i::_e("Enviar") ?> </button>
         </template>
     </mc-modal>
 </div>

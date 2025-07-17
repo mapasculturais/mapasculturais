@@ -14,6 +14,7 @@ $this->import('
     mc-modal
     opportunity-committee-groups
     opportunity-phase-publish-date-config
+    opportunity-appeal-phase-config
     seals-certifier
     tiebreaker-criteria-configuration
     v1-embed-tool
@@ -32,6 +33,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
                     <entity-field :entity="phase" prop="name" :autosave="3000" classes="col-12" label="<?= i::esc_attr__('Título') ?>" hide-required></entity-field>
                     <entity-field :entity="phase" prop="evaluationFrom" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de início') ?>" :min="fromDateMin?._date" :max="fromDateMax?._date"></entity-field>    
                     <entity-field v-if="!firstPhase?.isContinuousFlow" :entity="phase" prop="evaluationTo" :autosave="3000" classes="col-6 sm:col-12" label="<?= i::esc_attr__('Data de término') ?>" :min="toDateMin?._date" :max="toDateMax?._date"></entity-field>
+                    <entity-field v-if="phase.opportunity?.isReportingPhase" :entity="phase.opportunity" prop="allow_proponent_response" :autosave="3000" classes="col-12" ></entity-field>
                 </div>
             </div>
         </section>
@@ -81,14 +83,15 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
         </div>
 
-        <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
+        <opportunity-phase-publish-date-config v-if="!firstPhase?.isContinuousFlow" :phase="phase.opportunity" :phases="phases" hide-button hide-description useSealsCertification></opportunity-phase-publish-date-config>
         
         <seals-certifier :entity="firstPhase" :editable="seals.length > 0"></seals-certifier>
 
         <template v-if="phase.evaluateSelfApplication">
             <entity-field :entity="phase" type="checkbox" prop="autoApplicationAllowed" label="<?php i::esc_attr_e('Autoaplicação de resultados')?>" :autosave="300" classes="col-12 sm:col-12"></entity-field>
         </template>
-
+        <opportunity-appeal-phase-config :phase="phase" :phases="phases" :tab="tab"></opportunity-appeal-phase-config>
+        
         <div class="config-phase__line col-12"></div>
 
         <div class="col-12 sm:col-12">
@@ -96,7 +99,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
         </div>
 
         <div class="phase-delete col-12">
-            <mc-confirm-button message="<?= i::esc_attr__('Confirma a execução da ação?') ?>" @confirm="deletePhase($event, phase, index)">
+            <mc-confirm-button :message="confirmDeleteMessage" @confirm="deletePhase(phase, index)">
                 <template #button="modal">
                     <button :class="['phase-delete__trash button button--text button--sm', {'disabled' : !phase.currentUserPermissions.remove}]" @click="modal.open()">
                         <div class="icon">

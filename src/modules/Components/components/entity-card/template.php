@@ -26,7 +26,7 @@ $this->import('
 				</a>
 				<slot name="type">
 					<div v-if="entity.type" class="user-info__attr">
-						<?php i::_e('Tipo:') ?> {{entity.type.name}}
+						<?php i::_e('Tipo:') ?> {{entity.type?.name}}
 					</div>
 				</slot>
 			</div>
