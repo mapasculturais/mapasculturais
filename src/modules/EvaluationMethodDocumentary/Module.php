@@ -4,6 +4,7 @@ namespace EvaluationMethodDocumentary;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 
 const STATUS_INVALID = 'invalid';
@@ -11,10 +12,9 @@ const STATUS_VALID = 'valid';
 
 class Module extends \MapasCulturais\EvaluationMethod {
 
-    protected function _getDefaultStatuses(): array
+    protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {
         return [
-            '0'  => i::__('Não avaliada'),
             '1'  => i::__('Válida'),
             '-1' => i::__('Inválida'),
         ];
