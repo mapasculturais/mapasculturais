@@ -11,11 +11,14 @@ use MapasCulturais\Entities\Agent;
 
 class Module extends \MapasCulturais\Module{
     
-    public function register() {
-        ;
-    }
+    static $disableMailMessages = false;
+
+    public function register() { }
 
     public function sendMail($to, $msg, $subject = null) {
+        if(self::$disableMailMessages) {
+            return;
+        }
         $app = App::i();
         $dataValue = [
             'message'    => $msg
