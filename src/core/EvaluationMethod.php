@@ -35,17 +35,19 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): ?array;
     abstract function _getConsolidatedDetails(Entities\Registration $registration): ?array;
 
-    protected abstract function _getDefaultStatuses(): array;
+    protected abstract function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array;
 
     /**
      * Retorna os status padrão da fase de avaliação
      * 
      * @return array
      */
-    public function getDefaultStatuses(): array {
+    public function getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array {
         $app = App::i();
-        $config = $app->config["opportunityPhase.defaultStatuses.{$this->slug}"] ?? [];
-        $statuses = $config ?: $this->_getDefaultStatuses();
+        $config_key = $this->getDefaultStatusesConfigKey($evaluation_method_configuration);
+        $config = $app->config[$config_key] ?? [];
+        $statuses = $config ?: $this->_getDefaultStatuses($evaluation_method_configuration);
+        $statuses = [ '0' => i::__('Não avaliada') ] + $statuses;
 
         $app->applyHookBoundTo($this, "opportunityPhase({$this->slug}).defaultStatuses", [&$statuses]);
 
