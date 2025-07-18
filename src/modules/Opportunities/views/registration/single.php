@@ -8,7 +8,7 @@ use MapasCulturais\i;
 
 $this->layout = 'registrations';
 
-$this->addOpportunityPhasesToJs();
+$this->addOpportunityPhasesToJs($entity);
 $this->addRegistrationPhasesToJs();
 
 $this->import('

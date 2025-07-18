@@ -6,7 +6,9 @@
 use MapasCulturais\i;
 
 $this->layout = 'entity';
-$this->addOpportunityPhasesToJs();
+
+$this->addOpportunityPhasesToJs($entity);
+
 $this->import('
     entity-field
     mc-confirm-button

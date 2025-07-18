@@ -7,8 +7,8 @@
 use MapasCulturais\i;
 
 $this->layout = 'entity';
-$this->addOpportunityBreadcramb(i::__('Lista de inscrições'));
-$this->addOpportunityPhasesToJs();
+$this->addOpportunityBreadcramb(i::__('Lista de inscrições'), $entity);
+$this->addOpportunityPhasesToJs($entity);
 $this->import('
     entity-header
     entity-actions
