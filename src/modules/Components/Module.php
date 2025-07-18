@@ -182,6 +182,10 @@ class Module extends \MapasCulturais\Module {
                     continue;
                 }
 
+                foreach($this->data as $key => $value) {
+                    $$key = $value;
+                }
+
                 $started_at = microtime(true);
                 include $init_file;
                 $finished_at = microtime(true);
