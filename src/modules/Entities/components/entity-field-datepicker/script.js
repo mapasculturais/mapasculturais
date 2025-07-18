@@ -127,7 +127,7 @@ app.component('entity-field-datepicker', {
 
         dateFormat() {
             let mcdate = this.entity[this.prop];
-            if (mcdate == null) {
+            if (mcdate == null || mcdate == '') {
                 return '';
             }
             return mcdate.date('2-digit year');
