@@ -161,6 +161,7 @@ app.component('opportunity-evaluations-table', {
 
             reg.evaluation = rawData.evaluation;
             reg.valuer = rawData.valuer;
+            reg.committee = rawData.committee;
 
             return reg;
         },

@@ -981,7 +981,8 @@ class Opportunity extends EntityController {
                 registration_number, 
                 evaluation_id, 
                 valuer_agent_id,
-                evaluation_status
+                evaluation_status,
+                valuer_committee
             FROM evaluations
             WHERE
                 {$complement_where}
@@ -1029,7 +1030,8 @@ class Opportunity extends EntityController {
                     e.evaluation_id, 
                     e.valuer_agent_id,
                     e.registration_number,
-                    e.evaluation_status
+                    e.evaluation_status,
+                    e.valuer_committee
                 FROM evaluations e
                 LEFT JOIN registration_evaluation re ON re.registration_id = e.registration_id
                 WHERE
@@ -1064,7 +1066,8 @@ class Opportunity extends EntityController {
                 'registration_id' => $eval['registration_id'],
                 'evaluation' => $_evaluations[$eval['evaluation_id']] ?? null,
                 'registration' => $_registrations[$eval['registration_id']] ?? null,
-                'valuer' => $valuer_by_id[$eval['valuer_agent_id']] ?? null
+                'valuer' => $valuer_by_id[$eval['valuer_agent_id']] ?? null,
+                'committee' => $eval['valuer_committee'] ?? null
             ];
         }
 
