@@ -236,6 +236,11 @@ class ApiQuery {
     protected $registeredMetadata = [];
 
     /**
+     * @var array
+     */
+    protected array $registeredMetadataDefinitions;
+
+    /**
      * List of the registered taxonomies for this context
      * @var array
      */
@@ -589,8 +594,10 @@ class ApiQuery {
         
         if ($this->usesMetadata) {
             $this->metadataClassName = $class::getMetadataClassName();
+            $this->registeredMetadataDefinitions = $app->getRegisteredMetadata($class);
 
-            foreach ($app->getRegisteredMetadata($class) as $meta) {
+            foreach ($this->registeredMetadataDefinitions as $meta) {
+
                 $this->registeredMetadata[] = $meta->key;
             }
         }
@@ -2923,7 +2930,7 @@ class ApiQuery {
 
     protected function parseParam($key, $expression) {
         
-        if (is_string($expression) && !preg_match('#^[ ]*(!)?([a-z]+)[ ]*\((.*)\)$#i', $expression, $match)) {
+        if (is_string($expression) && !preg_match('#^[ ]*(!)?([a-z_]+)[ ]*\((.*)\)$#i', $expression, $match)) {
             throw new Exceptions\Api\InvalidExpression($expression);
         } else {
             $dql = '';
@@ -2946,17 +2953,36 @@ class ApiQuery {
                 if ($dql) {
                     $dql .= ')';
                 }
+            } elseif ($operator == "JSON_IN") {
+                $values = $this->splitParam($value);
+                $values = array_map(fn($str) => '"' . $str . '"', $values);
+                $values = $this->addMultipleParams($values);
+
+                if (count($values) > 0) {
+                    $_where = [];
+                    foreach($values as $value) {
+                        $_where[] = $not ? 
+                            "JSONB_CONTAINS(CAST($key AS JSONB), $value) = false": 
+                            "JSONB_CONTAINS(CAST($key AS JSONB), $value) = true";
+                    }
+                    $_inside_operator = $not ? ' AND ' : ' OR ';
+
+                    $dql = '(' . implode($_inside_operator, $_where) . ')';
+                    
+                } else if(!$not) {
+                    $dql .= "$key IS NULL AND $key IS NOT NULL";
+                }
+                
             } elseif ($operator == "IN") {
                 $values = $this->splitParam($value);
-
                 $values = $this->addMultipleParams($values);
+
                 if (count($values) > 0) {
                     $dql = $not ? "$key NOT IN (" : "$key IN (";
                     $dql .= implode(', ', $values) . ')';
                 } else if(!$not) {
                     $dql .= "$key IS NULL AND $key IS NOT NULL";
                 }
-
                 
             }elseif($operator == "IIN"){
                 $values = $this->splitParam($value);
@@ -3291,6 +3317,10 @@ class ApiQuery {
         $this->_keys[$key] = "$meta_alias.value";
 
         $this->joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $this->_templateJoinMetadata);
+
+        if(str_starts_with(strtoupper($value), 'IN(') && in_array($this->registeredMetadataDefinitions[$key]->type, ['multiselect', 'array', 'json'])) {
+            $value = 'JSON_' . $value;
+        }
 
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
     }
