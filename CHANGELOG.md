@@ -33,7 +33,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Refatoração da distribuição das avaliações para não dependerem mais do cache de permissão;
 - Nova estrutura para os testes automatizados 
 - Corrige função de tradução para que faça a leitura dos arquivos de tradução dos plugins
-
+- Operador IN para metadados de seleção múltipla
   
 ## [7.5.53] - 2025-06-02
 ### Correções
