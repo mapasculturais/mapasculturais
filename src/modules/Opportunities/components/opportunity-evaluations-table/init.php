@@ -53,6 +53,14 @@ foreach ($definitions as $field => $def) {
     }
 }
 
+$default_headers[] = [
+    'text' => i::__('Comissão de avaliação'),
+    'value' => 'committee',
+    'slug' => 'committee',
+    'required' => true,
+    'visible' => true
+];
+
 // Função para separar campos no select
 function splitSelectFields($str) {
     $len = strlen($str);
