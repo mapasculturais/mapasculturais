@@ -12,7 +12,7 @@ class ChatThread extends Controller {
     /**
      * @return Entities\ChatThread
      */
-    function getRequestedEntity() : Entities\ChatThread
+    function getRequestedEntity() : ?Entities\ChatThread
     {
         $app = App::i();
 

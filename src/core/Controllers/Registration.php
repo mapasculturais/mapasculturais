@@ -309,7 +309,7 @@ class Registration extends EntityController {
     /**
      * @return \MapasCulturais\Entities\Registration
      */
-    function getRequestedEntity(): EntityRegistration {
+    function getRequestedEntity(): ?EntityRegistration {
         if($preview_entity = $this->getPreviewEntity()) {
             return $preview_entity;
         } else {
