@@ -87,7 +87,8 @@ trait ControllerEntity {
      *
      * @return \MapasCulturais\Entity|null
      */
-    public function getRequestedEntity(): Entity{
+    public function getRequestedEntity(): ?Entity
+    {
         if (key_exists('id', $this->urlData)) {
             $entity = $this->repository->find($this->urlData['id']);
         } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {
