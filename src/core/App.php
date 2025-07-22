@@ -26,6 +26,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\TransactionRequiredException;
 use Exception as GlobalException;
 use Doctrine\Persistence\Mapping\MappingException;
+use MailNotification\JobTypes\MailMessage;
 use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
@@ -2353,7 +2354,12 @@ class App {
      * @param Email $message 
      * @return bool 
      */
-    function sendMailMessage(Email $message): bool {
+    function sendMailMessage(Email $message, bool $create_job = false): bool {
+        if($create_job) {
+            $this->enqueueMailMessageJob($message);
+            return true;
+        }
+
         $mailer = $this->getMailer();
 
         if (!is_object($mailer))
