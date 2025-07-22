@@ -317,7 +317,7 @@ class Module extends \MapasCulturais\Module
                 'name' => \MapasCulturais\i::__('Campo de dados bancários'),
                 'viewTemplate' => 'registration-field-types/bankFields',
                 'configTemplate' => 'registration-field-types/bankFields-config',
-                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                'serialize' => function($value, ?Registration $registration = null, $metadata_definition = null) use ($module) {
                     $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
                     return json_encode($value);
                 },
@@ -788,7 +788,7 @@ class Module extends \MapasCulturais\Module
                 if (isset($value["En_Pais"])) {
                     $entity->En_Pais = $value["En_Pais"];
                 }
-                $entity->publicLocation = !empty($value['publicLocation']);
+                $entity->publicLocation = filter_var($value['publicLocation'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
             } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
                 $entity->terms[$taxonomies_fields[$entity_field]] = $value;
