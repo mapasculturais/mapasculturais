@@ -51,9 +51,9 @@ class Module extends \MapasCulturais\Module {
         });
 
         $app->hook('repo(Registration).getIdsByKeywordDQL.where', function (&$where, $keyword, $alias) use ($format_doc) {
-            $where .= "\n OR unaccent(lower(agent_coletivo.name)) LIKE unaccent(lower('$keyword'))";
-            $where .= "\n OR unaccent(lower(owner_nome.value)) LIKE unaccent(lower('$keyword'))";
-            $where .= "\n OR unaccent(lower(coletivo_nome.value)) LIKE unaccent(lower('$keyword'))";
+            $where .= "\n OR unaccent(lower(agent_coletivo.name)) LIKE unaccent(lower(:$alias))";
+            $where .= "\n OR unaccent(lower(owner_nome.value)) LIKE unaccent(lower(:$alias))";
+            $where .= "\n OR unaccent(lower(coletivo_nome.value)) LIKE unaccent(lower(:$alias))";
 
             if ($doc = $format_doc($keyword)) {
                 $doc2 = trim(str_replace(['%', '.', '/', '-'], '', $keyword));
@@ -62,8 +62,8 @@ class Module extends \MapasCulturais\Module {
             }
 
             if (str_contains($keyword, '@')) {
-                $where .= "\n OR lower(owner_email.value) LIKE lower('$keyword')";
-                $where .= "\n OR lower(coletivo_email.value) LIKE lower('$keyword')";
+                $where .= "\n OR lower(owner_email.value) LIKE lower(:$alias)";
+                $where .= "\n OR lower(coletivo_email.value) LIKE lower(:$alias)";
             }
         });
 
@@ -84,11 +84,7 @@ class Module extends \MapasCulturais\Module {
         $app->hook('repo(agent).getIdsByKeywordDQL.join', function (&$joins, $keyword, $alias) use($app) {
             if($app->user->is('admin')){
                 $joins .= "\n LEFT JOIN e.__metadata cnpj_meta WITH cnpj_meta.key = 'cnpj'";
-                $joins .= "\n LEFT JOIN e.__metadata owner_nome WITH owner_nome.key = 'nomeCompleto'";
-        
-                $joins .= "\n LEFT JOIN e.__agentRelations coletivo_relation WITH coletivo_relation.group = 'coletivo'";
-                $joins .= "\n LEFT JOIN coletivo_relation.agent coletivo_agent";
-                $joins .= "\n LEFT JOIN coletivo_agent.__metadata coletivo_nome WITH coletivo_nome.key = 'nomeCompleto'";
+                $joins .= "\n LEFT JOIN e.__metadata nomeCompleto_meta WITH nomeCompleto_meta.key = 'nomeCompleto'";
             }
         });
         
@@ -100,8 +96,7 @@ class Module extends \MapasCulturais\Module {
                     $where .= "\n OR cnpj_meta.value = '{$doc}' OR cnpj_meta.value = '{$unformattedDoc}'";
                 }
     
-                $where .= "\n OR unaccent(lower(coletivo_nome.value)) LIKE unaccent(lower('$keyword'))";
-                $where .= "\n OR unaccent(lower(owner_nome.value)) LIKE unaccent(lower('$keyword'))";
+                $where .= "\n OR unaccent(lower(nomeCompleto_meta.value)) LIKE unaccent(lower(:$alias))";
             }
             
         });
