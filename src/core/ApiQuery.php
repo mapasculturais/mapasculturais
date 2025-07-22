@@ -1113,7 +1113,7 @@ class ApiQuery {
         }
         
         if($keyword_where = $this->getKeywordSubDQL()){
-            $where .= " AND $keyword_where";
+            $where .= ($where ? ' AND ' : '') . "$keyword_where";
         }
         
         $filters = $this->getSubqueryFilters();
