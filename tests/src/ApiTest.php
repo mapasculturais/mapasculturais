@@ -16,19 +16,17 @@ class ApiTest extends TestCase
 
     function testInMultiselectMetadata()
     {
-
-        /*
-        'Nenhuma'
-        'Auditiva'
-        'Física-motora'
-        'Intelectual'
-        'Múltipla'
-        'Transtorno do Espectro Autista'
-        'Visual'
-        'Outras'
-        */
         $this->app->disableAccessControl();
-
+        /* valores válidos para pessoaDeficiente:
+                - Nenhuma
+                - Auditiva
+                - Física-motora
+                - Intelectual
+                - Múltipla
+                - Transtorno do Espectro Autista
+                - Visual
+                - Outras
+        */
         $values = [
             ['Auditiva', 'Visual'],
             ['Auditiva', 'Visual', 'Transtorno do Espectro Autista'],
@@ -37,6 +35,7 @@ class ApiTest extends TestCase
             ['Auditiva', 'Múltipla'],
             ['Intelectual']
         ];
+        
 
         foreach ($values as $i => $vs) {
             $user = $this->userDirector->createUser();
@@ -74,5 +73,7 @@ class ApiTest extends TestCase
         foreach ($result as $agent) {
             $this->assertContainsOneOf(['Auditiva', 'Múltipla'], $agent['pessoaDeficiente'], 'Certificando que todos os resultados da consulta na api, quanto utilizado o operador IN em metadados de seleção múltipla, contém ao menos um dos termo buscados - busca por 2 termos');
         }
+
+        $this->app->enableAccessControl();
     }
 }
