@@ -2339,6 +2339,14 @@ class App {
         return $message;
     }
 
+    function enqueueMailMessageJob(Email $message): void {
+        $data = [
+            'message' => serialize($message)
+        ];
+
+        $this->enqueueJob(MailMessage::SLUG, $data);
+    }
+
     /**
      * Envia uma mensagem de email
      * 
