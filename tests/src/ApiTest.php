@@ -76,4 +76,58 @@ class ApiTest extends TestCase
 
         $this->app->enableAccessControl();
     }
+
+    function testApiKeywordWithSingleQuota() {
+        $this->app->disableAccessControl();
+
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $names = [
+            ['Fulano', 'Fulano de Tal'],
+            ['Ciclano', 'Ciclano de Catatau'],
+            ['Beltrano', 'Beltrano\'s Um'],
+            ['Beltrano', 'Beltrano\'s Dois'],
+        ];
+
+        foreach ($names as $name) {
+            $user = $this->userDirector->createUser();
+            $profile = $user->profile;
+            $profile->name = $name[0];
+            $profile->nomeCompleto = $name[1];
+            $profile->save(true);
+        }
+
+        $this->processPCache();
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'id,name,nomeCompleto',
+            '@keyword' => 'Beltrano\'s',
+            '@order' => 'id ASC'
+        ]);
+
+        $result = $query->find();
+        $this->assertEquals(2, count($result), 'Certificando que a busca na api por palavra-chave com aspas simples retorna o número correto de resultados.');
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'id,name,nomeCompleto',
+            '@keyword' => 'Beltrano\'s Um; Beltrano\'s Dois',
+            '@order' => 'id ASC'
+        ]);
+
+        $result = $query->find();
+        $this->assertEquals(2, count($result), 'Certificando que a busca na api por palavra-chave com dois termos separados por ponto e vírgula e com aspas simples retorna o número correto de resultados.');
+
+
+        $query = new ApiQuery(Agent::class, [
+            '@select' => 'id,name,nomeCompleto',
+            '@keyword' => 'Beltrano\'s Um',
+            '@order' => 'id ASC'
+        ]);
+
+        $result = $query->find();
+        $this->assertEquals(1, count($result), 'Certificando que a busca na api por palavra-chave com aspas simples retorna o número correto de resultados.');
+
+        $this->app->enableAccessControl();
+    }
 }
