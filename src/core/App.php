@@ -26,6 +26,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\TransactionRequiredException;
 use Exception as GlobalException;
 use Doctrine\Persistence\Mapping\MappingException;
+use MailNotification\JobTypes\MailMessage;
 use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
@@ -38,6 +39,8 @@ use MapasCulturais\Exceptions\WorkflowRequest;
 use ReflectionException;
 use RuntimeException;
 use Slim\App as SlimApp;
+
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql as DqlFunctions;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler;
@@ -694,6 +697,11 @@ class App {
         $doctrine_config->addCustomStringFunction('st_envelope', 'MapasCulturais\DoctrineMappings\Functions\STEnvelope');
         $doctrine_config->addCustomNumericFunction('st_within', 'MapasCulturais\DoctrineMappings\Functions\STWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
+
+
+        // para trabalhar com JSONS
+        $doctrine_config->addCustomStringFunction(DqlFunctions\JsonbExists::FUNCTION_NAME, DqlFunctions\JsonbExists::class);
+        $doctrine_config->addCustomStringFunction(DqlFunctions\JsonbContains::FUNCTION_NAME, DqlFunctions\JsonbContains::class);
 
         $metadata_cache_adapter = new \Symfony\Component\Cache\Adapter\PhpFilesAdapter();
         $doctrine_config->setMetadataCache($metadata_cache_adapter);
@@ -2339,13 +2347,26 @@ class App {
         return $message;
     }
 
+    function enqueueMailMessageJob(Email $message): void {
+        $data = [
+            'message' => serialize($message)
+        ];
+
+        $this->enqueueJob(MailMessage::SLUG, $data);
+    }
+
     /**
      * Envia uma mensagem de email
      * 
      * @param Email $message 
      * @return bool 
      */
-    function sendMailMessage(Email $message): bool {
+    function sendMailMessage(Email $message, bool $create_job = false): bool {
+        if($create_job) {
+            $this->enqueueMailMessageJob($message);
+            return true;
+        }
+
         $mailer = $this->getMailer();
 
         if (!is_object($mailer))
@@ -2353,11 +2374,55 @@ class App {
 
         try {
             $mailer->send($message);
+            $this->_logMailMessage($message);
             return true;
         } catch(TransportExceptionInterface $exception) {
             $this->log->error('Mailer error: ' . $exception->getMessage());
+            $this->_logMailMessage($message, $exception->getMessage());
             return false;
         }
+    }
+
+    protected function _logMailMessage(Email $message, string $error_message = '') {
+        if(!$this->config['mailer.logMessages']) {
+            return;
+        }
+        $folder = LOGS_PATH . 'mailer/';
+        if(!is_dir($folder) && !file_exists($folder)) {
+            @mkdir($folder);
+        }
+
+        $log_data = [];
+
+        if($error_message) {
+            $log_data['error'] = $error_message;
+        }
+
+        $fields = explode(',', $this->config['mailer.logMessages']);
+        $parseField = '';
+        $parseField = function  ($item) use(&$parseField) {
+            if(is_string($item) || is_numeric($item)) {
+                return $item;
+            } else if (is_array($item)) {
+                return implode(',', array_map($parseField, $item));
+            } else if (is_object($item) && method_exists($item, 'toString')){
+                return $item->toString();
+            } else {
+                return @(string) $item;
+            }
+        };
+
+        foreach($fields as $field) {
+            $getter = 'get' . ucfirst($field);
+            if(!method_exists($message, $getter)) {
+                continue;
+            }
+            $log_data[$field] = $parseField($message->$getter());
+        }
+        $log_line = (new \DateTime())->format('Y-m-d H:i:s.u') . ' ' . json_encode($log_data);
+
+        $filename = date('Y-m') . ($error_message ? '-errors' : '-success') . '.log';
+        file_put_contents($folder . $filename, $log_line . PHP_EOL, FILE_APPEND);
     }
 
     /**
