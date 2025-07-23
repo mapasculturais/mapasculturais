@@ -89,19 +89,14 @@
             border: size(2) solid var(--mc-gray-100);
         }
         
-        & .input__checkboxLabel {
+        & .input__checkboxLabel, .input__radioLabel {
             display: flex;
             gap: size(8);
             font-size: var(--mc-font-size-xxs);
             font-weight: var(--mc-font-semibold);
         }
     }
-
-    .input__radioLabel {
-        font-size: var(--mc-font-size-xxs);
-        font-weight: var(--mc-font-semibold);
-    }
-
+    
     &__color {
         display: flex;
         gap: size(8);
