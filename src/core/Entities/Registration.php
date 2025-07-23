@@ -1307,12 +1307,12 @@ class Registration extends \MapasCulturais\Entity
         }
  
         $_fied_name = $field->conditionalField;
+        $_fied_value = $field->conditionalValue;
 
         if (is_array($this->$_fied_name)) {
             return in_array($_fied_value, $this->$_fied_name);
         }
 
-        $_fied_value = $field->conditionalValue;
 
         if ($_fied_name == 'appliedForQuota') {
             return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
