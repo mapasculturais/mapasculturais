@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correções
+- Corrige erro que impedia o acesso à inscrição quando não havia campos liberados para o avaliador e o valor retornado era null
+
 ## [7.5.55] - 2025-07-14
 ### Correções
 - Ajusta cenUserSend() na entidade registration, evitando falso bloqueio causado por erros anteriores no formulário
