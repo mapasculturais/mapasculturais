@@ -182,9 +182,7 @@ class Module extends \MapasCulturais\Module {
                     continue;
                 }
 
-                foreach($this->data as $key => $value) {
-                    $$key = $value;
-                }
+                extract($this->data);
 
                 $started_at = microtime(true);
                 include $init_file;
@@ -309,6 +307,7 @@ class Module extends \MapasCulturais\Module {
 
             $app->applyHookBoundTo($this, "component({$component}):before", [&$__data, &$__template_path]);
             
+            extract($this->data);
             extract($__data);
 
             include $__template_path;
