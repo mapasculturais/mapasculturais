@@ -502,15 +502,22 @@ class Module extends \MapasCulturais\Module{
         });
 
 
-        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused, Entity $requested_entity) use ($app) {
+        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused, ?Entity $requested_entity = null) use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
+            $requested_entity = $requested_entity ?: $this->controller->requestedEntity;
+
             $opportunity = $this->getOpportunityFromEntity($requested_entity);
             $this->useOpportunityAPI();
            
             $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
         });
 
-        $app->hook('Theme::addRegistrationFieldsToJs', function ($unused, Entity $requested_entity) use ($app) {
+        $app->hook('Theme::addRegistrationFieldsToJs', function ($unused, ?Entity $requested_entity = null) use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
+            $requested_entity = $requested_entity ?: $this->controller->requestedEntity;
+
             $opportunity = $this->getOpportunityFromEntity($requested_entity);
 
             $fields = array_merge((array) $opportunity->registrationFileConfigurations, (array) $opportunity->registrationFieldConfigurations);
