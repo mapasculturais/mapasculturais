@@ -467,7 +467,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $avaliableEvaluationFields = ($this->opportunity->avaliableEvaluationFields != "null") ? $this->opportunity->avaliableEvaluationFields : [];
-        if(in_array($key, array_keys($avaliableEvaluationFields))){
+        if($avaliableEvaluationFields && in_array($key, array_keys($avaliableEvaluationFields))){
             return true;
         }
 
