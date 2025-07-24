@@ -116,18 +116,18 @@ app.component('opportunity-registrations-table', {
 
         // Ordena por step.displayOrder e depois por displayOrder
         const sortedElements = [...steppedFields].sort((a, b) => {
-
-            const stepSortKeyA = fieldA.step?.displayOrder ?? Infinity;
-            const stepSortKeyB = fieldB.step?.displayOrder ?? Infinity;
+            const stepSortKeyA = a.step?.displayOrder ?? Infinity;
+            const stepSortKeyB = b.step?.displayOrder ?? Infinity;
+            
         
             if (stepSortKeyA !== stepSortKeyB) {
                 return stepSortKeyA - stepSortKeyB;
             }
         
-            const fieldSortKeyA = a.displayOrder ?? Infinity;
-            const fieldSortKeyB = b.displayOrder ?? Infinity;
+            const displayOrderA = a.displayOrder ?? Infinity;
+            const displayOrderB = b.displayOrder ?? Infinity;
         
-            return fieldSortKeyA - fieldSortKeyB;
+            return displayOrderA - displayOrderB;
         });
         
         // Preenche de volta no array original mantendo os elementos que não têm step/displayOrder nas mesmas posições
