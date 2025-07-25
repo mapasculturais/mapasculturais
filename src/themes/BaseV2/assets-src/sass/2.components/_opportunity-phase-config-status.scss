@@ -1,0 +1,38 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-phase-config-status {
+    .status-line {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+
+        .mc-status-like {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+
+            &.disabled {
+                opacity: 0.5;
+            }
+        }
+
+        button {
+            font-size: 0.85rem;
+            padding: 0.2rem 0.5rem;
+            cursor: pointer;
+        }
+    }
+
+    input[type="text"] {
+        margin: 0.4rem 0;
+        display: block;
+    }
+
+    .original-label {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 1rem;
+        margin-left: 1.8rem;
+    }
+}
