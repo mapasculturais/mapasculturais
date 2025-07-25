@@ -62,8 +62,11 @@ app.component('opportunity-phase-config-status', {
             }
         },
 
-        toggleShowOriginal(status) {
-            status.showOriginal = !status.showOriginal;
+        restoreOriginal(status) {
+            this.phase.statusLabels[status.key] = status.defaultLabel;
+            status.label = status.defaultLabel;
+
+            this.phase.save(true);
         },
 
         toggleEdit(status) {

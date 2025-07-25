@@ -19,7 +19,7 @@ $this->import('
         <div class="status-line">
             <input type="checkbox" v-model="status.enabled" @change="updateStatus(status)">
 
-            <input v-if="status.enabled && status.isEditing" type="text" v-model="status.label" @input="updateLabel(status)" />
+            <input v-if="status.enabled && status.isEditing" @change="toggleEdit(status)" type="text" v-model="status.label" @input="updateLabel(status)" />
 
             <div v-else class="mc-status-like" :class="{ disabled: !status.enabled }">
                 <mc-icon name="dot"></mc-icon>
@@ -29,14 +29,12 @@ $this->import('
             <button v-if="status.enabled" @click="toggleEdit(status)">
                 {{ status.isEditing ? 'Cancelar edição' : 'Editar' }}
             </button>
-
-            <button @click="toggleShowOriginal(status)">
-                {{ status.showOriginal ? 'Ocultar original' : 'Mostrar original' }}
-            </button>
         </div>
 
-        <div v-if="status.showOriginal" class="original-label">
+        <div class="original-label">
             <?= i::__("Original") ?> {{ status.defaultLabel }}
+
+            <button class="button button--text" @click="restoreOriginal(status)"><?= i::__("Restaurar") ?></button>
         </div>
     </div>
 </div>
