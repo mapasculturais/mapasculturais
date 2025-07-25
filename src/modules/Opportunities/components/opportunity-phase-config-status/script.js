@@ -1,4 +1,4 @@
-app.component('opportunity-phase-config-status' , {
+app.component('opportunity-phase-config-status', {
     template: $TEMPLATES['opportunity-phase-config-status'],
 
     setup() {
@@ -33,6 +33,8 @@ app.component('opportunity-phase-config-status' , {
                     defaultLabel: label,
                     label: isActive ? this.phase.statusLabels[key] : label,
                     enabled: isActive,
+                    showOriginal: false,
+                    isEditing: false,
                 };
             });
 
@@ -48,6 +50,7 @@ app.component('opportunity-phase-config-status' , {
             } else {
                 delete this.phase.statusLabels[status.key];
                 status.label = status.defaultLabel;
+                status.isEditing = false;
             }
             this.phase.save(true);
         },
@@ -57,6 +60,14 @@ app.component('opportunity-phase-config-status' , {
                 this.phase.statusLabels[status.key] = status.label;
                 this.phase.save(true);
             }
+        },
+
+        toggleShowOriginal(status) {
+            status.showOriginal = !status.showOriginal;
+        },
+
+        toggleEdit(status) {
+            status.isEditing = !status.isEditing;
         }
     }
 });
