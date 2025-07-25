@@ -1118,14 +1118,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
         $total = 0;
 
-        $cfg = $evaluation->getEvaluationMethodConfiguration();
-        foreach($cfg->criteria as $cri){
-            $key = $cri->id;
-            if(!isset($evaluation->evaluationData->$key)){
-                return null;
-            } else {
-                $val = $evaluation->evaluationData->$key;
-                $total += is_numeric($val) ? $cri->weight * $val : 0;
+        if($cfg = $evaluation->getEvaluationMethodConfiguration()) {
+            foreach($cfg->criteria as $cri){
+                $key = $cri->id;
+                if(!isset($evaluation->evaluationData->$key)){
+                    return null;
+                } else {
+                    $val = $evaluation->evaluationData->$key;
+                    $total += is_numeric($val) ? $cri->weight * $val : 0;
+                }
             }
         }
 
