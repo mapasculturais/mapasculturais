@@ -16,16 +16,21 @@ app.component('opportunity-phase-config-status', {
     data() {
         const defaultStatuses = $MAPAS.config.opportunityPhaseConfigStatus.statuses || {};
 
-        if (!this.phase.statusLabels) {
+        if (Array.isArray(this.phase.statusLabels)) {
+            const converted = {};
+            this.phase.statusLabels.forEach((label, index) => {
+                converted[String(index)] = label;
+            });
+            this.phase.statusLabels = converted;
+        } else if (!this.phase.statusLabels || typeof this.phase.statusLabels !== 'object') {
             this.phase.statusLabels = {};
         }
 
-        this.phase.statusLabels[0] = defaultStatuses[0] || 'Não avaliada';
+        this.phase.statusLabels['0'] = defaultStatuses['0'] || 'Não avaliada';
 
         const statuses = Object.entries(defaultStatuses)
             .filter(([key]) => key !== '0')
             .map(([key, label]) => {
-                key = parseInt(key);
                 const isActive = key in this.phase.statusLabels;
 
                 return {
@@ -45,27 +50,32 @@ app.component('opportunity-phase-config-status', {
 
     methods: {
         updateStatus(status) {
+            const key = String(status.key);
             if (status.enabled) {
-                this.phase.statusLabels[status.key] = status.label;
+                if (!status.label || status.label.trim() === '') {
+                    status.label = status.defaultLabel;
+                }
+                this.phase.statusLabels[key] = status.label;
             } else {
-                delete this.phase.statusLabels[status.key];
                 status.label = status.defaultLabel;
                 status.isEditing = false;
+                delete this.phase.statusLabels[key];
             }
-            this.phase.save(true);
+            this.phase.save();
         },
 
         updateLabel(status) {
             if (status.enabled) {
-                this.phase.statusLabels[status.key] = status.label;
+                const key = String(status.key);
+                this.phase.statusLabels[key] = status.label;
                 this.phase.save(true);
             }
         },
 
         restoreOriginal(status) {
-            this.phase.statusLabels[status.key] = status.defaultLabel;
+            const key = String(status.key);
+            this.phase.statusLabels[key] = status.defaultLabel;
             status.label = status.defaultLabel;
-
             this.phase.save(true);
         },
 
