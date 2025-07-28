@@ -53,5 +53,9 @@
         font-size: var(--mc-font-size-xxs);
         font-weight: var(--mc-font-semibold);
         text-decoration: none;
+
+        &:hover {
+            color: var(--mc-gray-500);
+        }
     }
 }
