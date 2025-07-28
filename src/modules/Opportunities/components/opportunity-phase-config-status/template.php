@@ -26,7 +26,7 @@ $this->import('
             <mc-status v-else :status-name="status.label || ''" :class="{ disabled: !status.enabled }"></mc-status>
 
             <button class="opportunity-phase-config-status__button" v-if="status.enabled" @click="toggleEdit(status)">
-                <template v-if="status.isEditing"> <?= i::__('Cancelar edição') ?> </template>
+                <template v-if="status.isEditing"> <?= i::__('Concluir edição') ?> </template>
                 <template v-if="!status.isEditing"> <?= i::__('Editar') ?> </template>
             </button>
 
