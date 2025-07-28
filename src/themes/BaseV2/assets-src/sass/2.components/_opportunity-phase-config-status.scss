@@ -1,38 +1,57 @@
 @use '../0.settings/mixins' as *;
 
 .opportunity-phase-config-status {
-    .status-line {
-        display: flex;
+    display: grid;
+    gap: size(8);
+
+    &__status {
+        display: grid;
+        margin-bottom: 8px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__status-line {
         align-items: center;
-        gap: 1rem;
-        margin-bottom: 0.5rem;
+        display: flex;
+        gap: size(16);
 
-        .mc-status-like {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
+        .field {
+            max-width: size(200);
 
-            &.disabled {
-                opacity: 0.5;
+            &>input {
+                padding: 4px 14px;
+                margin: 0;
             }
         }
 
-        button {
-            font-size: 0.85rem;
-            padding: 0.2rem 0.5rem;
-            cursor: pointer;
+        .mc-status {
+            margin: unset;
+
+            &.disabled {
+                opacity: .5;
+            }
         }
     }
 
-    input[type="text"] {
-        margin: 0.4rem 0;
-        display: block;
+    &__status-default {
+        color: var(--mc-gray-500);
+        font-size: var(--mc-font-size-xxs);
     }
 
-    .original-label {
-        font-size: 0.85rem;
-        color: #666;
-        margin-bottom: 1rem;
-        margin-left: 1.8rem;
+    &__button {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        align-items: center;
+        appearance: none;
+        background-color: unset;
+        border: none;
+        cursor: pointer;
+        font-family: var(--mc-font-body);
+        font-size: var(--mc-font-size-xxs);
+        font-weight: var(--mc-font-semibold);
+        text-decoration: none;
     }
 }

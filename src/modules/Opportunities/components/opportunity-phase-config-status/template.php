@@ -12,29 +12,31 @@ $this->import('
 ');
 
 ?>
-<div class="opportunity-phase-config-status grid-12">
+<div class="opportunity-phase-config-status col-12 grid-12">
     <h4 class="bold col-12"><?= i::__("Configuração de status") ?></h4>
 
-    <div v-for="status in statuses" :key="status.key" class="col-12">
-        <div class="status-line">
-            <input type="checkbox" v-model="status.enabled" @change="updateStatus(status)">
+    <div v-for="(status, index) in statuses" :key="index" class="col-12 opportunity-phase-config-status__status">
+        <div class="opportunity-phase-config-status__status-line">
+            <input type="checkbox" v-model="status.enabled" @change="updateStatus(status)" />
 
-            <input v-if="status.enabled && status.isEditing" @change="toggleEdit(status)" type="text" v-model="status.label" @input="updateLabel(status)" />
-
-            <div v-else class="mc-status-like" :class="{ disabled: !status.enabled }">
-                <mc-icon name="dot"></mc-icon>
-                <span>{{ status.label }}</span>
+            <div v-if="status.enabled && status.isEditing" class="field">
+                <input @change="toggleEdit(status); updateLabel(status);" type="text" v-model="status.label" />
             </div>
 
-            <button v-if="status.enabled" @click="toggleEdit(status)">
-                {{ status.isEditing ? 'Cancelar edição' : 'Editar' }}
+            <mc-status v-else :status-name="status.label || ''" :class="{ disabled: !status.enabled }"></mc-status>
+
+            <button class="opportunity-phase-config-status__button" v-if="status.enabled" @click="toggleEdit(status)">
+                <template v-if="status.isEditing"> <?= i::__('Cancelar edição') ?> </template>
+                <template v-if="!status.isEditing"> <?= i::__('Editar') ?> </template>
+            </button>
+
+            <button v-if="status.label !== status.defaultLabel" class="opportunity-phase-config-status__button" @click="restoreOriginal(status)">
+                <?= i::__("Restaurar") ?>
             </button>
         </div>
 
-        <div class="original-label">
-            <?= i::__("Original") ?> {{ status.defaultLabel }}
-
-            <button class="button button--text" @click="restoreOriginal(status)"><?= i::__("Restaurar") ?></button>
+        <div class="opportunity-phase-config-status__status-default">
+            <b><?= i::__("Original") ?>: </b> {{ status.defaultLabel }}
         </div>
     </div>
 </div>
