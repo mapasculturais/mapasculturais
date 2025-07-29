@@ -7,15 +7,18 @@ use MapasCulturais\App,
     MapasCulturais\Entities,
     MapasCulturais\Entities\Notification,
     MapasCulturais\Entities\Request;
-
+use MapasCulturais\Entities\Agent;
 
 class Module extends \MapasCulturais\Module{
     
-    public function register() {
-        ;
-    }
+    static $disableMailMessages = false;
+
+    public function register() { }
 
     public function sendMail($to, $msg, $subject = null) {
+        if(self::$disableMailMessages) {
+            return;
+        }
         $app = App::i();
         $dataValue = [
             'message'    => $msg
@@ -93,6 +96,19 @@ class Module extends \MapasCulturais\Module{
             // dump($destination);
             
             $origin_type = strtolower($origin->entityTypeLabel);
+
+            if($origin instanceof Agent) {
+                if($origin->type->id == 1) {
+                    $origin_type = i::__('perfil');
+                } else {
+                    $app->disableAccessControl();
+                    $has_cnpj = $origin->cnpj;
+                    $app->enableAccessControl();
+
+                    $origin_type = $has_cnpj ? i::__('organização') : i::__('coletivo');
+                }
+            }
+
             $origin_url = $origin->singleUrl;
             $origin_name = $origin->name;
 
@@ -165,11 +181,24 @@ class Module extends \MapasCulturais\Module{
                         }
 
                     } else {
-                        $subject = i::__("Requisição para relacionar agente");
-                        /* Translators: "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}." */
-                        $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
-                        /* Translators: "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada." */
-                        $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
+                        if($this->agentRelation->hasControl) {
+                            $subject = sprintf(i::__("Requisição para administrar %s"), $origin_type);
+                            if($this->agentRelation->agent == $origin) {
+                                $message = sprintf(i::__("%s quer administrar o agente %s. %s"), $profile_link, $destination_link, $urlDestinationPanel_link);
+                                $message_to_requester = sprintf(i::__("Sua requisição para administração do agente %s foi enviada ao %s."), $destination_link, $origin_link);
+                            } else {
+                                $message = sprintf(i::__("%s quer que %s administre o %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
+                                /* Translators: "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada." */
+                                $message_to_requester = sprintf(i::__("Sua requisição para que %s administre o %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
+                            }
+
+                        } else {
+                            $subject = i::__("Requisição para relacionar agente");
+                            /* Translators: "{$profile_link} quer relacionar o agente {$destination_link} ao {$origin_type} {$origin_link}." */
+                            $message = sprintf(i::__("%s quer relacionar o agente %s ao %s %s. %s"), $profile_link, $destination_link, $origin_type, $origin_link, $urlDestinationPanel_link);
+                            /* Translators: "Sua requisição para relacionar o agente {$destination_link} ao {$origin_type} {$origin_link} foi enviada." */
+                            $message_to_requester = sprintf(i::__("Sua requisição para relacionar o agente %s ao %s %s foi enviada."), $destination_link, $origin_type, $origin_link);
+                        }
                     }
                     break;
                     

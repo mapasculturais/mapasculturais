@@ -2,7 +2,8 @@
 use MapasCulturais\i;
 $this->layout = 'entity';
 
-$this->addOpportunityBreadcramb(i::__('Configuração do formulário'));
+
+$this->addOpportunityBreadcramb(i::__('Configuração do formulário'), $entity);
 
 $this->import('
     entity-actions

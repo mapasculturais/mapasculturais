@@ -40,6 +40,8 @@ use ReflectionException;
 use RuntimeException;
 use Slim\App as SlimApp;
 
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql as DqlFunctions;
+
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler;
 use Monolog\Level;
@@ -755,6 +757,11 @@ class App {
         $doctrine_config->addCustomStringFunction('st_envelope', 'MapasCulturais\DoctrineMappings\Functions\STEnvelope');
         $doctrine_config->addCustomNumericFunction('st_within', 'MapasCulturais\DoctrineMappings\Functions\STWithin');
         $doctrine_config->addCustomNumericFunction('st_makepoint', 'MapasCulturais\DoctrineMappings\Functions\STMakePoint');
+
+
+        // para trabalhar com JSONS
+        $doctrine_config->addCustomStringFunction(DqlFunctions\JsonbExists::FUNCTION_NAME, DqlFunctions\JsonbExists::class);
+        $doctrine_config->addCustomStringFunction(DqlFunctions\JsonbContains::FUNCTION_NAME, DqlFunctions\JsonbContains::class);
 
         $metadata_cache_adapter = new \Symfony\Component\Cache\Adapter\PhpFilesAdapter();
         $doctrine_config->setMetadataCache($metadata_cache_adapter);

@@ -36,7 +36,7 @@ class User extends Controller {
         App::i()->pass();
     }
 
-    function getRequestedEntity(): UserEntity {
+    function getRequestedEntity(): ?UserEntity {
         $app = App::i();
         if($id = $this->urlData['id']) {
             return $app->repo('User')->find($id);

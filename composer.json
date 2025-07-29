@@ -28,7 +28,8 @@
         "league/csv": "^9.6.2",
         "phpoffice/phpspreadsheet": "^2.0",
         "curl/curl": "1.2.*",
-        "laminas/laminas-diactoros": "^3.6"
+        "laminas/laminas-diactoros": "^3.6",
+        "scienta/doctrine-json-functions": "^5.4"
     },
     "autoload": {
         "psr-4": {
