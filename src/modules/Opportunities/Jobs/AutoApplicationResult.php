@@ -63,7 +63,7 @@ class AutoApplicationResult extends JobType
             }
 
             if ($evaluation_type == 'qualification') {
-                $value = $registration->consolidatedResult == 'Habilitado' ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
+                $value = $registration->consolidatedResult == 'valid' ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
             }
 
             $app->disableAccessControl();
