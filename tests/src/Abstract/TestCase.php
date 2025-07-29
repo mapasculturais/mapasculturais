@@ -5,6 +5,7 @@ namespace Tests\Abstract;
 use MapasCulturais\App;
 use MapasCulturais\Connection;
 use MapasCulturais\Entities\User;
+use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -100,8 +101,8 @@ class TestCase extends PHPUnitTestCase
 
         /** @var Connection */
         $conn = $app->em->getConnection();
-        
-        while($conn->fetchScalar("SELECT count(*) FROM permission_cache_pending")) {
+
+        while ($conn->fetchScalar("SELECT count(*) FROM permission_cache_pending")) {
             $app->recreatePermissionsCache();
         }
     }
@@ -154,5 +155,15 @@ class TestCase extends PHPUnitTestCase
     protected function assertStatus404(ServerRequestInterface $request, string $message = '')
     {
         $this->assertHttpStatusCode($request, 404, $message);
+    }
+
+    public function assertContainsOneOf(array $expected, iterable $actual, $message = '')
+    {
+        $constraints = [];
+        foreach ($expected as $expected_value) {
+            $constraints[] = new TraversableContainsEqual($expected_value);
+        }
+        $constraint = $this->logicalOr(...$constraints);
+        $this->assertThat($actual, $constraint, $message);
     }
 }

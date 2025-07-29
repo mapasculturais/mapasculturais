@@ -16,6 +16,7 @@ use MapasCulturais\Entities\RegistrationStep;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation;
 use MapasCulturais\Entities\EvaluationMethodConfigurationMeta;
+use MapasCulturais\Entity;
 
 class Module extends \MapasCulturais\Module{
 
@@ -399,23 +400,21 @@ class Module extends \MapasCulturais\Module{
             ];
         });
 
-        $app->hook('Theme::addOpportunityBreadcramb', function($unused, $label) use($app) {
+        $app->hook('Theme::addOpportunityBreadcramb', function($unused, $label, Opportunity|EvaluationMethodConfiguration $requested_entity) use($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
-            /** @var Opportunity $entity */
-            $entity = $this->controller->requestedEntity;
-
+            
             $is_valuer = false;
 
-            if($entity instanceof EvaluationMethodConfiguration) {
-                $first_phase = $entity->opportunity->firstPhase;
-                $relation = $entity->getUserRelation($app->user);
+            if($requested_entity instanceof EvaluationMethodConfiguration) {
+                $first_phase = $requested_entity->opportunity->firstPhase;
+                $relation = $requested_entity->getUserRelation($app->user);
 
                 $is_valuer = $relation && $relation->status === AgentRelation::STATUS_ENABLED;
             } else {
-                $first_phase = $entity->firstPhase;
+                $first_phase = $requested_entity->firstPhase;
 
-                if ($entity->evaluationMethodConfiguration) {
-                    $relation = $entity->evaluationMethodConfiguration->getUserRelation($app->user);
+                if ($requested_entity->evaluationMethodConfiguration) {
+                    $relation = $requested_entity->evaluationMethodConfiguration->getUserRelation($app->user);
                     $is_valuer = $relation && $relation->status === AgentRelation::STATUS_ENABLED;
                 }
             }
@@ -434,10 +433,10 @@ class Module extends \MapasCulturais\Module{
                 ];
             }
 
-            if ($entity->isFirstPhase) {
+            if ($requested_entity->isFirstPhase) {
                 $breadcrumb[] = ['label'=> i::__('Período de inscrição')];
             } else {
-                $breadcrumb[] = ['label'=> $entity->name];
+                $breadcrumb[] = ['label'=> $requested_entity->name];
             }
             $breadcrumb[] = ['label'=> $label];
 
@@ -464,7 +463,7 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['evaluationInfos'] = $infos;
         });
 
-        $app->hook('Theme::addRegistrationPhasesToJs', function ($unused = null, $registration = null) use ($app) {
+        $app->hook('Theme::addRegistrationPhasesToJs', function ($unused, $registration = null) use ($app) {
             /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
             $this->useOpportunityAPI();
             if (!$registration) {
@@ -486,37 +485,40 @@ class Module extends \MapasCulturais\Module{
             $this->jsObject['registrationPhases'] = $phases;
         });
 
-        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused = null, $opportunity = null) use ($app) {
-            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
-            $this->useOpportunityAPI();
-            if (!$opportunity) {
-                $entity = $this->controller->requestedEntity;
-
-                if ($entity instanceof Opportunity) {
-                    $opportunity = $entity;
-                } else if ($entity instanceof Registration) {
-                    $opportunity = $entity->opportunity;
-                } else if ($entity instanceof EvaluationMethodConfiguration) {
-                    $opportunity = $entity->opportunity;
-                } else {
-                    throw new Exception();
-                }
+        $app->hook('Theme::getOpportunityFromEntity', function ($unused, Entity $entity) use ($app) {
+            if ($entity instanceof Opportunity) {
+                return $entity;
             }
+
+            if ($entity instanceof EvaluationMethodConfiguration) {
+                return $entity->opportunity;
+            }
+
+            if ($entity instanceof Registration) {
+                return $entity->opportunity;
+            }
+
+            return null;
+        });
+
+
+        $app->hook('Theme::addOpportunityPhasesToJs', function ($unused, ?Entity $requested_entity = null) use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
+
+            $requested_entity = $requested_entity ?: $this->controller->requestedEntity;
+
+            $opportunity = $this->getOpportunityFromEntity($requested_entity);
+            $this->useOpportunityAPI();
+           
             $this->jsObject['opportunityPhases'] = $opportunity->firstPhase->phases;
         });
 
-        $app->hook('Theme::addRegistrationFieldsToJs', function ($unused = null, $opportunity = null) use ($app) {
-            if (!$opportunity) {
-                $entity = $this->controller->requestedEntity;
+        $app->hook('Theme::addRegistrationFieldsToJs', function ($unused, ?Entity $requested_entity = null) use ($app) {
+            /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
 
-                if ($entity instanceof Opportunity) {
-                    $opportunity = $entity;
-                } else if ($entity instanceof Registration) {
-                    $opportunity = $entity->opportunity;
-                } else {
-                    throw new Exception();
-                }
-            }
+            $requested_entity = $requested_entity ?: $this->controller->requestedEntity;
+
+            $opportunity = $this->getOpportunityFromEntity($requested_entity);
 
             $fields = array_merge((array) $opportunity->registrationFileConfigurations, (array) $opportunity->registrationFieldConfigurations);
 

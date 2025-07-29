@@ -2,6 +2,7 @@
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
+use MapasCulturais\Repository;
 
 trait ControllerEntity {
 
@@ -18,6 +19,7 @@ trait ControllerEntity {
      * @var string the entity class name
      */
     protected $entityClassName;
+    protected Repository|\Doctrine\ORM\EntityRepository|null $entityRepository = null;
 
     static $changeStatusMap = [
         Entity::STATUS_ENABLED => [
@@ -54,7 +56,9 @@ trait ControllerEntity {
      * @return \Doctrine\ORM\EntityRepository
      */
     public function getRepository(){
-        return App::i()->repo($this->entityClassName);
+        $this->entityRepository =  $this->entityRepository ?: App::i()->repo($this->entityClassName);
+        
+        return $this->entityRepository;
     }
 
     /**
@@ -87,7 +91,8 @@ trait ControllerEntity {
      *
      * @return \MapasCulturais\Entity|null
      */
-    public function getRequestedEntity(): Entity{
+    public function getRequestedEntity(): ?Entity
+    {
         if (key_exists('id', $this->urlData)) {
             $entity = $this->repository->find($this->urlData['id']);
         } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {

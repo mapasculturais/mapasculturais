@@ -120,7 +120,7 @@ $this->import('
 
                 <template #goalStatuses="{entity}">
                     <a v-if="entity.goalStatuses" :href="entity.singleUrl + '#ficha'" class="entity-table__goals">{{entity.goalStatuses['10']}}/{{entity.goalStatuses.numGoals}} <?= i::__('concluídas') ?></a>
-                <template>
+                </template>
 
                 <template #icon-text="popover">
                     <button class="agent-table__button button button--icon button--primary button--sm">

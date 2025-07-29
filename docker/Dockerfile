@@ -78,7 +78,7 @@ COPY composer.lock /var/www/composer.lock
 WORKDIR /var/www/
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 
-ENV COMPOSER_ARGS=${COMPOSER_ARGS}
+ARG COMPOSER_ARGS
 
 RUN composer.phar install $COMPOSER_ARGS
 RUN composer.phar dump-autoload --optimize

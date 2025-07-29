@@ -22,7 +22,7 @@ $this->import('
     opportunity-subscribe-results
 ');
 
-$this->addOpportunityPhasesToJs();
+$this->addOpportunityPhasesToJs($entity);
 
 $label = $this->isRequestedEntityMine() ? i::__('Minhas oportunidades') : i::__('Oportunidades');
 $this->breadcrumb = [

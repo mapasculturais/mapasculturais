@@ -7,12 +7,12 @@
 use MapasCulturais\i;
 use MapasCulturais\Entities\Registration;
 
-$entity = $this->controller->requestedEntity;
-
 $committee = [];
 $valuersMetadata = [];
 
-if ($comm = $entity->getEvaluationCommittee()) {
+$opportunity = $this->getOpportunityFromEntity($entity);
+
+if ($comm = $opportunity->getEvaluationCommittee()) {
     foreach($comm as $member) {
         $user_id = $member->agent->owner->user->id;
         if (empty($committee[$user_id])) {
@@ -52,6 +52,14 @@ foreach ($definitions as $field => $def) {
         $default_headers[] = $header;
     }
 }
+
+$default_headers[] = [
+    'text' => i::__('Comissão de avaliação'),
+    'value' => 'committee',
+    'slug' => 'committee',
+    'required' => true,
+    'visible' => true
+];
 
 // Função para separar campos no select
 function splitSelectFields($str) {

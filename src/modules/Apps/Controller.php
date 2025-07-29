@@ -29,13 +29,12 @@ class Controller extends EntityController {
      *
      * @return \MapasCulturais\Entity|null
      */
-    public function getRequestedEntity(): UserApp {
+    public function getRequestedEntity(): ?UserApp {
         $entity = parent::getRequestedEntity();
         if (!$entity && key_exists(0, $this->urlData)) {
             $entity = $this->repository->find($this->urlData[0]);
         } else if (!$entity && !key_exists(0, $this->urlData)) {
-
-            return false;
+            return null;
         }
 
         if ($entity) {
