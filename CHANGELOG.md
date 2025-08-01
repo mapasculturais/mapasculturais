@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Correções
 - Corrige erro que impedia o acesso à inscrição quando não havia campos liberados para o avaliador e o valor retornado era null
+- Corrige erro no cálculo da pontuação total na tela de avaliação.
 
 ## [7.5.55] - 2025-07-14
 ### Correções
