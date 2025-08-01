@@ -200,7 +200,7 @@ class Entity {
     }
 
     catchErrors(res, data) {
-        const message = data.data.message;
+        const message = data.data?.message;
         
         if (res.status >= 500 && res.status <= 599) {
             this.sendMessage(message || this.text('erro inesperado'), 'error');
