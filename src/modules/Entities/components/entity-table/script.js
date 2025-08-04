@@ -412,55 +412,59 @@ app.component('entity-table', {
         },
 
         getEntityData(obj, prop) {
-            let val = eval(`obj.${prop}`);
+            try {
+                let val = eval(`obj.${prop}`);
 
-            const description = this.$description[prop];
+                const description = this.$description[prop];
 
-            if(description) {
-                switch (description.type) {
-                    case 'multiselect':
-                    case 'array':
-                        val = val?.filter(item => item !== "null" && item !== "").join(', ')
-                        break;
-                    case 'links':
-                        val = val ? JSON.parse(val).map(item => `${item.title}: ${item.value},`).join('\n') : null
-                        break;
-                    case 'point':
-                        val = val ? `${val.lat}, ${val.lng}` : null
-                    case 'boolean':
-                        if(prop == "publicLocation") {
-                            val = val ? this.text('sim') : this.text('nao')
-                        } else {
+                if (description) {
+                    switch (description.type) {
+                        case 'multiselect':
+                        case 'array':
+                            val = val?.filter(item => item !== "null" && item !== "").join(', ')
+                            break;
+                        case 'links':
+                            val = val ? JSON.parse(val).map(item => `${item.title}: ${item.value},`).join('\n') : null
+                            break;
+                        case 'point':
+                            val = val ? `${val.lat}, ${val.lng}` : null
+                        case 'boolean':
+                            if (prop == "publicLocation") {
+                                val = val ? this.text('sim') : this.text('nao')
+                            } else {
+                                val = val
+                            }
+                            break;
+                        default:
                             val = val
-                        }
-                        break;
-                    default:
-                        val = val
+                    }
                 }
-            }
 
-            if(val instanceof McDate) {
-                if(description.type == 'datetime') {
-                    val = val.date('numeric year') + ' ' + val.time('2-digit');
-                } else {
-                    val = val.date('numeric year');
+                if (val instanceof McDate) {
+                    if (description.type == 'datetime') {
+                        val = val.date('numeric year') + ' ' + val.time('2-digit');
+                    } else {
+                        val = val.date('numeric year');
+                    }
                 }
-            }
 
-            if(prop == 'type') {
-                val = val.name
-            }
+                if (prop == 'type') {
+                    val = val.name
+                }
 
-            if(prop == 'public') {
-                val = val ? this.text('sim') : this.text('nao')
-            }
+                if (prop == 'public') {
+                    val = val ? this.text('sim') : this.text('nao')
+                }
 
-            if(prop == 'status') {
-                let type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
-                val = this.fromToStatus[type]?.[val] || val;
-            }
+                if (prop == 'status') {
+                    let type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                    val = this.fromToStatus[type]?.[val] || val;
+                }
 
-            return val;
+                return val;
+            } catch (error) {
+                console.error("erro ao carregar prop => ", prop);
+            }
         },
 
         resetHeaders() {
