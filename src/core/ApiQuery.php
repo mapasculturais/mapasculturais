@@ -2186,6 +2186,8 @@ class ApiQuery {
                     continue;
                 }
 
+                $relations_by_owner_id[$owner_id] = $relations_by_owner_id[$owner_id] ?? [];
+
                 $relations_by_owner_id[$owner_id][$group] = $relations_by_owner_id[$owner_id][$group] ?? [];
                 $relation['agent'] = $agents_by_id[$agent_id];
 
@@ -2195,7 +2197,7 @@ class ApiQuery {
             foreach($entities as &$entity) {
                 $entity_id = $entity[$this->pk];
 
-                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? (object)[];
+                $entity['agentRelations'] = $relations_by_owner_id[$entity_id] ?? [];
                 $permisions = $entity['currentUserPermissions'] ?? [];
 
                 $can_view_pending = ($permisions['@controll'] ?? false) || 
