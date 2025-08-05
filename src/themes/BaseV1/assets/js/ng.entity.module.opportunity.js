@@ -1825,11 +1825,15 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }
         }
 
-        if(field.conditional){
+        if (field.conditional) {
+            let parentField = $scope.data.fields.find(f => f.fieldName === field.conditionalField);
+
+            if (parentField && !$scope.showField(parentField)) {
+                return false; 
+            }
+           
             if (field.conditionalField === 'appliedForQuota') {
-                if($scope.appliedForQuota) {
-                    result = result && $scope.appliedForQuota;
-                }
+                result = result && $scope.appliedForQuota;
             } else {
                 result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
             }

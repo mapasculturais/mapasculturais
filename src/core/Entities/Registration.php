@@ -1050,7 +1050,8 @@ class Registration extends \MapasCulturais\Entity
      * @param RegistrationFieldConfiguration|RegistrationFileConfiguration $field O campo a ser verificado.
      * @return bool Verdadeiro se o campo deve ser exibido, falso caso contrário.
      */
-    function isFieldVisisble(RegistrationFieldConfiguration|RegistrationFileConfiguration $field): bool {
+    function isFieldVisisble(RegistrationFieldConfiguration|RegistrationFileConfiguration $field): bool
+    {
         $opportunity = $this->opportunity;
 
         $use_category = (bool) $opportunity->registrationCategories;
@@ -1076,18 +1077,55 @@ class Registration extends \MapasCulturais\Entity
 
         if($field->conditional){
             $_fied_name = $field->conditionalField;
-            if($_fied_name) {
-                $_fied_value = $field->conditionalValue;
+            $_fied_value = $field->conditionalValue;
 
-                if ($_fied_name == 'appliedForQuota') {
+            if ($_fied_name) {
+                // Busca o campo pai (pode estar na lista de campos ou de arquivos)
+                $parentField = $this->findParentField($_fied_name);
+
+                // Se o pai existe e não está visível, este também não está
+                if ($parentField && !$this->isFieldVisisble($parentField)) {
+                    return false;
+                }
+
+                // Se o pai estiver visível, checa o valor esperado
+                if ($_fied_name === 'appliedForQuota') {
                     return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
                 }
 
-                return $this->$_fied_name == $_fied_value;
+                return $this->{$_fied_name} == $_fied_value;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Localiza e retorna a configuração de campo ou arquivo correspondente ao nome informado.
+     * 
+     * Pode ser utilizada para identificar o campo pai de um campo condicional,
+     * permitindo a verificação recursiva de dependências em cascata.
+     *
+     * @param string $fieldName Nome do campo ou grupo de arquivos a ser localizado.
+     *
+     * @return RegistrationFieldConfiguration|RegistrationFileConfiguration|null
+     *         Retorna a configuração correspondente ou null caso não seja encontrada.
+     */
+    private function findParentField(string $fieldName): RegistrationFieldConfiguration|RegistrationFileConfiguration|null
+    {
+        // Procura entre os campos normais
+        foreach ($this->opportunity->registrationFieldConfigurations as $f) {
+            if ($f->fieldName === $fieldName) {
+                return $f;
+            }
+        }
+        // Procura entre os arquivos
+        foreach ($this->opportunity->registrationFileConfigurations as $f) {
+            if ($f->fileGroupName === $fieldName || $f->fieldName === $fieldName) {
+                return $f;
+            }
+        }
+        return null;
     }
 
     function getValidationErrors() {
