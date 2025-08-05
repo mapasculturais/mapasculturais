@@ -186,13 +186,28 @@ $app->applyHookBoundTo($this, 'opportunity.blockedFields', [$entity]);
 
                 <div ng-if="field.fieldType === 'file'">
                     <div class="js-open-editbox item">
-                        <div class="label">{{field.title}} <em><small>({{field.required.toString() === 'true' ? 'Obrigatório' : 'Opcional'}})</small></em></div>
+                        <div class="label">
+                            <code onclick="copyToClipboard(this)" class="hltip field-id" title="<?php i::esc_attr_e('Clique para copiar') ?>">{{field.id}}</code> {{field.title}} 
+                            <em ng-if="field.fieldType !== 'section'"><em><small>({{field.required.toString() === 'true' ? 'Obrigatório' : 'Opcional'}})</small></em>
+                        </div>
                         <span ng-if="field.categories.length" class="attachment-description">
                             <?php i::_e("Somente para"); ?> <strong>{{field.categories.join(', ')}}</strong>
                             <br>
                         </span>
+                        <span ng-if="field.categories.length" class="attachment-description">
+                            <?php i::_e("Categorias:"); ?> <strong>{{field.categories.join(', ')}}</strong>
+                            <br>
+                        </span>
                         <span class="attachment-description type">
                             <?php i::_e("Tipo"); ?>: <strong><?php i::_e("Anexo"); ?></strong>
+                            <br>
+                        </span>
+                        <span ng-if="field.proponentTypes.length" class="attachment-description">
+                            <?php i::_e("Tipos de proponentes: "); ?> <strong>{{field.proponentTypes.join(', ')}}</strong>
+                            <br>
+                        </span>
+                        <span class="attachment-description">
+                            <?php i::_e("Faixas:"); ?> <strong>{{field.registrationRanges.join(', ')}}</strong>
                             <br>
                         </span>
                         <span class="attachment-description description">
