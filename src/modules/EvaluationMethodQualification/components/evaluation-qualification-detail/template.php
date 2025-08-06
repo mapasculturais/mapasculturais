@@ -26,11 +26,11 @@ $this->import('
                 </label>
                 <strong v-if="registration.consolidatedResult === 'valid'" class="success__color">
                     <mc-icon name="circle" class="success__color"></mc-icon>{{registration.score}}
-                    {{registration.consolidatedResult}}
+                    {{formatConsolidatedResult(registration.consolidatedResult)}}
                 </strong>
                 <strong v-if="registration.consolidatedResult === 'invalid'" class="danger__color">
-                    <mc-icon name="circle" class="danger__color"></mc-icon>{{registration.consolidatedResult}}
-                    {{registration.consolidatedResult}}
+                    <mc-icon name="circle" class="danger__color"></mc-icon>
+                    {{formatConsolidatedResult(registration.consolidatedResult)}}
                 </strong>
             </p>
         </div>
