@@ -1,3 +1,18 @@
+> ⚠ COMUNICADO - REESTRUTURAÇÃO E ADEQUAÇÃO AO PADRÃO ADOTADO PELA COMUNIDADE  
+>  
+> O MinC está trabalhando na adequação do mapadacultura ao padrão oficial adotado pela comunidade Mapas Culturais, com base no repositório [mapasculturais/BaseProject](https://github.com/mapasculturais/BaseProject).  
+>  
+> Está em curso uma adequação técnica e estrutural que visa assegurar maior consistência, interoperabilidade e sustentabilidade para todos os entes públicos que utilizam ou pretendem utilizar a plataforma.  
+>  
+> ⚙ Durante este período de transição, recomenda-se que novas implementações utilizem o [mapasculturais/BaseProject](https://github.com/mapasculturais/BaseProject) como referência principal.  
+>  
+> ✅ Em breve, o MinC disponibilizará um novo repositório, derivado do BaseProject, que será adotado como referência para entes públicos que utilizam ou desejam implantar a plataforma Mapas Culturais.  
+>  
+> Agradecemos a compreensão e reiteramos nosso compromisso com a evolução, transparência e fortalecimento do ecossistema Mapas Culturais.
+>
+
+---
+
 [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
 
 # Mapas Culturais
