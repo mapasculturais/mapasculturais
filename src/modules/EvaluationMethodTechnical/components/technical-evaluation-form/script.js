@@ -65,7 +65,7 @@ app.component('technical-evaluation-form', {
                 for (let criterion of this.sections[sectionIndex].criteria) {
                     const value = this.formData.data[criterion.id];
                     if (value !== null && value !== undefined) {
-                        result += parseFloat(value);
+                        result += parseFloat(value * criterion.weight);
                     }
                 }
             }
@@ -76,7 +76,9 @@ app.component('technical-evaluation-form', {
             for (let sectionKey in this.sections) {
                 const section = this.sections[sectionKey];
                 if (section.criteria && Array.isArray(section.criteria)) {
-                    total += section.criteria.reduce((acc, criterion) => parseFloat(acc) + parseFloat((criterion.max || 0)), 0);
+                    total +=  section.criteria.reduce((acc, criterion) => {
+                        return acc + (criterion.max * criterion.weight);
+                    }, 0);
                 }
             }
             return total;

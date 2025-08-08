@@ -464,96 +464,97 @@ app.component('entity-table', {
         },
 
         getEntityData(obj, prop) {
-            let val = eval(`obj.${prop}`);
+            try {
+                let val = eval(`obj.${prop}`);
 
-            const description = this.$description[prop];
+                const description = this.$description[prop];
 
-            if(description) {
-                if(description.options) {
-                    if(description.options[val]) {
-                        return description.options[val];
+                if(description) {
+                    if(description.options) {
+                        if(description.options[val]) {
+                            return description.options[val];
+                        }
+                    }
+                    switch (description.type) {
+                        case 'multiselect':
+                        case 'array':
+                            val = val?.filter(item => item !== "null" && item !== "").join(', ')
+                            break;
+                        case 'links':
+                            var hasVal = val != null ?  (val !== '"null"' || val !== 'null' ? true : false) : false ;
+                            if (hasVal && !Array.isArray(val)) {
+                                
+                                const parsed = val !== '' ? JSON.parse(val) : null ;
+                                if (parsed && parsed !== 'null' && Array.isArray(parsed)) {
+                                    val = parsed.map(item => `${item.title}: ${item.value},`).join('\n');
+                                } else {
+                                    val = null;
+                                }
+                            }
+                            
+                            if (hasVal &&  Array.isArray(val)) {
+                                val = val.map(item => `${item.title}: ${item.value},`).join('\n');
+                            }
+
+                            val = null;
+                            break;
+                        case 'point':
+                            val = val ? `${val.lat}, ${val.lng}` : null
+                            break;
+                        case 'addresses':
+                            let _val = val;
+                            if(typeof val === 'string') {
+                                _val = JSON.parse(val);
+                            } 
+
+                            if (typeof val === "string") {
+                                val = val ? JSON.parse(val).map(item => `${item.nome}: ${item.logradouro}, ${item.numero}, ${item.bairro}, ${item.cidade}, ${item.complemento}  - ${item.estado}, ${item.cep}`).join('<br>') : null
+                            }
+
+                            break;
+                        case 'boolean':
+                            if(prop == "publicLocation") {
+                                val = val ? this.text('sim') : this.text('nao')
+                            } else {
+                                val = val
+                        }
                     }
                 }
-                switch (description.type) {
-                    case 'multiselect':
-                    case 'array':
-                        val = val?.filter(item => item !== "null" && item !== "").join(', ')
-                        break;
-                    case 'links':
-                        var hasVal = val != null ?  (val !== '"null"' || val !== 'null' ? true : false) : false ;
-                        if (hasVal && !Array.isArray(val)) {
-                            
-                            const parsed = val !== '' ? JSON.parse(val) : null ;
-                            if (parsed && parsed !== 'null' && Array.isArray(parsed)) {
-                                val = parsed.map(item => `${item.title}: ${item.value},`).join('\n');
-                            } else {
-                                val = null;
-                            }
-                        }
-                        
-                        if (hasVal &&  Array.isArray(val)) {
-                            val = val.map(item => `${item.title}: ${item.value},`).join('\n');
-                        }
 
-                        val = null;
-                        break;
-                    case 'point':
-                        val = val ? `${val.lat}, ${val.lng}` : null
-                        break;
-                    case 'addresses':
-                        let _val = val;
-                        if(typeof val === 'string') {
-                            _val = JSON.parse(val);
-                        } 
-
-                        if (typeof val === "string") {
-                            val = val ? JSON.parse(val).map(item => `${item.nome}: ${item.logradouro}, ${item.numero}, ${item.bairro}, ${item.cidade}, ${item.complemento}  - ${item.estado}, ${item.cep}`).join('<br>') : null
-                        }
-
-                        break;
-                    case 'boolean':
-                        if(prop == "publicLocation") {
-                            val = val ? this.text('sim') : this.text('nao')
-                        } else {
-                            val = val
-                        }
-                        break;
-                    default:
-                        val = val
+                if(prop == 'singleUrl' ) {
+                    val = `<a href="${val}">${val}</a>`;
                 }
-            }
 
-            if(prop == 'singleUrl' ) {
-                val = `<a href="${val}">${val}</a>`;
-            }
-
-            if(val && prop == 'seals[0]?.createTimestamp' ) {
-                let _val = new McDate(val.date);
-                val = _val.date('numeric year') + ' ' + _val.time('2-digit');
-            }
-
-            if(val instanceof McDate) {
-                if(description.type == 'datetime') {
-                    val = val.date('numeric year') + ' ' + val.time('2-digit');
-                } else {
-                    val = val.date('numeric year');
+                if(val && prop == 'seals[0]?.createTimestamp' ) {
+                    let _val = new McDate(val.date);
+                    val = _val.date('numeric year') + ' ' + _val.time('2-digit');
                 }
-            }
 
-            if(prop == 'type') {
-                val = val.name
-            }
+                if(val instanceof McDate) {
+                    if(description.type == 'datetime') {
+                        val = val.date('numeric year') + ' ' + val.time('2-digit');
+                    } else {
+                        val = val.date('numeric year');
+                    }
+                }
 
-            if(prop == 'public') {
-                val = val ? this.text('sim') : this.text('nao')
-            }
+                if (prop == 'type') {
+                    val = val.name
+                }
 
-            if(prop == 'status') {
-                let type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
-                val = this.fromToStatus[type]?.[val] || val;
-            }
+                if (prop == 'public') {
+                    val = val ? this.text('sim') : this.text('nao')
+                }
 
-            return val;
+                if (prop == 'status') {
+                    let type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                    val = this.fromToStatus[type]?.[val] || val;
+                }
+
+                return val;
+            } catch (error) {
+                console.error("erro ao carregar prop => ", prop);
+            }
         },
 
         resetHeaders() {

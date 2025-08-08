@@ -596,7 +596,7 @@ class Module extends \MapasCulturais\Module
                 'viewTemplate' => 'registration-field-types/agent-owner-field',
                 'configTemplate' => 'registration-field-types/agent-owner-field-config',
                 'requireValuesConfiguration' => true,
-                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                'serialize' => function($value, ?Registration $registration = null, $metadata_definition = null) use ($module) {
                     $module->saveToEntity($registration->owner, $value, $registration, $metadata_definition);
 
                     if(is_object($value) || is_array($value)) {
@@ -607,10 +607,7 @@ class Module extends \MapasCulturais\Module
                 },
                 'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
 
-                    if(!$registration instanceof \MapasCulturais\Entities\Registration){
-                        $registration = $app->repo('Registration')->find($registration->id);
-                    }
-                    
+                  
                     if(is_null($registration) || $registration->status > 0){
                         $value = $value ?: "";
 
@@ -622,13 +619,17 @@ class Module extends \MapasCulturais\Module
                         }
 
                     }else{
+                        if(!$registration instanceof \MapasCulturais\Entities\Registration){
+                            $registration = $app->repo('Registration')->find($registration->id);
+                        }
+
                         $disable_access_control = false;
 
                         if($registration->canUser('viewPrivateData')){
                             $disable_access_control = true;
                             $app->disableAccessControl();
                         }
-                        
+
                         $result = $module->fetchFromEntity($registration->owner, $value, $registration, $metadata_definition);
 
                         if($disable_access_control) {
@@ -646,7 +647,7 @@ class Module extends \MapasCulturais\Module
                 'viewTemplate' => 'registration-field-types/agent-collective-field',
                 'configTemplate' => 'registration-field-types/agent-collective-field-config',
                 'requireValuesConfiguration' => true,
-                'serialize' => function($value, Registration $registration = null, $metadata_definition = null) use ($module) {
+                'serialize' => function($value, ?Registration $registration = null, $metadata_definition = null) use ($module) {
                     $agent = $registration->getRelatedAgents('coletivo');
 
                     if($agent){
@@ -659,10 +660,6 @@ class Module extends \MapasCulturais\Module
                     }
                 },
                 'unserialize' => function($value, $registration = null, $metadata_definition = null) use ($module, $app) {
-                    if(!$registration instanceof \MapasCulturais\Entities\Registration){
-                        $registration =  $app->repo('Registration')->find($registration->id);
-                    }
-
                     if(is_null($registration) || $registration->status > 0){
                             
                         $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
@@ -673,6 +670,10 @@ class Module extends \MapasCulturais\Module
                         }
 
                     } else {
+                        if(!$registration instanceof \MapasCulturais\Entities\Registration){
+                            $registration =  $app->repo('Registration')->find($registration->id);
+                        }
+
                         $disable_access_control = false;
 
                         if($registration->canUser('viewPrivateData')){
@@ -704,7 +705,7 @@ class Module extends \MapasCulturais\Module
                 'viewTemplate' => 'registration-field-types/space-field',
                 'configTemplate' => 'registration-field-types/space-field-config',
                 'requireValuesConfiguration' => true,
-                'serialize' => function($value, Registration $registration = null, Metadata $metadata_definition = null) use ($module) {
+                'serialize' => function($value, ?Registration $registration = null, ?Metadata $metadata_definition = null) use ($module) {
                     $space_relation = $registration->getSpaceRelation();
 
                     if($space_relation){
@@ -716,11 +717,8 @@ class Module extends \MapasCulturais\Module
                         return $value;
                     }
                 },
-                'unserialize' => function($value, $registration = null, Metadata $metadata_definition = null) use ($module, $app) {
-                    if(!$registration instanceof \MapasCulturais\Entities\Registration){
-                        $registration =  $app->repo('Registration')->find($registration->id);
-                    }
-                    
+                'unserialize' => function($value, $registration = null, ?Metadata $metadata_definition = null) use ($module, $app) {
+                                        
                     if(is_null($registration) || $registration->status > 0){
                         $first_char = strlen($value ?? '') > 0 ? $value[0] : "" ;
                         if(in_array($first_char, ['"', "[", "{"]) || in_array($value, ["null", "false", "true"])) {
@@ -729,6 +727,10 @@ class Module extends \MapasCulturais\Module
                             $result = $value;
                         }
                     } else {
+                        if(!$registration instanceof \MapasCulturais\Entities\Registration){
+                            $registration =  $app->repo('Registration')->find($registration->id);
+                        }
+
                         $disable_access_control = false;
                     
                         if($registration->canUser('viewPrivateData')){

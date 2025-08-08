@@ -521,7 +521,7 @@ class Registration extends \MapasCulturais\Entity
         }
 
         $avaliableEvaluationFields = ($this->opportunity->avaliableEvaluationFields != "null") ? $this->opportunity->avaliableEvaluationFields : [];
-        if(in_array($key, array_keys($avaliableEvaluationFields))){
+        if($avaliableEvaluationFields && in_array($key, array_keys($avaliableEvaluationFields))){
             return true;
         }
 
@@ -1275,7 +1275,8 @@ class Registration extends \MapasCulturais\Entity
      * @param RegistrationFieldConfiguration|RegistrationFileConfiguration $field O campo a ser verificado.
      * @return bool Verdadeiro se o campo deve ser exibido, falso caso contrário.
      */
-    function isFieldVisisble(RegistrationFieldConfiguration|RegistrationFileConfiguration $field): bool {
+    function isFieldVisisble(RegistrationFieldConfiguration|RegistrationFileConfiguration $field): bool
+    {
         $opportunity = $this->opportunity;
 
         $use_category = (bool) $opportunity->registrationCategories;
@@ -1305,20 +1306,57 @@ class Registration extends \MapasCulturais\Entity
         if(!$field->conditional || !$field->conditionalField) {
             return true;
         }
- 
+
         $_fied_name = $field->conditionalField;
         $_fied_value = $field->conditionalValue;
+        
+
+        // Busca o campo pai (pode estar na lista de campos ou de arquivos)
+        $parentField = $this->findParentField($_fied_name);
+
+        // Se o pai existe e não está visível, este também não está
+        if ($parentField && !$this->isFieldVisisble($parentField)) {
+            return false;
+        }
+
+        // Se o pai estiver visível, checa o valor esperado
+        if ($_fied_name === 'appliedForQuota') {
+            return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
+        }
 
         if (is_array($this->$_fied_name)) {
             return in_array($_fied_value, $this->$_fied_name);
         }
 
-
-        if ($_fied_name == 'appliedForQuota') {
-            return $opportunity->enableQuotasQuestion && $this->appliedForQuota;
-        }
-
         return $this->$_fied_name == $_fied_value;
+    }
+
+    /**
+     * Localiza e retorna a configuração de campo ou arquivo correspondente ao nome informado.
+     * 
+     * Pode ser utilizada para identificar o campo pai de um campo condicional,
+     * permitindo a verificação recursiva de dependências em cascata.
+     *
+     * @param string $fieldName Nome do campo ou grupo de arquivos a ser localizado.
+     *
+     * @return RegistrationFieldConfiguration|RegistrationFileConfiguration|null
+     *         Retorna a configuração correspondente ou null caso não seja encontrada.
+     */
+    private function findParentField(string $fieldName): RegistrationFieldConfiguration|RegistrationFileConfiguration|null
+    {
+        // Procura entre os campos normais
+        foreach ($this->opportunity->registrationFieldConfigurations as $f) {
+            if ($f->fieldName === $fieldName) {
+                return $f;
+            }
+        }
+        // Procura entre os arquivos
+        foreach ($this->opportunity->registrationFileConfigurations as $f) {
+            if ($f->fileGroupName === $fieldName || $f->fieldName === $fieldName) {
+                return $f;
+            }
+        }
+        return null;
     }
 
     function getValidationErrors() {
@@ -1752,11 +1790,7 @@ class Registration extends \MapasCulturais\Entity
         if(!$this->opportunity->isRegistrationOpen()){
             return false;
         }
-
-        if($this->getSendValidationErrors()){
-            return false;
-        }
-
+       
         if($this->isUserAdmin($user)){
             return true;
         }
