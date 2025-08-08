@@ -21,6 +21,9 @@ $this->import('
     <mc-loading :condition="loading && page == 1"></mc-loading>
     <div v-if="!loading || page > 1" class="col-9 search-list__cards">
         <div class="grid-12">
+            <div v-if="!loading && occurrences.length === 0" class="col-12 no-results">
+                <h3>Nenhum evento encontrado.</h3>
+            </div>
             <div v-for="occurrence in occurrences" :key="occurrence._reccurrence_string" class="col-12">
                 <div v-if="newDate(occurrence)" class="search-list__cards--date">
                     <div class="search-list__cards--date-info">
