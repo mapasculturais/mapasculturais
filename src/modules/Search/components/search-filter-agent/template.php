@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -21,11 +22,11 @@ $this->import('
         <div class="field">
             <label> <?php i::_e('Status do agente') ?> </label>
             <label class="verified"><input v-model="pseudoQuery['@verified']" type="checkbox"> <?php i::_e('Agentes oficiais') ?> </label>
-        </div>  
+        </div>
         <div class="field">
             <label> <?php i::_e('Tipo') ?></label>
             <select v-model="pseudoQuery['type']">
-                <option :value="undefined"> <? i::_e('Todos')?> </option>
+                <option :value="undefined"> <?php i::_e('Todos') ?> </option>
                 <option value="1"> <?php i::_e('Agente Individual') ?> </option>
                 <option value="2"> <?php i::_e('Agente Coletivo') ?> </option>
             </select>
