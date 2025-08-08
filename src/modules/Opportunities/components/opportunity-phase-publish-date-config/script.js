@@ -108,12 +108,12 @@ app.component('opportunity-phase-publish-date-config' , {
     methods: {
         publishRegistration () {
             this.phase.POST('publishRegistrations', this.phase).then(item => {
-                this.phase.populate(item);
+                this.phase.publishedRegistrations = item.publishedRegistrations
             });
         },
         unpublishRegistration () {
             this.phase.POST('unpublishRegistrations', this.phase).then(item => {
-                this.phase.populate(item);
+                this.phase.publishedRegistrations = item.publishedRegistrations
             });
         }
     }
