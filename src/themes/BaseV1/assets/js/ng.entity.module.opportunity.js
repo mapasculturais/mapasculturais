@@ -1885,17 +1885,17 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
             }
         }
 
-        if(field.conditional){
-            if($scope.entity[field.conditionalField] instanceof Array){
-                result = result && $scope.entity[field.conditionalField].indexOf(field.conditionalValue) >= 0;
-            }else{
-                if (field.conditionalField === 'appliedForQuota') {
-                    if($scope.appliedForQuota) {
-                        result = result && $scope.appliedForQuota;
-                    }
-                }else {
-                    result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
-                }
+        if (field.conditional) {
+            let parentField = $scope.data.fields.find(f => f.fieldName === field.conditionalField);
+
+            if (parentField && !$scope.showField(parentField)) {
+                return false; 
+            }
+           
+            if (field.conditionalField === 'appliedForQuota') {
+                result = result && $scope.appliedForQuota;
+            } else {
+                result = result && $scope.entity[field.conditionalField] == field.conditionalValue;
             }
         }
 
