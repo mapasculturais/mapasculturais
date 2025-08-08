@@ -1,6 +1,6 @@
 app.component('search-list-event', {
     template: $TEMPLATES['search-list-event'],
-    
+
     created() {
         this.currentDate = null;
         this.eventApi = new API('event');
@@ -18,7 +18,7 @@ app.component('search-list-event', {
 
     watch: {
         pseudoQuery: {
-            handler(){
+            handler() {
                 clearTimeout(this.watchTimeout);
                 this.loading = true;
                 this.page = 1;
@@ -42,7 +42,7 @@ app.component('search-list-event', {
         },
         spaceSelect: {
             type: String,
-            default: 'id,name,endereco,files.avatar,singleUrl'
+            default: 'id,parent_id,location,_geo_location,name,short_description,long_description,create_timestamp,status,type,agent_id,is_verified,public,update_timestamp,subsite_id'
         },
         pseudoQuery: {
             type: Object,
@@ -52,37 +52,47 @@ app.component('search-list-event', {
 
     methods: {
         // http://localhost/api/event/findOccurrences?@from=2022-08-19&@to=2022-09-19&space:@select=id,name,shortDescription,endereco&@select=
-        async fetchOccurrences() {
-            const query = Utils.parsePseudoQuery(this.pseudoQuery);
+        async fetchOccurrences(query = null) {
+            if (query === null) {
+                query = Utils.parsePseudoQuery(this.pseudoQuery);
+            }
 
             this.loading = true;
-            // clearTimeout(this.timeout);
-            // this.timeout = setTimeout(() => {
-                
-            // }, 500)
-            if(query['@keyword']) {
+            if (query['@keyword']) {
                 query['event:@keyword'] = query['@keyword'];
                 delete query['@keyword'];
             }
+
+            if (query['@seals']) {
+                query['event:@seals'] = query['@seals'];
+                delete query['@seals'];
+            }
+
             query['event:@select'] = this.select;
             query['space:@select'] = this.spaceSelect;
             query['@limit'] = this.limit;
             query['@page'] = this.page;
-            
-            const occurrences = await this.eventApi.fetch('occurrences', query, {
-                raw: true,
-                rawProcessor: (rawData) => Utils.occurrenceRawProcessor(rawData, this.eventApi, this.spaceApi)
-            });
-            
-            const metadata = occurrences.metadata;
 
-            if(this.page === 1) {
-                this.occurrences = occurrences;
-            } else {
-                this.occurrences = this.occurrences.concat(occurrences);
-                this.occurrences.metadata = metadata;
+            try {
+                const occurrences = await this.eventApi.fetch('occurrences', query, {
+                    raw: true,
+                    rawProcessor: (rawData) => Utils.occurrenceRawProcessor(rawData, this.eventApi, this.spaceApi)
+                });
+
+                const metadata = occurrences.metadata
+
+                if (this.page === 1) {
+                    this.occurrences = occurrences;
+                } else {
+                    this.occurrences = this.occurrences.concat(occurrences);
+                    this.occurrences.metadata = metadata;
+                }
+                this.loading = false;
+            } catch (error) {
+                console.error('Erro ao buscar ocorrências:', error);
+                this.loading = false;
+                return;
             }
-            this.loading = false;
         },
 
         loadMore() {
