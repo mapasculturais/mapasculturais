@@ -5,10 +5,13 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.59] - 2025-08-08
+### Correções
+- Recria o cache de permissão do usuário no momento que ele acessa a entidade
+
 ## [7.5.58] - 2025-08-05
 ### Correções
 - Corrige exibição e validação de campos condicionais dependentes em múltiplos níveis
-
 - Corrige exibição das informações de campos condicionados na configuração dos anexos
 
 ## [7.5.57] - 2025-08-04
