@@ -34,6 +34,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Nova estrutura para os testes automatizados 
 - Corrige função de tradução para que faça a leitura dos arquivos de tradução dos plugins
 - Operador IN para metadados de seleção múltipla
+- Corrige erro do fetchByStatus que impedia o carregamento das views das entidades
   
 ## [7.5.59] - 2025-08-08
 ### Correções
