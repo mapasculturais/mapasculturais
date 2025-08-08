@@ -4,7 +4,7 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
       args:
-        - COMPOSER_ARGS="" 
+        - COMPOSER_ARGS=
     volumes:
       - ./docker/entrypoint.sh:/entrypoint.sh
       - ./docker/phpunit.sh:/bin/phpunit
