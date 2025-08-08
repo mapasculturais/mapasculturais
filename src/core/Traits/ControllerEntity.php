@@ -20,7 +20,7 @@ trait ControllerEntity {
     protected $entityClassName;
 
 
-    protected $_requestedEntity = false;
+    protected Entity|false|null $_requestedEntity = false;
 
     static $changeStatusMap = [
         Entity::STATUS_ENABLED => [
@@ -96,7 +96,13 @@ trait ControllerEntity {
         }
 
         if (key_exists('id', $this->urlData)) {
+            $app = App::i();
             $this->_requestedEntity = $this->repository->find($this->urlData['id']);
+            
+            if($app->auth->isUserAuthenticated() && $this->_requestedEntity->usesPermissionCache()) {
+                $this->_requestedEntity->recreatePermissionCache([$app->user]);
+            }
+
         } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {
             $this->_requestedEntity = $this->newEntity;
         } else {
