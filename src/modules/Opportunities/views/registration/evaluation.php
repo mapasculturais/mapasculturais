@@ -40,10 +40,11 @@ $breadcrumb[] = ['label' => i::__('Formulário de avaliação')];
 $this->breadcrumb = $breadcrumb;
 
 if ($entity->opportunity->isAppealPhase) {
-    $parent_registration = $app->repo('registration')->findBy([
+    $parent_registration = $app->repo('registration')->findOneBy([
         'owner' => $entity->owner->id,
-        'opportunity' => $entity->opportunity->parent->id
-    ])[0];
+        'opportunity' => $entity->opportunity->parent->id,
+        'number' => $entity->number
+    ]);
 }
 
 if (isset($this->controller->data['user']) && $entity->opportunity->canUser("@control")) {
