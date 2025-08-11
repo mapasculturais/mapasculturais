@@ -34,7 +34,37 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Nova estrutura para os testes automatizados 
 - Corrige função de tradução para que faça a leitura dos arquivos de tradução dos plugins
 - Operador IN para metadados de seleção múltipla
+- Corrige erro do fetchByStatus que impedia o carregamento das views das entidades
   
+## [7.5.59] - 2025-08-08
+### Correções
+- Recria o cache de permissão do usuário no momento que ele acessa a entidade
+
+## [7.5.58] - 2025-08-05
+### Correções
+- Corrige exibição e validação de campos condicionais dependentes em múltiplos níveis
+- Corrige exibição das informações de campos condicionados na configuração dos anexos
+
+## [7.5.57] - 2025-08-04
+### Correções
+- Evita que a listagem de oportunidades quebre quando exista um erro em alguma coluna
+
+## [7.5.56] - 2025-08-01
+### Correções
+- Corrige erro que impedia o acesso à inscrição quando não havia campos liberados para o avaliador e o valor retornado era null
+- Corrige erro no cálculo da pontuação total na tela de avaliação.
+
+## [7.5.55] - 2025-07-14
+### Correções
+- Ajusta cenUserSend() na entidade registration, evitando falso bloqueio causado por erros anteriores no formulário
+
+## [7.5.54] - 2025-07-10
+### Correções
+- Ajusta o método appendMetadata na classe ApiQuery para repassar corretamente os parâmetros de definição durante o processo de unserialize
+
+### Melhorias
+- Ajusta unserialize dos campos de tipo agent-owner-field, agent-collective-field e space-field para melhorar a performace
+
 ## [7.5.53] - 2025-06-02
 ### Correções
 - Ajusta verirficação de permissão para baixar arquivos ZIP das inscrições
