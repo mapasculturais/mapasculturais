@@ -95,6 +95,12 @@ trait ControllerEntity {
     {
         if (key_exists('id', $this->urlData)) {
             $entity = $this->repository->find($this->urlData['id']);
+            $app = App::i();
+            
+            if($app->auth->isUserAuthenticated() && $entity->usesPermissionCache() && !$app->isEntityPermissionCacheRecreated($entity)) {
+                $entity->recreatePermissionCache([$app->user]);
+            }
+
         } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {
             $entity = $this->newEntity;
         } else {

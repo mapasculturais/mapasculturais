@@ -16,3 +16,5 @@ src/plugins/*
 .vscode
 .zed
 public/assets
+public/evaluators-default-profiles
+public/files/distributionslog
