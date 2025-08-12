@@ -34,6 +34,7 @@ app.component('mc-status', {
                     'pago', 'paga', 'pagos', 'pagas',
                     'enviado', 'enviada', 'enviados', 'enviadas',
                     'habilitado', 'habilitada', 'habilitados', 'habilitadas',
+                    'válida','Válida',
 
                     // adicionais comuns de sucesso
                     'aprovado', 'aprovada', 'aprovados', 'aprovadas',

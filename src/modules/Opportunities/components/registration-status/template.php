@@ -62,7 +62,7 @@ $this->import('
             <?= i::__('às') ?> <span v-if="hour()">{{hour()}}</span></h5>
         </div>
 
-        <div v-if="appealRegistration.opportunity.allow_proponent_response === '1' || shouldShowResults(appealRegistration.opportunity.evaluationMethodConfiguration)" class="opportunity-phases-timeline__box">
+        <div v-if="appealRegistration.opportunity.allow_proponent_response || shouldShowResults(appealRegistration.opportunity.evaluationMethodConfiguration)" class="opportunity-phases-timeline__box">
             <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
             <div class="opportunity-phases-timeline__status">
                 <mc-icon name="circle" :class="verifyState(appealRegistration)"></mc-icon>
