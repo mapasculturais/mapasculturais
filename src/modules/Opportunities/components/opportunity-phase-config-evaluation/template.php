@@ -84,7 +84,7 @@ $evaluation_methods = $app->getRegisteredEvaluationMethods();
             <textarea :id="`field-info-${category}`" v-model="phase.infos[category]" @change="savePhase()" style="width: 100%" rows="10" class="evaluation-config__input"></textarea>
         </div>
         
-        <opportunity-phase-config-status :phase="phase"></opportunity-phase-config-status>
+        <opportunity-phase-config-status :phase="phase.opportunity"></opportunity-phase-config-status>
 
         <opportunity-phase-publish-date-config :phase="phase.opportunity" :phases="phases" hide-button hide-description></opportunity-phase-publish-date-config>
         
