@@ -24,6 +24,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
     {
         if($evaluation_method_configuration->opportunity->isReportingPhase){
             return [
+                Registration::STATUS_DRAFT => i::__('Rascunho'),
+                Registration::STATUS_SENT => i::__('Pendente'),
                 Registration::STATUS_INVALID => i::__('Inválida'),
                 Registration::STATUS_NOTAPPROVED => i::__('Reprovado'),
                 Registration::STATUS_WAITLIST => i::__('Aprovado com ressalvas'),
@@ -32,6 +34,8 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
 
         return [
+            Registration::STATUS_DRAFT => i::__('Rascunho'),
+            Registration::STATUS_SENT => i::__('Pendente'),
             Registration::STATUS_INVALID => i::__('Negado'),
             Registration::STATUS_NOTAPPROVED => i::__('Indeferido'),
             Registration::STATUS_APPROVED => i::__('Deferido')
