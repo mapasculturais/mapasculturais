@@ -18,8 +18,10 @@ class Module extends \MapasCulturais\EvaluationMethod
     protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {
         return [
-            'invalid' => i::__('Inabilitado'),
-            'valid'   => i::__('Habilitado')
+            Registration::STATUS_DRAFT => i::__('Rascunho'),
+            Registration::STATUS_SENT => i::__('Pendente'),
+            Registration::STATUS_NOTAPPROVED => i::__('Inabilitado'),
+            Registration::STATUS_APPROVED => i::__('Habilitado')
         ];
     }
 
