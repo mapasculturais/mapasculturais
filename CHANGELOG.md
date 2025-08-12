@@ -5,37 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.6]
-### Novas Funcionalidades
-- Novo **módulo de recursos** que permite que o gestor configure fases de recurso nos editais/oportunidades, possibilitando que proponentes contestem o resultado de fases específicas. É possível habilitar um formulário personalizado para a solicitação de recurso e definir uma comissão avaliadora responsável por analisar essas solicitações, garantindo mais transparência e formalização no processo dentro da plataforma.
-- Módulo **plano de metas** que permite ao gestor configurar um formulário, disponível já na fase de inscrição, para que os proponentes descrevam quais metas pretendem alcançar, prazos de execução e as entregas previstas para cada meta, garantindo maior clareza e detalhamento dos objetivos e compromissos dos projetos que estão submetendo.
-- Módulo de **monitoramento e prestação de contas** que permite ao gestor configurar fases de envio de informações para acompanhar o andamento das metas e entregas declaradas na inscrição (_plano de metas_) pelos proponentes contemplados. A última dessas fases é a prestação final de informações, ou prestação de contas, de preenchimento obrigatório para todos os contemplados.
-- **Documentos oficiais** - melhoria na interface de bloqueio de campos por selos verificadores de documento, como por exemplo um selo _GOV.br_ que valide os campos _CPF_, _Nome Completo_, _Telefone Privado_, exibindo ao lado do campo o ícone do selo e a data da validação do campo.
-- **Editais de fluxo contínuo**, onde as inscrições podem ficar abertas indefinidamente e os proponentes recebem os resultados conforme avançam nas fases (como análise técnica ou avaliação documental), sem depender de datas pré-fixadas para divulgação coletiva do resultado — ideal para programas de fomento contínuo ou ocupação de espaços culturais.
-- **Certificação automática de proponentes** por meio de selos vinculados às fases dos editais, que são atribuídos conforme o proponente avança no processo — por exemplo, ao ser aprovado na análise documental, recebe um selo de "CPF verificado", e ao ser contemplado na fase final, ganha o selo "Fomento 2025".
-- **Autoaplicação das avaliações** - Quando todos os avaliadores de uma inscrição finalizam suas avaliações, o sistema processa automaticamente o resultado das avaliações e atualiza o status da inscrição dispensando qualquer ação manual pela equipe gestora.
-- **Formulários de inscrição por etapas** - agora é possível dividir o formulário de inscrição em etapas, organizando os campos em blocos sequenciais. A tela de inscrição foi redesenhada para essa nova estrutura, tornando o preenchimento mais claro e fluido para os proponentes.
+## [7.5.60] - 2025-08-12
+### Correções
+- Ajusta para que seja recriado o cache da inscrição quando usuário acessa a mesma
 
-
-- **Nova interface de configuração das comissões de avaliação** que permite maior flexibilidade e controle na gestão das comissões de avaliação dos editais.
-  - **Múltiplas comissões**: Agora é possível criar diversas comissões em um mesmo edital, cada uma com critérios próprios de distribuição das inscrições.
-  - **Filtros no nível da comissão**: Os filtros (antes aplicados individualmente por avaliador) agora podem ser definidos na comissão, usando qualquer campo de seleção do formulário, além de categoria, tipo de proponente e faixa. (Continua possível aplicar subfiltros específicos por avaliador dentro da comissão.)
-  - **Limite de avaliadores por inscrição**: Permite definir quantos avaliadores de uma comissão analisarão cada inscrição, facilitando editais com grande volume.
-  - **Comissão de voto de minerva**: Nova instância que recebe inscrições com avaliações divergentes para desempate.
-  - **Maior transparência no processo de distribuição**: Interface que exibe o progresso da distribuição das inscrições entre os avaliadores, especialmente útil em grandes editais.
-
-### Melhorias e correções não funcionais
-- Novos tipos de metadados:
-  - **object** - serializa / deserializa um json fazendo um cast para (object)
-  - **array** - serializa / deserializa um json fazendo um cast para (array)
-  - **entity** - possibilita a vinculação de entidade em metadados
-- Parâmetro para substituições na função text do javascript;
-- Refatoração da distribuição das avaliações para não dependerem mais do cache de permissão;
-- Nova estrutura para os testes automatizados 
-- Corrige função de tradução para que faça a leitura dos arquivos de tradução dos plugins
-- Operador IN para metadados de seleção múltipla
-- Corrige erro do fetchByStatus que impedia o carregamento das views das entidades
-  
 ## [7.5.59] - 2025-08-08
 ### Correções
 - Recria o cache de permissão do usuário no momento que ele acessa a entidade
