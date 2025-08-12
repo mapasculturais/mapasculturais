@@ -303,16 +303,28 @@ class Registration extends EntityController {
      * @return \MapasCulturais\Entities\Registration
      */
     function getRequestedEntity() {
+        $app = App::i();
+
         $preview_entity = $this->getPreviewEntity();
        
         if(isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
-            if(!App::i()->request->isGet()){
+            if(!$app->request->isGet()){
                 $this->errorJson(['message' => [\MapasCulturais\i::__('Este formulário é um pré-visualização da da ficha de inscrição.')]]);
             } else {
                 return $preview_entity;
             }
         }
-        return parent::getRequestedEntity();
+
+        /**
+         * @var EntityRegistration
+         */
+        $requested_entity = parent::getRequestedEntity();
+        
+        if($app->auth->isUserAuthenticated() && !$app->isEntityPermissionCacheRecreated($requested_entity)) {
+            $requested_entity->recreatePermissionCache([$app->user]);
+        }
+
+        return $requested_entity;
     }
 
     /**
