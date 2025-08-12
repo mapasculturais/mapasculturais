@@ -101,10 +101,10 @@ app.component('mc-chat', {
     },
 
     watch: {
-        'chatEntities'(newData, oldData) {       
+        'chatEntities'(newData, oldData) {    
             this.$nextTick(() => {
                 this.global.threads[this.thread.id] = {
-                    id: this.lastMessage.id,
+                    id: this.lastMessage._id,
                     user: this.currentUser.id,
                 }
             });
@@ -115,7 +115,7 @@ app.component('mc-chat', {
         async sendMessage() {
             if ((typeof this.message.payload) === 'string' && this.message.payload.trim() === '') {
                 return;
-            } 
+            }
 
             if ((typeof this.message.payload) === 'object' && this.message.payload.message.trim() === '') {
                 return;
@@ -125,9 +125,9 @@ app.component('mc-chat', {
             const messages = useMessages();
 
             try {
-                const newMessage = this.message; 
+                const newMessage = this.message;
                 await newMessage.save();
-                
+
                 const attachment = this.$refs.attachment;
                 if (attachment.file) {
                     await attachment.upload();
@@ -135,11 +135,12 @@ app.component('mc-chat', {
 
                 this.$refs.chatMessages.entities.unshift(newMessage);
 
-                this.global.threads[this.thread.id] = {
-                    id: this.lastMessage.id,
-                    user: this.currentUser.id,
+                if (this.lastMessage) {
+                    this.global.threads[this.thread.id] = {
+                        id: this.lastMessage._id,
+                        user: this.currentUser.id,
+                    }
                 }
-
                 messages.success(this.text('Mensagem enviada com sucesso'));
                 this.message = this.createNewMessage('');
             } catch (error) {
