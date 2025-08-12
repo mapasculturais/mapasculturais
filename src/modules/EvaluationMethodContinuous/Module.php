@@ -35,7 +35,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
 
         return [
             Registration::STATUS_DRAFT => i::__('Rascunho'),
-            Registration::STATUS_SENT => i::__('Pendente'),
+            Registration::STATUS_SENT => i::__('Aguardando resposta'),
             Registration::STATUS_INVALID => i::__('Negado'),
             Registration::STATUS_NOTAPPROVED => i::__('Indeferido'),
             Registration::STATUS_APPROVED => i::__('Deferido')
