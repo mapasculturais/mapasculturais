@@ -50,6 +50,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $this->registerOpportunityMetadata('allow_proponent_response', [
             'type' => "checkbox",
             'label' => \MapasCulturais\i::__('Possibilitar mais de uma resposta do proponente'),
+            'unserialize' => function($value) {
+                if($value == 1) {
+                    return true;
+                }
+
+                return false;
+            }
         ]);
 
         $thread_type_description = i::__('Conversação entre proponente e avaliador');
