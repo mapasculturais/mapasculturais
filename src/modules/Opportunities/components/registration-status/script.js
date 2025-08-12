@@ -81,6 +81,10 @@ app.component('registration-status', {
 
             return publishEvaluationDetails || allow_proponent_response === '1';
         },
+
+        statuses() {
+            return $MAPAS.config.registrationStatus.statuses || [];
+        }
     },
 
     methods: {
@@ -190,5 +194,17 @@ app.component('registration-status', {
             const types = ['qualification', 'technical', 'documentary'];
             return types.includes(phase.type) || phase.publishEvaluationDetails;
         },
+
+        showRegistrationStatus(status) {
+            if(status == 1) {
+                return this.text('Não enviada');
+            }
+
+            if(status == 0) {
+                return this.text('Enviada');
+            }
+
+            return this.statuses[status];
+        }
     }
 });
