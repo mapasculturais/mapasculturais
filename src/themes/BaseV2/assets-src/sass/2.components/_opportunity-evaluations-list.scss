@@ -41,7 +41,6 @@
     }
 
     &__container {
-        position: sticky;
         top: 0;
         width: size(140);
         display: flex;
@@ -498,7 +497,6 @@
 
     &__content {
         max-height: 0;
-        overflow: hidden;
         transition: max-height .5s ease-out;
     }
 }
