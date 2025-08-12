@@ -28,6 +28,8 @@ app.component('mc-status', {
                 case 'selecionado':
                 case 'selecionada':
                 case 'válido':
+                case 'válida':
+                case 'Válida':
                 case 'aceito':
                 case 'disponível':
                 case 'pago':
