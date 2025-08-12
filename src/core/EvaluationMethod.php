@@ -47,7 +47,6 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $config_key = $this->getDefaultStatusesConfigKey($evaluation_method_configuration);
         $config = $app->config[$config_key] ?? [];
         $statuses = $config ?: $this->_getDefaultStatuses($evaluation_method_configuration);
-        $statuses = [ '0' => i::__('Não avaliada') ] + $statuses;
 
         $app->applyHookBoundTo($this, "opportunityPhase({$this->slug}).defaultStatuses", [&$statuses]);
 
