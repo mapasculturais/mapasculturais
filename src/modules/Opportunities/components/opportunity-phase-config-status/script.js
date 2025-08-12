@@ -26,7 +26,7 @@ app.component('opportunity-phase-config-status', {
             this.phase.statusLabels = {};
         }
 
-        this.phase.statusLabels['0'] = defaultStatuses['0'] || 'Não avaliada';
+        this.phase.statusLabels['0'] = defaultStatuses['0'] || this.text('Rascunho');
 
         const statuses = Object.entries(defaultStatuses)
             .filter(([key]) => key !== '0')

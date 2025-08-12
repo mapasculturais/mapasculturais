@@ -6,16 +6,17 @@
 
 
 $opportunity = $this->controller->requestedEntity;
-$evaluation_method_configuration = $opportunity->evaluationMethodConfiguration;
+$default_statuses = $opportunity->evaluationMethodConfiguration->defaultStatuses ?: $opportunity->defaultStatuses;
+$missing_labels = array_diff(array_values($default_statuses), array_values($opportunity->statusLabels ?: []) );
 
-if ($evaluation_method_configuration && !$evaluation_method_configuration->statusLabels) {
-    $evaluation_method_configuration->statusLabels = $evaluation_method_configuration->defaultStatuses;
+if($opportunity && (!$opportunity->statusLabels || $missing_labels)) {
+    $opportunity->statusLabels = $default_statuses;
 
     $app->disableAccessControl();
-    $evaluation_method_configuration->save();
+    $opportunity->save();
     $app->enableAccessControl();
 }
 
 $this->jsObject['config']['opportunityPhaseConfigStatus'] = [
-    'statuses' => $evaluation_method_configuration->defaultStatuses,
+    'statuses' => $opportunity->defaultStatuses,
 ];
