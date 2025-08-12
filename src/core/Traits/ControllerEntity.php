@@ -99,10 +99,6 @@ trait ControllerEntity {
             $app = App::i();
             $this->_requestedEntity = $this->repository->find($this->urlData['id']);
             
-            if($app->auth->isUserAuthenticated() && $this->_requestedEntity->usesPermissionCache()) {
-                $this->_requestedEntity->recreatePermissionCache([$app->user]);
-            }
-
         } elseif ($this->action === 'create' || ($this->method == 'POST' && $this->action === 'index')) {
             $this->_requestedEntity = $this->newEntity;
         } else {
