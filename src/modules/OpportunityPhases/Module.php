@@ -1814,6 +1814,11 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Label dos status das fases de avaliações'),
             'type' => 'array',
         ]);
+
+        $this->registerOpportunityMetadata('statusLabels', [
+            'label' => i::__('Label dos status das fases de avaliações'),
+            'type' => 'array',
+        ]);
     }
 
 
