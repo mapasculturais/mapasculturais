@@ -6,16 +6,17 @@ $opportunity = $this->controller->requestedEntity;
 $em = $opportunity->getEvaluationMethod();
 
 
-$statusList = [
-    ['status' => '0', 'label' =>   i::__('Rascunho')],
-    ['status' => '1', 'label' =>   i::__('Aguardando resposta')],
-    ['status' => '2', 'label' =>   i::__('Negado')],
-    ['status' => '3', 'label' =>   i::__('Indeferido')],
-    ['status' => '10', 'label' =>   i::__('Deferido')],
-];
+$status_list = [];
+$statuses_names = $opportunity->statusLabels ?: $opportunity->defaultStatuses;
+
+foreach ($statuses_names as $status => $status_name) {
+    if (in_array($status, [0, 1, 2, 3, 8, 10])) {
+        $status_list[] = ["status" => $status, "label" => $status_name];
+    }
+}
 
 
 $this->jsObject['config']['evaluation-method-continuous--apply'] = [
-    'statusList' => $statusList,
+    'statusList' => $status_list,
     'consolidated_results' => $em->findConsolidatedResult($opportunity)
 ];
