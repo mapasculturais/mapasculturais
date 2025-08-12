@@ -631,6 +631,32 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $result[0]['totalRegistrations'];
     }
 
+    public function getDefaultStatuses(): array {
+        $app = App::i();
+        
+        $default_statuses = [
+            Registration::STATUS_DRAFT => i::__('Rascunho'),
+            Registration::STATUS_SENT => i::__('Pendente'),
+            Registration::STATUS_INVALID => i::__('Inválida'),
+            Registration::STATUS_NOTAPPROVED => i::__('Não selecionada'),
+            Registration::STATUS_WAITLIST => i::__('Suplente'),
+            Registration::STATUS_APPROVED => i::__('Selecionada')
+        ];
+
+        $config_key = $this->getDefaultStatusesConfigKey();
+        $config = $app->config[$config_key] ?: $default_statuses;
+        
+        return $config;
+    }
+
+    public function getDefaultStatusesConfigKey(): string {
+        if($this->isLastPhase){
+            return "opportunityPhase.defaultStatuses.lastPhase";
+        }
+
+        return "opportunityPhase.defaultStatuses.dataCollection";
+    }
+
     function setRegistrationFrom($date){
         if($date instanceof \DateTime){
             $this->registrationFrom = $date;
