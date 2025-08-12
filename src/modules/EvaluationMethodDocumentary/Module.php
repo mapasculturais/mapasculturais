@@ -15,8 +15,10 @@ class Module extends \MapasCulturais\EvaluationMethod {
     protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {
         return [
-            '1'  => i::__('Válida'),
-            '-1' => i::__('Inválida'),
+            Registration::STATUS_DRAFT => i::__('Rascunho'),
+            Registration::STATUS_SENT => i::__('Pendente'),
+            Registration::STATUS_APPROVED  => i::__('Válida'),
+            Registration::STATUS_INVALID => i::__('Inválida'),
         ];
     }
 
