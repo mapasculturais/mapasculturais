@@ -6,10 +6,10 @@
 
 
 $opportunity = $this->controller->requestedEntity;
-$default_statuses = $opportunity->evaluationMethodConfiguration->defaultStatuses ?: $opportunity->defaultStatuses;
-$missing_labels = array_diff(array_values($default_statuses), array_values($opportunity->statusLabels ?: []) );
+$default_statuses = $opportunity->evaluationMethodConfiguration ? $opportunity->evaluationMethodConfiguration->defaultStatuses : $opportunity->defaultStatuses;
+$missing_labels = array_diff(array_keys($default_statuses), array_keys($opportunity->statusLabels ?: []) );
 
-if($opportunity && (!$opportunity->statusLabels || $missing_labels)) {
+if($opportunity && !$opportunity->statusLabels && $missing_labels) {
     $opportunity->statusLabels = $default_statuses;
 
     $app->disableAccessControl();
