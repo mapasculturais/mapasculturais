@@ -1959,6 +1959,10 @@ class Registration extends \MapasCulturais\Entity
     }
     
     function getExtraEntitiesToRecreatePermissionCache(): array {
+        if(!$this->id) {
+            return [];
+        }
+
         $result = [];
 
         if ($previous_phase = $this->previousPhase) {
