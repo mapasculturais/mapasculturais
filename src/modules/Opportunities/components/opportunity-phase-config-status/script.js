@@ -14,37 +14,8 @@ app.component('opportunity-phase-config-status', {
     },
 
     data() {
-        const defaultStatuses = $MAPAS.config.opportunityPhaseConfigStatus.statuses || {};
-
-        if (Array.isArray(this.phase.statusLabels)) {
-            const converted = {};
-            this.phase.statusLabels.forEach((label, index) => {
-                converted[String(index)] = label;
-            });
-            this.phase.statusLabels = converted;
-        } else if (!this.phase.statusLabels || typeof this.phase.statusLabels !== 'object') {
-            this.phase.statusLabels = {};
-        }
-
-        this.phase.statusLabels['0'] = defaultStatuses['0'] || this.text('Rascunho');
-
-        const statuses = Object.entries(defaultStatuses)
-            .filter(([key]) => key !== '0')
-            .map(([key, label]) => {
-                const isActive = key in this.phase.statusLabels;
-
-                return {
-                    key,
-                    defaultLabel: label,
-                    label: isActive ? this.phase.statusLabels[key] : label,
-                    enabled: isActive,
-                    showOriginal: false,
-                    isEditing: false,
-                };
-            });
-
         return {
-            statuses
+            statuses: []
         }
     },
 
@@ -81,6 +52,56 @@ app.component('opportunity-phase-config-status', {
 
         toggleEdit(status) {
             status.isEditing = !status.isEditing;
+        },
+
+        defaultStatuses() {
+            const defaultMap = {
+                appeal: {
+                    0: this.text('Rascunho'),
+                    1: this.text('Aguardando resposta'),
+                    2: this.text('Negado'),
+                    3: this.text('Indeferido'),
+                    10: this.text('Deferido')
+                },
+                reporting: {
+                    0: this.text('Rascunho'),
+                    1: this.text('Pendente'),
+                    2: this.text('Inválida'),
+                    3: this.text('Reprovado'),
+                    8: this.text('Aprovado com ressalva'),
+                    10: this.text('Aprovado')
+                },
+                default: {
+                    0: this.text('Rascunho'),
+                    1: this.text('Pendente'),
+                    2: this.text('Inválida'),
+                    3: this.text('Não selecionada'),
+                    8: this.text('Suplente'),
+                    10: this.text('Selecionada')
+                }
+            };
+
+            const type = this.phase?.isAppealPhase ? 'appeal' : this.phase?.isReportingPhase ? 'reporting' : 'default';
+
+            const selected = defaultMap[type] || {};
+            const labels = this.phase.statusLabels || {};
+
+            return Object.entries(selected).map(([key, defaultLabel]) => {
+                const statusKey = String(key);
+                const isEnabled = Object.prototype.hasOwnProperty.call(labels, statusKey);
+
+                return {
+                    key: Number(key),
+                    defaultLabel,
+                    label: isEnabled ? labels[statusKey] : defaultLabel,
+                    enabled: isEnabled,
+                    isEditing: false
+                };
+            });
         }
-    }
+    },
+
+    mounted() {
+        this.statuses = this.defaultStatuses();
+    },
 });
