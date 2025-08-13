@@ -2022,7 +2022,7 @@ class Registration extends \MapasCulturais\Entity
      * @return EvaluationMethodConfiguration
      */
     public function getEvaluationMethodConfiguration() {
-        return $this->opportunity->evaluationMethodConfiguration;
+        return $this->opportunity ? $this->opportunity->evaluationMethodConfiguration : null;
     }
 
     /**
