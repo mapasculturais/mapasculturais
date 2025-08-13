@@ -196,6 +196,10 @@ app.component('registration-status', {
         },
 
         showRegistrationStatus(status) {
+            if(this.registration.opportunity?.isReportingPhase) {
+               return this.phase.opportunity.statusLabels[status];
+            }
+            
             if(this.appealRegistration?.id) {
                 return this.phase.appealPhase.statusLabels[status];
             }
