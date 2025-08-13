@@ -15,6 +15,7 @@ $this->import('
     mc-link
     mc-loading
     opportunity-committee-groups
+    opportunity-phase-config-status
     opportunity-phase-list-evaluation
     opportunity-phase-publish-date-config
     opportunity-phase-status
@@ -140,6 +141,9 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__config-button opportunity-appeal-phase-config__add-evaluation-committee">
                     <opportunity-committee-groups :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
+
+                <opportunity-phase-config-status :phase="entity"></opportunity-phase-config-status>
+
                 <opportunity-phase-publish-date-config :phase="entity" :phases="phases" hide-description hide-button></opportunity-phase-publish-date-config>
 
                 <div v-if="entity.evaluationMethodConfiguration.evaluateSelfApplication">
