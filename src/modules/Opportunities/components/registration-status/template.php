@@ -66,12 +66,7 @@ $this->import('
             <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
             <div class="opportunity-phases-timeline__status">
                 <mc-icon name="circle" :class="verifyState(appealRegistration)"></mc-icon>
-                <p v-if="appealRegistration.status == 10"><?= i::__('Deferido') ?></p>
-                <p v-if="appealRegistration.status == 3"><?= i::__('Indeferido') ?></p>
-                <p v-if="appealRegistration.status == 2"><?= i::__('Recurso inválido') ?></p>
-                <p v-if="appealRegistration.status == 1"><?= i::__('Aguardando resposta') ?></p>
-                <p v-if="appealRegistration.status == 0"><?= i::__('Recurso não enviado') ?></p>
-
+                <p>{{showRegistrationStatus(appealRegistration.status)}}</p>
             </div>
             <registration-results :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
         </div>

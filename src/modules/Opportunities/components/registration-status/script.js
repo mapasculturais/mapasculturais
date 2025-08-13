@@ -196,6 +196,10 @@ app.component('registration-status', {
         },
 
         showRegistrationStatus(status) {
+            if(this.appealRegistration?.id) {
+                return this.phase.appealPhase.statusLabels[status];
+            }
+
             if(status == 1) {
                 return this.text('Não enviada');
             }
