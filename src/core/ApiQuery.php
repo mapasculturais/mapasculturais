@@ -3316,8 +3316,12 @@ class ApiQuery {
 
         $this->joins .= str_replace(['{ALIAS}', '{KEY}'], [$meta_alias, $key], $this->_templateJoinMetadata);
 
-        if(str_starts_with(strtoupper($value), 'IN(') && in_array($this->registeredMetadataDefinitions[$key]->type, ['multiselect', 'array', 'json'])) {
-            $value = 'JSON_' . $value;
+        if(in_array($this->registeredMetadataDefinitions[$key]->type, ['multiselect', 'array', 'json'])) {
+            if(str_starts_with(strtoupper($value), 'IN(')) {
+                $value = 'JSON_' . $value;
+            } else if(str_starts_with(strtoupper($value), 'IIN(')) {
+                $value = 'JSON_' . substr($value, 1);
+            }
         }
 
         $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
