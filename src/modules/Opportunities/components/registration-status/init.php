@@ -10,7 +10,7 @@ $entity = $this->controller->requestedEntity;
 $class = $entity->getClassName();
 
 if($class == Registration::class) {
-    $opportunity = $registration->opportunity;
+    $opportunity = $entity->opportunity;
     $evaluation_configuration = $opportunity->evaluationMethodConfiguration;
     
     $status_names = $opportunity->statusLabels ?: $evaluation_configuration->defaultStatuses;
