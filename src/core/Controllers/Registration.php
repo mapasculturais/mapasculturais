@@ -313,8 +313,7 @@ class Registration extends EntityController {
         $app = App::i();
 
         $preview_entity = $this->getPreviewEntity();
-       
-        if(isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
+        if($preview_entity && isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
             if(!$app->request->isGet()){
                 $this->errorJson(['message' => [\MapasCulturais\i::__('Este formulário é um pré-visualização da da ficha de inscrição.')]]);
             } else {
