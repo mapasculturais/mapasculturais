@@ -26,11 +26,12 @@ $this->import('
                     <div v-if="entity.opportunity.summary?.registrations">
                         <p v-if="entity.opportunity.summary?.registrations"><?= i::__("Quantidade de inscrições:") ?> <strong>{{entity.opportunity.summary?.registrations}}</strong> </p>
                         <p v-if="entity.opportunity.summary?.evaluated"><?= i::__("Quantidade de inscrições <strong>avaliadas</strong>:") ?> <strong>{{entity.opportunity.summary?.evaluated}}</strong> </p>
-                        <p v-if="entity.opportunity.summary?.Approved"><?= i::__("Quantidade de inscrições <strong>selecionadas</strong>:") ?> <strong>{{entity.opportunity.summary?.Approved}}</strong> </p>
-                        <p v-if="entity.opportunity.summary?.Notapproved"><?= i::__("Quantidade de inscrições <strong>não selecionadas</strong>:") ?> <strong>{{entity.opportunity.summary.Notapproved}}</strong></p>
-                        <p v-if="entity.opportunity.summary?.Waitlist"><?= i::__("Quantidade de inscrições <strong>suplentes</strong>:") ?> <strong>{{entity.opportunity.summary?.Waitlist}}</strong> </p>
-                        <p v-if="entity.opportunity.summary?.Invalid"><?= i::__("Quantidade de inscrições <strong>inválidas</strong>:") ?> <strong>{{entity.opportunity.summary?.Invalid}}</strong> </p>
-                        <p v-if="entity.opportunity.summary?.Pending"><?= i::__("Quantidade de inscrições <strong>pendentes</strong>:") ?> <strong>{{entity.opportunity.summary?.Pending}}</strong> </p>
+                        
+                        <template v-for="(label, code) in statusNames" :key="code">
+                            <p v-if="statusKey(code)">
+                                <?= i::__('Status') ?> <strong>{{ label.toLowerCase() }}</strong>: {{ statusKey(code) }}
+                            </p>
+                        </template>
                     </div>
                     <div v-if="!entity.opportunity.summary?.registrations && !entity.isFirstPhase">
                         <?= i::__("As inscrições para esta fase ainda não estão disponíveis") ?>
