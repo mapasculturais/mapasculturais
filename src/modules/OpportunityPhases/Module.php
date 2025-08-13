@@ -1818,6 +1818,21 @@ class Module extends \MapasCulturais\Module{
         $this->registerOpportunityMetadata('statusLabels', [
             'label' => i::__('Label dos status das fases de avaliações'),
             'type' => 'array',
+            'unserialize' => function($value, $entity) use($app) {
+                if(!$value) {
+                    if(!$entity instanceof Opportunity) {
+                        $entity = $app->repo('Opportunity')->find($entity->id);
+                    }
+
+                    if($entity->evaluationMethodConfiguration) {
+                        return $entity->evaluationMethodConfiguration->defaultStatuses;
+                    }
+
+                    return $entity->defaultStatuses;
+                }
+
+                return json_decode($value, true);
+            }
         ]);
     }
 
