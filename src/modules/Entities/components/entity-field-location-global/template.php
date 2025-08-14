@@ -12,12 +12,6 @@ $this->import('
     mc-loading
     mc-select
 ');
-
-$localizations = $app->getRegisteredCountryLocalizations();
-
-foreach ($localizations as $localization) {
-    $this->import($localization->getFormComponentName());
-};
 ?>
 
 <div class="country-address-form grid-12">
