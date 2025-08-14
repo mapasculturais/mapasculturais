@@ -782,15 +782,15 @@ class Module extends \MapasCulturais\Module
 
                 }
                 
-                $entity->address_postalCode = $value["address_postalCode"]  ?? $value["En_CEP"];
+                $entity->address_postalCode = $value["address_postalCode"];
                 $entity->address_level1     = $value["address_level1"];
-                $entity->address_level2     = $value["address_level2"]      ?? $value["En_Estado"];
+                $entity->address_level2     = $value["address_level2"];
                 $entity->address_level3     = $value["address_level3"];
-                $entity->address_level4     = $value["address_level4"]      ?? $value["En_Municipio"];
+                $entity->address_level4     = $value["address_level4"];
                 $entity->address_level5     = $value["address_level5"];
-                $entity->address_level6     = $value["address_level6"]      ?? $value["En_Bairro"];
-                $entity->address_line1      = $value["address_line1"]       ?? "{$value['En_Nome_Logradouro']}, {$value['En_Num']}";
-                $entity->address_line2      = $value["address_line2"]       ?? $value["En_Complemento"];
+                $entity->address_level6     = $value["address_level6"];
+                $entity->address_line1      = $value["address_line1"];
+                $entity->address_line2      = $value["address_line2"];
                 
                 if (isset($value["En_Pais"])) {
                     $entity->En_Pais = $value["En_Pais"];
