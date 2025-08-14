@@ -102,33 +102,32 @@ $this->import('
                 </select>
             </div>
         </div>
-    </div>
 
-    <div class="col-12" v-if="hasPublicLocation">
-        <div class="col-12 sm:col-12 field public-location">
-            <div class="field__group">
-                <label class="field__checkbox">
-                    <input type="checkbox" v-model="entity.publicLocation" />
-                    <span>
-                        <?= i::__('Localização pública') ?>
-                        <?php $this->info('cadastro -> configuracoes-entidades -> localizacao-publica') ?>
-                    </span>
-                </label>
+        <div class="col-12" v-if="hasPublicLocation">
+            <div class="col-12 sm:col-12 field public-location">
+                <div class="field__group">
+                    <label class="field__checkbox">
+                        <input type="checkbox" v-model="entity.publicLocation" />
+                        <span>
+                            <?= i::__('Localização pública') ?>
+                            <?php $this->info('cadastro -> configuracoes-entidades -> localizacao-publica') ?>
+                        </span>
+                    </label>
+                </div>
+
+                <small class="field__description">
+                    <?php i::_e('Marque o campo acima para tornar o endereço público ou deixe desmarcado para manter o endereço privado.') ?>
+                </small>
             </div>
+        </div>
 
-            <small class="field__description">
-                <?php i::_e('Marque o campo acima para tornar o endereço público ou deixe desmarcado para manter o endereço privado.') ?>
-            </small>
+        <div v-if="filledAdress()" class="col-12 grid-12">
+            <p class="brasil-address-form__address col-12">
+                <span v-if="entity.endereco">{{entity.endereco}}</span>
+                <span v-else><?= i::_e("Sem Endereço"); ?></span>
+            </p>
+            <entity-map class="col-12" :entity="entity" editable></entity-map>
         </div>
     </div>
-
-    <div v-if="filledAdress()" class="col-12">
-        <p class="brasil-address-form__address">
-            <span v-if="entity.endereco">{{entity.endereco}}</span>
-            <span v-else><?= i::_e("Sem Endereço"); ?></span>
-        </p>
-        <entity-map :entity="entity" editable></entity-map>
-    </div>
-
     <?php $this->applyTemplateHook('entity-address-form-nacional', 'end'); ?>
 </div>
