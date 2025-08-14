@@ -359,14 +359,15 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
             }
         }
 
-        // Conta as inscrições que tenham o status pendente
+        // Conta as inscrições que não tenham sido totalmente avaliadas
         $query = $app->em->createQuery("
             SELECT 
                 count(r) as qtd 
             FROM 
                 MapasCulturais\\Entities\\Registration r  
             WHERE 
-                r.opportunity = :opp AND r.status = 1
+                r.opportunity = :opp AND r.status = 1 AND
+                (r.consolidatedResult is null or r.consolidatedResult in ('', '0'))
         ");
 
         $query->setParameters([
@@ -395,7 +396,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         // Conta as inscrições com avaliações iniciadas
         $query = $app->em->createQuery("
             SELECT 
-                COUNT(re) AS qtd 
+                COUNT(DISTINCT r.id) AS qtd 
             FROM 
                 MapasCulturais\\Entities\\RegistrationEvaluation re
             JOIN 
