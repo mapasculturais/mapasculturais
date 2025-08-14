@@ -35,6 +35,7 @@ $this->import('
                     v-if="country == 'BR'"
                     :entity="entity[fieldName]"
                     :hierarchy="levelHierarchy"
+                    has-public-location
                     class="col-12">
                 </entity-address-form-nacional>
     
