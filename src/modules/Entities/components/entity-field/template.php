@@ -141,7 +141,8 @@ $this->import('
             </template>
 
             <template v-else-if="is('location')">
-                <entity-field-location :entity="entity" :field-name="prop" :configs="description?.registrationFieldConfiguration?.config"></entity-field-location>
+                <entity-field-location-global :entity="entity" :field-name="prop" :configs="description?.registrationFieldConfiguration"></entity-field-location-global>
+                <!-- <entity-field-location :entity="entity" :field-name="prop" :configs="description?.registrationFieldConfiguration?.config"></entity-field-location> -->
             </template>
 
             <template v-else-if="is('bankFields')">
