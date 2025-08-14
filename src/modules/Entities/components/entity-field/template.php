@@ -11,6 +11,7 @@ $this->import('
     entity-field-datepicker
     entity-field-links
     entity-field-location
+    entity-field-location-global
     entity-field-seals
     entity-file
     mc-alert

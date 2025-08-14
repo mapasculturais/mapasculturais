@@ -4,9 +4,12 @@ namespace CountryLocalizations;
 
 use MapasCulturais\App;
 use MapasCulturais\i;
+use MapasCulturais\Traits\ControllerAPI;
 
 class Controller extends \MapasCulturais\Controller
 {
+    use ControllerAPI;
+
     function API_findLevelHierarchy() {
         $this->requireAuthentication();
 
