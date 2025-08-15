@@ -19,8 +19,9 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Pontos de Memória - http://pontosdememoria.cultura.gov.br/
 
 ### Instalações estaduais
-- Distrito Federal - http://mapa.cultura.df.gov.br/
+- Acre - https://mapadacultura.ac.gov.br/
 - Ceará - https://mapacultural.secult.ce.gov.br/
+- Distrito Federal - http://mapa.cultura.df.gov.br/
 - Espírito Santo - https://mapa.cultura.es.gov.br/
 - Goiás - https://mapagoiano.cultura.go.gov.br/
 - Maranhão - https://mapadacultura.ma.gov.br/
@@ -29,44 +30,43 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Pará - https://mapacultural.pa.gov.br/
 - Paraíba - http://pb.mapas.cultura.gov.br/
 - Pernambuco - https://www.mapacultural.pe.gov.br/
+- Roraima - https://mapadacultura.rr.gov.br/
 - Sergipe - http://mapas.cultura.se.gov.br/
 - Tocantins - https://mapadacultura.secult.to.gov.br/
-- Acre - https://mapadacultura.ac.gov.br/
-- Roraima - https://mapadacultura.rr.gov.br/
 
 ### Instalações municipais
 
 - Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
-- Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
-- Camaçari - https://mapacultural.camacari.ba.gov.br/
-- Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
-- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
-- Sobral - https://cultura.sobral.ce.gov.br/
-- Juazeiro do Norte - https://mapacultural.juazeiro.ce.gov.br/
 - Belo Horizonte - http://mapaculturalbh.pbh.gov.br/
-- Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
-- Ipatinga - http://mapacultural.ipatinga.mg.gov.br/
-- Varzea Grande - http://varzeagrande.mt.mapas.cultura.gov.br/
-- João Pessoa - http://jpcultura.joaopessoa.pb.gov.br/
-- Londrina - https://londrinacultura.londrina.pr.gov.br/
+- Camaçari - https://mapacultural.camacari.ba.gov.br/
+- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
 - Foz do Iguaçu - http://mapadaculturafoz.pmfi.pr.gov.br/
-- Maringa - http://maringacultura.maringa.pr.gov.br:38081/
-- Toledo/PR - https://cultura.toledo.pr.gov.br/
-- Rio das Ostras - http://mapadacultura.riodasostras.rj.gov.br/
-- Laguna - http://laguna.sc.mapas.cultura.gov.br/
-- Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/
-- Rio Grande - http://mapacultural.riogrande.rs.gov.br/
-- São Paulo - http://spcultura.prefeitura.sp.gov.br/
-- Santo André - http://culturaz.santoandre.sp.gov.br/
-- São Caetano do Sul - http://mapacultural.saocaetanodosul.sp.gov.br/
-- Osasco - http://osasco.sp.mapas.cultura.gov.br/
 - Franco da Rocha - http://francodarocha.sp.mapas.cultura.gov.br/
 - Guaruja - http://mapadacultura.guaruja.sp.gov.br/
-- Varzea Paulista - http://janelacultural.varzeapaulista.sp.gov.br/
-- Itu - http://mapacultural.itu.sp.gov.br/
 - Guarulhos - http://grucultura.guarulhos.sp.gov.br/
+- Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
+- Ipatinga - http://mapacultural.ipatinga.mg.gov.br/
 - Itapetininga - http://mapacultural.itapetininga.sp.gov.br/
+- Itu - http://mapacultural.itu.sp.gov.br/
+- João Pessoa - http://jpcultura.joaopessoa.pb.gov.br/
+- Juazeiro do Norte - https://mapacultural.juazeiro.ce.gov.br/
 - Lagoa Santa - https://mapacultural.lagoasanta.mg.gov.br/
+- Laguna - http://laguna.sc.mapas.cultura.gov.br/
+- Londrina - https://londrinacultura.londrina.pr.gov.br/
+- Maringa - http://maringacultura.maringa.pr.gov.br:38081/
+- Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/
+- Osasco - http://osasco.sp.mapas.cultura.gov.br/
+- Rio das Ostras - http://mapadacultura.riodasostras.rj.gov.br/
+- Rio Grande - http://mapacultural.riogrande.rs.gov.br/
+- Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
+- Santo André - http://culturaz.santoandre.sp.gov.br/
+- São Caetano do Sul - http://mapacultural.saocaetanodosul.sp.gov.br/
+- São Paulo - http://spcultura.prefeitura.sp.gov.br/
+- Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
+- Sobral - https://cultura.sobral.ce.gov.br/
+- Toledo/PR - https://cultura.toledo.pr.gov.br/
+- Varzea Grande - http://varzeagrande.mt.mapas.cultura.gov.br/
+- Varzea Paulista - http://janelacultural.varzeapaulista.sp.gov.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
