@@ -23,7 +23,7 @@ $this->import('
                 <input @change="toggleEdit(status); updateLabel(status);" type="text" v-model="status.label" />
             </div>
 
-            <mc-status v-else :status-name="status.label || ''" :class="{ disabled: !status.enabled }"></mc-status>
+            <mc-status v-else :status-name="status || ''" :class="{ disabled: !status.enabled }"></mc-status>
 
             <button class="opportunity-phase-config-status__button" v-if="status.enabled" @click="toggleEdit(status)">
                 <template v-if="status.isEditing"> <?= i::__('Concluir edição') ?> </template>
