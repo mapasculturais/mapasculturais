@@ -3,7 +3,7 @@ app.component('mc-status', {
 
     props: {
         statusName: {
-            type: String,
+            type: [Object, String],
             required: true,
         },
     },
@@ -19,7 +19,8 @@ app.component('mc-status', {
         statusClass() {
             let classes = ['mc-status'];
 
-            const status = this.statusName?.toLowerCase() || '';
+            const normalize = val => String(val || '').toLowerCase();
+
             const classesMap = {
                 'mc-status--draft': [
                     'rascunho', 'iniciado'
@@ -52,12 +53,15 @@ app.component('mc-status', {
                     'emitido', 'emitida', 'emitidos', 'emitidas'
                 ],
 
+                'mc-status--invalid': [
+                    'inválido', 'inválida', 'inválidos', 'inválidas',
+                ],
+
                 'mc-status--error': [
                     // já existentes
                     'não selecionado', 'não selecionada', 'não selecionados', 'não selecionadas',
                     'inabilitado', 'inabilitada', 'inabilitados', 'inabilitadas',
                     'não aceito', 'não aceita', 'não aceitos', 'não aceitas',
-                    'inválido', 'inválida', 'inválidos', 'inválidas',
                     'falha', 'falhas',
                     'não enviado', 'não enviada', 'não enviados', 'não enviadas',
 
@@ -110,16 +114,39 @@ app.component('mc-status', {
 
             let matched = false;
 
-            for (const [className, statusList] of Object.entries(classesMap)) {
-            if (statusList.includes(status)) {
-                classes.push(className);
-                matched = true;
-                break;
-            }
+            if (typeof this.statusName === 'string') {
+                const status = normalize(this.statusName);
+                for (const [className, list] of Object.entries(classesMap)) {
+                    if (list.includes(status)) {
+                        classes.push(className);
+                        matched = true;
+                        break;
+                    }
+                }
+            } else if (typeof this.statusName === 'object' && this.statusName !== null) {
+                const statusKey = this.statusName.value || this.statusName.key;
+
+                if(statusKey == 10) {
+                    classes.push('mc-status--success');
+                    matched = true;
+                } else if(statusKey == 8) {
+                    console.log('staus =>', this.statusName);
+                    classes.push('mc-status--warning');
+                    matched = true;
+                } else if(statusKey == 3) {
+                    classes.push('mc-status--error');
+                    matched = true;
+                } else if(statusKey == 2) {
+                    classes.push('mc-status--invalid');
+                    matched = true;
+                } else if(statusKey == 0) {
+                    classes.push('mc-status--draft');
+                    matched = true;
+                }
             }
 
             if (!matched) {
-            classes.push('mc-status--default');
+                classes.push('mc-status--default');
             }
 
             return classes;

@@ -14,6 +14,6 @@ $this->import('
 <div :class="statusClass">
     <mc-icon name="dot"></mc-icon>
     <span>        
-        {{statusName}}
+        {{ typeof statusName === 'object' ? statusName.label : statusName }}
     </span>
 </div>
