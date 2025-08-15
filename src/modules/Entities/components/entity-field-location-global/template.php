@@ -9,6 +9,7 @@ use MapasCulturais\i;
 
 $this->import('
     entity-address-form-nacional
+    entity-address-form-internacional
     mc-loading
     mc-select
 ');
@@ -48,6 +49,15 @@ $this->import('
                         editable>
                     </<?= $localization->getFormComponentName() ?>>
                 <?php endforeach; ?> -->
+
+                <entity-address-form-internacional
+                    v-else
+                    :entity="entity[fieldName]"
+                    :hierarchy="levelHierarchy"
+                    :country="country"
+                    has-public-location
+                    class="col-12">
+                </entity-address-form-internacional>
     
                 <!-- <international-address-form
                     v-else
