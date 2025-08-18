@@ -34,6 +34,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 
 ### Instalações municipais
 - Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
+- Apucarana - https://cultura.apucarana.pr.gov.br/
 - Aracaju - http://mapa.cultura.aracaju.se.gov.br/
 - Belo Horizonte - https://mapaculturalbh.pbh.gov.br/
 - Bento Gonçalvez - http://mapacultural.bentogoncalves.rs.gov.br/
@@ -50,6 +51,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Lagoa Santa - https://mapacultural.lagoasanta.mg.gov.br/
 - Londrina - https://londrinacultura.londrina.pr.gov.br/
 - Maringá - https://maringacultura.maringa.pr.gov.br/
+- Mauá - https://mapacultural.maua.sp.gov.br/
 - Natal - https://mapacultural.natal.rn.gov.br/
 - Nova Lima - https://mapacultural.novalima.mg.gov.br/
 - Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/ (minc)
@@ -61,6 +63,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - São Gonçalo do Amarante - https://mapacultural.saogoncalodoamarante.ce.gov.br/
 - São Paulo - https://spcultura.prefeitura.sp.gov.br/
 - São Bernardo - https://mapacultural.saobernardo.sp.gov.br/
+- Sarandi - https://cultura.sarandi.pr.gov.br/
 - Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/ (minc)
 - Sobral - https://cultura.sobral.ce.gov.br/ (CE - fora do ar)
 - Toledo/PR - https://cultura.toledo.pr.gov.br/
@@ -71,6 +74,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - AMFRIMapa Cultural CIM-AMFRI / SC - https://mapacultural.cim-amfri.sc.gov.br/
 - Mapa Cultural AGIMOS - UFPel - https://mapacultural.ufpel.edu.br/
 - Mapa da Inovação do ES - https://mapa.inovacao.es.gov.br/
+- Balaio Cultural UFPR - https://mapadacultura.ufpr.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
