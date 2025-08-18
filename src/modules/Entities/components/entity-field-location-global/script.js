@@ -39,9 +39,9 @@ app.component('entity-field-location-global', {
 
         // Lista de países vinda do ambiente Mapas
         countries() {
-            return $MAPAS.countries.map(item => ({
-                label: item.nome_pais_int,
-                value: item.sigla,
+            return Object.entries($MAPAS.countries).map(([code, country]) => ({
+                label: country,
+                value: code,
             }));
         },
 
