@@ -10,8 +10,8 @@ $this->import('
 ');
 ?>
 
-<?php $this->applyTemplateHook('entity-map','before'); ?>
-<mc-map :center="entity.location">
+<mc-map :center="location">
+    <?php $this->applyTemplateHook('entity-map','begin'); ?>
     <mc-map-marker :entity="entity" :draggable="editable" @moved="change($event)"></mc-map-marker>
+    <?php $this->applyTemplateHook('entity-map','end'); ?>
 </mc-map>
-<?php $this->applyTemplateHook('entity-map','after'); ?>
