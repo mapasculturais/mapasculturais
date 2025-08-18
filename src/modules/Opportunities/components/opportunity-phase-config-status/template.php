@@ -17,7 +17,7 @@ $this->import('
 
     <div v-for="(status, index) in statuses" :key="index" class="col-12 opportunity-phase-config-status__status">
         <div class="opportunity-phase-config-status__status-line">
-            <input type="checkbox" v-model="status.enabled" @change="updateStatus(status)" :disabled="status.key == 0"/>
+            <input type="checkbox" v-model="status.enabled" @change="updateStatus(status)" :disabled="[0, 1, 10].includes(status.key)"/>
 
             <div v-if="status.enabled && status.isEditing" class="field">
                 <input @change="toggleEdit(status); updateLabel(status);" type="text" v-model="status.label" />
