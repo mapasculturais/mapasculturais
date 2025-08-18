@@ -766,7 +766,7 @@ class Module extends \MapasCulturais\Module
             $metadata_definition->config['registrationFieldConfiguration']->id;
 
             $taxonomies_fields = $this->taxonomiesOpportunityFields();
-
+            
             if ($entity_field == "@location" && is_array($value)) {
                 if(isset($value['location']) && $value['location'] instanceof GeoPoint) {
                     $value["location"] = [
@@ -878,27 +878,24 @@ class Module extends \MapasCulturais\Module
 
             if($entity_field == '@location'){
 
-                if($entity->En_Nome_Logradouro && $entity->En_Num && $entity->En_Municipio && $entity->En_Estado) {
-                    $result = [
-                        'address_postalCode' => $entity->address_postalCode,
-                        'address_level1'     => $entity->address_level1,
-                        'address_level2'     => $entity->address_level2,
-                        'address_level3'     => $entity->address_level3,
-                        'address_level4'     => $entity->address_level4,
-                        'address_level5'     => $entity->address_level5,
-                        'address_level6'     => $entity->address_level6,
-                        'address_line1'      => $entity->address_line1,
-                        'address_line2'      => $entity->address_line2,
-                        'endereco'           => $entity->fullAddress,                        
-                        'location'           => $entity->location,
-                        'publicLocation'     => $entity->publicLocation,
+                $result = [
+                    'address_postalCode' => $entity->address_postalCode,
+                    'address_level1'     => $entity->address_level1,
+                    'address_level2'     => $entity->address_level2,
+                    'address_level3'     => $entity->address_level3,
+                    'address_level4'     => $entity->address_level4,
+                    'address_level5'     => $entity->address_level5,
+                    'address_level6'     => $entity->address_level6,
+                    'address_line1'      => $entity->address_line1,
+                    'address_line2'      => $entity->address_line2,
+                    'endereco'           => $entity->fullAddress,                        
+                    'location'           => $entity->location,
+                    'publicLocation'     => $entity->publicLocation,
 
-                    ];
-                    if (isset($entity->En_Pais)) {
-                        $result["En_Pais"] = $entity->En_Pais;
-                    }
-                } else {
-                    $result = null;
+                ];
+                
+                if (isset($entity->En_Pais)) {
+                    $result["En_Pais"] = $entity->En_Pais;
                 }
 
                 $value = $result;
