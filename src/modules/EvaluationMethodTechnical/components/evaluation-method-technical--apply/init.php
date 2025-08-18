@@ -10,12 +10,14 @@ $em = $app->em;
 $conn = $em->getConnection();
 $dql = "SELECT MAX(e.score) FROM MapasCulturais\\Entities\\Registration e WHERE e.opportunity = {$entity->id}";
 $query = $app->em->createQuery($dql);
+$data = [];
 $data['max_result'] = $query->getSingleScalarResult();
 
-$registrations = Registration::getStatusesNames();
-foreach ($registrations as $status => $status_name) {
+$statuses_names = $entity->statusLabels ?: $entity->defaultStatuses;
+
+foreach ($statuses_names as $status => $status_name) {
     if (in_array($status, [0, 1, 2, 3, 8, 10])) {
-        $data["registrationStatusDict"][] = ["label" => $status_name, "value" => $status];
+        $data["registrationStatusDict"][] = ["status" => $status, "label" => $status_name];
     }
 }
 

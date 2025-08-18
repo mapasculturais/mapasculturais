@@ -4,6 +4,7 @@ namespace EvaluationMethodDocumentary;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Registration;
 
 const STATUS_INVALID = 'invalid';
@@ -11,6 +12,15 @@ const STATUS_VALID = 'valid';
 
 class Module extends \MapasCulturais\EvaluationMethod {
 
+    protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
+    {
+        return [
+            Registration::STATUS_DRAFT => i::__('Rascunho'),
+            Registration::STATUS_SENT => i::__('Pendente'),
+            Registration::STATUS_APPROVED  => i::__('Válida'),
+            Registration::STATUS_INVALID => i::__('Inválida'),
+        ];
+    }
 
     public function getSlug() {
         return 'documentary';

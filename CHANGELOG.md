@@ -36,6 +36,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Operador IN para metadados de seleção múltipla
 - Corrige erro do fetchByStatus que impedia o carregamento das views das entidades
   
+## [7.5.60] - 2025-08-12
+### Correções
+- Ajusta para que seja recriado o cache da inscrição quando usuário acessa a mesma
+
 ## [7.5.59] - 2025-08-08
 ### Correções
 - Recria o cache de permissão do usuário no momento que ele acessa a entidade

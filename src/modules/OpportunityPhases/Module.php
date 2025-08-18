@@ -514,7 +514,7 @@ class Module extends \MapasCulturais\Module{
                     if($opportunity->isDataCollection || $opportunity->isFirstPhase || $opportunity->isLastPhase){
                         $app->applyHook('module(OpportunityPhases).dataCollectionPhaseData', [&$mout_simplify]);
 
-                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files");
+                        $item = $opportunity->simplify("{$mout_simplify},type,publishedRegistrations,publishTimestamp,registrationFrom,registrationTo,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels");
                         $item->appealPhase = $opportunity->appealPhase;
 
                         $item->registrationSteps = [];
@@ -1813,6 +1813,26 @@ class Module extends \MapasCulturais\Module{
         $this->registerEvauationMethodConfigurationMetadata('statusLabels', [
             'label' => i::__('Label dos status das fases de avaliações'),
             'type' => 'array',
+        ]);
+
+        $this->registerOpportunityMetadata('statusLabels', [
+            'label' => i::__('Label dos status das fases de avaliações'),
+            'type' => 'array',
+            'unserialize' => function($value, $entity) use($app) {
+                if(!$value) {
+                    if(!$entity instanceof Opportunity) {
+                        $entity = $app->repo('Opportunity')->find($entity->id);
+                    }
+
+                    if($entity->evaluationMethodConfiguration) {
+                        return $entity->evaluationMethodConfiguration->defaultStatuses;
+                    }
+
+                    return $entity->defaultStatuses;
+                }
+
+                return json_decode($value, true);
+            }
         ]);
     }
 

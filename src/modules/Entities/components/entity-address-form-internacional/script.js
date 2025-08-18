@@ -43,7 +43,9 @@ app.component('entity-address-form-internacional', {
     computed: {
         hasPublicLocation() {
             // segue o padrão atual do projeto (controle por schema da entidade)
-            return !!(this.entity?.$PROPERTIES?.publicLocation);
+
+            // verificar se o campo @ é pro agente ou espaço
+            return true;
         },
 
         activeLevels() {

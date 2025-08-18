@@ -41,7 +41,6 @@
     }
 
     &__container {
-        position: sticky;
         top: 0;
         width: size(140);
         display: flex;
@@ -214,6 +213,9 @@
                         align-items: center;
                         gap: size(8);
                         padding-bottom: size(16) ;
+                    }
+                    .mc-status {
+                        margin: 0;
                     }
                     .state,
                     &label {
@@ -498,7 +500,6 @@
 
     &__content {
         max-height: 0;
-        overflow: hidden;
         transition: max-height .5s ease-out;
     }
 }
