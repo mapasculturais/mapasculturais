@@ -75,12 +75,16 @@ app.component('registration-status', {
             const { isReportingPhase, __objectType, publishEvaluationDetails } = this.phase;
             const { allow_proponent_response } = this.registration.opportunity;
 
-            if (isReportingPhase === '1' && __objectType === 'opportunity' && allow_proponent_response == '1') {
+            if (isReportingPhase === '1' && __objectType === 'opportunity' && allow_proponent_response) {
                 return false;
             }
 
-            return publishEvaluationDetails || allow_proponent_response === '1';
+            return publishEvaluationDetails || allow_proponent_response;
         },
+
+        statuses() {
+            return $MAPAS.config.registrationStatus.statuses || [];
+        }
     },
 
     methods: {
@@ -190,5 +194,25 @@ app.component('registration-status', {
             const types = ['qualification', 'technical', 'documentary'];
             return types.includes(phase.type) || phase.publishEvaluationDetails;
         },
+
+        showRegistrationStatus(status) {
+            if(this.registration.opportunity?.isReportingPhase) {
+               return this.phase.opportunity.statusLabels[status];
+            }
+            
+            if(this.appealRegistration?.id) {
+                return this.phase.appealPhase.statusLabels[status];
+            }
+
+            if(status == 1) {
+                return this.text('Não enviada');
+            }
+
+            if(status == 0) {
+                return this.text('Enviada');
+            }
+
+            return this.statuses[status];
+        }
     }
 });

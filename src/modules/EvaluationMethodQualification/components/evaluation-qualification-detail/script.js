@@ -37,6 +37,11 @@ app.component('evaluation-qualification-detail', {
                     return value;
                 })
                 .join("\n - ");
+        },
+        formatConsolidatedResult(result) {
+            if (result === 'valid') return this.text('Habilitado');
+            if (result === 'invalid') return this.text('Inabilitado');
+            return result;
         }
     }
 });

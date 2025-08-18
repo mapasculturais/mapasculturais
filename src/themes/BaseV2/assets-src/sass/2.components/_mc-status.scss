@@ -18,11 +18,15 @@
         color: var(--mc-success-500);
     }
 
+    &--invalid {
+        color: purple;
+    }
+
     &--error {
         color: var(--mc-danger-500);
     }
 
-    &--warnign {
+    &--warning {
         color: var(--mc-warning-500);
     }
 

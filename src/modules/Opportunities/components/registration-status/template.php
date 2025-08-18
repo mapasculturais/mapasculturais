@@ -16,12 +16,9 @@ $this->import('
     <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado da fase:')?></label>
     <div class="opportunity-phases-timeline__status">
         <mc-icon name="circle" :class="verifyState(registration)"></mc-icon>
-        <p v-if="registration.status == 10"><?= i::__('Inscrição selecionada') ?></p>
-        <p v-if="registration.status == 8"><?= i::__('Inscrição suplente') ?></p>
-        <p v-if="registration.status == 3"><?= i::__('Inscrição não selecionada') ?></p>
-        <p v-if="registration.status == 2"><?= i::__('Inscrição inválida') ?></p>
-        <p v-if="registration.status == 1"><?= i::__('Inscrição enviada') ?></p>
-        <p v-if="registration.status == 0"><?= i::__('Inscrição não enviada') ?></p>
+        <p>
+            {{showRegistrationStatus(registration.status)}}
+        </p>
     </div>
 
     <div v-if="showResults(phase)">
@@ -65,16 +62,11 @@ $this->import('
             <?= i::__('às') ?> <span v-if="hour()">{{hour()}}</span></h5>
         </div>
 
-        <div v-if="appealRegistration.opportunity.allow_proponent_response === '1' || shouldShowResults(appealRegistration.opportunity.evaluationMethodConfiguration)" class="opportunity-phases-timeline__box">
+        <div v-if="appealRegistration.opportunity.allow_proponent_response || shouldShowResults(appealRegistration.opportunity.evaluationMethodConfiguration)" class="opportunity-phases-timeline__box">
             <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
             <div class="opportunity-phases-timeline__status">
                 <mc-icon name="circle" :class="verifyState(appealRegistration)"></mc-icon>
-                <p v-if="appealRegistration.status == 10"><?= i::__('Deferido') ?></p>
-                <p v-if="appealRegistration.status == 3"><?= i::__('Indeferido') ?></p>
-                <p v-if="appealRegistration.status == 2"><?= i::__('Recurso inválido') ?></p>
-                <p v-if="appealRegistration.status == 1"><?= i::__('Aguardando resposta') ?></p>
-                <p v-if="appealRegistration.status == 0"><?= i::__('Recurso não enviado') ?></p>
-
+                <p>{{showRegistrationStatus(appealRegistration.status)}}</p>
             </div>
             <registration-results :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>
         </div>

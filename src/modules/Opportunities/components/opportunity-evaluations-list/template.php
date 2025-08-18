@@ -91,7 +91,6 @@ $this->import('
                             <div class="card-state">
                                 <span class="state"><?= i::__('Resultado de avaliação') ?></span>
                                 <span :class="verifyState(evaluation)" class="card-state__info">
-                                    <mc-icon name="circle"></mc-icon>
                                     <mc-status v-if="evaluation.resultString" :status-name="evaluation.resultString"></mc-status>
                                     <mc-status v-if="!evaluation.resultString" status-name="<?= i::__('Pendente') ?>"></mc-status>
                                 </span>

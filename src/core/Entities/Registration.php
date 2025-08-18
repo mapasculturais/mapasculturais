@@ -1959,6 +1959,10 @@ class Registration extends \MapasCulturais\Entity
     }
     
     function getExtraEntitiesToRecreatePermissionCache(): array {
+        if(!$this->id) {
+            return [];
+        }
+
         $result = [];
 
         if ($previous_phase = $this->previousPhase) {
@@ -2018,7 +2022,7 @@ class Registration extends \MapasCulturais\Entity
      * @return EvaluationMethodConfiguration
      */
     public function getEvaluationMethodConfiguration() {
-        return $this->opportunity->evaluationMethodConfiguration;
+        return $this->opportunity ? $this->opportunity->evaluationMethodConfiguration : null;
     }
 
     /**
