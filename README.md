@@ -14,6 +14,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Mapa Uruguai - https://culturaenlinea.uy/
 - SNIIC - https://mapa.cultura.gov.br/
 - Cultura Viva - https://culturaviva.cultura.gov.br/
+- Rede das Artes - https://rededasartes.cultura.gov.br/
 
 ### Instalações estaduais
 - Acre - https://mapadacultura.ac.gov.br/
