@@ -6,6 +6,8 @@
 
 $app->view->enqueueScript('components', 'countries', 'js/countries.js', ['components-init']);
 
+$this->addLocalizedCountriesToJS();
+
 $country_field_enabled = $app->config['address.countryFieldEnabled'];
 $country_default_code = $app->config['address.defaultCountryCode'];
 
