@@ -13,6 +13,7 @@ $this->import('
     opportunity-category
     opportunity-ranges-config
     opportunity-proponent-types
+    opportunity-phase-config-status
     opportunity-appeal-phase-config
 ');
 ?>
@@ -81,6 +82,11 @@ $this->import('
         </div>
         <?php $this->applyTemplateHook('opportunity-data-collection-config-form',sufix: 'after')?>
 
+
+        <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
+            <div class="opportunity-data-collection__horizontal-line col-12 "></div>
+            <opportunity-phase-config-status :phase="phase"></opportunity-phase-config-status>
+        </template>
 
         <template v-if="nextPhase?.__objectType != 'evaluationmethodconfiguration'">
             <div class="opportunity-data-collection__horizontal-line col-12 "></div>

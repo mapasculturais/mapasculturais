@@ -8,6 +8,7 @@ use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\ChatMessage;
 use MapasCulturais\Entities\ChatThread;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Notification;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
@@ -18,6 +19,40 @@ class Module extends \MapasCulturais\EvaluationMethod {
     const CHAT_THREAD_TYPE = 'EvaluationMethodContinuous';
 
     public $internal = true;
+
+    protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
+    {
+        if($evaluation_method_configuration->opportunity->isReportingPhase){
+            return [
+                Registration::STATUS_DRAFT => i::__('Rascunho'),
+                Registration::STATUS_SENT => i::__('Pendente'),
+                Registration::STATUS_INVALID => i::__('Inválida'),
+                Registration::STATUS_NOTAPPROVED => i::__('Reprovado'),
+                Registration::STATUS_WAITLIST => i::__('Aprovado com ressalvas'),
+                Registration::STATUS_APPROVED => i::__('Aprovado')
+            ];
+        }
+
+        return [
+            Registration::STATUS_DRAFT => i::__('Rascunho'),
+            Registration::STATUS_SENT => i::__('Aguardando resposta'),
+            Registration::STATUS_INVALID => i::__('Negado'),
+            Registration::STATUS_NOTAPPROVED => i::__('Indeferido'),
+            Registration::STATUS_APPROVED => i::__('Deferido')
+        ];
+    }
+
+    public function getDefaultStatusesConfigKey(EvaluationMethodConfiguration $evaluation_method_configuration): string {
+        if($evaluation_method_configuration->opportunity->isReportingPhase){
+            return "opportunityPhase.defaultStatuses.reporting";
+        }
+
+        if($evaluation_method_configuration->opportunity->isAppealPhase){
+            return "opportunityPhase.defaultStatuses.appeal";
+        }
+
+        return parent::getDefaultStatusesConfigKey($evaluation_method_configuration);
+    }
 
     public function getSlug() {
         return 'continuous';

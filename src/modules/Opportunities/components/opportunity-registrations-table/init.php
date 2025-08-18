@@ -3,7 +3,11 @@
 use MapasCulturais\i;
 use MapasCulturais\Entities\Registration;
 
+$opportunity = $this->controller->requestedEntity;
 $data = [];
+
+$evaluation_method_configuration = $opportunity->evaluationMethodConfiguration;
+$statuses_names = $opportunity->statusLabels ?: $evaluation_method_configuration->defaultStatuses;
 
 $data['evaluationStatusDict'] = [
     'simple' => [
@@ -207,7 +211,7 @@ $data['defaultSelect'] = $default_select;
 $data['defaultHeaders'] = $default_headers;
 $data['defaultAvailable'] = $available_fields;
 
-foreach (Registration::getStatusesNames() as $status => $status_name) {
+foreach ($statuses_names as $status => $status_name) {
     if (in_array($status, [0, 1, 2, 3, 8, 10])) {
         $data["registrationStatusDict"][] = ["label" => $status_name, "value" => $status];
     }

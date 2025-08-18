@@ -97,20 +97,6 @@ app.component('documentary-evaluation-form', {
         validateErrors() {
             let hasError = false;
             const global = useGlobalState();
-            
-            Object.values(this.formData.data).forEach(item => {
-                if(this.newStatus && this.newStatus > 0) {
-                    if(!item.obsItems) {
-                        this.messages.error(this.text('o campo "Descumprimento do(s) item(s) do edital" não foi avaliado'));
-                        hasError = true;
-                    }
-    
-                    if(!item.obs) {
-                        this.messages.error(this.text('o campo "Justificativa / Observações" não foi avaliado'));
-                        hasError = true;
-                    }
-                }
-            });
 
             global.validateEvaluationErrors = hasError;
 
