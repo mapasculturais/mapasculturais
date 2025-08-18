@@ -143,7 +143,7 @@ app.component('entity-field-location-global', {
 
             // Ao trocar país, limpe os níveis/linhas específicos (o subform repopula)
             this.clearAddressSpecificFields();
-            this.initMode();
+            this.initModel();
             await this.loadLevelHierarchy();
         },
 
