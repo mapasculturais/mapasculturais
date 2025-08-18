@@ -11,15 +11,13 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 
 ### Instalações em nível federal ou internacional
 - IberculturaViva - https://mapa.iberculturaviva.org/
-- Mapa Uruguai - http://culturaenlinea.uy/
-- SNIIC - http://mapas.cultura.gov.br/
-- Museus - http://museus.cultura.gov.br/
-- Sistema Nacional de Bibliotecas Públicas - http://bibliotecas.cultura.gov.br/
-- Cultura Viva - http://culturaviva.gov.br/
-- Pontos de Memória - http://pontosdememoria.cultura.gov.br/
+- Mapa Uruguai - https://culturaenlinea.uy/
+- SNIIC - https://mapa.cultura.gov.br/
+- Cultura Viva - https://culturaviva.cultura.gov.br/
 
 ### Instalações estaduais
 - Acre - https://mapadacultura.ac.gov.br/
+- Amapá - https://mapacultural.ap.gov.br/
 - Ceará - https://mapacultural.secult.ce.gov.br/
 - Distrito Federal - http://mapa.cultura.df.gov.br/
 - Espírito Santo - https://mapa.cultura.es.gov.br/
@@ -30,43 +28,49 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Pará - https://mapacultural.pa.gov.br/
 - Paraíba - http://pb.mapas.cultura.gov.br/
 - Pernambuco - https://www.mapacultural.pe.gov.br/
+- Piauí - https://www.mapadacultura.pi.gov.br/
 - Roraima - https://mapadacultura.rr.gov.br/
-- Sergipe - http://mapas.cultura.se.gov.br/
 - Tocantins - https://mapadacultura.secult.to.gov.br/
 
 ### Instalações municipais
-
 - Aparecida de Goiânia - https://portaldacultura.aparecida.go.gov.br/
-- Belo Horizonte - http://mapaculturalbh.pbh.gov.br/
+- Aracaju - http://mapa.cultura.aracaju.se.gov.br/
+- Belo Horizonte - https://mapaculturalbh.pbh.gov.br/
+- Bento Gonçalvez - http://mapacultural.bentogoncalves.rs.gov.br/
+- Campos dos Goytacazes - https://mapasculturais.campos.rj.gov.br/
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
-- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
-- Foz do Iguaçu - http://mapadaculturafoz.pmfi.pr.gov.br/
-- Franco da Rocha - http://francodarocha.sp.mapas.cultura.gov.br/
-- Guaruja - http://mapadacultura.guaruja.sp.gov.br/
-- Guarulhos - http://grucultura.guarulhos.sp.gov.br/
-- Ilheus - http://ilheus.ba.mapas.cultura.gov.br/
-- Ipatinga - http://mapacultural.ipatinga.mg.gov.br/
-- Itapetininga - http://mapacultural.itapetininga.sp.gov.br/
-- Itu - http://mapacultural.itu.sp.gov.br/
-- João Pessoa - http://jpcultura.joaopessoa.pb.gov.br/
-- Juazeiro do Norte - https://mapacultural.juazeiro.ce.gov.br/
+- Campinas - https://mapacultural.campinas.sp.gov.br/
+- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/ (CE)
+- Franco da Rocha - http://francodarocha.sp.mapas.cultura.gov.br/ (minc)
+- Gravataí - https://mapacultural.gravatai.rs.gov.br/
+- Guarulhos - http://grucultura.guarulhos.sp.gov.br/ (minc)
+- Ilheus - http://ilheus.ba.mapas.cultura.gov.br/ (minc)
+- Iguatu - http://mapacultural.iguatu.ce.gov.br/
+- João Pessoa - https://jpcultura.joaopessoa.pb.gov.br/
 - Lagoa Santa - https://mapacultural.lagoasanta.mg.gov.br/
-- Laguna - http://laguna.sc.mapas.cultura.gov.br/
 - Londrina - https://londrinacultura.londrina.pr.gov.br/
-- Maringa - http://maringacultura.maringa.pr.gov.br:38081/
-- Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/
-- Osasco - http://osasco.sp.mapas.cultura.gov.br/
-- Rio das Ostras - http://mapadacultura.riodasostras.rj.gov.br/
-- Rio Grande - http://mapacultural.riogrande.rs.gov.br/
+- Maringá - https://maringacultura.maringa.pr.gov.br/
+- Natal - https://mapacultural.natal.rn.gov.br/
+- Nova Lima - https://mapacultural.novalima.mg.gov.br/
+- Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/ (minc)
+- Osasco - http://osasco.sp.mapas.cultura.gov.br/ (minc)
+- Parauapebas - https://mapacultural.parauapebas.pa.gov.br/
+- Petrolina - https://mapacultural.petrolina.pe.gov.br/
 - Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
-- Santo André - http://culturaz.santoandre.sp.gov.br/
-- São Caetano do Sul - http://mapacultural.saocaetanodosul.sp.gov.br/
-- São Paulo - http://spcultura.prefeitura.sp.gov.br/
-- Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/
-- Sobral - https://cultura.sobral.ce.gov.br/
+- Santo André - https://culturaz.santoandre.sp.gov.br/
+- São Gonçalo do Amarante - https://mapacultural.saogoncalodoamarante.ce.gov.br/
+- São Paulo - https://spcultura.prefeitura.sp.gov.br/
+- São Bernardo - https://mapacultural.saobernardo.sp.gov.br/
+- Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/ (minc)
+- Sobral - https://cultura.sobral.ce.gov.br/ (CE - fora do ar)
 - Toledo/PR - https://cultura.toledo.pr.gov.br/
-- Varzea Grande - http://varzeagrande.mt.mapas.cultura.gov.br/
-- Varzea Paulista - http://janelacultural.varzeapaulista.sp.gov.br/
+- Varzea Grande - http://varzeagrande.mt.mapas.cultura.gov.br/ (minc)
+
+### Outras instalações
+- Floresta Ativista - https://rede.florestaativista.org/
+- AMFRIMapa Cultural CIM-AMFRI / SC - https://mapacultural.cim-amfri.sc.gov.br/
+- Mapa Cultural AGIMOS - UFPel - https://mapacultural.ufpel.edu.br/
+- Mapa da Inovação do ES - https://mapa.inovacao.es.gov.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
@@ -75,8 +79,6 @@ Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e ba
 * [Mapas Cuturais Base Project](https://github.com/hacklabr/mapasculturais-app) - Repositório de projeto base para novas instalações.
 * [Multiple Local Auth](https://github.com/mapasculturais/mapasculturais-MultipleLocalAuth) - Plugin de autenticação local + oauth.
 * [Mapas SDK](https://github.com/centroculturalsp/MapasSDK)
-* [Mapas Culturais APP](https://github.com/hacklabr/mapasculturais-app)
-* [Cultural Magazine Theme](https://github.com/hacklabr/cultural)
 
 ## Instalação
 A maneira mais simples e segura para instalar o Mapas Culturais é utilizando o [Mapas Culturais Base Project](https://github.com/mapasculturais/mapasculturais-base-project) como base para a criação de um repositório próprio para o seu projeto, que reunirá o tema, os plugins e as configurações da aplicação. O Mapas Culturais Base Project utiliza o Docker e o Docker Composer para rodar a aplicação, facilitando os processos de deploy e de atualizaçao.
@@ -179,4 +181,5 @@ Debates políticos com propósitos partidários.
 ## Licença de uso e desenvolvimento
 
 Mapas Culturais é um software livre licenciado com [GPLv3](http://gplv3.fsf.org). 
+
 
