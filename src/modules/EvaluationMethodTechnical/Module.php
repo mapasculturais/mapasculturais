@@ -9,10 +9,23 @@ use MapasCulturais\App;
 use MapasCulturais\Controller;
 use MapasCulturais\Controllers\Opportunity as ControllersOpportunity;
 use MapasCulturais\Entities;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 
 class Module extends \MapasCulturais\EvaluationMethod {
+
+    protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
+    {
+        return [
+            Registration::STATUS_DRAFT => i::__('Rascunho'),
+            Registration::STATUS_SENT => i::__('Pendente'),
+            Registration::STATUS_INVALID => i::__('Inválida'),
+            Registration::STATUS_NOTAPPROVED => i::__('Não selecionada'),
+            Registration::STATUS_WAITLIST => i::__('Suplente'),
+            Registration::STATUS_APPROVED => i::__('Selecionada')
+        ];
+    }
     
     protected static Module $instance;
     private $viability_status;

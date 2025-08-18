@@ -1,0 +1,61 @@
+@use '../0.settings/mixins' as *;
+
+.opportunity-phase-config-status {
+    display: grid;
+    gap: size(8);
+
+    &__status {
+        display: grid;
+        margin-bottom: 8px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__status-line {
+        align-items: center;
+        display: flex;
+        gap: size(16);
+
+        .field {
+            max-width: size(200);
+
+            &>input {
+                padding: 4px 14px;
+                margin: 0;
+            }
+        }
+
+        .mc-status {
+            margin: unset;
+
+            &.disabled {
+                opacity: .5;
+            }
+        }
+    }
+
+    &__status-default {
+        color: var(--mc-gray-500);
+        font-size: var(--mc-font-size-xxs);
+    }
+
+    &__button {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        align-items: center;
+        appearance: none;
+        background-color: unset;
+        border: none;
+        cursor: pointer;
+        font-family: var(--mc-font-body);
+        font-size: var(--mc-font-size-xxs);
+        font-weight: var(--mc-font-semibold);
+        text-decoration: none;
+
+        &:hover {
+            color: var(--mc-gray-500);
+        }
+    }
+}

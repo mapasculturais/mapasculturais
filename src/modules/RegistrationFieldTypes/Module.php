@@ -766,7 +766,7 @@ class Module extends \MapasCulturais\Module
             $metadata_definition->config['registrationFieldConfiguration']->id;
 
             $taxonomies_fields = $this->taxonomiesOpportunityFields();
-
+            
             if ($entity_field == "@location" && is_array($value)) {
                 if(isset($value['location']) && $value['location'] instanceof GeoPoint) {
                     $value["location"] = [
@@ -781,17 +781,23 @@ class Module extends \MapasCulturais\Module
                     $entity->location = [$value["location"]["lng"], $value["location"]["lat"]];
 
                 }
-                $entity->endereco = $value["endereco"] ?? "";
-                $entity->En_CEP = $value["En_CEP"] ?? "";
-                $entity->En_Nome_Logradouro = $value["En_Nome_Logradouro"] ?? "";
-                $entity->En_Num = $value["En_Num"] ?? "";
-                $entity->En_Complemento = $value["En_Complemento"] ?? "";
-                $entity->En_Bairro = $value["En_Bairro"] ?? "";
-                $entity->En_Municipio = $value["En_Municipio"] ?? "";
-                $entity->En_Estado = $value["En_Estado"] ?? "";
+                
+                $entity->address_postalCode = $value["address_postalCode"];
+                $entity->address_level0     = $value["address_level0"];
+                $entity->address_level1     = $value["address_level1"];
+                $entity->address_level2     = $value["address_level2"];
+                $entity->address_level3     = $value["address_level3"];
+                $entity->address_level4     = $value["address_level4"];
+                $entity->address_level5     = $value["address_level5"];
+                $entity->address_level6     = $value["address_level6"];
+                $entity->address_line1      = $value["address_line1"];
+                $entity->address_line2      = $value["address_line2"];
+                
                 if (isset($value["En_Pais"])) {
                     $entity->En_Pais = $value["En_Pais"];
                 }
+                
+                $entity->endereco           = $value["endereco"] ?: $value["address"];
                 $entity->publicLocation = !empty($value['publicLocation']);
 
             } else if($taxonomies_fields && in_array($entity_field, array_keys($taxonomies_fields))) {
@@ -805,7 +811,7 @@ class Module extends \MapasCulturais\Module
                         $matchedItem=false;
                         if(is_array($value)){
                             foreach ($value as $key => $itemValue) {
-                               
+                                
                                 if(empty($itemValue->value)){                            
                                     continue;
                                 }
@@ -873,24 +879,25 @@ class Module extends \MapasCulturais\Module
 
             if($entity_field == '@location'){
 
-                if($entity->En_Nome_Logradouro && $entity->En_Num && $entity->En_Municipio && $entity->En_Estado) {
-                    $result = [
-                        'endereco' => $entity->endereco,
-                        'En_CEP' => $entity->En_CEP,
-                        'En_Nome_Logradouro' => $entity->En_Nome_Logradouro,
-                        'En_Num' => $entity->En_Num,
-                        'En_Complemento' => $entity->En_Complemento,
-                        'En_Bairro' => $entity->En_Bairro,
-                        'En_Municipio' => $entity->En_Municipio,
-                        'En_Estado' => $entity->En_Estado,
-                        'location' => $entity->location,
-                        'publicLocation' => $entity->publicLocation
-                    ];
-                    if (isset($entity->En_Pais)) {
-                        $result["En_Pais"] = $entity->En_Pais;
-                    }
-                } else {
-                    $result = null;
+                $result = [
+                    'address_postalCode' => $entity->address_postalCode,
+                    'address_level0'     => $entity->address_level0,
+                    'address_level1'     => $entity->address_level1,
+                    'address_level2'     => $entity->address_level2,
+                    'address_level3'     => $entity->address_level3,
+                    'address_level4'     => $entity->address_level4,
+                    'address_level5'     => $entity->address_level5,
+                    'address_level6'     => $entity->address_level6,
+                    'address_line1'      => $entity->address_line1,
+                    'address_line2'      => $entity->address_line2,
+                    'endereco'           => $entity->fullAddress ?: $entity->endereco,                        
+                    'location'           => $entity->location,
+                    'publicLocation'     => $entity->publicLocation,
+
+                ];
+
+                if($entity->address_level0 || $entity->En_Pais) {
+                    $result["En_Pais"] = $entity->address_level0 ?: $entity->En_Pais;
                 }
 
                 $value = $result;
