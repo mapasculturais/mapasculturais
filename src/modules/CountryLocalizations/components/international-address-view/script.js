@@ -40,5 +40,13 @@ app.component('international-address-view', {
 
             return result;
         },
+
+        showAddress() {
+            if(!this.entity.address && !this.entity.endereco) {
+                return false;
+            }
+            
+            return this.entity.address || this.entity.endereco;
+        }
     }
 });
