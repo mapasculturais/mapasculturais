@@ -15,7 +15,7 @@ $this->import('
 $entity = $this->controller->requestedEntity;
 $term_url = $app->createUrl('site', 'termoAdesao');
 ?>
-{{console.log(registration.currentUserPermissions)}}
+
 <div class="registration-actions">
     <div class="registration-actions__primary">
         <div v-if="hasErrors" class="registration-actions__errors">
