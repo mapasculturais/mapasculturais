@@ -783,6 +783,7 @@ class Module extends \MapasCulturais\Module
                 }
                 
                 $entity->address_postalCode = $value["address_postalCode"];
+                $entity->address_level0     = $value["address_level0"];
                 $entity->address_level1     = $value["address_level1"];
                 $entity->address_level2     = $value["address_level2"];
                 $entity->address_level3     = $value["address_level3"];
@@ -880,6 +881,7 @@ class Module extends \MapasCulturais\Module
 
                 $result = [
                     'address_postalCode' => $entity->address_postalCode,
+                    'address_level0'     => $entity->address_level0,
                     'address_level1'     => $entity->address_level1,
                     'address_level2'     => $entity->address_level2,
                     'address_level3'     => $entity->address_level3,
@@ -893,9 +895,9 @@ class Module extends \MapasCulturais\Module
                     'publicLocation'     => $entity->publicLocation,
 
                 ];
-                
-                if (isset($entity->En_Pais)) {
-                    $result["En_Pais"] = $entity->En_Pais;
+
+                if($entity->address_level0 || $entity->En_Pais) {
+                    $result["En_Pais"] = $entity->address_level0 ?: $entity->En_Pais;
                 }
 
                 $value = $result;
