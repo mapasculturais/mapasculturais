@@ -9,7 +9,7 @@ $this->import('
 ');
 ?>
 
-<l-marker :lat-lng="entity.location" :draggable="draggable" @moveend="moved($event)">
+<l-marker :lat-lng="location" :draggable="draggable" @moveend="moved($event)">
     <l-icon>
         <div :class="[entity.__objectType+'__background', 'mc-map-marker']">
             <mc-icon :entity="entity"></mc-icon>

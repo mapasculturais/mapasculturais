@@ -72,7 +72,7 @@ class Module extends \MapasCulturais\Module {
                         $slug = 'address_fullAddress';
                     }
 
-                    if($country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country)) {
+                    if($country && $country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country)) {
                         $setter = 'set'.substr($slug, 8);
 
                         $country_localization->$setter($entity, $value);
