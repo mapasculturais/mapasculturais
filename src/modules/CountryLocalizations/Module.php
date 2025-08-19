@@ -35,6 +35,11 @@ class Module extends \MapasCulturais\Module {
                 $country_localization->setLevel0($this, $country);
             } 
         });
+
+
+        $app->hook('Theme::addLocalizedCountriesToJS', function () {
+            $this->jsObject['countries'] = include __DIR__ . '/countries.php';
+        });
     }
 
     function register(){

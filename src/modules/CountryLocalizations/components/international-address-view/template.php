@@ -24,8 +24,8 @@ $this->import('
 
     <div v-if="verifiedAdress()" class="col-12">
         <p class="international-address-view__address">
-            <span v-if="entity.address">{{entity.address}}</span>
-            <span v-if="!entity.address"><?= i::_e("Sem Endereço"); ?></span>
+            <span v-if="showAddress()">{{showAddress()}}</span>
+            <span v-else><?= i::_e("Sem Endereço"); ?></span>
         </p>
         <entity-map :entity="entity" :editable="editable"></entity-map>
     </div>
