@@ -65,6 +65,10 @@ app.component('entity-field-location-global', {
         hasLinkedEntity() {
             return !!this.targetEntity;
         },
+
+        hasPublicLocation() {
+            return this.configs?.fieldType !== 'space-field';
+        },
     },
 
     watch: {
@@ -163,8 +167,6 @@ app.component('entity-field-location-global', {
         },
 
         async loadLevelHierarchy() {
-            console.log('aqui');
-            
             if (!this.country) {
                 this.levelHierarchy = null;
                 return;
