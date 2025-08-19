@@ -1,0 +1,21 @@
+# Usa a imagem oficial do Node 20
+FROM node:20
+
+
+# Cria um diretório de trabalho no contêiner
+WORKDIR /app
+VOLUME [ "/app" ]
+
+# Copia os arquivos package.json e pnpm-lock.yaml para o diretório de trabalho
+COPY . /app/
+
+# Instala o pnpm globalmente
+RUN npm install -g pnpm
+
+# Instala as dependências do projeto usando o pnpm
+RUN pnpm install
+
+# Copia todos os arquivos do projeto para o diretório de trabalho
+
+# Define o comando padrão para executar o pnpm run watch
+# CMD ["pnpm", "run", "build"]

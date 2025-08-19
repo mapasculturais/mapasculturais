@@ -151,7 +151,7 @@ class Controller extends \MapasCulturais\Controller
       $csv->setDelimiter(",");
       $csv->setHeaderOffset(0);
 
-      $stm = (new Statement());
+      $stm = (new \League\Csv\Statement());
       $file_data = $stm->process($csv);
 
       return $file_data;

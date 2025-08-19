@@ -1,0 +1,15 @@
+[variables]
+    NIXPACKS_METADATA="php"
+    NIXPACKS_PHP_FALLBACK_PATH="/app/public/index.php"
+    NIXPACKS_PHP_ROOT_DIR="/app/public"
+    PORT="80"
+
+[phases.setup]
+    cmds = ['PHP_INI_PATH=$(php --ini | grep "Additional .ini files parsed:" | cut -d: -f2 | tr -d " "); echo "PHP_INI_PATH is $PHP_INI_PATH"; echo "upload_max_filesize=128M" >> $PHP_INI_PATH; echo "post_max_size=128M" >> $PHP_INI_PATH; echo "Content of php.ini below:"; cat "$PHP_INI_PATH"']
+
+# [phases.install]
+# cmds = ['npm install -g corepack', 'corepack enable', 'corepack prepare pnpm@9.7.1 --activate', 'pnpm install']
+# [phases.setup]
+# nixPkgs = ["...", "xvfb-run"] # Install the ffmpeg package from Nix
+# nixLibs = ["...", "xvfb-run"] # Install the gcc-unwrapped package from Nix and add it to the LD_LIBRARY_PATH
+#  aptPkgs = ["...", "wget"]   # Install the wget package with apt-get

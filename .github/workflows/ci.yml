@@ -1,19 +1,26 @@
 name: ci
-
 on:
   push:
     branches:
-      - "master"
-      - "develop"
-      - "saas"
+      - "feature*"
     tags:
       - "v*.*.*"
   pull_request:
     branches:
       - "develop"
+  workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+  security-events: write
+  actions: read
+  checks: read
+  statuses: read
+  
 jobs:
-  docker:
+  CODE_PUBLISH:
     runs-on: ubuntu-latest
     steps:
       -
@@ -24,44 +31,169 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          # list of Docker images to use as base name for tags
           images: |
-            docker.io/hacklab/mapasculturais 
-          # ghcr.io/username/app
-          # generate Docker tags based on the following events/attributes
+            ghcr.io/redemapas/mapas 
           tags: |
+            type=raw,value=latest,enable=${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') }}
             type=ref,event=branch
+            type=raw,value=pr-${{ github.event.pull_request.number }}
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
+            type=sha
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-      -
-        name: Login to Docker Hub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
       # -
-      #   name: Login to GHCR
+      #   name: Login to Docker Hub
       #   if: github.event_name != 'pull_request'
       #   uses: docker/login-action@v2
       #   with:
-      #     registry: ghcr.io
-      #     username: ${{ github.repository_owner }}
-      #     password: ${{ secrets.GITHUB_TOKEN }}
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Login to GHCR
+        # if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       -
         name: Build and push
         uses: docker/build-push-action@v4
         with:
-          file: ./docker/Dockerfile
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          file: .nixpacks/Dockerfile
+          platforms: linux/amd64
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
+  CODE_STYLE_FIXER:
+    name: CODE STYLE CS FIXER
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Run PHP-CS-Fixer
+        uses: erkenes/php-cs-fixer-action@main
+        with:
+          args: '--dry-run --diff -vvv'
+
+  CODE_STYLE_PSALM:
+    name: CODE SECURITY
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Run Psalm
+        uses: docker://ghcr.io/psalm/psalm-github-actions
+        with:
+          composer_require_dev: true
+          composer_ignore_platform_reqs: true
+          security_analysis: true
+          report_file: results.sarif
+      - name: Upload Security Analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: results.sarif
+
+  CODE_TESTS:
+    name: CODE TESTS
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixando codigo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      # See https://github.com/pnpm/action-setup
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      # See https://github.com/actions/setup-node
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          # cache-dependency-path: ./pnpm-lock.yaml
+      - run: pnpm i
+      - run: pnpm run build
+      - name: Configuração de valores padrões
+        run: |
+            cp .env.sample .env
+
+      - uses: hoverkraft-tech/compose-action@v1.5.1
+        with:
+          compose-file: |
+            docker-compose.yml
+            docker-compose.dev.yml
+          services: "backend"
+          up-flags: "-d --wait"
+          down-flags: "-v"
+
+      - name: Atualização da estrutura do banco de dados
+        run: |
+          make db-restore
+          make init
+          make init_dev
+          make db-migrations
+        env:
+          APP_MODE: development
+
+      - name: Testes Unitários com PhpUnit
+        run: |
+          make test-backend
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          verbose: true
+
+      # - name: Testes de integração com Cypress
+      #   uses: cypress-io/github-action@v6
+      #   with:
+      #     config: '{"e2e":{"viewportWidth":375,"viewportHeight":667}}'
+      #     wait-on: "http://localhost:4242"
+      #     wait-on-timeout: 120
+      #     browser: chrome
+      #     # record: false
+      #     # parallel: true
+      #     # group: "UI - Chrome - Mobile"
+      #     config-file: cypress/cypress.config.js
+      #   env:
+      #     # CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+      #     # CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      #     # Recommended: pass the GitHub token lets this action correctly
+      #     # determine the unique run id necessary to re-run the checks
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #
+      # - name: Save build folder
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: screenshots
+      #     if-no-files-found: error
+      #     path: src/cypress/screenshots
+    # - name: Install composer and dependencies
+    #   uses: php-actions/composer@v6
+    #   with:
+    #     php_extensions: pdo_pgsql zip intl gd mbstring curl xml
+
+    # - name: PHPUnit Tests Mapas
+    #   uses: php-actions/phpunit@v3
+    #   env:
+    #     XDEBUG_MODE: coverage
+    #   with:
+    #     version: 10.5
+    #     php_version: 8.2
+    #     configuration: phpunit.xml
+    #     php_extensions: pdo_pgsql zip intl gd mbstring curl xml

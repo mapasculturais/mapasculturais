@@ -5,7 +5,7 @@ namespace EventImporter;
 use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Definitions;
-use MapasCulturais\Themes;
+use MapasCulturais\Themes\BaseV2\Theme;
 
 class Module extends \MapasCulturais\Module
 {
@@ -369,7 +369,7 @@ class Module extends \MapasCulturais\Module
             // BaseV2
 
             $app->hook('component(panel--entity-tabs):end', function () {
-                /** @var Themes\BaseV2\Theme $this */
+                /** @var \MapasCulturais\Themes\BaseV2\Theme $this */
                 if($this->controller->action == 'events') {
                     $this->part('event-importer/tab');
                 }

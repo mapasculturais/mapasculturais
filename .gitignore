@@ -12,3 +12,12 @@ src/themes/BaseV1/assets/css/main.css
 src/themes/BaseV1/assets/css/main.css.map
 **/.env
 !/dev/.env
+.vscode
+.zed
+public/assets
+public/evaluators-default-profiles
+public/files/distributionslog
+.phpunit*
+*.phar
+*.php-cs-fixer.cache
+*coverage.xml
