@@ -24,10 +24,10 @@ $this->import('
 
     <div v-if="verifiedAdress()" class="col-12">
         <p class="brasil-address-view__address">
-            <span v-if="entity.endereco">{{entity.endereco}}</span>
-            <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
+            <span v-if="showAddress()">{{showAddress()}}</span>
+            <span v-else><?= i::_e("Sem Endereço"); ?></span>
         </p>
-        <entity-map  :entity="entity" :editable="editable"></entity-map>
+        <entity-map :entity="entity" editable></entity-map>
     </div>
     <?php $this->applyTemplateHook('brasil-address-view','end'); ?>
 </div>
