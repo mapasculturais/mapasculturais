@@ -27,7 +27,7 @@ $this->import('
             <span v-if="showAddress()">{{showAddress()}}</span>
             <span v-else><?= i::_e("Sem Endereço"); ?></span>
         </p>
-        <entity-map :entity="entity" :editable="editable"></entity-map>
+        <entity-map :entity="entity"></entity-map>
     </div>
     <?php $this->applyTemplateHook('international-address-view','end'); ?>
 </div>

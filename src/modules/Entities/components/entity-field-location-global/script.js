@@ -65,6 +65,10 @@ app.component('entity-field-location-global', {
         hasLinkedEntity() {
             return !!this.targetEntity;
         },
+
+        hasPublicLocation() {
+            return this.configs?.fieldType !== 'space-field';
+        },
     },
 
     watch: {

@@ -89,7 +89,7 @@ $this->breadcrumb = [
                         </template>
                         <template #content>
                             <div class="grid-12">
-                                <country-address-form :entity="entity" classes="col-12"></country-address-form>
+                                <country-address-form :entity="entity" class="col-12"></country-address-form>
                             </div>
                         </template>
                     </mc-card>

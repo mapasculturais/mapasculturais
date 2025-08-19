@@ -15,14 +15,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - **Certificação automática de proponentes** por meio de selos vinculados às fases dos editais, que são atribuídos conforme o proponente avança no processo — por exemplo, ao ser aprovado na análise documental, recebe um selo de "CPF verificado", e ao ser contemplado na fase final, ganha o selo "Fomento 2025".
 - **Autoaplicação das avaliações** - Quando todos os avaliadores de uma inscrição finalizam suas avaliações, o sistema processa automaticamente o resultado das avaliações e atualiza o status da inscrição dispensando qualquer ação manual pela equipe gestora.
 - **Formulários de inscrição por etapas** - agora é possível dividir o formulário de inscrição em etapas, organizando os campos em blocos sequenciais. A tela de inscrição foi redesenhada para essa nova estrutura, tornando o preenchimento mais claro e fluido para os proponentes.
-
-
 - **Nova interface de configuração das comissões de avaliação** que permite maior flexibilidade e controle na gestão das comissões de avaliação dos editais.
   - **Múltiplas comissões**: Agora é possível criar diversas comissões em um mesmo edital, cada uma com critérios próprios de distribuição das inscrições.
   - **Filtros no nível da comissão**: Os filtros (antes aplicados individualmente por avaliador) agora podem ser definidos na comissão, usando qualquer campo de seleção do formulário, além de categoria, tipo de proponente e faixa. (Continua possível aplicar subfiltros específicos por avaliador dentro da comissão.)
   - **Limite de avaliadores por inscrição**: Permite definir quantos avaliadores de uma comissão analisarão cada inscrição, facilitando editais com grande volume.
   - **Comissão de voto de minerva**: Nova instância que recebe inscrições com avaliações divergentes para desempate.
   - **Maior transparência no processo de distribuição**: Interface que exibe o progresso da distribuição das inscrições entre os avaliadores, especialmente útil em grandes editais.
+- **Configuração avançada de status das inscrições** - agora é possível configurar quais status de inscrições estarão ativos em cada fase do edital, além de customizar seus nomes para melhor se adequar a cada organização ou situação. 
+- **Internacionalização dos endereços** - para atender os distintos formatos de coleta de endereços existentes. Possibilidade de criação de componentes específicos para cada país.
 
 ### Melhorias e correções não funcionais
 - Novos tipos de metadados:
@@ -34,8 +34,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Nova estrutura para os testes automatizados 
 - Corrige função de tradução para que faça a leitura dos arquivos de tradução dos plugins
 - Operador IN para metadados de seleção múltipla
-- Corrige erro do fetchByStatus que impedia o carregamento das views das entidades
-  
+
 ## [7.5.60] - 2025-08-12
 ### Correções
 - Ajusta para que seja recriado o cache da inscrição quando usuário acessa a mesma

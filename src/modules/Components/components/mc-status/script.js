@@ -130,7 +130,6 @@ app.component('mc-status', {
                     classes.push('mc-status--success');
                     matched = true;
                 } else if(statusKey == 8) {
-                    console.log('staus =>', this.statusName);
                     classes.push('mc-status--warning');
                     matched = true;
                 } else if(statusKey == 3) {
