@@ -25,6 +25,7 @@ $this->import('
                 v-model:default-value="country"
                 @change-option="changeCountry"
                 placeholder="<?= i::__("País") ?>"
+                :has-public-location="hasPublicLocation"
                 show-filter>
             </mc-select>
             
@@ -36,7 +37,7 @@ $this->import('
                     v-if="country == 'BR'"
                     :entity="entity[fieldName]"
                     :hierarchy="levelHierarchy"
-                    has-public-location
+                    :has-public-location="hasPublicLocation"
                     class="col-12">
                 </entity-address-form-nacional>
     

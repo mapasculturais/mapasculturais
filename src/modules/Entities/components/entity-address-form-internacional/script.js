@@ -19,6 +19,7 @@ app.component('entity-address-form-internacional', {
             type: Boolean,
             default: false,
         },
+        hasPublicLocation: Boolean,
     },
 
     setup(props, { slots }) {
@@ -41,13 +42,6 @@ app.component('entity-address-form-internacional', {
     },
 
     computed: {
-        hasPublicLocation() {
-            // segue o padrão atual do projeto (controle por schema da entidade)
-
-            // verificar se o campo @ é pro agente ou espaço
-            return true;
-        },
-
         activeLevels() {
             // Ex.: { "1": true, "2": true, "3": false, ... } ou { "level1": true, ... }
             return $MAPAS.config.entityAddressFormInternacional.activeLevels;
