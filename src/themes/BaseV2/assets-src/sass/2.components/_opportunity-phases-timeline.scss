@@ -1,7 +1,7 @@
 @use '../0.settings/mixins' as *;
 
 .opportunity-phases-timeline {
-    &__box {
+    &__box:not(:empty) {
         display: grid;
         gap: size(8);
         border-radius: size(4);
