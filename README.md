@@ -17,20 +17,15 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Rede das Artes - https://rededasartes.cultura.gov.br/
 
 ### Instalações estaduais
-- Acre - https://mapadacultura.ac.gov.br/
 - Amapá - https://mapacultural.ap.gov.br/
 - Ceará - https://mapacultural.secult.ce.gov.br/
-- Distrito Federal - http://mapa.cultura.df.gov.br/
 - Espírito Santo - https://mapa.cultura.es.gov.br/
 - Goiás - https://mapagoiano.cultura.go.gov.br/
 - Maranhão - https://mapadacultura.ma.gov.br/
 - Mato Grosso - https://mapas.mt.gov.br/
-- Mato Grosso do Sul - https://www.mapacultural.ms.gov.br/
 - Pará - https://mapacultural.pa.gov.br/
-- Paraíba - http://pb.mapas.cultura.gov.br/
 - Pernambuco - https://www.mapacultural.pe.gov.br/
 - Piauí - https://www.mapadacultura.pi.gov.br/
-- Roraima - https://mapadacultura.rr.gov.br/
 - Tocantins - https://mapadacultura.secult.to.gov.br/
 
 ### Instalações municipais
@@ -68,6 +63,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Mapa Cultural AGIMOS - UFPel - https://mapacultural.ufpel.edu.br/
 - Mapa da Inovação do ES - https://mapa.inovacao.es.gov.br/
 - Balaio Cultural UFPR - https://mapadacultura.ufpr.br/
+- Periferia Viva - Ministério das Cidades - https://iniciativas-mapadasperiferias.cidades.gov.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
