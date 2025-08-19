@@ -42,11 +42,8 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Campos dos Goytacazes - https://mapasculturais.campos.rj.gov.br/
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Campinas - https://mapacultural.campinas.sp.gov.br/
-- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/ (CE)
-- Franco da Rocha - http://francodarocha.sp.mapas.cultura.gov.br/ (minc)
+- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
 - Gravataí - https://mapacultural.gravatai.rs.gov.br/
-- Guarulhos - http://grucultura.guarulhos.sp.gov.br/ (minc)
-- Ilheus - http://ilheus.ba.mapas.cultura.gov.br/ (minc)
 - Iguatu - http://mapacultural.iguatu.ce.gov.br/
 - João Pessoa - https://jpcultura.joaopessoa.pb.gov.br/
 - Lagoa Santa - https://mapacultural.lagoasanta.mg.gov.br/
@@ -55,8 +52,6 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Mauá - https://mapacultural.maua.sp.gov.br/
 - Natal - https://mapacultural.natal.rn.gov.br/
 - Nova Lima - https://mapacultural.novalima.mg.gov.br/
-- Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/ (minc)
-- Osasco - http://osasco.sp.mapas.cultura.gov.br/ (minc)
 - Parauapebas - https://mapacultural.parauapebas.pa.gov.br/
 - Petrolina - https://mapacultural.petrolina.pe.gov.br/
 - Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
@@ -65,10 +60,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - São Paulo - https://spcultura.prefeitura.sp.gov.br/
 - São Bernardo - https://mapacultural.saobernardo.sp.gov.br/
 - Sarandi - https://cultura.sarandi.pr.gov.br/
-- Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/ (minc)
-- Sobral - https://cultura.sobral.ce.gov.br/ (CE - fora do ar)
 - Toledo/PR - https://cultura.toledo.pr.gov.br/
-- Varzea Grande - http://varzeagrande.mt.mapas.cultura.gov.br/ (minc)
 
 ### Outras instalações
 - Floresta Ativista - https://rede.florestaativista.org/
