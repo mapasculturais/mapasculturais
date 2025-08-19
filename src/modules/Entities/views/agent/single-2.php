@@ -6,6 +6,7 @@ $this->layout = 'entity';
 
 $this->import('
     agent-data-2
+    country-address-view
     complaint-suggestion
     entity-actions
     entity-admins
@@ -48,7 +49,7 @@ $this->breadcrumb = [
                         <opportunity-list></opportunity-list>
                         <div class="grid-12">
                             <agent-data-2 :entity="entity"></agent-data-2>
-                            <entity-location :entity="entity" classes="col-12"></entity-location>
+                            <country-address-view v-if="entity.publicLocation" :entity="entity" class="col-12"></country-address-view>
                             <div v-if="entity.longDescription" class="col-12">
                                 <h2><?php i::_e('Descrição Detalhada'); ?></h2>
                                 <p class="description"  v-html="entity.longDescription"></p>

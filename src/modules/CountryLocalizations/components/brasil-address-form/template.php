@@ -26,7 +26,7 @@ $this->import('
             </label>
         </div>
 
-        <div class="col-12" v-if="editable">
+        <div class="col-12">
             <div class="grid-12">
                 <entity-field @change="address(); pesquisacep(entity.En_CEP);" classes="col-4 sm:col-12" :entity="entity" prop="En_CEP"></entity-field>
                 <entity-field @change="address()" classes="col-8 sm:col-12" :entity="entity" prop="En_Nome_Logradouro"></entity-field>
@@ -37,14 +37,14 @@ $this->import('
             </div>
         </div>
 
-        <div class="col-12" v-if="editable && !statesAndCitiesEnable">
+        <div class="col-12" v-if="!statesAndCitiesEnable">
             <div class="grid-12" v-if="!entity.En_Pais || entity.En_Pais == statesAndCitiesCountryCode">
                 <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Estado" label="<?php i::_e('Estado')?>"></entity-field>
                 <entity-field @change="address()" classes="col-6 sm:col-12" :entity="entity" prop="En_Municipio" label="<?php i::_e('Município')?>"></entity-field>
             </div>            
         </div>
 
-        <div class="col-12" v-if="editable && statesAndCitiesEnable">
+        <div class="col-12" v-if="statesAndCitiesEnable">
             <div class="grid-12" v-if="!entity.En_Pais || entity.En_Pais == statesAndCitiesCountryCode">
                 <div class="field col-6">
                     <label class="field__title">
@@ -88,7 +88,7 @@ $this->import('
             </div>
         </div>
 
-        <div class="col-12" v-if="editable && hasPublicLocation">
+        <div class="col-12" v-if="hasPublicLocation">
             <div class="col-6 sm:col-12 field public-location">
                 <entity-field  @change="address()" type="checkbox" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::esc_attr_e('Localização pública')?>">
                     <?php if($this->isEditable()): ?>
@@ -106,10 +106,10 @@ $this->import('
 
         <div v-if="verifiedAdress()" class="col-12">
             <p class="brasil-address-form__address">
-                <span v-if="entity.endereco">{{entity.endereco}}</span>
-                <span v-if="!entity.endereco"><?= i::_e("Sem Endereço"); ?></span>
+                <span v-if="showAddress()">{{showAddress()}}</span>
+                <span v-else><?= i::_e("Sem Endereço"); ?></span>
             </p>
-            <entity-map :entity="entity" :editable="editable"></entity-map>
+            <entity-map :entity="entity" editable></entity-map>
         </div>
 
         <?php $this->applyTemplateHook('brasil-address-form','end'); ?>
