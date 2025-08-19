@@ -17,20 +17,15 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Rede das Artes - https://rededasartes.cultura.gov.br/
 
 ### Instalações estaduais
-- Acre - https://mapadacultura.ac.gov.br/
 - Amapá - https://mapacultural.ap.gov.br/
 - Ceará - https://mapacultural.secult.ce.gov.br/
-- Distrito Federal - http://mapa.cultura.df.gov.br/
 - Espírito Santo - https://mapa.cultura.es.gov.br/
 - Goiás - https://mapagoiano.cultura.go.gov.br/
 - Maranhão - https://mapadacultura.ma.gov.br/
 - Mato Grosso - https://mapas.mt.gov.br/
-- Mato Grosso do Sul - https://www.mapacultural.ms.gov.br/
 - Pará - https://mapacultural.pa.gov.br/
-- Paraíba - http://pb.mapas.cultura.gov.br/
 - Pernambuco - https://www.mapacultural.pe.gov.br/
 - Piauí - https://www.mapadacultura.pi.gov.br/
-- Roraima - https://mapadacultura.rr.gov.br/
 - Tocantins - https://mapadacultura.secult.to.gov.br/
 
 ### Instalações municipais
@@ -42,11 +37,8 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Campos dos Goytacazes - https://mapasculturais.campos.rj.gov.br/
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Campinas - https://mapacultural.campinas.sp.gov.br/
-- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/ (CE)
-- Franco da Rocha - http://francodarocha.sp.mapas.cultura.gov.br/ (minc)
+- Chorozinho - https://mapacultural.chorozinho.ce.gov.br/
 - Gravataí - https://mapacultural.gravatai.rs.gov.br/
-- Guarulhos - http://grucultura.guarulhos.sp.gov.br/ (minc)
-- Ilheus - http://ilheus.ba.mapas.cultura.gov.br/ (minc)
 - Iguatu - http://mapacultural.iguatu.ce.gov.br/
 - João Pessoa - https://jpcultura.joaopessoa.pb.gov.br/
 - Lagoa Santa - https://mapacultural.lagoasanta.mg.gov.br/
@@ -55,8 +47,6 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Mauá - https://mapacultural.maua.sp.gov.br/
 - Natal - https://mapacultural.natal.rn.gov.br/
 - Nova Lima - https://mapacultural.novalima.mg.gov.br/
-- Novo Hamburgo - http://mapacultural.novohamburgo.rs.gov.br/ (minc)
-- Osasco - http://osasco.sp.mapas.cultura.gov.br/ (minc)
 - Parauapebas - https://mapacultural.parauapebas.pa.gov.br/
 - Petrolina - https://mapacultural.petrolina.pe.gov.br/
 - Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
@@ -65,10 +55,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - São Paulo - https://spcultura.prefeitura.sp.gov.br/
 - São Bernardo - https://mapacultural.saobernardo.sp.gov.br/
 - Sarandi - https://cultura.sarandi.pr.gov.br/
-- Senhor do Bonfim - http://senhordobonfim.ba.mapas.cultura.gov.br/ (minc)
-- Sobral - https://cultura.sobral.ce.gov.br/ (CE - fora do ar)
 - Toledo/PR - https://cultura.toledo.pr.gov.br/
-- Varzea Grande - http://varzeagrande.mt.mapas.cultura.gov.br/ (minc)
 
 ### Outras instalações
 - Floresta Ativista - https://rede.florestaativista.org/
@@ -76,6 +63,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Mapa Cultural AGIMOS - UFPel - https://mapacultural.ufpel.edu.br/
 - Mapa da Inovação do ES - https://mapa.inovacao.es.gov.br/
 - Balaio Cultural UFPR - https://mapadacultura.ufpr.br/
+- Periferia Viva - Ministério das Cidades - https://iniciativas-mapadasperiferias.cidades.gov.br/
 
 ## Sobre a aplicação
 Mapas Culturais é uma aplicação web server-side baseada em linguagem PHP e banco de dados Postgres, entre outras tecnologias e componentes, que propicia um ambiente virtual para mapeamento, divulgação e gestão de ativos culturais. 
