@@ -35,7 +35,7 @@ $this->import('
         <entity-field class="col-12" :entity="entity" prop="address_line1"></entity-field>
         <entity-field class="col-12" :entity="entity" prop="address_line2"></entity-field>
 
-        <div class="col-12" v-if="editable && hasPublicLocation">
+        <div class="col-12" v-if="hasPublicLocation">
             <div class="col-6 sm:col-12 field public-location">
                 <entity-field  @change="address()" type="checkbox" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::esc_attr_e('Localização pública')?>">
                     <?php if($this->isEditable()): ?>
@@ -53,10 +53,10 @@ $this->import('
         
         <div class="col-12">
             <p class="international-address-form__address">
-                <span v-if="entity.address">{{entity.address}}</span>
-                <span v-if="!entity.address"><?= i::_e("Sem Endereço"); ?></span>
+                <span v-if="showAddress()">{{showAddress()}}</span>
+                <span v-else><?= i::_e("Sem Endereço"); ?></span>
             </p>
-            <entity-map :entity="entity"></entity-map>
+            <entity-map :entity="entity" editable></entity-map>
         </div>
 
         <?php $this->applyTemplateHook('international-address-form','end'); ?>

@@ -18,14 +18,14 @@ $entity = $this->controller->requestedEntity;
                     <?php $this->part($evaluation_method->slug . '/evaluations-details') ?>
                 </div>
             <?php endforeach ?>
-
-            <div v-if="canShowAppeal && appealPhase && !appealRegistration" class="registration-results__request-appeal">
-                <button class="button button--primary" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
-            </div>
         </template>
 
         <template #button="modal">
             <button  class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
         </template>
     </mc-modal>
+
+    <div v-if="canShowAppeal" class="registration-results__request-appeal">
+        <button class="button button--primary" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
+    </div>
 </div>

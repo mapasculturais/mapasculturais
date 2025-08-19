@@ -45,7 +45,7 @@ $this->breadcrumb = [
                     <opportunity-list></opportunity-list>
                     <div class="grid-12 col-12">
                         <agent-data-1 :entity="entity"></agent-data-1>
-                        <country-address-view v-if="entity.publicLocation" :entity="entity" classes="col-12"></country-address-view>
+                        <country-address-view v-if="entity.publicLocation" :entity="entity" class="col-12"></country-address-view>
                         <div v-if="entity.longDescription" class="col-12">
                             <span>   
                                 <h3 class="single-1__description bold"><?php i::_e('Descrição Detalhada');?></h3>

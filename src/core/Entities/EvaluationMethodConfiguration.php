@@ -610,8 +610,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     }
 
     protected function canUser_control($user) {
-        
-        if ($this->opportunity->canUser('@control')) {
+        if ($this->opportunity && $this->opportunity->canUser('@control')) {
             return true;
         } else {
             return parent::canUser_control($user);

@@ -204,11 +204,11 @@ app.component('registration-status', {
                 return this.phase.appealPhase.statusLabels[status];
             }
 
-            if(status == 1) {
+            if(status == 0) {
                 return this.text('Não enviada');
             }
 
-            if(status == 0) {
+            if(status == 1) {
                 return this.text('Enviada');
             }
 
