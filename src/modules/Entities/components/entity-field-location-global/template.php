@@ -39,16 +39,6 @@ $this->import('
                     has-public-location
                     class="col-12">
                 </entity-address-form-nacional>
-    
-                <!-- <?php foreach ($localizations as $localization): ?>
-                    <<?= $localization->getFormComponentName() ?>
-                        v-if="country == 'BR'"
-                        :entity="entity[fieldName]"
-                        :hierarchy="levelHierarchy"
-                        class="col-12"
-                        editable>
-                    </<?= $localization->getFormComponentName() ?>>
-                <?php endforeach; ?> -->
 
                 <entity-address-form-internacional
                     v-else
@@ -58,15 +48,6 @@ $this->import('
                     has-public-location
                     class="col-12">
                 </entity-address-form-internacional>
-    
-                <!-- <international-address-form
-                    v-else
-                    :entity="entity[fieldName]"
-                    :country="country"
-                    :hierarchy="levelHierarchy"
-                    class="col-12"
-                    editable>
-                </international-address-form> -->
             </template>
         </div>
     </template>
