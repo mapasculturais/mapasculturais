@@ -16,10 +16,6 @@ app.component('international-address-view', {
             type: Entity,
             required: true
         },
-        editable: {
-            type: Boolean,
-            default: false,
-        },
         hideLabel: {
             type: Boolean,
             default: false,

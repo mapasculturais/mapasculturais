@@ -323,6 +323,13 @@ app.component('international-address-form', {
 
             return 'col-6';
         },
-
+        
+        showAddress() {
+            if(!this.entity.address && !this.entity.endereco) {
+                return false;
+            }
+            
+            return this.entity.address || this.entity.endereco;
+        },
     },
 });
