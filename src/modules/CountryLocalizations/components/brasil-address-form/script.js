@@ -12,10 +12,6 @@ app.component('brasil-address-form', {
             type: Object,
             default: () => null
         },
-        editable: {
-            type: Boolean,
-            default: false,
-        },
     },
 
     setup(props, { slots }) {
@@ -286,6 +282,13 @@ app.component('brasil-address-form', {
         },
         isRequired(field){
             return $DESCRIPTIONS[this.entity.__objectType][field].required;
-        }
+        },
+        showAddress() {
+            if(!this.entity.address && !this.entity.endereco) {
+                return false;
+            }
+            
+            return this.entity.address || this.entity.endereco;
+        },
     }
 });
