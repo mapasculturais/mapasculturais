@@ -91,67 +91,45 @@ A documentação pode ser navegada no endereço (http://docs.mapasculturais.org)
 Toda documentação da aplicação está na pasta [documentation](documentation). Principais referências: 
 - [API](http://docs.mapasculturais.org/apidoc/index.html?doctype=api)
 - [API - exemplos](documentation/docs/mc_config_api.md)
-- [Guia do desenvolvedor](documentation/docs/mc_developer_guide.md)
 - [Como contribuir](documentation/docs/mc_developer_contribute.md)
-- [Desenvolver um novo tema](documentation/docs/mc_developer_theme.md)
 - [Importação de arquivos de dados geoespaciais (Shapefiles)](documentation/docs/mc_deploy_shapefiles.md)
 - [Deploy diretamente no sistema operacional](https://docs.mapasculturais.org/mc_deploy/) - **NÃO RECOMENDADO**
-- [Habilitar um novo tema](documentation/docs/mc_deploy_theme.md)
 
 ### [Software] Requisitos para Instalação
 Lista dos principais softwares que compõe e aplicação. Maiores detalhes, ver documentação de [instalação](documentation/docs/mc_deploy.md) ou [guia do desenvolvedor](documentation/docs/mc_developer_guide.md). 
 
-- [Ubuntu Server >= 18.04](http://www.ubuntu.com) ou [Debian Server >= 10](https://www.debian.org.)
-- [PHP = 7.2](http://php.net)
-  - [php-gd](http://php.net/manual/pt_BR/book.image.php)
-  - [php-cli](https://packages.debian.org/pt-br/jessie/php5-cli)
-  - [php-json](http://php.net/manual/pt_BR/book.json.php)
-  - [php-curl](http://php.net/manual/pt_BR/book.curl.php)
-  - [php-pgsql](http://php.net/manual/pt_BR/book.pgsql.php)
-  - [php-apc](http://php.net/manual/pt_BR/book.apc.php)
+- [PHP = 8.3](http://php.net)
 - [Composer](https://getcomposer.org/)
-- [PostgreSQL >= 10](http://www.postgresql.org/)
+- [PostgreSQL >= 14](http://www.postgresql.org/)
 - [Postgis >= 2.2](http://postgis.net)
-- [Node.JS >= 8.x](https://nodejs.org/en/)
-  - [NPM](https://www.npmjs.com/)
-  - [Terser](https://terser.org/)
-  - [UglifyCSS](https://www.npmjs.com/package/gulp-uglifycss)
-- [Ruby](https://www.ruby-lang.org/pt)
-  - [Sass gem](https://rubygems.org/gems/sass/versions/3.4.22)
+- [Node.JS >= 20](https://nodejs.org/en/)
 
-### [Hardware] Requisitos para instalação
+## Hardware
 
-Para instalações de pequeno/medio porte nas quais o número de entidades, isto é, número de agentes, espaços, projetos e evento,giram em torno de 2000 ativos, recomenda-se o mínimo de recursos para um servidor (aplicação + base de dados):
+As estimativas abaixo podem variar de acordo com a velocidade dos cores, velocidade do disco, entre outros fatores, por isso recomenda-se que o sysadmin monitore o sistema para ajustar os recursos de acordo com a demanda.
 
-* 2 cores de CPU;
-* 2gb de RAM;
-* 50mbit de rede;
+Sobre o armazenamento deve-se considerar que a tendência é que o uso de espaço em disco cresça constantemente a medida que novos editais vão sendo cadastrados. A quantidade indicada nas tabelas abaixo são uma estimativa para o primeiro ano de uso da plataforma, mas deve ser monitorado e ajustado de acordo com a demanda.
 
-Desejável:
+### Instalações de pequeno porte (até 2.000 usuários ativos)
 
-*  4 cores de CPU;
-* 4gb de RAM;
-* 100mbit de rede;
+<table><thead><tr><th> </th><th width="150">CPUs</th><th width="150">RAM</th><th>Armazenamento</th></tr></thead><tbody><tr><td>mínimo</td><td>2</td><td>2GB</td><td>25GB SSD</td></tr><tr><td>recomendado</td><td>4</td><td>4GB</td><td>50GB SSD</td></tr><tr><td>durante grandes editais</td><td>6</td><td>6GB</td><td>50GB SSD</td></tr></tbody></table>
 
-Para instalações em cidades de grande porte onde o número de entidades, isto é, número de agentes, espaços, projetos e evento, giram em torno de dezenas de milhares de ativos de cada, recomenda-se o mínimo de recursos para um servidor:
+### Instalações de médio porte (entre 2.000 e 10.000 usuários ativos)
 
-* 4 cores de CPU
-* 4gb de RAM
-* 100mbit de rede
+<table><thead><tr><th> </th><th width="150">CPUs</th><th width="150">RAM</th><th>Armazenamento</th></tr></thead><tbody><tr><td>mínimo</td><td>4</td><td>4GB</td><td>50GB SSD</td></tr><tr><td>recomendado</td><td>6</td><td>6GB</td><td>75GB SSD</td></tr><tr><td>durante grandes editais</td><td>8</td><td>8GB</td><td>75GB SSD</td></tr></tbody></table>
 
-Recomendado:
-* 8 cores de CPU
-* 8gb de RAM
-* 500mbit de rede
+### Instalações de grante porte (acima de 10.000 usuários ativos)
+
+<table><thead><tr><th> </th><th width="150">CPUs</th><th width="150">RAM</th><th>Armazenamento</th></tr></thead><tbody><tr><td>mínimo</td><td>6</td><td>6GB</td><td>150GB SSD</td></tr><tr><td>recomendado</td><td>8</td><td>8GB</td><td>250GB SSD</td></tr><tr><td>durante grandes editais</td><td>16</td><td>16GB</td><td>250GB SSD</td></tr></tbody></table>
 
 Vale lembrar que os requisitos de hardware podem variar de acordo com a latência da rede, velocidade dos cores dos cpus, uso de proxies, entre outros fatores. Recomendamos aos sysadmin da rede em que a aplicação será instalada um monitoramento de tráfego e uso durante o período de 6 meses a 1 ano para avaliação de cenário de uso. 
 
 ## Canais de comunicação
 
 * Jitsi: https://meet.jit.si/MapasCulturais
-* Canal do Telegram: [![Join the chat at https://t.me/joinchat/WCYOkiRbAWmxQM2y](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/joinchat/WCYOkiRbAWmxQM2y)
+* Canal do Telegram: [![Join the chat at https://t.me/RedeMapas](https://patrolavia.github.io/telegram-badge/chat.png)](https://t.me/RedeMapas)
 
-###Regras do grupo do Telegram MAPAS CULTURAIS [DEV]
+### Regras do grupo do Telegram Mapas Culturais
 
 * Antes de postar, releia e analise se o conteúdo:
 Ofenda as pessoas do grupo;
@@ -162,8 +140,7 @@ Evite “ser chato”;
 Qualquer membro que se sentir ofendido por outro, poderá informar aos admins para análise do conteúdo
 Não faça publicidade e propagandas fora do tema Preferencialmente mande mensagem, mas audio não está proibido Nada de correntes: Repassar correntes é de muito mau gosto, até mesmo aquelas de “utilidade pública”. **Evite *
 
-* Atitutdes proibidas, com possibilidade de ser removido do grupo:
-
+#### Atitutdes proibidas, com possibilidade de ser removido do grupo:
 Fazer propaganda, sem a permissão dos moderadores;
 Envio de links de grupos sem a prévia autorização dos moderadores;
 Postar assuntos que não sejam pertinentes ao propósito do grupo;
