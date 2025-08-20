@@ -131,7 +131,7 @@ $this->import('
                         <label><?= i::esc_attr__('Etapa do fazer cultural') ?><span class="required">obrigatório*</span></label>
                         <select v-model="goal.culturalMakingStage">
                             <option value=""><?= i::esc_attr__('Selecione') ?></option>
-                            <option v-for="n in workplanFields.goal.culturalMakingStage.options" :key="n" :value="n">{{ n }}</option>
+                            <option v-for="n in workplanFields.goal?.culturalMakingStage?.options" :key="n" :value="n">{{ n }}</option>
                         </select>
                     </div>
 
