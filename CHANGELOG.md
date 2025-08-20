@@ -7,22 +7,24 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.6]
 ### Novas Funcionalidades
-- Novo **módulo de recursos** que permite que o gestor configure fases de recurso nos editais/oportunidades, possibilitando que proponentes contestem o resultado de fases específicas. É possível habilitar um formulário personalizado para a solicitação de recurso e definir uma comissão avaliadora responsável por analisar essas solicitações, garantindo mais transparência e formalização no processo dentro da plataforma.
-- Módulo **plano de metas** que permite ao gestor configurar um formulário, disponível já na fase de inscrição, para que os proponentes descrevam quais metas pretendem alcançar, prazos de execução e as entregas previstas para cada meta, garantindo maior clareza e detalhamento dos objetivos e compromissos dos projetos que estão submetendo.
-- Módulo de **monitoramento e prestação de contas** que permite ao gestor configurar fases de envio de informações para acompanhar o andamento das metas e entregas declaradas na inscrição (_plano de metas_) pelos proponentes contemplados. A última dessas fases é a prestação final de informações, ou prestação de contas, de preenchimento obrigatório para todos os contemplados.
-- **Documentos oficiais** - melhoria na interface de bloqueio de campos por selos verificadores de documento, como por exemplo um selo _GOV.br_ que valide os campos _CPF_, _Nome Completo_, _Telefone Privado_, exibindo ao lado do campo o ícone do selo e a data da validação do campo.
-- **Editais de fluxo contínuo**, onde as inscrições podem ficar abertas indefinidamente e os proponentes recebem os resultados conforme avançam nas fases (como análise técnica ou avaliação documental), sem depender de datas pré-fixadas para divulgação coletiva do resultado — ideal para programas de fomento contínuo ou ocupação de espaços culturais.
-- **Certificação automática de proponentes** por meio de selos vinculados às fases dos editais, que são atribuídos conforme o proponente avança no processo — por exemplo, ao ser aprovado na análise documental, recebe um selo de "CPF verificado", e ao ser contemplado na fase final, ganha o selo "Fomento 2025".
-- **Autoaplicação das avaliações** - Quando todos os avaliadores de uma inscrição finalizam suas avaliações, o sistema processa automaticamente o resultado das avaliações e atualiza o status da inscrição dispensando qualquer ação manual pela equipe gestora.
-- **Formulários de inscrição por etapas** - agora é possível dividir o formulário de inscrição em etapas, organizando os campos em blocos sequenciais. A tela de inscrição foi redesenhada para essa nova estrutura, tornando o preenchimento mais claro e fluido para os proponentes.
-- **Nova interface de configuração das comissões de avaliação** que permite maior flexibilidade e controle na gestão das comissões de avaliação dos editais.
+- Novo **módulo de recursos**[(1)](#hl-funpar) que permite que o gestor configure fases de recurso nos editais/oportunidades, possibilitando que proponentes contestem o resultado de fases específicas. É possível habilitar um formulário personalizado para a solicitação de recurso e definir uma comissão avaliadora responsável por analisar essas solicitações, garantindo mais transparência e formalização no processo dentro da plataforma.
+- Módulo **plano de metas**[(2)](#ufpr) que permite ao gestor configurar um formulário, disponível já na fase de inscrição, para que os proponentes descrevam quais metas pretendem alcançar, prazos de execução e as entregas previstas para cada meta, garantindo maior clareza e detalhamento dos objetivos e compromissos dos projetos que estão submetendo.
+- **Modelos de oportunidades**[(2)](#ufpr) - Funcionalidade que permite o salvamento de oportunidades já configuradas como modelos que podem ser utilizados para a criação de oportunidades já pré-configuradas.
+- **Duplicação de oportunidades**[(2)](#ufpr) - Funcionalidade que permite a criar uma cópia de uma outra oportunidade já inteiramente configurada.
+- Módulo de **monitoramento e prestação de contas**[(1)](#hl-funpar) que permite ao gestor configurar fases de envio de informações para acompanhar o andamento das metas e entregas declaradas na inscrição (_plano de metas_) pelos proponentes contemplados. A última dessas fases é a prestação final de informações, ou prestação de contas, de preenchimento obrigatório para todos os contemplados. (1)
+- **Documentos oficiais**[(1)](#hl-funpar) - melhoria na interface de bloqueio de campos por selos verificadores de documento, como por exemplo um selo _GOV.br_ que valide os campos _CPF_, _Nome Completo_, _Telefone Privado_, exibindo ao lado do campo o ícone do selo e a data da validação do campo. (1)
+- **Editais de fluxo contínuo**[(3)](#hl-scdc), onde as inscrições podem ficar abertas indefinidamente e os proponentes recebem os resultados conforme avançam nas fases (como análise técnica ou avaliação documental), sem depender de datas pré-fixadas para divulgação coletiva do resultado — ideal para programas de fomento contínuo ou ocupação de espaços culturais.
+- **Certificação automática de proponentes**[(3)](#hl-scdc) por meio de selos vinculados às fases dos editais, que são atribuídos conforme o proponente avança no processo — por exemplo, ao ser aprovado na análise documental, recebe um selo de "CPF verificado", e ao ser contemplado na fase final, ganha o selo "Fomento 2025".
+- **Autoaplicação das avaliações**[(3)](#hl-scdc) - Quando todos os avaliadores de uma inscrição finalizam suas avaliações, o sistema processa automaticamente o resultado das avaliações e atualiza o status da inscrição dispensando qualquer ação manual pela equipe gestora.
+- **Formulários de inscrição por etapas**[(3)](#hl-scdc) - agora é possível dividir o formulário de inscrição em etapas, organizando os campos em blocos sequenciais. A tela de inscrição foi redesenhada para essa nova estrutura, tornando o preenchimento mais claro e fluido para os proponentes.
+- **Nova interface de configuração das comissões de avaliação**[(3)](#hl-scdc) que permite maior flexibilidade e controle na gestão das comissões de avaliação dos editais.
   - **Múltiplas comissões**: Agora é possível criar diversas comissões em um mesmo edital, cada uma com critérios próprios de distribuição das inscrições.
   - **Filtros no nível da comissão**: Os filtros (antes aplicados individualmente por avaliador) agora podem ser definidos na comissão, usando qualquer campo de seleção do formulário, além de categoria, tipo de proponente e faixa. (Continua possível aplicar subfiltros específicos por avaliador dentro da comissão.)
   - **Limite de avaliadores por inscrição**: Permite definir quantos avaliadores de uma comissão analisarão cada inscrição, facilitando editais com grande volume.
   - **Comissão de voto de minerva**: Nova instância que recebe inscrições com avaliações divergentes para desempate.
   - **Maior transparência no processo de distribuição**: Interface que exibe o progresso da distribuição das inscrições entre os avaliadores, especialmente útil em grandes editais.
-- **Configuração avançada de status das inscrições** - agora é possível configurar quais status de inscrições estarão ativos em cada fase do edital, além de customizar seus nomes para melhor se adequar a cada organização ou situação. 
-- **Internacionalização dos endereços** - para atender os distintos formatos de coleta de endereços existentes. Possibilidade de criação de componentes específicos para cada país.
+- **Configuração avançada de status das inscrições**[(4)](#hl-secultpe) - agora é possível configurar quais status de inscrições estarão ativos em cada fase do edital, além de customizar seus nomes para melhor se adequar a cada organização ou situação. 
+- **Internacionalização dos endereços**[(5)](#hl-ibercultura) - para atender os distintos formatos de coleta de endereços existentes. Possibilidade de criação de componentes específicos para cada país.
 
 ### Melhorias e correções não funcionais
 - Novos tipos de metadados:
@@ -34,6 +36,13 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Nova estrutura para os testes automatizados 
 - Corrige função de tradução para que faça a leitura dos arquivos de tradução dos plugins
 - Operador IN para metadados de seleção múltipla
+
+### Créditos
+1. <small name="hl-funpar">Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a FUNPAR, referente à execução do TED Mapas MinC</small>
+2. <small name="ufpr">Funcionalidade desenvolvida pela UFPR, por meio TED Mapas MinC com colaboração da hacklab/</small>
+3. <small name="hl-scdc">Funcionalidade desenvolvida pela hacklab/ por meio de cooperação com a SCDC</small>
+4. <small name="hl-secultpe">Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a SECULT/PE</small>
+5. <small name="hl-ibercultura">Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
 
 ## [7.5.60] - 2025-08-12
 ### Correções
