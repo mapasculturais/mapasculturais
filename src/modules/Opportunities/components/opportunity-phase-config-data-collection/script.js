@@ -94,6 +94,10 @@ app.component('opportunity-phase-config-data-collection' , {
                 return this.text('confirma exclusao de fase');
             }
         },
+
+        seals() {
+            return $MAPAS.config?.opportunityPhaseConfigDataCollection?.seals;
+        },
     },
 
     methods: {
