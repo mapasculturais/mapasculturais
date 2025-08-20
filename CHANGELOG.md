@@ -38,11 +38,16 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Operador IN para metadados de seleção múltipla
 
 ### Créditos
-1. <small id="hl-funpar">Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a FUNPAR, referente à execução do TED Mapas MinC</small>
-2. <small id="ufpr">Funcionalidade desenvolvida pela UFPR, por meio TED Mapas MinC com colaboração da hacklab/</small>
-3. <small id="hl-scdc">Funcionalidade desenvolvida pela hacklab/ por meio de cooperação com a SCDC</small>
-4. <small id="hl-secultpe">Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a SECULT/PE</small>
-5. <small id="hl-ibercultura">Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
+<a name="hl-funpar"></a>
+1. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a FUNPAR, referente à execução do TED Mapas MinC</small>
+<a name="ufpr"></a>
+2. <small>Funcionalidade desenvolvida pela UFPR, por meio TED Mapas MinC com colaboração da hacklab/</small>
+<a name="hl-scdc"></a>
+3. <small>Funcionalidade desenvolvida pela hacklab/ por meio de cooperação com a SCDC</small>
+<a name="hl-secultpe"></a>
+4. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a SECULT/PE</small>
+<a name="hl-ibercultura"></a>
+5. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
 
 ## [7.5.60] - 2025-08-12
 ### Correções
