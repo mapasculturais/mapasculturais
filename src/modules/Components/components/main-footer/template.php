@@ -43,7 +43,7 @@ $config = $app->config['social-media'];
                 </li>
                 <li v-if="global.enabledEntities.opportunities">
                     <a href="<?= $app->createUrl('search', 'opportunities') ?>">
-                        <mc-icon name="opportunity"></mc-icon> <?php i::_e('editais e oportunidades'); ?>
+                        <mc-icon name="opportunity"></mc-icon> <?= $this->text('main-footer', i::__('editais e oportunidade')); ?>
                     </a>
                 </li>
                 <li v-if="global.enabledEntities.events">
