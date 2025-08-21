@@ -136,7 +136,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     protected $_attorneyProcurations;
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
     */
     protected $__metadata;
 

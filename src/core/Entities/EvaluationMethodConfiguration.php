@@ -103,7 +103,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     protected $__agentRelations;
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
      */
     protected $__metadata;
 
