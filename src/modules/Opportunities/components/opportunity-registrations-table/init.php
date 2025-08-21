@@ -95,6 +95,28 @@ foreach ($definitions as $field => $def) {
         ];
         $default_headers[] = $header;
     }
+
+    if(isset($def['type']) && $def['type'] == 'location' && $can_see($def)) {
+        $field_id = str_replace('field_', '', $field);
+
+        $level_labels = $app->config['address.defaultLevelsLabels'];
+        $state_label = $level_labels[2];
+        $city_label = $level_labels[4];
+
+        $header_state = [
+            'text' => "#{$field_id} - {$state_label}",
+            'value' => "{$field}.address_level2",
+            'slug' => $field
+        ];
+        $default_headers[] = $header_state;
+
+        $header_city = [
+            'text' => "#{$field_id} - {$city_label}",
+            'value' => "{$field}.address_level4",
+            'slug' => $field
+        ];
+        $default_headers[] = $header_city;
+    }
 }
 
 // Função para separar campos no select
