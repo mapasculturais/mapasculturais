@@ -247,7 +247,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $evaluationMethodConfiguration;
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
     */
     protected $__metadata;
 

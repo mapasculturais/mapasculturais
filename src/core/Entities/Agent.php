@@ -210,7 +210,7 @@ class Agent extends \MapasCulturais\Entity
 
 
     /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\AgentMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
     */
     protected $__metadata;
 

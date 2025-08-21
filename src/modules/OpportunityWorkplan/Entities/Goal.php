@@ -59,7 +59,7 @@ class Goal extends \MapasCulturais\Entity {
     protected $deliveries;
 
     /**
-    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\GoalMeta::class, mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true)
+    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\GoalMeta::class, mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
     */
     protected $__metadata;
 
