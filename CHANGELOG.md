@@ -5,7 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [7.6]
+## [unreleased]
+### Melhorias
+- Muda o fetch mode da relação __metada para EAGER
+
+## [7.6.0] - 2025-08-20
 ### Novas Funcionalidades
 - Novo **módulo de recursos**[(1)](#hl-funpar) que permite que o gestor configure fases de recurso nos editais/oportunidades, possibilitando que proponentes contestem o resultado de fases específicas. É possível habilitar um formulário personalizado para a solicitação de recurso e definir uma comissão avaliadora responsável por analisar essas solicitações, garantindo mais transparência e formalização no processo dentro da plataforma.
 - Módulo **plano de metas**[(2)](#ufpr) que permite ao gestor configurar um formulário, disponível já na fase de inscrição, para que os proponentes descrevam quais metas pretendem alcançar, prazos de execução e as entregas previstas para cada meta, garantindo maior clareza e detalhamento dos objetivos e compromissos dos projetos que estão submetendo.
