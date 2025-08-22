@@ -8,6 +8,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Melhorias
 - Muda o fetch mode da relação __metada para EAGER
+- Tradução para o inglês (wip)
+- Verificação da existência de um metadado com a mesma chave antes de salvar o metadado
 
 ## [7.6.0] - 2025-08-20
 ### Novas Funcionalidades
