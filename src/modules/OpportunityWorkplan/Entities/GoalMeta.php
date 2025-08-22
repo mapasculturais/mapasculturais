@@ -13,27 +13,13 @@ use MapasCulturais\App;
  * @ORM\Entity
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
-class GoalMeta extends \MapasCulturais\Entity {
+class GoalMeta extends \MapasCulturais\EntityMetadata {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     public $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="key", type="string", nullable=false)
-     */
-    public $key;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="text", nullable=true)
-     */
-    protected $value;
 
     /**
      * @var \OpportunityWorkplan\Entities\Goal
