@@ -31,6 +31,14 @@ app.component('mc-tag-list', {
         }
     },
 
+    computed: {
+        validTags() {
+            const tagsArray = Array.isArray(this.tags) ? this.tags : [];
+            
+            return tagsArray.filter(tag => tag && tag.trim() !== '');
+        }
+    },
+
     methods: {
         remove(tag) {
             const tags = this.tags;

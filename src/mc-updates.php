@@ -479,10 +479,10 @@ return [
             $conn = $app->em->getConnection();
             if($data = $conn->fetchAll("SELECT value from agent_meta WHERE object_id = {$agent->id} AND key = 'pessoaDeficiente'")) {
                 $_result = [""];
-                $value = json_decode($data[0]['value']);
+                $value = json_decode($data[0]['value'],true);
                 $modify = false;
                 if(is_array($value)) {
-                    $_result = $ajust_array_value($value);
+                    $_result = $ajust_array_value(array_values($value));
                     $modify = true;
                 }else {
                     $_value = explode(";", $value);
