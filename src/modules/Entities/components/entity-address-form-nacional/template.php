@@ -109,7 +109,7 @@ $this->import('
                     <label class="field__checkbox">
                         <input type="checkbox" v-model="entity.publicLocation" />
                         <span>
-                            <?= i::__('Localização pública') ?>
+                            <?= $this->text('public-location_adress', i::__('Localização pública'))?>
                             <?php $this->info('cadastro -> configuracoes-entidades -> localizacao-publica') ?>
                         </span>
                     </label>

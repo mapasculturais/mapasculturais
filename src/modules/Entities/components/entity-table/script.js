@@ -512,6 +512,9 @@ app.component('entity-table', {
                             }
 
                             break;
+                        case 'location':
+                            val = val?.address ? val.address : val?.endereco ? val.endereco : null;
+                            break;
                         case 'boolean':
                             if(prop == "publicLocation") {
                                 val = val ? this.text('sim') : this.text('nao')
