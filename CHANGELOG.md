@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Melhorias
 - Muda o fetch mode da relação __metada para EAGER
+- Aplicação de função `text` em textos do rodapé, permitindo a manipulação e personalização por meio de temas e plugins.
 
 ## [7.6.0] - 2025-08-20
 ### Novas Funcionalidades
