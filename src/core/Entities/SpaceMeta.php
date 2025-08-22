@@ -19,7 +19,7 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
-class SpaceMeta extends \MapasCulturais\Entity {
+class SpaceMeta extends \MapasCulturais\EntityMetadata {
 
     /**
      * @var integer
@@ -30,20 +30,6 @@ class SpaceMeta extends \MapasCulturais\Entity {
      * @ORM\SequenceGenerator(sequenceName="space_meta_id_seq", allocationSize=1, initialValue=1)
      */
     public $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="key", type="string", nullable=false)
-     */
-    protected $key;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="text", nullable=true)
-     */
-    protected $value;
 
     /**
      * @var \MapasCulturais\Entities\Space
