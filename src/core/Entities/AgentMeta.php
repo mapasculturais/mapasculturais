@@ -19,7 +19,7 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
-class AgentMeta extends \MapasCulturais\Entity {
+class AgentMeta extends \MapasCulturais\EntityMetadata {
     /**
      * @var integer
      *
@@ -29,20 +29,6 @@ class AgentMeta extends \MapasCulturais\Entity {
      * @ORM\SequenceGenerator(sequenceName="agent_meta_id_seq", allocationSize=1, initialValue=1)
      */
     public $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="key", type="string", nullable=false)
-     */
-    public $key;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="text", nullable=true)
-     */
-    protected $value;
 
     /**
      * @var \MapasCulturais\Entities\Agent

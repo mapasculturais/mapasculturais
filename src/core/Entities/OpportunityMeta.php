@@ -17,7 +17,7 @@ use MapasCulturais\App;
  * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  * @ORM\HasLifecycleCallbacks
  */
-class OpportunityMeta extends \MapasCulturais\Entity {
+class OpportunityMeta extends \MapasCulturais\EntityMetadata {
     /**
      * @var integer
      *
@@ -27,28 +27,6 @@ class OpportunityMeta extends \MapasCulturais\Entity {
      * @ORM\SequenceGenerator(sequenceName="opportunity_meta_id_seq", allocationSize=1, initialValue=1)
      */
     public $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="key", type="string", nullable=false)
-     */
-    public $key;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="text", nullable=true)
-     */
-    protected $value;
-
-    public function getValue() {
-        return $this->value;
-    }
-
-    public function setValue($value) {
-        $this->value = $value;
-    }
 
     /**
      * @var \MapasCulturais\Entities\Opportunity

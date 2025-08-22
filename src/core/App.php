@@ -701,6 +701,8 @@ class App {
         $this->rcache = new Cache($rcache_adapter);
     }
 
+    protected \Doctrine\ORM\Configuration $doctrineConfiguration;
+
     /**
      * Inicializa o Doctrine
      * 
@@ -717,8 +719,6 @@ class App {
             isDevMode: (bool) $this->config['doctrine.isDev'],
             cache: $this->cache->adapter
         );
-
-        
 
         // tells the doctrine to ignore hook annotation.
         AnnotationReader::addGlobalIgnoredName('hook');
@@ -769,20 +769,6 @@ class App {
         $doctrine_config->setResultCache($this->mscache->adapter);
 
         $doctrine_config->setAutoGenerateProxyClasses(\Doctrine\Common\Proxy\AbstractProxyFactory::AUTOGENERATE_FILE_NOT_EXISTS);
-        
-        // obtaining the entity manager
-        $connection = DriverManager::getConnection([
-            'driver' => 'pdo_pgsql',
-            'dbname' => $this->config['db.dbname'],
-            'user' => $this->config['db.user'],
-            'password' => $this->config['db.password'],
-            'host' => $this->config['db.host'],
-            'wrapperClass' => Connection::class
-        ], $doctrine_config);
-        
-        
-        // obtaining the entity manager
-        $this->em = new EntityManager($connection, $doctrine_config);
 
         DoctrineMappings\Types\Frequency::register();
         DoctrineMappings\Types\Point::register();
@@ -794,7 +780,23 @@ class App {
             DoctrineEnumTypes\PermissionAction::getTypeName() => DoctrineEnumTypes\PermissionAction::class
         ]);
 
-        $platform = $this->em->getConnection()->getDatabasePlatform();
+        $this->doctrineConfiguration = $doctrine_config;
+
+        $this->initEntityManager();
+    }
+
+    public function initEntityManager() {
+        // obtaining the entity manager
+        $connection = DriverManager::getConnection([
+            'driver' => 'pdo_pgsql',
+            'dbname' => $this->config['db.dbname'],
+            'user' => $this->config['db.user'],
+            'password' => $this->config['db.password'],
+            'host' => $this->config['db.host'],
+            'wrapperClass' => Connection::class
+        ], $this->doctrineConfiguration);
+
+        $platform = $connection->getDatabasePlatform();
 
         $platform->registerDoctrineTypeMapping('_text', 'text');
         $platform->registerDoctrineTypeMapping('point', 'point');
@@ -802,6 +804,9 @@ class App {
         $platform->registerDoctrineTypeMapping('geometry', 'geometry');
         $platform->registerDoctrineTypeMapping('object_type', 'object_type');
         $platform->registerDoctrineTypeMapping('permission_action', 'permission_action');
+        
+        // obtaining the entity manager
+        $this->em = new EntityManager($connection, $this->doctrineConfiguration);
     }
 
     /**
