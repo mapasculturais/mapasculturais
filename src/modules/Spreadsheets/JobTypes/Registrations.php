@@ -216,8 +216,10 @@ class Registrations extends SpreadsheetJob
                         }
 
                         if($entity_type_field['ft'] == '@location') {
-                            $entity['UF'] = $entity[$field->fieldName] ? $entity[$field->fieldName]->En_Estado : null;
-                            $entity['Municipio'] = $entity[$field->fieldName] ? $entity[$field->fieldName]->En_Municipio : null;
+                            $location = $entity[$field->fieldName] ?? null;
+                            
+                            $entity['UF'] = $location->address_level2 ?: $location->En_Estado ?: null;
+                            $entity['Municipio'] = $location->address_level4 ?: $location->En_Municipio ?: null;
                             unset($entity[$field->fieldName]);
                         }
 
@@ -449,6 +451,11 @@ class Registrations extends SpreadsheetJob
             if($def->config['type'] == 'persons') {
                 $result['status'] = true;
                 $result['ft'] = 'persons';
+            }
+
+            if($def->config['type'] == 'location') {
+                $result['status'] = true;
+                $result['ft'] = '@location';
             }
         }
 

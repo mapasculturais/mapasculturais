@@ -85,7 +85,7 @@ $this->import('
 
     <div class="col-12" v-if="editable && hasPublicLocation">
         <div class="col-6 sm:col-12 public-location">
-            <entity-field  @change="address()" type="checkbox" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="<?php i::esc_attr_e('Localização pública')?>">
+            <entity-field  @change="address()" type="checkbox" classes="public-location__field col-6" :entity="entity" prop="publicLocation" label="  <?= $this->text('Public-location', i::__('Localização pública')) ?>">
                 <?php if($this->isEditable()): ?>
                     <template #info>
                         <?php $this->info('cadastro -> configuracoes-entidades -> localizacao-publica') ?>
