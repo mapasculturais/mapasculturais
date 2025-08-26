@@ -356,7 +356,7 @@ return array(
                 }
             },
             'unserialize' => function($value){
-                return $value ? true : false;
+                return $value == '1' ? true : false;
             },
             'available_for_opportunities' => true
         ),
