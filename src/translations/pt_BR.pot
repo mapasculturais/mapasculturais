@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mapas\n"
-"POT-Creation-Date: 2025-08-20 19:20-0300\n"
+"POT-Creation-Date: 2025-08-25 10:09-0300\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Hacklab\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.2.2\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__;i::__\n"
+"X-Poedit-KeywordsList: _e;__;esc_attr_e;esc_attr__;i::__;i::_e\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
@@ -821,7 +821,7 @@ msgstr ""
 msgid "Estado"
 msgstr ""
 
-#: conf/agent-types.php:575 modules/CountryLocalizations/Module.php:51
+#: conf/agent-types.php:575 modules/CountryLocalizations/Module.php:56
 #: modules/CountryLocalizations/components/brasil-address-form/template.php:36
 #: modules/CountryLocalizations/components/country-address-form/template.php:20
 #: modules/CountryLocalizations/components/country-address-form/template.php:25
@@ -2033,7 +2033,7 @@ msgstr ""
 msgid "O número de documento informado é inválido."
 msgstr ""
 
-#: conf/space-types.php:274 modules/Entities/views/agent/edit-2.php:97
+#: conf/space-types.php:274 modules/Entities/views/agent/edit-2.php:98
 msgid "Razão Social"
 msgstr ""
 
@@ -2146,7 +2146,7 @@ msgstr ""
 #: conf/subsite-types.php:60
 #: modules/Entities/components/agent-table/init.php:45
 #: modules/Entities/components/agent-table/texts.php:8
-#: modules/Entities/views/agent/edit-2.php:80
+#: modules/Entities/views/agent/edit-2.php:81
 #: modules/Entities/views/space/edit.php:80
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-collective-field-config.php:11
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/agent-owner-field-config.php:11
@@ -6476,7 +6476,7 @@ msgstr ""
 #: modules/Entities/components/project-table/texts.php:9
 #: modules/Entities/components/space-table/texts.php:10
 #: modules/Entities/views/agent/single-1.php:92
-#: modules/Entities/views/agent/single-2.php:89
+#: modules/Entities/views/agent/single-2.php:90
 #: modules/Entities/views/event/edit.php:143
 #: modules/Entities/views/event/single.php:74
 #: modules/Entities/views/project/edit.php:133
@@ -6561,7 +6561,7 @@ msgstr ""
 #: core/ApiOutputs/Html.php:131
 #: modules/Entities/components/entity-owner/texts.php:5
 #: modules/Entities/views/agent/single-1.php:104
-#: modules/Entities/views/agent/single-2.php:101
+#: modules/Entities/views/agent/single-2.php:102
 #: modules/Entities/views/event/edit.php:145
 #: modules/Entities/views/event/single.php:70
 #: modules/Entities/views/project/edit.php:135
@@ -6792,11 +6792,11 @@ msgstr ""
 #: modules/BaseV1EmbedTools/layouts/parts/evaluations-evaluator-table.php:36
 #: modules/BaseV1EmbedTools/layouts/parts/registration--manager.php:61
 #: modules/Entities/views/agent/edit-1.php:35
-#: modules/Entities/views/agent/edit-2.php:33
+#: modules/Entities/views/agent/edit-2.php:34
 #: modules/Entities/views/agent/single-1.php:30
 #: modules/Entities/views/agent/single-1.php:63
-#: modules/Entities/views/agent/single-2.php:32
-#: modules/Entities/views/agent/single-2.php:64
+#: modules/Entities/views/agent/single-2.php:33
+#: modules/Entities/views/agent/single-2.php:65
 #: modules/Home/components/home-entities/template.php:109
 #: modules/Home/components/home-feature/template.php:53
 #: modules/Panel/components/panel--entities-summary/template.php:24
@@ -6925,7 +6925,7 @@ msgid "Com avaliações iniciadas"
 msgstr ""
 
 #: core/Entities/Event.php:219 modules/Entities/views/agent/single-1.php:62
-#: modules/Entities/views/agent/single-2.php:63
+#: modules/Entities/views/agent/single-2.php:64
 #: modules/Entities/views/event/edit.php:36
 #: modules/Entities/views/event/single.php:32
 #: modules/Home/components/home-entities/template.php:59
@@ -7318,7 +7318,7 @@ msgid "Aprovados"
 msgstr ""
 
 #: core/Entities/Project.php:218 modules/Entities/views/agent/single-1.php:64
-#: modules/Entities/views/agent/single-2.php:65
+#: modules/Entities/views/agent/single-2.php:66
 #: modules/Entities/views/project/edit.php:35
 #: modules/Entities/views/project/single.php:33
 #: modules/Home/components/home-entities/template.php:134
@@ -7543,7 +7543,7 @@ msgid "<b>Data de Criação</b>"
 msgstr ""
 
 #: core/Entities/Space.php:250 modules/Entities/views/agent/single-1.php:61
-#: modules/Entities/views/agent/single-2.php:62
+#: modules/Entities/views/agent/single-2.php:63
 #: modules/Entities/views/space/single.php:33
 #: modules/Home/components/home-entities/template.php:84
 #: modules/Home/components/home-feature/template.php:76
@@ -8896,7 +8896,7 @@ msgstr ""
 
 #: modules/Components/components/main-footer/template.php:73
 #: modules/Entities/views/agent/edit-1.php:37
-#: modules/Entities/views/agent/edit-2.php:35
+#: modules/Entities/views/agent/edit-2.php:36
 #: modules/Entities/views/event/edit.php:38
 #: modules/Entities/views/event/single.php:34
 #: modules/Entities/views/project/edit.php:37
@@ -8924,9 +8924,9 @@ msgstr ""
 
 #: modules/Components/components/main-footer/template.php:82
 #: modules/Entities/views/agent/edit-1.php:35
-#: modules/Entities/views/agent/edit-2.php:33
+#: modules/Entities/views/agent/edit-2.php:34
 #: modules/Entities/views/agent/single-1.php:30
-#: modules/Entities/views/agent/single-2.php:32
+#: modules/Entities/views/agent/single-2.php:33
 #: modules/Panel/views/panel/agents.php:19 themes/BaseV1/Theme.php:424
 #: themes/BaseV1/Theme.php:425 themes/BaseV1/views/panel/agents.php:19
 msgid "Meus agentes"
@@ -9253,7 +9253,7 @@ msgstr ""
 #: modules/CountryLocalizations/components/brasil-address-view/template.php:28
 #: modules/CountryLocalizations/components/international-address-form/template.php:57
 #: modules/CountryLocalizations/components/international-address-view/template.php:28
-#: modules/Entities/components/entity-address-form-internacional/template.php:128
+#: modules/Entities/components/entity-address-form-internacional/template.php:123
 #: modules/Entities/components/entity-address-form-nacional/template.php:127
 #: modules/Entities/components/entity-location/template.php:101
 msgid "Sem Endereço"
@@ -9327,7 +9327,7 @@ msgstr ""
 #: modules/Components/components/mc-relation-card/template.php:37
 #: modules/Entities/views/agent/edit-1.php:75
 #: modules/Entities/views/agent/single-1.php:72
-#: modules/Entities/views/agent/single-2.php:73
+#: modules/Entities/views/agent/single-2.php:74
 #: modules/Entities/views/space/single.php:83
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:25
 #: modules/RegistrationFieldTypes/layouts/parts/registration-field-types/persons-config.php:45
@@ -9682,6 +9682,7 @@ msgid "Email:"
 msgstr ""
 
 #: modules/CountryLocalizations/BrasilLocalization.php:21
+#: modules/CountryLocalizations/countries.php:35
 msgid "Brasil"
 msgstr ""
 
@@ -9695,21 +9696,21 @@ msgid ""
 "fornecido"
 msgstr ""
 
-#: modules/CountryLocalizations/Module.php:49
+#: modules/CountryLocalizations/Module.php:54
 msgid "Endereço completo"
 msgstr ""
 
-#: modules/CountryLocalizations/Module.php:50
+#: modules/CountryLocalizations/Module.php:55
 #: modules/Entities/components/entity-address-form-internacional/template.php:23
 #: modules/Entities/components/entity-address-form-internacional/template.php:29
 msgid "Código postal"
 msgstr ""
 
-#: modules/CountryLocalizations/Module.php:52
+#: modules/CountryLocalizations/Module.php:57
 msgid "Endereço linha 1"
 msgstr ""
 
-#: modules/CountryLocalizations/Module.php:53
+#: modules/CountryLocalizations/Module.php:58
 msgid "Endereço linha 2"
 msgstr ""
 
@@ -9773,7 +9774,7 @@ msgstr ""
 
 #: modules/CountryLocalizations/components/brasil-address-form/template.php:93
 #: modules/CountryLocalizations/components/international-address-form/template.php:40
-#: modules/Entities/components/entity-address-form-internacional/template.php:109
+#: modules/Entities/components/entity-address-form-internacional/template.php:107
 #: modules/Entities/components/entity-address-form-nacional/template.php:112
 #: modules/Entities/components/entity-location/template.php:88
 msgid "Localização pública"
@@ -9781,7 +9782,7 @@ msgstr ""
 
 #: modules/CountryLocalizations/components/brasil-address-form/template.php:102
 #: modules/CountryLocalizations/components/international-address-form/template.php:49
-#: modules/Entities/components/entity-address-form-internacional/template.php:119
+#: modules/Entities/components/entity-address-form-internacional/template.php:114
 #: modules/Entities/components/entity-address-form-nacional/template.php:119
 #: modules/Entities/components/entity-location/template.php:95
 msgid ""
@@ -9796,9 +9797,1029 @@ msgid "Este endereço pode ficar público na plataforma?"
 msgstr ""
 
 #: modules/CountryLocalizations/components/country-address-form/template.php:30
-#: modules/Entities/components/entity-field-location-global/template.php:31
+#: modules/Entities/components/entity-field-location-global/template.php:32
 #: modules/EventImporter/components/event-importer-upload/template.php:39
 msgid "Carregando"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:6
+msgid "Afeganistão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:7
+msgid "África do Sul"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:8
+msgid "Albânia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:9
+msgid "Alemanha"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:10
+msgid "Andorra"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:11
+msgid "Angola"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:12
+msgid "Anguilla"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:13
+msgid "Antártida"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:14
+msgid "Antígua e Barbuda"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:15
+msgid "Arábia Saudita"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:16
+msgid "Argélia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:17
+msgid "Argentina"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:18
+msgid "Armênia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:19
+msgid "Aruba"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:20
+msgid "Austrália"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:21
+msgid "Áustria"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:22
+msgid "Azerbaijão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:23
+msgid "Bahamas"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:24
+msgid "Bahrein"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:25
+msgid "Bangladesh"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:26
+msgid "Barbados"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:27
+msgid "Belarus"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:28
+msgid "Bélgica"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:29
+msgid "Belize"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:30
+msgid "Benin"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:31
+msgid "Bermudas"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:32
+msgid "Bolívia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:33
+msgid "Bósnia-Herzegóvina"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:34
+msgid "Botsuana"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:36
+msgid "Brunei"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:37
+msgid "Bulgária"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:38
+msgid "Burkina Fasso"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:39
+msgid "Burundi"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:40
+msgid "Butão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:41
+msgid "Cabo Verde"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:42
+msgid "Camarões"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:43
+msgid "Camboja"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:44
+msgid "Canadá"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:45
+msgid "Canárias"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:46
+msgid "Cazaquistão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:47
+msgid "Ceuta e Melilla"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:48
+msgid "Chade"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:49
+msgid "Chile"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:50
+msgid "China"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:51
+msgid "Chipre"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:52
+msgid "Cingapura"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:53
+msgid "Colômbia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:54
+msgid "Comores"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:55
+msgid "Congo"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:56
+msgid "Coréia do Norte"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:57
+msgid "Coréia do Sul"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:58
+msgid "Costa do Marfim"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:59
+msgid "Costa Rica"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:60
+msgid "Croácia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:61
+msgid "Cuba"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:62
+msgid "Curaçao"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:63
+msgid "Diego Garcia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:64
+msgid "Dinamarca"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:65
+msgid "Djibuti"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:66
+msgid "Dominica"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:67
+msgid "Egito"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:68
+msgid "El Salvador"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:69
+msgid "Emirados Árabes Unidos"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:70
+msgid "Equador"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:71
+msgid "Eritréia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:72
+msgid "Eslováquia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:73
+msgid "Eslovênia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:74
+msgid "Espanha"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:75
+msgid "Estados Unidos"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:76
+msgid "Estônia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:77
+msgid "Etiópia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:78
+msgid "Fiji"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:79
+msgid "Filipinas"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:80
+msgid "Finlândia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:81
+msgid "França"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:82
+msgid "Gabão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:83
+msgid "Gâmbia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:84
+msgid "Gana"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:85
+msgid "Geórgia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:86
+msgid "Gibraltar"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:87
+msgid "Grã-Bretanha (Reino Unido, UK)"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:88
+msgid "Granada"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:89
+msgid "Grécia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:90
+msgid "Groelândia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:91
+msgid "Guadalupe"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:92
+msgid "Guam (Território dos Estados Unidos)"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:93
+msgid "Guatemala"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:94
+msgid "Guernsey"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:95
+msgid "Guiana"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:96
+msgid "Guiana Francesa"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:97
+msgid "Guiné"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:98
+msgid "Guiné Equatorial"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:99
+msgid "Guiné-Bissau"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:100
+msgid "Haiti"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:101
+msgid "Holanda"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:102
+msgid "Honduras"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:103
+msgid "Hong Kong"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:104
+msgid "Hungria"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:105
+msgid "Iêmen"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:106
+msgid "Ilha Bouvet"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:107
+msgid "Ilha de Ascensão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:108
+msgid "Ilha de Clipperton"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:109
+msgid "Ilha de Man"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:110
+msgid "Ilha Natal"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:111
+msgid "Ilha Pitcairn"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:112
+msgid "Ilha Reunião"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:113
+msgid "Ilhas Aland"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:114
+msgid "Ilhas Cayman"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:115
+msgid "Ilhas Cocos"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:116
+msgid "Ilhas Cook"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:117
+msgid "Ilhas Faroes"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:118
+msgid "Ilhas Geórgia do Sul e Sandwich do Sul"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:119
+msgid "Ilhas Heard e McDonald (Território da Austrália)"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:120
+msgid "Ilhas Malvinas"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:121
+msgid "Ilhas Marianas do Norte"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:122
+msgid "Ilhas Marshall"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:123
+msgid "Ilhas Menores dos Estados Unidos"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:124
+msgid "Ilhas Norfolk"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:125
+msgid "Ilhas Salomão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:126
+msgid "Ilhas Seychelles"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:127
+msgid "Ilhas Tokelau"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:128
+msgid "Ilhas Turks e Caicos"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:129
+msgid "Ilhas Virgens (Estados Unidos)"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:130
+msgid "Ilhas Virgens (Inglaterra)"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:131
+msgid "Índia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:132
+msgid "Indonésia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:133
+msgid "Irã"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:134
+msgid "Iraque"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:135
+msgid "Irlanda"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:136
+msgid "Islândia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:137
+msgid "Israel"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:138
+msgid "Itália"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:139
+msgid "Jamaica"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:140
+msgid "Japão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:141
+msgid "Jersey"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:142
+msgid "Jordânia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:143
+msgid "Kiribati"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:144
+msgid "Kosovo"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:145
+msgid "Kuait"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:146
+msgid "Laos"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:147
+msgid "Lesoto"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:148
+msgid "Letônia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:149
+msgid "Líbano"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:150
+msgid "Libéria"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:151
+msgid "Líbia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:152
+msgid "Liechtenstein"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:153
+msgid "Lituânia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:154
+msgid "Luxemburgo"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:155
+msgid "Macau"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:156
+msgid "Macedônia (República Yugoslava)"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:157
+msgid "Madagascar"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:158
+msgid "Malásia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:159
+msgid "Malaui"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:160
+msgid "Maldivas"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:161
+msgid "Mali"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:162
+msgid "Malta"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:163
+msgid "Marrocos"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:164
+msgid "Martinica"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:165
+msgid "Maurício"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:166
+msgid "Mauritânia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:167
+msgid "Mayotte"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:168
+msgid "México"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:169
+msgid "Micronésia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:170
+msgid "Moçambique"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:171
+msgid "Moldova"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:172
+msgid "Mônaco"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:173
+msgid "Mongólia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:174
+msgid "Montenegro"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:175
+msgid "Montserrat"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:176
+msgid "Myanma"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:177
+msgid "Namíbia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:178
+msgid "Nauru"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:179
+msgid "Nepal"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:180
+msgid "Nicarágua"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:181
+msgid "Níger"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:182
+msgid "Nigéria"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:183
+msgid "Niue"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:184
+msgid "Noruega"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:185
+msgid "Nova Caledônia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:186
+msgid "Nova Zelândia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:187
+msgid "Omã"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:188
+msgid "Países Baixos Caribenhos"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:189
+msgid "Palau"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:190
+msgid "Palestina"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:191
+msgid "Panamá"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:192
+msgid "Papua-Nova Guiné"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:193
+msgid "Paquistão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:194
+msgid "Paraguai"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:195
+msgid "Peru"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:196
+msgid "Polinésia Francesa"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:197
+msgid "Polônia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:198
+msgid "Porto Rico"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:199
+msgid "Portugal"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:200
+msgid "Qatar"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:201
+msgid "Quênia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:202
+msgid "Quirguistão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:203
+msgid "República Centro-Africana"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:204
+msgid "República Democrática do Congo"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:205
+msgid "República Dominicana"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:206
+msgid "República Tcheca"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:207
+msgid "Romênia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:208
+msgid "Ruanda"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:209
+msgid "Rússia (antiga URSS) - Federação Russa"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:210
+msgid "Saara Ocidental"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:211
+msgid "Saint-Pierre e Miquelon"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:212
+msgid "Samoa Americana"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:213
+msgid "Samoa Ocidental"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:214
+msgid "San Marino"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:215
+msgid "Santa Helena"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:216
+msgid "Santa Lúcia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:217
+msgid "São Bartolomeu"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:218
+msgid "São Cristóvão e Névis"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:219
+msgid "São Martim"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:220
+msgid "São Martinho"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:221
+msgid "São Tomé e Príncipe"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:222
+msgid "São Vicente e Granadinas"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:223
+msgid "Senegal"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:224
+msgid "Serra Leoa"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:225
+msgid "Sérvia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:226
+msgid "Síria"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:227
+msgid "Somália"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:228
+msgid "Sri Lanka"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:229
+msgid "Suazilândia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:230
+msgid "Sudão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:231
+msgid "Sudão do Sul"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:232
+msgid "Suécia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:233
+msgid "Suíça"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:234
+msgid "Suriname"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:235
+msgid "Svalbard"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:236
+msgid "Tadjiquistão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:237
+msgid "Tailândia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:238
+msgid "Taiwan"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:239
+msgid "Tanzânia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:240
+msgid "Território Britânico do Oceano índico"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:241
+msgid "Territórios do Sul da França"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:242
+msgid "Timor-Leste"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:243
+msgid "Togo"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:244
+msgid "Tonga"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:245
+msgid "Trinidad e Tobago"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:246
+msgid "Tristão da Cunha"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:247
+msgid "Tunísia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:248
+msgid "Turcomenistão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:249
+msgid "Turquia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:250
+msgid "Tuvalu"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:251
+msgid "Ucrânia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:252
+msgid "Uganda"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:253
+msgid "Uruguai"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:254
+msgid "Uzbequistão"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:255
+msgid "Vanuatu"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:256
+msgid "Vaticano"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:257
+msgid "Venezuela"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:258
+msgid "Vietnã"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:259
+msgid "Wallis e Futuna"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:260
+msgid "Zâmbia"
+msgstr ""
+
+#: modules/CountryLocalizations/countries.php:261
+msgid "Zimbábue"
 msgstr ""
 
 #: modules/DeleteAccount/Module.php:69
@@ -11244,7 +12265,7 @@ msgstr ""
 #: modules/Entities/components/entity-header/template.php:24
 #: modules/Entities/components/entity-header/template.php:76
 #: modules/Entities/views/agent/single-1.php:96
-#: modules/Entities/views/agent/single-2.php:93
+#: modules/Entities/views/agent/single-2.php:94
 #: modules/Entities/views/event/single.php:76
 #: modules/Entities/views/project/single.php:95
 #: modules/Entities/views/project/single.php:139
@@ -12074,9 +13095,9 @@ msgid "Espaços oficiais"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:50
-#: modules/Entities/views/agent/edit-2.php:48
+#: modules/Entities/views/agent/edit-2.php:49
 #: modules/Entities/views/agent/single-1.php:42
-#: modules/Entities/views/agent/single-2.php:44
+#: modules/Entities/views/agent/single-2.php:45
 #: modules/Entities/views/event/edit.php:51
 #: modules/Entities/views/event/single.php:52
 #: modules/Entities/views/project/edit.php:50
@@ -12090,7 +13111,7 @@ msgid "Informações"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:55
-#: modules/Entities/views/agent/edit-2.php:53
+#: modules/Entities/views/agent/edit-2.php:54
 #: modules/Entities/views/event/edit.php:56
 #: modules/Entities/views/project/edit.php:55
 #: modules/Entities/views/space/edit.php:54
@@ -12098,7 +13119,7 @@ msgid "Informações de Apresentação"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:56
-#: modules/Entities/views/agent/edit-2.php:54
+#: modules/Entities/views/agent/edit-2.php:55
 #: modules/Entities/views/event/edit.php:57
 #: modules/Entities/views/project/edit.php:56
 #: modules/Entities/views/space/edit.php:55
@@ -12106,7 +13127,7 @@ msgid "Os dados inseridos abaixo serão exibidos para todos os usuários"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:69
-#: modules/Entities/views/agent/edit-2.php:67
+#: modules/Entities/views/agent/edit-2.php:68
 msgid "Nome do Agente"
 msgstr ""
 
@@ -12127,7 +13148,7 @@ msgid "Anexar CPF - Formatos: (png, jpeg, pdf)"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:114
-#: modules/Entities/views/agent/edit-2.php:100
+#: modules/Entities/views/agent/edit-2.php:101
 msgid "Anexar CNPJ - Formatos: (png, jpeg, pdf)"
 msgstr ""
 
@@ -12136,22 +13157,22 @@ msgid "E-mail pessoal"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:116
-#: modules/Entities/views/agent/edit-2.php:103
+#: modules/Entities/views/agent/edit-2.php:104
 msgid "Telefone público com DDD"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:117
-#: modules/Entities/views/agent/edit-2.php:104
+#: modules/Entities/views/agent/edit-2.php:105
 msgid "E-mail público"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:118
-#: modules/Entities/views/agent/edit-2.php:105
+#: modules/Entities/views/agent/edit-2.php:106
 msgid "Telefone privado 1 com DDD"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:119
-#: modules/Entities/views/agent/edit-2.php:106
+#: modules/Entities/views/agent/edit-2.php:107
 msgid "Telefone privado 2 com DDD"
 msgstr ""
 
@@ -12200,7 +13221,7 @@ msgid "Anexar RG - Formatos: (png, jpeg, pdf)"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:150
-#: modules/Entities/views/agent/edit-2.php:92
+#: modules/Entities/views/agent/edit-2.php:93
 msgid ""
 "Os dados inseridos abaixo serão registrados apenas no sistemas e não serão "
 "exibidos publicamente"
@@ -12240,7 +13261,7 @@ msgid "Informações públicas"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:170
-#: modules/Entities/views/agent/edit-2.php:115
+#: modules/Entities/views/agent/edit-2.php:116
 #: modules/Entities/views/project/edit.php:115
 msgid ""
 "Os dados inseridos abaixo assim como as informações de apresentação também "
@@ -12256,7 +13277,7 @@ msgid "Adicionar arquivos para download"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:176
-#: modules/Entities/views/agent/edit-2.php:121
+#: modules/Entities/views/agent/edit-2.php:122
 #: modules/Entities/views/event/edit.php:131
 #: modules/Entities/views/project/edit.php:121
 #: modules/Entities/views/space/edit.php:151
@@ -12266,7 +13287,7 @@ msgid "Adicionar links"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:177
-#: modules/Entities/views/agent/edit-2.php:122
+#: modules/Entities/views/agent/edit-2.php:123
 #: modules/Entities/views/event/edit.php:132
 #: modules/Entities/views/project/edit.php:122
 #: modules/Entities/views/space/edit.php:152
@@ -12274,36 +13295,36 @@ msgid "Adicionar vídeos"
 msgstr ""
 
 #: modules/Entities/views/agent/edit-1.php:178
-#: modules/Entities/views/agent/edit-2.php:123
+#: modules/Entities/views/agent/edit-2.php:124
 #: modules/Entities/views/event/edit.php:133
 #: modules/Entities/views/project/edit.php:123
 #: modules/Entities/views/space/edit.php:153
 msgid "Adicionar fotos na galeria"
 msgstr ""
 
-#: modules/Entities/views/agent/edit-2.php:91
+#: modules/Entities/views/agent/edit-2.php:92
 msgid "Dados do Agente Coletivo"
 msgstr ""
 
-#: modules/Entities/views/agent/edit-2.php:96
+#: modules/Entities/views/agent/edit-2.php:97
 #: themes/BaseV1/layouts/parts/singles/agent-form-2.php:53
 msgid "Nome Fantasia"
 msgstr ""
 
-#: modules/Entities/views/agent/edit-2.php:101
+#: modules/Entities/views/agent/edit-2.php:102
 msgid "Data de fundação"
 msgstr ""
 
-#: modules/Entities/views/agent/edit-2.php:102
+#: modules/Entities/views/agent/edit-2.php:103
 msgid "E-mail privado "
 msgstr ""
 
-#: modules/Entities/views/agent/edit-2.php:114
+#: modules/Entities/views/agent/edit-2.php:115
 msgid "informações públicas"
 msgstr ""
 
 #: modules/Entities/views/agent/single-1.php:32
-#: modules/Entities/views/agent/single-2.php:34
+#: modules/Entities/views/agent/single-2.php:35
 #: modules/Entities/views/project/single.php:35
 #: modules/Entities/views/space/single.php:32
 #: modules/Opportunities/views/opportunity/single.php:48
@@ -12318,7 +13339,7 @@ msgid "Inicio"
 msgstr ""
 
 #: modules/Entities/views/agent/single-1.php:51
-#: modules/Entities/views/agent/single-2.php:53
+#: modules/Entities/views/agent/single-2.php:54
 #: modules/Entities/views/event/single.php:61
 #: modules/Entities/views/project/single.php:81
 #: modules/Entities/views/space/single.php:67
@@ -12326,7 +13347,7 @@ msgid "Descrição Detalhada"
 msgstr ""
 
 #: modules/Entities/views/agent/single-1.php:55
-#: modules/Entities/views/agent/single-2.php:56
+#: modules/Entities/views/agent/single-2.php:57
 #: modules/Entities/views/event/single.php:62
 #: modules/Entities/views/project/single.php:83
 #: modules/Entities/views/space/single.php:70
@@ -12336,7 +13357,7 @@ msgid "Arquivos para download"
 msgstr ""
 
 #: modules/Entities/views/agent/single-1.php:56
-#: modules/Entities/views/agent/single-2.php:57
+#: modules/Entities/views/agent/single-2.php:58
 #: modules/Entities/views/event/single.php:63
 #: modules/Entities/views/project/single.php:84
 #: modules/Entities/views/space/single.php:71
@@ -12351,7 +13372,7 @@ msgid "Links"
 msgstr ""
 
 #: modules/Entities/views/agent/single-1.php:60
-#: modules/Entities/views/agent/single-2.php:61
+#: modules/Entities/views/agent/single-2.php:62
 msgid "Propriedades do Agente:"
 msgstr ""
 
@@ -12362,7 +13383,7 @@ msgid "Funções"
 msgstr ""
 
 #: modules/Entities/views/agent/single-1.php:84
-#: modules/Entities/views/agent/single-2.php:81
+#: modules/Entities/views/agent/single-2.php:82
 #: modules/Entities/views/event/single.php:73
 #: modules/Entities/views/project/single.php:92
 #: modules/Entities/views/project/single.php:136
@@ -12374,7 +13395,7 @@ msgid "Verificações"
 msgstr ""
 
 #: modules/Entities/views/agent/single-1.php:88
-#: modules/Entities/views/agent/single-2.php:85
+#: modules/Entities/views/agent/single-2.php:86
 #: modules/Entities/views/event/single.php:75
 #: modules/Entities/views/project/single.php:93
 #: modules/Entities/views/project/single.php:137
@@ -12386,7 +13407,7 @@ msgid "Agentes Relacionados"
 msgstr ""
 
 #: modules/Entities/views/agent/single-1.php:96
-#: modules/Entities/views/agent/single-2.php:93
+#: modules/Entities/views/agent/single-2.php:94
 #: modules/Entities/views/event/single.php:76
 #: modules/Entities/views/project/single.php:95
 #: modules/Entities/views/project/single.php:139
@@ -16818,18 +17839,18 @@ msgstr ""
 msgid "{{ownerType(entity)}}"
 msgstr ""
 
-#: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:79
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:80
 #: modules/OpportunityAppealPhase/components/opportunity-appeal-phase-config/template.php:94
 msgid "Configurar formulário"
 msgstr ""
 
-#: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:103
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:109
 #: modules/Opportunities/components/opportunity-phases-config/texts.php:8
 #: modules/Opportunities/components/opportunity-subscribe-results/texts.php:8
 msgid "Excluir fase de prestação de informações"
 msgstr ""
 
-#: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:104
+#: modules/Opportunities/components/opportunity-phase-config-data-collection/template.php:110
 #: modules/Opportunities/components/opportunity-phases-config/texts.php:7
 #: modules/Opportunities/components/opportunity-subscribe-results/texts.php:7
 msgid "Excluir fase de coleta de dados"
@@ -17243,7 +18264,7 @@ msgid "a"
 msgstr ""
 
 #: modules/Opportunities/components/opportunity-phases-timeline/template.php:48
-#: modules/Opportunities/components/registration-status/template.php:75
+#: modules/Opportunities/components/registration-status/template.php:77
 #: modules/Opportunities/views/registration/single.php:273
 msgid "Preencher formulário"
 msgstr ""
@@ -18112,13 +19133,13 @@ msgstr ""
 msgid "Vincule um espaço a sua inscrição"
 msgstr ""
 
-#: modules/Opportunities/components/registration-results/template.php:23
-#: modules/Opportunities/components/registration-status/template.php:49
-msgid "Solicitar recurso"
+#: modules/Opportunities/components/registration-results/template.php:24
+msgid "Exibir detalhamento"
 msgstr ""
 
-#: modules/Opportunities/components/registration-results/template.php:28
-msgid "Exibir detalhamento"
+#: modules/Opportunities/components/registration-results/template.php:29
+#: modules/Opportunities/components/registration-status/template.php:49
+msgid "Solicitar recurso"
 msgstr ""
 
 #: modules/Opportunities/components/registration-status/template.php:16
@@ -18150,11 +19171,11 @@ msgstr ""
 msgid "[Recurso]"
 msgstr ""
 
-#: modules/Opportunities/components/registration-status/template.php:66
+#: modules/Opportunities/components/registration-status/template.php:67
 msgid "Resultado do recurso:"
 msgstr ""
 
-#: modules/Opportunities/components/registration-status/template.php:74
+#: modules/Opportunities/components/registration-status/template.php:76
 msgid "Finalize sua inscrição no recurso:"
 msgstr ""
 
