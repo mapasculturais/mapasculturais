@@ -8,7 +8,11 @@ app.component('elderly-person', {
             required: true
         },
     },
-
+    computed: {
+        idoso() {
+            return this.entity?.idoso ? this.entity.idoso : false;
+        }
+    },
     setup() {
         const text = Utils.getTexts('elderly-person')
         return { text }
