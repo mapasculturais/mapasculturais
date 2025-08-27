@@ -366,7 +366,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         "fieldId" => $id,
                         "label" => $value['label'],
                         "obs" => $value['obs'],
-                        "obs_items" => $value['obs_items'],
+                        "obs_items" => $value['obsItems'],
                         "evaluation" => $value['evaluation'],
                     ];
 
