@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.61] - 2025-08-27
+### Correções
+- corrige exibição dos pareceres e detalhamentos para o proponente no método de avaliação documental
+
 ## [7.5.60] - 2025-08-12
 ### Correções
 - Ajusta para que seja recriado o cache da inscrição quando usuário acessa a mesma
