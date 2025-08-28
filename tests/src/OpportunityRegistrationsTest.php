@@ -55,11 +55,11 @@ class OpportunityRegistrationsTest extends TestCase
         
         $amarelo->$field_cor = 'Amarelo';
         $this->assertEmpty($amarelo->validationErrors, 
-            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO quando condicionado a outro campo NÃO causa erro de validação quando a condição para sua exibição NÃO foi ATENDIDA');
+            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO, quando condicionado a outro campo, NÃO causa erro de validação quando a condição para sua exibição NÃO foi ATENDIDA');
         
         $azul->$field_cor = 'Azul';
         $this->assertArrayHasKey($field_tom_de_azul, $azul->validationErrors, 
-            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO quando condicionado a outro campo CAUSA erro de validação quando a condição para sua exibição FOI ATENDIDA');
+            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO, quando condicionado a outro campo, CAUSA erro de validação quando a condição para sua exibição FOI ATENDIDA');
 
         $this->assertCount(1, $azul->validationErrors, 
             'Certificando que há o número certo de campos com erro de validação quando um CAMPO OBRIGATÓRIO NÃO PREENCHIDO condicionado a outro campo CAUSA erro de validação quando a condição para sua exibição FOI ATENDIDA');
@@ -67,7 +67,7 @@ class OpportunityRegistrationsTest extends TestCase
         $vermelho->$field_cor = 'Vermelho';
         $vermelho->$field_tom_de_vermelho = 'Escuro';
         $this->assertEmpty($amarelo->validationErrors, 
-            'Certificando que um CAMPO OBRIGATÓRIO PREENCHIDO quando condicionado a outro campo NÃO causa erro de validação quando a condição para sua exibição FOI ATENDIDA');
+            'Certificando que um CAMPO OBRIGATÓRIO PREENCHIDO, quando condicionado a outro campo, NÃO causa erro de validação quando a condição para sua exibição FOI ATENDIDA');
 
     }
 
@@ -106,14 +106,14 @@ class OpportunityRegistrationsTest extends TestCase
         $registration->$field_tom_de_vermelho = 'Escuro';
 
         $this->assertArrayHasKey($field_pq_vermelho_escuro, $registration->validationErrors, 
-            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO quando condicionado a outro campo condicionado CAUSA erro de validação quando a condição para sua exibição FOI ATENDIDA');
+            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO, quando condicionado a outro campo condicionado, CAUSA erro de validação quando a condição para sua exibição FOI ATENDIDA');
 
         $this->assertCount(1, $registration->validationErrors, 
             'Certificando que há o número certo de campos com erro de validação quando um CAMPO OBRIGATÓRIO NÃO PREENCHIDO condicionado a outro campo condicionado CAUSA erro de validação quando a condição para sua exibição FOI ATENDIDA');
 
         $registration->$field_cor = 'Amarelo';
         $this->assertEmpty($registration->validationErrors, 
-            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO quando condicionado a outro campo condicionado NÃO causa erro de validação quando a condição para sua exibição NÃO foi ATENDIDA APÓS TER SIDO ATENDIDA ANTERIORMENTE');
+            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO, quando condicionado a outro campo condicionado, NÃO causa erro de validação quando a condição para sua exibição NÃO foi ATENDIDA APÓS TER SIDO ATENDIDA ANTERIORMENTE');
 
     }
 }
