@@ -6,6 +6,7 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Project;
+use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\Space;
 use Tests\Abstract\Builder;
 use Tests\Traits\Faker;
@@ -28,6 +29,8 @@ class OpportunityBuilder extends Builder
 
     protected DataCollectionPhaseBuilder $firstPhaseBuilder;
     protected DataCollectionPhaseBuilder $lastPhaseBuilder;
+
+    protected array $fieldsByIdentifier = [];
 
     public function reset(Agent $owner, Agent|Space|Project|Event $owner_entity, int $status = Opportunity::STATUS_ENABLED): self
     {
@@ -115,5 +118,30 @@ class OpportunityBuilder extends Builder
         $this->instance->registrationCategories = $categories;
 
         return $this;
+    }
+
+    public function saveField(string $identifier, RegistrationFieldConfiguration $field, ?Opportunity $opportunity = null): string
+    {
+        $opportunity = $opportunity ?: $this->instance;
+        $key = "$opportunity:$identifier";
+
+        $this->fieldsByIdentifier[$key] = $field;
+
+        return $key;
+    }
+
+    public function getField(string $identifier, ?Opportunity $opportunity = null): ?RegistrationFieldConfiguration
+    {
+        $opportunity = $opportunity ?: $this->instance;
+        $key = "$opportunity:$identifier";
+
+        return $this->fieldsByIdentifier[$key] ?? null;
+    }
+
+    public function getFieldName(string $identifier, ?Opportunity $opportunity = null): ?string
+    {
+        $field = $this->getField($identifier, $opportunity);
+
+        return $field ? $field->fieldName : null;
     }
 }
