@@ -55,11 +55,19 @@ class RegistrationBuilder extends Builder
     public function setCategory(?string $category = null): self
     {
         $opportunity = $this->instance->opportunity;
-        if (!$category && $opportunity->registrationCategories) {
-            $rand_index = array_rand($opportunity->registrationCategories);
-            $category = $opportunity->registrationCategories[$rand_index];
-            $this->instance->category = $category;
+
+        if (!$opportunity->registrationCategories) {
+            return $this;
         }
+
+        if ($category) {
+            $this->instance->category = $category;
+            return $this;
+        }
+
+        $rand_index = array_rand($opportunity->registrationCategories);
+        $category = $opportunity->registrationCategories[$rand_index];
+        $this->instance->category = $category;
 
         return $this;
     }
