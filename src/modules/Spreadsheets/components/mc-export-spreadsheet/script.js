@@ -33,10 +33,16 @@ app.component('mc-export-spreadsheet', {
         return { messages }
     },
 
-    data() {
+    data() {        
+        let group = this.group;
+        if(this.group == "evaluations-spreadsheets" && $MAPAS.config.mcExportSpreadsheet.evaluation_type) { 
+            group = $MAPAS.config.mcExportSpreadsheet.evaluation_type
+        }
+
         return {
+            isOpenModal: false,
             processing: false,
-            lastExported: $MAPAS.config.mcExportSpreadsheet.files ? $MAPAS.config.mcExportSpreadsheet.files[this.group] : [],
+            lastExported: $MAPAS.config.mcExportSpreadsheet.files ? $MAPAS.config.mcExportSpreadsheet.files[group] : [],
             interval: null
         }
     },
@@ -62,7 +68,14 @@ app.component('mc-export-spreadsheet', {
             });
         },
 
-        updateExportedData() {
+        updateExportedDataTimeout() {
+            this.interval = setInterval(() => {
+               this.getExportData();
+            }, 
+            30 * 1000);
+        },
+
+        getExportData() {
             const api = new API('spreadsheets');
             let props = {
                 entityType: this.owner.__objectType,
@@ -78,10 +91,10 @@ app.component('mc-export-spreadsheet', {
         },
 
         openModal() {
-            this.interval = setInterval(() => {
-                this.updateExportedData();
-            }, 
-            30 * 1000);
+            if (this.isOpenModal) { return };
+            this.isOpenModal = true;
+            this.getExportData();
+            this.updateExportedDataTimeout();
         },
 
         closeModal() {
