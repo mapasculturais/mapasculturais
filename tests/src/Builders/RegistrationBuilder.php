@@ -75,11 +75,19 @@ class RegistrationBuilder extends Builder
     public function setProponentType(?string $proponent_type = null): self
     {
         $opportunity = $this->instance->opportunity;
-        if (!$proponent_type && $opportunity->registrationProponentTypes) {
-            $rand_index = array_rand($opportunity->registrationProponentTypes);
-            $proponent_type = $opportunity->registrationProponentTypes[$rand_index];
-            $this->instance->proponentType = $proponent_type;
+
+        if (!$opportunity->registrationProponentTypes) {
+            return $this;
         }
+
+        if ($proponent_type) {
+            $this->instance->proponentType = $proponent_type;
+            return $this;
+        }
+
+        $rand_index = array_rand($opportunity->registrationProponentTypes);
+        $proponent_type = $opportunity->registrationProponentTypes[$rand_index];
+        $this->instance->proponentType = $proponent_type;
 
         return $this;
     }
