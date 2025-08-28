@@ -119,4 +119,15 @@ class EvaluationPhaseBuilder extends Builder
 
         return $this;
     }
+
+    public function setCommitteeFilterProponentType(string $committee, array $proponent_types): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+
+        $fetch_fields->$committee = empty($proponent_types) ? [] : ['proponentType' => $proponent_types];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
 }
