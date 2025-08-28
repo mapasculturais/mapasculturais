@@ -163,6 +163,12 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
       */
     protected $proponentTypes = [];
 
+    public function __construct()
+    {
+        $this->config = (object)[];
+        parent::__construct();
+    }
+
     static function getValidations() {
         $app = App::i();
         $validations = [
