@@ -296,7 +296,7 @@ trait EntityAgentRelation {
 
         $app = App::i();
 
-        if($name === AGENT_RELATION_ADMIN_GROUP) {
+        if($name === self::AGENT_RELATION_ADMIN_GROUP) {
             return false;
         }
 
