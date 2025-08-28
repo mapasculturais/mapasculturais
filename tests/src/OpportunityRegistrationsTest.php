@@ -71,5 +71,49 @@ class OpportunityRegistrationsTest extends TestCase
 
     }
 
-    
+    function testRequiredTwoLevelsConditionalField() {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->createStep('etapa')
+                                ->createField('cor', 'select', required:true, options:['Azul', 'Vermelho', 'Amarelo'])
+                                ->createField('tom-de-vermelho', 'text', required:true, field_condition:'cor:Vermelho')
+                                ->createField('pq-vermelho-escuro', 'text', required:true, field_condition:'tom-de-vermelho:Escuro')
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+        
+        $field_cor = $this->opportunityBuilder->getFieldName('cor');
+        $field_tom_de_vermelho = $this->opportunityBuilder->getFieldName('tom-de-vermelho');
+        $field_pq_vermelho_escuro = $this->opportunityBuilder->getFieldName('pq-vermelho-escuro');
+
+        $registrations = $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 1
+        );
+        
+        $registration = $registrations[0];
+        
+        $registration->$field_cor = 'Vermelho';
+        $registration->$field_tom_de_vermelho = 'Escuro';
+
+        $this->assertArrayHasKey($field_pq_vermelho_escuro, $registration->validationErrors, 
+            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO quando condicionado a outro campo condicionado CAUSA erro de validação quando a condição para sua exibição FOI ATENDIDA');
+
+        $this->assertCount(1, $registration->validationErrors, 
+            'Certificando que há o número certo de campos com erro de validação quando um CAMPO OBRIGATÓRIO NÃO PREENCHIDO condicionado a outro campo condicionado CAUSA erro de validação quando a condição para sua exibição FOI ATENDIDA');
+
+        $registration->$field_cor = 'Amarelo';
+        $this->assertEmpty($registration->validationErrors, 
+            'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO quando condicionado a outro campo condicionado NÃO causa erro de validação quando a condição para sua exibição NÃO foi ATENDIDA APÓS TER SIDO ATENDIDA ANTERIORMENTE');
+
+    }
 }
