@@ -139,6 +139,21 @@ class OpportunityBuilder extends Builder
         return $this;
     }
 
+    public function addRange(?string $label = null, ?int $limit = 0, ?int $value = 0): self
+    {
+        $ranges = $this->instance->registrationRanges ?: [];
+
+        $ranges[] = [
+            'label' => $label ?: $this->faker->text(10),
+            'limit' => $limit,
+            'value' => $value
+        ];
+
+        $this->instance->registrationRanges = $ranges;
+
+        return $this;
+    }
+
     public function saveField(string $identifier, RegistrationFieldConfiguration $field, ?Opportunity $opportunity = null): string
     {
         $opportunity = $opportunity ?: $this->instance;
