@@ -95,11 +95,19 @@ class RegistrationBuilder extends Builder
     public function setRange(?string $range = null): self
     {
         $opportunity = $this->instance->opportunity;
-        if (!$range && $opportunity->registrationRanges) {
-            $rand_index = array_rand($opportunity->registrationRanges);
-            $range = $opportunity->registrationRanges[$rand_index];
-            $this->instance->range = $range;
+
+        if (!$opportunity->registrationRanges) {
+            return $this;
         }
+
+        if ($range) {
+            $this->instance->range = $range;
+            return $this;
+        }
+
+        $rand_index = array_rand($opportunity->registrationRanges);
+        $range = $opportunity->registrationRanges[$rand_index];
+        $this->instance->range = $range;
 
         return $this;
     }
