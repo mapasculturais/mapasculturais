@@ -108,4 +108,15 @@ class EvaluationPhaseBuilder extends Builder
 
         return $this;
     }
+
+    public function setCommitteeFilterCategory(string $committee, array $categories): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+
+        $fetch_fields->$committee = empty($categories) ? [] : ['category' => $categories];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
 }
