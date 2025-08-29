@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.6.1] - 2025-08-29
 ### Melhorias
 - Muda o fetch mode da relação __metada para EAGER
 - Aplicação de função `text` em textos do rodapé, permitindo a manipulação e personalização por meio de temas e plugins.
