@@ -11,6 +11,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Tradução para o inglês (wip)
 - Verificação da existência de um metadado com a mesma chave antes de salvar o metadado
 
+## [7.5.62] - 2025-08-28
+### Correções
+- Corrige exibição da lista de últimas planilhas exportadas no componente mc-export-spreadsheet
+
 ## [7.5.61] - 2025-08-27
 ### Correções
 - corrige exibição dos pareceres e detalhamentos para o proponente no método de avaliação documental

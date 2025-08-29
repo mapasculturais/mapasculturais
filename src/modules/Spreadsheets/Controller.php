@@ -70,8 +70,7 @@ class Controller extends \MapasCulturais\Controller
         unset($query['@limit']);
         unset($query['@page']);
         
-        if(isset($this->data['@select'])) {
-            $select = $this->data['@select'];
+        if($select = isset($this->data['@select']) ? $this->data['@select'] : false) {
             unset($query['@select']);
             $query['@select'] = $select;
         }
