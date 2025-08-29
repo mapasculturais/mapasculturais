@@ -6,4 +6,4 @@
 
 use MapasCulturais\i;
 ?>
-<?= i::__('{{ownerType(entity)}}')?>
+{{ownerType(entity)}}
