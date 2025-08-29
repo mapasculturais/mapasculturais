@@ -11,6 +11,7 @@ use Tests\Builders\PhasePeriods\After;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Builders\PhasePeriods\Past;
+use Tests\Enums\EvaluationMethods;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
 use Tests\Traits\UserDirector;
@@ -33,7 +34,7 @@ class EvaluationsDistributionTest extends TestCase
                                     ->setRegistrationPeriod(new Open)
                                     ->done()
                                 ->save()
-                                ->addEvaluationPhase('simple')
+                                ->addEvaluationPhase(EvaluationMethods::simple)
                                     ->setEvaluationPeriod(new ConcurrentEndingAfter)
                                     ->setCommitteeValuersPerRegistration('committee 1', 1)
                                     ->save()
@@ -82,11 +83,11 @@ class EvaluationsDistributionTest extends TestCase
                                     ->setRegistrationPeriod(new Open)
                                     ->done()
                                 ->save()
-                                ->addEvaluationPhase('simple')
+                                ->addEvaluationPhase(EvaluationMethods::simple)
                                     ->setEvaluationPeriod(new ConcurrentEndingAfter)
                                     ->save()
                                     ->done()
-                                ->addEvaluationPhase('simple')
+                                ->addEvaluationPhase(EvaluationMethods::simple)
                                     ->setEvaluationPeriod(new ConcurrentEndingAfter)
                                     ->setCommitteeValuersPerRegistration('committee 1', 1)
                                     ->save()
@@ -155,7 +156,7 @@ class EvaluationsDistributionTest extends TestCase
                                     ->setRegistrationPeriod(new Open)
                                     ->done()
                                 ->save()
-                                ->addEvaluationPhase('simple')
+                                ->addEvaluationPhase(EvaluationMethods::simple)
                                     ->setEvaluationPeriod(new ConcurrentEndingAfter)
                                     ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
                                     ->setCommitteeFilterCategory('committee 1', ['Cat1'])
@@ -272,7 +273,7 @@ class EvaluationsDistributionTest extends TestCase
                                     ->setRegistrationPeriod(new Open)
                                     ->done()
                                 ->save()
-                                ->addEvaluationPhase('simple')
+                                ->addEvaluationPhase(EvaluationMethods::simple)
                                     ->setEvaluationPeriod(new ConcurrentEndingAfter)
                                     ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
                                     ->setCommitteeFilterCategory('committee 1', ['Cat1'])

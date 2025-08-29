@@ -9,6 +9,7 @@ use MapasCulturais\Entities\Project;
 use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\Space;
 use Tests\Abstract\Builder;
+use Tests\Enums\EvaluationMethods;
 use Tests\Traits\Faker;
 use Tests\Traits\UserDirector;
 
@@ -78,10 +79,10 @@ class OpportunityBuilder extends Builder
         return $builder;
     }
 
-    public function addEvaluationPhase(string $evaluation_method_slug): EvaluationPhaseBuilder
+    public function addEvaluationPhase(EvaluationMethods $evaluation_method): EvaluationPhaseBuilder
     {
         $builder = new EvaluationPhaseBuilder($this);
-        $builder->reset($this->instance, $evaluation_method_slug);
+        $builder->reset($this->instance, $evaluation_method);
 
         return $builder;
     }
@@ -95,6 +96,42 @@ class OpportunityBuilder extends Builder
             $this->setType();
         }
 
+        return $this;
+    }
+
+    /**
+     * Número de vagas da oportunidade
+     * 
+     * @param null|int $vacancies 
+     * @return OpportunityBuilder 
+     */
+    public function setVacancies(?int $vacancies = null): self
+    {
+        $this->instance->vacancies = $vacancies;
+        return $this;
+    }
+
+    /**
+     * Límite de inscrições totais no edital
+     * 
+     * @param null|int $limit 
+     * @return OpportunityBuilder 
+     */
+    public function setRegistrationLimit(?int $limit = null): self
+    {
+        $this->instance->registrationLimit = $limit;
+        return $this;
+    }
+
+    /**
+     * Limite de inscrições que o mesmo agente responsável pode fazer
+     * 
+     * @param null|int $limit 
+     * @return OpportunityBuilder 
+     */
+    public function setRegistrationLimitPerOwner(?int $limit = null): self
+    {
+        $this->instance->registrationLimitPerOwner = $limit;
         return $this;
     }
 

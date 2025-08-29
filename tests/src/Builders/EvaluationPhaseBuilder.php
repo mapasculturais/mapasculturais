@@ -6,6 +6,8 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\Builder;
+use Tests\Abstract\EvaluationMethodConfigurationBuilder;
+use Tests\Enums\EvaluationMethods;
 use Tests\Interfaces\EvaluationPeriodInterface;
 use Tests\Traits\Faker;
 use Tests\Traits\UserDirector;
@@ -22,18 +24,20 @@ class EvaluationPhaseBuilder extends Builder
 
 
     protected EvaluationMethodConfiguration $instance;
+    protected EvaluationMethods $evaluationMethod;
 
-    function __construct(private OpportunityBuilder $opportunityBuilder)
+    function __construct(protected OpportunityBuilder $opportunityBuilder)
     {
         parent::__construct();
     }
 
-    public function reset(Opportunity $opportunity, string $evaluation_method_slug): self
+    public function reset(Opportunity $opportunity, EvaluationMethods $evaluation_method): self
     {
         $this->instance = new EvaluationMethodConfiguration;
+        $this->evaluationMethod = $evaluation_method;
 
         $this->instance->opportunity = $opportunity;
-        $this->instance->type = $evaluation_method_slug;
+        $this->instance->type = $evaluation_method->name;
 
         return $this;
     }
@@ -118,5 +122,10 @@ class EvaluationPhaseBuilder extends Builder
         $this->instance->fetchFields = $fetch_fields;
 
         return $this;
+    }
+
+    public function config(): EvaluationMethodConfigurationBuilder|EvaluationMethodTechnicalBuilder
+    {
+        return $this->evaluationMethod->builder($this, $this->opportunityBuilder);
     }
 }
