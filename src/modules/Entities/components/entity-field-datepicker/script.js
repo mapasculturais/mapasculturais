@@ -139,12 +139,12 @@ app.component('entity-field-datepicker', {
             if (mcdate == null) {
                 return '';
             }
-            return mcdate.date('2-digit year');
+            return mcdate ? mcdate.date('2-digit year') : '';
         },
 
         timeFormat() {
             let mcdate = this.entity[this.prop];
-            return mcdate?.time('full');
+            return mcdate ? mcdate?.time('full') : '';
         },
 
         change(val) {
@@ -170,36 +170,58 @@ app.component('entity-field-datepicker', {
         },
 
         handleBlur(type) {
-            if (type === 'date' && this.dateInput?.length === 10) {
+            if (type === 'date') {
                 this.inputValue('date');
-            } else if (type === 'time' && this.timeInput?.length === 5) {
+            } else if (type === 'time') {
                 this.inputValue('time');
             }
         },
 
         inputValue(type) {
-            if (type === 'date' && this.dateInput.length === 10) {
-                const [day, month, year] = this.dateInput.split('/');
-                this.modelDate = new McDate(`${year}-${month}-${day}`)._date;
-            } else if (type === 'time' && this.timeInput.length === 5) {
-                const [hours, minutes] = this.timeInput.split(':');
-                this.modelTime = {
-                    hours: parseInt(hours, 10),
-                    minutes: parseInt(minutes, 10),
-                    seconds: 0
-                };
+            if(!this.dateInput) {
+                 this.modelTime = '';
+                 this.modelDate = '';
+                 this.dateInput = '';
+                 this.timeInput = '';
+            } else {
+                if (type === 'date' && this.dateInput.length === 10) {
+                    const [day, month, year] = this.dateInput.split('/');
+                    this.modelDate = new McDate(`${year}-${month}-${day}`)._date;
+                } else if (type === 'time' && this.timeInput.length === 5) {
+                    const [hours, minutes] = this.timeInput.split(':');
+                    this.modelTime = {
+                        hours: parseInt(hours, 10),
+                        minutes: parseInt(minutes, 10),
+                        seconds: 0
+                    };
+                }
             }
+            
             this.updateDateTime();
         },
 
         updateDateTime() {
-            if (this.modelDate && this.modelTime) {
-                let datetime = new McDate(this.modelDate)._date;
-                datetime.setHours(this.modelTime.hours);
-                datetime.setMinutes(this.modelTime.minutes);
-                this.change(datetime); 
-                this.$emit('change', datetime);
+            let datetime = this.modelDate ? new McDate(this.modelDate)._date : "";
+
+            if (this.modelDate) {
+                if (!this.modelTime) {
+                    const now = new Date();
+                    this.modelTime = {
+                        hours: now.getHours(),
+                        minutes: now.getMinutes(),
+                        seconds: now.getSeconds()
+                    };
+                }
+
+                if (datetime) {
+                    datetime.setHours(this.modelTime.hours);
+                    datetime.setMinutes(this.modelTime.minutes);
+                    datetime.setSeconds(this.modelTime.seconds ?? 0);
+                }
             }
+
+            this.change(datetime);
+            this.$emit('change', datetime);
         },
     }
 });
