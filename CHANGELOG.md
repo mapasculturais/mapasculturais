@@ -12,6 +12,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Tradução para o inglês (wip)
 - Verificação da existência de um metadado com a mesma chave antes de salvar o metadado
 
+### Correções
+- Corrige componente `opportunity-owner-type` que estava quebrada com as novas traduções do ES e EN
+
 ## [7.6.0] - 2025-08-20
 ### Novas Funcionalidades
 - Novo **módulo de recursos**[(1)](#hl-funpar) que permite que o gestor configure fases de recurso nos editais/oportunidades, possibilitando que proponentes contestem o resultado de fases específicas. É possível habilitar um formulário personalizado para a solicitação de recurso e definir uma comissão avaliadora responsável por analisar essas solicitações, garantindo mais transparência e formalização no processo dentro da plataforma.
