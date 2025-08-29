@@ -157,6 +157,40 @@ class OpportunityBuilder extends Builder
         return $this;
     }
 
+    public function addProponentType(?string $proponent_type = null): self
+    {
+        $available_proponent_types = ['Coletivo', 'MEI', 'Pessoa Jurídica', 'Pessoa Física'];
+        $proponent_types = $this->instance->registrationProponentTypes ?: [];
+
+        if(!$proponent_type) {
+            $remaining_types = array_diff($available_proponent_types, $this->instance->registrationProponentTypes);
+            $proponent_types[] = $remaining_types ? $remaining_types[array_rand($remaining_types)] : $available_proponent_types[array_rand($available_proponent_types)];
+
+            return $this;
+        }
+
+        $proponent_types = $this->instance->registrationProponentTypes;
+        $proponent_types[] = $proponent_type;
+        $this->instance->registrationProponentTypes = $proponent_types;
+
+        return $this;
+    }
+
+    public function addRange(?string $label = null, ?int $limit = 0, ?int $value = 0): self
+    {
+        $ranges = $this->instance->registrationRanges ?: [];
+
+        $ranges[] = [
+            'label' => $label ?: $this->faker->text(10),
+            'limit' => $limit,
+            'value' => $value
+        ];
+
+        $this->instance->registrationRanges = $ranges;
+
+        return $this;
+    }
+
     public function saveField(string $identifier, RegistrationFieldConfiguration $field, ?Opportunity $opportunity = null): string
     {
         $opportunity = $opportunity ?: $this->instance;
