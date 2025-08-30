@@ -214,4 +214,26 @@ class DataCollectionPhaseBuilder extends Builder
             flush: $flush
         );
     }
+
+    public function enableQuotaQuestion(): self
+    {
+        if(!$this->instance->isFirstPhase){
+            throw new Exception('só é possível habilitar a pergunta "Vai concorrer às cotas" na primeira fase');
+        }
+
+        $this->instance->enableQuotasQuestion = '1';
+
+        return $this;
+    }
+
+    public function disableQuotaQuestion(): self
+    {
+        if(!$this->instance->isFirstPhase){
+            throw new Exception('só é possível habilitar a pergunta "Vai concorrer às cotas" na primeira fase');
+        }
+
+        $this->instance->enableQuotasQuestion = '0';
+
+        return $this;
+    }
 }

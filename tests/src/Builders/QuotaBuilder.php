@@ -21,6 +21,7 @@ class QuotaBuilder extends Builder
 
     public function reset(EvaluationMethodConfiguration $instance): self
     {
+        $this->instance = $instance;
         return $this;
     }
 
@@ -41,7 +42,7 @@ class QuotaBuilder extends Builder
 
     public function setConsiderQuotasInGeneralList(?bool $consider = null): self
     {
-        $this->instance->considerQuotasInGeneralList = $consider;
+        $this->instance->opportunity->firstPhase->considerQuotasInGeneralList = $consider;
         return $this;
     }
 

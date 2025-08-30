@@ -11,6 +11,8 @@ use Tests\Builders\OpportunityBuilder;
 /** @property Entity $instance */
 abstract class EvaluationMethodConfigurationBuilder extends Builder
 {
+    protected EvaluationMethodConfiguration $instance;
+
     function __construct(
         protected EvaluationPhaseBuilder $evaluationPhaseBuilder,
         protected OpportunityBuilder $opportunityBuilder

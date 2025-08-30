@@ -394,7 +394,7 @@ class EvaluationsDistributionTest extends TestCase
                                     ->setRegistrationPeriod(new Open)
                                     ->done()
                                 ->save()
-                                ->addEvaluationPhase('simple')
+                                ->addEvaluationPhase(EvaluationMethods::simple)
                                     ->setEvaluationPeriod(new ConcurrentEndingAfter)
                                     ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
                                     ->setCommitteeFilterProponentType('committee 1', ['MEI'])

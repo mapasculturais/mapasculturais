@@ -2,6 +2,7 @@
 
 namespace Tests\Builders;
 
+use Exception;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Event;
 use MapasCulturais\Entities\Opportunity;
