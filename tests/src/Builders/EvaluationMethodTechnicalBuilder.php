@@ -24,6 +24,6 @@ class EvaluationMethodTechnicalBuilder extends EvaluationMethodConfigurationBuil
     }
 
     public function quota(): QuotaBuilder {
-        return $this->quotaBuilder;
+        return $this->quotaBuilder->reset($this->instance);
     }
 }

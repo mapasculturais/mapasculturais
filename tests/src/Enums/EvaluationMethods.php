@@ -15,7 +15,6 @@ enum EvaluationMethods: string
     case technical = EvaluationMethodTechnicalBuilder::class;
     case documentary = EvaluationMethodDocumentaryBuilder::class;
     case qualification = EvaluationMethodQualificationBuilder::class;
-    case continuous = EvaluationMethodQualificationBuilder::class;
 
     function builder(EvaluationPhaseBuilder $evaluation_phase_builder, OpportunityBuilder $opportunity_builder): EvaluationMethodConfigurationBuilder
     {

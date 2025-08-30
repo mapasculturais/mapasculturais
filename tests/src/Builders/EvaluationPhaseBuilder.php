@@ -137,6 +137,8 @@ class EvaluationPhaseBuilder extends Builder
 
     public function config(): EvaluationMethodConfigurationBuilder|EvaluationMethodTechnicalBuilder
     {
-        return $this->evaluationMethod->builder($this, $this->opportunityBuilder);
+        $builder = $this->evaluationMethod->builder($this, $this->opportunityBuilder);
+
+        return $builder->reset($this->instance);
     }
 }
