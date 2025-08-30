@@ -10,6 +10,7 @@ use Tests\Builders\PhasePeriods\After;
 use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Builders\PhasePeriods\Past;
+use Tests\Enums\EvaluationMethods;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
 use Tests\Traits\UserDirector;
@@ -33,11 +34,11 @@ class OpportunityPhasesTest extends TestCase
                                     ->setRegistrationPeriod(new Open)
                                     ->done()
                                 ->save()
-                                ->addEvaluationPhase('simple')
+                                ->addEvaluationPhase(EvaluationMethods::simple)
                                     ->setEvaluationPeriod(new ConcurrentEndingAfter)
                                     ->save()
                                     ->done()
-                                ->addEvaluationPhase('simple')
+                                ->addEvaluationPhase(EvaluationMethods::simple)
                                     ->setEvaluationPeriod(new ConcurrentEndingAfter)
                                     ->setCommitteeValuersPerRegistration('committee 1', 1)
                                     ->save()
@@ -45,8 +46,6 @@ class OpportunityPhasesTest extends TestCase
                                     ->done()
                                 ->refresh()
                                 ->getInstance();
-        
-
         
 
         $opportunity->evaluationMethodConfiguration->delete(true);

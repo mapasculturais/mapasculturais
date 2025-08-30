@@ -8,6 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @property RegistrationFileConfiguration[] $registrationFileConfigurations
  * @property RegistrationFieldConfiguration[] $registrationFieldConfigurations
+ * 
+ * @property string $name
+ * @property integer $displayOrder
  *
  * @ORM\Table(name="registration_step")
  * @ORM\Entity

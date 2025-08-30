@@ -8,7 +8,11 @@ app.component('elderly-person', {
             required: true
         },
     },
-
+    computed: {
+        idoso() {
+            return this.entity?.idoso ? this.entity.idoso : false;
+        }
+    },
     setup() {
         const text = Utils.getTexts('elderly-person')
         return { text }
@@ -18,7 +22,7 @@ app.component('elderly-person', {
             const response = event.detail;
         
             response.clone().json().then(data => {
-                this.entity.idoso = data.idoso;
+                this.entity.idoso = data.idoso ?? this.idoso;
             }).catch(err => {
                 console.error('Erro ao processar o response:', err);
             });

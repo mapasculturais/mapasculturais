@@ -1241,7 +1241,8 @@ class Registration extends \MapasCulturais\Entity
      * @return bool Verdadeiro se a etapa deve ser exibida, falso caso contrário.
      */
     function isStepVisible(RegistrationStep $step): bool {
-        $conditional = $step->metadata['conditional'] ?? null;
+        $metadata = (array) $step->metadata;
+        $conditional = $metadata['conditional'] ?? null;
 
         if (!$conditional) {
             return true;

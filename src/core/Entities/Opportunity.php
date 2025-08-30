@@ -159,6 +159,8 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected array $registrationCategories = [];
 
     /**
+     * @var MapasCulturais\Entities\RegistrationStep[]
+     * 
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationStep", mappedBy="opportunity", cascade={"remove"}, orphanRemoval=true)
      */
     protected $registrationSteps;
