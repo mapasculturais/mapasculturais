@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.64] - 2025-08-30
+### Correções
+- Corrige ordenação por classificação quando não há faixas no edital
+
 ## [7.5.63] - 2025-08-29
 ### Correções
 - Corrige erro no componente entity-field-datepicker que impedia deixar vazios os campos de datas não obrigatórias
