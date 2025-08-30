@@ -165,7 +165,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
 
     public function __construct()
     {
-        $this->config = (object)[];
+        $this->config = [];
         parent::__construct();
     }
 
