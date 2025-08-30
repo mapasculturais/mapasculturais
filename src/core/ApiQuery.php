@@ -671,7 +671,7 @@ class ApiQuery {
         
         $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset());
 
-        if($app->rcache->contains($cache_key)) {
+        if($this->__useDQLCache && $app->rcache->contains($cache_key)) {
             return $app->rcache->fetch($cache_key);
         }
 
@@ -709,8 +709,9 @@ class ApiQuery {
             $this->processEntities($_tmp);
 
         }
-
-        $app->rcache->save($cache_key, $result);
+        if($this->__useDQLCache) {
+            $app->rcache->save($cache_key, $result);
+        }
 
         return $result;
     }
@@ -781,7 +782,7 @@ class ApiQuery {
 
         $cache_key = $this->getCacheKey(__METHOD__, $select, $this->getOffset(), $this->getLimit());
 
-        if($app->rcache->contains($cache_key)) {
+        if($this->__useDQLCache && $app->rcache->contains($cache_key)) {
             return $app->rcache->fetch($cache_key);
         }
 
@@ -827,7 +828,9 @@ class ApiQuery {
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.findResult", [&$result]);
 
-        $app->rcache->save($cache_key, $result);
+        if($this->__useDQLCache){
+            $app->rcache->save($cache_key, $result);
+        }
 
         return $result;
     }
@@ -842,7 +845,7 @@ class ApiQuery {
 
         $cache_key = $this->getCacheKey(__METHOD__, offset: $this->getOffset(), limit: $this->getLimit());
 
-        if($app->rcache->contains($cache_key)) {
+        if($this->__useDQLCache && $app->rcache->contains($cache_key)) {
             return $app->rcache->fetch($cache_key);
         }
 
@@ -863,7 +866,9 @@ class ApiQuery {
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.countResult", [&$result]);
 
-        $app->rcache->save($cache_key, $result);
+        if($this->__useDQLCache) {
+            $app->rcache->save($cache_key, $result);
+        }
 
         return $result;
     }

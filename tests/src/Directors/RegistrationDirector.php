@@ -2,7 +2,9 @@
 
 namespace Tests\Directors;
 
+use DateTime;
 use Doctrine\DBAL\Exception;
+use MapasCulturais\App;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 use Tests\Abstract\Director;
@@ -68,4 +70,43 @@ class RegistrationDirector extends Director
         return $registrations;
     }
 
+    public function createSentRegistration(Opportunity $opportunity, array $data): Registration
+    {
+        $opportunity->registerRegistrationMetadata();
+
+        $registration = $this->registrationBuilder
+                ->reset($opportunity)
+                ->fillRequiredProperties()
+                ->getInstance();
+
+        foreach($data as $key => $value) {
+            if(in_array($key, ['sentTimestamp', 'createTimestamp', 'updateTimestamp']) && is_string($value)) {
+                $value = new DateTime($value);
+            }
+            $registration->$key = $value;
+        }
+        
+        $registration = $this->registrationBuilder
+                ->save()
+                ->send()
+                ->getInstance();
+
+        $field_to_column = [
+            'score' => 'score', 
+            'consolidatedResult' => 'consolidated_result'
+        ];
+
+        $app = App::i();
+        foreach($field_to_column as $field => $column) {
+            if(isset($data[$field])) {
+                $value = $data[$field];
+                $app->conn->executeQuery("UPDATE registration SET $column = :val WHERE id = :id", [
+                    'id' => $registration->id, 
+                    'val' => $value
+                ]);
+            }
+        }
+
+        return $registration->refreshed();
+    }
 }
