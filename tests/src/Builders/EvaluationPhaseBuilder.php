@@ -6,6 +6,8 @@ use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use Tests\Abstract\Builder;
+use Tests\Abstract\EvaluationMethodConfigurationBuilder;
+use Tests\Enums\EvaluationMethods;
 use Tests\Interfaces\EvaluationPeriodInterface;
 use Tests\Traits\Faker;
 use Tests\Traits\UserDirector;
@@ -22,18 +24,20 @@ class EvaluationPhaseBuilder extends Builder
 
 
     protected EvaluationMethodConfiguration $instance;
+    protected EvaluationMethods $evaluationMethod;
 
-    function __construct(private OpportunityBuilder $opportunityBuilder)
+    function __construct(protected OpportunityBuilder $opportunityBuilder)
     {
         parent::__construct();
     }
 
-    public function reset(Opportunity $opportunity, string $evaluation_method_slug): self
+    public function reset(Opportunity $opportunity, EvaluationMethods $evaluation_method): self
     {
         $this->instance = new EvaluationMethodConfiguration;
+        $this->evaluationMethod = $evaluation_method;
 
         $this->instance->opportunity = $opportunity;
-        $this->instance->type = $evaluation_method_slug;
+        $this->instance->type = $evaluation_method->name;
 
         return $this;
     }
@@ -107,5 +111,57 @@ class EvaluationPhaseBuilder extends Builder
         $this->instance->valuersPerRegistration = $valuers_per_registration;
 
         return $this;
+    }
+
+    public function setCommitteeFilterCategory(string $committee, array $categories): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+
+        $fetch_fields->$committee = empty($categories) ? [] : ['category' => $categories];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
+    
+    public function setCommitteeFilterProponentType(string $committee, array $proponent_types): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+
+        $fetch_fields->$committee = empty($proponent_types) ? [] : ['proponentType' => $proponent_types];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
+
+    public function setCommitteeFilterRange(string $committee, array $ranges): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+
+        $fetch_fields->$committee = empty($ranges) ? [] : ['range' => $ranges];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
+
+    public function setCommitteeFilterField(string $committee, string $field_identifier, array $answers): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $field = $this->opportunityBuilder->getFieldName($field_identifier);
+
+        $fetch_fields->$committee = empty($answers) ? [] : [$field => $answers];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
+
+    public function config(): EvaluationMethodConfigurationBuilder|EvaluationMethodTechnicalBuilder
+    {
+        $builder = $this->evaluationMethod->builder($this, $this->opportunityBuilder);
+
+        return $builder->reset($this->instance);
     }
 }

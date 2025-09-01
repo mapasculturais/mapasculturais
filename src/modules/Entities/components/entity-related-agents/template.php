@@ -59,7 +59,7 @@ $this->import('
                 <mc-relation-card :relation="relation">
                     <template #default="{open, close, toggle}">
                         <a class="agent__img" @click="$event.preventDefault(); toggle()">
-                           <mc-avatar :entity="entity" size="xsmall"></mc-avatar>
+                           <mc-avatar :entity="relation.agent" size="xsmall"></mc-avatar>
                         </a>
                     </template>
                 </mc-relation-card>

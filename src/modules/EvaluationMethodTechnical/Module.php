@@ -389,10 +389,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
                
                 $app->enableAccessControl();
                 
-                // limpa o cache das cotas
-                $cache_key = "{$this->opportunity}:quota-registrations";
-                $app->cache->delete($cache_key);
-                
             }
            
         });
@@ -401,6 +397,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
             /** @var ApiQuery $this */
 
             if($params['__enableQuota'] ?? false) {
+                Module::$quotaData = null;
                 unset($params['__enableQuota']);
             } else {
                 return;
@@ -426,6 +423,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                 Module::$quotaData->orderByQuota = $order == '@quota';
 
                 $quota_order = Module::$quotaData->quota->getRegistrationsOrderByScoreConsideringQuotas($params);
+
                 $opportunity = $app->repo('Opportunity')->find($phase_id);
                 $opportunity->registerRegistrationMetadata();
                 
@@ -460,7 +458,6 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     $page = $params['@page'] ?? 1;
                     $offset = ($page - 1) * $limit;
                     $ids = array_slice($ids, $offset, $limit);
-                    // eval(\psy\sh());
                     
                 } else {
                     $ids = array_map(fn($reg) => $reg->id, $quota_order);

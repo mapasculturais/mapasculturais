@@ -12,6 +12,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Tradução para o inglês (wip)
 - Verificação da existência de um metadado com a mesma chave antes de salvar o metadado
 
+## [7.5.62] - 2025-08-28
+### Correções
+- Corrige exibição da lista de últimas planilhas exportadas no componente mc-export-spreadsheet
+
+## [7.5.61] - 2025-08-27
+### Correções
+- corrige exibição dos pareceres e detalhamentos para o proponente no método de avaliação documental
+
 ## [7.6.0] - 2025-08-20
 ### Novas Funcionalidades
 - Novo **módulo de recursos**[(1)](#hl-funpar) que permite que o gestor configure fases de recurso nos editais/oportunidades, possibilitando que proponentes contestem o resultado de fases específicas. É possível habilitar um formulário personalizado para a solicitação de recurso e definir uma comissão avaliadora responsável por analisar essas solicitações, garantindo mais transparência e formalização no processo dentro da plataforma.

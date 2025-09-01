@@ -18,6 +18,7 @@ class RegistrationBuilder extends Builder
 
     public function reset(Opportunity $opportunity, ?Agent $owner = null): self
     {
+        $opportunity->registerRegistrationMetadata();
         $this->instance = new Registration;
         $this->instance->opportunity = $opportunity;
         $this->instance->owner = $owner ?: $this->userDirector->createUser()->profile;
@@ -55,11 +56,19 @@ class RegistrationBuilder extends Builder
     public function setCategory(?string $category = null): self
     {
         $opportunity = $this->instance->opportunity;
-        if (!$category && $opportunity->registrationCategories) {
-            $rand_index = array_rand($opportunity->registrationCategories);
-            $category = $opportunity->registrationCategories[$rand_index];
-            $this->instance->category = $category;
+
+        if (!$opportunity->registrationCategories) {
+            return $this;
         }
+
+        if ($category) {
+            $this->instance->category = $category;
+            return $this;
+        }
+
+        $rand_index = array_rand($opportunity->registrationCategories);
+        $category = $opportunity->registrationCategories[$rand_index];
+        $this->instance->category = $category;
 
         return $this;
     }
@@ -67,11 +76,19 @@ class RegistrationBuilder extends Builder
     public function setProponentType(?string $proponent_type = null): self
     {
         $opportunity = $this->instance->opportunity;
-        if (!$proponent_type && $opportunity->registrationProponentTypes) {
-            $rand_index = array_rand($opportunity->registrationProponentTypes);
-            $proponent_type = $opportunity->registrationProponentTypes[$rand_index];
-            $this->instance->proponentType = $proponent_type;
+
+        if (!$opportunity->registrationProponentTypes) {
+            return $this;
         }
+
+        if ($proponent_type) {
+            $this->instance->proponentType = $proponent_type;
+            return $this;
+        }
+
+        $rand_index = array_rand($opportunity->registrationProponentTypes);
+        $proponent_type = $opportunity->registrationProponentTypes[$rand_index];
+        $this->instance->proponentType = $proponent_type;
 
         return $this;
     }
@@ -79,11 +96,19 @@ class RegistrationBuilder extends Builder
     public function setRange(?string $range = null): self
     {
         $opportunity = $this->instance->opportunity;
-        if (!$range && $opportunity->registrationRanges) {
-            $rand_index = array_rand($opportunity->registrationRanges);
-            $range = $opportunity->registrationRanges[$rand_index];
-            $this->instance->range = $range;
+
+        if (!$opportunity->registrationRanges) {
+            return $this;
         }
+
+        if ($range) {
+            $this->instance->range = $range;
+            return $this;
+        }
+
+        $rand_index = array_rand($opportunity->registrationRanges);
+        $range = $opportunity->registrationRanges[$rand_index];
+        $this->instance->range = $range;
 
         return $this;
     }

@@ -109,7 +109,7 @@ class Quotas {
         $this->cutoffScore = $this->evaluationConfig->cutoffScore ?: 0;
 
         $this->considerQuotasInGeneralList = $this->firstPhase->considerQuotasInGeneralList;
-
+        
         // proecessa a configuração de cotas
         $this->quotaRules = $this->evaluationConfig->quotaConfiguration ? ($this->evaluationConfig->quotaConfiguration->rules ?: []) : [];
         $this->tiebreakerConfig = array_values((array) $this->evaluationConfig->tiebreakerCriteriaConfiguration ?: []);
@@ -131,6 +131,17 @@ class Quotas {
         // proecessa a configuração de faixas
         $registration_ranges = $this->firstPhase->registrationRanges ?: [];
         $this->isRangeActive = (bool) $registration_ranges;
+
+        // se não há faixas configuradas, inicializa a faixa default
+        if(!$this->isRangeActive) {
+            $registration_ranges = [
+                'default' => [
+                    'label' => 'default',
+                    'limit' => $this->vacancies
+                ]
+            ];
+        }
+
         foreach($registration_ranges as $range) {
             $range_name = $range['label'];
             $range_vacancies = $range['limit'];
@@ -179,11 +190,7 @@ class Quotas {
      * @return Quotas 
      */
     public static function instance(int $phase_id): Quotas {
-        if(!isset(self::$instances[$phase_id])) {
-            self::$instances[$phase_id] = new Quotas($phase_id);
-        }
-
-        return self::$instances[$phase_id];
+        return new Quotas($phase_id);
     }
 
     /**
@@ -261,14 +268,6 @@ class Quotas {
      */
     function getRegistrationsForQuotaSorting(): array {
         $app = App::i();
-                
-        $use_cache = $app->config['app.useQuotasCache'];
-        
-        $cache_key = false;//"{$this->phase}:quota-registrations:" . md5(serialize($params));
-        
-        if($use_cache && $app->cache->contains($cache_key)){
-            return $app->cache->fetch($cache_key);
-        }
 
         $result = $app->controller('opportunity')->apiFindRegistrations($this->phase, [
             '@select' => implode(',', ['number,range,proponentType,agentsData,consolidatedResult,eligible,score,sentTimestamp', ...$this->fields]),
@@ -279,10 +278,6 @@ class Quotas {
         $registrations = array_map(function ($reg) {
             return (object) $reg; 
         }, $result->registrations);
-
-        if($use_cache){
-            $app->cache->save($cache_key, $registrations, $app->config['app.quotasCache.lifetime']);
-        }
 
         foreach($registrations as $registration) {
             $this->getRegistrationQuotas($registration);
@@ -344,8 +339,6 @@ class Quotas {
     }
 
     public function getRegistrationsOrderByScoreConsideringQuotas(): array {
-        $app = App::i();
-
         // obtendo as inscrições ordenadas pela pontuação considerando critérios de desempate
         $registrations = $this->getRegistrationsForQuotaSorting();
         $registrations = $this->tiebreaker($registrations);
@@ -653,14 +646,6 @@ class Quotas {
      * @return string 
      */
     private function getSectionCriterionName(string $section_id): string {
-        $app = App::i();
-        $cache_key = __METHOD__.$section_id;
-
-        if($app->rcache->contains($cache_key)) {
-            return $app->rcache->fetch($cache_key);
-        }
-
-        $result = '';
         foreach($this->evaluationConfig->sections as $section) {
             if($section->id == $section_id) {
                 return $section->name;
