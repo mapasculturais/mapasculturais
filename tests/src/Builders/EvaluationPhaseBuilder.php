@@ -135,6 +135,17 @@ class EvaluationPhaseBuilder extends Builder
         return $this;
     }
 
+    public function setCommitteeFilterRange(string $committee, array $ranges): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+
+        $fetch_fields->$committee = empty($ranges) ? [] : ['range' => $ranges];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
+
     public function config(): EvaluationMethodConfigurationBuilder|EvaluationMethodTechnicalBuilder
     {
         $builder = $this->evaluationMethod->builder($this, $this->opportunityBuilder);
