@@ -177,6 +177,21 @@ class OpportunityBuilder extends Builder
         return $this;
     }
 
+    public function setProponentTypes(array $proponent_types = []): self
+    {
+        $available_proponent_types = ['Coletivo', 'MEI', 'Pessoa Jurídica', 'Pessoa Física'];
+
+        if (empty($proponent_types)) {
+            foreach($available_proponent_types as $type) {
+                $proponent_types[] = $type;
+            }
+        }
+
+        $this->instance->registrationProponentTypes = $proponent_types;
+
+        return $this;
+    }
+
     public function addRange(?string $label = null, ?int $limit = 0, ?int $value = 0): self
     {
         $ranges = $this->instance->registrationRanges ?: [];
