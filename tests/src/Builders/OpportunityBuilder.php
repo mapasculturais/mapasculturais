@@ -207,6 +207,23 @@ class OpportunityBuilder extends Builder
         return $this;
     }
 
+    public function setRanges(array $ranges = [], int $number_of_random_ranges = 3): self
+    {
+        if (empty($ranges)) {
+            for ($i = 0; $i < $number_of_random_ranges; $i++) {
+                $ranges[] = [
+                    'label' => $this->faker->text(10),
+                    'limit' => $this->faker->randomNumber(),
+                    'value' => $this->faker->randomNumber()
+                ];
+            }
+        }
+
+        $this->instance->registrationRanges = $ranges;
+
+        return $this;
+    }
+
     public function saveField(string $identifier, RegistrationFieldConfiguration $field, ?Opportunity $opportunity = null): string
     {
         $opportunity = $opportunity ?: $this->instance;
