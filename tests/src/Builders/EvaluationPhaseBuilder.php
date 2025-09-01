@@ -146,6 +146,18 @@ class EvaluationPhaseBuilder extends Builder
         return $this;
     }
 
+    public function setCommitteeFilterField(string $committee, string $field_identifier, array $answers): self
+    {
+        $fetch_fields = $this->instance->fetchFields ?: (object)[];
+        $field = $this->opportunityBuilder->getFieldName($field_identifier);
+
+        $fetch_fields->$committee = empty($answers) ? [] : [$field => $answers];
+
+        $this->instance->fetchFields = $fetch_fields;
+
+        return $this;
+    }
+
     public function config(): EvaluationMethodConfigurationBuilder|EvaluationMethodTechnicalBuilder
     {
         $builder = $this->evaluationMethod->builder($this, $this->opportunityBuilder);
