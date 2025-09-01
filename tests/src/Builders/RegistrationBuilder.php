@@ -18,6 +18,7 @@ class RegistrationBuilder extends Builder
 
     public function reset(Opportunity $opportunity, ?Agent $owner = null): self
     {
+        $opportunity->registerRegistrationMetadata();
         $this->instance = new Registration;
         $this->instance->opportunity = $opportunity;
         $this->instance->owner = $owner ?: $this->userDirector->createUser()->profile;
