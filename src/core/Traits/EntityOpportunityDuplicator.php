@@ -80,11 +80,12 @@ trait EntityOpportunityDuplicator {
                 $newMethodConfiguration->save(true);
             }
 
-            foreach ($evaluationMethodConfiguration->getAgentRelations() as $agentRelation_) {
-                $agentRelation = clone $agentRelation_;
-                $agentRelation->owner = $newMethodConfiguration;
-                $agentRelation->save(true);
-            }
+            /** @todo Verificar possibilidade de questionar se deve ou não copiar a commisão de avaliação no momento da duplicação */
+            // foreach ($evaluationMethodConfiguration->getAgentRelations() as $agentRelation_) {
+            //     $agentRelation = clone $agentRelation_;
+            //     $agentRelation->owner = $newMethodConfiguration;
+            //     $agentRelation->save(true);
+            // }
         }
     }
 
