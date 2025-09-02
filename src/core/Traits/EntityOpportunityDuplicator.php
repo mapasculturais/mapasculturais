@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 
@@ -53,6 +54,7 @@ trait EntityOpportunityDuplicator {
         $this->entityNewOpportunity->registrationProponentTypes = $this->entityOpportunity->registrationProponentTypes;
         $this->entityNewOpportunity->registrationRanges = $this->entityOpportunity->registrationRanges;
         $this->entityNewOpportunity->owner = $app->user->profile;
+        $this->entityNewOpportunity->createTimestamp = new DateTime('now');
         $this->entityNewOpportunity->save(true);
 
         return $this->entityNewOpportunity;
