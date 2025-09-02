@@ -52,6 +52,7 @@ trait EntityOpportunityDuplicator {
         $this->entityNewOpportunity->registrationCategories = $this->entityOpportunity->registrationCategories;
         $this->entityNewOpportunity->registrationProponentTypes = $this->entityOpportunity->registrationProponentTypes;
         $this->entityNewOpportunity->registrationRanges = $this->entityOpportunity->registrationRanges;
+        $this->entityNewOpportunity->owner = $app->user->profile;
         $this->entityNewOpportunity->save(true);
 
         return $this->entityNewOpportunity;
