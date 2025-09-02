@@ -24,8 +24,7 @@ trait EntityOpportunityDuplicator {
         $this->duplicateRegistrationFieldsAndFiles();
         $this->duplicateMetalist();
         $this->duplicateFiles();
-        $this->duplicateAgentRelations();
-        $this->duplicateSealsRelations();
+        // $this->duplicateAgentRelations();
 
         $this->entityNewOpportunity->save(true);
        
