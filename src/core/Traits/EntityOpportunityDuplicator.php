@@ -24,7 +24,9 @@ trait EntityOpportunityDuplicator {
         $this->duplicateRegistrationFieldsAndFiles();
         $this->duplicateMetalist();
         $this->duplicateFiles();
+        /** @todo Verificar a possibilidade de perguntar no momento da duplicação se deve ou não duplicar selos e agentes relacionados ao edital */
         // $this->duplicateAgentRelations();
+        // $this->duplicateSealsRelations();
 
         $this->entityNewOpportunity->save(true);
        
