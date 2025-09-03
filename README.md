@@ -34,6 +34,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Aracaju - http://mapa.cultura.aracaju.se.gov.br/
 - Belo Horizonte - https://mapaculturalbh.pbh.gov.br/
 - Bento Gonçalvez - http://mapacultural.bentogoncalves.rs.gov.br/
+- Campo Mourão - https://mapas.campomourao.pr.gov.br/
 - Campos dos Goytacazes - https://mapasculturais.campos.rj.gov.br/
 - Camaçari - https://mapacultural.camacari.ba.gov.br/
 - Campinas - https://mapacultural.campinas.sp.gov.br/
@@ -49,6 +50,7 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Nova Lima - https://mapacultural.novalima.mg.gov.br/
 - Parauapebas - https://mapacultural.parauapebas.pa.gov.br/
 - Petrolina - https://mapacultural.petrolina.pe.gov.br/
+- Ribeirão das Neves - http://mapaculturaneves.com.br/
 - Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
 - Santo André - https://culturaz.santoandre.sp.gov.br/
 - São Gonçalo do Amarante - https://mapacultural.saogoncalodoamarante.ce.gov.br/
