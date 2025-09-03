@@ -28,7 +28,7 @@ $this->import('
             <entity-data v-if="entity.telefonePublico && !showOnlyPublicData" class="agent-data__fields--field" :entity="entity" prop="telefonePublico" label="<?php i::_e("Telefone Público")?>"></entity-data>
             <entity-data v-if="entity.telefone1 && !showOnlyPublicData" class="agent-data__fields--field" :entity="entity" prop="telefone1" label="<?php i::_e("Telefone Privado 1")?>"></entity-data>
             <entity-data v-if="entity.telefone2 && !showOnlyPublicData" class="agent-data__fields--field" :entity="entity" prop="telefone2" label="<?php i::_e("Telefone Privado 2")?>"></entity-data>
-            <entity-data v-if="entity.emailPrivado && !showOnlyPublicData" class="agent-data__fields--field" :entity="entity" prop="emailPrivado" label="<?php i::_e("Email Pessoal")?>"></entity-data>
+            <entity-data v-if="entity.emailPrivado && !showOnlyPublicData" class="agent-data__fields--field" :entity="entity" prop="emailPrivado" label="<?php i::_e("E-mail privado")?>"></entity-data>
             <entity-data v-if="entity.emailPublico && !showOnlyPublicData" class="agent-data__fields--field" :entity="entity" prop="emailPublico" label="<?php i::_e("Email Público")?>"></entity-data>
         </div>
     </template>
