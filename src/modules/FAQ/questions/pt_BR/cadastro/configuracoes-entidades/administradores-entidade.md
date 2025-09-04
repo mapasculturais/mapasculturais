@@ -1,4 +1,4 @@
-# O que são os administradors de uma entidade?
+# O que são os administradores de uma entidade?
 
 - acesso
 - cadastro
