@@ -68,6 +68,9 @@ class RegistrationDirector extends Director
                 ->getInstance();
             
             $this->setRegistrationData($registration, $data);
+
+            $registration->send();
+            
             $registrations[] = $registration;
         }
 
@@ -83,10 +86,12 @@ class RegistrationDirector extends Director
 
         $this->setRegistrationData($registration, $data);
 
+        $registration->send();
+
         return $registration->refreshed();
     }
 
-    protected function setRegistrationData(Registration $registration, array $data): void
+    protected function setRegistrationData(Registration $registration, array $data, bool $save = false, $flush = true): void
     {
         foreach($data as $key => $value) {
             if(in_array($key, ['sentTimestamp', 'createTimestamp', 'updateTimestamp']) && is_string($value)) {
@@ -94,10 +99,12 @@ class RegistrationDirector extends Director
             }
             $registration->$key = $value;
         }
+
+        if($save) {
+            $registration->save($flush);
+        }
         
         $registration = $this->registrationBuilder
-                ->save()
-                ->send()
                 ->getInstance();
 
         $field_to_column = [

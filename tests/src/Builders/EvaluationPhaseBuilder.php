@@ -124,6 +124,12 @@ class EvaluationPhaseBuilder extends Builder
         return $this;
     }
     
+    /**
+     * 
+     * @param string $committee 
+     * @param ProponentTypes[] $proponent_types 
+     * @return EvaluationPhaseBuilder 
+     */
     public function setCommitteeFilterProponentType(string $committee, array $proponent_types): self
     {
         $fetch_fields = $this->instance->fetchFields ?: (object)[];

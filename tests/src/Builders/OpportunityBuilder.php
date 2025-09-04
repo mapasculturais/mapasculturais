@@ -11,6 +11,7 @@ use MapasCulturais\Entities\RegistrationFieldConfiguration;
 use MapasCulturais\Entities\Space;
 use Tests\Abstract\Builder;
 use Tests\Enums\EvaluationMethods;
+use Tests\Enums\ProponentTypes;
 use Tests\Traits\Faker;
 use Tests\Traits\UserDirector;
 
@@ -158,20 +159,29 @@ class OpportunityBuilder extends Builder
         return $this;
     }
 
-    public function addProponentType(?string $proponent_type = null): self
+    public function addProponentType(?ProponentTypes $proponent_type = null): self
     {
-        $available_proponent_types = ['Coletivo', 'MEI', 'Pessoa Jurídica', 'Pessoa Física'];
+        $available_proponent_types = array_map(fn($case) => $case->value, ProponentTypes::cases());
+        
         $proponent_types = $this->instance->registrationProponentTypes ?: [];
 
         if(!$proponent_type) {
             $remaining_types = array_diff($available_proponent_types, $this->instance->registrationProponentTypes);
-            $proponent_types[] = $remaining_types ? $remaining_types[array_rand($remaining_types)] : $available_proponent_types[array_rand($available_proponent_types)];
+            $proponent_type_value = $remaining_types ? 
+                $remaining_types[array_rand($remaining_types)] : 
+                $available_proponent_types[array_rand($available_proponent_types)];
 
+            $proponent_type = ProponentTypes::from($proponent_type_value);
+        }
+
+        // se já tem todos os proponent types
+        if(!$proponent_type) {
             return $this;
         }
 
-        $proponent_types = $this->instance->registrationProponentTypes;
-        $proponent_types[] = $proponent_type;
+        $proponent_types = (array) $this->instance->registrationProponentTypes;
+        $proponent_types[] = $proponent_type->value;
+
         $this->instance->registrationProponentTypes = $proponent_types;
 
         return $this;
