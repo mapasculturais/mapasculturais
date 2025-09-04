@@ -9,19 +9,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige distribuição das comissões quando há avaliadores repetidos em comissões diferentes que tenham filtro configurados
 - Corrige resumo das avaliações dos avaliadores dentro das comissões, para exibir somente as avaliações da comissão
+- Corrige alguns warnings
 
+## [7.6.2] - 2025-08-30
+### Correções
+- Corrige ordenação por classificação quando não há faixas no edital
+
+## [7.6.1] - 2025-08-29
 ### Melhorias
 - Muda o fetch mode da relação __metada para EAGER
+- Aplicação de função `text` em textos do rodapé, permitindo a manipulação e personalização por meio de temas e plugins.
 - Tradução para o inglês (wip)
 - Verificação da existência de um metadado com a mesma chave antes de salvar o metadado
 
-## [7.5.62] - 2025-08-28
 ### Correções
-- Corrige exibição da lista de últimas planilhas exportadas no componente mc-export-spreadsheet
-
-## [7.5.61] - 2025-08-27
-### Correções
-- corrige exibição dos pareceres e detalhamentos para o proponente no método de avaliação documental
+- Corrige componente `opportunity-owner-type` que estava quebrada com as novas traduções do ES e EN
 
 ## [7.6.0] - 2025-08-20
 ### Novas Funcionalidades
@@ -66,6 +68,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 4. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a SECULT/PE</small>
 <a name="hl-ibercultura"></a>
 5. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
+
+## [7.5.62] - 2025-08-28
+### Correções
+- Corrige exibição da lista de últimas planilhas exportadas no componente mc-export-spreadsheet
+
+## [7.5.61] - 2025-08-27
+### Correções
+- corrige exibição dos pareceres e detalhamentos para o proponente no método de avaliação documental
 
 ## [7.5.60] - 2025-08-12
 ### Correções
