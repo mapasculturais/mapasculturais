@@ -6,6 +6,10 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [unreleased]
+### Correções
+- Corrige distribuição das comissões quando há avaliadores repetidos em comissões diferentes que tenham filtro configurados
+- Corrige resumo das avaliações dos avaliadores dentro das comissões, para exibir somente as avaliações da comissão
+
 ### Melhorias
 - Muda o fetch mode da relação __metada para EAGER
 - Tradução para o inglês (wip)
