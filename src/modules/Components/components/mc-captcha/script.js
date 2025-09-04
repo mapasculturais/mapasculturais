@@ -8,7 +8,7 @@ app.component('mc-captcha', {
     props: {
         config: {
             type: String,
-            required: true
+            required: false
         },
         error: {
             type: Boolean,
