@@ -150,7 +150,7 @@ class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
 
         $user = $this->agent->user;
         $evaluation_method_configuration = $this->owner;
-        $metadata->summary = $evaluation_method_configuration->getValuerSummary($user);
+        $metadata->summary = $evaluation_method_configuration->getValuerSummary($user, $this->group);
 
         $conn = $app->em->getConnection();
         $conn->update('agent_relation', ['metadata' => json_encode($metadata)], ['id' => $this->id]);

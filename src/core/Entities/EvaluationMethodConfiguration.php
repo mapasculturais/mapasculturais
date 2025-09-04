@@ -434,7 +434,7 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         return $data;
     }
 
-    public function getValuerSummary(?User $user = null): array {
+    public function getValuerSummary(?User $user = null, ?string $committee_name = null): array {
         $app = App::i();
         
         /** @var \MapasCulturais\Connection $conn */
@@ -459,27 +459,42 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
          * @param int|null $status Status da avaliação (0 = iniciada, 1 = concluída, 2 = enviada).
          * @return int Retorna a contagem de avaliações.
          */
-        $buildQuery = function ($status = null) use ($user_ids, $opportunity, $conn): int {
+        $buildQuery = function ($status = null) use ($user_ids, $opportunity, $conn, $committee_name): int {
             $statusCondition = is_null($status) ? "e.status IS NULL" : "e.status = {$status} AND e.registration_id IN (SELECT r.id FROM registration r WHERE r.opportunity_id = {$opportunity->id})";
-
+            
+            $params = [];
+            $committee_where = '';
+            if($committee_name) {
+                $committee_where = "AND committee = :committee";
+                $params['committee'] = $committee_name;
+            }
             
             $query = "
                 SELECT DISTINCT count(e.registration_id)
                 FROM registration_evaluation e
-                WHERE {$statusCondition} AND user_id IN($user_ids)
+                WHERE {$statusCondition} AND user_id IN($user_ids) $committee_where
             ";
 
-            return $conn->fetchScalar($query);
+            
+
+            return $conn->fetchScalar($query, $params);
         };
+
+        $params = [];
+        $committee_where = '';
+        if($committee_name) {
+            $committee_where = "AND valuer_committee = :committee";
+            $params['committee'] = $committee_name;
+        }
 
         // Avaliações pendentes
         $query = "
             SELECT DISTINCT count(e.registration_id)
             FROM evaluations e
-            WHERE opportunity_id = {$opportunity->id} AND e.evaluation_status IS NULL AND valuer_user_id IN ($user_ids)
+            WHERE opportunity_id = {$opportunity->id} AND e.evaluation_status IS NULL AND valuer_user_id IN ($user_ids) $committee_where
         ";
 
-        $data['pending'] = $conn->fetchScalar($query);
+        $data['pending'] = $conn->fetchScalar($query, $params);
         
         // Avaliações iniciadas
         $data['started'] = $buildQuery(0);
