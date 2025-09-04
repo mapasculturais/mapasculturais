@@ -8,5 +8,5 @@ $entity = $this->controller->requestedEntity;
 
 $this->jsObject['config']['mcExportSpreadsheet'] = [
     'files' => $entity ? $entity->files : [],
-    'evaluation_type' => $entity->evaluationMethod ? $entity->evaluationMethod->slug."-spreadsheets" : null
+    'evaluation_type' => $entity ? ($entity->evaluationMethod ? $entity->evaluationMethod->slug."-spreadsheets" : null) : null
 ];
