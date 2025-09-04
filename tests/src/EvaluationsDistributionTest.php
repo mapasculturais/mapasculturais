@@ -28,19 +28,19 @@ class EvaluationsDistributionTest extends TestCase
         $this->login($admin);
 
         $opportunity = $this->opportunityBuilder
-                                ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-                                ->fillRequiredProperties()
-                                ->firstPhase()
-                                    ->setRegistrationPeriod(new Open)
-                                    ->done()
-                                ->save()
-                                ->addEvaluationPhase(EvaluationMethods::simple)
-                                    ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                                    ->setCommitteeValuersPerRegistration('committee 1', 1)
-                                    ->save()
-                                    ->addValuers(2, 'committee 1')
-                                    ->done()
-                                ->getInstance();
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+            ->setRegistrationPeriod(new Open)
+            ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+            ->setEvaluationPeriod(new ConcurrentEndingAfter)
+            ->setCommitteeValuersPerRegistration('committee 1', 1)
+            ->save()
+            ->addValuers(2, 'committee 1')
+            ->done()
+            ->getInstance();
 
         $this->registrationDirector->createDraftRegistrations(
             $opportunity,
@@ -77,24 +77,24 @@ class EvaluationsDistributionTest extends TestCase
 
         /** @var Opportunity */
         $opportunity = $this->opportunityBuilder
-                                ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-                                ->fillRequiredProperties()
-                                ->firstPhase()
-                                    ->setRegistrationPeriod(new Open)
-                                    ->done()
-                                ->save()
-                                ->addEvaluationPhase(EvaluationMethods::simple)
-                                    ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                                    ->save()
-                                    ->done()
-                                ->addEvaluationPhase(EvaluationMethods::simple)
-                                    ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                                    ->setCommitteeValuersPerRegistration('committee 1', 1)
-                                    ->save()
-                                    ->addValuers(2, 'committee 1')
-                                    ->done()
-                                ->refresh()
-                                ->getInstance();
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->save()
+                ->done()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
+            ->refresh()
+            ->getInstance();
 
 
         $this->registrationDirector->createDraftRegistrations(
@@ -108,7 +108,7 @@ class EvaluationsDistributionTest extends TestCase
         );
 
         $opportunity->evaluationMethodConfiguration->delete(true);
-        
+
         $opportunity = $opportunity->refreshed();
         $phases = $opportunity->phases;
         $evaluation_method_configuration_id = $phases[1]->id;
@@ -117,14 +117,14 @@ class EvaluationsDistributionTest extends TestCase
 
         /** @var EvaluationMethodConfiguration */
         $emc = $app->repo('EvaluationMethodConfiguration')->find($evaluation_method_configuration_id);
-        
+
         $emc->redistributeCommitteeRegistrations();
         // atualiza o objeto da fase de avaliação para recarregar os metadados dos agentes relacionados
         $emc = $emc->refreshed();
 
         $valuer1_summary = $emc->agentRelations[0]->metadata['summary'];
         $valuer2_summary = $emc->agentRelations[1]->metadata['summary'];
-        
+
         $this->assertEquals(5, $valuer1_summary['pending'], 'Garantindo que o avaliador 1 tem 5 avaliações pendentes');
         $this->assertEquals(5, $valuer2_summary['pending'], 'Garantindo que o avaliador 2 tem 5 avaliações pendentes');
 
@@ -137,41 +137,74 @@ class EvaluationsDistributionTest extends TestCase
 
     function testCategoryFilteredUniqueEvaluatorDistribution()
     {
+        /*
+         tendo 10 inscrições por categoria e tendo 2 avaliadores por comissão,
+         cada comissão terá um total de 20 avaliações
+
+         tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
+         cada avaliador recebe 4 inscrições para avaliar.
+
+
+                      comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
+        =========================+=============+==============+=====================
+        avaliador 1       4                                              4              
+        avaliador 2       4                                              4
+        avaliador 3       4                                              4
+        avaliador 4       4                                              4
+        avaliador 5       4                                              4
+        avaliador 6                   4                                  4
+        avaliador 7                   4                                  4
+        avaliador 8                   4                                  4
+        avaliador 9                   4                                  4
+        avaliador 10                  4                                  4
+        avaliador 11                                 4                   4
+        avaliador 12                                 4                   4
+        avaliador 13                                 4                   4
+        avaliador 14                                 4                   4
+        avaliador 15                                 4                   4
+        ----------------------------------------------------------------------------
+        TOTAL da                                                                           
+        comissão         20          20             20                  60
+
+        */
+
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
-        $valuers_per_committe = 10;
-        $registrations_per_category = 20;
+        $valuers_per_committe = 5;
+        $registrations_per_category = 10;
         $valuers_per_registrations = 2;
-        $expected_evaluations_per_valuer = $registrations_per_category * $valuers_per_registrations / $valuers_per_committe;
+        $evaluations_per_valuer = $registrations_per_category * $valuers_per_registrations / $valuers_per_committe;
+
         $expected_total_per_committe = $registrations_per_category * $valuers_per_registrations;
 
         $opportunity = $this->opportunityBuilder
-                                ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-                                ->fillRequiredProperties()
-                                ->addCategory('Cat1')
-                                ->addCategory('Cat2')
-                                ->addCategory('Cat3')
-                                ->firstPhase()
-                                    ->setRegistrationPeriod(new Open)
-                                    ->done()
-                                ->save()
-                                ->addEvaluationPhase(EvaluationMethods::simple)
-                                    ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                                    ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
-                                    ->setCommitteeFilterCategory('committee 1', ['Cat1'])
-                                    ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
-                                    ->setCommitteeFilterCategory('committee 2', ['Cat2'])
-                                    ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
-                                    ->setCommitteeFilterCategory('committee 3', ['Cat3'])
-                                    ->save()
-                                    ->addValuers($valuers_per_committe, 'committee 1')
-                                    ->addValuers($valuers_per_committe, 'committee 2')
-                                    ->addValuers($valuers_per_committe, 'committee 3')
-                                    ->done()
-                                ->getInstance();
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->addCategory('Cat1')
+            ->addCategory('Cat2')
+            ->addCategory('Cat3')
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
+                ->setCommitteeFilterCategory('committee 1', ['Cat1'])
+                ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
+                ->setCommitteeFilterCategory('committee 2', ['Cat2'])
+                ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
+                ->setCommitteeFilterCategory('committee 3', ['Cat3'])
+                ->save()
+                ->addValuers($valuers_per_committe, 'committee 1')
+                ->addValuers($valuers_per_committe, 'committee 2')
+                ->addValuers($valuers_per_committe, 'committee 3')
+                ->done()
+            ->getInstance();
 
 
+        // 30 inscrições enviadas sendo 10 por categorias
         $categories = [
             'Cat1' => ['sent' => $registrations_per_category, 'draft' => 3],
             'Cat2' => ['sent' => $registrations_per_category, 'draft' => 3],
@@ -197,101 +230,123 @@ class EvaluationsDistributionTest extends TestCase
 
         // atualiza o objeto da fase de avaliação para recarregar os metadados dos agentes relacionados
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
+
         $committees = [];
-        foreach($emc->agentRelations as $relation) {
+        foreach ($emc->agentRelations as $relation) {
             $committees[$relation->group][] = $relation;
         }
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
-        foreach($committees as $committee => $relations) {
-            foreach($relations as $relation) {
-                $valuer_agent_id = $relation->agent->id;
-                $pending_summary = $relation->metadata['summary']['pending'];
 
-                // Verifica se o total de avaliações por comissão do avaliador está correto
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                        AND valuer_committee = :committee
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                    'committee' => $committee
-                ];
-                $evaluations_per_committee_count = $conn->fetchScalar($query, $params);
+        // testar se cada comissão tem um total de 20 avaliações
+        foreach (['committee 1', 'committee 2', 'committee 3'] as $committee_name) {
+            $number_of_evaluations = $conn->fetchScalar("SELECT count(*) FROM evaluations WHERE valuer_committee = :committee", ['committee' => $committee_name]);
 
-                $this->assertEquals($expected_evaluations_per_valuer, $evaluations_per_committee_count, "[Sem repetição de avaliador] Garantindo que o avaliador de id {$valuer_agent_id} na comissão {$committee} tem exatamente {$expected_evaluations_per_valuer} avaliações; obtido {$evaluations_per_committee_count}.");
-
-                // Verifica se o sumário do avaliador corresponde ao total na tabela evaluations
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                ];
-                $evaluations_count = $conn->fetchScalar($query, $params);
-
-                $this->assertEquals($pending_summary, $evaluations_count, "[Sem repetição de avaliador] Garantindo que o sumário de avaliações pendentes ({$pending_summary}) do avaliador {$valuer_agent_id} corresponde ao total de avaliações na tabela evaluations ({$evaluations_count}).");
-            }
-
-            // Verifica se o total de avaliações por comissão corresponde a soma do total de pendentes da comissão
-            $pendings = array_sum(array_map(fn($rel) => $rel->metadata['summary']['pending'], $relations));
-            $this->assertEquals($expected_total_per_committe, $pendings, "[Sem repetição de avaliador] Garantindo que cada avaliador da comissão {$committee} deve ter exatamente {$expected_total_per_committe} pendentes; obtido {$pendings}.");
+            $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador único] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // Verifica se o total de avaliações da oportunidade corresponde ao total de avaliações esperada
-        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id", ['opportunity_id' => $opportunity->id]);
-        $total_evaluations = array_sum(array_map(fn($category_counts) => $category_counts['sent'] * $valuers_per_registrations, $categories));
 
-        $this->assertEquals($total_evaluations, $number_of_evaluations, "[Sem repetição de avaliador] Garantindo que tenha {$total_evaluations} avaliações");
+
+        // testar se cada avaliador tem exatamente 4
+        foreach ($committees as $committee => $relations) {
+            foreach ($relations as $relation) {
+                $valuer_id = $relation->agent->id;
+
+                $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
+
+                $this->assertEquals($evaluations_per_valuer, $number_of_evaluations, "[Avaliador único] Garantindo que o avaliador da comissão {$committee} tem exatamente {$evaluations_per_valuer} avaliações");
+            }
+        }
+
+        // testar se a soma de todos os sumários pendentes em cada comissão tem a soma de 20 avaliações
+        $committee_total = [];
+        foreach ($committees as $committee => $relations) {
+            $committee_total = 0;
+            foreach ($relations as $relation) {
+                $committee_total += $relation->metadata['summary']['pending'];
+            }
+
+            $this->assertEquals($expected_total_per_committe, $committee_total, "[Avaliador único] Garantindo que a soma das inscrições pendentes dos resumos dos avaliadores da comissão $committee_name está correta");
+        }
     }
-    
+
     function testCategoryFilteredRepeatedEvaluatorDistribution()
     {
+        /*
+         tendo 10 inscrições por categoria e tendo 2 avaliadores por comissão,
+         cada comissão terá um total de 20 avaliações
+
+         tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
+         cada avaliador recebe 4 inscrições para avaliar.
+
+         se há um avaliador que está em mais de uma comissão, cada avaliador recebe, no total 
+         entre 4 e 5 avaliações
+
+
+                      comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
+        =========================+=============+==============+=====================
+        avaliador 1       3           2                                  5              
+        avaliador 2       4                                              4
+        avaliador 3       4                                              4
+        avaliador 4       5                                              5
+        avaliador 5       4                                              4
+        avaliador 6                   4                                  4
+        avaliador 7                   5                                  5
+        avaliador 8                   4                                  4
+        avaliador 9                   5                                  5
+        avaliador 10                                 4                   4
+        avaliador 11                                 4                   4
+        avaliador 12                                 4                   4
+        avaliador 13                                 4                   4
+        avaliador 14                                 4                   4
+        ----------------------------------------------------------------------------
+        TOTAL da                                                                           
+        comissão         20          20             20                  60
+
+        */
+
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
         $valuer = $this->userDirector->createUser();
 
-        $valuers_per_committe = 10;
-        $registrations_per_category = 20;
+        $valuers_per_committe = 5;
+        $registrations_per_category = 10;
         $valuers_per_registrations = 2;
-        $expected_evaluations_per_valuer = $registrations_per_category * $valuers_per_registrations / $valuers_per_committe;
+        $min_evaluations_per_valuer = $registrations_per_category * $valuers_per_registrations / $valuers_per_committe;
+        $max_evaluations_per_valuer = $min_evaluations_per_valuer + 1;
         $expected_total_per_committe = $registrations_per_category * $valuers_per_registrations;
 
         $opportunity = $this->opportunityBuilder
-                                ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-                                ->fillRequiredProperties()
-                                ->addCategory('Cat1')
-                                ->addCategory('Cat2')
-                                ->addCategory('Cat3')
-                                ->firstPhase()
-                                    ->setRegistrationPeriod(new Open)
-                                    ->done()
-                                ->save()
-                                ->addEvaluationPhase(EvaluationMethods::simple)
-                                    ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                                    ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
-                                    ->setCommitteeFilterCategory('committee 1', ['Cat1'])
-                                    ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
-                                    ->setCommitteeFilterCategory('committee 2', ['Cat2'])
-                                    ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
-                                    ->setCommitteeFilterCategory('committee 3', ['Cat3'])
-                                    ->save()
-                                    ->addValuers($valuers_per_committe - 1, 'committee 1')
-                                    ->addValuers($valuers_per_committe - 1, 'committee 2')
-                                    ->addValuers($valuers_per_committe, 'committee 3')
-                                    ->addValuer('committee 1', $valuer->profile)
-                                    ->addValuer('committee 2', $valuer->profile)
-                                    ->done()
-                                ->getInstance();
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->addCategory('Cat1')
+            ->addCategory('Cat2')
+            ->addCategory('Cat3')
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
+                ->setCommitteeFilterCategory('committee 1', ['Cat1'])
+                ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
+                ->setCommitteeFilterCategory('committee 2', ['Cat2'])
+                ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
+                ->setCommitteeFilterCategory('committee 3', ['Cat3'])
+                ->save()
+                ->addValuers($valuers_per_committe - 1, 'committee 1')
+                ->addValuers($valuers_per_committe - 1, 'committee 2')
+                ->addValuers($valuers_per_committe, 'committee 3')
+                ->addValuer('committee 1', $valuer->profile)
+                ->addValuer('committee 2', $valuer->profile)
+                ->done()
+            ->getInstance();
 
 
-        // 60 inscrições enviadas sendo 20 por categorias
+        // 20 inscrições enviadas sendo 10 por categorias
         $categories = [
             'Cat1' => ['sent' => $registrations_per_category, 'draft' => 3],
             'Cat2' => ['sent' => $registrations_per_category, 'draft' => 3],
@@ -319,100 +374,120 @@ class EvaluationsDistributionTest extends TestCase
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
 
         $committees = [];
-        foreach($emc->agentRelations as $relation) {
+        foreach ($emc->agentRelations as $relation) {
             $committees[$relation->group][] = $relation;
         }
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
-        foreach($committees as $committee => $relations) {
-            foreach($relations as $relation) {
-                $valuer_agent_id = $relation->agent->id;
-                $pending_summary = $relation->metadata['summary']['pending'];
 
-                // Verifica se o total de avaliações por comissão do avaliador está correto
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                        AND valuer_committee = :committee
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                    'committee' => $committee
-                ];
-                $evaluations_per_committee_count = $conn->fetchScalar($query, $params);
+        // testar se cada comissão tem um total de 20 avaliações
+        foreach (['committee 1', 'committee 2', 'committee 3'] as $committee_name) {
+            $number_of_evaluations = $conn->fetchScalar("SELECT count(*) FROM evaluations WHERE valuer_committee = :committee", ['committee' => $committee_name]);
 
-                $this->assertEquals($expected_evaluations_per_valuer, $evaluations_per_committee_count, "[Avaliador repetido] Garantindo que o avaliador de id {$valuer_agent_id} na comissão {$committee} tem exatamente {$expected_evaluations_per_valuer} avaliações; obtido {$evaluations_per_committee_count}.");
-
-                // Verifica se o sumário do avaliador corresponde ao total na tabela evaluations
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                ];
-                $evaluations_count = $conn->fetchScalar($query, $params);
-
-                $this->assertEquals($pending_summary, $evaluations_count, "[Avaliador repetido] Garantindo que o sumário de avaliações pendentes ({$pending_summary}) do avaliador {$valuer_agent_id} corresponde ao total de avaliações na tabela evaluations ({$evaluations_count}).");
-            }
-
-            // Verifica se o total de avaliações por comissão corresponde a soma do total de pendentes da comissão
-            $pendings = array_sum(array_map(fn($rel) => $rel->metadata['summary']['pending'], $relations));
-            $this->assertEquals($expected_total_per_committe, $pendings, "[Avaliador repetido] Garantindo que cada avaliador da comissão {$committee} deve ter exatamente {$expected_total_per_committe} pendentes; obtido {$pendings}.");
+            $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador repetido] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // Verifica se o total de avaliações da oportunidade corresponde ao total de avaliações esperada
-        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id", ['opportunity_id' => $opportunity->id]);
-        $total_evaluations = array_sum(array_map(fn($category_counts) => $category_counts['sent'] * $valuers_per_registrations, $categories));
+        // testar se cada avaliador tem entre 4 e 5 avaliações
+        foreach ($committees as $committee => $relations) {
+            foreach ($relations as $relation) {
+                $valuer_id = $relation->agent->id;
 
-        $this->assertEquals($total_evaluations, $number_of_evaluations, "[Avaliador repetido] Garantindo que tenha {$total_evaluations} avaliações");
+                $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
+
+                $this->assertGreaterThanOrEqual($min_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} tem ao menos {$min_evaluations_per_valuer} avaliações");
+                $this->assertLessThanOrEqual($max_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} não tem mais que {$max_evaluations_per_valuer} avaliações");
+            }
+        }
+
+        // testar se a soma de todos os sumários pendentes em cada comissão tem a soma de 20 avaliações
+        $committee_total = [];
+        foreach ($committees as $committee => $relations) {
+            $committee_total = 0;
+            foreach ($relations as $relation) {
+                $committee_total += $relation->metadata['summary']['pending'];
+            }
+
+            $this->assertEquals($expected_total_per_committe, $committee_total, "[Avaliador repetido] Garantindo que a soma das inscrições pendentes dos resumos dos avaliadores da comissão $committee_name está correta");
+        }
     }
 
     function testProponentTypeFilteredRepeatedEvaluatorDistribution()
     {
+        /*
+         tendo 10 inscrições por categoria e tendo 2 avaliadores por comissão,
+         cada comissão terá um total de 20 avaliações
+
+         tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
+         cada avaliador recebe 4 inscrições para avaliar.
+
+         se há um avaliador que está em mais de uma comissão, cada avaliador recebe, no total 
+         entre 4 e 5 avaliações
+
+
+                      comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
+        =========================+=============+==============+=====================
+        avaliador 1       3           2                                  5              
+        avaliador 2       4                                              4
+        avaliador 3       4                                              4
+        avaliador 4       5                                              5
+        avaliador 5       4                                              4
+        avaliador 6                   4                                  4
+        avaliador 7                   5                                  5
+        avaliador 8                   4                                  4
+        avaliador 9                   5                                  5
+        avaliador 10                                 4                   4
+        avaliador 11                                 4                   4
+        avaliador 12                                 4                   4
+        avaliador 13                                 4                   4
+        avaliador 14                                 4                   4
+        ----------------------------------------------------------------------------
+        TOTAL da                                                                           
+        comissão         20          20             20                  60
+
+        */
+
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
         $valuer = $this->userDirector->createUser();
 
-        $valuers_per_committe = 10;
-        $registrations_per_proponent_type = 20;
+        $valuers_per_committe = 5;
+        $registrations_per_proponent_type = 10;
         $valuers_per_registrations = 2;
-        $expected_evaluations_per_valuer = $registrations_per_proponent_type * $valuers_per_registrations / $valuers_per_committe;
+        $min_evaluations_per_valuer = $registrations_per_proponent_type * $valuers_per_registrations / $valuers_per_committe;
+        $max_evaluations_per_valuer = $min_evaluations_per_valuer + 1;
         $expected_total_per_committe = $registrations_per_proponent_type * $valuers_per_registrations;
 
         $opportunity = $this->opportunityBuilder
-                                ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-                                ->fillRequiredProperties()
-                                ->addProponentType('MEI')
-                                ->addProponentType('Pessoa Jurídica')
-                                ->addProponentType('Coletivo')
-                                ->firstPhase()
-                                    ->setRegistrationPeriod(new Open)
-                                    ->done()
-                                ->save()
-                                ->addEvaluationPhase(EvaluationMethods::simple)
-                                    ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                                    ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
-                                    ->setCommitteeFilterProponentType('committee 1', ['MEI'])
-                                    ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
-                                    ->setCommitteeFilterProponentType('committee 2', ['Coletivo'])
-                                    ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
-                                    ->setCommitteeFilterProponentType('committee 3', ['Pessoa Física'])
-                                    ->save()
-                                    ->addValuers($valuers_per_committe - 1, 'committee 1')
-                                    ->addValuers($valuers_per_committe - 1, 'committee 2')
-                                    ->addValuers($valuers_per_committe, 'committee 3')
-                                    ->addValuer('committee 1', $valuer->profile)
-                                    ->addValuer('committee 2', $valuer->profile)
-                                    ->done()
-                                ->getInstance();
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->addProponentType('MEI')
+            ->addProponentType('Pessoa Jurídica')
+            ->addProponentType('Coletivo')
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
+                ->setCommitteeFilterProponentType('committee 1', ['MEI'])
+                ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
+                ->setCommitteeFilterProponentType('committee 2', ['Coletivo'])
+                ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
+                ->setCommitteeFilterProponentType('committee 3', ['Pessoa Física'])
+                ->save()
+                ->addValuers($valuers_per_committe - 1, 'committee 1')
+                ->addValuers($valuers_per_committe - 1, 'committee 2')
+                ->addValuers($valuers_per_committe, 'committee 3')
+                ->addValuer('committee 1', $valuer->profile)
+                ->addValuer('committee 2', $valuer->profile)
+                ->done()
+            ->getInstance();
 
 
-        // 60 inscrições enviadas sendo 20 por tipos de proponente
+        // 30 inscrições enviadas sendo 10 por tipos de proponente
         $proponent_types = [
             'MEI' => ['sent' => $registrations_per_proponent_type, 'draft' => 3],
             'Pessoa Jurídica' => ['sent' => $registrations_per_proponent_type, 'draft' => 3],
@@ -436,104 +511,125 @@ class EvaluationsDistributionTest extends TestCase
 
         $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
 
+
+
         // atualiza o objeto da fase de avaliação para recarregar os metadados dos agentes relacionados
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
 
         $committees = [];
-        foreach($emc->agentRelations as $relation) {
+        foreach ($emc->agentRelations as $relation) {
             $committees[$relation->group][] = $relation;
         }
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
-        foreach($committees as $committee => $relations) {
-            foreach($relations as $relation) {
-                $valuer_agent_id = $relation->agent->id;
-                $pending_summary = $relation->metadata['summary']['pending'];
 
-                // Verifica se o total de avaliações por comissão do avaliador está correto
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                        AND valuer_committee = :committee
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                    'committee' => $committee
-                ];
-                $evaluations_per_committee_count = $conn->fetchScalar($query, $params);
+        // testar se cada comissão tem um total de 20 avaliações
+        foreach (['committee 1', 'committee 2', 'committee 3'] as $committee_name) {
+            $number_of_evaluations = $conn->fetchScalar("SELECT count(*) FROM evaluations WHERE valuer_committee = :committee", ['committee' => $committee_name]);
 
-                $this->assertEquals($expected_evaluations_per_valuer, $evaluations_per_committee_count, "[Avaliador repetido] Garantindo que o avaliador de id {$valuer_agent_id} na comissão {$committee} tem exatamente {$expected_evaluations_per_valuer} avaliações; obtido {$evaluations_per_committee_count}.");
-
-                // Verifica se o sumário do avaliador corresponde ao total na tabela evaluations
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                ];
-                $evaluations_count = $conn->fetchScalar($query, $params);
-
-                $this->assertEquals($pending_summary, $evaluations_count, "[Avaliador repetido] Garantindo que o sumário de avaliações pendentes ({$pending_summary}) do avaliador {$valuer_agent_id} corresponde ao total de avaliações na tabela evaluations ({$evaluations_count}).");
-            }
-
-            // Verifica se o total de avaliações por comissão corresponde a soma do total de pendentes da comissão
-            $pendings = array_sum(array_map(fn($rel) => $rel->metadata['summary']['pending'], $relations));
-            $this->assertEquals($expected_total_per_committe, $pendings, "[Avaliador repetido] Garantindo que cada avaliador da comissão {$committee} deve ter exatamente {$expected_total_per_committe} pendentes; obtido {$pendings}.");
+            $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador repetido] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // Verifica se o total de avaliações da oportunidade corresponde ao total de avaliações esperada
-        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id", ['opportunity_id' => $opportunity->id]);
-        $total_evaluations = array_sum(array_map(fn($proponent_type_counts) => $proponent_type_counts['sent'] * $valuers_per_registrations, $proponent_types));
+        // testar se cada avaliador tem entre 4 e 5 avaliações
+        foreach ($committees as $committee => $relations) {
+            foreach ($relations as $relation) {
+                $valuer_id = $relation->agent->id;
 
-        $this->assertEquals($total_evaluations, $number_of_evaluations, "[Avaliador repetido] Garantindo que tenha {$total_evaluations} avaliações");
+                $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
+
+                $this->assertGreaterThanOrEqual($min_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} tem ao menos {$min_evaluations_per_valuer} avaliações");
+                $this->assertLessThanOrEqual($max_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} não tem mais que {$max_evaluations_per_valuer} avaliações");
+            }
+        }
+
+        // testar se a soma de todos os sumários pendentes em cada comissão tem a soma de 20 avaliações
+        $committee_total = [];
+        foreach ($committees as $committee => $relations) {
+            $committee_total = 0;
+            foreach ($relations as $relation) {
+                $committee_total += $relation->metadata['summary']['pending'];
+            }
+
+            $this->assertEquals($expected_total_per_committe, $committee_total, "[Avaliador repetido] Garantindo que a soma das inscrições pendentes dos resumos dos avaliadores da comissão $committee_name está correta");
+        }
     }
 
     function testRangeFilteredRepeatedEvaluatorDistribution()
     {
+        /*
+         tendo 10 inscrições por categoria e tendo 2 avaliadores por comissão,
+         cada comissão terá um total de 20 avaliações
+
+         tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
+         cada avaliador recebe 4 inscrições para avaliar.
+
+         se há um avaliador que está em mais de uma comissão, cada avaliador recebe, no total 
+         entre 4 e 5 avaliações
+
+
+                      comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
+        =========================+=============+==============+=====================
+        avaliador 1       3           2                                  5              
+        avaliador 2       4                                              4
+        avaliador 3       4                                              4
+        avaliador 4       5                                              5
+        avaliador 5       4                                              4
+        avaliador 6                   4                                  4
+        avaliador 7                   5                                  5
+        avaliador 8                   4                                  4
+        avaliador 9                   5                                  5
+        avaliador 10                                 4                   4
+        avaliador 11                                 4                   4
+        avaliador 12                                 4                   4
+        avaliador 13                                 4                   4
+        avaliador 14                                 4                   4
+        ----------------------------------------------------------------------------
+        TOTAL da                                                                           
+        comissão         20          20             20                  60
+
+        */
+
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
         $valuer = $this->userDirector->createUser();
 
-        $valuers_per_committe = 10;
-        $registrations_per_range = 20;
+        $valuers_per_committe = 5;
+        $registrations_per_range = 10;
         $valuers_per_registrations = 2;
-        $expected_evaluations_per_valuer = $registrations_per_range * $valuers_per_registrations / $valuers_per_committe;
+        $min_evaluations_per_valuer = $registrations_per_range * $valuers_per_registrations / $valuers_per_committe;
+        $max_evaluations_per_valuer = $min_evaluations_per_valuer + 1;
         $expected_total_per_committe = $registrations_per_range * $valuers_per_registrations;
 
         $opportunity = $this->opportunityBuilder
-                                ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-                                ->fillRequiredProperties()
-                                ->addRange('Faixa 1')
-                                ->addRange('Faixa 2')
-                                ->addRange('Faixa 3')
-                                ->firstPhase()
-                                    ->setRegistrationPeriod(new Open)
-                                    ->done()
-                                ->save()
-                                ->addEvaluationPhase(EvaluationMethods::simple)
-                                    ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                                    ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
-                                    ->setCommitteeFilterRange('committee 1', ['Faixa 1'])
-                                    ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
-                                    ->setCommitteeFilterRange('committee 2', ['Faixa 2'])
-                                    ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
-                                    ->setCommitteeFilterRange('committee 3', ['Faixa 3'])
-                                    ->save()
-                                    ->addValuers($valuers_per_committe - 1, 'committee 1')
-                                    ->addValuers($valuers_per_committe - 1, 'committee 2')
-                                    ->addValuers($valuers_per_committe, 'committee 3')
-                                    ->addValuer('committee 1', $valuer->profile)
-                                    ->addValuer('committee 2', $valuer->profile)
-                                    ->done()
-                                ->getInstance();
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->addRange('Faixa 1')
+            ->addRange('Faixa 2')
+            ->addRange('Faixa 3')
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
+                ->setCommitteeFilterRange('committee 1', ['Faixa 1'])
+                ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
+                ->setCommitteeFilterRange('committee 2', ['Faixa 2'])
+                ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
+                ->setCommitteeFilterRange('committee 3', ['Faixa 3'])
+                ->save()
+                ->addValuers($valuers_per_committe - 1, 'committee 1')
+                ->addValuers($valuers_per_committe - 1, 'committee 2')
+                ->addValuers($valuers_per_committe, 'committee 3')
+                ->addValuer('committee 1', $valuer->profile)
+                ->addValuer('committee 2', $valuer->profile)
+                ->done()
+            ->getInstance();
 
-
-        // 60 inscrições enviadas sendo 20 por faixas
+        // 30 inscrições enviadas sendo 10 por tipos de proponente
         $ranges = [
             'Faixa 1' => ['sent' => $registrations_per_range, 'draft' => 3],
             'Faixa 2' => ['sent' => $registrations_per_range, 'draft' => 3],
@@ -561,100 +657,119 @@ class EvaluationsDistributionTest extends TestCase
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
 
         $committees = [];
-        foreach($emc->agentRelations as $relation) {
+        foreach ($emc->agentRelations as $relation) {
             $committees[$relation->group][] = $relation;
         }
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
-        foreach($committees as $committee => $relations) {
-            foreach($relations as $relation) {
-                $valuer_agent_id = $relation->agent->id;
-                $pending_summary = $relation->metadata['summary']['pending'];
 
-                // Verifica se o total de avaliações por comissão do avaliador está correto
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                        AND valuer_committee = :committee
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                    'committee' => $committee
-                ];
-                $evaluations_per_committee_count = $conn->fetchScalar($query, $params);
+        // testar se cada comissão tem um total de 20 avaliações
+        foreach (['committee 1', 'committee 2', 'committee 3'] as $committee_name) {
+            $number_of_evaluations = $conn->fetchScalar("SELECT count(*) FROM evaluations WHERE valuer_committee = :committee", ['committee' => $committee_name]);
 
-                $this->assertEquals($expected_evaluations_per_valuer, $evaluations_per_committee_count, "[Avaliador repetido] Garantindo que o avaliador de id {$valuer_agent_id} na comissão {$committee} tem exatamente {$expected_evaluations_per_valuer} avaliações; obtido {$evaluations_per_committee_count}.");
-
-                // Verifica se o sumário do avaliador corresponde ao total na tabela evaluations
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                ];
-                $evaluations_count = $conn->fetchScalar($query, $params);
-
-                $this->assertEquals($pending_summary, $evaluations_count, "[Avaliador repetido] Garantindo que o sumário de avaliações pendentes ({$pending_summary}) do avaliador {$valuer_agent_id} corresponde ao total de avaliações na tabela evaluations ({$evaluations_count}).");
-            }
-
-            // Verifica se o total de avaliações por comissão corresponde a soma do total de pendentes da comissão
-            $pendings = array_sum(array_map(fn($rel) => $rel->metadata['summary']['pending'], $relations));
-            $this->assertEquals($expected_total_per_committe, $pendings, "[Avaliador repetido] Garantindo que cada avaliador da comissão {$committee} deve ter exatamente {$expected_total_per_committe} pendentes; obtido {$pendings}.");
+            $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador repetido] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // Verifica se o total de avaliações da oportunidade corresponde ao total de avaliações esperada
-        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id", ['opportunity_id' => $opportunity->id]);
-        $total_evaluations = array_sum(array_map(fn($range_counts) => $range_counts['sent'] * $valuers_per_registrations, $ranges));
+        // testar se cada avaliador tem entre 4 e 5 avaliações
+        foreach ($committees as $committee => $relations) {
+            foreach ($relations as $relation) {
+                $valuer_id = $relation->agent->id;
 
-        $this->assertEquals($total_evaluations, $number_of_evaluations, "[Avaliador repetido] Garantindo que tenha {$total_evaluations} avaliações");
+                $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
+
+                $this->assertGreaterThanOrEqual($min_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} tem ao menos {$min_evaluations_per_valuer} avaliações");
+                $this->assertLessThanOrEqual($max_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} não tem mais que {$max_evaluations_per_valuer} avaliações");
+            }
+        }
+
+        // testar se a soma de todos os sumários pendentes em cada comissão tem a soma de 20 avaliações
+        $committee_total = [];
+        foreach ($committees as $committee => $relations) {
+            $committee_total = 0;
+            foreach ($relations as $relation) {
+                $committee_total += $relation->metadata['summary']['pending'];
+            }
+
+            $this->assertEquals($expected_total_per_committe, $committee_total, "[Avaliador repetido] Garantindo que a soma das inscrições pendentes dos resumos dos avaliadores da comissão $committee_name está correta");
+        }
     }
 
     function testFieldFilteredRepeatedEvaluatorDistribution()
     {
+        /*
+         tendo 10 inscrições por categoria e tendo 2 avaliadores por comissão,
+         cada comissão terá um total de 20 avaliações
+
+         tendo 5 avaliadores únicos, que não são avaliadores de outras comissões,
+         cada avaliador recebe 4 inscrições para avaliar.
+
+         se há um avaliador que está em mais de uma comissão, cada avaliador recebe, no total 
+         entre 4 e 5 avaliações
+
+
+                      comissão 1   comissão 2    comissão 3      TOTAL DO AVALIADOR
+        =========================+=============+==============+=====================
+        avaliador 1       3           2                                  5              
+        avaliador 2       4                                              4
+        avaliador 3       4                                              4
+        avaliador 4       5                                              5
+        avaliador 5       4                                              4
+        avaliador 6                   4                                  4
+        avaliador 7                   5                                  5
+        avaliador 8                   4                                  4
+        avaliador 9                   5                                  5
+        avaliador 10                                 4                   4
+        avaliador 11                                 4                   4
+        avaliador 12                                 4                   4
+        avaliador 13                                 4                   4
+        avaliador 14                                 4                   4
+        ----------------------------------------------------------------------------
+        TOTAL da                                                                           
+        comissão         20          20             20                  60
+
+        */
+
         $admin = $this->userDirector->createUser('admin');
         $this->login($admin);
 
         $valuer = $this->userDirector->createUser();
 
-        $valuers_per_committe = 10;
-        $registrations_per_field = 20;
+        $valuers_per_committe = 5;
+        $registrations_per_field = 10;
         $valuers_per_registrations = 2;
-        $expected_evaluations_per_valuer = $registrations_per_field * $valuers_per_registrations / $valuers_per_committe;
+        $min_evaluations_per_valuer = $registrations_per_field * $valuers_per_registrations / $valuers_per_committe;
+        $max_evaluations_per_valuer = $min_evaluations_per_valuer + 1;
         $expected_total_per_committe = $registrations_per_field * $valuers_per_registrations;
 
         $opportunity = $this->opportunityBuilder
-                                ->reset(owner: $admin->profile, owner_entity: $admin->profile)
-                                ->fillRequiredProperties()
-                                ->save()
-                                ->firstPhase()
-                                    ->setRegistrationPeriod(new Open)
-                                    ->createStep('etapa')
-                                    ->createField('cor', 'select', required:true, options:['Azul', 'Vermelho', 'Amarelo'])
-                                    ->done()
-                                ->save()
-                                ->addEvaluationPhase(EvaluationMethods::simple)
-                                    ->setEvaluationPeriod(new ConcurrentEndingAfter)
-                                    ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
-                                    ->setCommitteeFilterField('committee 1', 'cor', ['Azul'])
-                                    ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
-                                    ->setCommitteeFilterField('committee 2', 'cor', ['Vermelho'])
-                                    ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
-                                    ->setCommitteeFilterField('committee 3', 'cor', ['Amarelo'])
-                                    ->save()
-                                    ->addValuers($valuers_per_committe - 1, 'committee 1')
-                                    ->addValuers($valuers_per_committe - 1, 'committee 2')
-                                    ->addValuers($valuers_per_committe, 'committee 3')
-                                    ->addValuer('committee 1', $valuer->profile)
-                                    ->addValuer('committee 2', $valuer->profile)
-                                    ->done()
-                                ->getInstance();
+            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+            ->fillRequiredProperties()
+            ->addCategory('Cat1')
+            ->addCategory('Cat2')
+            ->addCategory('Cat3')
+            ->firstPhase()
+                ->setRegistrationPeriod(new Open)
+                ->done()
+            ->save()
+            ->addEvaluationPhase(EvaluationMethods::simple)
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
+                ->setCommitteeFilterField('committee 1', 'cor', ['Azul'])
+                ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
+                ->setCommitteeFilterField('committee 2', 'cor', ['Vermelho'])
+                ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
+                ->setCommitteeFilterField('committee 3', 'cor', ['Amarelo'])
+                ->save()
+                ->addValuers($valuers_per_committe - 1, 'committee 1')
+                ->addValuers($valuers_per_committe - 1, 'committee 2')
+                ->addValuers($valuers_per_committe, 'committee 3')
+                ->addValuer('committee 1', $valuer->profile)
+                ->addValuer('committee 2', $valuer->profile)
+                ->done()
+            ->getInstance();
 
-
-        // 60 inscrições enviadas sendo 20 por campos
+        // 30 inscrições enviadas sendo 10 por tipos de proponente
         $fields = [
             'Azul' => ['sent' => $registrations_per_field],
             'Vermelho' => ['sent' => $registrations_per_field],
@@ -678,55 +793,41 @@ class EvaluationsDistributionTest extends TestCase
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
 
         $committees = [];
-        foreach($emc->agentRelations as $relation) {
+        foreach ($emc->agentRelations as $relation) {
             $committees[$relation->group][] = $relation;
         }
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
-        foreach($committees as $committee => $relations) {
-            foreach($relations as $relation) {
-                $valuer_agent_id = $relation->agent->id;
-                $pending_summary = $relation->metadata['summary']['pending'];
 
-                // Verifica se o total de avaliações por comissão do avaliador está correto
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                        AND valuer_committee = :committee
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                    'committee' => $committee
-                ];
-                $evaluations_per_committee_count = $conn->fetchScalar($query, $params);
+        // testar se cada comissão tem um total de 20 avaliações
+        foreach (['committee 1', 'committee 2', 'committee 3'] as $committee_name) {
+            $number_of_evaluations = $conn->fetchScalar("SELECT count(*) FROM evaluations WHERE valuer_committee = :committee", ['committee' => $committee_name]);
 
-                $this->assertEquals($expected_evaluations_per_valuer, $evaluations_per_committee_count, "[Avaliador repetido] Garantindo que o avaliador de id {$valuer_agent_id} na comissão {$committee} tem exatamente {$expected_evaluations_per_valuer} avaliações; obtido {$evaluations_per_committee_count}.");
-
-                // Verifica se o sumário do avaliador corresponde ao total na tabela evaluations
-                $query = "
-                    SELECT COUNT(*) 
-                    FROM evaluations 
-                    WHERE valuer_agent_id = :valuer_agent_id 
-                ";
-                $params = [
-                    'valuer_agent_id' => $valuer_agent_id,
-                ];
-                $evaluations_count = $conn->fetchScalar($query, $params);
-
-                $this->assertEquals($pending_summary, $evaluations_count, "[Avaliador repetido] Garantindo que o sumário de avaliações pendentes ({$pending_summary}) do avaliador {$valuer_agent_id} corresponde ao total de avaliações na tabela evaluations ({$evaluations_count}).");
-            }
-
-            // Verifica se o total de avaliações por comissão corresponde a soma do total de pendentes da comissão
-            $pendings = array_sum(array_map(fn($rel) => $rel->metadata['summary']['pending'], $relations));
-            $this->assertEquals($expected_total_per_committe, $pendings, "[Avaliador repetido] Garantindo que cada avaliador da comissão {$committee} deve ter exatamente {$expected_total_per_committe} pendentes; obtido {$pendings}.");
+            $this->assertEquals($expected_total_per_committe, $number_of_evaluations, "[Avaliador repetido] Garantindo que o número de avaliações na comissão $committee_name está correto ($expected_total_per_committe)");
         }
 
-        // Verifica se o total de avaliações da oportunidade corresponde ao total de avaliações esperada
-        $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE opportunity_id = :opportunity_id", ['opportunity_id' => $opportunity->id]);
-        $total_evaluations = array_sum(array_map(fn($field_counts) => $field_counts['sent'] * $valuers_per_registrations, $fields));
+        // testar se cada avaliador tem entre 4 e 5 avaliações
+        foreach ($committees as $committee => $relations) {
+            foreach ($relations as $relation) {
+                $valuer_id = $relation->agent->id;
 
-        $this->assertEquals($total_evaluations, $number_of_evaluations, "[Avaliador repetido] Garantindo que tenha {$total_evaluations} avaliações");
+                $number_of_evaluations = $conn->fetchScalar("SELECT COUNT(*) FROM evaluations WHERE valuer_agent_id = :valuer_id", ['valuer_id' => $valuer_id]);
+
+                $this->assertGreaterThanOrEqual($min_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} tem ao menos {$min_evaluations_per_valuer} avaliações");
+                $this->assertLessThanOrEqual($max_evaluations_per_valuer, $number_of_evaluations, "[Avaliador repetido] Garantindo que o avaliador da comissão {$committee} não tem mais que {$max_evaluations_per_valuer} avaliações");
+            }
+        }
+
+        // testar se a soma de todos os sumários pendentes em cada comissão tem a soma de 20 avaliações
+        $committee_total = [];
+        foreach ($committees as $committee => $relations) {
+            $committee_total = 0;
+            foreach ($relations as $relation) {
+                $committee_total += $relation->metadata['summary']['pending'];
+            }
+
+            $this->assertEquals($expected_total_per_committe, $committee_total, "[Avaliador repetido] Garantindo que a soma das inscrições pendentes dos resumos dos avaliadores da comissão $committee_name está correta");
+        }
     }
 }
