@@ -11,8 +11,8 @@ $this->import('
 ');
 ?>
 
-<div class="mc-summary-agent-info" :class="classes">
-    <div v-if="opportunity && canSee('agentsSummary')" class="mc-summary-agent-info__section">
+<div v-if="opportunity && canSee('agentsSummary')" class="mc-summary-agent-info" :class="classes">
+    <div  class="mc-summary-agent-info__section">
         <h3><?= i::__("Dados do proponente") ?></h3>
 
         <h4 v-if="owner.id"> <span class="bold"><?= i::__("ID:") ?></span> {{owner.id}} </h4>
