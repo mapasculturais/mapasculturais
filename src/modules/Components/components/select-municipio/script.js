@@ -33,7 +33,8 @@ app.component('select-municipio', {
             this.selectedState = option.value;
             const state = this.ibge[this.selectedState];
 
-            this.cities = state ? state.municipios : [];
+            // Força reatividade do array
+            this.cities = state ? [...state.municipios] : [];
             this.selectedCity = null;
         },
 
