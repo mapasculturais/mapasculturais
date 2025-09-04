@@ -191,31 +191,31 @@ abstract class Opportunity extends \MapasCulturais\Entity
      *
      * @ORM\Column(name="auto_publish", type="boolean", options={"default" : false})
      */
-    protected $autoPublish = false;
+    protected bool $autoPublish = false;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="status", type="smallint", nullable=false)
      */
-    protected $status = self::STATUS_ENABLED;
+    protected int $status = self::STATUS_ENABLED;
 
      /**
-     * @var string
+     * @var array
      *
      * @ORM\Column(name="registration_proponent_types", type="json", nullable=false)
      */
     protected array $registrationProponentTypes = [];
 
     /**
-     * @var string
+     * @var array
      *
      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
      */
     protected array $registrationRanges = [];
 
     /**
-     * @var \MapasCulturais\Entities\Opportunity
+     * @var Opportunity
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
      * @ORM\JoinColumns({
@@ -225,14 +225,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $parent;
 
     /**
-     * @var \MapasCulturais\Entities\Opportunity[] Children opportunities
+     * @var Opportunity[] Children opportunities
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Opportunity", mappedBy="parent", fetch="LAZY", cascade={"remove"})
      */
     protected $_children;
 
     /**
-     * @var \MapasCulturais\Entities\Agent
+     * @var Agent
      *
      * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
      * @ORM\JoinColumns({
@@ -242,7 +242,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $owner;
 
     /**
-     * @var \MapasCulturais\Entities\EvaluationMethodConfiguration
+     * @var EvaluationMethodConfiguration
      *
      * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy="opportunity")
      */
@@ -254,7 +254,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $__metadata;
 
     /**
-     * @var \MapasCulturais\Entities\OpportunityFile[] Files
+     * @var OpportunityFile[] Files
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
@@ -262,7 +262,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $__files;
 
     /**
-     * @var \MapasCulturais\Entities\OpportunityAgentRelation[] Agent Relations
+     * @var OpportunityAgentRelation[] Agent Relations
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
@@ -271,7 +271,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
 
     /**
-     * @var \MapasCulturais\Entities\OpportunityTermRelation[] TermRelation
+     * @var OpportunityTermRelation[] TermRelation
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
@@ -280,7 +280,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
 
     /**
-     * @var \MapasCulturais\Entities\OpportunitySealRelation[] OpportunitySealRelation
+     * @var OpportunitySealRelation[] OpportunitySealRelation
      *
      * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunitySealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
@@ -293,14 +293,14 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $__permissionsCache;
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
     protected $_subsiteId;
 
     /**
-    * @var \MapasCulturais\Entities\Subsite
+    * @var Subsite
     *
     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
     * @ORM\JoinColumns({
@@ -324,7 +324,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $avaliableEvaluationFields = [];
 
     /**
-     * @var dateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="continuous_flow", type="datetime", nullable=true)
      */
