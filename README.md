@@ -54,7 +54,6 @@ A plataforma já está em uso em diversos municipios, estados, no governo federa
 - Santa Luzia - http://mapacultural.santaluzia.mg.gov.br/
 - Santo André - https://culturaz.santoandre.sp.gov.br/
 - São Gonçalo do Amarante - https://mapacultural.saogoncalodoamarante.ce.gov.br/
-- São Paulo - https://spcultura.prefeitura.sp.gov.br/
 - São Bernardo - https://mapacultural.saobernardo.sp.gov.br/
 - Sarandi - https://cultura.sarandi.pr.gov.br/
 - Toledo/PR - https://cultura.toledo.pr.gov.br/
