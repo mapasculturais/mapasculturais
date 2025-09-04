@@ -19,7 +19,7 @@ app.component('panel--last-registrations', {
         const registrationAPI = new API('registration');
         
         const query = this.query;
-        query['@select'] = 'id,number,opportunity.{name,files.avatar,registrationFrom,registrationTo},owner.{name},category,range,proponentType,agentRelations,createTimestamp';
+        query['@select'] = 'id,number,status,opportunity.{name,files.avatar,registrationFrom,registrationTo},owner.{name},category,range,proponentType,agentRelations,createTimestamp';
         query['@order'] = 'updateTimestamp ASC';
         query['@permissions'] = 'view';
         query['status'] = 'GTE(0)';
