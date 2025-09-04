@@ -12,6 +12,7 @@ use Tests\Builders\PhasePeriods\ConcurrentEndingAfter;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Builders\PhasePeriods\Past;
 use Tests\Enums\EvaluationMethods;
+use Tests\Enums\ProponentTypes;
 use Tests\Traits\OpportunityBuilder;
 use Tests\Traits\RegistrationDirector;
 use Tests\Traits\UserDirector;
@@ -462,9 +463,10 @@ class EvaluationsDistributionTest extends TestCase
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
-            ->addProponentType('MEI')
-            ->addProponentType('Pessoa Jurídica')
-            ->addProponentType('Coletivo')
+            ->save()
+            ->addProponentType(ProponentTypes::PESSOA_FISICA)
+            ->addProponentType(ProponentTypes::MEI)
+            ->addProponentType(ProponentTypes::COLETIVO)
             ->firstPhase()
                 ->setRegistrationPeriod(new Open)
                 ->done()
@@ -472,11 +474,11 @@ class EvaluationsDistributionTest extends TestCase
             ->addEvaluationPhase(EvaluationMethods::simple)
                 ->setEvaluationPeriod(new ConcurrentEndingAfter)
                 ->setCommitteeValuersPerRegistration('committee 1', $valuers_per_registrations)
-                ->setCommitteeFilterProponentType('committee 1', ['MEI'])
+                ->setCommitteeFilterProponentType('committee 1', [ProponentTypes::PESSOA_FISICA->value])
                 ->setCommitteeValuersPerRegistration('committee 2', $valuers_per_registrations)
-                ->setCommitteeFilterProponentType('committee 2', ['Coletivo'])
+                ->setCommitteeFilterProponentType('committee 2', [ProponentTypes::MEI->value])
                 ->setCommitteeValuersPerRegistration('committee 3', $valuers_per_registrations)
-                ->setCommitteeFilterProponentType('committee 3', ['Pessoa Física'])
+                ->setCommitteeFilterProponentType('committee 3', [ProponentTypes::COLETIVO->value])
                 ->save()
                 ->addValuers($valuers_per_committe - 1, 'committee 1')
                 ->addValuers($valuers_per_committe - 1, 'committee 2')
@@ -484,14 +486,16 @@ class EvaluationsDistributionTest extends TestCase
                 ->addValuer('committee 1', $valuer->profile)
                 ->addValuer('committee 2', $valuer->profile)
                 ->done()
+
+            ->refresh()
             ->getInstance();
 
-
+        
         // 30 inscrições enviadas sendo 10 por tipos de proponente
         $proponent_types = [
-            'MEI' => ['sent' => $registrations_per_proponent_type, 'draft' => 3],
-            'Pessoa Jurídica' => ['sent' => $registrations_per_proponent_type, 'draft' => 3],
-            'Coletivo' => ['sent' => $registrations_per_proponent_type, 'draft' => 3],
+            ProponentTypes::PESSOA_FISICA->value => ['sent' => $registrations_per_proponent_type, 'draft' => 3],
+            ProponentTypes::MEI->value => ['sent' => $registrations_per_proponent_type, 'draft' => 3],
+            ProponentTypes::COLETIVO->value => ['sent' => $registrations_per_proponent_type, 'draft' => 3],
         ];
 
         // Cria inscrições "enviadas" e "rascunho" para cada tipo de proponente especificado
@@ -510,8 +514,6 @@ class EvaluationsDistributionTest extends TestCase
         }
 
         $opportunity->evaluationMethodConfiguration->redistributeCommitteeRegistrations();
-
-
 
         // atualiza o objeto da fase de avaliação para recarregar os metadados dos agentes relacionados
         $emc = $opportunity->evaluationMethodConfiguration->refreshed();
@@ -745,11 +747,11 @@ class EvaluationsDistributionTest extends TestCase
         $opportunity = $this->opportunityBuilder
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
-            ->addCategory('Cat1')
-            ->addCategory('Cat2')
-            ->addCategory('Cat3')
+            ->save()
             ->firstPhase()
                 ->setRegistrationPeriod(new Open)
+                ->createStep('etapa')
+                ->createField('cor', 'select', required:true, options:['Azul', 'Vermelho', 'Amarelo'])
                 ->done()
             ->save()
             ->addEvaluationPhase(EvaluationMethods::simple)
