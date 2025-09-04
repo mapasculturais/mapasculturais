@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.6.3] - 2025-09-04
 ### Correções
 - Corrige distribuição das comissões quando há avaliadores repetidos em comissões diferentes que tenham filtro configurados
 - Corrige resumo das avaliações dos avaliadores dentro das comissões, para exibir somente as avaliações da comissão
