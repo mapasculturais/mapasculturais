@@ -7,6 +7,7 @@ $avaliable_evaluationFields['range'] = true;
 $avaliable_evaluationFields['category'] = true;
 
 $app->view->jsObject['avaliableEvaluationFields'] = $avaliable_evaluationFields;
+$app->view->jsObject['viewUserEvaluation'] = $entity->canUser('viewUserEvaluation');
 
 $app->view->jsObject['bank_data_dict'] = [
     'account_types' => $app->config['module.registrationFieldTypes']['account_types'],
