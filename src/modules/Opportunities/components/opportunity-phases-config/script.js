@@ -81,6 +81,10 @@ app.component('opportunity-phases-config', {
         },
 
         publishTimestamp(phase) {
+            if(!phase.publishTimestamp) {
+                return null;
+            }
+
             if (phase.__objectType == 'opportunity') {
                 return phase.publishTimestamp;
             } 
