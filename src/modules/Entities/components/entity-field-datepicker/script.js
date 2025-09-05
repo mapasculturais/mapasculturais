@@ -18,11 +18,11 @@ app.component('entity-field-datepicker', {
             required: true
         },
         minDate: {
-            type: [ String, Date ],
+            type: [String, Date],
             default: null
         },
         maxDate: {
-            type: [ String, Date ],
+            type: [String, Date],
             default: null
         },
         propId: {
@@ -71,18 +71,18 @@ app.component('entity-field-datepicker', {
         }
     },
 
-    mounted () {
+    mounted() {
         this.initializeModels();
 
-        this.$watch(() => this.entity[this.prop], (newValue,oldValue) => {
-            if(!oldValue){
+        this.$watch(() => this.entity[this.prop], (newValue, oldValue) => {
+            if (!oldValue) {
                 this.initializeModels();
 
             }
         });
     },
 
-    data () {
+    data() {
         return {
             model: '',
             modelDate: '',
@@ -93,15 +93,15 @@ app.component('entity-field-datepicker', {
             isTimeInputFocused: false,
             locale: $MAPAS.config.locale,
             dayNames: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            dateTextInputOptions: {'format': 'dd/MM/yyyy'},
-            timeTextInputOptions: {'format': 'HH:mm'},
+            dateTextInputOptions: { 'format': 'dd/MM/yyyy' },
+            timeTextInputOptions: { 'format': 'HH:mm' },
         };
     },
 
     computed: {
         hasErrors() {
             let errors = this.entity.__validationErrors[this.prop] || [];
-            if(errors.length > 0){
+            if (errors.length > 0) {
                 return true;
             } else {
                 return false;
@@ -121,7 +121,7 @@ app.component('entity-field-datepicker', {
         },
 
         onChange(event, onInput) {
-            if(event instanceof InputEvent) {
+            if (event instanceof InputEvent) {
                 setTimeout(() => onInput(event), 50);
             }
         },
@@ -131,12 +131,12 @@ app.component('entity-field-datepicker', {
             if (mcdate == null || mcdate == '') {
                 return '';
             }
-            return mcdate.date('2-digit year');
+            return mcdate ? mcdate.date('2-digit year') : '';
         },
 
         timeFormat() {
             let mcdate = this.entity[this.prop];
-            return mcdate?.time('full');
+            return mcdate ? mcdate?.time('full') : '';
         },
 
         change(val) {
@@ -146,7 +146,7 @@ app.component('entity-field-datepicker', {
             }
             if (this.minDate && val < this.minDate) {
                 this.entity.__validationErrors[this.prop].push("Data abaixo do permitido");
-            }            
+            }
             this.$emit('change', val);
         },
 
@@ -164,10 +164,10 @@ app.component('entity-field-datepicker', {
         onDateInput() {
             if (this.modelDate && this.modelTime) {
                 let datetime = new McDate(this.modelDate)._date;
-                
+
                 datetime.setHours(this.modelTime.hours);
                 datetime.setMinutes(this.modelTime.minutes);
-        
+
                 this.change(datetime);
                 this.$emit('change', datetime);
             }
@@ -178,7 +178,7 @@ app.component('entity-field-datepicker', {
                 const [day, month, year] = this.dateInput.split('/');
                 if (day && month && year) {
                     this.modelDate = new McDate(`${year}-${month}-${day}`)._date;
-                    
+
                     // Verifica se modelTime está definido, se não, define com a hora atual
                     if (!this.modelTime) {
                         this.modelTime = {
@@ -187,7 +187,7 @@ app.component('entity-field-datepicker', {
                             seconds: 0
                         };
                     }
-        
+
                     this.updateDateTime();
                 }
             } else if (type === 'time' && this.timeInput?.length === 5) {
@@ -201,31 +201,59 @@ app.component('entity-field-datepicker', {
                     this.updateDateTime();
                 }
             }
+
+            if (type === 'date') {
+                this.inputValue('date');
+            } else if (type === 'time') {
+                this.inputValue('time');
+            }
         },
 
         inputValue(type) {
-            if (type === 'date' && this.dateInput.length === 10) {
-                const [day, month, year] = this.dateInput.split('/');
-                this.modelDate = new McDate(`${year}-${month}-${day}`)._date;
-            } else if (type === 'time' && this.timeInput.length === 5) {
-                const [hours, minutes] = this.timeInput.split(':');
-                this.modelTime = {
-                    hours: parseInt(hours, 10),
-                    minutes: parseInt(minutes, 10),
-                    seconds: 0
-                };
+            if (!this.dateInput) {
+                this.modelTime = '';
+                this.modelDate = '';
+                this.dateInput = '';
+                this.timeInput = '';
+            } else {
+                if (type === 'date' && this.dateInput.length === 10) {
+                    const [day, month, year] = this.dateInput.split('/');
+                    this.modelDate = new McDate(`${year}-${month}-${day}`)._date;
+                } else if (type === 'time' && this.timeInput.length === 5) {
+                    const [hours, minutes] = this.timeInput.split(':');
+                    this.modelTime = {
+                        hours: parseInt(hours, 10),
+                        minutes: parseInt(minutes, 10),
+                        seconds: 0
+                    };
+                }
             }
+
             this.updateDateTime();
         },
 
         updateDateTime() {
-            if (this.modelDate && this.modelTime) {
-                let datetime = new McDate(this.modelDate)._date;
-                datetime.setHours(this.modelTime.hours);
-                datetime.setMinutes(this.modelTime.minutes);
-                this.change(datetime); 
-                this.$emit('change', datetime);
+            let datetime = this.modelDate ? new McDate(this.modelDate)._date : "";
+
+            if (this.modelDate) {
+                if (!this.modelTime) {
+                    const now = new Date();
+                    this.modelTime = {
+                        hours: now.getHours(),
+                        minutes: now.getMinutes(),
+                        seconds: now.getSeconds()
+                    };
+                }
+
+                if (datetime) {
+                    datetime.setHours(this.modelTime.hours);
+                    datetime.setMinutes(this.modelTime.minutes);
+                    datetime.setSeconds(this.modelTime.seconds ?? 0);
+                }
             }
+
+            this.change(datetime);
+            this.$emit('change', datetime);
         },
 
         initializeModels() {
