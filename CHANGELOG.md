@@ -77,6 +77,18 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="hl-ibercultura"></a>
 5. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
 
+## [7.5.65] - 2025-09-04
+### Correções
+- Corrige erro que exibia os campos para o avaliador mesmo quando estavam bloqueados após o envio da avaliação.
+
+## [7.5.64] - 2025-08-30
+### Correções
+- Corrige ordenação por classificação quando não há faixas no edital
+
+## [7.5.63] - 2025-08-29
+### Correções
+- Corrige erro no componente entity-field-datepicker que impedia deixar vazios os campos de datas não obrigatórias
+
 ## [7.5.62] - 2025-08-28
 ### Correções
 - Corrige exibição da lista de últimas planilhas exportadas no componente mc-export-spreadsheet
