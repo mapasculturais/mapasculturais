@@ -456,7 +456,7 @@ return [
             $app->enableAccessControl();
         });
     },
-    'Reordena campo pessoa deficiente dos agentes' => function () use ($app) {
+    'Reordena campo pessoa deficiente dos agentes again' => function () use ($app) {
         $ajust_array_value = function ($value) {
             $result =  array_filter($value, function ($val) {
                 $val = trim($val);
@@ -470,7 +470,7 @@ return [
             $result = implode('","', $result);
             $result = '["' . $result . '"]';
 
-            return $result ?: [""];
+            return $result ?: [];
         };
 
         $app->disableAccessControl();

@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use DateTime;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
 
@@ -23,8 +24,9 @@ trait EntityOpportunityDuplicator {
         $this->duplicateRegistrationFieldsAndFiles();
         $this->duplicateMetalist();
         $this->duplicateFiles();
-        $this->duplicateAgentRelations();
-        $this->duplicateSealsRelations();
+        /** @todo Verificar a possibilidade de perguntar no momento da duplicação se deve ou não duplicar selos e agentes relacionados ao edital */
+        // $this->duplicateAgentRelations();
+        // $this->duplicateSealsRelations();
 
         $this->entityNewOpportunity->save(true);
        
@@ -52,6 +54,8 @@ trait EntityOpportunityDuplicator {
         $this->entityNewOpportunity->registrationCategories = $this->entityOpportunity->registrationCategories;
         $this->entityNewOpportunity->registrationProponentTypes = $this->entityOpportunity->registrationProponentTypes;
         $this->entityNewOpportunity->registrationRanges = $this->entityOpportunity->registrationRanges;
+        $this->entityNewOpportunity->owner = $app->user->profile;
+        $this->entityNewOpportunity->createTimestamp = new DateTime('now');
         $this->entityNewOpportunity->save(true);
 
         return $this->entityNewOpportunity;
@@ -76,11 +80,12 @@ trait EntityOpportunityDuplicator {
                 $newMethodConfiguration->save(true);
             }
 
-            foreach ($evaluationMethodConfiguration->getAgentRelations() as $agentRelation_) {
-                $agentRelation = clone $agentRelation_;
-                $agentRelation->owner = $newMethodConfiguration;
-                $agentRelation->save(true);
-            }
+            /** @todo Verificar possibilidade de questionar se deve ou não copiar a commisão de avaliação no momento da duplicação */
+            // foreach ($evaluationMethodConfiguration->getAgentRelations() as $agentRelation_) {
+            //     $agentRelation = clone $agentRelation_;
+            //     $agentRelation->owner = $newMethodConfiguration;
+            //     $agentRelation->save(true);
+            // }
         }
     }
 

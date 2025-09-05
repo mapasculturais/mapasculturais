@@ -21,6 +21,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aplicação de função `text` em textos do rodapé, permitindo a manipulação e personalização por meio de temas e plugins.
 - Tradução para o inglês (wip)
 - Verificação da existência de um metadado com a mesma chave antes de salvar o metadado
+- Ajustar a label do campo "E-mail pessoal" para "E-mail privado" nos agentes individuais e coletivos.
+
+### Correções
+- Impede que a funcionalidade de duplicar oportunidade duplique a commisão de avaliação do edital de origem
+- Impede que a funcionalidade de duplicação de oportunidade mantenha os selos relacionados do edital de origem no edital copiado
+- Impede que a funcionalidade de duplicação de oportunidade mantenha os agentes relacionados do edital de origem no edital copiado
+- Impede que a data de criação permaneca igual ao edital original na funcionalidade de duplicar oportunidade
+- Impede que a funcionalidade de duplicação de oportunidade mantenha o mesmo dono do edital de origem no edital copiado
 
 ### Correções
 - Corrige componente `opportunity-owner-type` que estava quebrada com as novas traduções do ES e EN
