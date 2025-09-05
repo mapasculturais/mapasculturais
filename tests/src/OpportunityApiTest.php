@@ -32,6 +32,21 @@ class OpportunityApiTest extends TestCase
 
         $space = $this->spaceDirector->createSpace($admin->profile);
         $opportunities = [];
+        $names = [
+            1 => 'Ana',
+            2 => 'Beatriz',
+            3 => 'Carolina',
+            4 => 'Daniela',
+            5 => 'Eduarda',
+            6 => 'Fabi',
+            7 => 'Gabriela',
+            8 => 'Helena',
+            9 => 'Iara',
+            10 => 'Juliana',
+            11 => 'Kelly',
+            12 => 'Laura',
+            13 => 'Maria'
+        ];
 
         for($i = 1; $i <= 13; $i++) {
             $owner_entity = $i % 2 === 0 ? $admin->profile : $space;
@@ -39,6 +54,7 @@ class OpportunityApiTest extends TestCase
             $opportunities[] = $this->opportunityBuilder
                 ->reset(owner: $admin->profile, owner_entity: $owner_entity)
                 ->fillRequiredProperties()
+                ->setName($names[$i])
                 ->firstPhase()
                     ->setRegistrationPeriod(new Open)
                     ->done()
@@ -48,7 +64,7 @@ class OpportunityApiTest extends TestCase
         }
         
         usort($opportunities, function($o1, $o2) {
-            $result = $o1->name <=> $o2->name;
+            $result = strtolower($o1->name) <=> strtolower($o2->name);
             
             if($result) {
                 return $result;

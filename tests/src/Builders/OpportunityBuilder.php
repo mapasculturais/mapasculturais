@@ -23,6 +23,7 @@ class OpportunityBuilder extends Builder
         Traits\EntityType,
         Traits\SealRelations,
         Traits\Taxonomies,
+        Traits\EntityName,
 
         UserDirector;
 
