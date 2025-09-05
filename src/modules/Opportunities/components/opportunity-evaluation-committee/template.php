@@ -20,6 +20,7 @@ $this->import('
 ?>
 <div class="opportunity-evaluation-committee">
     <div class="opportunity-evaluation-committee__header">
+        <?php $this->applyComponentHook('select-entity', 'begin'); ?>
         <select-entity v-if="!showDisabled" type="agent" :select="queryString" :query="query" @select="selectAgent($event)" openside="down-right" permissions="">
             <template #button="{ toggle }">
                 <button class="button button--icon button--primary button--md" @click="toggle()">
@@ -28,6 +29,7 @@ $this->import('
                 </button>
             </template>
         </select-entity>
+        <?php $this->applyComponentHook('select-entity', 'end'); ?>
 
         <div v-if="showReviewers" class="opportunity-evaluation-committee__expand-button">
             <button class="button button--icon button--primary" @click="expandAllToggles()">
