@@ -721,21 +721,14 @@ class ApiQuery {
     }
 
     private $__inGetSubClassesResult = false;
+    private $_idsFilter = [];
     protected function getSubClassesResult() {
-        $app = App::i();
         $ids = $this->findIds();
 
-        $app->hook('ApiQuery(Opportunity).where', function (&$where) use($app, $ids) {
-            if($this->__inGetSubClassesResult) {
-                $ids = $ids ?: [-1];
-                $_ids = implode(',', $ids);
-                $where .= " AND e.id IN ($_ids)";
-            }
-        });
-        
         $entities = [];
         $subclasses = $this->entityClassMetadata->subClasses;
         $main_class = $this->entityClassName;
+        $this->_idsFilter = $ids;
         foreach($subclasses as $subclass) {
             $this->entityClassName = $subclass;
             $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
@@ -748,6 +741,7 @@ class ApiQuery {
 
             $entities = array_merge($entities, $subclass_result);
         }
+        $this->_idsFilter = [];
         $this->entityClassName = $main_class;
         $this->entityClassMetadata = $this->em->getClassMetadata($this->entityClassName);
         $this->entityProperties = array_keys($this->entityClassMetadata->fieldMappings);
@@ -761,6 +755,7 @@ class ApiQuery {
                 }
             }
         }
+
         return $result;
     }
 
@@ -777,7 +772,7 @@ class ApiQuery {
     }
     
     private $__inSubclassesQuery = false;
-    public function getFindResult(string $select = null) {
+    public function getFindResult(?string $select = null) {
         $app = App::i();
 
         $cache_key = $this->getCacheKey(__METHOD__, $select, $this->getOffset(), $this->getLimit());
@@ -1147,6 +1142,11 @@ class ApiQuery {
                 $userID = App::i()->user->id;
                 $where = "$where OR e.userId = {$userID}"; //Adiciona todos os agentes pertecentes ao usuário a resposta.
             }
+        }
+
+        if($this->_idsFilter) {
+            $ids = implode(',', $this->_idsFilter);
+            $where .= " AND e.id in ($ids) "; 
         }
 
         $app->applyHookBoundTo($this, "{$this->hookPrefix}.where", [&$where]);
