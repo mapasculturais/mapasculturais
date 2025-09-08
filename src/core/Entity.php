@@ -153,7 +153,6 @@ abstract class Entity implements \JsonSerializable{
         }
 
         $this->refresh();
-        
         return $this->repo()->find($this->id);
     }
 
@@ -913,7 +912,7 @@ abstract class Entity implements \JsonSerializable{
 
     function isUpdateTimestampEnabled(): bool
     {
-        return $this->__updateTimestampEnabled >= 0;
+        return $this->__updateTimestampEnabled > 0;
     }
 
     /**
