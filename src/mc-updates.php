@@ -655,34 +655,6 @@ return [
                 }
             }
         });
-
-    },
-    
-    'Atualiza valores do campo comunidadesTradicional' => function () {
-        $app = App::i();
-
-        $mapping = [
-            'Comunidade extrativista' => 'Extrativistas',
-            'Comunidade ribeirinha' => 'Ribeirinhos',
-            'Povos indígenas/originários' => 'Povos indígenas',
-            'Comunidades de pescadores(as) artesanais' => 'Pescadores artesanais',
-            'Povos de terreiro' => 'Povos e comunidades de terreiro/povos e comunidades de matriz africana',
-            'Povos de quilombola' => 'Quilombolas', 
-            'Pomeranos' => 'Povo Pomerano',
-        ];
-
-        DB_UPDATE::enqueue('Agent', 'id > 0', function (MapasCulturais\Entities\Agent $agent) use ($mapping, $app) {
-            
-            $comunidade_tradicional = $agent->comunidadesTradicional ?: null;
-
-            if($comunidade_tradicional && isset($mapping[$comunidade_tradicional])) {
-
-                $result =  $mapping[$comunidade_tradicional]; 
-                $agent->comunidadesTradicional =  $result; 
-                $app->log->debug("Agente {$agent->id} - Comunidade tradicional atualizado de '{$comunidade_tradicional}' para '{$result}'");
-                $agent->save(true);
-            }
-        });
     },
 
 ];
