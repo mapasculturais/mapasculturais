@@ -679,7 +679,7 @@ return [
                 FROM agent_meta 
                 WHERE 
                     key = 'comunidadesTradicional' AND 
-                    values IN ($old_values)
+                    value IN ($old_values)
                 )";
 
         DB_UPDATE::enqueue('Agent', $agents_where, function (MapasCulturais\Entities\Agent $agent) use ($mapping, $app) {
