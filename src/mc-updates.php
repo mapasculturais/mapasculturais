@@ -651,6 +651,7 @@ return [
 
                 if($areas != $result) {
                     $agent->terms['area'] = $result;
+                    $agent->disableUpdateTimestamp();
                     $agent->save(true);
                 }
             }
