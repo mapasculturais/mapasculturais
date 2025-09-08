@@ -38,9 +38,14 @@ class EntitiesTest extends TestCase
         $space = $this->spaceDirector->createSpace($user->profile);
         $collective = $this->agentDirector->createCollective($user->profile);
 
-        $this->assertNotNull($user->profile->updateTimestamp, 'Garantindo que o updateTimestamp de um USER PROFILE recém criado não está vazio ');
-        $this->assertNotNull($space->updateTimestamp, 'Garantindo que o updateTimestamp de um ESPAÇO recém criado não está vazio');
-        $this->assertNotNull($collective->updateTimestamp, 'Garantindo que o updateTimestamp de um ESPAÇO recém criado não está vazio');
+        $this->assertNotNull($user->profile->updateTimestamp, 
+            'Garantindo que o updateTimestamp de um USER PROFILE recém criado não está vazio ');
+
+        $this->assertNotNull($space->updateTimestamp, 
+            'Garantindo que o updateTimestamp de um ESPAÇO recém criado não está vazio');
+
+        $this->assertNotNull($collective->updateTimestamp, 
+            'Garantindo que o updateTimestamp de um ESPAÇO recém criado não está vazio');
 
         sleep(1);
 
@@ -48,23 +53,27 @@ class EntitiesTest extends TestCase
         $space->name = "nome do espaço modificado";
         $space->save(true);
 
-        $this->assertGreaterThan($initial_space_timestamp, $space->updateTimestamp, 'Garantindo que a data de atualização do espaço foi atualizada');
+        $this->assertGreaterThan($initial_space_timestamp, $space->updateTimestamp, 
+            'Garantindo que a data de atualização do espaço foi atualizada');
 
         $update_timestmap = new DateTime($space->updateTimestamp->format('Y-m-d H:i:s'));
         $space = $space->refreshed();
 
-        $this->assertEquals($update_timestmap, $space->updateTimestamp, 'Garantindo que a data de atualização do espaço foi salva no banco de dados');
+        $this->assertEquals($update_timestmap, $space->updateTimestamp, 
+            'Garantindo que a data de atualização do espaço foi salva no banco de dados');
 
         $initial_collective_timestamp = new DateTime($collective->updateTimestamp->format('Y-m-d H:i:s'));
         $collective->name = "nome do coletivo modificado";
         $collective->save(true);
 
-        $this->assertGreaterThan($initial_collective_timestamp, $collective->updateTimestamp, 'Garantindo que a data de atualização do coletivo foi atualizada');
+        $this->assertGreaterThan($initial_collective_timestamp, $collective->updateTimestamp, 
+            'Garantindo que a data de atualização do coletivo foi atualizada');
 
         $update_timestmap = new DateTime($collective->updateTimestamp->format('Y-m-d H:i:s'));
         $collective = $collective->refreshed();
 
-        $this->assertEquals($update_timestmap, $collective->updateTimestamp, 'Garantindo que a data de atualização do coletivo foi salva no banco de dados');
+        $this->assertEquals($update_timestmap, $collective->updateTimestamp, 
+            'Garantindo que a data de atualização do coletivo foi salva no banco de dados');
 
     }
 
@@ -85,7 +94,6 @@ class EntitiesTest extends TestCase
         $this->assertTrue($space->isUpdateTimestampEnabled(), 
             'Garantindo que a flag autoUpdateTimestamp fica ativa após chamar o método enableUpdateTimestamp()');
 
-
     }
 
     function testDisableAutoUpdateTimestamp()
@@ -96,9 +104,14 @@ class EntitiesTest extends TestCase
         $space = $this->spaceDirector->createSpace($user->profile);
         $collective = $this->agentDirector->createCollective($user->profile);
 
-        $this->assertNotNull($user->profile->updateTimestamp, 'Garantindo que o updateTimestamp de um USER PROFILE recém criado não está vazio ');
-        $this->assertNotNull($space->updateTimestamp, 'Garantindo que o updateTimestamp de um ESPAÇO recém criado não está vazio');
-        $this->assertNotNull($collective->updateTimestamp, 'Garantindo que o updateTimestamp de um ESPAÇO recém criado não está vazio');
+        $this->assertNotNull($user->profile->updateTimestamp, 
+            'Garantindo que o updateTimestamp de um USER PROFILE recém criado não está vazio ');
+
+        $this->assertNotNull($space->updateTimestamp, 
+            'Garantindo que o updateTimestamp de um ESPAÇO recém criado não está vazio');
+
+        $this->assertNotNull($collective->updateTimestamp, 
+            'Garantindo que o updateTimestamp de um ESPAÇO recém criado não está vazio');
 
         sleep(1);
 
@@ -108,7 +121,8 @@ class EntitiesTest extends TestCase
         $space->name = "nome do espaço modificado";
         $space->save(true);
 
-        $this->assertEquals($initial_space_timestamp, $space->updateTimestamp, 'Garantindo que a data de atualização do espaço NÂO foi atualizada após salvamento com a flag disableUpdateTimestamp');
+        $this->assertEquals($initial_space_timestamp, $space->updateTimestamp, 
+            'Garantindo que a data de atualização do espaço NÂO foi atualizada após salvamento com a flag disableUpdateTimestamp');
 
         // testa com entidade Agent
         $initial_collective_timestamp = $collective->updateTimestamp;
@@ -116,6 +130,7 @@ class EntitiesTest extends TestCase
         $collective->name = "nome do coletivo modificado";
         $collective->save(true);
 
-        $this->assertEquals($initial_collective_timestamp, $collective->updateTimestamp, 'Garantindo que a data de atualização do coletivo foi atualizada');
+        $this->assertEquals($initial_collective_timestamp, $collective->updateTimestamp, 
+            'Garantindo que a data de atualização do coletivo foi atualizada');
     }
 }
