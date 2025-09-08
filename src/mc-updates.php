@@ -657,7 +657,7 @@ return [
         });
 
     },
-    
+
     'Atualiza valores do campo comunidadesTradicional' => function () {
         $app = App::i();
 
@@ -667,18 +667,31 @@ return [
             'Povos indígenas/originários' => 'Povos indígenas',
             'Comunidades de pescadores(as) artesanais' => 'Pescadores artesanais',
             'Povos de terreiro' => 'Povos e comunidades de terreiro/povos e comunidades de matriz africana',
-            'Povos de quilombola' => 'Quilombolas', 
+            'Povos de quilombola' => 'Quilombolas',
             'Pomeranos' => 'Povo Pomerano',
         ];
 
-        DB_UPDATE::enqueue('Agent', 'id > 0', function (MapasCulturais\Entities\Agent $agent) use ($mapping, $app) {
-            
+        $old_values = implode(',', array_map(fn($value) => "'$value'", array_keys($mapping)));
+
+        $agents_where = "
+            id IN (
+                SELECT object_id 
+                FROM agent_meta 
+                WHERE 
+                    key = 'comunidadesTradicional' AND 
+                    values IN ($old_values)
+                )";
+
+        DB_UPDATE::enqueue('Agent', $agents_where, function (MapasCulturais\Entities\Agent $agent) use ($mapping, $app) {
+
+            $agent->disableUpdateTimestamp();
+
             $comunidade_tradicional = $agent->comunidadesTradicional ?: null;
 
-            if($comunidade_tradicional && isset($mapping[$comunidade_tradicional])) {
+            if ($comunidade_tradicional && isset($mapping[$comunidade_tradicional])) {
 
-                $result =  $mapping[$comunidade_tradicional]; 
-                $agent->comunidadesTradicional =  $result; 
+                $result =  $mapping[$comunidade_tradicional];
+                $agent->comunidadesTradicional =  $result;
                 $app->log->debug("Agente {$agent->id} - Comunidade tradicional atualizado de '{$comunidade_tradicional}' para '{$result}'");
                 $agent->save(true);
             }
