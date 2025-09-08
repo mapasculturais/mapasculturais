@@ -45,7 +45,10 @@ app.component('country-address-form', {
             this.processing = true;
             this.entity.address_level0 = this.country;   
             this.clearFields();
-            this.getLevelHierarchy();
+
+            this.$nextTick(() => {
+                this.getLevelHierarchy();
+            });
         },
 
         clearFields() {
