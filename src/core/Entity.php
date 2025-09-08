@@ -80,7 +80,14 @@ abstract class Entity implements \JsonSerializable{
      */
     protected $__enableMagicGetterHook = false;
     protected $__enableMagicSetterHook = false;
-
+    
+    /**
+     * Flag para desabilitar a atualização do updateTimestamp no save
+     * 
+     * a flag está ativa se o valor igual ou maior que 1
+     * @var int
+     */
+    private int $__updateTimestampEnabled = 1;
 
     /**
      * Creates the new empty entity object adding an empty point to properties of type 'point' and,
@@ -128,7 +135,11 @@ abstract class Entity implements \JsonSerializable{
     }
 
     function refresh(){
-        App::i()->em->refresh($this);
+        $app = App::i();
+
+        if($app->em->contains($this)) {
+            $app->em->refresh($this);
+        }
     }
 
     /** 
@@ -137,6 +148,11 @@ abstract class Entity implements \JsonSerializable{
      * @return self
      */
     function refreshed() {
+        if ($this->isNew()) {
+            return $this;
+        }
+
+        $this->refresh();
         return $this->repo()->find($this->id);
     }
 
@@ -884,6 +900,21 @@ abstract class Entity implements \JsonSerializable{
         return App::i()->em->getUnitOfWork()->getEntityState($this);
     }
 
+    function disableUpdateTimestamp(): void
+    {
+        $this->__updateTimestampEnabled--;
+    }
+
+    function enableUpdateTimestamp(): void
+    {
+        $this->__updateTimestampEnabled++;
+    }
+
+    function isUpdateTimestampEnabled(): bool
+    {
+        return $this->__updateTimestampEnabled > 0;
+    }
+
     /**
      * Persist the Entity optionally flushing
      *
@@ -1385,7 +1416,7 @@ abstract class Entity implements \JsonSerializable{
 
         $this->computeChangeSets();
         
-        if (property_exists($this, 'updateTimestamp')) {
+        if (property_exists($this, 'updateTimestamp') && $this->isUpdateTimestampEnabled()) {
             $this->updateTimestamp = new \DateTime;
         }
     }
