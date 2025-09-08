@@ -135,7 +135,11 @@ abstract class Entity implements \JsonSerializable{
     }
 
     function refresh(){
-        App::i()->em->refresh($this);
+        $app = App::i();
+
+        if($app->em->contains($this)) {
+            $app->em->refresh($this);
+        }
     }
 
     /** 
@@ -144,6 +148,12 @@ abstract class Entity implements \JsonSerializable{
      * @return self
      */
     function refreshed() {
+        if ($this->isNew()) {
+            return $this;
+        }
+
+        $this->refresh();
+        
         return $this->repo()->find($this->id);
     }
 
