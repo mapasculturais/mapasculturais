@@ -11,7 +11,7 @@ use MapasCulturais\Entities\Space;
 trait EntityParent {
     function setParent(Agent|Space|Project|Opportunity|null $parent = null): self
     {
-        if($parent && $parent->getClassName() || $this->instance->getClassName()) {
+        if($parent && $parent->getClassName() != $this->instance->getClassName()) {
             throw new Exception("o tipo do parent deve ser igual ao da entidade");
         }
         
