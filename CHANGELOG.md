@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige componente entity-activity-card que quebrava pela falta do use da classe de internacionalização
 - Corrige layout da página de busca de eventos
 - Botão de solicitar recurso em fases avançadas do edital
+- Corrige exibição do campo de estados na estrutura de endereço internacional
 
 ### Melhorias e correções não funcionais
 - Flag para desabilitar a atualização automática do update_timestamp das entidades
