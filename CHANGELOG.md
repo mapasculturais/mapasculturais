@@ -8,6 +8,12 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Correções
 - Implementa mc-update para normalização das comunidades Tradicionais 
+- Corrige o método refreshed das entidades
+- Corrige componente entity-activity-card que quebrava pela falta do use da classe de internacionalização
+- Corrige layout da página de busca de eventos
+
+### Melhorias e correções não funcionais
+- Flag para desabilitar a atualização automática do update_timestamp das entidades
 
 ## [7.6.3] - 2025-09-04
 ### Correções
