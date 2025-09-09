@@ -24,10 +24,6 @@ app.component('registration-status', {
         return {
             processing: false, 
             entity: null,
-            appealPhaseRegistrationFrom: this.registration.opportunity.appealPhase?.registrationFrom,
-            appealPhaseRegistrationTo: this.registration.opportunity.appealPhase?.registrationTo,
-            appealPhaseEvaluationFrom: this.registration.opportunity.appealPhase?.evaluationMethodConfiguration.evaluationFrom,
-            appealPhaseEvaluationTo: this.registration.opportunity.appealPhase?.evaluationMethodConfiguration.evaluationTo,
         }
     },
 
@@ -145,31 +141,33 @@ app.component('registration-status', {
         },
 
         dateFrom() {
-			if (this.appealPhaseRegistrationFrom) {
-				return this.appealPhaseRegistrationFrom.date('2-digit year');
-			}	
-			if (this.appealPhaseEvaluationFrom) {
-				return this.appealPhaseEvaluationFrom.date('2-digit year');
+			if (this.appealPhase?.registrationFrom) {
+				return this.appealPhase?.registrationFrom.date('2-digit year');
+			}
+
+			if (this.appealPhase?.evaluationMethodConfiguration?.evaluationFrom) {
+				return this.appealPhase?.evaluationMethodConfiguration?.evaluationFrom.date('2-digit year');
 			}
 			return false;
 		},
 
 		dateTo() {
-			if (this.appealPhaseRegistrationTo) {
-				return this.appealPhaseRegistrationTo.date('2-digit year');
-			}	
-			if (this.appealPhaseEvaluationTo) {
-				return this.appealPhaseEvaluationTo.date('2-digit year');
+			if (this.appealPhase?.registrationTo) {
+				return this.appealPhase?.registrationTo?.date('2-digit year');
+			}
+
+			if (this.appealPhase?.evaluationMethodConfiguration?.evaluationTo) {
+				return this.appealPhase?.evaluationMethodConfiguration?.evaluationTo?.date('2-digit year');
 			}
 			return false;
 		},
 
 		hour() {
-			if (this.appealPhaseRegistrationTo) {
-				return this.appealPhaseRegistrationTo.time();
+			if (this.appealPhase?.registrationTo) {
+				return this.appealPhase?.registrationTo?.time();
 			}
-			if (this.appealPhaseEvaluationTo) {
-				return this.appealPhaseEvaluationTo.time();
+			if (this.appealPhase?.evaluationMethodConfiguration?.evaluationTo) {
+				return this.appealPhase?.evaluationMethodConfiguration?.evaluationTo.time();
 			}
 			return false;
 		},
