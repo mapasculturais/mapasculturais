@@ -1129,7 +1129,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
         $total = 0;
 
         if($cfg = $evaluation->getEvaluationMethodConfiguration()) {
-            foreach($cfg->criteria as $cri){
+            foreach(($cfg->criteria ?: []) as $cri){
                 $key = $cri->id;
                 if(!isset($evaluation->evaluationData->$key)){
                     return null;
