@@ -17,7 +17,7 @@ $this->import('
     <div class="opportunity-phases-timeline__status">
         <mc-icon name="circle" :class="verifyState(registration)"></mc-icon>
         <p>
-            {{showRegistrationStatus(registration.status)}}
+            {{showRegistrationStatus(registration)}}
         </p>
     </div>
 
@@ -67,7 +67,7 @@ $this->import('
                 <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
                 <div class="opportunity-phases-timeline__status">
                     <mc-icon name="circle" :class="verifyState(appealRegistration)"></mc-icon>
-                    <p>{{showRegistrationStatus(appealRegistration.status)}}</p>
+                    <p>{{showRegistrationStatus(appealRegistration)}}</p>
                 </div>
             </div>
             <registration-results :registration="appealRegistration" :phase="appealRegistration.opportunity.evaluationMethodConfiguration"></registration-results>

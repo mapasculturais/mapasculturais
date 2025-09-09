@@ -79,7 +79,7 @@ app.component('registration-status', {
         },
 
         statuses() {
-            return $MAPAS.config.registrationStatus.statuses || [];
+            return this.registration.opportunity.statusLabels;
         }
     },
 
@@ -193,24 +193,24 @@ app.component('registration-status', {
             return types.includes(phase.type) || phase.publishEvaluationDetails;
         },
 
-        showRegistrationStatus(status) {
-            if(this.registration.opportunity?.isReportingPhase) {
-               return this.phase.opportunity.statusLabels[status];
+        showRegistrationStatus(registration) {
+            if(registration.opportunity?.isReportingPhase) {
+               return this.phase.opportunity.statusLabels[registration.status];
             }
             
-            if(this.appealRegistration?.id) {
-                return this.phase.appealPhase.statusLabels[status];
+            if(registration.opportunity.isAppealPhase) {
+                return this.phase.appealPhase.statusLabels[registration.status];
             }
 
-            if(status == 0) {
+            if(registration.status == 0) {
                 return this.text('Não enviada');
             }
 
-            if(status == 1) {
+            if(registration.status == 1) {
                 return this.text('Enviada');
             }
 
-            return this.statuses[status];
+            return this.statuses[registration.status];
         }
     }
 });
