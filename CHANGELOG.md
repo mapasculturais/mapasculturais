@@ -13,6 +13,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige layout da página de busca de eventos
 - Botão de solicitar recurso em fases avançadas do edital
 - Corrige exibição do campo de estados na estrutura de endereço internacional
+- Corrige listagem de avaliações da fase de recuros
+- Corrige exibição do status na teela de acompanhamento
 
 ### Melhorias e correções não funcionais
 - Flag para desabilitar a atualização automática do update_timestamp das entidades
