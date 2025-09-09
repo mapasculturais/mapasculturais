@@ -14,7 +14,7 @@ foreach ($phases as $phase) {
         $phase_evaluations[$phase->opportunity->id] = [];
 
         $registration = $app->repo('Registration')->findOneBy([
-            'opportunity' => $phase->opportunity,
+            'opportunity' => $phase->opportunity->id,
             'number' => $registration_number
         ]);
 

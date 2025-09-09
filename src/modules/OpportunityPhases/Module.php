@@ -540,12 +540,19 @@ class Module extends \MapasCulturais\Module{
                         $app->applyHook('module(OpportunityPhases).evaluationPhaseData', [&$mout_simplify]);
 
                         $item = $emc->simplify("{$mout_simplify},opportunity,infos,evaluationFrom,evaluationTo");
-                        $item->appealPhase = $emc->appealPhase;
+                        if($appeal_phase = $emc->appealPhase) {
+                            $item->appealPhase = $appeal_phase;
+                            $item->opportunity = $opportunity->simplify('id,isFirstPhase,isLastPhase,isReportingPhase,isLastReportingPhase,files,statusLabels');
+                            $item->opportunity->appealPhase = $appeal_phase;
+                            
+                        }
+                        
 
                         $result[] = $item;
                     }
                 }
             }
+
             $app->enableAccessControl();
 
             $value = $result;
