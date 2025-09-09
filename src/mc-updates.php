@@ -651,13 +651,14 @@ return [
 
                 if($areas != $result) {
                     $agent->terms['area'] = $result;
+                    $agent->disableUpdateTimestamp();
                     $agent->save(true);
                 }
             }
         });
 
     },
-
+    
     'Atualiza valores do campo comunidadesTradicional' => function () {
         $app = App::i();
 
