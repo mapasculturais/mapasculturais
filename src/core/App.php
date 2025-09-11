@@ -1801,7 +1801,7 @@ class App {
         }
 
         /** @var Entities\Job $job */
-        if ($job = $this->repo('Job')->find($id)) {
+        if (!$replace && ($job = $this->repo('Job')->find($id))) {
             $job_create_timestamp = $job->createTimestamp;
 
             // o job tem mais que 5 minutos?
