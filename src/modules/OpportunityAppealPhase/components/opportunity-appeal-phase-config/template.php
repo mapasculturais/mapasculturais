@@ -138,6 +138,13 @@ $this->import('
                 <div class="opportunity-appeal-phase-config__checkboxes field">
                     <entity-field class="input-box" :entity="entity" hide-required  :editable="true" prop="allow_proponent_response" :autosave="3000"></entity-field>
                 </div> 
+
+                <mc-alert v-if="entity.allow_proponent_response" type="warning" class="entity-owner-pending">
+                    <div>
+                        <?= i::__('Ao habilitar esta função, o detalhamento das avaliações ficará disponível para consulta mesmo antes da divulgação oficial do resultado da fase') ?></strong>
+                    </div>
+                </mc-alert>
+
                 <div class="opportunity-appeal-phase-config__config-button opportunity-appeal-phase-config__add-evaluation-committee">
                     <opportunity-committee-groups :entity="entity.evaluationMethodConfiguration"></opportunity-committee-groups>
                 </div>
