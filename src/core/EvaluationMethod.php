@@ -287,6 +287,17 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     }
 
     /**
+     * Retorna se os detalhes de uma avaliação pode ou não serem exibidos
+     *
+     * @param Registration $registration
+     * @return boolean
+     */
+    function shouldDisplayEvaluationResults(Registration $registration): bool
+    {
+        return $registration->opportunity->publishedRegistrations && $registration->opportunity->evaluationMethodConfiguration->publishEvaluationDetails;
+    }
+
+    /**
      * Retorna os detalhes consolidados de uma inscrição
      * 
      * @param Entities\Registration $registration
