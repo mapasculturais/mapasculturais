@@ -59,7 +59,7 @@ class AutoApplicationResult extends JobType
             }
 
             if ($evaluation_type == 'documentary') {
-                $value = $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
+                $value = $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_INVALID;
             }
 
             if ($evaluation_type == 'qualification') {
