@@ -1134,7 +1134,7 @@ class Module extends \MapasCulturais\Module{
                 }
             }
             if(!$has_new_seal){
-                $agent->createSealRelation($seal);
+                $agent->createSealRelation($seal, agent: $agent);
             }
         }
     }
