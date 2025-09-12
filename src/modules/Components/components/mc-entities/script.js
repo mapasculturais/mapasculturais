@@ -102,7 +102,7 @@ app.component('mc-entities', {
             }
 
             if (this.ids) {
-                query[this.API.$PK] = 'IN(' + this.ids.join(',') + ')'
+                query[this.api.$PK] = 'IN(' + this.ids.join(',') + ')'
             }
 
             if (this.order) {
