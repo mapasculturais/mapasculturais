@@ -557,4 +557,15 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return null;
     }
 
+    /**
+     * Retorna se os detalhes de uma avaliação pode ou não serem exibidos
+     *
+     * @param Registration $registration
+     * @return boolean
+     */
+    function shouldDisplayEvaluationResults(Registration $registration): bool
+    {
+        return $registration->opportunity->publishedRegistrations || $registration->opportunity->allow_proponent_response;
+    }
+
 }
