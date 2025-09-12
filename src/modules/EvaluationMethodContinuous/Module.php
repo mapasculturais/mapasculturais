@@ -350,13 +350,13 @@ class Module extends \MapasCulturais\EvaluationMethod {
             if ($this->thread->ownerEntity instanceof Entities\Registration && 
                 $this->thread->ownerEntity->evaluationMethod instanceof $self && 
                 $app->user->canUser('evaluateOnTime')) {
-                    $data = (object) $this->payload;
+                    $payload = (object) $this->payload;
 
                     // altera o status de uma avaliação de acordo com o status da mensagem do chat
                     $evaluation = $app->repo('RegistrationEvaluation')->findOneBy(['registration' => $this->thread->ownerEntity]);
-                    if ($evaluation && isset($data->status)) {
+                    if ($evaluation && isset($payload->status)) {
 
-                        $evaluation->result = $data->status;
+                        $evaluation->result = $payload->status;
                         $app->disableAccessControl();
                         $evaluation->save(true);
                         $app->enableAccessControl();
@@ -369,7 +369,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                                 'registrationEvaluation' => $evaluation,
                                 'registration' => $registration,
                                 'opportunity' => $opportunity,
-                                'newStatus' => $data->status 
+                                'newStatus' => $payload->status 
                             ];
             
                             $start_string = (new DateTime())->modify('+1 minute 20 seconds')->format('Y-m-d H:i:s');
@@ -378,7 +378,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                     }
 
                     // altera o status do chat de acordo com o checkbox `endChat` da mensagem
-                    $end_chat = $data->endChat ?? false;
+                    $end_chat = $payload->endChat ?? false;
                     if ($end_chat) {
                         $thread = $app->repo('ChatThread')->findOneBy(['id' => $this->thread->id]);
                         if ($thread) {
