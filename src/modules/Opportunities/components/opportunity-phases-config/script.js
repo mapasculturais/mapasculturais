@@ -81,7 +81,8 @@ app.component('opportunity-phases-config', {
         },
 
         publishTimestamp(phase) {
-            if(!phase.publishTimestamp) {
+            const _phase = phase.__objectType == "evaluationmethodconfiguration" ? phase.opportunity : phase;
+            if(!_phase.publishTimestamp) {
                 return null;
             }
 
