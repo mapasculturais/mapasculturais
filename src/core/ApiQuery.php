@@ -1776,7 +1776,9 @@ class ApiQuery {
                             if($original_select === $this->pk){
                                 $subquery_result_index[$r[$_target_property]] = $r[$this->pk];
                             } else {
-                                $subquery_result_index[$r[$_target_property]] = &$r;
+                                $_target_id = $r[$_target_property]['id'] ?? $r[$_target_property];
+                                
+                                $subquery_result_index[$_target_id] = &$r;
                                 if(!in_array($_target_property, $query->_selecting)){
                                     unset($subquery_result[$_target_property]);
                                 }
