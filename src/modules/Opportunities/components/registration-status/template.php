@@ -62,7 +62,7 @@ $this->import('
             <?= i::__('às') ?> <span v-if="hour()">{{hour()}}</span></h5>
         </div>
 
-        <div class="opportunity-phases-timeline__box">
+        <div v-if="appealRegistration.status > 0" class="opportunity-phases-timeline__box">
             <div>
                 <label class="semibold opportunity-phases-timeline__label"><?= i::__('Resultado do recurso:')?></label>
                 <div class="opportunity-phases-timeline__status">
