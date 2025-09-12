@@ -5,6 +5,22 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [unreleased]
+### Corrções
+- Corrige o endpoint ALL_error para capturar corretamente as exceções
+- Corrige erro no método EvaluationMethodContinuous que impedia o avaliador de encerrar o CHAT
+- Corrige a sintaxe HTML do componente de exibição dos detalhes da avaliação documental
+- Oculta o checkbox que ativa ou desativa a exibição de parecer na avaliação contínua
+- Corrige a exibição do botão de detalhamento na tela de acompanhamento da inscrição
+- Corrige a aplicação dos resultados da avaliação nos casos de avaliação documental
+- Corrige a exibição da data de publicação de resultados nos steps de configuração das fases da oportunidade
+- Impede que os pareceres sejam carregados no front-end quando não estiver permitido exibi-los
+
+### Melhorias
+- Adicionado aviso que explica que, ao ativar o chat, o detalhamento da avaliação também ficará visível mesmo sem publicação da fase
+- Implementa o método shouldDisplayEvaluationResults para verificar se uma inscrição está apta ou não a exibir os resultados da avaliação
+
 ## [7.6.4] - 2025-09-09
 ### Correções
 - Implementa mc-update para normalização das comunidades Tradicionais 
