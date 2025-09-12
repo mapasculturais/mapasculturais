@@ -41,23 +41,23 @@ use MapasCulturais\i;
                         <strong> {{item.label}} </strong>
                     </p>
                     <br>
-                    <p v-if="item.obs">
+                    <div v-if="item.obs">
                         <h5 class="registration-results__opinion-title bold"><?= i::__('Parecer') ?>:</h5>
                         <ul>
                             <li>
                                 {{item.obs}}
                             </li>
                         </ul>
-                    </p>
+                    </div>
                     <br>
-                    <p v-if="item.obs_items">
+                    <div v-if="item.obs_items">
                         <h5 class="registration-results__opinion-title bold"><?= i::__('Detalhamento') ?>:</h5>
                         <ul>
                             <li>
                                 {{item.obs_items}}
                             </li>
                         </ul>
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
