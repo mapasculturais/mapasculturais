@@ -49,7 +49,7 @@ $this->import('
                 </div>
                 <div v-if="showPublishTimestamp(item) && (!firstPhase?.isContinuousFlow || (firstPhase?.isContinuousFlow && firstPhase?.hasEndDate))" class="date">
                     <div class="date__title"> <?= i::__('Data publicação') ?> </div>
-                    <div class="date__content">{{publishTimestamp(item)?.date('2-digit year')}}</div>
+                    <div class="date__content">{{publishTimestamp(item)?.date('2-digit year')}} {{publishTimestamp(item)?.time('numeric')}}</div>
                 </div>
             </div>
         </div>
