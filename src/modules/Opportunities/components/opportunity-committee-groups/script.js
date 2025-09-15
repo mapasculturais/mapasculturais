@@ -116,7 +116,7 @@ app.component('opportunity-committee-groups', {
             }
             
             for (let groupName of Object.keys(this.entity.relatedAgents)) {
-                if (groupName !== "group-admin" && groupName !== '@support') {
+                if (groupName !== '@support') {
                     groups[groupName] = this.entity.relatedAgents[groupName];
                 }
             }
