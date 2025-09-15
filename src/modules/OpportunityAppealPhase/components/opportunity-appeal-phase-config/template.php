@@ -141,7 +141,7 @@ $this->import('
 
                 <mc-alert v-if="entity.allow_proponent_response" type="warning" class="entity-owner-pending">
                     <div>
-                        <?= i::__('Ao habilitar esta função, o detalhamento das avaliações ficará disponível para consulta mesmo antes da divulgação oficial do resultado da fase') ?></strong>
+                        <?= i::__('Ao habilitar esta função, o detalhamento das avaliações ficará disponível para consulta mesmo antes da divulgação oficial do resultado da fase') ?>
                     </div>
                 </mc-alert>
 
