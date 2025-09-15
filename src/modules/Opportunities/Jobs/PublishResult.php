@@ -18,6 +18,11 @@ class PublishResult extends JobType
         /** @var Opportunity $opportunity */
         
         $opportunity = $job->opportunity;
+
+        if (!$opportunity) {
+            return true;
+        }
+
         $opportunity->publishRegistrations();
         
         return true;
