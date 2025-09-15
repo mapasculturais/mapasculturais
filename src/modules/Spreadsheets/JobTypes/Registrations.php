@@ -218,7 +218,7 @@ class Registrations extends SpreadsheetJob
                         if($entity_type_field['ft'] == '@location') {
                             $location = $entity[$field->fieldName] ?? null;
                             
-                            $entity['UF'] = $location->address_level2 ?: $location->En_Estado ?: null;
+                            $entity['UF'] = $location->address_level2 ?? $location->En_Estado ?? null;
                             $entity['Municipio'] = $location->address_level4 ?: $location->En_Municipio ?: null;
                             unset($entity[$field->fieldName]);
                         }
@@ -245,7 +245,7 @@ class Registrations extends SpreadsheetJob
                         }
                     }
 
-                    if ($entity[$field->fieldName] instanceof \stdClass) {
+                    if (isset($entity[$field->fieldName]) && $entity[$field->fieldName] instanceof \stdClass) {
                         $entity[$field->fieldName] = (array) $entity[$field->fieldName];
                     }	
 

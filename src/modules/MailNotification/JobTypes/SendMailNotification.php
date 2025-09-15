@@ -23,6 +23,10 @@ class SendMailNotification extends JobType
         $registration = $app->repo("Registration")->find($job->registrationId);
         $phase = $registration->opportunity;
         $first_phase = $registration->opportunity->firstPhase;
+        if (!$registration || !$phase || !$first_phase) {
+            return true;
+        }
+
 
 
         $params = [
