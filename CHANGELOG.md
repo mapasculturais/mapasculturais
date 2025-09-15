@@ -16,6 +16,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a aplicação dos resultados da avaliação nos casos de avaliação documental
 - Corrige a exibição da data de publicação de resultados nos steps de configuração das fases da oportunidade
 - Impede que os pareceres sejam carregados no front-end quando não estiver permitido exibi-los
+- Corrige exibição de resultados da inscrição para mostra apenas quando a fase estiver publicada ou, em fases de recurso, tambem se o chat estiver ativo para múltiplas respostas
 
 ### Melhorias
 - Adicionado aviso que explica que, ao ativar o chat, o detalhamento da avaliação também ficará visível mesmo sem publicação da fase

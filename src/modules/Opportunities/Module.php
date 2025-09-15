@@ -268,7 +268,8 @@ class Module extends \MapasCulturais\Module{
             $data = ['opportunity' => $this];
 
             // verifica se a oportunidade e a fase estão públicas
-            $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === Opportunity::STATUS_ENABLED;
+            $enabled_status = $this->isAppealPhase ? -1 : Opportunity::STATUS_ENABLED;
+            $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === $enabled_status;
 
             $now = new \DateTime;
 
