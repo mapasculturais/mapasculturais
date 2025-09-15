@@ -59,7 +59,9 @@ $this->import('
                 <div class="opportunity-evaluation-committee__card-header-content">
                     <div class="opportunity-evaluation-committee__card-header-content-info">
                         <small>
-                            <strong>E-mail:</strong> {{infoReviewer.agent.user.email}} | <strong>ID Agente:</strong> #{{infoReviewer.agent.id}} | <strong>ID Usuário:</strong> #{{infoReviewer.agent.user.id}}
+                            <strong><?= i::__('E-mail')?>:</strong> {{infoReviewer.agent.user.email}} | 
+                            <strong><?= i::__('ID Agente')?>:</strong> #{{infoReviewer.agent.id}} | 
+                            <strong><?= i::__('ID Usuário')?>:</strong> #{{infoReviewer.agent.user.id}}
                         </small>
                     </div>
                     <div class="opportunity-evaluation-committee__card-header-content-data">
@@ -74,7 +76,8 @@ $this->import('
                         </div>
                         <div class="opportunity-evaluation-committee__card-status">
                             <div v-if="hasEvaluationConfiguration(infoReviewer?.agentUserId) && infoReviewer.status != -5" class="opportunity-evaluation-committee__card-status-wrapper field">
-                                <label class="status-label"><?= i::_e('Status das avaliações:') ?></label>
+                                <label class="status-label">{{ infoReviewer.metadata.summary.pending + infoReviewer.metadata.summary.started + infoReviewer.metadata.summary.completed + infoReviewer.metadata.summary.sent }} <?= i::__('inscrições para avaliar, estando:') ?></label>
+                                
                                 <div class="opportunity-evaluation-committee__summary">
                                     <span class="opportunity-evaluation-committee__summary--pending semibold">
                                         <mc-icon name="clock"></mc-icon> <?= i::_e('Pendentes') ?>: {{infoReviewer.metadata.summary.pending}}
