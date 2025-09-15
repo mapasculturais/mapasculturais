@@ -557,7 +557,8 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         $sql = "
                 SELECT 
                     r.id, 
-                    r.number, 
+                    r.number,
+                    r.status, 
                     r.valuers,
                     r.valuers_exceptions_list,
                     v.user_id,
@@ -572,8 +573,7 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                     registration_evaluation v ON v.registration_id = r.id
                 WHERE 
                     opportunity_id = {$opportunity->id} AND
-                    r.status = 1
-
+                    r.status > 0
                 GROUP BY r.id, v.id
                 ORDER BY num ASC
             ";
@@ -614,14 +614,14 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                 // se a configuração `Desconsiderar as avaliações já feitas na distribuição` estiver desativada
                 if(!($ignore_started_evaluations->$committee_name ?? false)) {
                     // atualiza o número de avaliadores da inscrição
-                    $valuers_committee_registrations_count[$committee_name][$user_id] = $valuers_committee_registrations_count[$committee_name][$user_id] ?? 0;
                     $valuers_committee_registrations_count[$committee_name][$user_id]++;
+                    $valuers_total_registrations_count[$user_id]++;
                 }
 
                 $registration_valuers_count[$registration->id][$committee_name] = $registration_valuers_count[$registration->id][$committee_name] ?? 0;
 
                 // incrementa o número de avaliações que a inscrição tem por comissão
-                $registration_valuers_count[$registration->id][$committee_name]++;
+                $registration_valuers_count[$registration->id][$committee_name]++;    
             }
 
             // define o total de avaliações já feitas para cada inscrição
@@ -633,6 +633,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         foreach($registration_evaluations as &$registration) {
             $registration_entity = null;
+
+            if($registration->status > 1) {
+                continue;
+            }
 
             // adiciona os usuários da lista de inclusões (valuers_exceptions_list->include)
             foreach($registration->valuers_exceptions_list->include as $user_id) {
@@ -673,8 +677,10 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
             }
 
             // passa por cada comissão adicionando os avaliadores até o limite de avaliadores por inscrição configurado na comissão
-            foreach($committees as $committee_name => &$users) {
+            foreach($committees as $committee_name => $users) {
                 $max_valuers = $valuers_per_registration->$committee_name ?? null;
+                // se a comissão tem limite de avaliadores por inscrição e esse limite já foi atingido, não adiociona
+                    
                 $percent = round(($checks_count / $total_checks) * 100, 1);
                 if($is_log_active) {
                     // imprime a porcentagem de verificações
@@ -690,17 +696,17 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
                         continue;
                     }
 
-                    $app->log->debug("Registration:: {$registration->id} precisando de DESEMPATE");
+                    if($is_log_active) {
+                        $app->log->debug("Registration:: {$registration->id} precisando de DESEMPATE");
+                    }
                 }
 
                 usort($users, fn($u1, $u2) => $valuers_total_registrations_count[$u1->id] <=> $valuers_total_registrations_count[$u2->id]);
-
+                
                 // adiciona os avaliadores da comissão na inscrição
                 foreach($users as $user) {
                     $checks_count++;
 
-                    // se a comissão tem limite de avaliadores por inscrição e esse limite já foi atingido, não adiociona
-                    
                     if($max_valuers && $registration_valuers_count[$registration->id][$committee_name] >= $max_valuers) {
                         continue;
                     }
