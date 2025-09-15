@@ -23,6 +23,10 @@ class AutoApplicationResult extends JobType
         $opportunity = $job->opportunity;
         $registration = $job->registration;
 
+        if(!$opportunity || !$registration) {
+            return true;
+        }
+
         $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
 
         if ($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
