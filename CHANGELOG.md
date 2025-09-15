@@ -108,6 +108,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="hl-ibercultura"></a>
 5. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
 
+## [7.5.66] - 2025-09-05
+### Correções
+- Corrige paginação de oportunidades
+
 ## [7.5.65] - 2025-09-04
 ### Correções
 - Corrige erro que exibia os campos para o avaliador mesmo quando estavam bloqueados após o envio da avaliação.
