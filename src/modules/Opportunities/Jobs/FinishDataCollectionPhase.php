@@ -19,7 +19,10 @@ class FinishDataCollectionPhase extends JobType
         
         /** @var Opportunity $opportunity */
         $opportunity = $job->opportunity;
-        
+        if(!$opportunity) {
+            return true;
+        }
+
         /** @var Opportunity $next_phase */
         $next_phase = $opportunity->nextPhase;
         
