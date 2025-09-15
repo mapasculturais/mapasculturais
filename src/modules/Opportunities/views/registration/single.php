@@ -36,6 +36,17 @@ $this->breadcrumb = [
 
 $entity = $entity->firstPhase;
 
+$registration = $entity ;
+$result = [];
+if($all_registrations = $app->repo('Registration')->findBy(['number' => $entity->number])) {
+    foreach($all_registrations as $reg) {
+        $em = $reg->evaluationMethod;
+        $result[$reg->id] = $em ? $em->shouldDisplayEvaluationResults($reg) : false;
+    }
+}
+    
+$this->jsObject['config']['registrationResults']['shouldDisplayEvaluationResults'] = $result;
+
 $today = new DateTime();
 ?>
 
