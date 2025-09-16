@@ -56,6 +56,10 @@ app.component('registration-status', {
                 return false;
             }
 
+            if(this.registration.opportunity.appealPhase && (this.appealRegistration || this?.registration?.opportunity?.appealPhase?.registrationFrom?.isFuture() || this?.registration?.opportunity?.appealPhase?.registrationTo?.isPast())) {
+                return false;
+            }
+
             return this.registration.status > 1 && this.registration.status < 10;
         },
 
