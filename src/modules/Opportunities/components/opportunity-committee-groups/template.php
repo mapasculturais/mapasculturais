@@ -63,10 +63,10 @@ $next_execution_time = EvaluationMethod::getNextRedistributionDateTime();
         <mc-tab v-for="([groupName, relations], index) in Object.entries(entity.relatedAgents)" :key="index" :label="groupName == '@tiebreaker' ? '<?= $this->text('tiebreaker', i::__('Voto de minerva')) ?>' : groupName" :slug="String(index)">
             <div class="opportunity-committee-groups__group">
                 <div class="opportunity-committee-groups__edit-group field">
-                    <label v-if="groupName != '@tiebreaker'" for="newGroupName"><?= i::__('Título da comissão') ?></label>
+                    <!-- <label v-if="groupName != '@tiebreaker'" :for="`newGroupName${index}`"><?= i::__('Título da comissão') ?></label> -->
 
                     <div class="opportunity-committee-groups__edit-group--field">
-                        <input v-if="groupName != '@tiebreaker'" id="newGroupName" class="input" type="text" @change="renameTab($event, index, groupName);" placeholder="<?= i::esc_attr__('Digite o novo nome do grupo') ?>" />
+                        <!-- <input v-if="groupName != '@tiebreaker'" id="newGroupName${index}`" class="input" type="text" @change="renameTab($event, index, groupName);" placeholder="<?=  i::esc_attr__('Digite o novo nome da comissão') ?>" /> -->
                         <mc-confirm-button @confirm="removeGroup(groupName)">
                             <template #button="modal">
                                 <a class="button button--delete button--icon button--sm" @click="modal.open()">
