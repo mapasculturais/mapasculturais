@@ -5,6 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correções
+- Corrige para que o botão de solicitar recurso não seja exibido o príodo esteja fechado
+
+### Melhorias não funcionais
+- Faz com que a hora de abertura e fechamento do recurso seja exibida nas sanfonas de configuração de fases
 
 ## [7.6.5] - 2025-09-16
 ### Corrções
