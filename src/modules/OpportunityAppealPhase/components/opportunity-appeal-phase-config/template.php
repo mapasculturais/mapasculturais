@@ -71,11 +71,11 @@ $this->import('
                 <div class="dates opportunity-appeal-phase-config__dates">
                     <div class="date">
                         <h6 class="date__title"> <?= i::__('Data de início') ?> </h6>
-                        <h4 class="date__content">{{ registrationFrom }}</h4>
+                        <h4 class="date__content">{{ entity?.registrationFrom?.date('numeric year') }}  {{ entity?.registrationFrom?.time('numeric') }}</h4>
                     </div>
                     <div v-if="(!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate)" class="date">
                         <h6 class="date__title"> <?= i::__('Data final') ?> </h6>
-                        <h4 class="date__content">{{ registrationTo }}</h4>
+                        <h4 class="date__content">{{ entity?.registrationTo?.date('numeric year') }} {{ entity?.registrationTo?.time('numeric') }}</h4>
                     </div>
                 </div>
             </template>
@@ -116,11 +116,11 @@ $this->import('
                 <div class="dates opportunity-appeal-phase-config__dates">
                     <div class="date">
                         <h6 class="date__title"> <?= i::__('Data de início') ?> </h6>
-                        <h4 class="date__content">{{ evaluationFrom }}</h4>
+                        <h4 class="date__content">{{ entity.evaluationMethodConfiguration?.evaluationFrom?.date('numeric year') }}  {{ entity.evaluationMethodConfiguration?.evaluationFrom?.time('numeric') }}</h4>
                     </div>
                     <div v-if="(!firstPhase?.isContinuousFlow || firstPhase?.hasEndDate)" class="date">
                         <h6 class="date__title"> <?= i::__('Data final') ?> </h6>
-                        <h4 class="date__content">{{ evaluationTo }}</h4>
+                        <h4 class="date__content">{{ entity.evaluationMethodConfiguration?.evaluationTo?.date('numeric year') }}  {{ entity.evaluationMethodConfiguration?.evaluationTo?.time('numeric') }}</h4>
                     </div>
                 </div>
             </template>
