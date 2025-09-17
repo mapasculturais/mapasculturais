@@ -176,8 +176,6 @@ abstract class Storage{
         }
     }
 
-    abstract public function createZipOfEntityFiles($entity);
-
     abstract protected function _add(File $file);
     abstract protected function _remove(File $file);
     abstract protected function _getUrl(File $file);

@@ -2688,7 +2688,6 @@ class App {
             'share' => new Definitions\FileGroup('share',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'),true),
             'institute'  => new Definitions\FileGroup('institute',['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'favicon'  => new Definitions\FileGroup('favicon',['^image/(jpeg|png|x-icon|vnd.microsoft.icon)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
-            'zipArchive'  => new Definitions\FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true),
             'chatImage' => new Definitions\FileGroup('chatImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
             'chatAttachment' => new Definitions\FileGroup('chatAttachment', unique:true),
             'evaluationImage' => new Definitions\FileGroup('evaluationImage', ['^image/(jpeg|png)$'], i::__('O arquivo enviado não é uma imagem válida.'), true),
@@ -2736,8 +2735,7 @@ class App {
         $this->registerFileGroup('seal', $file_groups['gallery']);
 
         $this->registerFileGroup('registrationFileConfiguration', $file_groups['registrationFileConfiguration']);
-        $this->registerFileGroup('registration', $file_groups['zipArchive']);
-
+        
         $this->registerFileGroup('subsite',$file_groups['header']);
         $this->registerFileGroup('subsite',$file_groups['avatar']);
         $this->registerFileGroup('subsite',$file_groups['downloads']);
