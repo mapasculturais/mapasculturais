@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige para que o botão de solicitar recurso não seja exibido o príodo esteja fechado
 - Corrige a exibição dos campos condicionais do formulário, exibindo-os corretamente quando existe condicionalidade por tipo de proponente
 - Corrige exibição da pre visualização do formulário de inscrição
+- Corrige método getRequestedEntity para que interprete de forma correta a abertura da pre visualização do formulario
 
 ### Melhorias não funcionais
 - Faz com que a hora de abertura e fechamento do recurso seja exibida nas sanfonas de configuração de fases
