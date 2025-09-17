@@ -39,6 +39,9 @@ use MapasCulturais\EvaluationMethod;
  * @property Agent $owner
  *
  *
+ * @property-read ?Opportunity $previousPhase
+ * @property-read ?Opportunity $nextPhase
+ * 
  * @property-read ?EvaluationMethod $evaluationMethod
  * @property-read string $specializedClassName
  * @property EvaluationMethodConfiguration $evaluationMethodConfiguration
