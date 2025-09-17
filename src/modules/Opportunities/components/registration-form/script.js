@@ -59,7 +59,7 @@ app.component('registration-form', {
                     return false;
                 }
 
-                if (field.registrationProponentTypes?.length && !field.registrationProponentTypes.includes(registration.proponentType)) {
+                if (field.proponentTypes?.length && !field.proponentTypes.includes(registration.proponentType)) {
                     return false;
                 }
 
