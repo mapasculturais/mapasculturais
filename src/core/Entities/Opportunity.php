@@ -1523,7 +1523,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         return $revision_data;
     }
 
-    function unregisterRegistrationMetadata(){
+    function unregisterRegistrationMetadata(bool $include_previous_phases = false){
         $app = App::i();
 
         $registered_metadata = $app->getRegisteredMetadata(Registration::class);
@@ -1536,6 +1536,10 @@ abstract class Opportunity extends \MapasCulturais\Entity
             if (isset($registered_metadata[$field_name])) {
                 $app->unregisterEntityMetadata(Registration::class, $field_name);
             }
+        }
+
+        if($include_previous_phases && ($previous_phase = $this->previousPhase)) {
+            $previous_phase->unregisterRegistrationMetadata(true);
         }
     }
 
