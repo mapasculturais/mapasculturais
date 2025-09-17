@@ -2,6 +2,7 @@
 
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Definitions\FileGroup;
 use MapasCulturais\Utils;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Opportunity;
