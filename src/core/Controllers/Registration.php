@@ -288,8 +288,15 @@ class Registration extends EntityController {
     }
     
     function getPreviewEntity(){
-        if(preg_match('/^(\d+)-preview$/', $this->urlData[0] ?? '', $matches)){
-            $app = App::i();
+        $app = App::i();
+        
+        $id = isset($this->urlData['id']) ? $this->urlData['id'] : $this->urlData[0];
+        $referer = $app->request->getReferer()[0] ?? "";
+        if($id == -1 && $referer && preg_match("#/(\d+-preview)/#", $referer, $matches)) {
+            $id = $matches[1];
+        }
+
+        if(preg_match('/^(\d+)-preview$/', $id ?? '', $matches)){
             $opportunity = $app->repo('Opportunity')->find($matches[1]);
 
             $registration = new $this->entityClassName;
