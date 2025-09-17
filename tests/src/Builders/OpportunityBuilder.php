@@ -78,7 +78,8 @@ class OpportunityBuilder extends Builder
     {
         $builder = new DataCollectionPhaseBuilder($this);
         $builder->reset();
-
+        $builder->fillRequiredProperties();
+        $builder->save();
         return $builder;
     }
 
