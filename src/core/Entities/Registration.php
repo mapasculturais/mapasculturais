@@ -1361,6 +1361,10 @@ class Registration extends \MapasCulturais\Entity
     }
 
     function getValidationErrors() {
+        if($previous_phase_opportunity = $this->opportunity->previousPhase){
+            $previous_phase_opportunity->unregisterRegistrationMetadata(include_previous_phases:true);
+        }
+
         if($this->isNew()) {
             $errors = parent::getValidationErrors();
         } else {
