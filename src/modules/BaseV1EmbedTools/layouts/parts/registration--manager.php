@@ -120,7 +120,7 @@ use MapasCulturais\i;
                     </p>
                 </td>
                 <td ng-show="data.registrationTableColumns.attachments" ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                    <a ng-if="reg.files.zipArchive.url" class="icon icon-download" href="{{reg.files.zipArchive.url}}" rel='noopener noreferrer'>
+                    <a  class="icon icon-download" :href="reg.getUrl('createZipFiles')" rel='noopener noreferrer'>
                         <div class="screen-reader-text"><?php i::_e("Baixar arquivos"); ?></div>
                     </a>
                 </td>

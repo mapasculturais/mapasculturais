@@ -2,6 +2,7 @@
 
 use MapasCulturais\i;
 use MapasCulturais\App;
+use MapasCulturais\Definitions\FileGroup;
 use MapasCulturais\Utils;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Opportunity;
@@ -698,5 +699,21 @@ return [
             }
         });
     },
+
+    'remove arquivos zipArchive das registrations' => function () {
+        $app = App::i();
+        
+        if(!env('CLEAN_ZIPARCHIVE')) {
+            $app->log->debug("PARA FAZER A LIMPEZA DOS ARQUIVOS zipArchive DAS INSCRIÇÕES, DEFINA A VARIAVEL DE AMBIETE CLEAN_ZIPARCHIVE=1");
+            return false;
+        }
+
+        $app->registerFileGroup('registration', new FileGroup('zipArchive',['^application/zip$'], i::__('O arquivo não é um ZIP.'), true, null, true));
+        DB_UPDATE::enqueue('File', "grp = 'zipArchive' AND object_type = 'MapasCulturais\Entities\Registration'", function (MapasCulturais\Entities\RegistrationFile $file) use($app) {
+            $app->log->debug("REMOVENDO ARQUIVO {$file->path}");
+            file_put_contents(LOGS_PATH . 'removed-zipArchives.log', "\n{$file->path}", FILE_APPEND);
+            $file->delete(true);
+        });
+    }
 
 ];

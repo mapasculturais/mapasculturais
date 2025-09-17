@@ -197,48 +197,6 @@ class FileSystem extends \MapasCulturais\Storage{
         return str_replace('\\', '-', $result);
     }
 
-
-    public function createZipOfEntityFiles($entity, $fileName = null) {
-        if($file = $entity->getFile('zipArchive')){
-            $file->delete(true);
-        }
-        \MapasCulturais\App::i()->em->refresh($entity);
-        $files = array_map(function($item){
-            if (is_array($item)) {
-                $item = $item[0];
-            }
-            return '"'.$this->getPath($item).'"';
-        }, $entity->files);
-
-
-        $strFiles = implode(' ', $files);
-
-        $tmpName = sys_get_temp_dir() . '/' . $entity->id . '-' . uniqid() . '.zip';
-
-        if(!$fileName){
-            $fileName = $entity->id . '.zip';
-        }
-
-        if(exec('zip -j ' . $tmpName . ' ' . $strFiles) && file_exists($tmpName)){
-            
-            $file_class = $entity->getFileClassName();
-            $newFile = new $file_class ([
-                'name' => $fileName,
-                'type' => 'application/zip',
-                'tmp_name' => $tmpName,
-                'error' => 0,
-                'size' => filesize($tmpName)
-            ]);
-            $newFile->owner = $entity;
-            $newFile->group = 'zipArchive';
-            $newFile->save(true);
-            return $newFile;
-        }else{
-            //exception: can't create zipfile
-            return null;
-        }
-    }
-
     protected function _moveToPublicFolder(\MapasCulturais\Entities\File $file) {
         $relative_path = $this->_getPath($file, true);
         $public_path = $this->config['dir'] . $relative_path;
