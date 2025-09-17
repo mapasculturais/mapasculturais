@@ -164,7 +164,7 @@ class OpportunityRegistrationsTest extends TestCase
         $second_phase_registration = $registration->nextPhase;
         $second_phase_registration->$field_fruta = 'Banana';
 
-        $this->assertEmpty($registration->validationErrors, 
+        $this->assertEmpty($second_phase_registration->validationErrors, 
             'Certificando que não há erro de validação na segunda fase, após preencher todos os campos obrigatórios');
         
     }
