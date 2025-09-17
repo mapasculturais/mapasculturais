@@ -782,7 +782,7 @@ class Registration extends EntityController {
         $this->requireAuthentication();
 
         $entity = $this->requestedEntity;
-        $entity->opportunity->checkPermission('@control');
+        $entity->checkPermission('view');
 
         if (!$entity) {
             $app->pass(); 

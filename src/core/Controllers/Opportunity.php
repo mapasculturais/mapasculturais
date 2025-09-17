@@ -376,7 +376,6 @@ class Opportunity extends EntityController {
 
     function apiFindRegistrations($opportunity, $query_data, $enalble_quota = false) {
         $app = App::i();
-        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
         $data = $query_data;
 
         $data['opportunity'] = API::EQ($opportunity->id);
@@ -531,8 +530,6 @@ class Opportunity extends EntityController {
     function API_findRegistrations() {
         $app = App::i();
         
-        $app->registerFileGroup('registration', new \MapasCulturais\Definitions\FileGroup('zipArchive',[], '', true, null, true));
-
         $opportunity = $this->_getOpportunity();
         
         $query_data = $this->data;
