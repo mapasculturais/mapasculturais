@@ -5,15 +5,19 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.6.6] - 2025-09-17
 ### Correções
-- Corrige para que o botão de solicitar recurso não seja exibido o príodo esteja fechado
+- Corrige condição de exibição do botão de recurso para não aparecer quando o período de recurso não estiver aberto
 - Corrige a exibição dos campos condicionais do formulário, exibindo-os corretamente quando existe condicionalidade por tipo de proponente
 - Corrige exibição da pre visualização do formulário de inscrição
-- Corrige método getRequestedEntity para que interprete de forma correta a abertura da pre visualização do formulario
+- Corrige links para arquivo compactado dos anexos dos formulários de inscrição
 
-### Melhorias não funcionais
-- Faz com que a hora de abertura e fechamento do recurso seja exibida nas sanfonas de configuração de fases
+### Melhorias
+- Exibe hora de abertura e fechamento da fase de recurso nas sanfonas de configuração de fases
+
+### Outros
+- Script de limpeza dos arquivos compactados com os anexos dos formulários. Para executar o script é necesário definir a variável de ambiente `CLEAN_ZIPARCHIVE=1`
+- Mudança no entrypoint do Docker, fazendo os comandos de mudança de permissão das pastas não serem recursivos, diminuindo o tempo para subir o ambiente
 
 ## [7.6.5] - 2025-09-16
 ### Corrções
