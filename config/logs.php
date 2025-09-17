@@ -55,10 +55,12 @@ return [
     'app.log.apiDql'        => env('LOG_APIDQL', false),
     'app.log.assets'        => env('LOG_ASSETS', false),
     'app.log.auth'          => env('LOG_AUTH', false),
-
+    
+    
     'app.log.evaluations'   => env('LOG_EVALUATIONS', false),
-    'app.log.summary'   => env('LOG_SUMMARY', false),
-
+    'app.log.summary'       => env('LOG_SUMMARY', false),
+    'app.log.syncRegistrations' => env('LOG_SYNC_REGISTRATIONS', false),
+    
     'app.log.lockfile'      => env('LOG_LOCKFILE', false),
 
     'app.log.components'          => env('LOG_COMPONENTS', false),
