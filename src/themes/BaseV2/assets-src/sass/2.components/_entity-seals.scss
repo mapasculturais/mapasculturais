@@ -237,7 +237,14 @@
     margin-top: size(24);
     
     h3 {
-        margin-bottom: size(16);
+        margin: size(24) 0 size(20) 0;
+        padding-top: size(8);
         color: var(--mc-primary-500);
+        font-size: size(20);
+        font-weight: 600;
+    }
+
+    .mc-tab-content {
+        padding-top: 0;
     }
 }
