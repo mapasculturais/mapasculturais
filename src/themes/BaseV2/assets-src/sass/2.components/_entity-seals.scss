@@ -168,3 +168,76 @@
         }
     }
 }
+
+// Estilos para as entidades que possuem o selo
+.seal-entity-card {
+    background: white;
+    border: 1px solid var(--mc-gray-300);
+    border-radius: var(--mc-border-radius-sm);
+    padding: size(16);
+    text-align: center;
+    transition: box-shadow 0.2s ease;
+    margin-bottom: size(16);
+
+    &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    h4 {
+        font-size: size(16);
+        font-weight: 700;
+        margin: size(8) 0 size(4) 0;
+        color: var(--mc-primary-500);
+    }
+
+    p {
+        font-size: size(14);
+        color: var(--mc-gray-700);
+        margin: 0;
+        line-height: 1.4;
+    }
+}
+
+// Estilos específicos para entity-cards portrait na seção de selos
+.seal-entities-tabs {
+    .entity-card.portrait {
+        background: #f8f9fa !important;
+        border: 1px solid #e9ecef !important;
+        border-radius: 8px !important;
+        transition: all 0.2s ease;
+        margin-bottom: size(16);
+
+        &:hover {
+            background: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+            transform: translateY(-2px);
+        }
+    }
+
+    .entity-card {
+        background: #f8f9fa !important;
+        border: 1px solid #e9ecef !important;
+        border-radius: 8px !important;
+        margin-bottom: size(16);
+        
+        &:hover {
+            background: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        }
+    }
+}
+
+.seal-entities-tabs {
+    margin-top: size(24);
+    
+    h3 {
+        margin-bottom: size(16);
+        color: var(--mc-primary-500);
+    }
+}
