@@ -208,8 +208,10 @@ class Registrations extends SpreadsheetJob
                             $_persons = [];
 
                             foreach($persons as $person){
-                                if($person['fullName'] || $person['cpf']){
-                                    $_persons[] = $person['fullName'] . " : " . $person['cpf'];
+                                if((isset($person['name']) && $person['name']) || isset($person['cpf']) && $person['cpf']){
+                                    $_name = isset($person['name']) ? $person['name'] : i::__('Nome não informado');
+                                    $_cpf = isset($person['cpf']) ? $person['cpf'] : i::__('CPF não informado');
+                                    $_persons[] = $_name . " : " . $_cpf;
                                 }
                             }
                             $entity[$field->fieldName] = implode(', ', $_persons );
@@ -282,7 +284,7 @@ class Registrations extends SpreadsheetJob
                             }
                         }, $entity[$field->fieldName]);
 
-                        $formatted_values = implode(', ', $values);
+                        $formatted_values = implode(', ', array_filter($values));
                         $entity[$field->fieldName] = $formatted_values;
                     }
 
