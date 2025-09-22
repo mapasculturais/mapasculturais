@@ -7,11 +7,21 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 ### Correções
-- Corrige para que o botão de solicitar recurso não seja exibido o príodo esteja fechado
-- Corrige a exibição dos campos condicionais do formulário, exibindo-os corretamente quando existe condicionalidade por tipo de proponente
+- Implementa db-updates para ajustar as avaliações, garantindo compatibilidade com a nova estrutura de comissões de avaliação
 
-### Melhorias não funcionais
-- Faz com que a hora de abertura e fechamento do recurso seja exibida nas sanfonas de configuração de fases
+## [7.6.6] - 2025-09-17
+### Correções
+- Corrige condição de exibição do botão de recurso para não aparecer quando o período de recurso não estiver aberto
+- Corrige a exibição dos campos condicionais do formulário, exibindo-os corretamente quando existe condicionalidade por tipo de proponente
+- Corrige exibição da pre visualização do formulário de inscrição
+- Corrige links para arquivo compactado dos anexos dos formulários de inscrição
+
+### Melhorias
+- Exibe hora de abertura e fechamento da fase de recurso nas sanfonas de configuração de fases
+
+### Outros
+- Script de limpeza dos arquivos compactados com os anexos dos formulários. Para executar o script é necesário definir a variável de ambiente `CLEAN_ZIPARCHIVE=1`
+- Mudança no entrypoint do Docker, fazendo os comandos de mudança de permissão das pastas não serem recursivos, diminuindo o tempo para subir o ambiente
 
 ## [7.6.5] - 2025-09-16
 ### Corrções
