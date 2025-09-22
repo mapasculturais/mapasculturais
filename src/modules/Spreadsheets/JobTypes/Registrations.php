@@ -358,19 +358,8 @@ class Registrations extends SpreadsheetJob
                 }
 
                 if (isset($entity['number'])) {
-                    if ($job->extension == 'csv') {
-                        $number = "=HIPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\"; \"" . $entity['number'] . "\")";
-                    }
-
-                    if ($job->extension == 'xlsx') {
-                        $number = "=HYPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\", \"" . $entity['number'] . "\")";
-                    }
-
-                    if ($job->extension == 'ods') {
-                        $number = "=HYPERLINK(\"" . $app->createUrl('registration', 'view', [$entity['id']]) . "\"; \"" . $entity['number'] . "\")";
-                    }
-
-                    $entity['number'] = $number;
+                    $url = $app->createUrl('registration', 'view', [$entity['id']]);
+                    $entity['number'] = $url;
                 }
 
                 if(isset($entity['goalStatuses'])) {
