@@ -38,6 +38,10 @@ class Registrations extends SpreadsheetJob
             if(str_starts_with($property, 'field_')) {
                 continue;
             }
+            if($property == 'singleUrl') {
+                $header[$property] = i::__('Link da inscrição');
+                continue;
+            }
 
             if($property == 'ownerGeoMesoregiao') {
                 $header[$property] = i::__('Mesorregião do responsável');
@@ -359,9 +363,13 @@ class Registrations extends SpreadsheetJob
                     $entity['status'] = $this->getStatusName($entity['status']);
                 }
 
-                if (isset($entity['number'])) {
+                if (isset($entity['singleUrl'])) {
                     $url = $app->createUrl('registration', 'view', [$entity['id']]);
-                    $entity['number'] = $url;
+                    $entity['singleUrl'] = $url;
+                }
+
+                 if (isset($entity['number'])) {
+                    $entity['number'] = $entity['number'];
                 }
 
                 if(isset($entity['goalStatuses'])) {
