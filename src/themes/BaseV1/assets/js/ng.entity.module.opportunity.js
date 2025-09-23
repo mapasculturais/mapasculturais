@@ -1900,7 +1900,7 @@ module.controller('RegistrationFieldsController', ['$scope', '$rootScope', '$int
         }
 
         if(MapasCulturais.entity.canUserEvaluate || MapasCulturais?.viewUserEvaluation){
-            if(MapasCulturais.opportunityControl) {
+            if(MapasCulturais.opportunityControl && result) {
                 result = true;
             } else if(result && !$scope.isAvaliableEvaluationFields(field)){
                 result = false;

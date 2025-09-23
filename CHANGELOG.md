@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige exibição do link da inscrição na exportação da planilhas de inscritos
 - Corrige exibição dos campos do tipo "Lista de Pessoas" na exportação da planilha de inscritos
+- Corrige erro que exibia campos indevidos para o admnistrador na ficha de inscrição
 
 ## [7.6.7] - 2025-09-19
 ### Correções
