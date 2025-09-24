@@ -116,7 +116,7 @@ return array(
                 MapasCulturais\i::__('Retireiros do Araguaia'),
                 MapasCulturais\i::__('Ribeirinhos'),
                 MapasCulturais\i::__('Vazanteiros'),
-                MapasCulturais\i::__('Veredeiros'),                                
+                MapasCulturais\i::__('Veredeiros'),
             ),
             'available_for_opportunities' => true
         ),
@@ -165,7 +165,7 @@ return array(
                 if (!$value && isset($entity->type) && $entity->type->id == 2) {
                     $value = $entity->documento;
                 }
-    
+
                 return Utils::formatCnpjCpf($value);
             },
             'validations' => array(
@@ -188,7 +188,7 @@ return array(
                 /**@var MapasCulturais\App $this */
                 if(!$this->rcache->contains("$entity:SET_cpf")){
                     $this->rcache->save("$entity:SET_cpf", true);
-                    
+
                     if($entity->type && $entity->type->id == 1 && !$this->rcache->contains("$entity:SET_documento")){
                         $entity->documento = $value;
                     }
@@ -330,7 +330,7 @@ return array(
                $this->hook("entity(<<*>>).save:before", function() use ($entity){
                     /** @var MapasCulturais\Entity $entity */
                     if($this->equals($entity)){
-                        $this->idoso = 1; 
+                        $this->idoso = 1;
                     }
                });
                return (new DateTime($value))->format("Y-m-d");
@@ -448,7 +448,7 @@ return array(
             'field_type' => 'email',
             'unserialize' => function($value, $agent = null){
                 $agent = (object) $agent;
-                $user = $agent->user ?? null;  
+                $user = $agent->user ?? null;
                 if(!$value && $user && $user->email){
                     return $user->email;
                 }
@@ -496,7 +496,7 @@ return array(
             'label' => \MapasCulturais\i::__('Endereço'),
             'type' => 'text'
         ),
-                    
+
         'En_CEP' => [
             'label' => \MapasCulturais\i::__('CEP'),
             'type' => 'cep',
@@ -722,6 +722,18 @@ return array(
             ),
             'placeholder' => \MapasCulturais\i::__('nomedousuario'),
             'available_for_opportunities' => true
+        ),
+        'fediverso' => array(
+            'type' => "socialMedia",
+            'label' => \MapasCulturais\i::__('Fediverso'),
+            'available_for_opportunities' => true,
+            'serialize' => function ($value) {
+                return $value;
+            },
+            'validations' => array(
+                "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'placeholder' => \MapasCulturais\i::__('https://nomedoservidor.com.br/@nomedousuario'),
         ),
     ),
     'items' => array(

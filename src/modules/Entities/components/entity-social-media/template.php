@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @var MapasCulturais\App $app
  * @var MapasCulturais\Themes\BaseV2\Theme $this
@@ -58,6 +58,10 @@ $this->import('
             <a target="_blank" :href="buildSocialMediaLink('tiktok')">{{entity.tiktok}}</a>
         </div>
 
+        <div v-if="entity.fediverso" class="entity-social-media__links--link">
+            <mc-icon name="fediverso"></mc-icon>
+            <a target="_blank" :href="buildSocialMediaLink('fediverso')">{{entity.fediverso}}</a>
+        </div>
     </div>
 
 
@@ -107,6 +111,10 @@ $this->import('
         <div class="entity-social-media__edit--link">
             <mc-icon name="tiktok"></mc-icon>
             <entity-field :entity="entity" prop="tiktok"></entity-field>
+        </div>
+        <div class="entity-social-media__edit--link">
+            <mc-icon name="fediverso"></mc-icon>
+            <entity-field :entity="entity" prop="fediverso"></entity-field>
         </div>
     </div>
 </div>
