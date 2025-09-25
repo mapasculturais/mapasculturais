@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige erro que exibia campos indevidos para o admnistrador na ficha de inscrição
 - Corrige exibição do link da inscrição na tabela e planilha de inscritos
 - Corrige ordenação dos campos do formulário de avaliação
+- Corrige layout da tela de acompanhamento de inscrição no mobile
 
 ## [7.6.7] - 2025-09-19
 ### Correções
