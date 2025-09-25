@@ -80,7 +80,7 @@ $this->import('
                 <label class="seals__title">
                     <?php i::_e('Selos') ?> ({{event.seals.length}}):
                 </label>
-                <div v-for="seal in seals" class="seals__seal" :title="seal.name"></div>
+                <div v-for="seal in seals" class="seals__seal" v-tooltip="seal.name"></div>
                 <div v-if="seals.length == 2" class="seals__seal more">+1</div>
             </div>
         </div>
