@@ -21,11 +21,15 @@
         .iconify {
             font-size: size(24);
         }
+
+        @include mobile {
+            bottom: size(36);
+        }
     }
 
     &__printOnly {
         visibility: hidden;
-        position: absolute;        
+        position: absolute;
         @media print {
             visibility: visible;
         }

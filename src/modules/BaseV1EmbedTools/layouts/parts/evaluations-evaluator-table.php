@@ -77,7 +77,7 @@ $evaluation_url = $app->createUrl('registration', 'evaluation');
                 </p>
             </td>
             <td ng-if="data.entity.registrationFileConfigurations.length > 0" class="registration-attachments-col">
-                <a ng-if="evaluation.registration.files.zipArchive.url" class="icon icon-download" href="{{evaluation.registration.files.zipArchive.url}}" rel='noopener noreferrer'><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
+                <a class="icon icon-download" :href="evaluation.registration.getUrl('createZipFiles')" rel='noopener noreferrer'><div class="screen-reader-text"><?php i::_e("Baixar arquivos");?></div></a>
             </td>
             <td class="registration-status-col">
                 {{getEvaluationStatusLabel(evaluation)}}

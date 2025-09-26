@@ -19,6 +19,10 @@ class StartDataCollectionPhase extends JobType
         
         /** @var Opportunity $opportunity */
         $opportunity = $job->opportunity;
+
+        if(!$opportunity) {
+            return true;
+        }
         
         /**
          * importa as inscrições da fase anterior 

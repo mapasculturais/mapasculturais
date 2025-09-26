@@ -24,7 +24,7 @@ $this->import('
     <div class="entity-seals__seals">
 
         <div class="entity-seals__seals--seal" v-for="seal in entity.seals">
-            <div class="seal-icon">
+            <div class="seal-icon" v-tooltip="seal.name">
                 <a :href="seal.singleUrl" class="link ">
                     <div v-if="seal.files?.avatar" class="image">
                         <mc-avatar :entity="seal" size="small" square></mc-avatar>

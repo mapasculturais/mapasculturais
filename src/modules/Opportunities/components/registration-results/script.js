@@ -27,6 +27,10 @@ app.component('registration-results', {
     },
 
     computed: {
+        shouldDisplayEvaluationResults() {
+            return $MAPAS.config.registrationResults.shouldDisplayEvaluationResults 
+        },
+
         appealPhase() {
             return this.opportunity.isAppealPhase ? this.opportunity : this.opportunity.appealPhase;
         },
@@ -70,9 +74,7 @@ app.component('registration-results', {
         },
 
         showEvaluationDetails() {
-
-            const can = this.phase.__objectType === 'evaluationmethodconfiguration' && this.phase.publishEvaluationDetails
-            console.log(this.evaluationData)
+            const can = this.shouldDisplayEvaluationResults[this.registration.id]
             if (can && this.evaluationData?.consolidatedDetails?.sentEvaluationCount) {
                 return true;
             } else {

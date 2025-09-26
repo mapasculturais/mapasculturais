@@ -23,6 +23,10 @@ class AutoApplicationResult extends JobType
         $opportunity = $job->opportunity;
         $registration = $job->registration;
 
+        if(!$opportunity || !$registration) {
+            return true;
+        }
+
         $evaluation_type = $opportunity->evaluationMethodConfiguration->type->id;
 
         if ($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
@@ -59,7 +63,7 @@ class AutoApplicationResult extends JobType
             }
 
             if ($evaluation_type == 'documentary') {
-                $value = $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_NOTAPPROVED;
+                $value = $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_INVALID;
             }
 
             if ($evaluation_type == 'qualification') {

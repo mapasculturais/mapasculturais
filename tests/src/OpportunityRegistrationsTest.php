@@ -116,4 +116,56 @@ class OpportunityRegistrationsTest extends TestCase
             'Certificando que um CAMPO OBRIGATÓRIO NÃO PREENCHIDO, quando condicionado a outro campo condicionado, NÃO causa erro de validação quando a condição para sua exibição NÃO foi ATENDIDA APÓS TER SIDO ATENDIDA ANTERIORMENTE');
 
     }
+
+    function testRequiredFirstPhaseFieldOnSecondDataCollectionPhase() {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        /** @var Opportunity */
+        $opportunity = $this->opportunityBuilder
+                            ->reset(owner: $admin->profile, owner_entity: $admin->profile)
+                            ->fillRequiredProperties()
+                            ->save()
+                            ->firstPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->createStep('etapa')
+                                ->createField('cor', 'select', required:true, options:['Azul', 'Vermelho', 'Amarelo'])
+                                ->done()
+                            ->addDataCollectionPhase()
+                                ->setRegistrationPeriod(new Open)
+                                ->createStep('etapa')
+                                ->createField('fruta', 'select', required:true, options:['Abacate', 'Morango', 'Banana'])
+                                ->done()
+                            ->save()
+                            ->refresh()
+                            ->getInstance();
+        
+        $field_cor = $this->opportunityBuilder->getFieldName('cor');
+        $field_fruta = $this->opportunityBuilder->getFieldName('fruta');
+
+        $registrations = $this->registrationDirector->createDraftRegistrations(
+            $opportunity,
+            number_of_registrations: 1
+        );
+        
+        $registration = $registrations[0];
+        
+        $registration->$field_cor = 'Vermelho';
+        
+        $this->assertEmpty($registration->validationErrors, 
+            'Certificando que não há erro de validação na primeira fase, após preencher todos os campos obrigatórios');
+
+        $registration->send();
+        $registration->setStatus(10);
+
+        $second_phase = $opportunity->nextPhase;
+        $second_phase->syncRegistrations();
+
+        $second_phase_registration = $registration->nextPhase;
+        $second_phase_registration->$field_fruta = 'Banana';
+
+        $this->assertEmpty($second_phase_registration->validationErrors, 
+            'Certificando que não há erro de validação na segunda fase, após preencher todos os campos obrigatórios');
+        
+    }
 }

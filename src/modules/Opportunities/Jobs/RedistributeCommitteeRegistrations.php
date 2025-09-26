@@ -17,9 +17,13 @@ class RedistributeCommitteeRegistrations extends JobType
     protected function _execute(\MapasCulturais\Entities\Job $job){
         /** @var EvaluationMethodConfiguration $emc */
         $emc = $job->evaluationMethodConfiguration;
+
+        if (!$emc) {
+            return true;
+        }
         
         $emc->redistributeCommitteeRegistrations();
-        $app = App::i();
+        
         return true;
     }
 }
