@@ -853,7 +853,7 @@ class Module extends \MapasCulturais\Module
                 $entity->payment_bank_account_number = $value['account_number'];
                 $entity->payment_bank_dv_account_number = $value['dv_account_number'];
                 $entity->save(true);
-            } else {
+            } else if($value) {
                 $entity->$entity_field = $value;
             }
          
