@@ -56,6 +56,10 @@ app.component('registration-status', {
                 return false;
             }
 
+            if(this.registration.opportunity.appealPhase && (this.appealRegistration || this?.registration?.opportunity?.appealPhase?.registrationFrom?.isFuture() || this?.registration?.opportunity?.appealPhase?.registrationTo?.isPast())) {
+                return false;
+            }
+
             return this.registration.status > 1 && this.registration.status < 10;
         },
 
@@ -84,12 +88,20 @@ app.component('registration-status', {
     },
 
     methods: {
+        shouldDisplayEvaluationResults(registration) {
+            return $MAPAS.config.registrationResults.shouldDisplayEvaluationResults[registration.id];
+        },
 		formatNote(note) {
 			note = parseFloat(note);
 			return note.toLocaleString($MAPAS.config.locale);
 		},
 		verifyState(registration) {
-            switch (registration.status) {
+            let status = registration.status;
+            if(registration.opportunity?.isAppealPhase) {
+                status = this.shouldDisplayEvaluationResults(registration) ? status : 1;
+            }
+
+            switch (status) {
                 case 10:
                 case 1:
                     return 'success__color';
@@ -199,7 +211,7 @@ app.component('registration-status', {
             }
             
             if(registration.opportunity.isAppealPhase) {
-                return this.phase.appealPhase.statusLabels[registration.status];
+                return this.shouldDisplayEvaluationResults(registration) ? this.phase.appealPhase.statusLabels[registration.status] : this.phase.appealPhase.statusLabels[1];
             }
 
             if(registration.status == 0) {

@@ -41,7 +41,6 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
         $app->registerJobType(new Jobs\RedistributeCommitteeRegistrations(Jobs\RedistributeCommitteeRegistrations::SLUG));
-        $app->registerJobType(new Jobs\RefreshViewEvaluations(Jobs\RefreshViewEvaluations::SLUG));
         $app->registerJobType(new Jobs\AutoApplicationResult(Jobs\AutoApplicationResult::SLUG));
 
         $app->hook('mapas.printJsObject:before', function () {
@@ -182,8 +181,6 @@ class Module extends \MapasCulturais\Module{
         });
 
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app, $distribute_execution_time) {
-            $app->log->debug("Registration {$this->id} status changed to {$this->status}");
-
             if($this->evaluationMethodConfiguration){
                 $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $distribute_execution_time);
 
@@ -269,7 +266,8 @@ class Module extends \MapasCulturais\Module{
             $data = ['opportunity' => $this];
 
             // verifica se a oportunidade e a fase estão públicas
-            $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === Opportunity::STATUS_ENABLED;
+            $enabled_status = $this->isAppealPhase ? -1 : Opportunity::STATUS_ENABLED;
+            $active = in_array($this->status, [-1,-20, Opportunity::STATUS_ENABLED]) && $this->firstPhase->status === $enabled_status;
 
             $now = new \DateTime;
 

@@ -100,12 +100,12 @@ class Spreadsheet extends EvaluationsSpreadsheetJob
                     return $cri['sid'] === $section['id'];
                 });
 
-                $section_data['subtotal-'.$section['id']] = null;
+                $section_data['subtotal-'.$section['id']] = 0;
                 foreach($section['criteria'] as $cri) {
                     if(isset($evaluation['evaluation']['evaluationData'])) {
                         foreach($evaluation['evaluation']['evaluationData'] as $key => $value) {
                             if($cri['id'] === $key) {
-                                $section_data['subtotal-'.$section['id']] += $value;
+                                $section_data['subtotal-'.$section['id']] += (float) $value;
                             }
                         }
                     }

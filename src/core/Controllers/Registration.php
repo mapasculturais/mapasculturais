@@ -288,8 +288,15 @@ class Registration extends EntityController {
     }
     
     function getPreviewEntity(){
-        if(preg_match('/^(\d+)-preview$/', $this->urlData[0] ?? '', $matches)){
-            $app = App::i();
+        $app = App::i();
+        
+        $id = isset($this->urlData['id']) ? $this->urlData['id'] : $this->urlData[0];
+        $referer = $app->request->getReferer()[0] ?? "";
+        if($id == -1 && $referer && preg_match("#/(\d+-preview)/#", $referer, $matches)) {
+            $id = $matches[1];
+        }
+
+        if(preg_match('/^(\d+)-preview$/', $id ?? '', $matches)){
             $opportunity = $app->repo('Opportunity')->find($matches[1]);
 
             $registration = new $this->entityClassName;
@@ -312,9 +319,8 @@ class Registration extends EntityController {
     function getRequestedEntity(): ?EntityRegistration {
         $app = App::i();
 
-        $preview_entity = $this->getPreviewEntity();
-        if($preview_entity && isset($this->urlData['id']) && $this->urlData['id'] == $preview_entity->id){
-            if(!$app->request->isGet()){
+        if($preview_entity = $this->getPreviewEntity()){
+            if($app->request->getMethod() != "GET"){
                 $this->errorJson(['message' => [\MapasCulturais\i::__('Este formulário é um pré-visualização da da ficha de inscrição.')]]);
             } else {
                 return $preview_entity;
@@ -782,7 +788,7 @@ class Registration extends EntityController {
         $this->requireAuthentication();
 
         $entity = $this->requestedEntity;
-        $entity->opportunity->checkPermission('@control');
+        $entity->checkPermission('view');
 
         if (!$entity) {
             $app->pass(); 

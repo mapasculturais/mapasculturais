@@ -49,28 +49,7 @@ app.component('opportunity-committee-groups', {
             }
         });
 
-        this.interval = setInterval(async () => {
-            try {
-                const req = await fetch(`/files/distributionslog/${this.entity.id}.log?` + new Date().getTime());
-                if(req.status == 200) {
-                    const message = await req.text();
-                    this.statusMessage = message;
-                    if(/.*\%/.test(message)){
-                        this.percentage = message;
-                    } else {
-                        this.percentage = '100%';
-                    }
-                } else {
-                    this.statusMessage = null;
-                    this.percentage = null;
-                }
-
-            } catch(error) {
-                console.log(error);
-                this.statusMessage = null;
-                this.percentage = null;
-            }
-        }, 1000);
+        this.initLogInterval();
     },
 
     unmounted() {
@@ -78,6 +57,47 @@ app.component('opportunity-committee-groups', {
     },
     
     methods: {
+        initLogInterval(interval = 10000){
+            const self = this;
+            clearInterval(this.interval);
+
+            this.interval = setInterval(async () => {
+                try {
+                    const req = await fetch(`/files/distributionslog/${this.entity.id}.log?` + new Date().getTime());
+                    if(req.status == 200) {
+                        const message = await req.text();
+                        this.statusMessage = message;
+                        if(/.*\%/.test(message)){
+                            this.percentage = message;
+                            if(interval > 1000) {
+                                self.initLogInterval(1000);
+                            }
+                        } else {
+                            if(interval < 10000) {
+                                self.initLogInterval(10000);
+                            }
+                            this.percentage = '100%';
+                        }
+
+                    } else {
+                        this.statusMessage = null;
+                        this.percentage = null;
+                        if(interval < 10000) {
+                            self.initLogInterval(10000);
+                        }
+                    }
+
+                } catch(error) {
+                    console.log(error);
+                    this.statusMessage = null;
+                    this.percentage = null;
+                    if(interval < 10000) {
+                        self.initLogInterval(10000);
+                    }
+                }
+            }, interval);
+        },
+
         updateExcludedFields(group, selectedField) {
             this.selectedFields[group] = selectedField;
 
@@ -96,7 +116,7 @@ app.component('opportunity-committee-groups', {
             }
             
             for (let groupName of Object.keys(this.entity.relatedAgents)) {
-                if (groupName !== "group-admin" && groupName !== '@support') {
+                if (groupName !== '@support') {
                     groups[groupName] = this.entity.relatedAgents[groupName];
                 }
             }

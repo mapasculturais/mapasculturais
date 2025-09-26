@@ -24,8 +24,4 @@ $entity = $this->controller->requestedEntity;
             <button  class="button button--primary button--sm button--large" @click="modal.open()"><?php i::_e('Exibir detalhamento') ?></button>
         </template>
     </mc-modal>
-
-    <div v-if="canShowAppeal" class="registration-results__request-appeal">
-        <button class="button button--primary" @click="createAppealPhaseRegistration()"><?= i::__('Solicitar recurso') ?></button>
-    </div>
 </div>

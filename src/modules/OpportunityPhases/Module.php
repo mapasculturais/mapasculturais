@@ -937,8 +937,9 @@ class Module extends \MapasCulturais\Module{
 
             $this->checkPermission('@control');
 
-            $app->log->debug("Sincronizando inscrições da {$this->name} ({$this->id})");
-
+            if ($app->config['app.log.syncRegistrations']) {
+                $app->log->debug("Sincronizando inscrições da {$this->name} ({$this->id})");
+            }
             $today = new \DateTime;
 
             $result = (object) [
@@ -970,11 +971,15 @@ class Module extends \MapasCulturais\Module{
 
             $this->checkPermission('@control');
 
-            $app->log->debug("  >> REMOVENDO inscrições órfãs da {$this->name} ({$this->id})");
+            if ($app->config['app.log.syncRegistrations']) {
+                $app->log->debug("  >> REMOVENDO inscrições órfãs da {$this->name} ({$this->id})");
+            }
 
             $first_phase = $this->firstPhase;
             $previous_phase = $this->isFinalReportingPhase ? $this->lastPhase : $this->previousPhase;
-            $app->log->debug("  >>>>>>>  PREVIOUS  {$previous_phase->name} ({$previous_phase->id})");
+            if ($app->config['app.log.syncRegistrations']) {
+                $app->log->debug("  >>>>>>>  PREVIOUS  {$previous_phase->name} ({$previous_phase->id})");
+            }
 
             $where_numbers = '';
 
@@ -1037,7 +1042,9 @@ class Module extends \MapasCulturais\Module{
             while ($registration = $query->getOneOrNullResult()) {
                 $count++;
                 $deleted_registrations[] = $registration->number;
-                $app->log->debug("   >>> [{$count}] Removendo inscrição {$registration->number} da fase {$first_phase->name}/{$this->name} ({$this->id})");
+                if($app->config['app.log.syncRegistrations']) {
+                    $app->log->debug("   >>> [{$count}] Removendo inscrição {$registration->number} da fase {$first_phase->name}/{$this->name} ({$this->id})");
+                }
                 $registration->delete(true);
                 $app->em->clear();
             }
@@ -1060,7 +1067,10 @@ class Module extends \MapasCulturais\Module{
 
             $this->checkPermission('@control');
 
-            $app->log->debug("  >> IMPORTANDO inscrições da fase {$this->name} ({$this->id})");
+
+            if($app->config['app.log.syncRegistrations']) {
+                $app->log->debug("  >> IMPORTANDO inscrições da fase {$this->name} ({$this->id})");
+            }
 
             $first_phase = $this->firstPhase;
             $previous_phase = $this->previousPhase;
@@ -1121,7 +1131,9 @@ class Module extends \MapasCulturais\Module{
                         }
                     }
 
-                    $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+                    if($app->config['app.log.syncRegistrations']) {
+                        $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+                    }
 
                     if($current_phase_registration = $repo->findOneBy(['number' => $registration->number, 'opportunity' => $this])) {
                         $current_phase_registration->__skipQueuingPCacheRecreation = true;
@@ -1186,7 +1198,9 @@ class Module extends \MapasCulturais\Module{
 
                 while ($registration = $query->getOneOrNullResult()) {
                     $count++;
-                    $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+                    if($app->config['app.log.syncRegistrations']) {
+                        $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+                    }
 
                     $current_phase_registration = $self->createPhaseRegistration($this, $registration);
 
@@ -1230,8 +1244,10 @@ class Module extends \MapasCulturais\Module{
                             $registration = $next_registration_phase;
                         }
                     }
-                    
-                    $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+
+                    if ($app->config['app.log.syncRegistrations']) {
+                        $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+                    }
                     
                     if($current_phase_registration = $repo->findOneBy(['number' => $registration->number, 'opportunity' => $this])) {
                         $current_phase_registration->__skipQueuingPCacheRecreation = true;
@@ -1285,8 +1301,9 @@ class Module extends \MapasCulturais\Module{
 
                 while ($registration = $query->getOneOrNullResult()) {
                     $count++;
-                    $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
-
+                    if ($app->config['app.log.syncRegistrations']) {
+                        $app->log->debug("   >>> [{$count}] Importando inscrição {$registration->number} para a fase {$first_phase->name}/{$this->name} ({$this->id})");
+                    }
                     $current_phase_registration = $self->createPhaseRegistration($this, $registration);
 
                     if(!$as_draft){
