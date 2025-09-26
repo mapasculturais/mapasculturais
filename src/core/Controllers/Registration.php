@@ -127,6 +127,25 @@ class Registration extends EntityController {
         parent::__construct();
     }
     
+
+    function PATCH_single($data = null)
+    {
+        $entity = $this->requestedEntity;
+        $data = $this->postData;
+
+        // se estiver no modo "editableFields", filtra os dados da requisição para 
+        // passar somente os que estão abertos para edição
+        if ($entity->status > 0 && $entity->canUser('sendEditableFields')) {
+            foreach(array_keys($data) as $key) {
+                if(!in_array($key, $entity->editableFields)) {
+                    unset($data[$key]);
+                }
+            }
+        }
+        
+        parent::PATCH_single($data);
+    }
+
      /**
      * metodo vindo da edição da oportunidade, no campo de ESPAÇO CULTURAL tem que fazer a 
      * verificação se já tem registro na tabela, se tiver deve fazer um update para o novo
