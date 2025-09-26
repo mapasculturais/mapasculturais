@@ -167,6 +167,7 @@ class Module extends \MapasCulturais\Module
             if($module->inEditableTransaction) {
                 if($entity->editableFields && !in_array($this->key, $entity->editableFields)) {
                     $app->em->rollback();
+                    $module->inEditableTransaction = false;
                     throw new PermissionDenied(message:i::__('Você está tentando modificar um campo que você não tem permissão'));
                 }
             }
