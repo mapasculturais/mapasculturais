@@ -5,6 +5,12 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.9] - 2025-09-26
+- Corrige criação de opportunidade de fluxo contínuo
+- Corrige permissão de bloquear uma entidade para edição quando a permissão de modificar foi dada por um role
+- Evita que campos @ condicionados tentem apagar a informação da entidade relacionada
+- Corrige salvamento de formulário de edição de campos de inscrição 
+
 ## [7.6.8] - 2025-09-25
 ### Correções
 - Corrige exibição do link da inscrição na exportação da planilhas de inscritos
