@@ -1804,6 +1804,10 @@ class Registration extends \MapasCulturais\Entity
     }
 
     protected function canUserSendEditableFields(User | GuestUser $user):bool {
+        if($this->status == self::STATUS_DRAFT) {
+            return false;
+        }
+
         if (!$this->canUser('@control')) {
             return false;
         }
