@@ -133,7 +133,6 @@ trait EntityLock {
 
     protected function canUserLock(UserInterface $user): bool 
     {
-        eval(\psy\sh());
         return $this->canUser('modify', $user);
     }
 }
