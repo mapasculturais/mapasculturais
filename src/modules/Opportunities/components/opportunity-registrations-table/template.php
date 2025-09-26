@@ -124,6 +124,10 @@ $entity = $this->controller->requestedEntity;
                     <a :href="entity.singleUrl">{{entity.number}}</a>
                 </template>
 
+                 <template #singleUrl="{entity}">
+                    <a :href="entity.singleUrl">{{entity.singleUrl}}</a>
+                </template>
+
                 <template #eligible="{entity}">
                     <span v-if="entity.eligible"><?= i::__('Sim') ?></span>
                     <span v-else> &nbsp; </span>

@@ -176,23 +176,29 @@ app.component('registration-form', {
             this.$nextTick(() => {
                 const registration = this.registration;
                 const fields = [...$MAPAS.config.registrationForm.fields, ...$MAPAS.config.registrationForm.files];
-
+                
                 for(let i = 0; i < 4; i++) {
                     for(let field of fields) {
-                        if (field.conditional) {
-                            const fieldName = field.conditionalField;
-                            const fieldValue = field.conditionalValue;
+                        if (!field.conditional) {
+                            continue
+                        }
+                        if(this.editableFields.length && !this.editableFields.includes(field.fieldName)) {
+                            continue;
+                        }
+                        
+                        const fieldName = field.conditionalField;
+                        const fieldValue = field.conditionalValue;
 
-                            if (fieldName) {
-                                if(registration[fieldName] instanceof Array) {
-                                    if (!registration[fieldName].includes(fieldValue)) {
-                                        registration[field.fieldName] = null;
-                                    }
-                                } else if (registration[fieldName] != fieldValue) {
+                        if (fieldName) {
+                            if(registration[fieldName] instanceof Array) {
+                                if (!registration[fieldName].includes(fieldValue)) {
                                     registration[field.fieldName] = null;
                                 }
+                            } else if (registration[fieldName] != fieldValue) {
+                                registration[field.fieldName] = null;
                             }
                         }
+                        
                     }
                 }
             });
