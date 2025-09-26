@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.6.8] - 2025-09-25
 ### Correções
 - Corrige exibição do link da inscrição na exportação da planilhas de inscritos
 - Corrige exibição dos campos do tipo "Lista de Pessoas" na exportação da planilha de inscritos
@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige exibição do link da inscrição na tabela e planilha de inscritos
 - Corrige ordenação dos campos do formulário de avaliação
 - Corrige layout da tela de acompanhamento de inscrição no mobile
+- Corrige salvamento de formulário de edição de campos de inscrição quando há campos @ condicionados
 
 ## [7.6.7] - 2025-09-19
 ### Correções
