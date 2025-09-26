@@ -9,8 +9,8 @@ use MapasCulturais\Exceptions\PermissionDenied;
 /**
  * Defines that this entity has seals related to it.
  *
- * @property-read \MapasCulturais\Entities\Seal[] $relatedSeals The seals related to this entity
- * @property-read \MapasCulturais\Entities\SealRelation[] $sealRelations
+ * @property-read Seal[] $relatedSeals The seals related to this entity
+ * @property-read SealRelation[] $sealRelations
  * @property-read string $sealRelationEntityClassNamerelatedSeals
  * 
  */
@@ -125,7 +125,7 @@ trait EntitySealRelation {
     /**
      * Returns the seals related to this entity.
      *
-     * @return \MapasCulturais\Entities\Seal[]|\MapasCulturais\Entities\SealRelation[] The Seals related to this entity.
+     * @return Seal[]|SealRelation[] The Seals related to this entity.
      */
     function getRelatedSeals($return_relations = false, $include_pending_relations = false){
         $app = App::i();
@@ -147,7 +147,7 @@ trait EntitySealRelation {
         return $result;
     }
 
-    function createSealRelation(\MapasCulturais\Entities\Seal $seal, $save = true, $flush = true, ?Agent $agent = null){
+    function createSealRelation(Seal $seal, $save = true, $flush = true, ?Agent $agent = null){
         $app = App::i();
         
         $seal->checkPermission('@control');
@@ -166,7 +166,7 @@ trait EntitySealRelation {
         return $relation;
     }
 
-    function removeSealRelation(\MapasCulturais\Entities\Seal $seal, $flush = true){
+    function removeSealRelation(Seal $seal, $flush = true){
         $relation_class = $this->getSealRelationEntityClassName();
         $repo = App::i()->repo($relation_class);
         $relation = $repo->findOneBy(['seal' => $seal, 'owner' => $this]);
