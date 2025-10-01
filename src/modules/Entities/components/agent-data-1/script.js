@@ -27,6 +27,18 @@ app.component('agent-data-1', {
         },
     },
     methods: {
+        canShow(objt) {
+            if(objt <= 0){
+                return false;
+            }
+            
+            if(objt.length == 1 && objt[0] == ''){
+                 return false;
+            }else{
+                return true;
+            }
+
+        },
         getTextI18n(str) {
             return this.text(str)
         },
