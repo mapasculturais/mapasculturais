@@ -165,13 +165,6 @@ trait ControllerUploads{
 
             $file->owner = $owner;
 
-            // if this group is unique, deletes the existent file
-            if($upload_group->unique){
-                $old_file = $app->repo($file_class_name)->findOneBy(['owner' => $owner, 'group' => $file->group]);
-                if($old_file)
-                    $old_file->delete();
-            }
-
             try{
                 $app->applyHookBoundTo($this, "{$file->hookPrefix}.upload.filesSave:before", [$file]);
                 $file->save();
@@ -182,6 +175,12 @@ trait ControllerUploads{
             $file_group = $file->group;
 
             if($upload_group->unique){
+                if($old_files = $app->repo($file_class_name)->findBy(['owner' => $owner, 'group' => $file->group])) {
+                    foreach($old_files as $old_file) {
+                        $old_file->delete(true);
+                    }
+                }
+
                 $result[$file_group] = $file;
             }else{
                 if(!key_exists($file->group, $result))

@@ -109,6 +109,20 @@ class Registration extends EntityController {
             $this->tmpFile = $tmpFile;
         });
 
+        $app->hook('entity(Registration).file(rfc_<<*>>).insert:after', function() use ($app){
+            $registeredGroup = $app->getRegisteredFileGroup($this->owner->controllerId, $this->group);
+            
+            if($registeredGroup->unique) {
+                if($old_files = $app->repo($this->className)->findBy(['owner' => $this->owner, 'group' => $this->group])) {
+                    foreach($old_files as $old_file) {
+                        if($old_file->id != $this->id) {
+                            $old_file->delete(true);
+                        }
+                    }
+                }
+            }
+        });
+
         $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
             $registration = $this->getRequestedEntity();
            
