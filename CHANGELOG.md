@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige conflito entre a criação de inscrição e a pré visualização de formulários
 
+### Melhorias
+- Implementa botão de alteração de senha para ser usados em providers externos Ex.: Authentik
+
 ## [7.6.9] - 2025-09-26
 - Corrige criação de opportunidade de fluxo contínuo
 - Corrige permissão de bloquear uma entidade para edição quando a permissão de modificar foi dada por um role
