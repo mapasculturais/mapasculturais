@@ -8,7 +8,7 @@ use MapasCulturais\i;
 
 $this->import('
 	mc-avatar
-	mc-icon 
+	mc-icon
 	mc-title
 ');
 ?>
@@ -90,15 +90,7 @@ $this->import('
 		</div>
 
 		<div class="entity-card__content--terms">
-			<div v-if="areas" class="entity-card__content--terms-area">
-				<label v-if="entity.__objectType === 'opportunity'" class="area__title">
-					<?php i::_e('Áreas de interesse:') ?> ({{entity.terms.area.length}}):
-				</label>
-				<label v-if="entity.__objectType === 'agent' || entity.__objectType === 'space'" class="area__title">
-					<?php i::_e('Áreas de atuação:') ?> ({{entity.terms.area.length}}):
-				</label>
-				<p :class="['terms', entity.__objectType+'__color']"> {{areas}} </p>
-			</div>
+			<?php $this->part('entity-card/area') ?>
 
 			<div v-if="tags" class="entity-card__content--terms-tag">
 				<label class="tag__title">
