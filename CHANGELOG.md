@@ -8,6 +8,8 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [unreleased]
 ### Correções
 - Corrige conflito entre a criação de inscrição e a pré visualização de formulários
+- Faz ajustes para evitar que fique arquivos duplicados na inscrição
+- Corrige db-update que ajusta o metadado pessoa com deficiência
 
 ### Melhorias
 - Implementa botão de alteração de senha para ser usados em providers externos Ex.: Authentik
