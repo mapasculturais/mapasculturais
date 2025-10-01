@@ -468,6 +468,10 @@ return [
                 }
             });
 
+            if (empty($result)) {
+                return '[]'; 
+            }
+
             $result = implode('","', $result);
             $result = '["' . $result . '"]';
 
