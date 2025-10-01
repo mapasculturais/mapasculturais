@@ -309,7 +309,7 @@ class Registration extends EntityController {
     function getPreviewEntity(){
         $app = App::i();
         
-        $id = isset($this->urlData['id']) ? $this->urlData['id'] : $this->urlData[0];
+        $id = isset($this->urlData['id']) ? $this->urlData['id'] : (isset($this->urlData[0]) ? $this->urlData[0] : null);
         $referer = $app->request->getReferer()[0] ?? "";
         if($id == -1 && $referer && preg_match("#/(\d+-preview)/#", $referer, $matches)) {
             $id = $matches[1];
