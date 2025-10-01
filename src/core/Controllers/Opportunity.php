@@ -1388,7 +1388,12 @@ class Opportunity extends EntityController {
             $app->pass();
         }
 
-        $entity->checkPermission('modify');
+        try {
+            $entity->checkPermission('modify');
+        } catch (\MapasCulturais\Exceptions\PermissionDenied $e) {
+            $this->errorJson('Você não tem permissão para acessar as inscrições desta oportunidade.', 403);
+            return;
+        }
 
         $this->render('registrations', ['entity' => $entity]);
     }
