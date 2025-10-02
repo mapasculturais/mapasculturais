@@ -47,6 +47,10 @@ app.component('entity-parent-edit', {
     methods: {
         changeParent(entity) {
             this.entity.parent = entity;
+        },
+        
+        removeParent() {
+            this.entity.parent = null;
         }
     }
     
