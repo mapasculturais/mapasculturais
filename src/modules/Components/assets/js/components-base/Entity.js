@@ -263,9 +263,12 @@ class Entity {
             if(prop == 'ownerEntity' && this[prop]) {
                 result[prop] = this[prop]?.id;
                 result['objectType'] = this[prop]?.__objectType;
-            } else if(prop == 'parent' && this[prop]) {
-                if (this[prop]?.id != this.id) {
+            } else if(prop == 'parent') {
+                if (this[prop] && this[prop]?.id != this.id) {
                     result[prop] = this[prop]?.id;
+                } else if (!this[prop]) {
+                    // Inclui parent como null quando for removido
+                    result[prop] = null;
                 }
             } else {
                 result[prop] = this[prop]?.id;
