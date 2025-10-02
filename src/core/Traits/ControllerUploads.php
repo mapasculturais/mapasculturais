@@ -162,6 +162,7 @@ trait ControllerUploads{
 
         foreach($files as $file){
             $upload_group = $app->getRegisteredFileGroup($this->id, $file->group);
+            $old_files = $app->repo($file_class_name)->findBy(['owner' => $owner, 'group' => $file->group]);
 
             $file->owner = $owner;
 
@@ -175,9 +176,11 @@ trait ControllerUploads{
             $file_group = $file->group;
 
             if($upload_group->unique){
-                if($old_files = $app->repo($file_class_name)->findBy(['owner' => $owner, 'group' => $file->group])) {
+                if($old_files) {
                     foreach($old_files as $old_file) {
-                        $old_file->delete(true);
+                        if($old_file->id != $file->id) {
+                            $old_file->delete(true);
+                        }
                     }
                 }
 
