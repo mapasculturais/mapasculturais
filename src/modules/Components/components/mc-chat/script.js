@@ -117,7 +117,7 @@ app.component('mc-chat', {
                 return;
             }
 
-            if ((typeof this.message.payload) === 'object' && this.message.payload.message.trim() === '') {
+            if ((typeof this.message.payload) === 'object' && this.message.payload?.message?.trim() === '') {
                 return;
             }
 

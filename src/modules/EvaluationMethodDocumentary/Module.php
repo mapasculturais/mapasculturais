@@ -344,6 +344,17 @@ class Module extends \MapasCulturais\EvaluationMethod {
         return $result;
     }
 
+    /**
+     * Retorna o resultado consolidado aplicado
+     *
+     * @param Entities\Registration $registration
+     * @return string|int
+     */
+    public function _getConsolidatedAutoApplicationResult(Entities\Registration $registration): string|int
+    {
+        return $registration->consolidatedResult == 1 ? Registration::STATUS_APPROVED : Registration::STATUS_INVALID;
+    }
+
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {
         $data = (array) $evaluation->evaluationData;
         
