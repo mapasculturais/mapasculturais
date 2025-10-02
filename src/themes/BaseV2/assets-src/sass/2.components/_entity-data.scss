@@ -19,6 +19,11 @@
         justify-content: space-between;
         min-height: size(48);
         padding: size(8) size(12);
+
+        &:has(.mc-tag-list) {
+            background-color: var(--mc-white);
+        }
+
     }
     
     &__value {
