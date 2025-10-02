@@ -365,15 +365,7 @@ class Module extends \MapasCulturais\EvaluationMethod {
                         $opportunity = $registration->opportunity;
                         
                         if($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
-                            $data = [
-                                'registrationEvaluation' => $evaluation,
-                                'registration' => $registration,
-                                'opportunity' => $opportunity,
-                                'newStatus' => $payload->status 
-                            ];
-            
-                            $start_string = (new DateTime())->modify('+1 minute 20 seconds')->format('Y-m-d H:i:s');
-                            $app->enqueueOrReplaceJob(\Opportunities\Jobs\AutoApplicationResult::SLUG, $data, $start_string);
+                            $opportunity->evaluationMethod->applyConsolidatedResult($registration, $payload->status);
                         }
                     }
 
@@ -519,6 +511,17 @@ class Module extends \MapasCulturais\EvaluationMethod {
         }
 
         return $result;
+    }
+
+    /**
+     * Retorna o resultado consolidado aplicado
+     *
+     * @param Entities\Registration $registration
+     * @return string|int
+     */
+    public function _getConsolidatedAutoApplicationResult(Entities\Registration $registration, $status_force = null): string|int
+    {
+        return $status_force ?: $registration->consolidatedResult;
     }
 
     public function getEvaluationResult(Entities\RegistrationEvaluation $evaluation) {

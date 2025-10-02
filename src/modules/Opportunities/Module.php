@@ -41,7 +41,6 @@ class Module extends \MapasCulturais\Module{
         $app->registerJobType(new Jobs\PublishResult(Jobs\PublishResult::SLUG));
         $app->registerJobType(new Jobs\UpdateSummaryCaches(Jobs\UpdateSummaryCaches::SLUG));
         $app->registerJobType(new Jobs\RedistributeCommitteeRegistrations(Jobs\RedistributeCommitteeRegistrations::SLUG));
-        $app->registerJobType(new Jobs\AutoApplicationResult(Jobs\AutoApplicationResult::SLUG));
 
         $app->hook('mapas.printJsObject:before', function () {
             /** @var \MapasCulturais\Theme $this */
@@ -761,14 +760,7 @@ class Module extends \MapasCulturais\Module{
             $opportunity = $registration->opportunity;
             
             if ($opportunity->evaluationMethodConfiguration->autoApplicationAllowed) {
-                $data = [
-                    'registrationEvaluation' => $this,
-                    'registration' => $registration,
-                    'opportunity' => $opportunity,
-                ];
-
-                $start_string = (new DateTime())->modify('+1 minute 20 seconds')->format('Y-m-d H:i:s');
-                $app->enqueueOrReplaceJob(Jobs\AutoApplicationResult::SLUG, $data, $start_string);
+                $opportunity->evaluationMethod->applyConsolidatedResult($registration);
             }
         });
 
