@@ -24,7 +24,7 @@ $this->import('
         </div>
     </header>
 
-    <mc-card>
+    <mc-card v-if="loading">
         <mc-loading :condition="loading"><?= i::__('Salvando aceite dos termos...') ?></mc-loading>
     </mc-card>
 
