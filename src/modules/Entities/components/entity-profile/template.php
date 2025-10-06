@@ -12,7 +12,7 @@ $this->import('
 ');
 ?>
 
-<div class="entity-profile">
+<div class="entity-profile" :class="{error: entity.__validationErrors['file:avatar']}">
     <mc-image-uploader :entity="entity" group="avatar" :aspect-ratio="1" :circular="true">
         <template #default="modal">
             <div class="entity-profile__profile">
@@ -24,4 +24,7 @@ $this->import('
             </div>
         </template>
     </mc-image-uploader>
+    <div v-if="entity.__validationErrors['file:avatar']" class="field__error">
+        {{entity.__validationErrors['file:avatar'].join(', ')}}
+    </div>
 </div>
