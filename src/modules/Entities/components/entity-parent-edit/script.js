@@ -16,7 +16,7 @@ app.component('entity-parent-edit', {
 
     computed: {
         parent() {
-            return this.entity.parent || null
+            return this.entity.parent || null;
         }
     },
     
@@ -47,6 +47,12 @@ app.component('entity-parent-edit', {
     methods: {
         changeParent(entity) {
             this.entity.parent = entity;
+            this.entity.save();
+        },
+        
+        removeParent() {
+            this.entity.parent = null;
+            this.entity.save();
         }
     }
     
