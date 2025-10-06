@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Correções
+- Corrige erro na avaliação de qualificação documental, que exigia uma opção para desabilitação mesmo quando não existia opções configuradas
+- Corrige erro que impedia o carregamento da inscrição, quando nao existia step configurado em algum campo
+
 ## [7.6.10] - 2025-10-02
 ### Correções
 - Corrige conflito entre a criação de inscrição e a pré visualização de formulários
