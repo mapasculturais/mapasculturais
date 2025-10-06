@@ -463,7 +463,35 @@ class Entity {
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
     }
 
+    async validate() {
+            this.POST('validateEntity', {callback: (response) => {
+            debugger;
+        }});
+    }
+
     async save(delay = 300, preserveValues = true, forceSave) {
+        let updateMethod = 'PATCH';
+
+        if(typeof delay == 'object') {
+            if (delay.preserveValues !== undefined) {
+                preserveValues = delay.preserveValues;
+            }
+
+            if (delay.forceSave !== undefined) {
+                forceSave = delay.forceSave;
+            }
+
+            if (delay.updateMethod !== undefined) {
+                updateMethod = delay.updateMethod;
+            }
+
+            if (delay.delay !== undefined) {
+                delay = delay.delay;
+            } else {
+                delay = 300;
+            }
+        }
+
         if(!this.id) {
             preserveValues = false;
         }
@@ -491,7 +519,7 @@ class Entity {
                         return;
                     }
 
-                    const res = await this.API.persistEntity(this, forceSave);                    
+                    const res = await this.API.persistEntity(this, forceSave, updateMethod);                    
                     this.doPromise(res, (entity) => {
                         if (this.id) {
                             this.sendMessage(this.text('modificacoes salvas'));
