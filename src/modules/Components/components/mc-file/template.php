@@ -13,12 +13,12 @@ use MapasCulturais\i;
         <?= i::__('Anexar:') ?>
     </h5>
 
-    <label :for="uniqueId" class="mc-file__field">
+    <label :for="propId" class="mc-file__field">
         <span class="button button--primary-outline button--icon">
             <?= i::__('Escolher arquivo') ?> <mc-icon name="attachment"></mc-icon>
         </span>
         <h5 :class="['semibold', {'primary__color' : newFile}]"> {{fileName}} </h5>
-        <input :id="uniqueId" type="file" name="newFile" class="mc-file__input" @change="setFile($event)" rel="newFile">
+        <input type="file" :id="propId" class="mc-file__input" rel="newFile" name="newFile" :accept="accept" @change="setFile($event)">
     </label>
 
     <small class="mc-file__field-rules">Tamanho máximo do arquivo: <strong>{{maxFileSize}}</strong></small>
