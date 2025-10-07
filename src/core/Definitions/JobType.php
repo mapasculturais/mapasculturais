@@ -46,9 +46,7 @@ abstract class JobType extends \MapasCulturais\Definition {
 
         $app->applyHookBoundTo($job, "job({$this->slug}).execute:before");
         
-        $app->disableAccessControl();
         $result = $this->_execute($job);
-        $app->enableAccessControl();
 
         $app->applyHookBoundTo($job, "job({$this->slug}).execute:after", [&$result]);
 
