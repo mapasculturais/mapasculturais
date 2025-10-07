@@ -10,19 +10,75 @@ $this->import('
     mc-modal
 ');
 ?>
-<!-- usando uma tag <template> para o slot padrao -->
-<mc-modal title="Título da modal">
+<mc-modal title="<?= i::__('Exportar oportunidade') ?>">
     <template #default="modal">
-        <p>conteúdo da modal</p>
-        <a @click="modal.close()">você pode fechar a modal por aqui também</a>
+        <div class="opportunity-exporter">
+            <p>
+                <?= i::__('Selecione os dados que serão exportados:') ?>
+            </p>
+            <div class="field field__group">
+                <label class="field__checkbox">
+                    <input type="checkbox" name="infos" v-model="filters.infos">
+                    <span><?= i::__('Informações básicas') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="files" v-model="filters.files">
+                    <span><?= i::__('Anexos') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="images" v-model="filters.images">
+                    <span><?= i::__('Imagens') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="dates" v-model="filters.dates">
+                    <span><?= i::__('Datas das fases') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="vacancyLimits" v-model="filters.vacancyLimits">
+                    <span><?= i::__('Limites de vagas') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="categories" v-model="filters.categories">
+                    <span><?= i::__('Categorias') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="ranges" v-model="filters.ranges">
+                    <span><?= i::__('Faixas/Linhas') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="proponentTypes" v-model="filters.proponentTypes">
+                    <span><?= i::__('Tipos de proponente') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="workplan" v-model="filters.workplan">
+                    <span><?= i::__('Plano de metas') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="statusLabels" v-model="filters.statusLabels">
+                    <span><?= i::__('Configurações de status') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="phaseSeals" v-model="filters.phaseSeals">
+                    <span><?= i::__('Selos certificadores') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="appealPhases" v-model="filters.appealPhases">
+                    <span><?= i::__('Fases de recurso') ?></span>
+                </label>
+                <label class="field__checkbox">
+                    <input type="checkbox" name="monitoringPhases" v-model="filters.monitoringPhases">
+                    <span><?= i::__('Fases de monitoramento') ?></span>
+                </label>
+            </div>
+        </div>
     </template>
 
     <template #actions="modal">
-        <button @click="doSomething(modal)">fazer algo</button>
-        <button @click="modal.close()">cancelar</button>
+        <button class="button button--text" @click="cancelExport(modal)"><?= i::__('Cancelar') ?></button>
+        <button class="button button--primary" @click="doExport(modal)"><?= i::__('Exportar') ?></button>
     </template>
 
-    <template #button-label="modal">
-        <a href="#" @click="modal.open()"><?= i::__('Exportar Opportunidade') ?></a>
+    <template #button="modal">
+        <button type="button" class="button button--icon button--sm" @click="modal.open()"><?= i::__('Exportar') ?></button>
     </template>
 </mc-modal>

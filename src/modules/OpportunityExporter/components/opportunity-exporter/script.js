@@ -1,51 +1,67 @@
 app.component('opportunity-exporter', {
     template: $TEMPLATES['opportunity-exporter'],
     
-    // define os eventos que este componente emite
     emits: ['exported'],
 
     props: {
-        opportunity: {
+        entity: {
             type: Entity,
             required: true
         },
     },
     
-    setup(props, { slots }) {
-        const hasSlot = name => !!slots[name];
+    setup() {
         // os textos estão localizados no arquivo texts.php deste componente 
         const text = Utils.getTexts('opportunity-exporter')
-        return { text, hasSlot }
+        return {text }
     },
 
-    beforeCreate() { },
-    created() { },
-
-    beforeMount() { },
-    mounted() { },
-
-    beforeUpdate() { },
-    updated() { },
-
-    beforeUnmount() {},
-    unmounted() {},
-
     data() {
+        const filters = this.createFilters()
+
         return {
+            filters,
         }
     },
 
     computed: {
         opportunityPhases(){
-            return $MAPAS.opportunityPhases;
+            return $MAPAS.opportunityPhases
         }
     },
     
     methods: {
-        export () {
+        cancelExport (modal) {
+            this.filters = this.createFilters()
+            modal.close()
+        },
 
-            // emite o evento enviando o data
-            this.$emit('exported', this.opportunity);
-        }
+        createFilters () {
+            return {
+                infos: true,
+                files: true,
+                images: true,
+                dates: true,
+                vacancyLimits: true,
+                categories: true,
+                ranges: true,
+                proponentTypes: true,
+                workplan: true,
+                statusLabels: true,
+                phaseSeals: true,
+                appealPhases: true,
+                monitoringPhases: true,
+            }
+        },
+
+        async doExport (modal) {
+            try {
+                const res = await this.entity.POST('export', this.filters)
+                modal.close()
+                this.$emit('exported', this.entity)
+            } catch (err) {
+                console.error(err)
+            }
+        },
     },
 });

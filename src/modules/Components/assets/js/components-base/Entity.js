@@ -445,6 +445,9 @@ class Entity {
         return result;
     }
 
+    /**
+     * @deprecated Use `invoke`
+     */
     async POST(action, {callback, data, processingMessage}) {
         this.__processing = processingMessage || this.text('processando');
         const res = await this.API.POST(this.getUrl(action), data);
@@ -461,6 +464,18 @@ class Entity {
         this.__processing = false;
         this.sendMessage(this.text('erro inesperado'), 'error');
         return Promise.reject({error: true, status:0, data: this.text('erro inesperado'), exception: error});
+    }
+
+    async invoke(action, data, processingMessage) {
+        this.__processing = processingMessage || this.text('processando');
+        
+        const res = await this.API.POST(this.getUrl(action), data);
+        
+        try {
+            return this.doPromise(res, (data) => data);
+        } catch (error) {
+            return this.doCatch(error);
+        }
     }
 
     async save(delay = 300, preserveValues = true, forceSave) {
