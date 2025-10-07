@@ -9,12 +9,6 @@ app.component('opportunity-exporter', {
             required: true
         },
     },
-    
-    setup() {
-        // os textos estão localizados no arquivo texts.php deste componente 
-        const text = Utils.getTexts('opportunity-exporter')
-        return {text }
-    },
 
     data() {
         const filters = this.createFilters()

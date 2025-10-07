@@ -15,6 +15,7 @@ $this->import('
         <div class="opportunity-exporter">
             <p>
                 <?= i::__('Selecione os dados que serão exportados:') ?>
+                <?php $this->info('editais-oportunidades -> configuracoes -> exportando-oportunidade') ?>
             </p>
             <div class="field field__group">
                 <label class="field__checkbox">
