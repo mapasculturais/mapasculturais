@@ -190,7 +190,16 @@ app.component('agent-table', {
             this.selectedBairro = [];
             this.selectedCities = [];
             this.selectedStates = [];
-            this.query = this.initialQuery;
+            this.query = {
+                '@select': this.query['@select'],
+                '@order': 'createTimestamp DESC',
+                '@limit': 20,
+                '@page': 1
+            };
+
+            if (this.agentType) {
+                this.query['type'] = `EQ(${this.agentType})`;
+            }
 
             entities.refresh();
             this.$emit('clear-filters', entities);

@@ -10,6 +10,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - Ajuste a estilização do campo pessoa com deficiência
  - Ajuste as labels na single do agente
 
+## [7.6.11] - 2025-10-07
+### Correções
+- Corrige erro na avaliação de qualificação documental, que exigia uma opção para desabilitação mesmo quando não existia opções configuradas
+- Corrige erro que impedia o carregamento da inscrição, quando nao existia step configurado em algum campo
+- Ajusta para que o script de cotas não quebre quando não existe configurações de cotas definidas ou se as configurações  estão incompletas
+- Corrige filtros da tabela de agentes individuais
+- Corrige funcionalidade de limpar filtros da tabela de agentes
+- Corrige exibição das tabelas de agentes e agentes individuais
+
 ## [7.6.10] - 2025-10-02
 ### Correções
 - Corrige conflito entre a criação de inscrição e a pré visualização de formulários
@@ -158,6 +167,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 4. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a SECULT/PE</small>
 <a name="hl-ibercultura"></a>
 5. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
+
+## [7.5.68] - 2025-10-07
+### Correções
+- Corrige template de e-mail de aviso de inscrição selecionada para exibir o number da inscrição corretamente
+
+## [7.5.67] - 2025-09-26
+### Correções
+- Corrige permissão para edição via role criado na página de funções de usuário
 
 ## [7.5.66] - 2025-09-05
 ### Correções
