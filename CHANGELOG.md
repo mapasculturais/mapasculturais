@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige a consolidação de resultado da avaliação do tipo habilitação documental
 - Corrige exibição da data da inscrição na tela de avaliação
+- Corrige exibição das colunas da tabela de inscrição
 
 ## [7.6.11] - 2025-10-07
 ### Correções
