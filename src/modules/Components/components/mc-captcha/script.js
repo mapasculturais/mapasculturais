@@ -8,7 +8,7 @@ app.component('mc-captcha', {
     props: {
         config: {
             type: String,
-            required: true
+            required: false
         },
         error: {
             type: Boolean,
@@ -28,16 +28,17 @@ app.component('mc-captcha', {
         return {
             provider: config?.captcha?.provider,
             key: config?.captcha.key,
-            recaptchaResponse: ''
+            recaptchaResponse: '',
+            containerId: `container-captcha-${Math.random().toString(36).slice(2)}`,
+            widgetId: null
         }
     },
 
     mounted() {
         if (this.provider === 'cloudflare') {
-            window.turnstile.ready(() => this.onloadTurnstileCallback());
-
-            window.verifyCaptcha = this.verifyCaptcha;
-            window.expiredCaptcha = this.expiredCaptcha;
+            if (window.turnstile && typeof window.turnstile.ready === 'function') {
+                window.turnstile.ready(() => this.onloadTurnstileCallback());
+            }
         };
     },
     computed: {
@@ -46,15 +47,8 @@ app.component('mc-captcha', {
 
     watch: {
         error(newValue, oldValue) {
-            // check if grecaptcha is not defined
-            if (typeof grecaptcha !== 'undefined') {
-                grecaptcha.reset();
+            if (newValue) {
                 this.expiredCaptcha();
-            }
-
-            // check if turnstile is not defined
-            if (typeof window.turnstile !== 'undefined') {
-                window.turnstile.reset();
             }
         }
     },
@@ -65,12 +59,30 @@ app.component('mc-captcha', {
         },
 
         expiredCaptcha() {
+            // check if grecaptcha is not defined
+            if (typeof grecaptcha !== 'undefined') {
+                try {
+                    if (this.widgetId !== null) {
+                        grecaptcha.reset(this.widgetId);
+                    } else {
+                        grecaptcha.reset();
+                    }
+                } catch (e) {}
+            }
+
+            // check if turnstile is not defined
+            if (typeof window.turnstile !== 'undefined') {
+                try {
+                    window.turnstile.reset(this.widgetId || undefined);
+                } catch (e) {}
+            }
+
             this.$emit('captcha-expired');
         },
 
         onloadTurnstileCallback() {
             const self = this;
-            turnstile.render("#container-cloudflare-turnstile", {
+            self.widgetId = turnstile.render(`#${self.containerId}`, {
                 sitekey: self.key,
                 callback: function (token) {
                     self.verifyCaptcha(token);
