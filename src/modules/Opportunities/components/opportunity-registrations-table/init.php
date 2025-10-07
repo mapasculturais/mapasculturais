@@ -88,6 +88,14 @@ $default_headers[] = [
 
 // Carrega metadados
 $definitions = Registration::getPropertiesMetadata();
+unset(
+    $definitions['consolidatedDetails'],
+    $definitions['evaluationsDetails'],
+    $definitions['valuersIncludeList'],
+    $definitions['valuersExcludeList'],
+    $definitions['valuers'],
+);
+
 $can_see = function ($def) use ($app) {
     return $app->user->is('admin') ? true : !(isset($def['private']) && $def['private']);
 };
@@ -235,6 +243,7 @@ if (count($phase->registrationRanges) > 0) {
 
 $app->applyHook('component(opportunity-registrations-table).additionalHeaders', [&$default_headers, &$default_select, &$available_fields]);
 
+// eval(\psy\sh());die();
 $data['defaultSelect'] = $default_select;
 $data['defaultHeaders'] = $default_headers;
 $data['defaultAvailable'] = $available_fields;
