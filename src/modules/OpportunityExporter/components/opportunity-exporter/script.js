@@ -56,12 +56,24 @@ app.component('opportunity-exporter', {
 
         async doExport (modal) {
             try {
-                const res = await this.entity.POST('export', this.filters)
+                const exported = await this.entity.POST('export', this.filters)
                 modal.close()
-                this.$emit('exported', this.entity)
+                this.downloadJSON(exported)
+                this.$emit('exported', exported)
             } catch (err) {
                 console.error(err)
             }
+        },
+
+        downloadJSON (data) {
+            const blob = new Blob([JSON.stringify(data)], { type: 'application/json' })
+            const fileURL = URL.createObjectURL(blob)
+
+            const downloadLink = document.createElement('a')
+            downloadLink.href = fileURL
+            downloadLink.download = `${this.entity.__objectId}.json`
+            document.body.appendChild(downloadLink)
+            downloadLink.click()
         },
     },
 });
