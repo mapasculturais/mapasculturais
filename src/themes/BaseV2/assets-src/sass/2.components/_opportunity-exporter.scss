@@ -1,0 +1,17 @@
+.opportunity-exporter {
+    
+    .field__group {
+        display: block;
+        column-count: 2;
+        margin-top: size(16);
+
+        @include mobile {
+            column-count: 1;
+        }
+    }
+
+    .field__checkbox {
+        break-inside: avoid;
+        margin-block: size(8);
+    }
+}
