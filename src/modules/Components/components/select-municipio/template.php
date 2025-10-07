@@ -16,17 +16,13 @@ $this->import('
         <label class="field__title">
             <?= i::__('Estado') ?>
         </label>
-        <mc-select placeholder="<?= i::esc_attr_e("Selecione"); ?>" v-model:default-value="selectedState" @change-option="loadCities($event)" show-filter>
-            <option v-for="state in states" :key="state.sigla" :value="state.sigla">{{state.nome}}</option>
-        </mc-select>
+        <mc-select placeholder="<?= i::esc_attr_e("Selecione"); ?>" v-model:default-value="selectedState" @change-option="loadCities($event)" show-filter :options="states.map(state => ({value: state.sigla, label: state.nome}))"></mc-select>
     </div>
     
-    <div v-if="selectedState" class="field col-6">
+    <div v-show="selectedState" class="field col-6">
         <label class="field__title">
             <?=i::__('Município') ?>
         </label>
-        <mc-select placeholder="<?= i::esc_attr_e("Selecione"); ?>" v-model:default-value="selectedCity" @change-option="selectCity($event)" show-filter>
-            <option v-for="city in cities" :key="city.nome" :value="city.nome">{{city.nome}}</option>
-        </mc-select>
+        <mc-select :key="'city-select-' + selectedState" placeholder="<?= i::esc_attr_e("Selecione"); ?>" v-model:default-value="selectedCity" @change-option="selectCity($event)" show-filter :options="cities.map(city => ({value: city.nome, label: city.nome}))"></mc-select>
     </div>
 </div>
