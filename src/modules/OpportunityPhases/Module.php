@@ -1880,7 +1880,7 @@ class Module extends \MapasCulturais\Module{
                 "baseUrl" => $registration->singleUrl,
                 "opportunityId" => $opportunity->id,
                 "opportunityTitle" => $opportunity->firstPhase->name,
-                "registrationId" => $registration->id,
+                "registrationNumber" => $registration->number,
                 "registrationUrl" => $registration->singleUrl
             ];
             $email_params = [
