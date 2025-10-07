@@ -159,6 +159,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 <a name="hl-ibercultura"></a>
 5. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
 
+## [7.5.68] - 2025-10-07
+### Correções
+- Corrige template de e-mail de aviso de inscrição selecionada para exibir o number da inscrição corretamente
+
+## [7.5.67] - 2025-09-26
+### Correções
+- Corrige permissão para edição via role criado na página de funções de usuário
+
 ## [7.5.66] - 2025-09-05
 ### Correções
 - Corrige paginação de oportunidades
