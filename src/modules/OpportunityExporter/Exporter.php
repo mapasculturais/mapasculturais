@@ -29,24 +29,24 @@ class Exporter
      */
     function __construct(
         protected Opportunity $opportunity,
-        protected bool $infos = true,
-        protected bool $files = true,
-        protected bool $images = true,
+        protected bool $infos = false,
+        protected bool $files = false,
+        protected bool $images = false,
 
-        protected bool $dates = true,
+        protected bool $dates = false,
 
-        protected bool $vacancyLimits = true,
+        protected bool $vacancyLimits = false,
 
-        protected bool $categories = true,
-        protected bool $ranges = true,
-        protected bool $proponentTypes = true,
+        protected bool $categories = false,
+        protected bool $ranges = false,
+        protected bool $proponentTypes = false,
 
-        protected bool $workplan = true,
+        protected bool $workplan = false,
 
-        protected bool $statusLabels = true,
-        protected bool $phaseSeals = true,
-        protected bool $appealPhases = true,
-        protected bool $monitoringPhases = true,
+        protected bool $statusLabels = false,
+        protected bool $phaseSeals = false,
+        protected bool $appealPhases = false,
+        protected bool $monitoringPhases = false,
     ) {
         if(!$opportunity->isFirstPhase) {
             throw new Exception('O parâmetro opportunity deve ser a primeira fase de uma oportunidade');
@@ -246,7 +246,7 @@ class Exporter
 
     public function exportPhase(Opportunity $phase): array
     {
-        
+        return [];
     }
 
     public function exportStatusLabels(Opportunity $phase): array
