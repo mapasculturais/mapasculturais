@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro na avaliação de qualificação documental, que exigia uma opção para desabilitação mesmo quando não existia opções configuradas
 - Corrige erro que impedia o carregamento da inscrição, quando nao existia step configurado em algum campo
+- Ajusta para que o script de cotas não quebre quando não existe configurações de cotas definidas ou se as configurações  estão incompletas
 
 ## [7.6.10] - 2025-10-02
 ### Correções
