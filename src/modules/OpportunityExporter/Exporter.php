@@ -11,6 +11,22 @@ use MapasCulturais\App;
 
 class Exporter
 {
+    /**
+     * @param Opportunity $opportunity Oportunidade a ser exportada
+     * @param bool $infos Exportar informações básicas
+     * @param bool $files Exportar anexos
+     * @param bool $images Exportar imagens
+     * @param bool $dates Exportar datas das fases do edital
+     * @param bool $vacancyLimits Exportar limites de vagas
+     * @param bool $categories Exportar categorias
+     * @param bool $ranges Exportar faixas/linhas
+     * @param bool $proponentTypes Exportar tipos de proponente
+     * @param bool $workplan Exportar plano de metas
+     * @param bool $statusLabels Exportar configurações de status
+     * @param bool $phaseSeals Exportar configuração dos selos certificadores das fases
+     * @param bool $appealPhases Exportar fases de recurso
+     * @param bool $monitoringPhases Exportar fases de monitoramento
+     */
     function __construct(
         protected Opportunity $opportunity,
         protected bool $infos = true,
