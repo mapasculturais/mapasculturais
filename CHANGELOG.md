@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.5.68] - 2025-10-07
+### Correções
+- Corrige template de e-mail de aviso de inscrição selecionada para exibir o number da inscrição corretamente
+
 ## [7.5.67] - 2025-09-26
 ### Correções
 - Corrige permissão para edição via role criado na página de funções de usuário
