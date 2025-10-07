@@ -353,6 +353,12 @@ app.component('opportunity-registrations-table', {
                 });
             }
 
+            const statusIndex = itens.findIndex(item => item.value === 'status');
+            if (statusIndex !== -1) {
+                const statusItem = itens.splice(statusIndex, 1)[0];
+                itens.push(statusItem);
+            }
+
             return itens;
         },
         select() {
