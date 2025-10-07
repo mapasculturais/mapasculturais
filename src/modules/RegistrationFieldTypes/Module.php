@@ -167,6 +167,7 @@ class Module extends \MapasCulturais\Module
             if($module->inEditableTransaction) {
                 if($entity->editableFields && !in_array($this->key, $entity->editableFields)) {
                     $app->em->rollback();
+                    $module->inEditableTransaction = false;
                     throw new PermissionDenied(message:i::__('Você está tentando modificar um campo que você não tem permissão'));
                 }
             }
@@ -852,7 +853,7 @@ class Module extends \MapasCulturais\Module
                 $entity->payment_bank_account_number = $value['account_number'];
                 $entity->payment_bank_dv_account_number = $value['dv_account_number'];
                 $entity->save(true);
-            } else {
+            } else if($value) {
                 $entity->$entity_field = $value;
             }
          

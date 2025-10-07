@@ -17,11 +17,7 @@ $this->import('
      <template v-if="entity && !entity.id" #default>
          <label><?php i::_e('Crie um projeto com informações básicas') ?><br><?php i::_e('e de forma rápida') ?></label>
          <div class="create-modal__fields">
-             <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título") ?> prop="name"></entity-field>
-             <entity-field :entity="entity" hide-required :editable="true" prop="type" label="<?php i::_e('Linguagem cultural')?>"></entity-field>
-             <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
-             <entity-field :entity="entity" hide-required prop="shortDescription" :max-length="400" label="<?php i::esc_attr_e("Adicione uma Descrição curta para o Projeto") ?>"></entity-field>
-             <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
+            <?php $this->part('entities/create-project-fields') ?>
          </div>
      </template>
 

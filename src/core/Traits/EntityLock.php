@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\UserInterface;
 
 trait EntityLock {
 
@@ -21,7 +22,7 @@ trait EntityLock {
      * @param int $timeout Lock Tempo limite do bloqueio em segundos (padrão é 60).
      * @return string Token gerado para o bloqueio.
      */
-    function lock(int $timeout = null, string $token = null): string {
+    function lock(?int $timeout = null, ?string $token = null): string {
         /** @var \MapasCulturais\Entity $this */
         $app = App::i();
         $this->checkPermission('lock');
@@ -128,5 +129,10 @@ trait EntityLock {
         $filename = sys_get_temp_dir() . "/lock-{$name}.lock";
 
         return $filename;
+    }
+
+    protected function canUserLock(UserInterface $user): bool 
+    {
+        return $this->canUser('modify', $user);
     }
 }
