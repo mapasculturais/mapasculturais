@@ -312,21 +312,23 @@ app.component('qualification-evaluation-form', {
                     }
                     
                     if (crit.nonEliminatory === 'false' && value.includes('invalid')) {
-                        let hasRecommendation = false;
+                        let hasRecommendation = true;
+                        
+                        const isOthersActive = crit.otherReasonsOption == 'true';
 
                         if (crit.options.length > 0) {
-                            for (let option of crit.options) {
-                                if (this.formData.data[crit.id]?.includes(option)) {
-                                    hasRecommendation = true;
+                            for (const option of crit.options) {
+                                if (!this.formData.data[crit.id]?.includes(option)) {
+                                    hasRecommendation = false;
                                     break;
                                 }
                             }
                         }
 
-                        if (crit.otherReasonsOption && this.formData.data[crit.id]?.includes('others')) {
-                            const reason = this.formData.data[crit.id + '_reason'];
-                            if (reason && reason.trim() !== '') {
-                                hasRecommendation = true;
+                        if (isOthersActive && hasRecommendation) {
+                            const reason = this.formData.data[`${crit.id}_reason`];
+                            if (!reason || reason.trim() == '') {
+                                hasRecommendation = false;
                             }
                         }
 
