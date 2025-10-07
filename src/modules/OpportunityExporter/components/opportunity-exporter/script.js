@@ -56,7 +56,7 @@ app.component('opportunity-exporter', {
 
         async doExport (modal) {
             try {
-                const exported = await this.entity.POST('export', this.filters)
+                const exported = await this.entity.invoke('export', this.filters)
                 modal.close()
                 this.downloadJSON(exported)
                 this.$emit('exported', exported)
