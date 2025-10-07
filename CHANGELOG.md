@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
 - Corrige erro na avaliação de qualificação documental, que exigia uma opção para desabilitação mesmo quando não existia opções configuradas
 - Corrige erro que impedia o carregamento da inscrição, quando nao existia step configurado em algum campo
+- Corrige filtros da tabela de agentes individuais
+- Corrige funcionalidade de limpar filtros da tabela de agentes
+- Corrige exibição das tabelas de agentes e agentes individuais
 
 ## [7.6.10] - 2025-10-02
 ### Correções
