@@ -1503,6 +1503,7 @@ class Theme extends MapasCulturais\Theme {
                     $section_divisor->owner = $opportunity;
                     $section_divisor->fieldType = 'section';
                     $section_divisor->title = sprintf(i::__('%s - Inscrição %s'),$opportunity->name, $reg->id);
+                    $section_divisor->step = $opportunity->registrationFieldConfigurations[0]->step;
                     $section_divisor->displayOrder = $i * 1000 -1;
                     $this->jsObject['entity']['registrationFieldConfigurations'][] = $section_divisor;
                 }
