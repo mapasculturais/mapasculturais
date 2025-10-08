@@ -11,10 +11,8 @@ app.component('opportunity-exporter', {
     },
 
     data() {
-        const filters = this.createFilters()
-
         return {
-            filters,
+            filters: this.createFilters(),
         }
     },
 
@@ -26,8 +24,8 @@ app.component('opportunity-exporter', {
     
     methods: {
         cancelExport (modal) {
-            this.filters = this.createFilters()
             modal.close()
+            this.filters = this.createFilters()
         },
 
         createFilters () {
