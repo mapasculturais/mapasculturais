@@ -7,9 +7,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [UNRELEASED]
 ### Correções
- - Ajuste da exibição de acessbilidade na lista de espaços
- - Ajustes de filtros de categoria, faixa e tipo de proponente no suporte
- - Ajuste da visibilidade dos campos do formulário de inscrição condicionado a pergunta "Vai concorrer por cotas"?
+- Ajuste da exibição de acessbilidade na lista de espaços
+- Ajustes de filtros de categoria, faixa e tipo de proponente no suporte
+- Ajuste da visibilidade dos campos do formulário de inscrição condicionado a pergunta "Vai concorrer por cotas"?
+- Corrige a consolidação de resultado da avaliação do tipo habilitação documental
+- Corrige exibição da data da inscrição na tela de avaliação
 
 ## [7.6.12] - 2025-10-08
 ### Correções
