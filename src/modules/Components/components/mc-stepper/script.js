@@ -34,6 +34,14 @@ app.component('mc-stepper', {
             type: Array,
             default: () => [],
         },
+        countClass: {
+            type: String,
+            default: 'count'
+        },
+        showStepNumber: {
+            type: Boolean,
+            default: false
+        }
     },
 
     methods: {
