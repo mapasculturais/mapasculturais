@@ -5,10 +5,21 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.6.12] - 2025-10-08
 ### Correções
- - Ajuste a estilização do campo pessoa com deficiência
- - Ajuste as labels na single do agente
+- Ajuste a estilização do campo pessoa com deficiência
+- Padroniza labels dos cmapos da página de edição de agente individual
+- Ajuste de estilização na tela de aceitação de termos de usu e política de privacidade
+- Corrige destinatário dos emails de início de inscrições quando o agente não tem o email privado definido
+- Evita que entidades em rascunho e lixiera sejam exportados nas planilhas
+
+### Melhorias
+- Adiciona funcionalidade de remoção do supra espaço
+
+### Melhorias não funcionais
+- Novo hook para manipulação do título da página
+- Novo hook para manipulação do tipo de requisição do salvamento das entidades, que por padrão é PATCH, possibilitando definir para PUT
+- Viabiliza, na interface, mensagem de erro para o campo de upload de avatar das entidades
 
 ## [7.6.11] - 2025-10-07
 ### Correções
