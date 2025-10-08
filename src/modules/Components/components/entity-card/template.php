@@ -71,12 +71,6 @@ $this->import('
 			</div>
 		</template>
 
-
-
-
-
-
-
 		<div v-if="entity.shortDescription" class="entity-card__content-shortDescription">
 			<small v-if="sliceDescription">{{slice(entity.shortDescription, 300)}}</small>
 			<small v-if="!sliceDescription">{{showShortDescription}}</small>
@@ -84,8 +78,9 @@ $this->import('
 
 		<div v-if="entity.__objectType=='space'" class="entity-card__content--description">
 			<label><?= i::_e('ACESSIBILIDADE:') ?>
-				<strong v-if="entity.acessibilidade"> <?= i::_e('Oferece') ?> </strong>
-				<strong v-if="!entity.acessibilidade"> <?= i::_e('Não') ?> </strong>
+				<strong v-if="entity.acessibilidade === 'Sim'"> <?= i::_e('Oferece') ?> </strong>
+				<strong v-else-if="entity.acessibilidade === 'Não'"> <?= i::_e('Não') ?> </strong>
+				<strong v-else> <?= i::_e('Não informado') ?> </strong>
 			</label>
 		</div>
 

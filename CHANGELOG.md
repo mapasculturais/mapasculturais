@@ -6,6 +6,8 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Correções
+ - Ajuste da exibição de acessbilidade na lista de espaços
 
 ## [7.6.12] - 2025-10-08
 ### Correções
