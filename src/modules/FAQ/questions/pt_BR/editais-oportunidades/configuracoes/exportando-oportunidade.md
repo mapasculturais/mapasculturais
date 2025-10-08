@@ -2,7 +2,7 @@
 
 Os seguintes filtros estão disponíveis:
 
-- **Informações básicas**: nome; descrições curta e longa; áreas de interesse; tags
+- **Informações básicas**: nome; descrições curta e longa; áreas de interesse; tags; site e redes sociais 
 - **Anexos**
 - **Imagens**: imagem de perfil; imagem de capa; galeria
 - **Datas das fases**: datas de início e fim das inscrições; data de publicação do resultado
