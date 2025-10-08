@@ -71,6 +71,11 @@ $this->import('
                                         <label><?= i::__('Tipo de faixa/linha') ?></label>
                                         <mc-select v-model:default-value="rangeFilter" hide-filter :options="ranges"></mc-select>    
                                     </div>
+
+                                    <div v-if="appliedForQuota" class="field">
+                                        <label><?= i::__('Vai concorrer às cotas?') ?></label>
+                                        <mc-select v-model:default-value="appliedForQuotaFilter" hide-filter :options="appliedForQuota"></mc-select>
+                                    </div>
                                 </div>    
 
                                 <div v-if="hasSelectedField" class="field">
