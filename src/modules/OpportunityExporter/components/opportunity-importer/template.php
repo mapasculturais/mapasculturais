@@ -82,7 +82,7 @@ $this->import('
                 </div>
 
                 <div class="create-modal__fields">
-                    <template v-if="!opportunity.infos || true">
+                    <template v-if="!opportunity.infos">
                         <entity-field :entity="infos" hide-required :editable="true" label="<?php i::esc_attr_e('Selecione o tipo da oportunidade') ?>" prop="type"></entity-field>
 
                         <entity-field :entity="infos" hide-required label="<?php i::esc_attr_e("Título") ?>" prop="name"></entity-field>
