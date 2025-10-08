@@ -65,7 +65,8 @@ app.component('opportunity-importer', {
                     filters: this.filters,
                     opportunity: this.opportunity,
                 }
-                const imported = await API.POST('opportunity/import', data)
+                const api = new API('opportunity')
+                const imported = await api.POST('import', data)
                 modal.close()
                 this.$emit('imported', imported)
             } catch (err) {
