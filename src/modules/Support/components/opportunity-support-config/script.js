@@ -176,7 +176,7 @@ app.component('opportunity-support-config', {
 
             if (category && category != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.categories.length <= 0 || (field.categories.length > 0 && field.categories.includes(category))) {
+                    if (field.categories.includes(category)) {
                         return field;
                     }
                 });
@@ -184,7 +184,7 @@ app.component('opportunity-support-config', {
 
             if (proponent && proponent != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.proponentTypes.length <= 0 || (field.proponentTypes.length > 0 && field.proponentTypes.includes(proponent))) {
+                    if (field.proponentTypes.includes(proponent)) {
                         return field;
                     }
                 });
@@ -192,7 +192,7 @@ app.component('opportunity-support-config', {
 
             if (range && range != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.registrationRanges.length <= 0 || (field.registrationRanges.length > 0 && field.registrationRanges.includes(range))) {
+                    if (field.registrationRanges.includes(range)) {
                         return field;
                     }
                 });
