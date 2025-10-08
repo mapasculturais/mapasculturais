@@ -117,6 +117,7 @@ class Module extends \MapasCulturais\EvaluationMethod
         $cfg = $evaluation->getEvaluationMethodConfiguration();
         
         foreach(($cfg->sections ?? []) as $section) {
+            $max_non_eliminatory = $section->maxNonEliminatory ?? false;
             $number_max_non_liminatory = $section->numberMaxNonEliminatory ?? 0;
             $non_eliminatory_count = 0;
 
@@ -149,7 +150,7 @@ class Module extends \MapasCulturais\EvaluationMethod
                     }
                 }
 
-                if($non_eliminatory_count > $number_max_non_liminatory){
+                if($max_non_eliminatory && $non_eliminatory_count > $number_max_non_liminatory){
                     $result = 'invalid';
                     break;
                 }
