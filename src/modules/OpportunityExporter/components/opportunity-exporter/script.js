@@ -15,12 +15,6 @@ app.component('opportunity-exporter', {
             filters: this.createFilters(),
         }
     },
-
-    computed: {
-        opportunityPhases(){
-            return $MAPAS.opportunityPhases
-        }
-    },
     
     methods: {
         cancelExport (modal) {
