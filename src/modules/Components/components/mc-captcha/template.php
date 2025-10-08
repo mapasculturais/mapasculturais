@@ -10,5 +10,5 @@ use MapasCulturais\i;
 
 
     <!-- Cloudflare Turnstile -->
-    <div v-if="provider == 'cloudflare'" id="container-cloudflare-turnstile"></div>
+    <div v-if="provider == 'cloudflare'" :id="containerId"></div>
 </div>
