@@ -13,6 +13,7 @@ app.component('opportunity-importer', {
         return {
             availableFilters: this.createFilters(),
             filters: this.createFilters(),
+            infos: this.createInfos(),
             opportunity: null,
         }
     },
@@ -38,6 +39,7 @@ app.component('opportunity-importer', {
     methods: {
         cancelImport (modal) {
             modal.close()
+            this.infos = this.createInfos()
             this.opportunity = null
         },
 
@@ -59,11 +61,24 @@ app.component('opportunity-importer', {
             }
         },
 
+        createInfos () {
+            const entity = new Entity('opportunity')
+            entity.type = 1
+            entity.terms = { area: [] }
+            return Vue.reactive(entity)
+        },
+
         async doImport (modal) {
             try {
                 const data = {
                     filters: this.filters,
-                    opportunity: this.opportunity,
+                    opportunity: {
+                        ...this.opportunity,
+                        infos: this.opportunity.infos || {
+                            name: this.infos.name,
+                            terms: this.infos.terms,
+                        },
+                    },
                 }
                 const api = new API('opportunity')
                 const imported = await api.POST('import', data)

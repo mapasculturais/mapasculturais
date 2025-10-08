@@ -7,13 +7,16 @@
 use MapasCulturais\i;
 
 $this->import('
+    entity-field
+    entity-terms
     mc-file
     mc-modal
+    select-entity
 ');
 ?>
 <mc-modal title="<?= i::__('Importar oportunidade') ?>">
     <template #default="modal">
-        <div class="opportunity-exporter">
+        <div class="opportunity-exporter opportunity-importer">
             <template v-if="!opportunity">
                 <p><?= i::__('Selecione o arquivo que será importado:') ?></p>
                 <mc-file accept=".json" @file-selected="parseFile"></mc-file>
@@ -77,6 +80,14 @@ $this->import('
                         <span><?= i::__('Fases de monitoramento') ?></span>
                     </label>
                 </div>
+
+                <div class="create-modal__fields">
+                    <template v-if="!opportunity.infos">
+                        <entity-field :entity="infos" label="<?php i::esc_attr_e("Título") ?>" prop="name"></entity-field>
+
+                        <entity-terms :entity="infos" :editable="true" title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
+                    </template>
+                </div>
             </template>
         </div>
     </template>
@@ -87,8 +98,8 @@ $this->import('
     </template>
 
     <template #button="modal">
-        <button type="button" class="button button--solid button--icon" @click="modal.open()">
-            <mc-icon name="add"></mc-icon>
+        <button type="button" class="button button--solid button--icon opportunity-importer__button" @click="modal.open()">
+            <mc-icon name="upload"></mc-icon>
             <?= i::__('Importar oportunidade') ?>
         </button>
     </template>
