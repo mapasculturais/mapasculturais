@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Correções
  - Ajuste a estilização do campo pessoa com deficiência
  - Ajuste as labels na single do agente
+ - Ajuste da exibição de acessbilidade na lista de espaços
 
 ## [7.6.11] - 2025-10-07
 ### Correções
