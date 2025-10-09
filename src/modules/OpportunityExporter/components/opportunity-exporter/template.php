@@ -39,18 +39,6 @@ $this->import('
                     <span><?= i::__('Limites de vagas') ?></span>
                 </label>
                 <label class="field__checkbox">
-                    <input type="checkbox" name="categories" v-model="filters.categories">
-                    <span><?= i::__('Categorias') ?></span>
-                </label>
-                <label class="field__checkbox">
-                    <input type="checkbox" name="ranges" v-model="filters.ranges">
-                    <span><?= i::__('Faixas/Linhas') ?></span>
-                </label>
-                <label class="field__checkbox">
-                    <input type="checkbox" name="proponentTypes" v-model="filters.proponentTypes">
-                    <span><?= i::__('Tipos de proponente') ?></span>
-                </label>
-                <label class="field__checkbox">
                     <input type="checkbox" name="workplan" v-model="filters.workplan">
                     <span><?= i::__('Plano de metas') ?></span>
                 </label>

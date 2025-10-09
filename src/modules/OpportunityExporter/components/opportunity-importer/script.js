@@ -18,6 +18,15 @@ app.component('opportunity-importer', {
         }
     },
 
+    computed: {
+        shouldOverrideInfos () {
+            if (!this.opportunity) {
+                return false
+            }
+            return !this.availableFilters.infos || !this.filters.infos
+        }
+    },
+
     watch: {
         opportunity () {
             this.filters = this.createFilters()
@@ -50,9 +59,6 @@ app.component('opportunity-importer', {
                 images: true,
                 dates: true,
                 vacancyLimits: true,
-                categories: true,
-                ranges: true,
-                proponentTypes: true,
                 workplan: true,
                 statusLabels: true,
                 phaseSeals: true,
@@ -63,21 +69,24 @@ app.component('opportunity-importer', {
 
         createInfos () {
             const entity = new Entity('opportunity')
-            entity.type = 1
             entity.terms = { area: [] }
             return Vue.reactive(entity)
         },
 
         async doImport (modal) {
             try {
+                const infos = !this.shouldOverrideInfos
+                    ? this.opportunity.infos
+                    : {
+                        name: this.infos.name,
+                        terms: this.infos.terms,
+                        type: this.infos.type,
+                    }
                 const data = {
                     filters: this.filters,
                     opportunity: {
                         ...this.opportunity,
-                        infos: this.opportunity.infos || {
-                            name: this.infos.name,
-                            terms: this.infos.terms,
-                        },
+                        infos,
                         ownerEntity: this.infos.ownerEntity,
                     },
                 }
