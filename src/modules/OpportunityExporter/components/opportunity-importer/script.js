@@ -23,7 +23,7 @@ app.component('opportunity-importer', {
             if (!this.opportunity) {
                 return false
             }
-            return !this.availableFilters.infos || !this.filters.infos
+            return !this.filters.infos
         }
     },
 
