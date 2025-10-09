@@ -8,9 +8,13 @@ use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\i;
 use MapasCulturais\Traits\Singleton;
 use MapasCulturais\App;
+use MapasCulturais\Entities\EvaluationMethodConfiguration;
 
 class Exporter
 {
+    const EXPORTER_VERSION = '1.0';
+    const REQUIRED_IMPORTER_VERSION = '1.0';
+
     /**
      * @param Opportunity $opportunity Oportunidade a ser exportada
      * @param bool $infos Exportar informações básicas
@@ -33,7 +37,7 @@ class Exporter
         protected bool $files = false,
         protected bool $images = false,
 
-        protected bool $dates = false,
+        protected bool $dates = false, // exportado a cada fase
 
         protected bool $vacancyLimits = false,
 
@@ -43,12 +47,12 @@ class Exporter
 
         protected bool $workplan = false,
 
-        protected bool $statusLabels = false,
-        protected bool $phaseSeals = false,
-        protected bool $appealPhases = false,
+        protected bool $statusLabels = false, // exportado a cada fase
+        protected bool $phaseSeals = false, // exportado a cada fase
+        protected bool $appealPhases = false, // exportado a cada fase
         protected bool $monitoringPhases = false,
     ) {
-        if(!$opportunity->isFirstPhase) {
+        if (!$opportunity->isFirstPhase) {
             throw new Exception('O parâmetro opportunity deve ser a primeira fase de uma oportunidade');
         }
     }
@@ -57,10 +61,49 @@ class Exporter
     {
         $app = App::i();
 
-        $result = [];
+        $result = [
+            'exporterVersion' => self::EXPORTER_VERSION,
+            'requiredImporterVersion' => self::REQUIRED_IMPORTER_VERSION,
+            'entityType' => 'opportunity',
+            'exported' => [
+                'infos' => $this->infos,
+                'files' => $this->files,
+                'images' => $this->images,
+                'dates' => $this->dates,
+                'vacancyLimits' => $this->vacancyLimits,
+                'categories' => $this->categories,
+                'ranges' => $this->ranges,
+                'proponentTypes' => $this->proponentTypes,
+                'workplan' => $this->workplan,
+                'statusLabels' => $this->statusLabels,
+                'phaseSeals' => $this->phaseSeals,
+                'appealPhases' => $this->appealPhases,
+                'monitoringPhases' => $this->monitoringPhases,
+            ]
+        ];
 
         if ($this->infos) {
             $result['infos'] = $this->exportInfo();
+        }
+
+        if ($this->files) {
+            $registered_file_groups = $app->getRegisteredFileGroupsByEntity(Opportunity::class);
+            $result['files'] = [];
+            foreach ($registered_file_groups as $file_group) {
+                if (in_array($file_group->name, ['header', 'avatar', 'gallery'])) {
+                    continue;
+                }
+
+                $result['files'][$file_group->name] = $this->exportFileGroup($file_group->name);
+            }
+        }
+
+        if ($this->images) {
+            $result['images'] = [
+                'header' => $this->exportFileGroup('header'),
+                'avatar' => $this->exportFileGroup('avatar'),
+                'gallery' => $this->exportFileGroup('gallery'),
+            ];
         }
 
         if ($this->vacancyLimits) {
@@ -83,31 +126,19 @@ class Exporter
             $result['workplan'] = $this->exportWorkplan();
         }
 
-        if ($this->images) {
-            $result['images'] = [
-                'header' => $this->exportFileGroup('header'),
-                'avatar' => $this->exportFileGroup('avatar'),
-                'gallery' => $this->exportFileGroup('gallery'),
-            ];
-        }
+        $result['phases'] = [];
 
-        if ($this->files) {
-            $registered_file_groups = $app->getRegisteredFileGroupsByEntity(Opportunity::class);
-            $result['files'] = [];
-            foreach($registered_file_groups as $file_group) {
-                if(in_array($file_group->name, ['header', 'avatar', 'gallery'])) {
+        foreach ($this->opportunity->allPhases as $phase) {
+            if ($phase->isReportingPhase) {
+                if (!$this->monitoringPhases) {
                     continue;
                 }
-
-                $result['files'][$file_group->name] = $this->exportFileGroup($file_group->name);
+                $result['phases'][] = $this->exportMonitoringPhase($phase);
+            } else {
+                $result['phases'][] = $this->exportPhase($phase);
             }
         }
 
-        $result['phases'] = [];
-
-        foreach($this->opportunity->allPhases as $phase) {
-            $result['phases'][] = $this->exportPhase($phase);
-        }
 
         return json_encode($result);
     }
@@ -128,9 +159,23 @@ class Exporter
 
         $properties = [
             'name',
+            'type',
             'shortDescription',
             'longDescription',
-            'terms'
+            'terms',
+
+            'site',
+
+            'facebook',
+            'twitter',
+            'instagram',
+            'linkedin',
+            'vimeo',
+            'spotify',
+            'youtube',
+            'pinterest',
+            'tiktok',
+
         ];
 
         foreach ($properties as $prop) {
@@ -214,13 +259,20 @@ class Exporter
         return $result;
     }
 
-    public function exportFile(File $file): array {
+    public function exportFile(File $file): array
+    {
+        if (file_exists($file->path)) {
+            $file_content = file_get_contents($file->path);
+        } else {
+            $file_content = '';
+        }
+
         $result = [
             'name' => $file->name,
             'description' => $file->description,
             'mimeType' => $file->mimeType,
             'md5' => $file->md5,
-            'content' => base64_encode(file_get_contents($file->path))
+            'content' => base64_encode($file_content)
         ];
 
         return $result;
@@ -230,28 +282,215 @@ class Exporter
     {
         $result = [];
 
-        if($group_files = $this->opportunity->files[$group_name] ?? false) {
+        if ($group_files = $this->opportunity->files[$group_name] ?? false) {
             $group_files = is_array($group_files) ? $group_files : [$group_files];
 
-            foreach($group_files as $file) {
+            foreach ($group_files as $file) {
                 $result[] = $this->exportFile($file);
             }
         }
-        
+
         return $result;
     }
 
-
     // por fase
 
-    public function exportPhase(Opportunity $phase): array
+    public function exportPhase(Opportunity $phase, array $include_metadata = []): array
     {
-        return [];
+        $export_phase_props = [
+            'isDataCollection',
+            ...$include_metadata,
+        ];
+
+        if ($this->statusLabels) {
+            $export_phase_props = [
+                ...$export_phase_props,
+                'statusLabels'
+            ];
+        }
+
+        if ($this->dates) {
+            $export_phase_props = [
+                ...$export_phase_props,
+                'registrationFrom',
+                'registrationTo',
+                'publishTimestamp',
+                'autoPublish',
+            ];
+        }
+
+        $result = [];
+
+        if ($phase->isFirstPhase) {
+            $result['isFirstPhase'] = true;
+        }
+
+        if ($phase->isLastPhase) {
+            $result['isLastPhase'] = true;
+        }
+
+        foreach ($export_phase_props as $prop) {
+            $result[$prop] = $phase->$prop;
+        }
+
+        if ($phase->isDataCollection) {
+            $result['form'] = $this->exportForm($phase);
+        }
+
+        if ($evaluation_phase = $phase->evaluationMethodConfiguration) {
+            $this->exportEvaluationPhase($evaluation_phase);
+        }
+
+        if ($this->appealPhases) {
+            $result['appealPhase'] = $this->exportAppealPhase($phase);
+        }
+
+        return $result;
     }
 
-    public function exportStatusLabels(Opportunity $phase): array
+    public function exportForm(Opportunity $phase): array
+    {
+        $attachments = [];
+
+        $result = [
+            'steps' => $this->exportFormSteps($phase),
+            'fields' => $this->exportFormFields($phase),
+            'attachments' => $this->exportFormAttachments($phase)
+        ];
+
+        return $result;
+    }
+
+    public function exportFormSteps(Opportunity $phase): array
     {
         $result = [];
+
+        foreach ($phase->registrationSteps as $step) {
+            $step_id = base_convert($step->id, 10, 36);
+
+            $result[$step_id] = [
+                'name' => $step->name,
+                'displayOrder' => $step->displayOrder,
+                'metadata' => $step->metadata
+            ];
+        }
+
+        return $result;
+    }
+
+    public function exportFormFields(Opportunity $phase): array
+    {
+        $result = [];
+
+        foreach ($phase->registrationFieldConfigurations as $field) {
+            $field_id = base_convert($field->id, 10, 36);
+
+            $config = is_array($field->config) ? array_filter($field->config) : $field->config;
+
+            $field_result = [
+                'step' => base_convert($field->step->id, 10, 36),
+
+                'title' => $field->title,
+                'description' => $field->description,
+                'maxSize' => $field->maxSize,
+                'required' => $field->required,
+                'fieldType' => $field->fieldType,
+                'displayOrder' => $field->displayOrder,
+                'fieldOptions' => $field->fieldOptions,
+                'config' => $config,
+                'categories' => $field->categories,
+                'registrationRanges' => $field->registrationRanges,
+                'proponentTypes' => $field->proponentTypes,
+
+                'conditional' => false,
+            ];
+
+            if ($field->conditional && $field->conditionalField && preg_match('#field_(\d+)#', $field->conditionalField, $matches)) {
+                $conditional_field = base_convert($matches[1], 10, 36);
+                $field_result = [
+                    ...$field_result,
+                    'conditional' => true,
+                    'conditionalField' => $conditional_field,
+                    'conditionalValue' => $field->conditionalValue,
+                ];
+            }
+
+            $result[$field_id] = $field_result;
+        }
+
+        return $result;
+    }
+
+    public function exportFormAttachments(Opportunity $phase): array
+    {
+        $result = [];
+
+        foreach ($phase->registrationFileConfigurations as $rfc) {
+            $rfc_id = base_convert($rfc->id, 10, 36);
+
+            $rfc_result = [
+                'step' => base_convert($rfc->step->id, 10, 36),
+
+                'title' => $rfc->title,
+                'description' => $rfc->description,
+                'required' => $rfc->required,
+                'displayOrder' => $rfc->displayOrder,
+                'categories' => $rfc->categories,
+                'registrationRanges' => $rfc->registrationRanges,
+                'proponentTypes' => $rfc->proponentTypes,
+
+                'conditional' => false,
+            ];
+
+            if ($rfc->conditional && $rfc->conditionalField && preg_match('#field_(\d+)#', $rfc->conditionalField, $matches)) {
+                $conditional_field = base_convert($matches[1], 10, 36);
+                $rfc_result = [
+                    ...$rfc_result,
+                    'conditional' => true,
+                    'conditionalField' => $conditional_field,
+                    'conditionalValue' => $rfc->conditionalValue,
+                ];
+            }
+
+            if ($template = $rfc->files['registrationFileTemplate'] ?? false) {
+                $rfc_result['template'] = $this->exportFile($template);
+            }
+
+            $result[$rfc_id] = $rfc_result;
+        }
+
+        return $result;
+    }
+
+    public function exportEvaluationPhase(EvaluationMethodConfiguration $evaluation_phase): array
+    {
+        $result = [];
+
+        return $result;
+    }
+
+    public function exportAppealPhase(Opportunity $phase): ?array
+    {
+        $appeal_phase = $phase->appealPhase;
+
+        if (!$appeal_phase) {
+            return null;
+        }
+
+        $result = $this->exportPhase($appeal_phase, ['isAppealPhase']);
+
+        return $result;
+    }
+
+    public function exportMonitoringPhase(Opportunity $phase): ?array
+    {
+        $result = [];
+
+        if (!$phase->isReportingPhase) {
+            return null;
+        }
+
+        $result = $this->exportPhase($phase, ['isReportingPhase', 'isFinalReportingPhase', 'includesWorkPlan']);
 
         return $result;
     }
