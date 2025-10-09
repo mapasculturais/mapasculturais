@@ -78,6 +78,7 @@ app.component('opportunity-importer', {
                             name: this.infos.name,
                             terms: this.infos.terms,
                         },
+                        ownerEntity: this.infos.ownerEntity,
                     },
                 }
                 const api = new API('opportunity')

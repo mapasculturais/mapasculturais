@@ -11,10 +11,10 @@ $this->import('
     entity-terms
     mc-file
     mc-modal
-    select-entity
+    select-owner-entity
 ');
 ?>
-<mc-modal title="<?= i::__('Importar oportunidade') ?>">
+<mc-modal classes="create-modal create-opportunity-modal" title="<?= i::__('Importar oportunidade') ?>">
     <template #default="modal">
         <div class="opportunity-exporter opportunity-importer">
             <template v-if="!opportunity">
@@ -83,18 +83,22 @@ $this->import('
 
                 <div class="create-modal__fields">
                     <template v-if="!opportunity.infos">
-                        <entity-field :entity="infos" label="<?php i::esc_attr_e("Título") ?>" prop="name"></entity-field>
+                        <entity-field :entity="infos" hide-required :editable="true" label="<?php i::esc_attr_e('Selecione o tipo da oportunidade') ?>" prop="type"></entity-field>
 
-                        <entity-terms :entity="infos" :editable="true" title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
+                        <entity-field :entity="infos" hide-required label="<?php i::esc_attr_e("Título") ?>" prop="name"></entity-field>
+
+                        <entity-terms :entity="infos" hide-required :editable="true" title="<?php i::_e('Área de Interesse') ?>" taxonomy="area"></entity-terms>
                     </template>
+
+                    <select-owner-entity :entity="infos" title="<?= i::__('Vincule a oportunidade a uma entidade: ') ?>"></select-owner-entity>
                 </div>
             </template>
         </div>
     </template>
 
     <template #actions="modal">
-        <button class="button button--text" @click="cancelImport(modal)"><?= i::__('Cancelar') ?></button>
-        <button class="button button--primary" @click="doImport(modal)"><?= i::__('Importar') ?></button>
+        <button type="button" class="button button--primary" @click="doImport(modal)"><?= i::__('Importar') ?></button>
+        <button type="button" class="button button--text" @click="cancelImport(modal)"><?= i::__('Cancelar') ?></button>
     </template>
 
     <template #button="modal">
