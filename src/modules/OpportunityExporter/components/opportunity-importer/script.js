@@ -74,6 +74,10 @@ app.component('opportunity-importer', {
         },
 
         async doImport (modal) {
+            if (!this.validate()) {
+                return
+            }
+
             try {
                 const infos = !this.shouldOverrideInfos
                     ? this.opportunity.infos
@@ -87,7 +91,10 @@ app.component('opportunity-importer', {
                     opportunity: {
                         ...this.opportunity,
                         infos,
-                        ownerEntity: this.infos.ownerEntity,
+                        ownerEntity: {
+                            __objectType: this.infos.ownerEntity.__objectType,
+                            _id: this.infos.ownerEntity._id,
+                        },
                     },
                 }
                 const api = new API('opportunity')
@@ -113,6 +120,35 @@ app.component('opportunity-importer', {
                 this.opportunity = JSON.parse(json)
             }
             reader.readAsText(file)
+        },
+
+        validate () {
+            let isValid = true
+            this.infos.__validationErrors = {}
+
+            if (!this.infos.ownerEntity) {
+                this.infos.__validationErrors['objectType'] = [this.text('Campo obrigatório')]
+                isValid = false
+            }
+
+            if (this.shouldOverrideInfos) {
+                if (!this.infos.type) {
+                    this.infos.__validationErrors['type'] = [this.text('Campo obrigatório')]
+                    isValid = false
+                }
+
+                if (!this.infos.name) {
+                    this.infos.__validationErrors['name'] = [this.text('Campo obrigatório')]
+                    isValid = false
+                }
+
+                if (this.infos.terms.area.length === 0) {
+                    this.infos.__validationErrors['term-area'] = [this.text('Campo obrigatório')]
+                    isValid = false
+                }
+            }
+
+            return isValid
         },
     },
 });
