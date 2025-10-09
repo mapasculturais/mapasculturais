@@ -7,9 +7,6 @@ Os seguintes filtros estão disponíveis:
 - **Imagens**: imagem de perfil, imagem de capa e imagens da galeria.
 - **Datas das fases**: datas de início e fim das inscrições; data de publicação do resultado.
 - **Limites de vagas**: total de vagas, valor total do edital, limite de inscrições e limite de inscritos por agente.
-- **Categorias**
-- **Faixas/Linhas**
-- **Tipos de proponente**
 - **Configuração do plano de metas**
 - **Configurações de status**: texto dos rótulos de cada status de inscrição.
 - **Selos certificadores**: quais selos serão atribuídos aos selecionados após cada fase do edital.

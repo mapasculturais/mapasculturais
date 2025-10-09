@@ -48,18 +48,6 @@ $this->import('
                         <span><?= i::__('Limites de vagas') ?></span>
                     </label>
                     <label class="field__checkbox">
-                        <input type="checkbox" name="categories" :disabled="!availableFilters.categories" v-model="filters.categories">
-                        <span><?= i::__('Categorias') ?></span>
-                    </label>
-                    <label class="field__checkbox">
-                        <input type="checkbox" name="ranges" :disabled="!availableFilters.ranges" v-model="filters.ranges">
-                        <span><?= i::__('Faixas/Linhas') ?></span>
-                    </label>
-                    <label class="field__checkbox">
-                        <input type="checkbox" name="proponentTypes" :disabled="!availableFilters.proponentTypes" v-model="filters.proponentTypes">
-                        <span><?= i::__('Tipos de proponente') ?></span>
-                    </label>
-                    <label class="field__checkbox">
                         <input type="checkbox" name="workplan" :disabled="!availableFilters.workplan" v-model="filters.workplan">
                         <span><?= i::__('Plano de metas') ?></span>
                     </label>
@@ -82,7 +70,7 @@ $this->import('
                 </div>
 
                 <div class="create-modal__fields">
-                    <template v-if="!opportunity.infos">
+                    <template v-if="shouldOverrideInfos">
                         <entity-field :entity="infos" hide-required :editable="true" label="<?php i::esc_attr_e('Selecione o tipo da oportunidade') ?>" prop="type"></entity-field>
 
                         <entity-field :entity="infos" hide-required label="<?php i::esc_attr_e("Título") ?>" prop="name"></entity-field>
