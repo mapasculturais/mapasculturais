@@ -14,6 +14,19 @@ const STATUS_VALID = 'valid';
 
 class Module extends \MapasCulturais\EvaluationMethod
 {
+    protected function _export(EvaluationMethodConfiguration $evaluation_method_configuration): array 
+    { 
+        return [
+            'sections' => $evaluation_method_configuration->sections,
+            'criteria' => $evaluation_method_configuration->criteria
+        ];
+    }
+
+    protected function _import(EvaluationMethodConfiguration $evaluation_method_configuration, array $data) 
+    {
+        $evaluation_method_configuration->sections = $data['sections'];
+        $evaluation_method_configuration->criteria = $data['criteria'];
+    }
 
     protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {

@@ -10,7 +10,17 @@ use MapasCulturais\Entities\Registration;
 const STATUS_INVALID = 'invalid';
 const STATUS_VALID = 'valid';
 
-class Module extends \MapasCulturais\EvaluationMethod {
+class Module extends \MapasCulturais\EvaluationMethod
+{
+    protected function _export(EvaluationMethodConfiguration $evaluation_method_configuration): array
+    {
+        return [];
+    }
+
+    protected function _import(EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
+    {
+        /** não precisa fazer nada */
+    }
 
     protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {

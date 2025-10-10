@@ -13,7 +13,47 @@ use MapasCulturais\Entities\EvaluationMethodConfiguration;
 use MapasCulturais\Entities\Opportunity;
 use MapasCulturais\Entities\Registration;
 
-class Module extends \MapasCulturais\EvaluationMethod {
+class Module extends \MapasCulturais\EvaluationMethod
+{
+    protected function _export(EvaluationMethodConfiguration $evaluation_method_configuration): array 
+    {
+        $result = [
+            'sections' => $evaluation_method_configuration->sections,
+            'criteria' => $evaluation_method_configuration->criteria,
+            'pointReward' => $evaluation_method_configuration->pointReward,
+            'isActivePointReward' => $evaluation_method_configuration->isActivePointReward,
+            'pointRewardRoof' => $evaluation_method_configuration->pointRewardRoof,
+            'quota' => $evaluation_method_configuration->quota,
+            'enableViability' => $evaluation_method_configuration->enableViability,
+            'geoQuotaConfiguration' => $evaluation_method_configuration->geoQuotaConfiguration,
+            'tiebreakerCriteriaConfiguration' => $evaluation_method_configuration->tiebreakerCriteriaConfiguration,
+            'quotaConfiguration' => $evaluation_method_configuration->quotaConfiguration,
+            'cutoffScore' => $evaluation_method_configuration->cutoffScore,
+            
+            'enableQuotasQuestion' => $evaluation_method_configuration->opportunity->firstPhase->enableQuotasQuestion,
+            'considerQuotasInGeneralList' => $evaluation_method_configuration->opportunity->firstPhase->considerQuotasInGeneralList,
+        ];
+        
+        return $result;
+    }
+
+    protected function _import(EvaluationMethodConfiguration $evaluation_method_configuration, array $data) 
+    { 
+        $evaluation_method_configuration->sections = $data['sections'];
+        $evaluation_method_configuration->criteria = $data['criteria'];
+        $evaluation_method_configuration->pointReward = $data['pointReward'];
+        $evaluation_method_configuration->isActivePointReward = $data['isActivePointReward'];
+        $evaluation_method_configuration->pointRewardRoof = $data['pointRewardRoof'];
+        $evaluation_method_configuration->quota = $data['quota'];
+        $evaluation_method_configuration->enableViability = $data['enableViability'];
+        $evaluation_method_configuration->geoQuotaConfiguration = $data['geoQuotaConfiguration'];
+        $evaluation_method_configuration->tiebreakerCriteriaConfiguration = $data['tiebreakerCriteriaConfiguration'];
+        $evaluation_method_configuration->quotaConfiguration = $data['quotaConfiguration'];
+        $evaluation_method_configuration->cutoffScore = $data['cutoffScore'];
+
+        $evaluation_method_configuration->opportunity->firstPhase->enableQuotasQuestion = $data['enableQuotasQuestion'];
+        $evaluation_method_configuration->opportunity->firstPhase->considerQuotasInGeneralList = $data['considerQuotasInGeneralList'];
+    }
 
     protected function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array
     {
