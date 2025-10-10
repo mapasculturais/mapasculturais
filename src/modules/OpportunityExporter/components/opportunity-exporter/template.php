@@ -47,10 +47,6 @@ $this->import('
                     <span><?= i::__('Configurações de status') ?></span>
                 </label>
                 <label class="field__checkbox">
-                    <input type="checkbox" name="phaseSeals" v-model="filters.phaseSeals">
-                    <span><?= i::__('Selos certificadores') ?></span>
-                </label>
-                <label class="field__checkbox">
                     <input type="checkbox" name="appealPhases" v-model="filters.appealPhases">
                     <span><?= i::__('Fases de recurso') ?></span>
                 </label>

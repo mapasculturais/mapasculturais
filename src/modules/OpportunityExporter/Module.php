@@ -31,12 +31,8 @@ class Module extends MapasCulturaisModule {
             $images = $data['images'] ?? false;
             $dates = $data['dates'] ?? false;
             $vacancy_limits = $data['vacancyLimits'] ?? false;
-            $categories = $data['categories'] ?? false;
-            $ranges = $data['ranges'] ?? false;
-            $proponent_types = $data['proponentTypes'] ?? false;
             $workplan = $data['workplan'] ?? false;
             $status_labels = $data['statusLabels'] ?? false;
-            $phase_seals = $data['phaseSeals'] ?? false;
             $appeal_phases = $data['appealPhases'] ?? false;
             $monitoring_phases = $data['monitoringPhases'] ?? false;
 
@@ -47,12 +43,8 @@ class Module extends MapasCulturaisModule {
                 images: $images,
                 dates: $dates,
                 vacancyLimits: $vacancy_limits,
-                categories: $categories,
-                ranges: $ranges,
-                proponentTypes: $proponent_types,
                 workplan: $workplan,
                 statusLabels: $status_labels,
-                phaseSeals: $phase_seals,
                 appealPhases: $appeal_phases,
                 monitoringPhases: $monitoring_phases,
             );
