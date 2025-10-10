@@ -317,7 +317,7 @@ class Exporter
         }
 
         if ($evaluation_phase = $phase->evaluationMethodConfiguration) {
-            $this->exportEvaluationPhase($evaluation_phase);
+            $result['evaluationPhase'] = $this->exportEvaluationPhase($evaluation_phase);
         }
 
         if ($this->appealPhases) {
@@ -389,7 +389,7 @@ class Exporter
                 $field_result = [
                     ...$field_result,
                     'conditional' => true,
-                    'conditionalField' => $conditional_field,
+                    'conditionalField' => ":$conditional_field",
                     'conditionalValue' => $field->conditionalValue,
                 ];
             }
@@ -426,7 +426,7 @@ class Exporter
                 $rfc_result = [
                     ...$rfc_result,
                     'conditional' => true,
-                    'conditionalField' => $conditional_field,
+                    'conditionalField' => ":$conditional_field",
                     'conditionalValue' => $rfc->conditionalValue,
                 ];
             }
@@ -443,9 +443,36 @@ class Exporter
 
     public function exportEvaluationPhase(EvaluationMethodConfiguration $evaluation_phase): array
     {
-        $result = [];
+        $result = $evaluation_phase->evaluationMethod->export($evaluation_phase);
 
-        return $result;
+        $result = [
+            ...$result,
+            'infos' => $evaluation_phase->infos,
+            'publishEvaluationDetails' => $evaluation_phase->publishEvaluationDetails,
+            'publishValuerNames' => $evaluation_phase->publishValuerNames,
+            'autoApplicationAllowed' => $evaluation_phase->autoApplicationAllowed,
+
+            'avaliableEvaluationFields' => $evaluation_phase->opportunity->avaliableEvaluationFields,
+
+        ];
+
+        $result_json = json_encode($result);
+
+        if (preg_match_all('#field_(\d+)#', $result_json, $matches)) {
+            foreach ($matches[0] as $i => $field_name) {
+                $fid = base_convert($matches[1][$i], 10, 36);
+                $result_json = str_replace($field_name, ":$fid", $result_json);
+            }
+        }
+
+        if (preg_match_all('#"field":"?(\d+)"?#', $result_json, $matches)) {
+            foreach ($matches[0] as $i => $field_name) {
+                $fid = base_convert($matches[1][$i], 10, 36);
+                $result_json = str_replace($field_name, "\"field\":\"@$fid'\"", $result_json);
+            }
+        }
+
+        return (array) json_decode($result_json);
     }
 
     public function exportAppealPhase(Opportunity $phase): ?array
