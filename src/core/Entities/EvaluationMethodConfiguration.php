@@ -17,7 +17,7 @@ use Opportunities\Jobs\UpdateSummaryCaches;
  * @property \DateTime $evaluationTo
  * 
  * @property-read \MapasCulturais\Definitions\EvaluationMethod $definition The evaluation method definition object
- * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method plugin object
+ * @property-read \MapasCulturais\EvaluationMethod $evaluationMethod The evaluation method module object
  * @property-read bool $useCommitteeGroups
  * @property-read bool $evaluateSelfApplication
  * @property-read string $summaryCacheKey Chave do cache do resumo das avaliações
