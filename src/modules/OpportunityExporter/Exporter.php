@@ -22,12 +22,8 @@ class Exporter
      * @param bool $images Exportar imagens
      * @param bool $dates Exportar datas das fases do edital
      * @param bool $vacancyLimits Exportar limites de vagas
-     * @param bool $categories Exportar categorias
-     * @param bool $ranges Exportar faixas/linhas
-     * @param bool $proponentTypes Exportar tipos de proponente
      * @param bool $workplan Exportar plano de metas
      * @param bool $statusLabels Exportar configurações de status
-     * @param bool $phaseSeals Exportar configuração dos selos certificadores das fases
      * @param bool $appealPhases Exportar fases de recurso
      * @param bool $monitoringPhases Exportar fases de monitoramento
      */
@@ -41,14 +37,9 @@ class Exporter
 
         protected bool $vacancyLimits = false,
 
-        protected bool $categories = false,
-        protected bool $ranges = false,
-        protected bool $proponentTypes = false,
-
         protected bool $workplan = false,
 
         protected bool $statusLabels = false, // exportado a cada fase
-        protected bool $phaseSeals = false, // exportado a cada fase
         protected bool $appealPhases = false, // exportado a cada fase
         protected bool $monitoringPhases = false,
     ) {
@@ -71,12 +62,8 @@ class Exporter
                 'images' => $this->images,
                 'dates' => $this->dates,
                 'vacancyLimits' => $this->vacancyLimits,
-                'categories' => $this->categories,
-                'ranges' => $this->ranges,
-                'proponentTypes' => $this->proponentTypes,
                 'workplan' => $this->workplan,
                 'statusLabels' => $this->statusLabels,
-                'phaseSeals' => $this->phaseSeals,
                 'appealPhases' => $this->appealPhases,
                 'monitoringPhases' => $this->monitoringPhases,
             ]
@@ -110,17 +97,9 @@ class Exporter
             $result['vacancyLimits'] = $this->exportVacancyLimits();
         }
 
-        if ($this->categories) {
-            $result['categories'] = $this->exportCategories();
-        }
-
-        if ($this->ranges) {
-            $result['ranges'] = $this->exportRanges();
-        }
-
-        if ($this->proponentTypes) {
-            $result['proponentTypes'] = $this->exportProponentTypes();
-        }
+        $result['categories'] = $this->exportCategories();
+        $result['ranges'] = $this->exportRanges();
+        $result['proponentTypes'] = $this->exportProponentTypes();
 
         if ($this->workplan) {
             $result['workplan'] = $this->exportWorkplan();
