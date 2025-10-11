@@ -5,15 +5,16 @@ namespace OpportunityExporter;
 use Exception;
 use MapasCulturais\Entities\File;
 use MapasCulturais\Entities\Opportunity;
-use MapasCulturais\i;
-use MapasCulturais\Traits\Singleton;
 use MapasCulturais\App;
 use MapasCulturais\Entities\EvaluationMethodConfiguration;
+use MapasCulturais\Entity;
 
 class Exporter
 {
-    const EXPORTER_VERSION = '1.0';
-    const REQUIRED_IMPORTER_VERSION = '1.0';
+    /**
+     * Leia o README.md do módulo
+     */
+    const VERSION = '1.0.0';
 
     /**
      * @param Opportunity $opportunity Oportunidade a ser exportada
@@ -53,8 +54,7 @@ class Exporter
         $app = App::i();
 
         $result = [
-            'exporterVersion' => self::EXPORTER_VERSION,
-            'requiredImporterVersion' => self::REQUIRED_IMPORTER_VERSION,
+            'exporterVersion' => self::VERSION,
             'entityType' => 'opportunity',
             'exported' => [
                 'infos' => $this->infos,
@@ -136,30 +136,13 @@ class Exporter
     {
         $result = [];
 
-        $properties = [
-            'name',
-            'type',
-            'shortDescription',
-            'longDescription',
-            'terms',
-
-            'site',
-
-            'facebook',
-            'twitter',
-            'instagram',
-            'linkedin',
-            'vimeo',
-            'spotify',
-            'youtube',
-            'pinterest',
-            'tiktok',
-
-        ];
+        $properties = Module::getInfoProperties();
 
         foreach ($properties as $prop) {
             $result[$prop] = $this->opportunity->$prop;
         }
+
+        $result['type'] = $result['type']->id;
 
         return $result;
     }
@@ -202,7 +185,7 @@ class Exporter
     public function exportProponentTypes(): array
     {
         $result = [
-            'enabledProponentTypes' => $this->opportunity->registrationProponentTypes ?: [],
+            'registrationProponentTypes' => $this->opportunity->registrationProponentTypes ?: [],
             'useAgentRelationColetivo' => $this->opportunity->useAgentRelationColetivo,
             'proponentAgentRelation' => $this->opportunity->proponentAgentRelation,
         ];
@@ -212,28 +195,15 @@ class Exporter
 
     public function exportWorkplan(): array
     {
-        $result = [
-            'enableWorkplan' => $this->opportunity->enableWorkplan,
-            'workplanLabelDefault' => $this->opportunity->workplanLabelDefault,
-            'goalLabelDefault' => $this->opportunity->goalLabelDefault,
-            'deliveryLabelDefault' => $this->opportunity->deliveryLabelDefault,
-            'workplan_dataProjectlimitMaximumDurationOfProjects' => $this->opportunity->workplan_dataProjectlimitMaximumDurationOfProjects,
-            'workplan_dataProjectmaximumDurationInMonths' => $this->opportunity->workplan_dataProjectmaximumDurationInMonths,
-            'workplan_metaInformTheStageOfCulturalMaking' => $this->opportunity->workplan_metaInformTheStageOfCulturalMaking,
-            'workplan_metaLimitNumberOfGoals' => $this->opportunity->workplan_metaLimitNumberOfGoals,
-            'workplan_metaMaximumNumberOfGoals' => $this->opportunity->workplan_metaMaximumNumberOfGoals,
-            'workplan_deliveryReportTheDeliveriesLinkedToTheGoals' => $this->opportunity->workplan_deliveryReportTheDeliveriesLinkedToTheGoals,
-            'workplan_deliveryLimitNumberOfDeliveries' => $this->opportunity->workplan_deliveryLimitNumberOfDeliveries,
-            'workplan_deliveryMaximumNumberOfDeliveries' => $this->opportunity->workplan_deliveryMaximumNumberOfDeliveries,
-            'workplan_registrationReportTheNumberOfParticipants' => $this->opportunity->workplan_registrationReportTheNumberOfParticipants,
-            'workplan_registrationInformCulturalArtisticSegment' => $this->opportunity->workplan_registrationInformCulturalArtisticSegment,
-            'workplan_registrationReportExpectedRenevue' => $this->opportunity->workplan_registrationReportExpectedRenevue,
-            'workplan_monitoringInformTheFormOfAvailability' => $this->opportunity->workplan_monitoringInformTheFormOfAvailability,
-            'workplan_monitoringInformAccessibilityMeasures' => $this->opportunity->workplan_monitoringInformAccessibilityMeasures,
-            'workplan_monitoringInformThePriorityAudience' => $this->opportunity->workplan_monitoringInformThePriorityAudience,
-            'workplan_monitoringProvideTheProfileOfParticipants' => $this->opportunity->workplan_monitoringProvideTheProfileOfParticipants,
-            'workplan_monitoringReportExecutedRevenue' => $this->opportunity->workplan_monitoringReportExecutedRevenue,
-        ];
+        if(!$this->opportunity->enableWorkplan) {
+            return ['enableWorkplan' => false];
+        }
+
+        $result = ['enableWorkplan' => true];
+
+        foreach(Module::getInfoProperties() as $prop) {
+            $result[$prop] = $this->opportunity->$prop;
+        }
 
         return $result;
     }
@@ -257,11 +227,15 @@ class Exporter
         return $result;
     }
 
-    public function exportFileGroup(string $group_name): array
+    public function exportFileGroup(string $group_name, ?Entity $owner = null): array
     {
         $result = [];
 
-        if ($group_files = $this->opportunity->files[$group_name] ?? false) {
+        if(is_null($owner)) {
+            $owner = $this->opportunity;
+        }
+
+        if ($group_files = $owner->files[$group_name] ?? false) {
             $group_files = is_array($group_files) ? $group_files : [$group_files];
 
             foreach ($group_files as $file) {
@@ -280,6 +254,14 @@ class Exporter
             'isDataCollection',
             ...$include_metadata,
         ];
+
+        if (!$phase->isFirstPhase) {
+            // o nome da primeira fase é exportado nas infos
+            $export_phase_props = [
+                ...$export_phase_props,
+                'name'
+            ];
+        }
 
         if ($this->statusLabels) {
             $export_phase_props = [
@@ -309,7 +291,11 @@ class Exporter
         }
 
         foreach ($export_phase_props as $prop) {
-            $result[$prop] = $phase->$prop;
+            $value = $phase->$prop;
+            if($value instanceof \DateTime) {
+                $value = $value->format('Y-m-d H:i:s');
+            }
+            $result[$prop] = $value;
         }
 
         if ($phase->isDataCollection) {
@@ -329,8 +315,6 @@ class Exporter
 
     public function exportForm(Opportunity $phase): array
     {
-        $attachments = [];
-
         $result = [
             'steps' => $this->exportFormSteps($phase),
             'fields' => $this->exportFormFields($phase),
@@ -389,7 +373,7 @@ class Exporter
                 $field_result = [
                     ...$field_result,
                     'conditional' => true,
-                    'conditionalField' => ":$conditional_field",
+                    'conditionalField' => "$conditional_field",
                     'conditionalValue' => $field->conditionalValue,
                 ];
             }
@@ -426,7 +410,7 @@ class Exporter
                 $rfc_result = [
                     ...$rfc_result,
                     'conditional' => true,
-                    'conditionalField' => ":$conditional_field",
+                    'conditionalField' => "$conditional_field",
                     'conditionalValue' => $rfc->conditionalValue,
                 ];
             }
