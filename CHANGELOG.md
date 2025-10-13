@@ -12,6 +12,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajuste da visibilidade dos campos do formulário de inscrição condicionado a pergunta "Vai concorrer por cotas"?
 - Corrige a consolidação de resultado da avaliação do tipo habilitação documental
 - Corrige exibição da data da inscrição na tela de avaliação
+- Corrige criação de espaço
+
+### Melhorias não funcionais
+-- Novos hooks para manipulação na página de edição dos espaços
 
 ## [7.6.12] - 2025-10-08
 ### Correções
