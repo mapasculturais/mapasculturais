@@ -421,7 +421,7 @@ return array(
 
         'horario' => array(
             'label' => \MapasCulturais\i::__('Horário de funcionamento'),
-            'type' => 'text',
+            'type' => 'textarea',
             'available_for_opportunities' => true
         ),
 
