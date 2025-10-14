@@ -13,6 +13,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige a consolidação de resultado da avaliação do tipo habilitação documental
 - Corrige exibição da data da inscrição na tela de avaliação
 - Corrige criação de espaço
+- Evita quebra no getSummary da fase de avaliação
 
 ### Melhorias não funcionais
 -- Novos hooks para manipulação na página de edição dos espaços
