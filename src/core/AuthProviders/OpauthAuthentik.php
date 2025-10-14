@@ -21,6 +21,7 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
             'login_url' => '',
             'path' => preg_replace('#^https?\:\/\/[^\/]*(/.*)#', '$1', $url),
             'logout_url' => $app->createUrl('site','index'),
+            'change_password_url' => null
         ], $this->_config);
         
         
@@ -74,6 +75,16 @@ class OpauthAuthentik extends \MapasCulturais\AuthProvider{
                 $app->redirect($config['logout_url']);
             });
         }
+
+        // Implementa botão para alterar a senha no paineld e usuario
+        $app->hook('template(panel.<<my-account|user-detail>>.user-mail):end ', function () use ($app) {
+            /** @var \MapasCulturais\Theme $this */
+            if (isset($app->config['auth.config']) && isset($app->config['auth.config']['change_password_url']) && $app->config['auth.config']['change_password_url']) {
+                $this->part('change_password_other_providers', [
+                    'change_password_url' => $app->config['auth.config']['change_password_url']
+                ]);
+            }
+        });
         
     }
     public function _cleanUserSession() {

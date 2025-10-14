@@ -976,6 +976,16 @@ class Module extends \MapasCulturais\EvaluationMethod
         return $errors;
     }
 
+    /**
+     * Retorna se método de avaliação deve ou não auto aplicar os resultados
+     *
+     * @return boolean
+     */
+    function useAutoApplication(): bool
+    {
+        return false;
+    }
+
     public function _getConsolidatedResult(\MapasCulturais\Entities\Registration $registration, array $evaluations) {
         if(empty($evaluations)){
             return 0;
@@ -998,6 +1008,17 @@ class Module extends \MapasCulturais\EvaluationMethod
         } else {
             return null;
         }
+    }
+
+    /**
+     * Retorna o resultado consolidado aplicado
+     *
+     * @param Entities\Registration $registration
+     * @return string|int
+     */
+    public function _getConsolidatedAutoApplicationResult(Entities\Registration $registration): string|int
+    {
+        return $registration->consolidatedResult;
     }
 
     public function applyPointReward($result, \MapasCulturais\Entities\Registration $registration)

@@ -205,13 +205,17 @@ class API {
         });
     }
 
-    async persistEntity(entity, forceSave) {
+    async persistEntity(entity, forceSave, updateMethod = 'PATCH') {
+        if(updateMethod != 'PATCH' && updateMethod != 'PUT') {
+            throw new Error('o updateMethod deve ser PUT ou PATCH');
+        }
+
         if (!entity[this.$PK]) {
             let url = Utils.createUrl(this.objectType, 'index');
             return this.POST(url, entity.data())
             
         } else {
-            return this.PATCH(entity.singleUrl, entity.data(true), forceSave)
+            return this[updateMethod](entity.singleUrl, entity.data(true), forceSave)
         }
     }
 

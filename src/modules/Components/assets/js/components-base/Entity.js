@@ -263,9 +263,12 @@ class Entity {
             if(prop == 'ownerEntity' && this[prop]) {
                 result[prop] = this[prop]?.id;
                 result['objectType'] = this[prop]?.__objectType;
-            } else if(prop == 'parent' && this[prop]) {
-                if (this[prop]?.id != this.id) {
+            } else if(prop == 'parent') {
+                if (this[prop] && this[prop]?.id != this.id) {
                     result[prop] = this[prop]?.id;
+                } else if (!this[prop]) {
+                    // Inclui parent como null quando for removido
+                    result[prop] = null;
                 }
             } else {
                 result[prop] = this[prop]?.id;
@@ -478,7 +481,33 @@ class Entity {
         }
     }
 
+    async validate() {
+        await this.invoke('validateEntity');
+    }
+
     async save(delay = 300, preserveValues = true, forceSave) {
+        let updateMethod = 'PATCH';
+
+        if(typeof delay == 'object') {
+            if (delay.preserveValues !== undefined) {
+                preserveValues = delay.preserveValues;
+            }
+
+            if (delay.forceSave !== undefined) {
+                forceSave = delay.forceSave;
+            }
+
+            if (delay.updateMethod !== undefined) {
+                updateMethod = delay.updateMethod;
+            }
+
+            if (delay.delay !== undefined) {
+                delay = delay.delay;
+            } else {
+                delay = 300;
+            }
+        }
+
         if(!this.id) {
             preserveValues = false;
         }
@@ -506,7 +535,7 @@ class Entity {
                         return;
                     }
 
-                    const res = await this.API.persistEntity(this, forceSave);                    
+                    const res = await this.API.persistEntity(this, forceSave, updateMethod);                    
                     this.doPromise(res, (entity) => {
                         if (this.id) {
                             this.sendMessage(this.text('modificacoes salvas'));

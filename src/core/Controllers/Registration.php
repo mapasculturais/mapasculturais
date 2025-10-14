@@ -109,6 +109,20 @@ class Registration extends EntityController {
             $this->tmpFile = $tmpFile;
         });
 
+        $app->hook('entity(Registration).file(rfc_<<*>>).insert:after', function() use ($app){
+            $registeredGroup = $app->getRegisteredFileGroup($this->owner->controllerId, $this->group);
+            
+            if($registeredGroup->unique) {
+                if($old_files = $app->repo($this->className)->findBy(['owner' => $this->owner, 'group' => $this->group])) {
+                    foreach($old_files as $old_file) {
+                        if($old_file->id != $this->id) {
+                            $old_file->delete(true);
+                        }
+                    }
+                }
+            }
+        });
+
         $app->hook('<<GET|POST|PUT|PATCH|DELETE>>(registration.<<*>>):before', function() {
             $registration = $this->getRequestedEntity();
            
@@ -309,7 +323,7 @@ class Registration extends EntityController {
     function getPreviewEntity(){
         $app = App::i();
         
-        $id = isset($this->urlData['id']) ? $this->urlData['id'] : $this->urlData[0];
+        $id = isset($this->urlData['id']) ? $this->urlData['id'] : (isset($this->urlData[0]) ? $this->urlData[0] : null);
         $referer = $app->request->getReferer()[0] ?? "";
         if($id == -1 && $referer && preg_match("#/(\d+-preview)/#", $referer, $matches)) {
             $id = $matches[1];

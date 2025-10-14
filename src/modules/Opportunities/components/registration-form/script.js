@@ -30,6 +30,14 @@ app.component('registration-form', {
         }
     },
 
+    watch: {
+        'registration.appliedForQuota': function (newVal, oldVal) {
+            if (newVal !== oldVal) {
+                this.clearFields();
+            }
+        }
+    },
+
     computed: {
         disableFields() {
             return $MAPAS.config.registrationForm.disableFields || null;
@@ -70,6 +78,12 @@ app.component('registration-form', {
                     if (fieldName) {
                         if(registration[fieldName] instanceof Array) {
                             if (!registration[fieldName].includes(fieldValue)) {
+                                return false;
+                            }
+                        } else if (fieldName == 'appliedForQuota') {
+                            let appliedForQuota = registration.appliedForQuota === true || registration.appliedForQuota === 'true';
+
+                            if (!appliedForQuota) {
                                 return false;
                             }
                         } else if (registration[fieldName] != fieldValue) {
@@ -193,6 +207,12 @@ app.component('registration-form', {
                             if(registration[fieldName] instanceof Array) {
                                 if (!registration[fieldName].includes(fieldValue)) {
                                     registration[field.fieldName] = null;
+                                }
+                            } else if (fieldName == 'appliedForQuota') {
+                                let appliedForQuota = registration.appliedForQuota === true || registration.appliedForQuota === 'true';
+                                
+                                if (!appliedForQuota && registration[field.fieldName]) {
+                                   registration[field.fieldName] = null;
                                 }
                             } else if (registration[fieldName] != fieldValue) {
                                 registration[field.fieldName] = null;

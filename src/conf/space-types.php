@@ -349,7 +349,8 @@ return array(
                 \MapasCulturais\i::__('Sanitário adaptado'),
                 \MapasCulturais\i::__('Telefone público adaptado'),
                 \MapasCulturais\i::__('Vaga de estacionamento exclusiva para deficientes'),
-                \MapasCulturais\i::__('Vaga de estacionamento exclusiva para idosos')
+                \MapasCulturais\i::__('Vaga de estacionamento exclusiva para idosos'),
+                '@NA' => \MapasCulturais\i::__('Não possui')
             )
         ),
         'capacidade' => array(
@@ -420,7 +421,7 @@ return array(
 
         'horario' => array(
             'label' => \MapasCulturais\i::__('Horário de funcionamento'),
-            'type' => 'text',
+            'type' => 'textarea',
             'available_for_opportunities' => true
         ),
 

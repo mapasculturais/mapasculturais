@@ -367,6 +367,17 @@ class Quotas {
             }
             
             $range = $registration->range ?: 'default';
+            
+            if (!isset($range_registrations[$range])) {
+                $range_registrations[$range] = [];
+            }
+            if (!isset($range_result[$range])) {
+                $range_result[$range] = [];
+            }
+            if (!isset($range_max_registrations[$range])) {
+                $range_max_registrations[$range] = 0;
+            }
+            
             $range_registrations[$range][] = $registration;
             if(count($range_result[$range]) < $range_max_registrations[$range]) {
                 $range_result[$range][] = $registration;

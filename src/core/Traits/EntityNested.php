@@ -74,6 +74,12 @@ trait EntityNested{
      * @param \MapasCulturais\Entity $parent
      */
     function setParent($parent = null) {
+        // Tratamento especial para null - evita loop infinito
+        if($parent === null) {
+            $this->_newParent = null;
+            return;
+        }
+        
         if(!is_object($parent)) {
             $this->setParentId($parent);
             return;

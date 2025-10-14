@@ -37,12 +37,15 @@ $this->import('
         <div v-if="areas" class="mc-map-card__content--info">
             <p v-if="entity.__objectType != 'agent'" class="info">
             <?= i::_e('ACESSIBILIDADE:') ?>
-                <strong v-if="entity.acessibilidade">
-                   <strong><?= i::_e('Oferece') ?></strong>
+                <strong v-if="entity.acessibilidade === 'Sim'">
+                   <?= i::_e('Oferece') ?>
                 </strong>
-                <strong v-else> <?= i::_e('Não') ?>
+                <strong v-else-if="entity.acessibilidade === 'Não'">
+                   <?= i::_e('Não') ?>
                 </strong>
-
+                <strong v-else>
+                   <?= i::_e('Não informado') ?>
+                </strong>
             </p>
         </div>
         <div v-if="areas" class="mc-map-card__content--info">
