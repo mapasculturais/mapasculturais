@@ -269,7 +269,7 @@ class Registrations extends SpreadsheetJob
                             continue;
                         }
 
-                        $values = array_map(function($item) use ($field, $entity) {
+                        $values = array_map(function($item) use ($field) {
                             if (!is_object($item)) {
                                 return $item;
                             }
