@@ -269,19 +269,29 @@ class Registrations extends SpreadsheetJob
                             continue;
                         }
 
-                        $values = array_map(function($item) {
-                            if (is_object($item)) {
-                                if (isset($item->value)) {
-                                    return $item->value;
-                                } else {
-                                    return '';
-                                }
-                            } else {
+                        $values = array_map(function($item) use ($field, $entity) {
+                            if (!is_object($item)) {
                                 return $item;
                             }
+                            
+                            if (isset($item->value)) {
+                                return $item->value;
+                            }
+
+                            if ($field->fieldType == 'addresses') {
+                                return $this->buildAddress($item);
+                            }
+                            
+                            return '';
                         }, $entity[$field->fieldName]);
 
-                        $formatted_values = implode(', ', $values);
+                        // Para campos de endereço, separa cada endereço com pipe para melhor legibilidade
+                        if ($field->fieldType == 'addresses') {
+                            $formatted_values = implode(" | ", $values);
+                        } else {
+                            $formatted_values = implode(', ', $values);
+                        }
+
                         $entity[$field->fieldName] = $formatted_values;
                     }
 
@@ -470,6 +480,29 @@ class Registrations extends SpreadsheetJob
         } else {
             return i::__('Rascunho');
         }
+    }
+
+    /**
+     * Formata um endereço completo baseado na função JavaScript MapasCulturais.buildAddress.
+     * 
+     * Esta função replica o comportamento da função JavaScript encontrada em:
+     * /src/themes/BaseV1/assets/js/customizable.js linha 22-24
+     * 
+     * @param object $address Objeto com propriedades de endereço
+     * @return string Endereço formatado
+     */
+    private function buildAddress($address) {
+        $addressName = $address->nome ?? '';
+        if ($addressName) {
+            $addressName = "[$addressName]: ";
+        }
+
+        // Montando o endereço
+        $result = $addressName . $address->logradouro . ", " . $address->numero;
+        $result .= $address->complemento ? ", " . $address->complemento : " ";
+        $result .= ", " . $address->bairro . ", " . $address->cep . ", " . $address->cidade . ", " . $address->estado;
+        
+        return $result;
     }
 
     /**
