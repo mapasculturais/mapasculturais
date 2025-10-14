@@ -603,6 +603,7 @@ abstract class Theme {
         }
 
         $app->applyHookBoundTo($this, 'mapasculturais.getTitle', [&$title]);
+        $app->applyHookBoundTo($this, "view.title({$this->controller->id}.{$this->controller->action})" , [&$title]);
 
         return $title;
     }

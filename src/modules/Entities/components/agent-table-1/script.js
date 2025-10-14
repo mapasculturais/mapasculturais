@@ -33,6 +33,7 @@ app.component('agent-table-1', {
             sexualOrientation: $DESCRIPTIONS.agent.orientacaoSexual.optionsOrder.filter((value) => value != ''),
             gender: $DESCRIPTIONS.agent.genero.optionsOrder.filter((value) => value != ''),
             race: $DESCRIPTIONS.agent.raca.optionsOrder.filter((value) => value != ''),
+            localExtraQuery: { ...this.extraQuery }
         }
     },
 
@@ -45,36 +46,36 @@ app.component('agent-table-1', {
     methods: {
         filterByOrientacaoSexual(entities) {
             if (this.selectedSexualOrientation.length > 0) {
-                this.extraQuery = {...this.extraQuery, orientacaoSexual: `IIN(${this.selectedSexualOrientation.join(", ")})`};
+                this.localExtraQuery = {...this.localExtraQuery, orientacaoSexual: `IIN(${this.selectedSexualOrientation.join(", ")})`};
             } else {
-                this.extraQuery = {...this.extraQuery, orientacaoSexual: undefined};
+                this.localExtraQuery = {...this.localExtraQuery, orientacaoSexual: undefined};
             }
             entities.refresh();
         },
 
         filterByGender(entities) {
             if (this.selectedGender.length > 0) {
-                this.extraQuery = {...this.extraQuery, genero: `IIN(${this.selectedGender.join(", ")})`};
+                this.localExtraQuery = {...this.localExtraQuery, genero: `IIN(${this.selectedGender.join(", ")})`};
             } else {
-                this.extraQuery = {...this.extraQuery, genero: undefined};
+                this.localExtraQuery = {...this.localExtraQuery, genero: undefined};
             }
             entities.refresh();
         },
 
         filterByRace(entities) {
             if (this.selectedRace.length > 0) {
-                this.extraQuery = {...this.extraQuery, raca: `IN(${this.selectedRace.join(", ")})`};
+                this.localExtraQuery = {...this.localExtraQuery, raca: `IN(${this.selectedRace.join(", ")})`};
             } else {
-                this.extraQuery = {...this.extraQuery, raca: undefined};
+                this.localExtraQuery = {...this.localExtraQuery, raca: undefined};
             }
             entities.refresh();
         },
 
         oldPeopleFilter(event, entities) {
             if (event.target.checked) {
-                this.extraQuery = {...this.extraQuery, idoso: `EQ(1)`};
+                this.localExtraQuery = {...this.localExtraQuery, idoso: `EQ(1)`};
             } else {
-                this.extraQuery = {...this.extraQuery, idoso: undefined};
+                this.localExtraQuery = {...this.localExtraQuery, idoso: undefined};
             }
             entities.refresh();
         },
@@ -83,10 +84,10 @@ app.component('agent-table-1', {
             this.selectedSexualOrientation = [];
             this.selectedGender = [];
             this.selectedRace = [];
-            delete this.extraQuery['orientacaoSexual'];
-            delete this.extraQuery['genero'];
-            delete this.extraQuery['raca'];
-            delete this.extraQuery['idoso'];
+            delete this.localExtraQuery['orientacaoSexual'];
+            delete this.localExtraQuery['genero'];
+            delete this.localExtraQuery['raca'];
+            delete this.localExtraQuery['idoso'];
 
             this.$refs.oldPeople.checked = false;
 
@@ -98,30 +99,30 @@ app.component('agent-table-1', {
                 case 'orientacaoSexual':
                     this.selectedSexualOrientation = this.selectedSexualOrientation.filter((orientacao) => orientacao.toString().trim() != filter.value.toString().trim());
                     if (this.selectedSexualOrientation.length > 0) {
-                        this.extraQuery = {...this.extraQuery, orientacaoSexual: `IIN(${this.selectedSexualOrientation.join(", ")})`};
+                        this.localExtraQuery = {...this.localExtraQuery, orientacaoSexual: `IIN(${this.selectedSexualOrientation.join(", ")})`};
                     } else {
-                        delete this.extraQuery['orientacaoSexual'];
+                        delete this.localExtraQuery['orientacaoSexual'];
                     }
                     break;
                 case 'genero':
                     this.selectedGender = this.selectedGender.filter((gen) => gen.toString().trim() != filter.value.toString().trim());
                     if (this.selectedGender.length > 0) {
-                        this.extraQuery = {...this.extraQuery, genero: `IIN(${this.selectedGender.join(", ")})`};
+                        this.localExtraQuery = {...this.localExtraQuery, genero: `IIN(${this.selectedGender.join(", ")})`};
                     } else {
-                        delete this.extraQuery['genero'];
+                        delete this.localExtraQuery['genero'];
                     }
                     break;
                 case 'raca':
                     this.selectedRace = this.selectedRace.filter((raca) => raca.toString().trim() != filter.value.toString().trim());
                     if (this.selectedRace.length > 0) {
-                        this.extraQuery = {...this.extraQuery, raca: `IN(${this.selectedRace.join(", ")})`};
+                        this.localExtraQuery = {...this.localExtraQuery, raca: `IN(${this.selectedRace.join(", ")})`};
                     } else {
-                        delete this.extraQuery['raca'];
+                        delete this.localExtraQuery['raca'];
                     }
                     break;
                 case 'idoso':
                     this.$refs.oldPeople.checked = false;
-                    delete this.extraQuery['idoso'];
+                    delete this.localExtraQuery['idoso'];
                     break;
             }
         },

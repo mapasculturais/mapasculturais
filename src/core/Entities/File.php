@@ -300,15 +300,17 @@ abstract class File extends \MapasCulturais\Entity
 
         if($files){
             foreach($files as $file){
-                $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $file->group);
+                $group_key = trim($file->group);
+                $registeredGroup = $app->getRegisteredFileGroup($file->owner->controllerId, $group_key);
 
-                if($registeredGroup && $registeredGroup->unique || strpos($file->group, 'rfc_') === 0){
-                    $result[trim($file->group)] = $file;
+                if($registeredGroup && $registeredGroup->unique || strpos($group_key, 'rfc_') === 0){
+                    $last_file = $result[$group_key] ?? null;
+                    $result[$group_key] = (!$last_file || $file->id > $last_file->id) ? $file : $last_file;
                 }else{
-                    if(!key_exists($file->group, $result))
-                        $result[trim($file->group)] = [];
+                    if(!key_exists($group_key, $result))
+                        $result[$group_key] = [];
 
-                    $result[trim($file->group)][] = $file;
+                    $result[$group_key][] = $file;
                 }
             }
         }

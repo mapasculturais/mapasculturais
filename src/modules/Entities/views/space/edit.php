@@ -83,14 +83,17 @@ $this->breadcrumb = [
                     </template>
                 </mc-card>
                 <main>
+                    <?php $this->applyTemplateHook('main-mc-card','begin') ?>
                     <mc-card>
                         <template #title>
                             <label><?php i::_e("Endereço do espaço"); ?></label>
                         </template>
                         <template #content>
+                            <?php $this->applyTemplateHook('mc-card-content-address','begin') ?>
                             <div class="grid-12">
                                 <country-address-form :entity="entity" class="col-12"></country-address-form>
                             </div>
+                            <?php $this->applyTemplateHook('mc-card-content-address','end') ?>
                         </template>
                     </mc-card>
                     <mc-card>
@@ -106,12 +109,14 @@ $this->breadcrumb = [
                             <label><?php i::_e("Acessibilidade física"); ?></label>
                         </template>
                         <template #content>
+                            <?php $this->applyTemplateHook('mc-card-content-acessibilidade_fisica','begin') ?>
                             <entity-field :entity="entity" classes="col-12" type="multiselect" prop="acessibilidade_fisica"></entity-field>
+                            <?php $this->applyTemplateHook('mc-card-content-acessibilidade_fisica','end') ?>
                         </template>
                     </mc-card>
                     <mc-card>
                         <template #title>
-                            <label><?php i::_e("Capacidade"); ?></label>
+                            <label><?= $this->text('capacidade', i::__('Capacidade')) ?></label>
                         </template>
                         <template #content>
                             <entity-field :entity="entity" classes="col-12" prop="capacidade"></entity-field>
@@ -119,7 +124,7 @@ $this->breadcrumb = [
                     </mc-card>
                     <mc-card>
                         <template #title>
-                            <label><?php i::_e("Horário e funcionamento"); ?></label>
+                            <label><?= $this->text('horario-funcionamento', i::__('Horário e funcionamento')) ?></label>
                         </template>
                         <template #content>
                             <entity-field :entity="entity" classes="col-12" prop="horario"></entity-field>
@@ -146,7 +151,7 @@ $this->breadcrumb = [
                         </template>
                         <template #content>
                             <div class="grid-12">
-                                <entity-field :entity="entity" classes="col-12" prop="longDescription" label="<?php i::_e('Descrição'); ?>"></entity-field>
+                                <entity-field :entity="entity" classes="col-12" prop="longDescription" label="<?= $this->text('long-description', i::__('Descrição')) ?>"></entity-field>
                                 <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
                                 <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                                 <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Adicionar vídeos') ?>" editable></entity-gallery-video>
@@ -154,6 +159,7 @@ $this->breadcrumb = [
                             </div>
                         </template>
                     </mc-card>
+                    <?php $this->applyTemplateHook('main-mc-card','end') ?>
                 </main>
                 <aside>
                     <mc-card>

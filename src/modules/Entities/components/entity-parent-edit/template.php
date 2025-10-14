@@ -32,6 +32,11 @@ $this->import('
                 </a>
             </template>
         </select-entity>
+        <a class="entity-parent-edit__remove--btn" @click="removeParent()">
+            <mc-icon name="trash"></mc-icon>
+            <h4 v-if="type == 'space'"><?php i::_e( "Remover supra espaço") ?></h4>
+            <h4 v-if="type == 'project'"><?php i::_e( "Remover supra projeto") ?></h4>
+        </a>
     </div>
 </div>
 <div v-if="!parent" class="col-12 entity-parent-edit__edit">

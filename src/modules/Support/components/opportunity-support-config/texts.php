@@ -12,4 +12,7 @@ return [
     "Sem permissão" => i::__("Sem permissão"),
     "Visualizar" => i::__("Visualizar"),
     "Modificar" => i::__("Modificar"),
+    "Todos" => i::__("Todos"),
+    "Sim" => i::__("Sim"),
+    "Não" => i::__("Não"),
 ];

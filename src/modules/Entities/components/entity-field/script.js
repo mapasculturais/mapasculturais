@@ -75,7 +75,9 @@ app.component('entity-field', {
                 })
             );
         
-            description.optionsOrder = description.optionsOrder.filter(item => !removedOptions.includes(item));
+            description.optionsOrder = Array.isArray(description.optionsOrder)
+                ? description.optionsOrder.filter(key => !removedOptions.includes(key))
+                : Object.values(description.optionsOrder).filter(item => !removedOptions.includes(item));
         }
 
         return {

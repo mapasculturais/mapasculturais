@@ -90,3 +90,20 @@ small {
     border: none;
     text-align: center;
 }
+
+.change_password_other_providers {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &--fakePassword {
+        display: flex;
+        .dot {
+            background: black;
+            border-radius: 50%;
+            height: 8px;
+            width: 8px;
+        }
+    }
+
+}

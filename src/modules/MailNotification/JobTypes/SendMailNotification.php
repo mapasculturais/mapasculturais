@@ -49,10 +49,11 @@ class SendMailNotification extends JobType
         $app->applyHook("sendMailNotification.registrationStart",[&$registration, &$template, &$params]);
 
         $message = $app->renderMailerTemplate($template, $params);
-      
+        $app->log->debug($message['body']);
+        $mail_to = $registration->owner->emailPrivado ?: $registration->owner->user->email;
         $email_params = [
             'from' => $app->config['mailer.from'],
-            'to' => $registration->owner->emailPrivado,
+            'to' => $mail_to ,
             'subject' => $message['title'],
             'body' => $message['body'],
         ];

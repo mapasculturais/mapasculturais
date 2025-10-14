@@ -43,6 +43,9 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract protected function _valueToString($value);
 
     abstract protected function _getConsolidatedResult(Entities\Registration $registration, array $evaluations);
+
+    abstract protected function _getConsolidatedAutoApplicationResult(Entities\Registration $registration);
+
     abstract function getEvaluationResult(Entities\RegistrationEvaluation $evaluation);
 
     abstract function _getEvaluationDetails(Entities\RegistrationEvaluation $evaluation): ?array;
@@ -314,6 +317,80 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
 
         return $result;
     }
+
+    /**
+     * Retorna se método de avaliação deve ou não auto aplicar os resultados
+     *
+     * @return boolean
+     */
+    function useAutoApplication(): bool
+    {
+        return true;
+    }
+    
+    /**
+     * Aplica o resultado de uma avaliação na inscrição
+     *
+     * @param Entities\Registration $registration
+     * @return boolean
+     */
+    function applyConsolidatedResult(Entities\Registration $registration, $status_force = null): bool
+    {
+        $app = App::i();
+
+        if(!$this->useAutoApplication() || !$registration) {
+            return false;
+        }
+
+        $opportunity = $registration->opportunity;
+
+        // $evaluation_type = $registration->evaluationMethod->slug;
+
+        if ($registration->needsTiebreaker() && !$registration->evaluationMethod->getTiebreakerEvaluation($registration)) {
+            return false;
+        }
+
+        $conn = $app->em->getConnection();
+        $evaluations = $conn->fetchAll(
+            "
+                SELECT
+                   *
+                FROM
+                    evaluations
+                WHERE
+                    registration_id = {$registration->id}"
+        );
+
+        $all_status_sent = true;
+        foreach ($evaluations as $evaluation) {
+            $registration_evaluation = $evaluation['evaluation_id'] ? $app->repo('RegistrationEvaluation')->find($evaluation['evaluation_id']) : false;
+
+            if (!$registration_evaluation && $evaluation['evaluation_status'] !== RegistrationEvaluation::STATUS_SENT) {
+                $all_status_sent = false;
+            }
+        }
+
+        if ($all_status_sent) {
+            $value = $this->getConsolidatedAutoApplicationResult($registration, $status_force);
+
+            $app->disableAccessControl();
+            $registration->setStatus($value);
+            $registration->save();
+            $app->enableAccessControl();
+        }
+        
+        return true;
+    }
+
+    public function getConsolidatedAutoApplicationResult(Registration $registration, $status_force = null)
+    {
+        $app = App::i();
+        $result = $this->_getConsolidatedAutoApplicationResult($registration, $status_force);
+        $app->applyHookBoundTo($this, "evaluationMethod({$this->slug}).consolidatedAutoApplicationResult", [&$result]);
+        return $result;
+    }
+    
+    
 
     /**
      * Retorna os detalhes de uma avaliação

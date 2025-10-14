@@ -26,6 +26,7 @@ app.component('opportunity-support-config', {
             categoryFilter: null,
             proponentFilter: null,
             rangeFilter: null,
+            appliedForQuotaFilter: null,
             keyword: "",
         };
     },
@@ -136,9 +137,27 @@ app.component('opportunity-support-config', {
             }
         },
 
+        appliedForQuota() {
+            if (this.entity?.enableQuotasQuestion) {
+                const options = [
+                    { label: this.text('Todos'), value: 'Todos' },
+                    { label: this.text('Sim'), value: 'Sim' },
+                    { label: this.text('Não'), value: 'Não' }
+                ];
+
+                if (!options.some(opt => opt.value === 'Todos')) {
+                    options.unshift({ label: this.text('Todos'), value: 'Todos' });
+                }
+                this.appliedForQuotaFilter = 'Todos';
+                
+                return options;
+            }
+
+            return false;
+        },
+
         sortedFields() {
             return this.fields.toSorted((a, b) => {
-                console.log(a.step, b.step);
                 if (a.step?.displayOrder === b.step?.displayOrder) {
                     return Math.sign(a.displayOrder - b.displayOrder);
                 } else {
@@ -152,11 +171,12 @@ app.component('opportunity-support-config', {
             const category = this.categoryFilter; 
             const proponent = this.proponentFilter;
             const range = this.rangeFilter;
+            const appliedForQuota = this.appliedForQuotaFilter;
             const keyword = this.keyword
 
             if (category && category != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.categories.length <= 0 || (field.categories.length > 0 && field.categories.includes(category))) {
+                    if (field.categories.includes(category)) {
                         return field;
                     }
                 });
@@ -164,7 +184,7 @@ app.component('opportunity-support-config', {
 
             if (proponent && proponent != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.proponentTypes.length <= 0 || (field.proponentTypes.length > 0 && field.proponentTypes.includes(proponent))) {
+                    if (field.proponentTypes.includes(proponent)) {
                         return field;
                     }
                 });
@@ -172,9 +192,15 @@ app.component('opportunity-support-config', {
 
             if (range && range != 'Todos') {
                 fields = fields.filter(function(field) {
-                    if (field.registrationRanges.length <= 0 || (field.registrationRanges.length > 0 && field.registrationRanges.includes(range))) {
+                    if (field.registrationRanges.includes(range)) {
                         return field;
                     }
+                });
+            }
+
+            if (appliedForQuota && appliedForQuota != 'Todos') {
+                fields = fields.filter(function(field) {
+                    return appliedForQuota == 'Sim' ? field.conditionalField == 'appliedForQuota' : field.conditionalField != 'appliedForQuota';
                 });
             }
 
@@ -261,6 +287,7 @@ app.component('opportunity-support-config', {
             this.categoryFilter = null;
             this.proponentFilter = null;
             this.rangeFilter = null;
+            this.appliedForQuotaFilter = null;
             this.keyword = "";
         },
 

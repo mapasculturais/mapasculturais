@@ -5,6 +5,54 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Correções
+- Ajuste da exibição de acessbilidade na lista de espaços
+- Ajustes de filtros de categoria, faixa e tipo de proponente no suporte
+- Ajuste da visibilidade dos campos do formulário de inscrição condicionado a pergunta "Vai concorrer por cotas"?
+- Corrige a consolidação de resultado da avaliação do tipo habilitação documental
+- Corrige exibição da data da inscrição na tela de avaliação
+- Corrige criação de espaço
+- Evita quebra no getSummary da fase de avaliação
+
+### Melhorias não funcionais
+-- Novos hooks para manipulação na página de edição dos espaços
+
+## [7.6.12] - 2025-10-08
+### Correções
+- Ajuste a estilização do campo pessoa com deficiência
+- Padroniza labels dos cmapos da página de edição de agente individual
+- Ajuste de estilização na tela de aceitação de termos de usu e política de privacidade
+- Corrige destinatário dos emails de início de inscrições quando o agente não tem o email privado definido
+- Evita que entidades em rascunho e lixiera sejam exportados nas planilhas
+
+### Melhorias
+- Adiciona funcionalidade de remoção do supra espaço
+
+### Melhorias não funcionais
+- Novo hook para manipulação do título da página
+- Novo hook para manipulação do tipo de requisição do salvamento das entidades, que por padrão é PATCH, possibilitando definir para PUT
+- Viabiliza, na interface, mensagem de erro para o campo de upload de avatar das entidades
+
+## [7.6.11] - 2025-10-07
+### Correções
+- Corrige erro na avaliação de qualificação documental, que exigia uma opção para desabilitação mesmo quando não existia opções configuradas
+- Corrige erro que impedia o carregamento da inscrição, quando nao existia step configurado em algum campo
+- Ajusta para que o script de cotas não quebre quando não existe configurações de cotas definidas ou se as configurações  estão incompletas
+- Corrige filtros da tabela de agentes individuais
+- Corrige funcionalidade de limpar filtros da tabela de agentes
+- Corrige exibição das tabelas de agentes e agentes individuais
+
+## [7.6.10] - 2025-10-02
+### Correções
+- Corrige conflito entre a criação de inscrição e a pré visualização de formulários
+- Faz ajustes para evitar que fique arquivos duplicados na inscrição
+- Corrige db-update que ajusta o metadado pessoa com deficiência
+
+### Melhorias
+- Implementa botão de alteração de senha para ser usados em providers externos Ex.: Authentik
+- Implementa método que melhora a auto aplicação de resultados das avaliações melhorando a usabilidade da funcionalidade
+
 ## [7.6.9] - 2025-09-26
 - Corrige criação de opportunidade de fluxo contínuo
 - Corrige permissão de bloquear uma entidade para edição quando a permissão de modificar foi dada por um role
@@ -143,6 +191,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 4. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com a SECULT/PE</small>
 <a name="hl-ibercultura"></a>
 5. <small>Funcionalidade desenvolvida pela hacklab/ por meio do contrato com o programa IberCultura Viva</small>
+
+## [7.5.68] - 2025-10-07
+### Correções
+- Corrige template de e-mail de aviso de inscrição selecionada para exibir o number da inscrição corretamente
+
+## [7.5.67] - 2025-09-26
+### Correções
+- Corrige permissão para edição via role criado na página de funções de usuário
 
 ## [7.5.66] - 2025-09-05
 ### Correções

@@ -57,6 +57,12 @@ trait EntityLock {
             return false;
         }
 
+        $app = App::i();
+
+        if(!$app->isAccessControlEnabled()) {
+            return false;
+        }
+
         $filename = $this->generateLockFilename();
 
         if(file_exists($filename)) {

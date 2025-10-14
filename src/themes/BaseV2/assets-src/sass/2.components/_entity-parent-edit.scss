@@ -68,8 +68,33 @@
                     font-size: size(14);
                 }
             }
-
-
+        }
+    }
+    
+    &__remove {
+        &--btn {
+            align-items: center;
+            cursor: pointer;
+            display: flex;
+            gap: size(8);
+            padding-top: size(8);
+            padding-bottom: size(16);
+            color: var(--mc-danger);
+            text-decoration: none;
+            
+            &:hover {
+                opacity: 0.8;
+            }
+            
+            h4 {
+                margin: 0;
+                font-size: size(14);
+                font-weight: 600;
+            }
+            
+            .iconify {
+                font-size: size(16);
+            }
         }
     }
 
