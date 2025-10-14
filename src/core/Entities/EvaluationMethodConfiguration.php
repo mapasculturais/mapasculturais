@@ -338,6 +338,10 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         $data = [
             'evaluations' => []
         ];
+
+        if(!$em) {
+            return $data;
+        }
         
         // Conta as inscrições avaliadas por consolidatedResult
         $query = $app->em->createQuery("
