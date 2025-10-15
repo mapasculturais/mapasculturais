@@ -5,6 +5,11 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [UNRELEASED]
+### Melhorias
+- Ajuste na visualização dos status das avaliações do avaliador para que seja exibido sempre que houver avaliações, mesmo que não tenham filtros configurados
+- Ajuste na distribuição para que distribua também as inscrições já avaliadas quando houver configurações na lista de inclusão de avaliadores.
+
 ## [7.6.13] - 2025-10-14
 ### Correções
 - Ajuste da exibição de acessbilidade na lista de espaços
