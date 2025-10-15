@@ -1775,7 +1775,7 @@ class Module extends \MapasCulturais\Module{
 
             });
 
-            $app->hook('entity(Registration).update:after', function() use($app){
+            $app->hook('entity(Registration).save:after', function() use($app){
                 /** @var Registration $this */
 
                 $app->disableAccessControl();
