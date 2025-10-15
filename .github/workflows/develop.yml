@@ -31,7 +31,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            docker.io/hacklab/mapasculturais 
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_IMAGE }}
           tags: ${{ steps.tag.outputs.tag }}
       -
         name: Set up QEMU
