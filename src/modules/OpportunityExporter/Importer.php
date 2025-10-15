@@ -258,7 +258,24 @@ class Importer
 
     public function importEvaluationPhase(Opportunity $phase, array $data)
     {
-        //
+
+        eval(\psy\sh()); die;
+
+        if (preg_match_all('#field_(\d+)#', $result_json, $matches)) {
+            foreach ($matches[0] as $i => $field_name) {
+                $fid = base_convert($matches[1][$i], 10, 36);
+                $result_json = str_replace($field_name, ":$fid", $result_json);
+            }
+        }
+
+        if (preg_match_all('#"field":"?(\d+)"?#', $result_json, $matches)) {
+            foreach ($matches[0] as $i => $field_name) {
+                $fid = base_convert($matches[1][$i], 10, 36);
+                $result_json = str_replace($field_name, "\"field\":\"@$fid'\"", $result_json);
+            }
+        }
+
+
     }
 
     public function importAppealPhase(Opportunity $phase, array $data)
