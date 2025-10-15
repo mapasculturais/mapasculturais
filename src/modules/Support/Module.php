@@ -3,6 +3,8 @@
 namespace Support;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\Registration;
+use MapasCulturais\Themes\BaseV2\Theme;
 
 class Module extends \MapasCulturais\Module
 {
@@ -225,6 +227,39 @@ class Module extends \MapasCulturais\Module
                 }
             }
             return false;
+        });
+
+        $app->hook('GET(support.form):before', function () use($app) {
+            $app->hook('view.requestedEntity(Registration).result', function (&$result) use($app) {
+                /** @var Theme $this */
+
+                /** @var Registration */
+                $registration = $this->controller->requestedEntity;
+                $opportunity = $registration->opportunity;
+
+                $permissions = [];
+
+                foreach ($opportunity->agentRelations as $rel){
+                    if ($rel->group == self::SUPPORT_GROUP && $rel->agent->user->equals($app->user)) {
+                        $permissions = $rel->metadata["registrationPermissions"];
+                        break;
+                    }
+                }
+
+                $fields = array_merge(
+                    $opportunity->registrationFieldConfigurations,
+                    $opportunity->registrationFileConfigurations
+                );
+
+                foreach ($fields as $field) {
+                    $key = $field->group ?? $field->fieldName;
+                    
+                    $app->log->debug($key);
+                    if(($permissions[$key] ?? 'ro') == 'ro') {
+                        $result['__lockedFields'][] = $key;
+                    }
+                }                
+            });
         });
     }
 
