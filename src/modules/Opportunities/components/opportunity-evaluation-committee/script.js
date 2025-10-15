@@ -98,7 +98,14 @@ app.component('opportunity-evaluation-committee', {
             return summary ? Object.values(summary).some(value => value > 0) : false;
         },
 
-        hasEvaluationConfiguration(agentId) {
+        hasEvaluationConfiguration(infoReviewer) {
+            const summary = infoReviewer?.metadata?.summary || {};
+
+            if(summary.pending || summary.started || summary.sent || summary.completed) {
+                return true;
+            }
+
+            const agentId = infoReviewer.agentUserId;
             const propertiesToCheck = [
                 'fetchCategories',
                 'fetchProponentTypes',
