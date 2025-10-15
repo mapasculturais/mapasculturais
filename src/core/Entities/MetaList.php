@@ -11,7 +11,7 @@ use \MapasCulturais\App;
  * @property-read int $id MetaList Id
  * @property string $name MetaList name
  * @property string $group MetaList Group (link, video etc)
- * @propertystring $objectType MetaList Owner Class Name
+ * @property string $objectType MetaList Owner Class Name
  * @property id $objectId MetaList Owner Id
  * @property \DateTime $createTimestamp MetaList Create Timestamp
  * @property \MapasCulturais\Entity $owner The Owner of this MetaList
