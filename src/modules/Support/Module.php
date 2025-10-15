@@ -254,7 +254,6 @@ class Module extends \MapasCulturais\Module
                 foreach ($fields as $field) {
                     $key = $field->group ?? $field->fieldName;
                     
-                    $app->log->debug($key);
                     if(($permissions[$key] ?? 'ro') == 'ro') {
                         $result['__lockedFields'][] = $key;
                     }
