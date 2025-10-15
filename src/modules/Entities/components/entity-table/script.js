@@ -472,7 +472,11 @@ app.component('entity-table', {
                 switch (description.type) {
                     case 'multiselect':
                     case 'array':
-                        val = val?.filter(item => item !== "null" && item !== "").join(', ')
+                        if (Array.isArray(val)) {
+                            val = val.filter(item => item !== "null" && item !== "").join(', ');
+                        } else {
+                            val = null;
+                        }
                         break;
                     case 'links':
                         var hasVal = val != null ?  (val !== '"null"' || val !== 'null' ? true : false) : false ;
