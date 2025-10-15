@@ -1946,7 +1946,7 @@ $$
         __try("DROP MATERIALIZED VIEW evaluations");
     },
 
-    'Recria view evaluations!!!!!!' => function() use($conn) {
+    'Recria view evaluations!!!!!!!' => function() use($conn) {
         __try("DROP VIEW IF EXISTS evaluations");
 
         $conn->executeQuery("
@@ -2006,7 +2006,7 @@ $$
                         JOIN evaluation_method_configuration emc
                             ON emc.opportunity_id = r2.opportunity_id
                     WHERE                          
-                        r2.status = 1
+                        r2.status >= 1
                 ) AS evaluations_view 
                 GROUP BY
                     registration_id,
