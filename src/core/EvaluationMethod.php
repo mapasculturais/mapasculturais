@@ -711,7 +711,9 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
         foreach($registration_evaluations as &$registration) {
             $registration_entity = null;
 
-            if($registration->status > 1) {
+            $include_list = $registration->valuers_exceptions_list->include ?? [];
+
+            if($registration->status > 1 && !count($include_list)) {
                 continue;
             }
 
