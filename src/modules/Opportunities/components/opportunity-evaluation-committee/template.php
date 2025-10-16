@@ -67,15 +67,15 @@ $this->import('
                     <div class="opportunity-evaluation-committee__card-header-content-data">
                         <div class="opportunity-evaluation-committee__card-entity">
                         <div class="opportunity-evaluation-committee__card-header-info">
-                            <mc-avatar v-if="infoReviewer.status !== -5 && hasEvaluationConfiguration(infoReviewer?.agentUserId)" :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
-                            <mc-avatar v-if="infoReviewer.status == -5 || !hasEvaluationConfiguration(infoReviewer?.agentUserId)" :entity="infoReviewer.agent" type="warning" size="xsmall" square></mc-avatar>
+                            <mc-avatar v-if="infoReviewer.status !== -5 && hasEvaluationConfiguration(infoReviewer)" :entity="infoReviewer.agent" size="xsmall"></mc-avatar>
+                            <mc-avatar v-if="infoReviewer.status == -5 || !hasEvaluationConfiguration(infoReviewer)" :entity="infoReviewer.agent" type="warning" size="xsmall" square></mc-avatar>
                             <div class="opportunity-evaluation-committee__card-header-info-name">
                                 <span class="bold">{{infoReviewer.agent.name}}</span>
                             </div>
                         </div>
                         </div>
                         <div class="opportunity-evaluation-committee__card-status">
-                            <div v-if="hasEvaluationConfiguration(infoReviewer?.agentUserId) && infoReviewer.status != -5" class="opportunity-evaluation-committee__card-status-wrapper field">
+                            <div v-if="hasEvaluationConfiguration(infoReviewer) && infoReviewer.status != -5" class="opportunity-evaluation-committee__card-status-wrapper field">
                                 <label class="status-label">{{ infoReviewer.metadata.summary.pending + infoReviewer.metadata.summary.started + infoReviewer.metadata.summary.completed + infoReviewer.metadata.summary.sent }} <?= i::__('inscrições para avaliar, estando:') ?></label>
                                 
                                 <div class="opportunity-evaluation-committee__summary">
@@ -95,7 +95,8 @@ $this->import('
                             </div>
 
                             <mc-alert v-else type="warning" small>
-                                <p v-if="!hasEvaluationConfiguration(infoReviewer?.agentUserId)"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?> </p>
+                                
+                                <p v-if="!hasEvaluationConfiguration(infoReviewer)"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não tem avaliações disponíveis') ?> </p>
                                 <p v-if="infoReviewer.status == -5"> <strong>{{infoReviewer.agent.name}}</strong> <?= i::__('ainda não aceitou o convite para avaliar esta oportunidade') ?> </p>
                             </mc-alert>
 
