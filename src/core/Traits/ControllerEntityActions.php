@@ -196,7 +196,7 @@ trait ControllerEntityActions {
         $force_save = false;
 
         foreach($app->request->headers as $key => $value) {
-            if(strtolower($key == 'mapas-force-save')) {
+            if(strtolower($key) == 'mapas-force-save') {
                 $force_save = true;
             }
         }
