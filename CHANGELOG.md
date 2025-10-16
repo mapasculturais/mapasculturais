@@ -6,6 +6,9 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED]
+### Correções
+- Corrige remoção de fase de avaliação quando a próxima fase for a última fase e a fase atual não for uma fase de coleta de dados
+
 ### Melhorias
 - Ajuste na visualização dos status das avaliações do avaliador para que seja exibido sempre que houver avaliações, mesmo que não tenham filtros configurados
 - Ajuste na distribuição para que distribua também as inscrições já avaliadas quando houver configurações na lista de inclusão de avaliadores.
