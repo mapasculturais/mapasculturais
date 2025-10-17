@@ -1596,7 +1596,7 @@ class Module extends \MapasCulturais\Module{
             // se a próxima fase for a última fase e a fase atual não for uma fase de coleta de dados, apaga a fase atual
             if ($next_phase->isLastPhase){
                 if (!$opportunity->isDataCollection) {
-                    $opportunity->delete(true);
+                    $opportunity->destroy();
                     $previous_phase->fixNextPhaseRegistrationIds();
                 }
 
@@ -1775,7 +1775,7 @@ class Module extends \MapasCulturais\Module{
 
             });
 
-            $app->hook('entity(Registration).update:after', function() use($app){
+            $app->hook('entity(Registration).save:after', function() use($app){
                 /** @var Registration $this */
 
                 $app->disableAccessControl();
