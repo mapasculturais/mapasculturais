@@ -5,7 +5,24 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [7.6.18] - 2025-10-16
+### Correções
+- Corrige remoção de fase de avaliação quando a próxima fase for a última fase e a fase atual não for uma fase de coleta de dados
+
+## [7.6.17] - 2025-10-16
+### Correções
+- Corrige verificação do header que força o salvamento das requisições PATCH que contenham erro de validação
+
+## [7.6.16] - 2025-10-15
+### Correções
+- Corrige funcionamento dos campos somente leitura do módulo de suporte
+
+## [7.6.15] - 2025-10-15
+### Melhorias
+- Ajuste na visualização dos status das avaliações do avaliador para que seja exibido sempre que houver avaliações, mesmo que não tenham filtros configurados
+- Ajuste na distribuição para que distribua também as inscrições já avaliadas quando houver configurações na lista de inclusão de avaliadores.
+
+## [7.6.13] - 2025-10-14
 ### Correções
 - Ajuste da exibição de acessbilidade na lista de espaços
 - Ajustes de filtros de categoria, faixa e tipo de proponente no suporte

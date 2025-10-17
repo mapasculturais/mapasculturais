@@ -393,6 +393,14 @@ app.component('entity-field', {
             if(lockedFieldSeals && lockedFieldSeals[this.prop]) {
                 this.readonly = true;
             }
+
+            const lockedFields = this.entity.__lockedFields || [];
+
+            if(lockedFields.includes(this.prop)) {
+                this.readonly = true;
+            }
+
+            return this.readonly;
         }
     },
 });
