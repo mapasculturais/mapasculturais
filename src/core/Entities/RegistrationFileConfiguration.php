@@ -8,6 +8,21 @@ use MapasCulturais\Traits;
 
 /**
  * RegistrationMeta
+ * 
+ *  $owner
+ *  @property RegistrationStep $step
+ *  @property string $title
+ *  @property string $description
+ *  @property bool $required
+ *  @property string[] $categories
+ *  @property int $displayOrder
+ *  @property bool $conditional
+ *  @property string $conditionalField
+ *  @property string $conditionalValue
+ *  @property array $registrationRanges
+ *  @property string[] $proponentTypes
+ * 
+ * @property-read string $fileGroupName 
  *
  * @ORM\Table(name="registration_file_configuration")
  * @ORM\Entity
