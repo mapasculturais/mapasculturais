@@ -169,7 +169,18 @@ return array(
             'placeholder' => \MapasCulturais\i::__('nomedousuario'),
             'available_for_opportunities' => true
         ),
-
+        'fediverso' => array(
+            'type' => "socialMedia",
+            'label' => \MapasCulturais\i::__('Fediverso'),
+            'available_for_opportunities' => true,
+            'serialize' => function ($value) {
+                return $value;
+            },
+            'validations' => array(
+                "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'placeholder' => \MapasCulturais\i::__('https://nomedoservidor.com.br/@nomedousuario'),
+        ),
         'emailPublico' => array(
             'label' => \MapasCulturais\i::__('Email Público'),
             'validations' => array(
@@ -223,7 +234,7 @@ return array(
 
     ),
     'items' => $items,
-    
+
     /* EXEMPLOS DE METADADOS:
 
     'cnpj' => array(
