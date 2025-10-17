@@ -425,19 +425,24 @@ class Exporter
         return $result;
     }
 
-    public function exportEvaluationPhase(EvaluationMethodConfiguration $evaluation_phase): array
+    public function exportEvaluationPhase(EvaluationMethodConfiguration $phase): array
     {
-        $result = $evaluation_phase->evaluationMethod->export($evaluation_phase);
+        $result = $phase->evaluationMethod->export($phase);
 
         $result = [
+            'name' => $phase->name,
+            'type' => $phase->type->id,
+            'evaluationFrom' => $phase->evaluationFrom ? $phase->evaluationFrom->format('Y-m-d H:i:s') : null,
+            'evaluationTo' => $phase->evaluationTo ? $phase->evaluationTo->format('Y-m-d H:i:s') : null,
+
             ...$result,
-            'infos' => $evaluation_phase->infos,
-            'publishEvaluationDetails' => $evaluation_phase->publishEvaluationDetails,
-            'publishValuerNames' => $evaluation_phase->publishValuerNames,
-            'autoApplicationAllowed' => $evaluation_phase->autoApplicationAllowed,
 
-            'avaliableEvaluationFields' => $evaluation_phase->opportunity->avaliableEvaluationFields,
+            'infos' => $phase->infos,
+            'publishEvaluationDetails' => $phase->publishEvaluationDetails,
+            'publishValuerNames' => $phase->publishValuerNames,
+            'autoApplicationAllowed' => $phase->autoApplicationAllowed,
 
+            'avaliableEvaluationFields' => $phase->opportunity->avaliableEvaluationFields,
         ];
 
         $result_json = json_encode($result);
@@ -452,7 +457,14 @@ class Exporter
         if (preg_match_all('#"field":"?(\d+)"?#', $result_json, $matches)) {
             foreach ($matches[0] as $i => $field_name) {
                 $fid = base_convert($matches[1][$i], 10, 36);
-                $result_json = str_replace($field_name, "\"field\":\"@$fid'\"", $result_json);
+                $result_json = str_replace($field_name, "\"field\":\"@$fid\"", $result_json);
+            }
+        }
+
+        if (preg_match_all('#rfc_(\d+)#', $result_json, $matches)) {
+            foreach ($matches[0] as $i => $file_group) {
+                $fid = base_convert($matches[1][$i], 10, 36);
+                $result_json = str_replace($file_group, "%$fid", $result_json);
             }
         }
 

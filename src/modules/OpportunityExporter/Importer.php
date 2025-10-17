@@ -39,6 +39,12 @@ class Importer
      */
     protected array $fieldsMap = [];
 
+    /**
+     * Mapeamento dos anexos criados
+     * @var RegistrationFileConfiguration[]
+     */
+    protected array $attachmentsMap = [];
+
     public function __construct(
         protected Agent|Space|Event|Project $onwerEntity,
         protected array $data,
@@ -190,7 +196,7 @@ class Importer
         }
     }
 
-    public function importPhase(array $phase_data, array $include_metadata = [], int $status = Opportunity::STATUS_PHASE)
+    public function importPhase(array $phase_data, array $include_metadata = [], int $status = Opportunity::STATUS_PHASE, ?Opportunity $parent = null): Opportunity
     {
         if ($phase_data['isFirstPhase'] ?? false) {
             $phase = $this->opportunity;
@@ -200,6 +206,7 @@ class Importer
             $opportunity_class = $this->onwerEntity->opportunityClassName;
 
             $phase = new $opportunity_class;
+            $phase->parent = $parent ?: $this->opportunity;
             $phase->ownerEntity = $this->onwerEntity;
             $phase->status = $status;
             $phase->name = $phase_data['name'] ?? '';
@@ -249,6 +256,8 @@ class Importer
         if ($appeal_phase = $phase_data['appealPhase'] ?? null) {
             $this->importAppealPhase($phase, $appeal_phase);
         }
+
+        return $phase;
     }
 
     public function importMonitoringPhase(array $phase_data)
@@ -256,31 +265,50 @@ class Importer
         $this->importPhase($phase_data, ['isReportingPhase', 'isFinalReportingPhase', 'includesWorkPlan']);
     }
 
-    public function importEvaluationPhase(Opportunity $phase, array $data)
+    public function importEvaluationPhase(Opportunity $phase, array $data): EvaluationMethodConfiguration
     {
 
-        eval(\psy\sh()); die;
+        $data_json = json_encode($data);
 
-        if (preg_match_all('#field_(\d+)#', $result_json, $matches)) {
-            foreach ($matches[0] as $i => $field_name) {
-                $fid = base_convert($matches[1][$i], 10, 36);
-                $result_json = str_replace($field_name, ":$fid", $result_json);
-            }
+        foreach($this->fieldsMap as $fid => $field) {
+            $data_json = str_replace(":$fid", $field->fieldName, $data_json);
+            $data_json = str_replace('"field":"@' . $fid . '"', '"field":"' . $field->id . '"', $data_json);
         }
 
-        if (preg_match_all('#"field":"?(\d+)"?#', $result_json, $matches)) {
-            foreach ($matches[0] as $i => $field_name) {
-                $fid = base_convert($matches[1][$i], 10, 36);
-                $result_json = str_replace($field_name, "\"field\":\"@$fid'\"", $result_json);
-            }
+        foreach($this->attachmentsMap as $fid => $field) {
+            $data_json = str_replace("%$fid", $field->fileGroupName, $data_json);
         }
+        
+        $replaced_data = json_decode($data_json, JSON_OBJECT_AS_ARRAY);
 
+        $evaluation_phase = new EvaluationMethodConfiguration;
 
+        $evaluation_phase->opportunity = $phase;
+        $evaluation_phase->name = $replaced_data['name'];
+        $evaluation_phase->type = $replaced_data['type'];
+        $evaluation_phase->evaluationFrom = $replaced_data['evaluationFrom'];
+        $evaluation_phase->evaluationTo = $replaced_data['evaluationTo'];
+        $evaluation_phase->save(true);
+
+        $evaluation_phase->evaluationMethod->import($evaluation_phase, $replaced_data);
+        $evaluation_phase->save(true);
+
+        return $evaluation_phase;
     }
 
-    public function importAppealPhase(Opportunity $phase, array $data)
+    public function importAppealPhase(Opportunity $phase, array $data): Opportunity
     {
-        //
+        $appeal_phase = $this->importPhase(
+            phase_data: $data, 
+            include_metadata: ['isAppealPhase'],
+            status: Opportunity::STATUS_APPEAL_PHASE,
+            parent: $phase
+        );
+
+        $phase->appealPhase = $appeal_phase;
+        $phase->save(true);
+
+        return $appeal_phase;
     }
 
     public function importForm(Opportunity $phase, array $data)
@@ -352,7 +380,7 @@ class Importer
 
     public function importFormAttachments(Opportunity $phase, array $data)
     {
-        foreach ($data as $rfc_data) {
+        foreach ($data as $id => $rfc_data) {
             $conditional = $rfc_data['conditional'] ?? false;
             $conditional_field = $rfc_data['conditionalField'] ?? null;
 
@@ -375,6 +403,9 @@ class Importer
             }
 
             $rfc->save();
+
+            $this->attachmentsMap[$id] = $rfc;
+
 
             if ($template_file_data = $rfc_data['template'] ?? null) {
                 $this->importFile($rfc, 'registrationFileTemplate', $template_file_data);
@@ -408,7 +439,8 @@ class Importer
         ]);
 
         $file->owner = $owner;
-        $file->descr = $file_data['description'];
+        $file->name = $file_data['name'];
+        $file->description = $file_data['description'];
         $file->group = $group;
 
         $file->save();
