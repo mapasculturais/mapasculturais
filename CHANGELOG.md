@@ -8,6 +8,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [UNRELEASED]
 ### Novas Funcionalidades
 - Exportador / Importador de oportunidades
+- Lista de entidades seladas na single dos selos
 
 ## [7.6.18] - 2025-10-16
 ### Correções
