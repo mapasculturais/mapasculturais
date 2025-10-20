@@ -311,15 +311,15 @@ app.component('qualification-evaluation-form', {
                         isValid = true;
                     }
                     
-                    if (crit.nonEliminatory === 'false' && value.includes('invalid')) {
-                        let hasRecommendation = true;
+                    if (crit.nonEliminatory === 'false' && value.includes('invalid') && crit.options.length > 0) {
+                        let hasRecommendation = false;
                         
                         const isOthersActive = crit.otherReasonsOption == 'true';
 
                         if (crit.options.length > 0) {
                             for (const option of crit.options) {
-                                if (!this.formData.data[crit.id]?.includes(option)) {
-                                    hasRecommendation = false;
+                                if (this.formData.data[crit.id]?.includes(option)) {
+                                    hasRecommendation = true;
                                     break;
                                 }
                             }
