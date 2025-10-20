@@ -52,6 +52,16 @@ app.component('tiebreaker-criteria-configuration', {
         fields() {
             return $MAPAS.config.tiebreakerCriteriaConfiguration.fields[this.phase.opportunity._id];
         },
+
+        fieldsMap() {
+            const result = {};
+
+            for(const field of Object.values(this.fields)) {
+                result[field.fieldName] = field;
+            }
+
+            return result;
+        },
     },
     
     methods: {
@@ -73,7 +83,6 @@ app.component('tiebreaker-criteria-configuration', {
 
         setCriterion(option, id) {
             const field = Object.values(this.fields).filter(field => field.fieldName == option.value);
-            this.criteria[id].selected = !!field.length ? field[0] : null;
             this.criteria[id].criterionType = option.value;
             this.criteria[id].preferences = this.checkCriterionType(this.criteria[id], ['checkboxes', 'select']) ? [] : null;
         },
@@ -109,7 +118,10 @@ app.component('tiebreaker-criteria-configuration', {
         },
 
         checkCriterionType(criterion, allowedTypes = []) {
-            return criterion.selected ? !!allowedTypes.includes(criterion.selected.fieldType) : false 
+            const selected = this.fieldsMap[criterion.criterionType];
+            const result = selected ? !!allowedTypes.includes(selected.fieldType) : false;
+
+            return result;
         },
 
         optionValue(option) {
@@ -130,7 +142,7 @@ app.component('tiebreaker-criteria-configuration', {
                 return;
             }
 
-            const filled = criterias.filter(
+            let filled = criterias.filter(
                 cri => {
                     checPreferences = function(value) {
                         if(Array.isArray(value)) {
@@ -152,6 +164,12 @@ app.component('tiebreaker-criteria-configuration', {
             );
 
             if(filled.length) {
+                filled = filled.map((item) => {
+                    const newItem = {...item};
+                    delete newItem.selected;
+                    return newItem;
+                });
+                
                 this.phase.tiebreakerCriteriaConfiguration = filled;
                 await this.phase.save(this.autoSaveTime);
             }

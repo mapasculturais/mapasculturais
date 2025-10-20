@@ -1,11 +1,12 @@
 <?php
 namespace MapasCulturais\Traits;
 use MapasCulturais\App;
+use MapasCulturais\Entities\MetaList;
 
 /**
  * Defines that the entity has metalist.
  *
- * @property-read array $metaLists array of metalists grouped by the metalist group
+ * @property-read MetaList[][] $metaLists array of metalists grouped by the metalist group
  */
 trait EntityMetaLists{
 

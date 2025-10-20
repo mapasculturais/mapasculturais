@@ -13,11 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @property-read int $id File Id
  * @property-read string $md5 File MD5
  * @property-read string $mimeType File Mime Type
- * @property-read string $name File name
- * @property-read string $group File Group (gallery|avatar|download|etc.)
- * @property-read \MapasCulturais\Entity $owner File Owner
+ * @property string $name File name
+ * @property string $description File description
+ * @property string $group File Group (gallery|avatar|download|etc.)
+ * @property \MapasCulturais\Entity $owner File Owner
  * @property-read \DateTime $createTimestamp File Create Timestamp
- * @property-read \MapasCulturais\Entity $owner The Owner of this File
+ * @property \MapasCulturais\Entity $owner The Owner of this File
  * 
  * @property bool $private Is this file private?
  *

@@ -2,7 +2,8 @@
 use MapasCulturais\i;
 $this->import('
     create-opportunity
-    mc-icon 
+    mc-icon
+    opportunity-importer
     panel--entity-card
     panel--entity-tabs
 ');
@@ -28,6 +29,7 @@ $this->import('
                     <span><?= i::__('Criar Oportunidade') ?></span>
                 </button>
             </create-opportunity>
+            <opportunity-importer></opportunity-importer>
         </div>
     </header>
 

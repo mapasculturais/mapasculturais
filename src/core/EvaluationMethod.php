@@ -15,6 +15,7 @@ use MapasCulturais\Entities\User;
  * @property-read string $name
  * @property-read string $description
  * @property-read array  $defaultStatuses
+ * @property-read string $hookPrefix
  * 
  * @package MapasCulturais
  */
@@ -26,6 +27,18 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract function getSlug();
     abstract function getName();
     abstract function getDescription();
+
+    /**
+     * Exporta as configurações de uma fase de avaliação
+     * @return array 
+     */
+    abstract protected function _export(EvaluationMethodConfiguration $evaluation_method_configuration): array;
+
+    /**
+     * Importa as configurações de uma fase de avaliação
+     * @return array 
+     */
+    abstract protected function _import(EvaluationMethodConfiguration $evaluation_method_configuration, array $data);
     
     abstract protected function _valueToString($value);
 
@@ -39,6 +52,35 @@ abstract class EvaluationMethod extends Module implements \JsonSerializable{
     abstract function _getConsolidatedDetails(Entities\Registration $registration): ?array;
 
     protected abstract function _getDefaultStatuses(EvaluationMethodConfiguration $evaluation_method_configuration): array;
+
+    public function getHookPrefix(): string
+    {
+        return "evaluationMethod({$this->slug})";
+    }
+
+    public function export(EvaluationMethodConfiguration $evaluation_method_configuration): array
+    {
+        $app = App::i();
+
+        $app->applyHookBoundTo($evaluation_method_configuration, "{$this->hookPrefix}.export:before");
+        
+        $result = $this->_export($evaluation_method_configuration);
+        
+        $app->applyHookBoundTo($evaluation_method_configuration, "{$this->hookPrefix}.export:after", [&$result]);
+
+        return $result;
+    }
+
+    public function import(EvaluationMethodConfiguration $evaluation_method_configuration, array $data)
+    {
+        $app = App::i();
+
+        $app->applyHookBoundTo($evaluation_method_configuration, "{$this->hookPrefix}.import:before", [&$data]);
+        
+        $this->_import($evaluation_method_configuration, $data);
+        
+        $app->applyHookBoundTo($evaluation_method_configuration, "{$this->hookPrefix}.import:after", [&$data]);
+    }
 
     /**
      * Retorna os status padrão da fase de avaliação
