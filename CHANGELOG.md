@@ -9,6 +9,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Novas Funcionalidades
 - Exportador / Importador de oportunidades
 - Lista de entidades seladas na single dos selos
+- Opção para habilitar página de certificado na configuração de selo
 
 ## [7.6.19] - 2025-10-20
 ### Correções
