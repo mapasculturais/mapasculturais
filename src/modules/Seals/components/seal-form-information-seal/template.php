@@ -32,6 +32,7 @@ $this->import('
             <div class="col-9 sm:col-12 grid-12">
                 <entity-field class="col-12" :entity="entity" prop="name"></entity-field>
                 <seal-form-valid-period class="col-12" :entity="entity"></seal-form-valid-period>
+                <entity-field class="col-12" :entity="entity" prop="enableCertificatePage"></entity-field>
             </div>
             <entity-field :entity="entity" classes="col-12" prop="shortDescription" :max-length="400"></entity-field>
         </div>

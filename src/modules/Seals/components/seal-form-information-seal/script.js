@@ -13,5 +13,9 @@ app.component('seal-form-information-seal', {
     setup() {
         const text = Utils.getTexts('seal-form-information-seal');
         return { text };
+    },
+    mounted() {
+        const enableCertificatePage = this.entity.enableCertificatePage === "1" || this.entity.enableCertificatePage == null;
+        this.entity.enableCertificatePage = enableCertificatePage;
     }
 });
