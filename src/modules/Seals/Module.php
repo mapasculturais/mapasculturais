@@ -49,5 +49,11 @@ class Module extends \MapasCulturais\Module
     {
         $app = App::i();
         $app->registerController('seal', Controller::class);
+
+        $this->registerSealMetadata('enableCertificatePage', [
+            'label' => i::__('Habilitar página de certificado'),
+            'type' => 'checkbox',
+            'default' => true,
+        ]);
     }
 }
