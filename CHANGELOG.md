@@ -11,9 +11,14 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Lista de entidades seladas na single dos selos
 - Opção para habilitar página de certificado na configuração de selo
 
+## [7.6.20]
+### Melhorias
+- Template part para os créditos do footer
+
 ## [7.6.19] - 2025-10-20
 ### Correções
 - Corrige salvamento de avaliação do método de avaliação qualificação documental
+- Corrige salvamento de avaliação por usuários admins
 
 ## [7.6.18] - 2025-10-16
 ### Correções
