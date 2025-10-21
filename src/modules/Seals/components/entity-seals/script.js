@@ -37,6 +37,12 @@ app.component('entity-seals', {
         },
         removeSeal(seal) {
             this.entity.removeSealRelation(seal);
-        }
+        },
+        formatDate(value) {
+            if(value) {
+                let date = new McDate(value.date);
+                return date.date('numeric year');
+            }
+        },
     }
 });
