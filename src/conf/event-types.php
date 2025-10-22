@@ -180,6 +180,18 @@ return array(
             'placeholder' => \MapasCulturais\i::__('nomedousuario'),
             'available_for_opportunities' => true
         ),
+        'fediverso' => array(
+            'type' => "socialMedia",
+            'label' => \MapasCulturais\i::__('Fediverso'),
+            'available_for_opportunities' => true,
+            'serialize' => function ($value) {
+                return $value;
+            },
+            'validations' => array(
+                "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'placeholder' => \MapasCulturais\i::__('https://nomedoservidor.com.br/@nomedousuario'),
+        ),
         'event_attendance' => array(
             'label' => \MapasCulturais\i::__('Público presente'),
             'type' => 'integer',

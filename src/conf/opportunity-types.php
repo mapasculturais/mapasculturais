@@ -212,6 +212,18 @@ return array(
             'placeholder' => \MapasCulturais\i::__('nomedousuario'),
             'available_for_opportunities' => true
         ),
+        'fediverso' => array(
+            'type' => "socialMedia",
+            'label' => \MapasCulturais\i::__('Fediverso'),
+            'available_for_opportunities' => true,
+            'serialize' => function ($value) {
+                return $value;
+            },
+            'validations' => array(
+                "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'placeholder' => \MapasCulturais\i::__('https://nomedoservidor.com.br/@nomedousuario'),
+        ),
         'registrationSeals' => array(
                 'label' => \MapasCulturais\i::__('Selos'),
                 'serialize' => function($value) { return json_encode($value); },
@@ -256,7 +268,7 @@ return array(
             'type' => 'integer',
             'label' => \MapasCulturais\i::__('É modelo público?'),
         ),
-        
+
         'requestAgentAvatar' => array(
             'label' => \MapasCulturais\i::__('Solicitar avatar'),
             'type' => 'radio',
@@ -275,15 +287,15 @@ return array(
             'label' => \MapasCulturais\i::__('É modelo?'),
             'default_value' => 0
         ),
-        
+
         'isModelPublic' => array(
             'type' => 'integer',
             'label' => \MapasCulturais\i::__('É modelo público?'),
         ),
-        
+
     ),
     'items' => $items,
-    
+
     /* EXEMPLOS DE METADADOS:
 
     'cnpj' => array(

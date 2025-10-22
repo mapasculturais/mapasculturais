@@ -55,6 +55,9 @@ $this->import('
                 <a v-if="entity.tiktok" class="button button--text button--icon" aria-label="tiktok" target="_blank" :href="buildSocialMediaLink('tiktok')">
                     <mc-icon name="tiktok"></mc-icon>
                 </a>
+                <a v-if="entity.fediverso" class="button button--text button--icon" aria-label="fediverso" target="_blank" :href="buildSocialMediaLink('fediverso')">
+                    <mc-icon name="fediverso"></mc-icon>
+                </a>
             </nav>
         </div>
         <div class="rightSide">
@@ -65,7 +68,7 @@ $this->import('
                         <dl v-if="entity.id && global.showIds[entity.__objectType]" class="metadata__id">
                             <dt class="metadata__id--id"><?= i::__('ID') ?></dt>
                             <dd><strong>{{entity.id}}</strong></dd>
-                        </dl> 
+                        </dl>
                         <dl v-if="entity.type">
                             <dt><?= i::__('Tipo')?></dt>
                             <dd :class="[entity.__objectType+'__color', 'type']">{{entity.type.name}} </dd>
