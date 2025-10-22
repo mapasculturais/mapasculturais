@@ -29,7 +29,10 @@
         "phpoffice/phpspreadsheet": "^2.0",
         "curl/curl": "1.2.*",
         "laminas/laminas-diactoros": "^3.6",
-        "scienta/doctrine-json-functions": "^5.4"
+        "scienta/doctrine-json-functions": "^5.4",
+        "phpunit/phpunit": "^10.5",
+        "psy/psysh": "^0.12.8",
+        "fakerphp/faker": "^1.24"
     },
     "autoload": {
         "psr-4": {
@@ -52,10 +55,5 @@
             "type": "git",
             "url": "https://github.com/mapasculturais/opauth.git"
         }
-    ],
-    "require-dev": {
-        "phpunit/phpunit": "^10.5",
-        "psy/psysh": "^0.12.8",
-        "fakerphp/faker": "^1.24"
-    }
+    ]
 }
