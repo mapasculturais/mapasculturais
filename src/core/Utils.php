@@ -234,12 +234,12 @@ class Utils {
     static function detectDateFormat(string $dateString): string | bool
     {
         $patterns = [
-            'd/m/Y' => '/^\d{2}\/\d{2}\/\d{4}$/', // dd/mm/yyyy
-            'm/d/Y' => '/^\d{2}\/\d{2}\/\d{4}$/', // mm/dd/yyyy
-            'Y-m-d' => '/^\d{4}-\d{2}-\d{2}$/',    // yyyy-mm-dd
-            'd-m-Y' => '/^\d{2}-\d{2}-\d{4}$/',    // dd-mm-yyyy
-            'm-d-Y' => '/^\d{2}-\d{2}-\d{4}$/',    // mm-dd-yyyy
-            'Y/m/d' => '/^\d{4}\/\d{2}\/\d{2}$/'    // yyyy/mm/dd
+            'd/m/Y' => '/^\d{1,2}\/\d{1,2}\/\d{4}$/', // dd/mm/yyyy
+            'm/d/Y' => '/^\d{1,2}\/\d{2}\/\d{4}$/', // mm/dd/yyyy
+            'Y-m-d' => '/^\d{4}-\d{1,2}-\d{1,2}$/',    // yyyy-mm-dd
+            'd-m-Y' => '/^\d{1,2}-\d{1,2}-\d{4}$/',    // dd-mm-yyyy
+            'm-d-Y' => '/^\d{1,2}-\d{1,2}-\d{4}$/',    // mm-dd-yyyy
+            'Y/m/d' => '/^\d{4}\/\d{1,2}\/\d{1,2}$/'    // yyyy/mm/dd
         ];
 
         foreach ($patterns as $format => $pattern) {

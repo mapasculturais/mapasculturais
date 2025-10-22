@@ -27,6 +27,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\TransactionRequiredException;
 use Exception as GlobalException;
 use Doctrine\Persistence\Mapping\MappingException;
+use MailNotification\JobTypes\MailMessage;
 use MapasCulturais\Definitions\ChatThreadType;
 use MapasCulturais\Definitions\JobType;
 use MapasCulturais\Definitions\RegistrationAgentRelation;
@@ -1887,7 +1888,7 @@ class App {
         }
 
         /** @var Entities\Job $job */
-        if ($job = $this->repo('Job')->find($id)) {
+        if (!$replace && ($job = $this->repo('Job')->find($id))) {
             $job_create_timestamp = $job->createTimestamp;
 
             // o job tem mais que 5 minutos?
@@ -2431,13 +2432,26 @@ class App {
         return $message;
     }
 
+    function enqueueMailMessageJob(Email $message): void {
+        $data = [
+            'message' => serialize($message)
+        ];
+
+        $this->enqueueJob(MailMessage::SLUG, $data);
+    }
+
     /**
      * Envia uma mensagem de email
      * 
      * @param Email $message 
      * @return bool 
      */
-    function sendMailMessage(Email $message): bool {
+    function sendMailMessage(Email $message, bool $create_job = false): bool {
+        if($create_job) {
+            $this->enqueueMailMessageJob($message);
+            return true;
+        }
+
         $mailer = $this->getMailer();
 
         if (!is_object($mailer))

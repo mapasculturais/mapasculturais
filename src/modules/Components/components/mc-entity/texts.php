@@ -1,6 +1,11 @@
-<?php 
+<?php
+
+use MapasCulturais\App;
 use MapasCulturais\i;
-return [
+
+$app = App::i();
+
+$texts = [
     'erro inesperado' => i::__('Houve um erro inesperado'),
     'erro de validacao' => i::__('Corrija os erros indicados'),
     'permissao negada' => i::__('Você não tem permissão para executar esta operação'),
@@ -38,3 +43,7 @@ return [
     'removendo selo da entidade' => i::__('Removendo selo da entidade'),
     'relacionando selo à entidade' =>  i::__('Relacionando selo à entidade'),
 ];
+
+$app->applyHook('component(mc-entity).texts', [&$texts]);
+
+return $texts;
