@@ -6,8 +6,12 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [7.6.20]
+### Correções
+- Corrige filtro de ordenamento na lista de avaliações "mais recentes primeiro" e "mais antigas primeiro" pela ordem de envio da inscrição
+
 ### Melhorias
 - Template part para os créditos do footer
+
 
 ## [7.6.19] - 2025-10-20
 ### Correções
