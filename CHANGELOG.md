@@ -11,7 +11,11 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Lista de entidades seladas na single dos selos
 - Opção para habilitar página de certificado na configuração de selo
 
-## [7.6.20]
+## [7.6.20] - 2025-10-22
+### Correções
+- Corrige filtro de ordenamento na lista de avaliações "mais recentes primeiro" e "mais antigas primeiro" pela ordem de envio da inscrição
+- Corrige criação de avaliação quando não é informado o user na url da requisição, criando para o usuário autenticado
+
 ### Melhorias
 - Template part para os créditos do footer
 

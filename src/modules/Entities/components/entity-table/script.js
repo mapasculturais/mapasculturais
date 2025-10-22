@@ -51,12 +51,7 @@ app.component('entity-table', {
         },
         sortOptions: {
             type: Array,
-            default: [
-                { value: 'createTimestamp DESC', label: __('mais recentes primeiro', 'entity-table') },
-                { value: 'createTimestamp ASC',  label: __('mais antidas primeiro', 'entity-table') },
-                { value: 'updateTimestamp DESC', label: __('modificadas recentemente', 'entity-table') },
-                { value: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
-            ]
+            default: $MAPAS.config.entityTable.sortOptions
         },
         identifier: {
             type: String,
