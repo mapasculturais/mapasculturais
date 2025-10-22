@@ -656,13 +656,9 @@ class Module extends \MapasCulturais\Module{
         // Atualiza a coluna metadata da relação do agente com a avaliação com od dados do summary das avaliações no momento da alteração de status.
         $app->hook("entity(RegistrationEvaluation).setStatus(<<*>>)", function() use ($app) {
             /** @var \MapasCulturais\Entities\RegistrationEvaluation $this */
-            $opportunity = $this->registration->opportunity;
 
-            $user = $app->user;
-            if ($opportunity->canUser('@control')) {
-                $user = $this->user;
-            }
-
+            $user = $this->user;
+            
             if ($em = $this->getEvaluationMethodConfiguration()) {
                 $em->getUserRelation($user)->updateSummary();
             }
