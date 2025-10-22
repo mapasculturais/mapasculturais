@@ -5,6 +5,19 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.19] - 2025-10-20
+### Correções
+- Corrige salvamento de avaliação do método de avaliação qualificação documental
+- Corrige salvamento de avaliação por usuários admins
+
+## [7.6.18] - 2025-10-16
+### Correções
+- Corrige remoção de fase de avaliação quando a próxima fase for a última fase e a fase atual não for uma fase de coleta de dados
+
+## [7.6.17] - 2025-10-16
+### Correções
+- Corrige verificação do header que força o salvamento das requisições PATCH que contenham erro de validação
+
 ## [7.6.16] - 2025-10-15
 ### Correções
 - Corrige funcionamento dos campos somente leitura do módulo de suporte

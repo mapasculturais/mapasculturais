@@ -91,7 +91,7 @@ $this->import('
                             </label>
                         </div>
 
-                        <div v-if="formData.data[crit.id]?.includes('invalid') && (crit.options?.length > 0 || crit.otherReasonsOption === 'true')" class="qualification-evaluation-form__criterion-options-reasons field">
+                        <div v-if="formData.data[crit.id]?.includes('invalid') && crit.options?.length > 0" class="qualification-evaluation-form__criterion-options-reasons field">
                             <h5 class="qualification-evaluation-form__criterion-options-reasons-title"><?php i::_e("Recomendação para atender ao critério") ?></h5>
 
                             <label class="qualification-evaluation-form__criterion-options-reasons-label" v-for="option in crit.options" :key="option">
