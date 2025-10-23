@@ -1,5 +1,7 @@
 <?php 
 
 return [
-    'middlewares' => []
+    'middlewares' => [
+        Apps\Middleware\JWTAuthMiddleware::class
+    ]
 ];
