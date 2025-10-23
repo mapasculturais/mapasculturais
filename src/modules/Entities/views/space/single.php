@@ -22,6 +22,7 @@ $this->import('
     mc-breadcrumb
     mc-container
     mc-share-links
+    search-list-event
     space-info
     mc-tab
     mc-tabs
@@ -95,6 +96,19 @@ $this->breadcrumb = [
                         </div>
                     </aside>
                 </mc-container>
+            </div>
+        </mc-tab>
+        <mc-tab icon="event" label="<?= i::_e('Agenda') ?>" slug="agenda">
+            <div class="search__tabs--list">
+                <search-list-event 
+                    :pseudo-query='<?= json_encode([
+                        "space:id" => $entity->id,
+                        "@from" => date("Y-m-d"),
+                        "@to" => date("Y") . "-12-31"
+                    ]) ?>'
+                    select="id,name,subTitle,files.avatar,seals,terms,classificacaoEtaria,singleUrl"
+                    space-select="id,name,endereco,files.avatar,singleUrl"
+                />
             </div>
         </mc-tab>
         <?php $this->applyTemplateHook('tabs','end') ?>
