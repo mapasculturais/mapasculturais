@@ -98,7 +98,7 @@ $this->breadcrumb = [
                 </mc-container>
             </div>
         </mc-tab>
-        <mc-tab icon="event" label="<?= i::_e('Agenda') ?>" slug="agenda">
+        <mc-tab icon="event" label="<?= i::_e('Eventos') ?>" slug="eventos">
             <div class="search__tabs--list">
                 <search-list-event 
                     :pseudo-query='<?= json_encode([
