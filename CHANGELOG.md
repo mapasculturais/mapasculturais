@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.21] - 2025-10-24
+### Correções
+- Corrige listagem de avaliações da fase de recurso
+
 ## [7.6.20] - 2025-10-22
 ### Correções
 - Corrige filtro de ordenamento na lista de avaliações "mais recentes primeiro" e "mais antigas primeiro" pela ordem de envio da inscrição
