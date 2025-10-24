@@ -473,7 +473,11 @@ app.component('entity-table', {
                     switch (description.type) {
                         case 'multiselect':
                         case 'array':
-                            val = val?.filter(item => item !== "null" && item !== "").join(', ')
+                            if (Array.isArray(val)) {
+                                val = val.filter(item => item !== "null" && item !== "").join(', ');
+                            } else {
+                                val = null;
+                            }
                             break;
                         case 'links':
                             var hasVal = val != null ?  (val !== '"null"' || val !== 'null' ? true : false) : false ;
@@ -497,25 +501,33 @@ app.component('entity-table', {
                             val = val ? `${val.lat}, ${val.lng}` : null
                             break;
                         case 'addresses':
-                            let _val = val;
-                            if(typeof val === 'string') {
-                                _val = JSON.parse(val);
-                            } 
-
-                            if (typeof val === "string") {
-                                val = val ? JSON.parse(val).map(item => `${item.nome}: ${item.logradouro}, ${item.numero}, ${item.bairro}, ${item.cidade}, ${item.complemento}  - ${item.estado}, ${item.cep}`).join('<br>') : null
+                            if(val === null || val === undefined || val === 'null' || val === '') {
+                                val = null;
                             }
-
+                            if (typeof val === 'string') {
+                                try { val = JSON.parse(val); } catch { val = null; }
+                            }
+                            
+                            if (Array.isArray(val)) {
+                                
+                                val = val.map(item =>
+                                    `${item.nome || ''}: ${item.logradouro || ''}, ${item.numero || ''}, ${item.bairro || ''}, ${item.cidade || ''}, ${item.complemento || ''} - ${item.estado || ''}, ${item.cep || ''}`
+                                ).join(',');
+                            } else {
+                                val = null;
+                            }
                             break;
                         case 'location':
                             val = val?.address ? val.address : val?.endereco ? val.endereco : null;
                             break;
                         case 'boolean':
                             if(prop == "publicLocation") {
-                                val = val ? this.text('sim') : this.text('nao')
+                                val = val ? this.text('sim') : this.text('nao');
                             } else {
                                 val = val
-                        }
+                            }
+                            break;
+                        
                     }
                 }
 

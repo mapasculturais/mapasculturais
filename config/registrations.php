@@ -110,6 +110,6 @@ return [
         'twitter'
     ),
 
-    'registrations.distribution.dateString' => 'H:00',
-    'registrations.distribution.incrementString' => '+1 hour',
+    'registrations.distribution.dateString' => env('REGISTRATIONS_DISTRIBUTION_DATE_STRING', 'H:00'),
+    'registrations.distribution.incrementString' => env('REGISTRATIONS_DISTRIBUTION_INCREMENT_STRING', '+1 hour'),
 ];
