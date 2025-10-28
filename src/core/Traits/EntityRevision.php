@@ -153,16 +153,17 @@ trait EntityRevision{
         return $revisionData;
     }
 
-    public function _newCreatedRevision() {
+    public function _newCreatedRevision(bool $flush = true) {
         $revisionData = $this->_getRevisionData();
         $message = i::__("Registro criado.");
         
-        $revision = new Revision($revisionData,$this,Revision::ACTION_CREATED,$message);
-        $revision->save(true);
+        $revision = new Revision($revisionData, $this, Revision::ACTION_CREATED, $message);
+        
+        $revision->save($flush);
         return $revision;
     }
 
-    public function _newModifiedRevision(string $message = null) { 
+    public function _newModifiedRevision(?string $message = null, bool $flush = true) { 
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_MODIFIED;
         
@@ -177,7 +178,7 @@ trait EntityRevision{
         
         $last_revision = $this->getLastRevision();
         if(!$last_revision) {
-            $last_revision = $this->_newCreatedRevision();
+            $last_revision = $this->_newCreatedRevision(flush: $flush);
         }
 
         $last_revision_data = $last_revision->getRevisionData();
@@ -217,9 +218,9 @@ trait EntityRevision{
             }
         }
 
-        $revision = new Revision($revisionData,$this,$action,$message);
+        $revision = new Revision($revisionData, $this, $action, $message, flush: $flush);
         if($revision->modified || $remove_field) {
-            $revision->save(true);
+            $revision->save($flush);
         }
     }
 

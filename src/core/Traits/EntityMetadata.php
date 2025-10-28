@@ -394,10 +394,11 @@ trait EntityMetadata{
      *
      * @see \MapasCulturais\Entity::save()
      */
-    public function saveMetadata(){
+    public function saveMetadata(bool $flush = true){
         foreach(array_keys($this->__changedMetadata) as $meta_key){
             $metadata_object = $this->getMetadata($meta_key, true);
-            $metadata_object->save(true);
+            $metadata_object->save($flush);
+            
         }
     }
 
