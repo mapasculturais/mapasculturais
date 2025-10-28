@@ -32,15 +32,15 @@ class EvaluationsDistributionTest extends TestCase
             ->reset(owner: $admin->profile, owner_entity: $admin->profile)
             ->fillRequiredProperties()
             ->firstPhase()
-            ->setRegistrationPeriod(new Open)
-            ->done()
+                ->setRegistrationPeriod(new Open)
+                ->done()
             ->save()
             ->addEvaluationPhase(EvaluationMethods::simple)
-            ->setEvaluationPeriod(new ConcurrentEndingAfter)
-            ->setCommitteeValuersPerRegistration('committee 1', 1)
-            ->save()
-            ->addValuers(2, 'committee 1')
-            ->done()
+                ->setEvaluationPeriod(new ConcurrentEndingAfter)
+                ->setCommitteeValuersPerRegistration('committee 1', 1)
+                ->save()
+                ->addValuers(2, 'committee 1')
+                ->done()
             ->getInstance();
 
         $this->registrationDirector->createDraftRegistrations(
