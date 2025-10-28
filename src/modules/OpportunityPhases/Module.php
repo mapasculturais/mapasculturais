@@ -285,6 +285,11 @@ class Module extends \MapasCulturais\Module{
                 return null;
             }
 
+            if($this->isAppealPhase) {
+                $value = $this->parent;
+                return;
+            }
+
             $this->enableCacheGetterResult('previousPhase');
 
             $last_phase = $this->isLastPhase ? $this : $this->lastPhase;
@@ -1771,8 +1776,8 @@ class Module extends \MapasCulturais\Module{
                     }
                     $this->save(true);
                 }
-                $app->disableAccessControl();
 
+                $app->enableAccessControl();
             });
 
             $app->hook('entity(Registration).save:after', function() use($app){

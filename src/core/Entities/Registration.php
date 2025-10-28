@@ -1857,47 +1857,37 @@ class Registration extends \MapasCulturais\Entity
             return false;
         }
 
-        $valuers = $evaluation_method_configuration->getAgentRelations();
-        
-        $is_valuer = false;
-        
-        foreach ($valuers as $agent_relation) {
-            if ($agent_relation->status != EvaluationMethodConfigurationAgentRelation::STATUS_ENABLED) {
-                continue;
-            }
+        $is_valuer = isset($this->valuers[$user->id]);
 
-            $agent = $agent_relation->agent;
-            if($agent->user->id == $user->id ){
-                $is_valuer = true;
-            }
-        }
-        
         if(!$is_valuer){
             return false;
         }
         
-        return $this->canUserViewUserEvaluation($user, true);
+        $result = $this->canUserViewUserEvaluation($user, true);
+
+        return $result;
     }
 
     protected function canUserEvaluate($user){
-        if (!$this->opportunity->evaluationMethodConfiguration) {
+        $emc = $this->opportunity->evaluationMethodConfiguration;
+        
+        if (!$emc) {
             return false;
         }
         
-        if(new DateTime('now') < $this->opportunity->evaluationMethodConfiguration->evaluationFrom || new DateTime('now') > $this->opportunity->evaluationMethodConfiguration->evaluationTo){
+        if(new DateTime('now') < $emc->evaluationFrom || new DateTime('now') > $emc->evaluationTo){
             return false;
         }
 
         $can = $this->canUserEvaluateOnTime($user);
 
         $evaluation = $this->getUserEvaluation($user);
-
+        
         $evaluation_sent = false;
 
         if($evaluation){
             $evaluation_sent = $evaluation->status === RegistrationEvaluation::STATUS_SENT;
         }
-
         return $can && !$evaluation_sent;
     }
 
