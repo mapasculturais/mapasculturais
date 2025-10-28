@@ -1888,7 +1888,7 @@ class App {
         }
 
         /** @var Entities\Job $job */
-        if (!$replace && ($job = $this->repo('Job')->find($id))) {
+        if (!$replace && ($job = $this->repo('Job')->findOneBy(['id' => $id]))) {
             $job_create_timestamp = $job->createTimestamp;
 
             // o job tem mais que 5 minutos?
@@ -1964,7 +1964,7 @@ class App {
 
         $id = $type->generateId($data, $start_string, $interval_string, $iterations);
 
-        if ($job = $this->repo('Job')->find($id)) {
+        if ($job = $this->repo('Job')->findOneBy(['id' => $id])) {
             $job->delete(true);
         }
     }
@@ -2001,7 +2001,7 @@ class App {
         if ($job_id) {
             /** @var Job $job */
             $conn->executeQuery("UPDATE job SET status = 1 WHERE id = '{$job_id}'");
-            $job = $this->repo('Job')->find($job_id);
+            $job = $this->repo('Job')->findOneBy(['id' => $job_id]);
             if( $job->subsite) {
                 $this->_initSubsite($job->subsite->url);
                 $path = (array) $this->view->path;
