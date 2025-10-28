@@ -119,12 +119,7 @@ $config = $app->config['social-media'];
     <div class="main-footer__reg">
         <?php $this->applyTemplateHook("main-footer-reg", "begin")?>
         <div class="main-footer__reg-content">
-            <p>
-                <?php i::_e("plataforma criada pela comunidade") ?> 
-                <span class="mapas"><?php i::_e("mapas culturais,"); ?></span> 
-                <?php i::_e("desenvolvida por "); ?><strong>hacklab<span style="color: red">/</span></strong>
-                e adaptada pelo <strong>minc</strong>
-            </p>
+            <?php $this->part('main-footer/developed-by') ?>
 
             <a class="link" href="https://github.com/culturagovbr/mapadacultura">
                 <?php i::_e("Conheça o repositório") ?>

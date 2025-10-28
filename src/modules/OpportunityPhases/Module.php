@@ -285,6 +285,11 @@ class Module extends \MapasCulturais\Module{
                 return null;
             }
 
+            if($this->isAppealPhase) {
+                $value = $this->parent;
+                return;
+            }
+
             $this->enableCacheGetterResult('previousPhase');
 
             $last_phase = $this->isLastPhase ? $this : $this->lastPhase;
