@@ -970,36 +970,29 @@ abstract class Entity implements \JsonSerializable{
             }else{
                 $this->checkPermission('modify');
                 $is_new = false;
-
             }
-
+            
             $app->applyHookBoundTo($this, "{$hook_prefix}.save:before");
             $app->em->persist($this);
             $app->applyHookBoundTo($this, "{$hook_prefix}.save:after");
 
             if($flush){
-                $app->em->flush();
+                $app->em->flush($this);
             }
 
             if($this->usesMetadata()){
-                $this->saveMetadata();
-                if($flush){
-                    $app->em->flush();
-                }
+                $this->saveMetadata($flush);
             }
 
             if($this->usesTaxonomies()){
-                $this->saveTerms();
-                if($flush){
-                    $app->em->flush();
-                }
+                $this->saveTerms($flush);
             }
 
             if($this->usesRevision()) {
                 if($is_new){
-                    $this->_newCreatedRevision();
+                    $this->_newCreatedRevision(flush: $flush);
                 } else {
-                    $this->_newModifiedRevision();
+                    $this->_newModifiedRevision(flush: $flush);
                 }
             }
 

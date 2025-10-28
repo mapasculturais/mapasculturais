@@ -97,7 +97,7 @@ class EntityRevision extends \MapasCulturais\Entity{
 
     protected $modified = false;
 
-    public function __construct(array $dataRevision, $entity, $action, $message="")
+    public function __construct(array $dataRevision, $entity, $action, $message="", bool $flush = true)
     {
         parent::__construct();
         $app = App::i();
@@ -117,17 +117,13 @@ class EntityRevision extends \MapasCulturais\Entity{
                 $revisionData = new EntityRevisionData;
                 $revisionData->key = $key;
                 $revisionData->value = $data;
-                $revisionData->save();
+                $revisionData->save($flush);
                 $this->__data[] = $revisionData;
             }
         } else {
             $lastRevision = $entity->getLastRevision();
             $lastRevisionData = $lastRevision->getRevisionData();
-            if (isset($lastRevision->updateTimestamp) && $lastRevision->updateTimestamp) {
-                $createTimestamp = $lastRevision->updateTimestamp;
-            } elseif (isset($this->user->lastLoginTimestamp) && $this->user->lastLoginTimestamp) {
-                $createTimestamp = $this->user->lastLoginTimestamp;
-            }
+            
             foreach ($dataRevision as $key => $data) {
                 $item = $lastRevisionData[$key] ?? null;
                 if (!is_null($item)) {
@@ -146,7 +142,8 @@ class EntityRevision extends \MapasCulturais\Entity{
                     $revisionData = new EntityRevisionData;
                     $revisionData->key = $key;
                     $revisionData->setValue($data);
-                    $revisionData->save();
+                    $revisionData->save($flush);
+
                     $this->__data[] = $revisionData;
                     $this->modified = true;
                 } elseif (!is_null($item)) {
