@@ -801,7 +801,7 @@ class EvaluationsDistributionTest extends TestCase
 
         /** @var Connection */
         $conn = $this->app->em->getConnection();
-
+        
         // testar se cada comissão tem um total de 20 avaliações
         foreach (['committee 1', 'committee 2', 'committee 3'] as $committee_name) {
             $number_of_evaluations = $conn->fetchScalar("SELECT count(*) FROM evaluations WHERE valuer_committee = :committee", ['committee' => $committee_name]);

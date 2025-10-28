@@ -3,6 +3,7 @@
 namespace Tests\Abstract;
 
 use MapasCulturais\App;
+use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entity;
 
 /** @property Entity $instance */
