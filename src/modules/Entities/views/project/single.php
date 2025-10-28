@@ -42,9 +42,7 @@ foreach($entity->children as $children) {
     $children_id[] = $children->id;
 }
 
-if($children_id ){
-    $children_id  = implode(",", $children_id );
-}
+$children_id  = implode(",", $children_id );
 
 ?>
 

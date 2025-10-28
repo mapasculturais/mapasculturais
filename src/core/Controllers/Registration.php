@@ -789,8 +789,9 @@ class Registration extends EntityController {
             $entity->checkPermission('evaluate', $valuer_user);
             $evaluation = new RegistrationEvaluation();
             $evaluation->registration = $entity;
-            $evaluation->user = $valuer_user;
+            $evaluation->user = $valuer_user ?: $app->user;
             $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
+            
             $evaluation->save(true);
         }
 
