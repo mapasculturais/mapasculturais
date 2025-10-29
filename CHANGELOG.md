@@ -9,6 +9,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias e correções não funcionais
 - Implementa novos hooks na edit dos agentes
 
+### Correções
+- Corrige erro que ocorria ao ordenar resultados com campos string vazios convertidos para FLOAT no ApiQuery
+
 ## [7.6.22] - 2025-10-28
 ### Correções
 - Corrige criação de avaliação na rota de nova avaliação
