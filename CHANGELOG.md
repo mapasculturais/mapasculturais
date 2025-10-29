@@ -11,6 +11,20 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Lista de entidades seladas na single dos selos
 - Opção para habilitar página de certificado na configuração de selo
 - Aba de eventos na single de espaços com listagem de eventos programados no local
+- Aba de eventos na single de projetos com listagem de eventos vinculados e suas ocorrências
+
+## [7.6.22] - 2025-10-28
+### Correções
+- Corrige criação de avaliação na rota de nova avaliação
+
+### Melhorias e correções não funcionais
+- Corrige permissão na propagação do score e do eligible entre as fases da inscrição
+- Reformações de código para melhorar a leitura
+
+## [7.6.21] - 2025-10-24
+### Correções
+- Corrige listagem de avaliações da fase de recurso
+
 
 ## [7.6.20] - 2025-10-22
 ### Correções

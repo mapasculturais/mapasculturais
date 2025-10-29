@@ -32,11 +32,21 @@ class Job extends \MapasCulturais\Entity{
     const STATUS_WAITING = 0;
     const STATUS_PROCESSING = 1;
 
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="pk", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="job_pk_seq", allocationSize=1, initialValue=1)
+     */
+    public $pk;
+
     /**
      * @var integer
      *
      * @ORM\Column(name="id", type="string", nullable=false)
-     * @ORM\Id
      */
     public $id;
 

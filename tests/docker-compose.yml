@@ -8,6 +8,7 @@ services:
     volumes:
       - ./docker/entrypoint.sh:/entrypoint.sh
       - ./docker/phpunit.sh:/bin/phpunit
+      - ./docker/pu.sh:/bin/pu
 
       - ../composer.json:/var/www/composer.json
       - ../composer.lock:/var/www/composer.lock

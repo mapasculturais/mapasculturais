@@ -68,9 +68,9 @@ class DataCollectionPhaseBuilder extends Builder
     {
         $opportunity = $this->instance->opportunity;
 
-        $this->instance->registrationTo = $period->getRegistrationFrom($opportunity);
+        $this->instance->registrationFrom = $period->getRegistrationFrom($opportunity);
         $this->instance->registrationTo = $period->getRegistrationTo($opportunity);
-
+        
         return $this;
     }
 

@@ -27,11 +27,11 @@ class Concurrent implements EvaluationPeriodInterface, DataCollectionPeriodInter
 
     public function getEvaluationFrom(Opportunity $phase): DateTime
     {
-        return clone $phase->registrationTo;
+        return clone $phase->registrationFrom;
     }
 
     public function getEvaluationTo(Opportunity $phase): DateTime
     {
-        return clone $phase->registrationFrom;
+        return clone $phase->registrationTo;
     }
 }
