@@ -842,6 +842,10 @@ return [
         __exec("CREATE INDEX job_search_idx ON job (next_execution_timestamp, iterations_count, status);");
     },
 
+    'remove comment of table job' => function () {
+        __exec("COMMENT ON COLUMN job.metadata is ''");
+    },
+
     'alter job.metadata comment' => function () {
         __exec("COMMENT ON COLUMN job.metadata IS '(DC2Type:json)';");
     },
