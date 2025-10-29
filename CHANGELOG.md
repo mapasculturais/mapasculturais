@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unrelease]
+### Melhorias e correções não funcionais
+- Implementa novos hooks na edit dos agentes
+
 ## [7.6.22] - 2025-10-28
 ### Correções
 - Corrige criação de avaliação na rota de nova avaliação
