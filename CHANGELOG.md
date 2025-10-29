@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Opção para habilitar página de certificado na configuração de selo
 - Aba de eventos na single de espaços com listagem de eventos programados no local
 - Aba de eventos na single de projetos com listagem de eventos vinculados e suas ocorrências
+- Fediverso como rede social nos metadados das entidades
 
 ## [7.6.22] - 2025-10-28
 ### Correções
@@ -58,7 +59,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [7.6.13] - 2025-10-14
 ### Correções
-- Ajuste da exibição de acessbilidade na lista de espaços
+- Ajuste da exibição de acessibilidade na lista de espaços
 - Ajustes de filtros de categoria, faixa e tipo de proponente no suporte
 - Ajuste da visibilidade dos campos do formulário de inscrição condicionado a pergunta "Vai concorrer por cotas"?
 - Corrige a consolidação de resultado da avaliação do tipo habilitação documental
@@ -72,10 +73,10 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.6.12] - 2025-10-08
 ### Correções
 - Ajuste a estilização do campo pessoa com deficiência
-- Padroniza labels dos cmapos da página de edição de agente individual
-- Ajuste de estilização na tela de aceitação de termos de usu e política de privacidade
+- Padroniza labels dos campos da página de edição de agente individual
+- Ajuste de estilização na tela de aceitação de termos de uso e política de privacidade
 - Corrige destinatário dos emails de início de inscrições quando o agente não tem o email privado definido
-- Evita que entidades em rascunho e lixiera sejam exportados nas planilhas
+- Evita que entidades em rascunho e lixeira sejam exportados nas planilhas
 
 ### Melhorias
 - Adiciona funcionalidade de remoção do supra espaço
@@ -88,7 +89,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.6.11] - 2025-10-07
 ### Correções
 - Corrige erro na avaliação de qualificação documental, que exigia uma opção para desabilitação mesmo quando não existia opções configuradas
-- Corrige erro que impedia o carregamento da inscrição, quando nao existia step configurado em algum campo
+- Corrige erro que impedia o carregamento da inscrição, quando não existia step configurado em algum campo
 - Ajusta para que o script de cotas não quebre quando não existe configurações de cotas definidas ou se as configurações  estão incompletas
 - Corrige filtros da tabela de agentes individuais
 - Corrige funcionalidade de limpar filtros da tabela de agentes
@@ -105,7 +106,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa método que melhora a auto aplicação de resultados das avaliações melhorando a usabilidade da funcionalidade
 
 ## [7.6.9] - 2025-09-26
-- Corrige criação de opportunidade de fluxo contínuo
+- Corrige criação de oportunidade de fluxo contínuo
 - Corrige permissão de bloquear uma entidade para edição quando a permissão de modificar foi dada por um role
 - Evita que campos @ condicionados tentem apagar a informação da entidade relacionada
 - Corrige salvamento de formulário de edição de campos de inscrição 
