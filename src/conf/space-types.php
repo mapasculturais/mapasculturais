@@ -15,7 +15,7 @@ use MapasCulturais\Utils;
             13 => array( 'name' => \MapasCulturais\i::__('Espaço Público Para Projeção de Filmes') ),
             14 => array( 'name' => \MapasCulturais\i::__('Sala de cinema')),
         ),
-        
+
     ),
 
     \MapasCulturais\i::__('Bibliotecas') => array(
@@ -232,7 +232,7 @@ use MapasCulturais\Utils;
 
 function ordenaSubcategorias(&$array) {
     ksort($array);
-    
+
     foreach ($array as &$item) {
         if (isset($item['items'])) {
             uasort($item['items'], function($a, $b) {
@@ -549,7 +549,18 @@ return array(
             'placeholder' => \MapasCulturais\i::__('nomedousuario'),
             'available_for_opportunities' => true
         ),
-
+        'fediverso' => array(
+            'type' => "socialMedia",
+            'label' => \MapasCulturais\i::__('Fediverso'),
+            'available_for_opportunities' => true,
+            'serialize' => function ($value) {
+                return $value;
+            },
+            'validations' => array(
+                "v::url()" => \MapasCulturais\i::__("A url informada é inválida.")
+            ),
+            'placeholder' => \MapasCulturais\i::__('https://nomedoservidor.com.br/@nomedousuario'),
+        ),
     ),
 
 /**
