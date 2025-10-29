@@ -48,6 +48,7 @@ $this->breadcrumb = [
     <mc-tabs class="tabs" sync-hash>
         <?php $this->applyTemplateHook('tabs','begin') ?>
         <mc-tab label="<?= i::_e('Informações') ?>" slug="info">
+            <?php $this->applyTemplateHook('entity-info-validation','begin') ?>
             <mc-container>
                 <entity-status :entity="entity"></entity-status>
                 <mc-card class="feature">
@@ -195,6 +196,7 @@ $this->breadcrumb = [
                     </mc-card>
                 </aside>
             </mc-container>
+            <?php $this->applyTemplateHook('entity-info-validation','end') ?>
         </mc-tab>
         <?php $this->applyTemplateHook('tabs','end') ?>
     </mc-tabs>
