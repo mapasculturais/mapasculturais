@@ -123,4 +123,58 @@ class OpportunityExporterTest extends TestCase
             $this->assertEquals($exported_first_phase['evaluationPhase']['type'], $imported->evaluationMethodConfiguration->type->id, 'Garantindo que a fase de avaliação é igual ao exportado');
         }
     }
+
+    function testImportOpportunity()
+    {
+        $admin = $this->userDirector->createUser('admin');
+        $this->login($admin);
+
+        $data = Fixtures::getJSON('exported-opportunity.json');
+
+        $importOwner = $this->userDirector->createUser()->profile;
+
+        $importer = new Importer(
+            $importOwner,
+            $data,
+            files: false,
+            images: false,
+            dates: true,
+            vacancyLimits: true,
+            workplan: true,
+            statusLabels: true,
+            appealPhases: true,
+            monitoringPhases: false
+        );
+        
+        $imported = $importer->import();
+        $imported->save(true);
+        $imported = $imported->refreshed();
+
+        // Verificações básicas
+        $this->assertEquals($data['infos']['properties']['name'], $imported->name, 'Garantindo que o nome importado é igual ao do fixture');
+        $this->assertEquals($data['infos']['properties']['shortDescription'], $imported->shortDescription, 'Garantindo que a descrição curta importada é igual ao do fixture');
+
+        // categorias / faixas / tipos de proponentes
+        $this->assertEquals($data['categories'], $imported->registrationCategories, 'Garantindo que as categorias importadas são iguais às do fixture');
+        $this->assertEquals($data['ranges'], $imported->registrationRanges, 'Garantindo que as faixas importadas são iguais às do fixture');
+        $this->assertEquals($data['proponentTypes']['registrationProponentTypes'], $imported->registrationProponentTypes, 'Garantindo que os tipos de proponentes importados são iguais às do fixture');
+
+        // limites de vagas
+        if (isset($data['vacancyLimits'])) {
+            $this->assertEquals($data['vacancyLimits']['registrationLimit'], $imported->registrationLimit, 'Garantindo que o limite de inscrições importado é igual ao do fixture');
+            $this->assertEquals($data['vacancyLimits']['registrationLimitPerOwner'], $imported->registrationLimitPerOwner, 'Garantindo que o limite de inscrições por proprietário importado é igual ao do fixture');
+            $this->assertEquals($data['vacancyLimits']['vacancies'], $imported->vacancies, 'Garantindo que o número de vagas importado é igual ao do fixture');
+        }
+
+        // verificação de steps, fase e campos
+        $exported_first_phase = $data['phases'][0];
+        if (isset($exported_first_phase['form'])) {
+
+            $this->assertEquals(count($exported_first_phase['form']['steps']), count($imported->registrationSteps->toArray()), 'Garantindo que o número de steps importados é igual ao do fixture');
+            $this->assertEquals(count($exported_first_phase['form']['fields']), count($imported->firstPhase->registrationFieldConfigurations), 'Garantindo que o número de fields importados é igual ao do fixture');
+            if (isset($exported_first_phase['evaluationPhase']['type'])) {
+                $this->assertEquals($exported_first_phase['evaluationPhase']['type'], $imported->evaluationMethodConfiguration->type->id, 'Garantindo que a fase de avaliação é igual ao do fixture');
+            }
+        }
+    }
 }
