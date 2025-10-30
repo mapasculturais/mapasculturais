@@ -23,105 +23,62 @@ use Doctrine\ORM\Mapping as ORM;
  * @property bool $private Is this file private?
  *
  * @property-read array $tmpFile $_FILE
- * 
- * @ORM\Table(name="file",indexes={
- *      @ORM\Index(name="file_owner_index", columns={"object_type", "object_id"}),
- *      @ORM\Index(name="file_group_index", columns={"grp"}),
- * })
- * 
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\File")
- * @ORM\HasLifecycleCallbacks
- *
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="object_type")
- * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\ChatMessage"                   = "\MapasCulturais\Entities\ChatMessageFile",
-        "MapasCulturais\Entities\Opportunity"                   = "\MapasCulturais\Entities\OpportunityFile",
-        "MapasCulturais\Entities\Project"                       = "\MapasCulturais\Entities\ProjectFile",
-        "MapasCulturais\Entities\Event"                         = "\MapasCulturais\Entities\EventFile",
-        "MapasCulturais\Entities\Agent"                         = "\MapasCulturais\Entities\AgentFile",
-        "MapasCulturais\Entities\Space"                         = "\MapasCulturais\Entities\SpaceFile",
-        "MapasCulturais\Entities\Seal"                          = "\MapasCulturais\Entities\SealFile",
-        "MapasCulturais\Entities\Registration"                  = "\MapasCulturais\Entities\RegistrationFile",
-        "MapasCulturais\Entities\RegistrationFileConfiguration" = "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
-        "MapasCulturais\Entities\Subsite"                       = "\MapasCulturais\Entities\SubsiteFile",
-        "MapasCulturais\Entities\User"                          = "\MapasCulturais\Entities\UserFile",
-        "MapasCulturais\Entities\RegistrationEvaluation"        = "\MapasCulturais\Entities\RegistrationEvaluationFile",
-        "OpportunityWorkplan\Entities\Delivery"                 = "\OpportunityWorkplan\Entities\DeliveryFile",
-
-   })
  */
+#[ORM\Table(name: "file", indexes: [
+    new ORM\Index(name: "file_owner_index", columns: ["object_type", "object_id"]),
+    new ORM\Index(name: "file_group_index", columns: ["grp"]),
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\File")]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "object_type")]
+#[ORM\DiscriminatorMap([
+    "MapasCulturais\Entities\ChatMessage" => "\MapasCulturais\Entities\ChatMessageFile",
+    "MapasCulturais\Entities\Opportunity" => "\MapasCulturais\Entities\OpportunityFile",
+    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectFile",
+    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventFile",
+    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentFile",
+    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpaceFile",
+    "MapasCulturais\Entities\Seal" => "\MapasCulturais\Entities\SealFile",
+    "MapasCulturais\Entities\Registration" => "\MapasCulturais\Entities\RegistrationFile",
+    "MapasCulturais\Entities\RegistrationFileConfiguration" => "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
+    "MapasCulturais\Entities\Subsite" => "\MapasCulturais\Entities\SubsiteFile",
+    "MapasCulturais\Entities\User" => "\MapasCulturais\Entities\UserFile",
+    "MapasCulturais\Entities\RegistrationEvaluation" => "\MapasCulturais\Entities\RegistrationEvaluationFile",
+    "OpportunityWorkplan\Entities\Delivery" => "\OpportunityWorkplan\Entities\DeliveryFile",
+])]
 abstract class File extends \MapasCulturais\Entity
 {
     use \MapasCulturais\Traits\EntityFiles;
 
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="file_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "file_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="md5", type="string", length=32, nullable=false)
-     */
+    #[ORM\Column(name: "md5", type: "string", length: 32, nullable: false)]
     protected $md5;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="mime_type", type="string", length=32, nullable=false)
-     */
+    #[ORM\Column(name: "mime_type", type: "string", length: 32, nullable: false)]
     protected $mimeType;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="grp", type="string", length=32, nullable=false)
-     */
+    #[ORM\Column(name: "grp", type: "string", length: 32, nullable: false)]
     protected $group;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "name", type: "string", length: 255, nullable: false)]
     protected $name;
     
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="path", type="string", length=1024, nullable=true)
-     */
+    #[ORM\Column(name: "path", type: "string", length: 1024, nullable: true)]
     protected $_path;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "description", type: "string", length: 255, nullable: true)]
     protected $description;
     
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="private", type="boolean", nullable=false)
-     */
+    #[ORM\Column(name: "private", type: "boolean", nullable: false)]
     protected $private = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
     /**
@@ -501,9 +458,7 @@ abstract class File extends \MapasCulturais\Entity
 
     protected function _cropCenter($transformation_name, $width, $height){
         return $this->_transform($transformation_name, "resizeDown($width, $height, 'outside')->crop('center', 'middle', $width, $height)");
-    }
-
-    /** @ORM\PrePersist */
+    }#[ORM\PrePersist]
     public function _prePersist($args = null){
         $app = App::i();
         
@@ -513,7 +468,8 @@ abstract class File extends \MapasCulturais\Entity
 
         $app->storage->add($this);
     }
-    /** @ORM\PostPersist */
+
+    #[ORM\PostPersist]
     public function _postPersist($args = null){
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').insert:after');
@@ -524,7 +480,7 @@ abstract class File extends \MapasCulturais\Entity
         }        
     }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function _preRemove($args = null){
         $files = $this->repo()->findBy(['parent' => $this]);
         foreach($files as $f)
@@ -533,7 +489,8 @@ abstract class File extends \MapasCulturais\Entity
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:before');
     }
-    /** @ORM\PostRemove */
+
+    #[ORM\PostRemove]
     public function _postRemove($args = null){
         $app = App::i();
         $app->storage->remove($this);
@@ -542,35 +499,38 @@ abstract class File extends \MapasCulturais\Entity
         $app->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').remove:after');
     }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function _preUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:before');
     }
-    /** @ORM\PostUpdate */
+
+    #[ORM\PostUpdate]
     public function _postUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->owner->getClassName());
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').file(' . $this->group . ').update:after');
     }
-
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

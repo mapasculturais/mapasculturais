@@ -7,10 +7,8 @@ use MapasCulturais\App;
 /**
  *
  * @property \MapasCulturais\Entities\Space $destination The space to be related
- *
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class RequestSpaceRelation extends Request{
 
     function setSpaceRelation(SpaceRelation $relation){

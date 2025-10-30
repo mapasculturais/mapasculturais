@@ -18,127 +18,71 @@ use stdClass;
  * @property-read int $iterationsCount
  * @property string $intervalString
  * @property-read string $type
- * 
- * @ORM\Table(name="job", indexes={
- *      @ORM\Index(name="job_next_execution_timestamp_idx", columns={"next_execution_timestamp"}),
- *      @ORM\Index(name="job_search_idx", columns={"next_execution_timestamp", "iterations_count", "status"})
- *    }   
- * )
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Table(name: "job", indexes: [
+    new ORM\Index(name: "job_next_execution_timestamp_idx", columns: ["next_execution_timestamp"]),
+    new ORM\Index(name: "job_search_idx", columns: ["next_execution_timestamp", "iterations_count", "status"])
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class Job extends \MapasCulturais\Entity{
 
     const STATUS_WAITING = 0;
     const STATUS_PROCESSING = 1;
 
     
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="pk", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="job_pk_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "pk", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "job_pk_seq", allocationSize: 1, initialValue: 1)]
     public $pk;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="string", nullable=false)
-     */
+    #[ORM\Column(name: "id", type: "string", nullable: false)]
     public $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=32, nullable=false)
-     */
+    #[ORM\Column(name: "name", type: "string", length: 32, nullable: false)]
     protected $type;
 
     /**
      * Número execuções.
      * 
      * 0 (zero) significa que deve executar infinitamente
-     * 
-     * @var integer
-     *
-     * @ORM\Column(name="iterations", type="integer", nullable=false)
      */
+    #[ORM\Column(name: "iterations", type: "integer", nullable: false)]
     protected $iterations = 1;
 
     /**
      * Número de vezes que o processo já rodou
-     * 
-     * @var integer
-     *
-     * @ORM\Column(name="iterations_count", type="integer", nullable=false)
      */
+    #[ORM\Column(name: "iterations_count", type: "integer", nullable: false)]
     protected $iterationsCount = 0;
 
     /**
      * Número de vezes que o processo já rodou
-     * 
-     * @var integer
-     *
-     * @ORM\Column(name="interval_string", type="string", nullable=false)
      */
+    #[ORM\Column(name: "interval_string", type: "string", nullable: false)]
     protected $intervalString = '';    
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="next_execution_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "next_execution_timestamp", type: "datetime", nullable: false)]
     protected $nextExecutionTimestamp;
 
-    /**
-     * @var DateTime
-     *
-     * @ORM\Column(name="last_execution_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "last_execution_timestamp", type: "datetime", nullable: true)]
     protected $lastExecutionTimestamp;
 
-    /**
-     * @var \MapasCulturais\Entities\Subsite
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="cascade")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Subsite")]
+    #[ORM\JoinColumn(name: "subsite_id", referencedColumnName: "id", nullable: true, onDelete: "cascade")]
     protected $subsite;
 
-    /**
-     * @var \MapasCulturais\Entities\User
-     * 
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true, onDelete="cascade")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: true, onDelete: "cascade")]
     protected $user;
 
-    /**
-     * @var object
-     *
-     * @ORM\Column(name="metadata", type="json", nullable=false)
-     */
+    #[ORM\Column(name: "metadata", type: "json", nullable: false)]
     protected $_metadata = [];
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_WAITING;
 
     function __construct(JobType $type) {
@@ -259,18 +203,21 @@ class Job extends \MapasCulturais\Entity{
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

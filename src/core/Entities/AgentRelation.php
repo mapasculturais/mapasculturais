@@ -5,6 +5,7 @@ namespace MapasCulturais\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
+
 /**
  * AgentRelation
  *
@@ -17,96 +18,60 @@ use MapasCulturais\App;
  * @property \DateTime $createTimestamp
  *
  * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
- *
- * @ORM\Table(name="agent_relation", indexes={
- *      @ORM\Index(name="agent_relation_owner_type", columns={"object_type"}),
- *      @ORM\Index(name="agent_relation_owner_id", columns={"object_id"}),
- *      @ORM\Index(name="agent_relation_owner", columns={"object_type", "object_id"}),
- *      @ORM\Index(name="agent_relation_agent", columns={"agent_id"}),
- *      @ORM\Index(name="agent_relation_has_control", columns={"has_control"}),
- *      @ORM\Index(name="agent_relation_status", columns={"status"}),
- * })
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="object_type")
- * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Opportunity"   = "\MapasCulturais\Entities\OpportunityAgentRelation",
-        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectAgentRelation",
-        "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventAgentRelation",
-        "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentAgentRelation",
-        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceAgentRelation",
-        "MapasCulturais\Entities\Seal"          = "\MapasCulturais\Entities\SealAgentRelation",
-        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationAgentRelation",
-        "MapasCulturais\Entities\EvaluationMethodConfiguration" = "\MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation",
-        "MapasCulturais\Entities\ChatThread"    = "\MapasCulturais\Entities\ChatThreadAgentRelation",
-   })
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "agent_relation", indexes: [
+    new ORM\Index(name: "agent_relation_owner_type", columns: ["object_type"]),
+    new ORM\Index(name: "agent_relation_owner_id", columns: ["object_id"]),
+    new ORM\Index(name: "agent_relation_owner", columns: ["object_type", "object_id"]),
+    new ORM\Index(name: "agent_relation_agent", columns: ["agent_id"]),
+    new ORM\Index(name: "agent_relation_has_control", columns: ["has_control"]),
+    new ORM\Index(name: "agent_relation_status", columns: ["status"]),
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "object_type")]
+#[ORM\DiscriminatorMap([
+    "MapasCulturais\Entities\Opportunity" => "\MapasCulturais\Entities\OpportunityAgentRelation",
+    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectAgentRelation",
+    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventAgentRelation",
+    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentAgentRelation",
+    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpaceAgentRelation",
+    "MapasCulturais\Entities\Seal" => "\MapasCulturais\Entities\SealAgentRelation",
+    "MapasCulturais\Entities\Registration" => "\MapasCulturais\Entities\RegistrationAgentRelation",
+    "MapasCulturais\Entities\EvaluationMethodConfiguration" => "\MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation",
+    "MapasCulturais\Entities\ChatThread" => "\MapasCulturais\Entities\ChatThreadAgentRelation",
+])]
+#[ORM\HasLifecycleCallbacks]
 abstract class AgentRelation extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="agent_relation_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "agent_relation_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "object_id", type: "integer", nullable: false)]
     protected $objectId;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=64, nullable=true)
-     */
+    #[ORM\Column(name: "type", type: "string", length: 64, nullable: true)]
     protected $group;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="has_control", type="boolean", nullable=false)
-     */
+    #[ORM\Column(name: "has_control", type: "boolean", nullable: false)]
     protected $hasControl = false;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: true)]
     protected $createTimestamp;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=true)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: true)]
     protected $status = self::STATUS_ENABLED;
 
-    /**
-     * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $agent;
 
-     /**
-     * @var object
-     *
-     * @ORM\Column(name="metadata", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "metadata", type: "json", nullable: true)]
     protected $metadata;
 
 
@@ -204,18 +169,18 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

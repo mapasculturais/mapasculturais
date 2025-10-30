@@ -12,59 +12,50 @@ use MapasCulturais\App;
  * @property-read int $id The Id of the relation.
  *
  * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
- *
- * @ORM\Table(name="space_relation")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="string")
- * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Registration"  = "\MapasCulturais\Entities\RegistrationSpaceRelation"
-   })
  */
+#[ORM\Table(name: "space_relation")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string")]
+#[ORM\DiscriminatorMap([
+    "MapasCulturais\Entities\Registration" => "\MapasCulturais\Entities\RegistrationSpaceRelation"
+])]
 abstract class SpaceRelation extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="space_relation_id_seq", allocationSize=1, initialValue=1)
      */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "space_relation_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
      */
+    #[ORM\Column(name: "object_id", type: "integer", nullable: false)]
     protected $objectId;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: true)]
     protected $createTimestamp;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=true)
      */
+    #[ORM\Column(name: "status", type: "smallint", nullable: true)]
     protected $status = self::STATUS_ENABLED;
 
     /**
      * @var \MapasCulturais\Entities\Space
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Space", fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "space_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $space;
 
     function jsonSerialize(): array {

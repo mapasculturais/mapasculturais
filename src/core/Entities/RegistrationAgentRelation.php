@@ -5,20 +5,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @property Registration $owner
- * 
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class RegistrationAgentRelation extends AgentRelation{
 
-    /**
-     * @var \MapasCulturais\Entities\Registration
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Registration")]
+    #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
     public function save($flush = false) {

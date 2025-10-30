@@ -6,10 +6,8 @@ use MapasCulturais\App;
 
 /**
  * @property \MapasCulturais\Entities\Space $destination The space where event occurrence will be created
- *
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\RequestEventOccurrence")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\RequestEventOccurrence")]
 class RequestEventOccurrence extends Request{
 
     function setEventOccurrence(EventOccurrence $eo){

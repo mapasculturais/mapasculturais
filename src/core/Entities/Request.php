@@ -14,126 +14,69 @@ use MapasCulturais\Traits;
  * @property \MapasCulturais\Entity $origin The origin entity of the requested action
  * @property \MapasCulturais\Entity $destination The destination entity of the requested action
  * @property-read string $requestType The request type
- *
- * @ORM\Table(name="request")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({
-        "ChangeOwnerchip"   = "\MapasCulturais\Entities\RequestChangeOwnership",
-        "EntitiesTransference"   = "\MapasCulturais\Entities\RequestEntitiesTransference",
-        "EventOccurrence"   = "\MapasCulturais\Entities\RequestEventOccurrence",
-        "EventProject"      = "\MapasCulturais\Entities\RequestEventProject",
-        "ChildEntity"       = "\MapasCulturais\Entities\RequestChildEntity",
-        "AgentRelation"     = "\MapasCulturais\Entities\RequestAgentRelation",
-        "SealRelation"      = "\MapasCulturais\Entities\RequestSealRelation",
-        "SpaceRelation"      = "\MapasCulturais\Entities\RequestSpaceRelation"
-   })
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "request")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorMap([
+    "ChangeOwnerchip" => "\MapasCulturais\Entities\RequestChangeOwnership",
+    "EntitiesTransference" => "\MapasCulturais\Entities\RequestEntitiesTransference",
+    "EventOccurrence" => "\MapasCulturais\Entities\RequestEventOccurrence",
+    "EventProject" => "\MapasCulturais\Entities\RequestEventProject",
+    "ChildEntity" => "\MapasCulturais\Entities\RequestChildEntity",
+    "AgentRelation" => "\MapasCulturais\Entities\RequestAgentRelation",
+    "SealRelation" => "\MapasCulturais\Entities\RequestSealRelation",
+    "SpaceRelation" => "\MapasCulturais\Entities\RequestSpaceRelation"
+])]
+#[ORM\HasLifecycleCallbacks]
 abstract class Request extends \MapasCulturais\Entity{
     use Traits\EntityPermissionCache;
     
     const STATUS_PENDING = 1;
     const STATUS_APPROVED = 2;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="request_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "request_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="request_uid", type="string", length=32, nullable=false)
-     */
+    #[ORM\Column(name: "request_uid", type: "string", length: 32, nullable: false)]
     protected $requestUid;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="origin_type", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "origin_type", type: "string", length: 255, nullable: false)]
     protected $originType;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="origin_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "origin_id", type: "integer", nullable: false)]
     protected $originId;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="destination_type", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "destination_type", type: "string", length: 255, nullable: false)]
     protected $destinationType;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="destination_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "destination_id", type: "integer", nullable: false)]
     protected $destinationId;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp = 'now()';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="action_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "action_timestamp", type: "datetime", nullable: true)]
     protected $actionTimestamp;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_PENDING;
 
-    /**
-     * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="requester_user_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\JoinColumn(name: "requester_user_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $requesterUser;
 
-
-    /**
-     *
-     * @var \MapasCulturais\Entities\Notification[] Notifications
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Notification", mappedBy="request", cascade={"all"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Notification", mappedBy: "request", cascade: ["all"], orphanRemoval: true)]
     protected $notifications;
     
-    
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RequestPermissionCache", mappedBy="owner", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RequestPermissionCache", mappedBy: "owner", cascade: ["all"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="metadata", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "metadata", type: "json", nullable: true)]
     protected $metadata = [];
 
 
@@ -299,9 +242,8 @@ abstract class Request extends \MapasCulturais\Entity{
             parent::save($flush);
         }
     }
-
-
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function _applyPostPersistHooks(){
         $app = App::i();
         $app->applyHookBoundTo($this, 'workflow(' . $this->getHookClassPath() . ').create');
@@ -312,19 +254,21 @@ abstract class Request extends \MapasCulturais\Entity{
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }
-

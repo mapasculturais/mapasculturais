@@ -18,12 +18,10 @@ use MapasCulturais\Traits;
  * 
  * @property-read string $publicKey
  * @property-read string $privateKey
- *
- * @ORM\Table(name="user_app")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "user_app")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class UserApp extends \MapasCulturais\Entity {
 
     use Traits\EntitySoftDelete,
@@ -31,66 +29,53 @@ class UserApp extends \MapasCulturais\Entity {
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="public_key", type="string", nullable=false)
-     * @ORM\Id
      */
+    #[ORM\Column(name: "public_key", type: "string", nullable: false)]
+    #[ORM\Id]
     protected $publicKey;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="private_key", type="string", nullable=false)
      */
+    #[ORM\Column(name: "private_key", type: "string", nullable: false)]
     protected $privateKey;
 
     /**
      * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", fetch="EAGER")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $user;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", nullable=false)
      */
-
+    #[ORM\Column(name: "name", type: "string", nullable: false)]
     protected $name;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
      */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
-    
     
     /**
      * @var integer
-     *
-     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
      */
+    #[ORM\Column(name: "subsite_id", type: "integer", nullable: true)]
     protected $_subsiteId;
-
 
     /**
      * @var \MapasCulturais\Entities\Subsite
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Subsite")]
+    #[ORM\JoinColumn(name: "subsite_id", referencedColumnName: "id", nullable: true, onDelete: "CASCADE")]
     protected $subsite;
 
     public function __construct() {
@@ -138,18 +123,18 @@ class UserApp extends \MapasCulturais\Entity {
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

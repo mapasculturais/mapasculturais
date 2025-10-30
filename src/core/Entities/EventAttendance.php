@@ -8,104 +8,52 @@ use MapasCulturais\i;
 
 /**
  * EventMeta
- *
- * @ORM\Table(name="event_attendance", indexes={
- *      @ORM\Index(name="event_attendance_type_idx", columns={"type"})
- * })
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "event_attendance", indexes: [
+    new ORM\Index(name: "event_attendance_type_idx", columns: ["type"])
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class EventAttendance extends \MapasCulturais\Entity {
     const TYPE_CONFIRMATION = 'confirmation';
     const TYPE_INTEREST = 'interested';
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="event_attendance_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "event_attendance_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", nullable=false)
-     */
+    #[ORM\Column(name: "type", type: "string", nullable: false)]
     protected $type;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="reccurrence_string", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "reccurrence_string", type: "text", nullable: true)]
     protected $reccurrenceString;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "start_timestamp", type: "datetime", nullable: false)]
     protected $startTimestamp;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "end_timestamp", type: "datetime", nullable: false)]
     protected $endTimestamp;
 
-    /**
-     * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $user;
 
-    /**
-     * @var \MapasCulturais\Entities\EventOccurrence
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EventOccurrence")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_occurrence_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\EventOccurrence")]
+    #[ORM\JoinColumn(name: "event_occurrence_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $_eventOccurrence;
 
-    /**
-     * @var \MapasCulturais\Entities\Event
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Event")]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $_event;
 
-
-    /**
-     * @var \MapasCulturais\Entities\Space
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Space")]
+    #[ORM\JoinColumn(name: "space_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $_space;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
-
 
     function __construct($recurrence_string = null) {
         parent::__construct();
@@ -302,18 +250,21 @@ class EventAttendance extends \MapasCulturais\Entity {
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

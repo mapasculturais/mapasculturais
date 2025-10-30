@@ -13,66 +13,34 @@ use MapasCulturais\App;
  * @property string $user
  * @property string $attorney
  * @property string $validUntilTimestamp
- * 
- *
- * @ORM\Table(name="procuration",  indexes={
- *      @ORM\Index(name="procuration_usr_idx", columns={"usr_id"}),
- *      @ORM\Index(name="procuration_attorney_idx", columns={"attorney_user_id"}),
- * })
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Table(name: "procuration", indexes: [
+    new ORM\Index(name: "procuration_usr_idx", columns: ["usr_id"]),
+    new ORM\Index(name: "procuration_attorney_idx", columns: ["attorney_user_id"]),
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class Procuration extends \MapasCulturais\Entity{
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="token", type="string", length=32, nullable=false)
-     * @ORM\Id
-     */
+    #[ORM\Column(name: "token", type: "string", length: 32, nullable: false)]
+    #[ORM\Id]
     public $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="action", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "action", type: "string", length: 255, nullable: false)]
     protected $action;
 
-    /**
-     * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade={"persist"}, )
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "usr_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $user;
 
-    /**
-     * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade={"persist"}, )
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="attorney_user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "attorney_user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $attorney;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="valid_until_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "valid_until_timestamp", type: "datetime", nullable: true)]
     protected $validUntilTimestamp;
-
 
     public function __construct() {
         $this->_token = App::getToken(32);
@@ -95,18 +63,21 @@ class Procuration extends \MapasCulturais\Entity{
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

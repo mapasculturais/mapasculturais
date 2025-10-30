@@ -29,12 +29,10 @@ use MapasCulturais\Traits;
  * @property $status = self::STATUS_ENABLED
  * @property-read $roles
  * @property Agent $profile User Profile Agent
- *
- * @ORM\Table(name="usr")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\User")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "usr")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\User")]
+#[ORM\HasLifecycleCallbacks]
 class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterface{
     use Traits\EntityMetadata,
         Traits\EntitySoftDelete,
@@ -47,97 +45,79 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="usr_id_seq", allocationSize=1, initialValue=1)
      */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "usr_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="auth_provider", type="smallint", nullable=false)
      */
+    #[ORM\Column(name: "auth_provider", type: "smallint", nullable: false)]
     protected $authProvider;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="auth_uid", type="string", length=512, nullable=false)
      */
+    #[ORM\Column(name: "auth_uid", type: "string", length: 512, nullable: false)]
     protected $authUid;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: "email", type: "string", length: 255, nullable: false)]
     protected $email;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="last_login_timestamp", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: "last_login_timestamp", type: "datetime", nullable: true)]
     protected $lastLoginTimestamp;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
      */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     public $status = self::STATUS_ENABLED;
 
-
     /**
-     *
      * @var \MapasCulturais\Entities\Role[] User Roles
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
      */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "user", cascade: ["remove"], orphanRemoval: true, fetch: "LAZY")]
     protected $roles;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Agent", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
-     * @ORM\OrderBy({"createTimestamp" = "ASC"})
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Agent", mappedBy: "user", cascade: ["remove"], orphanRemoval: true, fetch: "LAZY")]
+    #[ORM\OrderBy(["createTimestamp" => "ASC"])]
     protected $agents;
 
     /**
      * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="profile_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "profile_id", referencedColumnName: "id", onDelete: "SET NULL")]
     protected $profile;
 
     /**
-     *
      * @var \MapasCulturais\Entities\Procuration[] 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="user", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
      */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Procuration", mappedBy: "user", cascade: ["remove"], orphanRemoval: true, fetch: "LAZY")]
     protected $_userProcurations;
 
     /**
-     *
      * @var \MapasCulturais\Entities\Procuration[] 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Procuration", mappedBy="attorney", cascade={"remove"}, orphanRemoval=true, fetch="LAZY")
      */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Procuration", mappedBy: "attorney", cascade: ["remove"], orphanRemoval: true, fetch: "LAZY")]
     protected $_attorneyProcurations;
 
-    /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\UserMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\UserMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
     protected $__metadata;
 
     protected $_isDeleting = false;
@@ -994,18 +974,18 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

@@ -5,19 +5,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @property Space $owner
- * 
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class SpaceAgentRelation extends AgentRelation {
 
     /**
      * @var \MapasCulturais\Entities\Space
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Space")]
+    #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 }

@@ -6,10 +6,8 @@ use MapasCulturais\App;
 
 /**
  * @property \MapasCulturais\Entities\Project $destination The project of the event
- *
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class RequestEventProject extends Request{
 
     function _doApproveAction() {

@@ -31,12 +31,10 @@ use MapasCulturais\GuestUser;
  * @property-read array $valuersExcludeList retorna a lista de avaliadores excluídos
  * @property-read array $valuers retorna a lista de avaliadores excluídos
  * @property-read array $statuses Nomes dos status
- *
- * @ORM\Table(name="registration")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Registration")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "registration")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\Registration")]
+#[ORM\HasLifecycleCallbacks]
 class Registration extends \MapasCulturais\Entity
 {
     use Traits\EntityMetadata,
@@ -49,228 +47,106 @@ class Registration extends \MapasCulturais\Entity
             Traits\EntityMetadata::canUserViewPrivateData as __canUserViewPrivateData;
         }
 
-
     const STATUS_SENT = self::STATUS_ENABLED;
     const STATUS_APPROVED = 10;
     const STATUS_WAITLIST = 8;
     const STATUS_NOTAPPROVED = 3;
     const STATUS_INVALID = 2;
 
-
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", options={"default": "pseudo_random_id_generator()"})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="MapasCulturais\DoctrineMappings\RandomIdGenerator")
-     */
+    #[ORM\Column(name: "id", type: "integer", options: ["default" => "pseudo_random_id_generator()"])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\CustomIdGenerator(class: "MapasCulturais\DoctrineMappings\RandomIdGenerator")]
     public $id;
 
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="number", type="string", length=24, nullable=true)
-     */
+    #[ORM\Column(name: "number", type: "string", length: 24, nullable: true)]
     public $number;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="category", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "category", type: "string", length: 255, nullable: true)]
     protected $category;
 
-
-    /**
-     * @var \MapasCulturais\Entities\Opportunity
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Opportunity", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "opportunity_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $opportunity;
 
-
-    /**
-     * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="sent_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "sent_timestamp", type: "datetime", nullable: true)]
     protected $sentTimestamp;
 
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="agents_data", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "agents_data", type: "json", nullable: true)]
     protected $agentsData = [];
     
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="consolidated_result", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "consolidated_result", type: "string", length: 255, nullable: true)]
     protected $consolidatedResult = self::STATUS_DRAFT;
     
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="space_data", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "space_data", type: "json", nullable: true)]
     protected $_spaceData = [];
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_DRAFT;
 
-      /**
-     * @var string
-     *
-     * @ORM\Column(name="proponent_type", type="string", nullable=false)
-     */
+    #[ORM\Column(name: "proponent_type", type: "string", nullable: false)]
     protected $proponentType;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="range", type="string", nullable=false)
-     */
+    #[ORM\Column(name: "range", type: "string", nullable: false)]
     protected $range;
     
-    /**
-     * @var object
-     *
-     * @ORM\Column(name="valuers_exceptions_list", type="json", nullable=false)
-     */
+    #[ORM\Column(name: "valuers_exceptions_list", type: "json", nullable: false)]
     protected $__valuersExceptionsList;
 
-    /**
-     * @var object
-     *
-     * @ORM\Column(name="valuers", type="json", nullable=false)
-     */
+    #[ORM\Column(name: "valuers", type: "json", nullable: false)]
     protected $__valuers;
 
-    /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationMeta", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationMeta", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     protected $__metadata = [];
 
-    /**
-     * @var \MapasCulturais\Entities\RegistrationFile[] Files
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationFile", fetch="EXTRA_LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationFile", fetch: "EXTRA_LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__files;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
 
-    /**
-
-     * @var \MapasCulturais\Entities\RegistrationAgentRelation[] Agent Relations
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__agentRelations;
 
-    /**
-     * @var \MapasCulturais\Entities\RegistrationSpaceRelation[] Space Relations
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationSpaceRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationSpaceRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__spaceRelation;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
-     */
+    #[ORM\Column(name: "subsite_id", type: "integer", nullable: true)]
     protected $_subsiteId;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="score", type="float", nullable=true)
-     */
+    #[ORM\Column(name: "score", type: "float", nullable: true)]
     protected $score;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="eligible", type="boolean", nullable=true)
-     */
+    #[ORM\Column(name: "eligible", type: "boolean", nullable: true)]
     protected $eligible;
 
-    /**
-     * @var dateTime
-     *
-     * @ORM\Column(name="editable_until", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "editable_until", type: "datetime", nullable: true)]
     protected $editableUntil;
 
-    /**
-     * @var dateTime
-     *
-     * @ORM\Column(name="edit_sent_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "edit_sent_timestamp", type: "datetime", nullable: true)]
     protected $editSentTimestamp;
 
-     /**
-     * @var array
-     *
-     * @ORM\Column(name="editable_fields", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "editable_fields", type: "json", nullable: true)]
     protected $editableFields;
 
-     /**
-     * @var \MapasCulturais\Entities\Subsite
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Subsite")]
+    #[ORM\JoinColumn(name: "subsite_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     protected $subsite;
 
-    /**
-     * @var dateTime
-     *
-     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]
     protected $updateTimestamp;
 
 
@@ -2121,20 +1997,18 @@ class Registration extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
-    public function prePersist($args = null){ 
-        parent::prePersist($args); 
-    }
-    /** @ORM\PostPersist */
-    public function postPersist($args = null){ parent::postPersist($args); }
+    #[ORM\PrePersist]
+    public function prePersist($args = null) { parent::prePersist($args); }
+    #[ORM\PostPersist]
+    public function postPersist($args = null) { parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
-    public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
-    public function postRemove($args = null){ parent::postRemove($args); }
+    #[ORM\PreRemove]
+    public function preRemove($args = null) { parent::preRemove($args); }
+    #[ORM\PostRemove]
+    public function postRemove($args = null) { parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
-    public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
-    public function postUpdate($args = null){ parent::postUpdate($args); }
+    #[ORM\PreUpdate]
+    public function preUpdate($args = null) { parent::preUpdate($args); }
+    #[ORM\PostUpdate]
+    public function postUpdate($args = null) { parent::postUpdate($args); }
 }

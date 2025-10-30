@@ -9,10 +9,9 @@ use MapasCulturais\Traits\EntityOwnerAgent;
 
 /**
  * 
- * @ORM\Table(name="registration_workplan_goal_delivery")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Table(name: "registration_workplan_goal_delivery")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class Delivery extends \MapasCulturais\Entity {
 
     const STATUS_SCHEDULED = 0;
@@ -26,64 +25,53 @@ class Delivery extends \MapasCulturais\Entity {
         EntityFiles;
 
     /**
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     protected $id;
 
     /**
      * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
     /**
-     *
-     * @ORM\ManyToOne(targetEntity=\OpportunityWorkplan\Entities\Goal::class, inversedBy="deliveries"))
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="goal_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: \OpportunityWorkplan\Entities\Goal::class, inversedBy: "deliveries")]
+    #[ORM\JoinColumn(name: "goal_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $goal;
 
     /**
-    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\DeliveryMeta::class, mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
     */
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\DeliveryMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
     protected $__metadata;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-        /**
+    /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]
     protected $updateTimestamp;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
      */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_SCHEDULED;
 
     /**
      * @var \OpportunityWorkplan\Entities\DeliveryFile[] Files
-     *
-     * @ORM\OneToMany(targetEntity="OpportunityWorkplan\Entities\DeliveryFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+     */
+    #[ORM\OneToMany(targetEntity: "OpportunityWorkplan\Entities\DeliveryFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__files;
 
     /**

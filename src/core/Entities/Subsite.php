@@ -11,15 +11,13 @@ use MapasCulturais\App;
 /**
  * Subsite
  * @property \MapasCulturais\Entities\Agent $owner The owner of this subsite
- *
- * @ORM\Table(name="subsite", indexes={
- *  @ORM\Index(name="url_index", columns={"url"}),
- *  @ORM\Index(name="alias_url_index", columns={"alias_url"})
- * })
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Subsite")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "subsite", indexes: [
+    new ORM\Index(name: "url_index", columns: ["url"]),
+    new ORM\Index(name: "alias_url_index", columns: ["alias_url"])
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\Subsite")]
+#[ORM\HasLifecycleCallbacks]
 class Subsite extends \MapasCulturais\Entity
 {
     use Traits\EntityOwnerAgent,
@@ -33,81 +31,69 @@ class Subsite extends \MapasCulturais\Entity
         
     protected $__enableMagicGetterHook = true;
 
-
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="subsite_id_seq", allocationSize=1, initialValue=1)
      */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "subsite_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: "name", type: "string", length: 255, nullable: false)]
     protected $name;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
      */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     public $status = self::STATUS_ENABLED;
 
     /**
      * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
-     * @ORM\JoinColumn(name="agent_id", referencedColumnName="id")
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id")]
     protected $owner;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="agent_id", type="integer", nullable=false)
      */
+    #[ORM\Column(name: "agent_id", type: "integer", nullable: false)]
     protected $_ownerId;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="url", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: "url", type: "string", length: 255, nullable: false)]
     protected $url;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="alias_url", type="string", length=255, nullable=true)
      */
+    #[ORM\Column(name: "alias_url", type: "string", length: 255, nullable: true)]
     protected $aliasUrl;
 
     /**
      * @var \MapasCulturais\Entities\Role[] Role
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Role", mappedBy="subsite", cascade={"remove"}, fetch="EAGER", orphanRemoval=true)
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="subsite_id", onDelete="CASCADE")
-     * })
-    */
+     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "subsite", cascade: ["remove"], fetch: "EAGER", orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "subsite_id", onDelete: "CASCADE")]
     protected $_roles;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="verified_seals", type="json", nullable=true)
      */
+    #[ORM\Column(name: "verified_seals", type: "json", nullable: true)]
     protected $verifiedSeals = [];
 
     function setVerifiedSeals($val) {
@@ -126,26 +112,22 @@ class Subsite extends \MapasCulturais\Entity
         $val = array_map(function($v) { return (int) $v; }, $val);
 
         $this->verifiedSeals = $val;
-    }
-
-    /**
+    }    /**
      * @var string
-     *
-     * @ORM\Column(name="namespace", type="string", length=50, nullable=false)
      */
+    #[ORM\Column(name: "namespace", type: "string", length: 50, nullable: false)]
     protected $namespace = 'Subsite';
 
     /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
      */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
     protected $__metadata;
 
     /**
      * @var \MapasCulturais\Entities\SubsiteFile[] Files
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\SubsiteFile", fetch="EAGER", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteFile", fetch: "EAGER", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__files;
 
 
@@ -435,9 +417,7 @@ class Subsite extends \MapasCulturais\Entity
     public function save($flush = false) {
         parent::save($flush);
         $this->clearCache();
-    }
-
-    /** @ORM\PreRemove */
+    }    #[ORM\PreRemove]
     public function _setNullSubsiteId() {
         $app = App::i();
         $subsite_id = $this->id;
@@ -483,18 +463,18 @@ class Subsite extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

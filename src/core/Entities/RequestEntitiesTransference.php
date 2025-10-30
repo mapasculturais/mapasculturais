@@ -8,10 +8,8 @@ use Respect\Validation\Rules\Instance;
 /**
  * @property \MapasCulturais\Entities\Agent $destination The new owner of the origin
  * @property \MapasCulturais\Entities\User $origin The new owner of the origin
- *
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class RequestEntitiesTransference extends Request{
 
     /**

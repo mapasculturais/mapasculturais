@@ -11,67 +11,35 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @property string $name
  * @property integer $displayOrder
- *
- * @ORM\Table(name="registration_step")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "registration_step")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class RegistrationStep extends \MapasCulturais\Entity
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="registration_step_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "registration_step_seq", allocationSize: 1, initialValue: 1)]
     protected $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string")
-     */
+    #[ORM\Column(name: "name", type: "string")]
     protected $name;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="display_order", type="integer")
-     */
+    #[ORM\Column(name: "display_order", type: "integer")]
     protected $displayOrder = 0;
 
-    /**
-     * @var \MapasCulturais\Entities\Opportunity
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Opportunity")]
+    #[ORM\JoinColumn(name: "opportunity_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $opportunity;
 
-    /**
-     * @var object
-     *
-     * @ORM\Column(name="metadata", type="json")
-     */
+    #[ORM\Column(name: "metadata", type: "json")]
     protected $metadata;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime")
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime")]
     protected $createTimestamp;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_timestamp", type="datetime")
-     */
+    #[ORM\Column(name: "update_timestamp", type: "datetime")]
     protected $updateTimestamp;
 
     static function getControllerId() {

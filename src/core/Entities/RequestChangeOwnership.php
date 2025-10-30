@@ -6,10 +6,8 @@ use MapasCulturais\App;
 
 /**
  * @property \MapasCulturais\Entities\Agent $destination The new owner of the origin
- *
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class RequestChangeOwnership extends Request{
     const TYPE_GIVE = 'give';
     const TYPE_REQUEST = 'request';

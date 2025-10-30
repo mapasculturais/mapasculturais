@@ -3,71 +3,65 @@
 namespace MapasCulturais\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use MapasCulturais\App;
 
 /**
  * SubsiteMeta
  *
- * @ORM\Table(name="subsite_meta", indexes={
- *      @ORM\Index(name="subsite_meta_owner_idx", columns={"object_id"}),
- *      @ORM\Index(name="subsite_meta_owner_key_idx", columns={"object_id", "key"}),
- *      @ORM\Index(name="subsite_meta_key_idx", columns={"key"}),
- *      @ORM\Index(name="subsite_meta_value_idx", columns={"value"}, flags={"fulltext"})
- * })
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "subsite_meta", indexes: [
+    new ORM\Index(name: "subsite_meta_owner_idx", columns: ["object_id"]),
+    new ORM\Index(name: "subsite_meta_owner_key_idx", columns: ["object_id", "key"]),
+    new ORM\Index(name: "subsite_meta_key_idx", columns: ["key"]),
+    new ORM\Index(name: "subsite_meta_value_idx", columns: ["value"], flags: ["fulltext"])
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class SubsiteMeta extends \MapasCulturais\EntityMetadata {
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="subsite_meta_id_seq", allocationSize=1, initialValue=1)
      */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "subsite_meta_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
     /**
      * @var \MapasCulturais\Entities\Subsite
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Subsite")]
+    #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $owner;
 
     public function canUser($action, $userOrAgent = null){
         return $this->owner->canUser($action, $userOrAgent);
     }
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:before', [$args]);
     }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function _postPersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').insert:after', [$args]);
     }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function _preRemove($args = null){
         App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:before', [$args]);
     }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function _postRemove($args = null){
         App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').remove:after', [$args]);
     }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function _preUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:before', [$args]);
     }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function _postUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(space).meta(' . $this->key . ').update:after', [$args]);
     }
@@ -77,18 +71,18 @@ class SubsiteMeta extends \MapasCulturais\EntityMetadata {
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

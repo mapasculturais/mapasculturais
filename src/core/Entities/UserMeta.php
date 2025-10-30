@@ -9,35 +9,30 @@ use MapasCulturais\App;
 /**
  * UserMeta
  *
- * @ORM\Table(name="user_meta", indexes={
- *      @ORM\Index(name="user_meta_owner_idx", columns={"object_id"}),
- *      @ORM\Index(name="user_meta_owner_key_idx", columns={"object_id", "key"}),
- *      @ORM\Index(name="user_meta_key_idx", columns={"key"}),
- *      @ORM\Index(name="user_meta_value_idx", columns={"value"}, flags={"fulltext"})
- * })
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "user_meta", indexes: [
+    new ORM\Index(name: "user_meta_owner_idx", columns: ["object_id"]),
+    new ORM\Index(name: "user_meta_owner_key_idx", columns: ["object_id", "key"]),
+    new ORM\Index(name: "user_meta_key_idx", columns: ["key"]),
+    new ORM\Index(name: "user_meta_value_idx", columns: ["value"], flags: ["fulltext"])
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class UserMeta extends \MapasCulturais\EntityMetadata {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="user_meta_id_seq", allocationSize=1, initialValue=1)
      */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "user_meta_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
     /**
      * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $owner;
 
     public function canUser($action, $userOrAgent = null){
@@ -47,50 +42,51 @@ class UserMeta extends \MapasCulturais\EntityMetadata {
         return $this->owner->canUser($action, $userOrAgent);
     }
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(user).meta(' . $this->key . ').insert:before');
     }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function _postPersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(user).meta(' . $this->key . ').insert:after');
     }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function _preRemove($args = null){
         App::i()->applyHookBoundTo($this, 'entity(user).meta(' . $this->key . ').remove:before');
     }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function _postRemove($args = null){
         App::i()->applyHookBoundTo($this, 'entity(user).meta(' . $this->key . ').remove:after');
     }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function _preUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(user).meta(' . $this->key . ').update:before');
     }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function _postUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(user).meta(' . $this->key . ').update:after');
     }
+
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

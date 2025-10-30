@@ -8,6 +8,7 @@ use MapasCulturais\Entity;
 use MapasCulturais\Traits;
 use MapasCulturais\UserInterface;
 
+
 /**
  * ChatThread
  *
@@ -17,90 +18,48 @@ use MapasCulturais\UserInterface;
  * @property string $description
  * @property-read \DateTime $createTimestamp
  * @property \DateTime $lastMessageTimestamp
- *
- * @ORM\Table(name="chat_thread")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "chat_thread")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class ChatThread extends \MapasCulturais\Entity
 {
     use Traits\EntityAgentRelation;
 
     const STATUS_CLOSED = 2;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="chat_thread_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "chat_thread_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "object_id", type: "integer", nullable: false)]
     protected $objectId;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_type", type="object_type", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "object_type", type: "object_type", length: 255, nullable: false)]
     protected $objectType;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", nullable=false)
-     */
+    #[ORM\Column(name: "type", type: "string", nullable: false)]
     protected $type;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="identifier", type="string", nullable=false)
-     */
+    #[ORM\Column(name: "identifier", type: "string", nullable: false)]
     public $identifier;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "description", type: "text", nullable: true)]
     protected $description;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="last_message_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "last_message_timestamp", type: "datetime", nullable: true)]
     protected $lastMessageTimestamp;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "status", type: "integer", nullable: false)]
     protected $status;
 
-    /**
-     * @var \MapasCulturais\Entities\ChatThreadAgentRelation[] Agent Relations
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ChatThreadAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\ChatThreadAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__agentRelations;
 
     protected $_ownerEntity;
@@ -281,18 +240,21 @@ class ChatThread extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args=null) { parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args=null) { parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args=null) { parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args=null) { parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args=null) { parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args=null) { parent::postUpdate($args); }
 }

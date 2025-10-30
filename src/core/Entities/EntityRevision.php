@@ -6,13 +6,11 @@ use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
+#[ORM\Table(name: "entity_revision", indexes: [new ORM\Index(name: "entity_revision_idx", columns: ["object_id", "object_type"])])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\EntityRevision")]
+#[ORM\HasLifecycleCallbacks]
 /**
  * Entity Revision
- *
- * @ORM\Table(name="entity_revision",indexes={@ORM\Index(name="entity_revision_idx", columns={"object_id", "object_type"})}))
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\EntityRevision")
- * @ORM\HasLifecycleCallbacks
  */
 class EntityRevision extends \MapasCulturais\Entity{
     const ACTION_CREATED        = 'created';
@@ -26,73 +24,35 @@ class EntityRevision extends \MapasCulturais\Entity{
     const ACTION_DELETED        = 'delete';
     const ACTION_AUTOUPDATED    = 'autoupdated'; // for implicit modifications
 
-
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="entity_revision_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "entity_revision_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "object_id", type: "integer", nullable: false)]
     protected $objectId;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_type", type="object_type", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "object_type", type: "object_type", length: 255, nullable: false)]
     protected $objectType;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="action", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "action", type: "string", length: 255, nullable: false)]
     protected $action = "";
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="message", type="text", nullable=false)
-     */
+    #[ORM\Column(name: "message", type: "text", nullable: false)]
     protected $message = "";
 
-    /**
-     * @var \MapasCulturais\Entities\EntityRevisionData[]
-     *
-     * @ORM\ManyToMany(targetEntity="MapasCulturais\Entities\EntityRevisionData")
-     * @ORM\JoinTable(name="entity_revision_revision_data",
-     *      joinColumns={@ORM\JoinColumn(name="revision_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="revision_data_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     */
+    #[ORM\ManyToMany(targetEntity: "MapasCulturais\Entities\EntityRevisionData")]
+    #[ORM\JoinTable(name: "entity_revision_revision_data")]
+    #[ORM\JoinColumn(name: "revision_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    #[ORM\InverseJoinColumn(name: "revision_data_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $__data;
 
-
-    /**
-     * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $user;
 
     protected $modified = false;
@@ -212,18 +172,21 @@ class EntityRevision extends \MapasCulturais\Entity{
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

@@ -49,26 +49,22 @@ use MapasCulturais\EvaluationMethod;
  * @property RegistrationFileConfiguration[] $registrationFileConfigurations
  * @property RegistrationFieldConfiguration[] $registrationFieldConfigurations
  * @property \MapasCulturais\Entity $ownerEntity
- *
- *
- * @ORM\Table(name="opportunity", indexes={
- *      @ORM\Index(name="opportunity_entity_idx", columns={"object_type", "object_id"}),
- *      @ORM\Index(name="opportunity_parent_idx", columns={"parent_id"}),
- *      @ORM\Index(name="opportunity_owner_idx", columns={"agent_id"}),
- * })
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Opportunity")
- * @ORM\HasLifecycleCallbacks
- *
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="string")
- * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectOpportunity",
-        "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventOpportunity",
-        "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentOpportunity",
-        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceOpportunity",
-   })
  */
+#[ORM\Table(name: "opportunity", indexes: [
+    new ORM\Index(name: "opportunity_entity_idx", columns: ["object_type", "object_id"]),
+    new ORM\Index(name: "opportunity_parent_idx", columns: ["parent_id"]),
+    new ORM\Index(name: "opportunity_owner_idx", columns: ["agent_id"]),
+])]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\Opportunity")]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string")]
+#[ORM\DiscriminatorMap([
+    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectOpportunity",
+    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventOpportunity",
+    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentOpportunity",
+    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpaceOpportunity",
+])]
 abstract class Opportunity extends \MapasCulturais\Entity
 {
     use Traits\EntityOwnerAgent,
@@ -100,237 +96,107 @@ abstract class Opportunity extends \MapasCulturais\Entity
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
 
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="opportunity_id_seq", allocationSize=1, initialValue=1)
-     *
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "opportunity_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="type", type="smallint", nullable=false)
-     */
+    #[ORM\Column(name: "type", type: "smallint", nullable: false)]
     protected $_type;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "name", type: "string", length: 255, nullable: false)]
     protected $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="short_description", type="text", nullable=false)
-     */
+    #[ORM\Column(name: "short_description", type: "text", nullable: false)]
     protected $shortDescription;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="registration_from", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "registration_from", type: "datetime", nullable: false)]
     protected $registrationFrom;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="registration_to", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "registration_to", type: "datetime", nullable: false)]
     protected $registrationTo;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="published_registrations", type="boolean", nullable=false)
-     */
+    #[ORM\Column(name: "published_registrations", type: "boolean", nullable: false)]
     protected $publishedRegistrations = false;
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="registration_categories", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "registration_categories", type: "json", nullable: true)]
     protected array $registrationCategories = [];
 
-    /**
-     * @var MapasCulturais\Entities\RegistrationStep[]
-     * 
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationStep", mappedBy="opportunity", cascade={"remove"}, orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationStep", mappedBy: "opportunity", cascade: ["remove"], orphanRemoval: true)]
     protected $registrationSteps;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]
     protected $updateTimestamp;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="publish_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "publish_timestamp", type: "datetime", nullable: true)]
     protected $publishTimestamp;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="auto_publish", type="boolean", options={"default" : false})
-     */
+    #[ORM\Column(name: "auto_publish", type: "boolean", options: ["default" => false])]
     protected bool $autoPublish = false;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected int $status = self::STATUS_ENABLED;
 
-     /**
-     * @var array
-     *
-     * @ORM\Column(name="registration_proponent_types", type="json", nullable=false)
-     */
+    #[ORM\Column(name: "registration_proponent_types", type: "json", nullable: false)]
     protected array $registrationProponentTypes = [];
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="registration_ranges", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "registration_ranges", type: "json", nullable: true)]
     protected array $registrationRanges = [];
 
-    /**
-     * @var Opportunity
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Opportunity")]
+    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 
-    /**
-     * @var Opportunity[] Children opportunities
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\Opportunity", mappedBy="parent", fetch="LAZY", cascade={"remove"})
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Opportunity", mappedBy: "parent", fetch: "LAZY", cascade: ["remove"])]
     protected $_children;
 
-    /**
-     * @var Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
-    /**
-     * @var EvaluationMethodConfiguration
-     *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy="opportunity")
-     */
+    #[ORM\OneToOne(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy: "opportunity")]
     protected $evaluationMethodConfiguration;
 
-    /**
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
     protected $__metadata;
 
-    /**
-     * @var OpportunityFile[] Files
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__files;
 
-    /**
-     * @var OpportunityAgentRelation[] Agent Relations
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__agentRelations;
 
-
-    /**
-     * @var OpportunityTermRelation[] TermRelation
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityTermRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__termRelations;
 
-
-    /**
-     * @var OpportunitySealRelation[] OpportunitySealRelation
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunitySealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunitySealRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__sealRelations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\OpportunityPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
-     */
+    #[ORM\Column(name: "subsite_id", type: "integer", nullable: true)]
     protected $_subsiteId;
 
-    /**
-    * @var Subsite
-    *
-    * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-    * @ORM\JoinColumns({
-    *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-    * })
-    */
-   protected $subsite;
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Subsite")]
+    #[ORM\JoinColumn(name: "subsite_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
+    protected $subsite;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="long_description", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "long_description", type: "text", nullable: true)]
     protected $longDescription;
 
-     /**
-     * @var object
-     *
-     * @ORM\Column(name="avaliable_evaluation_fields", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "avaliable_evaluation_fields", type: "json", nullable: true)]
     protected $avaliableEvaluationFields = [];
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="continuous_flow", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "continuous_flow", type: "datetime", nullable: true)]
     protected $continuousFlow;
     
     abstract function getSpecializedClassName();
@@ -1806,18 +1672,18 @@ abstract class Opportunity extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }
