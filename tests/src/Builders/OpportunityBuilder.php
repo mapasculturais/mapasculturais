@@ -97,7 +97,7 @@ class OpportunityBuilder extends Builder
         $instance->name = $this->faker->name();
         $instance->shortDescription = $this->faker->name();
         if (!$instance->type) {
-            $this->setType();
+            $this->setType(1);
         }
 
         return $this;
