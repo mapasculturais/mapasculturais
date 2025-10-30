@@ -127,7 +127,7 @@ class Importer
             }
         }
 
-        $this->opportunity->save();
+        $this->opportunity->save(true);
     }
 
     public function exportInfoMetalists(array $data)
@@ -140,7 +140,7 @@ class Importer
                 $metalist->title = $val['title'];
                 $metalist->value = $val['value'];
                 $metalist->description = $val['description'];
-                $metalist->save();
+                $metalist->save(true);
             }
         }
     }
@@ -151,19 +151,19 @@ class Importer
         $this->opportunity->registrationLimitPerOwner = $data['registrationLimitPerOwner'];
         $this->opportunity->totalResource = $data['totalResource'];
         $this->opportunity->vacancies = $data['vacancies'];
-        $this->opportunity->save();
+        $this->opportunity->save(true);
     }
 
     public function importCategories(array $data)
     {
-        $this->opportunity->registrationCategories = $data['registrationCategories'] ?? [];
-        $this->opportunity->save();
+        $this->opportunity->registrationCategories = $data ?? [];
+        $this->opportunity->save(true);
     }
 
     public function importRanges(array $data)
     {
-        $this->opportunity->registrationRanges = $data['registrationRanges'] ?? [];
-        $this->opportunity->save();
+        $this->opportunity->registrationRanges = $data ?? [];
+        $this->opportunity->save(true);
     }
 
     public function importProponentTypes(array $data)
@@ -178,7 +178,7 @@ class Importer
             $this->opportunity->proponentAgentRelation = $data['proponentAgentRelation'];
         }
 
-        $this->opportunity->save();
+        $this->opportunity->save(true);
     }
 
     public function importWorkplan(array $data)
@@ -192,7 +192,7 @@ class Importer
                 }
             }
 
-            $this->opportunity->save();
+            $this->opportunity->save(true);
         }
     }
 
@@ -204,13 +204,17 @@ class Importer
             $phase = $this->opportunity->lastPhase;
         } else {
             $opportunity_class = $this->onwerEntity->opportunityClassName;
+            $parent = $parent ?: $this->opportunity;
 
             $phase = new $opportunity_class;
-            $phase->parent = $parent ?: $this->opportunity;
+            $phase->parent = $parent;
             $phase->ownerEntity = $this->onwerEntity;
             $phase->status = $status;
             $phase->name = $phase_data['name'] ?? '';
-            $phase->save();
+            $phase->registrationCategories = $parent->registrationCategories;
+            $phase->registrationRanges = $parent->registrationRanges;
+            $phase->registrationProponentTypes = $parent->registrationProponentTypes;
+            $phase->save(true);
         }
 
         /** @var Opportunity $phase */
@@ -243,7 +247,7 @@ class Importer
             }
         }
 
-        $phase->save();
+        $phase->save(true);
 
         if ($phase->isDataCollection && array_key_exists('form', $phase_data)) {
             $this->importForm($phase, $phase_data['form']);
@@ -328,7 +332,7 @@ class Importer
             $step->name = $step_data['name'] ?? '';
             $step->displayOrder = $step_data['displayOrder'] ?? 0;
             $step->metadata = $step_data['metadata'] ?? (object) [];
-            $step->save();
+            $step->save(true);
 
             $this->stepsMap[$id] = $step;
         }
@@ -368,7 +372,7 @@ class Importer
                 $field->conditionalValue = $field_data['conditionalValue'];
             }
 
-            $field->save();
+            $field->save(true);
 
             $this->fieldsMap[$id] = $field;
         }
@@ -402,7 +406,7 @@ class Importer
                 $rfc->conditionalValue = $rfc_data['conditionalValue'];
             }
 
-            $rfc->save();
+            $rfc->save(true);
 
             $this->attachmentsMap[$id] = $rfc;
 
@@ -443,6 +447,6 @@ class Importer
         $file->description = $file_data['description'];
         $file->group = $group;
 
-        $file->save();
+        $file->save(true);
     }
 }

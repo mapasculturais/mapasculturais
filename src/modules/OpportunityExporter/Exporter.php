@@ -329,7 +329,7 @@ class Exporter
         $result = [];
 
         foreach ($phase->registrationSteps as $step) {
-            $step_id = base_convert($step->id, 10, 36);
+            $step_id = "STEP(" . base_convert($step->id, 10, 36) . ")";
 
             $result[$step_id] = [
                 'name' => $step->name,
@@ -346,12 +346,12 @@ class Exporter
         $result = [];
 
         foreach ($phase->registrationFieldConfigurations as $field) {
-            $field_id = base_convert($field->id, 10, 36);
+            $field_id = "FIELD(" . base_convert($field->id, 10, 36) . ")";
 
             $config = is_array($field->config) ? array_filter($field->config) : $field->config;
 
             $field_result = [
-                'step' => base_convert($field->step->id, 10, 36),
+                'step' => "STEP(" . base_convert($field->step->id, 10, 36) . ")",
 
                 'title' => $field->title,
                 'description' => $field->description,
@@ -369,7 +369,7 @@ class Exporter
             ];
 
             if ($field->conditional && $field->conditionalField && preg_match('#field_(\d+)#', $field->conditionalField, $matches)) {
-                $conditional_field = base_convert($matches[1], 10, 36);
+                $conditional_field = "FIELD(" . base_convert($matches[1], 10, 36) . ")";
                 $field_result = [
                     ...$field_result,
                     'conditional' => true,
@@ -389,10 +389,10 @@ class Exporter
         $result = [];
 
         foreach ($phase->registrationFileConfigurations as $rfc) {
-            $rfc_id = base_convert($rfc->id, 10, 36);
+            $rfc_id = "FILE(" . base_convert($rfc->id, 10, 36) . ")";
 
             $rfc_result = [
-                'step' => base_convert($rfc->step->id, 10, 36),
+                'step' => "STEP(" . base_convert($rfc->step->id, 10, 36) . ")",
 
                 'title' => $rfc->title,
                 'description' => $rfc->description,
@@ -406,7 +406,7 @@ class Exporter
             ];
 
             if ($rfc->conditional && $rfc->conditionalField && preg_match('#field_(\d+)#', $rfc->conditionalField, $matches)) {
-                $conditional_field = base_convert($matches[1], 10, 36);
+                $conditional_field = "FIELD(" . base_convert($matches[1], 10, 36) . ")";
                 $rfc_result = [
                     ...$rfc_result,
                     'conditional' => true,
@@ -449,21 +449,21 @@ class Exporter
 
         if (preg_match_all('#field_(\d+)#', $result_json, $matches)) {
             foreach ($matches[0] as $i => $field_name) {
-                $fid = base_convert($matches[1][$i], 10, 36);
+                $fid = "FIELD(" . base_convert($matches[1][$i], 10, 36) . ")";
                 $result_json = str_replace($field_name, ":$fid", $result_json);
             }
         }
 
         if (preg_match_all('#"field":"?(\d+)"?#', $result_json, $matches)) {
             foreach ($matches[0] as $i => $field_name) {
-                $fid = base_convert($matches[1][$i], 10, 36);
+                $fid = "FIELD(" . base_convert($matches[1][$i], 10, 36) . ")";
                 $result_json = str_replace($field_name, "\"field\":\"@$fid\"", $result_json);
             }
         }
 
         if (preg_match_all('#rfc_(\d+)#', $result_json, $matches)) {
             foreach ($matches[0] as $i => $file_group) {
-                $fid = base_convert($matches[1][$i], 10, 36);
+                $fid = "FILE(" . base_convert($matches[1][$i], 10, 36) . ")";
                 $result_json = str_replace($file_group, "%$fid", $result_json);
             }
         }
