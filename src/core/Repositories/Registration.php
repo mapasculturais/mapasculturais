@@ -46,7 +46,7 @@ class Registration extends \MapasCulturais\Repository {
      * @param mixed $status = all all|sent|Entities\Registration::STATUS_*|[Entities\Registration::STATUS_*, Entities\Registration::STATUS_*]
      * @return \MapasCulturais\Entities\Registration[]
      */
-    function findByUser($user, $status = 'all', int $limit = null){
+    function findByUser($user, $status = 'all', ?int $limit = null){
         if($user->is('guest')){
             return [];
         }

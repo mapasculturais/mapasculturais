@@ -90,7 +90,7 @@ class Module extends \MapasCulturais\Module
         return null;
     }
 
-    function getFAQ(string $section_slug = null): array {
+    function getFAQ(?string $section_slug = null): array {
         $language_code = 'pt_BR';
 
         $faq = [];
