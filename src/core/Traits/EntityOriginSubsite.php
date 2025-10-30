@@ -31,7 +31,7 @@ trait EntityOriginSubsite{
         }
     }
     
-    function setSubsite(\MapasCulturais\Entities\Subsite $subsite = null){
+    function setSubsite(?\MapasCulturais\Entities\Subsite $subsite = null){
         $this->subsite = $subsite;
         $this->_subsiteId = $subsite ? $subsite->id : null;
     }

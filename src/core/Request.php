@@ -43,7 +43,7 @@ class Request {
         }
     }
 
-    public function get(string $key = null, $default = null) {
+    public function get(?string $key = null, $default = null) {
         $params = $this->psr7request->getQueryParams();
         
         if ($key) {
@@ -53,23 +53,23 @@ class Request {
         }
     }
 
-    public function post(string $key = null, $default = null) {
+    public function post(?string $key = null, $default = null) {
         return $this->_POST($key, $default);
     }
 
-    public function put(string $key = null, $default = null) {
+    public function put(?string $key = null, $default = null) {
         return $this->_POST($key, $default);
     }
 
-    public function patch(string $key = null, $default = null) {
+    public function patch(?string $key = null, $default = null) {
         return $this->_POST($key, $default);
     }
 
-    public function delete(string $key = null, $default = null) {
+    public function delete(?string $key = null, $default = null) {
         return $this->_POST($key, $default);
     }
 
-    protected function _POST(string $key = null, $default = null) {
+    protected function _POST(?string $key = null, $default = null) {
         if ($key) {
             return $_POST[$key] ?? $default;
         } else {

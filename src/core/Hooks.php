@@ -33,7 +33,7 @@ class Hooks {
      *
      * @param  string   $name   A hook name (Optional)
      */
-    public function clear(string $name = null) {
+    public function clear(?string $name = null) {
         if (is_null($name)) {
             $this->_hooks = [];
             $this->_excludeHooks = [];
@@ -69,7 +69,7 @@ class Hooks {
      * @param  string     $name     A hook name (Optional)
      * @return array|null
      */
-    public function get(string $name = null) {
+    public function get(?string $name = null) {
         return $this->getCallables($name);
     }
 
