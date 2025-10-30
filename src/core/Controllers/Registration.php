@@ -770,8 +770,8 @@ class Registration extends EntityController {
 
 
     function GET_evaluation() {
-
         $this->requireAuthentication();
+
         $app = App::i();
 
         $entity = $app->repo('Registration')->find($this->data['id']);
@@ -782,14 +782,16 @@ class Registration extends EntityController {
         
         $entity->checkPermission('viewUserEvaluation');
 
-        $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1);
-
+        $valuer_user = $app->repo('User')->find($this->data['user'] ?? -1) ?: $app->user;
+        
         $evaluation = $entity->getUserEvaluation($valuer_user);
+
         if (!$evaluation) {
             $entity->checkPermission('evaluate', $valuer_user);
+            
             $evaluation = new RegistrationEvaluation();
             $evaluation->registration = $entity;
-            $evaluation->user = $valuer_user ?: $app->user;
+            $evaluation->user = $valuer_user;
             $evaluation->status = RegistrationEvaluation::STATUS_DRAFT;
             
             $evaluation->save(true);
