@@ -27,140 +27,66 @@ use MapasCulturais\Traits;
  * @property array $categories
  * @property array $registrationRanges
  * @property array $proponentTypes
- *
- * @ORM\Table(name="registration_field_configuration")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "registration_field_configuration")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="registration_field_configuration_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "registration_field_configuration_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var \MapasCulturais\Entities\Opportunity
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Opportunity")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Opportunity")]
+    #[ORM\JoinColumn(name: "opportunity_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
-    /**
-     * @var \MapasCulturais\Entities\RegistrationStep
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\RegistrationStep")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="step_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\RegistrationStep")]
+    #[ORM\JoinColumn(name: "step_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $step;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "title", type: "string", length: 255, nullable: false)]
     protected $title;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "description", type: "text", nullable: true)]
     protected $description;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="max_size", type="integer", nullable=true)
-     */
+    #[ORM\Column(name: "max_size", type: "integer", nullable: true)]
     protected $maxSize;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="categories", type="json", nullable=true)
-     */
+    #[ORM\Column(name: "categories", type: "json", nullable: true)]
     protected $categories = [];
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="required", type="boolean", nullable=false)
-     */
+    #[ORM\Column(name: "required", type: "boolean", nullable: false)]
     protected $required = false;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="field_type", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "field_type", type: "string", length: 255, nullable: false)]
     protected $fieldType = null;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="display_order", type="smallint", nullable=false)
-     */
+    #[ORM\Column(name: "display_order", type: "smallint", nullable: false)]
     protected $displayOrder = 255;
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="field_options", type="json", nullable=false)
-     */
+    #[ORM\Column(name: "field_options", type: "json", nullable: false)]
     protected $fieldOptions = [];
 
-    /**
-     * @var object
-     *
-     * @ORM\Column(name="config", type="json")
-     */
+    #[ORM\Column(name: "config", type: "json")]
     protected $config;
 
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="conditional", type="boolean", nullable=true)
-     */
+    #[ORM\Column(name: "conditional", type: "boolean", nullable: true)]
     protected $conditional;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="conditional_field", type="string", nullable=true)
-     */
+    #[ORM\Column(name: "conditional_field", type: "string", nullable: true)]
     protected $conditionalField;
 
-    /**
-      * @var string
-      *
-      * @ORM\Column(name="conditional_value", type="string", nullable=true)
-      */
+    #[ORM\Column(name: "conditional_value", type: "string", nullable: true)]
     protected $conditionalValue;
 
-     /**
-      * @var boolean
-      *
-      * @ORM\Column(name="registration_ranges", type="json", nullable=true)
-      */
+    #[ORM\Column(name: "registration_ranges", type: "json", nullable: true)]
     protected $registrationRanges = [];
 
-     /**
-      * @var boolean
-      *
-      * @ORM\Column(name="proponent_types", type="json", nullable=true)
-      */
+    #[ORM\Column(name: "proponent_types", type: "json", nullable: true)]
     protected $proponentTypes = [];
 
     public function __construct()
@@ -310,7 +236,7 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
         return $this->_canUser($user);
     }
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:before');
 
@@ -318,21 +244,23 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
             $this->fieldOptions = [];
         }
     }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function _postPersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').insert:after');
     }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function _preRemove($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').remove:before');
     }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function _postRemove($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').remove:after');
     }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function _preUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:before');
 
@@ -340,7 +268,8 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
             $this->fieldOptions = [];
         }
     }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function _postUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(registration).fieldConfiguration(' . $this->fieldType . ').update:after');
     }
@@ -350,18 +279,21 @@ class RegistrationFieldConfiguration extends \MapasCulturais\Entity {
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

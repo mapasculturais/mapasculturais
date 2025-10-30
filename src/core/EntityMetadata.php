@@ -7,16 +7,14 @@ class EntityMetadata extends Entity {
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="key", type="string", nullable=false)
      */
+    #[ORM\Column(name: "key", type: "string", nullable: false)]
     public $key;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="value", type="text", nullable=true)
      */
+    #[ORM\Column(name: "value", type: "text", nullable: true)]
     protected $value;
 
 

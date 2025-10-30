@@ -6,22 +6,14 @@ use MapasCulturais\App;
 
 /**
  * @property Project $owner
- * 
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class ProjectAgentRelation extends AgentRelation {
     const STATUS_REGISTRATION = -5;
     const STATUS_REGISTRATION_REJECTED = -6;
 
-    /**
-     * @var \MapasCulturais\Entities\Project
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Project")]
+    #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
     protected function canUserCreate($user){

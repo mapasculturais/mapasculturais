@@ -7,68 +7,49 @@ use Doctrine\Common\Collections\Collection;
 use MapasCulturais\Traits\EntityMetadata;
 use MapasCulturais\Traits\EntityOwnerAgent;
 
-/**
- * 
- * @ORM\Table(name="registration_workplan")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- */
+#[ORM\Table(name: "registration_workplan")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class Workplan extends \MapasCulturais\Entity {
 
     use EntityMetadata,
         EntityOwnerAgent;
     
 
-    /**
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     protected $id;
 
     /**
      * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
     
     /**
      * @var \MapasCulturais\Entities\Registration
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="registration_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Registration")]
+    #[ORM\JoinColumn(name: "registration_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $registration;
 
-    /**
-    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\Goal::class, mappedBy="workplan", cascade={"persist", "remove"}, orphanRemoval=true)
-    */
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\Goal::class, mappedBy: "workplan", cascade: ["persist", "remove"], orphanRemoval: true)]
     protected $goals;
 
-    /**
-    * @ORM\OneToMany(targetEntity=\OpportunityWorkplan\Entities\WorkplanMeta::class, mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
-    */
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\WorkplanMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
     protected $__metadata;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-        /**
+    /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]
     protected $updateTimestamp;
     
 
@@ -100,6 +81,4 @@ class Workplan extends \MapasCulturais\Entity {
             ...$metadatas
         ];
     }
-
-
 }

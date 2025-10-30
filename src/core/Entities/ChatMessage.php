@@ -16,75 +16,41 @@ use MapasCulturais\Traits;
  * @property-write int $userId
  * @property mixed $payload
  * @property-read \DateTime $sentTimestamp
- *
- * @ORM\Table(name="chat_message")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "chat_message")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class ChatMessage extends \MapasCulturais\Entity
 {
     use Traits\EntityFiles;
     use Traits\EntityNested;
     use Traits\EntityPermissionCache;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="chat_message_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "chat_message_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var \MapasCulturais\Entities\ChatThread
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\ChatThread")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="chat_thread_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\ChatThread")]
+    #[ORM\JoinColumn(name: "chat_thread_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $thread;
 
-    /**
-     * @var \MapasCulturais\Entities\ChatMessage
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\ChatMessage")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\ChatMessage")]
+    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", nullable: true, onDelete: "CASCADE")]
     protected $parent;
 
-    /**
-     * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $user;
 
-    /**
-     * @var mixed
-     *
-     * @ORM\Column(name="payload", type="json", nullable=false)
-     */
+    #[ORM\Column(name: "payload", type: "json", nullable: false)]
     protected $payload;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\ChatMessagePermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\ChatMessagePermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
 
     public function __construct()
@@ -187,18 +153,21 @@ class ChatMessage extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args=null) { parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args=null) { parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args=null) { parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args=null) { parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args=null) { parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args=null) { parent::postUpdate($args); }
 }

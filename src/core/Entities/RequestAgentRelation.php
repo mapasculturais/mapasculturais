@@ -8,10 +8,8 @@ use MapasCulturais\App;
  *
  * @property \MapasCulturais\Entities\Agent $destination The agent to be related
  * @property-read string $group The Agent relation Group
- *
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class RequestAgentRelation extends Request{
 
     function setAgentRelation(AgentRelation $relation){

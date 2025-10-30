@@ -31,14 +31,10 @@ use RuntimeException;
  * @property integer $status
  * @property bool $isTiebreaker
  * @property string $committee
- * 
- * 
- *
- * @ORM\Table(name="registration_evaluation")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\RegistrationEvaluation")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "registration_evaluation")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\RegistrationEvaluation")]
+#[ORM\HasLifecycleCallbacks]
 class RegistrationEvaluation extends \MapasCulturais\Entity {
     use Traits\EntityFiles;
     use Traits\EntityRevision;
@@ -46,100 +42,49 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     const STATUS_EVALUATED = self::STATUS_ENABLED;
     const STATUS_SENT = 2;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="registration_evaluation_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "registration_evaluation_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="result", type="string", nullable=true)
-     */
+    #[ORM\Column(name: "result", type: "string", nullable: true)]
     protected $result;
 
-    /**
-     * @var string|object
-     *
-     * @ORM\Column(name="evaluation_data", type="json", nullable=false)
-     */
+    #[ORM\Column(name: "evaluation_data", type: "json", nullable: false)]
     protected $evaluationData = [];
 
-    /**
-     * @var \MapasCulturais\Entities\Registration
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Registration")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="registration_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Registration")]
+    #[ORM\JoinColumn(name: "registration_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $registration;
 
-    /**
-     * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $user;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="sent_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "sent_timestamp", type: "datetime", nullable: true)]
     protected $sentTimestamp;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]
     protected $updateTimestamp;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=true)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: true)]
     protected $status = self::STATUS_DRAFT;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="is_tiebreaker", type="boolean", nullable=true)
-     */
+    #[ORM\Column(name: "is_tiebreaker", type: "boolean", nullable: true)]
     protected $isTiebreaker = false;
 
-    /**
-     * @var \MapasCulturais\Entities\RegistrationEvaluationFile[] Files
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__files;
 
     /**
      * Nome da comissão avaliadora pela qual o avaliador avaliou essa avaliação
-     * 
-     * @var string
-     *
-     * @ORM\Column(name="committee", type="string", nullable=true)
      */
+    #[ORM\Column(name: "committee", type: "string", nullable: true)]
     protected $committee = '';
 
     /**
@@ -335,16 +280,15 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
-    // ============================================================ //
-
-    /** @ORM\PrePersist */
+    // ============================================================ //    
+    #[ORM\PrePersist]
     public function prePersist($args = null){ 
         if($this->registration && $this->registration->needsTiebreaker()){
             $this->isTiebreaker = true;
         }
         parent::prePersist($args); 
     }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){
         parent::postPersist($args);
         
@@ -352,9 +296,9 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         $this->updateValuerSummaries();
     }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){
         parent::postRemove($args);
         
@@ -362,9 +306,9 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
         $this->updateValuerSummaries();
     }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){
         parent::postUpdate($args);
         

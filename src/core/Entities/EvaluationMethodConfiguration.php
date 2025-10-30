@@ -7,6 +7,7 @@ use MapasCulturais\i;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Connection;
 use Opportunities\Jobs\UpdateSummaryCaches;
 
 /**
@@ -29,12 +30,10 @@ use Opportunities\Jobs\UpdateSummaryCaches;
  * @property-read DateTime $publishTimestamp
  * @property-read array $summary
  * @property-read boolean $evaluationOpen
- * 
- * @ORM\Table(name="evaluation_method_configuration")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "evaluation_method_configuration")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\HasLifecycleCallbacks]
 class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
     use Traits\EntityTypes,
@@ -47,71 +46,39 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     protected $__enableMagicGetterHook = true;
     protected $__enableMagicSetterHook = true;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="evaluation_method_configuration_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "evaluation_method_configuration_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
     /**
      * The Evaluation Method Slug
-     *
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=255, nullable=false)
      */
+    #[ORM\Column(name: "type", type: "string", length: 255, nullable: false)]
     protected $_type;
 
-    /**
-     * @var \MapasCulturais\Entities\Opportunity
-     *
-     * @ORM\OneToOne(targetEntity="MapasCulturais\Entities\Opportunity", inversedBy="evaluationMethodConfiguration", cascade={"persist"} )
-     * @ORM\JoinColumn(name="opportunity_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\OneToOne(targetEntity: "MapasCulturais\Entities\Opportunity", inversedBy: "evaluationMethodConfiguration", cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "opportunity_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $opportunity;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "name", type: "string", length: 255, nullable: false)]
     protected $name;
 
-         /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="evaluation_from", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "evaluation_from", type: "datetime", nullable: true)]
     protected $evaluationFrom;
 
-
-     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="evaluation_to", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "evaluation_to", type: "datetime", nullable: true)]
     protected $evaluationTo;
 
-    /**
-     * @var \MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation[] Agent Relations
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__agentRelations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfigurationMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
     protected $__metadata;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
     
     static function getValidations() {
@@ -335,6 +302,8 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
         }
 
         $em = $this->evaluationMethod;
+
+        /** @var Connection */
         $conn = $app->em->getConnection();
         $opportunity = $this->owner;
         $data = [
@@ -653,36 +622,20 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
-    // ============================================================ //
+    // ============================================================ //    
+    #[ORM\PrePersist]
+    public function prePersist($args = null) { parent::prePersist($args); }
+    #[ORM\PostPersist]
+    public function postPersist($args = null) { parent::postPersist($args); }
 
-    /** @ORM\PrePersist */
-    public function prePersist($args = null) {
-        parent::prePersist($args);
-    }
+    #[ORM\PreRemove]
+    public function preRemove($args = null) { parent::preRemove($args); }
+    #[ORM\PostRemove]
+    public function postRemove($args = null) { parent::postRemove($args); }
 
-    /** @ORM\PostPersist */
-    public function postPersist($args = null) {
-        parent::postPersist($args);
-    }
-
-    /** @ORM\PreRemove */
-    public function preRemove($args = null) {
-        parent::preRemove($args);
-    }
-
-    /** @ORM\PostRemove */
-    public function postRemove($args = null) {
-        parent::postRemove($args);
-    }
-
-    /** @ORM\PreUpdate */
-    public function preUpdate($args = null) {
-        parent::preUpdate($args);
-    }
-
-    /** @ORM\PostUpdate */
-    public function postUpdate($args = null) {
-        parent::postUpdate($args);
-    }
+    #[ORM\PreUpdate]
+    public function preUpdate($args = null) { parent::preUpdate($args); }
+    #[ORM\PostUpdate]
+    public function postUpdate($args = null) { parent::postUpdate($args); }
 
 }

@@ -15,75 +15,39 @@ use \MapasCulturais\App;
  * @property id $objectId MetaList Owner Id
  * @property \DateTime $createTimestamp MetaList Create Timestamp
  * @property \MapasCulturais\Entity $owner The Owner of this MetaList
- *
- * @ORM\Table(name="MetaList")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\MetaList")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "MetaList")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\MetaList")]
+#[ORM\HasLifecycleCallbacks]
 class MetaList extends \MapasCulturais\Entity
 {
     use \MapasCulturais\Traits\EntityMetaLists;
 
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="file_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "file_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="grp", type="string", length=32, nullable=false)
-     */
+    #[ORM\Column(name: "grp", type: "string", length: 32, nullable: false)]
     public $group;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "title", type: "string", length: 255, nullable: false)]
     public $title;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="value", type="text", nullable=false)
-     */
+    #[ORM\Column(name: "value", type: "text", nullable: false)]
     public $value;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "description", type: "text", nullable: true)]
     public $description;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_type", type="string", nullable=false)
-     */
+    #[ORM\Column(name: "object_type", type: "string", nullable: false)]
     protected $objectType;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "object_id", type: "integer", nullable: false)]
     protected $objectId;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
     /**
@@ -163,58 +127,63 @@ class MetaList extends \MapasCulturais\Entity
         return App::i()->storage->getPath($this);
     }
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function _prePersist($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').insert:before');
     }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function _postPersist($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').insert:after');
     }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function _preRemove($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').remove:before');
     }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function _postRemove($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').remove:after');
     }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function _preUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').update:before');
     }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function _postUpdate($args = null){
         $_hook_class = $this->getHookClassPath($this->objectType);
         App::i()->applyHookBoundTo($this, 'entity(' . $_hook_class . ').metalist(' . $this->group . ').update:after');
     }
-
 
     //============================================================= //
     // The following lines ara used by MapasCulturais hook system.
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 
     public function __toString() {

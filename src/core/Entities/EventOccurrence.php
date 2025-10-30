@@ -6,164 +6,78 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
-
 /**
  * EventOccurrence
- *
- * @ORM\Table(name="event_occurrence")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\EventOccurrence")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "event_occurrence")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\EventOccurrence")]
+#[ORM\HasLifecycleCallbacks]
 class EventOccurrence extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;
 
     private $flag_day_on = true;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="event_occurrence_id_seq", allocationSize=1, initialValue=1)
-     */
-
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "event_occurrence_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="starts_on", type="date", nullable=true)
-     */
+    #[ORM\Column(name: "starts_on", type: "date", nullable: true)]
     protected $startsOn;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="ends_on", type="date", nullable=true)
-     */
+    #[ORM\Column(name: "ends_on", type: "date", nullable: true)]
     protected $endsOn;
 
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="starts_at", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "starts_at", type: "datetime", nullable: true)]
     protected $startsAt;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="ends_at", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "ends_at", type: "datetime", nullable: true)]
     protected $endsAt;
 
-    /**
-     * @var frequency
-     *
-     * @ORM\Column(name="frequency", type="frequency", nullable=true)
-     */
+    #[ORM\Column(name: "frequency", type: "frequency", nullable: true)]
     protected $frequency;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="separation", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "separation", type: "integer", nullable: false)]
     protected $separation = 1;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="count", type="integer", nullable=true)
-     */
+    #[ORM\Column(name: "count", type: "integer", nullable: true)]
     protected $count;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="until", type="date", nullable=true)
-     */
+    #[ORM\Column(name: "until", type: "date", nullable: true)]
     protected $until;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "description", type: "text", nullable: true)]
     protected $description;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="price", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "price", type: "text", nullable: true)]
     protected $price;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="priceInfo", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "priceInfo", type: "text", nullable: true)]
     protected $priceInfo;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="timezone_name", type="text", nullable=false)
-     */
+    #[ORM\Column(name: "timezone_name", type: "text", nullable: false)]
     protected $timezoneName = 'Etc/UTC';
 
-    /**
-     * @var \MapasCulturais\Entities\Event
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Event", cascade={"persist"})
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Event", cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $event;
 
-    /**
-     * @var eventId
-     *
-     * @ORM\Column(name="event_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "event_id", type: "integer", nullable: false)]
     protected $eventId;
 
-    /**
-     * @var \MapasCulturais\Entities\Space
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Space")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="space_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Space")]
+    #[ORM\JoinColumn(name: "space_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $space;
 
-
-    /**
-     * @var spaceId
-     *
-     * @ORM\Column(name="space_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "space_id", type: "integer", nullable: false)]
     protected $spaceId;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="rule", type="text", nullable=false)
-     */
+    #[ORM\Column(name: "rule", type: "text", nullable: false)]
     protected $rule;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
     static function getValidations() {
@@ -219,7 +133,6 @@ class EventOccurrence extends \MapasCulturais\Entity
     function validateFrequency($value) {
         if ($this->flag_day_on === false) return false;
         if (in_array($value, ['daily', 'weekly', 'monthly'])) {
-        /* if (in_array($value, ['once', 'weekly', 'daily'])) { */
             return !is_null($this->getUntil());
         }
 
@@ -261,7 +174,6 @@ class EventOccurrence extends \MapasCulturais\Entity
         return $this->endsOn;
     }
 
-
     function setStartsAt($value) {
         $this->startsAt = self::convert($value, 'Y-m-d H:i');
     }
@@ -269,7 +181,6 @@ class EventOccurrence extends \MapasCulturais\Entity
     function getStartsAt() {
         return $this->startsAt;
     }
-
 
     function setEndsAt($value) {
         $this->endsAt = self::convert($value, 'Y-m-d H:i');
@@ -499,7 +410,6 @@ class EventOccurrence extends \MapasCulturais\Entity
 
     function delete($flush = false) {
         $this->checkPermission('remove');
-        // ($originType, $originId, $destinationType, $destinationId, $metadata)
         $ruid = RequestEventOccurrence::generateRequestUid($this->event->getClassName(), $this->event->id, $this->space->getClassName(), $this->space->id, ['event_occurrence_id' => $this->id, 'rule' => $this->getRule()]);
         $requests = App::i()->repo('RequestEventOccurrence')->findBy(['requestUid' => $ruid]);
         foreach($requests as $r)
@@ -511,7 +421,7 @@ class EventOccurrence extends \MapasCulturais\Entity
         $this->event->save($flush);
     }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     function _removeRequests(){
         if($this->status === self::STATUS_PENDING){
             $requests = App::i()->repo('RequestEventOccurrence')->findByEventOccurrence($this);
@@ -526,18 +436,21 @@ class EventOccurrence extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

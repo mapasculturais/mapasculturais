@@ -9,64 +9,35 @@ use MapasCulturais\App;
  * Role
  *
  * @property-read \MapasCulturais\Definitions\Role $definition
- * 
- * @ORM\Table(name="role")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Table(name: "role")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class Role extends \MapasCulturais\Entity{
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="role_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "role_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=32, nullable=false)
-     */
+    #[ORM\Column(name: "name", type: "string", length: 32, nullable: false)]
     public $name;
 
-    /**
-     * @var \MapasCulturais\Entities\User
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\User", cascade={"persist"}, fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="usr_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", cascade: ["persist"], fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "usr_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $user;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="usr_id", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "usr_id", type: "integer", nullable: false)]
     protected $userId;
 
     /**
-     * @var int
-     * 
      * @TODO: REMOVER ESTE MAPEAMENTO
-     *
-     * @ORM\Column(name="subsite_id", type="integer", length=32, nullable=true)
      */
+    #[ORM\Column(name: "subsite_id", type: "integer", length: 32, nullable: true)]
     protected $subsiteId;
     
-    /**
-     * @var \MapasCulturais\Entities\Subsite
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Subsite")]
+    #[ORM\JoinColumn(name: "subsite_id", referencedColumnName: "id", nullable: true, onDelete: "CASCADE")]
     protected $subsite;
     
     
@@ -160,18 +131,18 @@ class Role extends \MapasCulturais\Entity{
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

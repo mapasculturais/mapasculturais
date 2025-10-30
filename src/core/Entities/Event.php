@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Traits;
 use MapasCulturais\App;
 
-
 /**
  * Event
  * 
@@ -21,12 +20,10 @@ use MapasCulturais\App;
  * @property-read \DateTime $createTimestamp
  * @property-read \DateTime $updateTimestamp
  * @property-read MapasCulturais\Entities\EventOccurrence[] $occurrences
- * 
- * @ORM\Table(name="event")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repositories\Event")
- * @ORM\HasLifecycleCallbacks
  */
+#[ORM\Table(name: "event")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\Event")]
+#[ORM\HasLifecycleCallbacks]
 class Event extends \MapasCulturais\Entity
 {
     use Traits\EntityOwnerAgent,
@@ -49,170 +46,81 @@ class Event extends \MapasCulturais\Entity
         
     protected $__enableMagicGetterHook = true;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="event_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "event_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="type", type="smallint", nullable=true)
-     */
+    #[ORM\Column(name: "type", type: "smallint", nullable: true)]
     protected $_type = 1;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "name", type: "string", length: 255, nullable: false)]
     protected $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="short_description", type="text", nullable=false)
-     */
+    #[ORM\Column(name: "short_description", type: "text", nullable: false)]
     protected $shortDescription = '';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="long_description", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "long_description", type: "text", nullable: true)]
     protected $longDescription;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="rules", type="text", nullable=true)
-     */
+    #[ORM\Column(name: "rules", type: "text", nullable: true)]
     protected $rules;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=false)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
-    /**
-     * @var MapasCulturais\Entities\EventOccurrence[]
-     * 
-    * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOccurrence", mappedBy="event", cascade={"remove"}, orphanRemoval=true)
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventOccurrence", mappedBy: "event", cascade: ["remove"], orphanRemoval: true)]
     protected $occurrences = [];
 
-    /**
-     * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
-    /**
-     * @var \MapasCulturais\Entities\Project
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Project", fetch="LAZY")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="project_id", referencedColumnName="id", onDelete="SET NULL")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Project", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "project_id", referencedColumnName: "id", onDelete: "SET NULL")]
     protected $project = null;
     
-    /**
-     * @var \MapasCulturais\Entities\EventOpportunity[] Opportunities
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventOpportunity", mappedBy="ownerEntity", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventOpportunity", mappedBy: "ownerEntity", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $_relatedOpportunities;
 
-
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventMeta", mappedBy="owner", cascade={"remove","persist"}, orphanRemoval=true, fetch="EAGER")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
     protected $__metadata;
 
-    /**
-     * @var \MapasCulturais\Entities\ProjectFile[] Files
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventFile", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__files;
 
-    /**
-     * @var \MapasCulturais\Entities\EventAgentRelation[] Agent Relations
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventAgentRelation", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__agentRelations;
 
-    /**
-     * @var \MapasCulturais\Entities\EventTermRelation[] TermRelation
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventTermRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventTermRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__termRelations;
 
-
-    /**
-     * @var \MapasCulturais\Entities\EventSealRelation[] EventSealRelation
-     *
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventSealRelation", fetch="LAZY", mappedBy="owner", cascade={"remove"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="id", referencedColumnName="object_id", onDelete="CASCADE")
-    */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventSealRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__sealRelations;
 
-    /**
-     * @ORM\OneToMany(targetEntity="MapasCulturais\Entities\EventPermissionCache", mappedBy="owner", cascade={"remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
-     */
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]
     protected $updateTimestamp;
 
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="subsite_id", type="integer", nullable=true)
-     */
+    #[ORM\Column(name: "subsite_id", type: "integer", nullable: true)]
     protected $_subsiteId;
 
-     /**
-     * @var \MapasCulturais\Entities\Subsite
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Subsite")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="subsite_id", referencedColumnName="id", nullable=true, onDelete="SET NULL")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Subsite")]
+    #[ORM\JoinColumn(name: "subsite_id", referencedColumnName: "id", nullable: true, onDelete: "SET NULL")]
     protected $subsite;
 
-    private $_newProject = false;
+    private object|false $_newProject = false;
 
     public static function getEntityTypeLabel($plural = false): string {
         if ($plural)
@@ -552,18 +460,21 @@ class Event extends \MapasCulturais\Entity
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

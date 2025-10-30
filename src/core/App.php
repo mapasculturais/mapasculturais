@@ -714,17 +714,14 @@ class App {
      * @throws Exception 
      */
     protected function _initDoctrine() {
+
         // annotation driver
-        $doctrine_config = ORMSetup::createAnnotationMetadataConfiguration(
+        $doctrine_config = ORMSetup::createAttributeMetadataConfiguration(
             paths: [__DIR__ . '/Entities/'],
-            isDevMode: (bool) $this->config['doctrine.isDev'],
+            isDevMode: (bool) $this->config['app.mode'] == 'development',
             cache: $this->cache->adapter
         );
 
-        // tells the doctrine to ignore hook annotation.
-        AnnotationReader::addGlobalIgnoredName('hook');
-
-        $doctrine_config->setProxyDir(DOCTRINE_PROXIES_PATH);
         $doctrine_config->setProxyNamespace('MapasCulturais\DoctrineProxies');
 
         /** DOCTRINE2 SPATIAL */

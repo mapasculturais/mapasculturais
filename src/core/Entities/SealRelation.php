@@ -13,104 +13,63 @@ use MapasCulturais\i;
  * @property-read int $id The Id of the relation.
  *
  * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
- *
- * @ORM\Table(name="seal_relation")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="object_type", type="string")
- * @ORM\DiscriminatorMap({
-        "MapasCulturais\Entities\Opportunity"   = "\MapasCulturais\Entities\OpportunitySealRelation",
-        "MapasCulturais\Entities\Project"       = "\MapasCulturais\Entities\ProjectSealRelation",
-        "MapasCulturais\Entities\Event"         = "\MapasCulturais\Entities\EventSealRelation",
-        "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentSealRelation",
-        "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceSealRelation"
-   })
  */
+#[ORM\Table(name: "seal_relation")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string")]
+#[ORM\DiscriminatorMap([
+    "MapasCulturais\Entities\Opportunity" => "\MapasCulturais\Entities\OpportunitySealRelation",
+    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectSealRelation",
+    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventSealRelation",
+    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentSealRelation",
+    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpaceSealRelation"
+])]
 abstract class SealRelation extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="seal_relation_id_seq", allocationSize=1, initialValue=1)
-     */
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
+    #[ORM\SequenceGenerator(sequenceName: "seal_relation_id_seq", allocationSize: 1, initialValue: 1)]
     public $id;
 
     /**
      * A entidade que recebe o selo
-     * 
-     * @var integer
-     *
-     * @ORM\Column(name="object_id", type="integer", nullable=false)
      */
+    #[ORM\Column(name: "object_id", type: "integer", nullable: false)]
     protected $objectId;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_timestamp", type="datetime", nullable=true)
-     */
+    #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: true)]
     protected $createTimestamp;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=true)
-     */
+    #[ORM\Column(name: "status", type: "smallint", nullable: true)]
     protected $status = self::STATUS_ENABLED;
 
-    /**
-     * @var \MapasCulturais\Entities\Seal
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Seal", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="seal_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Seal", fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "seal_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $seal;
 
     /**
      * O agente que está aplicando o selo (que não necessariamente é o dono do selo, pode ser um agente com permissão
      * ou o dono de um projeto que aplica o selo quando a inscrição é selecionada)
-     * 
-     * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="agent_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $agent;
 
     /**
      * Gerada automaticamente no metodo save() com o profile do usuario logado.
-     * 
-     * @var \MapasCulturais\Entities\Agent
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\Agent", fetch="EAGER")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "EAGER")]
+    #[ORM\JoinColumn(name: "owner_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $ownerRelation;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="validate_date", type="date", nullable=true)
-     */
+    #[ORM\Column(name: "validate_date", type: "date", nullable: true)]
     protected $validateDate;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="renovation_request", type="boolean", nullable=false)
-     */
+    #[ORM\Column(name: "renovation_request", type: "boolean", nullable: false)]
     protected $renovationRequest;
     
     function setSeal(Seal $seal){

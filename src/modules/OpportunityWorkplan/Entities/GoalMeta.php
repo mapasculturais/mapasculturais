@@ -9,52 +9,46 @@ use MapasCulturais\App;
 /**
  * GoalMeta
  *
- * @ORM\Table(name="registration_workplan_goal_meta")
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Table(name: "registration_workplan_goal_meta")]
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class GoalMeta extends \MapasCulturais\EntityMetadata {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
     public $id;
 
     /**
      * @var \OpportunityWorkplan\Entities\Goal
-     *
-     * @ORM\ManyToOne(targetEntity=\OpportunityWorkplan\Entities\Goal::class)
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     * })
      */
+    #[ORM\ManyToOne(targetEntity: \OpportunityWorkplan\Entities\Goal::class)]
+    #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $owner;
 
-
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function _prePersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(goal).meta(' . $this->key . ').insert:before');
     }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function _postPersist($args = null){
         App::i()->applyHookBoundTo($this, 'entity(goal).meta(' . $this->key . ').insert:after');
     }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function _preRemove($args = null){
         App::i()->applyHookBoundTo($this, 'entity(goal).meta(' . $this->key . ').remove:before');
     }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function _postRemove($args = null){
         App::i()->applyHookBoundTo($this, 'entity(goal).meta(' . $this->key . ').remove:after');
     }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function _preUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(goal).meta(' . $this->key . ').update:before');
     }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function _postUpdate($args = null){
         App::i()->applyHookBoundTo($this, 'entity(goal).meta(' . $this->key . ').update:after');
     }
@@ -64,18 +58,18 @@ class GoalMeta extends \MapasCulturais\EntityMetadata {
     // Please do not change them.
     // ============================================================ //
 
-    /** @ORM\PrePersist */
+    #[ORM\PrePersist]
     public function prePersist($args = null){ parent::prePersist($args); }
-    /** @ORM\PostPersist */
+    #[ORM\PostPersist]
     public function postPersist($args = null){ parent::postPersist($args); }
 
-    /** @ORM\PreRemove */
+    #[ORM\PreRemove]
     public function preRemove($args = null){ parent::preRemove($args); }
-    /** @ORM\PostRemove */
+    #[ORM\PostRemove]
     public function postRemove($args = null){ parent::postRemove($args); }
 
-    /** @ORM\PreUpdate */
+    #[ORM\PreUpdate]
     public function preUpdate($args = null){ parent::preUpdate($args); }
-    /** @ORM\PostUpdate */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){ parent::postUpdate($args); }
 }

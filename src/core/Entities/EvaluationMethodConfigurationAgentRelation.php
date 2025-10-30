@@ -14,23 +14,15 @@ use MapasCulturais\JobTypes\ReopenEvaluations;
  * 
  * @property \MapasCulturais\Entities\EvaluationMethodConfiguration $owner
  * @property \MapasCulturais\Entities\Agent $agent
- * 
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class EvaluationMethodConfigurationAgentRelation extends AgentRelation {
     const STATUS_SENT = 10;
     const STATUS_DISABLED = 8;
     const STATUS_ACTIVE = 1;
 
-    /**
-     * @var \MapasCulturais\Entities\EvaluationMethodConfiguration
-     *
-     * @ORM\ManyToOne(targetEntity="MapasCulturais\Entities\EvaluationMethodConfiguration")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfiguration")]
+    #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
 

@@ -7,10 +7,8 @@ use MapasCulturais\App;
 /**
  *
  * @property \MapasCulturais\Entities\Seal $destination The seal to be related
- *
- * @ORM\Entity
- * @ORM\entity(repositoryClass="MapasCulturais\Repository")
  */
+#[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 class RequestSealRelation extends Request{
 
     function setSealRelation(SealRelation $relation){

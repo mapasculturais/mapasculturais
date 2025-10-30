@@ -1414,7 +1414,7 @@ abstract class Entity implements \JsonSerializable{
         }
     }
 
-    /**
+        /**
      * Executed after the entity is updated.
      *
      * If the entity uses Metadata, saves the entity metadatas.
@@ -1430,9 +1430,8 @@ abstract class Entity implements \JsonSerializable{
      * @hook **entity({$entity_class}).update:after**
      * @hook **entity.save:after**
      * @hook **entity({$entity_class}).save:after**
-     *
-     * @ORM\PostUpdate
      */
+    #[ORM\PostUpdate]
     public function postUpdate($args = null){
         $app = App::i();
         $hook_prefix = $this->getHookPrefix();
