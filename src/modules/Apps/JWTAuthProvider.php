@@ -4,6 +4,7 @@ namespace Apps;
 use Apps\Entities\UserApp;
 use MapasCulturais\App;
 use \Firebase\JWT\JWT as FireJWT;
+use \Firebase\JWT\Key as FireKey;
 
 class JWTAuthProvider extends \MapasCulturais\AuthProvider {
 
@@ -15,12 +16,15 @@ class JWTAuthProvider extends \MapasCulturais\AuthProvider {
         $token = $this->_config['token'];
 
         try {
-            $exploded = array_map(function($item) {
-                return json_decode(base64_decode($item));
-            }, explode('.', $token));
-            $jwt_data = $exploded[1] ?? null;
-            if (isset($jwt_data->pk)) {
-                $pk = $jwt_data->pk;
+            $parts = explode('.', (string) $token);
+            if (count($parts) !== 3) {
+                http_response_code(401);
+                die;
+            }
+
+            $payload = json_decode(self::base64UrlDecode($parts[1]));
+            if (isset($payload->pk)) {
+                $pk = $payload->pk;
 
                 $userapp = $app->repo(UserApp::class)->find($pk); // pegar da tabela de apps
 
@@ -29,13 +33,19 @@ class JWTAuthProvider extends \MapasCulturais\AuthProvider {
                     die;
                 }
 
-                FireJWT::decode($token, $userapp->privateKey, ['HS512', 'HS384', 'HS256', 'RS256']);
+                // Detect algorithm from header (default HS256)
+                $header = json_decode(self::base64UrlDecode($parts[0]));
+                $alg = isset($header->alg) ? (string) $header->alg : 'HS256';
+
+                // Decode and validate token using firebase/php-jwt v6 API
+                FireJWT::decode($token, new FireKey($userapp->privateKey, $alg));
+
                 $user = $userapp->user;
                 $this->__user = $user;
                 $this->__userApp = $userapp;
                 return true;
             }
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             http_response_code(401);
         }
 
@@ -76,6 +86,13 @@ class JWTAuthProvider extends \MapasCulturais\AuthProvider {
 
     protected function _createUser($data) {
         return null;
+    }
+
+    private static function base64UrlDecode(string $data): string
+    {
+        $replaced = strtr($data, '-_', '+/');
+        $padded = str_pad($replaced, strlen($replaced) % 4 === 0 ? strlen($replaced) : strlen($replaced) + 4 - (strlen($replaced) % 4), '=', STR_PAD_RIGHT);
+        return base64_decode($padded) ?: '';
     }
 
 }
