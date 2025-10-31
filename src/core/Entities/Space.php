@@ -55,18 +55,6 @@ class Space extends \MapasCulturais\Entity
     public $id;
 
     /**
-     * @var \MapasCulturais\Types\GeoPoint
-     */
-    #[ORM\Column(name: "location", type: "point", nullable: false)]
-    protected $location;
-
-    /**
-     * @var _geography
-     */
-    #[ORM\Column(name: "_geo_location", type: "geography", nullable: false)]
-    protected $_geoLocation;
-
-    /**
      * @var string
      */
     #[ORM\Column(name: "name", type: "string", length: 255, nullable: false)]
