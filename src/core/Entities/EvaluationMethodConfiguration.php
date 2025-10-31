@@ -70,9 +70,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
 
     #[ORM\Column(name: "evaluation_to", type: "datetime", nullable: true)]
     protected $evaluationTo;
-
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
-    protected $__permissionsCache;
     
     static function getValidations() {
         $app = App::i();

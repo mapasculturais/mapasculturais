@@ -153,9 +153,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__sealRelations;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
-    protected $__permissionsCache;
-
     #[ORM\Column(name: "subsite_id", type: "integer", nullable: true)]
     protected $_subsiteId;
 

@@ -46,9 +46,6 @@ class ChatMessage extends \MapasCulturais\Entity
     #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\ChatMessagePermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
-    protected $__permissionsCache;
-
     public function __construct()
     {
         parent::__construct();

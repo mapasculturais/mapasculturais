@@ -140,11 +140,6 @@ class Space extends \MapasCulturais\Entity
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpaceSealRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__sealRelations;
-    
-    /**
-     */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpacePermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
-    protected $__permissionsCache;
 
     /**
      * @var \DateTime
