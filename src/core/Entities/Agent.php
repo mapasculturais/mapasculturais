@@ -102,10 +102,6 @@ class Agent extends \MapasCulturais\Entity
 
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Event", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     protected $_events;
-    
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\AgentOpportunity", mappedBy: "ownerEntity", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $_relatedOpportunities;
 
     #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]
     protected $updateTimestamp;

@@ -114,13 +114,6 @@ class Space extends \MapasCulturais\Entity
      */
     #[ORM\Column(name: "agent_id", type: "integer", nullable: false)]
     protected $_ownerId;
-    
-    /**
-     * @var \MapasCulturais\Entities\SpaceOpportunity[] Opportunities
-     */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpaceOpportunity", mappedBy: "ownerEntity", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $_relatedOpportunities;
 
     /**
      * @var \DateTime
