@@ -456,13 +456,21 @@ class Module extends \MapasCulturais\Module {
                         'registration' => $first_phase
                     ]);
 
-                    $goals = $app->repo(\OpportunityWorkplan\Entities\Goal::class)->findBy([
-                        'workplan' => $workplan
-                    ]);
+                    if(empty($workplan)) {
+                        $goals = [];
+                    } else {
+                        $goals = $app->repo(\OpportunityWorkplan\Entities\Goal::class)->findBy([
+                            'workplan' => $workplan
+                        ]);
+                    }
 
-                    $deliveries = $app->repo(\OpportunityWorkplan\Entities\Delivery::class)->findBy([
-                        'goal' => $goals
-                    ]);
+                    if(empty($goals)) {
+                        $deliveries = [];
+                    } else {
+                        $deliveries = $app->repo(\OpportunityWorkplan\Entities\Delivery::class)->findBy([
+                            'goal' => $goals
+                        ]);
+                    }
 
                     $result = [
                         'goals'      => [],
