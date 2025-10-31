@@ -1,6 +1,6 @@
 ARG COMPOSER_ARGS="--no-dev"
 
-FROM php:8.3-fpm
+FROM php:8.4-fpm
 
 RUN apt-get update
 
