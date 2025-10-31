@@ -31,7 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\File")]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 256)]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 64)]
 
 abstract class File extends \MapasCulturais\Entity
 {
