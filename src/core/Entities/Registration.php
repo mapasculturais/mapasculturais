@@ -106,10 +106,6 @@ class Registration extends \MapasCulturais\Entity
     #[ORM\Column(name: "valuers", type: "json", nullable: false)]
     protected $__valuers;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationFile", fetch: "EXTRA_LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__files;
-
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
 

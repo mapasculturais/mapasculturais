@@ -77,10 +77,6 @@ class RegistrationEvaluation extends \MapasCulturais\Entity {
     #[ORM\Column(name: "is_tiebreaker", type: "boolean", nullable: true)]
     protected $isTiebreaker = false;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationEvaluationFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__files;
-
     /**
      * Nome da comissão avaliadora pela qual o avaliador avaliou essa avaliação
      */

@@ -135,13 +135,6 @@ class Space extends \MapasCulturais\Entity
     protected $_relatedOpportunities;
 
     /**
-     * @var \MapasCulturais\Entities\SpaceFile[] Files
-     */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpaceFile", fetch: "EXTRA_LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__files;
-
-    /**
      * @var \MapasCulturais\Entities\SpaceAgentRelation[] Agent Relations
      */
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpaceAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]

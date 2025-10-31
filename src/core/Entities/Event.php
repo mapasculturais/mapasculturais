@@ -88,10 +88,6 @@ class Event extends \MapasCulturais\Entity
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $_relatedOpportunities;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__files;
-
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__agentRelations;
