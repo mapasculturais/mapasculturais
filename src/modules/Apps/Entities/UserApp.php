@@ -43,7 +43,7 @@ class UserApp extends \MapasCulturais\Entity {
     /**
      * @var \MapasCulturais\Entities\User
      */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $user;
 

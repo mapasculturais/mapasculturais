@@ -10,7 +10,7 @@ class RegistrationEvaluationFile extends File{
     #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\RegistrationEvaluationFile", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\RegistrationEvaluationFile")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 

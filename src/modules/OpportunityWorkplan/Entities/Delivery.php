@@ -46,7 +46,7 @@ class Delivery extends \MapasCulturais\Entity {
 
     /**
     */
-    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\DeliveryMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\DeliveryMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
     protected $__metadata;
 
     /**

@@ -10,7 +10,7 @@ class ProjectFile extends File{
     #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\ProjectFile", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\ProjectFile")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 }

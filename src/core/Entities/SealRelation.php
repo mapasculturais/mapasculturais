@@ -47,7 +47,7 @@ abstract class SealRelation extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: true)]
     protected $status = self::STATUS_ENABLED;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Seal", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Seal")]
     #[ORM\JoinColumn(name: "seal_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $seal;
 
@@ -55,14 +55,14 @@ abstract class SealRelation extends \MapasCulturais\Entity
      * O agente que está aplicando o selo (que não necessariamente é o dono do selo, pode ser um agente com permissão
      * ou o dono de um projeto que aplica o selo quando a inscrição é selecionada)
      */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent")]
     #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $agent;
 
     /**
      * Gerada automaticamente no metodo save() com o profile do usuario logado.
      */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent")]
     #[ORM\JoinColumn(name: "owner_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $ownerRelation;
 

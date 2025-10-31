@@ -16,7 +16,7 @@ class SpaceFile extends File{
     /**
      * @var \MapasCulturais\Entities\SpaceFile
      */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\SpaceFile", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\SpaceFile")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 }

@@ -10,7 +10,7 @@ class AgentFile extends File{
     #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\AgentFile", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\AgentFile")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 }
