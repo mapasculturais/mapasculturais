@@ -5,6 +5,10 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+### Melhorias
+- Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
+
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
 - Implementa novos hooks na edit dos agentes
