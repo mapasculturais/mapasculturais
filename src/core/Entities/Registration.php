@@ -109,10 +109,6 @@ class Registration extends \MapasCulturais\Entity
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__agentRelations;
-
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationSpaceRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__spaceRelation;

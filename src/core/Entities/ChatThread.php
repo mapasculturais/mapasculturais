@@ -58,10 +58,6 @@ class ChatThread extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "integer", nullable: false)]
     protected $status;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\ChatThreadAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__agentRelations;
-
     protected $_ownerEntity;
 
     public function __construct($ownerEntity, $identifier, $type,
