@@ -68,13 +68,6 @@ class Project extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Project")]
-    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    protected $parent;
-
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Project", mappedBy: "parent", fetch: "LAZY", cascade: ["remove"])]
-    protected $_children;
-
     #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
     #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;

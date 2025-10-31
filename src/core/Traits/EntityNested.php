@@ -1,5 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
+
+use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 
 /**
@@ -11,7 +13,15 @@ use MapasCulturais\App;
  * @property-read self[] $children
  * @property-write int $parentId
  */
-trait EntityNested{
+trait EntityNested {
+
+    #[ORM\ManyToOne(targetEntity: self::class, fetch: 'LAZY')]
+    #[ORM\JoinColumn(name: 'parent_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    protected $parent;
+
+
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent', fetch: 'LAZY', cascade: ['remove'])]
+    protected $_children;
 
     /**
      * This entity has Nested Objects

@@ -142,13 +142,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     #[ORM\Column(name: "registration_ranges", type: "json", nullable: true)]
     protected array $registrationRanges = [];
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Opportunity")]
-    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    protected $parent;
-
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Opportunity", mappedBy: "parent", fetch: "LAZY", cascade: ["remove"])]
-    protected $_children;
-
     #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
     #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;

@@ -115,19 +115,6 @@ class Space extends \MapasCulturais\Entity
     protected $eventOccurrences;
 
     /**
-     * @var \MapasCulturais\Entities\Space
-     */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Space", fetch: "LAZY")]
-    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    protected $parent;
-
-    /**
-     * @var \MapasCulturais\Entities\Space[] Chield spaces
-     */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Space", mappedBy: "parent", fetch: "LAZY", cascade: ["remove"])]
-    protected $_children;
-
-    /**
      * @var \MapasCulturais\Entities\Agent
      */
     #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
