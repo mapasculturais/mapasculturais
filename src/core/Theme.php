@@ -224,7 +224,6 @@ abstract class Theme {
                 $app->hook('template(agent.edit.entity-info-validation):begin', function () use ($app) {
 
                     if (isset($_GET['notification_handler']) && $_GET['notification_handler'] == 'true') {
-                        $app->view->enqueueStyle('app-v2', 'mandatory-fields-message', 'css/mandatory-fields-message.css');
                         $this->part("mandatory-fields-message");
                     }
                 });
