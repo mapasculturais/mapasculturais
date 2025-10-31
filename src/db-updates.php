@@ -1368,6 +1368,32 @@ return [
 
     },
 
+        'refatora colunas object_type' => function () use ($conn) {
+        $columns = ['request' => 'type'];
+
+        $tables = [
+            // tabela e concatenação (Prefix|Sufixo)
+            // table => 
+            'agent_relation' => '|AgentRelation',
+            'file' => '|File',
+            'opportunity' => '|Opportunity',
+            'pcache' => '|PermissionCache',
+            'request' => 'Request|',
+            'seal_relation' => '|SealRelation',
+            'space_relation' => '|SpaceRelation',
+            'term_relation' => '|TermRelation',
+        ];
+
+        foreach($tables as $table => $concat) {
+            $column = $columns[$table] ?? 'object_type';
+            
+            list($prefix, $sufix) = explode('|', $concat);
+
+            echo "\n$table";
+            __exec("ALTER TABLE $table ALTER $column TYPE VARCHAR(64) USING LOWER(CONCAT('$prefix', REPLACE($column::VARCHAR, 'MapasCulturais\Entities\', ''), '$sufix'))");
+        }
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {

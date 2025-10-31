@@ -18,17 +18,7 @@ use MapasCulturais\Traits;
 #[ORM\Table(name: "request")]
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "type", type: "string")]
-#[ORM\DiscriminatorMap([
-    "ChangeOwnerchip" => "\MapasCulturais\Entities\RequestChangeOwnership",
-    "EntitiesTransference" => "\MapasCulturais\Entities\RequestEntitiesTransference",
-    "EventOccurrence" => "\MapasCulturais\Entities\RequestEventOccurrence",
-    "EventProject" => "\MapasCulturais\Entities\RequestEventProject",
-    "ChildEntity" => "\MapasCulturais\Entities\RequestChildEntity",
-    "AgentRelation" => "\MapasCulturais\Entities\RequestAgentRelation",
-    "SealRelation" => "\MapasCulturais\Entities\RequestSealRelation",
-    "SpaceRelation" => "\MapasCulturais\Entities\RequestSpaceRelation"
-])]
+#[ORM\DiscriminatorColumn(name: "type", type: "string", length: 64)]
 #[ORM\HasLifecycleCallbacks]
 abstract class Request extends \MapasCulturais\Entity{
     use Traits\EntityPermissionCache;

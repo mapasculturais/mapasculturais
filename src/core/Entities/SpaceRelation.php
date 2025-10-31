@@ -16,10 +16,7 @@ use MapasCulturais\App;
 #[ORM\Table(name: "space_relation")]
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "object_type", type: "string")]
-#[ORM\DiscriminatorMap([
-    "MapasCulturais\Entities\Registration" => "\MapasCulturais\Entities\RegistrationSpaceRelation"
-])]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 64)]
 abstract class SpaceRelation extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;

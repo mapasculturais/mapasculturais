@@ -29,18 +29,8 @@ use MapasCulturais\App;
 ])]
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "object_type", type: "object_type")]
-#[ORM\DiscriminatorMap([
-    "MapasCulturais\Entities\Opportunity" => "\MapasCulturais\Entities\OpportunityAgentRelation",
-    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectAgentRelation",
-    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventAgentRelation",
-    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentAgentRelation",
-    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpaceAgentRelation",
-    "MapasCulturais\Entities\Seal" => "\MapasCulturais\Entities\SealAgentRelation",
-    "MapasCulturais\Entities\Registration" => "\MapasCulturais\Entities\RegistrationAgentRelation",
-    "MapasCulturais\Entities\EvaluationMethodConfiguration" => "\MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation",
-    "MapasCulturais\Entities\ChatThread" => "\MapasCulturais\Entities\ChatThreadAgentRelation",
-])]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 64)]
+
 #[ORM\HasLifecycleCallbacks]
 abstract class AgentRelation extends \MapasCulturais\Entity
 {
