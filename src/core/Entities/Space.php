@@ -135,13 +135,6 @@ class Space extends \MapasCulturais\Entity
     protected $_relatedOpportunities;
 
     /**
-     * @var \MapasCulturais\Entities\SpaceTermRelation[] TermRelation
-     */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpaceTermRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__termRelations;
-
-    /**
      * @var \MapasCulturais\Entities\SpaceSealRelation[] SpaceSealRelation
      */
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpaceSealRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
