@@ -101,7 +101,7 @@ class Importer
 
         foreach ($data['phases'] as $phase_data) {
             if ($phase_data['isReportingPhase'] ?? false) {
-                $this->importReportingPhase($phase_data);
+                $this->importMonitoringPhase($phase_data);
             } else {
                 $this->importPhase($phase_data);
             }
