@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App,
     MapasCulturais\Entities\Seal;
 use MapasCulturais\Entities\Agent;
@@ -15,6 +16,10 @@ use MapasCulturais\Exceptions\PermissionDenied;
  * 
  */
 trait EntitySealRelation {
+
+    #[ORM\OneToMany(targetEntity: self::class . "SealRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
+    protected $__sealRelations;
 
     public static function usesSealRelation(){
         return true;
