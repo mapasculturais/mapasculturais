@@ -71,10 +71,6 @@ class EvaluationMethodConfiguration extends \MapasCulturais\Entity {
     #[ORM\Column(name: "evaluation_to", type: "datetime", nullable: true)]
     protected $evaluationTo;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfigurationAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__agentRelations;
-
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
     protected $__permissionsCache;
     

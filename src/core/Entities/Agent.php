@@ -113,10 +113,6 @@ class Agent extends \MapasCulturais\Entity
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $_relatedOpportunities;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\AgentAgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__agentRelations;
-
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\AgentTermRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__termRelations;

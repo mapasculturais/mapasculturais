@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Exception\NotSupported;
 use MapasCulturais\App,
     MapasCulturais\Entities\Agent;
@@ -22,6 +23,10 @@ use RuntimeException;
 trait EntityAgentRelation {
 
     const AGENT_RELATION_ADMIN_GROUP = 'group-admin';
+
+    #[ORM\OneToMany(targetEntity: self::class . "AgentRelation", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
+    protected $__agentRelations;
 
     public static function usesAgentRelation(){
         return true;
