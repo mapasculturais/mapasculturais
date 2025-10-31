@@ -143,7 +143,7 @@ class OpportunityExporterTest extends TestCase
             workplan: true,
             statusLabels: true,
             appealPhases: true,
-            monitoringPhases: false
+            monitoringPhases: true
         );
         
         $imported = $importer->import();
