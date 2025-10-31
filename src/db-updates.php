@@ -1258,19 +1258,19 @@ return [
         }
     },
 
-    'adiciona coluna pk à tabela de job' => function () use($conn) {
-        $conn->executeQuery("CREATE SEQUENCE job_pk_seq
+    'adiciona coluna pk à tabela de job' => function () {
+        __exec('DROP SEQUENCE IF EXISTS job_pk_seq');
+        __exec("CREATE SEQUENCE job_pk_seq
                                 START WITH 1
                                 INCREMENT BY 1
                                 NO MINVALUE
                                 NO MAXVALUE
                                 CACHE 1;");
                                 
-        $conn->executeQuery("ALTER TABLE job ADD COLUMN pk bigint not null;");
-
-        $conn->executeQuery("ALTER TABLE job ALTER COLUMN pk SET DEFAULT nextval('job_pk_seq'::regclass);");
-        $conn->executeQuery("ALTER TABLE job DROP CONSTRAINT job_pkey");
-        $conn->executeQuery("ALTER TABLE job ADD CONSTRAINT job_pk PRIMARY KEY (pk);");
+        __exec("ALTER TABLE job ADD COLUMN pk bigint not null DEFAULT nextval('job_pk_seq'::regclass)");
+        
+        __exec("ALTER TABLE job DROP CONSTRAINT job_pkey");
+        __exec("ALTER TABLE job ADD CONSTRAINT job_pk PRIMARY KEY (pk);");
 
     },
 
