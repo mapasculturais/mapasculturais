@@ -88,7 +88,7 @@ class Event extends \MapasCulturais\Entity
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $_relatedOpportunities;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
     protected $__metadata;
 
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]

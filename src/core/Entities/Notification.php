@@ -49,7 +49,7 @@ class Notification extends \MapasCulturais\Entity{
     #[ORM\JoinColumn(name: "request_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $request;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\NotificationMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\NotificationMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
     protected $__metadata;
     
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\NotificationPermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]

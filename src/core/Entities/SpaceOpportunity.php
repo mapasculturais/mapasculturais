@@ -21,7 +21,7 @@ class SpaceOpportunity extends Opportunity{
     /**
      * @var \MapasCulturais\Entities\SpaceOpportunity
      */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\SpaceOpportunity", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\SpaceOpportunity")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
     

@@ -37,7 +37,7 @@ class Workplan extends \MapasCulturais\Entity {
     #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\Goal::class, mappedBy: "workplan", cascade: ["persist", "remove"], orphanRemoval: true)]
     protected $goals;
 
-    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\WorkplanMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
+    #[ORM\OneToMany(targetEntity: \OpportunityWorkplan\Entities\WorkplanMeta::class, mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
     protected $__metadata;
 
     /**

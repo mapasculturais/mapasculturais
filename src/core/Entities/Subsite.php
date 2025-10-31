@@ -61,7 +61,7 @@ class Subsite extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Agent
      */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent")]
     #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id")]
     protected $owner;
 
@@ -86,7 +86,7 @@ class Subsite extends \MapasCulturais\Entity
     /**
      * @var \MapasCulturais\Entities\Role[] Role
      */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "subsite", cascade: ["remove"], fetch: "EAGER", orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Role", mappedBy: "subsite", cascade: ["remove"], orphanRemoval: true)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "subsite_id", onDelete: "CASCADE")]
     protected $_roles;
 
@@ -120,13 +120,13 @@ class Subsite extends \MapasCulturais\Entity
 
     /**
      */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
     protected $__metadata;
 
     /**
      * @var \MapasCulturais\Entities\SubsiteFile[] Files
      */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteFile", fetch: "EAGER", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__files;
 

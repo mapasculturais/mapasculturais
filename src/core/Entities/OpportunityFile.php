@@ -10,7 +10,7 @@ class OpportunityFile extends File{
     #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $owner;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\OpportunityFile", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\OpportunityFile")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 }

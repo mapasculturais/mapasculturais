@@ -117,7 +117,7 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Procuration", mappedBy: "attorney", cascade: ["remove"], orphanRemoval: true, fetch: "LAZY")]
     protected $_attorneyProcurations;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\UserMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\UserMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
     protected $__metadata;
 
     protected $_isDeleting = false;

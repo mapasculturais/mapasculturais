@@ -161,7 +161,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
     #[ORM\OneToOne(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy: "opportunity")]
     protected $evaluationMethodConfiguration;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true, fetch: "EAGER")]
+    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
     protected $__metadata;
 
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]

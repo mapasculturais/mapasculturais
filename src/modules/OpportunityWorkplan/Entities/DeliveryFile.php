@@ -16,7 +16,7 @@ class DeliveryFile extends \MapasCulturais\Entities\File{
     /**
      * @var \OpportunityWorkplan\Entities\DeliveryFile
      */
-    #[ORM\ManyToOne(targetEntity: "OpportunityWorkplan\Entities\DeliveryFile", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "OpportunityWorkplan\Entities\DeliveryFile")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 }

@@ -16,7 +16,7 @@ class UserFile extends File {
     /**
      * @var \MapasCulturais\Entities\UserFile
      */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\UserFile", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\UserFile")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 }

@@ -16,7 +16,7 @@ class SubsiteFile extends File {
     /**
      * @var \MapasCulturais\Entities\SubsiteFile
      */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\SubsiteFile", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\SubsiteFile")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
 }

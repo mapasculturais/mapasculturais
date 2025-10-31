@@ -15,7 +15,7 @@ class AgentOpportunity extends Opportunity{
     #[ORM\JoinColumn(name: "object_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $ownerEntity;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\AgentOpportunity", fetch: "EAGER")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\AgentOpportunity")]
     #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $parent;
     
