@@ -5,7 +5,17 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [UNRELEASED]
+## [UNRELEASED - 8.0]
+### Melhorias não funcionais
+- Substituição do driver AnnotationDriver de mapeamendo do Doctrine para o AttributeDriver
+- Remoção dos fetch: EAGER para compatibilidade com o Doctrine 2.20
+- Remoção dos DiscriminatorMaps das classes auxiliares (File, AgentRelation etc) possibilitando a utilização desses recursos em plugins
+
+### Atualizações de bibliiotecas
+- PHP atualizado para versão 8.4
+- Doctrine atualizado para versão 2.20.x
+
+## [UNRELEASED - 7.7]
 ### Novas Funcionalidades
 - Exportador / Importador de oportunidades
 - Lista de entidades seladas na single dos selos
