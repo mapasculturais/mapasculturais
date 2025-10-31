@@ -118,13 +118,6 @@ class Subsite extends \MapasCulturais\Entity
     #[ORM\Column(name: "namespace", type: "string", length: 50, nullable: false)]
     protected $namespace = 'Subsite';
 
-    /**
-     * @var \MapasCulturais\Entities\SubsiteFile[] Files
-     */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__files;
-
 
     protected $filters = [];
 

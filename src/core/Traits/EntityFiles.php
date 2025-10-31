@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 use MapasCulturais\Entities\File;
 
@@ -23,7 +24,11 @@ use MapasCulturais\Entities\File;
  * @see \MapasCulturais\Definitions\FileGroup
  * @see \MapasCulturais\App::registerFileGroup()
  */
-trait EntityFiles{
+trait EntityFiles {
+
+    #[ORM\OneToMany(targetEntity: self::class . "File", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
+    protected $__files;
 
     public static function getFileClassName(){
         $class = get_called_class();

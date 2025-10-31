@@ -75,10 +75,6 @@ class RegistrationFileConfiguration extends \MapasCulturais\Entity {
     #[ORM\Column(name: "proponent_types", type: "json", nullable: true)]
     protected $proponentTypes = [];
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RegistrationFileConfigurationFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__files;
-
     static function getValidations() {
         $app = App::i();
         $validations = [
