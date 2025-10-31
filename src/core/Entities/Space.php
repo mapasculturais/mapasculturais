@@ -103,19 +103,6 @@ class Space extends \MapasCulturais\Entity
     protected $eventOccurrences;
 
     /**
-     * @var \MapasCulturais\Entities\Agent
-     */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
-    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    protected $owner;
-
-    /**
-     * @var integer
-     */
-    #[ORM\Column(name: "agent_id", type: "integer", nullable: false)]
-    protected $_ownerId;
-
-    /**
      * @var \DateTime
      */
     #[ORM\Column(name: "update_timestamp", type: "datetime", nullable: true)]

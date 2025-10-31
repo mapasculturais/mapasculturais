@@ -1,5 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
+
+use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Agent;
 
@@ -11,7 +13,14 @@ use MapasCulturais\Entities\Agent;
  * @property \MapasCulturais\Entities\Agent $owner
  * @property-write int $ownerId
  */
-trait EntityOwnerAgent{
+trait EntityOwnerAgent {
+
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
+    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
+    protected $owner;
+
+    #[ORM\Column(name: "agent_id", type: "integer", nullable: false)]
+    protected $_ownerId;
     
     /**
      * Temporary owner.

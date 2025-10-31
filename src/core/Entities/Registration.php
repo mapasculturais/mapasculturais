@@ -72,10 +72,6 @@ class Registration extends \MapasCulturais\Entity
     #[ORM\JoinColumn(name: "opportunity_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $opportunity;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
-    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    protected $owner;
-
     #[ORM\Column(name: "create_timestamp", type: "datetime", nullable: false)]
     protected $createTimestamp;
 

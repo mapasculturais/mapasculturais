@@ -76,10 +76,6 @@ class Event extends \MapasCulturais\Entity
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventOccurrence", mappedBy: "event", cascade: ["remove"], orphanRemoval: true)]
     protected $occurrences = [];
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
-    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    protected $owner;
-
     #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Project", fetch: "LAZY")]
     #[ORM\JoinColumn(name: "project_id", referencedColumnName: "id", onDelete: "SET NULL")]
     protected $project = null;

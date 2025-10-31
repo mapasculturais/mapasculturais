@@ -59,19 +59,6 @@ class Subsite extends \MapasCulturais\Entity
     public $status = self::STATUS_ENABLED;
 
     /**
-     * @var \MapasCulturais\Entities\Agent
-     */
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent")]
-    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id")]
-    protected $owner;
-
-    /**
-     * @var integer
-     */
-    #[ORM\Column(name: "agent_id", type: "integer", nullable: false)]
-    protected $_ownerId;
-
-    /**
      * @var string
      */
     #[ORM\Column(name: "url", type: "string", length: 255, nullable: false)]

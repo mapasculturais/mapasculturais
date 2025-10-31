@@ -36,7 +36,6 @@ use MapasCulturais\EvaluationMethod;
  * @property array $registrationProponentTypes
  * @property array $registrationRanges
  * @property self $parent
- * @property Agent $owner
  *
  *
  * @property-read ?Opportunity $previousPhase
@@ -141,10 +140,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
     #[ORM\Column(name: "registration_ranges", type: "json", nullable: true)]
     protected array $registrationRanges = [];
-
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
-    #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
-    protected $owner;
 
     #[ORM\OneToOne(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy: "opportunity")]
     protected $evaluationMethodConfiguration;
