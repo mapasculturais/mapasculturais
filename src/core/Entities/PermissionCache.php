@@ -15,21 +15,8 @@ use \MapasCulturais\App;
 ])]
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "object_type", type: "object_type")]
-#[ORM\DiscriminatorMap([
-    "MapasCulturais\Entities\Opportunity" => "\MapasCulturais\Entities\OpportunityPermissionCache",
-    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectPermissionCache",
-    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventPermissionCache",
-    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentPermissionCache",
-    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpacePermissionCache",
-    "MapasCulturais\Entities\Seal" => "\MapasCulturais\Entities\SealPermissionCache",
-    "MapasCulturais\Entities\Registration" => "\MapasCulturais\Entities\RegistrationPermissionCache",
-    "MapasCulturais\Entities\Notification" => "\MapasCulturais\Entities\NotificationPermissionCache",
-    "MapasCulturais\Entities\Request" => "\MapasCulturais\Entities\RequestPermissionCache",
-    "MapasCulturais\Entities\EvaluationMethodConfiguration" => "\MapasCulturais\Entities\EvaluationMethodConfigurationPermissionCache",
-    "MapasCulturais\Entities\ChatMessage" => "\MapasCulturais\Entities\ChatMessagePermissionCache",
-    "MapasCulturais\Entities\User" => "\MapasCulturais\Entities\UserPermissionCache",
-])]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 64)]
+
 abstract class PermissionCache extends \MapasCulturais\Entity {
 
     #[ORM\Column(name: "id", type: "integer", nullable: false)]

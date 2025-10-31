@@ -17,14 +17,8 @@ use MapasCulturais\i;
 #[ORM\Table(name: "seal_relation")]
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "object_type", type: "string")]
-#[ORM\DiscriminatorMap([
-    "MapasCulturais\Entities\Opportunity" => "\MapasCulturais\Entities\OpportunitySealRelation",
-    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectSealRelation",
-    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventSealRelation",
-    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentSealRelation",
-    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpaceSealRelation"
-])]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 64)]
+
 abstract class SealRelation extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;

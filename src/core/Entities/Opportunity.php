@@ -58,13 +58,8 @@ use MapasCulturais\EvaluationMethod;
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\Opportunity")]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "object_type", type: "string")]
-#[ORM\DiscriminatorMap([
-    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectOpportunity",
-    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventOpportunity",
-    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentOpportunity",
-    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpaceOpportunity",
-])]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 64)]
+
 abstract class Opportunity extends \MapasCulturais\Entity
 {
     use Traits\EntityOwnerAgent,

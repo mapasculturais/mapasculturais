@@ -31,22 +31,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repositories\File")]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\InheritanceType("SINGLE_TABLE")]
-#[ORM\DiscriminatorColumn(name: "object_type", type: "object_type")]
-#[ORM\DiscriminatorMap([
-    "MapasCulturais\Entities\ChatMessage" => "\MapasCulturais\Entities\ChatMessageFile",
-    "MapasCulturais\Entities\Opportunity" => "\MapasCulturais\Entities\OpportunityFile",
-    "MapasCulturais\Entities\Project" => "\MapasCulturais\Entities\ProjectFile",
-    "MapasCulturais\Entities\Event" => "\MapasCulturais\Entities\EventFile",
-    "MapasCulturais\Entities\Agent" => "\MapasCulturais\Entities\AgentFile",
-    "MapasCulturais\Entities\Space" => "\MapasCulturais\Entities\SpaceFile",
-    "MapasCulturais\Entities\Seal" => "\MapasCulturais\Entities\SealFile",
-    "MapasCulturais\Entities\Registration" => "\MapasCulturais\Entities\RegistrationFile",
-    "MapasCulturais\Entities\RegistrationFileConfiguration" => "\MapasCulturais\Entities\RegistrationFileConfigurationFile",
-    "MapasCulturais\Entities\Subsite" => "\MapasCulturais\Entities\SubsiteFile",
-    "MapasCulturais\Entities\User" => "\MapasCulturais\Entities\UserFile",
-    "MapasCulturais\Entities\RegistrationEvaluation" => "\MapasCulturais\Entities\RegistrationEvaluationFile",
-    "OpportunityWorkplan\Entities\Delivery" => "\OpportunityWorkplan\Entities\DeliveryFile",
-])]
+#[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 256)]
+
 abstract class File extends \MapasCulturais\Entity
 {
     use \MapasCulturais\Traits\EntityFiles;
