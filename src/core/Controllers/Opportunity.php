@@ -8,6 +8,7 @@ use MapasCulturais\API;
 use MapasCulturais\App;
 use MapasCulturais\Traits;
 use MapasCulturais\ApiQuery;
+use MapasCulturais\Connection;
 use MapasCulturais\Entities;
 use MapasCulturais\Entities\Registration;
 use MapasCulturais\Entities\RegistrationEvaluation;
@@ -715,6 +716,7 @@ class Opportunity extends EntityController {
         $opportunity = $this->_getOpportunity();
         $data = $this->data;
 
+        /** @var Connection */
         $conn = $app->em->getConnection();
 
         $resultLength = "
@@ -870,8 +872,10 @@ class Opportunity extends EntityController {
         }
     }
 
-    function apiFindEvaluations(int $opportunity_id = null, array $query_data = []) {
+    function apiFindEvaluations(?int $opportunity_id = null, array $query_data = []) {
         $app = App::i();
+
+        /** @var Connection */
         $conn = $app->em->getConnection();
 
         $opportunity = $this->_getOpportunity($opportunity_id);
@@ -1135,6 +1139,7 @@ class Opportunity extends EntityController {
 
         $app = App::i();
 
+        /** @var Connection */
         $conn = $app->em->getConnection();
 
         $conn->executeQuery("

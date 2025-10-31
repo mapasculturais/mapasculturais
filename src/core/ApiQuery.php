@@ -759,7 +759,7 @@ class ApiQuery {
         return $result;
     }
 
-    function getCacheKey($method, string $select = null, $offset = null, $limit = null) {
+    function getCacheKey($method, ?string $select = null, $offset = null, $limit = null) {
         $dql = $this->getFindDQL($select);
         $params = $this->getDqlParams();
 
