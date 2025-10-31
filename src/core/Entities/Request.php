@@ -62,9 +62,6 @@ abstract class Request extends \MapasCulturais\Entity{
 
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Notification", mappedBy: "request", cascade: ["all"], orphanRemoval: true)]
     protected $notifications;
-    
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\RequestPermissionCache", mappedBy: "owner", cascade: ["all"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
-    protected $__permissionsCache;
 
     #[ORM\Column(name: "metadata", type: "json", nullable: true)]
     protected $metadata = [];

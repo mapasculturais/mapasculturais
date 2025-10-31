@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\UnitOfWork;
 use MapasCulturais\App;
 use MapasCulturais\Entity;
@@ -10,6 +11,10 @@ use MapasCulturais\Entity;
  * @property-read string[] $permissionsList
  */
 trait EntityPermissionCache {
+
+    #[ORM\OneToMany(targetEntity: self::class . "PermissionCache", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true, fetch: "EXTRA_LAZY")]
+    protected $__permissionsCache;
+
     public $__skipQueuingPCacheRecreation = false;
 
     private $__enabled = true;
