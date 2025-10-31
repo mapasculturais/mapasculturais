@@ -119,11 +119,6 @@ class Subsite extends \MapasCulturais\Entity
     protected $namespace = 'Subsite';
 
     /**
-     */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
-    protected $__metadata;
-
-    /**
      * @var \MapasCulturais\Entities\SubsiteFile[] Files
      */
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SubsiteFile", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
