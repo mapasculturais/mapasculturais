@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use MapasCulturais\App;
 use MapasCulturais\Entities\User;
@@ -37,6 +38,10 @@ use MapasCulturais\GuestUser;
  */
 trait EntityMetadata{
     use MagicGetter, MagicSetter;
+
+
+    #[ORM\OneToMany(targetEntity: self::class . "Meta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
+    protected $__metadata;
 
     /**
      * Changed metadata.

@@ -135,11 +135,6 @@ class Space extends \MapasCulturais\Entity
     protected $_relatedOpportunities;
 
     /**
-    */
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpaceMeta", mappedBy: "owner", cascade: ["remove", "persist"], orphanRemoval: true)]
-    protected $__metadata;
-
-    /**
      * @var \MapasCulturais\Entities\SpaceFile[] Files
      */
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\SpaceFile", fetch: "EXTRA_LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
