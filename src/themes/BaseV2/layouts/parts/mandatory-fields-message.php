@@ -12,7 +12,8 @@ $this->import('
 ');
 ?>
 
-
-<mc-alert type="warning" class="mc-mandatory-fields-message">
-    <?= i::__("Por favor, preencha todos os campos obrigatórios.") ?>
-</mc-alert>
+<div class="container grid-12">
+    <mc-alert type="warning" class="col-2">
+        <?= i::__("Por favor, preencha todos os campos obrigatórios.") ?>
+    </mc-alert>
+</div>
