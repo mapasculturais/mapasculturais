@@ -36,10 +36,6 @@ class ChatMessage extends \MapasCulturais\Entity
     #[ORM\JoinColumn(name: "chat_thread_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $thread;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\ChatMessage")]
-    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", nullable: true, onDelete: "CASCADE")]
-    protected $parent;
-
     #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false, onDelete: "CASCADE")]
     protected $user;

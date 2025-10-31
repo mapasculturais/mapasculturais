@@ -90,13 +90,6 @@ class Agent extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: false)]
     protected $status = self::STATUS_ENABLED;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: "LAZY")]
-    #[ORM\JoinColumn(name: "parent_id", referencedColumnName: "id", onDelete: "SET NULL")]
-    protected $parent;
-
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Agent", mappedBy: "parent", fetch: "LAZY", cascade: ["remove"])]
-    protected $_children;
-
     #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\User", fetch: "LAZY")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $user;
