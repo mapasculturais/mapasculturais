@@ -1,7 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
-use MapasCulturais\App;
+use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\Entities\Opportunity;
 /**
  * Defines that the entity has related opportunities.
@@ -9,8 +9,11 @@ use MapasCulturais\Entities\Opportunity;
  * @property-read \MapasCulturais\Entities\Opportunity[] $opportunities
  * @property-read string $opportunityClassName
  */
-trait EntityOpportunities{
-
+trait EntityOpportunities {
+    
+    #[ORM\OneToMany(targetEntity: self::class . "Opportunity", mappedBy: "ownerEntity", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
+    protected $_relatedOpportunities;
 
     /**
      * This entity has related opportunities.

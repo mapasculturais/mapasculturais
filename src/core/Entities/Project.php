@@ -74,10 +74,6 @@ class Project extends \MapasCulturais\Entity
 
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\Event", mappedBy: "project", fetch: "LAZY", cascade: ["persist"])]
     protected $_events;
-    
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\ProjectOpportunity", mappedBy: "ownerEntity", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $_relatedOpportunities;
 
     #[ORM\Column(name: "subsite_id", type: "integer", nullable: true)]
     protected $_subsiteId;
