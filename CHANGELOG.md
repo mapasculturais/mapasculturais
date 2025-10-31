@@ -10,6 +10,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Substituição do driver AnnotationDriver de mapeamendo do Doctrine para o AttributeDriver
 - Remoção dos fetch: EAGER para compatibilidade com o Doctrine 2.20
 - Remoção dos DiscriminatorMaps das classes auxiliares (File, AgentRelation etc) possibilitando a utilização desses recursos em plugins
+- Refatoração dos traits de entidades para incluir as propriedades de mapeamento do doctrine utilizadas pelo trait
 
 ### Atualizações de bibliiotecas
 - PHP atualizado para versão 8.4
