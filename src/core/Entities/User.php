@@ -677,6 +677,10 @@ class User extends \MapasCulturais\Entity implements \MapasCulturais\UserInterfa
         ";
         $q = $app->em->createQuery($dql);
         $opportunity_ids = $q->getSingleColumnResult();
+
+        if(empty($opportunity_ids)) {
+            return [];
+        }
         
         $opportunities = $app->repo('Opportunity')->findBy(['id' => $opportunity_ids]);
 
