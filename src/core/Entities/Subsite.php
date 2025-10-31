@@ -99,12 +99,13 @@ class Subsite extends \MapasCulturais\Entity
         $val = array_map(function($v) { return (int) $v; }, $val);
 
         $this->verifiedSeals = $val;
-    }    /**
+    }    
+    
+    /**
      * @var string
      */
     #[ORM\Column(name: "namespace", type: "string", length: 50, nullable: false)]
     protected $namespace = 'Subsite';
-
 
     protected $filters = [];
 
