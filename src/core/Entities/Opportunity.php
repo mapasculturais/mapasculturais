@@ -149,10 +149,6 @@ abstract class Opportunity extends \MapasCulturais\Entity
     #[ORM\OneToOne(targetEntity: "MapasCulturais\Entities\EvaluationMethodConfiguration", mappedBy: "opportunity")]
     protected $evaluationMethodConfiguration;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunityTermRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__termRelations;
-
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\OpportunitySealRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__sealRelations;

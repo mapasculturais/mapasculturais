@@ -1,5 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
+
+use Doctrine\ORM\Mapping as ORM;
 use MapasCulturais\App;
 use MapasCulturais\Entities\Term;
 use MapasCulturais\Entities\TermRelation;
@@ -28,7 +30,12 @@ use MapasCulturais\Entities\TermRelation;
  * 
  * @property-read string $termRelationClassName the name of the term relation class for this entity
  */
-trait EntityTaxonomies{
+trait EntityTaxonomies {
+
+    #[ORM\OneToMany(targetEntity: self::class . "TermRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
+    protected $__termRelations;
+
     /**
      * This property is used to set terms to the entity.
      *

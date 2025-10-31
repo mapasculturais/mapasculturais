@@ -88,10 +88,6 @@ class Event extends \MapasCulturais\Entity
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $_relatedOpportunities;
 
-    #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventTermRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
-    #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
-    protected $__termRelations;
-
     #[ORM\OneToMany(targetEntity: "MapasCulturais\Entities\EventSealRelation", fetch: "LAZY", mappedBy: "owner", cascade: ["remove"], orphanRemoval: true)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "object_id", onDelete: "CASCADE")]
     protected $__sealRelations;
