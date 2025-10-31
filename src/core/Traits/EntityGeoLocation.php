@@ -1,6 +1,7 @@
 <?php
 namespace MapasCulturais\Traits;
 
+use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use MapasCulturais\App;
 use \MapasCulturais\Types\GeoPoint;
@@ -27,7 +28,13 @@ use stdClass;
  *
  * @property \MapasCulturais\Types\GeoPoint $location The location of the entity.
  */
-trait EntityGeoLocation{
+trait EntityGeoLocation {
+
+    #[ORM\Column(name: "location", type: "point", nullable: false)]
+    protected $location;
+
+    #[ORM\Column(name: "_geo_location", type: "geography", nullable: false)]
+    protected $_geoLocation;
 
     /**
      * This entity has geoLocation
