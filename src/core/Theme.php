@@ -208,25 +208,26 @@ abstract class Theme {
                 $app->hook('GET(panel.<<*>>):before, GET(<<*>>.<<edit|create|single>>):before, auth.successful', function () use ($app) {
                     $url = $app->user->profile->editUrl . '?notification_handler=true';
 
+                    $redirect = false;
+                    if($app->user->profile->status < 1 || $app->user->profile->validationErrors) {
+                        $redirect = true;
+                    }
+
+                    // Hook do template para exibir alerta de campos obrigatórios
+                    $app->hook('template(agent.edit.entity-info-validation):begin', function () use ($app, $redirect) {
+                        if ($redirect && isset($_GET['notification_handler']) && $_GET['notification_handler'] == 'true') {
+                            $this->part("mandatory-fields-message");
+                        }
+                    });
+
                     if ($entity = $this->requestedEntity) {
                         /** @var \MapasCulturais\Entity $entity */
-                        if (!$entity->equals($app->user->profile)) {
+                        if (!$entity->equals($app->user->profile) && $redirect) {
                             $app->redirect($url);
                         }
-                    }
-
-                    if ($app->user->profile->status < 1) {
-                        $app->redirect($url);
-                    }
+                    } 
                 });
 
-                // Hook do template para exibir alerta de campos obrigatórios
-                $app->hook('template(agent.edit.entity-info-validation):begin', function () use ($app) {
-
-                    if (isset($_GET['notification_handler']) && $_GET['notification_handler'] == 'true') {
-                        $this->part("mandatory-fields-message");
-                    }
-                });
             }
         });
 
