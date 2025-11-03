@@ -24,7 +24,6 @@ class Subsite extends \MapasCulturais\Entity
         Traits\EntityFiles,
         Traits\EntityMetadata,
         Traits\EntityMetaLists,
-        Traits\EntityGeoLocation,
         Traits\EntitySoftDelete,
         Traits\EntityDraft,
         Traits\EntityArchive;
