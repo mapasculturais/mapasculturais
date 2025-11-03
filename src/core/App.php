@@ -3411,7 +3411,7 @@ class App {
         $controllers = $this->_register['controllers'];
         if($return_controller_object){
             foreach($controllers as $id => $class){
-                $controllers[$id] = $class::i();
+                $controllers[$id] = $class::i($id, $this->_register['controllers_view_dirs'][$id]);
             }
         }
 
@@ -3433,7 +3433,7 @@ class App {
         $controller_id = strtolower($controller_id);
         if(key_exists($controller_id, $this->_register['controllers']) && class_exists($this->_register['controllers'][$controller_id])){
             $class = $this->_register['controllers'][$controller_id];
-            return $class::i($controller_id);
+            return $class::i($controller_id, $this->_register['controllers_view_dirs'][$controller_id]);
         }else{
             return null;
         }

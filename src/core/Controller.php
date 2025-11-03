@@ -104,17 +104,25 @@ abstract class Controller{
     public $id = null;
 
     /**
+     * 
+     * @var string controller id
+     */
+    protected string $viewDir;
+
+    /**
      * Returns the singleton instance. This method creates the instance when called for the first time.
      * @return self
      */
-    static public function i(string $controller_id): Controller {
+    static public function i(string $controller_id, ?string $view_dir = null): Controller {
         $class = get_called_class();
 
         $id = "{$class}:{$controller_id}";
 
         if (!key_exists($id, self::$_singletonInstances)) {
-            self::$_singletonInstances[$id] = new $class;
-            self::$_singletonInstances[$id]->id = $controller_id;
+            $instance = new $class;
+            $instance->id = $controller_id;
+            $instance->viewDir = $view_dir ?: $controller_id;
+            self::$_singletonInstances[$id] = $instance;
         }
 
         return self::$_singletonInstances[$id];
@@ -319,7 +327,7 @@ abstract class Controller{
 
     function getTemplatePrefix()
     {
-        return $this->id;
+        return $this->viewDir;
     }
 
     /**
