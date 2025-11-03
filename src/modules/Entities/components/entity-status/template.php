@@ -10,13 +10,18 @@ use MapasCulturais\i;
 $this->import('
     mc-alert
 ');
+
+$agent_draft_text = sprintf(
+    '<strong>%s</strong> %s',
+    i::__('Este agente está em rascunho.'),
+    i::__('Você precisa <strong>publicar</strong> para exibir para todas as pessoas.')
+);
 ?>
 <div v-if="entity.status != 1" class="entity-status">
     <mc-alert type="warning">
         <template v-if="entity.__objectType == 'agent'">
             <span v-if="entity.status == 0">
-                <strong><?= i::__('Este agente está em rascunho.'); ?></strong>
-                <?= i::__('Você precisa <strong>publicar</strong> para exibir para todas as pessoas.') ?>
+                <?= $this->text('agent-status--draft', $agent_draft_text) ?>
             </span>
             <span v-if="entity.status == -10">
                 <strong><?= i::__('Este agente está na lixeira.'); ?></strong>

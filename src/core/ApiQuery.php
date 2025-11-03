@@ -1300,7 +1300,16 @@ class ApiQuery {
                         $new_oder = str_replace('.', '_', preg_replace('#^([^ ]+)#', '$1_' . $cast, $_order));
                         $alias = preg_replace("# .*#", '', $new_oder);
                         $_prop = preg_replace("# .*#", '', $_order);
-                        $order_cast = "CAST({$_prop} AS $cast) AS HIDDEN $alias";
+                        
+                        $field_type = isset($this->fieldMappings[$key]) ? $this->fieldMappings[$key]['type'] : null;
+                        $numeric_casts = ['FLOAT', 'INTEGER'];
+
+                        if ($field_type == 'string' && in_array(strtoupper($cast), $numeric_casts)) {
+                            $order_cast = "CAST(NULLIF({$_prop}, '') AS $cast) AS HIDDEN $alias";
+                        } else {
+                            $order_cast = "CAST({$_prop} AS $cast) AS HIDDEN $alias";
+                        }
+
                         if(!in_array($order_cast, $this->orderCasts)){
                             $this->orderCasts[] = $order_cast;
                         }
