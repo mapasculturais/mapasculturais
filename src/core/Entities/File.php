@@ -6,6 +6,8 @@ use \MapasCulturais\i;
 use \MapasCulturais\App;
 use MapasCulturais\Utils;
 use Doctrine\ORM\Mapping as ORM;
+use MapasCulturais\Traits\EntityFiles;
+use MapasCulturais\Traits\EntityFilesFunctions;
 
 /**
  * File
@@ -35,7 +37,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 abstract class File extends \MapasCulturais\Entity
 {
-    use \MapasCulturais\Traits\EntityFiles;
+    use EntityFilesFunctions;
 
     #[ORM\Column(name: "id", type: "integer", nullable: false)]
     #[ORM\Id]
