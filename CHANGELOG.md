@@ -12,6 +12,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
 - Implementa novos hooks na edit dos agentes
+- Implementa novos hooks na edit de espaço e no componente entity-field
 
 ### Correções
 - Corrige erro que ocorria ao ordenar resultados com campos string vazios convertidos para FLOAT no ApiQuery
