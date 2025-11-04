@@ -109,7 +109,7 @@ return [
     'footer.supportMessage' => '',
 
     /* Define se o usuário será redirecionado para a edição do perfil caso o perfil não esteja validado */
-    'app.redirect_profile_validate' => env('APP_REDIRECT_PROFILE_VALIDATE', true),
+    'app.redirect_profile_validate' => env('APP_REDIRECT_PROFILE_VALIDATE', false),
     
     /* Lista de MIME types bloqueados */
     'app.not_allowed_mime_types' => env('APP_NOT_ALLOWED_MIME_TYPES', "html|php|javascript|css|executable|msdownload|bat|cmd|installer|bash|diskimage|android|java|octet-stream"),
