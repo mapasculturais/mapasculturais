@@ -10,6 +10,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
 - Implementa novos hooks na edit de espaço e no componente entity-field
 
+### Correções
+- Corrige warnigs no navegador devido a problemas com o componente entity-field
+
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
 - Implementa novos hooks na edit dos agentes
