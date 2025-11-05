@@ -58,35 +58,37 @@ class Module extends \MapasCulturais\Module {
             'address_line2'      => i::__('Endereço linha 2')
         ];
 
-        $level_labels = $app->config['address.defaultLevelsLabels'];
+        $level_labels = $app->config['address.defaultLevelsLabels'] ?? [];
 
-        for($i = 1; $i <= 6; $i++) {
-            $label_config = $level_labels[$i];
-            $address_metadata["address_level{$i}"] = $label_config;
-        }
-
-        foreach ($address_metadata as $slug => $label) {
-            $this->registerAgentMetadata($slug, [
-                'label' => $label,
-                'private' => function(){
-                    return !$this->publicLocation;
-                },
-                'serialize' => function($value, $entity) use($slug, $app) {
-                    $country = $slug == 'address_level0' ? $value : $entity->address_level0;
-                    if($slug == 'address') {
-                        $slug = 'address_fullAddress';
-                    }
-
-                    if($country && $country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country)) {
-                        $setter = 'set'.substr($slug, 8);
-
-                        $country_localization->$setter($entity, $value);
-                    }
-
-                    return $value;
-                },
-            ]);
-            $this->registerSpaceMetadata($slug, ['label' => $label]);
+        if($level_labels) {
+            for($i = 1; $i <= 6; $i++) {
+                $label_config = $level_labels[$i];
+                $address_metadata["address_level{$i}"] = $label_config;
+            }
+    
+            foreach ($address_metadata as $slug => $label) {
+                $this->registerAgentMetadata($slug, [
+                    'label' => $label,
+                    'private' => function(){
+                        return !$this->publicLocation;
+                    },
+                    'serialize' => function($value, $entity) use($slug, $app) {
+                        $country = $slug == 'address_level0' ? $value : $entity->address_level0;
+                        if($slug == 'address') {
+                            $slug = 'address_fullAddress';
+                        }
+    
+                        if($country && $country_localization = $app->getRegisteredCountryLocalizationByCountryCode($country)) {
+                            $setter = 'set'.substr($slug, 8);
+    
+                            $country_localization->$setter($entity, $value);
+                        }
+    
+                        return $value;
+                    },
+                ]);
+                $this->registerSpaceMetadata($slug, ['label' => $label]);
+            }
         }
 
         $app->registerCountryLocalization(new BrasilLocalization());
