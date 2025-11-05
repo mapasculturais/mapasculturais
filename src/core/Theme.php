@@ -209,14 +209,14 @@ abstract class Theme {
                     $url = $app->user->profile->editUrl . '?notification_handler=true';
 
                     $redirect = false;
-                    if($app->user->profile->status < 1 || $app->user->profile->validationErrors) {
+                    if($app->user->profile->status < 1 || !empty($app->user->profile->getValidationErrors())) {
                         $redirect = true;
                     }
 
                     // Hook do template para exibir alerta de campos obrigatórios
                     $app->hook('template(agent.edit.entity-info-validation):begin', function () use ($app, $redirect) {
                         if ($redirect && isset($_GET['notification_handler']) && $_GET['notification_handler'] == 'true') {
-                            $this->part("mandatory-fields-message");
+                            $this->part("required-fields-profile-message");
                         }
                     });
 
