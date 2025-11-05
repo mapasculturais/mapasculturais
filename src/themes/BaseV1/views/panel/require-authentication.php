@@ -1,1 +1,0 @@
-<script type="text/javascript"> window.parent.MapasCulturais.auth.finish(); </script>
