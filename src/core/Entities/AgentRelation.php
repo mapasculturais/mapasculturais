@@ -16,8 +16,6 @@ use MapasCulturais\App;
  * @property int $objectId
  * @property \MapasCulturais\Entities\Agent $agent
  * @property \DateTime $createTimestamp
- *
- * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
  */
 #[ORM\Table(name: "agent_relation", indexes: [
     new ORM\Index(name: "agent_relation_owner_type", columns: ["object_type"]),
