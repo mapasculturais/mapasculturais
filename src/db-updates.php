@@ -1337,6 +1337,23 @@ return [
             $app->log->debug("Aplicado Índice Único na tabela auxiliar {$table}");
         }
     },
+
+    'adiciona coluna pk à tabela de job' => function () {
+        __exec('DROP SEQUENCE IF EXISTS job_pk_seq');
+        __exec("CREATE SEQUENCE job_pk_seq
+                                START WITH 1
+                                INCREMENT BY 1
+                                NO MINVALUE
+                                NO MAXVALUE
+                                CACHE 1;");
+                                
+        __exec("ALTER TABLE job ADD COLUMN pk bigint not null DEFAULT nextval('job_pk_seq'::regclass)");
+        
+        __exec("ALTER TABLE job DROP CONSTRAINT job_pkey");
+        __exec("ALTER TABLE job ADD CONSTRAINT job_pk PRIMARY KEY (pk);");
+
+    },
+
     /// MIGRATIONS - DATA CHANGES =========================================
 
     'migrate gender' => function() use ($conn) {

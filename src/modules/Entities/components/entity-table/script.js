@@ -51,12 +51,7 @@ app.component('entity-table', {
         },
         sortOptions: {
             type: Array,
-            default: [
-                { value: 'createTimestamp DESC', label: __('mais recentes primeiro', 'entity-table') },
-                { value: 'createTimestamp ASC',  label: __('mais antidas primeiro', 'entity-table') },
-                { value: 'updateTimestamp DESC', label: __('modificadas recentemente', 'entity-table') },
-                { value: 'updateTimestamp ASC',  label: __('modificadas há mais tempo', 'entity-table') },
-            ]
+            default: $MAPAS.config.entityTable.sortOptions
         },
         identifier: {
             type: String,
@@ -121,6 +116,7 @@ app.component('entity-table', {
     },
 
     data() {
+        let fromToStatus = $MAPAS.config.entityTable.fromToStatus
         const id = this.query['@opportunity'] ?? '';
         const sessionTitle = this.controller + ':' + this.endpoint + ':' + id + ':' + this.identifier;
         
@@ -137,6 +133,7 @@ app.component('entity-table', {
         }
 
         return {
+            fromToStatus,
             apiController: this.controller || this.type,
             entitiesOrder: this.order,
             columns,
@@ -543,6 +540,11 @@ app.component('entity-table', {
                 } else {
                     val = val.date('numeric year');
                 }
+            }
+
+            if(prop == 'status') {
+                let type = this.type.charAt(0).toUpperCase() + this.type.slice(1);
+                val = this.fromToStatus[type]?.[val] || val;
             }
 
             return val;
