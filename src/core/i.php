@@ -439,7 +439,7 @@ class i {
             $translation = str_replace(ucwords($from), ucwords($to), $translation);
             $translation = str_replace(ucfirst($from), ucfirst($to), $translation);
             $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
-            $translation = str_replace(mb_strtolower($from), mb_strtolower($to), $translation);
+            $translation = str_replace(mb_strtoupper($from), mb_strtoupper($to), $translation);
         }
 
         return $translation;
