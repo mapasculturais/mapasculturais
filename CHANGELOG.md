@@ -22,6 +22,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Corrige warnigs no navegador devido a problemas com o componente entity-field
 - Implementa verificações para evitar warnings indesejados referente ao componente de localização
 - Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
+- Corrige função replaces da classe i
 
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
