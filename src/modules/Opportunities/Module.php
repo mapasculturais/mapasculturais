@@ -1001,6 +1001,15 @@ class Module extends \MapasCulturais\Module{
                 }
             }
         });
+
+        $app->hook('template(opportunity.allEvaluations.entityTableSortOptions)', function(&$sort_options) {
+            $sort_options = [
+                [ 'value' => 'sentTimestamp DESC',   'label' => i::__('mais recentes primeiro') ],
+                [ 'value' => 'sentTimestamp ASC',    'label' => i::__('mais antigas primeiro') ],
+                [ 'value' => 'updateTimestamp DESC', 'label' => i::__('modificadas recentemente') ],
+                [ 'value' => 'updateTimestamp ASC',  'label' => i::__('modificadas há mais tempo') ],
+            ];
+        });
     }
 
     function register(){

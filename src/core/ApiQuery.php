@@ -3312,6 +3312,11 @@ class ApiQuery {
     }
 
     protected function _addFilterByMetadata($key, $value) {
+        if (isset($this->_keys[$key])) {
+            $this->_whereDqls[] = $this->parseParam($this->_keys[$key], $value);
+            return;
+        }
+    
         $meta_alias = $this->getAlias('meta_' . $key);
 
         $this->_keys[$key] = "$meta_alias.value";
