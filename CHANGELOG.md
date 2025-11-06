@@ -14,6 +14,22 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Aba de eventos na single de projetos com listagem de eventos vinculados e suas ocorrências
 - Fediverso como rede social nos metadados das entidades
 
+### Melhorias
+- Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
+- Implementa novos hooks na edit de espaço e no componente entity-field
+
+### Correções
+- Corrige warnigs no navegador devido a problemas com o componente entity-field
+- Implementa verificações para evitar warnings indesejados referente ao componente de localização
+- Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
+
+## [7.6.23] - 2025-10-31
+### Melhorias e correções não funcionais
+- Implementa novos hooks na edit dos agentes
+
+### Correções
+- Corrige erro que ocorria ao ordenar resultados com campos string vazios convertidos para FLOAT no ApiQuery
+
 ## [7.6.22] - 2025-10-28
 ### Correções
 - Corrige criação de avaliação na rota de nova avaliação

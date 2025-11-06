@@ -151,7 +151,10 @@ $this->breadcrumb = [
                         </template>
                         <template #content>
                             <div class="grid-12">
+                                <?php $this->applyTemplateHook('public-info-long-description','before') ?>
                                 <entity-field :entity="entity" classes="col-12" prop="longDescription" label="<?= $this->text('long-description', i::__('Descrição')) ?>"></entity-field>
+                                <?php $this->applyTemplateHook('public-info-long-description','after') ?>
+
                                 <entity-files-list :entity="entity" classes="col-12" group="downloads" title="<?= i::_e('Adicionar arquivos para download') ?>" editable></entity-files-list>
                                 <entity-links :entity="entity" classes="col-12" title="<?php i::_e('Adicionar links'); ?>" editable></entity-links>
                                 <entity-gallery-video :entity="entity" classes="col-12" title="<?php i::_e('Adicionar vídeos') ?>" editable></entity-gallery-video>

@@ -21,12 +21,17 @@ $this->import('
     select-municipio
 ')
 ?>
+<?php $this->applyTemplateHook('entity-field','before') ?>
 <div v-if="propExists()" class="field" :class="[{error: hasErrors}, {disabled: readonly || disabled}, classes]" :data-field="prop">
+    <?php $this->applyTemplateHook('entity-field','begin') ?>
+
+    <?php $this->applyTemplateHook('entity-field-label','before') ?>
     <label class="field__title" v-if="!hideLabel && !is('checkbox')" :for="propId">
         <slot>{{label || description.label}}</slot>
         <span v-if="description.required && !hideRequired" class="required">*<?php i::_e('obrigatório') ?></span>
         <slot name="info"></slot>
     </label>
+    <?php $this->applyTemplateHook('entity-field-label','after') ?>
 
     <small class="field__description" v-if="descriptionFirst && (!hideDescription && (fieldDescription || description.description))"> {{ fieldDescription || description.description}} </small>
 
@@ -165,4 +170,6 @@ $this->import('
     <small class="field__error" v-if="hasErrors">
         {{errors.join('; ')}}
     </small>
+    <?php $this->applyTemplateHook('entity-field','end') ?>
 </div>
+<?php $this->applyTemplateHook('entity-field','after') ?>   
