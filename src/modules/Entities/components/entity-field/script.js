@@ -170,6 +170,11 @@ app.component('entity-field', {
             default: false
         },
 
+        editable: {
+            type: Boolean,
+            default: false
+        },
+
         preserveOrder: {
             type: Boolean,
             default: false
