@@ -193,27 +193,41 @@ abstract class Theme {
                 $reflaction = $reflaction->getParentClass();
             }
         }, 100);
+        
+        $app->hook('app.init:after', function () use ($app) {
 
+            if ((!$app->user->is('guest')) && $app->config['app.redirect_profile_validate']) {
 
-        $app->hook('app.init:after', function () use($app) {
-            if(!$app->user->is('guest') && $app->user->profile->status < 1){
-                if($app->view->version < 2) {
-                    $app->hook('view.partial(nav-main-user).params', function($params, &$name){
+                if ($app->view->version < 2) {
+                    $app->hook('view.partial(nav-main-user).params', function ($params, &$name) {
                         $name = 'header-profile-link';
                     });
                 }
-                
+
                 // redireciona o usuário para a edição do perfil se este não estiver publicado
-                $app->hook('GET(panel.<<*>>):before, GET(<<*>>.<<edit|create>>):before', function() use($app){
-                    if($entity = $this->requestedEntity) {
-                        /** @var \MapasCulturais\Entity $entity */
-                        if(!$entity->equals($app->user->profile)){
-                            $app->redirect($app->user->profile->editUrl);
-                        }
-                    } else {
-                        $app->redirect($app->user->profile->editUrl);
+                $app->hook('GET(panel.<<*>>):before, GET(<<*>>.<<edit|create|single>>):before, auth.successful', function () use ($app) {
+                    $url = $app->user->profile->editUrl . '?notification_handler=true';
+
+                    $redirect = false;
+                    if($app->user->profile->status < 1 || !empty($app->user->profile->getValidationErrors())) {
+                        $redirect = true;
                     }
+
+                    // Hook do template para exibir alerta de campos obrigatórios
+                    $app->hook('template(agent.edit.entity-info-validation):begin', function () use ($app, $redirect) {
+                        if ($redirect && isset($_GET['notification_handler']) && $_GET['notification_handler'] == 'true') {
+                            $this->part("required-fields-profile-message");
+                        }
+                    });
+
+                    if ($entity = $this->requestedEntity) {
+                        /** @var \MapasCulturais\Entity $entity */
+                        if (!$entity->equals($app->user->profile) && $redirect) {
+                            $app->redirect($url);
+                        }
+                    } 
                 });
+
             }
         });
 
