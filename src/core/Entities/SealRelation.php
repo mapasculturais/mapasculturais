@@ -12,7 +12,6 @@ use MapasCulturais\i;
  *
  * @property-read int $id The Id of the relation.
  *
- * @todo http://thoughtsofthree.com/2011/04/defining-discriminator-maps-at-child-level-in-doctrine-2-0/
  */
 #[ORM\Table(name: "seal_relation")]
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]

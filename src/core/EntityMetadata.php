@@ -2,7 +2,9 @@
 namespace MapasCulturais;
 
 use Doctrine\ORM\Mapping as ORM;
-
+/**
+ * @property mixed $value
+ */
 class EntityMetadata extends Entity {
 
     /**
