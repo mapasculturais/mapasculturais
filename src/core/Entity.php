@@ -164,10 +164,6 @@ abstract class Entity implements \JsonSerializable{
         return App::i()->em->getUnitOfWork()->getEntityState($this) === \Doctrine\ORM\UnitOfWork::STATE_NEW;
     }
 
-    function isArchived(){
-        return $this->status === self::STATUS_ARCHIVED;
-    }
-
     function simplify($properties = 'id,name'){
         $e = new \stdClass;
         $e->{'@entityType'} = $this->getControllerId();
