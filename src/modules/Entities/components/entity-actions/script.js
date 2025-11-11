@@ -39,6 +39,11 @@ app.component('entity-actions', {
                     return __('Projeto', 'entity-actions');
             }
         },
+
+        usePrivate() {
+            const description = $DESCRIPTIONS[this.entity.__objectType];
+            return !!description.status.options.private;
+        }
     },
 
     props: {
