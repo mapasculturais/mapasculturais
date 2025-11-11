@@ -20,7 +20,7 @@ class AgentDirector extends Director
         $this->userBuilder = new UserBuilder;
     }
 
-    function createAgent(User|Agent $owner_or_parent, ?int $type = null, bool $fill_requered_properties = true, bool $save = true, bool $flush = true, bool $disable_access_control = false): Agent
+    function createAgent(User|Agent $owner_or_parent, ?int $type = null, bool $fill_requered_properties = true, bool $save = true, bool $flush = true, bool $disable_access_control = false, bool $private = false): Agent
     {
         $app = App::i();
         $builder = $this->agentBuilder;
@@ -40,6 +40,10 @@ class AgentDirector extends Director
 
         if ($parent) {
             $builder->setParent($parent);
+        }
+
+        if($private) {
+            $builder->setStatus(Agent::STATUS_PRIVATE);
         }
 
         if ($save) {

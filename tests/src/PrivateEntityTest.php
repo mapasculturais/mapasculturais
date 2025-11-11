@@ -5,17 +5,31 @@ namespace Tests;
 use MapasCulturais\ApiQuery;
 use MapasCulturais\Entities\Agent;
 use MapasCulturais\Entities\Opportunity;
+use MapasCulturais\Entities\Space;
 use Tests\Abstract\TestCase;
 use Tests\Builders\PhasePeriods\Open;
 use Tests\Traits\AgentDirector;
 use Tests\Traits\OpportunityBuilder;
+use Tests\Traits\SpaceDirector;
 use Tests\Traits\UserDirector;
 
 class PrivateEntityTest extends TestCase
 {
     use UserDirector,
         OpportunityBuilder,
+        SpaceDirector,
         AgentDirector;
+
+
+    protected function assertApiQueryCount(string $entity_class, array $query_params, int $count, string $message)
+    {
+        $query = new ApiQuery($entity_class, $query_params);
+
+        $result = $query->getFindResult();
+
+
+        $this->assertEquals($count, count($result), $message);
+    }
 
     protected function createOpportunity(Agent $owner, bool $private): Opportunity
     {
@@ -40,7 +54,22 @@ class PrivateEntityTest extends TestCase
         return $opportunity;
     }
 
-    function testPermissionToView()
+    protected function createSpace(Agent $owner, bool $private): Space
+    {
+        $current_user = $this->app->user;
+        $this->login($owner->user);
+    
+        $space = $this->spaceDirector->createSpace(
+            owner: $owner,
+            private: $private
+        );
+    
+        $this->login($current_user);
+    
+        return $space;
+    }
+
+    function testPermissionToViewOpportunity()
     {
         $normal_user1 = $this->userDirector->createUser();
         $normal_user2 = $this->userDirector->createUser();
@@ -70,19 +99,8 @@ class PrivateEntityTest extends TestCase
         $this->assertTrue($opportunity->canUser('view'), 'Garantindo que um usuário consegue ver uma oportunidade privada na qual ele foi relacionado');
     }
 
-    protected function asserApiQueryCount(array $query_params, int $count, string $message)
-    {
-        $query = new ApiQuery(Opportunity::class, $query_params);
-
-        $result = $query->getFindResult();
-
-        // eval(\psy\sh());
-
-        $this->assertEquals($count, count($result), $message);
-    }
-
-    function testAPI() {
-       $normal_user1 = $this->userDirector->createUser();
+    function testOppotunityAPI() {
+        $normal_user1 = $this->userDirector->createUser();
         $normal_user2 = $this->userDirector->createUser();
         $normal_user3 = $this->userDirector->createUser();
 
@@ -117,18 +135,100 @@ class PrivateEntityTest extends TestCase
 
         foreach($query_params as $params) {
             $this->login($normal_user1);
-            $this->asserApiQueryCount($params, 3, "Garantindo que a API retorna as oportunidades privadas para o proprietário das oportunidades");
+            $this->assertApiQueryCount(Opportunity::class, $params, 3, "Garantindo que a API retorna as oportunidades privadas para o proprietário das oportunidades");
     
             $this->login($normal_user2);
-            $this->asserApiQueryCount($params, 1, "Garantindo que a API NÃO retorna as oportunidades privadas para um usuário comum que não possui vínculo com as oportunidades");
+            $this->assertApiQueryCount(Opportunity::class, $params, 1, "Garantindo que a API NÃO retorna as oportunidades privadas para um usuário comum que não possui vínculo com as oportunidades");
     
             $this->login($admin);
-            $this->asserApiQueryCount($params, 3, "Garantindo que a API retorna as oportunidades privadas para os admins");
+            $this->assertApiQueryCount(Opportunity::class, $params, 3, "Garantindo que a API retorna as oportunidades privadas para os admins");
     
             $this->login($normal_user3);
-            $this->asserApiQueryCount($params, 2, "Garantindo que a API retorna as oportunidades privadas para um usuário comum com vínculo com a proprietário");      
+            $this->assertApiQueryCount(Opportunity::class, $params, 2, "Garantindo que a API retorna as oportunidades privadas para um usuário comum com vínculo com a proprietário");      
         }
+    }
+
+    function testPermissionToViewSpace()
+    {
+        $normal_user1 = $this->userDirector->createUser();
+        $normal_user2 = $this->userDirector->createUser();
+        $normal_user3 = $this->userDirector->createUser();
+
+        $admin = $this->userDirector->createUser('admin');
+
+        $space = $this->createSpace(
+            owner: $normal_user1->profile,
+            private: true
+        );
+
+        $this->login($normal_user1);
+        $this->assertTrue($space->canUser('view'), 'Garantindo que um usuário consegue ver o próprio espaço privado');
+
+        $this->login($normal_user2);
+        $this->assertFalse($space->canUser('view'), 'Garantindo que um usuário comum NÃO PODE ver um espaço privado de outro usuário');
+
+        $this->login($admin);
+        $this->assertTrue($space->canUser('view'), 'Garantindo que um admin PODE ver a um espaõ privado de outro usuário');
+
+        $this->app->disableAccessControl();
+        $space->createAgentRelation($normal_user3->profile, 'teste');
+        $this->app->enableAccessControl();
+
+        $this->login($normal_user3);
+        $this->assertTrue($space->canUser('view'), 'Garantindo que um usuário consegue ver um espaço privado no qual ele foi relacionado');
+    }
+
+    function testSpaceAPI() {
+        $normal_user1 = $this->userDirector->createUser();
+        $normal_user2 = $this->userDirector->createUser();
+        $normal_user3 = $this->userDirector->createUser();
+
+        $admin = $this->userDirector->createUser('admin');
+
+        $public_space = $this->createSpace(
+            owner: $normal_user1->profile,
+            private: false
+        );
+
+        $private_space1 = $this->createSpace(
+            owner: $normal_user1->profile,
+            private: true
+        );
+
+        $private_space2 = $this->createSpace(
+            owner: $normal_user1->profile,
+            private: true
+        );
+
+        $private_space3 = $this->createSpace(
+            owner: $admin->profile,
+            private: true
+        );
+    
+        $this->app->disableAccessControl();
+        $private_space1->createAgentRelation($normal_user3->profile, 'teste');
+        $this->app->enableAccessControl();
+
+        $this->processPCache();
+
+        $query_params = [
+            ['@select' => 'id,name,owner.{name},status'],
+            ['@select' => 'id,name,status'],
+        ];
 
         
+        foreach($query_params as $params) {
+            $this->login($normal_user1);
+            $this->assertApiQueryCount(Space::class, $params, 3, "Garantindo que a API retorna os espaços privados para o proprietário dos espaços");
+    
+            $this->login($normal_user2);
+            $this->assertApiQueryCount(Space::class, $params, 1, "Garantindo que a API NÃO retorna os espaços privados para um usuário comum que não possui vínculo com os espaços");
+    
+            $this->login($admin);
+            $this->assertApiQueryCount(Space::class, $params, 4, "Garantindo que a API retorna os espaços privados para os admins");
+    
+            $this->login($normal_user3);
+            $this->assertApiQueryCount(Space::class, $params, 2, "Garantindo que a API retorna os espaços privados para um usuário comum com vínculo com a proprietário");      
+        }
     }   
 }

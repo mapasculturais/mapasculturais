@@ -18,7 +18,7 @@ class SpaceDirector extends Director
         $this->spaceBuilder = new SpaceBuilder;
     }
 
-    function createSpace(Agent $owner, ?int $type = null, bool $fill_requered_properties = true, ?Space $parent = null, bool $save = true, bool $flush = true, $disable_access_control = false): Space
+    function createSpace(Agent $owner, ?int $type = null, bool $fill_requered_properties = true, ?Space $parent = null, bool $save = true, bool $flush = true, $disable_access_control = false, bool $private = false): Space
     {
         $builder = $this->spaceBuilder;
         $app = App::i();
@@ -39,6 +39,10 @@ class SpaceDirector extends Director
 
         if($parent) {
             $builder->setParent($parent);
+        }
+
+        if($private) {
+            $builder->setStatus(Space::STATUS_PRIVATE);
         }
 
         if ($save) {

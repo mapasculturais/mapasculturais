@@ -19,16 +19,19 @@ class OpportunityDirector extends Director {
     const PERIOD_OPEN = 'open';
     const PERIOD_CONCURRENT = 'concurrent';
 
-    function createOpportunity(Agent $owner, Agent|Space|Project|Event $ownerEntity, DataCollectionPeriodInterface $registration_period, ?string $evaluation_method_slug = null): Opportunity {
-        $this->opportunityBuilder
-            ->reset($owner, $ownerEntity)
-            ->firstPhase()
-                ->save()
-                ->done();
+    function createOpportunity(Agent $owner, Agent|Space|Project|Event $ownerEntity, DataCollectionPeriodInterface $registration_period, ?string $evaluation_method_slug = null, bool $private = false): Opportunity {
+        $builder = $this->opportunityBuilder;
 
+        $builder->reset($owner, $ownerEntity); 
 
-        $opportunity = $this->opportunityBuilder->getInstance();
-            
+        if($private) {
+            $builder->setStatus(Opportunity::STATUS_PRIVATE);
+        }
+
+        $builder->save();
+
+        $opportunity = $builder->getInstance();
+
         return $opportunity;
     }
 }

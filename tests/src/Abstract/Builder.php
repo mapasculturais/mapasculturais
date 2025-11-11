@@ -29,6 +29,12 @@ abstract class Builder
         }
     }
 
+    function setStatus(int $status): static
+    {
+        $this->instance->status = $status;
+        return $this;
+    }
+
     function save(bool $flush = true): static
     {
         $this->getInstance()->save($flush);
