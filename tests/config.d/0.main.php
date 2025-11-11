@@ -10,6 +10,7 @@ return [
     
     /* SELOS */
     'app.verifiedSealsIds' => [1],
+    'app.lcode' => 'pt_BR',
 
     /* ASSET MANAGER */
     'themes.assetManager' => [
