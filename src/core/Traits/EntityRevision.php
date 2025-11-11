@@ -5,6 +5,7 @@ use MapasCulturais\App;
 use MapasCulturais\Entities;
 use MapasCulturais\i;
 use MapasCulturais\Entities\EntityRevision as Revision;
+use MapasCulturais\Entities\EntityRevision as EntitiesEntityRevision;
 
 /**
  * @property-read \MapasCulturais\Entities\EntityRevision $lastRevision
@@ -185,41 +186,36 @@ trait EntityRevision{
         
         $old_status = $last_revision_data['status']->value;
         $new_status = $this->status;
-        
-        if($old_status != $new_status){
-            switch ($new_status){
-                case self::STATUS_ENABLED:
-                    $action = Revision::ACTION_PUBLISHED;
-                    $message = i::__("Registro publicado.");
-                    break;
-                
-                case self::STATUS_ARCHIVED:
-                    $action = Revision::ACTION_ARCHIVED;
-                    $message = i::__("Registro arquivado.");
-                    break;
-                
-                case self::STATUS_DRAFT:
-                    if($old_status == self::STATUS_TRASH){
-                        $message = i::__("Registro recuperado da lixeira.");
-                        $action = Revision::ACTION_UNTRASHED;
-                    } else if( $old_status == self::STATUS_ARCHIVED){
-                        $message = i::__("Registro desarquivado.");
-                        $action = Revision::ACTION_UNARCHIVED;
-                    } else {
-                        $action = Revision::ACTION_UNPUBLISHED;
-                        $message = i::__("Registro despublicado.");
-                    }
-                    break;
-                    
-                case self::STATUS_TRASH:
-                    $action = Revision::ACTION_TRASHED;
-                    $message = i::__("Registro movido para a lixeira.");
-                    break;
+
+        $compare_status = function (string $constant, $status) {
+            $class = static::class;
+            return defined("{$class}::STATUS_ENABLED") && $status == constant("{$class}::STATUS_ENABLED");
+        };
+
+        if ($old_status != $new_status) {
+            if ($compare_status('STATUS_ENABLED', $new_status)) {
+                $action = Revision::ACTION_PUBLISHED;
+            } else if ($compare_status('STATUS_ARCHIVED', $new_status)) {
+                $action = Revision::ACTION_ARCHIVED;
+            } else if ($compare_status('STATUS_PRIVATE', $new_status)) {
+                $action = Revision::ACTION_MAKE_PRIVATE;
+            } else if ($compare_status('STATUS_DRAFT', $new_status)) {
+                if ($compare_status('STATUS_TRASH', $old_status)) {
+                    $action = Revision::ACTION_UNTRASHED;
+                } else if ($compare_status('STATUS_ARCHIVED', $old_status)) {
+                    $action = Revision::ACTION_UNARCHIVED;
+                } else {
+                    $action = Revision::ACTION_UNPUBLISHED;
+                }
+            } else if ($compare_status('STATUS_DRAFT', $new_status)) {
+                $action = Revision::ACTION_TRASHED;
             }
+
+            $message = EntitiesEntityRevision::defaultMessageForAction($action ?? '');
         }
 
         $revision = new Revision($revisionData, $this, $action, $message, flush: $flush);
-        if($revision->modified || $remove_field) {
+        if ($revision->modified || $remove_field) {
             $revision->save($flush);
         }
     }
@@ -228,7 +224,7 @@ trait EntityRevision{
         $revisionData = $this->_getRevisionData();
         $action = Revision::ACTION_DELETED;
         $message = i::__("Registro deletado.");
-        $revision = new Revision($revisionData,$this,Revision::ACTION_DELETED,$message);
+        $revision = new Revision($revisionData, $this, Revision::ACTION_DELETED, $message);
         $revision->save(true);
     }
 

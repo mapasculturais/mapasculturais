@@ -74,6 +74,13 @@ trait EntityPermissionCache {
             return;
         }
 
+        
+        if($this->usesPrivate()) {
+            $is_private = ($this->status == static::STATUS_PRIVATE);
+        } else {
+            $is_private = false;
+        }
+
         if(is_null($users)){
             if($delete_old) {
                 $this->deletePermissionsCache();
@@ -81,6 +88,11 @@ trait EntityPermissionCache {
 
             if($this->usesAgentRelation()){
                 $users = $this->getUsersWithControl();
+                if($is_private) {
+                    foreach($this->agentRelations as $relation) {
+                        $users[] = $relation->agent->user;
+                    }
+                }
             } else if($this->owner) {
                 $users = $this->owner->getUsersWithControl();
             } else {
@@ -102,7 +114,7 @@ trait EntityPermissionCache {
         $this->__enabled = false;
         $isPrivateEntity = $class_name::isPrivateEntity();
         $hasCanUserViewMethod = method_exists($this, 'canUserView');
-        $isStatusNotDraft = ($this->status > Entity::STATUS_DRAFT);
+        $isStatusNotDraft = ($this->status > 0);
 
         $already_created_users = [];
         $users = array_unique($users);
@@ -135,12 +147,15 @@ trait EntityPermissionCache {
             $allowed_permissions = [];
 
             foreach ($permissions as $permission) {
-                if($permission === '_control' || $permission === 'view' && $isStatusNotDraft && !$isPrivateEntity && !$hasCanUserViewMethod) {
+                if($permission === '_control' || $permission === 'view' && $isStatusNotDraft && !$is_private && !$isPrivateEntity && !$hasCanUserViewMethod) {
                     continue;
                 }
 
                 if ($this->canUser($permission, $user)) {
                     $allowed_permissions[] = $permission;
+
+                    $class_parts = explode('\\', $class_name);
+                    $object_type = strtolower(end($class_parts)) . 'permissioncache';
 
                     $conn->executeQuery("
                         INSERT INTO pcache (user_id, action, object_type, object_id, create_timestamp)
@@ -148,7 +163,7 @@ trait EntityPermissionCache {
                         [
                             'user_id' => $user->id,
                             'action' => $permission,
-                            'object_type' => $class_name,
+                            'object_type' => $object_type,
                             'object_id' => $this->id,
                         ]
                     );

@@ -22,6 +22,7 @@ class EntityRevision extends \MapasCulturais\Entity{
     const ACTION_TRASHED        = 'delete';
     const ACTION_UNTRASHED      = 'undelete';
     const ACTION_DELETED        = 'delete';
+    const ACTION_MAKE_PRIVATE   = 'make-private';
     const ACTION_AUTOUPDATED    = 'autoupdated'; // for implicit modifications
 
     #[ORM\Column(name: "id", type: "integer", nullable: false)]
@@ -135,6 +136,7 @@ class EntityRevision extends \MapasCulturais\Entity{
             self::ACTION_UNARCHIVED => \MapasCulturais\i::__("Registro desarquivado."),
             self::ACTION_UNPUBLISHED => \MapasCulturais\i::__("Registro despublicado."),
             self::ACTION_TRASHED => \MapasCulturais\i::__("Registro movido para a lixeira."),
+            self::ACTION_MAKE_PRIVATE => \MapasCulturais\i::__("Registro tornado privado."),
             self::ACTION_AUTOUPDATED => \MapasCulturais\i::__("Registro atualizado."),
         ][$action] ?? \MapasCulturais\i::__("Registro atualizado."));
     }

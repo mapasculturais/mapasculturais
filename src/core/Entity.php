@@ -56,12 +56,12 @@ abstract class Entity implements \JsonSerializable{
     use Traits\MagicGetter,
         Traits\MagicSetter,
         Traits\MagicCallers;
-
-    const STATUS_ENABLED = 1;
-    const STATUS_DRAFT = 0;
-    const STATUS_DISABLED = -9;
+        
     const STATUS_TRASH = -10;
+    const STATUS_DISABLED = -9;
     const STATUS_ARCHIVED = -2;
+    const STATUS_DRAFT = 0;
+    const STATUS_ENABLED = 1;
 
     /**
      * array of validation definition
@@ -267,13 +267,25 @@ abstract class Entity implements \JsonSerializable{
      * @return array
      */
     protected static function _getStatusesNames() {
-        return [
-            self::STATUS_ARCHIVED => i::__('Arquivado'),
-            self::STATUS_DISABLED => i::__('Desabilitado'),
-            self::STATUS_DRAFT => i::__('Rascunho'),
-            self::STATUS_ENABLED => i::__('Ativado'),
-            self::STATUS_TRASH => i::__('Lixeira'),
+        $statuses = [
+            static::STATUS_DRAFT => i::__('Rascunho'),
+            static::STATUS_ENABLED => i::__('Ativado'),
+            static::STATUS_DISABLED => i::__('Desabilitado'),
         ];
+
+        if(self::usesArchive()) {
+            $statuses[static::STATUS_ARCHIVED] = i::__('Arquivado');
+        }
+
+        if(self::usesArchive()) {
+            $statuses[static::STATUS_TRASH] = i::__('Lixeira');
+        }
+
+        if(self::usesPrivate()) {
+            $statuses[static::STATUS_PRIVATE] = i::__('Privado');
+        }
+
+        return $statuses;
     }
 
     /**
@@ -297,39 +309,33 @@ abstract class Entity implements \JsonSerializable{
     function setStatus(int $status){
         $app = App::i();
 
-        
-        if($status != $this->status){
-            
-            switch($status){
-                case self::STATUS_ARCHIVED:
-                    if($this->usesArchive()){
-                        $this->checkPermission('archive');
-                    }
-                    break;
-                
-                case self::STATUS_TRASH:
-                    if($this->usesSoftDelete()){
-                        $this->checkPermission('remove');
-                    }
-                    break;
+        if ($status != $this->status) {
+            if ($this->usesArchive() && $status == static::STATUS_ARCHIVED) {
+                $this->checkPermission('archive');
 
-                case self::STATUS_DRAFT:
-                    if ($this->usesSoftDelete() && $this->status == self::STATUS_TRASH) {
-                        $this->checkPermission('undelete');
-                    } else if ($this->usesArchive() && $this->status == self::STATUS_ARCHIVED) {
-                        $this->checkPermission('unarchive');
-                    }
-                    break;
+            } else if ($this->usesPrivate() && $status == static::STATUS_PRIVATE) {
+                $this->checkPermission('makePrivate');
 
-                case self::STATUS_ENABLED:
-                    if ($this->usesSoftDelete() && $this->status == self::STATUS_TRASH) {
-                        $this->checkPermission('undelete');
-                    } else if ($this->usesArchive() && $this->status == self::STATUS_ARCHIVED) {
-                        $this->checkPermission('unarchive');
-                    }
-                    break;
+            } else if ($this->usesSoftDelete() && $status == static::STATUS_TRASH) {
+                $this->checkPermission('remove');
+
+            } else if ($this->usesDraft() && $status == static::STATUS_DRAFT) {
+                if ($this->usesSoftDelete() && $this->status == static::STATUS_TRASH) {
+                    $this->checkPermission('undelete');
+                } else if ($this->usesArchive() && $this->status == static::STATUS_ARCHIVED) {
+                    $this->checkPermission('unarchive');
+                }
+            } else if ($status == static::STATUS_ENABLED) {
+                if ($this->usesSoftDelete() && $this->status == static::STATUS_TRASH) {
+                    $this->checkPermission('undelete');
+                } else if ($this->usesPrivate() && $this->status == static::STATUS_PRIVATE) {
+                    $this->checkPermission('makePublic');
+                } else if ($this->usesArchive() && $this->status == static::STATUS_ARCHIVED) {
+                    $this->checkPermission('unarchive');
+                }
             }
         }
+
         $hook_prefix = $this->getHookPrefix();
 
         $app->applyHookBoundTo($this, "{$hook_prefix}.setStatus({$status})", [&$status]);
@@ -727,14 +733,19 @@ abstract class Entity implements \JsonSerializable{
 
             if ($key == 'status') {
                 $options = [
-                    'draft' => self::STATUS_DRAFT, 
-                    'enabled' => self::STATUS_ENABLED,
+                    'enabled' => static::STATUS_ENABLED,
                 ];
+                if ($class::usesDraft()) {
+                    $options['draft'] = static::STATUS_DRAFT;
+                }
                 if ($class::usesSoftDelete()) {
-                    $options['trash'] = self::STATUS_TRASH;
+                    $options['trash'] = static::STATUS_TRASH;
                 }
                 if ($class::usesArchive()) {
-                    $options['archived'] = self::STATUS_ARCHIVED;
+                    $options['archived'] = static::STATUS_ARCHIVED;
+                }
+                if ($class::usesPrivate()) {
+                    $options['private'] = static::STATUS_PRIVATE;
                 }
                 $metadata['options'] = $options;
             }
