@@ -20,6 +20,7 @@ $tabs = $tabs ?? [
     'draft' => i::esc_attr__('Em rascunho'),
     'granted' => i::esc_attr__('Com permissão'),
     'mymodels' => i::esc_attr__('Meus modelos'),
+    'private' => i::esc_attr__('Privados'),
     'archived' => i::esc_attr__('Arquivados'),
     'trash' => i::esc_attr__('Lixeira'),
 ];
@@ -43,6 +44,8 @@ $this->applyComponentHook('.sortOptions', [&$tabs]);
         <?php $this->applyComponentHook('tab', 'begin') ?>
         <mc-icon v-if="tab.slug === 'archived'" name="archive"></mc-icon>
         <mc-icon v-else-if="tab.slug === 'trash'" name="trash"></mc-icon>
+        <mc-icon v-else-if="tab.slug === 'private'" name="private"></mc-icon>
+        
         {{ tab.label }}
         <?php $this->applyComponentHook('tab', 'end') ?>
     </template>
