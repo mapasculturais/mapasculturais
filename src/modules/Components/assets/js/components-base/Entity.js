@@ -634,6 +634,26 @@ class Entity {
         }
     }
 
+    async makePrivate(removeFromLists) {
+        this.__processing = this.text('tornando privada');
+        try {
+            // se há modificações não salvas, primeiro salva as alterações, só depois publica a entidade
+            if(Object.keys(this.data(true)).length > 0) {
+                await this.save();
+            }
+            const res = await this.API.makeEntityPrivate(this);
+            return this.doPromise(res, (entity) => {
+                this.sendMessage(this.text('entidade tornada privada'));
+                this.populate(entity, false);
+                if(removeFromLists) {
+                    this.removeFromLists();
+                }
+            });
+        } catch (error) {
+            return this.doCatch(error);
+        }
+    }
+
     async publish(removeFromLists) {
         this.__processing = this.text('publicando');
         try {
