@@ -18,7 +18,7 @@ trait Singleton{
      * Returns the singleton instance. This method creates the instance when called for the first time.
      * @return self
      */
-    static public function i($config = null){
+    static public function i($config = null): static {
         $class = get_called_class();
 
         if(!key_exists($class, self::$_singletonInstances))
