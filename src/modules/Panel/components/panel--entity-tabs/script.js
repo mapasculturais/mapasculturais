@@ -33,6 +33,7 @@ app.component('panel--entity-tabs', {
             description: $DESCRIPTIONS[this.type],
             queries: {
                 publish: { status: 'GTE(1)', ...query },
+                private: { status: 'EQ(-100)', ...query },
                 draft: { status: 'EQ(0)', ...query },
                 granted: { ...query, '@permissions': '@control', status: 'GTE(0)', user: '!EQ(@me)' },
                 mymodels: { status: 'EQ(-1)', isModel: 'EQ(1)', ...queryGetModel },
@@ -54,7 +55,7 @@ app.component('panel--entity-tabs', {
         },
         tabs: {
             type: String,
-            default: "publish,draft,granted,mymodels,trash,archived"
+            default: "publish,private,draft,granted,mymodels,trash,archived"
         },
 
     },
@@ -85,9 +86,10 @@ app.component('panel--entity-tabs', {
             await event.promise;
             const lists = useEntitiesLists();
             const status = `${entity.status}`;
-
+            // publish,private,draft,granted,mymodels,trash,archived
             const listnames = {
                 '1': `${this.type}:publish`,
+                '-100': `${this.type}:private`,
                 '-10': `${this.type}:trash`,
                 '-2': `${this.type}:archived`,
                 '0': `${this.type}:draft`,
