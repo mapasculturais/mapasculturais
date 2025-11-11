@@ -899,7 +899,7 @@ abstract class Theme {
                 }
 
                 if(property_exists ($entity_class_name, 'status')) {
-                    $query_params['status'] = 'GTE(-20)'; 
+                    $query_params['status'] = 'GTE(-100)'; 
                     $app->applyHookBoundTo($this, "view.requestedEntity($_entity).status", [&$query_params, $entity_class_name, $entity_id]);
                 }
 
@@ -932,6 +932,7 @@ abstract class Theme {
                 $query->__useDQLCache = false;
 
                 $e = $query->findOne();
+                
                 if($disable_access_control) {
                     $app->enableAccessControl();
                 }
@@ -978,6 +979,7 @@ abstract class Theme {
                         WHERE 
                             e.id = :id");
                     $query->setParameter('id', $e['user']);
+                    
                     $result = $query->getSingleResult();
                     $e['parent'] = $result['profile'];
                 }
