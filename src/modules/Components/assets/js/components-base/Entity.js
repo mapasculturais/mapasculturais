@@ -579,7 +579,7 @@ class Entity {
                     this.removeFromLists();
                 }
 
-                this.populate(entity);
+                this.populate(entity, false);
             });
 
         } catch (error) {
@@ -594,7 +594,7 @@ class Entity {
             const res = await this.API.undeleteEntity(this);
             return this.doPromise(res, (entity) => {
                 this.sendMessage(this.text('entidade recuperada'));
-                this.populate(entity);
+                this.populate(entity, false);
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
@@ -664,7 +664,7 @@ class Entity {
             const res = await this.API.publishEntity(this);
             return this.doPromise(res, (entity) => {
                 this.sendMessage(this.text('entidade publicada'));
-                this.populate(entity);
+                this.populate(entity, false);
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
@@ -696,7 +696,7 @@ class Entity {
             const res = await this.API.archiveEntity(this);
             return this.doPromise(res, (entity) => {
                 this.sendMessage(this.text('entidade arquivada'));
-                this.populate(entity);
+                this.populate(entity, false);
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
@@ -713,7 +713,7 @@ class Entity {
             const res = await this.API.unpublishEntity(this);
             return this.doPromise(res, (entity) => {
                 this.sendMessage(this.text('entidade foi tornada rascunho'));
-                this.populate(entity);
+                this.populate(entity, false);
                 if(removeFromLists) {
                     this.removeFromLists();
                 }
