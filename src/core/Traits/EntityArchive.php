@@ -38,7 +38,7 @@ trait EntityArchive{
             $this->makeFilesPrivate();
         }
 
-        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').archive:before');
+        $app->applyHookBoundTo($this, 'entity(' . $hook_class_path . ').archive:after');
     }
 
     function unarchive($flush = true){

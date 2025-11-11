@@ -23,6 +23,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Implementa verificações para evitar warnings indesejados referente ao componente de localização
 - Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
 - Corrige função replaces da classe i
+- Corrige nome do hook entity().archive:after
 
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
