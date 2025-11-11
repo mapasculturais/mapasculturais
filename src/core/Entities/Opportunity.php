@@ -77,6 +77,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityLock,
+        Traits\EntityPrivate,
         Traits\EntityArchive{
             Traits\EntityNested::setParent as nestedSetParent;
             Traits\EntityAgentRelation::canUserCreateAgentRelationWithControl as __canUserCreateAgentRelationWithControl;
@@ -546,7 +547,7 @@ abstract class Opportunity extends \MapasCulturais\Entity
 
         $app = App::i();
         $opportunity = $this;
-        $conn = $app->em->getConnection();
+        $conn = $app->conn;
 
         if($next_phase = $opportunity->nextPhase) {
             $conn->executeQuery("DELETE FROM registration_meta where key = 'nextPhaseRegistrationId' AND object_id in (SELECT id FROM registration WHERE opportunity_id = {$opportunity->id})");

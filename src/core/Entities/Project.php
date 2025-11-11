@@ -29,6 +29,7 @@ class Project extends \MapasCulturais\Entity
         Traits\EntityPermissionCache,
         Traits\EntityOriginSubsite,
         Traits\EntityArchive,
+        Traits\EntityPrivate,
         Traits\EntityLock,
         Traits\EntityOpportunities,
         Traits\EntityRevision;
