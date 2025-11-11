@@ -22,6 +22,7 @@ class Project extends EntityController {
         Traits\ControllerChangeOwner,
         Traits\ControllerDraft,
         Traits\ControllerArchive,
+        Traits\ControllerPrivateEntity,
         Traits\ControllerAPI,
         Traits\ControllerAPINested,
         Traits\ControllerLock,
