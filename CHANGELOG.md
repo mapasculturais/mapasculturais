@@ -24,6 +24,9 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
 - Corrige função replaces da classe i
 
+### Melhorias não funcionais
+- LifecycleCallbacks na Entities\SealRelation
+
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
 - Implementa novos hooks na edit dos agentes

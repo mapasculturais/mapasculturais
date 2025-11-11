@@ -26,6 +26,7 @@ use MapasCulturais\i;
         "MapasCulturais\Entities\Agent"         = "\MapasCulturais\Entities\AgentSealRelation",
         "MapasCulturais\Entities\Space"         = "\MapasCulturais\Entities\SpaceSealRelation"
    })
+ * @ORM\HasLifecycleCallbacks
  */
 abstract class SealRelation extends \MapasCulturais\Entity
 {
