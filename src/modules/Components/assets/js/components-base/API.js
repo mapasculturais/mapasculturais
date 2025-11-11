@@ -261,6 +261,12 @@ class API {
         }
     }
 
+    async makeEntityPrivate(entity) {
+        if (entity[this.$PK]) {
+            return this.POST(entity.getUrl('makePrivate'));
+        }
+    }
+
     async findOne(id, select) {
         let url = this.createApiUrl('findOne', {id: `EQ(${id})`, '@select': select || '*'});
         return this.GET(url).then(response => response.json().then(obj => {
