@@ -62,7 +62,7 @@ trait EntityPrivate
     {
         /** @var Entity $this */
         if ($this->status != self::STATUS_PRIVATE) {
-            return $this->genericPermissionVerification($user);
+            return parent::canUserView($user);
         }
 
         if ($user->is('guest')) {
