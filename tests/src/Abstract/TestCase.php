@@ -5,6 +5,7 @@ namespace Tests\Abstract;
 use MapasCulturais\App;
 use MapasCulturais\Connection;
 use MapasCulturais\Entities\User;
+use MapasCulturais\GuestUser;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -63,11 +64,15 @@ class TestCase extends PHPUnitTestCase
 
     // =================== AUTENTICAÇÃO ===================
 
-    protected function login(User $user)
+    protected function login(GuestUser|User|null $user)
     {
         $app = App::i();
         $app->reset();
-        $app->auth->authenticatedUser = $user;
+        if($user instanceof User) {
+            $app->auth->authenticatedUser = $user;
+        } else {
+            $this->logout();
+        }
     }
 
     protected function logout(): void
