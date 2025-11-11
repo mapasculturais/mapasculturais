@@ -151,6 +151,8 @@ class ApiQuery {
      * @var bool
      */
     protected $usesAgentRelations;
+
+    protected bool $usesPrivateStatus;
     
     /**
      * The entity uses files?
@@ -547,6 +549,8 @@ class ApiQuery {
         
         $this->entityController = $controller;
         $this->entityRepository = $app->repo($this->entityClassName);
+
+        $this->usesPrivateStatus = $class::usesPrivate();
         
         $this->usesFiles = $class::usesFiles();
         $this->usesMetalists = $class::usesMetalists();
@@ -1088,6 +1092,7 @@ class ApiQuery {
         return $filters;
     }
 
+    private $private_pcache_join = false;
     protected function generateWhere() {
         $app = App::i();
 
@@ -1102,12 +1107,56 @@ class ApiQuery {
 
         if($app->isAccessControlEnabled() && $this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
             $params = $this->apiParams;
+
+            /*
+                        if ($this->usesPrivateStatus && !$this->private_pcache_join) {
+                $class = $this->entityClassName;
+                $private_status = $class::STATUS_PRIVATE;
+                $alias = $this->getAlias('pcache');
+                $user = $this->_permissionsUser ?
+                    $app->repo('User')->find($this->_permissionsUser) :
+                    $app->user;
+                $this->private_pcache_join = " OR (e.status = $private_status AND e.{$this->pk} IN (SELECT IDENTITY($alias.owner) FROM {$this->permissionCacheClassName} $alias WHERE $alias.owner = e AND $alias.action = 'view' AND $alias.userId = $user->id))";
+            }
+
+            */
+
+            if ($this->usesPrivateStatus && !$this->private_pcache_join) {
+                
+                // if the logged in user is an admin in some site
+                if($this->adminInSubsites){
+                    $admin_where = [];
+
+                    foreach($this->adminInSubsites as $subsite_id){
+                        if($subsite_id){
+                            $admin_where[] = "e._subsiteId = {$subsite_id}";
+                        } else {
+                            $admin_where[] = "e._subsiteId IS NULL";
+                        }
+                    }
+
+                    $admin_where = implode(' OR ', $admin_where);
+                    $admin_where = "OR ($admin_where)";
+                } 
+
+                $admin_where = $admin_where ?? '';
+
+                $user = $this->_permissionsUser ?
+                    $app->repo('User')->find($this->_permissionsUser) :
+                    $app->user;
+                    
+                $class = $this->entityClassName;
+                $private_status = $class::STATUS_PRIVATE;
+                $alias = $this->getAlias('pcache');
+                $this->joins .= " LEFT JOIN e.__permissionsCache $alias WITH $alias.action = 'view' AND $alias.userId = $user->id ";
+                $this->private_pcache_join =  "OR (e.status = $private_status AND ($alias.id IS NOT NULL $admin_where))";
+            }
             
             if ($this->rootEntityClassName === Opportunity::class && (isset($params['id']) || isset($params['status']) || isset($params['parent']))) {
-                $where_status = '(e.status > 0 OR e.status = -1 OR e.status = -20)';
+                $where_status = "(e.status > 0 OR e.status = -1 OR e.status = -20 $this->private_pcache_join)";
             }
             else {
-                $where_status = 'e.status > 0';
+                $where_status = "e.status > 0 $this->private_pcache_join";
             }
             $where = $where ? "($where) AND $where_status" : $where_status;
         }
