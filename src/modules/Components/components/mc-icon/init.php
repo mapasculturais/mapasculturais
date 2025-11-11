@@ -112,6 +112,7 @@ $iconset = [
     'pin' => 'ph:map-pin-fill',
     'previous' => 'ooui:previous-ltr',
     'print' => 'material-symbols:print-outline',
+    'private' => 'entypo:eye-with-line',
     'projects' => 'ri:file-list-2-line',
     'process' => 'fluent-mdl2:processing-pause',
     'question' => 'fe:question',
