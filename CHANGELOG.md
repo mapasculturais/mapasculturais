@@ -27,6 +27,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
+- Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ascii
 
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
