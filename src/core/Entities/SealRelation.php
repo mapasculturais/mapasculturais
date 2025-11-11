@@ -9,15 +9,13 @@ use MapasCulturais\i;
 /**
  * SealRelation
  *
- *
  * @property-read int $id The Id of the relation.
- *
  */
 #[ORM\Table(name: "seal_relation")]
 #[ORM\Entity(repositoryClass: "MapasCulturais\Repository")]
 #[ORM\InheritanceType("SINGLE_TABLE")]
 #[ORM\DiscriminatorColumn(name: "object_type", type: "string", length: 64)]
-
+#[ORM\HasLifecycleCallbacks]
 abstract class SealRelation extends \MapasCulturais\Entity
 {
     const STATUS_PENDING = -5;
