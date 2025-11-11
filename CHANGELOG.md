@@ -6,11 +6,16 @@ O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [UNRELEASED - 8.0]
+### Novas Funcionalidades
+- Novo status privado para as entidades
+
 ### Melhorias não funcionais
 - Substituição do driver AnnotationDriver de mapeamendo do Doctrine para o AttributeDriver
 - Remoção dos fetch: EAGER para compatibilidade com o Doctrine 2.20
 - Remoção dos DiscriminatorMaps das classes auxiliares (File, AgentRelation etc) possibilitando a utilização desses recursos em plugins
 - Refatoração dos traits de entidades para incluir as propriedades de mapeamento do doctrine utilizadas pelo trait
+- Possibilidade de configuração da pasta que contém as visões de um controller
+- Limpeza de código do tema BaseV1
 
 ### Atualizações de bibliiotecas
 - PHP atualizado para versão 8.4
