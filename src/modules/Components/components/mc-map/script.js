@@ -92,6 +92,7 @@ app.component('mc-map', {
             maxZoom: $MAPAS.config.map.maxZoom,
             minZoom: $MAPAS.config.map.minZoom,
             popupEntity: null,
+            dynamicMarkerIcons: {},
         };
     },
 
@@ -162,7 +163,7 @@ app.component('mc-map', {
             for (let marker of cluster._markers) {
                 const entity = marker.entity;
                 const entityType = entity['@icon'] || entity.__objectType || entity['@entityType'];
-                result[entityType]++
+                result[entityType] = (result[entityType] || 0) + 1;
             }
             
             return result;
@@ -192,7 +193,8 @@ app.component('mc-map', {
                             objectType += entity.type.id;
                         }
 
-                        marker.setIcon(L.divIcon({ className: '', html: icons[objectType]}));
+                        const iconHtml = this.getMarkerIconHtml(objectType, icons, entity);
+                        marker.setIcon(L.divIcon({ className: '', html: iconHtml}));
 
                         this.currentMarkers[entity.__objectId] = marker;
 
@@ -210,6 +212,37 @@ app.component('mc-map', {
                 this.markersGroup.addLayers(markersToAdd);
                 this.markersGroup.removeLayers(markersToRemove);
             }, 100);
+        },
+        getMarkerIconHtml(objectType, baseIcons, entity) {
+            if (baseIcons[objectType]) {
+                return baseIcons[objectType];
+            }
+        
+            const iconKey = entity['@icon'] || objectType;
+            const backgroundType = entity.__objectType || entity['@entityType'] || 'app';
+        
+            if (!this.dynamicMarkerIcons[iconKey]) {
+                const iconset = $MAPAS?.config?.iconset || {};
+                const iconName =
+                    iconset[iconKey] ||
+                    iconset[entity.__objectType] ||
+                    iconset[backgroundType] ||
+                    iconset.app ||
+                    'heroicons-solid:puzzle';
+
+                const parts = (iconName || '').split(':');
+                const iconUrl = parts.length === 2
+                    ? `https://api.iconify.design/${parts[0]}/${parts[1]}.svg`
+                    : `https://api.iconify.design/heroicons-solid/puzzle.svg`;
+
+                this.dynamicMarkerIcons[iconKey] = `
+                    <div class="${backgroundType}__background mc-map-marker">
+                        <img src="${iconUrl}" alt="${iconKey}">
+                    </div>
+                `;
+            }
+        
+            return this.dynamicMarkerIcons[iconKey];
         }
     },
 });
