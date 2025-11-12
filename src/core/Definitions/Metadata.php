@@ -8,14 +8,14 @@ use MapasCulturais\App;
 /**
  * This class defines an Entity Metadata.
  *
- * @property-read string $key Metadata Key
- * @property-read mixed $default_value The metadata default value
- * @property-read string $label The metadata label
- * @property-read string $type The metadata input type
- * @property-read boolean $is_unique The value of metadata must be unique for the same entity?
- * @property-read string $is_unique_error_message The is_unique error message
- * @property-read boolean $is_required Is this metadata required?
- * @property-read array $config The metadata configuration. This will be extracted to the input
+ * @property string $key Metadata Key
+ * @property mixed $default_value The metadata default value
+ * @property string $label The metadata label
+ * @property string $type The metadata input type
+ * @property boolean $is_unique The value of metadata must be unique for the same entity?
+ * @property string $is_unique_error_message The is_unique error message
+ * @property boolean $is_required Is this metadata required?
+ * @property array $config The metadata configuration. This will be extracted to the input
  */
 class Metadata extends \MapasCulturais\Definition{
 
