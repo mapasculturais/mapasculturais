@@ -606,15 +606,14 @@ class ApiQuery {
             }
         }
         
-        if($this->usesOriginSubsite){
-            if(!$app->user->is('guest')){
-                foreach($app->user->roles as $role){
-                    if($role->name == 'admin' || $role->name == 'superAdmin'){
-                        $this->adminInSubsites[] = $role->subsiteId;
-                    }
+        if(!$app->user->is('guest')){
+            foreach($app->user->roles as $role){
+                if($role->name == 'admin' || $role->name == 'superAdmin'){
+                    $this->adminInSubsites[] = $role->subsiteId;
                 }
             }
         }
+    
 
         $controller_id = $controller->id ?? -1;
         $this->__useDQLCache = $app->config['app.useApiCache'];
@@ -1108,23 +1107,12 @@ class ApiQuery {
         if($app->isAccessControlEnabled() && $this->usesStatus && (!isset($this->apiParams['status']) || !$this->_permission)){
             $params = $this->apiParams;
 
-            /*
-                        if ($this->usesPrivateStatus && !$this->private_pcache_join) {
-                $class = $this->entityClassName;
-                $private_status = $class::STATUS_PRIVATE;
-                $alias = $this->getAlias('pcache');
-                $user = $this->_permissionsUser ?
-                    $app->repo('User')->find($this->_permissionsUser) :
-                    $app->user;
-                $this->private_pcache_join = " OR (e.status = $private_status AND e.{$this->pk} IN (SELECT IDENTITY($alias.owner) FROM {$this->permissionCacheClassName} $alias WHERE $alias.owner = e AND $alias.action = 'view' AND $alias.userId = $user->id))";
-            }
-
-            */
-
             if ($this->usesPrivateStatus && !$this->private_pcache_join) {
-                
-                // if the logged in user is an admin in some site
-                if($this->adminInSubsites){
+
+                if($app->user->is('saasAdmin')) {
+                    $admin_where = ' OR 1=1';
+                } else if($this->adminInSubsites) {
+                    // if the logged in user is an admin in some site
                     $admin_where = [];
 
                     foreach($this->adminInSubsites as $subsite_id){
