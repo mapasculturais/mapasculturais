@@ -38,6 +38,7 @@ $this->import('
         <div ref="app" class="app__background mc-map-marker">
             <mc-icon name="app"></mc-icon>
         </div>
+        <div ref="marker"><slot name="marker"></slot></div>
     </l-map>
 </div>
 

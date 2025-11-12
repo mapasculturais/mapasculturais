@@ -25,6 +25,7 @@ $this->import('
         <template #popup="{entity}">
             <mc-map-card :entity="entity"></mc-map-card>
         </template>
+        <template #marker><slot name="marker"></slot></template>
     </mc-map>
     <mc-loading :condition="loading"></mc-loading>
 </div> 

@@ -80,7 +80,9 @@ app.component('mc-map', {
         entities: {
             type: Array,
             default: []
-        }
+        },
+
+
     },
 
     data() {
@@ -178,8 +180,10 @@ app.component('mc-map', {
                     agent1: $map?.$refs?.agent1?.outerHTML,
                     agent2: $map?.$refs?.agent2?.outerHTML,
                     space: $map?.$refs?.space?.outerHTML,
-                    event: $map?.$refs?.event?.outerHTML
+                    event: $map?.$refs?.event?.outerHTML,
+                    marker: $map?.$refs?.marker?.innerHTML,
                 };
+
                 const markersToAdd = [];
                 const markersToRemove = [];
                 const markersOfEntities = {};
@@ -194,7 +198,7 @@ app.component('mc-map', {
                         }
 
                         const iconHtml = this.getMarkerIconHtml(objectType, icons, entity);
-                        marker.setIcon(L.divIcon({ className: '', html: iconHtml}));
+                        marker.setIcon(L.divIcon({ className: '', html: icons.marker || iconHtml}));
 
                         this.currentMarkers[entity.__objectId] = marker;
 
