@@ -107,7 +107,7 @@ trait EntityTaxonomies {
         }
 
         foreach($taxonomies as $slug) {
-            if (in_array("terms:{$slug}", $this->lockedFields)) {
+            if (in_array("terms:{$slug}", $this->lockedFields ?? [])) {
                 if(is_null($this->terms)){
                     $this->populateTermsProperty();
                 }
