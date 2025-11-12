@@ -6,7 +6,7 @@ app.component('mc-title', {
         tag: {
             type: String,
             default: 'h2',
-            validator: (value) => ['h1', 'h2', 'h3', 'h4'].includes(value)
+            validator: (value) => ['h1', 'h2', 'h3', 'h4', 'h5'].includes(value)
         },
 
         size: {
