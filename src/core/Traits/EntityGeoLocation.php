@@ -33,7 +33,7 @@ trait EntityGeoLocation {
     #[ORM\Column(name: "location", type: "point", nullable: false)]
     protected $location;
 
-    #[ORM\Column(name: "_geo_location", type: "geography", nullable: false)]
+    #[ORM\Column(name: "_geo_location", type: "geography", nullable: true)]
     protected $_geoLocation;
 
     /**
