@@ -55,7 +55,7 @@ abstract class AgentRelation extends \MapasCulturais\Entity
     #[ORM\Column(name: "status", type: "smallint", nullable: true)]
     protected $status = self::STATUS_ENABLED;
 
-    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent")]
+    #[ORM\ManyToOne(targetEntity: "MapasCulturais\Entities\Agent", fetch: 'EAGER')]
     #[ORM\JoinColumn(name: "agent_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $agent;
 
