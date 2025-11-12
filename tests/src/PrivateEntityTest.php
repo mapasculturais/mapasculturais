@@ -76,6 +76,7 @@ class PrivateEntityTest extends TestCase
         $normal_user3 = $this->userDirector->createUser();
 
         $admin = $this->userDirector->createUser('admin');
+        $saas_admin = $this->userDirector->createUser('saasAdmin');
 
         $opportunity = $this->createOpportunity(
             owner: $normal_user1->profile,
@@ -91,6 +92,9 @@ class PrivateEntityTest extends TestCase
         $this->login($admin);
         $this->assertTrue($opportunity->canUser('view'), 'Garantindo que um admin PODE ver a uma oportunidade privada de outro usuário');
 
+        $this->login($saas_admin);
+        $this->assertTrue($opportunity->canUser('view'), 'Garantindo que um saasAdmin PODE ver a uma oportunidade privada de outro usuário');
+
         $this->app->disableAccessControl();
         $opportunity->createAgentRelation($normal_user3->profile, 'teste');
         $this->app->enableAccessControl();
@@ -105,6 +109,7 @@ class PrivateEntityTest extends TestCase
         $normal_user3 = $this->userDirector->createUser();
 
         $admin = $this->userDirector->createUser('admin');
+        $saas_admin = $this->userDirector->createUser('saasAdmin');
 
         $public_opportunity = $this->createOpportunity(
             owner: $normal_user1->profile,
@@ -143,6 +148,9 @@ class PrivateEntityTest extends TestCase
             $this->login($admin);
             $this->assertApiQueryCount(Opportunity::class, $params, 3, "Garantindo que a API retorna as oportunidades privadas para os admins");
     
+            $this->login($saas_admin);
+            $this->assertApiQueryCount(Opportunity::class, $params, 3, "Garantindo que a API retorna as oportunidades privadas para os saasAdmins");
+    
             $this->login($normal_user3);
             $this->assertApiQueryCount(Opportunity::class, $params, 2, "Garantindo que a API retorna as oportunidades privadas para um usuário comum com vínculo com a proprietário");      
         }
@@ -155,6 +163,8 @@ class PrivateEntityTest extends TestCase
         $normal_user3 = $this->userDirector->createUser();
 
         $admin = $this->userDirector->createUser('admin');
+        $saas_admin = $this->userDirector->createUser('saasAdmin');
+
 
         $space = $this->createSpace(
             owner: $normal_user1->profile,
@@ -170,6 +180,9 @@ class PrivateEntityTest extends TestCase
         $this->login($admin);
         $this->assertTrue($space->canUser('view'), 'Garantindo que um admin PODE ver a um espaõ privado de outro usuário');
 
+        $this->login($saas_admin);
+        $this->assertTrue($space->canUser('view'), 'Garantindo que um saasAdmin PODE ver a um espaõ privado de outro usuário');
+
         $this->app->disableAccessControl();
         $space->createAgentRelation($normal_user3->profile, 'teste');
         $this->app->enableAccessControl();
@@ -184,6 +197,7 @@ class PrivateEntityTest extends TestCase
         $normal_user3 = $this->userDirector->createUser();
 
         $admin = $this->userDirector->createUser('admin');
+        $saas_admin = $this->userDirector->createUser('saasAdmin');
 
         $public_space = $this->createSpace(
             owner: $normal_user1->profile,
@@ -226,6 +240,9 @@ class PrivateEntityTest extends TestCase
     
             $this->login($admin);
             $this->assertApiQueryCount(Space::class, $params, 4, "Garantindo que a API retorna os espaços privados para os admins");
+
+            $this->login($saas_admin);
+            $this->assertApiQueryCount(Space::class, $params, 4, "Garantindo que a API retorna os espaços privados para os saasAdmins");
     
             $this->login($normal_user3);
             $this->assertApiQueryCount(Space::class, $params, 2, "Garantindo que a API retorna os espaços privados para um usuário comum com vínculo com a proprietário");      
