@@ -39,8 +39,8 @@ class Module extends \MapasCulturais\Module
                 ];
             });
 
-            $app->hook('app.register:after', function () use($app) {
-                $this->view->jsObject['EntitiesDescription']['sealRelation'] = \MapasCulturais\Entities\SealRelation::getPropertiesMetadata();
+            $app->hook('mapas.printJsObject:before', function () use($app) {
+                $this->jsObject['EntitiesDescription']['sealRelation'] = \MapasCulturais\Entities\SealRelation::getPropertiesMetadata();
             });
             
             $app->hook('view.render(seal/sealrelation):before', function () use($app) {
