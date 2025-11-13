@@ -38,7 +38,7 @@ app.component('entity-field', {
             var typeOptions = {};
             var optionsOrder = [];
             Object.keys(description.options).forEach(function(item, index){
-                if(description.options[item] != "Individual"){
+                if(item != 1){
                     typeOptions[index] = description.options[item];
                     optionsOrder.push(parseInt(index));
                 }
