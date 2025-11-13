@@ -22,3 +22,6 @@
 [submodule "src/plugins/MapasBlame"]
 	path = src/plugins/MapasBlame
 	url = https://github.com/culturagovbr/plugin-MapasBlame.git
+[submodule "src/themes/Pnab"]
+	path = src/themes/Pnab
+	url = https://github.com/culturagovbr/theme-Pnab
