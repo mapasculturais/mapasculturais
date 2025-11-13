@@ -16,7 +16,7 @@ $this->import('
 <mc-modal :title="modalTitle" classes="create-modal create-app" button-label="<?php i::_e('Criar App')?>" @open="createEntity()" @close="destroyEntity()">
     <template v-if="entity && !entity.publicKey" #default>
         <div class="create-modal__fields">
-            <entity-field :entity="entity" hide-required label=<?php i::esc_attr_e("Nome ou título")?>  prop="name"></entity-field>
+            <entity-field :entity="entity" hide-required label="<?php i::esc_attr_e("Nome ou título")?>"  prop="name"></entity-field>
             <small class="field__error" v-if="areaErrors">{{areaErrors.join(', ')}}</small>
             <entity-field :entity="entity" hide-required v-for="field in fields" :prop="field"></entity-field>
         </div>
