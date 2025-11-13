@@ -119,8 +119,10 @@ $this->import('
                 <div :class="['icon', entity.__objectType+'__background']">
                     <mc-icon :entity="entity"></mc-icon>
                 </div>
-                <h2 v-if="this.entity.__objectType!='opportunity'">{{titleEdit}}</h2>
-                <h2 v-if="this.entity.__objectType=='opportunity'">{{entity.name}}</h2>
+                <slot name="title-edit" :title-edit="titleEdit" :entity="entity">
+                    <h2 v-if="this.entity.__objectType!='opportunity'">{{titleEdit}}</h2>
+                    <h2 v-else>{{entity.name}}</h2>
+                </slot>
 
             </div>
         </div>
