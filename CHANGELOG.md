@@ -5,7 +5,7 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [7.6.24] - 2025-11-14
 ### Melhorias
 - Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
 - Implementa novos hooks na edit de espaço e no componente entity-field
