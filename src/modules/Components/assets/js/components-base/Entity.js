@@ -467,8 +467,8 @@ class Entity {
     }
 
     async validate() {
-            this.POST('validateEntity', {callback: (response) => {
-            debugger;
+        this.POST('validateEntity', {callback: (response) => {
+            return response;
         }});
     }
 
