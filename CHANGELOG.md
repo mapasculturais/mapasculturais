@@ -5,6 +5,19 @@ Todas as mudanças notáveis no projeto serão documentadas neste arquivo.
 O formato é baseado no [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/)
 e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.6.24] - 2025-11-14
+### Melhorias
+- Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
+- Implementa novos hooks na edit de espaço e no componente entity-field
+
+### Correções
+- Corrige warnigs no navegador devido a problemas com o componente entity-field
+- Implementa verificações para evitar warnings indesejados referente ao componente de localização
+- Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
+- Corrige função replaces da classe i
+- Corrige label do campo nome do modal
+- Ajusta a verificação de exibição do tipo no modal de criação de agente, garantindo o funcionamento correto mesmo quando houver replacements
+
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
 - Implementa novos hooks na edit dos agentes
