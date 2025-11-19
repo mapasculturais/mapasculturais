@@ -171,7 +171,7 @@ trait ControllerUploads{
                 $file->save();
                 $app->applyHookBoundTo($this, "{$file->hookPrefix}.upload.filesSave:after", [$file]);
             } catch (SaveFileError $e) {
-                $this->errorJson(i::__('Falha ao salvar o arquivo, por favor entre em contato com o suporte.'), 500);
+                $this->errorJson([$file->group => $e->getMessage()]);
             }
             $file_group = $file->group;
 
