@@ -24,12 +24,22 @@ $this->import('
             
             <div class="create-opportunity-modal__continuous-flow">
                 <div class="create-opportunity-modal__continuous-flow-options">
-                    <entity-field :entity="entity" type="checkbox" prop="isContinuousFlow" label="<?php i::esc_attr_e('Habilitar fluxo contínuo')?>">
+                    <entity-field :entity="entity" type="checkbox" prop="isContinuousFlow" label="<?php i::esc_attr_e('Habilitar fluxo contínuo')?>" :disabled="entity?.publicityOnly">
                         <template #info>
                             <?php $this->info('editais-oportunidades -> configuracoes -> fluxo-continuo') ?>
                         </template>
                     </entity-field>
                     <entity-field v-if="entity?.isContinuousFlow" :entity="entity" type="checkbox" prop="hasEndDate" label="<?php i::esc_attr_e('Habilitar data final das inscrições')?>"></entity-field>
+                </div>
+            </div>
+
+            <div class="create-opportunity-modal__publicity-only">
+                <div class="create-opportunity-modal__publicity-only-options">
+                    <entity-field :entity="entity" type="checkbox" prop="publicityOnly" label="<?php i::esc_attr_e('Oportunidade apenas para divulgação')?>" :disabled="entity?.isContinuousFlow">
+                        <template #info>
+                            <?php $this->info('editais-oportunidades -> configuracoes -> apenas-divulgacao') ?>
+                        </template>
+                    </entity-field>
                 </div>
             </div>
 
