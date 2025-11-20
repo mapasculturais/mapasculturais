@@ -242,4 +242,16 @@
     &__continuous-flow-options {
         display: flex;
     }
+
+    &__publicity-only {
+        display: grid;
+        gap: 8px;
+        border: var(--mc-border-hairline) var(--mc-gray-300);
+        border-radius: var(--mc-border-radius-xs);
+        padding: 10px;
+    }
+
+    &__publicity-only-options {
+        display: flex;
+    }
 }
