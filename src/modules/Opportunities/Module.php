@@ -132,19 +132,32 @@ class Module extends \MapasCulturais\Module{
             }
         });
 
-        $distribute_execution_time = date($app->config['registrations.distribution.dateString']) . ' ' . $app->config['registrations.distribution.incrementString'];
+        $distribute_execution_time = function($distribution_config) {
+            if ($distribution_config === 'hourly') {
+                return date('Y-m-d H:00:00', strtotime('+1 hour'));
+            } 
+            
+            if ($distribution_config === 'daily') {
+                // Próxima meia-noite
+                $next_midnight = new \DateTime('tomorrow 00:00:00');
+                return $next_midnight->format('Y-m-d H:i:s');
+            }
+        };
 
         /** 
          * Enfileiramento dos JOBs de distribuição de avaliadores
          */
         $app->hook('entity(EvaluationMethodConfigurationAgentRelation).<<insert|update|delete>>:finish', function() use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfigurationAgentRelation $this */
-            if($this->owner){
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner], $distribute_execution_time);
+            $distribution_config = $this->owner->distributionConfiguration ?? 'deactivate';
+            
+            if($this->owner && $distribution_config != 'deactivate') {
+                $execution_time = $distribute_execution_time($distribution_config);
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->owner], $execution_time);
             }
         });
 
-        $_metadata_list = 'valuersPerRegistration|ignoreStartedEvaluations|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes';
+        $_metadata_list = 'valuersPerRegistration|ignoreStartedEvaluations|fetchFields|fetchSelectionFields|fetch|fetchCategories|fetchRanges|fetchProponentTypes|distributionConfiguration';
         $app->hook("entity(EvaluationMethodConfiguration).meta(<<{$_metadata_list}>>).<<insert|update|delete>>:after", function() use($app) {
             /** @var EvaluationMethodConfigurationMeta $this */
             $this->owner->mustRedistributeCommitteeRegistrations = true;
@@ -153,14 +166,28 @@ class Module extends \MapasCulturais\Module{
         $app->hook('entity(EvaluationMethodConfiguration).save:finish', function () use($app, $distribute_execution_time) {
             /** @var EvaluationMethodConfiguration $this */
             if ($this->mustRedistributeCommitteeRegistrations) {
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], $distribute_execution_time);
+                $distribution_config = $this->distributionConfiguration ?? 'deactivate';
+                
+                if($distribution_config == 'deactivate') {
+                    $app->unqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], 'now', '1 hour');
+                    $app->unqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], 'now', '1 day');
+                    return;
+                }
+
+                $execution_time = $distribute_execution_time($distribution_config);
+                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this], $execution_time);
             }
         });
 
         $app->hook('entity(<<RegistrationEvaluation|Registration>>).send:after', function() use($app, $distribute_execution_time) {
             /** @var Registration $this */
             if($emc = $this->evaluationMethodConfiguration) {
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], $distribute_execution_time);
+                $distribution_config = $emc->distributionConfiguration ?? 'deactivate';
+                // Só agenda se não estiver desativado
+                if($distribution_config != 'deactivate') {
+                    $execution_time = $distribute_execution_time($distribution_config);
+                    $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $emc], $execution_time);
+                }
             }
         });
 
@@ -181,7 +208,12 @@ class Module extends \MapasCulturais\Module{
 
         $app->hook("entity(Registration).status(<<*>>)", function() use ($app, $distribute_execution_time) {
             if($this->evaluationMethodConfiguration){
-                $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $distribute_execution_time);
+                $distribution_config = $this->evaluationMethodConfiguration->distributionConfiguration ?? 'deactivate';
+                // Só agenda se não estiver desativado
+                if($distribution_config != 'deactivate') {
+                    $execution_time = $distribute_execution_time($distribution_config);
+                    $app->enqueueJob(Jobs\RedistributeCommitteeRegistrations::SLUG, ['evaluationMethodConfiguration' => $this->evaluationMethodConfiguration], $execution_time);
+                }
 
                 /** @var Registration $this */
                 /** @var Opportunity $opportunity */
@@ -1135,6 +1167,17 @@ class Module extends \MapasCulturais\Module{
             'label' => i::__('Permite visualização de pareceres externos'),
             'type' => 'boolean',
             'default' => false,
+        ]);
+
+        $this->registerEvauationMethodConfigurationMetadata('distributionConfiguration', [
+            'label' => i::__('Configuração da distribuição das inscrições entre os avaliadores'),
+            'type' => 'select',
+            'options' => [
+                'hourly' => i::__('Distribuição por hora'),
+                'daily' => i::__('Distribuição por dia'),
+                'deactivate' => i::__('Desativar distribuição'),
+            ],
+            'default' => 'hourly',
         ]);
     }
 
