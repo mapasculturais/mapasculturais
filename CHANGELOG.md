@@ -18,6 +18,7 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Melhorias
 - Redireciona usuario para o perfil quando o mesmo esta em rascunho ou com dados obrigatórios não preechidos
 - Implementa novos hooks na edit de espaço e no componente entity-field
+- Adiciona suporte a autenticação JWT nas requisições para API [(1)](#snp)
 
 ### Correções
 - Corrige warnigs no navegador devido a problemas com o componente entity-field
@@ -25,10 +26,15 @@ e este projeto adere ao [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Ajusta ApiQuery para evitar que _addFilterByMetadata crie JOIN's duplicados
 - Corrige função replaces da classe i
 - Corrige nome do hook entity().archive:after
+- Corrige busca pela chave primária da tabela Job
 
 ### Melhorias não funcionais
 - LifecycleCallbacks na Entities\SealRelation
 - Função \query que faz uma consulta no banco e imprime o resultado como uma tabela ascii
+
+### Créditos
+<a name="snp"></a>
+1. <small>Melhoria desenvolvida pelo Ministério das Cidades, através da Secretaria Nacional de Periferias, para o Prêmio Periferia Viva</small>
 
 ## [7.6.23] - 2025-10-31
 ### Melhorias e correções não funcionais
